@@ -2,19 +2,19 @@
 if (!$id_date && !$id_edition) {
     Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSES', 'course'),
-        Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name
+        Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
     ]);
 } elseif ($id_edition && !$id_date) {
     Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSE', 'course'),
         'index.php?r=' . $this->link_edition . '/show&amp;id_course=' . $id_course . '' => Lang::t('_EDITIONS', 'course'),
-        Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name
+        Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
     ]);
 } else {
     Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSE', 'course'),
         'index.php?r=' . $this->link_classroom . '/classroom&amp;id_course=' . $id_course . '' => Lang::t('_CLASSROOM', 'course'),
-        Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name
+        Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
     ]);
 }
 ?>
@@ -24,11 +24,11 @@ if (!$id_date && !$id_edition) {
 
     switch ($sendCalendar) {
         case 1:
-            $msg_info_course = "<span style='color: green'>" . Lang::t('_SEND_CALENDAR_ENABLED', 'calendar') . " : <b>" . Lang::t('_YES', 'standard') . "</b></span><br>";
+            $msg_info_course = "<span style='color: green'>" . Lang::t('_SEND_CALENDAR_ENABLED', 'calendar') . ' : <b>' . Lang::t('_YES', 'standard') . '</b></span><br>';
             break;
         case 0:
         default:
-            $msg_info_course = "<span style='color: red'>" . Lang::t('_SEND_CALENDAR_ENABLED', 'calendar') . " : <b>" . Lang::t('_NO', 'standard') . "</b></span><br>";
+            $msg_info_course = "<span style='color: red'>" . Lang::t('_SEND_CALENDAR_ENABLED', 'calendar') . ' : <b>' . Lang::t('_NO', 'standard') . '</b></span><br>';
             break;
     }
 
@@ -44,8 +44,8 @@ if (!$id_date && !$id_edition) {
         <div>
             <?php
             echo '<label for="fast_subscribe">' . Lang::t('_SUBSCRIBE', 'subscribe') . '</label>:&nbsp;';
-            echo Form::getInputTextfield("search_t", 'fast_subscribe', 'fast_subscribe', '', '', 255, '');
-            echo Form::getButton("fast_subscribe_b", "fast_subscribe_b", Lang::t('_SUBSCRIBE', 'standard'), "plus_b");
+            echo Form::getInputTextfield('search_t', 'fast_subscribe', 'fast_subscribe', '', '', 255, '');
+            echo Form::getButton('fast_subscribe_b', 'fast_subscribe_b', Lang::t('_SUBSCRIBE', 'standard'), 'plus_b');
             echo '<div id="fast_subscribe_container"></div>';
             echo Form::getHidden('fast_subscribe_idst', 'fast_subscribe_idst', '0');
 
@@ -58,35 +58,35 @@ if (!$id_date && !$id_edition) {
     <div class="quick_search_form">
         <div>
             <?php
-            echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '');
-            echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-            echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
+            echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+            echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
+            echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
             ?>
         </div>
         <a id="advanced_search" class="advanced_search"
-           href="javascript:;"><?php echo Lang::t("_ADVANCED_SEARCH", 'standard'); ?></a>
+           href="javascript:;"><?php echo Lang::t('_ADVANCED_SEARCH', 'standard'); ?></a>
         <div id="advanced_search_options" class="advanced_search_options"
              style="display: <?php echo $is_active_advanced_filter ? 'block' : 'none'; ?>">
             <?php
             //filter inputs
 
-            $_orgchart_after = '<br />' . Form::getInputCheckbox('filter_descendants', 'filter_descendants', 1, $filter_descendants ? true : false, "")
+            $_orgchart_after = '<br />' . Form::getInputCheckbox('filter_descendants', 'filter_descendants', 1, $filter_descendants ? true : false, '')
                 . '&nbsp;<label for="filter_descendants">' . Lang::t('_ORG_CHART_INHERIT', 'organization_chart') . '</label>';
-            echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'filter_orgchart', 'filter_orgchart', $orgchart_list, (int)$filter_orgchart, $_orgchart_after);
+            echo Form::getDropdown(Lang::t('_DIRECTORY_MEMBERTYPETREE', 'admin_directory'), 'filter_orgchart', 'filter_orgchart', $orgchart_list, (int) $filter_orgchart, $_orgchart_after);
             echo Form::getDatefield(Lang::t('_VALID_AT_DATE', 'subscribe'), 'filter_date_valid', 'filter_date_valid', $filter_date_valid);
 
             $arr_filter = [
                 0 => Lang::t('_ALL', 'standard'),
                 1 => Lang::t('_ONLY_EXPIRED', 'subscribe'),
                 2 => Lang::t('_NOT_EXPIRED_WITH_DATE', 'subscribe'),
-                3 => Lang::t('_NOT_EXPIRED_WITHOUT_DATE', 'subscribe')
+                3 => Lang::t('_NOT_EXPIRED_WITHOUT_DATE', 'subscribe'),
             ];
             echo Form::getDropdown(Lang::t('_SHOW_ONLY', 'subscribe'), 'filter_show', 'filter_show', $arr_filter, $filter_show);
 
             //buttons
             echo Form::openButtonSpace();
-            echo Form::getButton("set_advanced_filter", "set_advanced_filter", Lang::t('_SEARCH', 'standard'), false, '', false);
-            echo Form::getButton("reset_advanced_filter", "reset_advanced_filter", Lang::t('_UNDO', 'standard'), false, '', false);
+            echo Form::getButton('set_advanced_filter', 'set_advanced_filter', Lang::t('_SEARCH', 'standard'), false, '', false);
+            echo Form::getButton('reset_advanced_filter', 'reset_advanced_filter', Lang::t('_UNDO', 'standard'), false, '', false);
             echo Form::closeButtonSpace();
             ?>
         </div>
@@ -115,21 +115,19 @@ if (!$id_date && !$id_edition) {
         . '&nbsp;&nbsp;&nbsp;&nbsp;';
 
     $count_selected_over = '<span>'
-        . '<b id="num_users_selected_top">' . (int)(isset($num_users_selected) ? $num_users_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
+        . '<b id="num_users_selected_top">' . (int) (isset($num_users_selected) ? $num_users_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
         . '</span>';
 
     $count_selected_bottom = '<span>'
-        . '<b id="num_users_selected_bottom">' . (int)(isset($num_users_selected) ? $num_users_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
+        . '<b id="num_users_selected_bottom">' . (int) (isset($num_users_selected) ? $num_users_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
         . '</span>';
-
 
     $icon_unset = '<span class="ico-sprite subs_cancel" title="' . Lang::t('_RESET_VALIDITY_DATES', 'subscribe') . '"><span>' . Lang::t('_RESET_VALIDITY_DATES', 'subscribe') . '</span></span>';
     $icon_delete = '';
 
-
     $dyn_labels = [];
     $dyn_filter = [];
-    for ($i = 0; $i < $num_var_fields; $i++) {
+    for ($i = 0; $i < $num_var_fields; ++$i) {
         $label = '<select id="_dyn_field_selector_' . $i . '" name="_dyn_field_selector[' . $i . ']">';
         foreach ($fieldlist as $key => $value) {
             $label .= '<option value="' . $key . '"'
@@ -144,39 +142,36 @@ if (!$id_date && !$id_edition) {
         $dyn_labels[$i] = $label;
     }
 
-
     $columns = [];
     $columns[] = ['key' => 'userid', 'label' => Lang::t('_USERNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'];
     $columns[] = ['key' => 'fullname', 'label' => Lang::t('_FULLNAME', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.labelFormatter'];
-    for ($i = 0; $i < $num_var_fields; $i++) {
+    for ($i = 0; $i < $num_var_fields; ++$i) {
         $columns[] = ['key' => '_dyn_field_' . $i, 'label' => $dyn_labels[$i]];
     }
     $columns[] = ['key' => 'level', 'label' => Lang::t('_LEVEL', 'subscribe'), 'sortable' => true,
         'formatter' => 'Subscription.levelFormatter',
-        'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $level_list_js . '})'];
+        'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $level_list_js . '})', ];
     $columns[] = ['key' => 'status', 'label' => Lang::t('_STATUS', 'subscribe'), 'sortable' => true,
         'formatter' => 'Subscription.statusFormatter',
-        'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $status_list_js . '})'];
+        'editor' => 'new YAHOO.widget.DropdownCellEditor({dropdownOptions:' . $status_list_js . '})', ];
 
-
-    $columns[] = ["key" => "date_begin", "label" => Lang::t("_DATE_BEGIN_VALIDITY", 'subscribe'), "sortable" => true, "formatter" => 'Subscription.dateFormatter',
-        "editor" => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className" => 'img-cell', "hidden" => $hidden_validity];
-    $columns[] = ["key" => "date_expire", "label" => Lang::t("_DATE_EXPIRE_VALIDITY", 'subscribe'), "sortable" => true, "formatter" => 'Subscription.dateFormatter',
-        "editor" => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', "className" => 'img-cell', "hidden" => $hidden_validity];
-    $columns[] = ["key" => "date_unset", "label" => $icon_unset, 'formatter' => 'Subscription.resetDatesFormatter', 'className' => 'img-cell', "hidden" => $hidden_validity];
+    $columns[] = ['key' => 'date_begin', 'label' => Lang::t('_DATE_BEGIN_VALIDITY', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.dateFormatter',
+        'editor' => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', 'className' => 'img-cell', 'hidden' => $hidden_validity, ];
+    $columns[] = ['key' => 'date_expire', 'label' => Lang::t('_DATE_EXPIRE_VALIDITY', 'subscribe'), 'sortable' => true, 'formatter' => 'Subscription.dateFormatter',
+        'editor' => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', 'className' => 'img-cell', 'hidden' => $hidden_validity, ];
+    $columns[] = ['key' => 'date_unset', 'label' => $icon_unset, 'formatter' => 'Subscription.resetDatesFormatter', 'className' => 'img-cell', 'hidden' => $hidden_validity];
 
     $columns[] = ['key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'subscribe')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 
     $tfields = ['id', 'userid', 'fullname', 'level', 'status', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del', 'overbooking'];
-    for ($i = 0; $i < $num_var_fields; $i++) {
+    for ($i = 0; $i < $num_var_fields; ++$i) {
         $tfields[] = '_dyn_field_' . $i;
     }
-
 
     Events::trigger('core.users.show.columns', [
         'fields' => '',
         'columns' => '',
-        'hiddenValidity' => $hidden_validity
+        'hiddenValidity' => $hidden_validity,
     ]);
 
     $this->widget('table', [
@@ -194,12 +189,12 @@ if (!$id_date && !$id_edition) {
         'rel_actions' => [$rel_action . $count_selected_over, $rel_action . $count_selected_bottom],
         'delDisplayField' => 'userid',
         'generateRequest' => 'Subscription.requestBuilder',
-        'editorSaveEvent' => 'Subscription.editorSaveEvent',//'YAHOO.fastSubscribe.editorSaveEvent',
+        'editorSaveEvent' => 'Subscription.editorSaveEvent', //'YAHOO.fastSubscribe.editorSaveEvent',
         'events' => [
             'initEvent' => 'Subscription.initEvent',
             'beforeRenderEvent' => 'Subscription.beforeRenderEvent',
-            'postRenderEvent' => 'Subscription.postRenderEvent'
-        ]
+            'postRenderEvent' => 'Subscription.postRenderEvent',
+        ],
     ]);
 
     echo $back_link;
@@ -208,17 +203,17 @@ if (!$id_date && !$id_edition) {
 </div>
 <script type="text/javascript">
 
-    Subscription.init(<?php echo (int)$id_course;?>, <?php echo (int)$id_edition; ?>, <?php echo (int)$id_date; ?>, {
+    Subscription.init(<?php echo (int) $id_course; ?>, <?php echo (int) $id_edition; ?>, <?php echo (int) $id_date; ?>, {
         baseLink: "<?php echo $this->link; ?>",
         levelList: <?php echo $level_list_js; ?>,
         statusList: <?php echo $status_list_js; ?>,
         filterText: "<?php echo $filter_text; ?>",
-        filterOrgChart: <?php echo (int)$filter_orgchart; ?>,
+        filterOrgChart: <?php echo (int) $filter_orgchart; ?>,
         filterDescendants: <?php echo $filter_descendants ? 'true' : 'false'; ?>,
         filterDateValid: '<?php echo $filter_date_valid; ?>',
-        filterShow: <?php echo (int)$filter_show; ?>,
+        filterShow: <?php echo (int) $filter_show; ?>,
         overbookingStatus: <?php echo _CUS_OVERBOOKING; ?>,
-        editor: '<?php //echo getSelectedHtmlEditor(); ?>',
+        editor: '<?php //echo getSelectedHtmlEditor();?>',
         langs: {
             _RESET_VALIDITY_DATES: "<?php echo Lang::t('_RESET_VALIDITY_DATES', 'subscribe'); ?>",
             _OVERBOOKING: "<?php echo Lang::t('_USER_STATUS_OVERBOOKING', 'subscribe'); ?>",

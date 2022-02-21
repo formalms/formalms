@@ -5,40 +5,41 @@ echo getTitleArea(Lang::t('_LABELS', 'label'));
 <?php
 
 $_columns = [
-	['key' => 'title', 'label' => Lang::t('_TITLE', 'label')],
-	['key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'label')]
+    ['key' => 'title', 'label' => Lang::t('_TITLE', 'label')],
+    ['key' => 'description', 'label' => Lang::t('_DESCRIPTION', 'label')],
 ];
 if ($permissions['mod']) {
-
-	$_columns[] = ['key' => 'move_up', 'label' => '<span class="ico-sprite subs_up" title="'.Lang::t('_MOVE_UP', 'label').'"><span>'.Lang::t('_MOVE_UP', 'label').'</span></span>', 'className' => 'img-cell', 'formatter' => 'Labels.upFormatter'];
-	$_columns[] = ['key' => 'move_down', 'label' => '<span class="ico-sprite subs_down" title="'.Lang::t('_MOVE_DOWN', 'label').'"><span>'.Lang::t('_MOVE_DOWN', 'label').'</span></span>', 'className' => 'img-cell', 'formatter' => 'Labels.downFormatter'];
-	$_columns[] = ['key' => 'mod', 'label' => '<span class="ico-sprite subs_mod" title="'.Lang::t('_MOD', 'label').'"><span>'.Lang::t('_MOD', 'label').'</span></span>', 'className' => 'img-cell'];
+    $_columns[] = ['key' => 'move_up', 'label' => '<span class="ico-sprite subs_up" title="' . Lang::t('_MOVE_UP', 'label') . '"><span>' . Lang::t('_MOVE_UP', 'label') . '</span></span>', 'className' => 'img-cell', 'formatter' => 'Labels.upFormatter'];
+    $_columns[] = ['key' => 'move_down', 'label' => '<span class="ico-sprite subs_down" title="' . Lang::t('_MOVE_DOWN', 'label') . '"><span>' . Lang::t('_MOVE_DOWN', 'label') . '</span></span>', 'className' => 'img-cell', 'formatter' => 'Labels.downFormatter'];
+    $_columns[] = ['key' => 'mod', 'label' => '<span class="ico-sprite subs_mod" title="' . Lang::t('_MOD', 'label') . '"><span>' . Lang::t('_MOD', 'label') . '</span></span>', 'className' => 'img-cell'];
 }
-if ($permissions['del']) $_columns[] = ['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'label')), 'formatter'=>'doceboDelete', 'className' => 'img-cell'];
+if ($permissions['del']) {
+    $_columns[] = ['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'label')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
+}
 
 $_params = [
-	'id'			=> 'label_table',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/label/getLabels',
-	'rowsPerPage'	=> Get::sett('visuItem', 25),
-	'startIndex'	=> 0,
-	'results'		=> Get::sett('visuItem', 25),
-	'sort'			=> '',
-	'columns'		=> $_columns,
-	'fields' => ['id_common_label', 'title', 'description','position', 'sequence' , 'mod', 'del'],
-	'delDisplayField' => 'title',
-	'events' => [
-		'beforeRenderEvent' => 'function() {
+    'id' => 'label_table',
+    'ajaxUrl' => 'ajax.adm_server.php?r=alms/label/getLabels',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => '',
+    'columns' => $_columns,
+    'fields' => ['id_common_label', 'title', 'description', 'position', 'sequence', 'mod', 'del'],
+    'delDisplayField' => 'title',
+    'events' => [
+        'beforeRenderEvent' => 'function() {
 			var rlist = YAHOO.util.Selector.query("a[id^=move_]");
 			for (var i=0; i<rlist.length; i++) YAHOO.util.Event.purgeElement(rlist[i]);
 		}',
-		'postRenderEvent' => 'function() {
+        'postRenderEvent' => 'function() {
 			var rlist = YAHOO.util.Selector.query("a[id^=move_]");
 			YAHOO.util.Event.addListener(rlist, "click", Labels.move_label);
-		}'
+		}',
     ],
 ];
 if ($permissions['add']) {
-	$_params['rel_actions'] = '<a class="ico-wt-sprite subs_add" href="index.php?r=alms/label/add"><span>'.Lang::t('_ADD', 'standard').'</span></a>';
+    $_params['rel_actions'] = '<a class="ico-wt-sprite subs_add" href="index.php?r=alms/label/add"><span>' . Lang::t('_ADD', 'standard') . '</span></a>';
 }
 
 $this->widget('table', $_params);

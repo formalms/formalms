@@ -1,7 +1,7 @@
 <?php
 
-Util::get_js(Get::rel_path('lms').'/admin/views/aggregatedcertificate/tabbedcontent.min.js', true, true);
-Util::get_css(Get::rel_path('base').'/addons/jquery/bootstrap-treeview/bootstrap-treeview.min.css', true, true);
+Util::get_js(Get::rel_path('lms') . '/admin/views/aggregatedcertificate/tabbedcontent.min.js', true, true);
+Util::get_css(Get::rel_path('base') . '/addons/jquery/bootstrap-treeview/bootstrap-treeview.min.css', true, true);
 
 include Forma::inc(_lib_ . '/formatable/include.php');
 ?>
@@ -15,10 +15,9 @@ include Forma::inc(_lib_ . '/formatable/include.php');
     }
 </style>
 <?php
-    
 
 cout(
-     getTitleArea($cert_name.':&nbsp;'.Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
+     getTitleArea($cert_name . ':&nbsp;' . Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
 );
 
 ?>
@@ -37,7 +36,7 @@ cout(
     var selected_one = false;
     
 <?php
-    echo "var idsCoursePathArr = " .$idsCoursePath.";";
+    echo 'var idsCoursePathArr = ' . $idsCoursePath . ';';
 ?>
 
     $(document).ready(function () {    
@@ -48,7 +47,7 @@ cout(
                 serverSide: true,
                 'ajax': {
                     type: 'POST',
-                    url: "<?= 'ajax.adm_server.php?r=alms/aggregatedcertificate/getCoursePathList'?>",
+                    url: "<?php echo 'ajax.adm_server.php?r=alms/aggregatedcertificate/getCoursePathList'; ?>",
                 },
                 rowId: function(row) {
                   return row.idCoursePath;
@@ -79,11 +78,11 @@ cout(
                     },
                     { 
                         data: 'nameCoursePath',
-                        title: "<?= Lang::t('_NAME') ?>",
+                        title: "<?php echo Lang::t('_NAME'); ?>",
                     },
                     { 
                         data: 'descriptionCoursePath',
-                        title: "<?= Lang::t('_DESCRIPTION') ?>",
+                        title: "<?php echo Lang::t('_DESCRIPTION'); ?>",
                         searchable: false 
                     },
 
@@ -94,14 +93,14 @@ cout(
                 'order': [[1, 'asc']],
                 language: {       //TODO: Aggiungere lingue
 
-                    "emptyTable": "<?= Lang::t('_NO_COURSEPATH_FOUND','coursepath'); ?>",
-                    "info": "<?= Lang::t('_INFO','datatable'); ?>",
-                    "infoEmpty": "<?= Lang::t('_INFOEMPTY','datatable'); ?>",
+                    "emptyTable": "<?php echo Lang::t('_NO_COURSEPATH_FOUND', 'coursepath'); ?>",
+                    "info": "<?php echo Lang::t('_INFO', 'datatable'); ?>",
+                    "infoEmpty": "<?php echo Lang::t('_INFOEMPTY', 'datatable'); ?>",
                     select: {
                         rows: {
-                            0: "<?= Lang::t('_NO_COURSEPATH_SELECTED','coursepath'); ?>",
-                            1: "<?= Lang::t('_ONE_ROW_SELECTED','datatable'); ?>",
-                            _: "<?= Lang::t('_ROWS_SELECTED','datatable'); ?>",
+                            0: "<?php echo Lang::t('_NO_COURSEPATH_SELECTED', 'coursepath'); ?>",
+                            1: "<?php echo Lang::t('_ONE_ROW_SELECTED', 'datatable'); ?>",
+                            _: "<?php echo Lang::t('_ROWS_SELECTED', 'datatable'); ?>",
 
                         }
                     }
@@ -172,8 +171,8 @@ cout(
 
 <?php
 
-    require('tab.php');
-    require_once(_base_.'/lib/lib.table.php');
+    require 'tab.php';
+    require_once _base_ . '/lib/lib.table.php';
 
 ?>
 
@@ -188,24 +187,22 @@ cout(
         $type_h = ['', '', ''];
         $tb_courses->addHead($cont_h);
         $tb_courses->setColsStyle($type_h);
-        require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
-        foreach($coursePathsArr as $coursePathInfo)
-            $tb_courses->addBody([$coursePathInfo[COURSEPATH_CODE],  $coursePathInfo[COURSEPATH_NAME], $coursePathInfo[COURSEPATH_DESCR],] );    
-                    
-    }    
+        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        foreach ($coursePathsArr as $coursePathInfo) {
+            $tb_courses->addBody([$coursePathInfo[COURSEPATH_CODE],  $coursePathInfo[COURSEPATH_NAME], $coursePathInfo[COURSEPATH_DESCR]]);
+        }
+    }
 
-    $mtitle =  Lang::t("_COURSEPATH");
-    $id_table = "coursepath_ft";
+    $mtitle = Lang::t('_COURSEPATH');
+    $id_table = 'coursepath_ft';
     $arrTab = [
               [
-              "title"     => $title,
-              "content"   => 
-              ($id_association > 0 ? $tb_courses->getTable() : '')
+              'title' => $title,
+              'content' => ($id_association > 0 ? $tb_courses->getTable() : '')
               . "<table class='table table-striped table-bordered' style='width:100%' id='{$id_table}'>
                 </table>
-             "
-              ]
-
+             ",
+              ],
     ];
 
     TabContainer::printStartHeader();
@@ -217,19 +214,19 @@ cout(
     Tab::printEndContent();
 
    cout(
-    Form::getHidden("id_certificate","id_certificate",$id_certificate)
-    .Form::getHidden("id_association","id_association",$id_association)
-    .Form::getHidden("type_assoc","type_assoc",$type_assoc)
-    .Form::getHidden("title","title",$title)
-    .Form::getHidden("description","description",$description)
+    Form::getHidden('id_certificate', 'id_certificate', $id_certificate)
+    . Form::getHidden('id_association', 'id_association', $id_association)
+    . Form::getHidden('type_assoc', 'type_assoc', $type_assoc)
+    . Form::getHidden('title', 'title', $title)
+    . Form::getHidden('description', 'description', $description)
     );
 
     cout(
         Form::openButtonSpace()
-        .Form::getBreakRow()
-        .Form::getButton('ok_filter', 'import_filter', Lang::t('_NEXT'))
-        .Form::getButton('undo_filter', 'undo_filter', Lang::t('_UNDO'))
-        .Form::closeButtonSpace()
-        .Form::closeForm()
+        . Form::getBreakRow()
+        . Form::getButton('ok_filter', 'import_filter', Lang::t('_NEXT'))
+        . Form::getButton('undo_filter', 'undo_filter', Lang::t('_UNDO'))
+        . Form::closeButtonSpace()
+        . Form::closeForm()
     );
 ?>

@@ -112,44 +112,41 @@ YAHOO.util.Event.onDOMReady(function() {
 <?php echo getBackUi('index.php?r=adm/templatelayout/show', Lang::t('_BACK', 'template')); ?>
 <?php
 if (isset($error)) {
-	echo $error;
+    echo $error;
 } else {
-?>
+    ?>
 
 <?php
-	if (isset($id)) {
-		echo Form::openForm('edit_template_form', 'index.php?r=adm/templatelayout/update', false, 'POST', 'multipart/form-data');
-		echo Form::getHidden('id_tmpl', 'id_tmpl', $id);
-	} else {
-		echo Form::openForm('create_template_form', 'index.php?r=adm/templatelayout/save', false, 'POST', 'multipart/form-data');
-	}
-?>
+    if (isset($id)) {
+        echo Form::openForm('edit_template_form', 'index.php?r=adm/templatelayout/update', false, 'POST', 'multipart/form-data');
+        echo Form::getHidden('id_tmpl', 'id_tmpl', $id);
+    } else {
+        echo Form::openForm('create_template_form', 'index.php?r=adm/templatelayout/save', false, 'POST', 'multipart/form-data');
+    } ?>
 
 <?php
-	echo '<label for="color_1">'.Lang::t('_COLOR_1', 'template').':</label>&nbsp;<span id="color_1"></span>';
-	echo Form::getBreakRow();
-	echo '<label for="color_2">'.Lang::t('_COLOR_2', 'template').':</label>&nbsp;<span id="color_2"></span>';
-	echo Form::getBreakRow();
-	echo '<label for="color_3">'.Lang::t('_COLOR_3', 'template').':</label>&nbsp;<span id="color_3"></span>';
-	echo Form::getBreakRow();
-	echo '<label for="color_4">'.Lang::t('_COLOR_4', 'template').':</label>&nbsp;<span id="color_4"></span>';
-	echo Form::getBreakRow();
-	echo '<label for="color_5">'.Lang::t('_COLOR_5', 'template').':</label>&nbsp;<span id="color_5"></span>';
-	echo Form::getBreakRow();
-	echo '<label for="color_6">'.Lang::t('_COLOR_6', 'template').':</label>&nbsp;<span id="color_6"></span>';
-	echo Form::getBreakRow();
+    echo '<label for="color_1">' . Lang::t('_COLOR_1', 'template') . ':</label>&nbsp;<span id="color_1"></span>';
+    echo Form::getBreakRow();
+    echo '<label for="color_2">' . Lang::t('_COLOR_2', 'template') . ':</label>&nbsp;<span id="color_2"></span>';
+    echo Form::getBreakRow();
+    echo '<label for="color_3">' . Lang::t('_COLOR_3', 'template') . ':</label>&nbsp;<span id="color_3"></span>';
+    echo Form::getBreakRow();
+    echo '<label for="color_4">' . Lang::t('_COLOR_4', 'template') . ':</label>&nbsp;<span id="color_4"></span>';
+    echo Form::getBreakRow();
+    echo '<label for="color_5">' . Lang::t('_COLOR_5', 'template') . ':</label>&nbsp;<span id="color_5"></span>';
+    echo Form::getBreakRow();
+    echo '<label for="color_6">' . Lang::t('_COLOR_6', 'template') . ':</label>&nbsp;<span id="color_6"></span>';
+    echo Form::getBreakRow();
 
-	echo Form::getFilefield(Lang::t('_LOGO_1'), 'logo_1', 'logo_1', isset($data['logo_1']) ? $data['logo_1'] : '');
-	echo Form::getFilefield(Lang::t('_LOGO_2'), 'logo_2', 'logo_2', isset($data['logo_2']) ? $data['logo_2'] : '');
-
-?>
+    echo Form::getFilefield(Lang::t('_LOGO_1'), 'logo_1', 'logo_1', isset($data['logo_1']) ? $data['logo_1'] : '');
+    echo Form::getFilefield(Lang::t('_LOGO_2'), 'logo_2', 'logo_2', isset($data['logo_2']) ? $data['logo_2'] : ''); ?>
 
 <?php
-	echo Form::openButtonSpace();
-	echo Form::getButton('save', 'save', Lang::t('_SAVE', 'standard'));
-	echo Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'));
-	echo Form::closeButtonSpace();
-	echo Form::closeForm();
-?>
-<?php } ?>
+    echo Form::openButtonSpace();
+    echo Form::getButton('save', 'save', Lang::t('_SAVE', 'standard'));
+    echo Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'));
+    echo Form::closeButtonSpace();
+    echo Form::closeForm(); ?>
+<?php
+} ?>
 <?php echo getBackUi('index.php?r=adm/templatelayout/show', Lang::t('_BACK', 'template')); ?>

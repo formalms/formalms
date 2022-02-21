@@ -1,16 +1,27 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events\Core\Courses;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class CourseSubscriptionRemoveEvent
- * @package appLms\Events\Core
+ * Class CourseSubscriptionRemoveEvent.
  */
 class CourseSubscriptionRemoveEvent extends Event
 {
-    const EVENT_NAME = 'core.coursesubscriptionremove.event';
-    
+    public const EVENT_NAME = 'core.coursesubscriptionremove.event';
+
     /** @var array */
     protected $user;
     protected $level;
@@ -20,7 +31,7 @@ class CourseSubscriptionRemoveEvent extends Event
      * CourseSubscriptionRemoveEvent constructor.
      */
     public function __construct()
-    {        
+    {
         $this->user = null;
         $this->level = null;
         $this->course = null;
@@ -85,5 +96,4 @@ class CourseSubscriptionRemoveEvent extends Event
             'course' => $this->course,
         ];
     }
-
 }

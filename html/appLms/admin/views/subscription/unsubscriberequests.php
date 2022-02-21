@@ -1,7 +1,7 @@
 <?php
 echo getTitleArea([
-	'index.php?r=alms/course/show' => Lang::t('_COURSES', 'admin_courses_managment'),
-	Lang::t('_UNSUBSCRIBE_REQUESTS', 'course')
+    'index.php?r=alms/course/show' => Lang::t('_COURSES', 'admin_courses_managment'),
+    Lang::t('_UNSUBSCRIBE_REQUESTS', 'course'),
 ]);
 ?>
 <div class="std_block">
@@ -10,69 +10,68 @@ echo getTitleArea([
 	<div>
 		<div class="simple_search_box" id="waitingusers_simple_filter_options">
 			<?php
-				echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '' );
-				echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-				echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-			?>
+                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+                echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
+                echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
+            ?>
 		</div>
 	</div>
 </div>
 <?php
 
-
 //$icon_details = '<span class="ico-sprite subs_view"><span>'.Lang::t('_DETAILS', 'standard').'</span></span>';
-$icon_confirm = '<span class="ico-sprite subs_unassoc"><span>'.Lang::t('_CONFIRM', 'standard').'</span></span>';
-$icon_delete = '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
+$icon_confirm = '<span class="ico-sprite subs_unassoc"><span>' . Lang::t('_CONFIRM', 'standard') . '</span></span>';
+$icon_delete = '<span class="ico-sprite subs_del"><span>' . Lang::t('_DEL', 'standard') . '</span></span>';
 
-$rel_action_over = '<a class="ico-wt-sprite subs_unassoc" id="confirm_multi_over" href="ajax.adm_server.php?r='. $this->link.'/accept_unsubscribe_request_multi">'
-	.'<span>'.Lang::t('_CONFIRM', 'admin_directory').'</span>'
-	.'</a>'
-	.'<a class="ico-wt-sprite subs_del" id="delete_multi_over" href="ajax.adm_server.php?r='. $this->link.'/deny_unsubscribe_request_multi">'
-	.'<span>'.Lang::t('_DEL_SELECTED', 'admin_directory').'</span>'
-	.'</a>'
-	.'<span class="ma_selected_users">'
-	.'<b id="num_subs_selected_top">'.(int)(isset($num_subs_selected) ? $num_subs_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
-	.'</span>';
+$rel_action_over = '<a class="ico-wt-sprite subs_unassoc" id="confirm_multi_over" href="ajax.adm_server.php?r=' . $this->link . '/accept_unsubscribe_request_multi">'
+    . '<span>' . Lang::t('_CONFIRM', 'admin_directory') . '</span>'
+    . '</a>'
+    . '<a class="ico-wt-sprite subs_del" id="delete_multi_over" href="ajax.adm_server.php?r=' . $this->link . '/deny_unsubscribe_request_multi">'
+    . '<span>' . Lang::t('_DEL_SELECTED', 'admin_directory') . '</span>'
+    . '</a>'
+    . '<span class="ma_selected_users">'
+    . '<b id="num_subs_selected_top">' . (int) (isset($num_subs_selected) ? $num_subs_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
+    . '</span>';
 
-$rel_action_bottom = '<a class="ico-wt-sprite subs_unassoc" id="confirm_multi_bottom" href="ajax.adm_server.php?r='. $this->link.'/accept_unsubscribe_request_multi">'
-	.'<span>'.Lang::t('_CONFIRM', 'admin_directory').'</span>'
-	.'</a>'
-	.'<a class="ico-wt-sprite subs_del" id="delete_multi_bottom" href="ajax.adm_server.php?r='. $this->link.'/deny_unsubscribe_request_multi">'
-	.'<span>'.Lang::t('_DEL_SELECTED', 'admin_directory').'</span>'
-	.'</a>'
-	.'<span class="ma_selected_users">'
-	.'<b id="num_subs_selected_bottom">'.(int)(isset($num_subs_selected) ? $num_subs_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
-	.'</span>';
+$rel_action_bottom = '<a class="ico-wt-sprite subs_unassoc" id="confirm_multi_bottom" href="ajax.adm_server.php?r=' . $this->link . '/accept_unsubscribe_request_multi">'
+    . '<span>' . Lang::t('_CONFIRM', 'admin_directory') . '</span>'
+    . '</a>'
+    . '<a class="ico-wt-sprite subs_del" id="delete_multi_bottom" href="ajax.adm_server.php?r=' . $this->link . '/deny_unsubscribe_request_multi">'
+    . '<span>' . Lang::t('_DEL_SELECTED', 'admin_directory') . '</span>'
+    . '</a>'
+    . '<span class="ma_selected_users">'
+    . '<b id="num_subs_selected_bottom">' . (int) (isset($num_subs_selected) ? $num_subs_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
+    . '</span>';
 
 $params = [
-	'id' => 'unsubscriberequests_table',
-	'ajaxUrl' => 'ajax.adm_server.php?r='. $this->link.'/getunsubscribetabledata',
-	'rowsPerPage' => Get::sett('visuItem', 25),
-	'startIndex' => 0,
-	'results' => Get::sett('visuItem', 25),
-	'sort' => 'userid',
-	'dir' => 'desc',
-	'columns' => [
-			['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
-			['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
-			['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
-			['key' => 'course_code', 'label' => Lang::t('_CODE', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
-			['key' => 'course_name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
-			['key' => 'request_date', 'label' => Lang::t('_DATE', 'admin_directory'), 'sortable' => true],
-			['key' => 'confirm', 'label' => $icon_confirm, 'formatter' => 'UnsubscribeRequests.confirmFormatter', 'className' => 'img-cell'],
-			['key' => 'del', 'label' => $icon_delete, 'formatter' => 'doceboDelete', 'className' => 'img-cell']
+    'id' => 'unsubscriberequests_table',
+    'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/getunsubscribetabledata',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'userid',
+    'dir' => 'desc',
+    'columns' => [
+            ['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+            ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+            ['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+            ['key' => 'course_code', 'label' => Lang::t('_CODE', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+            ['key' => 'course_name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true, 'formatter' => 'UnsubscribeRequests.labelFormatter'],
+            ['key' => 'request_date', 'label' => Lang::t('_DATE', 'admin_directory'), 'sortable' => true],
+            ['key' => 'confirm', 'label' => $icon_confirm, 'formatter' => 'UnsubscribeRequests.confirmFormatter', 'className' => 'img-cell'],
+            ['key' => 'del', 'label' => $icon_delete, 'formatter' => 'doceboDelete', 'className' => 'img-cell'],
     ],
-	'fields' => ['id', 'id_user', 'res_id', 'userid', 'firstname', 'lastname', 'email', 'course_name', 'course_code', 'request_date', 'r_type', 'del'],
-	'generateRequest' => 'UnsubscribeRequests.requestBuilder',
-	'rel_actions' => [$rel_action_over, $rel_action_bottom],
-	'stdSelection' => true,
-	'delDisplayField' => 'userid',
-	'selectAllAdditionalFilter' => 'UnsubscribeRequests.selectAllAdditionalFilter()',
-	'events' => [
-			'initEvent' => 'UnsubscribeRequests.initEvent',
-			'beforeRenderEvent' => 'UnsubscribeRequests.beforeRenderEvent',
-			'postRenderEvent' => 'UnsubscribeRequests.postRenderEvent'
-    ]
+    'fields' => ['id', 'id_user', 'res_id', 'userid', 'firstname', 'lastname', 'email', 'course_name', 'course_code', 'request_date', 'r_type', 'del'],
+    'generateRequest' => 'UnsubscribeRequests.requestBuilder',
+    'rel_actions' => [$rel_action_over, $rel_action_bottom],
+    'stdSelection' => true,
+    'delDisplayField' => 'userid',
+    'selectAllAdditionalFilter' => 'UnsubscribeRequests.selectAllAdditionalFilter()',
+    'events' => [
+            'initEvent' => 'UnsubscribeRequests.initEvent',
+            'beforeRenderEvent' => 'UnsubscribeRequests.beforeRenderEvent',
+            'postRenderEvent' => 'UnsubscribeRequests.postRenderEvent',
+    ],
 ];
 
 $this->widget('table', $params);

@@ -1,28 +1,22 @@
 <?php
 
-
-
 /**
- * @package course management
- * @subpackage course catalogue
  * @category ajax server
- * @version $Id:$
  *
+ * @version $Id:$
  */
-
-define("LMS", true);
-define("IN_FORMA", true);
+define('LMS', true);
+define('IN_FORMA', true);
 //define("IS_AJAX", true);
-define("_deeppath_", '../../../');
-require(dirname(__FILE__).'/'._deeppath_.'base.php');
+define('_deeppath_', '../../../');
+require dirname(__FILE__) . '/' . _deeppath_ . 'base.php';
 
 // start buffer
 ob_start();
 
 // initialize
-require(_base_.'/lib/lib.bootstrap.php');
+require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(BOOT_DATETIME);
-
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Strict//EN"    
@@ -32,8 +26,10 @@ Boot::init(BOOT_DATETIME);
 	
 	<!-- <link href="<?php echo getPathTemplate(); ?>style/style.css" rel="stylesheet" type="text/css" /> -->
 	<link href="<?php echo getPathTemplate(); ?>style/lms-scormplayer.css" rel="stylesheet" type="text/css" />
-	<?php if(!isset($playertemplate) || trim($playertemplate) == '') $playertemplate = 'default'; ?>
-	<link href="<?php echo getPathTemplate().'player_scorm/'.$playertemplate; ?>/def_style.css" rel="stylesheet" type="text/css" />
+	<?php if (!isset($playertemplate) || trim($playertemplate) == '') {
+    $playertemplate = 'default';
+} ?>
+	<link href="<?php echo getPathTemplate() . 'player_scorm/' . $playertemplate; ?>/def_style.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
 		function msgPrereqNotSatisfied( text ) {
 			var elem = document.getElementById('prerequisites');
@@ -49,7 +45,7 @@ Boot::init(BOOT_DATETIME);
 	<body>
 		<div id="bodynav">
 			<div id="prerequisites" style="visibility: hidden" >
-				<b><?php echo Lang::t('_ORGLOCKEDTITLE', 'organization') ?></b>
+				<b><?php echo Lang::t('_ORGLOCKEDTITLE', 'organization'); ?></b>
 			</div>
 			<br />
 			<div id="prevblocklink">

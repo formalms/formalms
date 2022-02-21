@@ -1,14 +1,25 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appLms\Events\Lms;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 class CourseCreateAndUpdateEvent extends Event
 {
-    const EVENT_NAME_MASK = 'lms.course.mask';
-    const EVENT_NAME_INS = 'lms.course.ins';
-    const EVENT_NAME_MOD = 'lms.course.mod';
+    public const EVENT_NAME_MASK = 'lms.course.mask';
+    public const EVENT_NAME_INS = 'lms.course.ins';
+    public const EVENT_NAME_MOD = 'lms.course.mod';
 
     /**
      * @var bool
@@ -20,11 +31,12 @@ class CourseCreateAndUpdateEvent extends Event
      */
     protected $postData;
 
-    /** @var string $htmlData */
+    /** @var string */
     protected $htmlData;
 
     /**
      * CourseCreateAndUpdateEvent constructor.
+     *
      * @param $idCourse
      */
     public function __construct($idCourse = false)
@@ -43,11 +55,13 @@ class CourseCreateAndUpdateEvent extends Event
 
     /**
      * @param mixed $idCourse
+     *
      * @return CourseCreateAndUpdateEvent
      */
     public function setIdCourse($idCourse)
     {
         $this->idCourse = $idCourse;
+
         return $this;
     }
 
@@ -61,11 +75,13 @@ class CourseCreateAndUpdateEvent extends Event
 
     /**
      * @param mixed $postData
+     *
      * @return CourseCreateAndUpdateEvent
      */
     public function setPostData($postData)
     {
         $this->postData = $postData;
+
         return $this;
     }
 
@@ -79,16 +95,19 @@ class CourseCreateAndUpdateEvent extends Event
 
     /**
      * @param string $htmlData
+     *
      * @return CourseCreateAndUpdateEvent
      */
     public function setHtmlData($htmlData)
     {
         $this->htmlData = $htmlData;
+
         return $this;
     }
 
     /**
      * @param $data
+     *
      * @return string
      */
     public function appendHtmlData($htmlData)

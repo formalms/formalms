@@ -3,11 +3,11 @@
 <h3><?php echo Lang::t('_LANGUAGES'); ?></h3>
 
 <div id="import_lang_info">
-<?php foreach($_SESSION["lang_install"] as $code=>$ok): ?>
-	<div><span id="loading_img_<?php echo $code; ?>" style="visibility: hidden;"><img src="<?php echo getTemplatePath() ?>images/loading.gif" alt="loading" /></span>
+<?php foreach ($_SESSION['lang_install'] as $code => $ok) { ?>
+	<div><span id="loading_img_<?php echo $code; ?>" style="visibility: hidden;"><img src="<?php echo getTemplatePath(); ?>images/loading.gif" alt="loading" /></span>
 	<?php echo ucfirst($code); ?>
 	</div>
-<?php endforeach; ?>
+<?php } ?>
 </div>
 <script type="text/javascript">
 	YAHOO.util.Event.onDOMReady(function() {
@@ -16,8 +16,8 @@
 	});
 	function importLanguages() {
 
-		var language =new Array('<?php echo implode("','", array_keys($_SESSION["lang_install"])); ?>');
-		var platform =new Array('<?php echo implode("','", array_keys($_SESSION["platform_arr"])); ?>');
+		var language =new Array('<?php echo implode("','", array_keys($_SESSION['lang_install'])); ?>');
+		var platform =new Array('<?php echo implode("','", array_keys($_SESSION['platform_arr'])); ?>');
 
 		var prev_lang ='';
 

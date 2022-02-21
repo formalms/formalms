@@ -1,27 +1,37 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class CatalogLms extends Model
 {
-    var $edition_man;
-    var $course_man;
-    var $classroom_man;
+    public $edition_man;
+    public $course_man;
+    public $classroom_man;
 
-    var $cstatus;
-    var $acl_man;
+    public $cstatus;
+    public $acl_man;
 
     /* category handling */
-    var $children;
-    var $show_all_category;
-    var $currentCatalogue;
-
+    public $children;
+    public $show_all_category;
+    public $currentCatalogue;
 
     public function __construct()
     {
-        require_once(_lms_ . '/lib/lib.course.php');
-        require_once(_lms_ . '/lib/lib.edition.php');
-        require_once(_lms_ . '/lib/lib.date.php');
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.edition.php';
+        require_once _lms_ . '/lib/lib.date.php';
 
         $this->course_man = new Man_Course();
         $this->edition_man = new EditionManager();
@@ -32,7 +42,7 @@ class CatalogLms extends Model
             CST_AVAILABLE => '_CST_AVAILABLE',
             CST_EFFECTIVE => '_CST_CONFIRMED',
             CST_CONCLUDED => '_CST_CONCLUDED',
-            CST_CANCELLED => '_CST_CANCELLED'
+            CST_CANCELLED => '_CST_CANCELLED',
         ];
 
         $this->acl_man = &Docebo::user()->getAclManager();
@@ -41,54 +51,51 @@ class CatalogLms extends Model
         $this->currentCatalogue = 0;
     }
 
-
     public function enrolledStudent($idCourse)
     {
-        $query = "SELECT COUNT(*)"
-            . " FROM %lms_courseuser"
+        $query = 'SELECT COUNT(*)'
+            . ' FROM %lms_courseuser'
             . " WHERE idCourse = '" . $idCourse . "'";
 
-
         list($enrolled) = sql_fetch_row(sql_query($query));
+
         return $enrolled;
     }
 
-
     public function getInfoEnroll($idCourse, $idUser)
     {
-        $query = "SELECT status, waiting, level"
-            . " FROM %lms_courseuser"
-            . " WHERE idCourse = " . $idCourse
-            . " AND idUser = " . $idUser;
+        $query = 'SELECT status, waiting, level'
+            . ' FROM %lms_courseuser'
+            . ' WHERE idCourse = ' . $idCourse
+            . ' AND idUser = ' . $idUser;
+
         return Docebo::db()->query($query);
     }
 
-
     public function getInfoLO($idCourse)
     {
-
         $query = "select org.idOrg, org.idCourse, org.objectType from (SELECT o.idOrg, o.idCourse, o.objectType 
-              FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . $idCourse . ") ORDER BY o.path) as org 
-              GROUP BY org.idCourse";
+              FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . $idCourse . ') ORDER BY o.path) as org 
+              GROUP BY org.idCourse';
 
         return Docebo::db()->query($query);
     }
 
     public function getCourseList($type = '', $page = 1, $id_catalog, $id_category)
     {
-        require_once(_lms_ . '/lib/lib.catalogue.php');
+        require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
         $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
         $category_filter = ($id_category == 0 || $id_category == null ? '' : ' and idCategory=' . $id_category);
-        $cat_list_filter = "";
+        $cat_list_filter = '';
         if ($id_catalog > 0) {
-            $q = "select idEntry from learning_catalogue_entry where idCatalogue=" . $id_catalog . " and type_of_entry='course'";
+            $q = 'select idEntry from learning_catalogue_entry where idCatalogue=' . $id_catalog . " and type_of_entry='course'";
             $r = sql_query($q);
             while (list($idcat) = sql_fetch_row($r)) {
                 $cat_array[] = $idcat;
             }
-            $cat_list_filter = " and idCourse in (" . implode(",", $cat_array) . ")";
+            $cat_list_filter = ' and idCourse in (' . implode(',', $cat_array) . ')';
         }
 
         switch ($type) {
@@ -104,7 +111,7 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
             case 'classroom':
@@ -119,7 +126,7 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
             case 'new':
@@ -134,7 +141,7 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
             case 'catalogue':
@@ -142,7 +149,7 @@ class CatalogLms extends Model
                 $base_link = 'index.php?r=catalog/catalogueCourse&amp;id_cat=' . $id_catalogue . '&amp;page=' . $page;
 
                 $catalogue_course = &$cat_man->getCatalogueCourse($id_catalogue);
-                $filter = " AND idCourse IN (" . implode(',', $catalogue_course) . ")";
+                $filter = ' AND idCourse IN (' . implode(',', $catalogue_course) . ')';
                 break;
             default:
                 $filter = '';
@@ -159,15 +166,14 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
         }
 
-
-        $query = "SELECT *"
-            . " FROM %lms_course"
-            . " WHERE status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")"
+        $query = 'SELECT *'
+            . ' FROM %lms_course'
+            . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
             . " AND (                       
 						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND
@@ -177,29 +183,28 @@ class CatalogLms extends Model
             . $filter
             . $category_filter
             . $cat_list_filter
-            . " ORDER BY name";
-
+            . ' ORDER BY name';
 
         $result = sql_query($query);
+
         return $result;
     }
 
-
     public function getNewCourseList($type = '', $page = 1, $idCatalog = 0, $idCategory = 0)
     {
-        require_once(_lms_ . '/lib/lib.catalogue.php');
+        require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
         $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
         $categoryFilter = (empty($idCategory) ? '' : ' and idCategory=' . $idCategory);
-        $categoryListFilter = "";
+        $categoryListFilter = '';
         if ($idCatalog > 0) {
-            $query = "select idEntry from learning_catalogue_entry where idCatalogue=" . $idCatalog . " and type_of_entry='course'";
+            $query = 'select idEntry from learning_catalogue_entry where idCatalogue=' . $idCatalog . " and type_of_entry='course'";
             $result = Docebo::db()->query($query);
             foreach ($result as $item) {
                 $cat_array[] = $item['idEntry'];
             }
-            $categoryListFilter = " and idCourse in (" . implode(",", $cat_array) . ")";
+            $categoryListFilter = ' and idCourse in (' . implode(',', $cat_array) . ')';
         }
         $courses = [];
         $filter = '';
@@ -209,7 +214,7 @@ class CatalogLms extends Model
                 $filter = " AND course_type = '" . $type . "'";
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
                 break;
             case 'catalogue':
                 $idCatalogue = Get::req('id_cata', DOTY_INT, '0');
@@ -217,7 +222,6 @@ class CatalogLms extends Model
                 $user_catalogue[] = $idCatalogue;
                 break;
             default:
-
                 break;
         }
         if (count($user_catalogue) > 0) {
@@ -225,16 +229,15 @@ class CatalogLms extends Model
                 $catalogue_courses = $cat_man->getCatalogueCourse($id_cat);
                 $courses = array_merge($courses, $catalogue_courses);
             }
-
         }
 
         if (count($courses) > 0) {
-            $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+            $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
         }
 
-        $query = "SELECT *"
-            . " FROM %lms_course"
-            . " WHERE status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")"
+        $query = 'SELECT *'
+            . ' FROM %lms_course'
+            . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
             . " AND (                       
 						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND
@@ -244,11 +247,10 @@ class CatalogLms extends Model
             . $filter
             . $categoryFilter
             . $categoryListFilter
-            . " ORDER BY name";
+            . ' ORDER BY name';
 
         return Docebo::db()->query($query);
     }
-
 
     public function getCatalogCourseList($type, $page, $idCatalog, $idCategory)
     {
@@ -266,12 +268,13 @@ class CatalogLms extends Model
 
             $courses[] = $course;
         }
+
         return $courses;
     }
 
     public function getTotalCourseNumber($type = '')
     {
-        require_once(_lms_ . '/lib/lib.catalogue.php');
+        require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
         $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
@@ -288,7 +291,7 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
             case 'classroom':
@@ -302,11 +305,11 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
             case 'edition':
-                $filter = " AND course_edition = 1";
+                $filter = ' AND course_edition = 1';
                 if (count($user_catalogue) > 0) {
                     $courses = [];
 
@@ -316,11 +319,11 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
                 if (count($user_catalogue) > 0) {
                     $courses = [];
 
@@ -330,14 +333,14 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
             case 'catalogue':
                 $idCatalogue = Get::req('id_cata', DOTY_INT, '0');
 
                 $catalogue_course = &$cat_man->getCatalogueCourse($idCatalogue);
-                $filter = " AND idCourse IN (" . implode(',', $catalogue_course) . ")";
+                $filter = ' AND idCourse IN (' . implode(',', $catalogue_course) . ')';
                 break;
             default:
                 $filter = '';
@@ -351,28 +354,28 @@ class CatalogLms extends Model
                         $courses = array_merge($courses, $catalogue_course);
                     }
 
-                    $filter .= " AND idCourse IN (" . implode(',', $courses) . ")";
+                    $filter .= ' AND idCourse IN (' . implode(',', $courses) . ')';
                 }
                 break;
         }
 
         if (count($user_catalogue) == 0 && Get::sett('on_catalogue_empty', 'off') == 'off') {
-            $filter = " AND 0 "; //query won't return any results with this setting
+            $filter = ' AND 0 '; //query won't return any results with this setting
         }
 
         $id_cat = Get::req('id_cat', DOTY_INT, 0);
 
-        $query = "SELECT COUNT(*)"
-            . " FROM %lms_course"
-            . " WHERE status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")"
+        $query = 'SELECT COUNT(*)'
+            . ' FROM %lms_course'
+            . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
-            . " AND ("
+            . ' AND ('
             . " date_begin = '0000-00-00'"
             . " OR date_begin > '" . date('Y-m-d') . "'"
-            . " )"
+            . ' )'
             . $filter
-            . ($id_cat > 0 ? " AND idCategory = " . (int)$id_cat : '')
-            . " ORDER BY name";
+            . ($id_cat > 0 ? ' AND idCategory = ' . (int) $id_cat : '')
+            . ' ORDER BY name';
 
         list($res) = sql_fetch_row(sql_query($query));
 
@@ -381,7 +384,7 @@ class CatalogLms extends Model
 
     public function _getClassDisplayInfo($id_course, &$course_array)
     {
-        require_once(_lms_ . '/lib/lib.date.php');
+        require_once _lms_ . '/lib/lib.date.php';
         $dm = new DateManager();
         $cl = new ClassroomLms();
         $course_editions = $cl->getUserEditionsInfo(Docebo::user()->idst, $id_course);
@@ -409,7 +412,6 @@ class CatalogLms extends Model
                     $next_lesson_array[$id_date . ',' . $id] = new DateTime(Format::date($day['date_begin'], 'datetime'));
                 }
             }
-
         }
 
         // calculating what's next lession will be; safe mode in case of more editions with different days
@@ -423,12 +425,13 @@ class CatalogLms extends Model
                 }
             }
         }
+
         return $out;
     }
 
     public function getUserCatalogue($id_user)
     {
-        require_once(_lms_ . '/lib/lib.catalogue.php');
+        require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
         $res = &$cat_man->getUserAllCatalogueInfo($id_user);
@@ -440,31 +443,33 @@ class CatalogLms extends Model
     {
         $user_catalogue = array_keys($this->getUserCatalogue($id_user));
 
-        $query = "SELECT idEntry"
-            . " FROM %lms_catalogue_entry"
-            . " WHERE idCatalogue IN (" . implode(',', $user_catalogue) . ")"
+        $query = 'SELECT idEntry'
+            . ' FROM %lms_catalogue_entry'
+            . ' WHERE idCatalogue IN (' . implode(',', $user_catalogue) . ')'
             . " AND type_of_entry = 'coursepath'";
 
         $result = sql_query($query);
         $res = [];
 
-        while (list($id_path) = sql_fetch_row($result))
+        while (list($id_path) = sql_fetch_row($result)) {
             $res[$id_path] = $id_path;
+        }
 
         return $res;
     }
 
     public function getUserCoursepathSubscription($id_user)
     {
-        $query = "SELECT id_path"
-            . " FROM %lms_coursepath_user"
+        $query = 'SELECT id_path'
+            . ' FROM %lms_coursepath_user'
             . " WHERE idUser = '" . $id_user . "'";
 
         $result = sql_query($query);
         $res = [];
 
-        while (list($id_path) = sql_fetch_row($result))
+        while (list($id_path) = sql_fetch_row($result)) {
             $res[$id_path] = $id_path;
+        }
 
         return $res;
     }
@@ -476,21 +481,22 @@ class CatalogLms extends Model
         $user_coursepath = $this->getUserCoursepathSubscription($id_user);
         $limit = ($page - 1) * Get::sett('visuItem');
 
-        $query = "SELECT id_path, path_name, path_code, path_descr, subscribe_method"
-            . " FROM %lms_coursepath"
-            . " WHERE id_path IN (" . implode(',', $coursepath) . ")"
-            . " LIMIT " . $limit . ", " . Get::sett('visuItem');
+        $query = 'SELECT id_path, path_name, path_code, path_descr, subscribe_method'
+            . ' FROM %lms_coursepath'
+            . ' WHERE id_path IN (' . implode(',', $coursepath) . ')'
+            . ' LIMIT ' . $limit . ', ' . Get::sett('visuItem');
 
         $result = sql_query($query);
 
         while (list($id_path, $name, $code, $descr, $subscribe_method) = sql_fetch_row($result)) {
             $action = '';
-            if (isset($user_coursepath[$id_path]))
+            if (isset($user_coursepath[$id_path])) {
                 $action = '<div class="catalog_action"><p class="subscribed">' . Lang::t('_USER_STATUS_SUBS', 'catalogue') . '</p></div>';
-            elseif ($subscribe_method != 0)
-                $action = "<div class=\"catalog_action\" id=\"action_" . $id_path . "\"><a href=\"javascript:;\" onclick=\"subscriptionCoursePathPopUp('" . $id_path . "')\" title=\"Subscribe\"><p class=\"can_subscribe\">" . Lang::t('_SUBSCRIBE', 'catalogue') . "</p></a></div>";
-            elseif ($subscribe_method == 0)
+            } elseif ($subscribe_method != 0) {
+                $action = '<div class="catalog_action" id="action_' . $id_path . "\"><a href=\"javascript:;\" onclick=\"subscriptionCoursePathPopUp('" . $id_path . "')\" title=\"Subscribe\"><p class=\"can_subscribe\">" . Lang::t('_SUBSCRIBE', 'catalogue') . '</p></a></div>';
+            } elseif ($subscribe_method == 0) {
                 $action .= '<div class="catalog_action"><p class="cannot_subscribe">' . Lang::t('_COURSE_S_GODADMIN', 'catalogue') . '</p></div>';
+            }
 
             $html .= '<div style="position:relative;clear: none;margin: .4em 1em 1em;padding-bottom:1em;border-bottom:1px solid #BAC2CF;">'
                 . '<h2>'
@@ -512,7 +518,6 @@ class CatalogLms extends Model
 
     public function subscribeCoursePathInfo($id_path)
     {
-
         $res = [];
 
         $res['success'] = true;
@@ -520,16 +525,15 @@ class CatalogLms extends Model
         $res['body'] = Lang::t('_COURSEPATH_SUBSCRIBE_WIN_TXT', 'catalogue');
         $res['footer'] = '<a href="javascript:;" onclick="subscribeToCoursePath(\'' . $id_path . '\');"><span class="close_dialog">' . Lang::t('_SUBSCRIBE', 'catalogue') . '</span></a>'
             . '&nbsp;&nbsp;<a href="javascript:;" onclick="hideDialog();"><span class="close_dialog">' . Lang::t('_UNDO', 'catalogue') . '</span></a>';
+
         return $res;
     }
 
-
     public function courseSelectionInfo($id_course)
     {
-
-        $query = "SELECT name, selling, prize"
-            . " FROM %lms_course"
-            . " WHERE idCourse = " . (int)$id_course;
+        $query = 'SELECT name, selling, prize'
+            . ' FROM %lms_course'
+            . ' WHERE idCourse = ' . (int) $id_course;
 
         list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
         $classrooms = $this->classroom_man->getCourseDate($id_course, false);
@@ -545,19 +549,17 @@ class CatalogLms extends Model
             $available_classrooms[$id_date]['days'] = $this->classroom_man->getDateDayDateDetails($id_date);
             $available_classrooms[$id_date]['full'] = isset($full_classrooms[$id_date]);
             $available_classrooms[$id_date]['overbooking'] = isset($overbooking_classrooms[$id_date]);
-
-
         }
         $teachers = array_intersect_key($this->course_man->getClassroomTeachers($id_course), $available_classrooms);
-        return compact('available_classrooms', 'teachers', 'course_name');
 
+        return compact('available_classrooms', 'teachers', 'course_name');
     }
 
     public function controlSubscriptionRemaining($id_course)
     {
-        $query = "SELECT *"
-            . " FROM %lms_course"
-            . " WHERE idCourse = " . (int)$id_course;
+        $query = 'SELECT *'
+            . ' FROM %lms_course'
+            . ' WHERE idCourse = ' . (int) $id_course;
 
         $result = sql_query($query);
 
@@ -567,9 +569,9 @@ class CatalogLms extends Model
 
             $classrooms = $this->classroom_man->getCourseDate($row['idCourse'], false);
 
-            if (count($classrooms) == 0)
+            if (count($classrooms) == 0) {
                 return false;
-            else {
+            } else {
                 //Controllo che l'utente non sia iscritto a tutte le edizioni future
                 $date_id = [];
 
@@ -577,30 +579,33 @@ class CatalogLms extends Model
                 $classroom_full = $this->classroom_man->getFullDateForCourse($row['idCourse']);
                 $classroom_not_confirmed = $this->classroom_man->getNotConfirmetDateForCourse($row['idCourse']);
 
-                foreach ($classrooms as $classroom_info)
+                foreach ($classrooms as $classroom_info) {
                     $date_id[] = $classroom_info['id_date'];
+                }
 
                 reset($classrooms);
 
                 $control = array_diff($date_id, $user_classroom, $classroom_full, $classroom_not_confirmed);
 
-                if (count($control) == 0)
+                if (count($control) == 0) {
                     return false;
-                else {
-                    if ($row['selling'] == 0)
+                } else {
+                    if ($row['selling'] == 0) {
                         return true;
-                    else {
+                    } else {
                         $classroom_in_chart = [];
 
-                        if (isset($_SESSION['lms_cart'][$row['idCourse']]['classroom']))
+                        if (isset($_SESSION['lms_cart'][$row['idCourse']]['classroom'])) {
                             $classroom_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['classroom'];
+                        }
 
                         $control = array_diff($control, $classroom_in_chart);
 
-                        if (count($control) == 0)
+                        if (count($control) == 0) {
                             return false;
-                        else
+                        } else {
                             return true;
+                        }
                     }
                 }
             }
@@ -609,28 +614,29 @@ class CatalogLms extends Model
 
             $editions = $this->edition_man->getEditionAvailableForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
 
-            if (count($editions) == 0)
+            if (count($editions) == 0) {
                 return false;
-            else {
-                if ($row['selling'] == 0)
+            } else {
+                if ($row['selling'] == 0) {
                     return true;
-                else {
+                } else {
                     $edition_in_chart = [];
 
-                    if (isset($_SESSION['lms_cart'][$row['idCourse']]['editions']))
+                    if (isset($_SESSION['lms_cart'][$row['idCourse']]['editions'])) {
                         $edition_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['editions'];
+                    }
 
                     $editions = array_diff($editions, $edition_in_chart);
 
-                    if (count($editions) == 0)
+                    if (count($editions) == 0) {
                         return false;
-                    else
+                    } else {
                         return true;
+                    }
                 }
             }
         }
     }
-
 
     public function GetGlobalJsonTree($idCatalogue)
     {
@@ -640,18 +646,19 @@ class CatalogLms extends Model
         foreach ($top_category as $id_key => $val) {
             if ($this->CategoryHasChildrenCourses($id_key, $val['iLeft'], $val['iRight'])) {
                 $this->children = $this->getMinorCategoryTree($id_key, $val['iLeft'], $val['iRight'], 2);
-                $global_tree[] = ['text' => $val['text'], "id_cat" => $id_key, 'nodes' => $this->children];
+                $global_tree[] = ['text' => $val['text'], 'id_cat' => $id_key, 'nodes' => $this->children];
             }
         }
+
         return $global_tree;
     }
 
     private function getMajorCategory()
     {
-        $q = "SELECT idCategory, path, iLeft, iRight"
-            . " FROM %lms_category"
-            . " WHERE lev = 1"
-            . " ORDER BY path";
+        $q = 'SELECT idCategory, path, iLeft, iRight'
+            . ' FROM %lms_category'
+            . ' WHERE lev = 1'
+            . ' ORDER BY path';
 
         $res = [];
         $records = sql_query($q);
@@ -664,10 +671,9 @@ class CatalogLms extends Model
 
     public function getMinorCategoryTree($idCat, $ileft, $iright, $lev)
     {
-
         if (($iright - $ileft > 1) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright)) {
-            $q = "SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
-                        WHERE iLeft > " . (int)$ileft . " AND iRight < " . $iright . " AND lev=" . $lev;
+            $q = 'SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
+                        WHERE iLeft > ' . (int) $ileft . ' AND iRight < ' . $iright . ' AND lev=' . $lev;
             $res = [];
             $records = sql_query($q);
             while ($row = sql_fetch_assoc($records)) {
@@ -675,7 +681,7 @@ class CatalogLms extends Model
                 if ($this->CategoryHasChildrenCourses($row['idCategory'], $row['iLeft'], $row['iRight'])) {
                     $res[$row['idCategory']] = [
                         'text' => end(explode('/', $row['path'])),
-                        'id_cat' => $row['idCategory']
+                        'id_cat' => $row['idCategory'],
                     ];
                     // getting all children of next level, if any
                     $children = $this->getMinorCategoryTree($row['idCategory'], $row['iLeft'], $row['iRight'], $row['lev'] + 1);
@@ -684,6 +690,7 @@ class CatalogLms extends Model
                     }
                 }
             }
+
             return $res;
         } else {
             return '';
@@ -691,43 +698,41 @@ class CatalogLms extends Model
     }
 
     /**
-     * checking if there are courses starting from id_cat and searching through all children nodes
+     * checking if there are courses starting from id_cat and searching through all children nodes.
      */
     private function CategoryHasChildrenCourses($id_cat, $ileft, $iright)
     {
-
         if ($this->show_all_category) {
             return true;
         } else {
             if ($this->currentCatalogue == 0) {
-
-                $query = "select count(*) as t from
+                $query = 'select count(*) as t from
                        %lms_course, %lms_category  where
                        %lms_course.idCategory = %lms_category.idCategory and
-                       %lms_category.iLeft >=" . $ileft . " and %lms_category.iRight <= " . $iright . " and
+                       %lms_category.iLeft >=' . $ileft . ' and %lms_category.iRight <= ' . $iright . " and
                        %lms_course.course_type <> 'assessment' and
-                       %lms_course.status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")
+                       %lms_course.status NOT IN (" . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ")
                        AND (                       
                               (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )";
             } else {
-
-                $query = "select count(*) as t from
+                $query = 'select count(*) as t from
                        %lms_course, %lms_category,  %lms_catalogue_entry where
                        %lms_course.idCategory = %lms_category.idCategory and
-                       %lms_category.iLeft >=" . $ileft . " and %lms_category.iRight <= " . $iright . " and
+                       %lms_category.iLeft >=' . $ileft . ' and %lms_category.iRight <= ' . $iright . " and
                        %lms_course.course_type <> 'assessment' and
-                       %lms_course.status NOT IN (" . CST_PREPARATION . ", " . CST_CONCLUDED . ", " . CST_CANCELLED . ")
+                       %lms_course.status NOT IN (" . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ")
                        AND (                       
                               (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )
-                       AND idCatalogue = " . (int)$this->currentCatalogue .
-                    " AND %lms_catalogue_entry.idEntry=%lms_course.idCourse";
+                       AND idCatalogue = " . (int) $this->currentCatalogue .
+                    ' AND %lms_catalogue_entry.idEntry=%lms_course.idCourse';
             }
             list($c) = sql_fetch_row(sql_query($query));
-            return ($c > 0);
+
+            return $c > 0;
         }
     }
 }

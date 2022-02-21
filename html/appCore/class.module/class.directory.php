@@ -1,89 +1,92 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
-
-
-/**
- * @package admin-core
- * @subpackage user
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once(dirname(__FILE__) . '/class.definition.php');
-require_once(dirname(__FILE__) . '/../lib/lib.directory.php');
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+require_once dirname(__FILE__) . '/class.definition.php';
+require_once dirname(__FILE__) . '/../lib/lib.directory.php';
 
-define("FILTER_FOLD", "FILTER_FOLD");
+define('FILTER_FOLD', 'FILTER_FOLD');
 
 class Module_Directory extends Module
 {
+    public $lang = null;
+    public $tab = null;
+    public $aclManager = null;
+    public $selection = [];
+    public $selection_alt = [];
+    public $selector_mode = false;
+    public $use_multi_sel = false;
+    public $sel_extend = null;
+    public $show_user_selector = true;
+    public $show_group_selector = true;
+    public $show_orgchart_selector = true;
+    public $show_orgchart_simple_selector = false;
+    public $multi_choice = true;
+    public $group_filter = [];
+    public $user_filter = [];
+    public $not_idst_filter = [];
+    public $page_title = false;
+    public $select_all = false;
+    public $deselect_all = false;
+    public $nFields = false;
+    public $requested_tab = false;
+    public $_extra_form = [];
+    public $show_only_group_name = false;
 
-    var $lang = NULL;
-    var $tab = NULL;
-    var $aclManager = NULL;
-    var $selection = [];
-    var $selection_alt = [];
-    var $selector_mode = FALSE;
-    var $use_multi_sel = FALSE;
-    var $sel_extend = NULL;
-    var $show_user_selector = TRUE;
-    var $show_group_selector = TRUE;
-    var $show_orgchart_selector = TRUE;
-    var $show_orgchart_simple_selector = FALSE;
-    var $multi_choice = TRUE;
-    var $group_filter = [];
-    var $user_filter = [];
-    var $not_idst_filter = [];
-    var $page_title = FALSE;
-    var $select_all = FALSE;
-    var $deselect_all = FALSE;
-    var $nFields = FALSE;
-    var $requested_tab = FALSE;
-    var $_extra_form = [];
-    var $show_only_group_name = FALSE;
+    public $show_simple_filter = false;
 
-    var $show_simple_filter = FALSE;
+    public $hide_anonymous = false;
+    public $hide_suspend = true;
 
-    var $hide_anonymous = FALSE;
-    var $hide_suspend = TRUE;
+    public $lms_editions_filter = false;
 
-    var $lms_editions_filter = FALSE;
-
-
-    function Module_Directory()
+    public function Module_Directory()
     {
         parent::Module();
         $this->aclManager = new DoceboACLManager();
-        $this->lang =& DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
 
-        require_once($GLOBALS["where_framework"] . "/lib/lib.selextend.php");
+        require_once $GLOBALS['where_framework'] . '/lib/lib.selextend.php';
         $this->sel_extend = new ExtendSelector();
         $this->multi_choice = Get::sett('use_org_chart_multiple_choice');
     }
 
-    function directory_save_state(&$data, &$selection, &$selection_alt)
+    public function directory_save_state(&$data, &$selection, &$selection_alt)
     {
         $_SESSION['directory'] = serialize($data);
         $_SESSION['directory_selection'] = serialize($selection);
         $_SESSION['directory_selection_alt'] = serialize($selection_alt);
     }
 
-    function &directory_load_state()
+    public function &directory_load_state()
     {
-
         $result = [[], [], []];
         if (isset($_SESSION['directory']) && isset($_SESSION['directory_selection'])) {
             $result = [unserialize($_SESSION['directory']),
                 unserialize($_SESSION['directory_selection']),
-                unserialize($_SESSION['directory_selection_alt'])];
+                unserialize($_SESSION['directory_selection_alt']), ];
         }
+
         return $result;
     }
 
-    function isParseDataAvailable($arrayState)
+    public function isParseDataAvailable($arrayState)
     {
         return isset($arrayState[DIRECTORY_ID]);
     }
 
-    function parseInput($arrayState)
+    public function parseInput($arrayState)
     {
         $itemSelectedMulti = [];
         $printedItems = [];
@@ -115,14 +118,16 @@ class Module_Directory extends Module
                     list($idst, $idst_desc) = preg_split('/_/', $key);
                     $printedItems[] = $idst;
                     $printedItems[] = $idst_desc;
-                    if ($val != '') $itemSelectedMulti[] = $val;
+                    if ($val != '') {
+                        $itemSelectedMulti[] = $val;
+                    }
                 }
             }
             if (isset($arrayState[DIRECTORY_ID][DIRECTORY_OP_SELECTALL])) {
-                $this->select_all = TRUE;
+                $this->select_all = true;
             }
             if (isset($arrayState[DIRECTORY_ID][DIRECTORY_OP_DESELECTALL])) {
-                $this->deselect_all = TRUE;
+                $this->deselect_all = true;
                 $array_selection = [];
                 $array_selection_alt = [];
                 $this->selection = $array_selection;
@@ -132,8 +137,9 @@ class Module_Directory extends Module
             }
         }
 
-        if (!is_array($this->selection))
+        if (!is_array($this->selection)) {
             $this->selection = [];
+        }
 
         $unselectedItems = array_diff($printedItems, $itemSelectedMulti);
         $this->selection = array_diff($this->selection, $unselectedItems);
@@ -146,11 +152,11 @@ class Module_Directory extends Module
         //print_r($this->selection);
     }
 
-    function directory_create_TabView($op)
+    public function directory_create_TabView($op)
     {
         global $_tab_op_map;
         $arr_tabs = [];
-        require_once(_base_ . '/lib/lib.tab.php');
+        require_once _base_ . '/lib/lib.tab.php';
         $this->tab = new TabView(DIRECTORY_TAB, 'index.php?modname=directory&amp;op=directory');
 
         if ($this->show_user_selector) {
@@ -170,32 +176,37 @@ class Module_Directory extends Module
             $arr_tabs[] = ORGVIEW_TAB;
         }
 
-        if (count($this->selection) == 0)
+        if (count($this->selection) == 0) {
             list($extra_data, $this->selection, $this->selection_alt) = $this->directory_load_state();
+        }
         $this->parseInput($_POST);
         $this->tab->parseInput($_POST, $extra_data);
 
-        if ($this->tab->getActiveTab() === NULL)
-            if (in_array($op, $arr_tabs))
+        if ($this->tab->getActiveTab() === null) {
+            if (in_array($op, $arr_tabs)) {
                 $this->tab->setActiveTab($op);
-            else
+            } else {
                 $this->tab->setActiveTab(ORGVIEW_TAB);
-        if ($this->requested_tab !== FALSE)
+            }
+        }
+        if ($this->requested_tab !== false) {
             $this->tab->setActiveTab($this->requested_tab);
+        }
     }
 
-    function directory_destroy_TabView()
+    public function directory_destroy_TabView()
     {
         $this->directory_save_state($this->tab->getState(), $this->selection, $this->selection_alt);
     }
 
-
-    function resetSelection($array_selection = NULL, $array_selection_alt = NULL)
+    public function resetSelection($array_selection = null, $array_selection_alt = null)
     {
-        if ($array_selection === NULL)
+        if ($array_selection === null) {
             $array_selection = [];
-        if ($array_selection_alt === NULL)
+        }
+        if ($array_selection_alt === null) {
             $array_selection_alt = [];
+        }
         $this->selection = $array_selection;
         $this->selection_alt = $array_selection_alt;
         $_SESSION['directory_selection'] = serialize($array_selection);
@@ -204,180 +215,164 @@ class Module_Directory extends Module
         $_SESSION['directory_start_selection_alt'] = serialize($array_selection_alt);
     }
 
-    function getSelection($arrayData)
+    public function getSelection($arrayData)
     {
         list($extra_data, $this->selection, $this->selection_alt) = $this->directory_load_state();
         $this->parseInput($arrayData);
+
         return $this->selection;
     }
 
-    function getSelectionAlt($arrayData)
+    public function getSelectionAlt($arrayData)
     {
         list($extra_data, $this->selection, $this->selection_alt) = $this->directory_load_state();
         $this->parseInput($arrayData);
+
         return $this->selection_alt;
     }
 
-    function getAllSelection($arrayData)
+    public function getAllSelection($arrayData)
     {
         list($extra_data, $this->selection, $this->selection_alt) = $this->directory_load_state();
         $this->parseInput($arrayData);
+
         return [$this->selection, $this->selection_alt];
     }
 
-    function getPrintedItems($arrayState)
+    public function getPrintedItems($arrayState)
     {
         return Util::unserialize(urldecode($arrayState[DIRECTORY_ID][DIRECTORY_ID_PRINTEDITEM]));
     }
 
-    function getStartSelection()
+    public function getStartSelection()
     {
         return unserialize($_SESSION['directory_start_selection']);
     }
 
-    function getStartSelectionAlt()
+    public function getStartSelectionAlt()
     {
         return unserialize($_SESSION['directory_start_selection_alt']);
     }
 
-    function getUnselected()
+    public function getUnselected()
     {
         return array_diff($this->getStartSelection(), $this->selection);
     }
 
-    function getUnselectedAlt()
+    public function getUnselectedAlt()
     {
         return array_diff($this->getStartSelectionAlt(), $this->selection_alt);
     }
 
-    function useExtraMenu()
+    public function useExtraMenu()
     {
         return true;
     }
 
-    function loadExtraMenu()
+    public function loadExtraMenu()
     {
         loadAdminModuleLanguage($this->module_name);
     }
 
-    function loadBody()
+    public function loadBody()
     {
         global $op, $modname;
 
         switch ($op) {
-
             // group related actions ==========================================
             case 'listgroup':
-                {
                     checkPerm('view_group', false, 'directory', 'framework');
                     $this->loadGroupView();
-                };
+                ;
                 break;
             case 'editgroup':
-                {
                     checkPerm('editgroup', false, 'directory', 'framework');
-                    $this->editGroup(importVar('groupid', FALSE, ''));
-                };
+                    $this->editGroup(importVar('groupid', false, ''));
+                ;
                 break;
             case 'deletegroup':
-                {
                     checkPerm('delgroup', false, 'directory', 'framework');
-                    $this->deleteGroup(importVar('groupid', FALSE, ''));
-                };
+                    $this->deleteGroup(importVar('groupid', false, ''));
+                ;
                 break;
 
             // group members related actions ===================================
             case 'import_groupuser' :
-                {
                     checkPerm('associate_group', false, 'directory', 'framework');
                     $this->importToGroup();
-                };
+                ;
                 break;
             case 'import_groupuser_2' :
-                {
                     checkPerm('associate_group', false, 'directory', 'framework');
                     $this->importToGroup_step2();
-                };
+                ;
                 break;
             case 'import_groupuser_3' :
-                {
                     checkPerm('associate_group', false, 'directory', 'framework');
                     $this->importToGroup_step3();
-                };
+                ;
                 break;
 
             case 'addtogroup':
-                {
                     checkPerm('associate_group', false, 'directory', 'framework');
-                    $this->addToGroup(importVar('groupid', FALSE, ''));
-                };
+                    $this->addToGroup(importVar('groupid', false, ''));
+                ;
                 break;
             case 'membersGroupDelFilter':
             case 'membersgroup':
-                {
                     checkPerm('view_group', false, 'directory', 'framework');
-                    $this->membersGroup(importVar('groupid', FALSE, ''));
-                };
+                    $this->membersGroup(importVar('groupid', false, ''));
+                ;
                 break;
-            case "waitinggroup" :
-                {
+            case 'waitinggroup' :
                     checkPerm('view_group', false, 'directory', 'framework');
-                    $this->waitingUserGroup(importVar('groupid', FALSE, ''));
-                };
+                    $this->waitingUserGroup(importVar('groupid', false, ''));
+                ;
                 break;
 
             // org chart related actions ======================================
             case 'org_chart':
-                {
                     checkPerm('view_org_chart', false, 'directory', 'framework');
                     $this->loadOrgChartView();
-                };
+                ;
                 break;
             case 'addtotree':
-                {
                     checkPerm('edituser_org_chart', false, 'directory', 'framework');
-                    $this->addToTree(importVar('treeid', FALSE, ''));
-                };
+                    $this->addToTree(importVar('treeid', false, ''));
+                ;
                 break;
             case 'assignfield':
-                {
                     checkPerm('edituser_org_chart', false, 'directory', 'framework');
-                    $this->loadAssignField(importVar('groupid', FALSE, ''));
-                };
+                    $this->loadAssignField(importVar('groupid', false, ''));
+                ;
                 break;
             case 'assignfieldmandatory':
-                {
                     checkPerm('edituser_org_chart', false, 'directory', 'framework');
-                    $this->loadAssignField2(importVar('groupid', FALSE, ''));
-                };
+                    $this->loadAssignField2(importVar('groupid', false, ''));
+                ;
                 break;
 
             // users related actions =========================================
             case 'listuser':
-                {
                     checkPerm('view_org_chart', false, 'directory', 'framework');
                     $this->loadPeopleView();
-                };
+                ;
                 break;
             case 'org_createuser':
-                {
                     checkPerm('view_org_chart', false, 'directory', 'framework');
                     $this->org_createUser();
-                };
+                ;
                 break;
             case 'org_waitinguser':
-                {
                     checkPerm('view_org_chart', false, 'directory', 'framework');
                     $this->org_waitingUser();
-                };
+                ;
                 break;
 
-
             case 'org_manageuser':
-                {
                     checkPerm('view_org_chart', false, 'directory', 'framework');
                     $this->org_manageuser();
-                };
+                ;
                 break;
 
             case 'view_deleted_user':
@@ -386,23 +381,19 @@ class Module_Directory extends Module
                 break;
 
             case 'quick_change_password' :
-                {
                     checkPerm('view_org_chart', false, 'directory', 'framework');
                     $this->quickChangePassword();
-                };
+                ;
                 break;
 
-
             default:
-            {
                 checkPerm('view_org_chart', false, 'directory', 'framework');
-                $this->loadSelector('', '', '', FALSE);
-            }
+                $this->loadSelector('', '', '', false);
         }
     }
 
     // TODO: move this function in a proper position
-    function quickChangePassword()
+    public function quickChangePassword()
     {
         checkPerm('edituser_org_chart', false, 'directory', 'framework');
 
@@ -410,11 +401,10 @@ class Module_Directory extends Module
         $user_info = $this->aclManager->getUser(false, $_POST['cp_userid']);
         if ($user_info != false) {
             //change the user password
-            $re = $this->aclManager->updateUser($user_info[ACL_INFO_IDST], FALSE, FALSE, FALSE,
-                $_POST['cp_pwd'], FALSE, FALSE,
-                FALSE, FALSE, FALSE, (isset($_POST['cp_force']) ? 1 : ''));
+            $re = $this->aclManager->updateUser($user_info[ACL_INFO_IDST], false, false, false,
+                $_POST['cp_pwd'], false, false,
+                false, false, false, (isset($_POST['cp_force']) ? 1 : ''));
             if ($re) {
-
                 $GLOBALS['page']->add(getResultUi($this->lang->def('_OPERATION_SUCCESSFUL')));
             } else {
                 //update user failed
@@ -427,31 +417,31 @@ class Module_Directory extends Module
         $this->loadOrgChartView();
     }
 
-    function _getTableDeletedUser()
+    public function _getTableDeletedUser()
     {
         return 'core_deleted_user';
     }
 
-    function _getTableUser()
+    public function _getTableUser()
     {
         return 'core_user';
     }
 
-    function viewDeletedUser()
+    public function viewDeletedUser()
     {
-        require_once(_base_ . '/lib/lib.table.php');
+        require_once _base_ . '/lib/lib.table.php';
 
-        $lang =& DoceboLanguage::createInstance('profile', 'framework');
-        $out =& $GLOBALS['page'];
+        $lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
-        $acl_man =& Docebo::user()->getAclManager();
+        $acl_man = &Docebo::user()->getAclManager();
 
         $max_row = 10;
         $tb = new Table($max_row);
         $tb->initNavBar('ini', 'link');
         $ini = $tb->getSelectedElement();
 
-        $query = "SELECT * FROM " . $this->_getTableDeletedUser() . "";
+        $query = 'SELECT * FROM ' . $this->_getTableDeletedUser() . '';
         $result = sql_query($query);
         $num_rows = sql_num_rows($result);
         //print_r($ini);
@@ -461,15 +451,15 @@ class Module_Directory extends Module
             $limit = 0;
         }
 
-        $query = "SELECT d.idst, d.userid, d.firstname, d.lastname, d.email, d.lastenter, d.deletion_date, d.deleted_by, u.userid, u.firstname, u.lastname" .
-            " FROM " . $this->_getTableDeletedUser() . " AS d JOIN" .
-            " " . $this->_getTableUser() . " AS u ON d.deleted_by = u.idst" .
-            " LIMIT " . $limit . ", " . $max_row . "";
+        $query = 'SELECT d.idst, d.userid, d.firstname, d.lastname, d.email, d.lastenter, d.deletion_date, d.deleted_by, u.userid, u.firstname, u.lastname' .
+            ' FROM ' . $this->_getTableDeletedUser() . ' AS d JOIN' .
+            ' ' . $this->_getTableUser() . ' AS u ON d.deleted_by = u.idst' .
+            ' LIMIT ' . $limit . ', ' . $max_row . '';
 
         $result = sql_query($query);
 
         $out->add(getTitleArea($lang->def('_DELETED_USER_LIST')) . '<div class="std_block">');
-        $out->add(getBackUi('index.php?modname=directory&amp;op=org_chart', "&lt;&lt;" . $lang->def('_BACK')));
+        $out->add(getBackUi('index.php?modname=directory&amp;op=org_chart', '&lt;&lt;' . $lang->def('_BACK')));
 
         if ($num_rows) {
             $cont_h =
@@ -482,7 +472,7 @@ class Module_Directory extends Module
                     $lang->def('_DELETION_DATE'),
                     $lang->def('_USERID_DELETER'),
                     $lang->def('_FIRSTNAME_DELETER'),
-                    $lang->def('_LASTNAME_DELETER')
+                    $lang->def('_LASTNAME_DELETER'),
                 ];
             $type_h = ['', '', '', '', '', '', '', '', '', '', ''];
 
@@ -516,16 +506,16 @@ class Module_Directory extends Module
             $out->add($lang->def('_EMPTY_SELECTION'));
         }
 
-        $out->add(getBackUi('index.php?modname=directory&amp;op=org_chart', "&lt;&lt;" . $lang->def('_BACK')));
+        $out->add(getBackUi('index.php?modname=directory&amp;op=org_chart', '&lt;&lt;' . $lang->def('_BACK')));
         $out->add('</div>');
     }
 
-    function org_manageuser()
+    public function org_manageuser()
     {
         checkPerm('view_org_chart', false, 'directory', 'framework');
-        require_once(_base_ . '/lib/lib.user_profile.php');
+        require_once _base_ . '/lib/lib.user_profile.php';
 
-        $lang =& DoceboLanguage::createInstance('profile', 'framework');
+        $lang = &DoceboLanguage::createInstance('profile', 'framework');
 
         $profile = new UserProfile(importVar('id_user', true, 0));
         $profile->init('profile', 'framework', 'modname=directory&op=org_manageuser&id_user=' . importVar('id_user', true, 0), 'ap');
@@ -538,86 +528,82 @@ class Module_Directory extends Module
             . getBackUi('index.php?modname=directory&amp;op=org_chart', $lang->def('_BACK'))
 
             . $profile->performAction()
-
-            . $profile->getFooter()
-            , 'content');
-
+            . $profile->getFooter(), 'content');
     }
 
     /**
-     * Set filters for user data retriever
+     * Set filters for user data retriever.
+     *
      * @param string $filter_type one of the following:
-     *                                - "platform": retrieve only user of the platforms
-     *                                                given in $filter_arg array
-     *                                - "group": retrieve only user members of the
-     *                                                groups given in $filter_arg array
-     *                                - "exclude": exclude users with idst passed in
-     *                                                $filter_arg array
-     * @param array $filter_arg an array of platforms or an array of groups or
-     *                                an array of idst (see $filter_type)
-     * @return NULL
+     *                            - "platform": retrieve only user of the platforms
+     *                            given in $filter_arg array
+     *                            - "group": retrieve only user members of the
+     *                            groups given in $filter_arg array
+     *                            - "exclude": exclude users with idst passed in
+     *                            $filter_arg array
+     * @param array  $filter_arg  an array of platforms or an array of groups or
+     *                            an array of idst (see $filter_type)
+     *
+     * @return null
      **/
-    function setUserFilter($filter_type, $filter_arg)
+    public function setUserFilter($filter_type, $filter_arg)
     {
         switch ($filter_type) {
-            case "platform" :
+            case 'platform':
                 $this->user_filter['platform'] = $filter_arg;
                 break;
-            case "user"    :
+            case 'user':
                 $this->user_filter['user'] = $filter_arg;
                 break;
-            case "group"    :
+            case 'group':
                 $this->user_filter['group'] = $filter_arg;
                 break;
-            case "exclude"    :
+            case 'exclude':
                 $this->user_filter['exclude'] = $filter_arg;
                 break;
         }
+
         return;
     }
 
-    function setGroupFilter($filter_type, $filter_arg)
+    public function setGroupFilter($filter_type, $filter_arg)
     {
-
         switch ($filter_type) {
-            case "platform" :
+            case 'platform':
                 $this->group_filter['platform'] = $filter_arg;
                 break;
-            case "group"    :
+            case 'group':
                 $this->group_filter['group'] = $filter_arg;
                 break;
-            case "path"    :
+            case 'path':
                 $this->group_filter['path'] = $filter_arg;
                 break;
         }
+
         return;
     }
 
     /**
      * @param string $page_title the value returned by getTitleArea or an equivalent intestation for the page
      */
-    function setPageTitle($page_title)
+    public function setPageTitle($page_title)
     {
-
         $this->page_title = $page_title;
     }
 
-    function addFormInfo($string)
+    public function addFormInfo($string)
     {
-
         $this->_extra_form[] = $string;
     }
 
-    function resetFormInfo()
+    public function resetFormInfo()
     {
-
         $this->_extra_form = [];
     }
 
-    function loadSelector($url, $title, $text, $selector_mode = TRUE)
+    public function loadSelector($url, $title, $text, $selector_mode = true)
     {
-
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
         global $op, $modname;
         $this->directory_create_TabView($op);
         $this->selector_mode = $selector_mode;
@@ -638,7 +624,6 @@ class Module_Directory extends Module
             . '<input type="hidden" id="authentic_request_directoryselector" name="authentic_request" value="' . Util::getSignature() . '" />', 'content');
 
         if (is_array($this->_extra_form) && !empty($this->_extra_form)) {
-
             $GLOBALS['page']->add(implode('', $this->_extra_form), 'content');
         }
 
@@ -650,96 +635,94 @@ class Module_Directory extends Module
 
         switch ($this->tab->getActiveTab()) {
             case PEOPLEVIEW_TAB:
-                {
-                    $GLOBALS['page']->add($this->tab->printTabView_Begin('', FALSE), 'content');
+                    $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                     $this->loadPeopleView($url);
-                };
+                ;
                 break;
             case GROUPVIEW_TAB:
-                {
-                    $GLOBALS['page']->add($this->tab->printTabView_Begin('', FALSE), 'content');
+                    $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                     $this->loadGroupView();
-                };
+                ;
                 break;
             case ORGVIEW_TAB:
-                {
-                    $GLOBALS['page']->add($this->tab->printTabView_Begin('', FALSE), 'content');
+                    $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                     $this->loadOrgChartView();
-                };
+                ;
                 break;
-            default :
-                {
+            default:
                     if ($this->show_user_selector) {
-
                         $this->tab->setActiveTab(PEOPLEVIEW_TAB);
-                        $GLOBALS['page']->add($this->tab->printTabView_Begin('', FALSE), 'content');
+                        $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                         $this->loadPeopleView($url);
                     } elseif ($this->show_group_selector && $GLOBALS['use_groups'] == '1') {
-
                         $this->tab->setActiveTab(GROUPVIEW_TAB);
-                        $GLOBALS['page']->add($this->tab->printTabView_Begin('', FALSE), 'content');
+                        $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                         $this->loadGroupView();
                     } elseif ($this->show_orgchart_selector && Get::sett('use_org_chart') == '1') {
-
                         $this->tab->setActiveTab(ORGVIEW_TAB);
-                        $GLOBALS['page']->add($this->tab->printTabView_Begin('', FALSE), 'content');
+                        $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                         $this->loadOrgChartView();
                     }
-                };
+                ;
                 break;
         }
         $GLOBALS['page']->add($this->tab->printTabView_End(), 'content');
         $GLOBALS['page']->add(Form::openButtonSpace(), 'content');
         $GLOBALS['page']->add(Form::getButton(DIRECTORY_ID . '_' . DIRECTORY_OP_SELECTALL, DIRECTORY_ID . '[' . DIRECTORY_OP_SELECTALL . ']', $this->lang->def('_SELECTALL')), 'content');
         $GLOBALS['page']->add(Form::getButton(DIRECTORY_ID . '_' . DIRECTORY_OP_DESELECTALL, DIRECTORY_ID . '[' . DIRECTORY_OP_DESELECTALL . ']', $this->lang->def('_UNSELECT_ALL')), 'content');
-        $GLOBALS['page']->add(Form::getButton("okselector", "okselector", $this->lang->def('_CONFIRM')), 'content');
-        $GLOBALS['page']->add(Form::getButton("cancelselector", "cancelselector", $this->lang->def('_CANCEL')), 'content');
+        $GLOBALS['page']->add(Form::getButton('okselector', 'okselector', $this->lang->def('_CONFIRM')), 'content');
+        $GLOBALS['page']->add(Form::getButton('cancelselector', 'cancelselector', $this->lang->def('_CANCEL')), 'content');
         $GLOBALS['page']->add(Form::closeButtonSpace(), 'content');
         $GLOBALS['page']->add('</form>', 'content');
         $this->directory_destroy_TabView();
     }
 
-
-    function setNFields($nFields)
+    public function setNFields($nFields)
     {
         $this->nFields = $nFields;
     }
 
-
-    function loadPeopleView($url = '')
+    public function loadPeopleView($url = '')
     {
         //checkPerm('view_user', false, 'directory', 'framework');
         $data = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
         $rend = new Table(Get::sett('visuUser'));
         $lv = new PeopleListView('', $data, $rend, 'pepledirectory');
 
-        if ($this->nFields !== FALSE)
+        if ($this->nFields !== false) {
             $lv->setNFields($this->nFields);
+        }
 
-        if ($this->show_simple_filter !== FALSE)
-            $lv->show_simple_filter = TRUE;
+        if ($this->show_simple_filter !== false) {
+            $lv->show_simple_filter = true;
+        }
 
-        if ($this->lms_editions_filter !== FALSE)
-            $lv->lms_editions_filter = TRUE;
+        if ($this->lms_editions_filter !== false) {
+            $lv->lms_editions_filter = true;
+        }
 
-        if ($this->hide_anonymous !== FALSE)
-            $lv->hide_anonymous = TRUE;
+        if ($this->hide_anonymous !== false) {
+            $lv->hide_anonymous = true;
+        }
 
-        if ($this->hide_suspend !== TRUE)
-            $lv->hide_suspend = FALSE;
+        if ($this->hide_suspend !== true) {
+            $lv->hide_suspend = false;
+        }
 
-        if ($url == '')
-            $url = "index.php?modname=directory&amp;op=listuser";
+        if ($url == '') {
+            $url = 'index.php?modname=directory&amp;op=listuser';
+        }
         $lv->setLinkPagination($url);
-        $lv->aclManager =& $this->aclManager;
+        $lv->aclManager = &$this->aclManager;
         $lv->selector_mode = $this->selector_mode;
         $lv->select_all = $this->select_all;
         $lv->deselect_all = $this->deselect_all;
         $lv->use_multi_sel = $this->use_multi_sel;
         $lv->sel_extend = $this->sel_extend;
         $lv->idModule = 'directory_selector';
-        if ($this->selector_mode === FALSE)
-            $lv->setInsNew(TRUE);
+        if ($this->selector_mode === false) {
+            $lv->setInsNew(true);
+        }
         $lv->parsePositionData($_POST);
         $lv->itemSelectedMulti = $this->selection;
 
@@ -764,20 +747,22 @@ class Module_Directory extends Module
                     . '<input type="hidden" id="authentic_request_listpeople" name="authentic_request" value="' . Util::getSignature() . '" />', 'content');
                 $GLOBALS['page']->addEnd('</form>', 'content');
             }
-            if (isset($this->user_filter['exclude']))
+            if (isset($this->user_filter['exclude'])) {
                 $data->addNotFilter($this->user_filter['exclude']);
+            }
 
             if (isset($this->user_filter['user'])) {
                 $data->setUserFilter($this->user_filter['user']);
             }
 
             if (isset($this->user_filter['group'])) {
-                foreach ($this->user_filter['group'] as $idstGroup)
+                foreach ($this->user_filter['group'] as $idstGroup) {
                     $data->setGroupFilter($idstGroup);
+                }
             } else {
                 $userlevelid = Docebo::user()->getUserLevelId();
                 if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-                    require_once($GLOBALS['where_framework'] . '/lib/lib.adminmanager.php');
+                    require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
                     $adminManager = new AdminManager();
                     $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
                 }
@@ -787,22 +772,20 @@ class Module_Directory extends Module
         }
     }
 
-    function deletePerson($userid)
+    public function deletePerson($userid)
     {
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
         //if( $userid === FALSE ) //this has been commented after dialogbox introduction
         return;
-        $arrUser = $this->aclManager->getUser(FALSE, $userid);
-        if ($arrUser !== FALSE) {
+        $arrUser = $this->aclManager->getUser(false, $userid);
+        if ($arrUser !== false) {
             $idst = $arrUser[0];
             $firstname = $arrUser[2];
             $lastname = $arrUser[3];
         }
         $are_title = [
-
         ];
         $GLOBALS['page']->add(
-
             '<h2 id="directory_deluser">' . $this->lang->def('_DEL') . '</h2>'
 
             . Form::openForm('directorydeleteperson',
@@ -814,25 +797,25 @@ class Module_Directory extends Module
                 . $this->lang->def('_FIRSTNAME') . ' : ' . $firstname,
                 false,
                 'deleteperson',
-                "deletepersoncancel"
+                'deletepersoncancel'
             )
             . Form::closeForm(), 'content');
     }
 
-    function editPerson($userid = FALSE, $arr_idst_groups = FALSE, $form_url = FALSE)
+    public function editPerson($userid = false, $arr_idst_groups = false, $form_url = false)
     {
-        require_once(_base_ . '/lib/lib.form.php');
-        require_once(_adm_ . '/lib/lib.adminmanager.php');
-        if ($userid === FALSE) {
-            $userid = importVar('userid', FALSE, '');
-            $userLabel = importVar('userid', FALSE, $this->lang->def('_NEW_USER'));
+        require_once _base_ . '/lib/lib.form.php';
+        require_once _adm_ . '/lib/lib.adminmanager.php';
+        if ($userid === false) {
+            $userid = importVar('userid', false, '');
+            $userLabel = importVar('userid', false, $this->lang->def('_NEW_USER'));
         } else {
             $userLabel = $userid;
         }
-        $firstname = importVar('firstname', FALSE, '');;
-        $lastname = importVar('lastname', FALSE, '');;
-        $email = importVar('email', FALSE, '');;
-        $pass = importVar('pass', FALSE, '');;
+        $firstname = importVar('firstname', false, '');
+        $lastname = importVar('lastname', false, '');
+        $email = importVar('email', false, '');
+        $pass = importVar('pass', false, '');
         $idst = '';
         // get all levels
         $arr_levels_id = $this->aclManager->getAdminLevels();
@@ -840,11 +823,10 @@ class Module_Directory extends Module
         $arr_levels_id = array_flip($arr_levels_id);
         $arr_levels_translation = [];
         foreach ($arr_levels_id as $lev_idst => $lev_id) {
-
             if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-
-                if ($lev_id == ADMIN_GROUP_USER)
+                if ($lev_id == ADMIN_GROUP_USER) {
                     $arr_levels_translation[$lev_idst] = $this->lang->def('_DIRECTORY_' . $lev_id);
+                }
             } else {
                 $arr_levels_translation[$lev_idst] = $this->lang->def('_DIRECTORY_' . $lev_id);
             }
@@ -852,8 +834,8 @@ class Module_Directory extends Module
         // set default level
         $userlevel = array_search(ADMIN_GROUP_USER, $arr_levels_id);
         if ($userid != '') {
-            $arrUser = $this->aclManager->getUser(FALSE, $userid);
-            if ($arrUser !== FALSE) {
+            $arrUser = $this->aclManager->getUser(false, $userid);
+            if ($arrUser !== false) {
                 $idst = $arrUser[0];
                 $firstname = $arrUser[2];
                 $lastname = $arrUser[3];
@@ -863,26 +845,26 @@ class Module_Directory extends Module
 
                 $arr_user_level = array_intersect($arr_levels_idst, $arr_groups);
                 $arr_user_level = array_values($arr_user_level);
-                if (count($arr_user_level) > 0)
+                if (count($arr_user_level) > 0) {
                     $userlevel = $arr_user_level[0];
-                else
+                } else {
                     $userlevel = $arr_levels_idst[0];
+                }
             } else {
                 // the user don't exist
                 $firstname = $_POST['firstname'];
                 $lastname = $_POST['lastname'];
                 $email = $_POST['email'];
                 // get arr_folders to know collect custom fields
-                if ($arr_idst_groups === FALSE && isset($_POST['arr_idst_groups'])) {
+                if ($arr_idst_groups === false && isset($_POST['arr_idst_groups'])) {
                     $arr_idst_groups = Util::unserialize(urldecode($_POST['arr_idst_groups']));
                 }
             }
         } else {
-            if ($arr_idst_groups === FALSE && isset($_POST['arr_idst_groups'])) {
+            if ($arr_idst_groups === false && isset($_POST['arr_idst_groups'])) {
                 $arr_idst_groups = Util::unserialize(urldecode($_POST['arr_idst_groups']));
             }
             if (!$arr_idst_groups) {
-
                 $arr_idst_groups = [];
                 $oc = $this->aclManager->getGroup(false, '/oc_0');
                 $ocd = $this->aclManager->getGroup(false, '/ocd_0');
@@ -893,34 +875,35 @@ class Module_Directory extends Module
         }
 
         /*
-		$GLOBALS['page']->add( getTitleArea($this->lang->def( '_USERS' )
-								.': '.$userLabel, 'directory_people' ), 'content' );
+        $GLOBALS['page']->add( getTitleArea($this->lang->def( '_USERS' )
+                                .': '.$userLabel, 'directory_people' ), 'content' );
 */
         //$GLOBALS['page']->add( '<div class="std_block">', 'content');
 
-        if ($form_url === FALSE)
+        if ($form_url === false) {
             $form_url = 'index.php?modname=directory&amp;op=org_chart';
+        }
 
         $GLOBALS['page']->add(Form::getFormHeader($this->lang->def('_MOD')), 'content');
         $GLOBALS['page']->add(Form::openForm('directoryeditperson',
             $form_url,
-            FALSE,
+            false,
             'post',
             'multipart/form-data'),
             'content');
         $GLOBALS['page']->add(Form::openElementSpace(), 'content');
 
         $GLOBALS['page']->add(Form::getOpenFieldset($this->lang->def('_MOD') . ' - ' . $userLabel), 'content');
-        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_USERNAME'), "userid", "userid", 50, $userid), 'content');
-        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_FIRSTNAME'), "firstname", "firstname", 50, $firstname), 'content');
-        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_LASTNAME'), "lastname", "lastname", 50, $lastname), 'content');
-        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_EMAIL'), "email", "email", 50, $email), 'content');
-        $GLOBALS['page']->add(Form::getPassword($this->lang->def('_PASSWORD'), "pass", "pass", 50), 'content');
+        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_USERNAME'), 'userid', 'userid', 50, $userid), 'content');
+        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_FIRSTNAME'), 'firstname', 'firstname', 50, $firstname), 'content');
+        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_LASTNAME'), 'lastname', 'lastname', 50, $lastname), 'content');
+        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_EMAIL'), 'email', 'email', 50, $email), 'content');
+        $GLOBALS['page']->add(Form::getPassword($this->lang->def('_PASSWORD'), 'pass', 'pass', 50), 'content');
 
         $GLOBALS['page']->add(Form::getDropdown(
             $this->lang->def('_LEVEL'),
-            "userlevel",
-            "userlevel",
+            'userlevel',
+            'userlevel',
             $arr_levels_translation,
             $userlevel),
             'content');
@@ -935,24 +918,24 @@ class Module_Directory extends Module
 
         $GLOBALS['page']->add($preference->getModifyMask('ui.'));
 
-
         $GLOBALS['page']->add(Form::getCloseFieldset(), 'content');
         /*
-		$GLOBALS['page']->add( Form::closeElementSpace(), 'content' );
-		$GLOBALS['page']->add( Form::openButtonSpace(), 'content' );
-		$GLOBALS['page']->add( Form::getButton("editpersonsave","editpersonsave",$this->lang->def( '_SAVE' )), 'content' );
-		$GLOBALS['page']->add( Form::getButton("editpersoncancel","editpersoncancel",$this->lang->def( '_CANCEL' )), 'content' );
-		$GLOBALS['page']->add( Form::closeButtonSpace(), 'content' );
-		$GLOBALS['page']->add( Form::openElementSpace(), 'content' );
-		*/
+        $GLOBALS['page']->add( Form::closeElementSpace(), 'content' );
+        $GLOBALS['page']->add( Form::openButtonSpace(), 'content' );
+        $GLOBALS['page']->add( Form::getButton("editpersonsave","editpersonsave",$this->lang->def( '_SAVE' )), 'content' );
+        $GLOBALS['page']->add( Form::getButton("editpersoncancel","editpersoncancel",$this->lang->def( '_CANCEL' )), 'content' );
+        $GLOBALS['page']->add( Form::closeButtonSpace(), 'content' );
+        $GLOBALS['page']->add( Form::openElementSpace(), 'content' );
+        */
         //-extra field-----------------------------------------------
-        require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
         $fields = new FieldList();
-        if ($arr_idst_groups != FALSE) {
-            $acl =& Docebo::user()->getACL();
+        if ($arr_idst_groups != false) {
+            $acl = &Docebo::user()->getACL();
             $arr_idst_all = $acl->getArrSTGroupsST(array_values($arr_idst_groups));
-        } else
-            $arr_idst_all = FALSE;
+        } else {
+            $arr_idst_all = false;
+        }
         if ($fields->playFieldsForUser(($userid !== false ? $idst : -1), $arr_idst_all)) {
             $GLOBALS['page']->add(Form::getOpenFieldset($this->lang->def('_ASSIGNED_EXTRAFIELD')), 'content');
             $GLOBALS['page']->add($fields->playFieldsForUser(
@@ -960,26 +943,25 @@ class Module_Directory extends Module
                 $arr_idst_all
             ), 'content');
 
-
             $GLOBALS['page']->add(Form::getCloseFieldset(), 'content');
         }
         //-----------------------------------------------------------
 
         $GLOBALS['page']->add(Form::closeElementSpace(), 'content');
         $GLOBALS['page']->add(Form::openButtonSpace(), 'content');
-        $GLOBALS['page']->add(Form::getButton("editpersonsave_2", "editpersonsave", $this->lang->def('_SAVE')), 'content');
-        $GLOBALS['page']->add(Form::getButton("editpersoncancel_2", "editpersoncancel", $this->lang->def('_CANCEL')), 'content');
+        $GLOBALS['page']->add(Form::getButton('editpersonsave_2', 'editpersonsave', $this->lang->def('_SAVE')), 'content');
+        $GLOBALS['page']->add(Form::getButton('editpersoncancel_2', 'editpersoncancel', $this->lang->def('_CANCEL')), 'content');
         $GLOBALS['page']->add(Form::closeButtonSpace(), 'content');
         $GLOBALS['page']->add(Form::closeForm(), 'content');
         //$GLOBALS['page']->add( '</div>', 'content');
     }
 
-    function loadGroupView()
+    public function loadGroupView()
     {
         $data = new GroupDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
         $rend = new Table(Get::sett('visuItem'));
         $lv = new GroupListView('', $data, $rend, 'groupdirectory');
-        $lv->aclManager =& $this->aclManager;
+        $lv->aclManager = &$this->aclManager;
         $lv->selector_mode = $this->selector_mode;
         $lv->select_all = $this->select_all;
         $lv->deselect_all = $this->deselect_all;
@@ -1000,8 +982,9 @@ class Module_Directory extends Module
         if (isset($this->group_filter['path'])) {
             $data->addPathFilter($this->group_filter['path']);
         }
-        if ($this->selector_mode === FALSE)
-            $lv->setInsNew(TRUE);
+        if ($this->selector_mode === false) {
+            $lv->setInsNew(true);
+        }
         $lv->parsePositionData($_POST);
         $lv->itemSelectedMulti = $this->selection;
 
@@ -1013,16 +996,12 @@ class Module_Directory extends Module
             Util::jump_to('index.php?modname=directory&op=assignfield&groupid=' . $lv->getIdSelectedItem());
         } elseif ($lv->getOp() == 'membersgroup') {
             Util::jump_to('index.php?modname=directory&op=membersgroup&groupid=' . $lv->getIdSelectedItem());
-
-
         } elseif ($lv->getOp() == 'import_groupuser') {
             Util::jump_to('index.php?modname=directory&op=import_groupuser');
         } elseif ($lv->getOp() == 'import_groupuser_2') {
             Util::jump_to('index.php?modname=directory&op=import_groupuser_2');
         } elseif ($lv->getOp() == 'import_groupuser_3') {
             Util::jump_to('index.php?modname=directory&op=import_groupuser_3');
-
-
         } elseif ($lv->getOp() == 'editgroup') {
             Util::jump_to('index.php?modname=directory&op=editgroup&groupid=' . $lv->getIdSelectedItem());
         } elseif ($lv->getOp() == 'deletegroup') {
@@ -1042,13 +1021,14 @@ class Module_Directory extends Module
         }
     }
 
-    function deleteGroup($groupid)
+    public function deleteGroup($groupid)
     {
-        require_once(_base_ . '/lib/lib.form.php');
-        if ($groupid === FALSE)
+        require_once _base_ . '/lib/lib.form.php';
+        if ($groupid === false) {
             return;
-        $arrGroup = $this->aclManager->getGroup(FALSE, $groupid);
-        if ($arrGroup !== FALSE) {
+        }
+        $arrGroup = $this->aclManager->getGroup(false, $groupid);
+        if ($arrGroup !== false) {
             $idst = $arrGroup[0];
             $description = $arrGroup[2];
         }
@@ -1069,19 +1049,19 @@ class Module_Directory extends Module
             'content');
         $GLOBALS['page']->add(Form::getHidden('idst', 'idst', $idst), 'content');
         $GLOBALS['page']->add(Form::openButtonSpace(), 'content');
-        $GLOBALS['page']->add(Form::getButton("deletegroup", "deletegroup", $this->lang->def('_DEL')), 'content');
-        $GLOBALS['page']->add(Form::getButton("deletegroupcancel", "deletegroupcancel", $this->lang->def('_CANCEL')), 'content');
+        $GLOBALS['page']->add(Form::getButton('deletegroup', 'deletegroup', $this->lang->def('_DEL')), 'content');
+        $GLOBALS['page']->add(Form::getButton('deletegroupcancel', 'deletegroupcancel', $this->lang->def('_CANCEL')), 'content');
         $GLOBALS['page']->add(Form::closeButtonSpace(), 'content');
         $GLOBALS['page']->add(Form::closeForm(), 'content');
         $GLOBALS['page']->add('</div>', 'content');
     }
 
-    function editGroup($groupid = FALSE)
+    public function editGroup($groupid = false)
     {
-        require_once(_base_ . '/lib/lib.form.php');
-        if ($groupid === FALSE || $groupid === '') {
-            $groupid = importVar('groupid', FALSE, '');
-            $groupLabel = importVar('groupid', FALSE, $this->lang->def('_DIRECTORY_NEWGROUP'));
+        require_once _base_ . '/lib/lib.form.php';
+        if ($groupid === false || $groupid === '') {
+            $groupid = importVar('groupid', false, '');
+            $groupLabel = importVar('groupid', false, $this->lang->def('_DIRECTORY_NEWGROUP'));
         } else {
             $groupLabel = $groupid;
         }
@@ -1090,8 +1070,8 @@ class Module_Directory extends Module
         $type = 'free';
         $show_on_platform = [];
         if ($groupid != '') {
-            $arrGroup = $this->aclManager->getGroup(FALSE, $groupid);
-            if ($arrGroup !== FALSE) {
+            $arrGroup = $this->aclManager->getGroup(false, $groupid);
+            if ($arrGroup !== false) {
                 $idst = $arrGroup[0];
                 $description = $arrGroup[2];
                 $type = $arrGroup[4];
@@ -1102,7 +1082,7 @@ class Module_Directory extends Module
             'free' => $this->lang->def('_DIRECTORY_GROUPTYPE_FREE'),
             'moderate' => $this->lang->def('_DIRECTORY_GROUPTYPE_MODERATE'),
             'private' => $this->lang->def('_DIRECTORY_GROUPTYPE_PRIVATE'),
-            'invisible' => $this->lang->def('_DIRECTORY_GROUPTYPE_INVISIBLE')
+            'invisible' => $this->lang->def('_DIRECTORY_GROUPTYPE_INVISIBLE'),
         ];
 
         $GLOBALS['page']->add(getTitleArea($this->lang->def('_GROUPS')
@@ -1117,8 +1097,8 @@ class Module_Directory extends Module
 
         $GLOBALS['page']->add(Form::getOpenFieldset($this->lang->def('_DEL') . ' - ' . $groupLabel), 'content');
 
-        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_DIRECTORY_GROUPID'), "groupid", "groupid", 50, $groupid), 'content');
-        $GLOBALS['page']->add(Form::getSimpleTextarea($this->lang->def('_DESCRIPTION'), "description", "description", $description), 'content');
+        $GLOBALS['page']->add(Form::getTextfield($this->lang->def('_DIRECTORY_GROUPID'), 'groupid', 'groupid', 50, $groupid), 'content');
+        $GLOBALS['page']->add(Form::getSimpleTextarea($this->lang->def('_DESCRIPTION'), 'description', 'description', $description), 'content');
         $GLOBALS['page']->add(Form::getHidden('idst', 'idst', $idst), 'content');
 
         $GLOBALS['page']->add(Form::getDropdown($this->lang->def('_DIRECTORY_GROUPTYPE'), 'group_type', 'group_type', $all_group_type, $type), 'content');
@@ -1137,24 +1117,23 @@ class Module_Directory extends Module
 
         $GLOBALS['page']->add(Form::closeElementSpace(), 'content');
         $GLOBALS['page']->add(Form::openButtonSpace(), 'content');
-        $GLOBALS['page']->add(Form::getButton("editgroupsave", "editgroupsave", $this->lang->def('_SAVE')), 'content');
-        $GLOBALS['page']->add(Form::getButton("editgroupcancel", "editgroupcancel", $this->lang->def('_CANCEL')), 'content');
+        $GLOBALS['page']->add(Form::getButton('editgroupsave', 'editgroupsave', $this->lang->def('_SAVE')), 'content');
+        $GLOBALS['page']->add(Form::getButton('editgroupcancel', 'editgroupcancel', $this->lang->def('_CANCEL')), 'content');
         $GLOBALS['page']->add(Form::closeButtonSpace(), 'content');
         $GLOBALS['page']->add(Form::closeForm(), 'content');
         $GLOBALS['page']->add('</div>', 'content');
     }
 
-
-    function waitingUserGroup($groupid)
+    public function waitingUserGroup($groupid)
     {
-        require_once(_base_ . '/lib/lib.form.php');
-        require_once(_base_ . '/lib/lib.table.php');
-        require_once($GLOBALS['where_framework'] . "/lib/lib.field.php");
-        $acl =& Docebo::user()->getAcl();
+        require_once _base_ . '/lib/lib.form.php';
+        require_once _base_ . '/lib/lib.table.php';
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        $acl = &Docebo::user()->getAcl();
         $groupLabel = $groupid;
         if ($groupid != '') {
-            $arrGroup = $this->aclManager->getGroup(FALSE, $groupid);
-            if ($arrGroup !== FALSE) {
+            $arrGroup = $this->aclManager->getGroup(false, $groupid);
+            if ($arrGroup !== false) {
                 $idst = $arrGroup[0];
             }
         }
@@ -1167,13 +1146,11 @@ class Module_Directory extends Module
             $this->lang->def('_EMAIL'),
             $this->lang->def('_ACCEPT'),
             $this->lang->def('_DECLINE'),
-            $this->lang->def('_POSTPONE')
+            $this->lang->def('_POSTPONE'),
         ]);
-        $waiting_users =& $this->aclManager->getWaitingUserForGroup($idst);
+        $waiting_users = &$this->aclManager->getWaitingUserForGroup($idst);
         if ($waiting_users) {
-
             foreach ($waiting_users as $idst_u => $user_info) {
-
                 $more = '';
                 $more = (isset($_GET['id_user']) && $_GET['id_user'] == $idst_u
                     ? '<a href="index.php?modname=directory&amp;op=waitinggroup&groupid=' . $groupid . '"><img src="' . getPathImage() . 'standard/less.gif"></a> '
@@ -1188,7 +1165,7 @@ class Module_Directory extends Module
                     Form::getInputRadio('waiting_user_decline_' . $idst_u, 'waiting_user[' . $idst_u . ']', 'decline', false, '')
                     . '' . Form::getLabel('waiting_user_decline_' . $idst_u, $this->lang->def('_DECLINE'), 'access-only'),
                     Form::getInputRadio('waiting_user_postpone_' . $idst_u, 'waiting_user[' . $idst_u . ']', 'postpone', false, '')
-                    . '' . Form::getLabel('waiting_user_postpone_' . $idst_u, $this->lang->def('_POSTPONE'), 'access-only')
+                    . '' . Form::getLabel('waiting_user_postpone_' . $idst_u, $this->lang->def('_POSTPONE'), 'access-only'),
                 ]);
 
                 if (isset($_GET['id_user']) && $idst_u == $_GET['id_user']) {
@@ -1212,36 +1189,39 @@ class Module_Directory extends Module
         $GLOBALS['page']->add($tb->getTable(), 'content');
         $GLOBALS['page']->add(Form::closeElementSpace(), 'content');
         $GLOBALS['page']->add(Form::openButtonSpace(), 'content');
-        $GLOBALS['page']->add(Form::getButton("editwaitsave", "editwaitsave", $this->lang->def('_SAVE')), 'content');
-        $GLOBALS['page']->add(Form::getButton("editgroupcancel", "editgroupcancel", $this->lang->def('_CANCEL')), 'content');
+        $GLOBALS['page']->add(Form::getButton('editwaitsave', 'editwaitsave', $this->lang->def('_SAVE')), 'content');
+        $GLOBALS['page']->add(Form::getButton('editgroupcancel', 'editgroupcancel', $this->lang->def('_CANCEL')), 'content');
         $GLOBALS['page']->add(Form::closeButtonSpace(), 'content');
         $GLOBALS['page']->add(Form::closeForm(), 'content');
         $GLOBALS['page']->add('</div>', 'content');
     }
 
-    function membersGroup($groupid, $simple = FALSE)
+    public function membersGroup($groupid, $simple = false)
     {
-        if (isset($_POST['reset_filter']))
+        if (isset($_POST['reset_filter'])) {
             unset($_POST['user_id']);
-        require_once(_base_ . '/lib/lib.form.php');
-        if ($groupid === FALSE)
+        }
+        require_once _base_ . '/lib/lib.form.php';
+        if ($groupid === false) {
             return;
+        }
 
         if ($groupid != '') {
-            $arrGroup = $this->aclManager->getGroup(FALSE, $groupid);
-            if ($arrGroup !== FALSE) {
+            $arrGroup = $this->aclManager->getGroup(false, $groupid);
+            if ($arrGroup !== false) {
                 $idst = $arrGroup[0];
                 $description = $arrGroup[2];
             }
         }
-        if ($simple === FALSE) {
-            if (isset($_POST['membersgroupadd']))
+        if ($simple === false) {
+            if (isset($_POST['membersgroupadd'])) {
                 Util::jump_to('index.php?modname=directory&op=addtogroup&groupid=' . $groupid);
-            if (isset($_POST['membersgroupcancel']))
+            }
+            if (isset($_POST['membersgroupcancel'])) {
                 Util::jump_to('index.php?modname=directory&op=listgroup');
+            }
             $GLOBALS['page']->add(getTitleArea($this->lang->def('_GROUPS')
                 . ': ' . $groupid, 'directory_group'), 'content');
-
 
             $GLOBALS['page']->add('<div class="std_block">', 'content');
             $GLOBALS['page']->add(Form::getFormHeader($this->lang->def('_DIRECTORY_MEMBERSGROUP')), 'content');
@@ -1254,8 +1234,8 @@ class Module_Directory extends Module
             $GLOBALS['page']->add(Form::closeElementSpace(), 'content');
 
             $GLOBALS['page']->add(Form::openButtonSpace(), 'content');
-            $GLOBALS['page']->add(Form::getButton("membersGroup", "membersGroup", $this->lang->def('_FILTER')), 'content');
-            $GLOBALS['page']->add(Form::getButton("reset_filter", "reset_filter", $this->lang->def('_DEL')), 'content');
+            $GLOBALS['page']->add(Form::getButton('membersGroup', 'membersGroup', $this->lang->def('_FILTER')), 'content');
+            $GLOBALS['page']->add(Form::getButton('reset_filter', 'reset_filter', $this->lang->def('_DEL')), 'content');
             $GLOBALS['page']->add(Form::closeButtonSpace(), 'content');
 
             $GLOBALS['page']->add(Form::openElementSpace(), 'content');
@@ -1263,36 +1243,36 @@ class Module_Directory extends Module
         $data = new GroupMembersDataRetriever($idst, $GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
         $rend = new Table(Get::sett('visuItem'));
         $lv = new GroupMembersListView($idst, '', $data, $rend, 'groupmembersdirectory');
-        $lv->aclManager =& $this->aclManager;
+        $lv->aclManager = &$this->aclManager;
         $lv->parsePositionData($_POST);
         $GLOBALS['page']->add($lv->printOut(), 'content');
         $this->selected = $lv->printedItems;
-        if ($simple === FALSE) {
-
+        if ($simple === false) {
             $GLOBALS['page']->add(Form::closeElementSpace(), 'content');
             $GLOBALS['page']->add(Form::getCloseFieldset(), 'content');
             $GLOBALS['page']->add(Form::openButtonSpace(), 'content');
-            $GLOBALS['page']->add(Form::getButton("membersgroupadd", "membersgroupadd", $this->lang->def('_ADD')), 'content');
-            $GLOBALS['page']->add(Form::getButton("membersgroupcancel", "membersgroupcancel", $this->lang->def('_CLOSE')), 'content');
+            $GLOBALS['page']->add(Form::getButton('membersgroupadd', 'membersgroupadd', $this->lang->def('_ADD')), 'content');
+            $GLOBALS['page']->add(Form::getButton('membersgroupcancel', 'membersgroupcancel', $this->lang->def('_CLOSE')), 'content');
             $GLOBALS['page']->add(Form::closeButtonSpace(), 'content');
             $GLOBALS['page']->add(Form::closeForm(), 'content');
             $GLOBALS['page']->add('</div>', 'content');
         }
     }
 
-    function addToGroup($groupid)
+    public function addToGroup($groupid)
     {
-        require_once(_base_ . '/lib/lib.form.php');
-        if ($groupid === FALSE) {
-            echo "groupid is FALSE";
+        require_once _base_ . '/lib/lib.form.php';
+        if ($groupid === false) {
+            echo 'groupid is FALSE';
+
             return;
         }
         if (isset($_POST['okselector'])) {
             // aggiungere i selezionati al gruppo
-            require_once(dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php');
+            require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
             $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
-            $arrGroup = $this->aclManager->getGroup(FALSE, $groupid);
-            if ($arrGroup !== FALSE) {
+            $arrGroup = $this->aclManager->getGroup(false, $groupid);
+            if ($arrGroup !== false) {
                 $idst = $arrGroup[0];
                 $description = $arrGroup[2];
             }
@@ -1304,16 +1284,18 @@ class Module_Directory extends Module
             foreach ($arr_unselected as $idstMember) {
                 $this->aclManager->removeFromGroup($idst, $idstMember);
             }
-            foreach ($arr_selection as $idstMember)
+            foreach ($arr_selection as $idstMember) {
                 $this->aclManager->addToGroup($idst, $idstMember);
+            }
 
             $arr_unselected_alt = $this->getUnselectedAlt();
 
             foreach ($arr_unselected_alt as $idstMember) {
                 $this->aclManager->removeFromGroup($idst, $idstMember, FILTER_FOLD);
             }
-            foreach ($arr_selection_alt as $idstMember)
+            foreach ($arr_selection_alt as $idstMember) {
                 $this->aclManager->addToGroup($idst, $idstMember, FILTER_FOLD);
+            }
             Util::jump_to('index.php?modname=directory&op=listgroup');
         } elseif (isset($_POST['cancelselector'])) {
             Util::jump_to('index.php?modname=directory&op=listgroup');
@@ -1326,15 +1308,14 @@ class Module_Directory extends Module
             $this->loadSelector('index.php?modname=directory&amp;op=addtogroup&amp;groupid=' . $groupid . '&amp;stayon=1',
                 $this->lang->def('_DIRECTORY_ADDTOGROUP') . ' ' . $groupid,
                 $this->lang->def('_DIRECTORY_ADDTOGROUPDESCR'),
-                TRUE);
+                true);
         }
     }
 
-    function importToGroup()
+    public function importToGroup()
     {
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
         $form = new Form();
-
 
         $tree = getTitleArea($this->lang->def('_ORG_CHART_IMPORT_USERS', 'organization_chart'), 'directory_group')
             . '<div class="std_block">'
@@ -1350,7 +1331,7 @@ class Module_Directory extends Module
 
         $tree .= $form->getFilefield($this->lang->def('_GROUP_USER_IMPORT_FILE'), 'file_import', 'file_import')
             . $form->getTextfield($this->lang->def('_GROUP_USER_IMPORT_SEPARATOR'), 'import_separator', 'import_separator', 1, ',')
-            . $form->getCheckbox($this->lang->def('_GROUP_USER_IMPORT_HEADER'), 'import_first_row_header', 'import_first_row_header', 'true', TRUE)
+            . $form->getCheckbox($this->lang->def('_GROUP_USER_IMPORT_HEADER'), 'import_first_row_header', 'import_first_row_header', 'true', true)
             . $form->getTextfield($this->lang->def('_GROUP_USER_IMPORT_CHARSET'), 'import_charset', 'import_charset', 20, 'ISO-8859-1');
 
         $tree .= $form->closeElementSpace()
@@ -1364,10 +1345,9 @@ class Module_Directory extends Module
         $GLOBALS['page']->add($tree, 'content');
     }
 
-    function importToGroup_step2()
+    public function importToGroup_step2()
     {
-
-        require_once(_base_ . '/lib/lib.upload.php');
+        require_once _base_ . '/lib/lib.upload.php';
 
         // ----------- file upload -----------------------------------------
         if ($_FILES['file_import']['name'] == '') {
@@ -1379,7 +1359,6 @@ class Module_Directory extends Module
             if (!file_exists(_files_ . $path . $savefile)) {
                 sl_open_fileoperations();
                 if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
-
                     sl_close_fileoperations();
                     $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
                     Util::jump_to('index.php?modname=directory&amp;op=listgroup&import_result=-1');
@@ -1391,7 +1370,7 @@ class Module_Directory extends Module
             }
         }
 
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
         $form = new Form();
 
         $tree = getTitleArea($this->lang->def('_ORG_CHART_IMPORT_USERS', 'organization_chart'), 'directory_group')
@@ -1403,20 +1382,20 @@ class Module_Directory extends Module
                 false,
                 'multipart/form-data');
 
-
         $tree .= $form->openElementSpace();
 
-
-        require_once($GLOBALS['where_framework'] . '/modules/org_chart/import.org_chart.php');
+        require_once $GLOBALS['where_framework'] . '/modules/org_chart/import.org_chart.php';
         $separator = importVar('import_separator', false, ',');
-        $first_row_header = isset($_POST['import_first_row_header']) ? ($_POST['import_first_row_header'] == 'true') : FALSE;
+        $first_row_header = isset($_POST['import_first_row_header']) ? ($_POST['import_first_row_header'] == 'true') : false;
         $import_charset = importVar('import_charset', false, 'UTF-8');
-        if (trim($import_charset) === '') $import_charset = 'UTF-8';
+        if (trim($import_charset) === '') {
+            $import_charset = 'UTF-8';
+        }
 
         $src = new DeceboImport_SourceCSV(['filename' => _files_ . $path . $savefile,
                 'separator' => $separator,
                 'first_row_header' => $first_row_header,
-                'import_charset' => $import_charset]
+                'import_charset' => $import_charset, ]
         );
         $dst = new ImportGroupUser(['dbconn' => $GLOBALS['dbConn']]);
         $src->connect();
@@ -1442,21 +1421,23 @@ class Module_Directory extends Module
         $GLOBALS['page']->add($tree, 'content');
     }
 
-    function importToGroup_step3()
+    public function importToGroup_step3()
     {
         $back_url = 'index.php?modname=directory&op=listgroup';
 
         $filename = $_POST['filename'];
         $separator = importVar('import_separator', false, ',');
-        $first_row_header = isset($_POST['import_first_row_header']) ? ($_POST['import_first_row_header'] == 'true') : FALSE;
+        $first_row_header = isset($_POST['import_first_row_header']) ? ($_POST['import_first_row_header'] == 'true') : false;
         $import_charset = importVar('import_charset', false, 'UTF-8');
-        if (trim($import_charset) === '') $import_charset = 'UTF-8';
+        if (trim($import_charset) === '') {
+            $import_charset = 'UTF-8';
+        }
 
-        require_once($GLOBALS['where_framework'] . '/modules/org_chart/import.org_chart.php');
+        require_once $GLOBALS['where_framework'] . '/modules/org_chart/import.org_chart.php';
         $src = new DeceboImport_SourceCSV(['filename' => $filename,
             'separator' => $separator,
             'first_row_header' => $first_row_header,
-            'import_charset' => $import_charset
+            'import_charset' => $import_charset,
         ]);
         $dst = new ImportGroupUser(['dbconn' => $GLOBALS['dbConn']]);
         $src->connect();
@@ -1475,15 +1456,15 @@ class Module_Directory extends Module
         $tree = getTitleArea($this->lang->def('_ORG_CHART_IMPORT_USERS', 'organization_chart'), 'directory_group')
             . '<div class="std_block">';
         $tree .= getBackUi($back_url, $this->lang->def('_BACK'));
-        $tree .= getResultUi(str_replace("[count]", $result[0], $this->lang->def('_GROUP_ASSIGN_COUNT')));
+        $tree .= getResultUi(str_replace('[count]', $result[0], $this->lang->def('_GROUP_ASSIGN_COUNT')));
 
         if (count($result) > 1) {
-            require_once(_base_ . '/lib/lib.table.php');
+            require_once _base_ . '/lib/lib.table.php';
             $tree .= $this->lang->def('_ERRORS') . ': <b>' . (count($result) - 1) . '</b><br/>';
             $table = new Table(Get::sett('visuItem'), $this->lang->def('_ERRORS'), $this->lang->def('_ERRORS'));
             $table->setColsStyle(['', '']);
             $table->addHead([$this->lang->def('_ROW'),
-                $this->lang->def('_DESCRIPTION')
+                $this->lang->def('_DESCRIPTION'),
             ]);
 
             foreach ($result as $key => $err_val) {
@@ -1498,45 +1479,47 @@ class Module_Directory extends Module
         $GLOBALS['page']->add($tree, 'content');
     }
 
-    function &getOrgDb()
+    public function &getOrgDb()
     {
         $org_db = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
+
         return $org_db;
     }
 
-    function &getTreeView_OrgView()
+    public function &getTreeView_OrgView()
     {
-        require_once(dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php');
+        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
         $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
         $treeView = new TreeView_OrgView($orgDb, 'organization_chart', Get::sett('title_organigram_chart'));
-        $treeView->aclManager =& $this->aclManager;
+        $treeView->aclManager = &$this->aclManager;
+
         return $treeView;
     }
 
-    function &getPeopleView()
+    public function &getPeopleView()
     {
         $lv_data = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
         $rend = new Table(Get::sett('visuUser'));
         $lv_view = new PeopleListView('', $lv_data, $rend, 'usersmembersdirectory');
-        $lv_view->aclManager =& $this->aclManager;
+        $lv_view->aclManager = &$this->aclManager;
+
         return $lv_view;
     }
 
-    function loadOrgChartView()
+    public function loadOrgChartView()
     {
-
-        require_once(dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php');
-        $lang =& DoceboLanguage::createInstance('organization_chart', 'framework');
+        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+        $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
         $userlevelid = Docebo::user()->getUserLevelId();
 
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
         $treeView = new TreeView_OrgView($repoDb, 'organization_chart', Get::sett('title_organigram_chart'));
         $treeView->setLanguage($lang);
-        $treeView->aclManager =& $this->aclManager;
+        $treeView->aclManager = &$this->aclManager;
 
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-            require_once($GLOBALS['where_framework'] . '/lib/lib.adminmanager.php');
+            require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
             $treeView->setFilterNodes($adminManager->getAdminTree(Docebo::user()->getIdSt()));
         }
@@ -1554,7 +1537,7 @@ class Module_Directory extends Module
 
         $treeView->saveState();
 
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
 
         $GLOBALS['page']->add('<link href="' . getPathTemplate('framework') . '/style/base-old-treeview.css" rel="stylesheet" type="text/css" />', 'page_head');
         $GLOBALS['page']->setWorkingZone('content');
@@ -1565,23 +1548,23 @@ class Module_Directory extends Module
         }
 
         if ($treeView->op != '') {
-            $processed = FALSE;
+            $processed = false;
             switch ($treeView->op) {
                 case 'reedit_person':
-                    $processed = TRUE;
+                    $processed = true;
                     $this->editPerson();
                     break;
                 case 'create_user':
                     //$this->org_createUser($treeView->getSelectedFolderId());
-                    $processed = TRUE;
+                    $processed = true;
                     Util::jump_to('index.php?modname=directory&op=org_createuser&treeid=' . $treeView->getSelectedFolderId());
                     break;
                 case 'addtotree':
-                    $processed = TRUE;
+                    $processed = true;
                     Util::jump_to('index.php?modname=directory&op=addtotree&treeid=' . $treeView->getSelectedFolderId());
                     break;
                 case 'waiting_user':
-                    $processed = TRUE;
+                    $processed = true;
                     Util::jump_to('index.php?modname=directory&op=org_waitinguser&treeid=' . $treeView->getSelectedFolderId());
                     break;
             }
@@ -1626,7 +1609,6 @@ class Module_Directory extends Module
             }
         } else {
             if (!$this->selector_mode) {
-
                 //quick change password
                 if (checkPerm('edituser_org_chart', true, 'directory', 'framework')) {
                     $GLOBALS['page']->add('<div class="align_right">'
@@ -1639,7 +1621,7 @@ class Module_Directory extends Module
                         . '<input type="text" id="cp_userid" name="cp_userid" maxlenght="255" />&nbsp;&nbsp;'
                         . '<label for="cp_pwd">' . $lang->def('_PASSWORD') . ' </label>'
                         . '<input type="password" id="cp_pwd" name="cp_pwd" maxlenght="255" autocomplete="off" />&nbsp;&nbsp;'
-                        . '<input type="submit" id="cp_click" name="cp_click" value="' . $lang->def("_SAVE") . '" /><br/>'
+                        . '<input type="submit" id="cp_click" name="cp_click" value="' . $lang->def('_SAVE') . '" /><br/>'
 
                         . '<input type="checkbox" id="cp_force" name="cp_force" value="1" checked="checked" />'
                         . ' <label for="cp_force">' . $lang->def('_FORCE_CHANGE') . '</label>'
@@ -1653,9 +1635,9 @@ class Module_Directory extends Module
                 $treeView->lv_data = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
                 $rend = new Table(Get::sett('visuUser'));
                 $treeView->lv_view = new PeopleListView('', $treeView->lv_data, $rend, 'usersmembersdirectory');
-                $treeView->lv_view->hide_suspend = FALSE;
-                $treeView->lv_view->setLinkPagination("index.php?modname=directory&amp;op=org_chart");
-                $treeView->lv_view->aclManager =& $this->aclManager;
+                $treeView->lv_view->hide_suspend = false;
+                $treeView->lv_view->setLinkPagination('index.php?modname=directory&amp;op=org_chart');
+                $treeView->lv_view->aclManager = &$this->aclManager;
                 $treeView->lv_view->parsePositionData($_POST);
 
                 if ($treeView->lv_view->getOp() == 'newitem') {
@@ -1695,10 +1677,11 @@ class Module_Directory extends Module
                     } else {
                         $id_org = 0;
                     }
-                    if ($id_org > 0 && $treeView->isFolderAccessible())
+                    if ($id_org > 0 && $treeView->isFolderAccessible()) {
                         $this->membersTree($groupid, $treeView);
-                    elseif ($id_org == 0)
+                    } elseif ($id_org == 0) {
                         $this->membersTree('', $treeView);
+                    }
                     if (Get::sett('use_org_chart') != '1') {
                         $GLOBALS['page']->add($treeView->loadActions());
                     }
@@ -1710,29 +1693,29 @@ class Module_Directory extends Module
     }
 
     /**
-     * Print list of user in org_chart pages
+     * Print list of user in org_chart pages.
      **/
-    function membersTree($groupid, &$treeView)
+    public function membersTree($groupid, &$treeView)
     {
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
         if (Get::sett('register_deleted_user') == 'on') {
-            $lang =& DoceboLanguage::createInstance('profile', 'framework');
+            $lang = &DoceboLanguage::createInstance('profile', 'framework');
             $GLOBALS['page']->add('<br />' . '<a href="index.php?modname=directory&amp;op=view_deleted_user">' . $lang->def('_DELETED_USER_LIST') . '</a>');
-
         }
-        $data =& $treeView->lv_data;
-        $lv =& $treeView->lv_view;
-        $lv->show_flat_mode_flag = TRUE;
-        if ($groupid === FALSE)
+        $data = &$treeView->lv_data;
+        $lv = &$treeView->lv_view;
+        $lv->show_flat_mode_flag = true;
+        if ($groupid === false) {
             return;
+        }
         if ($groupid != '') {
-            $arrGroup = $this->aclManager->getGroup(FALSE, $groupid);
-            if ($arrGroup !== FALSE) {
+            $arrGroup = $this->aclManager->getGroup(false, $groupid);
+            if ($arrGroup !== false) {
                 $idst = $arrGroup[0];
                 $description = $arrGroup[2];
             }
         } else {
-            $lv->show_flat_mode_flag = FALSE;
+            $lv->show_flat_mode_flag = false;
         }
         if ($lv->op == 'deleteperson') {
             $userid = $lv->getIdSelectedItem();
@@ -1753,11 +1736,12 @@ class Module_Directory extends Module
             $this->aclManager->recoverUser($idst_user);
             $GLOBALS['page']->add(getResultUi($this->lang->def('_REACTIVATED_USER')));
         }
-        if ($groupid != '')
+        if ($groupid != '') {
             $data->setGroupFilter($idst, $lv->flat_mode);
+        }
         $userlevelid = Docebo::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-            require_once($GLOBALS['where_framework'] . '/lib/lib.adminmanager.php');
+            require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
             $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
         }
@@ -1765,16 +1749,14 @@ class Module_Directory extends Module
         //$this->selected = $lv->printedItems;
     }
 
-    /**
-     *
-     **/
-    function addToTree($treeid)
+    public function addToTree($treeid)
     {
-        require_once(_base_ . '/lib/lib.form.php');
-        if ($treeid === FALSE)
+        require_once _base_ . '/lib/lib.form.php';
+        if ($treeid === false) {
             return;
+        }
 
-        require_once(dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php');
+        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
         if (isset($_POST['okselector'])) {
@@ -1800,24 +1782,24 @@ class Module_Directory extends Module
                 $this->resetSelection($this->aclManager->getGroupUMembers($idst));
             }
             $arr_translations = $repoDb->getFolderTranslations($treeid);
-            $this->show_group_selector = FALSE;
-            $this->show_orgchart_selector = FALSE;
-            $this->hide_suspend = FALSE;
+            $this->show_group_selector = false;
+            $this->show_orgchart_selector = false;
+            $this->hide_suspend = false;
             $this->loadSelector('index.php?modname=directory&amp;op=addtotree&amp;treeid=' . $treeid . '&amp;stayon=1',
                 $this->lang->def('_ADD') . ' ' . $arr_translations[getLanguage()],
                 $this->lang->def('_ADD'),
-                TRUE);
+                true);
         }
     }
 
-    function org_createUser($treeid = FALSE)
+    public function org_createUser($treeid = false)
     {
         checkPerm('createuser_org_chart', false, 'directory', 'framework');
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
 
         $title_page = [
             $this->lang->def('_USERS'),
-            $this->lang->def('_NEW_USER')
+            $this->lang->def('_NEW_USER'),
         ];
 
         $control_view = 1;
@@ -1828,13 +1810,14 @@ class Module_Directory extends Module
 
         $group_count = $lv->getTotalRows();
 
-        $query_org_chart = "SELECT COUNT(*)"
-            . " FROM " . $GLOBALS['prefix_fw'] . "_org_chart_tree";
+        $query_org_chart = 'SELECT COUNT(*)'
+            . ' FROM ' . $GLOBALS['prefix_fw'] . '_org_chart_tree';
 
         list($number_of_folder) = sql_fetch_row(sql_query($query_org_chart));
 
-        if ($number_of_folder == 0 && $group_count == 0)
+        if ($number_of_folder == 0 && $group_count == 0) {
             $control_view = 0;
+        }
 
         $GLOBALS['page']->add(getTitleArea($title_page, 'directory_people')
             . '<div class="std_block">');
@@ -1842,47 +1825,49 @@ class Module_Directory extends Module
         if ($control_view && (Get::sett('use_org_chart') == '1' || $GLOBALS['use_groups'] == '1')) {
             if (isset($_POST['okselector'])) {
                 // go to user creation with folders selected
-                require_once(dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php');
+                require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
                 $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
                 $arr_selection = $this->getSelection($_POST);
-                if (count($arr_selection) > 0)
+                if (count($arr_selection) > 0) {
                     $arr_selection = array_merge($arr_selection, $repoDb->getDescendantsSTFromST($arr_selection));
+                }
                 $arr_selection = array_merge($arr_selection,
                     $this->aclManager->getArrGroupST(['/oc_0', '/ocd_0']));
-                $this->editPerson(FALSE, $arr_selection);
+                $this->editPerson(false, $arr_selection);
             } elseif (isset($_POST['cancelselector'])) {
                 Util::jump_to('index.php?modname=directory&op=org_chart');
             } else {
                 if (!isset($_GET['stayon'])) {
-                    if ($treeid === FALSE && isset($_GET['treeid']))
-                        $treeid = (int)$_GET['treeid'];
+                    if ($treeid === false && isset($_GET['treeid'])) {
+                        $treeid = (int) $_GET['treeid'];
+                    }
                     if ($treeid != 0) {
-                        require_once(dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php');
+                        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
                         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
                         $idst = $repoDb->getGroupST($treeid);
                         $this->resetSelection([$idst]);
                     } else {
                         $this->resetSelection([]);
                     }
-
                 }
-                $this->show_user_selector = FALSE;
+                $this->show_user_selector = false;
 
-                if ($group_count == 0)
-                    $this->show_group_selector = FALSE;
-                else
-                    $this->show_group_selector = TRUE;
+                if ($group_count == 0) {
+                    $this->show_group_selector = false;
+                } else {
+                    $this->show_group_selector = true;
+                }
 
                 if (Get::sett('use_org_chart') == '1' && $number_of_folder != 0) {
-                    $this->show_orgchart_selector = TRUE;
-                    $this->show_orgchart_simple_selector = TRUE;
+                    $this->show_orgchart_selector = true;
+                    $this->show_orgchart_simple_selector = true;
                 } else {
-                    $this->show_orgchart_selector = FALSE;
+                    $this->show_orgchart_selector = false;
                 }
 
                 if (Docebo::user()->getUserLevelId() === '/framework/level/admin') {
-                    require_once($GLOBALS['where_framework'] . '/lib/lib.adminmanager.php');
+                    require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
 
                     $adminManager = new AdminManager();
 
@@ -1892,32 +1877,30 @@ class Module_Directory extends Module
                 $this->loadSelector('index.php?modname=directory&amp;op=org_createuser&amp;stayon=1',
                     $this->lang->def('_NEW_USER'),
                     $this->lang->def('_NEW_USERDESCR'),
-                    TRUE);
+                    true);
             }
         } else {
-            $this->editPerson(FALSE, []);
+            $this->editPerson(false, []);
         }
 
         $GLOBALS['page']->add('</div>');
     }
 
-    function org_waitingUser()
+    public function org_waitingUser()
     {
         checkPerm('approve_waiting_user', false, 'directory', 'framework');
 
-        require_once(_base_ . '/lib/lib.form.php');
-        require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
-        require_once(_base_ . '/lib/lib.table.php');
-        require_once(Forma::inc(_base_ . '/lib/lib.usermanager.php'));
+        require_once _base_ . '/lib/lib.form.php';
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _base_ . '/lib/lib.table.php';
+        require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
 
         if (isset($_POST['ok_waiting'])) {
-
             $user_man = new UserManager();
             // Remove refused users
             $refused = [];
             $aopproved = [];
             if (isset($_POST['waiting_user_refuse'])) {
-
                 foreach ($_POST['waiting_user_refuse'] as $idst => $v) {
                     $this->aclManager->deleteTempUser($idst, false, false, true);
                 }
@@ -1925,7 +1908,6 @@ class Module_Directory extends Module
             }
             // Subscribed accepted users
             if (isset($_POST['waiting_user_accept'])) {
-
                 $idst_usergroup = $this->aclManager->getGroup(false, ADMIN_GROUP_USER);
                 $idst_usergroup = $idst_usergroup[ACL_INFO_IDST];
 
@@ -1937,7 +1919,6 @@ class Module_Directory extends Module
 
                 $request = $this->aclManager->getTempUsers(false, true);
 
-
                 foreach ($_POST['waiting_user_accept'] as $idst => $v) {
                     if ($this->aclManager->registerUser(addslashes($request[$idst]['userid']),
                         addslashes($request[$idst]['firstname']),
@@ -1948,7 +1929,6 @@ class Module_Directory extends Module
                         '',
                         true,
                         $idst)) {
-
                         $approved[] = $idst;
 
                         $this->aclManager->addToGroup($idst_usergroup, $idst);
@@ -1956,10 +1936,8 @@ class Module_Directory extends Module
                         $this->aclManager->addToGroup($idst_ocd, $idst);
 
                         if ($request[$idst]['create_by_admin'] != 0) {
-
                             $pref = new UserPreferences($request[$idst]['create_by_admin']);
                             if ($pref->getAdminPreference('admin_rules.limit_user_insert') == 'on') {
-
                                 $max_insert = $pref->getAdminPreference('admin_rules.max_user_insert');
                                 $pref->setPreference('admin_rules.max_user_insert', $max_insert - 1);
                             }
@@ -1969,26 +1947,26 @@ class Module_Directory extends Module
                 }
             }
 
-            require_once(_base_ . '/lib/lib.platform.php');
-            require_once(_base_ . '/lib/lib.eventmanager.php');
+            require_once _base_ . '/lib/lib.platform.php';
+            require_once _base_ . '/lib/lib.eventmanager.php';
             // send the alert
             /*
-			if(!empty($refused)) {
+            if(!empty($refused)) {
 
-				$array_subst = array('[url]' => Get::site_url());
+                $array_subst = array('[url]' => Get::site_url());
 
-				$msg_composer = new EventMessageComposer('admin_directory', 'framework');
+                $msg_composer = new EventMessageComposer('admin_directory', 'framework');
 
-				$msg_composer->setSubjectLangText('email', '_REFUSED_USER_SBJ', false);
-				$msg_composer->setBodyLangText('email', '_REFUSED_USER_TEXT', $array_subst);
+                $msg_composer->setSubjectLangText('email', '_REFUSED_USER_SBJ', false);
+                $msg_composer->setBodyLangText('email', '_REFUSED_USER_TEXT', $array_subst);
 
-				$msg_composer->setBodyLangText('sms', '_REFUSED_USER_TEXT_SMS', $array_subst);
+                $msg_composer->setBodyLangText('sms', '_REFUSED_USER_TEXT_SMS', $array_subst);
 
-				createNewAlert(	'UserApproved', 'directory', 'edit', '1', 'Users refused',
-							$refused, $msg_composer );
-			}*/
+                createNewAlert(	'UserApproved', 'directory', 'edit', '1', 'Users refused',
+                            $refused, $msg_composer );
+            }*/
             if (!empty($approved)) {
-                $pl_man =& PlatformManager::createInstance();
+                $pl_man = &PlatformManager::createInstance();
 
                 $reg_code = null;
                 $uma = new UsermanagementAdm();
@@ -2004,7 +1982,7 @@ class Module_Directory extends Module
 
                 $array_subst = [
                     '[url]' => Get::site_url(),
-                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url()
+                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
                 ];
 
                 $msg_composer2 = new EventMessageComposer('admin_directory', 'framework');
@@ -2020,10 +1998,8 @@ class Module_Directory extends Module
 
             Util::jump_to('index.php?modname=directory&op=org_chart');
         } elseif (isset($_POST['cancel_waiting'])) {
-
             Util::jump_to('index.php?modname=directory&op=org_chart');
         } else {
-
             $tb = new Table(0,
                 $this->lang->def('_WAITING_USERS'),
                 $this->lang->def('_WAITING_USER_SUMMARY'));
@@ -2036,7 +2012,7 @@ class Module_Directory extends Module
                 '<img src="' . getPathImage('framework') . 'directory/wuser_accept.gif" alt="' . $this->lang->def('_ACCEPT') . '" '
                 . 'title="' . $this->lang->def('_ACCEPT_USER') . '" />',
                 '<img src="' . getPathImage('framework') . 'directory/wuser_refuse.gif" alt="' . $this->lang->def('_REFUSE_USER') . '" '
-                . 'title="' . $this->lang->def('_REFUSE_USER_TITLE') . '" />'
+                . 'title="' . $this->lang->def('_REFUSE_USER_TITLE') . '" />',
             ];
             $tb->setColsStyle($type_h);
             $tb->addHead($cont_h);
@@ -2054,7 +2030,6 @@ class Module_Directory extends Module
 
                 reset($temp_users);
                 foreach ($temp_users as $idst => $info) {
-
                     if ($info['create_by_admin'] != 0) {
                         $creator = $admins[$info['create_by_admin']][ACL_INFO_LASTNAME] . ' '
                             . $admins[$info['create_by_admin']][ACL_INFO_FIRSTNAME];
@@ -2079,7 +2054,7 @@ class Module_Directory extends Module
                         Form::getInputCheckbox('waiting_user_refuse_' . $idst,
                             'waiting_user_refuse[' . $idst . ']',
                             $idst, false, '')
-                        . Form::getLabel('waiting_user_refuse_' . $idst, $this->lang->def('_REFUSE_USER'), 'access-only')
+                        . Form::getLabel('waiting_user_refuse_' . $idst, $this->lang->def('_REFUSE_USER'), 'access-only'),
                     ];
                     $tb->addBody($cont);
 
@@ -2103,61 +2078,57 @@ class Module_Directory extends Module
         }
     }
 
-
     // Function for permission managment
-    function getAllToken($op)
+    public function getAllToken($op)
     {
-
         switch ($op) {
-            case "org_chart" :
-                {
+            case 'org_chart':
                     return [
                         'view' => ['code' => 'view_org_chart',
                             'name' => '_VIEW_ORG_CHART',
-                            'image' => 'standard/view.png'],
+                            'image' => 'standard/view.png', ],
                         'add' => ['code' => 'createuser_org_chart',
                             'name' => '_NEW_USER',
-                            'image' => 'standard/add.png'],
+                            'image' => 'standard/add.png', ],
                         'mod' => ['code' => 'edituser_org_chart',
                             'name' => '_MOD',
-                            'image' => 'standard/edit.png'],
+                            'image' => 'standard/edit.png', ],
                         'del' => ['code' => 'deluser_org_chart',
                             'name' => '_DELUSER_ORG_CHART',
-                            'image' => 'standard/delete.png'],
+                            'image' => 'standard/delete.png', ],
                         'moderate' => ['code' => 'approve_waiting_user',
                             'name' => '_MODERATE',
-                            'image' => 'org_chart/waiting_identity.png']
+                            'image' => 'org_chart/waiting_identity.png', ],
                     ];
-                };
+                ;
                 break;
-            case "listgroup" :
-                {
+            case 'listgroup':
                     return [
                         'view' => ['code' => 'view_group',
                             'name' => '_VIEW',
-                            'image' => 'standard/view.png'],
+                            'image' => 'standard/view.png', ],
                         'add' => ['code' => 'creategroup',
                             'name' => '_ADD',
-                            'image' => 'standard/add.png'],
+                            'image' => 'standard/add.png', ],
                         'mod' => ['code' => 'editgroup',
                             'name' => '_MOD',
-                            'image' => 'standard/edit.png'],
+                            'image' => 'standard/edit.png', ],
                         'del' => ['code' => 'delgroup',
                             'name' => '_DEL',
-                            'image' => 'standard/delete.png'],
+                            'image' => 'standard/delete.png', ],
                         'associate' => ['code' => 'associate_group',
                             'name' => '_ASSOCIATEUSERTOGROUP',
-                            'image' => 'directory/addto.gif']
+                            'image' => 'directory/addto.gif', ],
                     ];
-                };
+                ;
                 break;
         }
     }
 
     /**
-     * Assign fields for group
+     * Assign fields for group.
      **/
-    function loadAssignField($groupid)
+    public function loadAssignField($groupid)
     {
         if (isset($_POST[DIRECTORY_ID])) {
             if (isset($_POST[DIRECTORY_ID]['save_assignfield'])) {
@@ -2167,18 +2138,18 @@ class Module_Directory extends Module
             }
         }
 
-        $arrGroup = $this->aclManager->getGroup(FALSE, $groupid);
-        if ($arrGroup !== FALSE) {
+        $arrGroup = $this->aclManager->getGroup(false, $groupid);
+        if ($arrGroup !== false) {
             $idst = $arrGroup[0];
             $description = $arrGroup[2];
         }
 
-        require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _base_ . '/lib/lib.form.php';
 
         $form = new Form();
         $fl = new FieldList();
-        $acl =& Docebo::user()->getACL();
+        $acl = &Docebo::user()->getACL();
 
         $GLOBALS['page']->setWorkingZone('content');
         $GLOBALS['page']->add(getTitleArea($this->lang->def('_GROUPS')
@@ -2205,10 +2176,11 @@ class Module_Directory extends Module
         ];
         foreach ($arr_all_fields as $field) {
             $def_value = GROUP_FIELD_NO;
-            if (isset($arr_fields_normal[$field[FIELD_INFO_ID]]))
+            if (isset($arr_fields_normal[$field[FIELD_INFO_ID]])) {
                 $def_value = GROUP_FIELD_NORMAL;
-            elseif (isset($arr_fields_inherit[$field[FIELD_INFO_ID]]))
+            } elseif (isset($arr_fields_inherit[$field[FIELD_INFO_ID]])) {
                 $def_value = GROUP_FIELD_INHERIT;
+            }
 
             $GLOBALS['page']->add($form->openFormLine());
             $GLOBALS['page']->add('<div class="label_effect">' . $field[FIELD_INFO_TRANSLATION] . '</div>');
@@ -2239,14 +2211,14 @@ class Module_Directory extends Module
     }
 
     /**
-     * Assign fields mandatory and user for group
+     * Assign fields mandatory and user for group.
      **/
-    function loadAssignField2($groupid)
+    public function loadAssignField2($groupid)
     {
         $arr_fields = $_POST[DIRECTORY_ID][DIRECTORY_OP_ADDFIELD];
         $idst_group = $_POST[DIRECTORY_ID]['idst_group'];
 
-        require_once($GLOBALS['where_framework'] . '/lib/lib.field.php');
+        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
 
         if (isset($_POST[DIRECTORY_ID]['save_assignfield2'])) {
             $fl = new FieldList();
@@ -2278,7 +2250,7 @@ class Module_Directory extends Module
 
         $fl = new FieldList();
         $arr_all_fields = $fl->getAllFields();
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.form.php';
         $form = new Form();
 
         $GLOBALS['page']->setWorkingZone('content');
@@ -2328,8 +2300,9 @@ class Module_Directory extends Module
                     . ' value="true"'
                 );
 
-                if (isset($arr_fields_normal[$id_filed]) && $arr_fields_normal[$id_filed][FIELD_INFO_MANDATORY] == 'true')
+                if (isset($arr_fields_normal[$id_filed]) && $arr_fields_normal[$id_filed][FIELD_INFO_MANDATORY] == 'true') {
                     $GLOBALS['page']->add(' checked="checked"');
+                }
                 $GLOBALS['page']->add(' />');
                 $GLOBALS['page']->add($form->getLabel(DIRECTORY_ID . '_' . $id_filed . '_mandatory', $this->lang->def('_MANDATORY'), 'label_bold access-only'));
                 // checkbox for useraccess
@@ -2339,15 +2312,14 @@ class Module_Directory extends Module
                     . ' name="' . DIRECTORY_ID . '[field_useraccess][' . $id_filed . ']"'
                     . ' value="readwrite"'
                 );
-                if (isset($arr_fields_normal[$id_filed]) && $arr_fields_normal[$id_filed][FIELD_INFO_USERACCESS] == 'readwrite')
+                if (isset($arr_fields_normal[$id_filed]) && $arr_fields_normal[$id_filed][FIELD_INFO_USERACCESS] == 'readwrite') {
                     $GLOBALS['page']->add(' checked="checked"');
+                }
                 $GLOBALS['page']->add(' />');
                 $GLOBALS['page']->add($form->getLabel(DIRECTORY_ID . '_' . $id_filed . '_useraccess', $this->lang->def('_DIRECTORY_GROUP_FIELD_WRITE'), 'label_bold access-only'));
                 $GLOBALS['page']->add($form->closeFormLine());
-
             }
         }
-
 
         $GLOBALS['page']->add(
             $form->closeElementSpace()
@@ -2356,17 +2328,14 @@ class Module_Directory extends Module
             . $form->getButton('cancel_assignfield' . DIRECTORY_ID, DIRECTORY_ID . '[cancel_assignfield]', $this->lang->def('_UNDO'))
             . $form->closeButtonSpace()
         );
-
-
     }
 
-    function getUsersStats($stats_required = false, $arr_users = false)
+    public function getUsersStats($stats_required = false, $arr_users = false)
     {
-
         $users = [];
         if ($stats_required == false || empty($stats_required) || !is_array($stats_required)) {
             $stats_required = ['all', 'suspended', 'register_today', 'register_yesterday', 'register_7d',
-                'now_online', 'inactive_30d', 'waiting', 'superadmin', 'admin', 'public_admin'];
+                'now_online', 'inactive_30d', 'waiting', 'superadmin', 'admin', 'public_admin', ];
         }
         $stats_required = array_flip($stats_required);
 
@@ -2377,29 +2346,29 @@ class Module_Directory extends Module
         if (isset($stats_required['suspended'])) {
             $data->addFieldFilter('valid', 0);
             $users['suspended'] = $data->getTotalRows();
-            $users['suspended']--; // one is anonymous
+            --$users['suspended']; // one is anonymous
         }
         if (isset($stats_required['register_today'])) {
             $data->resetFieldFilter();
-            $data->addFieldFilter('register_date', date("Y-m-d") . ' 00:00:00', '>');
+            $data->addFieldFilter('register_date', date('Y-m-d') . ' 00:00:00', '>');
             $users['register_today'] = $data->getTotalRows();
         }
         if (isset($stats_required['register_yesterday'])) {
             $data->resetFieldFilter();
-            $yesterday = date("Y-m-d", time() - 86400);
+            $yesterday = date('Y-m-d', time() - 86400);
             $data->addFieldFilter('register_date', $yesterday . ' 00:00:00', '>');
             $data->addFieldFilter('register_date', $yesterday . ' 23:59:59', '<');
             $users['register_yesterday'] = $data->getTotalRows();
         }
         if (isset($stats_required['register_7d'])) {
             $data->resetFieldFilter();
-            $sevendaysago = date("Y-m-d", time() - (7 * 86400));
+            $sevendaysago = date('Y-m-d', time() - (7 * 86400));
             $data->addFieldFilter('register_date', $sevendaysago . ' 00:00:00', '>');
             $users['register_7d'] = $data->getTotalRows();
         }
         if (isset($stats_required['now_online'])) {
             $data->resetFieldFilter();
-            $data->addFieldFilter('lastenter', date("Y-m-d H:i:s", time() - REFRESH_LAST_ENTER), '>');
+            $data->addFieldFilter('lastenter', date('Y-m-d H:i:s', time() - REFRESH_LAST_ENTER), '>');
             $users['now_online'] = $data->getTotalRows();
             if (($arr_users !== false) && (is_array($arr_users)) && (count($arr_users) > 0)) {
                 $data->setUserFilter($arr_users);
@@ -2410,7 +2379,7 @@ class Module_Directory extends Module
         }
         if (isset($stats_required['inactive_30d'])) {
             $data->resetFieldFilter();
-            $data->addFieldFilter('lastenter', date("Y-m-d", time() - 30 * 86400) . ' 00:00:00', '<');
+            $data->addFieldFilter('lastenter', date('Y-m-d', time() - 30 * 86400) . ' 00:00:00', '<');
             $users['inactive_30d'] = $data->getTotalRows();
         }
         if (isset($stats_required['waiting'])) {
@@ -2424,9 +2393,7 @@ class Module_Directory extends Module
             $idst_admin = $this->aclManager->getGroupST(ADMIN_GROUP_ADMIN);
             $users['admin'] = $this->aclManager->getGroupUMembersNumber($idst_admin);
         }
+
         return $users;
     }
-
 }
-
-?>

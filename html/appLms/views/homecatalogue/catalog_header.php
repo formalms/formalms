@@ -126,7 +126,7 @@
 <div class="tabs-wrapper">
     <ul class="nav nav-tabs hidden-xs">
         <li class="active">
-            <a href="index.php?r=catalog/show&amp;id_catalogue=0"><?php echo Lang::t('_CATALOGUE') ?></a>
+            <a href="index.php?r=catalog/show&amp;id_catalogue=0"><?php echo Lang::t('_CATALOGUE'); ?></a>
         </li>
     </ul>
 </div>
@@ -134,9 +134,9 @@
     <ul class="filterBar nav nav-pills">
         <li>
             <select class='form-control' id="typeCourse" onchange="javascript:loadCourseType();">
-                <option value=''><?php echo Lang::t('_ALL') ?></option>
-                <option value='elearning'><?php echo Lang::t('_ELEARNING') ?></option>
-                <option value='classroom'><?php echo Lang::t('_CLASSROOM', 'classroom') ?></option>
+                <option value=''><?php echo Lang::t('_ALL'); ?></option>
+                <option value='elearning'><?php echo Lang::t('_ELEARNING'); ?></option>
+                <option value='classroom'><?php echo Lang::t('_CLASSROOM', 'classroom'); ?></option>
             </select>
         </li>
     </ul>

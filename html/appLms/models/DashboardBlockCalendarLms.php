@@ -1,29 +1,35 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-defined("IN_FORMA") or die('Direct access is forbidden.');
-
-
-
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * Class DashboardBlockCalendarLms
+ * Class DashboardBlockCalendarLms.
  */
 class DashboardBlockCalendarLms extends DashboardBlockLms
 {
-    const COURSE_TYPE_ELEARNING = 'elearning';
-    const COURSE_TYPE_CLASSROOM = 'classroom';
+    public const COURSE_TYPE_ELEARNING = 'elearning';
+    public const COURSE_TYPE_CLASSROOM = 'classroom';
 
     public function __construct($jsonConfig)
     {
         parent::__construct($jsonConfig);
-
     }
 
     public function parseConfig($jsonConfig)
-	{
-		$this->parseBaseConfig($jsonConfig);
-	}
+    {
+        $this->parseBaseConfig($jsonConfig);
+    }
 
     public function getAvailableTypesForBlock()
     {
@@ -31,14 +37,12 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
             DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL
+            DashboardBlockLms::TYPE_4COL,
         ];
     }
 
-
     public function getViewData()
     {
-
         return $this->getCommonViewData();
     }
 
@@ -68,7 +72,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         return [
             'getElearningCalendar',
             'getClassroomCalendar',
-            'getReservationCalendar'
+            'getReservationCalendar',
         ];
     }
 
@@ -82,9 +86,10 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             $startDate = Get::pReq('startDate', DOTY_STRING, null);
             $endDate = Get::pReq('endDate', DOTY_STRING, null);
         }
+
         return [
             'startDate' => $startDate,
-            'endDate' => $endDate
+            'endDate' => $endDate,
         ];
     }
 
@@ -120,17 +125,16 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     private function findCourses($startDate = null, $endDate = null, $courseType, $showCourseWithoutDates = false)
     {
-
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
         $exclude_pathcourse = '';
         if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
-            $exclude_path_course = "select idCourse from learning_courseuser where idUser=" . Docebo::user()->getId() . " and level <= 3 and idCourse in (" . implode(',', $learning_path_enroll) . ")";
+            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
             while ($d = $this->db->fetch_assoc($rs)) {
                 $excl[] = $d['idCourse'];
             }
-            $exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
+            $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
         }
 
         switch ($courseType) {
@@ -143,17 +147,15 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 $query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, '
                     . ' cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting';
                 break;
-
         }
         $query .= ' FROM %lms_course AS c '
             . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) ';
 
-        
         switch ($courseType) {
             case self::COURSE_TYPE_CLASSROOM:
                 $query .= ' JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course) 
                             JOIN %lms_course_date_day cdd ON cdd.id_date = cd.id_date ';
-                            if (null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) { 
+                            if (null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
                                 $query .= 'AND cdd.date_begin BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE )';
                             }
                 break;
@@ -161,15 +163,14 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             default:
                 break;
         }
-    
 
         $query .= ' WHERE cu.iduser = ' . Docebo::user()->getId()
             . ' AND c.course_type = "' . $courseType . '"';
 
         if (($courseType == self::COURSE_TYPE_ELEARNING) && null !== $startDate && !empty($startDate) && null !== $endDate && !empty($endDate)) {
-                $query .= ' AND (( c.date_end BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) 
+            $query .= ' AND (( c.date_end BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) 
                 OR ( c.date_begin BETWEEN CAST( "' . $startDate . '" AS DATE ) AND CAST( "' . $endDate . '" AS DATE ) ) )';
-        } 
+        }
 
         if ($showCourseWithoutDates) {
             $query .= ' OR c.date_begin = 0000-00-00 OR c.date_end = 0000-00-00';
@@ -183,7 +184,6 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                     $query .= ' AND c.date_begin != 0000-00-00 AND  c.date_end != 0000-00-00';
                     break;
             }
-
         }
 
         $query .= $exclude_pathcourse;
@@ -198,16 +198,14 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 $query .= ' ORDER BY c.date_begin';
                 break;
         }
-     
+
         $rs = $this->db->query($query);
 
         $result = [];
-        foreach($rs as $data) {
-         
+        foreach ($rs as $data) {
             $courseDates = $this->getDatasFromCourse($data);
 
             foreach ($courseDates as $courseDate) {
-
                 $result[] = $courseDate;
             }
         }
@@ -223,12 +221,12 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
         $exclude_pathcourse = '';
         if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
-            $exclude_path_course = "select idCourse from learning_courseuser where idUser=" . Docebo::user()->getId() . " and level <= 3 and idCourse in (" . implode(',', $learning_path_enroll) . ")";
+            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
             while ($d = $this->db->fetch_assoc($rs)) {
                 $excl[] = $d['idCourse'];
             }
-            $exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
+            $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
         }
 
         $query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, '
@@ -249,13 +247,12 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
         $query .= ')';
 
-        $query .= $exclude_pathcourse . " ORDER BY c.date_begin";
+        $query .= $exclude_pathcourse . ' ORDER BY c.date_begin';
 
         $rs = $this->db->query($query);
 
         $result = [];
         while ($data = $this->db->fetch_assoc($rs)) {
-
             $reservationData = $this->getDataFromReservation($data);
 
             $result[] = $reservationData;
@@ -266,7 +263,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     private function getUserCoursePathCourses($id_user)
     {
-        require_once(_lms_ . '/lib/lib.coursepath.php');
+        require_once _lms_ . '/lib/lib.coursepath.php';
         $cp_man = new Coursepath_Manager();
         $output = [];
         $cp_list = $cp_man->getUserSubscriptionsInfo($id_user);
@@ -274,6 +271,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
             $cp_list = array_keys($cp_list);
             $output = $cp_man->getAllCourses($cp_list);
         }
+
         return $output;
     }
 
@@ -282,9 +280,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         $dates = [];
         $courseData = $this->getDataFromCourse($course, true);
 
-     
         if ($course['course_type'] == self::COURSE_TYPE_CLASSROOM) {
-            $result = $this->db->query("
+            $result = $this->db->query('
                 SELECT cr.name AS class, cl.location, cdd.date_begin, cdd.date_end, c.name 
                 FROM %lms_course_date_day cdd 
                 INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
@@ -292,10 +289,9 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 INNER JOIN %lms_course c ON c.idCourse = cd.id_course 
                 LEFT JOIN %lms_classroom cr ON cdd.classroom = cr.idClassroom
                 LEFT JOIN %lms_class_location cl ON cr.location_id = cl.location_id
-                WHERE cd.id_course = " . $course['course_id'] . "
-                AND cdu.id_user = " . Docebo::user()->getId() . " AND cdd.deleted = 0"
+                WHERE cd.id_course = ' . $course['course_id'] . '
+                AND cdu.id_user = ' . Docebo::user()->getId() . ' AND cdd.deleted = 0'
             );
-
 
             foreach ($result as $row) {
                 $courseData['endDate'] = $courseData['startDate'] = $row['date_begin'];
@@ -303,10 +299,10 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 $courseData['hourEnd'] = substr(explode(' ', $row['date_end'])[1], 0, 5);
                 $courseData['hours'] = $courseData['hourBegin'] . ' - ' . $courseData['hourEnd'];
                 $courseData['description'] = $row['name'] . '<br>' . $row['location'] . ' - ' . $row['class'];
-      
+
                 $dates[] = $courseData;
             }
-        } else if ($course['course_date_begin'] !== $course['course_date_end']) {
+        } elseif ($course['course_date_begin'] !== $course['course_date_end']) {
             $dates[] = $courseData;
             $courseData = $this->getDataFromCourse($course, false);
             $dates[] = $courseData;
@@ -319,19 +315,18 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     protected function getDataFromCourse($course, $status = true)
     {
-        $courseData =  parent::getDataFromCourse($course);
+        $courseData = parent::getDataFromCourse($course);
 
-        if ($status){
-
+        if ($status) {
             $courseData['endDate'] = $courseData['startDate'];
             $courseData['endDateString'] = $courseData['startDateString'];
-        }
-        else {
+        } else {
             $courseData['startDate'] = $courseData['endDate'];
             $courseData['startDateString'] = $courseData['endDateString'];
         }
 
         $courseData['status'] = $status;
+
         return $courseData;
     }
 }

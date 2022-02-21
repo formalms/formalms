@@ -1,20 +1,27 @@
 <?php
 
-require_once(dirname(__FILE__).'/StepController.php');
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-Class Step1Controller extends StepController {
+require_once dirname(__FILE__) . '/StepController.php';
 
-	var $step=1;
-	
-	public function validate() {
+class Step1Controller extends StepController
+{
+    public $step = 1;
 
-		$platform_arr=getPlatformArray();
-		$_SESSION['platform_arr'] =$platform_arr;
+    public function validate()
+    {
+        $platform_arr = getPlatformArray();
+        $_SESSION['platform_arr'] = $platform_arr;
 
-		return true;
-	}
-
+        return true;
+    }
 }
-
-
-?>

@@ -1,21 +1,32 @@
-<?php defined("IN_FORMA") or die("Direct access is forbidden");
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-require_once(Forma::inc(_base_ . '/lib/lib.upload.php'));
+defined('IN_FORMA') or exit('Direct access is forbidden');
+
+require_once Forma::inc(_base_ . '/lib/lib.upload.php');
 
 /**
- * Class DashboardsettingsAdmController
+ * Class DashboardsettingsAdmController.
  */
 class DashboardsettingsAdmController extends AdmController
 {
-
-    /** @var DashboardsettingsAdm $model */
+    /** @var DashboardsettingsAdm */
     protected $model;
 
-    /** @var Services_JSON $json */
+    /** @var Services_JSON */
     protected $json;
 
-    /** @var array $permissions */
+    /** @var array */
     protected $permissions;
 
     /*
@@ -24,7 +35,7 @@ class DashboardsettingsAdmController extends AdmController
     public function init()
     {
         parent::init();
-        require_once(_base_ . '/lib/lib.json.php');
+        require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
         $this->model = new DashboardsettingsAdm();
 
@@ -49,13 +60,11 @@ class DashboardsettingsAdmController extends AdmController
         ];
     }
 
-
     //----------------------------------------------------------------------------
-
 
     public function show()
     {
-        require_once(Get::rel_path('lib') . '/formatable/formatable.php');
+        require_once Get::rel_path('lib') . '/formatable/formatable.php';
         Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
 
         $data = [
@@ -105,44 +114,43 @@ class DashboardsettingsAdmController extends AdmController
             'dashboardId' => $dashboardId,
         ];
 
-        
         //render view
         $this->render('edit', $data);
     }
 
     // add permission to layout
-    public function permission(){
+    public function permission()
+    {
         $dashboardId = Get::req('dashboard', DOTY_INT, false);
 
-        require_once(_base_ . '/lib/lib.userselector.php');
-        require_once(_base_ . '/lib/lib.form.php');
+        require_once _base_ . '/lib/lib.userselector.php';
+        require_once _base_ . '/lib/lib.form.php';
 
         $man_ma = new Man_MiddleArea();
         $acl_manager = new DoceboACLManager();
         $user_select = new UserSelector();
 
         // tab of user selector
-        $user_select->show_user_selector = TRUE;
+        $user_select->show_user_selector = true;
         $user_select->show_group_selector = true;
         $user_select->show_orgchart_selector = true;
         $user_select->show_orgchart_simple_selector = false;
         $user_select->show_fncrole_selector = true;
         $user_select->multi_choice = true;
 
-
         $selected = $this->model->getObjIdstList($dashboardId);
 
-        if (is_array($selected)) $user_select->resetSelection($selected);
+        if (is_array($selected)) {
+            $user_select->resetSelection($selected);
+        }
 
         // cancell
-        if(isset($_POST['cancelselector'])){
-
-          Util::jump_to('index.php?r=adm/dashboardsettings/show');
+        if (isset($_POST['cancelselector'])) {
+            Util::jump_to('index.php?r=adm/dashboardsettings/show');
         }
 
         // save
         if (isset($_POST['okselector'])) {
-
             $selected = $user_select->getSelection($_POST);
 
             $re = $this->model->setObjIdstList($dashboardId, $selected);
@@ -153,15 +161,12 @@ class DashboardsettingsAdmController extends AdmController
         // add field hidden id_dashboard
         $user_select->addFormInfo(Form::getHidden('dashboard', 'dashboard', $dashboardId));
 
-         // view selector user
+        // view selector user
         $user_select->loadSelector('index.php?r=adm/dashboardsettings/permission',
              Lang::t('_VIEW_PERMISSION', 'standard'),
             false,
             true);
-
     }
-
-
 
     public function clone()
     {
@@ -177,7 +182,7 @@ class DashboardsettingsAdmController extends AdmController
         ];
 
         $res = [
-            'data' => $data
+            'data' => $data,
         ];
 
         echo $this->json->encode($res);
@@ -192,7 +197,7 @@ class DashboardsettingsAdmController extends AdmController
         $res = [];
 
         foreach ($layouts as $layout) {
-            $layout = array_values((array)$layout);
+            $layout = array_values((array) $layout);
 
             $keys = [
                 'id',
@@ -204,7 +209,7 @@ class DashboardsettingsAdmController extends AdmController
             ];
 
             $item = [];
-            for ($i = 0; $i < count($keys) - 1; $i++) {
+            for ($i = 0; $i < count($keys) - 1; ++$i) {
                 $item[$keys[$i]] = $layout[$i];
                 $item['selected'] = $layout[0] == $selectedDashboardId;
             }
@@ -215,9 +220,9 @@ class DashboardsettingsAdmController extends AdmController
         }
 
         $response = [
-            "data" => $res,
-            "recordsFiltered" => count($res),
-            "recordsTotal" => count($res),
+            'data' => $res,
+            'recordsFiltered' => count($res),
+            'recordsTotal' => count($res),
         ];
 
         echo $this->json_response(200, $response);
@@ -235,7 +240,7 @@ class DashboardsettingsAdmController extends AdmController
             'name' => $name,
             'caption' => $caption,
             'status' => $status,
-            'default' => $default
+            'default' => $default,
         ];
 
         $response = [];
@@ -255,7 +260,7 @@ class DashboardsettingsAdmController extends AdmController
         if ($errors) {
             $status = 400;
             $response['errors'] = $errors;
-        } else if (!$this->model->saveLayout($data)) {
+        } elseif (!$this->model->saveLayout($data)) {
             $response['errors'] = [];
         } else {
             $status = 200;
@@ -294,12 +299,12 @@ class DashboardsettingsAdmController extends AdmController
         if ($errors) {
             $status = 400;
             $response['errors'] = $errors;
-        } else if (!$res = $this->model->saveLayout($data)) {
+        } elseif (!$res = $this->model->saveLayout($data)) {
             $status = 400;
             $response['name'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         } else {
             $status = 200;
-            $res = sql_query("SELECT id FROM `dashboard_layouts` ORDER BY id DESC LIMIT 1");
+            $res = sql_query('SELECT id FROM `dashboard_layouts` ORDER BY id DESC LIMIT 1');
             $row = sql_fetch_object($res);
             $dashboard_new_id = $row->id;
 
@@ -370,14 +375,14 @@ class DashboardsettingsAdmController extends AdmController
     {
         header_remove();
         http_response_code($code);
-        header("Cache-Control: no-transform,public,max-age=300,s-maxage=900");
+        header('Cache-Control: no-transform,public,max-age=300,s-maxage=900');
         header('Content-Type: application/json');
 
         $status = [
             200 => '200 OK',
             400 => '400 Bad Request',
             422 => 'Unprocessable Entity',
-            500 => '500 Internal Server Error'
+            500 => '500 Internal Server Error',
         ];
         // ok, validation error, or failure
         header('Status: ' . $status[$code]);
@@ -392,7 +397,6 @@ class DashboardsettingsAdmController extends AdmController
 
         $response = ['status' => 200];
         foreach ($requestSettings as $data) {
-
             $block = $data['block'];
             $settings = $data['settings'];
 
@@ -408,7 +412,6 @@ class DashboardsettingsAdmController extends AdmController
             $this->model->resetOldSettings($dashboard);
 
             foreach ($requestSettings as $data) {
-
                 $block = $data['block'];
                 $setting = $data['settings'];
 
@@ -435,7 +438,6 @@ class DashboardsettingsAdmController extends AdmController
             $response['status'] = 400;
             $response['error'] = Lang::t('_FIELD_NOT_EXIST', 'dashboardsetting');
         } else {
-
             $fieldName = 'file';  //DashboardBlockForm::getFieldName($block, $field);
             $path = '/appLms/dashboard';
 
@@ -447,7 +449,6 @@ class DashboardsettingsAdmController extends AdmController
                 $response['status'] = 400;
                 $response['error'] = Lang::t('_FILE_NOT_VALID', 'dashboardsetting');
             } else {
-
                 $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES[$fieldName]['name'];
 
                 if (!file_exists($GLOBALS['where_files_relative'] . $path . '/' . $savefile)) {
@@ -467,7 +468,7 @@ class DashboardsettingsAdmController extends AdmController
             }
         }
         echo $this->json->encode($response);
-        die();
+        exit();
     }
 
     public function getBlockTypeForm()

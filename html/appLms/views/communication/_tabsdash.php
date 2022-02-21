@@ -1,9 +1,9 @@
 <div class="middlearea_container">
 	<?php
-	$this->widget('lms_tab', [
-		'active' => 'communication'
+    $this->widget('lms_tab', [
+        'active' => 'communication',
     ]);
-	?>
+    ?>
 </div>
 <script type="text/javascript">
 
@@ -17,7 +17,7 @@
 	});
 	mytab.addListener('contentChange', lb.init);
 	tabView.addTab(mytab, 0);
-	<?php if($this->isTabActive('history')): ?>
+	<?php if ($this->isTabActive('history')) { ?>
 	mytab = new YAHOO.widget.Tab({
 	    label: '<?php echo Lang::t('_HISTORY'); ?>',
 	    dataSrc: 'ajax.server.php?r=communication/history',
@@ -25,7 +25,7 @@
 	});
 	mytab.addListener('contentChange', lb.init);
 	tabView.addTab(mytab, 1);
-	<?php endif; ?>
+	<?php } ?>
 	tabView.appendTo('tab_content');
 	tabView.getTab(0).addClass('first')
 

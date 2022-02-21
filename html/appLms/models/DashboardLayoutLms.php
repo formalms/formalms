@@ -1,17 +1,25 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-defined("IN_FORMA") or die('Direct access is forbidden.');
-
-
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * Class DashboardLayoutLms
+ * Class DashboardLayoutLms.
  */
 class DashboardLayoutLms extends Model
 {
-    const LAYOUT_STATUS_DRAFT = 'draft';
-    const LAYOUT_STATUS_PUBLISH = 'publish';
+    public const LAYOUT_STATUS_DRAFT = 'draft';
+    public const LAYOUT_STATUS_PUBLISH = 'publish';
 
     protected $id;
 
@@ -89,17 +97,11 @@ class DashboardLayoutLms extends Model
         }
     }
 
-    /**
-     * @return bool
-     */
     public function isDefault(): bool
     {
         return $this->default;
     }
 
-    /**
-     * @param bool $default
-     */
     public function setDefault(bool $default)
     {
         $this->default = $default;

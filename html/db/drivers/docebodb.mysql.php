@@ -1,246 +1,298 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class Mysql_DbConn extends DbConn {
+class Mysql_DbConn extends DbConn
+{
+    protected $conn = null;
 
-	protected $conn = NULL;
+    public function __construct()
+    {
+    }
 
-	public function __construct() {}
+    public function __destruct()
+    {
+        if (is_resource($this->conn)) {
+            $this->close();
+        }
+    }
 
-	public function __destruct() {
+    public function connect($host, $user, $pwd, $dbname = false)
+    {
+        if (is_resource($this->conn)) {
+            return $this->conn;
+        }
+        if (!$this->conn = @mysql_connect($host, $user, $pwd, true)) {
+            Log::add('mysql connect error : ' . mysql_error());
 
-		if(is_resource($this->conn)) $this->close();
-	}
+            return false;
+        }
+        // todo : i need some drawback compatibility :/ for now
+        $GLOBALS['dbConn'] = $this;
 
-	public function connect($host, $user, $pwd, $dbname = false) {
+        $this->log('mysql connected to : ' . $host);
 
-		if(is_resource($this->conn)) return $this->conn;
-		if(!$this->conn = @mysql_connect($host, $user, $pwd, TRUE)) {
+        $this->set_timezone();	// set connection tz
 
-			Log::add( 'mysql connect error : '.mysql_error() );
-			return false;
-		}
-		// todo : i need some drawback compatibility :/ for now
-		$GLOBALS['dbConn'] = $this;
+        if ($dbname != false) {
+            return $this->select_db($dbname);
+        }
 
-		$this->log( 'mysql connected to : '.$host );
+        return $this;
+    }
 
-		$this->set_timezone();	// set connection tz
+    public function select_db($dbname)
+    {
+        if (!@mysql_select_db($dbname, $this->conn)) {
+            $this->log('mysql select db error : ' . mysql_error());
 
-		if($dbname != false) return $this->select_db($dbname);
-		return $this;
-	}
+            return false;
+        }
+        $this->log('mysql db selected ');
 
-	public function select_db($dbname) {
+        // change charset for utf8 (or other if user config in another way)
+        // connection with the server
+        $charset = Get::cfg('db_charset', 'utf8');
+        $this->query("SET NAMES '" . $charset . "'");
+        $this->query("SET CHARACTER SET '" . $charset . "'");
 
-		if(!@mysql_select_db($dbname,$this->conn)) {
+        return true;
+    }
 
-			$this->log( 'mysql select db error : '.mysql_error() );
-			return false;
-		}
-		$this->log( 'mysql db selected ' );
+    public function set_timezone()
+    {
+        // set connection timezone according to php settings
 
-		// change charset for utf8 (or other if user config in another way)
-		// connection with the server
-		$charset = Get::cfg('db_charset', 'utf8');
-		$this->query("SET NAMES '".$charset."'");
-		$this->query("SET CHARACTER SET '".$charset."'");
+        if (Get::cfg('set_mysql_tz', false)) {
+            $dt = new DateTime();
+            $offset = $dt->format('P');		// get current timezone offeset
+            $this->query("SET time_zone='" . $offset . "'");
+            $this->log('mysql set connection timezone offset to : ' . $offset);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	public function set_timezone() {
-		// set connection timezone according to php settings
+    public function get_null()
+    {
+        return 'NULL';
+    }
 
-		if ( Get::cfg('set_mysql_tz', false) ) {
-			$dt = new DateTime();
-			$offset = $dt->format("P");		// get current timezone offeset
-			$this->query("SET time_zone='".$offset."'");
-			$this->log( 'mysql set connection timezone offset to : '.$offset );
-		}
+    public function escape($data)
+    {
+        return mysql_real_escape_string($data, $this->conn);
+    }
 
-		return true;
-	}
+    public function query($query)
+    {
+        $data = func_get_args();
+        array_shift($data); //remove the query form the list
 
-	public function get_null() {
+        if (isset($data[0]) && is_array($data[0])) {
+            $data = $data[0];
+        }
 
-		return 'NULL';
-	}
+        $parsed_query = $this->parse_query($query, $data);
 
-	public function escape($data) {
+        $start_at = $this->get_time();
+        $re = mysql_query($parsed_query, $this->conn);
+        $this->query_log($parsed_query, ($this->get_time() - $start_at));
 
-		return mysql_real_escape_string($data, $this->conn);
-	}
+        return $re;
+    }
 
-	public function query($query) {
+    public function query_limit($query)
+    {
+        $data = func_get_args();
 
-		$data = func_get_args();
-		array_shift($data); //remove the query form the list
+        $results = array_pop($data);	//number of element
+        $from = array_pop($data);		//from the element
+        array_shift($data);				//remove the query form the list
 
-		if(isset($data[0]) && is_array($data[0])) $data = $data[0];
+        if (isset($data[0]) && is_array($data[0])) {
+            $data = $data[0];
+        }
 
-		$parsed_query = $this->parse_query($query, $data);
+        $parsed_query = $this->parse_query($query, $data)
+            . ' LIMIT ' . (int) $from . ', ' . (int) $results . '';
 
-		$start_at = $this->get_time();
-		$re = mysql_query($parsed_query, $this->conn);
-		$this->query_log( $parsed_query, ($this->get_time() - $start_at) );
+        $start_at = $this->get_time();
+        $re = mysql_query($parsed_query, $this->conn);
+        $this->query_log($parsed_query, ($this->get_time() - $start_at));
 
-		return $re;
-	}
+        return $re;
+    }
 
-	public function query_limit($query) {
+    public function insert_id()
+    {
+        return mysql_insert_id($this->conn);
+    }
 
-		$data = func_get_args();
+    public function fetch_row($result)
+    {
+        if (!$result) {
+            return false;
+        }
 
-		$results = array_pop($data);	//number of element
-		$from = array_pop($data);		//from the element
-		array_shift($data);				//remove the query form the list
+        return mysql_fetch_row($result);
+    }
 
-		if(isset($data[0]) && is_array($data[0])) $data = $data[0];
+    public function fetch_assoc($result)
+    {
+        if (!$result) {
+            return false;
+        }
 
-		$parsed_query = $this->parse_query($query, $data)
-			." LIMIT ".(int)$from.", ".(int)$results."";
+        return mysql_fetch_assoc($result);
+    }
 
-		$start_at = $this->get_time();
-		$re = mysql_query($parsed_query, $this->conn);
-		$this->query_log( $parsed_query, ($this->get_time() - $start_at) );
+    public function fetch_array($result)
+    {
+        if (!$result) {
+            return false;
+        }
 
-		return $re;
-	}
+        return mysql_fetch_array($result);
+    }
 
-	public function insert_id() {
+    public function fetch_obj($result, $class_name = null, $params = null)
+    {
+        if (!$result) {
+            return false;
+        }
+        if ($params) {
+            return mysql_fetch_object($result, $class_name, $params);
+        }
+        if ($class_name) {
+            return mysql_fetch_object($result, $class_name);
+        }
 
-		return mysql_insert_id($this->conn);
-	}
+        return mysql_fetch_object($result);
+    }
 
-	public function fetch_row($result) {
+    public function escape_string($unescaped_string)
+    {
+        if (!$unescaped_string) {
+            return false;
+        }
 
-		if(!$result) return false;
-		return mysql_fetch_row($result);
-	}
+        return mysql_escape_string($unescaped_string);
+    }
 
-	public function fetch_assoc($result) {
+    public function num_rows($result)
+    {
+        if (!$result) {
+            return false;
+        }
 
-		if(!$result) return false;
-		return mysql_fetch_assoc($result);
-	}
+        return mysql_num_rows($result);
+    }
 
-	public function fetch_array($result) {
-
-		if(!$result) return false;
-		return mysql_fetch_array($result);
-	}
-
-	public function fetch_obj($result, $class_name=null, $params=null) {
-
-		if(!$result) return false;
-		if ($params){
-			return mysql_fetch_object($result, $class_name, $params);
-		}
-		if ($class_name){
-			return mysql_fetch_object($result, $class_name);
-		}
-		return mysql_fetch_object($result);
-	}
-
-	public function escape_string($unescaped_string) {
-
-		if(!$unescaped_string) return false;
-		return mysql_escape_string($unescaped_string);
-	}
-
-	public function num_rows($result) {
-
-		if(!$result) return false;
-		return mysql_num_rows($result);
-	}
-    
-    public function affected_rows() {
+    public function affected_rows()
+    {
         return mysql_affected_rows($this->conn);
-    }    
+    }
 
-	public function errno() {
-		return mysql_errno($this->conn);
-	}
+    public function errno()
+    {
+        return mysql_errno($this->conn);
+    }
 
-	public function error() {
-		return mysql_error($this->conn);
-	}
+    public function error()
+    {
+        return mysql_error($this->conn);
+    }
 
-	public function free_result($result) {
-		return mysql_free_result($result);
-	}
+    public function free_result($result)
+    {
+        return mysql_free_result($result);
+    }
 
-	public function get_client_info() {
-		return mysql_get_client_info($this->conn);
-	}
+    public function get_client_info()
+    {
+        return mysql_get_client_info($this->conn);
+    }
 
-	public function get_server_info(){
-		return mysql_get_server_info($this->conn);
-	}
+    public function get_server_info()
+    {
+        return mysql_get_server_info($this->conn);
+    }
 
-	public function data_seek($result, $row_number){
-		return mysql_data_seek($result, $row_number);
-	}
+    public function data_seek($result, $row_number)
+    {
+        return mysql_data_seek($result, $row_number);
+    }
 
-	public function field_seek($result, $row_number){
-		return mysql_field_seek($result, $row_number);
-	}
+    public function field_seek($result, $row_number)
+    {
+        return mysql_field_seek($result, $row_number);
+    }
 
-	public function num_fields($result){
-		return mysql_num_fields($result);
-	}
+    public function num_fields($result)
+    {
+        return mysql_num_fields($result);
+    }
 
-	public function fetch_field($result){
-		return mysql_fetch_field($result);
-	}
+    public function fetch_field($result)
+    {
+        return mysql_fetch_field($result);
+    }
 
-	public function real_escape_string($unescaped_string){
-		return mysql_real_escape_string($unescaped_string, $this->conn);
-	}
+    public function real_escape_string($unescaped_string)
+    {
+        return mysql_real_escape_string($unescaped_string, $this->conn);
+    }
 
-	public function start_transaction() {
+    public function start_transaction()
+    {
+        return $this->query('START TRANSACTION');
+    }
 
-		return $this->query("START TRANSACTION");
-	}
+    /**
+     * Commit a transaction.
+     */
+    public function commit()
+    {
+        return $this->query('COMMIT');
+    }
 
-	/**
-	 * Commit a transaction
-	 */
-	public function commit() {
+    /**
+     * Rollback a transaction.
+     */
+    public function rollback()
+    {
+        return $this->query('ROLLBACK');
+    }
 
-		return $this->query("COMMIT");
-	}
+    public function close()
+    {
+        @mysql_close($this->conn);
+        $this->log('mysql close connection');
+    }
 
-	/**
-	 * Rollback a transaction
-	 */
-	public function rollback() {
-
-		return $this->query("ROLLBACK");
-	}
-
-	public function close() {
-
-		@mysql_close($this->conn);
-		$this->log( 'mysql close connection' );
-	}
-
-	function query_log($qtxt, $time_used = false) {
-
-		if(Get::sett('do_debug', 'off') == 'off') return;
-		$time_used = number_format($time_used, 6);
-		if($this->errno()) {
-			$this->log( '<b>('.$this->errno().') '.$this->error().'</b>'
-				.' :: '.'<span style="color:red">'.$qtxt.'</span>'
-				.( $time_used ? ' in :'.$time_used.' s' : '') );
-		} else {
-			$this->log( $qtxt.( $time_used ? ' in :'.$time_used.' s' : '') );
-		}
-
-	}
-
+    public function query_log($qtxt, $time_used = false)
+    {
+        if (Get::sett('do_debug', 'off') == 'off') {
+            return;
+        }
+        $time_used = number_format($time_used, 6);
+        if ($this->errno()) {
+            $this->log('<b>(' . $this->errno() . ') ' . $this->error() . '</b>'
+                . ' :: ' . '<span style="color:red">' . $qtxt . '</span>'
+                . ($time_used ? ' in :' . $time_used . ' s' : ''));
+        } else {
+            $this->log($qtxt . ($time_used ? ' in :' . $time_used . ' s' : ''));
+        }
+    }
 }
-
-?>

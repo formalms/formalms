@@ -1,30 +1,35 @@
 <?php
 
-
-
-/**
- * @package course management
- * @subpackage course catalogue
- * @category ajax server
- * @version $Id:$
+/*
+ * FORMA - The E-Learning Suite
  *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
-define("LMS", true);
-define("IN_FORMA", true);
-define("_deeppath_", '../../../');
-require(dirname(__FILE__).'/'._deeppath_.'base.php');
+
+define('LMS', true);
+define('IN_FORMA', true);
+define('_deeppath_', '../../../');
+require dirname(__FILE__) . '/' . _deeppath_ . 'base.php';
 
 // start buffer
 ob_start();
 
 // initialize
-require(_base_.'/lib/lib.bootstrap.php');
+require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(BOOT_DATETIME);
 
 // not a pagewriter but something similar
 $GLOBALS['operation_result'] = '';
-if(!function_exists("aout")) {
-	function aout($string) { $GLOBALS['operation_result'] .= $string; }
+if (!function_exists('aout')) {
+    function aout($string)
+    {
+        $GLOBALS['operation_result'] .= $string;
+    }
 }
 
 // here all the specific code ==========================================================
@@ -48,5 +53,3 @@ echo $GLOBALS['operation_result'];
 
 // flush buffer
 ob_end_flush();
-
-?>

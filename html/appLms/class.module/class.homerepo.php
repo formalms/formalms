@@ -1,273 +1,304 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class Module_Homerepo extends LmsModule {
-	var $treeView = NULL;
-	var $repoDb = NULL;
-	var $select_destination = FALSE;
+class Module_Homerepo extends LmsModule
+{
+    public $treeView = null;
+    public $repoDb = null;
+    public $select_destination = false;
 
-	//class constructor
-	function __construct($module_name = '') {
-		parent::__construct('homerepo');
-	}
+    //class constructor
+    public function __construct($module_name = '')
+    {
+        parent::__construct('homerepo');
+    }
 
-	function loadHeader() {
-		//EFFECTS: write in standard output extra header information
-		global $op;
-		$GLOBALS['page']->setWorkingZone( 'page_head' );
-		$GLOBALS['page']->add( '<link href="'.getPathTemplate().'style/base-old-treeview.css" rel="stylesheet" type="text/css" />');
-		return;
-	}
+    public function loadHeader()
+    {
+        //EFFECTS: write in standard output extra header information
+        global $op;
+        $GLOBALS['page']->setWorkingZone('page_head');
+        $GLOBALS['page']->add('<link href="' . getPathTemplate() . 'style/base-old-treeview.css" rel="stylesheet" type="text/css" />');
 
-	/**
-	 *
-	**/
-	function initialize() {
+        return;
+    }
 
-		require_once($GLOBALS['where_lms'].'/modules/homerepo/homerepo.php');
-		$ready = FALSE;
-		$this->lang =& DoceboLanguage::createInstance('homerepo', 'lms');
-		if( isset($_GET['shr']) && FALSE ) {
-			// reload from previously saved session
-			require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-			$saveObj = new Session_Save();
-			$saveName = $_GET['shr'];
-			if( $saveObj->nameExists($saveName) ) {
-				$this->treeView =& $saveObj->load($saveName);
-				$this->repoDb =& $this->treeView->tdb;
-				$ready = TRUE;
-				$saveObj->delete( $saveName );
-				$this->treeView->extendedParsing( $_REQUEST, $_REQUEST, $_REQUEST);
-				$this->treeView->refreshTree();
-			}
-		}
-		if( !$ready ) {
-			// contruct and initialize TreeView to manage public repository
-			$this->repoDb = new HomerepoDirDb( $GLOBALS['prefix_lms'] .'_homerepo', getLogUserId());
+    public function initialize()
+    {
+        require_once $GLOBALS['where_lms'] . '/modules/homerepo/homerepo.php';
+        $ready = false;
+        $this->lang = &DoceboLanguage::createInstance('homerepo', 'lms');
+        if (isset($_GET['shr']) && false) {
+            // reload from previously saved session
+            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            $saveObj = new Session_Save();
+            $saveName = $_GET['shr'];
+            if ($saveObj->nameExists($saveName)) {
+                $this->treeView = &$saveObj->load($saveName);
+                $this->repoDb = &$this->treeView->tdb;
+                $ready = true;
+                $saveObj->delete($saveName);
+                $this->treeView->extendedParsing($_REQUEST, $_REQUEST, $_REQUEST);
+                $this->treeView->refreshTree();
+            }
+        }
+        if (!$ready) {
+            // contruct and initialize TreeView to manage public repository
+            $this->repoDb = new HomerepoDirDb($GLOBALS['prefix_lms'] . '_homerepo', getLogUserId());
 
-			/* TODO: ACL
-			if( !funAccess('pubrepoedit','MOD', TRUE, 'pubrepo' ) ) {
-				$repoDb->setFilterVisibility( TRUE );
-				$repoDb->setFilterAccess( getLogUserId() );
-			}*/
+            /* TODO: ACL
+            if( !funAccess('pubrepoedit','MOD', TRUE, 'pubrepo' ) ) {
+                $repoDb->setFilterVisibility( TRUE );
+                $repoDb->setFilterAccess( getLogUserId() );
+            }*/
 
-			$this->treeView = new RepoTreeView($this->repoDb, 'homerepo', Lang::t('_HOMEREPOROOTNAME', 'storage', 'lms'));
-			$this->treeView->mod_name = 'homerepo';
+            $this->treeView = new RepoTreeView($this->repoDb, 'homerepo', Lang::t('_HOMEREPOROOTNAME', 'storage', 'lms'));
+            $this->treeView->mod_name = 'homerepo';
 
-			require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-			$saveObj = new Session_Save();
-			$saveName = 'homerepo'.getLogUserId();
-			if( $saveObj->nameExists($saveName) ) {
+            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            $saveObj = new Session_Save();
+            $saveName = 'homerepo' . getLogUserId();
+            if ($saveObj->nameExists($saveName)) {
+                $this->treeView->setState($saveObj->load($saveName));
+                $ready = true;
+                $saveObj->delete($saveName);
+                //$this->treeView->extendedParsing( $_POST, $_POST, $_POST);
+                $this->treeView->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
+                $this->treeView->refreshTree();
+            } else {
+                $this->treeView->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
+            }
+        }
+        if ($this->select_destination) {
+            $this->treeView->setOption(REPOOPTSHOWONLYFOLDER, true);
+        }
+    }
 
-				$this->treeView->setState($saveObj->load($saveName));
-				$ready = TRUE;
-				$saveObj->delete( $saveName );
-				//$this->treeView->extendedParsing( $_POST, $_POST, $_POST);
-				$this->treeView->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
-				$this->treeView->refreshTree();
-			} else {
-				$this->treeView->parsePositionData($_REQUEST, $_REQUEST, $_REQUEST);
-			}
-		}
-		if( $this->select_destination ) {
-			$this->treeView->setOption(REPOOPTSHOWONLYFOLDER, TRUE);
-		}
-	}
+    public function isSuperActive()
+    {
+        if ($this->treeView === null) {
+            $this->initialize();
+        }
+        if ($this->treeView->op == 'movefolder') {
+            return true;
+        }
 
-	function isSuperActive() {
-		if( $this->treeView === NULL )
-			$this->initialize();
-		if( $this->treeView->op == 'movefolder' )
-			return TRUE;
-		return FALSE;
-	}
+        return false;
+    }
 
-	function isFindingDestination() {
-		return ($this->treeView->op == 'copyLOSel');
-	}
+    public function isFindingDestination()
+    {
+        return $this->treeView->op == 'copyLOSel';
+    }
 
-	function getUrlParams() {
-		if( $this->isFindingDestination() )
-			return '&amp;crepo='.$_GET['crepo'].'&amp;'
-					.$this->treeView->_getOpCopyLOSel().'=1"';
-		return '';
-	}
+    public function getUrlParams()
+    {
+        if ($this->isFindingDestination()) {
+            return '&amp;crepo=' . $_GET['crepo'] . '&amp;'
+                    . $this->treeView->_getOpCopyLOSel() . '=1"';
+        }
 
-	function hideTab() {
-		switch($this->treeView->op) {
-			case 'createLO':
-			case 'createLOSel':
-			case 'editLO':
-			case 'playitem':
-				return TRUE;
-		}
-		return FALSE;
-	}
+        return '';
+    }
 
-	function getExtraTop() {
-		global $modname;
-		if( $this->isFindingDestination() ) {
-			require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-			$saveObj = new Session_Save();
-			$saveName = $_GET['crepo'];
-			if( $saveObj->nameExists($saveName) ) {
-				$saveData =& $saveObj->load($saveName);
-				return 	'<div class="std_block">'
-						.'<form id="homereposhow" method="post"'
-						.' action="index.php?modname='.$modname
-						.'&amp;op=display&amp;crepo='.$_GET['crepo'].'&amp;'
-						.$this->treeView->_getOpCopyLOSel().'=1"'
-						.' >'."\n"
-						.'<input type="hidden" id="authentic_request_hrm" name="authentic_request" value="'.Util::getSignature().'" />'
-						.$this->lang->def('_REPOSELECTDESTINATION')
-						.' <img src="'.getPathImage().'lobject/'.$saveData['objectType']
-						.'.gif" alt="'.$saveData['objectType']
-						.'" title="'.$saveData['objectType'].'"/>'
-						.$saveData['name'];
-			}
-		}
-		return "";
-	}
+    public function hideTab()
+    {
+        switch ($this->treeView->op) {
+            case 'createLO':
+            case 'createLOSel':
+            case 'editLO':
+            case 'playitem':
+                return true;
+        }
 
-	function getExtraBottom() {
-		global $modname;
-		if( $this->isFindingDestination() ) {
-			return 	'<img src="'.$this->treeView->_getCopyImage().'" alt="'.$this->lang->def('_REPOPASTELO').'" /> '
-					.'<input type="submit" value="'.$this->lang->def('_REPOPASTELO').'" class="LVAction"'
-					.' name="'.$this->treeView->_getOpCopyLOEndOk().'" />'
-					.' <img src="'.$this->treeView->_getCancelImage().'" alt="'.$this->treeView->_getCancelAlt().'" />'
-					.'<input type="submit" class="LVAction" value="'.$this->treeView->_getCancelLabel().'"'
-					.' name="'.$this->treeView->_getOpCopyLOEndCancel().'" id="'.$this->treeView->_getOpCopyLOEndCancel().'" />'
-					.'</form>'
-					.'</div>';
-		}
-		return "";
-	}
+        return false;
+    }
 
-	function setOptions( $select_destination ) {
-		$this->select_destionation = $select_destination;
-		if( $this->treeView !== NULL )
-			$this->treeView->setOption(REPOOPTSHOWONLYFOLDER, TRUE);
-	}
+    public function getExtraTop()
+    {
+        global $modname;
+        if ($this->isFindingDestination()) {
+            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            $saveObj = new Session_Save();
+            $saveName = $_GET['crepo'];
+            if ($saveObj->nameExists($saveName)) {
+                $saveData = &$saveObj->load($saveName);
 
-	function loadBody() {
-		global $op, $modname;
-		if( $this->treeView === NULL )
-			$this->initialize();
+                return '<div class="std_block">'
+                        . '<form id="homereposhow" method="post"'
+                        . ' action="index.php?modname=' . $modname
+                        . '&amp;op=display&amp;crepo=' . $_GET['crepo'] . '&amp;'
+                        . $this->treeView->_getOpCopyLOSel() . '=1"'
+                        . ' >' . "\n"
+                        . '<input type="hidden" id="authentic_request_hrm" name="authentic_request" value="' . Util::getSignature() . '" />'
+                        . $this->lang->def('_REPOSELECTDESTINATION')
+                        . ' <img src="' . getPathImage() . 'lobject/' . $saveData['objectType']
+                        . '.gif" alt="' . $saveData['objectType']
+                        . '" title="' . $saveData['objectType'] . '"/>'
+                        . $saveData['name'];
+            }
+        }
 
-		switch($this->treeView->op) {
-			case "import":
-				import($this->treeView);
-			break;
-			case 'createLO':
-				global $modname;
-				// save state
-				require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-				$saveObj = new Session_Save();
-				$saveName = $saveObj->getName('homerepo'.getLogUserId(),true);
-				$saveObj->save( $saveName, $this->treeView->getState() );
+        return '';
+    }
 
-				$GLOBALS['page']->add(
-							$this->treeView->LOSelector($modname, 'index.php?r=lms/lomanagerhomerepo/completeAction&op=display&shr='.$saveName.'&'
-							.$this->treeView->_getOpCreateLOEnd().'=1'),
-							'content' );
-			break;
-			case 'createLOSel':
-				global $modname;
-				// save state
-				require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-				$saveObj = new Session_Save();
-				$saveName = $saveObj->getName('homerepo'.getLogUserId(),true);
-				$saveObj->save( $saveName, $this->treeView->getState() );
+    public function getExtraBottom()
+    {
+        global $modname;
+        if ($this->isFindingDestination()) {
+            return '<img src="' . $this->treeView->_getCopyImage() . '" alt="' . $this->lang->def('_REPOPASTELO') . '" /> '
+                    . '<input type="submit" value="' . $this->lang->def('_REPOPASTELO') . '" class="LVAction"'
+                    . ' name="' . $this->treeView->_getOpCopyLOEndOk() . '" />'
+                    . ' <img src="' . $this->treeView->_getCancelImage() . '" alt="' . $this->treeView->_getCancelAlt() . '" />'
+                    . '<input type="submit" class="LVAction" value="' . $this->treeView->_getCancelLabel() . '"'
+                    . ' name="' . $this->treeView->_getOpCopyLOEndCancel() . '" id="' . $this->treeView->_getOpCopyLOEndCancel() . '" />'
+                    . '</form>'
+                    . '</div>';
+        }
 
-				// start learning object creation
-				$lo = createLO( $_REQUEST['radiolo'] );
-				$lo->create( 'index.php?r=lms/lomanagerhomerepo/completeAction&op=display&shr='.$saveName.'&'
-							.$this->treeView->_getOpCreateLOEnd().'=1' );
-			break;
-			case 'editLO':
-				global $modname;
-				// save state
-				require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-				$saveObj = new Session_Save();
-				$saveName = $saveObj->getName('homerepo'.getLogUserId(),true);
-				$saveObj->save( $saveName, $this->treeView->getState() );
+        return '';
+    }
 
-				$folder = $this->repoDb->getFolderById( $this->treeView->getSelectedFolderId() );
-				$lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
-				$lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lomanagerhomerepo/completeAction&op=display&shr='.$saveName.'&'
-							.$this->treeView->_getOpEditLOEnd().'=1' );
-			break;
-			case 'playitem':
-				global $modname;
-				// save state
-				require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-				$saveObj = new Session_Save();
-				$saveName = $saveObj->getName('homerepo'.getLogUserId(),true);
-				$saveObj->save( $saveName, $this->treeView->getState() );
+    public function setOptions($select_destination)
+    {
+        $this->select_destionation = $select_destination;
+        if ($this->treeView !== null) {
+            $this->treeView->setOption(REPOOPTSHOWONLYFOLDER, true);
+        }
+    }
 
-				$folder = $this->repoDb->getFolderById( $this->treeView->getItemToPlay() );
-				$lo = createLO( $folder->otherValues[REPOFIELDOBJECTTYPE]);
-				$idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
+    public function loadBody()
+    {
+        global $op, $modname;
+        if ($this->treeView === null) {
+            $this->initialize();
+        }
 
-				$back_url = 'index.php?r=lms/lomanagerhomerepo/completeAction&op=homerepo&shr='.$saveName.'&'
-							.$this->treeView->_getOpPlayEnd()
-							.'='.$folder->id;
+        switch ($this->treeView->op) {
+            case 'import':
+                import($this->treeView);
+            break;
+            case 'createLO':
+                global $modname;
+                // save state
+                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                $saveObj = new Session_Save();
+                $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
+                $saveObj->save($saveName, $this->treeView->getState());
 
-				$lo->play(	$idItem,
-							NULL,
-							$back_url );
+                $GLOBALS['page']->add(
+                            $this->treeView->LOSelector($modname, 'index.php?r=lms/lomanagerhomerepo/completeAction&op=display&shr=' . $saveName . '&'
+                            . $this->treeView->_getOpCreateLOEnd() . '=1'),
+                            'content');
+            break;
+            case 'createLOSel':
+                global $modname;
+                // save state
+                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                $saveObj = new Session_Save();
+                $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
+                $saveObj->save($saveName, $this->treeView->getState());
 
-			break;
-			case 'copyLOSel':
-				$GLOBALS['page']->add( $this->treeView->load() );
-			break;
-			case 'copyLOEndOk':
-			case 'copyLOEndCancel':
-				global $modname;
-				require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-				$saveObj = new Session_Save();
-				$saveName = $_GET['crepo'];
-				if( $saveObj->nameExists($saveName) ) {
-					$saveData =& $saveObj->load($saveName);
-					$saveObj->delete($saveName);
-					Util::jump_to( 'index.php?r=lms/lomanagerhomerepo/completeAction&op='.$saveData['repo'] );
-				}
-				Util::jump_to( 'index.php?r=lms/lomanagerhomerepo/completeAction&op=display' );
-			break;
-			case 'copyLO':
-				global $modname;
-				// save state
-				require_once( $GLOBALS['where_framework'].'/lib/lib.sessionsave.php' );
-				$saveObj = new Session_Save();
-				$saveName = $saveObj->getName('crepo',true);
-				$folder = $this->treeView->tdb->getFolderById( $this->treeView->selectedFolder );
-				$saveData = ['repo' => 'homerepo',
-									'id' => $this->treeView->getSelectedFolderId(),
-									'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
-									'name' => $folder->getFolderName(),
-									'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE]
+                // start learning object creation
+                $lo = createLO($_REQUEST['radiolo']);
+                $lo->create('index.php?r=lms/lomanagerhomerepo/completeAction&op=display&shr=' . $saveName . '&'
+                            . $this->treeView->_getOpCreateLOEnd() . '=1');
+            break;
+            case 'editLO':
+                global $modname;
+                // save state
+                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                $saveObj = new Session_Save();
+                $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
+                $saveObj->save($saveName, $this->treeView->getState());
+
+                $folder = $this->repoDb->getFolderById($this->treeView->getSelectedFolderId());
+                $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
+                $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lomanagerhomerepo/completeAction&op=display&shr=' . $saveName . '&'
+                            . $this->treeView->_getOpEditLOEnd() . '=1');
+            break;
+            case 'playitem':
+                global $modname;
+                // save state
+                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                $saveObj = new Session_Save();
+                $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
+                $saveObj->save($saveName, $this->treeView->getState());
+
+                $folder = $this->repoDb->getFolderById($this->treeView->getItemToPlay());
+                $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
+                $idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
+
+                $back_url = 'index.php?r=lms/lomanagerhomerepo/completeAction&op=homerepo&shr=' . $saveName . '&'
+                            . $this->treeView->_getOpPlayEnd()
+                            . '=' . $folder->id;
+
+                $lo->play($idItem,
+                            null,
+                            $back_url);
+
+            break;
+            case 'copyLOSel':
+                $GLOBALS['page']->add($this->treeView->load());
+            break;
+            case 'copyLOEndOk':
+            case 'copyLOEndCancel':
+                global $modname;
+                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                $saveObj = new Session_Save();
+                $saveName = $_GET['crepo'];
+                if ($saveObj->nameExists($saveName)) {
+                    $saveData = &$saveObj->load($saveName);
+                    $saveObj->delete($saveName);
+                    Util::jump_to('index.php?r=lms/lomanagerhomerepo/completeAction&op=' . $saveData['repo']);
+                }
+                Util::jump_to('index.php?r=lms/lomanagerhomerepo/completeAction&op=display');
+            break;
+            case 'copyLO':
+                global $modname;
+                // save state
+                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                $saveObj = new Session_Save();
+                $saveName = $saveObj->getName('crepo', true);
+                $folder = $this->treeView->tdb->getFolderById($this->treeView->selectedFolder);
+                $saveData = ['repo' => 'homerepo',
+                                    'id' => $this->treeView->getSelectedFolderId(),
+                                    'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
+                                    'name' => $folder->getFolderName(),
+                                    'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE],
                 ];
-				$saveObj->save( $saveName, $saveData );
-				Util::jump_to( 'index.php?r=lms/lomanagerhomerepo/completeAction&op=display&crepo='.$saveName.'&'
-							.$this->treeView->_getOpCopyLOSel().'=1' );
-			case 'createLOEnd':
-				// insertion managed by extendParsing
-			case "display" :
-			case "homerepo" :
-			default:
-				/*$GLOBALS['page']->addStart(
-					getTitleArea(Lang::t('_HOMEREPO', 'homerepo', 'lms'), 'homerepo')
-					.'<div class="std_block">', 'content');
-				$GLOBALS['page']->addEnd('</div>', 'content');
-				if( isset($_SESSION['last_error']) )
-					if( $_SESSION['last_error'] != "" ) {
-						$GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
-						unset( $_SESSION['last_error'] );
-					}*/
-				homerepo($this->treeView);
-			break;
-		}
-	}
+                $saveObj->save($saveName, $saveData);
+                Util::jump_to('index.php?r=lms/lomanagerhomerepo/completeAction&op=display&crepo=' . $saveName . '&'
+                            . $this->treeView->_getOpCopyLOSel() . '=1');
+                            // no break
+            case 'createLOEnd':
+                // insertion managed by extendParsing
+            case 'display' :
+            case 'homerepo' :
+            default:
+                /*$GLOBALS['page']->addStart(
+                    getTitleArea(Lang::t('_HOMEREPO', 'homerepo', 'lms'), 'homerepo')
+                    .'<div class="std_block">', 'content');
+                $GLOBALS['page']->addEnd('</div>', 'content');
+                if( isset($_SESSION['last_error']) )
+                    if( $_SESSION['last_error'] != "" ) {
+                        $GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
+                        unset( $_SESSION['last_error'] );
+                    }*/
+                homerepo($this->treeView);
+            break;
+        }
+    }
 }

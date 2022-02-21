@@ -1,9 +1,9 @@
 <div style="margin:1em;">
 	<?php
-	$this->widget('lms_tab', [
-		'active' => 'home'
+    $this->widget('lms_tab', [
+        'active' => 'home',
     ]);
-	?>
+    ?>
 	
 </div>
 <script type="text/javascript">

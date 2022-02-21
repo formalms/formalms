@@ -1,39 +1,53 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 define('IS_META', 0);
 
-if (Docebo::user()->isAnonymous()) die("You can't access");
+if (Docebo::user()->isAnonymous()) {
+    exit("You can't access");
+}
 
 function certificate()
 {
     checkPerm('view');
 
-    require_once(_base_ . '/lib/lib.form.php');
-    require_once(_base_ . '/lib/lib.table.php');
+    require_once _base_ . '/lib/lib.form.php';
+    require_once _base_ . '/lib/lib.table.php';
 
     $mod_perm = checkPerm('mod', true);
     // create a language istance for module admin_certificate
-    $lang =& DoceboLanguage::createInstance('certificate', 'lms');
-    $out =& $GLOBALS['page'];
+    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
     $tb = new Table(Get::sett('visuItem'), $lang->def('_CERTIFICATE_CAPTION'), $lang->def('_CERTIFICATE_SUMMARY'));
     $tb->initNavBar('ini', 'link');
-    $tb->setLink("index.php?modname=certificate&amp;op=certificate");
+    $tb->setLink('index.php?modname=certificate&amp;op=certificate');
     $ini = $tb->getSelectedElement();
 
     $form = new Form();
 
-    if (isset($_POST['filter_reset'])) unset($_POST['filter_text']);
+    if (isset($_POST['filter_reset'])) {
+        unset($_POST['filter_text']);
+    }
 
     //search query of certificates
-    $query_certificate = "
+    $query_certificate = '
     SELECT id_certificate, code, name, description
-    FROM " . $GLOBALS['prefix_lms'] . "_certificate"
-        . " WHERE meta = 0";
+    FROM ' . $GLOBALS['prefix_lms'] . '_certificate'
+        . ' WHERE meta = 0';
     if (isset($_POST['filter_text'])) {
         $query_certificate .= " AND (name LIKE '%" . $_POST['filter_text'] . "%'" .
             " OR code LIKE '%" . $_POST['filter_text'] . "%')";
@@ -41,9 +55,9 @@ function certificate()
     $query_certificate .= " ORDER BY id_certificate
     LIMIT $ini," . Get::sett('visuItem');
 
-    $query_certificate_tot = "
+    $query_certificate_tot = '
     SELECT COUNT(*)
-    FROM " . $GLOBALS['prefix_lms'] . "_certificate";
+    FROM ' . $GLOBALS['prefix_lms'] . '_certificate';
 
     $re_certificate = sql_query($query_certificate);
     list($tot_certificate) = sql_fetch_row(sql_query($query_certificate_tot));
@@ -52,7 +66,7 @@ function certificate()
     $cont_h = [
         $lang->def('_CODE'),
         $lang->def('_NAME'),
-        $lang->def('_DESCRIPTION')
+        $lang->def('_DESCRIPTION'),
     ];
     if ($mod_perm) {
         $cont_h[] = $lang->def('_TEMPLATE');
@@ -63,7 +77,6 @@ function certificate()
     $type_h[] = 'image';
 
     if ($mod_perm) {
-
         $cont_h[] = Get::sprite('subs_print', Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate'));
         $type_h[] = 'image';
 
@@ -81,10 +94,9 @@ function certificate()
         $cont = [
             $code,
             $name,
-            Util::cut($descr)
+            Util::cut($descr),
         ];
         if ($mod_perm) {
-
             $cont[] = '<a href="index.php?modname=certificate&amp;op=elemcertificate&amp;id_certificate=' . $id_certificate . '" title="' . Lang::t('_TEMPLATE', 'certificate') . '">'
                 . Lang::t('_TEMPLATE', 'certificate') . '</a>';
         }
@@ -92,7 +104,6 @@ function certificate()
         $cont[] = Get::sprite_link('subs_view', 'index.php?modname=certificate&amp;op=preview&amp;id_certificate=' . $id_certificate, Lang::t('_PREVIEW', 'certificate'));
 
         if ($mod_perm) {
-
             $cont[] = Get::sprite_link('subs_print',
                 'index.php?modname=certificate&amp;op=report_certificate&amp;id_certificate=' . $id_certificate,
                 Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate'));
@@ -106,7 +117,7 @@ function certificate()
         $tb->addBody($cont);
     }
 
-    require_once(Forma::inc(_base_ . '/lib/lib.dialog.php'));
+    require_once Forma::inc(_base_ . '/lib/lib.dialog.php');
     setupHrefDialogBox('a[href*=delcertificate]');
 
     if ($mod_perm) {
@@ -121,22 +132,22 @@ function certificate()
         . '<div class="quick_search_form">
             <div>
                 <div class="simple_search_box">'
-        . Form::getInputTextfield("search_t", "filter_text", "filter_text", Get::req('filter_text', DOTY_MIXED, ''), '', 255, '')
-        . Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b")
-        . Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b")
+        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', Get::req('filter_text', DOTY_MIXED, ''), '', 255, '')
+        . Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b')
+        . Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b')
         . '</div>
             </div>
         </div>'
         . $form->closeForm());
     if (isset($_GET['result'])) {
         switch ($_GET['result']) {
-            case "ok"         :
+            case 'ok':
                 $out->add(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));
                 break;
-            case "err"         :
+            case 'err':
                 $out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
                 break;
-            case "err_del" :
+            case 'err_del':
                 $out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
                 break;
         }
@@ -145,26 +156,25 @@ function certificate()
     $out->add($tb->getTable() . $tb->getNavBar($ini, $tot_certificate) . '</div>');
 }
 
-
 function list_element_certificate()
 {
     checkPerm('view');
 
-    require_once(_base_ . '/lib/lib.form.php');
-    require_once(_base_ . '/lib/lib.table.php');
+    require_once _base_ . '/lib/lib.form.php';
+    require_once _base_ . '/lib/lib.table.php';
 
     $mod_perm = checkPerm('mod', true);
     $id_certificate = importVar('id_certificate', true);
 
     // create a language istance for module admin_certificate
-    $lang =& DoceboLanguage::createInstance('certificate', 'lms');
-    $out =& $GLOBALS['page'];
+    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $form = new Form();
 
     $page_title = [
         'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
-        $lang->def('_STRUCTURE_CERTIFICATE')
+        $lang->def('_STRUCTURE_CERTIFICATE'),
     ];
 
     $out->add(getTitleArea($page_title, 'certificate')
@@ -174,22 +184,22 @@ function list_element_certificate()
 
     if (isset($_GET['result'])) {
         switch ($_GET['result']) {
-            case "ok"         :
+            case 'ok':
                 $out->add(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));
                 break;
-            case "err"         :
+            case 'err':
                 $out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
                 break;
-            case "err_del" :
+            case 'err_del':
                 $out->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
                 break;
         }
     }
 
-    $query_structure = "
+    $query_structure = '
     SELECT cert_structure, orientation, bgimage
-    FROM " . $GLOBALS['prefix_lms'] . "_certificate 
-    WHERE id_certificate = '" . (int)$id_certificate . "'";
+    FROM ' . $GLOBALS['prefix_lms'] . "_certificate 
+    WHERE id_certificate = '" . (int) $id_certificate . "'";
 
     list($structure, $orientation, $bgimage) = sql_fetch_row(sql_query($query_structure));
 
@@ -200,7 +210,6 @@ function list_element_certificate()
     $out->add($form->openForm('structure_certificate', 'index.php?modname=certificate&amp;op=savecertificate', false, false, 'multipart/form-data'));
     $out->add($form->getHidden('of_platform', 'of_platform', 'lms'));
     $out->add($form->openElementSpace()
-
         . $form->getTextarea($lang->def('_STRUCTURE_CERTIFICATE'), 'structure', 'structure', $structure)
         . '<p><b>' . $lang->def('_ORIENTATION') . '</b></p>'
         . $form->getRadio($lang->def('_PORTRAIT'), 'portrait', 'orientation', 'P', ($orientation == 'P'))
@@ -219,26 +228,22 @@ function list_element_certificate()
         . $form->closeButtonSpace()
         . $form->closeForm());
 
-
     $tb = new Table(0, $lang->def('_TAG_LIST_CAPTION'), $lang->def('_TAG_LIST_SUMMARY'));
 
     $tb->setColsStyle(['', '']);
     $tb->addHead([$lang->def('_TAG_CODE'), $lang->def('_TAG_DESCRIPTION')]);
 
     //search query of certificates tag
-    $query_format_tag = "
+    $query_format_tag = '
     SELECT file_name, class_name 
-    FROM " . $GLOBALS['prefix_lms'] . "_certificate_tags ";
+    FROM ' . $GLOBALS['prefix_lms'] . '_certificate_tags ';
     $re_certificate_tags = sql_query($query_format_tag);
     while (list($file_name, $class_name) = sql_fetch_row($re_certificate_tags)) {
-
         if (file_exists($GLOBALS['where_lms'] . '/lib/certificate/' . $file_name)) {
-
-            require_once($GLOBALS['where_lms'] . '/lib/certificate/' . $file_name);
+            require_once $GLOBALS['where_lms'] . '/lib/certificate/' . $file_name;
             $instance = new $class_name(0, 0);
             $this_subs = $instance->getSubstitutionTags();
             foreach ($this_subs as $tag => $description) {
-
                 $tb->addBody([$tag, $description]);
             } // end foreach
         } // end if
@@ -250,27 +255,30 @@ function list_element_certificate()
 
 function manageCertificateFile($new_file_id, $old_file, $path, $delete_old, $is_image = false)
 {
-    require_once(_base_ . '/lib/lib.upload.php');
+    require_once _base_ . '/lib/lib.upload.php';
     $arr_new_file = (isset($_FILES[$new_file_id]) && $_FILES[$new_file_id]['tmp_name'] != '' ? $_FILES[$new_file_id] : false);
     $return = ['filename' => $old_file,
         'new_size' => 0,
         'old_size' => 0,
         'error' => false,
-        'quota_exceeded' => false];
+        'quota_exceeded' => false, ];
     sl_open_fileoperations();
-    if (($delete_old || $arr_new_file !== false) && $old_file != '')
-        sl_unlink($path . $old_file);// the flag for file delete is checked or a new file was uploaded ---------------------
+    if (($delete_old || $arr_new_file !== false) && $old_file != '') {
+        sl_unlink($path . $old_file);
+    }// the flag for file delete is checked or a new file was uploaded ---------------------
 
     if (!empty($arr_new_file)) {
         // if present load the new file --------------------------------------------------------
         $filename = $new_file_id . '_' . mt_rand(0, 100) . '_' . time() . '_' . $arr_new_file['name'];
 
-        if (!sl_upload($arr_new_file['tmp_name'], $path . $filename))
+        if (!sl_upload($arr_new_file['tmp_name'], $path . $filename)) {
             return false;
-        else
+        } else {
             return $filename;
+        }
     }
     sl_close_fileoperations();
+
     return '';
 }
 
@@ -278,11 +286,11 @@ function editcertificate($load = false)
 {
     checkPerm('mod');
 
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.form.php';
 
-    $lang =& DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
     $form = new Form();
-    $out =& $GLOBALS['page'];
+    $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
     $id_certificate = importVar('id_certificate', true, 0);
@@ -293,14 +301,12 @@ function editcertificate($load = false)
     }
 
     if ($load) {
-
-        $query_certificate = "
+        $query_certificate = '
         SELECT code, name, base_language, description, user_release
-        FROM " . $GLOBALS['prefix_lms'] . "_certificate
+        FROM ' . $GLOBALS['prefix_lms'] . "_certificate
         WHERE id_certificate = '" . $id_certificate . "'";
         list($code, $name, $base_language, $descr, $user_release) = sql_fetch_row(sql_query($query_certificate));
     } else {
-
         $code = '';
         $name = '';
         $descr = '';
@@ -310,7 +316,7 @@ function editcertificate($load = false)
 
     $page_title = [
         'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
-        ($load ? $lang->def('_MOD') : $lang->def('_NEW_CERTIFICATE'))
+        ($load ? $lang->def('_MOD') : $lang->def('_NEW_CERTIFICATE')),
     ];
     $out->add(getTitleArea($page_title, 'certificate')
         . '<div class="std_block">'
@@ -320,7 +326,6 @@ function editcertificate($load = false)
         . $form->getHidden('of_platform', 'of_platform', 'lms')
     );
     if ($load) {
-
         $out->add($form->getHidden('id_certificate', 'id_certificate', $id_certificate)
             . $form->getHidden('load', 'load', 1));
     }
@@ -356,36 +361,40 @@ function savecertificate()
     $load = importVar('load', true, 0);
 
     $all_languages = Docebo::langManager()->getAllLangCode();
-    $lang =& DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
 
-    if ($_POST['name'] == '') $_POST['name'] = $lang->def('_NOTITLE');
+    if ($_POST['name'] == '') {
+        $_POST['name'] = $lang->def('_NOTITLE');
+    }
 
     if (isset($_POST['save_structure'])) {
-
         $path = '/appLms/certificate/';
         $path = $path . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
         $bgimage = manageCertificateFile('bgimage',
-            $_POST["old_bgimage"],
+            $_POST['old_bgimage'],
             $path,
             isset($_POST['file_to_del']['bgimage']));
-        if (!$bgimage) $bgimage = '';
+        if (!$bgimage) {
+            $bgimage = '';
+        }
 
-        $query_insert = "
-        UPDATE " . $GLOBALS['prefix_lms'] . "_certificate
+        $query_insert = '
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_certificate
         SET    cert_structure = '" . $_POST['structure'] . "',
             orientation = '" . $_POST['orientation'] . "'
-            " . ($bgimage != '' && !isset($_POST['file_to_del']['bgimage']) ? " , bgimage = '" . $bgimage . "'" : '') . "  
-            " . ($bgimage == '' && isset($_POST['file_to_del']['bgimage']) ? " , bgimage = ''" : '') . "
+            " . ($bgimage != '' && !isset($_POST['file_to_del']['bgimage']) ? " , bgimage = '" . $bgimage . "'" : '') . '  
+            ' . ($bgimage == '' && isset($_POST['file_to_del']['bgimage']) ? " , bgimage = ''" : '') . "
         WHERE id_certificate = '" . $id_certificate . "'";
 
-        if (!sql_query($query_insert)) Util::jump_to('index.php?modname=certificate&op=certificate&result=err');
+        if (!sql_query($query_insert)) {
+            Util::jump_to('index.php?modname=certificate&op=certificate&result=err');
+        }
         Util::jump_to('index.php?modname=certificate&op=certificate&result=ok');
     }
     if ($load == 1) {
-
-        $query_insert = "
-        UPDATE " . $GLOBALS['prefix_lms'] . "_certificate
+        $query_insert = '
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_certificate
         SET    code = '" . $_POST['code'] . "', 
             name = '" . $_POST['name'] . "',
             base_language = '" . $_POST['base_language'] . "',
@@ -393,11 +402,13 @@ function savecertificate()
             user_release = '" . (isset($_POST['user_release']) ? 1 : 0) . "'
         WHERE id_certificate = '" . $id_certificate . "'";
 
-        if (!sql_query($query_insert)) Util::jump_to('index.php?modname=certificate&op=certificate&result=err');
+        if (!sql_query($query_insert)) {
+            Util::jump_to('index.php?modname=certificate&op=certificate&result=err');
+        }
         Util::jump_to('index.php?modname=certificate&op=certificate&result=ok');
     } else {
-        $query_insert = "
-        INSERT INTO " . $GLOBALS['prefix_lms'] . "_certificate
+        $query_insert = '
+        INSERT INTO ' . $GLOBALS['prefix_lms'] . "_certificate
         ( code, name, base_language, description, user_release ) VALUES
         (     '" . $_POST['code'] . "' ,
             '" . $_POST['name'] . "' ,
@@ -405,11 +416,13 @@ function savecertificate()
             '" . $_POST['descr'] . "',
             '" . (isset($_POST['user_release']) ? 1 : 0) . "'
         )";
-        if (!sql_query($query_insert)) Util::jump_to('index.php?modname=certificate&op=certificate&result=err');
+        if (!sql_query($query_insert)) {
+            Util::jump_to('index.php?modname=certificate&op=certificate&result=err');
+        }
 
-        list($id_certificate) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+        list($id_certificate) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-        require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
+        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $certificate = new Certificate();
         $certificate_info = $certificate->getCertificateInfo($id_certificate);
         Events::trigger('lms.certificate.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
@@ -422,38 +435,36 @@ function delcertificate()
 {
     checkPerm('mod');
 
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.form.php';
 
     $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
-    $lang =& DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
 
     if (Get::req('confirm', DOTY_INT, 0) == 1) {
-
-        require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
+        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $certificate = new Certificate();
         $certificate_info = $certificate->getCertificateInfo($id_certificate);
 
-        $query_certificate = "
-        DELETE FROM " . $GLOBALS['prefix_lms'] . "_certificate
+        $query_certificate = '
+        DELETE FROM ' . $GLOBALS['prefix_lms'] . "_certificate
         WHERE id_certificate = '" . $id_certificate . "'";
-        if (!sql_query($query_certificate)) Util::jump_to('index.php?modname=certificate&op=certificate&result=err_del');
-        else {
-
+        if (!sql_query($query_certificate)) {
+            Util::jump_to('index.php?modname=certificate&op=certificate&result=err_del');
+        } else {
             Events::trigger('lms.certificate.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
 
             Util::jump_to('index.php?modname=certificate&op=certificate&result=ok');
         }
     } else {
-
-        list($name, $descr) = sql_fetch_row(sql_query("
+        list($name, $descr) = sql_fetch_row(sql_query('
         SELECT name, description
-        FROM " . $GLOBALS['prefix_lms'] . "_certificate
+        FROM ' . $GLOBALS['prefix_lms'] . "_certificate
         WHERE id_certificate = '" . $id_certificate . "'"));
 
         $form = new Form();
         $page_title = [
             'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
-            $lang->def('_DEL')
+            $lang->def('_DEL'),
         ];
         $GLOBALS['page']->add(
             getTitleArea($page_title, 'certificate')
@@ -474,23 +485,22 @@ function delcertificate()
 
 function report_certificate()
 {
-    require_once(_base_ . '/lib/lib.form.php');
-    require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
-    require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
-    require_once(_base_ . '/lib/lib.table.php');
+    require_once _base_ . '/lib/lib.form.php';
+    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _base_ . '/lib/lib.table.php';
 
     checkPerm('view');
 
-    $out =& $GLOBALS['page'];
+    $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
     $form = new Form();
     $certificate = new Certificate();
 
-    $lang =& DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
 
     if (isset($_GET['id_certificate'])) {
-
         $id_certificate = importVar('id_certificate', true, 0);
         $man_course = new Man_Course();
 
@@ -502,7 +512,7 @@ function report_certificate()
         $out->add(
             getTitleArea([
                 'index.php?modname=certificate&amp;op=certificate' => $lang->def('_TITLE_CERTIFICATE'),
-                $lang->def('_COURSES')
+                $lang->def('_COURSES'),
             ])
             . '<div class="std_block">'
             . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
@@ -514,7 +524,7 @@ function report_certificate()
         $cont_h = [
             $lang->def('_CODE'),
             $lang->def('_NAME'),
-            $lang->def('_CERTIFICATE_REPORT')
+            $lang->def('_CERTIFICATE_REPORT'),
         ];
 
         $tb->setColsStyle($type_h);
@@ -525,7 +535,7 @@ function report_certificate()
                 $course_info['code'],
                 '<a href="index.php?r=alms/course/list_certificate&amp;id_certificate=' . $id_certificate . '&amp;id_course=' . $course_id . '&amp;from=manage">'
                 . $course_info['name'] . '</a>',
-                $certificate->getNumberOfCertificateForCourse($id_certificate, $course_info['idCourse'])
+                $certificate->getNumberOfCertificateForCourse($id_certificate, $course_info['idCourse']),
             ];
             $tb->addBody($cont);
         }
@@ -535,7 +545,6 @@ function report_certificate()
             . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
             . '</div>');
     } else {
-
         $out->add(
             getTitleArea($lang->def('_CERTIFICATE_REPORT'), 'certificate')
             . '<div class="std_block">'
@@ -560,16 +569,18 @@ function report_certificate()
             . $form->closeForm());
 
         if (isset($_POST['filter'])) {
-            if ($_POST['name_filter'] !== '' && $_POST['code_filter'] !== '')
+            if ($_POST['name_filter'] !== '' && $_POST['code_filter'] !== '') {
                 $certificate_info = $certificate->getCertificateList($_POST['name_filter'], $_POST['code_filter']);
-            elseif ($_POST['name_filter'] !== '')
+            } elseif ($_POST['name_filter'] !== '') {
                 $certificate_info = $certificate->getCertificateList($_POST['name_filter']);
-            elseif ($_POST['code_filter'] !== '')
+            } elseif ($_POST['code_filter'] !== '') {
                 $certificate_info = $certificate->getCertificateList(false, $_POST['code_filter']);
-            else
+            } else {
                 $certificate_info = $certificate->getCertificateList();
-        } else
+            }
+        } else {
             $certificate_info = $certificate->getCertificateList();
+        }
 
         $tb = new Table(Get::sett('visuItem'), $lang->def('_CHOOSE_CERTIFICATE'), $lang->def('_CERTIFICATE_LIST'));
 
@@ -577,17 +588,16 @@ function report_certificate()
         $cont_h = [
             $lang->def('_CODE'),
             $lang->def('_NAME'),
-            $lang->def('_DESCRIPTION')
+            $lang->def('_DESCRIPTION'),
         ];
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
         foreach ($certificate_info as $info_certificate) {
-
             $cont = [
                 $info_certificate[CERT_CODE],
                 '<a href="index.php?modname=certificate&amp;op=report_certificate&amp;id_certificate=' . $info_certificate[CERT_ID] . '">'
                 . $info_certificate[CERT_NAME] . '</a>',
-                $info_certificate[CERT_DESCR]
+                $info_certificate[CERT_DESCR],
             ];
             $tb->addBody($cont);
         }
@@ -595,18 +605,17 @@ function report_certificate()
     }
 }
 
-
 function del_report_certificate()
 {
     checkPerm('view');
 
-    require_once(_base_ . '/lib/lib.form.php');
-    require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
+    require_once _base_ . '/lib/lib.form.php';
+    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
     $certificate = new Certificate();
     $form = new Form();
 
-    $lang =& DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
@@ -620,37 +629,37 @@ function del_report_certificate()
     $certificate_info = current($c_infos);
 
     if (Get::req('confirm_del_report_certificate', DOTY_INT, 0) == 1 || (isset($_GET['confirm']) && $_GET['confirm'] == 1)) {
-        require_once(_base_ . '/lib/lib.upload.php');
+        require_once _base_ . '/lib/lib.upload.php';
         Get::sett('pathcourse');
         $path = '/appLms/certificate/';
         $deletion_result = true;
-        if ($certificate_info[CERT_NAME] != '')
+        if ($certificate_info[CERT_NAME] != '') {
             $deletion_result = sl_unlink($path . $certificate_info[ASSIGN_CERT_FILE]);
+        }
 
         if ($deletion_result) {
             $deletion_result = $certificate->delCertificateForUserInCourse($id_certificate, $id_user, $id_course);
             if ($from == 'courselist') {
                 $id_certificate = 0;
             }
-            if ($deletion_result)
+            if ($deletion_result) {
                 Util::jump_to('index.php?r=alms/course/list_certificate&id_certificate=' . $id_certificate . '&id_course=' . $id_course . '&from=' . $from . '&deletion=1');
-            else
-                // to improve
-                die('ERROR ON CERTIFICATE DELETION');
-        } else
-            // to improve
-            die('ERROR ON CERTIFICATE DELETION');
+            } else { // to improve
+                exit('ERROR ON CERTIFICATE DELETION');
+            }
+        } else { // to improve
+            exit('ERROR ON CERTIFICATE DELETION');
+        }
     }
 }
 
-
 function send_zip_certificates()
 {
-    require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
-    require_once(_base_ . '/lib/lib.download.php');
+    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once _base_ . '/lib/lib.download.php';
 
     $files = [];
-    $zipName = date("YmdHis") . '_certs.zip';
+    $zipName = date('YmdHis') . '_certs.zip';
     $list = explode(',', Get::req('list', DOTY_STRING));
     $list_cert = explode(',', Get::req('list_cert', DOTY_STRING));
     $id_course = Get::req('id_course', DOTY_INT, -1);
@@ -666,7 +675,9 @@ function send_zip_certificates()
         $info_report = current($report_info);
 
         $file = $info_report[ASSIGN_CERT_FILE];
-        if ($file == null) continue;
+        if ($file == null) {
+            continue;
+        }
 
         $sendname = $info_report[ASSIGN_CERT_SENDNAME];
         copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
@@ -684,9 +695,8 @@ function send_zip_certificates()
 
 function send_certificate()
 {
-
-    require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
-    require_once(_base_ . '/lib/lib.download.php');
+    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once _base_ . '/lib/lib.download.php';
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
@@ -711,9 +721,8 @@ function send_certificate()
 
 function print_certificate()
 {
-
-    require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
-    require_once(_base_ . '/lib/lib.download.php');
+    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once _base_ . '/lib/lib.download.php';
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
@@ -723,14 +732,13 @@ function print_certificate()
 
     $subs = $cert->getSubstitutionArray($id_user, $id_course);
     $cert->send_certificate($id_certificate, $id_user, $id_course, $subs, true);
-
 }
 
 function preview()
 {
     checkPerm('view');
 
-    require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
+    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
     $id_certificate = importVar('id_certificate', true, 0);
 
@@ -738,29 +746,24 @@ function preview()
     $cert->send_preview_certificate($id_certificate, []);
 }
 
-
 function gen_zip_cert()
 {
-    require_once(_base_ . '/' . _folder_lms_ . '/lib/lib.certificate.php');
-    require_once(_base_ . '/lib/lib.download.php');
-
+    require_once _base_ . '/' . _folder_lms_ . '/lib/lib.certificate.php';
+    require_once _base_ . '/lib/lib.download.php';
 
     $str_rows = importVar('str_rows');
 
     $files = [];
-    $zipName = date("YmdHis") . '_certs.zip';
+    $zipName = date('YmdHis') . '_certs.zip';
 
     $filePath = _files_ . '/tmp/' . $zipName;
 
     $zip = new PclZip($filePath);
 
-    $list_cert = explode(",", $str_rows);
+    $list_cert = explode(',', $str_rows);
 
     foreach ($list_cert as $certRow) {
-
-
         list($id_user, $id_certificate, $id_course) = explode('-', $certRow);
-
 
         $certificate = new Certificate();
 
@@ -768,9 +771,10 @@ function gen_zip_cert()
 
         $info_report = current($report_info);
 
-
         $file = $info_report[ASSIGN_CERT_FILE];
-        if ($file === null) continue;
+        if ($file === null) {
+            continue;
+        }
 
         $sendname = $info_report[ASSIGN_CERT_SENDNAME];
         $copyResult = copy(_files_ . '/appLms/certificate/' . $file, _files_ . '/tmp/' . $sendname);
@@ -786,54 +790,59 @@ function gen_zip_cert()
     unlink($filePath);
 }
 
-
 function certificateDispatch($op)
 {
-    if (isset($_POST['undo'])) $op = 'certificate';
-    if (isset($_POST['undo_report'])) $op = 'report_certificate';
-    if (isset($_POST['certificate_course_selection_back'])) $op = 'report_certificate';
+    if (isset($_POST['undo'])) {
+        $op = 'certificate';
+    }
+    if (isset($_POST['undo_report'])) {
+        $op = 'report_certificate';
+    }
+    if (isset($_POST['certificate_course_selection_back'])) {
+        $op = 'report_certificate';
+    }
     switch ($op) {
-        case "download_all":
+        case 'download_all':
             gen_zip_cert();
             break;
 
-        case "certificate":
+        case 'certificate':
             certificate();
             break;
-        case "addcertificate":
+        case 'addcertificate':
             editcertificate();
             break;
-        case "modcertificate":
+        case 'modcertificate':
             editcertificate(true);
             break;
-        case "savecertificate":
+        case 'savecertificate':
             savecertificate();
             break;
-        case "delcertificate":
+        case 'delcertificate':
             delcertificate();
             break;
-        case "elemcertificate":
+        case 'elemcertificate':
             list_element_certificate();
             break;
-        case "report_certificate":
+        case 'report_certificate':
             report_certificate();
             break;
-        case "del_report_certificate":
+        case 'del_report_certificate':
             del_report_certificate();
             break;
-        case "del_gen_certificate":
+        case 'del_gen_certificate':
             del_gen_certificate();
             break;
-        case "send_certificate":
+        case 'send_certificate':
             send_certificate();
             break;
-        case "send_zip_certificates":
+        case 'send_zip_certificates':
             send_zip_certificates();
             break;
-        case "print_certificate":
+        case 'print_certificate':
             print_certificate();
             break;
-        case "preview":
+        case 'preview':
             preview();
             break;
     }

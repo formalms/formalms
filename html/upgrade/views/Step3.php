@@ -1,16 +1,16 @@
 <h2><?php echo Lang::t('_UPGRADE_CONFIG'); ?></h2>
 
 <?php
-	$version = Get::req('start_version', DOTY_ALPHANUM, '3603');
-	if ( version_compare($version, '3600','>=')  &&
-	     version_compare($version, '4000','<') ) {
-		echo "<div>UPGRADE  from  version : Docebo CE series  3.6.x version = '" . $GLOBALS['cfg']['versions'][$version] . "</div>";
-	} else if ( version_compare($version, '4000','>=')  &&
-	            version_compare($version, '5000','<' ) ) {
-		echo "<div>UPGRADE  from  version : Docebo CE series  4.x.x version = '" . $GLOBALS['cfg']['versions'][$version] . "'</div>";
-	} else  {
-		echo "<div>UPGRADE  from  version : forma.lms 1.x.x version = '" . $GLOBALS['cfg']['versions'][$version] . "'</div>";
-	}
+    $version = Get::req('start_version', DOTY_ALPHANUM, '3603');
+    if (version_compare($version, '3600', '>=') &&
+         version_compare($version, '4000', '<')) {
+        echo "<div>UPGRADE  from  version : Docebo CE series  3.6.x version = '" . $GLOBALS['cfg']['versions'][$version] . '</div>';
+    } elseif (version_compare($version, '4000', '>=') &&
+                version_compare($version, '5000', '<')) {
+        echo "<div>UPGRADE  from  version : Docebo CE series  4.x.x version = '" . $GLOBALS['cfg']['versions'][$version] . "'</div>";
+    } else {
+        echo "<div>UPGRADE  from  version : forma.lms 1.x.x version = '" . $GLOBALS['cfg']['versions'][$version] . "'</div>";
+    }
 ?>
 <div><br/><br/></div>
 

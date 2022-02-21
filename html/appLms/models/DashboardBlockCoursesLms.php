@@ -1,20 +1,27 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-defined("IN_FORMA") or die('Direct access is forbidden.');
-
-
-
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * Class DashboardBlockCoursesLms
+ * Class DashboardBlockCoursesLms.
  */
 class DashboardBlockCoursesLms extends DashboardBlockLms
 {
-    const MAX_COURSES = 3;
-    const COURSE_TYPE_LIMIT = 3;
-    const COURSE_TYPE_ELEARNING = 'elearning';
-    const COURSE_TYPE_CLASSROOM = 'classroom';
+    public const MAX_COURSES = 3;
+    public const COURSE_TYPE_LIMIT = 3;
+    public const COURSE_TYPE_ELEARNING = 'elearning';
+    public const COURSE_TYPE_CLASSROOM = 'classroom';
 
     public function __construct($jsonConfig)
     {
@@ -22,9 +29,9 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     }
 
     public function parseConfig($jsonConfig)
-	{
-		$this->parseBaseConfig($jsonConfig);
-	}
+    {
+        $this->parseBaseConfig($jsonConfig);
+    }
 
     public function getAvailableTypesForBlock()
     {
@@ -32,7 +39,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
             DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL
+            DashboardBlockLms::TYPE_4COL,
         ];
     }
 
@@ -41,6 +48,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $data = $this->getCommonViewData();
 
         $data['courses'] = $this->getCourses();
+
         return $data;
     }
 
@@ -72,13 +80,12 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
     private function getCourses()
     {
-
         $conditions = [
-            'cu.iduser = :id_user'
+            'cu.iduser = :id_user',
         ];
 
         $params = [
-            ':id_user' => (int)Docebo::user()->getId()
+            ':id_user' => (int) Docebo::user()->getId(),
         ];
 
         // course status : all status, new, completed, in progress
@@ -98,7 +105,6 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $courselist = $this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
 
         if (count($courselist) < self::COURSE_TYPE_LIMIT || count($courselist) < self::MAX_COURSES) {
-
             $classRoomConditions = $conditions;
             $classRoomConditions[] = "c.course_type = ':course_type'";
 
@@ -108,7 +114,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             $classRoomCourseList = $this->findAll($classRoomConditions, $classRoomParams, 0);
 
             foreach ($classRoomCourseList as $id => $course) {
-                switch ($course['type']){
+                switch ($course['type']) {
                     case self::COURSE_TYPE_CLASSROOM:
                         $q = sql_query("
 		            	SELECT date_begin, date_end FROM %lms_course_date_day cdd 
@@ -120,13 +126,13 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 		            	AND cdd.deleted = 0
 		            	ORDER BY date_begin ASC
 	            	");
-                        foreach ($q as $row){
+                        foreach ($q as $row) {
                             if (!$row['date_begin'] || !$row['date_end']) {
                                 break;
                             }
 
-                            $course['startDateString'] = $course['startDate'] = date("d-m-Y", strtotime($row['date_begin']));
-                            $course['endDateString'] = $course['endDate'] = date("H:i", strtotime($row['date_begin'])) . ' ' . date("H:i", strtotime($row['date_end']));
+                            $course['startDateString'] = $course['startDate'] = date('d-m-Y', strtotime($row['date_begin']));
+                            $course['endDateString'] = $course['endDate'] = date('H:i', strtotime($row['date_begin'])) . ' ' . date('H:i', strtotime($row['date_end']));
 
                             if (isset($course['dates'])) {
                                 unset($course['dates']);
@@ -147,6 +153,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         usort($courselist, function ($element1, $element2) {
             $datetime1 = strtotime($element1['startDate']);
             $datetime2 = strtotime($element2['startDate']);
+
             return $datetime1 - $datetime2;
         });
 
@@ -157,7 +164,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 break;
             }
             $res[] = $cl;
-            $i++;
+            ++$i;
         }
 
         return $res;
@@ -169,12 +176,12 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $learning_path_enroll = $this->getUserCoursePathCourses($params[':id_user']);
         $exclude_pathcourse = '';
         if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
-            $exclude_path_course = "select idCourse from learning_courseuser where idUser=" . $params[':id_user'] . " and level <= 3 and idCourse in (" . implode(',', $learning_path_enroll) . ")";
+            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $params[':id_user'] . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
             while ($d = $this->db->fetch_assoc($rs)) {
                 $excl[] = $d['idCourse'];
             }
-            $exclude_pathcourse = " and c.idCourse not in (" . implode(',', $excl) . " )";
+            $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
         }
 
         $query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, c.img_course AS course_img_course '
@@ -195,12 +202,10 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $rs = $this->db->query($query);
 
         $result = [];
-        foreach ($rs as $course){
-
+        foreach ($rs as $course) {
             $courseData = $this->getDataFromCourse($course);
 
             if ($courseData['type'] === 'classroom') {
-
                 $dates = $this->getDatesForCourse($course);
 
                 $courseData['dates'] = $dates;
@@ -214,7 +219,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
     private function getUserCoursePathCourses($id_user)
     {
-        require_once(_lms_ . '/lib/lib.coursepath.php');
+        require_once _lms_ . '/lib/lib.coursepath.php';
         $cp_man = new Coursepath_Manager();
         $output = [];
         $cp_list = $cp_man->getUserSubscriptionsInfo($id_user);
@@ -222,21 +227,23 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             $cp_list = array_keys($cp_list);
             $output = $cp_man->getAllCourses($cp_list);
         }
+
         return $output;
     }
 
     private function compileWhere($conditions, $params)
     {
-
-        if (!is_array($conditions)) return "1";
+        if (!is_array($conditions)) {
+            return '1';
+        }
 
         $where = [];
         $find = array_keys($params);
         foreach ($conditions as $key => $value) {
-
             $where[] = str_replace($find, $params, $value);
         }
-        return implode(" AND ", $where);
+
+        return implode(' AND ', $where);
     }
 
     private function getDatesForCourse($course)
@@ -253,7 +260,6 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
         $dates = [];
         foreach ($rs as $date) {
-
             if ($date['date_start_date'] !== '0000-00-00 00:00:00') {
                 $startDate = new DateTime($date['date_start_date']);
                 $startDateString = $startDate->format('d/m/Y');
@@ -280,6 +286,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 'endDateString' => $endDateString,
             ];
         }
+
         return $dates;
     }
 }

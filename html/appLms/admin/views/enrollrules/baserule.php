@@ -1,7 +1,7 @@
 <?php
 echo getTitleArea([
-	'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
-	Lang::t('_MANAGE', 'enrollrules').': '.$rule->title
+    'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
+    Lang::t('_MANAGE', 'enrollrules') . ': ' . $rule->title,
 ]);
 ?>
 <div class="std_block">
@@ -17,28 +17,28 @@ var coursecheckbox = function(elLiner, oRecord, oColumn, oData) {
 }
 </script>
 <?php
-echo Form::openForm('entity_course_rule', 'index.php?r=alms/enrollrules/savebaserule&amp;id_rule='.$id_rule);
+echo Form::openForm('entity_course_rule', 'index.php?r=alms/enrollrules/savebaserule&amp;id_rule=' . $id_rule);
 $this->widget('table', [
-	'id'			=> 'showrule',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=alms/enrollrules/getbaserule&id_rule='.$id_rule,
-	'rowsPerPage'	=> Get::sett('visuItem', 25),
-	'startIndex'	=> 0,
-	'results'		=> Get::sett('visuItem', 25),
-	'sort'			=> false,
-	'dir'			=> 'asc',
-	'columns'		=> $columns,
-	'fields'		=> $keys,
-	'show'			=> 'table',
-	'rel_actions'	=> [
-		'<a id="rule_course_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_COURSES').'</span></a>',
+    'id' => 'showrule',
+    'ajaxUrl' => 'ajax.adm_server.php?r=alms/enrollrules/getbaserule&id_rule=' . $id_rule,
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => false,
+    'dir' => 'asc',
+    'columns' => $columns,
+    'fields' => $keys,
+    'show' => 'table',
+    'rel_actions' => [
+        '<a id="rule_course_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule=' . $id_rule . '&amp;load=1"><span>' . Lang::t('_COURSES') . '</span></a>',
 
-		'<a id="rule_course_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule='.$id_rule.'&amp;load=1"><span>'.Lang::t('_COURSES').'</span></a>'
+        '<a id="rule_course_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule=' . $id_rule . '&amp;load=1"><span>' . Lang::t('_COURSES') . '</span></a>',
     ],
 ]);
 echo Form::openButtonSpace()
-	.Form::getButton('save', 'save', Lang::t('_SAVE', 'enrollrule'))
-	.Form::getButton('undo', 'undo', Lang::t('_UNDO', 'enrollrule'))
-	.Form::closeButtonSpace()
-	.Form::closeForm();
+    . Form::getButton('save', 'save', Lang::t('_SAVE', 'enrollrule'))
+    . Form::getButton('undo', 'undo', Lang::t('_UNDO', 'enrollrule'))
+    . Form::closeButtonSpace()
+    . Form::closeForm();
 ?>
 </div>

@@ -1,23 +1,37 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) die("You can't access");
+if (Docebo::user()->isAnonymous()) {
+    exit("You can't access");
+}
 
 // XXX: save status in session
 function saveTestStatus($save_this)
 {
-    require_once($GLOBALS['where_framework'] . '/lib/lib.sessionsave.php');
+    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
     $save = new Session_Save();
     $save_name = $save->getName('test');
 
     $save->save($save_name, $save_this);
+
     return $save_name;
 }
 
 function &loadTestStatus($save_name)
 {
-    require_once($GLOBALS['where_framework'] . '/lib/lib.sessionsave.php');
+    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
     $save = new Session_Save();
 
     return $save->load($save_name);
@@ -34,9 +48,8 @@ function addtest($object_test)
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.form.php';
     $url_encode = htmlentities(urlencode($object_test->back_url));
-
 
     $GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
         . '<div class="std_block">'
@@ -64,26 +77,26 @@ function instest()
 {
     checkPerm('view', false, 'storage');
 
-    require_once(Forma::inc(_lms_ . '/class.module/learning.test.php'));
+    require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    if (trim($_REQUEST['title']) == '') $_REQUEST['title'] = $lang->def('_NOTITLE');
+    if (trim($_REQUEST['title']) == '') {
+        $_REQUEST['title'] = $lang->def('_NOTITLE');
+    }
 
-    $ins_query = "
-    INSERT INTO " . $GLOBALS['prefix_lms'] . "_test
+    $ins_query = '
+    INSERT INTO ' . $GLOBALS['prefix_lms'] . "_test
     ( author, title, description, obj_type)
         VALUES 
     ( '" . (int) getLogUserId() . "', '" . addslashes($_REQUEST['title']) . "', '" . addslashes($_REQUEST['textof']) . "', '" . $_REQUEST['obj_type'] . "' )";
 
-
     if (!sql_query($ins_query)) {
-
         $_SESSION['last_error'] = $lang->def('_OPERATION_FAILURE');
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&create_result=0');
     }
 
-    list($id_test) = sql_fetch_row(sql_query("SELECT LAST_INSERT_ID()"));
+    list($id_test) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
     $test = Learning_Test::load($id_test);
 
@@ -91,8 +104,11 @@ function instest()
 
     // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCreateEvent::EVENT_NAME, $event);
 
-    if ($id_test > 0) Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&id_lo=' . $id_test . '&create_result=1');
-    else Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&create_result=0');
+    if ($id_test > 0) {
+        Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&id_lo=' . $id_test . '&create_result=1');
+    } else {
+        Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&create_result=0');
+    }
 }
 
 // XXX: modtest
@@ -101,14 +117,14 @@ function modtest()
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.form.php';
     $id_test = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
 
-    list($test_title, $textof) = sql_fetch_row(sql_query("
+    list($test_title, $textof) = sql_fetch_row(sql_query('
     SELECT title, description
-    FROM " . $GLOBALS['prefix_lms'] . "_test
+    FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $id_test . "'"));
 
     $GLOBALS['page']->add(
@@ -143,24 +159,26 @@ function uptest(Learning_Test $obj_test = null)
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
 
-    if (trim($_REQUEST['title']) == '') $_REQUEST['title'] = $lang->def('_NOTITLE');
+    if (trim($_REQUEST['title']) == '') {
+        $_REQUEST['title'] = $lang->def('_NOTITLE');
+    }
 
     if (isset($obj_test)) {
         $id_test = $obj_test->getId();
 
-        $mod_query = "
-            UPDATE " . $GLOBALS['prefix_lms'] . "_test
+        $mod_query = '
+            UPDATE ' . $GLOBALS['prefix_lms'] . "_test
             SET title = '" . addslashes($_REQUEST['title']) . "',
                 description = '" . addslashes($_REQUEST['textof']) . "'
             WHERE idTest = '" . $id_test . "'";
 
         if (!sql_query($mod_query)) {
-
             errorCommunication($lang->def('_OPERATION_FAILURE')
                 . getBackUi('index.php?modname=test&amp;op=modtest&amp;idTest=' . $id_test . '&amp;back_url=' . $url_encode));
+
             return;
         }
-        require_once($GLOBALS['where_lms'] . '/class.module/track.object.php');
+        require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
         Track_Object::updateObjectTitle($id_test, $obj_test->getObjectType(), $_REQUEST['title']);
     }
 
@@ -169,7 +187,6 @@ function uptest(Learning_Test $obj_test = null)
     // $event = new \appLms\Events\Lms\TestUpdateEvent($test, $lang);
 
     // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestUpdateEvent::EVENT_NAME, $event);
-
 
     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $id_test . '&back_url=' . $url_encode);
 }
@@ -190,26 +207,26 @@ function modtestgui($object_test)
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
-    require_once(_base_ . '/lib/lib.table.php');
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.table.php';
+    require_once _base_ . '/lib/lib.form.php';
     $url_encode = htmlentities(urlencode($object_test->back_url));
 
-    list($test_title) = sql_fetch_row(sql_query("
+    list($test_title) = sql_fetch_row(sql_query('
     SELECT title 
-    FROM " . $GLOBALS['prefix_lms'] . "_test
+    FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $object_test->getId() . "'"));
 
-    $re_quest = sql_query("
+    $re_quest = sql_query('
     SELECT tq.idQuest, tq.type_quest, tq.title_quest, tq.sequence, tq.page, tq.idCategory, qc.name AS category 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest AS tq
-    LEFT JOIN " . $GLOBALS['prefix_lms'] . "_quest_category qc ON qc.idCategory = tq.idCategory
+    FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS tq
+    LEFT JOIN ' . $GLOBALS['prefix_lms'] . "_quest_category qc ON qc.idCategory = tq.idCategory
     WHERE tq.idTest = '" . $object_test->getId() . "'
     ORDER BY tq.sequence");
 
     $num_quest = sql_num_rows($re_quest);
-    list($num_page) = sql_fetch_row(sql_query("
+    list($num_page) = sql_fetch_row(sql_query('
     SELECT MAX(page) 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . $object_test->getId() . "'"));
     $num_page = (int) $num_page;
 
@@ -220,8 +237,11 @@ function modtestgui($object_test)
         'content'
     );
     if (isset($_GET['mod_operation'])) {
-        if ($_GET['mod_operation']) $GLOBALS['page']->add(getResultUi($lang->def('_OPERATION_SUCCESSFUL')), 'content');
-        else $GLOBALS['page']->add(getResultUi($lang->def('_QUEST_ERR_MODIFY')), 'content');
+        if ($_GET['mod_operation']) {
+            $GLOBALS['page']->add(getResultUi($lang->def('_OPERATION_SUCCESSFUL')), 'content');
+        } else {
+            $GLOBALS['page']->add(getResultUi($lang->def('_QUEST_ERR_MODIFY')), 'content');
+        }
     }
     //other areas
 
@@ -232,7 +252,6 @@ function modtestgui($object_test)
             . $test_title . '</span></a><br /><br />',
         'content'
     );
-
 
     $tabs[] = '<li>' . '<a href="index.php?modname=test&amp;op=defmodality&amp;idTest='
         . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_TEST_MODALITY') . '">'
@@ -253,10 +272,9 @@ function modtestgui($object_test)
         . $lang->def ('_COURSEREPORT_MANAGEMENT') . '</a>' . '</li>');
 
     */
-    $eventResult = Events::trigger('lms.test.configuration_tabs_render', ['object_test' => $object_test, 'url_encode' => $url_encode, 'lang' => $lang, 'tabs' => $tabs ]);
+    $eventResult = Events::trigger('lms.test.configuration_tabs_render', ['object_test' => $object_test, 'url_encode' => $url_encode, 'lang' => $lang, 'tabs' => $tabs]);
 
     $tabs = $eventResult['tabs'];
-
 
     $GLOBALS['page']->add('<ul class="link_list_inline">', 'content');
     // foreach ($event->getTabs() as $tab) {
@@ -282,12 +300,11 @@ function modtestgui($object_test)
     $first = true;
 
     // Customfields initialize
-    require_once(_adm_ . '/lib/lib.customfield.php');
+    require_once _adm_ . '/lib/lib.customfield.php';
     $fman = new CustomFieldList();
-    $fman->setFieldArea("LO_TEST");
+    $fman->setFieldArea('LO_TEST');
 
     while (list($id_quest, $type, $title, $sequence, $page, $idCategory, $category_name) = sql_fetch_row($re_quest)) {
-
         // Customfields Get
         $fields_mask = $fman->playFieldsFlat($id_quest);
 
@@ -344,13 +361,15 @@ function modtestgui($object_test)
         );
 
         $tab->addBody($content);
-        if ($sequence != $correct_sequence) $seq_error_detected = true;
-        $correct_sequence++;
+        if ($sequence != $correct_sequence) {
+            $seq_error_detected = true;
+        }
+        ++$correct_sequence;
         ++$i;
     }
 
     //------------------------------------------------------------------
-    $move_quest = "";
+    $move_quest = '';
     if ($num_quest > 1) {
         $move_quest = '<form class="align_right" method="post" action="index.php?modname=test&amp;op=movequest">'
             . '<div>'
@@ -359,7 +378,7 @@ function modtestgui($object_test)
             . '<input type="hidden" name="idTest" value="' . $object_test->getId() . '" />';
         $move_quest .= '<label class="text_bold" for="source_quest">' . $lang->def('_MOVE') . '</label>&nbsp;'
             . '<select id="source_quest" name="source_quest">';
-        for ($opt = 1; $opt <= $i; $opt++) {
+        for ($opt = 1; $opt <= $i; ++$opt) {
             $move_quest .= '<option value="' . $opt . '"'
                 . ($opt == 1 ? ' selected="selected"' : '') . '>' . $lang->def('_TEST_MOVEQUEST') . ' ' . $opt . '</option>';
         }
@@ -367,7 +386,7 @@ function modtestgui($object_test)
         $move_quest .= '<label class="text_bold" for="dest_quest"> ' . $lang->def('_TO') . '</label>&nbsp;'
             . '<select id="dest_quest" name="dest_quest">'
             . '<option value="1" selected="selected">' . $lang->def('_TEST_FIRST_QUEST') . '</option>';
-        for ($opt = 1; $opt < $i; $opt++) {
+        for ($opt = 1; $opt < $i; ++$opt) {
             $move_quest .= '<option value="' . ($opt + 1) . '">' . $lang->def('_TEST_AFTER_QUEST') . ' ' . $opt . '</option>';
         }
         $move_quest .= '<option value="' . ($i + 1) . '">' . $lang->def('_TEST_LAST_QUEST') . '</option>';
@@ -399,10 +418,10 @@ function modtestgui($object_test)
         .'</div>'
         .'</form>';*/
 
-    $re_type = sql_query("
+    $re_type = sql_query('
     SELECT type_quest 
-    FROM " . $GLOBALS['prefix_lms'] . "_quest_type
-    ORDER BY sequence");
+    FROM ' . $GLOBALS['prefix_lms'] . '_quest_type
+    ORDER BY sequence');
 
     $add_quest = '<form method="post" action="index.php?modname=test&amp;op=addquest">'
         . '<input type="hidden" id="authentic_request_test" name="authentic_request" value="' . Util::getSignature() . '" />'
@@ -412,7 +431,6 @@ function modtestgui($object_test)
         . '<input type="submit" id="add_quest" name="add_quest" value="' . $lang->def('_TEST_ADDQUEST') . '">
         <select id="add_test_quest" name="add_test_quest">';
     while (list($type_quest) = sql_fetch_row($re_type)) {
-
         $add_quest .= '<option value="' . $type_quest . '">'
             . $lang->def('_QUEST_ACRN_' . strtoupper($type_quest)) . ' - ' . $lang->def('_QUEST_' . strtoupper($type_quest))
             . '</option>';
@@ -429,7 +447,6 @@ function modtestgui($object_test)
             . getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK')),
         'content'
     );
-
 
     /*
     $GLOBALS['page']->add(
@@ -451,9 +468,7 @@ function modtestgui($object_test)
     , 'content');
     */
 
-
     if ($seq_error_detected) {
-
         $GLOBALS['page']->add(
             ' <a href="index.php?modname=test&amp;op=fixsequence&amp;idTest=' . $object_test->getId() . $uri_back . '" title="' . $lang->def('_FIX_SEQUENCE') . '">'
                 . $lang->def('_FIX_SEQUENCE') . '</a>',
@@ -461,7 +476,7 @@ function modtestgui($object_test)
         );
     }
 
-    require_once($GLOBALS['where_lms'] . '/lib/lib.quest_bank.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
@@ -477,7 +492,6 @@ function modtestgui($object_test)
         'content'
     );
     foreach ($supported_format as $id_exp => $def) {
-
         cout('<option value="' . $id_exp . '">' . $def . '</option>', 'content');
     }
     cout('<option value="5">' . Lang::t('_QUEST_BANK', 'menu_course') . '</option>', 'content');
@@ -512,33 +526,32 @@ function movequestion($direction)
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-
     $idQuest = importVar('idQuest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    list($seq, $idTest) = sql_fetch_row(sql_query("
+    list($seq, $idTest) = sql_fetch_row(sql_query('
     SELECT sequence, idTest 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '$idQuest'"));
 
     if ($direction == 'up') {
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = '$seq' 
         WHERE idTest = '$idTest' AND sequence = '" . ($seq - 1) . "'");
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = sequence - 1 
         WHERE idTest = '$idTest' AND idQuest = '$idQuest'");
     }
     if ($direction == 'down') {
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = '$seq' 
         WHERE idTest = '$idTest' AND sequence = '" . ($seq + 1) . "'");
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = '" . ($seq + 1) . "' 
         WHERE idTest = '$idTest' AND idQuest = '$idQuest'");
     }
@@ -552,37 +565,34 @@ function movequest()
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
     $source_seq = importVar('source_quest', true, 0);
     $dest_seq = importVar('dest_quest', true, 0);
 
-    list($idQuest) = sql_fetch_row(sql_query("
+    list($idQuest) = sql_fetch_row(sql_query('
     SELECT idQuest 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND sequence = '$source_seq'"));
 
     if ($source_seq < $dest_seq) {
-
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = sequence - 1 
         WHERE idTest = '$idTest' AND sequence > '" . ($source_seq) . "'  AND sequence < '" . ($dest_seq) . "'");
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = '" . ($dest_seq - 1) . "' 
         WHERE idQuest = '$idQuest'");
     } else {
-
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = sequence + 1 
         WHERE idTest = '$idTest' AND sequence >= '" . ($dest_seq) . "'  AND sequence < '" . ($source_seq) . "'");
 
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = '$dest_seq' 
         WHERE idQuest = '$idQuest'");
     }
@@ -598,19 +608,18 @@ function fixQuestSequence()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    $re_quest = sql_query("
+    $re_quest = sql_query('
     SELECT idQuest, sequence 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' 
     ORDER BY page, sequence");
     $seq = 1;
     while (list($id_quest) = sql_fetch_row($re_quest)) {
-
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = '$seq' 
         WHERE idQuest = '$id_quest'");
-        $seq++;
+        ++$seq;
     }
     fixPageSequence($idTest);
     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded);
@@ -622,14 +631,14 @@ function fixPageSequence($id_test)
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-    list($tot_quest) = sql_fetch_row(sql_query("
+    list($tot_quest) = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . $id_test . "'"));
 
-    $re_break_page = sql_query("
+    $re_break_page = sql_query('
     SELECT sequence 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . $id_test . "' AND type_quest = 'break_page'
     ORDER BY sequence");
 
@@ -637,17 +646,16 @@ function fixPageSequence($id_test)
     //first page
     $ini_seq = 0;
     while (list($break_sequence) = sql_fetch_row($re_break_page)) {
-
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET page = '" . (int) $page_num . "'
         WHERE idTest = '" . (int) $id_test . "' AND
             sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $break_sequence . "'");
         $ini_seq = $break_sequence;
         ++$page_num;
     }
-    sql_query("
-    UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+    sql_query('
+    UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
     SET page = '" . (int) $page_num . "'
     WHERE idTest = '" . (int) $id_test . "' AND
         sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $tot_quest . "'");
@@ -658,15 +666,16 @@ function &istanceQuest($type_of_quest, $id)
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-
-    $re_quest = sql_query("
+    $re_quest = sql_query('
     SELECT type_file, type_class 
-    FROM " . $GLOBALS['prefix_lms'] . "_quest_type
+    FROM ' . $GLOBALS['prefix_lms'] . "_quest_type
     WHERE type_quest = '" . $type_of_quest . "'");
-    if (!sql_num_rows($re_quest)) return;
+    if (!sql_num_rows($re_quest)) {
+        return;
+    }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once(Forma::inc(_lms_ . '/modules/question/' . $type_file));
+    require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
     $quest_obj = eval("return new $type_class ( $id );");
 
     return $quest_obj;
@@ -678,13 +687,12 @@ function addquest()
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-
     $idTest = importVar('idTest', true, 0);
 
     if ($idTest) {
         $max_score = _getTestMaxScore($idTest);
         if ($max_score !== false) {
-            $query = "UPDATE " . $GLOBALS['prefix_lms'] . "_test SET score_max=" . (int) $max_score . " WHERE idTest=" . (int) $idTest;
+            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
             $res = sql_query($query);
         }
     }
@@ -695,7 +703,7 @@ function addquest()
             'idQuest' => 0,
             'type_quest' => $type_quest,
             'idTest' => $idTest,
-            'back_url' => urldecode(importVar('back_url'))
+            'back_url' => urldecode(importVar('back_url')),
         ];
         $var_save = saveTestStatus($var_to_safe);
     } else {
@@ -707,7 +715,7 @@ function addquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once($GLOBALS['where_lms'] . '/modules/question/question.php');
+    require_once $GLOBALS['where_lms'] . '/modules/question/question.php';
 
     quest_create($type_quest, $idTest, 'index.php?modname=test&op=modtestgui&test_saved=' . $var_save);
 }
@@ -718,18 +726,17 @@ function modquest()
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-
     $idQuest = importVar('idQuest', true, 0);
 
-    list($idTest, $type_quest) = sql_fetch_row(sql_query("
+    list($idTest, $type_quest) = sql_fetch_row(sql_query('
     SELECT idTest, type_quest 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '" . $idQuest . "'"));
 
     if ($idTest) {
         $max_score = _getTestMaxScore($idTest);
         if ($max_score !== false) {
-            $query = "UPDATE " . $GLOBALS['prefix_lms'] . "_test SET score_max=" . (int) $max_score . " WHERE idTest=" . (int) $idTest;
+            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
             $res = sql_query($query);
         }
     }
@@ -740,7 +747,7 @@ function modquest()
             'idQuest' => $idQuest,
             'type_quest' => $type_quest,
             'idTest' => $idTest,
-            'back_url' => urldecode(importVar('back_url'))
+            'back_url' => urldecode(importVar('back_url')),
         ];
         $var_save = saveTestStatus($var_to_safe);
     } else {
@@ -752,7 +759,7 @@ function modquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once($GLOBALS['where_lms'] . '/modules/question/question.php');
+    require_once $GLOBALS['where_lms'] . '/modules/question/question.php';
 
     quest_edit($type_quest, $idQuest, 'index.php?modname=test&op=modtestgui&test_saved=' . $var_save);
 }
@@ -768,29 +775,28 @@ function delquest()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($idTest, $title_quest, $type_quest, $seq) = sql_fetch_row(sql_query("
+    list($idTest, $title_quest, $type_quest, $seq) = sql_fetch_row(sql_query('
     SELECT idTest, title_quest, type_quest, sequence 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '" . $idQuest . "'"));
 
     if (isset($_GET['confirm'])) {
-
         $quest_obj = istanceQuest($type_quest, $idQuest);
         if (!$quest_obj->del()) {
-
             errorCommunication($lang->def('_OPERATION_FAILURE') . 'index.php?modname=test&amp;op=delquest&amp;idTest=' . $idTest . '&amp;back_url='
-                . $url_coded, $lang->def("_BACK"));
+                . $url_coded, $lang->def('_BACK'));
+
             return;
         }
-        sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+        sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
         SET sequence = sequence -1 
         WHERE sequence > '$seq'");
         fixPageSequence($idTest);
 
         $max_score = _getTestMaxScore($idTest);
         if ($max_score !== false) {
-            $query = "UPDATE " . $GLOBALS['prefix_lms'] . "_test SET score_max=" . (int) $max_score . " WHERE idTest=" . (int) $idTest;
+            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
             $res = sql_query($query);
         }
 
@@ -817,13 +823,12 @@ function delquest()
 // XXX: defmodality
 function defmodality()
 {
-
     checkPerm('view', false, 'storage');
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    require_once(_base_ . '/lib/lib.form.php');
-    require_once(_base_ . '/lib/lib.json.php');
+    require_once _base_ . '/lib/lib.form.php';
+    require_once _base_ . '/lib/lib.json.php';
 
     $idTest = importVar('idTest', true, 0);
     $db = DbConn::getInstance();
@@ -849,14 +854,14 @@ function defmodality()
     FROM %lms_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest) = sql_fetch_row(sql_query("
+    list($tot_quest) = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
 
-    $re_quest = sql_query("
+    $re_quest = sql_query('
     SELECT idQuest
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'");
     while (list($idQuest) = sql_fetch_row($re_quest)) {
         $arr_id_quest[] = $idQuest;
@@ -869,7 +874,6 @@ function defmodality()
             . getBackUi('index.php?modname=test&amp;op=modtestgui&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK'))
 
             . Form::openForm('defmodality', 'index.php?modname=test&amp;op=updatemodality')
-
 
             . Form::getOpenFieldset($lang->def('_TEST_MM_ONE'))
 
@@ -884,7 +888,7 @@ function defmodality()
 
     $cat_info = [];
     if ($order_info != '') {
-        require_once(_base_ . '/lib/lib.json.php');
+        require_once _base_ . '/lib/lib.json.php';
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $arr = $json->decode($order_info);
         if (is_array($arr)) {
@@ -896,20 +900,25 @@ function defmodality()
 
     $has_categories = false;
     $categories = [];
-    $query = "SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM " . $GLOBALS['prefix_lms'] . "_testquest AS tq LEFT JOIN " . $GLOBALS['prefix_lms'] . "_quest_category AS qc "
+    $query = 'SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS tq LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_quest_category AS qc '
         . " ON (tq.idCategory = qc.idCategory) WHERE idTest='" . (int) $idTest . "' GROUP BY tq.idCategory";
     $res = sql_query($query);
     if (sql_num_rows($res) > 0) {
         $has_categories = true;
         while (list($id_cat, $name_cat, $num_quest) = sql_fetch_row($res)) {
-            if ($id_cat == 0) $name_cat = $lang->def('_NO_CATEGORY');
-            if (isset($cat_info[$id_cat])) $selected = $cat_info[$id_cat];
-            else $selected = '0';
+            if ($id_cat == 0) {
+                $name_cat = $lang->def('_NO_CATEGORY');
+            }
+            if (isset($cat_info[$id_cat])) {
+                $selected = $cat_info[$id_cat];
+            } else {
+                $selected = '0';
+            }
             $categories[$id_cat] = ['name' => $name_cat, 'total' => $num_quest, 'selected' => (int) $selected];
         }
     }
 
-    $script = "";
+    $script = '';
     if ($has_categories) {
         $GLOBALS['page']->add('<script type="text/javascript">
                 function toggleCategoryList(o) {
@@ -946,9 +955,8 @@ function defmodality()
     //------------------------------------------------------------------------------
     $label = '';
 
-    $category_selector = '<ul id="category_list" style="display:' . ($order_type == 3 ? "block" : "none") . '">';
+    $category_selector = '<ul id="category_list" style="display:' . ($order_type == 3 ? 'block' : 'none') . '">';
     foreach ($categories as $key => $value) {
-
         $input_field = Form::getInputTextfield('textfield_nowh', 'question_random_category_' . $key, 'question_random_category[' . $key . ']', $value['selected'], 4, '', '');
 
         $category_selector .= '<li><label for="question_random_category_' . $key . '">' . $value['name'] . ':</label> '
@@ -969,14 +977,14 @@ function defmodality()
     );
 
     //Tabella Categorie
-    require_once(_adm_ . '/lib/lib.customfield.php');
+    require_once _adm_ . '/lib/lib.customfield.php';
     $fman = new CustomFieldList();
-    $fman->setFieldArea("LO_TEST");
+    $fman->setFieldArea('LO_TEST');
     $fields_mask = $fman->playFieldsFlat();
 
     $cust_info = [];
     if ($cf_info != '') {
-        require_once(_base_ . '/lib/lib.json.php');
+        require_once _base_ . '/lib/lib.json.php';
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
         $arr = $json->decode($cf_info);
         if (is_array($arr)) {
@@ -1003,7 +1011,7 @@ function defmodality()
         $GLOBALS['page']->add(
             Form::openFormLine()
                 . Form::getInputRadio('order_type_random_customfield' . $field['id'] . '', 'order_type', $cust_order_type, $order_type == $cust_order_type, '')
-                . '<label for="order_type_random_customfield' . $field['id'] . '">' . $field["name"] . '</label>'
+                . '<label for="order_type_random_customfield' . $field['id'] . '">' . $field['name'] . '</label>'
                 . $category_selector
                 . Form::closeFormLine()
                 . '<br />',
@@ -1129,7 +1137,7 @@ function defmodality()
     // $event->addFormElementForSection('<br /><br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
     // $event->addFormElementForSection(Form::getCloseFieldset(), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
 
-    $section_str = "";
+    $section_str = '';
     $section_str .= Form::getTextfield($lang->def('_MAX_ATTEMPT'), 'max_attempt', 'max_attempt', 3, $max_attempt);
     $section_str .= Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history);
     $section_str .= Form::getCheckbox($lang->def('_USE_SUSPENSION'), 'use_suspension', 'use_suspension', 1, $use_suspension, 'onclick="setSuspension();"');
@@ -1172,7 +1180,6 @@ function defmodality()
     $section_str .= '<label for="show_solution_yes_if_passed">' . $lang->def('_YES_IF_PASSED') . '</label>';
     $section_str .= '<br /><br />';
     $section_str .= Form::getCloseFieldset();
-
 
     // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_NAME, $event);
 
@@ -1218,7 +1225,7 @@ function updatemodality()
 {
     checkPerm('view', false, 'storage');
 
-    require_once(_base_ . '/lib/lib.json.php');
+    require_once _base_ . '/lib/lib.json.php';
     $json = new Services_JSON();
     $lang = &DoceboLanguage::createInstance('test');
 
@@ -1226,35 +1233,39 @@ function updatemodality()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($time_dependent) = sql_fetch_row(sql_query("
+    list($time_dependent) = sql_fetch_row(sql_query('
     SELECT time_dependent 
-    FROM " . $GLOBALS['prefix_lms'] . "_test
+    FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
 
-    $order_info = "";
+    $order_info = '';
     if ($_REQUEST['order_type'] == 3) {
         $arr = [];
         if (isset($_REQUEST['question_random_category']) && is_array($_REQUEST['question_random_category'])) {
             foreach ($_REQUEST['question_random_category'] as $key => $value) {
-                if ((int) $value > 0) $arr[] = ['id_category' => $key, 'selected' => (int) $value];
+                if ((int) $value > 0) {
+                    $arr[] = ['id_category' => $key, 'selected' => (int) $value];
+                }
             }
         }
         $order_info = $json->encode($arr);
     }
 
-    $cf_info = "";
+    $cf_info = '';
     if ($_REQUEST['order_type'] > 4) {
         $arr = [];
         if (isset($_REQUEST['question_random_customfield']) && is_array($_REQUEST['question_random_customfield'])) {
             foreach ($_REQUEST['question_random_customfield'] as $key => $value) {
-                if ((int) $value > 0) $arr[] = ['id_cf_son' => $key, 'selected' => (int) $value];
+                if ((int) $value > 0) {
+                    $arr[] = ['id_cf_son' => $key, 'selected' => (int) $value];
+                }
             }
         }
         $cf_info = $json->encode($arr);
     }
 
-    $queryString = "
-    UPDATE " . $GLOBALS['prefix_lms'] . "_test
+    $queryString = '
+    UPDATE ' . $GLOBALS['prefix_lms'] . "_test
     SET display_type = '" . ($_REQUEST['display_type'] ? 1 : 0) . "',
         order_type = '" . $_REQUEST['order_type'] . "',
         shuffle_answer = '" . ($_REQUEST['shuffle_answer'] ? 1 : 0) . "',
@@ -1271,14 +1282,13 @@ function updatemodality()
         show_solution = '" . $_REQUEST['show_solution'] . "',
         retain_answers_history = '" . $_REQUEST['retain_answers_history'] . "',
         max_attempt = '" . (int) $_REQUEST['max_attempt'] . "'"
-        . ($time_dependent == 2 && $_REQUEST['display_type'] == 0 ? " ,time_dependent = 0 " : "")
-        . " ,use_suspension = " . Get::req('use_suspension', DOTY_INT, 0) .
+        . ($time_dependent == 2 && $_REQUEST['display_type'] == 0 ? ' ,time_dependent = 0 ' : '')
+        . ' ,use_suspension = ' . Get::req('use_suspension', DOTY_INT, 0) .
         " ,suspension_num_attempts = '" . Get::req('suspension_num_attempts', DOTY_INT, 0) . "' " .
         " ,suspension_num_hours = '" . Get::req('suspension_num_hours', DOTY_INT, 0) . "' " .
-        " ,suspension_prerequisites = " . Get::req('suspension_prerequisites', DOTY_INT, 0) . " " .
-        " ,mandatory_answer = " . Get::req('mandatory_answer', DOTY_INT, 0) .
+        ' ,suspension_prerequisites = ' . Get::req('suspension_prerequisites', DOTY_INT, 0) . ' ' .
+        ' ,mandatory_answer = ' . Get::req('mandatory_answer', DOTY_INT, 0) .
         " WHERE idTest = '$idTest'";
-
 
     // $event = new \appLms\Events\Lms\TestUpdateModalityEvent($idTest, $queryString);
 
@@ -1289,6 +1299,7 @@ function updatemodality()
     if (!sql_query($queryString)) {
         errorCommunication($lang->def('_OPERATION_FAILURE')
             . getBackUi('index.php?modname=test&amp;op=deftime&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK')));
+
         return;
     }
 
@@ -1302,7 +1313,7 @@ function deftime()
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.form.php';
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1311,38 +1322,34 @@ function deftime()
     list(
         $time_dependent, $time_assigned,
         $penality_test, $penality_time_test, $penality_quest, $penality_time_quest
-    ) = sql_fetch_row(sql_query("
+    ) = sql_fetch_row(sql_query('
     SELECT time_dependent, time_assigned, 
         penality_test, penality_time_test, penality_quest, penality_time_quest 
-    FROM " . $GLOBALS['prefix_lms'] . "_test
+    FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '$idTest'"));
 
-
     if (isset($_REQUEST['undo'])) {
-
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
     }
     if (isset($_REQUEST['settime_button'])) {
-
         // second step, ask for time
         switch ($_REQUEST['time_limit']) {
-            case 0: {
-
-                    $update_query = "
-                UPDATE " . $GLOBALS['prefix_lms'] . "_test
+            case 0:
+                    $update_query = '
+                UPDATE ' . $GLOBALS['prefix_lms'] . "_test
                 SET time_dependent = 0, 
                     time_assigned = '" . $_REQUEST['time_assigned'] . "'
                 WHERE idTest = '$idTest'";
                     if (!sql_query($update_query)) {
                         errorCommunication($lang->def('_OPERATION_FAILURE')
                             . getBackUi('index.php?modname=test&amp;op=deftime&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK')));
+
                         return;
                     }
                     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=1');
-                };
+                ;
                 break;
-            case 1: {
-
+            case 1:
                     $GLOBALS['page']->add(
                         getTitleArea($lang->def('_TEST_SECTION'), 'test')
                             . '<div class="std_block">'
@@ -1378,13 +1385,12 @@ function deftime()
                             . '</div>',
                         'content'
                     );
-                };
+                ;
                 break;
-            case 2: {
-
-                    list($actual_tot_time) = sql_fetch_row(sql_query("
+            case 2:
+                    list($actual_tot_time) = sql_fetch_row(sql_query('
                 SELECT SUM(time_assigned) 
-                FROM " . $GLOBALS['prefix_lms'] . "_testquest
+                FROM ' . $GLOBALS['prefix_lms'] . "_testquest
                 WHERE idTest = '$idTest'"));
 
                     $GLOBALS['page']->add(
@@ -1427,11 +1433,10 @@ function deftime()
                             . '</div>',
                         'content'
                     );
-                };
+                ;
                 break;
         }
     } else {
-
         $GLOBALS['page']->add(
             getTitleArea($lang->def('_TEST_SECTION'), 'test')
                 . '<div class="std_block">'
@@ -1466,30 +1471,31 @@ function deftime()
 // XXX: updatetime
 function updatetime()
 {
-
     $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    if (isset($_REQUEST['undo'])) Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
+    if (isset($_REQUEST['undo'])) {
+        Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
+    }
 
-    $update_query = "
-    UPDATE " . $GLOBALS['prefix_lms'] . "_test
+    $update_query = '
+    UPDATE ' . $GLOBALS['prefix_lms'] . "_test
     SET time_dependent = '" . $_REQUEST['time_limit'] . "',
         time_assigned = '" . $_REQUEST['time_assigned'] . "' "
-        . ($_REQUEST['time_limit'] == 2 ? " ,display_type = 1 " : "")
+        . ($_REQUEST['time_limit'] == 2 ? ' ,display_type = 1 ' : '')
         . " WHERE idTest = '$idTest'";
 
     if (!sql_query($update_query)) {
         errorCommunication($lang->def('_OPERATION_FAILURE')
             . getBackUi('index.php?modname=test&amp;op=deftime&amp;idTest=' . $idTest . '&amp;back_url=' . $url_coded, $lang->def('_BACK')));
+
         return;
     }
 
     if ($_REQUEST['time_limit'] == 2) {
-
         Util::jump_to('index.php?modname=test&op=modassigntime&idTest=' . $idTest . '&back_url=' . $url_coded
             . '&point_assignement=' . $_REQUEST['point_assignement'] . '&new_time=' . $_REQUEST['new_time']);
     }
@@ -1503,8 +1509,8 @@ function modassigntime()
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    require_once(_base_ . '/lib/lib.form.php');
-    require_once(_base_ . '/lib/lib.table.php');
+    require_once _base_ . '/lib/lib.form.php';
+    require_once _base_ . '/lib/lib.table.php';
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1512,15 +1518,14 @@ function modassigntime()
 
     //save new time -------------------------------------------------
     if (isset($_REQUEST['saveandexit'])) {
-
-        $re = sql_query("
-        UPDATE " . $GLOBALS['prefix_lms'] . "_test
+        $re = sql_query('
+        UPDATE ' . $GLOBALS['prefix_lms'] . "_test
         SET display_type = '1'
         WHERE idTest = '$idTest'");
         if ($re) {
             while (list($idQuest, $difficult) = each($_REQUEST['new_difficult_quest'])) {
-                $re &= sql_query("
-                UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+                $re &= sql_query('
+                UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
                 SET difficult = '" . $difficult . "', 
                     time_assigned = '" . $_REQUEST['new_time_quest'][$idQuest] . "'
                 WHERE idTest = '$idTest' AND idQuest = '" . (int) $idQuest . "'");
@@ -1529,19 +1534,19 @@ function modassigntime()
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=' . ($re ? 1 : 0));
     }
 
-    list($test_title) = sql_fetch_row(sql_query("
+    list($test_title) = sql_fetch_row(sql_query('
     SELECT title 
-    FROM " . $GLOBALS['prefix_lms'] . "_test
+    FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest, $tot_difficult, $actual_tot_time) = sql_fetch_row(sql_query("
+    list($tot_quest, $tot_difficult, $actual_tot_time) = sql_fetch_row(sql_query('
     SELECT COUNT(*), SUM(difficult), SUM(time_assigned) 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
 
-    $re_quest = sql_query("
+    $re_quest = sql_query('
     SELECT idQuest, type_quest, title_quest, difficult, time_assigned 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . $idTest . "' 
     ORDER BY sequence");
 
@@ -1565,34 +1570,31 @@ function modassigntime()
     $tab_quest->setColsStyle(['image', 'image', '', 'image', 'image']);
     $tab_quest->addHead([
         $lang->def('_TEST_QUEST_ORDER'), $lang->def('_TYPE'), $lang->def('_QUESTION'), $lang->def('_DIFFICULTY'),
-        $lang->def('_TEST_QUEST_TIME_ASSIGNED') . ' (' . $lang->def('_SECONDS') . ')'
+        $lang->def('_TEST_QUEST_TIME_ASSIGNED') . ' (' . $lang->def('_SECONDS') . ')',
     ]);
 
     $i = 1;
     $effective_time = $effective_difficult = 0;
     //tabel body--------------------------------------------------------
     while (list($idQuest, $type_quest, $title_quest, $difficult, $time_assigned) = sql_fetch_row($re_quest)) {
-
         if (isset($_REQUEST['new_difficult_quest'][$idQuest])) {
-
             //loading new time form previous page
             $difficult = $_REQUEST['new_difficult_quest'][$idQuest];
             $new_time = $_REQUEST['new_time_quest'][$idQuest];
         } elseif (isset($_GET['point_assignement'])) {
-
             //calculate new time from deftime page
             switch ($_GET['point_assignement']) {
-                case "0": {
+                case '0':
                         $new_time = (int) (($_GET['new_time'] / $tot_difficult) * $difficult);
-                    };
+                    ;
                     break;
-                case "1": {
+                case '1':
                         $new_time = (int) ($_GET['new_time'] / $tot_quest);
-                    };
+                    ;
                     break;
-                case "2": {
+                case '2':
                         $new_time = (int) ($time_assigned);
-                    };
+                    ;
                     break;
             }
         }
@@ -1615,7 +1617,7 @@ function modassigntime()
             ($difficult ?
                 '<label for="new_time_quest_' . $idQuest . '">' . $lang->def('_QUEST_TM2_SETTIME') . '</label>' .
                 '<input type="text" id="new_time_quest_' . $idQuest . '" name="new_time_quest[' . $idQuest . ']" value="' . $new_time . '" size="5" maxlength="4" alt="' . $lang->def('_QUEST_TM2_SETTIME') . '" />' :
-                '&nbsp;')
+                '&nbsp;'),
         ];
         if ($difficult != 0) {
             $effective_time += $new_time;
@@ -1631,8 +1633,11 @@ function modassigntime()
 
     $GLOBALS['page']->add($tab_quest->getTable(), 'content');
     //command for this page---------------------------------------------
-    if (isset($_GET['new_time'])) $previous_time = $_GET['new_time'];
-    else $previous_time = $previous_time = $_REQUEST['previous_time'];
+    if (isset($_GET['new_time'])) {
+        $previous_time = $_GET['new_time'];
+    } else {
+        $previous_time = $previous_time = $_REQUEST['previous_time'];
+    }
     $time_difference = $effective_time - $previous_time;
     echo $effective_time;
     $GLOBALS['page']->add('</fieldset>'
@@ -1656,15 +1661,15 @@ function defpoint()
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.form.php';
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($title, $description, $point_type, $point_required) = sql_fetch_row(sql_query("
+    list($title, $description, $point_type, $point_required) = sql_fetch_row(sql_query('
     SELECT title, description, point_type, point_required 
-    FROM " . $GLOBALS['prefix_lms'] . "_test
+    FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
 
     $GLOBALS['page']->add(
@@ -1704,17 +1709,16 @@ function defpoint()
         'content'
     );
 
-    $query_question = "
+    $query_question = '
     SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q JOIN " . $GLOBALS['prefix_lms'] . "_quest_type AS t
+    FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
     WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
-    $query_question .= " ORDER BY q.sequence";
+    $query_question .= ' ORDER BY q.sequence';
     $re_quest = sql_query($query_question);
 
     $max_score = 0;
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-
-        require_once(Forma::inc(_lms_ . '/modules/question/' . $type_file));
+        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         $max_score += $quest_obj->getMaxScore();
@@ -1765,20 +1769,20 @@ function updatepoint()
     $url_coded = htmlentities(urlencode($back_url));
     $max_score = _getTestMaxScore($idTest);
 
-    if (!sql_query("
-    UPDATE " . $GLOBALS['prefix_lms'] . "_test
+    if (!sql_query('
+    UPDATE ' . $GLOBALS['prefix_lms'] . "_test
     SET point_required = '" . $_REQUEST['point_required'] . "',
         point_type = '" . ($_REQUEST['point_type'] ? $_REQUEST['point_type'] : 0) . "' ,
         score_max = " . (int) $max_score . "
     WHERE idTest = '$idTest'")) {
         UIFeedback::error($lang->def('_OPERATION_FAILURE'));
         defpoint();
+
         return;
     }
 
     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
 }
-
 
 // XXX: modassignpoint
 function modassignpoint()
@@ -1787,8 +1791,8 @@ function modassignpoint()
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    require_once(_base_ . '/lib/lib.table.php');
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.table.php';
+    require_once _base_ . '/lib/lib.form.php';
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1801,44 +1805,41 @@ function modassignpoint()
 
     //save new score ------------------------------------------------
     if (isset($_REQUEST['saveandexit'])) {
-
-        $query_question = "
+        $query_question = '
         SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
-        FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q JOIN " . $GLOBALS['prefix_lms'] . "_quest_type AS t
+        FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
         WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
-        $query_question .= " ORDER BY q.sequence";
+        $query_question .= ' ORDER BY q.sequence';
         $re_quest = sql_query($query_question);
 
         $score_assign = [];
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_quest)) {
-
-
-            sql_query("
-            UPDATE " . $GLOBALS['prefix_lms'] . "_testquest
+            sql_query('
+            UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
             SET difficult = '" . (int) $_REQUEST['new_difficult_quest'][$idQuest] . "'
             WHERE idTest = '" . $idTest . "' AND idQuest = '" . (int) $idQuest . "'");
 
-            require_once(Forma::inc(_lms_ . '/modules/question/' . $type_file));
+            require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
             $score_assign[$idQuest] = $quest_obj->setMaxScore($_REQUEST['new_score_quest'][$idQuest]);
         }
     }
 
-    list($test_title) = sql_fetch_row(sql_query("
+    list($test_title) = sql_fetch_row(sql_query('
     SELECT title 
-    FROM " . $GLOBALS['prefix_lms'] . "_test
+    FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest, $tot_difficult) = sql_fetch_row(sql_query("
+    list($tot_quest, $tot_difficult) = sql_fetch_row(sql_query('
     SELECT COUNT(*), SUM(difficult) 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
 
-    $query_question = "
+    $query_question = '
     SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q JOIN " . $GLOBALS['prefix_lms'] . "_quest_type AS t
+    FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
     WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
-    $query_question .= " ORDER BY q.sequence";
+    $query_question .= ' ORDER BY q.sequence';
     $re_quest = sql_query($query_question);
 
     $GLOBALS['page']->add(getTitleArea($lang->def('_TEST_SECTION'), 'test')
@@ -1858,7 +1859,7 @@ function modassignpoint()
     $tab_quest->setColsStyle(['image', 'image', '', 'image', 'image']);
     $tab_quest->addHead([
         $lang->def('_TEST_QUEST_ORDER'), $lang->def('_TYPE'), $lang->def('_QUESTION'),
-        $lang->def('_DIFFICULTY'), $lang->def('_SCORE')
+        $lang->def('_DIFFICULTY'), $lang->def('_SCORE'),
     ]);
 
     $i = 1;
@@ -1866,33 +1867,29 @@ function modassignpoint()
     //table body--------------------------------------------------------
 
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-
-        require_once(Forma::inc(_lms_ . '/modules/question/' . $type_file));
+        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         if (isset($_REQUEST['new_score_quest'][$idQuest])) {
-
             //loading new time form previous page
             $difficult = $_REQUEST['new_difficult_quest'][$idQuest];
             $quest_score = $quest_obj->getRealMaxScore($_REQUEST['new_score_quest'][$idQuest], true);
         } elseif (isset($_REQUEST['point_assignement'])) {
-
             //calculate new time from deftime page
             switch ($_REQUEST['point_assignement']) {
-                case "0": {
-
+                case '0':
                         $quest_score = $quest_obj->getRealMaxScore(round(round($_REQUEST['new_assigned_score'] / $tot_difficult, 2) * $difficult), 2);
                         //$quest_score = (( $_REQUEST['new_assigned_score'] / $tot_difficult ) * $difficult ), 2;
-                    };
+                    ;
                     break;
-                case "1": {
+                case '1':
                         $quest_score = $quest_obj->getRealMaxScore(round($_REQUEST['new_assigned_score'] / $tot_quest, 2));
                         //$quest_score = round(( $_REQUEST['new_assigned_score'] / $tot_quest ), 2);
-                    };
+                    ;
                     break;
-                case "2": {
+                case '2':
                         $quest_score = $quest_obj->getMaxScore();
-                    };
+                    ;
                     break;
             }
         }
@@ -1900,7 +1897,7 @@ function modassignpoint()
         $content = [
             $i++,
             $lang->def('_QUEST_ACRN_' . strtoupper($type_quest)),
-            $title_quest
+            $title_quest,
         ];
 
         if (isset($score_assign)) {
@@ -1932,8 +1929,11 @@ function modassignpoint()
         if ($difficult != 0) {
             $effective_difficult += $difficult;
 
-            if (isset($score_assign)) $effective_tot_score = round($effective_tot_score + $score_assign[$idQuest], 2);
-            else $effective_tot_score = round($effective_tot_score + $quest_score, 2);
+            if (isset($score_assign)) {
+                $effective_tot_score = round($effective_tot_score + $score_assign[$idQuest], 2);
+            } else {
+                $effective_tot_score = round($effective_tot_score + $quest_score, 2);
+            }
         }
         $tab_quest->addBody($content);
     }
@@ -1945,16 +1945,21 @@ function modassignpoint()
     $GLOBALS['page']->add($tab_quest->getTable(), 'content');
 
     //command for this page---------------------------------------------
-    if (isset($_REQUEST['new_assigned_score'])) $previous_score = $_REQUEST['new_assigned_score'];
-    else $previous_score = $_REQUEST['previous_score'];
+    if (isset($_REQUEST['new_assigned_score'])) {
+        $previous_score = $_REQUEST['new_assigned_score'];
+    } else {
+        $previous_score = $_REQUEST['previous_score'];
+    }
     $score_difference = round($effective_tot_score - $previous_score, 2);
 
-    if ($score_difference < 0) $score_difference = '<strong class="font_red">' . $score_difference . '<strong>';
-    else $score_difference = '<strong>' . $score_difference . '<strong>';
+    if ($score_difference < 0) {
+        $score_difference = '<strong class="font_red">' . $score_difference . '<strong>';
+    } else {
+        $score_difference = '<strong>' . $score_difference . '<strong>';
+    }
 
     $GLOBALS['page']->add('</fieldset>', 'content');
     if (!isset($score_assign)) {
-
         $GLOBALS['page']->add(
             '<div class="set_time_row">'
                 . Form::getHidden('previous_score', 'previous_score', $effective_tot_score)
@@ -1995,10 +2000,10 @@ function importquest()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.form.php';
 
     $form = new Form();
-    require_once($GLOBALS['where_lms'] . '/lib/lib.quest_bank.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
@@ -2040,7 +2045,7 @@ function doimportquest()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once($GLOBALS['where_lms'] . '/lib/lib.quest_bank.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
 
     $qb_man = new QuestBankMan();
 
@@ -2068,7 +2073,6 @@ function doimportquest()
         . '<td>' . $lang->def('_FAIL') . '</td>'
         . '</tr>');
     foreach ($import_result as $type_quest => $i_result) {
-
         cout('<tr>'
             . '<td>' . $lang->def('_QUEST_' . strtoupper($type_quest)) . '</td>'
             . '<td>' . $i_result['success'] . '</td>'
@@ -2089,28 +2093,26 @@ function exportquest()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once($GLOBALS['where_lms'] . '/lib/lib.quest_bank.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
 
     $file_format = Get::req('export_quest_select', DOTY_INT, 0);
 
-
     $quests = [];
 
-    $re_quest = sql_query("
+    $re_quest = sql_query('
     SELECT idQuest, type_quest 
-    FROM " . $GLOBALS['prefix_lms'] . "_testquest
+    FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' 
     ORDER BY page, sequence");
     while (list($id_quest, $type_quest) = sql_fetch_row($re_quest)) {
-
         $quests[$id_quest] = $type_quest;
     }
 
     $quest_export = $qb_man->export_quest($quests, $file_format);
 
-    require_once(_base_ . '/lib/lib.download.php');
-    sendStrAsFile($quest_export, 'export_' . date("Y-m-d") . '.txt');
+    require_once _base_ . '/lib/lib.download.php';
+    sendStrAsFile($quest_export, 'export_' . date('Y-m-d') . '.txt');
 }
 
 function exportquestqb()
@@ -2122,18 +2124,18 @@ function exportquestqb()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once(_base_ . '/lib/lib.form.php');
+    require_once _base_ . '/lib/lib.form.php';
 
     $form = new Form();
-    require_once($GLOBALS['where_lms'] . '/lib/lib.quest_bank.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
     unset($supported_format[-1]);
 
-    require_once(_lms_ . '/lib/lib.questcategory.php');
+    require_once _lms_ . '/lib/lib.questcategory.php';
     $quest_categories = [
-        0 => $lang->def('_NONE')
+        0 => $lang->def('_NONE'),
     ];
     $cman = new Questcategory();
     $arr = $cman->getCategory();
@@ -2141,7 +2143,6 @@ function exportquestqb()
         $quest_categories[$id_category] = $name_category;
     }
     unset($arr);
-
 
     $title = ['index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $back_coded => $lang->def('_TEST_SECTION'), $lang->def('_EXPORT')];
     cout(
@@ -2168,11 +2169,9 @@ function exportquestqb()
     );
 }
 
-
 function doexportquestqb()
 {
-
-    require_once(_lms_ . '/lib/lib.quest_bank.php');
+    require_once _lms_ . '/lib/lib.quest_bank.php';
 
     $lang = &DoceboLanguage::createInstance('test');
     $back_url = urldecode(importVar('back_url'));
@@ -2182,10 +2181,12 @@ function doexportquestqb()
     $quest_category = Get::req('quest_category', DOTY_INT, 0);
     $id_test = Get::pReq('idTest', DOTY_INT);
 
-    if (isset($_REQUEST['undo'])) Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $id_test . '&back_url=' . $back_coded);
+    if (isset($_REQUEST['undo'])) {
+        Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $id_test . '&back_url=' . $back_coded);
+    }
 
     // Get quest from id test
-    $reQuest = sql_query(" SELECT q.idQuest FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q WHERE q.idTest = " . $id_test);
+    $reQuest = sql_query(' SELECT q.idQuest FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q WHERE q.idTest = ' . $id_test);
 
     while (list($idQuest) = sql_fetch_row($reQuest)) {
         $quest_selection[] = $idQuest;
@@ -2193,13 +2194,13 @@ function doexportquestqb()
 
     if (is_array($quest_selection) && !empty($quest_selection)) {
         //Insert the question for the test
-        $reQuest = sql_query("
+        $reQuest = sql_query('
                         SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
-                        FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q JOIN " . $GLOBALS['prefix_lms'] . "_quest_type AS t
-                        WHERE q.idQuest IN (" . implode(',', $quest_selection) . ") AND q.type_quest = t.type_quest");
+                        FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . '_quest_type AS t
+                        WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            require_once(Forma::inc(_lms_ . '/modules/question/' . $type_file));
+            require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = new $type_class($idQuest);
             $new_id = $quest_obj->copy(0);
         }
@@ -2210,17 +2211,18 @@ function doexportquestqb()
 
 function _getTestMaxScore($idTest)
 {
-    if ($idTest <= 0) return false;
+    if ($idTest <= 0) {
+        return false;
+    }
 
-    $query_question = "SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult "
-        . " FROM " . $GLOBALS['prefix_lms'] . "_testquest AS q JOIN " . $GLOBALS['prefix_lms'] . "_quest_type AS t "
+    $query_question = 'SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult '
+        . ' FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . '_quest_type AS t '
         . " WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest ORDER BY q.sequence";
     $re_quest = sql_query($query_question);
 
-
     $max_score = 0;
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-        require_once(Forma::inc(_lms_ . '/modules/question/' . $type_file));
+        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
         $max_score += $quest_obj->getMaxScore();
     }
@@ -2230,15 +2232,17 @@ function _getTestMaxScore($idTest)
 
 function _adjustAllTestMaxScore()
 {
-    $query = "SELECT * FROM " . $GLOBALS['prefix_lms'] . "_test";
+    $query = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_test';
     $res = sql_query($query);
-    if (!$res) return;
+    if (!$res) {
+        return;
+    }
 
     while ($obj = sql_fetch_object($res)) {
         if ($obj->idTest) {
             $max_score = _getTestMaxScore($obj->idTest);
             if ($max_score !== false) {
-                $query = "UPDATE " . $GLOBALS['prefix_lms'] . "_test SET score_max=" . (int) $max_score . " WHERE idTest=" . (int) $obj->idTest;
+                $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $obj->idTest;
                 $res2 = sql_query($query);
             }
         }
@@ -2250,8 +2254,8 @@ function feedbackman()
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once(_lms_ . '/lib/lib.questcategory.php');
-    require_once(_lms_ . '/lib/lib.assessment_rule.php');
+    require_once _lms_ . '/lib/lib.questcategory.php';
+    require_once _lms_ . '/lib/lib.assessment_rule.php';
 
     $id_test = Get::gReq('idTest', DOTY_INT, 0);
     $back_url = urldecode(Get::gReq('back_url', DOTY_STRING));
@@ -2263,14 +2267,12 @@ function feedbackman()
     unset($categories[0]);
     $categories[0] = Lang::t('_TEST_TOTAL_SCORE', 'test');
 
-
     $res .= getTitleArea([
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
-        Lang::t('_FEEDBACK_MANAGEMENT', 'test')
+        Lang::t('_FEEDBACK_MANAGEMENT', 'test'),
         ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
-
 
     if (empty($categories)) {
         $res .= Lang::t('_NO_CATEGORIES_AVAILABLE');
@@ -2278,11 +2280,10 @@ function feedbackman()
         $asrule = new AssessmentRuleManager($id_test);
         $data = $asrule->getRules();
 
-        $first = TRUE;
+        $first = true;
         foreach ($categories as $cat_id => $category) {
-
             if ($first) {
-                $first = FALSE;
+                $first = false;
             } else {
                 $res .= '<br /><br />';
             }
@@ -2298,7 +2299,7 @@ function feedbackman()
                         Lang::t('_SCORE', 'test'),
                         Lang::t('_FEEDBACK_TEXT', 'test'),
                         Get::sprite('subs_mod', Lang::t('_MOD', 'standard'), Lang::t('_MOD', 'standard')),
-                        Get::sprite('subs_del', Lang::t('_DEL', 'standard'), Lang::t('_DEL', 'standard'))
+                        Get::sprite('subs_del', Lang::t('_DEL', 'standard'), Lang::t('_DEL', 'standard')),
                         //'<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'standard').'</span></span>',
                         //'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>',
                     ],
@@ -2332,8 +2333,7 @@ function feedbackman()
     $res .= getBackUi($back_link_url, Lang::t('_BACK'))
         . '</div>';
 
-
-    require_once(_base_ . '/lib/lib.dialog.php');
+    require_once _base_ . '/lib/lib.dialog.php';
     setupHrefDialogBox('a[id^=del_rule_]');
 
     $GLOBALS['page']->add($res, 'content');
@@ -2345,8 +2345,8 @@ function coursereportMan()
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    require_once(_base_ . '/lib/lib.form.php');
-    require_once(_base_ . '/lib/lib.json.php');
+    require_once _base_ . '/lib/lib.form.php';
+    require_once _base_ . '/lib/lib.json.php';
 
     $idTest = importVar('idTest', true, 0);
 
@@ -2383,13 +2383,11 @@ function coursereportMan()
 
 function updatecoursereport()
 {
-
     $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
-
 
     /*if (! $queryResponse) {
         errorCommunication ($lang->def ('_OPERATION_FAILURE')
@@ -2400,15 +2398,13 @@ function updatecoursereport()
     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded);
 }
 
-
 function addfbkrule()
 {
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once(_lms_ . '/lib/lib.questcategory.php');
-    require_once(_lms_ . '/lib/lib.assessment_rule.php');
-
+    require_once _lms_ . '/lib/lib.questcategory.php';
+    require_once _lms_ . '/lib/lib.assessment_rule.php';
 
     $id_test = Get::gReq('idTest', DOTY_INT, 0);
     $cat_id = Get::gReq('cat_id', DOTY_INT, 0);
@@ -2423,18 +2419,16 @@ function addfbkrule()
     if ($save) {
         $asrule->save();
         Util::jump_to($url_base . 'feedbackman');
-        die();
+        exit();
     }
-
 
     $res .= getTitleArea([
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
         $url_base . 'feedbackman' => Lang::t('_FEEDBACK_MANAGEMENT', 'test'),
-        Lang::t('_ADD_FEEDBACK_RULE', 'test')
+        Lang::t('_ADD_FEEDBACK_RULE', 'test'),
         ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
-
 
     $form_url = '';
 
@@ -2443,9 +2437,7 @@ function addfbkrule()
     $data['test_id'] = $id_test;
     $data['category_id'] = $cat_id;
 
-
     $res .= $asrule->getAddEditForm($form_url, $data);
-
 
     $res .= getBackUi($back_link_url, Lang::t('_BACK'))
         . '</div>';
@@ -2453,15 +2445,13 @@ function addfbkrule()
     $GLOBALS['page']->add($res, 'content');
 }
 
-
 function editfbkrule()
 {
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once(_lms_ . '/lib/lib.questcategory.php');
-    require_once(_lms_ . '/lib/lib.assessment_rule.php');
-
+    require_once _lms_ . '/lib/lib.questcategory.php';
+    require_once _lms_ . '/lib/lib.assessment_rule.php';
 
     $rule_id = Get::gReq('item_id', DOTY_INT, 0);
     $id_test = Get::gReq('idTest', DOTY_INT, 0);
@@ -2477,24 +2467,21 @@ function editfbkrule()
     if ($save) {
         $asrule->save();
         Util::jump_to($url_base . 'feedbackman');
-        die();
+        exit();
     }
-
 
     $res .= getTitleArea([
         $back_link_url => Lang::t('_TEST_SECTION', 'test'),
         $url_base . 'feedbackman' => Lang::t('_FEEDBACK_MANAGEMENT', 'test'),
-        Lang::t('_MOD', 'test')
+        Lang::t('_MOD', 'test'),
         ], 'test')
         . '<div class="std_block">'
         . getBackUi($back_link_url, Lang::t('_BACK'));
-
 
     $form_url = '';
 
     $data = $asrule->getRuleInfo($rule_id);
     $res .= $asrule->getAddEditForm($form_url, $data);
-
 
     $res .= getBackUi($back_link_url, Lang::t('_BACK'))
         . '</div>';
@@ -2502,15 +2489,13 @@ function editfbkrule()
     $GLOBALS['page']->add($res, 'content');
 }
 
-
 function delfbkrule()
 {
     checkPerm('view', false, 'storage');
     $res = '';
 
-    require_once(_lms_ . '/lib/lib.questcategory.php');
-    require_once(_lms_ . '/lib/lib.assessment_rule.php');
-
+    require_once _lms_ . '/lib/lib.questcategory.php';
+    require_once _lms_ . '/lib/lib.assessment_rule.php';
 
     $rule_id = Get::gReq('item_id', DOTY_INT, 0);
     $id_test = Get::gReq('idTest', DOTY_INT, 0);
@@ -2523,41 +2508,45 @@ function delfbkrule()
     if (Get::gReq('confirm', DOTY_INT, 0)) { //TODO: change me
         $asrule->delete($rule_id);
         Util::jump_to($url_base . 'feedbackman');
-        die();
+        exit();
     }
 }
 
-
 // XXX: switch
 
-if (isset($_REQUEST['import_quest'])) $GLOBALS['op'] = 'importquest';
-if (isset($_REQUEST['export_quest'])) $GLOBALS['op'] = 'exportquest';
-if ($_REQUEST['export_quest_select'] == 5) $GLOBALS['op'] = 'exportquestqb';
+if (isset($_REQUEST['import_quest'])) {
+    $GLOBALS['op'] = 'importquest';
+}
+if (isset($_REQUEST['export_quest'])) {
+    $GLOBALS['op'] = 'exportquest';
+}
+if ($_REQUEST['export_quest_select'] == 5) {
+    $GLOBALS['op'] = 'exportquestqb';
+}
 
 switch ($GLOBALS['op']) {
-    case "instest": {
+    case 'instest':
             instest();
-        };
+        ;
         break;
 
-    case "modtest": {
+    case 'modtest':
             modtest();
-        };
+        ;
         break;
-    case "uptest": {
+    case 'uptest':
             $idTest = importVar('idTest', true, 0);
             $db = DbConn::getInstance();
             $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
             $test_type = $db->fetch_row($res);
             $object_test = createLO($test_type[0], $idTest);
             uptest($object_test ? $object_test : null);
-        };
+        ;
         break;
 
-    case "modtestgui": {
+    case 'modtestgui':
             Util::get_js(Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
             if (isset($_GET['test_saved']) || isset($_REQUEST['test_saved'])) {
-
                 //other enter
                 $var_save = importVar('test_saved');
                 $var_loaded = loadTestStatus($var_save);
@@ -2566,7 +2555,6 @@ switch ($GLOBALS['op']) {
                 $back_url = urlencode($var_loaded['back_url']);
                 fixPageSequence($idTest);
             } else {
-
                 $idTest = importVar('idTest', true, 0);
                 $back_url = importVar('back_url');
             }
@@ -2577,132 +2565,131 @@ switch ($GLOBALS['op']) {
             $object_test = createLO($test_type[0], $idTest);
 
             $object_test->edit($idTest, urldecode($back_url));
-        };
+        ;
         break;
-    case "coursereportman": {
+    case 'coursereportman':
             coursereportMan();
-        }
+
         break;
-    case "updatecoursereport": {
+    case 'updatecoursereport':
             updatecoursereport();
-        }
+
         break;
-    case "movequest": {
+    case 'movequest':
             movequest();
-        };
+        ;
         break;
 
-    case "movedown": {
+    case 'movedown':
             movequestion('down');
-        };
+        ;
         break;
-    case "moveup": {
+    case 'moveup':
             movequestion('up');
-        };
+        ;
         break;
-    case "fixsequence": {
+    case 'fixsequence':
             fixQuestSequence();
-        };
+        ;
         break;
 
-    case "addquest": {
+    case 'addquest':
             addquest();
-        };
+        ;
         break;
-    case "modquest": {
+    case 'modquest':
             modquest();
-        };
+        ;
         break;
-    case "delquest": {
+    case 'delquest':
             delquest();
-        };
+        ;
         break;
 
         //modality setting
-    case "defmodality": {
+    case 'defmodality':
             defmodality();
-        };
+        ;
         break;
-    case "updatemodality": {
+    case 'updatemodality':
             updatemodality();
-        };
+        ;
         break;
 
         //time setting
-    case "deftime": {
+    case 'deftime':
             deftime();
-        };
+        ;
         break;
-    case "updatetime": {
+    case 'updatetime':
             updatetime();
-        };
+        ;
         break;
-    case "modassigntime": {
+    case 'modassigntime':
             modassigntime();
-        };
+        ;
         break;
-
 
         //point setting
-    case "defpoint": {
+    case 'defpoint':
             defpoint();
-        };
+        ;
         break;
-    case "updatepoint": {
+    case 'updatepoint':
             updatepoint();
-        };
+        ;
         break;
-    case "modassignpoint": {
+    case 'modassignpoint':
             modassignpoint();
-        };
+        ;
         break;
 
-    case "importquest": {
+    case 'importquest':
             importquest();
-        };
+        ;
         break;
-    case "doimportquest": {
+    case 'doimportquest':
             doimportquest();
-        };
+        ;
         break;
 
-    case "exportquest": {
+    case 'exportquest':
             exportquest();
-        };
+        ;
         break;
 
-    case "exportquestqb": {
+    case 'exportquestqb':
             exportquestqb();
-        };
+        ;
         break;
 
-    case "doexportquestqb": {
+    case 'doexportquestqb':
             doexportquestqb();
-        };
+        ;
         break;
 
-    case "feedbackman": {
+    case 'feedbackman':
             feedbackman();
-        }
+
         break;
 
-    case "addfbkrule": {
+    case 'addfbkrule':
             addfbkrule();
-        }
+
         break;
 
-    case "editfbkrule": {
+    case 'editfbkrule':
             editfbkrule();
-        }
+
         break;
 
-    case "delfbkrule": {
+    case 'delfbkrule':
             delfbkrule();
-        }
+
         break;
 
-    case "defrelation": {
+    case 'defrelation':
             defrelation();
-        };
+        ;
         break;
 }

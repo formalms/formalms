@@ -1,8 +1,19 @@
-<?php defined('IN_FORMA') or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-/**
+/*
  * @module scorm.php
  * Impor module for scorm content packages
  * @version $Id: scorm.php 1002 2007-03-24 11:55:51Z fabio $
@@ -16,7 +27,7 @@ function additem($object_item)
 {
     //checkPerm( 'view', FALSE, 'storage' );
 
-    $lang =& DoceboLanguage::createInstance('scorm', 'lms');
+    $lang = &DoceboLanguage::createInstance('scorm', 'lms');
     require_once Forma::inc(_lib_ . '/lib.form.php');
     $form = new Form();
 
@@ -98,7 +109,6 @@ function insitem()
 
     // check disk quota --------------------------------------------------
     if (isset($_SESSION['idCourse']) && defined('LMS')) {
-
         $zip_content = $zip->listContent();
         $zip_extracted_size = 0;
         foreach ($zip_content as $file_info) {
@@ -113,7 +123,6 @@ function insitem()
         $used = $GLOBALS['course_descriptor']->getUsedSpace();
 
         if (Util::exceed_quota(false, $quota, $used, $zip_extracted_size)) {
-
             sl_unlink($path . $savefile);
             $_SESSION['last_error'] = Lang::t('_QUOTA_EXCEDED');
             Util::jump_to('' . $back_url . '&create_result=0');
@@ -135,7 +144,6 @@ function insitem()
     sl_unlink($path . $savefile);
     sl_close_fileoperations();
 
-
     $cpm = new CPManager();
     // try to open content package
     if (!$cpm->Open(_files_ . $filepath)) {
@@ -154,7 +162,7 @@ function insitem()
         . " ('" . addslashes($cpm->identifier)
         . "','0','" . str_replace("'", "\'", $savefile) . STRPOSTCONTENT
         . "','" . addslashes($cpm->defaultOrg)
-        . "','" . (int)getLogUserId()
+        . "','" . (int) getLogUserId()
         . "','" . $cpm->scorm_version
         . "')";
     if (!($result = sql_query($query))) {
@@ -165,11 +173,11 @@ function insitem()
     $idscorm_package = sql_insert_id();
 
     // create the n entries in resources table
-    for ($i = 0; $i < $cpm->GetResourceNumber(); $i++) {
+    for ($i = 0; $i < $cpm->GetResourceNumber(); ++$i) {
         $info = $cpm->GetResourceInfo($cpm->GetResourceIdentifier($i));
         $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_scorm_resources (idsco,idscorm_package,scormtype,href)'
             . " VALUES ('" . addslashes($info['identifier']) . "','"
-            . (int)$idscorm_package . "','"
+            . (int) $idscorm_package . "','"
             . $info['scormtype'] . "','"
             . addslashes($info['href']) . "')";
 
@@ -178,7 +186,7 @@ function insitem()
         if (!$result) {
             $_SESSION['last_error'] = _OPERATION_FAILURE;
             Util::jump_to('' . $back_url . '&create_result=0');
-        } else if (sql_affected_rows() == 0) {
+        } elseif (sql_affected_rows() == 0) {
             $_SESSION['last_error'] = _OPERATION_FAILURE;
             Util::jump_to('' . $back_url . '&create_result=0');
         }
@@ -187,7 +195,7 @@ function insitem()
     $rdb = new RendererDb($GLOBALS['dbConn'], $GLOBALS['prefix_lms'], $idscorm_package);
     $orgElems = $cpm->orgElems;
     // save all organizations
-    for ($iOrg = 0; $iOrg < $orgElems->getLength(); $iOrg++) {
+    for ($iOrg = 0; $iOrg < $orgElems->getLength(); ++$iOrg) {
         $org = $orgElems->item($iOrg);
         $cpm->RenderOrganization($org->getAttribute('identifier'), $rdb);
     }
@@ -209,14 +217,14 @@ function insitem()
 
 function moditem($object_item)
 {
-    checkPerm('view', FALSE, 'storage');
+    checkPerm('view', false, 'storage');
 
-    $lang =& DoceboLanguage::createInstance('scorm', 'lms');
+    $lang = &DoceboLanguage::createInstance('scorm', 'lms');
 
     //area title
     $query = 'SELECT idOrg ' .
         ' FROM ' . $GLOBALS['prefix_lms'] . '_organization ' .
-        ' WHERE idResource = ' . (int)$object_item->id . " AND objectType = 'scormorg' ";
+        ' WHERE idResource = ' . (int) $object_item->id . " AND objectType = 'scormorg' ";
     list($id_reference) = sql_fetch_row(sql_query($query));
 
     require_once Forma::inc(_lib_ . '/lib.table.php');
@@ -224,7 +232,7 @@ function moditem($object_item)
     $h_type = ['', ''];
     $h_content = [
         $lang->def('_NAME'),
-        $lang->def('_LINK')
+        $lang->def('_LINK'),
     ];
 
     $tb->setColsStyle($h_type);
@@ -232,19 +240,17 @@ function moditem($object_item)
 
     $qry = 'SELECT item_identifier, idscorm_resource, title ' .
         ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_items ' .
-        ' WHERE idscorm_organization = ' . (int)$object_item->id . '' .
+        ' WHERE idscorm_organization = ' . (int) $object_item->id . '' .
         ' ORDER BY idscorm_item ';
 
     $res = sql_query($qry);
     while ($row = sql_fetch_row($res)) {
-
         $line = [];
         $line[] = $row[2];
         $line[] = ($row[1] != 0
             ? Get::abs_path('lms') . '/index.php?id_course=' . $_SESSION['idCourse'] . '&amp;act=playsco&amp;courseid=' . $_SESSION['idCourse'] . '&amp;id_item=' . $id_reference . '&amp;chapter=' . $row[0] . ''
             : '');
         $tb->addBody($line);
-
     }
 
     $GLOBALS['page']->add(getTitleArea($lang->getLangText('_SCORMIMGSECTION'), 'scorm')
@@ -256,7 +262,6 @@ function moditem($object_item)
 
 function play($aidResource, $aidReference, $aback_url, $aautoplay, $aplayertemplate, $environment = 'course_lo')
 {
-
     $GLOBALS['idReference'] = $aidReference;
     $GLOBALS['idResource'] = $aidResource;
     $GLOBALS['back_url'] = $aback_url;
@@ -266,9 +271,8 @@ function play($aidResource, $aidReference, $aback_url, $aautoplay, $aplayertempl
     require Forma::inc(_lms_ . '/modules/scorm/scorm_frameset.php');
 }
 
-function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackcontent = FALSE)
+function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackcontent = false)
 {
-
     /* remove items: based on organizations */
     //$rs = sql_query("SELECT idscorm_organization FROM ".$prefix."_scorm_organizations WHERE idscorm_package=".$idscorm_package);
     //while(list($idscorm_organization) = sql_fetch_row($rs)) {
@@ -289,19 +293,17 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
     $rs = sql_query('SELECT idscorm_organization FROM ' . $GLOBALS['prefix_lms'] . '_scorm_organizations WHERE idscorm_package=' . $idscorm_package);
 
     if (sql_num_rows($rs) == 0) {
-        $rs = sql_query('SELECT path FROM ' . $GLOBALS['prefix_lms'] . "_scorm_package WHERE idscorm_package='" . (int)$idscorm_package . "'")
-        or die(sql_error());
+        $rs = sql_query('SELECT path FROM ' . $GLOBALS['prefix_lms'] . "_scorm_package WHERE idscorm_package='" . (int) $idscorm_package . "'")
+        or exit(sql_error());
 
         list($path) = sql_fetch_row($rs);
         $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Get::sett('pathscorm'));
         /* remove all zip directory */
         if (file_exists($scopath . $path)) {
-
             /* if is the only occurrence of path in db delete files */
             $rs = sql_query('SELECT idscorm_package FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package'
                 . " WHERE path = '" . $path . "'");
             if (sql_num_rows($rs) == 1) {
-
                 $size = Get::dir_size($scopath . $path);
 
                 require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php'); // for del tree
@@ -316,11 +318,9 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
         /* remove resources */
         sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_scorm_resources WHERE idscorm_package=' . $idscorm_package);
 
-
         /* remove packages */
         sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package WHERE idscorm_package=' . $idscorm_package);
     }
-
 }
 
 function _scorm_copyitem($idscorm_package, $idscorm_organization)
@@ -333,9 +333,10 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
 
     if (($rs = sql_query('SELECT path FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package '
             . "WHERE idscorm_package='"
-            . (int)$idscorm_package . "'")) === FALSE) {
+            . (int) $idscorm_package . "'")) === false) {
         $_SESSION['last_error'] = _OPERATION_FAILURE . ': ' . sql_error();
-        return FALSE;
+
+        return false;
     }
 
     list($path) = sql_fetch_row($rs);
@@ -357,15 +358,15 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     /* copy package record */
     $rs_package = sql_query("SELECT idpackage,idProg,'" . $path . "',defaultOrg,idUser,scormVersion "
         . ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package '
-        . " WHERE idscorm_package='" . (int)$idscorm_package . "'");
+        . " WHERE idscorm_package='" . (int) $idscorm_package . "'");
 
     $arr_package = sql_fetch_row($rs_package);
-    for ($i = 0; $i < count($arr_package); $i++)
+    for ($i = 0; $i < count($arr_package); ++$i) {
         $arr_package[$i] = addslashes($arr_package[$i]);
+    }
     sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . '_scorm_package '
         . ' (idpackage,idProg,path,defaultOrg,idUser,scormVersion) VALUES '
         . "('" . implode("','", $arr_package) . "')");
-
 
     /*	sql_query("INSERT INTO ".$GLOBALS['prefix_lms']."_scorm_package "
                     ." (idpackage,idProg,path,defaultOrg,idUser) "
@@ -378,11 +379,12 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     /* copy resources */
     $rs_resources = sql_query(" SELECT idsco,'" . $new_idscorm_package . "',scormtype,href "
         . '  FROM ' . $GLOBALS['prefix_lms'] . '_scorm_resources '
-        . " WHERE idscorm_package='" . (int)$idscorm_package . "'");
+        . " WHERE idscorm_package='" . (int) $idscorm_package . "'");
 
     while ($arr_resource = sql_fetch_row($rs_resources)) {
-        for ($i = 0; $i < count($arr_resource); $i++)
+        for ($i = 0; $i < count($arr_resource); ++$i) {
             $arr_resource[$i] = addslashes($arr_resource[$i]);
+        }
         sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . '_scorm_resources '
             . ' (idsco,idscorm_package,scormtype,href) VALUES '
             . "('" . implode("','", $arr_resource) . "')");
@@ -397,15 +399,16 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     // try to open content package
     if (!$cpm->Open($scopath . $path)) {
         $_SESSION['last_error'] = 'Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']';
-        return FALSE;
+
+        return false;
     }
 
     // and parse the manifest
     if (!$cpm->ParseManifest()) {
         $_SESSION['last_error'] = 'Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']';
-        return FALSE;
-    }
 
+        return false;
+    }
 
     $rdb = new RendererDb($GLOBALS['dbConn'], $GLOBALS['prefix_lms'], $new_idscorm_package);
     /*$orgElems = $cpm->orgElems;
@@ -415,7 +418,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
 
     list($org_identifier) = sql_fetch_row(sql_query(
         'SELECT org_identifier FROM ' . $GLOBALS['prefix_lms'] . '_scorm_organizations '
-        . " WHERE idscorm_organization='" . (int)$idscorm_organization . "'"));
+        . " WHERE idscorm_organization='" . (int) $idscorm_organization . "'"));
 
     $cpm->RenderOrganization($org_identifier, $rdb);
 
@@ -425,77 +428,63 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     $so = new Scorm_Organization(addslashes($org_identifier), $new_idscorm_package, $GLOBALS['dbConn']);
     if ($so->err_code > 0) {
         $_SESSION['last_error'] = 'Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']';
-        return FALSE;
+
+        return false;
     } else {
         return $so->idscorm_organization;
     }
 }
 
-
 if (isset($GLOBALS['op'])) {
-
     switch ($GLOBALS['op']) {
         /*case "display": {
             display();
         }; break;*/
         case 'additem' :
-            {
                 additem();
-            }
+
             break;
         case 'insitem' :
-            {
                 insitem();
-            }
+
             break;
         case 'deleteitem':
-            {
                 deleteitem();
-            }
+
             break;
         case 'dodelete':
-            {
                 dodelete();
-            }
+
             break;
         case 'category' :
-            {
                 category();
-            }
+
             break;
         case 'categorysave':
-            {
                 categorysave();
-            }
+
             break;
         case 'play':
-            {
                 play();
-            }
+
             break;
         case 'tree':
-            {
                 require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_tree.php');
-            }
+
             break;
         case 'head':
-            {
                 require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_head.php');
-            }
+
             break;
         case 'body':
-            {
                 require_once Forma::inc(_lms_ . '/modules/scorm/scorm_page_body.php');
-            }
+
             break;
         case 'scoload':
-            {
                 require_once Forma::inc(_lms_ . '/modules/scorm/soaplms.php');
-            }
+
             break;
         default:
             break;
     }
 }
-
-?>

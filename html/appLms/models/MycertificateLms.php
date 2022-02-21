@@ -1,12 +1,22 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once(Forma::inc(_lms_ . '/lib/lib.certificate.php'));
+require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
 class MycertificateLms extends Model
 {
-
     protected $certificate;
 
     public $id_user;
@@ -15,7 +25,7 @@ class MycertificateLms extends Model
 
     public function __construct($id_user)
     {
-        $this->id_user = (int)$id_user;
+        $this->id_user = (int) $id_user;
         $this->certificate = new Certificate();
     }
 
@@ -47,7 +57,7 @@ class MycertificateLms extends Model
                     'course_name' => $cert['course_name'],
                     'cert_name' => $cert['cert_name'],
                     'date_complete' => $cert['date_complete'],
-                    'download' => $download
+                    'download' => $download,
                 ];
             }
         }
@@ -74,7 +84,7 @@ class MycertificateLms extends Model
         });
 
         $data_to_display = [];
-        for ($i = $startIndex; $i < ($startIndex + $results) && $i < count($data); $i++) {
+        for ($i = $startIndex; $i < ($startIndex + $results) && $i < count($data); ++$i) {
             $data_to_display[] = array_values($data[$i]);
         }
 
@@ -84,9 +94,9 @@ class MycertificateLms extends Model
     public function countMyCertificates()
     {
         $filter = ['id_user' => $this->id_user];
+
         return $this->certificate->countAssignment($filter);
     }
-
 
     /**
      * In this funct. we need to select all the aggr. certs that has been released or not.
@@ -98,7 +108,6 @@ class MycertificateLms extends Model
      *
      * Return an array of all certs available
      */
-
     public function getMyMetaCertificates()
     {
         $q = "SELECT 
@@ -114,19 +123,18 @@ class MycertificateLms extends Model
             INNER JOIN %lms_aggregated_cert_assign aca ON c.id_certificate = aca.idCertificate
             INNER JOIN %lms_aggregated_cert_coursepath acc ON aca.idAssociation = acc.idAssociation AND acc.idUser = acc.idUser
             INNER JOIN %lms_coursepath cp ON acc.idCoursePath = cp.id_path
-            WHERE aca.idUser = " . (int)$this->id_user;
+            WHERE aca.idUser = " . (int) $this->id_user;
 
         $rs = sql_query($q);
         $currentIdCert = 0;
         $index = 0;
         $arrAggregatedCerts = [];
         foreach ($rs as $row) {
-
             if ($currentIdCert !== $row['id_certificate']) {
                 $arrAggregatedCerts[$index] = $row;
-                $index++;
+                ++$index;
             } else {
-                $arrAggregatedCerts[$index - 1]['path_name'] = $arrAggregatedCerts[$index - 1]['path_name'] . " | " . $row['path_name'];
+                $arrAggregatedCerts[$index - 1]['path_name'] = $arrAggregatedCerts[$index - 1]['path_name'] . ' | ' . $row['path_name'];
             }
             $currentIdCert = $row['id_certificate'];
         }
@@ -146,7 +154,7 @@ class MycertificateLms extends Model
             INNER JOIN %lms_aggregated_cert_course acc ON aca.idAssociation = acc.idAssociation
             INNER JOIN %lms_course cc ON acc.idCourse = cc.idCourse AND acc.idUser = aca.idUser
             LEFT JOIN %lms_courseuser cu ON cu.idCourse = acc.idCourse AND cu.idUser = acc.idUser AND cu.status = 2 AND cu.date_complete IS NOT NULL
-            WHERE aca.idUser = " . (int)$this->id_user . " ORDER BY completed, c.id_certificate ASC";
+            WHERE aca.idUser = " . (int) $this->id_user . ' ORDER BY completed, c.id_certificate ASC';
         $rs = sql_query($q);
         $currentIdCert = 0;
         foreach ($rs as $row) {
@@ -155,9 +163,9 @@ class MycertificateLms extends Model
             }
             if ($currentIdCert != $row['id_certificate']) {
                 $arrAggregatedCerts[$index] = $row;
-                $index++;
+                ++$index;
             } else {
-                $arrAggregatedCerts[$index - 1]['course_name'] = $arrAggregatedCerts[$index - 1]['course_name'] . " | " . $row['course_name'];
+                $arrAggregatedCerts[$index - 1]['course_name'] = $arrAggregatedCerts[$index - 1]['course_name'] . ' | ' . $row['course_name'];
             }
             $currentIdCert = $row['id_certificate'];
         }
@@ -165,27 +173,28 @@ class MycertificateLms extends Model
         return $arrAggregatedCerts;
     }
 
-
-    function countAggrCertsToRelease()
+    public function countAggrCertsToRelease()
     {
-
         $r = sql_fetch_row(
             sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user . ' AND cert_file = \'\'')
         );
+
         return $r[0];
     }
 
-    function countMyMetaCertificates()
+    public function countMyMetaCertificates()
     {
         $r = sql_fetch_row(sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user));
+
         return $r[0];
     }
 
-    function countMyMetaCertsReleased()
+    public function countMyMetaCertsReleased()
     {
         $r = sql_fetch_row(
             sql_query('SELECT count(*) as tot from %lms_aggregated_cert_assign where idUser =' . $this->id_user . ' AND cert_file <> \'\'')
         );
+
         return $r[0];
     }
 }

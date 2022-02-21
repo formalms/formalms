@@ -1,18 +1,20 @@
 <?php
-require_once(_lms_ . '/lib/lib.middlearea.php');
+require_once _lms_ . '/lib/lib.middlearea.php';
 $ma = new Man_MiddleArea();
 // $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
 
 $files_dir = str_replace('../', '', $GLOBALS['where_files_relative']);
 
-$path_course =  Get::site_url() . $files_dir . '/appLms/' . Get::sett('pathcourse');
+$path_course = Get::site_url() . $files_dir . '/appLms/' . Get::sett('pathcourse');
 $smodel = new CatalogLms();
 $html = '';
 
 function TruncateText($the_text, $size)
 {
-    if (strlen($the_text) > $size)
+    if (strlen($the_text) > $size) {
         return substr($the_text, 0, $size) . '...';
+    }
+
     return $the_text;
 }
 ?>
@@ -29,7 +31,7 @@ function TruncateText($the_text, $size)
     <div class="main">
         <div id="cbp-vm" class="cbp-vm-switcher cbp-vm-view-gridx" style="padding: 0;">
 <!--            <ul>-->
-<!--    <pre>--><?php //var_dump($row); ?><!--</pre>-->
+<!--    <pre>--><?php //var_dump($row);?><!--</pre>-->
     <div class="row">
         <?php
 
@@ -42,7 +44,6 @@ function TruncateText($the_text, $size)
                 if (count($classrooms) > 0) {
 //                    $action = '<div class="catalog_action" style="top:5px;" id="action_' . $row['idCourse'] . '">'
 //                        . '<a href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SHOW_EDITIONS', 'catalogue') . '"><p class="can_subscribe">' . Lang::t('_SHOW_EDITIONS', 'catalogue') . '</p></a></div>';
-
 
                     $action = '<div class="course-box__item" id="action_' . $row['idCourse'] . '">'
                         . '<a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" onclick="courseSelection(\'' . $row['idCourse'] . '\', \'0\')" title="' . Lang::t('_SHOW_EDITIONS', 'catalogue') . '">'
@@ -73,38 +74,57 @@ function TruncateText($the_text, $size)
                     . '</div>';
             }
 
-            $arr_cat = $smodel->getMinorCategoryTree((int)$row['idCategory']);
+            $arr_cat = $smodel->getMinorCategoryTree((int) $row['idCategory']);
 
-            if ($row['course_type'] == "elearning") $img_type_ico = "<span class='elearning'><i class='fa fa-graduation-cap'></i>" . Lang::t('_LEARNING_COURSE', 'cart') . "</span>";
-            if ($row['course_type'] == "classroom") $img_type_ico = "<span class='classroom'><i class='fa fa-university'></i>" . Lang::t('_CLASSROOM_COURSE', 'cart') . "</span>";
+            if ($row['course_type'] == 'elearning') {
+                $img_type_ico = "<span class='elearning'><i class='fa fa-graduation-cap'></i>" . Lang::t('_LEARNING_COURSE', 'cart') . '</span>';
+            }
+            if ($row['course_type'] == 'classroom') {
+                $img_type_ico = "<span class='classroom'><i class='fa fa-university'></i>" . Lang::t('_CLASSROOM_COURSE', 'cart') . '</span>';
+            }
             // start - end
 
-            $str_start_end = "";
-            if ($row['date_begin'] != "0000-00-00") {
-                $str_start_end = Lang::t('_SUBSCRIPTION_DATE_BEGIN', 'course') . " <b>" . $row['date_begin'] . '</b>  ' . Lang::t('_SUBSCRIPTION_DATE_END', 'course') . ' <b>' . $row['date_end'] . "</b>";
+            $str_start_end = '';
+            if ($row['date_begin'] != '0000-00-00') {
+                $str_start_end = Lang::t('_SUBSCRIPTION_DATE_BEGIN', 'course') . ' <b>' . $row['date_begin'] . '</b>  ' . Lang::t('_SUBSCRIPTION_DATE_END', 'course') . ' <b>' . $row['date_end'] . '</b>';
             }
-
 
             // BUG TRACKER - LR #5669
             $data_inizio = $row['date_begin'];
             $data_end = $row['date_end'];
 
-            $str_lock_start = "";
-            $str_lock_end = "";
+            $str_lock_start = '';
+            $str_lock_end = '';
 
-            if ($row['hour_begin'] != "-1") $str_h_begin = $row['hour_begin'];
-            if ($row['hour_end'] != "-1") $str_h_end = $row['hour_end'];
+            if ($row['hour_begin'] != '-1') {
+                $str_h_begin = $row['hour_begin'];
+            }
+            if ($row['hour_end'] != '-1') {
+                $str_h_end = $row['hour_end'];
+            }
 
             $can_enter_star = true;
             $can_enter_end = true;
-            if ($data_inizio != "0000-00-00") $str_lock_start = "<b><i style='font-size:.68em'>" . Lang::t('_COURSE_BEGIN', 'certificate') . "</b>: " . Format::date($data_inizio, 'date') . " " . $str_h_begin . "</i>";
-            if ($data_end != "0000-00-00") $str_lock_end = "<br><b><i style='font-size:.68em'>" . Lang::t('_COURSE_END', 'certificate') . "</b>: " . Format::date($data_end, 'date') . " " . $str_h_end . "</i>";
+            if ($data_inizio != '0000-00-00') {
+                $str_lock_start = "<b><i style='font-size:.68em'>" . Lang::t('_COURSE_BEGIN', 'certificate') . '</b>: ' . Format::date($data_inizio, 'date') . ' ' . $str_h_begin . '</i>';
+            }
+            if ($data_end != '0000-00-00') {
+                $str_lock_end = "<br><b><i style='font-size:.68em'>" . Lang::t('_COURSE_END', 'certificate') . '</b>: ' . Format::date($data_end, 'date') . ' ' . $str_h_end . '</i>';
+            }
 
-            if ($data_inizio != "0000-00-00" && $data_inizio > date('Y-m-d')) $can_enter_star = false;
-            if ($data_end != "0000-00-00" && $data_end < date('Y-m-d')) $can_enter_end = false;
+            if ($data_inizio != '0000-00-00' && $data_inizio > date('Y-m-d')) {
+                $can_enter_star = false;
+            }
+            if ($data_end != '0000-00-00' && $data_end < date('Y-m-d')) {
+                $can_enter_end = false;
+            }
 
-            if ($data_inizio != "0000-00-00" || $data_end != "0000-00-00") $str_can_enter = ($can_enter_star && $can_enter_end);
-            if ($data_inizio == "0000-00-00" && $data_end == "0000-00-00") $str_can_enter = true;
+            if ($data_inizio != '0000-00-00' || $data_end != '0000-00-00') {
+                $str_can_enter = ($can_enter_star && $can_enter_end);
+            }
+            if ($data_inizio == '0000-00-00' && $data_end == '0000-00-00') {
+                $str_can_enter = true;
+            }
             $data_inizio_format = Format::date($data_inizio, 'date');
             $data_end_format = Format::date($data_end, 'date');
 
@@ -156,7 +176,7 @@ function TruncateText($the_text, $size)
                         ';
 
             if (/*userCanUnsubscribe($row) || */
-                $row["course_demo"]
+                $row['course_demo']
             ) {
                 $action .= '
                             <div class="course-box__options dropdown pull-right">
@@ -167,7 +187,7 @@ function TruncateText($the_text, $size)
                 /*if (userCanUnsubscribe($row)) {
                             $action .= '<li><a href="javascript:confirmDialog(\'' . $row['name'] . '\', ' . $row['idCourse'] . ", " . key($display_info[$row['idCourse']]) . ');">' . Lang::t('_SELF_UNSUBSCRIBE', 'course') . '</a><li>';
                         }*/
-                if ($row["course_demo"]) {
+                if ($row['course_demo']) {
                     $action .= '<li><a href="index.php?r=lms/homecatalogue/downloadDemoMaterial&amp;course_id=' . $row['idCourse'] . '">' . Lang::t('_COURSE_DEMO', 'course') . '</a></li>';
                 }
                 $action .= '</ul></div>';
@@ -226,7 +246,7 @@ function TruncateText($the_text, $size)
                        ';
             }
 
-            if ($row["course_demo"]) {
+            if ($row['course_demo']) {
                 $html .= '<!-- DATE START - DATE END  -->
                                  <div class="box_edizioni cat">
                                        <div class="edizioni cat">
@@ -242,20 +262,23 @@ function TruncateText($the_text, $size)
             }
 //            $html .= '<div class="cbp-vm-add">
 //                <div>';
-            if ($str_can_enter == true && $row['status'] != CST_CONCLUDED) $html .= $action;
-            if ($str_can_enter == false || $row['status'] == CST_CONCLUDED) $html .= "<div class='lock cat'><i class='fa fa-3x fa-lock' aria-hidden='true'></i></div>";
+            if ($str_can_enter == true && $row['status'] != CST_CONCLUDED) {
+                $html .= $action;
+            }
+            if ($str_can_enter == false || $row['status'] == CST_CONCLUDED) {
+                $html .= "<div class='lock cat'><i class='fa fa-3x fa-lock' aria-hidden='true'></i></div>";
+            }
 
             // in caso di corso a tempo, l utente deve potersi iscrivere, se non iscritto
-            if (($row['subscribe_method'] == 2 || $row['subscribe_method'] == 1) && $str_can_enter == false && strrpos($action, "subscribed") == false) $html .= $action;
+            if (($row['subscribe_method'] == 2 || $row['subscribe_method'] == 1) && $str_can_enter == false && strrpos($action, 'subscribed') == false) {
+                $html .= $action;
+            }
 
-                    $html .= '</div>
+            $html .= '</div>
                            </div>
                                          
                       '; //</li>
-
-
         }
-
 
         if (sql_num_rows($result) <= 0) {
             $html = '<p>' . Lang::t('_NO_CONTENT', 'standard') . '</p>';

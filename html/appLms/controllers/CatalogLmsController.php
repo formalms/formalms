@@ -1,10 +1,20 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class CatalogLmsController extends LmsController
 {
-
     public $name = 'catalog';
 
     private $path_course = '';
@@ -12,10 +22,10 @@ class CatalogLmsController extends LmsController
     protected $_default_action = 'show';
 
     /** @var CatalogLms */
-    var $model;
-    var $json;
+    public $model;
+    public $json;
     /** @var DoceboACLManager */
-    var $acl_man;
+    public $acl_man;
 
     public function isTabActive($tab_name)
     {
@@ -29,7 +39,7 @@ class CatalogLmsController extends LmsController
         $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
         $this->model = new CatalogLms();
 
-        require_once(_base_ . '/lib/lib.json.php');
+        require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
 
         $this->acl_man = &Docebo::user()->getAclManager();
@@ -46,7 +56,6 @@ class CatalogLmsController extends LmsController
         $show_empty_catalogue_tab = (!$onCatalogueEmptySetting && count($user_catalogue) === 0);
         $show_user_catalogue_tab = count($user_catalogue) > 0;
         $tab_actived = false;
-
 
         $catalogue = '';
         $total_category = 0;
@@ -83,10 +92,9 @@ class CatalogLmsController extends LmsController
         $this->render('courselist', ['data' => compact('courses', 'id_catalogue')]);
     }
 
-
     public function newCourse()
     {
-        require_once(_base_ . '/lib/lib.navbar.php');
+        require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'new';
 
         $page = Get::req('page', DOTY_INT, 1);
@@ -104,7 +112,7 @@ class CatalogLmsController extends LmsController
 
         $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
-            'close' => false
+            'close' => false,
         ]);
 
         $this->render('tab_start', [
@@ -112,15 +120,15 @@ class CatalogLmsController extends LmsController
             'active_tab' => $active_tab,
             'user_coursepath' => $user_coursepath,
             'std_link' => 'index.php?r=catalog/newCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-            'model' => $this->model
+            'model' => $this->model,
         ]);
         $this->render('courselist', [
             'html' => $html,
-            'nav_bar' => $nav_bar
+            'nav_bar' => $nav_bar,
         ]);
         $this->render('tab_end', [
             'std_link' => 'index.php?r=catalog/newCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-            'model' => $this->model
+            'model' => $this->model,
         ]);
         $lmstab->endWidget();
 
@@ -129,7 +137,7 @@ class CatalogLmsController extends LmsController
 
     public function elearningCourse()
     {
-        require_once(_base_ . '/lib/lib.navbar.php');
+        require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'elearning';
 
         $page = Get::req('page', DOTY_INT, 1);
@@ -147,7 +155,7 @@ class CatalogLmsController extends LmsController
 
         $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
-            'close' => false
+            'close' => false,
         ]);
 
         $this->render('tab_start', [
@@ -155,15 +163,15 @@ class CatalogLmsController extends LmsController
             'active_tab' => $active_tab,
             'user_coursepath' => $user_coursepath,
             'std_link' => 'index.php?r=catalog/elearningCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-            'model' => $this->model
+            'model' => $this->model,
         ]);
         $this->render('courselist', [
             'html' => $html,
-            'nav_bar' => $nav_bar
+            'nav_bar' => $nav_bar,
         ]);
         $this->render('tab_end', [
             'std_link' => 'index.php?r=catalog/elearningCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-            'model' => $this->model
+            'model' => $this->model,
         ]);
         $lmstab->endWidget();
 
@@ -172,7 +180,7 @@ class CatalogLmsController extends LmsController
 
     public function classroomCourse()
     {
-        require_once(_base_ . '/lib/lib.navbar.php');
+        require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'classroom';
 
         $page = Get::req('page', DOTY_INT, 1);
@@ -190,7 +198,7 @@ class CatalogLmsController extends LmsController
 
         $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
-            'close' => false
+            'close' => false,
         ]);
 
         $this->render('tab_start', [
@@ -198,15 +206,15 @@ class CatalogLmsController extends LmsController
             'active_tab' => $active_tab,
             'user_coursepath' => $user_coursepath,
             'std_link' => 'index.php?r=catalog/classroomCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-            'model' => $this->model
+            'model' => $this->model,
         ]);
         $this->render('courselist', [
             'html' => $html,
-            'nav_bar' => $nav_bar
+            'nav_bar' => $nav_bar,
         ]);
         $this->render('tab_end', [
             'std_link' => 'index.php?r=catalog/classroomCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-            'model' => $this->model
+            'model' => $this->model,
         ]);
         $lmstab->endWidget();
 
@@ -215,7 +223,7 @@ class CatalogLmsController extends LmsController
 
     public function catalogueCourse()
     {
-        require_once(_base_ . '/lib/lib.navbar.php');
+        require_once _base_ . '/lib/lib.navbar.php';
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
         $active_tab = 'catalogue';
 
@@ -234,7 +242,7 @@ class CatalogLmsController extends LmsController
 
         $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
-            'close' => false
+            'close' => false,
         ]);
 
         $this->render('tab_start', [
@@ -242,15 +250,15 @@ class CatalogLmsController extends LmsController
             'active_tab' => $active_tab . '_' . $id_cat,
             'user_coursepath' => $user_coursepath,
             'std_link' => 'index.php?r=catalog/catalogueCourse&amp;id_catalogue=' . $id_catalogue . ($page > 1 ? '&amp;page=' . $page : ''),
-            'model' => $this->model
+            'model' => $this->model,
         ]);
         $this->render('courselist', [
             'html' => $html,
-            'nav_bar' => $nav_bar
+            'nav_bar' => $nav_bar,
         ]);
         $this->render('tab_end', [
             'std_link' => 'index.php?r=catalog/catalogueCourse&amp;id_catalogue=' . $id_catalogue . ($page > 1 ? '&amp;page=' . $page : ''),
-            'model' => $this->model
+            'model' => $this->model,
         ]);
         $lmstab->endWidget();
 
@@ -259,7 +267,7 @@ class CatalogLmsController extends LmsController
 
     public function coursepathCourse()
     {
-        require_once(_base_ . '/lib/lib.navbar.php');
+        require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'coursepath';
 
         $nav_bar = new NavBar('page', Get::sett('visuItem'), count($this->model->getUserCoursepath(Docebo::user()->getIdSt())), 'link');
@@ -276,17 +284,17 @@ class CatalogLmsController extends LmsController
 
         $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
-            'close' => false
+            'close' => false,
         ]);
 
         $this->render('tab_start', [
             'user_catalogue' => $user_catalogue,
             'active_tab' => $active_tab,
-            'user_coursepath' => $user_coursepath
+            'user_coursepath' => $user_coursepath,
         ]);
         $this->render('courselist', [
             'html' => $html,
-            'nav_bar' => $nav_bar
+            'nav_bar' => $nav_bar,
         ]);
         $this->render('tab_end', []);
         $lmstab->endWidget();
@@ -304,13 +312,13 @@ class CatalogLmsController extends LmsController
 
         $lmstab = $this->widget('lms_tab', [
             'active' => 'catalog',
-            'close' => false
+            'close' => false,
         ]);
 
         $this->render('tab_start', [
             'user_catalogue' => $user_catalogue,
             'active_tab' => $active_tab,
-            'user_coursepath' => $user_coursepath
+            'user_coursepath' => $user_coursepath,
         ]);
         $this->render('calendar', []);
         $this->render('tab_end', []);
@@ -318,7 +326,6 @@ class CatalogLmsController extends LmsController
 
         echo '</div>';
     }
-
 
     public function subscribeCoursePathInfo()
     {
@@ -336,16 +343,13 @@ class CatalogLmsController extends LmsController
         $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
         $id_category = Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
-        $this->render('edition-modal', ["id_course" => $id_course, "available_classrooms" => $res['available_classrooms'], "teachers" => $res['teachers'],
-            "course_name" => $res['course_name'], "type_course" => $type_course, "id_catalogue" => $id_catalogue, "id_category" => $id_category]);
-
+        $this->render('edition-modal', ['id_course' => $id_course, 'available_classrooms' => $res['available_classrooms'], 'teachers' => $res['teachers'],
+            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category, ]);
     }
 
-
     //UG  select a user subscription level
-    function get_userlevel_subscription($idu)
+    public function get_userlevel_subscription($idu)
     {
-
         $level = 3;        // default subscription level = Student
         $reg_code = '';
         $reg_code = Get::cfg('registration_code_gu', '');
@@ -358,7 +362,8 @@ class CatalogLmsController extends LmsController
                 $level = 1;            // Guest user level subscription = Guest
             }
         }
-        return ($level);
+
+        return $level;
     }
 
     public function subscribeToCourse()
@@ -372,7 +377,7 @@ class CatalogLmsController extends LmsController
 
         $docebo_course = new DoceboCourse($id_course);
 
-        require_once(_lms_ . '/admin/models/SubscriptionAlms.php');
+        require_once _lms_ . '/admin/models/SubscriptionAlms.php';
         $model = new SubscriptionAlms($id_course, $id_edition, $id_date);
 
         $course_info = $model->getCourseInfoForSubscription();
@@ -380,8 +385,9 @@ class CatalogLmsController extends LmsController
 
         $level_idst = &$docebo_course->getCourseLevel($id_course);
 
-        if (count($level_idst) == 0 || $level_idst[1] == '')
+        if (count($level_idst) == 0 || $level_idst[1] == '') {
             $level_idst = &$docebo_course->createCourseLevel($id_course);
+        }
 
         $waiting = $course_info['subscribe_method'] == 1; // need approval
 
@@ -389,9 +395,7 @@ class CatalogLmsController extends LmsController
 
         $this->acl_man->addToGroup($level_idst[$userlevel_subscrip], $id_user);    //UG
 
-
-        if ($model->subscribeUser($id_user, $userlevel_subscrip, $waiting, false, false, $overbooking))        //UG
-        {
+        if ($model->subscribeUser($id_user, $userlevel_subscrip, $waiting, false, false, $overbooking)) {        //UG
             $res['success'] = true;
             $res['new_status_code'] = '';
 
@@ -399,8 +403,9 @@ class CatalogLmsController extends LmsController
                 $must_change_status = $this->model->controlSubscriptionRemaining($id_course);
                 $res['new_status'] = '';
 
-                if (!$must_change_status)
+                if (!$must_change_status) {
                     $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_NO_EDITIONS', 'catalogue') . '</p>';
+                }
             } else {
                 if ($waiting == 1) {
                     $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_WAITING', 'catalogue') . '</p>';
@@ -411,20 +416,18 @@ class CatalogLmsController extends LmsController
                 }
             }
 
-
             // message to user that is waiting
-            require_once(_base_ . '/lib/lib.eventmanager.php');
-
+            require_once _base_ . '/lib/lib.eventmanager.php';
 
             $acl = &Docebo::user()->getAcl();
             $acl_man = &$this->acl_man;
 
             $recipients = [];
 
-            // get all superadmins 
+            // get all superadmins
             // no mail to superadmin
-            /* 
-                $idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN); 
+            /*
+                $idst_group_god_admin = $acl->getGroupST(ADMIN_GROUP_GODADMIN);
                $recipients = $acl_man->getGroupMembers($idst_group_god_admin);
             */
 
@@ -432,7 +435,7 @@ class CatalogLmsController extends LmsController
             $idst_group_admin = $acl->getGroupST(ADMIN_GROUP_ADMIN);
             $idst_admin = $acl_man->getGroupMembers($idst_group_admin);
 
-            require_once(_adm_ . '/lib/lib.adminmanager.php');
+            require_once _adm_ . '/lib/lib.adminmanager.php';
 
             foreach ($idst_admin as $id_user) {
                 $adminManager = new AdminManager();
@@ -443,52 +446,50 @@ class CatalogLmsController extends LmsController
 
                 $array_user = &$acl_manager->getAllUsersFromIdst($idst_associated);
 
-                $array_user = array_unique($array_user) ;
+                $array_user = array_unique($array_user);
 
-                
                 $control_user = array_search(getLogUserId(), $array_user);
                 if ($control_user === 0) {
                     $control_user = true;
                 }
 
-                $query = "SELECT COUNT(*)"
-                    . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
+                $query = 'SELECT COUNT(*)'
+                    . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'course'"
-                    . " AND id_entry in (-1,0," . $id_course . ")";
+                    . ' AND id_entry in (-1,0,' . $id_course . ')';
 
                 list($control_course) = sql_fetch_row(sql_query($query));
-                
-                
 
-                $query = "SELECT COUNT(*)"
-                    . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
+                $query = 'SELECT COUNT(*)'
+                    . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'coursepath'"
-                    . " AND id_entry IN"
-                    . " ("
-                    . " SELECT id_path"
-                    . " FROM " . Get::cfg('prefix_lms') . "_coursepath_courses"
+                    . ' AND id_entry IN'
+                    . ' ('
+                    . ' SELECT id_path'
+                    . ' FROM ' . Get::cfg('prefix_lms') . '_coursepath_courses'
                     . " WHERE id_item = '" . $id_course . "'"
-                    . " )";
+                    . ' )';
 
                 list($control_coursepath) = sql_fetch_row(sql_query($query));
 
-                $query = "SELECT COUNT(*)"
-                    . " FROM " . Get::cfg('prefix_fw') . "_admin_course"
+                $query = 'SELECT COUNT(*)'
+                    . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'catalogue'"
-                    . " AND id_entry IN"
-                    . " ("
-                    . " SELECT idCatalogue"
-                    . " FROM " . Get::cfg('prefix_lms') . "_catalogue_entry"
+                    . ' AND id_entry IN'
+                    . ' ('
+                    . ' SELECT idCatalogue'
+                    . ' FROM ' . Get::cfg('prefix_lms') . '_catalogue_entry'
                     . " WHERE idEntry = '" . $id_course . "'"
-                    . " )";
+                    . ' )';
 
                 list($control_catalogue) = sql_fetch_row(sql_query($query));
 
-                if ($control_user && ($control_course || $control_coursepath || $control_catalogue))
+                if ($control_user && ($control_course || $control_coursepath || $control_catalogue)) {
                     $recipients[] = $id_user;
+                }
             }
 
             $recipients = array_unique($recipients);
@@ -497,13 +498,13 @@ class CatalogLmsController extends LmsController
                 '[url]' => Get::site_url(),
                 '[course]' => $course_info['name'],
                 '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
-                '[lastname]' => $userinfo[ACL_INFO_LASTNAME]
+                '[lastname]' => $userinfo[ACL_INFO_LASTNAME],
             ];
-            
+
             $msg_composer = new EventMessageComposer('subscribe', 'lms');
             if ($overbooking) {
-                $subject_key = "_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT";
-                $body_key = "_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT";
+                $subject_key = '_NEW_USER_OVERBOOKING_SUBSCRIBED_SUBJECT';
+                $body_key = '_NEW_USER_OVERBOOKING_SUBSCRIBED_TEXT';
 
                 $msg_composer->setSubjectLangText('email', $subject_key, false);
                 $msg_composer->setBodyLangText('email', $body_key, $array_subst);
@@ -512,27 +513,26 @@ class CatalogLmsController extends LmsController
                 $msg_composer->setBodyLangText('sms', $body_key . '_SMS', $array_subst);
                 createNewAlert('UserCourseInsertOverbooking', 'subscribe', 'insert', '1', 'User overbooked subscribed with moderation', $recipients, $msg_composer);
             } else {
-                $description = "User subscribed";
+                $description = 'User subscribed';
                 if ($waiting) {
-                    $description .= " with moderation";
-                    $subject_key = "_NEW_USER_SUBS_WAITING_SUBJECT";
-                    $body_key = "_NEW_USER_SUBS_WAITING_TEXT";
-                    $myevent = "UserCourseInsertModerate";
+                    $description .= ' with moderation';
+                    $subject_key = '_NEW_USER_SUBS_WAITING_SUBJECT';
+                    $body_key = '_NEW_USER_SUBS_WAITING_TEXT';
+                    $myevent = 'UserCourseInsertModerate';
                 } else {
-                    $subject_key = "_NEW_USER_SUBSCRIBED_SUBJECT";
-                    $body_key = "_NEW_USER_SUBSCRIBED_TEXT_MODERATORS";
-                    $myevent = "UserCourseInserted";
+                    $subject_key = '_NEW_USER_SUBSCRIBED_SUBJECT';
+                    $body_key = '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS';
+                    $myevent = 'UserCourseInserted';
                 }
 
                 $msg_composer->setSubjectLangText('email', $subject_key, false);
                 $msg_composer->setBodyLangText('email', $body_key, $array_subst);
-                
+
                 $msg_composer->setSubjectLangText('sms', '_TO_NEW_USER_TEXT_SMS', false);
                 $msg_composer->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', $array_subst);
 
                 createNewAlert($myevent, 'subscribe', 'insert', '1', $description, $recipients, $msg_composer);
             }
-                    
 
             $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
         } else {
@@ -543,7 +543,6 @@ class CatalogLmsController extends LmsController
         }
 
         $this->allCourseForma();
-
     }
 
     public function subscribeToCoursePath()
@@ -552,18 +551,20 @@ class CatalogLmsController extends LmsController
 
         $id_user = Docebo::user()->getIdSt();
 
-        $query_pathlist = "
+        $query_pathlist = '
         SELECT path_name, subscribe_method
-        FROM " . $GLOBALS['prefix_lms'] . "_coursepath
+        FROM ' . $GLOBALS['prefix_lms'] . "_coursepath
         WHERE id_path = '" . $id_path . "'
         ORDER BY path_name ";
         list($path_name, $subscribe_method) = sql_fetch_row(sql_query($query_pathlist));
 
-
-        if ($subscribe_method == 1) $waiting = 1;
-        else $waiting = 0;
-        $text_query = "
-            INSERT INTO " . $GLOBALS['prefix_lms'] . "_coursepath_user
+        if ($subscribe_method == 1) {
+            $waiting = 1;
+        } else {
+            $waiting = 0;
+        }
+        $text_query = '
+            INSERT INTO ' . $GLOBALS['prefix_lms'] . "_coursepath_user
             ( id_path, idUser, waiting, subscribed_by ) VALUES
             ( '" . $id_path . "', '" . $id_user . "', '" . $waiting . "', '" . getLogUserId() . "' )";
         $re_s = sql_query($text_query);
@@ -571,8 +572,8 @@ class CatalogLmsController extends LmsController
         /////////////////////////
 
         if ($waiting == 0) {
-            require_once(_lms_ . '/lib/lib.subscribe.php');
-            require_once(_lms_ . '/lib/lib.coursepath.php');
+            require_once _lms_ . '/lib/lib.subscribe.php';
+            require_once _lms_ . '/lib/lib.coursepath.php';
 
             $cpath_man = new CoursePath_Manager();
             $subs_man = new CourseSubscribe_Management();
@@ -588,10 +589,11 @@ class CatalogLmsController extends LmsController
         }
 
         $res['success'] = true;
-        if ($waiting == 1)
+        if ($waiting == 1) {
             $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_WAITING', 'catalogue') . '</p>';
-        else
+        } else {
             $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_USER_STATUS_SUBS', 'catalogue') . '</p>';
+        }
 
         $res['message'] = $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
 
@@ -604,12 +606,13 @@ class CatalogLmsController extends LmsController
         $id_date = Get::req('id_date', DOTY_INT, 0);
         $id_edition = Get::req('id_edition', DOTY_INT, 0);
 
-        if ($id_edition != 0)
+        if ($id_edition != 0) {
             $_SESSION['lms_cart'][$id_course]['edition'][$id_edition] = $id_edition;
-        elseif ($id_date != 0)
+        } elseif ($id_date != 0) {
             $_SESSION['lms_cart'][$id_course]['classroom'][$id_date] = $id_date;
-        else
+        } else {
             $_SESSION['lms_cart'][$id_course] = $id_course;
+        }
 
         $res['success'] = true;
         $res['message'] = UIFeedback::info(Lang::t('_COURSE_ADDED_IN_CART', 'catalogue'), true);
@@ -618,12 +621,14 @@ class CatalogLmsController extends LmsController
             $must_change_status = $this->model->controlSubscriptionRemaining($id_course);
             $res['new_status'] = '';
 
-            if (!$must_change_status)
+            if (!$must_change_status) {
                 $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_ALL_EDITION_BUYED', 'catalogue') . '</p>';
-        } else
+            }
+        } else {
             $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_COURSE_IN_CART', 'catalogue') . '</p>';
+        }
 
-        require_once(_lms_ . '/lib/lib.cart.php');
+        require_once _lms_ . '/lib/lib.cart.php';
 
         $res['cart_element'] = '' . Learning_Cart::cartItemCount() . '';
         $res['num_element'] = Learning_Cart::cartItemCount();
@@ -631,15 +636,14 @@ class CatalogLmsController extends LmsController
         $this->allCourseForma();
     }
 
-
-    function downloadDemoMaterialTask()
+    public function downloadDemoMaterialTask()
     {
-        require_once(_base_ . '/lib/lib.download.php');
+        require_once _base_ . '/lib/lib.download.php';
 
         $id = Get::gReq('course_id', DOTY_INT);
         $db = DbConn::getInstance();
 
-        $qtxt = "SELECT course_demo FROM %lms_course WHERE idCourse=" . $id;
+        $qtxt = 'SELECT course_demo FROM %lms_course WHERE idCourse=' . $id;
 
         $q = $db->query($qtxt);
         list($fname) = $db->fetch_row($q);
@@ -647,9 +651,9 @@ class CatalogLmsController extends LmsController
         if (!empty($fname)) {
             sendFile('/appLms/course/', $fname);
         } else {
-            echo "nothing found";
+            echo 'nothing found';
         }
-        die();
+        exit();
     }
 
     public function self_unsubscribe()
@@ -659,7 +663,6 @@ class CatalogLmsController extends LmsController
 
         $cmodel = new CourseAlms();
         $cinfo = $cmodel->getCourseModDetails($id_course);
-
 
         $smodel = new SubscriptionAlms();
         $param = '';
@@ -675,11 +678,8 @@ class CatalogLmsController extends LmsController
                 if ($cinfo['auto_unsubscribe'] == 2) {
                     $res = $smodel->unsubscribeUser($id_user, $id_course, $id_edition, $obj->id_date);
                 }
-
             }
-
         }
-
 
         if ($cinfo['course_type'] == 'elearning') {
             if ($cinfo['auto_unsubscribe'] == 1) {
@@ -692,7 +692,6 @@ class CatalogLmsController extends LmsController
                 $res = $smodel->unsubscribeUser($id_user, $id_course, $id_edition, $id_date);
             }
         }
-
 
         if ($res) {
             $this->allCourseForma();

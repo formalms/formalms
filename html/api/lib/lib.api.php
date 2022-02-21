@@ -1,6 +1,17 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 define('_API_DEBUG', false);
 
@@ -28,13 +39,12 @@ define('_GENERIC_ELEMENT', 'element');
 
 class API
 {
-
     protected $db;
     protected $aclManager;
 
     protected $needAuthentication = true;
     protected $authenticated = false;
-    protected $buffer = "";
+    protected $buffer = '';
 
     public function __construct()
     {
@@ -43,7 +53,8 @@ class API
     }
 
     /**
-     * Returns the buffer
+     * Returns the buffer.
+     *
      * @return <return>
      */
     public function get()
@@ -52,7 +63,8 @@ class API
     }
 
     /**
-     * Writes in the buffer
+     * Writes in the buffer.
+     *
      * @param <string> $string
      */
     protected function _write($string)
@@ -61,20 +73,21 @@ class API
     }
 
     /**
-     * Empty the buffer
+     * Empty the buffer.
      */
     public function flush()
     {
-        $this->_buffer = "";
+        $this->_buffer = '';
     }
 
     public function authenticateUser($username, $password)
     {
         $acl_man = Docebo::user()->getAclManager();
-        $query = "SELECT * FROM %adm_user "
+        $query = 'SELECT * FROM %adm_user '
             . "WHERE userid='" . $this->aclManager->absoluteId($username) . "' AND pass='" . $this->aclManager->encrypt($password) . "'";
         $res = $this->db->query($query);
-        return ($this->db->num_rows($res) > 0);
+
+        return $this->db->num_rows($res) > 0;
     }
 
     /*
@@ -84,7 +97,7 @@ class API
     {
         $result = ['success' => false];
         //eliminates old token
-        $query = "DELETE FROM %adm_rest_authentication WHERE expiry_date < NOW()";
+        $query = 'DELETE FROM %adm_rest_authentication WHERE expiry_date < NOW()';
         $this->db->query($query);
 
         if (!$this->needAuthentication) {
@@ -102,7 +115,6 @@ class API
         switch ($auth_method) {
             // use application's pre-set authentication code
             case _AUTH_UCODE:
-                {
                     $auth_code = Get::sett('rest_auth_code', false);
 
                     $headerAuth = str_replace(['FormaLMS', ' '], '', $_SERVER['HTTP_X_AUTHORIZATION']);
@@ -112,21 +124,19 @@ class API
                     } else {
                         $result['success'] = true;
                     }
-                }
+
                 break;
             // search the token in  authentications DB table
             case _AUTH_TOKEN:
-                {
                     $query = "SELECT * FROM %adm_rest_authentication WHERE token='$code'";
                     $res = $this->db->query($query);
                     if ($this->db->num_rows($res) > 0) {
-
                         $now = time();
                         $result = true;
-                        $query = "UPDATE %adm_rest_authentication SET last_enter_date='" . date("Y-m-d H:i:s", $now) . "' ";
+                        $query = "UPDATE %adm_rest_authentication SET last_enter_date='" . date('Y-m-d H:i:s', $now) . "' ";
                         if (Get::sett('rest_auth_update', false)) {
                             $lifetime = Get::sett('rest_auth_lifetime', 1);
-                            $query .= " , expiry_date='" . date("Y-m-d H:i:s", $now + $lifetime) . "' ";
+                            $query .= " , expiry_date='" . date('Y-m-d H:i:s', $now + $lifetime) . "' ";
                         }
                         $query .= " WHERE token='$code'";
                         $this->db->query($query);
@@ -134,32 +144,33 @@ class API
                     } else {
                         $result['message'] = 'Autentication Token is not valid';
                     }
-                }
+
                 break;
             case _AUTH_SECRET_KEY:
-                { // ---- new auth method (alpha) 20110610 ---- [
+                 // ---- new auth method (alpha) 20110610 ---- [
                     $result = $this->checkKeys($GLOBALS['UNFILTERED_POST']);
-                }
+
                 break; // ]----
             default:
-            {
-
-            }
         }
+
         return $result;
     }
 
-
     /**
-     * Check if the request is valid
+     * Check if the request is valid.
+     *
      * @param array $params the parameters recived by the api
+     *
      * @return array
      */
     public function checkKeys($params)
     { // ---- new auth method (alpha) 20110610 ---- [
         // retive the hash recived with the api call
         $result = ['success' => true];
-        if (!isset($_SERVER['HTTP_X_AUTHORIZATION'])) return false;
+        if (!isset($_SERVER['HTTP_X_AUTHORIZATION'])) {
+            return false;
+        }
 
         // calculate the same hash locally
         $auth = base64_decode(str_replace('FormaLMS ', '', $_SERVER['HTTP_X_AUTHORIZATION']));
@@ -189,9 +200,9 @@ class API
                 $params_to_check[] = $val;
             }
         }
+
         return $params_to_check;
     }
-
 
     public function call($name, $params)
     {
@@ -205,10 +216,11 @@ class API
     {
         $params = $this->fillParamsFrom($params, $_POST);
         $params = $this->checkExternalUser($params, $_POST);
+
         return $params;
     }
 
-    static public function Execute($auth_code, $module, $function, $params)
+    public static function Execute($auth_code, $module, $function, $params)
     {
         $result = ['success' => true, 'message' => ''];
         $class_name = $module . '_API';
@@ -219,7 +231,7 @@ class API
             $result['message'] = sprintf('File not found : %s', $file_name);
         }
         if ($result['success']) {
-            require_once($file_name);
+            require_once $file_name;
 
             if (!class_exists($class_name)) {
                 $result['success'] = false;
@@ -242,13 +254,14 @@ class API
     }
 
     /**
-     * Return the array of nested element into an xml format
+     * Return the array of nested element into an xml format.
+     *
      * @param array $arr
+     *
      * @return string the xml formatted output
      */
-    static public function getXML($arr)
+    public static function getXML($arr)
     {
-
         $output = '';
         if (is_array($arr)) {
             $output .= '<?xml version="' . _XML_VERSION . '" encoding="' . _XML_ENCODING . '"?>';
@@ -256,30 +269,38 @@ class API
             self::convert($output, $arr);
             $output .= '</XMLoutput>';
         }
+
         return $output;
     }
 
-    static protected function getopentag($tagkey)
+    protected static function getopentag($tagkey)
     {
-
         $output = '<';
-        if (is_numeric($tagkey)) $output .= _GENERIC_ELEMENT; else $output .= $tagkey;
+        if (is_numeric($tagkey)) {
+            $output .= _GENERIC_ELEMENT;
+        } else {
+            $output .= $tagkey;
+        }
         $output .= '>';
+
         return $output;
     }
 
-    static protected function getclosetag($tagkey)
+    protected static function getclosetag($tagkey)
     {
-
         $output = '</';
-        if (is_numeric($tagkey)) $output .= _GENERIC_ELEMENT; else $output .= $tagkey;
+        if (is_numeric($tagkey)) {
+            $output .= _GENERIC_ELEMENT;
+        } else {
+            $output .= $tagkey;
+        }
         $output .= '>';
+
         return $output;
     }
 
-    static protected function getstringval(&$value)
+    protected static function getstringval(&$value)
     {
-
         $output = '';
         if (is_bool($value)) {
             switch ($value) {
@@ -293,42 +314,48 @@ class API
         } else {
             $output .= $value;
         }
+
         return $output;
     }
 
-    static protected function convert(&$out, &$data)
+    protected static function convert(&$out, &$data)
     {
-
-        if (!is_array($data)) return;
+        if (!is_array($data)) {
+            return;
+        }
         foreach ($data as $key => $val) {
             $out .= self::getopentag($key);
-            if (is_array($val)) self::convert($out, $val);
-            else $out .= self::getstringval($val);
+            if (is_array($val)) {
+                self::convert($out, $val);
+            } else {
+                $out .= self::getstringval($val);
+            }
             $out .= self::getclosetag($key);
         }
     }
-
 
     /**
      * Check if the params array contains information about the external user;
      * if found the idst value of the array will be overwritten with the
      * data found.
+     *
      * @param <array> $params
+     *
      * @return <array>
      */
     public function checkExternalUser($params, $data)
     {
-        if (defined("_API_DEBUG") && _API_DEBUG) {
-            file_put_contents('check_ext_user.txt', "\n\n----------------\n\n" . print_r($params, true) . " || " . print_r($data, true), FILE_APPEND);
+        if (defined('_API_DEBUG') && _API_DEBUG) {
+            file_put_contents('check_ext_user.txt', "\n\n----------------\n\n" . print_r($params, true) . ' || ' . print_r($data, true), FILE_APPEND);
         }
 
         if (!empty($data['ext_user']) && !empty($data['ext_user_type'])) {
             $pref_path = 'ext.user.' . $data['ext_user_type'];
-            $pref_val = 'ext_user_' . $data['ext_user_type'] . "_" . (int)$data['ext_user'];
+            $pref_val = 'ext_user_' . $data['ext_user_type'] . '_' . (int) $data['ext_user'];
 
             $res = $this->aclManager->getUsersBySetting($pref_path, $pref_val);
 
-            if (defined("_API_DEBUG") && _API_DEBUG) {
+            if (defined('_API_DEBUG') && _API_DEBUG) {
                 file_put_contents('check_ext_user.txt', print_r($res, true), FILE_APPEND);
             }
 
@@ -345,17 +372,15 @@ class API
             }
         }
 
-        if (defined("_API_DEBUG") && _API_DEBUG) {
+        if (defined('_API_DEBUG') && _API_DEBUG) {
             file_put_contents('check_ext_user.txt', print_r($params, true), FILE_APPEND);
         }
 
         return $params;
     }
 
-
     public function fillParamsFrom($params, $data, $overwrite = false)
     {
-
         foreach ($data as $k => $val) {
             if (!isset($params[$k]) || $overwrite) {
                 $params[$k] = $val;
@@ -364,6 +389,4 @@ class API
 
         return $params;
     }
-
-
 }

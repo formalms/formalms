@@ -1,16 +1,27 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events\Core\User;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class UsersManagementShowEvent
- * @package appLms\Events\Core
+ * Class UsersManagementShowEvent.
  */
 class UsersManagementShowEvent extends Event
 {
-    const EVENT_NAME = 'core.usersmanagement.event';
-    
+    public const EVENT_NAME = 'core.usersmanagement.event';
+
     /** @var array */
     protected $users;
 
@@ -19,7 +30,6 @@ class UsersManagementShowEvent extends Event
      */
     public function __construct()
     {
-        
         $this->users = [];
     }
 
@@ -46,5 +56,4 @@ class UsersManagementShowEvent extends Event
     {
         return $this->users;
     }
-
 }

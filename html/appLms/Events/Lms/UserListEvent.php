@@ -1,15 +1,26 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appLms\Events\Lms;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class UserListEvent
- * @package appLms\Events\Lms
+ * Class UserListEvent.
  */
 class UserListEvent extends Event
 {
-    const EVENT_NAME = 'lms.userlist.event';
+    public const EVENT_NAME = 'lms.userlist.event';
 
     /** @var null */
     protected $lang;
@@ -39,7 +50,7 @@ class UserListEvent extends Event
 
         $this->lang = $lang;
 
-        $this->idEvent = NULL;
+        $this->idEvent = null;
     }
 
     /**
@@ -48,7 +59,6 @@ class UserListEvent extends Event
     public function setIdEvent($idEvent)
     {
         $this->idEvent = $idEvent;
-
     }
 
     /**

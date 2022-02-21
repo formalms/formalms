@@ -1,14 +1,25 @@
-﻿<?php
+<?php
 
-define("_INSTALLER_TITLE", "Инсталляция forma.lms");
-define("_NEXT", "Следующий шаг");
-define("_BACK", "Вернуться");
-define("_LOADING", "Загрузка");
-define("_TRY_AGAIN", "Попробуйте заново");
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
+define('_INSTALLER_TITLE', 'Инсталляция forma.lms');
+define('_NEXT', 'Следующий шаг');
+define('_BACK', 'Вернуться');
+define('_LOADING', 'Загрузка');
+define('_TRY_AGAIN', 'Попробуйте заново');
 //--------------------------------------
-define("_TITLE_STEP1", "Шаг 1: Выберите язык");
-define("_LANGUAGE", "Язык");
-define("_INSTALLER_INTRO_TEXT", "Компания formalms.org разработала собственную обучающую систему с открытым кодом, forma.lms, пригодную для применения в курпных организациях, корпоративном секторе, правительстве и здравоохранении.
+define('_TITLE_STEP1', 'Шаг 1: Выберите язык');
+define('_LANGUAGE', 'Язык');
+define('_INSTALLER_INTRO_TEXT', 'Компания formalms.org разработала собственную обучающую систему с открытым кодом, forma.lms, пригодную для применения в курпных организациях, корпоративном секторе, правительстве и здравоохранении.
 	<p><b>Ключевые особенности</b></p>
 	<ul>
 		<li>поддержка Scorm 1.2 и 2004</li>
@@ -23,101 +34,101 @@ define("_INSTALLER_INTRO_TEXT", "Компания formalms.org разработ�
 		<li>Функциональные возможности для суб-администрирования, функции администрирования стран и областей</li>
 		<li>Много-языковая поддержка, поддержка письма LTR(слева-направо) и RTL (справа-налево). Поддерживаются 25 языков</li>
 		<li>Поддержка мобильных устройств</li>
-	</ul>");
+	</ul>');
 // ---------------------------------------
-define("_TITLE_STEP2", "Шаг 2: Информация");
-define("_SERVERINFO","Информация о сервере");
-define("_SERVER_SOFTWARE","ПО сервера: ");
-define("_PHPVERSION","Версия PHP : ");
-define("_MYSQLCLIENT_VERSION","Версия клиента MySQL: ");
-define("_MYSQLSERVER_VERSION","Версия сервера MySQL : ");
-define("_LDAP","LDAP: ");
-define("_ONLY_IF_YU_WANT_TO_USE_IT","Примите во внимание только если Вы используете LDAP ");
-define("_OPENSSL","Openssl : ");
-define("_WARINNG_SOCIAL","Consider this warning only if you use social login");
+define('_TITLE_STEP2', 'Шаг 2: Информация');
+define('_SERVERINFO', 'Информация о сервере');
+define('_SERVER_SOFTWARE', 'ПО сервера: ');
+define('_PHPVERSION', 'Версия PHP : ');
+define('_MYSQLCLIENT_VERSION', 'Версия клиента MySQL: ');
+define('_MYSQLSERVER_VERSION', 'Версия сервера MySQL : ');
+define('_LDAP', 'LDAP: ');
+define('_ONLY_IF_YU_WANT_TO_USE_IT', 'Примите во внимание только если Вы используете LDAP ');
+define('_OPENSSL', 'Openssl : ');
+define('_WARINNG_SOCIAL', 'Consider this warning only if you use social login');
 
-define("_PHPINFO","Информация о PHP: ");
-define("_MAGIC_QUOTES_GPC","magic_quotes_gpc: ");
-define("_SAFEMODE","Безопасный режим: ");
-define("_REGISTER_GLOBALS","register_global: ");
-define("_UPLOAD_MAX_FILESIZE","upload_max_filsize: ");
-define("_POST_MAX_SIZE","post_max_size: ");
-define("_MAX_EXECUTION_TIME","max_execution_time: ");
-define("_ALLOW_URL_FOPEN","allow_url_fopen : ");
-define("_ALLOW_URL_INCLUDE","allow_url_include : ");
-define("_ON","ВКЛ ");
-define("_OFF","ВЫКЛ ");
+define('_PHPINFO', 'Информация о PHP: ');
+define('_MAGIC_QUOTES_GPC', 'magic_quotes_gpc: ');
+define('_SAFEMODE', 'Безопасный режим: ');
+define('_REGISTER_GLOBALS', 'register_global: ');
+define('_UPLOAD_MAX_FILESIZE', 'upload_max_filsize: ');
+define('_POST_MAX_SIZE', 'post_max_size: ');
+define('_MAX_EXECUTION_TIME', 'max_execution_time: ');
+define('_ALLOW_URL_FOPEN', 'allow_url_fopen : ');
+define('_ALLOW_URL_INCLUDE', 'allow_url_include : ');
+define('_ON', 'ВКЛ ');
+define('_OFF', 'ВЫКЛ ');
 // -----------------------------------------
-define("_TITLE_STEP3", "Шаг 3: Лицензия");
-define("_AGREE_LICENSE", "Я согласен с условиями лицензии");
+define('_TITLE_STEP3', 'Шаг 3: Лицензия');
+define('_AGREE_LICENSE', 'Я согласен с условиями лицензии');
 // -----------------------------------------
-define("_TITLE_STEP4", "Шаг 4: Configuration");
-define("_SITE_BASE_URL", "Базовая ссылка на сайт");
-define("_DATABASE_INFO", "Информация о базе данных");
-define("_DB_HOST", "Адрес");
-define("_DB_NAME", "Имя базы данных");
-define("_DB_USERNAME", "Пользователь базы данных");
-define("_DB_PASS", "Пароль");
-define("_UPLOAD_METHOD", "Способ загрузки файла (предлагается, при использовании Windows, например дома, используйте HTTP");
-define("_HTTP_UPLOAD", "Классический метод (HTTP)");
-define("_FTP_UPLOAD", "Загрузить файлы используя FTP");
-define("_FTP_INFO", "данные для доступа к FTP");
-define("_IF_FTP_SELECTED", "(если Вы выбрали FTP как метод загрузки)");
-define("_FTP_HOST", "Адрес Сервера");
-define("_FTP_PORT", "номер порта (общее значение правильно)");
-define("_FTP_USERNAME", "Имя пользователя");
-define("_FTP_PASS", "Пароль");
-define("_FTP_CONFPASS", "Подтвердите пароль");
-define("_FTP_PATH", "путь FTP (каталог в котором сохраняются файлы, напр. /htdocs/ /mainfile_html/");
-define("_CANT_CONNECT_WITH_DB", "Не могу соединиться с БД, пожалуйста проверьте данные для подключения");
-define("_CANT_SELECT_DB", "Не могу выбрать БД, пожалуйста проверьте данные для подключения");
-define("_CANT_CONNECT_WITH_FTP","Не могу подключться к выбранному серверу по FTP протоколу, пожалуйста проверьте параметры");
+define('_TITLE_STEP4', 'Шаг 4: Configuration');
+define('_SITE_BASE_URL', 'Базовая ссылка на сайт');
+define('_DATABASE_INFO', 'Информация о базе данных');
+define('_DB_HOST', 'Адрес');
+define('_DB_NAME', 'Имя базы данных');
+define('_DB_USERNAME', 'Пользователь базы данных');
+define('_DB_PASS', 'Пароль');
+define('_UPLOAD_METHOD', 'Способ загрузки файла (предлагается, при использовании Windows, например дома, используйте HTTP');
+define('_HTTP_UPLOAD', 'Классический метод (HTTP)');
+define('_FTP_UPLOAD', 'Загрузить файлы используя FTP');
+define('_FTP_INFO', 'данные для доступа к FTP');
+define('_IF_FTP_SELECTED', '(если Вы выбрали FTP как метод загрузки)');
+define('_FTP_HOST', 'Адрес Сервера');
+define('_FTP_PORT', 'номер порта (общее значение правильно)');
+define('_FTP_USERNAME', 'Имя пользователя');
+define('_FTP_PASS', 'Пароль');
+define('_FTP_CONFPASS', 'Подтвердите пароль');
+define('_FTP_PATH', 'путь FTP (каталог в котором сохраняются файлы, напр. /htdocs/ /mainfile_html/');
+define('_CANT_CONNECT_WITH_DB', 'Не могу соединиться с БД, пожалуйста проверьте данные для подключения');
+define('_CANT_SELECT_DB', 'Не могу выбрать БД, пожалуйста проверьте данные для подключения');
+define('_CANT_CONNECT_WITH_FTP', 'Не могу подключться к выбранному серверу по FTP протоколу, пожалуйста проверьте параметры');
 // -----------------------------------------
-define("_TITLE_STEP5", "Шаг 5: Конфигурация");
-define("_ADMIN_USER_INFO", "Информация, касающаяся администратора");
-define("_ADMIN_USERNAME", "Имя пользователя");
-define("_ADMIN_FIRSTNAME", "Имя");
-define("_ADMIN_LASTNAME", "Фамилия");
-define("_ADMIN_PASS", "Пароль");
-define("_ADMIN_CONFPASS", "Подтвердите пароль");
-define("_ADMIN_EMAIL", "эл.почта");
-define("_LANG_TO_INSTALL", "Языки для установки");
+define('_TITLE_STEP5', 'Шаг 5: Конфигурация');
+define('_ADMIN_USER_INFO', 'Информация, касающаяся администратора');
+define('_ADMIN_USERNAME', 'Имя пользователя');
+define('_ADMIN_FIRSTNAME', 'Имя');
+define('_ADMIN_LASTNAME', 'Фамилия');
+define('_ADMIN_PASS', 'Пароль');
+define('_ADMIN_CONFPASS', 'Подтвердите пароль');
+define('_ADMIN_EMAIL', 'эл.почта');
+define('_LANG_TO_INSTALL', 'Языки для установки');
 // -----------------------------------------
-define("_TITLE_STEP6", "Шаг 6: Настройка Базы Данных");
-define("_DATABASE", "База данных");
-define("_DB_IMPORTING", "БД для импорта");
-define("_LANGUAGES", "Языки");
+define('_TITLE_STEP6', 'Шаг 6: Настройка Базы Данных');
+define('_DATABASE', 'База данных');
+define('_DB_IMPORTING', 'БД для импорта');
+define('_LANGUAGES', 'Языки');
 // -----------------------------------------
-define("_TITLE_STEP7", "Step 7: Configurazione SMTP");
-define("_SMTP_INFO", "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
-define("_USE_SMTP_DATABASE", "Impostazioni SMTP su Database");
-define("_USE_SMTP", "Usa SMTP");
-define("_SMTP_HOST", "Host SMTP");
-define("_SMTP_PORT", "Porta SMTP");
-define("_SMTP_SECURE", "Tipo di sicurezza");
-define("_SMTP_AUTO_TLS", "Impostazione Auto TLS SMTP");
-define("_SMTP_USER", "User SMTP");
-define("_SMTP_PWD", "Password SMTP");
-define("_SMTP_DEBUG", "Debug SMTP");
-define("_CANT_CONNECT_SMTP", "impossibile connettersi al server SMTP selezionato");
+define('_TITLE_STEP7', 'Step 7: Configurazione SMTP');
+define('_SMTP_INFO', "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
+define('_USE_SMTP_DATABASE', 'Impostazioni SMTP su Database');
+define('_USE_SMTP', 'Usa SMTP');
+define('_SMTP_HOST', 'Host SMTP');
+define('_SMTP_PORT', 'Porta SMTP');
+define('_SMTP_SECURE', 'Tipo di sicurezza');
+define('_SMTP_AUTO_TLS', 'Impostazione Auto TLS SMTP');
+define('_SMTP_USER', 'User SMTP');
+define('_SMTP_PWD', 'Password SMTP');
+define('_SMTP_DEBUG', 'Debug SMTP');
+define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');
 // -----------------------------------------
-define("_TITLE_STEP8", "Шаг 8: Завершение установки");
-define("_INSTALLATION_COMPLETED", "Инсталляция только-что была завершена");
-define("_INSTALLATION_DETAILS", "Детали");
-define("_SITE_HOMEPAGE", "В начало");
-define("_REVEAL_PASSWORD", "Показать пароль");
-define("_COMMUNITY", "Сообщество");
-define("_COMMERCIAL_SERVICES", "Коммерческие услуги");
-define("_CONFIG_FILE_NOT_SAVED", "Программа-установщик не смогла сохранить файл config.php, скачайте его и перезапишите в режиме онлайн.");
-define("_DOWNLOAD_CONFIG", "Конфигурация загрузки");
-define("_CHECKED_DIRECTORIES","Некоторые каталоги, в которых сохраняются файлы, не существуют или не имеют необходимых разрешений");
-define("_CHECKED_FILES","Отдельные файлы не имеют необходимых разрешений");
+define('_TITLE_STEP8', 'Шаг 8: Завершение установки');
+define('_INSTALLATION_COMPLETED', 'Инсталляция только-что была завершена');
+define('_INSTALLATION_DETAILS', 'Детали');
+define('_SITE_HOMEPAGE', 'В начало');
+define('_REVEAL_PASSWORD', 'Показать пароль');
+define('_COMMUNITY', 'Сообщество');
+define('_COMMERCIAL_SERVICES', 'Коммерческие услуги');
+define('_CONFIG_FILE_NOT_SAVED', 'Программа-установщик не смогла сохранить файл config.php, скачайте его и перезапишите в режиме онлайн.');
+define('_DOWNLOAD_CONFIG', 'Конфигурация загрузки');
+define('_CHECKED_DIRECTORIES', 'Некоторые каталоги, в которых сохраняются файлы, не существуют или не имеют необходимых разрешений');
+define('_CHECKED_FILES', 'Отдельные файлы не имеют необходимых разрешений');
 // -----------------------------------------
-define("_UPGRADER_TITLE", "forma.lms - Обновление");
-define("_UPGRADE_CONFIG","Обновление файла config.php");
-define("_UPG_CONFIG_OK","Файл config.php успешно обновлен");
-define("_UPG_CONFIG_NOT_CHANGED", "Config.php already updated");
-define("_UPG_CONFIG_NOT_SAVED", "Процесс обновления файла config.php завершился неудачей.");
-define("_UPGRADING", "Обновление продолжается");
-define("_UPGRADING_LANGUAGES", "Обновляемые языки");
-define("_UPGRADE_COMPLETE", "Обновление завершено");
+define('_UPGRADER_TITLE', 'forma.lms - Обновление');
+define('_UPGRADE_CONFIG', 'Обновление файла config.php');
+define('_UPG_CONFIG_OK', 'Файл config.php успешно обновлен');
+define('_UPG_CONFIG_NOT_CHANGED', 'Config.php already updated');
+define('_UPG_CONFIG_NOT_SAVED', 'Процесс обновления файла config.php завершился неудачей.');
+define('_UPGRADING', 'Обновление продолжается');
+define('_UPGRADING_LANGUAGES', 'Обновляемые языки');
+define('_UPGRADE_COMPLETE', 'Обновление завершено');

@@ -1,33 +1,34 @@
 <?php
 
-
-
-/**
- * @module scorm_page_head.php
+/*
+ * FORMA - The E-Learning Suite
  *
- * @version $Id: scorm_page_head.php 229 2006-04-10 11:35:05Z ema $
- * @copyright 2003 
- **/
- 
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 ob_end_clean();
 ob_start();
 
-
-if(!Docebo::user()->isLoggedIn() || !isset($_SESSION['idCourse'])) 
-	die( "Malformed request" ); 
+if (!Docebo::user()->isLoggedIn() || !isset($_SESSION['idCourse'])) {
+    exit('Malformed request');
+}
 
 require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
 
-
-@sql_query("SET NAMES '".$GLOBALS['db_conn_names']."'", $dbconn);
-@sql_query("SET CHARACTER SET '".$GLOBALS['db_conn_char_set']."'", $dbconn);
+@sql_query("SET NAMES '" . $GLOBALS['db_conn_names'] . "'", $dbconn);
+@sql_query("SET CHARACTER SET '" . $GLOBALS['db_conn_char_set'] . "'", $dbconn);
 
 require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
 
-$idscorm_organization = (int)$_GET['idscorm_organization'];
-$idReference = (int)$_GET['idReference'];
-$imagesPath = getPathImage().'scorm/';
-$playertemplate = ( isset($_GET['template']) ? $_GET['template'] : '' );
+$idscorm_organization = (int) $_GET['idscorm_organization'];
+$idReference = (int) $_GET['idReference'];
+$imagesPath = getPathImage() . 'scorm/';
+$playertemplate = (isset($_GET['template']) ? $_GET['template'] : '');
 
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Strict//EN"';
 echo '    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
@@ -36,12 +37,14 @@ echo '<head>';
 echo '	<title>Untitled document</title>';
 // TODO: verificare se la prossima riga � un problema con IIS
 // echo '	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />';
-echo '	<link href="'.getPathTemplate().'style/base.css" rel="stylesheet" type="text/css" />';
-echo '	<link href="'.getPathTemplate().'style/lms-scormplayer.css" rel="stylesheet" type="text/css" />';
-if($playertemplate != '') {
-	if(file_exists(getPathTemplate().'player_scorm/'.$playertemplate.'/def_style.css'))
-		echo '	<link href="'.getPathTemplate().'player_scorm/'.$playertemplate.'/def_style.css" rel="stylesheet" type="text/css" />';
-	else $playertemplate = '';
+echo '	<link href="' . getPathTemplate() . 'style/base.css" rel="stylesheet" type="text/css" />';
+echo '	<link href="' . getPathTemplate() . 'style/lms-scormplayer.css" rel="stylesheet" type="text/css" />';
+if ($playertemplate != '') {
+    if (file_exists(getPathTemplate() . 'player_scorm/' . $playertemplate . '/def_style.css')) {
+        echo '	<link href="' . getPathTemplate() . 'player_scorm/' . $playertemplate . '/def_style.css" rel="stylesheet" type="text/css" />';
+    } else {
+        $playertemplate = '';
+    }
 }
 
 echo <<<_TEXTEND
@@ -168,82 +171,79 @@ echo <<<_TEXTEND
 </head>
 _TEXTEND;
 
-echo '<body id="page_head" class="'.( $playertemplate != '' ? $playertemplate.'_back' : 'standard_back' ).'" onload="Initialize()">';
+echo '<body id="page_head" class="' . ($playertemplate != '' ? $playertemplate . '_back' : 'standard_back') . '" onload="Initialize()">';
 
 echo "<div id=\"headnav\">\n"
-	."	<div>\n"
-	."		<div id=\"prevblocklink\" style=\"display:block; float: left;\">\n"
-	."			<A id=\"prevsco\" href=\"#\" onClick=\"navPrev(); return false;\"><img class=\"imgnav\" id=\"imgprev\" src=\"".$imagesPath."bt_sx.png\" alt=\"Back\" /></A>\n"
-	."			<span id=\"prevlink\"></span>"
-	."		</div>\n"
-	."		<div id=\"nextblocklink\" style=\"display:block; float: left;\">\n"
-	."			<A id=\"nextsco\" href=\"#\" onClick=\"navNext(); return false;\"><img class=\"imgnav\" id=\"imgnext\" src=\"".$imagesPath."bt_dx.png\" alt=\"Next\" /></A>\n"
-	."			<span id=\"nextlink\"></span>\n"
-	."		</div>\n"	
-	."		<script type=\"text/javascript\">\n"
-	."		<!--\n"
-	."			if(window.top.isShowTree()) {\n"
-	."				document.write('<a id=\"hidetree\" style=\"display:inline\" href=\"#\" onClick=\"hideTree(); return false;\"><img class=\"imgnav\" src=\"".$imagesPath."hide_tree.png\" alt=\"Hide Tree\" /></a>');\n"
-	."				document.write('<a id=\"showtree\" style=\"display:none\" href=\"#\" onClick=\"showTree(); return false;\"><img class=\"imgnav\" src=\"".$imagesPath."show_tree.png\" alt=\"Show Tree\" /></a>');\n"
-	."			} else {\n"
-	."				document.write('<a id=\"hidetree\" style=\"display:none\" href=\"#\" onClick=\"hideTree(); return false;\"><img class=\"imgnav\" src=\"".$imagesPath."hide_tree.png\" alt=\"Hide Tree\" /></a>');\n"
-	."				document.write('<a id=\"showtree\" style=\"display:inline\" href=\"#\" onClick=\"showTree(); return false;\"><img class=\"imgnav\" src=\"".$imagesPath."show_tree.png\" alt=\"Show Tree\" /></a>');\n"
-	."			}\n"
-	."		-->\n"
-	."		</script>\n"
-	."	</div>\n"
-	."</div>\n";
+    . "	<div>\n"
+    . "		<div id=\"prevblocklink\" style=\"display:block; float: left;\">\n"
+    . '			<A id="prevsco" href="#" onClick="navPrev(); return false;"><img class="imgnav" id="imgprev" src="' . $imagesPath . "bt_sx.png\" alt=\"Back\" /></A>\n"
+    . '			<span id="prevlink"></span>'
+    . "		</div>\n"
+    . "		<div id=\"nextblocklink\" style=\"display:block; float: left;\">\n"
+    . '			<A id="nextsco" href="#" onClick="navNext(); return false;"><img class="imgnav" id="imgnext" src="' . $imagesPath . "bt_dx.png\" alt=\"Next\" /></A>\n"
+    . "			<span id=\"nextlink\"></span>\n"
+    . "		</div>\n"
+    . "		<script type=\"text/javascript\">\n"
+    . "		<!--\n"
+    . "			if(window.top.isShowTree()) {\n"
+    . "				document.write('<a id=\"hidetree\" style=\"display:inline\" href=\"#\" onClick=\"hideTree(); return false;\"><img class=\"imgnav\" src=\"" . $imagesPath . "hide_tree.png\" alt=\"Hide Tree\" /></a>');\n"
+    . "				document.write('<a id=\"showtree\" style=\"display:none\" href=\"#\" onClick=\"showTree(); return false;\"><img class=\"imgnav\" src=\"" . $imagesPath . "show_tree.png\" alt=\"Show Tree\" /></a>');\n"
+    . "			} else {\n"
+    . "				document.write('<a id=\"hidetree\" style=\"display:none\" href=\"#\" onClick=\"hideTree(); return false;\"><img class=\"imgnav\" src=\"" . $imagesPath . "hide_tree.png\" alt=\"Hide Tree\" /></a>');\n"
+    . "				document.write('<a id=\"showtree\" style=\"display:inline\" href=\"#\" onClick=\"showTree(); return false;\"><img class=\"imgnav\" src=\"" . $imagesPath . "show_tree.png\" alt=\"Show Tree\" /></a>');\n"
+    . "			}\n"
+    . "		-->\n"
+    . "		</script>\n"
+    . "	</div>\n"
+    . "</div>\n";
 
 /*echo '<div id="headerLogo">';
 echo '<img src="'.$imagesPath.'logo.jpg" alt="logo spaghettilearning scorm" />';
 echo '</div>';*/
-		//echo '<div class="header">'."\n"
-		//	."\t".'<img class="immagineSx logo_sx" src="'.getPathImage().'scorm/logo.png" alt="Left logo" />'."\n";
+        //echo '<div class="header">'."\n"
+        //	."\t".'<img class="immagineSx logo_sx" src="'.getPathImage().'scorm/logo.png" alt="Left logo" />'."\n";
 
 //echo "<img id=\"immagineSx\" src=\"../../templates/".$_SESSION["sesTemplate"]."/images/scorm/logo.png\" alt=\"Logo\" />\n";
 
 // statistics
 echo '<div id="statistics">';
 $itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);
-$rs = $itemtrack->getItemTrack(sl_sal_getUserId(), $idReference, NULL, $idscorm_organization);
-if( $rs === FALSE ) {
-	echo "Lesson never initiated";
+$rs = $itemtrack->getItemTrack(sl_sal_getUserId(), $idReference, null, $idscorm_organization);
+if ($rs === false) {
+    echo 'Lesson never initiated';
 } else {
-	$report = sql_fetch_assoc($rs);
-	echo Lang::t('_PROGRESS', 'scorm')." ".$report['nDescendantCompleted']."/".$report['nDescendant']."<br />";
-	$widthMax = 220;
-	$widthOne = ($widthMax-$report['nDescendant'])/$report['nDescendant'];
-	$posRel = 2;
-	echo '<div class="scorm_progressbarstat">';
-	//echo "<div >";
-	for($nRep = 0; $nRep < $report['nDescendantCompleted']; $nRep++, $posRel += $widthOne+1 ) {
-		echo "<div class=\"scorm_complete\" style=\"width: ".$widthOne."px; left:".$posRel."px; top: 2px;\"></div>";
-		//echo "<div class=\"scorm_complete\" style=\"width: ".$widthOne."%;\" >&nbsp;</div>";
-	}
-	for(; $nRep < $report['nDescendant']; $nRep++, $posRel += $widthOne+1 ) {
-		echo "<div class=\"scorm_incomplete\" style=\"width: ".$widthOne."px; left:".$posRel."px; top: 2px;\"></div>";
-		//echo "<div class=\"scorm_incomplete\" style=\"width: ".$widthOne."%;\" >&nbsp;</div>";
-	}
-	//echo '<div style="float: left; height: 14px; border-left: 1px solid black;" >&nbsp;</div>';
-	//echo '<div class="noFloat" style="border-left: 1px solid black;" ></div>';
-	echo "</div>";
-	
+    $report = sql_fetch_assoc($rs);
+    echo Lang::t('_PROGRESS', 'scorm') . ' ' . $report['nDescendantCompleted'] . '/' . $report['nDescendant'] . '<br />';
+    $widthMax = 220;
+    $widthOne = ($widthMax - $report['nDescendant']) / $report['nDescendant'];
+    $posRel = 2;
+    echo '<div class="scorm_progressbarstat">';
+    //echo "<div >";
+    for ($nRep = 0; $nRep < $report['nDescendantCompleted']; $nRep++, $posRel += $widthOne + 1) {
+        echo '<div class="scorm_complete" style="width: ' . $widthOne . 'px; left:' . $posRel . 'px; top: 2px;"></div>';
+        //echo "<div class=\"scorm_complete\" style=\"width: ".$widthOne."%;\" >&nbsp;</div>";
+    }
+    for (; $nRep < $report['nDescendant']; $nRep++, $posRel += $widthOne + 1) {
+        echo '<div class="scorm_incomplete" style="width: ' . $widthOne . 'px; left:' . $posRel . 'px; top: 2px;"></div>';
+        //echo "<div class=\"scorm_incomplete\" style=\"width: ".$widthOne."%;\" >&nbsp;</div>";
+    }
+    //echo '<div style="float: left; height: 14px; border-left: 1px solid black;" >&nbsp;</div>';
+    //echo '<div class="noFloat" style="border-left: 1px solid black;" ></div>';
+    echo '</div>';
 }
 echo '</div>';
 
 echo '<div id="headtitle">'
-	.'<script type="text/javascript">'
-	.'document.write(window.top.getTitle());'
-	.'</script>'
-	.'</div>';
+    . '<script type="text/javascript">'
+    . 'document.write(window.top.getTitle());'
+    . '</script>'
+    . '</div>';
 
-echo "<a id=\"closewindow\" href=\"#\" onclick=\"closeScormRTE(); return false;\" ><img class=\"imgnav\" src=\"".$imagesPath."bt_exit.gif\" alt=\"Close\" /></A>\n";
+echo '<a id="closewindow" href="#" onclick="closeScormRTE(); return false;" ><img class="imgnav" src="' . $imagesPath . "bt_exit.gif\" alt=\"Close\" /></A>\n";
 
 echo "</div>\n"
-	."</body>\n"
-	."</html>\n";
-	
+    . "</body>\n"
+    . "</html>\n";
+
 ob_end_flush();
 exit;	// to avoid index.php to add additional and unuseful html
-
-?>

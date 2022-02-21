@@ -1,44 +1,44 @@
 <div id="<?php echo $id; ?>_table_container">
-<?php if($print_table_over) : ?>
+<?php if ($print_table_over) { ?>
 <div class="table-container-over">
 	<div class="table-actions">
 		<?php
-			echo ( !is_array($rel_actions) ? $rel_actions : $rel_actions[0]);
-			if ($useStdSelectFormatter && $use_paginator) {
-				echo '<p class="table_selection">'
-					.Lang::t('_SELECT', 'directory').': '
-					.'<a class="" id="'.$id.'_select_all_up" href="#"><span>'.Lang::t('_ALL_PAGES', 'directory').'</span></a>'
-					.', '
-					.'<a class="" id="'.$id.'_unselect_all_up" href="#"><span>'.Lang::t('_NONE', 'directory').'</span></a>'
-					.'</p>';
-			}
-		?>
+            echo  !is_array($rel_actions) ? $rel_actions : $rel_actions[0];
+            if ($useStdSelectFormatter && $use_paginator) {
+                echo '<p class="table_selection">'
+                    . Lang::t('_SELECT', 'directory') . ': '
+                    . '<a class="" id="' . $id . '_select_all_up" href="#"><span>' . Lang::t('_ALL_PAGES', 'directory') . '</span></a>'
+                    . ', '
+                    . '<a class="" id="' . $id . '_unselect_all_up" href="#"><span>' . Lang::t('_NONE', 'directory') . '</span></a>'
+                    . '</p>';
+            }
+        ?>
 	</div>
-	<?php if($use_paginator){ ?><div id="<?php echo $id; ?>_pag_over"></div><?php }?>
+	<?php if ($use_paginator) { ?><div id="<?php echo $id; ?>_pag_over"></div><?php }?>
 	<div class="nofloat"></div>
 </div>
-<?php endif; ?>
+<?php } ?>
 <!-- Table -->
 <div id="<?php echo $id; ?>"></div>
-<?php if($print_table_below) : ?>
+<?php if ($print_table_below) { ?>
 <div class="table-container-below">
 	<div class="table-actions">
 		<?php
-			echo ( !is_array($rel_actions) ? $rel_actions : $rel_actions[1]);
-			if ($useStdSelectFormatter && $use_paginator) {
-				echo '<p>'
-					.Lang::t('_SELECT', 'directory').': '
-					.'<a class="" id="'.$id.'_select_all_down" href="#"><span>'.Lang::t('_ALL_PAGES', 'directory').'</span></a>'
-					.', '
-					.'<a class="" id="'.$id.'_unselect_all_down" href="#"><span>'.Lang::t('_NONE', 'directory').'</span></a>'
-					.'</p>';
-			}
-		?>
+            echo  !is_array($rel_actions) ? $rel_actions : $rel_actions[1];
+            if ($useStdSelectFormatter && $use_paginator) {
+                echo '<p>'
+                    . Lang::t('_SELECT', 'directory') . ': '
+                    . '<a class="" id="' . $id . '_select_all_down" href="#"><span>' . Lang::t('_ALL_PAGES', 'directory') . '</span></a>'
+                    . ', '
+                    . '<a class="" id="' . $id . '_unselect_all_down" href="#"><span>' . Lang::t('_NONE', 'directory') . '</span></a>'
+                    . '</p>';
+            }
+        ?>
 	</div>
-	<?php if($use_paginator){ ?><div id="<?php echo $id; ?>_pag_below"></div><?php }?>
+	<?php if ($use_paginator) { ?><div id="<?php echo $id; ?>_pag_below"></div><?php }?>
 	<div class="nofloat"></div>
 </div>
-<?php endif; ?>
+<?php } ?>
 </div>
 <script type="text/javascript">
 if (!YAHOO.DataTableLangManager) {
@@ -52,7 +52,9 @@ if (!YAHOO.DataTableLangManager) {
 
 YAHOO.namespace("DataTable_<?php echo $id; ?>");
 var DataTable_<?php echo $id; ?>;
-<?php if ($useStdSelectFormatter) echo 'var DataTableSelector_'.$id.';'."\n"; ?>
+<?php if ($useStdSelectFormatter) {
+            echo 'var DataTableSelector_' . $id . ';' . "\n";
+        } ?>
 
 YAHOO.util.Event.onDOMReady(function() {
 	var oConfig = {
@@ -66,17 +68,25 @@ YAHOO.util.Event.onDOMReady(function() {
 		sort: "<?php echo $sort; ?>",
 		dir: "<?php echo $dir; ?>",
 
-		usePaginator: <?php echo $use_paginator ? 'true' : 'false' ?>
+		usePaginator: <?php echo $use_paginator ? 'true' : 'false'; ?>
 
 
 	};
 
 	<?php
-		if ($use_paginator) echo 'oConfig.paginatorParams = {rowsPerPage: '.$rowsPerPage.' '.$paginatorConfig.'};'."\n";
-		if ($generateRequest) echo 'oConfig.generateRequest = '.$generateRequest.';'."\n";
-		if (isset($scroll_x) && $scroll_x) echo 'oConfig.scrollX = "'.$scroll_x.'";'."\n";
-		if (isset($scroll_y) && $scroll_y) echo 'oConfig.scrollY = "'.$scroll_y.'";'."\n";
-	?>
+        if ($use_paginator) {
+            echo 'oConfig.paginatorParams = {rowsPerPage: ' . $rowsPerPage . ' ' . $paginatorConfig . '};' . "\n";
+        }
+        if ($generateRequest) {
+            echo 'oConfig.generateRequest = ' . $generateRequest . ';' . "\n";
+        }
+        if (isset($scroll_x) && $scroll_x) {
+            echo 'oConfig.scrollX = "' . $scroll_x . '";' . "\n";
+        }
+        if (isset($scroll_y) && $scroll_y) {
+            echo 'oConfig.scrollY = "' . $scroll_y . '";' . "\n";
+        }
+    ?>
 
 
 
@@ -144,30 +154,31 @@ var initDataTable = function(oConfig) {
 	//YAHOO.lang.augmentObject(oDt, { stdDialogIcons: ... });
 
 	<?php
-		if (isset($stdDialogIcons) && is_array($stdDialogIcons) && !empty($stdDialogIcons)) {
-			echo 'oDt.stdDialogIcons = [];';
-			foreach ($stdDialogIcons as $key => $style) {
-				if ($key != "" && $style != "")
-					echo 'oDt.stdDialogIcons["'.$key.'"] = "'.$style.'"';
-			}
-		}
-	?>
+        if (isset($stdDialogIcons) && is_array($stdDialogIcons) && !empty($stdDialogIcons)) {
+            echo 'oDt.stdDialogIcons = [];';
+            foreach ($stdDialogIcons as $key => $style) {
+                if ($key != '' && $style != '') {
+                    echo 'oDt.stdDialogIcons["' . $key . '"] = "' . $style . '"';
+                }
+            }
+        }
+    ?>
 
 	<?php
-		if (isset($events) && is_array($events)) {
-			foreach ($events as $name=>$event) {
-				echo 'oDt.subscribe("'.$name.'", '.$event.');'."\n" ;
-			}
-		}
-	?>
+        if (isset($events) && is_array($events)) {
+            foreach ($events as $name => $event) {
+                echo 'oDt.subscribe("' . $name . '", ' . $event . ');' . "\n";
+            }
+        }
+    ?>
 
 
-	<?php if ($this->editorSaveEvent) : ?>
+	<?php if ($this->editorSaveEvent) { ?>
 		oDt.subscribe("cellMouseoverEvent", highlightEditableCell);
 		oDt.subscribe("cellMouseoutEvent", oDt.onEventUnhighlightCell);
 		oDt.subscribe("cellClickEvent", oDt.onEventShowCellEditor);
 		oDt.subscribe("editorSaveEvent", <?php echo $this->editorSaveEvent; ?>);
-	<?php endif; ?>
+	<?php } ?>
 
 	<?php if ($useStdSelectFormatter) { ?>
 
@@ -221,7 +232,7 @@ var initDataTable = function(oConfig) {
 		YAHOO.util.Event.addListener(["<?php echo $id; ?>_select_all_up", "<?php echo $id; ?>_select_all_down"], "click", function(e) {
 			YAHOO.util.Event.preventDefault(e);
 			oDt.showTableMessage("<?php echo Lang::t('_LOADING', 'admin_directory'); ?> ...", YAHOO.widget.DataTable.CLASS_LOADING);
-			/*var postdata = <?php echo isset($selectAllAdditionalFilter) ? $selectAllAdditionalFilter : '""';?>;*/
+			/*var postdata = <?php echo isset($selectAllAdditionalFilter) ? $selectAllAdditionalFilter : '""'; ?>;*/
 			var postdata = "";
 			<?php if (isset($selectAllAdditionalFilter)) { ?>
 				var add = <?php echo $selectAllAdditionalFilter; ?>;
@@ -260,7 +271,9 @@ var initDataTable = function(oConfig) {
 			YAHOO.util.Dom.get("<?php echo $id; ?>_head_select").checked = false;
 		});
 
-		<?php if (isset($initialSelection)) echo 'TableSelector.initSelection('.$initialSelection.', true);'."\n"; ?>
+		<?php if (isset($initialSelection)) {
+        echo 'TableSelector.initSelection(' . $initialSelection . ', true);' . "\n";
+    } ?>
 		DataTableSelector_<?php echo $id; ?> = TableSelector;
 
 	<?php } ?>
@@ -289,14 +302,14 @@ var initDataTable = function(oConfig) {
 					header: "<?php echo addslashes(Lang::t('_AREYOUSURE')); ?>",
 					body: '<div id="<?php echo $id; ?>_del_dialog_message"></div>'
 						+'<form method="POST" id="<?php echo $id; ?>_del_dialog_form" action="'+this.href+'">'
-						+<?php echo (isset($delDisplayField) ? '"<p>'.addslashes(Lang::t('_DEL', 'standard')).':&nbsp;<b>"+oRecord.getData("'.$delDisplayField.'")+"</b></p>"' : '""');  ?>
+						+<?php echo isset($delDisplayField) ? '"<p>' . addslashes(Lang::t('_DEL', 'standard')) . ':&nbsp;<b>"+oRecord.getData("' . $delDisplayField . '")+"</b></p>"' : '""'; ?>
 						+'</form>',
 					callback: function(o) {
 						<?php
-							if (isset($stdDeleteCallbackEvent) && $stdDeleteCallbackEvent) {
-								echo $stdDeleteCallbackEvent.'.call(this, o);'."\n"; //an event to call whit scope = this and arguments = callback arguments
-							}
-						?>
+                            if (isset($stdDeleteCallbackEvent) && $stdDeleteCallbackEvent) {
+                                echo $stdDeleteCallbackEvent . '.call(this, o);' . "\n"; //an event to call whit scope = this and arguments = callback arguments
+                            }
+                        ?>
 						this.destroy();
 						oDt.refresh();
 					}
@@ -335,8 +348,12 @@ var initDataTable = function(oConfig) {
 							this.destroy();
 							oDt.refresh();
 						}
-						<?php if (isset($stdModifyRenderEvent) && $stdModifyRenderEvent) echo ',renderEvent: '.$stdModifyRenderEvent; ?>
-						<?php if (isset($stdModifyDestroyEvent) && $stdModifyDestroyEvent) echo ',destroyEvent: '.$stdModifyDestroyEvent; ?>
+						<?php if (isset($stdModifyRenderEvent) && $stdModifyRenderEvent) {
+                            echo ',renderEvent: ' . $stdModifyRenderEvent;
+                        } ?>
+						<?php if (isset($stdModifyDestroyEvent) && $stdModifyDestroyEvent) {
+                            echo ',destroyEvent: ' . $stdModifyDestroyEvent;
+                        } ?>
 					}).call(this, e);
 				});
 			});
@@ -419,7 +436,7 @@ var initDataTable = function(oConfig) {
 					header: "<?php echo Lang::t('_MAKE_A_COPY', 'standard'); ?>",
 					body: '<div id="<?php echo $id; ?>_dup_message"></div>'
 						+'<form method="POST" id="<?php echo $id; ?>_dup_form" action="'+this.href+'">'
-						+<?php echo '"<p>'.Lang::t('_MAKE_A_COPY', 'standard').'</p>"'; ?>
+						+<?php echo '"<p>' . Lang::t('_MAKE_A_COPY', 'standard') . '</p>"'; ?>
 
 						+'<br/>'
 						+'<input class="check" type="checkbox" id="image" name="image" value="1">'

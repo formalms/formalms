@@ -1,15 +1,26 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events\Core\FileSystem;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class DownloadEvent
- * @package appCore\Events\Core\FileSystem
+ * Class DownloadEvent.
  */
 class DownloadEvent extends Event
 {
-    const EVENT_NAME = 'core.event.filesystem.download';
+    public const EVENT_NAME = 'core.event.filesystem.download';
 
     private $path;
     private $filename;
@@ -18,12 +29,13 @@ class DownloadEvent extends Event
 
     /**
      * DownloadEvent constructor.
+     *
      * @param $path
      * @param $filename
      * @param $ext
      * @param $sendname
      */
-    public function __construct($path, $filename, $ext = NULL, $sendname = NULL)
+    public function __construct($path, $filename, $ext = null, $sendname = null)
     {
         $this->path = $path;
         $this->filename = $filename;
@@ -75,5 +87,4 @@ class DownloadEvent extends Event
             'sendname' => $this->sendname,
         ];
     }
-
 }

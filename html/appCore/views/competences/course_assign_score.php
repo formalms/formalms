@@ -2,9 +2,9 @@
 <div class="std_block">
 <?php
 
-echo Form::openForm('sel_assign_score_form', 'index.php?r='.$base_link_competence.'/assign_to_course_action');
+echo Form::openForm('sel_assign_score_form', 'index.php?r=' . $base_link_competence . '/assign_to_course_action');
 
-echo Form::getHidden('id_course', 'id_course', (int)$id_course);
+echo Form::getHidden('id_course', 'id_course', (int) $id_course);
 echo Form::getHidden('del_selection', 'del_selection', $del_selection);
 echo Form::getHidden('new_selection', 'new_selection', $new_selection);
 

@@ -4,9 +4,9 @@
 <script type="text/javascript">var tree_categorize =true;</script>
 
 <?php
-$title_arr=array();
-$title_arr[$back_url] = Lang::t('_CONTENT_LIBRARY', 'kb');//$data['original_name'];
-$title_arr[] = Lang::t('_CATEGORIZE', 'kb').': '.$data['original_name'];
+$title_arr = [];
+$title_arr[$back_url] = Lang::t('_CONTENT_LIBRARY', 'kb'); //$data['original_name'];
+$title_arr[] = Lang::t('_CATEGORIZE', 'kb') . ': ' . $data['original_name'];
 echo getTitleArea($title_arr);
 ?>
 
@@ -18,37 +18,35 @@ echo getTitleArea($title_arr);
 <div class="panel_left_small">
 <?php
 /**
- * Tree
+ * Tree.
  */
- 
-$root_node_actions ='';
- 
-$languages = array(
-	'_ROOT' => Get::sett('title_kb_tree', Lang::t('_ALL_CATEGORIES', 'kb') ),
-	'_YES' => Lang::t('_CONFIRM', 'kb'),
-	'_NO' => Lang::t('_UNDO', 'kb'),
-	'_LOADING' => Lang::t('_LOADING', 'standard'),
-	'_NEW_FOLDER_NAME' => Lang::t('_ORGCHART_ADDNODE', 'kb'),
-	'_AREYOUSURE'=> Lang::t('_AREYOUSURE', 'kb'),
-	'_NAME' => Lang::t('_NAME', 'standard'),
-	'_MOD' => Lang::t('_MOD', 'standard'),
-	'_DEL' => Lang::t('_DEL', 'standard')
-);
+$root_node_actions = '';
 
+$languages = [
+    '_ROOT' => Get::sett('title_kb_tree', Lang::t('_ALL_CATEGORIES', 'kb')),
+    '_YES' => Lang::t('_CONFIRM', 'kb'),
+    '_NO' => Lang::t('_UNDO', 'kb'),
+    '_LOADING' => Lang::t('_LOADING', 'standard'),
+    '_NEW_FOLDER_NAME' => Lang::t('_ORGCHART_ADDNODE', 'kb'),
+    '_AREYOUSURE' => Lang::t('_AREYOUSURE', 'kb'),
+    '_NAME' => Lang::t('_NAME', 'standard'),
+    '_MOD' => Lang::t('_MOD', 'standard'),
+    '_DEL' => Lang::t('_DEL', 'standard'),
+];
 
-$this->widget('tree', array(
-	'id' => 'kbcategorizetree',
-	'ajaxUrl' => Get::rel_path('adm').'/ajax.adm_server.php?r=alms/kb/gettreedata&show_actions=0&from_widget=1',
-	'treeClass' => 'KbFolderTree',
-	'treeFile' => Get::rel_path('lms').'/admin/views/kb/kbfoldertree.js',
-	'languages' => $languages,
-	'initialSelectedNode' => (int)$selected_node,
-	'rootActions' => array(),
-	'show' => 'tree',
-	'useCheckboxes' => 'true',
-	'initialSelectorData' => $c_folders,
-	'hiddenSelection' => 'h_selected_folders',
-));
+$this->widget('tree', [
+    'id' => 'kbcategorizetree',
+    'ajaxUrl' => Get::rel_path('adm') . '/ajax.adm_server.php?r=alms/kb/gettreedata&show_actions=0&from_widget=1',
+    'treeClass' => 'KbFolderTree',
+    'treeFile' => Get::rel_path('lms') . '/admin/views/kb/kbfoldertree.js',
+    'languages' => $languages,
+    'initialSelectedNode' => (int) $selected_node,
+    'rootActions' => [],
+    'show' => 'tree',
+    'useCheckboxes' => 'true',
+    'initialSelectorData' => $c_folders,
+    'hiddenSelection' => 'h_selected_folders',
+]);
 
 ?>
 </div>
@@ -58,53 +56,53 @@ $this->widget('tree', array(
 <?php
 
 $all_languages = Docebo::langManager()->getAllLangCode();
-$all_languages_id =array_flip($all_languages);
-$sel_lang =$all_languages_id[$data["r_lang"]];
+$all_languages_id = array_flip($all_languages);
+$sel_lang = $all_languages_id[$data['r_lang']];
 
 if ($data['r_type'] == 'scorm') {
-	echo '<div class="align-right">';
-	echo '<a href="#" id="subcategorize_switch" class="ico-wt-sprite subs_del"><span>'.
-		Lang::t('_CATEGORIZE_OBJECT_ITEMS', 'kb').'</span></a>';
-	echo "</div>\n";
+    echo '<div class="align-right">';
+    echo '<a href="#" id="subcategorize_switch" class="ico-wt-sprite subs_del"><span>' .
+        Lang::t('_CATEGORIZE_OBJECT_ITEMS', 'kb') . '</span></a>';
+    echo "</div>\n";
 
-	$body =Form::openForm('add_res', $form_url)
-		.Form::getHidden('subcategorize_switch', 'subcategorize_switch', '1')
-		.Form::getHidden('org_categorize_switch_subcat', 'org_categorize_switch_subcat', '1');
-	if (!empty($form_extra_hidden)) {
-		foreach($form_extra_hidden as $field_id=>$val) {
-			$body.=Form::getHidden($field_id, $field_id, $val);
-		}
-	}
-	$body.=Form::closeForm();
-	$body.=Lang::t('_YOU_WILL_LOSE_PREVIOUS_CATEGORIZATION', 'kb');
+    $body = Form::openForm('add_res', $form_url)
+        . Form::getHidden('subcategorize_switch', 'subcategorize_switch', '1')
+        . Form::getHidden('org_categorize_switch_subcat', 'org_categorize_switch_subcat', '1');
+    if (!empty($form_extra_hidden)) {
+        foreach ($form_extra_hidden as $field_id => $val) {
+            $body .= Form::getHidden($field_id, $field_id, $val);
+        }
+    }
+    $body .= Form::closeForm();
+    $body .= Lang::t('_YOU_WILL_LOSE_PREVIOUS_CATEGORIZATION', 'kb');
 
-	$this->widget('dialog', array(
-		'id' => 'subcategorize_switch_dialog',
-		'dynamicContent' => false,
-		'dynamicAjaxUrl' => false,
-		'directSubmit'=>true,
-		'header' => Lang::t('_AREYOUSURE', 'kb'),
-		'body' => $body,
-		'callback' => 'function() { this.destroy(); }',
-		'callEvents' => array(
-			array('caller' => 'subcategorize_switch', 'event' => 'click')
-		)
-	));
+    $this->widget('dialog', [
+        'id' => 'subcategorize_switch_dialog',
+        'dynamicContent' => false,
+        'dynamicAjaxUrl' => false,
+        'directSubmit' => true,
+        'header' => Lang::t('_AREYOUSURE', 'kb'),
+        'body' => $body,
+        'callback' => 'function() { this.destroy(); }',
+        'callEvents' => [
+            ['caller' => 'subcategorize_switch', 'event' => 'click'],
+        ],
+    ]);
 }
 
 echo Form::openElementSpace()
-	.Form::getLineBox(Lang::t('_RESOURCE_ORIGINAL_NAME', 'kb'), $data['original_name'])
-	.Form::getTextfield(Lang::t('_NAME', 'kb'), 'r_name', 'r_name', 255, Get::req('r_name', DOTY_MIXED, $data['r_name']) )
+    . Form::getLineBox(Lang::t('_RESOURCE_ORIGINAL_NAME', 'kb'), $data['original_name'])
+    . Form::getTextfield(Lang::t('_NAME', 'kb'), 'r_name', 'r_name', 255, Get::req('r_name', DOTY_MIXED, $data['r_name']))
 
-	.Form::getDropDown(Lang::t('_LANGUAGE', 'kb'), 'r_lang', 'r_lang', $all_languages, $sel_lang)
+    . Form::getDropDown(Lang::t('_LANGUAGE', 'kb'), 'r_lang', 'r_lang', $all_languages, $sel_lang)
 
-	.Form::getLineBox(Lang::t('_TYPE', 'kb'), $data['r_type'])
-	.Form::getLineBox(Lang::t('_ENVIRONMENT', 'kb'), $data['r_env'])	
+    . Form::getLineBox(Lang::t('_TYPE', 'kb'), $data['r_type'])
+    . Form::getLineBox(Lang::t('_ENVIRONMENT', 'kb'), $data['r_env'])
 
-	.Form::getCheckbox(Lang::t('_VISIBLE_BY_EVERYONE', 'kb'), 'force_visible', 'force_visible', 1, $data['force_visible'])
-	.Form::getCheckbox(Lang::t('_IS_MOBILE', 'kb'), 'is_mobile', 'is_mobile', 1, $data['is_mobile'])
+    . Form::getCheckbox(Lang::t('_VISIBLE_BY_EVERYONE', 'kb'), 'force_visible', 'force_visible', 1, $data['force_visible'])
+    . Form::getCheckbox(Lang::t('_IS_MOBILE', 'kb'), 'is_mobile', 'is_mobile', 1, $data['is_mobile'])
 
-	.Form::getTextarea(Lang::t('_DESCRIPTION', 'kb'), 'r_desc', 'r_desc', Get::req('r_desc', DOTY_MIXED, $data['r_desc']) );
+    . Form::getTextarea(Lang::t('_DESCRIPTION', 'kb'), 'r_desc', 'r_desc', Get::req('r_desc', DOTY_MIXED, $data['r_desc']));
 
 ?>
 
@@ -125,28 +123,28 @@ echo Form::openElementSpace()
 <?php
 
 if (!empty($form_extra_hidden)) {
-	foreach($form_extra_hidden as $field_id=>$val) {
-		echo Form::getHidden($field_id, $field_id, $val);
-	}
+    foreach ($form_extra_hidden as $field_id => $val) {
+        echo Form::getHidden($field_id, $field_id, $val);
+    }
 }
 
 echo Form::getHidden('tag_list', 'tag_list', htmlentities($c_tags_json))
 
-	.Form::getHidden('res_id', 'res_id', (int)$data['res_id'])
-	.Form::getHidden('original_name', 'original_name', $data['original_name'])
-	.Form::getHidden('r_item_id', 'r_item_id', (int)$data['r_item_id'])
-	.Form::getHidden('r_type', 'r_type', $data['r_type'])
-	.Form::getHidden('r_env', 'r_env', $data['r_env'])
-	.Form::getHidden('r_env_parent_id', 'r_env_parent_id', $data['r_env_parent_id'])
-	.Form::getHidden('r_param', 'r_param', $data['r_param'])
-	.Form::getHidden('h_selected_folders', 'h_selected_folders', '')
+    . Form::getHidden('res_id', 'res_id', (int) $data['res_id'])
+    . Form::getHidden('original_name', 'original_name', $data['original_name'])
+    . Form::getHidden('r_item_id', 'r_item_id', (int) $data['r_item_id'])
+    . Form::getHidden('r_type', 'r_type', $data['r_type'])
+    . Form::getHidden('r_env', 'r_env', $data['r_env'])
+    . Form::getHidden('r_env_parent_id', 'r_env_parent_id', $data['r_env_parent_id'])
+    . Form::getHidden('r_param', 'r_param', $data['r_param'])
+    . Form::getHidden('h_selected_folders', 'h_selected_folders', '')
 
-	.Form::closeElementSpace()
+    . Form::closeElementSpace()
 
-	.Form::openButtonSpace()
-	.Form::getButton('org_categorize_save', 'org_categorize_save', Lang::t('_SAVE', 'kb') )
-	.Form::getButton('org_categorize_cancel', 'org_categorize_cancel', Lang::t('_UNDO', 'kb') )
-	.Form::closeButtonSpace();
+    . Form::openButtonSpace()
+    . Form::getButton('org_categorize_save', 'org_categorize_save', Lang::t('_SAVE', 'kb'))
+    . Form::getButton('org_categorize_cancel', 'org_categorize_cancel', Lang::t('_UNDO', 'kb'))
+    . Form::closeButtonSpace();
 ?>
 </div>
 
@@ -162,7 +160,7 @@ echo Form::getHidden('tag_list', 'tag_list', htmlentities($c_tags_json))
 
 <script type="text/javascript">
 
-var res_current_tags_arr =<?php echo(!empty($c_tags_json) ? $c_tags_json : '[]'); ?>;
+var res_current_tags_arr =<?php echo !empty($c_tags_json) ? $c_tags_json : '[]'; ?>;
 handle_tags =false;
 
 YAHOO.util.Event.onDOMReady(draw_tag_list);
@@ -230,7 +228,7 @@ YAHOO.util.Event.addListener("link_add_tag", "click", function(e) {
 
 YAHOO.namespace("my.Data");
 
-YAHOO.my.Data.arrayTag = <?php echo(!empty($all_tags_json) ? $all_tags_json : '[]'); ?>;
+YAHOO.my.Data.arrayTag = <?php echo !empty($all_tags_json) ? $all_tags_json : '[]'; ?>;
 
 YAHOO.my.BasicLocal = function() {
 	// Use a LocalDataSource

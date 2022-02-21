@@ -1,62 +1,68 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-
-
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 if (!class_exists('Model')) {
-    require_once(_lib_ . '/mvc/lib.model.php');
+    require_once _lib_ . '/mvc/lib.model.php';
 }
 
 require_once _lib_ . '/lib.pluginmanager.php';
 require_once _base_ . '/Exceptions/PathNotFoundException.php';
 class Forma
 {
-
     public static function usePlugins()
     {
-
         return empty($GLOBALS['notuse_plugin']) && empty($_SESSION['notuse_plugin']);
     }
 
     public static function useCustomScripts()
     {
-
         return Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty($_SESSION['notuse_customscript']);
     }
 
-     /**
+    /**
      * @param $path
      * @param $file
      * @param $pattern
-     * 
+     *
      * @throws PathNotFoundException
+     *
      * @return string
      */
     public static function include($path, $file, $pattern = '/[a-zA-Z0-9.]+\.php/')
     {
-      
         //clean file from injection in protocol xxxxxx.php
         preg_match($pattern, $file, $matches);
-         
-        if(count($matches)) {
+
+        if (count($matches)) {
             $path = $path . $matches[0];
         } else {
             throw new PathNotFoundException();
         }
-               
-        return static::inc($path);
 
+        return static::inc($path);
     }
 
-    /** 
+    /**
      * @deprecated It will become private
+     *
      * @param $file
+     *
      * @return string
      */
     public static function inc($file)
     {
-
         $file = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $file);
         $_file = $file;
 
@@ -81,7 +87,7 @@ class Forma
                 return $customscript_file;
             }
         }
-       
+
         return $file;
     }
 
@@ -116,12 +122,14 @@ class Forma
     public static function errorsExists(): bool
     {
         self::initErrors();
+
         return count($_SESSION['errors']) > 0;
     }
 
     public static function getLastError($removeErrors = false): string
     {
         $errors = self::getErrors();
+
         return end($errors);
     }
 
@@ -132,6 +140,7 @@ class Forma
         if ($removeErrors) {
             self::removeErrors();
         }
+
         return $errors;
     }
 
@@ -149,6 +158,7 @@ class Forma
         if ($removeErrors) {
             self::removeErrors();
         }
+
         return $errorString;
     }
 }

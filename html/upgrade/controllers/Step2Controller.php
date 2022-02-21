@@ -1,8 +1,17 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-
-require_once(dirname(__FILE__) . '/StepController.php');
+require_once dirname(__FILE__) . '/StepController.php';
 
 // docebo ce versions series 3.x.x ( 03xxx formely 3xxx )
 // docebo ce versions series 4.x.x ( 04xxx formely 4xxx )
@@ -10,12 +19,12 @@ require_once(dirname(__FILE__) . '/StepController.php');
 
 class Step2Controller extends StepController
 {
-
     public $step = 2;
 
     public function validate()
     {
         $_SESSION['start_version'] = Get::req('start_version', DOTY_ALPHANUM, '3603');
+
         return true;
     }
 
@@ -26,7 +35,7 @@ class Step2Controller extends StepController
             version_compare($version, '4000', '<')) {
             //docebo ce v 3.x.x => go to step 3 (config upgrade )
             $next_step = $current_step + 1;
-        } else if (version_compare($version, '4000', '>=') &&
+        } elseif (version_compare($version, '4000', '>=') &&
             version_compare($version, '5000', '<')) {
             //docebo ce v 4.x.x => go to step 3 (config upgrade )
             $next_step = $current_step + 1;
@@ -35,7 +44,8 @@ class Step2Controller extends StepController
 
             $next_step = $current_step + 1;  // upgrade config via plugin
         }
-        return ($next_step);
+
+        return $next_step;
     }
 
     public function getCurrentVersion()
@@ -47,22 +57,21 @@ class Step2Controller extends StepController
         return $current_version;
     }
 
-
-    function versionList()
+    public function versionList()
     {
         $current_version = $this->getCurrentVersion();
 
         $txt = '<select id="start_version" name="start_version">';
         foreach ($GLOBALS['cfg']['versions'] as $k => $v) {
-
             $txt .= '<option value="' . $k . '"' . ($k === $current_version ? ' selected="selected"' : '') . '>' . $v . '</option>';
         }
         $txt .= '</select>';
+
         return $txt;
     }
 
     //TODO INSTALL_vs_UPGRADE: please share what you can
-    function checkRequirements()
+    public function checkRequirements()
     {
         $res = [];
 
@@ -70,43 +79,43 @@ class Step2Controller extends StepController
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
         if (version_compare(PHP_VERSION, '7.4', '<')) {
             $res['php'] = 'err';
-        } else if (version_compare(PHP_VERSION, '8.0', '>=')) {
+        } elseif (version_compare(PHP_VERSION, '8.0', '>=')) {
             $res['php'] = 'warn';
         } else {
             $res['php'] = 'ok';
         }
 
         $driver = [
-            'mysqli' => extension_loaded("mysqli")
+            'mysqli' => extension_loaded('mysqli'),
         ];
 
         if (array_filter($driver)) {
             // mysql client version, in php the version number is a string regcut it
             preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version);
 
-            if (empty($version[1])) $res['mysql_client'] = 'ok';
-            else $res['mysql_client'] = (version_compare($version[1], PHP_VERSION) >= 0 ? 'ok' : 'err');
+            if (empty($version[1])) {
+                $res['mysql_client'] = 'ok';
+            } else {
+                $res['mysql_client'] = (version_compare($version[1], PHP_VERSION) >= 0 ? 'ok' : 'err');
+            }
         } else {
             $res['mysql_client'] = 'err';
         }
 
         if (array_filter($driver)) {
-
             // mysql client version, in php the version number is a string regcut it
             preg_match('/([\.0-9][\.0-9]+\.[\.0-9]+)/', sql_get_server_version(), $mysqlVersion);
 
-            if (empty($mysqlVersion[1])){
+            if (empty($mysqlVersion[1])) {
                 $res['mysql'] = 'ok';
-            }
-            else {
-                $checkMysql = version_compare($mysqlVersion[1], '5.6') >= 0;// && version_compare($mysqlVersion[1], '8.0') < 0;
-                $checkMariaDB = version_compare($mysqlVersion[1], '10.3') >= 0;// && version_compare($mysqlVersion[1], '10.4') < 0;
+            } else {
+                $checkMysql = version_compare($mysqlVersion[1], '5.6') >= 0; // && version_compare($mysqlVersion[1], '8.0') < 0;
+                $checkMariaDB = version_compare($mysqlVersion[1], '10.3') >= 0; // && version_compare($mysqlVersion[1], '10.4') < 0;
 
-                if ($checkMysql || $checkMariaDB){
+                if ($checkMysql || $checkMariaDB) {
                     $res['mysql'] = 'ok';
-                }
-                else {
-                    $res['mysql'] =  'err';
+                } else {
+                    $res['mysql'] = 'err';
                 }
             }
         } else {
@@ -122,7 +131,7 @@ class Step2Controller extends StepController
         $res['mime_ct'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
 
         $current_version = $this->getCurrentVersion();
-        $end_version = (int)$GLOBALS['cfg']['endversion'];
+        $end_version = (int) $GLOBALS['cfg']['endversion'];
 
         if ($current_version == $end_version) {
             $res['upg_not_needed'] = true;
@@ -131,19 +140,18 @@ class Step2Controller extends StepController
         if ($current_version > $end_version) {
             $res['upg_not_needed'] = true;
             $res['upg_not_needed_text'] = Lang::t('_UPGRADE_NOT_NEEDED_FILE_IS_LATER');
-
         }
 
         if (version_compare($current_version, '3600', '>=') &&
             version_compare($current_version, '4000', '<')) {
             // docebo ce versions series 3.x.x.x
             // Upgrader: we check if we are starting from a valid (old) config.php file:
-            require_once(_base_ . '/config.php');
+            require_once _base_ . '/config.php';
             $res['config_v3'] = (!empty($GLOBALS['dbhost']) ? 'ok' : 'err');
             $res['config_v4'] = 'err';
             $res['config_v1'] = 'err';
         } else {
-            require_once(_base_ . '/config.php');
+            require_once _base_ . '/config.php';
             $res['config_v4'] = (!empty($GLOBALS['cfg']['db_host']) ? 'ok' : 'err');
             $res['config_v3'] = 'err';
             $res['config_v1'] = 'ok';
@@ -152,27 +160,26 @@ class Step2Controller extends StepController
         return $res;
     }
 
-
-    function checkStrictMode()
+    public function checkStrictMode()
     {
         return true;
-        $qtxt = "SELECT @@GLOBAL.sql_mode AS res";
+        $qtxt = 'SELECT @@GLOBAL.sql_mode AS res';
         $q = sql_query($qtxt);
         list($r1) = sql_fetch_row($q);
-        $qtxt = "SELECT @@SESSION.sql_mode AS res";
+        $qtxt = 'SELECT @@SESSION.sql_mode AS res';
         $q = sql_query($qtxt);
         list($r2) = sql_fetch_row($q);
         $res = ((strpos($r1 . $r2, 'STRICT_') === false) ? true : false);
+
         return $res;
     }
 
-
-    function checkFolderPerm()
+    public function checkFolderPerm()
     {
         $res = '';
 
         $platform_folders = $_SESSION['platform_arr'];
-        $file_to_check = ["config.php"];
+        $file_to_check = ['config.php'];
         $dir_to_check = [];
         $empty_dir_to_check = [];
 
@@ -182,7 +189,7 @@ class Step2Controller extends StepController
             'files/tmp',
             'files/common/comment',
             'files/common/iofiles',
-            'files/common/users'
+            'files/common/users',
         ];
 
         $current_version = $this->getCurrentVersion();
@@ -194,21 +201,18 @@ class Step2Controller extends StepController
         }
 
         foreach ($platform_folders as $platform_code => $dir_name) {
-
             $specific_file_to_check = [];
             $specific_dir_to_check = [];
 
             if (!is_dir(_base_ . '/' . $dir_name . '/')) {
-                $install[$platform_code] = FALSE;
+                $install[$platform_code] = false;
             } else {
-                $install[$platform_code] = TRUE;
+                $install[$platform_code] = true;
 
-                $empty_specific_dir_to_check = NULL;
+                $empty_specific_dir_to_check = null;
 
                 switch ($platform_code) {
-
-                    case "lms":
-                        {
+                    case 'lms':
                             $specific_dir_to_check = [
                                 'files/' . $dirprefix . 'Lms/certificate',
                                 'files/' . $dirprefix . 'Lms/course',
@@ -221,7 +225,7 @@ class Step2Controller extends StepController
                                 'files/' . $dirprefix . 'Lms/repo_light',
                                 'files/' . $dirprefix . 'Lms/scorm',
                                 'files/' . $dirprefix . 'Lms/sponsor',
-                                'files/' . $dirprefix . 'Lms/test'
+                                'files/' . $dirprefix . 'Lms/test',
                             ];
 
                             if ($dirprefix == 'app') {
@@ -229,35 +233,32 @@ class Step2Controller extends StepController
                                 $specific_dir_to_check[] = 'files/' . $dirprefix . 'Lms/htmlpages';
                             }
                             $empty_specific_dir_to_check = [];
-                        }
+
                         break;
 
-                    case "framework":
-                        {
+                    case 'framework':
                             $specific_dir_to_check = [
                                 'files/' . $dirprefix . 'Core/field',
                                 'files/' . $dirprefix . 'Core/photo',
                                 'files/' . $dirprefix . 'Core/newsletter',
-                                'files/common/users'
+                                'files/common/users',
                             ];
 
-                        }
                         break;
-
                 }
 
                 $dir_to_check = array_merge($dir_to_check, $specific_dir_to_check);
                 $file_to_check = array_merge($file_to_check, $specific_file_to_check);
 
-                if ((is_array($specific_dir_to_check)) && (count($specific_dir_to_check) > 0) && (is_array($empty_specific_dir_to_check)))
+                if ((is_array($specific_dir_to_check)) && (count($specific_dir_to_check) > 0) && (is_array($empty_specific_dir_to_check))) {
                     $empty_dir_to_check = array_merge($empty_dir_to_check, $empty_specific_dir_to_check);
+                }
             }
         }
 
         // Write permission
         $checked_dir = [];
         foreach ($dir_to_check as $dir_name) {
-
             if (!is_dir(_base_ . '/' . $dir_name . '/')) {
                 $checked_dir[] = $dir_name;
             } elseif (!is_writable(_base_ . '/' . $dir_name . '/')) {
@@ -265,7 +266,6 @@ class Step2Controller extends StepController
             }
         }
         if (!empty($checked_dir)) {
-
             $res .= '<h3 class="err">' . Lang::t('_CHECKED_DIRECTORIES') . '</h3>'
                 . '<ul class="info"><li class="err"><span>' . implode('</span></li><li class="err"><span>', $checked_dir) . '</span></li></ul>';
         }
@@ -277,14 +277,10 @@ class Step2Controller extends StepController
             }
         }
         if (!empty($checked_file)) {
-
             $res .= '<h3>' . Lang::t('_CHECKED_FILES') . '</h3>'
                 . '<ul class="info"><li class="err">' . implode('</li><li class="err">', $checked_file) . '</li></ul>';
         }
 
         return $res;
     }
-
 }
-
-?>

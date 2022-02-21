@@ -53,38 +53,38 @@ YAHOO.util.Event.onDOMReady(function(e) {
 	<div>
 		<div class="simple_search_box" id="deletedusers_simple_filter_options">
 			<?php
-				echo Form::getInputTextfield("search_t", "filter_text", "filter_text", $filter_text, '', 255, '' );
-				echo Form::getButton("filter_set", "filter_set", Lang::t('_SEARCH', 'standard'), "search_b");
-				echo Form::getButton("filter_reset", "filter_reset", Lang::t('_RESET', 'standard'), "reset_b");
-			?>
+                echo Form::getInputTextfield('search_t', 'filter_text', 'filter_text', $filter_text, '', 255, '');
+                echo Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b');
+                echo Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b');
+            ?>
 		</div>
 	</div>
 </div>
 <?php
 
 $params = [
-	'id' => 'logtable',
-	'ajaxUrl' => 'ajax.adm_server.php?r='. $this->link.'/getdbupgradestabledata',
-	'rowsPerPage' => Get::sett('visuItem', 25),
-	'startIndex' => 0,
-	'results' => Get::sett('visuItem', 25),
-	'sort' => 'execution_date',
-	'dir' => 'desc',
-	'columns' => [
-			['key' => 'script_id', 'label' => Lang::t('_SCRIPT_ID', 'standard'), 'sortable' => true],
-			['key' => 'script_name', 'label' => Lang::t('_SCRIPT_NAME', 'standard'), 'sortable' => true],
-			['key' => 'script_description', 'label' => Lang::t('_SCRIPT_DESCRIPTION', 'standard'), 'sortable' => true],
-			['key' => 'script_version', 'label' => Lang::t('_SCRIPT_VERSION', 'standard'), 'sortable' => true],
-			['key' => 'core_version', 'label' => Lang::t('_CORE_VERSION', 'standard'), 'sortable' => true],
-			['key' => 'creation_date', 'label' => Lang::t('_CREATION_DATE', 'standard'), 'sortable' => true],
-			['key' => 'execution_date', 'label' => Lang::t('_EXECUTION_DATE', 'standard'), 'sortable' => true]
+    'id' => 'logtable',
+    'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/getdbupgradestabledata',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'execution_date',
+    'dir' => 'desc',
+    'columns' => [
+            ['key' => 'script_id', 'label' => Lang::t('_SCRIPT_ID', 'standard'), 'sortable' => true],
+            ['key' => 'script_name', 'label' => Lang::t('_SCRIPT_NAME', 'standard'), 'sortable' => true],
+            ['key' => 'script_description', 'label' => Lang::t('_SCRIPT_DESCRIPTION', 'standard'), 'sortable' => true],
+            ['key' => 'script_version', 'label' => Lang::t('_SCRIPT_VERSION', 'standard'), 'sortable' => true],
+            ['key' => 'core_version', 'label' => Lang::t('_CORE_VERSION', 'standard'), 'sortable' => true],
+            ['key' => 'creation_date', 'label' => Lang::t('_CREATION_DATE', 'standard'), 'sortable' => true],
+            ['key' => 'execution_date', 'label' => Lang::t('_EXECUTION_DATE', 'standard'), 'sortable' => true],
     ],
-	'fields' => ['script_id', 'script_name', 'script_description', 'script_version', 'core_version', 'creation_date', 'execution_date'],
-	'generateRequest' => 'LogManagement.requestBuilder'
+    'fields' => ['script_id', 'script_name', 'script_description', 'script_version', 'core_version', 'creation_date', 'execution_date'],
+    'generateRequest' => 'LogManagement.requestBuilder',
 ];
 
 $this->widget('table', $params);
 
 ?>
-<?php echo getBackUi('index.php?r='. $this->link.'/show', Lang::t('_BACK', 'standard')); ?>
+<?php echo getBackUi('index.php?r=' . $this->link . '/show', Lang::t('_BACK', 'standard')); ?>
 </div>

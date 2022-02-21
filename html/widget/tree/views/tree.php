@@ -2,7 +2,9 @@
 <div class="folder_tree" id="<?php echo $id; ?>"></div>
 <?php } ?>
 <?php
-if ($rel_action != "") echo '<div class="folder_action_space">'.$rel_action.'</div>';
+if ($rel_action != '') {
+    echo '<div class="folder_action_space">' . $rel_action . '</div>';
+}
 ?>
 <script type="text/javascript">
 var TreeView_<?php echo $id; ?>;

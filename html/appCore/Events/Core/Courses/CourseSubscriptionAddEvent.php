@@ -1,16 +1,27 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appCore\Events\Core\Courses;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Class CourseSubscriptionAddEvent
- * @package appLms\Events\Core
+ * Class CourseSubscriptionAddEvent.
  */
 class CourseSubscriptionAddEvent extends Event
 {
-    const EVENT_NAME = 'core.coursesubscriptionadd.event';
-    
+    public const EVENT_NAME = 'core.coursesubscriptionadd.event';
+
     /** @var array */
     protected $data;
     protected $user;
@@ -97,5 +108,4 @@ class CourseSubscriptionAddEvent extends Event
 
         return $data;
     }
-
 }

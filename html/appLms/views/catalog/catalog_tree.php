@@ -1,68 +1,61 @@
 <?php
-  define("IS_AJAX", true);
+  define('IS_AJAX', true);
 
     /* managing setting options */
     $catalogue_todisplay = true;
-    if (Get::sett('on_catalogue_empty')=='on') { // show user's catalogue or main catalogue
-        if (count($user_catalogue)==0) {
-           $starting_catalogue = 0;  // show main catalogue
+    if (Get::sett('on_catalogue_empty') == 'on') { // show user's catalogue or main catalogue
+        if (count($user_catalogue) == 0) {
+            $starting_catalogue = 0;  // show main catalogue
         } else {
-            if ($id_catalogue == 0) { 
+            if ($id_catalogue == 0) {
                 reset($user_catalogue);
                 $key = key($user_catalogue);
-                $starting_catalogue= $user_catalogue[$key]['idCatalogue'];
+                $starting_catalogue = $user_catalogue[$key]['idCatalogue'];
             } else {
                 $starting_catalogue = $id_catalogue;
-            }    
+            }
         }
     } else {   // show user's catalogue or nothing
         if (count($user_catalogue) > 0) { // show first user's catalogue
             if ($id_catalogue == 0) {
                 reset($user_catalogue);
                 $key = key($user_catalogue);
-                $starting_catalogue= $user_catalogue[$key]['idCatalogue'];
+                $starting_catalogue = $user_catalogue[$key]['idCatalogue'];
             } else {
                 $starting_catalogue = $id_catalogue; // or the called one
-            }    
+            }
         } else {
-            $catalogue_todisplay =  false;
+            $catalogue_todisplay = false;
         }
-    }          
-    
+    }
 
-
-  
- 
-  
-  
   $catalogue = $model->GetGlobalJsonTree($starting_catalogue);
   $a_node = json_encode($catalogue);
   cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/bootstrap-treeview.js', true), 'page_head');
   cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/catalog.js', true), 'page_head');
-  
+
    // are there category ?
    $total_category = count($catalogue);
-     
+
 ?>
       
       
       
-    <?php 
-    // if no category, no tree
-    if($total_category==0){  ?>  
+    <?php // if no category, no tree
+    if ($total_category == 0) {  ?>  
           <div class="row">
-                <div class="col-sm-12" id="div_course"><br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
+                <div class="col-sm-12" id="div_course"><br><p align="center"><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p></div>
           <div>
-      <?php } else{ ?>
+      <?php } else { ?>
       
             <div class="row">
                 <div class="col-sm-4">
                     <div id="treeview1" class="aside"></div>
                 </div>    
-                <div class="col-sm-8" id="div_course"><br><p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p></div>
+                <div class="col-sm-8" id="div_course"><br><p align="center"><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p></div>
             <div>
                
-      <?php  }  ?>
+      <?php }  ?>
 
 
       <?php if ($catalogue_todisplay) { ?>
@@ -71,8 +64,8 @@
 
             function callAjaxCatalog(id_category) {
 
-                <?php echo $no_course ?>
-                str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
+                <?php echo $no_course; ?>
+                str_loading = "<?php echo Layout::path(); ?>images/standard/loadbar.gif";
                 $("#div_course").html("<br><p align='center'><img src='" + str_loading + "'></p>");
                 var type_course = getCurrentTypeCourse();
                 var posting = $.get(
@@ -81,7 +74,7 @@
                         r: 'catalog/allCourseForma',
                         id_category: id_category,
                         type_course: type_course,
-                        id_catalogue: <?php echo $starting_catalogue ?>
+                        id_catalogue: <?php echo $starting_catalogue; ?>
                     }
                 );
                 posting.done(function (responseText) {
@@ -108,7 +101,7 @@
 
             $(function () {
                 callAjaxCatalog(0);
-                a_node = <?php echo $a_node ?>
+                a_node = <?php echo $a_node; ?>
 
                 // Alphabetical sort
                 $.each(a_node, function(k, cat) {
@@ -124,7 +117,7 @@
                 })
                 var category_tree = [
                     {
-                        text: "&nbsp;&nbsp;<?php echo Lang::t('_ALL_COURSES') ?>",
+                        text: "&nbsp;&nbsp;<?php echo Lang::t('_ALL_COURSES'); ?>",
                         href: "#Category",
                         id_cat: 0,
                         state: {
@@ -163,7 +156,7 @@
         </script>
         <?php } else { ?> 
             <script type="text/javascript">
-                $("#div_course").html("<br><p align='center'><?php echo Lang::t('_NO_CATEGORY_TODISPLAY','catalogue')?></p>");
+                $("#div_course").html("<br><p align='center'><?php echo Lang::t('_NO_CATEGORY_TODISPLAY', 'catalogue'); ?></p>");
             </script>
         <?php } ?>            
             

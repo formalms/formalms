@@ -1,31 +1,38 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-defined("IN_FORMA") or die('Direct access is forbidden.');
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-
-
-require_once(_lms_ . '/lib/lib.middlearea.php');
-require_once(_lms_."/lib/lib.certificate.php");
+require_once _lms_ . '/lib/lib.middlearea.php';
+require_once _lms_ . '/lib/lib.certificate.php';
 /**
- * Class DashboardBlockCertificatesLms
+ * Class DashboardBlockCertificatesLms.
  */
 class DashboardBlockCertificatesLms extends DashboardBlockLms
 {
-    const MAX_CERTIFICATES = 3;
+    public const MAX_CERTIFICATES = 3;
     protected $certificate;
 
     public function __construct($jsonConfig)
     {
-   
         $this->certificate = new Certificate();
         parent::__construct($jsonConfig);
     }
 
     public function parseConfig($jsonConfig)
-	{
-		$this->parseBaseConfig($jsonConfig);
-	}
+    {
+        $this->parseBaseConfig($jsonConfig);
+    }
 
     public function getAvailableTypesForBlock()
     {
@@ -33,7 +40,7 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
             DashboardBlockLms::TYPE_1COL,
             DashboardBlockLms::TYPE_2COL,
             DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL
+            DashboardBlockLms::TYPE_4COL,
         ];
     }
 
@@ -90,7 +97,7 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     private function getCertificates()
     {
-        if (!$limit = (int)$this->data['max_last_records']) {
+        if (!$limit = (int) $this->data['max_last_records']) {
             $limit = self::MAX_CERTIFICATES;
         }
 
@@ -105,18 +112,17 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
         $pagination['startIndex'] = 0;
         $pagination['rowsPerPage'] = $limit;
         $results = $this->certificate->getAssignment($filter, $pagination);
-       // $query = "SELECT cu.date_complete, ca.on_date, cu.idUser as id_user,"
-       //     . " cu.status , cu.idCourse, cc.id_certificate, c.name AS name_certificate,"
-       //     . " ca.cert_file, courses.name AS course_name, courses.code AS course_code"
-       //     . " FROM ( %adm_user AS u JOIN %lms_courseuser AS cu ON (u.idst = cu.idUser) )"
-       //     . " JOIN %lms_certificate_course AS cc ON cc.id_course = cu.idCourse"
-       //     . " JOIN %lms_course AS courses ON courses.idCourse = cu.idCourse"
-       //     . " JOIN %lms_certificate AS c ON c.id_certificate = cc.id_certificate"
-       //     . " LEFT JOIN %lms_certificate_assign AS ca ON"
-       //     . " ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate )"
-       //     . " WHERE cu.idUser = " . $id_user
-       //     . " ORDER BY ca.on_date DESC";
-
+        // $query = "SELECT cu.date_complete, ca.on_date, cu.idUser as id_user,"
+        //     . " cu.status , cu.idCourse, cc.id_certificate, c.name AS name_certificate,"
+        //     . " ca.cert_file, courses.name AS course_name, courses.code AS course_code"
+        //     . " FROM ( %adm_user AS u JOIN %lms_courseuser AS cu ON (u.idst = cu.idUser) )"
+        //     . " JOIN %lms_certificate_course AS cc ON cc.id_course = cu.idCourse"
+        //     . " JOIN %lms_course AS courses ON courses.idCourse = cu.idCourse"
+        //     . " JOIN %lms_certificate AS c ON c.id_certificate = cc.id_certificate"
+        //     . " LEFT JOIN %lms_certificate_assign AS ca ON"
+        //     . " ( ca.id_course = cu.idCourse AND ca.id_user=cu.idUser AND ca.id_certificate = cc.id_certificate )"
+        //     . " WHERE cu.idUser = " . $id_user
+        //     . " ORDER BY ca.on_date DESC";
 
         return $results;
     }

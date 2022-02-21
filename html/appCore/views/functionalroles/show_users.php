@@ -1,6 +1,8 @@
 <?php echo getTitleArea($title_arr); ?>
 <div class="std_block">
-<?php if (isset($result_message)) echo $result_message; ?>
+<?php if (isset($result_message)) {
+    echo $result_message;
+} ?>
 <?php
 
 echo getBackUi('index.php?r=adm/functionalroles/show', Lang::t('_BACK', 'standard'));
@@ -8,77 +10,73 @@ echo getBackUi('index.php?r=adm/functionalroles/show', Lang::t('_BACK', 'standar
 //--- SEARCH FILTER -------
 
 $this->widget('tablefilter', [
-	'id' => 'fncrole_users_filter',
-	'filter_text' => isset($filter_text) ? $filter_text : "",
-	'js_callback_set' => 'Users.setFilter',
-	'js_callback_reset' => 'Users.resetFilter'
+    'id' => 'fncrole_users_filter',
+    'filter_text' => isset($filter_text) ? $filter_text : '',
+    'js_callback_set' => 'Users.setFilter',
+    'js_callback_reset' => 'Users.resetFilter',
 ]);
-
 
 //--- TABLE -------
 
-$icon_del = '<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>';
-$icon_chart = '<span class="ico-sprite subs_chart"><span>'.Lang::t('_GAP_ANALYSIS', 'fncroles').'</span></span>';
+$icon_del = '<span class="ico-sprite subs_del"><span>' . Lang::t('_DEL', 'standard') . '</span></span>';
+$icon_chart = '<span class="ico-sprite subs_chart"><span>' . Lang::t('_GAP_ANALYSIS', 'fncroles') . '</span></span>';
 
 $columns = [
-	['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
-	['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
-	['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
-	['key' => 'gap', 'label' => $icon_chart, 'formatter' => 'Users.gapAnalisysFormatter', 'className' => 'img-cell']
+    ['key' => 'userid', 'label' => Lang::t('_USERNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
+    ['key' => 'firstname', 'label' => Lang::t('_FIRSTNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
+    ['key' => 'lastname', 'label' => Lang::t('_LASTNAME', 'standard'), 'sortable' => true, 'formatter' => 'Users.labelFormatter'],
+    ['key' => 'gap', 'label' => $icon_chart, 'formatter' => 'Users.gapAnalisysFormatter', 'className' => 'img-cell'],
 ];
-if ($permissions['mod']) $columns[] = ['key' => 'del', 'label' => $icon_del, 'formatter' => 'Users.deleteFormatter', 'className' => 'img-cell'];
-
-
-
-$rel_action_over = "";
-$rel_action_bottom = "";
-
 if ($permissions['mod']) {
-	$rel_action_over = '<a id="sel_users_over" class="ico-wt-sprite subs_add" title="'.Lang::t('_ASSIGN_USERS', 'standard').'" '
-		.'href="index.php?r=adm/functionalroles/sel_users&id_fncrole='.(int)$id_fncrole.'">'
-		.'<span>'.Lang::t('_ASSIGN_USERS', 'standard').'</span></a>'
-		.'<a id="del_users_over" class="ico-wt-sprite subs_del" '
-		.'href="ajax.adm_server.php?r=adm/functionalroles/del_users&id_fncrole='.(int)$id_fncrole.'">'
-		.'<span>'.Lang::t('_DEL_SELECTED', 'admin_directory').'</span></a>';
-
-	$rel_action_bottom = '<a id="sel_users_bottom" class="ico-wt-sprite subs_add" title="'.Lang::t('_ASSIGN_USERS', 'standard').'" '
-		.'href="index.php?r=adm/functionalroles/sel_users&id_fncrole='.(int)$id_fncrole.'">'
-		.'<span>'.Lang::t('_ASSIGN_USERS', 'standard').'</span></a>'
-		.'<a id="del_users_bottom" class="ico-wt-sprite subs_del" '
-		.'href="ajax.adm_server.php?r=adm/functionalroles/del_users&id_fncrole='.(int)$id_fncrole.'">'
-		.'<span>'.Lang::t('_DEL_SELECTED', 'admin_directory').'</span></a>';
-
-	$rel_action_over .= '<span class="ma_selected_users">'
-		.'<b id="num_users_selected_top">'.(int)(isset($num_users_selected) ? $num_users_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
-		.'</span>';
-	$rel_action_bottom .= '<span class="ma_selected_users">'
-		.'<b id="num_users_selected_bottom">'.(int)(isset($num_users_selected) ? $num_users_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
-		.'</span>';
+    $columns[] = ['key' => 'del', 'label' => $icon_del, 'formatter' => 'Users.deleteFormatter', 'className' => 'img-cell'];
 }
 
+$rel_action_over = '';
+$rel_action_bottom = '';
+
+if ($permissions['mod']) {
+    $rel_action_over = '<a id="sel_users_over" class="ico-wt-sprite subs_add" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '" '
+        . 'href="index.php?r=adm/functionalroles/sel_users&id_fncrole=' . (int) $id_fncrole . '">'
+        . '<span>' . Lang::t('_ASSIGN_USERS', 'standard') . '</span></a>'
+        . '<a id="del_users_over" class="ico-wt-sprite subs_del" '
+        . 'href="ajax.adm_server.php?r=adm/functionalroles/del_users&id_fncrole=' . (int) $id_fncrole . '">'
+        . '<span>' . Lang::t('_DEL_SELECTED', 'admin_directory') . '</span></a>';
+
+    $rel_action_bottom = '<a id="sel_users_bottom" class="ico-wt-sprite subs_add" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '" '
+        . 'href="index.php?r=adm/functionalroles/sel_users&id_fncrole=' . (int) $id_fncrole . '">'
+        . '<span>' . Lang::t('_ASSIGN_USERS', 'standard') . '</span></a>'
+        . '<a id="del_users_bottom" class="ico-wt-sprite subs_del" '
+        . 'href="ajax.adm_server.php?r=adm/functionalroles/del_users&id_fncrole=' . (int) $id_fncrole . '">'
+        . '<span>' . Lang::t('_DEL_SELECTED', 'admin_directory') . '</span></a>';
+
+    $rel_action_over .= '<span class="ma_selected_users">'
+        . '<b id="num_users_selected_top">' . (int) (isset($num_users_selected) ? $num_users_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
+        . '</span>';
+    $rel_action_bottom .= '<span class="ma_selected_users">'
+        . '<b id="num_users_selected_bottom">' . (int) (isset($num_users_selected) ? $num_users_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
+        . '</span>';
+}
 
 $params = [
-	'id'			=> 'users_table',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/functionalroles/getusertabledata',
-	'rowsPerPage'	=> Get::sett('visuItem', 25),
-	'startIndex'	=> 0,
-	'results'		=> Get::sett('visuItem', 25),
-	'sort'			=> 'userid',
-	'dir'			=> 'asc',
-	'generateRequest' => 'Users.requestBuilder',
-	'columns'		=> $columns,
-	'fields'		=> ['id', 'userid', 'firstname', 'lastname', 'del', 'is_group'],
-	'delDisplayField' => 'userid',
-	'stdSelection' => $permissions['mod'] ? true : false,
-	'rel_actions' => [$rel_action_over, $rel_action_bottom],
-	'events' => [
-		'initEvent' => 'Users.initEvent',
-		'beforeRenderEvent' => 'Users.beforeRenderEvent',
-		'postRenderEvent' => 'Users.postRenderEvent'
-    ]
+    'id' => 'users_table',
+    'ajaxUrl' => 'ajax.adm_server.php?r=adm/functionalroles/getusertabledata',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'userid',
+    'dir' => 'asc',
+    'generateRequest' => 'Users.requestBuilder',
+    'columns' => $columns,
+    'fields' => ['id', 'userid', 'firstname', 'lastname', 'del', 'is_group'],
+    'delDisplayField' => 'userid',
+    'stdSelection' => $permissions['mod'] ? true : false,
+    'rel_actions' => [$rel_action_over, $rel_action_bottom],
+    'events' => [
+        'initEvent' => 'Users.initEvent',
+        'beforeRenderEvent' => 'Users.beforeRenderEvent',
+        'postRenderEvent' => 'Users.postRenderEvent',
+    ],
 ];
-
-
 
 $this->widget('table', $params);
 
@@ -246,8 +244,8 @@ var Users = {
 
 
 Users.init({
-	idFncrole: <?php echo (int)$id_fncrole; ?>,
-	filterText: "<?php echo isset($filter_text) ? $filter_text : ""; ?>",
+	idFncrole: <?php echo (int) $id_fncrole; ?>,
+	filterText: "<?php echo isset($filter_text) ? $filter_text : ''; ?>",
 	imagesPath: "<?php echo Get::tmpl_path('base'); ?>",
 	langs: {
 		_AREYOUSURE: "<?php echo Lang::t('_AREYOUSURE', 'standard'); ?>",

@@ -33,7 +33,7 @@
         <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/default.css" />
         <link rel="stylesheet" type="text/css" href="http://tympanus.net/Tutorials/CaptionHoverEffects/css/component.css" />
         <script src="<?php echo Layout::path(); ?>bootstrap/js/modernizr.custom.js"></script>
-<!--        <script src="--><?php //echo Layout::path(); ?><!--bootstrap/js/demoad.js"></script>-->
+<!--        <script src="--><?php //echo Layout::path();?><!--bootstrap/js/demoad.js"></script>-->
          
          
          
@@ -158,11 +158,12 @@
 		
         	<div id="yui-main-boot" class='col-md-9'>
 				<?php
-				if(!isset($_SESSION['direct_play']))
-					echo '<div class="yui-b">'.Layout::zone('content').'</div>';
-				else
-					echo Layout::zone('content');
-				?>
+                if (!isset($_SESSION['direct_play'])) {
+                    echo '<div class="yui-b">' . Layout::zone('content') . '</div>';
+                } else {
+                    echo Layout::zone('content');
+                }
+                ?>
                 
                 
 			</div>

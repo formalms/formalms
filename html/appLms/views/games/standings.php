@@ -1,21 +1,21 @@
 <div>
 	<?php
-	$lmstab = $this->widget('lms_tab', [
-		'active' => 'games',
-		'close' => false
+    $lmstab = $this->widget('lms_tab', [
+        'active' => 'games',
+        'close' => false,
     ]);
-	?>
+    ?>
 	<div class="nested_tab" id="tab_content">
 		<div id="global_conf" class="yui-navset yui-navset-top">
 			<ul class="yui-nav">
-				<li class="first <?php echo ($active_tab == 'unread' ? 'selected' : ''); ?>">
+				<li class="first <?php echo $active_tab == 'unread' ? 'selected' : ''; ?>">
 					<a href="index.php?r=games/show">
-						<em><?php echo Lang::t('_OPEN_COMPETITION', 'games') ?></em>
+						<em><?php echo Lang::t('_OPEN_COMPETITION', 'games'); ?></em>
 					</a>
 				</li>
-				<li class="<?php echo ($active_tab == 'history' ? 'selected' : ''); ?>">
+				<li class="<?php echo $active_tab == 'history' ? 'selected' : ''; ?>">
 					<a href="index.php?r=games/showhistory">
-						<em><?php echo Lang::t('_HISTORY', 'games') ?></em>
+						<em><?php echo Lang::t('_HISTORY', 'games'); ?></em>
 					</a>
 				</li>
 			</ul>
@@ -51,46 +51,45 @@
 					</script>
 				</div>
 				<h2><?php echo $game['title']; ?></h2>
-				<p><?php echo Lang::t('_START_DATE', 'standard').': '.Format::date($game['start_date']).' - '.Format::date($game['end_date']); ?></p>
+				<p><?php echo Lang::t('_START_DATE', 'standard') . ': ' . Format::date($game['start_date']) . ' - ' . Format::date($game['end_date']); ?></p>
 				<br />
 				<h3><?php echo Lang::t('_YOUR_RESULT', 'standard'); ?></h3>
 				<p>
-					<?php echo Lang::t('_LAST_PLAY', 'standard').': '.$track['dateAttempt']; ?><br/>
-					<?php echo Lang::t('_CURRENT_SCORE', 'standard').': '.$track['current_score']; ?><br/>
-					<?php echo Lang::t('_MAX_SCORE', 'standard').': '.$track['max_score']; ?><br/>
-					<?php echo Lang::t('_NUM_ATTEMPTS', 'standard').': '.$track['num_attempts']; ?><br/>
+					<?php echo Lang::t('_LAST_PLAY', 'standard') . ': ' . $track['dateAttempt']; ?><br/>
+					<?php echo Lang::t('_CURRENT_SCORE', 'standard') . ': ' . $track['current_score']; ?><br/>
+					<?php echo Lang::t('_MAX_SCORE', 'standard') . ': ' . $track['max_score']; ?><br/>
+					<?php echo Lang::t('_NUM_ATTEMPTS', 'standard') . ': ' . $track['num_attempts']; ?><br/>
 				</p>
 				<div class="nofloat"></div>
 				<br/>
 				<h3><?php echo Lang::t('_FIRST_PLACES', 'standard'); ?></h3>
 				<?php
-				$tb = new Table(30);
-				$tb->addHead([
-					Lang::t('_POSITION', 'games'),
-					Lang::t('_USERNAME', 'standard'),
-					Lang::t('_FULLNAME', 'standard'), 
-					Lang::t('_CURRENT_SCORE', 'standard'),
-					Lang::t('_MAX_SCORE', 'standard'),
-                ], ['image', '','','image','image']);
-				$i = 1;
-				foreach($standings as $row) {
-
-					$tb->addBody([
-						$i++,
-						Docebo::aclm()->relativeID($row['userid']),
-						$row['lastname'].' '.$row['firstname'],
-						$row['current_score'],
-						$row['max_score']
+                $tb = new Table(30);
+                $tb->addHead([
+                    Lang::t('_POSITION', 'games'),
+                    Lang::t('_USERNAME', 'standard'),
+                    Lang::t('_FULLNAME', 'standard'),
+                    Lang::t('_CURRENT_SCORE', 'standard'),
+                    Lang::t('_MAX_SCORE', 'standard'),
+                ], ['image', '', '', 'image', 'image']);
+                $i = 1;
+                foreach ($standings as $row) {
+                    $tb->addBody([
+                        $i++,
+                        Docebo::aclm()->relativeID($row['userid']),
+                        $row['lastname'] . ' ' . $row['firstname'],
+                        $row['current_score'],
+                        $row['max_score'],
                     ]);
-				}
-				echo $tb->getTable();
-				?>
+                }
+                echo $tb->getTable();
+                ?>
 				<div class="nofloat"></div>
 			</div>
 		</div>
 	</div>
 	<?php
-	// close the tab structure
-	$lmstab->endWidget();
-	?>
+    // close the tab structure
+    $lmstab->endWidget();
+    ?>
 </div>

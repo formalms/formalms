@@ -1,10 +1,20 @@
-<?php defined('IN_FORMA') or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class CommunicationLmsController extends LmsController
 {
-
     public $name = 'communication';
 
     protected $_default_action = 'show';
@@ -19,7 +29,6 @@ class CommunicationLmsController extends LmsController
 
     public function init()
     {
-
         YuiLib::load('base,tabview');
         Lang::init('course');
         $this->json = new Services_JSON();
@@ -30,9 +39,9 @@ class CommunicationLmsController extends LmsController
 
     public function showTask()
     {
-
         if (!$this->info['history'] && !$this->info['unread']) {
             $this->render('emptycommunication', []);
+
             return;
         }
         if ($this->info['history'] && !$this->info['unread']) {
@@ -42,18 +51,17 @@ class CommunicationLmsController extends LmsController
             'active_tab' => 'unread',
             'ajax_action' => 'gettabledata',
             'show_unread_tab' => $this->info['unread'],
-            'show_history_tab' => $this->info['history']
+            'show_history_tab' => $this->info['history'],
         ]);
     }
 
     public function showhistoryTask()
     {
-
         $this->render('_tabs', [
             'active_tab' => 'history',
             'ajax_action' => 'gethistorydata',
             'show_unread_tab' => $this->info['unread'],
-            'show_history_tab' => $this->info['history']
+            'show_history_tab' => $this->info['history'],
         ]);
     }
 
@@ -66,31 +74,28 @@ class CommunicationLmsController extends LmsController
 
         $model = new CommunicationAlms();
         $communications = $model->findAllUnread(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
-            'viewer' => Docebo::user()->getArrSt()
+            'viewer' => Docebo::user()->getArrSt(),
         ]);
         foreach ($communications as $id => $comm) {
             //$communications[$id]['publish_date'] = Format::dateDistance($comm['publish_date']);
             switch ($comm['type_of']) {
-                case 'none' :
-                    {
+                case 'none':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_unread" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                             . Lang::t('_MARK_AS_READ', 'communication')
                             . '</span></a>';
-                    };
+                    ;
                     break;
-                case 'file' :
-                    {
+                case 'file':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_download" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                             . Lang::t('_DOWNLOAD', 'communication')
                             . '</span></a>';
-                    };
+                    ;
                     break;
-                case 'scorm' :
-                    {
+                case 'scorm':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_play js-scorm_lightbox" rel="" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
                             . Lang::t('_PLAY', 'communication')
                             . '</span></a>';
-                    };
+                    ;
                     break;
             }
         }
@@ -101,7 +106,7 @@ class CommunicationLmsController extends LmsController
             'dir' => $dir,
             'rowsPerPage' => $results,
             'results' => count($communications),
-            'records' => $communications
+            'records' => $communications,
         ];
 
         $this->data = $this->json->encode($result);
@@ -117,31 +122,28 @@ class CommunicationLmsController extends LmsController
 
         $model = new CommunicationAlms();
         $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
-            'viewer' => Docebo::user()->getArrSt()
+            'viewer' => Docebo::user()->getArrSt(),
         ]);
         foreach ($communications as $id => $comm) {
             //$communications[$id]['publish_date'] = Format::dateDistance($comm['publish_date']);
             switch ($comm['type_of']) {
-                case 'none' :
-                    {
+                case 'none':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_unread" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                             . Lang::t('_MARK_AS_READ', 'communication')
                             . '</span></a>';
-                    };
+                    ;
                     break;
-                case 'file' :
-                    {
+                case 'file':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_download" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                             . Lang::t('_DOWNLOAD', 'communication')
                             . '</span></a>';
-                    };
+                    ;
                     break;
-                case 'scorm' :
-                    {
+                case 'scorm':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_play js-scorm_lightbox" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
                             . Lang::t('_PLAY', 'communication')
                             . '</span></a>';
-                    };
+                    ;
                     break;
             }
         }
@@ -152,7 +154,7 @@ class CommunicationLmsController extends LmsController
             'dir' => $dir,
             'rowsPerPage' => $results,
             'results' => count($communications),
-            'records' => $communications
+            'records' => $communications,
         ];
 
         $this->data = $this->json->encode($result);
@@ -160,29 +162,27 @@ class CommunicationLmsController extends LmsController
     }
 
     /**
-     * List all the unseen communications
+     * List all the unseen communications.
      */
     public function newTask()
     {
-
         $model = new CommunicationAlms();
         $communications = $model->findAllUnread(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
-            'viewer' => Docebo::user()->getArrSt()
+            'viewer' => Docebo::user()->getArrSt(),
         ]);
         $this->render('communication', [
-            'communications' => $communications
+            'communications' => $communications,
         ]);
     }
 
     public function historyTask()
     {
-
         $model = new CommunicationAlms();
         $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
-            'viewer' => Docebo::user()->getArrSt()
+            'viewer' => Docebo::user()->getArrSt(),
         ]);
         $this->render('communication', [
-            'communications' => $communications
+            'communications' => $communications,
         ]);
     }
 
@@ -195,7 +195,6 @@ class CommunicationLmsController extends LmsController
         if ($comm !== false) {
             switch ($comm['type_of']) {
                 case 'none' :
-                    //
                     $model->markAsRead($id_comm, Docebo::user()->getId());
                     break;
                 case 'file' :
@@ -203,6 +202,7 @@ class CommunicationLmsController extends LmsController
                     if ($lo) {
                         $lo->env_play($id_comm, 'index.php?r=communication/show');
                     }
+
                     return;
                     break;
                 case 'scorm' :
@@ -218,5 +218,4 @@ class CommunicationLmsController extends LmsController
         UpdatesLms::resetCache();
         Util::jump_to('index.php?r=communication/show');
     }
-
 }

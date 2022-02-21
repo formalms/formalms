@@ -1,20 +1,32 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-class CoreMenu {
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-    public static function getList($platform, $only_active = true) {
-
-        if(!is_array($platform)) {
+class CoreMenu
+{
+    public static function getList($platform, $only_active = true)
+    {
+        if (!is_array($platform)) {
             $platform = [$platform];
         }
 
-        $platform = implode(', ', array_map(function($pl) {
+        $platform = implode(', ', array_map(function ($pl) {
             return "'$pl'";
         }, $platform));
 
-        if($only_active) {
-            $only_active = "AND m.is_active = true";
+        if ($only_active) {
+            $only_active = 'AND m.is_active = true';
         }
 
         $query =
@@ -32,9 +44,9 @@ ORDER BY m.sequence
 SQL;
 
         $res = sql_query($query);
-        
+
         $menu = [];
-        while($row = sql_fetch_object($res)) {
+        while ($row = sql_fetch_object($res)) {
             $menu[] = $row;
         }
 
@@ -43,31 +55,33 @@ SQL;
         return $menu;
     }
 
-    public static function updateSequence($idMenu,$sequence) {
+    public static function updateSequence($idMenu, $sequence)
+    {
         $query = <<<SQL
         UPDATE `%adm_menu` SET `sequence` = $sequence WHERE `idMenu` = $idMenu 
 SQL;
 
         $res = sql_query($query);
     }
-    
-    private static function buildMenuArray($menu, $parent = 0) {
 
+    private static function buildMenuArray($menu, $parent = 0)
+    {
         $_menu = [];
-        foreach($menu as &$item) {
-            if((int)$item->idParent === $parent) {
-                $item->submenu  = self::buildMenuArray($menu, (int)$item->idMenu);
-                $item->role     = self::role($item->of_platform, $item->module_name, $item->associated_token);
-                $item->url      = self::url($item->of_platform, $item->mvc_path, $item->module_name, $item->default_op);
+        foreach ($menu as &$item) {
+            if ((int) $item->idParent === $parent) {
+                $item->submenu = self::buildMenuArray($menu, (int) $item->idMenu);
+                $item->role = self::role($item->of_platform, $item->module_name, $item->associated_token);
+                $item->url = self::url($item->of_platform, $item->mvc_path, $item->module_name, $item->default_op);
                 $_menu[] = $item;
             }
         }
+
         return $_menu;
     }
 
-    private static function role($of_platform, $module_name, $associated_token) {
-
-        switch($of_platform){
+    private static function role($of_platform, $module_name, $associated_token)
+    {
+        switch ($of_platform) {
             case 'lms':
                 $role = '/lms/course/public';
                 break;
@@ -82,20 +96,20 @@ SQL;
                 break;
         }
 
-        if($module_name) {            
+        if ($module_name) {
             $role .= "/$module_name";
         }
 
-        if($associated_token) {
+        if ($associated_token) {
             $role .= "/$associated_token";
         }
 
         return $role;
     }
 
-    private static function url($of_platform, $mvc_path, $module_name, $default_op) {
-
-        switch($of_platform){
+    private static function url($of_platform, $mvc_path, $module_name, $default_op)
+    {
+        switch ($of_platform) {
             case 'lms':
                 $to = 'lms';
                 $of_platform = 'lms';
@@ -117,26 +131,28 @@ SQL;
         $url = Get::abs_path($to);
 
         $query_url = [];
-        if($mvc_path) {
+        if ($mvc_path) {
             $query_url['r'] = $mvc_path;
-        } elseif($module_name) {
+        } elseif ($module_name) {
             $query_url['modname'] = $module_name;
             $query_url['op'] = $default_op;
         }
-        if($to === 'lms') {
-            $query_url['sop'] = "unregistercourse";
+        if ($to === 'lms') {
+            $query_url['sop'] = 'unregistercourse';
         }
-        if(!$mvc_path) {
+        if (!$mvc_path) {
             $query_url['of_platform'] = $of_platform;
         }
         $query_url = urldecode(http_build_query($query_url, '', '&'));
-        if($query_url) $url .= "index.php?$query_url";
+        if ($query_url) {
+            $url .= "index.php?$query_url";
+        }
 
         return $url;
     }
 
-    public static function get($id) {
-
+    public static function get($id)
+    {
         $query =
 <<<SQL
 SELECT  m.idMenu, m.idParent, m.sequence, m.name, m.image, m.is_active, mu.idUnder
@@ -149,12 +165,13 @@ SQL;
 
         $menu = sql_fetch_object(sql_query($query));
         $menu->role = self::role($menu->of_platform, $menu->module_name, $menu->associated_token);
-        $menu->url  = self::url($menu->of_platform, $menu->mvc_path, $menu->module_name, $menu->default_op);
+        $menu->url = self::url($menu->of_platform, $menu->mvc_path, $menu->module_name, $menu->default_op);
+
         return $menu;
     }
 
-    public static function getByMVC($mvc_path) {
-
+    public static function getByMVC($mvc_path)
+    {
         $query =
 <<<SQL
 SELECT  m.idMenu, m.idParent, m.sequence, m.name, m.image, m.is_active, mu.idUnder
@@ -167,18 +184,19 @@ SQL;
 
         $menu = sql_fetch_object(sql_query($query));
         $menu->role = self::role($menu->of_platform, $menu->module_name, $menu->associated_token);
-        $menu->url  = self::url($menu->of_platform, $menu->mvc_path, $menu->module_name, $menu->default_op);
+        $menu->url = self::url($menu->of_platform, $menu->mvc_path, $menu->module_name, $menu->default_op);
+
         return $menu;
     }
 
-    public static function set($id, $values) {
-
+    public static function set($id, $values)
+    {
         $sets = [];
-        foreach($values as $field => $value) {
+        foreach ($values as $field => $value) {
             $sets[] = "$field = '$value'";
         }
         $sets = implode(', ', $sets);
-        
+
         $query =
 <<<SQL
 UPDATE %adm_menu
@@ -186,54 +204,65 @@ SET $sets
 WHERE idMenu = $id
 SQL;
 
-        return (bool)sql_query($query);
+        return (bool) sql_query($query);
     }
 
     /**
      * Add new menu item and create the required role.
-     * 
-     * @param array $menu
-     *    string $name
-     *    string|null $image
-     *    int|null $sequence
-     *    bool|null $isActive
-     *    bool|null $collapse
-     *    int|null $idParent
-     *    string|null $ofPlatform
+     *
+     * @param array      $menu
+     *                                string $name
+     *                                string|null $image
+     *                                int|null $sequence
+     *                                bool|null $isActive
+     *                                bool|null $collapse
+     *                                int|null $idParent
+     *                                string|null $ofPlatform
      * @param array|null $menuUnder
-     *    string $defaultName
-     *    string $moduleName
-     *    string $associatedToken
-     *    string|null $defaultOp
-     *    string|null $ofPlatform
-     *    int|null $sequence
-     *    string|null $classFile
-     *    string|null $className
-     *    string|null $mvcPath
-     * @param array $roleMembers
-     * @param int|null $idPlugin
+     *                                string $defaultName
+     *                                string $moduleName
+     *                                string $associatedToken
+     *                                string|null $defaultOp
+     *                                string|null $ofPlatform
+     *                                int|null $sequence
+     *                                string|null $classFile
+     *                                string|null $className
+     *                                string|null $mvcPath
+     * @param array      $roleMembers
+     * @param int|null   $idPlugin
+     *
      * @return int|false
      */
-    public static function addMenu($menu, $menuUnder = null, $roleMembers = [], $idPlugin = null) {
-
+    public static function addMenu($menu, $menuUnder = null, $roleMembers = [], $idPlugin = null)
+    {
         $values = [];
         $values['name'] = "'{$menu['name']}'";
         $values['image'] = isset($menu['image']) ? "'{$menu['image']}'" : "''";
-        if(isset($menu['isActive'])) $values['is_active'] = $menu['isActive'] ? "'true'" : "'false'";
-        if(isset($menu['collapse'])) $values['collapse'] = $menu['collapse'] ? "'true'" : "'false'";
-        if(isset($menu['idParent'])) $values['idParent'] = $menu['idParent'];
-        if(isset($menu['ofPlatform'])) $values['of_platform'] = "'{$menu['ofPlatform']}'";
-        if(!is_null($idPlugin)) $values['idPlugin'] = $idPlugin;
-        if(isset($menu['sequence'])) {
+        if (isset($menu['isActive'])) {
+            $values['is_active'] = $menu['isActive'] ? "'true'" : "'false'";
+        }
+        if (isset($menu['collapse'])) {
+            $values['collapse'] = $menu['collapse'] ? "'true'" : "'false'";
+        }
+        if (isset($menu['idParent'])) {
+            $values['idParent'] = $menu['idParent'];
+        }
+        if (isset($menu['ofPlatform'])) {
+            $values['of_platform'] = "'{$menu['ofPlatform']}'";
+        }
+        if (!is_null($idPlugin)) {
+            $values['idPlugin'] = $idPlugin;
+        }
+        if (isset($menu['sequence'])) {
             $values['sequence'] = $menu['sequence'];
         } else {
             $of_platform = $values['of_platform'];
             $querySequence = "SELECT  max(sequence) max_sequence, of_platform FROM %adm_menu WHERE  of_platform = $of_platform GROUP BY of_platform";
-            if(! ($resSequence = sql_query($querySequence))) {
+            if (!($resSequence = sql_query($querySequence))) {
                 return false;
             } else {
                 $rowSequence = sql_fetch_assoc($resSequence);
-                if($rowSequence['max_sequence'] >= 100) {
+                if ($rowSequence['max_sequence'] >= 100) {
                     $values['sequence'] = $rowSequence['max_sequence'] + 1;
                 } else {
                     $values['sequence'] = 100;
@@ -241,89 +270,102 @@ SQL;
             }
         }
 
-        $query = "INSERT INTO %adm_menu (" . implode(', ', array_keys($values)) . ") VALUE (" . implode(', ', array_values($values)) . ")";
+        $query = 'INSERT INTO %adm_menu (' . implode(', ', array_keys($values)) . ') VALUE (' . implode(', ', array_values($values)) . ')';
 
-        if(!sql_query($query)) {
+        if (!sql_query($query)) {
             return false;
         }
 
         $id = sql_insert_id();
 
-        if($menuUnder) {
+        if ($menuUnder) {
             $values = [];
             $values['idMenu'] = $id;
             $values['default_name'] = "'{$menuUnder['defaultName']}'";
             $values['module_name'] = "'{$menuUnder['moduleName']}'";
             $values['associated_token'] = "'{$menuUnder['associatedToken']}'";
-            if(isset($menuUnder['ofPlatform'])) $values['of_platform'] = "'{$menuUnder['ofPlatform']}'";
-            if(isset($menuUnder['sequence'])) $values['sequence'] = $menuUnder['sequence'];
-            if(isset($menuUnder['classFile'])) $values['class_file'] = "'{$menuUnder['classFile']}'";
-            if(isset($menuUnder['className'])) $values['class_name'] = "'{$menuUnder['className']}'";
-            if(isset($menuUnder['mvcPath'])) $values['mvc_path'] = "'{$menuUnder['mvcPath']}'";
+            if (isset($menuUnder['ofPlatform'])) {
+                $values['of_platform'] = "'{$menuUnder['ofPlatform']}'";
+            }
+            if (isset($menuUnder['sequence'])) {
+                $values['sequence'] = $menuUnder['sequence'];
+            }
+            if (isset($menuUnder['classFile'])) {
+                $values['class_file'] = "'{$menuUnder['classFile']}'";
+            }
+            if (isset($menuUnder['className'])) {
+                $values['class_name'] = "'{$menuUnder['className']}'";
+            }
+            if (isset($menuUnder['mvcPath'])) {
+                $values['mvc_path'] = "'{$menuUnder['mvcPath']}'";
+            }
 
-            $query = "INSERT INTO %adm_menu_under (" . implode(', ', array_keys($values)) . ") VALUE (" . implode(', ', array_values($values)) . ")";
+            $query = 'INSERT INTO %adm_menu_under (' . implode(', ', array_keys($values)) . ') VALUE (' . implode(', ', array_values($values)) . ')';
 
-            if(!sql_query($query)) {
+            if (!sql_query($query)) {
                 self::delete($id);
+
                 return false;
             }
 
             $role = self::role($menuUnder['ofPlatform'], $menuUnder['moduleName'], $menuUnder['associatedToken']);
             $am = Docebo::user()->getACLManager();
             $role_info = $am->getRole(false, $role);
-            if( empty($role_info)) {
+            if (empty($role_info)) {
                 $idst = $am->registerRole($role, '', $idPlugin);
             } else {
                 $idst = $role_info[0];
             }
-            foreach($roleMembers as $roleMember) {
-                    $am->addToRole($idst, $roleMember);
+            foreach ($roleMembers as $roleMember) {
+                $am->addToRole($idst, $roleMember);
             }
         }
 
         return $id;
     }
 
-    public static function delete($id) {
-
+    public static function delete($id)
+    {
         $query = "DELETE FROM %adm_menu WHERE idMenu = $id";
-        return (bool)sql_query($query);
+
+        return (bool) sql_query($query);
     }
 
     /**
      * Add new menu item.
-     * 
+     *
      * @deprecated
      *
      * @param string $name
      * @param string $mvcPath
      * @param string $of_platform
      * @param string $under_of_platform
-     * @param boolean $parent
+     * @param bool   $parent
      * @param string $icon
-     * @param boolean $is_active
-     * @param int $idPlugin
+     * @param bool   $is_active
+     * @param int    $idPlugin
+     *
      * @return void
      */
-    public static function addMenuChild($name, $mvcPath, $of_platform, $under_of_platform, $parent=false, $icon='', $is_active=true, $idPlugin=null){
-
+    public static function addMenuChild($name, $mvcPath, $of_platform, $under_of_platform, $parent = false, $icon = '', $is_active = true, $idPlugin = null)
+    {
         // Check if $name contains only alphanumeric characters or undescores.
-        if(preg_match('/[^a-z_\-0-9]/i', $name)){
+        if (preg_match('/[^a-z_\-0-9]/i', $name)) {
             return false;
         }
 
-        $idPlugin = (int)$idPlugin;
+        $idPlugin = (int) $idPlugin;
 
         $idParent = 'NULL';
-        
+
         $is_active = ($is_active) ? 'true' : 'false';
 
         // Get idMenu
-        if($parent){
+        if ($parent) {
             $idParentQuery = " SELECT idMenu FROM core_menu WHERE name = '$parent' ";
             $idParentResult = sql_query($idParentQuery);
-            if($idParentResult){
-                if($idParentRow = sql_fetch_row($idParentResult)){
+            if ($idParentResult) {
+                if ($idParentRow = sql_fetch_row($idParentResult)) {
                     $idParent = $idParentRow[0];
                 } else {
                     return false;
@@ -335,22 +377,21 @@ SQL;
 
         // Get sequence
         $where = ' idParent ';
-        if($idParent!='NULL'){
+        if ($idParent != 'NULL') {
             $where .= "= $idParent ";
-        } else{
-            $where .= "IS NULL ";
+        } else {
+            $where .= 'IS NULL ';
         }
         $sequence = null;
         $sequenceQuery = " SELECT max(sequence)+1, count(sequence) as count FROM core_menu WHERE $where ";
         $sequenceResult = sql_query($sequenceQuery);
-        if($sequenceResult){
-            if($sequenceRow = sql_fetch_row($sequenceResult)){
-                if($sequenceRow[1]>0){
+        if ($sequenceResult) {
+            if ($sequenceRow = sql_fetch_row($sequenceResult)) {
+                if ($sequenceRow[1] > 0) {
                     $sequence = $sequenceRow[0];
                 } else {
                     $sequence = 1;
                 }
-                
             } else {
                 return false;
             }
@@ -380,9 +421,9 @@ SQL;
                 $idPlugin
             )
         ";
-        
+
         // Insert into core_menu_under
-        if(sql_query($queryMenu)){
+        if (sql_query($queryMenu)) {
             $idMenu = sql_insert_id();
             $queryMenuUnder = "INSERT INTO 
                 %adm_menu_under(
@@ -409,7 +450,7 @@ SQL;
                     '$mvcPath'
                 )
             ";
-            if(sql_query($queryMenuUnder)){
+            if (sql_query($queryMenuUnder)) {
                 return true;
             } else {
                 return false;

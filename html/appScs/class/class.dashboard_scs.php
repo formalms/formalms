@@ -1,15 +1,23 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once($GLOBALS['where_framework'].'/class/class.dashboard.php');
+require_once $GLOBALS['where_framework'] . '/class/class.dashboard.php';
 
-class Dashboard_Scs extends Dashboard {
-	
-	function Dashboard_Scs() {
-	
-	}
-	
+class Dashboard_Scs extends Dashboard
+{
+    public function Dashboard_Scs()
+    {
+    }
 }
-
-?>

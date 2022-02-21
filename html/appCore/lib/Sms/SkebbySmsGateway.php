@@ -1,22 +1,34 @@
 <?php
-require_once(Forma::inc(_adm_ . '/lib/Sms/SmsGatewayInterface.php'));
-require_once(Forma::inc(_adm_ . '/lib/Sms/SmsGatewayException.php'));
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
+require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayInterface.php');
+require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayException.php');
 
 class SkebbySmsGateway implements SmsGatewayInterface
 {
+    public const NET_ERROR = 'Network+error,+unable+to+send+the+message';
+    public const SENDER_ERROR = 'You+can+specify+only+one+type+of+sender,+numeric+or+alphanumeric';
 
-    const NET_ERROR = "Network+error,+unable+to+send+the+message";
-    const SENDER_ERROR = "You+can+specify+only+one+type+of+sender,+numeric+or+alphanumeric";
-
-    const SMS_TYPE_CLASSIC = "classic";
-    const SMS_TYPE_CLASSIC_PLUS = "classic_plus";
-    const SMS_TYPE_BASIC = "basic";
-    const SMS_TYPE_TEST_CLASSIC = "test_classic";
-    const SMS_TYPE_TEST_CLASSIC_PLUS = "test_classic_plus";
-    const SMS_TYPE_TEST_BASIC = "test_basic";
+    public const SMS_TYPE_CLASSIC = 'classic';
+    public const SMS_TYPE_CLASSIC_PLUS = 'classic_plus';
+    public const SMS_TYPE_BASIC = 'basic';
+    public const SMS_TYPE_TEST_CLASSIC = 'test_classic';
+    public const SMS_TYPE_TEST_CLASSIC_PLUS = 'test_classic_plus';
+    public const SMS_TYPE_TEST_BASIC = 'test_basic';
 
     /**
      * @return array
+     *
      * @throws SmsGatewayException
      */
     public function getCredit()
@@ -25,7 +37,6 @@ class SkebbySmsGateway implements SmsGatewayInterface
             Get::sett('sms_gateway_user'),
             Get::sett('sms_gateway_pass')
         );
-
 
         if ($credit_result['status'] == 'success') {
             return [
@@ -44,11 +55,8 @@ class SkebbySmsGateway implements SmsGatewayInterface
         }
     }
 
-
-    public
-    function send($recipients = [], $text, $type = SMS_TYPE_BASIC)
+    public function send($recipients = [], $text, $type = SMS_TYPE_BASIC)
     {
-
         // ------------ SMS Classic dispatch --------------
 
         // SMS CLASSIC dispatch with custom alphanumeric sender
@@ -56,7 +64,6 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
         // SMS CLASSIC dispatch with custom numeric sender
         // $result = $this->skebbyGatewaySendSMS('username','password',$recipients,'Hi Mike, how are you?', SMS_TYPE_CLASSIC,'393471234567');
-
 
         // ------------- SMS Basic dispatch ----------------
         $result = $this->skebbyGatewaySendSMS(
@@ -71,7 +78,6 @@ class SkebbySmsGateway implements SmsGatewayInterface
             'UTF-8'
         );
 
-
         // ------------ SMS Classic Plus dispatch -----------
 
         // SMS CLASSIC PLUS dispatch (with delivery report) with custom alphanumeric sender
@@ -82,7 +88,6 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
         // SMS CLASSIC PLUS dispatch (with delivery report) with custom alphanumeric sender and custom reference string
         // $result = $this->skebbyGatewaySendSMS('username','password',$recipients,'Hi Mike, how are you?', SMS_TYPE_CLASSIC_PLUS,'393471234567','','reference');
-
 
         //  ------------------------------------------------------------------
         //     WARNING! THE SMS_TYPE_TEST* SMS TYPES DOESN'T DISPATCH ANY SMS
@@ -112,7 +117,6 @@ class SkebbySmsGateway implements SmsGatewayInterface
         //    USE THEM ONLY TO CHECK IF YOU CAN REACH THE SKEBBY SERVER
         // ------------------------------------------------------------------
 
-
         if ($result['status'] == 'success') {
             return true;
 //            echo '<b style="color:#8dc63f;">Message Sent!</b><br/>';
@@ -137,8 +141,6 @@ class SkebbySmsGateway implements SmsGatewayInterface
             }
             throw new SmsGatewayException(urldecode($result['message']), $code);
         }
-
-
     }
 
     protected function do_post_request($url, $data, $optional_headers = null)
@@ -147,8 +149,8 @@ class SkebbySmsGateway implements SmsGatewayInterface
             $params = [
                 'http' => [
                     'method' => 'POST',
-                    'content' => $data
-                ]
+                    'content' => $data,
+                ],
             ];
             if ($optional_headers !== null) {
                 $params['http']['header'] = $optional_headers;
@@ -162,6 +164,7 @@ class SkebbySmsGateway implements SmsGatewayInterface
             if ($response === false) {
                 return 'status=failed&message=' . NET_ERROR;
             }
+
             return $response;
         } else {
             $ch = curl_init();
@@ -181,6 +184,7 @@ class SkebbySmsGateway implements SmsGatewayInterface
             if (!$response) {
                 return 'status=failed&message=' . NET_ERROR;
             }
+
             return $response;
         }
     }
@@ -227,13 +231,13 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
         if ($sender_number != '' && $sender_string != '') {
             parse_str('status=failed&message=' . SENDER_ERROR, $result);
+
             return $result;
         }
         $parameters .= $sender_number != '' ? '&sender_number=' . urlencode($sender_number) : '';
         $parameters .= $sender_string != '' ? '&sender_string=' . urlencode($sender_string) : '';
 
         $parameters .= $user_reference != '' ? '&user_reference=' . urlencode($user_reference) : '';
-
 
         switch ($charset) {
             case 'UTF-8':
@@ -252,8 +256,8 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
     protected function skebbyGatewayGetCredit($username, $password, $charset = '')
     {
-        $url = "http://gateway.skebby.it/api/send/smseasy/advanced/http.php";
-        $method = "get_credit";
+        $url = 'http://gateway.skebby.it/api/send/smseasy/advanced/http.php';
+        $method = 'get_credit';
 
         $parameters = 'method='
             . urlencode($method) . '&'

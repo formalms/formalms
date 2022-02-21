@@ -1,5 +1,5 @@
 <?php
-define("IS_AJAX", true);
+define('IS_AJAX', true);
 $a_node = json_encode($model->GetGlobalJsonTree());
 $id_cat = Get::req('id_cat', DOTY_INT, 0);
 cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/bootstrap-treeview.js', true), 'page_head');
@@ -16,7 +16,7 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
     </div>
     <div class="col-sm-8" id="div_course" style="padding-top: 15px;">
         <br>
-        <p align="center"><img src='<?php echo Layout::path() ?>images/standard/loadbar.gif'></p>
+        <p align="center"><img src='<?php echo Layout::path(); ?>images/standard/loadbar.gif'></p>
     </div>
 <div>
 
@@ -27,7 +27,7 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
     callAjaxCatalog(0);
     function callAjaxCatalog(id_cat) {
 
-        str_loading = "<?php echo Layout::path() ?>images/standard/loadbar.gif";
+        str_loading = "<?php echo Layout::path(); ?>images/standard/loadbar.gif";
         $("#div_course").html("<br><p align='center'><img src='" + str_loading + "'></p>");
 
         scriviCookie('id_current_cat', id_cat, 60);
@@ -50,7 +50,7 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
 
     var category_tree = [
         {
-            text: " &nbsp;&nbsp;<?php echo Lang::t('_CATEGORY') ?>",
+            text: " &nbsp;&nbsp;<?php echo Lang::t('_CATEGORY'); ?>",
             href: "#Categoria",
             id_cat: 0,
             state: {
@@ -58,7 +58,7 @@ cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js'
                 selected: true
             },
             showIcon: true,
-            nodes:<?php echo $a_node  ?>
+            nodes:<?php echo $a_node; ?>
         }
 
     ];

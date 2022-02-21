@@ -1,8 +1,8 @@
 <?php
 
 echo getTitleArea([
-	'index.php?r=adm/adminmanager/show' => Lang::t('_ADMIN_MANAGER', 'menu'),
-	Lang::t('_LOCATION', 'adminmanager').' : '.$model->getAdminFullname($id_user)
+    'index.php?r=adm/adminmanager/show' => Lang::t('_ADMIN_MANAGER', 'menu'),
+    Lang::t('_LOCATION', 'adminmanager') . ' : ' . $model->getAdminFullname($id_user),
 ]);
 
 ?>
@@ -12,47 +12,46 @@ echo getTitleArea([
 echo getBackUi('index.php?r=adm/adminmanager/show', Lang::t('_BACK', 'standard'));
 
 echo Form::openForm('classlocations_selection_form', 'index.php?r=adm/adminmanager/classlocations_set');
-echo Form::getHidden('selection', 'selection', implode(",", $selection));
+echo Form::getHidden('selection', 'selection', implode(',', $selection));
 echo Form::getHidden('id_user', 'id_user', $id_user);
 
 //--- SEARCH FILTER -------
 
 $this->widget('tablefilter', [
-	'id' => 'classlocations_filter',
-	'filter_text' => isset($filter_text) ? $filter_text : "",
-	'js_callback_set' => 'ClassLocations.setFilter',
-	'js_callback_reset' => 'ClassLocations.resetFilter'
+    'id' => 'classlocations_filter',
+    'filter_text' => isset($filter_text) ? $filter_text : '',
+    'js_callback_set' => 'ClassLocations.setFilter',
+    'js_callback_reset' => 'ClassLocations.resetFilter',
 ]);
-
 
 //--- TABLE -------
 
 $rel_action_over = '<span class="ma_selected_users">'
-		.'<b id="num_users_selected_top">'.(int)(isset($num_selected) ? $num_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
-		.'</span>';
+        . '<b id="num_users_selected_top">' . (int) (isset($num_selected) ? $num_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
+        . '</span>';
 $rel_action_bottom = '<span class="ma_selected_users">'
-		.'<b id="num_users_selected_bottom">'.(int)(isset($num_selected) ? $num_selected : '0').'</b> '.Lang::t('_SELECTED', 'admin_directory')
-		.'</span>';
+        . '<b id="num_users_selected_bottom">' . (int) (isset($num_selected) ? $num_selected : '0') . '</b> ' . Lang::t('_SELECTED', 'admin_directory')
+        . '</span>';
 
 $_params = [
-	'id'			=> 'classlocations_table',
-	'ajaxUrl'		=> 'ajax.adm_server.php?r=adm/adminmanager/getclasslocationstabledata',
-	'rowsPerPage'	=> Get::sett('visuItem', 25),
-	'startIndex'	=> 0,
-	'results'		=> Get::sett('visuItem', 25),
-	'sort'			=> 'location',
-	'dir'			=> 'asc',
-	'generateRequest' => 'ClassLocations.requestBuilder',
-	'columns'		=> [
-		['key' => 'location', 'label' => Lang::t('_LOCATION', 'lms'), 'sortable' => true, 'formatter' => 'ClassLocations.labelFormatter']
+    'id' => 'classlocations_table',
+    'ajaxUrl' => 'ajax.adm_server.php?r=adm/adminmanager/getclasslocationstabledata',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'location',
+    'dir' => 'asc',
+    'generateRequest' => 'ClassLocations.requestBuilder',
+    'columns' => [
+        ['key' => 'location', 'label' => Lang::t('_LOCATION', 'lms'), 'sortable' => true, 'formatter' => 'ClassLocations.labelFormatter'],
     ],
-	'fields'		=> ['id', 'location'],
-	'stdSelection' => true,
-	'initialSelection' => $selection,
-	'rel_actions' => [$rel_action_over, $rel_action_bottom],
-	'events' => [
-		'initEvent' => 'ClassLocations.initEvent'
-    ]
+    'fields' => ['id', 'location'],
+    'stdSelection' => true,
+    'initialSelection' => $selection,
+    'rel_actions' => [$rel_action_over, $rel_action_bottom],
+    'events' => [
+        'initEvent' => 'ClassLocations.initEvent',
+    ],
 ];
 
 $this->widget('table', $_params);

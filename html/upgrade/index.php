@@ -1,11 +1,9 @@
 <?php
 
-
-
 //TODO INSTALL_vs_UPGRADE: please share what you can
 ob_start();
 
-include('bootstrap.php');
+include 'bootstrap.php';
 
 StepManager::checkStep();
 Lang::setLanguage();
@@ -41,7 +39,7 @@ Lang::setLanguage();
 				<div class="install_hd">
 					<div class="ibd">
 						<h1><?php echo Lang::t('_UPGRADER_TITLE'); ?></h1>
-						<b><?php echo StepManager::getCurrentStep().' / '.StepManager::getTotalStep(); ?></b>
+						<b><?php echo StepManager::getCurrentStep() . ' / ' . StepManager::getTotalStep(); ?></b>
 					</div>
 				</div>
 				<div class="install_bd">

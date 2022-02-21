@@ -1,6 +1,5 @@
 <?php
 
-
 // date picker localization
 $regset = Format::instance();
 $date_format = $regset->date_token;
@@ -8,8 +7,6 @@ $date_sep = $regset->date_sep;
 $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
 $_lang = Docebo::user()->getPreference('ui.lang_code');
 $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-date-language="' . $_lang . '" data-date-format="' . $date_format . '"';
-
-
 
 ?>
 <script type="text/javascript">
@@ -43,8 +40,8 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
     $.fn.dataTable.ext.search.push(
         function(settings, data, dataIndex) {
             var ret_val = true
-            date_sep = '<?= $date_sep ?>'
-            date_format_array = '<?= $date_format ?>'.split(date_sep)
+            date_sep = '<?php echo $date_sep; ?>'
+            date_format_array = '<?php echo $date_format; ?>'.split(date_sep)
             day_position = date_format_array.indexOf("dd")
             month_position = date_format_array.indexOf("mm")
             year_position = date_format_array.indexOf("yyyy")
@@ -418,7 +415,7 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
             if (options.select.all === true) {
                 _options.buttons = $.merge(_options.buttons, [{
                     extend: 'selectAll',
-                    text: '<?= Lang::t('_SELECT_ALL', 'standard') ?>',
+                    text: '<?php echo Lang::t('_SELECT_ALL', 'standard'); ?>',
                     action: function(e, dt, node, config) {
                         if (!_thisObj._selection.all) {
                             _thisObj._selection.rows = [];
@@ -430,7 +427,7 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                     }
                 }, {
                     extend: 'selectNone',
-                    text: '<?= Lang::t('_UNSELECT_ALL', 'standard') ?>',
+                    text: '<?php echo Lang::t('_UNSELECT_ALL', 'standard'); ?>',
                     action: function(e, dt, node, config) {
                         if (_thisObj._selection.all) {
                             _thisObj._selection.rows = [];
@@ -595,12 +592,12 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
          * Language translation
          */
         _options.language = {
-            'sSearch': '<?= Lang::t('_SEARCH', 'standard') ?>',
+            'sSearch': '<?php echo Lang::t('_SEARCH', 'standard'); ?>',
             'oPaginate': {
-                'sFirst': '<?= Lang::t('_START', 'standard') ?>',
-                'sPrevious': '<?= Lang::t('_PREV_B', 'standard') ?>',
-                'sNext': '<?= Lang::t('_NEXT', 'standard') ?>',
-                'sLast': '<?= Lang::t('_END', 'standard') ?>'
+                'sFirst': '<?php echo Lang::t('_START', 'standard'); ?>',
+                'sPrevious': '<?php echo Lang::t('_PREV_B', 'standard'); ?>',
+                'sNext': '<?php echo Lang::t('_NEXT', 'standard'); ?>',
+                'sLast': '<?php echo Lang::t('_END', 'standard'); ?>'
             }
         }
 
@@ -730,8 +727,8 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
         },
         search_string: function(ix) {
             html_tag = '<select id="selString_' + ix + '" name="selString_' + ix + '">' +
-                '<option selected value="0"><?= Lang::t('_STARTS_WITH', 'standard') ?></option>' +
-                '<option value="1"><?= Lang::t('_CONTAINS', 'standard') ?></option>' +
+                '<option selected value="0"><?php echo Lang::t('_STARTS_WITH', 'standard'); ?></option>' +
+                '<option value="1"><?php echo Lang::t('_CONTAINS', 'standard'); ?></option>' +
                 '<option value="2">Uguale a</option>' +
                 '</select>' +
                 '<input id="inputString_' + ix + '" name="inputString_' + ix + '" type="text"  />'
@@ -763,13 +760,13 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                 '<option value="3">>=</option>' +
                 '<option value="4"><=</option>' +
                 '</select>' +
-                '<input style="width:80px" id="search_input_DateA_' + ix + '" name="search_input_DateA_' + ix + '" type="text"  <?= $date_picker_param ?>/><br>' //+
+                '<input style="width:80px" id="search_input_DateA_' + ix + '" name="search_input_DateA_' + ix + '" type="text"  <?php echo $date_picker_param; ?>/><br>' //+
             /*'<select id="selDateB_' + ix + '" name="selDateB_' + ix + '">'+
                    '<option selected value="0">=</option>'+
                    '<option value="1">></option>'+
                    '<option value="2"><</option>'+
                     '</select>' +
-                    '<input style="width:80px" id="search_input_DateB_' + ix + '" name="search_input_DateB_' + ix + '" type="text"  <?= $date_picker_param ?>/><br>' */
+                    '<input style="width:80px" id="search_input_DateB_' + ix + '" name="search_input_DateB_' + ix + '" type="text"  <?php echo $date_picker_param; ?>/><br>' */
             return html_tag
 
         },

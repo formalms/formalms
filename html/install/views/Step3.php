@@ -13,29 +13,29 @@
 
 <?php
 
-$content="";
-$fn = _installer_."/data/license/license_".Lang::getSelLang().".txt";
-$english_fn = _installer_."/data/license/license_english.txt";
+$content = '';
+$fn = _installer_ . '/data/license/license_' . Lang::getSelLang() . '.txt';
+$english_fn = _installer_ . '/data/license/license_english.txt';
 
-$handle=FALSE;
+$handle = false;
 if ((!file_exists($fn)) && (file_exists($english_fn))) {
-	$fn=$english_fn;
+    $fn = $english_fn;
 }
 
 if (file_exists($fn)) {
-	$handle = fopen($fn, "r");
-	$content = fread($handle, filesize($fn));
-	fclose($handle);
+    $handle = fopen($fn, 'r');
+    $content = fread($handle, filesize($fn));
+    fclose($handle);
 }
 
-$text = '<label for="license" style="visibility: hidden;">'.( defined('_SOFTWARE_LICENSE') ? _SOFTWARE_LICENSE : 'License' ).'</label><br />';
+$text = '<label for="license" style="visibility: hidden;">' . (defined('_SOFTWARE_LICENSE') ? _SOFTWARE_LICENSE : 'License') . '</label><br />';
 //$text .= '<textarea rows="23" cols="62" id="license" name="license" readonly="readonly">';
 $text .= '<div style="width:100%;overflow:auto;height:400px;border:1px solid #cccccc;"><pre>'
-	.htmlspecialchars($content)
-	.'</pre></div>';
+    . htmlspecialchars($content)
+    . '</pre></div>';
 $text .= '</textarea>';
 
-$text.=Form::getCheckbox( Lang::t('_AGREE_LICENSE'), "agree", "agree", 1, false);
+$text .= Form::getCheckbox(Lang::t('_AGREE_LICENSE'), 'agree', 'agree', 1, false);
 
 echo $text;
 

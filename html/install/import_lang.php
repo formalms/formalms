@@ -1,18 +1,29 @@
 <?php
 
-include('bootstrap.php');
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-require_once(_installer_.'/lib/lib.lang_import.php');
-require_once _lib_.'/loggers/lib.logger.php';
-require_once(_base_.'/db/lib.docebodb.php');
+include 'bootstrap.php';
 
-DbConn::getInstance(false,array(
-    'db_type'=>$_SESSION['db_info']['db_type'],
-    'db_host'=>$_SESSION['db_info']['db_host'],
-    'db_user'=>$_SESSION['db_info']['db_user'],
-    'db_pass'=>$_SESSION['db_info']['db_pass'],
-    'db_name'=>$_SESSION['db_info']['db_name']
-));
+require_once _installer_ . '/lib/lib.lang_import.php';
+require_once _lib_ . '/loggers/lib.logger.php';
+require_once _base_ . '/db/lib.docebodb.php';
+
+DbConn::getInstance(false, [
+    'db_type' => $_SESSION['db_info']['db_type'],
+    'db_host' => $_SESSION['db_info']['db_host'],
+    'db_user' => $_SESSION['db_info']['db_user'],
+    'db_pass' => $_SESSION['db_info']['db_pass'],
+    'db_name' => $_SESSION['db_info']['db_name'],
+]);
 
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
@@ -23,61 +34,57 @@ $platform_code = Get::pReq('platform', DOTY_STRING);
 $lang = Get::pReq('lang', DOTY_STRING);
 $upgrade = Get::pReq('upgrade', DOTY_INT);
 
-$lang_arr =array_keys($_SESSION["lang_install"]);
-$pl_arr =array('framework');
+$lang_arr = array_keys($_SESSION['lang_install']);
+$pl_arr = ['framework'];
 
 $cur['value'] = current($pl_arr);
-next($pl_arr); 
+next($pl_arr);
 $prev = '';
-while($cur && $prev != $platform_code) {
-	$prev =$cur['value'];
-	$cur['value'] = current($pl_arr);
+while ($cur && $prev != $platform_code) {
+    $prev = $cur['value'];
+    $cur['value'] = current($pl_arr);
     next($pl_arr);
 }
-$next_platform =($cur ? $cur['value'] : false);
-
+$next_platform = ($cur ? $cur['value'] : false);
 
 if ($next_platform === false) {
-	$cur['value'] = current($lang_arr);
-    next($lang_arr);  
-	$prev ='';
-	while($cur && $prev != $lang) {
-		$prev =$cur['value'];
-		$cur['value'] = current($lang_arr);
+    $cur['value'] = current($lang_arr);
+    next($lang_arr);
+    $prev = '';
+    while ($cur && $prev != $lang) {
+        $prev = $cur['value'];
+        $cur['value'] = current($lang_arr);
         next($lang_arr);
-	}
-	$next_lang =($cur ? $cur['value'] : false);
-	$next_platform =$pl_arr[0];
-}
-else {
-	$next_lang =$lang;
+    }
+    $next_lang = ($cur ? $cur['value'] : false);
+    $next_platform = $pl_arr[0];
+} else {
+    $next_lang = $lang;
 }
 
-
-$fn=_base_.'/xml_language/lang['.$lang.'].xml';
+$fn = _base_ . '/xml_language/lang[' . $lang . '].xml';
 
 /* $overwrite =true;
 if ($upgrade == 1) {
-	$overwrite =false;
+    $overwrite =false;
 } */
 // we always overwrite, also on upgrade
 // cause there are too many changes
 
 if (file_exists($fn)) {
-	$LangAdm = new LangAdm();
-	$LangAdm->importTranslation($fn, true, false);
+    $LangAdm = new LangAdm();
+    $LangAdm->importTranslation($fn, true, false);
 }
 
-$res =array();
-$res['current_lang']=$lang;
-$res['current_platform']=$platform_code;
-$res['next_lang']=$next_lang;
-$res['next_platform']=$next_platform;
+$res = [];
+$res['current_lang'] = $lang;
+$res['current_platform'] = $platform_code;
+$res['next_lang'] = $next_lang;
+$res['next_platform'] = $next_platform;
 
-require_once(_base_.'/lib/lib.json.php');
-$json =new Services_JSON();
+require_once _base_ . '/lib/lib.json.php';
+$json = new Services_JSON();
 ob_clean();
 echo $json->encode($res);
 
-die();
-
+exit();

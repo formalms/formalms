@@ -1,21 +1,29 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
 use Symfony\Component\Uid\Uuid;
 
 class CalendarManager
 {
-
     public static function generateUniqueCalendarId()
     {
         return Uuid::v4()->toRfc4122();
     }
 
     /**
-     * @param int $idCourse
-     * @param int $idDate
-     * @param int $idUser
+     * @param int   $idUser
      * @param false $immediateOutput
+     *
      * @return CalendarDataContainer
      */
     public static function getCalendarDataContainerForDateDays(int $idCourse, int $idDate, ?int $idUser = -1, bool $immediateOutput = false)
@@ -40,7 +48,6 @@ class CalendarManager
 
         $classrooms = $classroomModel->getClassroomForDropdown();
 
-
         $idOrganization = null;
         if ($idUser > 0) {
             $uma = new UsermanagementAdm();
@@ -55,13 +62,11 @@ class CalendarManager
         }
 
         foreach ($days as $row) {
-
             $timezone = \Eluceo\iCal\Domain\Entity\TimeZone::createFromPhpDateTimeZone($datetimezone,
                 DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $row['date_begin'], $datetimezone),
                 DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $row['date_end'], $datetimezone)
             );
             $calendar->addTimeZone($timezone);
-
 
             if (empty($row['calendarId'])) {
                 $row['calendarId'] = $dateManager->generateCalendarIdForDateDay($idDate, $row['id']);
@@ -77,15 +82,13 @@ class CalendarManager
                 $event->setMethod(\Eluceo\iCal\Domain\Enum\Method::CANCELLED());
             }
 
-
             $event->setOrganizer(new \Eluceo\iCal\Domain\ValueObject\Organizer(
                 new \Eluceo\iCal\Domain\ValueObject\EmailAddress(Get::sett('sender_event')),
                 Get::sett('use_sender_aclname', '')
             ));
 
-
-            if (array_key_exists((int)$row['classroom'], $classrooms)) {
-                $classroomString = strip_tags($classrooms[(int)$row['classroom']]);
+            if (array_key_exists((int) $row['classroom'], $classrooms)) {
+                $classroomString = strip_tags($classrooms[(int) $row['classroom']]);
                 $event->setLocation(
                     (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: Get::site_url(), $classroomString))
                 );
@@ -94,7 +97,6 @@ class CalendarManager
                     (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: Get::site_url(), getCurrentDomain($idOrganization) ?: Get::site_url()))
                 );
             }
-
 
             $event->setOccurrence(
                 new \Eluceo\iCal\Domain\ValueObject\TimeSpan(
@@ -126,12 +128,9 @@ class CalendarManager
         $calendarContainer = new CalendarDataContainer($fileName, $calendar);
 
         if ($immediateOutput) {
-
             $calendarContainer->download();
-
         }
 
         return $calendarContainer;
     }
-
 }

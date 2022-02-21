@@ -1,25 +1,34 @@
-<?php defined('IN_FORMA') or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
-
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class PDF extends TCPDF
 {
+    public $angle = 0;
+    /** @var boolean */
+    public $encrypted;          //whether document is protected
+    /** @var string */
+    public $password;           //encryption password
+    public $Uvalue;             //U entry in pdf document
+    public $Ovalue;             //O entry in pdf document
+    public $Pvalue;             //P entry in pdf document
+    public $enc_obj_id;         //encryption object id
+    public $last_rc4_key;       //last RC4 key encrypted (cached for optimisation)
+    public $last_rc4_key_c;     //last RC4 computed key
+    public $page_delimiter;
 
-    var $angle = 0;
-    /** @var  $encrypted boolean */
-    var $encrypted;          //whether document is protected
-    /** @var $password string */
-    var $password;           //encryption password
-    var $Uvalue;             //U entry in pdf document
-    var $Ovalue;             //O entry in pdf document
-    var $Pvalue;             //P entry in pdf document
-    var $enc_obj_id;         //encryption object id
-    var $last_rc4_key;       //last RC4 key encrypted (cached for optimisation)
-    var $last_rc4_key_c;     //last RC4 computed key
-    var $page_delimiter;
-
-    function PDF($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8')
+    public function PDF($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8')
     {
         parent::__construct($orientation, $unit, $format, $unicode, $encoding);
 
@@ -34,7 +43,7 @@ class PDF extends TCPDF
         $this->SetMargins(0, 0, 0);
 
         //set auto page breaks
-        $this->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM);
+        $this->SetAutoPageBreak(false, PDF_MARGIN_BOTTOM);
 
         //set image scale factor
         $this->setImageScale(PDF_IMAGE_SCALE_RATIO);
@@ -51,7 +60,7 @@ class PDF extends TCPDF
         //$this->SetFont('freeserif','',12);
     }
 
-    function PlaceWater()
+    public function PlaceWater()
     {
         //Put watermark  Author: Ivan
         $this->SetFont('times', '', 50);
@@ -59,7 +68,7 @@ class PDF extends TCPDF
         $this->RotatedText(0, 0, 'F a c - s i m i l e', 90);
     }
 
-    function RotatedText($x, $y, $txt, $angle)
+    public function RotatedText($x, $y, $txt, $angle)
     {
         //Text rotated around its origin
         $this->Rotate($angle, $x, $y);
@@ -67,16 +76,18 @@ class PDF extends TCPDF
         $this->Rotate(0);
     }
 
-
-    function Rotate($angle, $x = -1, $y = -1)
+    public function Rotate($angle, $x = -1, $y = -1)
     {
         //Author: Olivier
-        if ($x == -1)
+        if ($x == -1) {
             $x = $this->x;
-        if ($y == -1)
+        }
+        if ($y == -1) {
             $y = $this->y;
-        if ($this->angle != 0)
+        }
+        if ($this->angle != 0) {
             $this->_out('Q');
+        }
         $this->angle = $angle;
         if ($angle != 0) {
             $angle *= M_PI / 180;
@@ -88,7 +99,7 @@ class PDF extends TCPDF
         }
     }
 
-    function _endpage()
+    public function _endpage()
     {
         if ($this->angle != 0) {
             $this->angle = 0;
@@ -97,18 +108,18 @@ class PDF extends TCPDF
         parent::_endpage();
     }
 
-    function getPdf($html, $name, $img = false, $download = true, $facs_simile = false, $for_saving = false)
+    public function getPdf($html, $name, $img = false, $download = true, $facs_simile = false, $for_saving = false)
     {
         @ob_end_clean();
 
-        $doc = new DOMDocument(null,$this->encoding);
-        $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES',$this->encoding));
+        $doc = new DOMDocument(null, $this->encoding);
+        $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', $this->encoding));
         $xpath = new DOMXPath($doc);
-        $nodelist = $xpath->query('//img'); # "/images/image.jpg"
+        $nodelist = $xpath->query('//img'); // "/images/image.jpg"
 
-        foreach ($nodelist as $node){
+        foreach ($nodelist as $node) {
             $value = $node->attributes->getNamedItem('src')->nodeValue;
-            $value = str_replace(' ','%20',$value);
+            $value = str_replace(' ', '%20', $value);
             $node->attributes->getNamedItem('src')->nodeValue = $value;
         }
 
@@ -129,7 +140,7 @@ class PDF extends TCPDF
         $lg['w_page'] = 'page';
         $this->setLanguageArray($lg);
 
-        /**
+        /*
          * Protection for the PDF
          *
          * print : Print the document;
@@ -161,28 +172,27 @@ class PDF extends TCPDF
             $this->SetTextColor(0, 0, 0);
         }
         $this->setXY(0, 0);
-        
+
         // managing page break
         $this->page_delimiter = '<!-- pagebreak -->';
-        $pages    = explode($this->page_delimiter, $html);
-        $cnt       = count($pages);
+        $pages = explode($this->page_delimiter, $html);
+        $cnt = count($pages);
         $index = 0;
-        foreach ($pages as $page){
+        foreach ($pages as $page) {
             if ($img != '') {
                 $this->setXY(0, 0);
                 $this->Image($GLOBALS['where_files_relative'] . '/appLms/certificate/' . $img, 0, 0, ($this->CurOrientation == 'P' ? 210 : 298), 0, '', '', '', true);
                 $this->setXY(0, 0);
-            }            
-            
+            }
+
             $this->writeHTML($this->page_delimiter . $page, true, 0, true, 0);
 
             if ($index < $cnt - 1) {
-                 $this->AddPage();
+                $this->AddPage();
             }
-            $index++;
+            ++$index;
         }
         $this->lastPage();
-
 
         $name = str_replace(
             ['\\', '/', ':', '\'', '\*', '?', '"', '<', '>', '|'],
@@ -190,11 +200,11 @@ class PDF extends TCPDF
             $name
         );
 
-
         // maybe there is a way to understand why ie6 doesn't use correctly the 'D' option, but this work so....
 
-        if ($for_saving)
+        if ($for_saving) {
             return $this->Output(('"' . $name . '.pdf"'), 'S');
+        }
 
         $pdf = $this->Output(('"' . $name . '.pdf"'), 'S');
 
@@ -212,13 +222,12 @@ class PDF extends TCPDF
         //content type
         header('Content-Disposition: attachment; filename="' . $name . '.pdf"');
 
-
         echo $pdf;
         exit();
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEncrypted()
     {
@@ -226,7 +235,7 @@ class PDF extends TCPDF
     }
 
     /**
-     * @param boolean $encrypted
+     * @param bool $encrypted
      */
     public function setEncrypted($encrypted)
     {
@@ -248,5 +257,4 @@ class PDF extends TCPDF
     {
         $this->password = $password;
     }
-
 }

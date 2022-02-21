@@ -34,7 +34,7 @@ YAHOO.util.Event.onDOMReady(function() {
 		E.preventDefault(e);
 		var i, inputs = S.query('input[id^=assign_score_]');
 		for (i=0; i<inputs.length; i++) {
-			inputs[i].value = "<?php echo (int)$score_std_value; ?>";
+			inputs[i].value = "<?php echo (int) $score_std_value; ?>";
 		}
 	});
 

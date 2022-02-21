@@ -64,7 +64,7 @@
 
 			addDialog.setHeader("<?php echo Lang::t('_LOADING', 'subscribe'); ?>");
 			addDialog.setBody('<div id="admin_rules_table_addDialog"></div>'
-				+'<div class="align_center"><img src="<?php echo Get::tmpl_path().'images/standard/loadbar.gif'; ?>" /></div>');
+				+'<div class="align_center"><img src="<?php echo Get::tmpl_path() . 'images/standard/loadbar.gif'; ?>" /></div>');
 			addDialog.render(document.body);
 			addDialog.show();
 			var postdata = "";
@@ -182,40 +182,40 @@ var AdminProfile = {
 	}
 }
 </script>
-<?php echo getTitleArea(Lang::t('_ADMIN_RULES', 'adminrules')) ?>
+<?php echo getTitleArea(Lang::t('_ADMIN_RULES', 'adminrules')); ?>
 <div class="std_block">
 <?php
 
 echo $result_message;
 
 $add_url = 'ajax.adm_server.php?r=adm/adminrules/addGroup';
-$rel_action = '<a class="ico-wt-sprite subs_add" href="'.$add_url.'" title="'.Lang::t('_ADD', 'standard').'"><span>'.Lang::t('_ADD', 'standard').'</span></a>';
+$rel_action = '<a class="ico-wt-sprite subs_add" href="' . $add_url . '" title="' . Lang::t('_ADD', 'standard') . '"><span>' . Lang::t('_ADD', 'standard') . '</span></a>';
 
 $this->widget('table', [
-	'id' => 'admin_rules_table',
-	'ajaxUrl' => 'ajax.adm_server.php?r=adm/adminrules/getGroups&',
-	'rowsPerPage' => Get::sett('visuItem', 25),
-	'startIndex' => 0,
-	'results' => Get::sett('visuItem', 25),
-	'sort' => 'groupid',
-	'dir' => 'asc',
-	'columns' => [
-		['key' => 'groupid', 'label' => Lang::t('_NAME', 'adminrules'), 'sortable' => true, 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})'],
-		['key' => 'special', 'label' => Get::sprite('subs_conf', Lang::t('_SPECIAL_SETTING', 'adminrules')), 'className' => 'img-cell'],
-		['key' => 'menu', 'label' => Get::sprite('subs_elem', Lang::t('_EDIT_SETTINGS', 'adminrules')), 'className' => 'img-cell'],
-		['key' => 'lang', 'label' => Get::sprite('subs_lang', Lang::t('_LANG_SETTING', 'adminrules')), 'className' => 'img-cell'],
-		['key' => 'admin_manage', 'label' => Get::sprite('subs_users', Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules')), 'className' => 'img-cell'],
-		['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter'=>'doceboDelete', 'className' => 'img-cell']
+    'id' => 'admin_rules_table',
+    'ajaxUrl' => 'ajax.adm_server.php?r=adm/adminrules/getGroups&',
+    'rowsPerPage' => Get::sett('visuItem', 25),
+    'startIndex' => 0,
+    'results' => Get::sett('visuItem', 25),
+    'sort' => 'groupid',
+    'dir' => 'asc',
+    'columns' => [
+        ['key' => 'groupid', 'label' => Lang::t('_NAME', 'adminrules'), 'sortable' => true, 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})'],
+        ['key' => 'special', 'label' => Get::sprite('subs_conf', Lang::t('_SPECIAL_SETTING', 'adminrules')), 'className' => 'img-cell'],
+        ['key' => 'menu', 'label' => Get::sprite('subs_elem', Lang::t('_EDIT_SETTINGS', 'adminrules')), 'className' => 'img-cell'],
+        ['key' => 'lang', 'label' => Get::sprite('subs_lang', Lang::t('_LANG_SETTING', 'adminrules')), 'className' => 'img-cell'],
+        ['key' => 'admin_manage', 'label' => Get::sprite('subs_users', Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules')), 'className' => 'img-cell'],
+        ['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'],
     ],
-	'fields' => ['id', 'idst', 'groupid', 'special', 'menu', 'lang', 'admin_manage', 'del'],
-	'stdSelection' => false,
-	'rel_actions' => $rel_action,
-	'delDisplayField' => 'groupid',
-	'events' => [
-		'beforeRenderEvent' => 'AdminProfile.beforeRenderEvent',
-		'postRenderEvent' => 'AdminProfile.postRenderEvent'
+    'fields' => ['id', 'idst', 'groupid', 'special', 'menu', 'lang', 'admin_manage', 'del'],
+    'stdSelection' => false,
+    'rel_actions' => $rel_action,
+    'delDisplayField' => 'groupid',
+    'events' => [
+        'beforeRenderEvent' => 'AdminProfile.beforeRenderEvent',
+        'postRenderEvent' => 'AdminProfile.postRenderEvent',
     ],
-	'delDisplayField' => 'groupid'
+    'delDisplayField' => 'groupid',
 ]);
 
 ?>

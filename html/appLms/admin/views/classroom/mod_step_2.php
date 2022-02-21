@@ -1,7 +1,7 @@
 <?php Get::title([
-	'index.php?r='.$base_link_course.'/show' => Lang::t('_COURSE', 'course'),
-	'index.php?r='.$base_link_classroom.'/classroom&id_course='.$model->getIdCourse() => Lang::t('_CLASSROOM', 'course'),
-	Lang::t('_MOD', 'course').': '.$date_info['name'].' ('.Format::date($date_info['date_begin']).')'
+    'index.php?r=' . $base_link_course . '/show' => Lang::t('_COURSE', 'course'),
+    'index.php?r=' . $base_link_classroom . '/classroom&id_course=' . $model->getIdCourse() => Lang::t('_CLASSROOM', 'course'),
+    Lang::t('_MOD', 'course') . ': ' . $date_info['name'] . ' (' . Format::date($date_info['date_begin']) . ')',
 ]); ?>
 <div class="std_block">
 
@@ -102,32 +102,32 @@ function changeClassroom()
 </script>
 
 <?php
-	$data = $model->getDateInfoFromPost();
+    $data = $model->getDateInfoFromPost();
 
-	echo	Form::openForm('add_date_2', 'index.php?r='.$base_link_classroom.'/updateClassroom&amp;id_course='.$model->getIdCourse().'&amp;id_date='.$model->getIdDate())
-			.Form::getHidden('step', 'step', '3')
-			.Form::getHidden('code', 'code', stripslashes($data['code']))
-			.Form::getHidden('name', 'name', stripslashes($data['name']))
-			.Form::getHidden('max_par', 'max_par', $data['max_par'])
-			.Form::getHidden('price', 'price', $data['price'])
-			.Form::getHidden('overbooking', 'overbooking', $data['overbooking'])
-			.Form::getHidden('test', 'test', $data['test'])
-			.Form::getHidden('status', 'status', $data['status'])
-			.Form::getHidden('date_selected', 'date_selected', $data['date_selected'])
-			.Form::getHidden('description', 'description', stripslashes($data['description']))
-			.Form::getHidden('medium_time', 'medium_time', $data['medium_time'])
-			.Form::getHidden('sub_start_date', 'sub_start_date', $data['sub_start_date'])
-			.Form::getHidden('sub_end_date', 'sub_end_date', $data['sub_end_date'])
-			.Form::getHidden('unsubscribe_date_limit', 'unsubscribe_date_limit', $data['unsubscribe_date_limit'])
-			.Form::openElementSpace()
-			.$model->getDayTable($data['array_day'], $model->getIdDate())
-			.Form::closeElementSpace()
-			.Form::openButtonSpace()
-			.Form::getButton('back', 'back', Lang::t('_BACK', 'course'))
-			.Form::getButton('save', 'save', Lang::t('_SAVE', 'course'))
-			.Form::getButton('undo', 'undo', Lang::t('_UNDO', 'course'))
-			.Form::closeElementSpace()
-			.Form::closeForm();
+    echo Form::openForm('add_date_2', 'index.php?r=' . $base_link_classroom . '/updateClassroom&amp;id_course=' . $model->getIdCourse() . '&amp;id_date=' . $model->getIdDate())
+            . Form::getHidden('step', 'step', '3')
+            . Form::getHidden('code', 'code', stripslashes($data['code']))
+            . Form::getHidden('name', 'name', stripslashes($data['name']))
+            . Form::getHidden('max_par', 'max_par', $data['max_par'])
+            . Form::getHidden('price', 'price', $data['price'])
+            . Form::getHidden('overbooking', 'overbooking', $data['overbooking'])
+            . Form::getHidden('test', 'test', $data['test'])
+            . Form::getHidden('status', 'status', $data['status'])
+            . Form::getHidden('date_selected', 'date_selected', $data['date_selected'])
+            . Form::getHidden('description', 'description', stripslashes($data['description']))
+            . Form::getHidden('medium_time', 'medium_time', $data['medium_time'])
+            . Form::getHidden('sub_start_date', 'sub_start_date', $data['sub_start_date'])
+            . Form::getHidden('sub_end_date', 'sub_end_date', $data['sub_end_date'])
+            . Form::getHidden('unsubscribe_date_limit', 'unsubscribe_date_limit', $data['unsubscribe_date_limit'])
+            . Form::openElementSpace()
+            . $model->getDayTable($data['array_day'], $model->getIdDate())
+            . Form::closeElementSpace()
+            . Form::openButtonSpace()
+            . Form::getButton('back', 'back', Lang::t('_BACK', 'course'))
+            . Form::getButton('save', 'save', Lang::t('_SAVE', 'course'))
+            . Form::getButton('undo', 'undo', Lang::t('_UNDO', 'course'))
+            . Form::closeElementSpace()
+            . Form::closeForm();
 ?>
 
 </div>

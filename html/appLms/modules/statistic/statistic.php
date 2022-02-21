@@ -1,99 +1,108 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) die("You can't access");
+if (Docebo::user()->isAnonymous()) {
+    exit("You can't access");
+}
 
-require_once(Forma::inc(_lib_ . '/formatable/include.php'));
+require_once Forma::inc(_lib_ . '/formatable/include.php');
 
 function outPageView($link)
 {
-
-    $lang =& DoceboLanguage::createInstance('statistic', 'lms');
+    $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $for = importVar('for', false, 'week');
     $times = ['day', 'week', 'month', 'year'];
 
-    $dateend = date("Y-m-d H:i:s");
+    $dateend = date('Y-m-d H:i:s');
     $walk = [];
     $chart_data = [];
     switch ($for) {
-        case 'day' : {
-
-            $dateinit = date("Y-m-d H:i:s", time() - 24 * 3600);
+        case 'day':
+            $dateinit = date('Y-m-d H:i:s', time() - 24 * 3600);
             $start_num = substr($dateinit, 11, 2);
             $colums = 24;
-            $select = " HOUR(timeof) AS from_time ";
-            $group_by = " HOUR(timeof) ";
+            $select = ' HOUR(timeof) AS from_time ';
+            $group_by = ' HOUR(timeof) ';
 
-            for ($i = 1; $i <= $colums; $i++) {
-
+            for ($i = 1; $i <= $colums; ++$i) {
                 $c = (($i + $start_num) % $colums);
                 $chart_data[$c] = [
                     'x_axis' => $c,
-                    'y_axis' => 0
+                    'y_axis' => 0,
                 ];
             }
-        };
+        ;
             break;
-        case 'week' : {
-
-            $dateinit = date("Y-m-d H:i:s", time() - 7 * 24 * 3600);
-            $start_num = date("w", time() - 7 * 24 * 3600);
+        case 'week':
+            $dateinit = date('Y-m-d H:i:s', time() - 7 * 24 * 3600);
+            $start_num = date('w', time() - 7 * 24 * 3600);
             $colums = 7;
-            $select = " DAYOFWEEK(timeof) AS from_time ";
-            $group_by = " DAYOFMONTH(timeof) ";
-            for ($i = 1; $i <= $colums; $i++) {
-
+            $select = ' DAYOFWEEK(timeof) AS from_time ';
+            $group_by = ' DAYOFMONTH(timeof) ';
+            for ($i = 1; $i <= $colums; ++$i) {
                 $c = (($start_num + $i) % $colums) + 1;
                 $walk_name[] = $lang->def('_WEEK_DAY_' . $c . '_SHORT');
                 $chart_data[$c] = [
                     'x_axis' => $lang->def('_WEEK_DAY_' . ($c - 1) . '_SHORT'),
-                    'y_axis' => 0
+                    'y_axis' => 0,
                 ];
             }
-        };
+        ;
             break;
-        case 'month' : {
-            echo $dateinit = date("Y-m-d H:i:s", time() - 30 * 24 * 3600);
-            $y = date("Y", time() - 30 * 24 * 3600);
-            $m = date("m", time() - 30 * 24 * 3600);
+        case 'month':
+            echo $dateinit = date('Y-m-d H:i:s', time() - 30 * 24 * 3600);
+            $y = date('Y', time() - 30 * 24 * 3600);
+            $m = date('m', time() - 30 * 24 * 3600);
             $start_num = substr($dateinit, 8, 2) - 1;
             $colums = 31;
             $limit = cal_days_in_month(CAL_GREGORIAN, ($m), $y);
-            $select = " DAYOFMONTH(timeof) AS from_time ";
-            $group_by = " DAYOFMONTH(timeof) ";
-            for ($i = 1; $i <= $colums; $i++) {
-
+            $select = ' DAYOFMONTH(timeof) AS from_time ';
+            $group_by = ' DAYOFMONTH(timeof) ';
+            for ($i = 1; $i <= $colums; ++$i) {
                 $c = (($start_num + $i) % $limit);
-                if ($c == 0) $c = $limit;
+                if ($c == 0) {
+                    $c = $limit;
+                }
                 $walk[] = $c;
                 $chart_data[$c] = [
                     'x_axis' => $c,
-                    'y_axis' => 0
+                    'y_axis' => 0,
                 ];
             }
-        };
+        ;
             break;
-        case 'year' : {
-            $dateinit = date("Y-m-d H:i:s", time() - 365 * 24 * 3600);
+        case 'year':
+            $dateinit = date('Y-m-d H:i:s', time() - 365 * 24 * 3600);
             $start_num = substr($dateinit, 5, 2);
             $colums = 12;
-            $select = " MONTH(timeof) AS from_time ";
-            $group_by = " MONTH(timeof) ";
-            for ($i = 1; $i <= $colums; $i++) {
-
+            $select = ' MONTH(timeof) AS from_time ';
+            $group_by = ' MONTH(timeof) ';
+            for ($i = 1; $i <= $colums; ++$i) {
                 $c = (($start_num + $i) % $colums);
-                if ($c == 0) $c = $colums;
+                if ($c == 0) {
+                    $c = $colums;
+                }
                 $walk[] = $c;
                 $chart_data[$c] = [
                     'x_axis' => Lang::t('_MONTH_' . ($c < 10 ? '0' : '') . $c, 'standard'),
-                    'y_axis' => 0
+                    'y_axis' => 0,
                 ];
             }
-        };
+        ;
             break;
     }
-
 
     $view_all_perm = checkPerm('view_all', true);
     $course_man = new Man_Course();
@@ -102,33 +111,33 @@ function outPageView($link)
     //apply sub admin filters, if needed
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
         //filter users
-        require_once(_base_ . '/lib/lib.preference.php');
+        require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
         $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
-
     $page_views = [];
-    $query_stat = "
-	SELECT " . $select . ", COUNT(*) 
-	FROM " . $GLOBALS['prefix_lms'] . "_trackingeneral 
+    $query_stat = '
+	SELECT ' . $select . ', COUNT(*) 
+	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral 
 	WHERE idCourse='" . $_SESSION['idCourse'] . "' ";
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
-        $query_stat .= " AND idUser IN (" . implode($course_user, ',') . ") ";
+        $query_stat .= ' AND idUser IN (' . implode($course_user, ',') . ') ';
     }
     if ($_REQUEST['op'] == 'userdetails' && isset($_REQUEST['id'])) {
-        $query_stat .= " AND idUser = ".$_REQUEST['id'];
+        $query_stat .= ' AND idUser = ' . $_REQUEST['id'];
     }
     $query_stat .= " AND timeof >= '$dateinit' AND timeof <= '$dateend' 
-	GROUP BY " . $group_by . "
-	ORDER BY timeof";
+	GROUP BY " . $group_by . '
+	ORDER BY timeof';
     $max = 0;
     $re_stat = sql_query($query_stat);
     while (list($col, $number) = sql_fetch_row($re_stat)) {
-
         $page_views[$col] = $number;
-        if ($number > $max) $max = $number;
+        if ($number > $max) {
+            $max = $number;
+        }
 
         $chart_data[$col]['y_axis'] = $number;
     }
@@ -140,16 +149,16 @@ function outPageView($link)
     //var_dump(array_values($chart_data));
     $labels = [];
     $series = [];
-    foreach ($chart_data as $row){
+    foreach ($chart_data as $row) {
         $labels[] = $row['x_axis'];
         $series[] = $row['y_axis'];
     }
     $json = new Services_JSON();
     cout('<script type="text/javascript">
         new Chartist.Bar(".statistic_chart", {
-                                labels: '.$json->encode($labels).',
+                                labels: ' . $json->encode($labels) . ',
                                 series: [
-                                    '.$json->encode($series).'
+                                    ' . $json->encode($series) . '
                                 ]
                             },
                             {
@@ -192,7 +201,6 @@ function outPageView($link)
     cout('<div class="align-center">'
         . '<ul class="link_list_inline">', 'content');
     while (list(, $value) = each($times)) {
-
         if ($for == $value) {
             $GLOBALS['page']->add('<li><span>' . $lang->def('_FOR_' . $value) . '</span></li>', 'content');
         } else {
@@ -208,12 +216,12 @@ function statistic()
 {
     checkPerm('view');
 
-    require_once(_base_ . '/lib/lib.table.php');
-    require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
+    require_once _base_ . '/lib/lib.table.php';
+    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
 
     $view_all_perm = checkPerm('view_all', true);
 
-    $lang =& DoceboLanguage::createInstance('statistic', 'lms');
+    $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $acl_man = Docebo::user()->getAclManager();
     $course_man = new Man_Course();
     $course_user = $course_man->getIdUserOfLevel($_SESSION['idCourse']);
@@ -221,14 +229,13 @@ function statistic()
     //apply sub admin filters, if needed
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
         //filter users
-        require_once(_base_ . '/lib/lib.preference.php');
+        require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
         $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
-
-    $users_list =& $acl_man->getUsers($course_user);
+    $users_list = &$acl_man->getUsers($course_user);
     $GLOBALS['page']->add(getTitleArea(lang::t('_STAT', 'menu_course')), 'content');
 
     if (Get::sett('tracking') == 'on') {
@@ -242,7 +249,7 @@ function statistic()
     $cont_h = [
         $lang->def('_USERNAME'),
         $lang->def('_LASTNAME'),
-        $lang->def('_FIRSTNAME')
+        $lang->def('_FIRSTNAME'),
     ];
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
@@ -252,50 +259,50 @@ function statistic()
             . 'title="' . $lang->def('_DETAILS') . ' : ' . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '">'
             . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '</a>',
             $user_info[ACL_INFO_LASTNAME],
-            $user_info[ACL_INFO_FIRSTNAME]
+            $user_info[ACL_INFO_FIRSTNAME],
         ];
         $tb->addBody($cont);
     }
 
-    $GLOBALS['page']->add(getTable($tb,'_USERS_LIST_CAPTION', 'stats_users_list'), 'content');
+    $GLOBALS['page']->add(getTable($tb, '_USERS_LIST_CAPTION', 'stats_users_list'), 'content');
 }
 
 function getTable($tb, $title = null, $id)
 {
     $table_head = '';
     foreach ($tb->table_head as $row) {
-        $table_head.= '<tr>';
+        $table_head .= '<tr>';
         foreach ($row->cells as $cell) {
-            $table_head.='<th>'.$cell->abbr.'</th>';
+            $table_head .= '<th>' . $cell->abbr . '</th>';
         }
-        $table_head.= '</tr>';
+        $table_head .= '</tr>';
     }
 
     $table_body = '';
     foreach ($tb->table_body as $row) {
-        $table_body.= '<tr>';
+        $table_body .= '<tr>';
         foreach ($row->cells as $cell) {
-            $table_body.='<td>'.$cell->label.'</td>';
+            $table_body .= '<td>' . $cell->label . '</td>';
         }
-        $table_body.= '</tr>';
+        $table_body .= '</tr>';
     }
 
     return '
-        <table class="table table-striped table-bordered display" style="width:100%" id="'.$id.'">
+        <table class="table table-striped table-bordered display" style="width:100%" id="' . $id . '">
           <thead>
             <tr>
-                <th colspan="6"><b>'. Lang::t($title, 'statistic').'</b></th>
-            </tr>'.
+                <th colspan="6"><b>' . Lang::t($title, 'statistic') . '</b></th>
+            </tr>' .
         $table_head
-        .'</thead>
-          <tbody>'.
+        . '</thead>
+          <tbody>' .
         $table_body
-        .'</tbody>
+        . '</tbody>
         </table>'
 
-        .'<script>
+        . '<script>
         $(function() {
-          var tableId = "#'.$id.'";
+          var tableId = "#' . $id . '";
 
           $(tableId).FormaTable({
             processing: true,
@@ -312,7 +319,7 @@ function userdetails()
 {
     checkPerm('view');
 
-    require_once(_base_ . '/lib/lib.table.php');
+    require_once _base_ . '/lib/lib.table.php';
 
     $idst_user = importVar('id', true, 0);
     $ord = importVar('ord');
@@ -324,59 +331,59 @@ function userdetails()
     //if (!isset($_GET['p_ini'])) $ini = $nav_bar->getSelectedElement();
     //else $ini = $_GET['p_ini'];
 
-    $lang =& DoceboLanguage::createInstance('statistic', 'lms');
+    $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $acl_man = Docebo::user()->getAclManager();
-    $user_info =& $acl_man->getUser($idst_user, false);
+    $user_info = &$acl_man->getUser($idst_user, false);
 
     $page_title = [
         'index.php?modname=statistic&amp;op=statistic' => $lang->def('_STATISTICS'),
         ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
             ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
-            : $acl_man->relativeId($user_info[ACL_INFO_USERID]))
+            : $acl_man->relativeId($user_info[ACL_INFO_USERID])),
     ];
 
     // Find modulename -> name int his course
-    require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
     $course_man = new Man_Course();
-    $mods_names =& $course_man->getModulesName($_SESSION['idCourse']);
+    $mods_names = &$course_man->getModulesName($_SESSION['idCourse']);
 
     // find total time in the course
-    $query_time = "
+    $query_time = '
 	SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
-	FROM " . $GLOBALS['prefix_lms'] . "_tracksession 
-	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'";
+	FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
+	WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'";
     list($tot_time) = sql_fetch_row(sql_query($query_time));
 
-    $query_track = "
+    $query_track = '
 	SELECT idEnter, enterTime, lastTime, (UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) AS howm, 
 		numOp, lastFunction, lastOp, session_id 
-	FROM " . $GLOBALS['prefix_lms'] . "_tracksession 
-	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'
+	FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
+	WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'
 	ORDER BY ";
 
-    $img_down = '<img src="' . getPathImage() . 'standard/ord_asc.png" alt="' . $lang->def("_ORD_ASC_TITLE") . '" '
-        . 'title="' . $lang->def("_ORD_ASC_TITLE") . '" />';
-    $img_up = '<img src="' . getPathImage() . 'standard/ord_desc.png" alt="' . $lang->def("_ORD_DESC_ALT") . '" '
-        . 'title="' . $lang->def("_ORD_DESC_TITLE") . '" />';
+    $img_down = '<img src="' . getPathImage() . 'standard/ord_asc.png" alt="' . $lang->def('_ORD_ASC_TITLE') . '" '
+        . 'title="' . $lang->def('_ORD_ASC_TITLE') . '" />';
+    $img_up = '<img src="' . getPathImage() . 'standard/ord_desc.png" alt="' . $lang->def('_ORD_DESC_ALT') . '" '
+        . 'title="' . $lang->def('_ORD_DESC_TITLE') . '" />';
     $image_hm = $image_nop = $image_sst = '';
     switch ($ord) {
-        case "hm" : {
-            $query_track .= " howm " . ($inv ? '  ' : ' DESC ');
+        case 'hm':
+            $query_track .= ' howm ' . ($inv ? '  ' : ' DESC ');
             $order_for = $lang->def('_HOW_MUCH_TIME');
             $image_hm = ($inv ? $img_down : $img_up);
-        };
+        ;
             break;
-        case "nop" : {
-            $query_track .= " numOp " . ($inv ? '  ' : 'DESC');
+        case 'nop':
+            $query_track .= ' numOp ' . ($inv ? '  ' : 'DESC');
             $order_for = $lang->def('_NUMBER_OF_OP');
             $image_nop = ($inv ? $img_down : $img_up);
-        };
+        ;
             break;
-        default : {
-            $query_track .= " enterTime " . ($inv ? ' DESC ' : '');
+        default:
+            $query_track .= ' enterTime ' . ($inv ? ' DESC ' : '');
             $order_for = $lang->def('_SESSION_STARTED');
             $image_sst = ($inv ? $img_down : $img_up);
-        };
+        ;
             break;
     }
     //$query_track .= " LIMIT " . $ini . ", " . Get::sett('visuItem');
@@ -398,7 +405,7 @@ function userdetails()
         . $image_hm . ' ' . $lang->def('_HOW_MUCH_TIME') . '</a>',
         '<a href="' . $link . '&amp;ord=nop&amp;inv=' . ($ord == 'nop' && $inv ? '0' : '1') . '" title="' . $lang->def('_ORD_FOR_NOP') . '">'
         . $image_nop . ' ' . $lang->def('_NUMBER_OF_OP') . '</a>',
-        $lang->def('_LAST_OP')
+        $lang->def('_LAST_OP'),
     ];
     if (Get::sett('tracking') == 'on') {
         $cont_h[] = '<img src="' . getPathImage() . 'standard/view.png" title="' . $lang->def('_VIEW_SESSION_DETAILS') . '" '
@@ -406,7 +413,7 @@ function userdetails()
         $type_h[] = 'image';
 
         outPageView($link);
-    };
+    }
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
     $type_h[2] = 'align_right';
@@ -414,12 +421,15 @@ function userdetails()
     $total_sec = 0;
     $chart_data = [];
     while (list($id_enter, $session_start_at, $last_action_at, $how, $num_op, $last_module, $last_op, $session_id) = sql_fetch_row($re_tracks)) {
-
-        $hours = (int)($how / 3600);
-        $minutes = (int)(($how % 3600) / 60);
-        $seconds = (int)($how % 60);
-        if ($minutes < 10) $minutes = '0' . $minutes;
-        if ($seconds < 10) $seconds = '0' . $seconds;
+        $hours = (int) ($how / 3600);
+        $minutes = (int) (($how % 3600) / 60);
+        $seconds = (int) ($how % 60);
+        if ($minutes < 10) {
+            $minutes = '0' . $minutes;
+        }
+        if ($seconds < 10) {
+            $seconds = '0' . $seconds;
+        }
 
         $readable = $hours . 'h ' . $minutes . 'm ' . $seconds . 's ';
         $start = Format::date($session_start_at);
@@ -428,24 +438,26 @@ function userdetails()
             Format::date($last_action_at, false, true),
             $readable,
             $num_op,
-            '<span class="text_bold">' . (isset($mods_names[$last_module]) ? $mods_names[$last_module] : $last_module) . '</span> [' . $last_op . ']'
+            '<span class="text_bold">' . (isset($mods_names[$last_module]) ? $mods_names[$last_module] : $last_module) . '</span> [' . $last_op . ']',
         ];
         if (Get::sett('tracking') == 'on') {
             $cont[] = '<a href="index.php?modname=statistic&amp;op=sessiondetails&amp;id=' . $idst_user . '&amp;id_enter=' . $id_enter
                 . '&amp;sid=' . $session_id . '" '
                 . 'title="' . $lang->def('_VIEW_SESSION_DETAILS') . ' : ' . $start . '">'
                 . '<img src="' . getPathImage() . 'standard/view.png" alt="' . $lang->def('_VIEW_SESSION_DETAILS_ALT') . ' : ' . $start . '" /></a>';
-        };
+        }
         $tb->addBody($cont);
     }
 
-    $hours = (int)($tot_time / 3600);
-    $minutes = (int)(($tot_time % 3600) / 60);
-    $seconds = (int)($tot_time % 60);
-    if ($minutes < 10) $minutes = '0' . $minutes;
-    if ($seconds < 10) $seconds = '0' . $seconds;
-
-
+    $hours = (int) ($tot_time / 3600);
+    $minutes = (int) (($tot_time % 3600) / 60);
+    $seconds = (int) ($tot_time % 60);
+    if ($minutes < 10) {
+        $minutes = '0' . $minutes;
+    }
+    if ($seconds < 10) {
+        $seconds = '0' . $seconds;
+    }
 
     cout(
         '<div>'
@@ -459,7 +471,7 @@ function sessiondetails()
 {
     checkPerm('view');
 
-    require_once(_base_ . '/lib/lib.table.php');
+    require_once _base_ . '/lib/lib.table.php';
 
     $idst_user = importVar('id', true, 0);
     $id_enter = importVar('id_enter', true, 0);
@@ -470,30 +482,30 @@ function sessiondetails()
     $nav_bar->setLink($link . '&amp;p_ini=' . $p_ini);
     $ini = $nav_bar->getSelectedElement();
 
-    $lang =& DoceboLanguage::createInstance('statistic', 'lms');
+    $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $acl_man = Docebo::user()->getAclManager();
-    $user_info =& $acl_man->getUser($idst_user, false);
+    $user_info = &$acl_man->getUser($idst_user, false);
 
-    $query_track = "
+    $query_track = '
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
-	FROM " . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
-	WHERE g.idCourse = '" . (int)$_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND " .
+	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
+	WHERE g.idCourse = '" . (int) $_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND " .
         " ( g.idEnter = '" . $id_enter . "' OR (  g.idEnter = 0 AND g.session_id = '" . importVar('sid') . "' ) ) "
-        . " ORDER BY g.timeof 
-	LIMIT " . $ini . ", " . Get::sett('visuItem');
+        . ' ORDER BY g.timeof 
+	LIMIT ' . $ini . ', ' . Get::sett('visuItem');
     $re_tracks = sql_query($query_track);
 
-    $query_tot_track = "
+    $query_tot_track = '
 	SELECT COUNT(*) 
-	FROM " . $GLOBALS['prefix_lms'] . "_trackingeneral 
-	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "' AND idEnter = '" . $id_enter . "'";
+	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral 
+	WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "' AND idEnter = '" . $id_enter . "'";
     list($tot_elem) = sql_fetch_row(sql_query($query_tot_track));
     $nav_bar->setElementTotal($tot_elem);
 
     // Find modulename -> name int his course
-    require_once($GLOBALS['where_lms'] . '/lib/lib.course.php');
+    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
     $course_man = new Man_Course();
-    $mods_names =& $course_man->getModulesName($_SESSION['idCourse']);
+    $mods_names = &$course_man->getModulesName($_SESSION['idCourse']);
 
     $page_title = [
         'index.php?modname=statistic&amp;op=statistic' => $lang->def('_STATISTICS'),
@@ -501,7 +513,7 @@ function sessiondetails()
         $user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
             ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
             : $acl_man->relativeId($user_info[ACL_INFO_USERID])),
-        $lang->def('_VIEW_SESSION_DETAILS')
+        $lang->def('_VIEW_SESSION_DETAILS'),
     ];
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'statistic')
@@ -523,51 +535,58 @@ function sessiondetails()
     $total_sec = 0;
     $read_previous = false;
     while ($read = sql_fetch_assoc($re_tracks)) {
-
         if ($read_previous !== false) {
-
             $time_in = $read['unix_time'] - $read_previous['unix_time'];
-            $hours = (int)($time_in / 3600);
-            $minutes = (int)(($time_in % 3600) / 60);
-            $seconds = (int)($time_in % 60);
-            if ($minutes < 10) $minutes = '0' . $minutes;
-            if ($seconds < 10) $seconds = '0' . $seconds;
+            $hours = (int) ($time_in / 3600);
+            $minutes = (int) (($time_in % 3600) / 60);
+            $seconds = (int) ($time_in % 60);
+            if ($minutes < 10) {
+                $minutes = '0' . $minutes;
+            }
+            if ($seconds < 10) {
+                $seconds = '0' . $seconds;
+            }
 
             $readable = $hours . 'h ' . $minutes . 'm ' . $seconds . 's ';
             $cont = [
                 Format::date($read_previous['timeof'], false, true),
                 '<span class="text_bold">' . (isset($mods_names[$read_previous['function']]) ? $mods_names[$read_previous['function']] : $read_previous['function'])
                 . '</span> [' . $read_previous['type'] . ']',
-                $readable
+                $readable,
             ];
             $tb->addBody($cont);
         }
         $read_previous = $read;
     }
-    $query_last_track = "
+    $query_last_track = '
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
-	FROM " . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
-	WHERE g.idCourse = '" . (int)$_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND g.idEnter = '" . $id_enter . "' 
-	LIMIT " . ($ini + Get::sett('visuItem')) . ", 1";
+	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
+	WHERE g.idCourse = '" . (int) $_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND g.idEnter = '" . $id_enter . "' 
+	LIMIT " . ($ini + Get::sett('visuItem')) . ', 1';
     $re_track = sql_query($query_last_track);
     if (sql_num_rows($re_track) > 0) {
-
         $read = sql_fetch_assoc($re_track);
         $time_in = $read['unix_time'] - $read_previous['unix_time'];
-        $hours = (int)($time_in / 3600);
-        $minutes = (int)(($time_in % 3600) / 60);
-        $seconds = (int)($time_in % 60);
-        if ($minutes < 10) $minutes = '0' . $minutes;
-        if ($seconds < 10) $seconds = '0' . $seconds;
+        $hours = (int) ($time_in / 3600);
+        $minutes = (int) (($time_in % 3600) / 60);
+        $seconds = (int) ($time_in % 60);
+        if ($minutes < 10) {
+            $minutes = '0' . $minutes;
+        }
+        if ($seconds < 10) {
+            $seconds = '0' . $seconds;
+        }
 
         $readable = $hours . 'h ' . $minutes . 'm ' . $seconds . 's ';
-    } else $readable = '';
+    } else {
+        $readable = '';
+    }
 
     $cont = [
         Format::date($read_previous['timeof']),
         '<span class="text_bold">' . (isset($mods_names[$read_previous['function']]) ? $mods_names[$read_previous['function']] : $read_previous['function'])
         . '</span> [' . $read_previous['type'] . ']',
-        $readable
+        $readable,
     ];
     $tb->addBody($cont);
     $GLOBALS['page']->add(
@@ -578,22 +597,18 @@ function sessiondetails()
 
 function statisticDispatch($op)
 {
-
     switch ($op) {
-        case "statistic" : {
+        case 'statistic':
             statistic();
-        };
+        ;
             break;
-        case "userdetails" : {
+        case 'userdetails':
             userdetails();
-        };
+        ;
             break;
-        case "sessiondetails" : {
+        case 'sessiondetails':
             sessiondetails();
-        };
+        ;
             break;
     }
 }
-
-
-?>

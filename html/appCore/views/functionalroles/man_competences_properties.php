@@ -4,7 +4,7 @@
 
 echo Form::openForm('mod_competences_properties_form', 'index.php?r=adm/functionalroles/man_competences_properties_action');
 
-echo Form::getHidden('id_fncrole', 'id_fncrole', (int)$id_fncrole);
+echo Form::getHidden('id_fncrole', 'id_fncrole', (int) $id_fncrole);
 
 echo $table->getTable();
 

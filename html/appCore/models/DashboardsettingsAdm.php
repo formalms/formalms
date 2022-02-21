@@ -1,9 +1,20 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * Class DashboardsettingsAdm
+ * Class DashboardsettingsAdm.
  */
 class DashboardsettingsAdm extends Model
 {
@@ -25,7 +36,7 @@ class DashboardsettingsAdm extends Model
 
     public function loadLayouts()
     {
-        $query = "SELECT `id`, `name`, `caption`, `status`, `default` FROM `dashboard_layouts` ORDER BY `default` DESC, `created_at` ASC";
+        $query = 'SELECT `id`, `name`, `caption`, `status`, `default` FROM `dashboard_layouts` ORDER BY `default` DESC, `created_at` ASC';
 
         $result = sql_query($query);
         $this->layouts = [];
@@ -47,7 +58,7 @@ class DashboardsettingsAdm extends Model
                 'name' => 'Default Layout',
                 'caption' => 'Default Layout Caption',
                 'status' => 'publish',
-                'default' => true
+                'default' => true,
             ];
 
             $this->saveLayout($layout);
@@ -75,7 +86,7 @@ class DashboardsettingsAdm extends Model
 
     public function loadEnabledBlocks()
     {
-        $query_blocks = "SELECT `id`, `block_class`, `block_config`, `position`, `dashboard_id` FROM `dashboard_block_config` ORDER BY `position` ASC";
+        $query_blocks = 'SELECT `id`, `block_class`, `block_config`, `position`, `dashboard_id` FROM `dashboard_block_config` ORDER BY `position` ASC';
 
         $result = $this->db->query($query_blocks);
 
@@ -92,13 +103,12 @@ class DashboardsettingsAdm extends Model
 
     public function loadInstalledBlocks()
     {
-        $query_blocks = "SELECT `id`, `block_class` FROM `dashboard_blocks`";
+        $query_blocks = 'SELECT `id`, `block_class` FROM `dashboard_blocks`';
 
         $result = $this->db->query($query_blocks);
 
         foreach ($result as $block) {
             if (file_exists(Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
-
                 require_once Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']('');
@@ -150,7 +160,7 @@ class DashboardsettingsAdm extends Model
 
     public function resetOldSettings($dashboard)
     {
-        $query_blocks = sprintf("DELETE FROM dashboard_block_config WHERE `dashboard_id` = %s;", $dashboard);
+        $query_blocks = sprintf('DELETE FROM dashboard_block_config WHERE `dashboard_id` = %s;', $dashboard);
 
         $this->db->query($query_blocks);
     }
@@ -162,7 +172,7 @@ class DashboardsettingsAdm extends Model
         $status = $layout['status'];
         $default = ($layout['default'] === true || $layout['default'] === 1);
 
-        $query = "SELECT COUNT(*) AS count FROM `dashboard_layouts`";
+        $query = 'SELECT COUNT(*) AS count FROM `dashboard_layouts`';
         $res = $this->db->query($query);
         $res = sql_fetch_array($res);
         if ($res['count'] && $default === false) {
@@ -170,34 +180,36 @@ class DashboardsettingsAdm extends Model
         }
 
         $sql = "INSERT INTO `dashboard_layouts` ( `name`, `caption`, `status`, `default`, `created_at`) 
-            VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ", CURRENT_TIMESTAMP)";
+            VALUES ( '" . addslashes($name) . "', '" . addslashes($caption) . "', '" . addslashes($status) . "', " . $default . ', CURRENT_TIMESTAMP)';
 
         return sql_query($sql);
     }
 
     public function editInlineLayout($data)
     {
-        $query = "UPDATE `dashboard_layouts` SET " . $data['col'] . " = '" . addslashes($data['new_value']) . "' WHERE id = " . $data['id'];
+        $query = 'UPDATE `dashboard_layouts` SET ' . $data['col'] . " = '" . addslashes($data['new_value']) . "' WHERE id = " . $data['id'];
+
         return $this->db->query($query);
     }
 
     public function delLayout($id_layout)
     {
-
         // delete permission
         $query = "DELETE FROM dashboard_permission WHERE id_dashboard = $id_layout";
         $this->db->query($query);
 
         $query = "DELETE FROM `dashboard_layouts` WHERE id = $id_layout";
+
         return $this->db->query($query);
     }
 
     public function defaultLayout($id_layout)
     {
-        $query = "UPDATE `dashboard_layouts` SET `default` = 0";
+        $query = 'UPDATE `dashboard_layouts` SET `default` = 0';
         $this->db->query($query);
 
         $query = "UPDATE `dashboard_layouts` SET `default` = 1, `status` = 'publish' WHERE id = $id_layout";
+
         return $this->db->query($query);
     }
 
@@ -207,7 +219,7 @@ class DashboardsettingsAdm extends Model
             'type' => $setting['type'],
             'enabled' => $setting['enabled'],
             'enabledActions' => $setting['enabledActions'],
-            'data' => $setting['data']
+            'data' => $setting['data'],
         ];
 
         $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`, `created_at`) VALUES ( '%s' , '%s', '%s', '%s', CURRENT_TIMESTAMP)", $block, json_encode($config), $setting['position'], $dashboard);
@@ -222,19 +234,17 @@ class DashboardsettingsAdm extends Model
         return $this->layouts;
     }
 
-
     // check permission dashboard
     public function setObjIdstList($dashboardId, $idst_list)
     {
-
         $idst_list = serialize($idst_list);
 
-        $query = "SELECT id_dashboard FROM dashboard_permission WHERE id_dashboard = " . $dashboardId;
+        $query = 'SELECT id_dashboard FROM dashboard_permission WHERE id_dashboard = ' . $dashboardId;
 
         $exists = sql_num_rows($this->db->query($query));
 
         if (!$exists) {
-            $query = "INSERT INTO dashboard_permission ( id_dashboard, idst_list) VALUES ( " . $dashboardId . ", '" . $idst_list . "' ) ";
+            $query = 'INSERT INTO dashboard_permission ( id_dashboard, idst_list) VALUES ( ' . $dashboardId . ", '" . $idst_list . "' ) ";
         } else {
             $query = "UPDATE dashboard_permission  SET idst_list = '" . $idst_list . "'   WHERE id_dashboard = " . $dashboardId;
         }
@@ -245,17 +255,19 @@ class DashboardsettingsAdm extends Model
     // get user list permission of dashboard
     public function getObjIdstList($dashboardId)
     {
-
-        $query = "SELECT idst_list FROM dashboard_permission WHERE id_dashboard= " . $dashboardId;
+        $query = 'SELECT idst_list FROM dashboard_permission WHERE id_dashboard= ' . $dashboardId;
 
         $re_query = $this->db->query($query);
-        if (!$re_query) return false;
+        if (!$re_query) {
+            return false;
+        }
 
         list($idst_list) = sql_fetch_row($re_query);
 
-        if ($idst_list && is_string($idst_list)) return unserialize(($idst_list));
+        if ($idst_list && is_string($idst_list)) {
+            return unserialize(($idst_list));
+        }
+
         return [];
     }
-
-
 }

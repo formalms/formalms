@@ -9,9 +9,9 @@ echo $result_message;
 echo Form::openForm('precompile_form', 'index.php?r=precompile/set', null, null, 'multipart/form-data');
 
 if (!$fields_checked && Get::sett('request_mandatory_fields_compilation', 'on') === 'on') {
-	foreach ($fieldlist->getUserMandatoryFields(Docebo::user()->getIdSt()) as $id_field => $m_field) {
-		echo $fieldlist->playFieldForUser(Docebo::user()->getIdSt(), $id_field, false, true);
-	}
+    foreach ($fieldlist->getUserMandatoryFields(Docebo::user()->getIdSt()) as $id_field => $m_field) {
+        echo $fieldlist->playFieldForUser(Docebo::user()->getIdSt(), $id_field, false, true);
+    }
 }
 
 echo Form::getBreakRow();
@@ -23,10 +23,9 @@ echo '</p>';
 echo Form::getBreakRow();
 echo '<div class="align-center">';
 echo Form::getHidden('policy_id', 'policy_id', $policy_id);
-echo Form::getCheckbox(Lang::t('_ACCEPT', 'register'), 'accept_policy', 'accept_policy', 1, FALSE);
+echo Form::getCheckbox(Lang::t('_ACCEPT', 'register'), 'accept_policy', 'accept_policy', 1, false);
 echo '</div>';
 echo '</div>';
-
 
 echo Form::openButtonSpace();
 echo Form::getButton('save', 'save', Lang::t('_SAVE', 'standard'));

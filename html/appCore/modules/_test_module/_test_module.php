@@ -1,53 +1,65 @@
-<?php defined("IN_FORMA") or die('Direct access is forbidden.');
+<?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
 
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-function formatter_userid(&$column, &$record, &$data, $args = false) {
-	$acl = new DoceboACLManager();
-	$output = $acl->relativeId($data);
-	return $output;
+function formatter_userid(&$column, &$record, &$data, $args = false)
+{
+    $acl = new DoceboACLManager();
+    $output = $acl->relativeId($data);
+
+    return $output;
 }
 
-function dispatch($op) {
-		
-	switch ($op) {
+function dispatch($op)
+{
+    switch ($op) {
+        case 'tab' :
+            YuiLib::load(
+                ['tabview' => 'tabview-min.js'],
+                ['tabview/assets/skins/sam/' => 'tabview.css']
+            );
+            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.basetree.php';
+            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.groupselectortable.php';
+            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.userselectortable.php';
+            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.dynamicuserfilter.php';
 
-		case "tab" : {
-			YuiLib::load(
-				['tabview'=>'tabview-min.js'],
-				['tabview/assets/skins/sam/' => 'tabview.css']
-			);
-			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.basetree.php');
-			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.groupselectortable.php');
-			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.userselectortable.php');
-			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.dynamicuserfilter.php');
+            cout(getTitleArea(['Test manager e selettore utenti']));
+            cout('<div class="std_block">');
 
-			cout(getTitleArea(['Test manager e selettore utenti']));
-			cout('<div class="std_block">');
+            $bt = new BaseTree('user_orgchart', false, false, _TREE_COLUMNS_TYPE_RADIO);
+            $bt->init();
+            $bt->setInitialSelection();
+            $bt_out = $bt->get();
 
-			$bt = new BaseTree('user_orgchart', false, false, _TREE_COLUMNS_TYPE_RADIO);
-			$bt->init();
-			$bt->setInitialSelection();
-			$bt_out = $bt->get();
+            $gst = new GroupSelectorTable('group_table');
+            $gst->init();
+            $gst_out = $gst->get();
 
-			$gst = new GroupSelectorTable('group_table');
-			$gst->init();
-			$gst_out = $gst->get();
+            $ust = new UserSelectorTable('user_table');
+            $ust->init();
+            $ust_out = $ust->get();
 
-			$ust = new UserSelectorTable('user_table');
-			$ust->init();
-			$ust_out = $ust->get();
+            $duf = new DynamicUserFilter('user_rules');
+            $duf->init();
+            $duf_out = $duf->get();
 
-			$duf = new DynamicUserFilter('user_rules');
-			$duf->init();
-			$duf_out = $duf->get();
+            cout($bt_out['js'], 'page_head');
+            cout($gst_out['js'], 'page_head');
+            cout($ust_out['js'], 'page_head');
+            cout($duf_out['js'], 'page_head');
 
-			cout($bt_out['js'] ,'page_head');
-			cout($gst_out['js'] ,'page_head');
-			cout($ust_out['js'] ,'page_head');
-			cout($duf_out['js'] ,'page_head');
-
-			cout('<div id="'.$this->id.'" class="yui-navset">
+            cout('<div id="' . $this->id . '" class="yui-navset">
 				<ul class="yui-nav">
 					<li><a href="#tab1"><em>Organigramma</em></a></li>
 					<li class="selected"><a href="#tab2"><em>Utenti</em></a></li>
@@ -55,150 +67,140 @@ function dispatch($op) {
 					<li><a href="#tab4"><em>Regole</em></a></li>
 				</ul>
 				<div class="yui-content">
-					<div id="tab1">'.$bt_out['html'].'</div>
-					<div id="tab2">'.$ust_out['html'].'</div>
-					<div id="tab3"><p>'.$gst_out['html'].'</p></div>
-					<div id="tab4">'.$duf_out['html'].'</div>
+					<div id="tab1">' . $bt_out['html'] . '</div>
+					<div id="tab2">' . $ust_out['html'] . '</div>
+					<div id="tab3"><p>' . $gst_out['html'] . '</p></div>
+					<div id="tab4">' . $duf_out['html'] . '</div>
 				</div>
 			</div>');
 
-			cout('<script type="text/javascript">
+            cout('<script type="text/javascript">
 				var tabView = new YAHOO.widget.TabView(\'demo\');
 			</script>');
 
-			cout('</div>');
+            cout('</div>');
 
-		};break;
+        ; break;
 
-		case "final" : {
-			require_once(_base_.'/lib/lib.form.php');
-			require_once($GLOBALS['where_framework'].'/lib/user_selector/lib.fulluserselector.php');
+        case 'final' :
+            require_once _base_ . '/lib/lib.form.php';
+            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.fulluserselector.php';
 
-			$selector = new FullUserSelector('selector');
-			$selector->init();
-			$temp = $selector->get();
+            $selector = new FullUserSelector('selector');
+            $selector->init();
+            $temp = $selector->get();
 
-			cout(getTitleArea(['Selettore utenti completo']));
-			cout('<div class="std_block">');
+            cout(getTitleArea(['Selettore utenti completo']));
+            cout('<div class="std_block">');
 
-			cout(Form::openForm('test', 'index.php?modname=_test_module&op=resp_to_form'));
+            cout(Form::openForm('test', 'index.php?modname=_test_module&op=resp_to_form'));
 
-			cout($temp['js'], 'page_head');
-			cout($temp['html']);
+            cout($temp['js'], 'page_head');
+            cout($temp['html']);
 
-			cout(
-				Form::openButtonSpace().
-				Form::getButton('save', 'save', 'SALVA').
-				Form::getButton('undo', 'undo', 'ANNULLA').
-				Form::closeButtonSpace()
-			);
+            cout(
+                Form::openButtonSpace() .
+                Form::getButton('save', 'save', 'SALVA') .
+                Form::getButton('undo', 'undo', 'ANNULLA') .
+                Form::closeButtonSpace()
+            );
 
-			cout(Form::closeForm());
+            cout(Form::closeForm());
 
-			cout('</div>');
-		} break;
-		
-		
+            cout('</div>');
+         break;
+
 //------------------------------------------------------------------------------
 
+        case 'dataexport':
+            require_once _base_ . '/lib/dataexport/lib.dataexport.php';
 
+            $lang = &DoceboLanguage::CreateInstance('standard', 'framework');
 
-		case 'dataexport': {
-			require_once(_base_.'/lib/dataexport/lib.dataexport.php');
+            $query = 'SELECT * FROM core_user ORDER BY lastname LIMIT 0,20 ';
+            $source = new DataSource_Query($query);
 
-			$lang =& DoceboLanguage::CreateInstance('standard', 'framework');
+            $nameGroup = [];
+            $nameGroup[] = new DataColumn('lastname', $lang->def('_LASTNAME'));
+            $nameGroup[] = new DataColumn('firstname', $lang->def('_FIRSTNAME'));
 
-			$query = "SELECT * FROM core_user ORDER BY lastname LIMIT 0,20 ";
-			$source = new DataSource_Query($query);
+            $columns = [];
+            $columns[] = new DataColumn('idst', $lang->def('_ID'));
+            $columns[] = new DataColumnGroup('name', $lang->def('_NAME'), $nameGroup);
+            $columns[] = new DataColumn('userid', $lang->def('_USERNAME'), 'formatter_userid');
+            $columns[] = new DataColumn('email', $lang->def('_EMAIL'));
+            //$columns[] = new DataColumn();
 
-			$nameGroup = [];
-			$nameGroup[] = new DataColumn('lastname', $lang->def('_LASTNAME'));
-			$nameGroup[] = new DataColumn('firstname', $lang->def('_FIRSTNAME'));
+            $export = new DataExport(DATATYPE_HTM, 'users', $columns, $source);
+            cout($export->render());
 
-			$columns = [];
-			$columns[] = new DataColumn('idst', $lang->def('_ID'));
-			$columns[] = new DataColumnGroup('name', $lang->def('_NAME'), $nameGroup);
-			$columns[] = new DataColumn('userid', $lang->def('_USERNAME'), 'formatter_userid');
-			$columns[] = new DataColumn('email', $lang->def('_EMAIL'));
-			//$columns[] = new DataColumn();
+            cout('<br /><br /><a href="index.php?modname=_test_module&amp;op=dataexportcsv">SCARICA IN CSV</a>');
 
+         break;
 
-			$export = new DataExport(DATATYPE_HTM, 'users', $columns, $source);
-			cout($export->render());
+        case 'dataexportcsv':
+            require_once _base_ . '/lib/lib.download.php';
+            require_once _base_ . '/lib/dataexport/lib.dataexport.php';
+            $lang = &DoceboLanguage::CreateInstance('standard', 'framework');
+            $query = 'SELECT * FROM core_user ORDER BY lastname LIMIT 0,20 ';
+            $source = new DataSource_Query($query);
+            $nameGroup = [];
+            $nameGroup[] = new DataColumn('lastname', $lang->def('_LASTNAME'));
+            $nameGroup[] = new DataColumn('firstname', $lang->def('_FIRSTNAME'));
+            $columns = [];
+            $columns[] = new DataColumn('idst', $lang->def('_ID'));
+            $columns[] = new DataColumnGroup('name', $lang->def('_NAME'), $nameGroup);
+            $columns[] = new DataColumn('userid', $lang->def('_USERNAME'), 'formatter_userid');
+            $columns[] = new DataColumn('email', $lang->def('_EMAIL'));
+            //$columns[] = new DataColumn();
+            $export = new DataExport(DATATYPE_XLS, 'users', $columns, $source);
+            sendStrAsFile($export->render(), 'export_utenti.xls');
+         break;
 
-			cout('<br /><br /><a href="index.php?modname=_test_module&amp;op=dataexportcsv">SCARICA IN CSV</a>');
-
-		} break;
-
-
-		case 'dataexportcsv': {
-			require_once(_base_.'/lib/lib.download.php');
-			require_once(_base_.'/lib/dataexport/lib.dataexport.php');
-			$lang =& DoceboLanguage::CreateInstance('standard', 'framework');
-			$query = "SELECT * FROM core_user ORDER BY lastname LIMIT 0,20 ";
-			$source = new DataSource_Query($query);
-			$nameGroup = [];
-			$nameGroup[] = new DataColumn('lastname', $lang->def('_LASTNAME'));
-			$nameGroup[] = new DataColumn('firstname', $lang->def('_FIRSTNAME'));
-			$columns = [];
-			$columns[] = new DataColumn('idst', $lang->def('_ID'));
-			$columns[] = new DataColumnGroup('name', $lang->def('_NAME'), $nameGroup);
-			$columns[] = new DataColumn('userid', $lang->def('_USERNAME'), 'formatter_userid');
-			$columns[] = new DataColumn('email', $lang->def('_EMAIL'));
-			//$columns[] = new DataColumn();
-			$export = new DataExport(DATATYPE_XLS, 'users', $columns, $source);
-			sendStrAsFile($export->render(), "export_utenti.xls");
-		} break;
-
-
-
-		case 'sample': {
-			$libs = YuiLib::load(false, false, true);
-			$GLOBALS['page']->add($libs, 'page_head');
-			$GLOBALS['page']->add(Util::get_css('../yui-skin/datatable.css'), 'page_head');
-			Util::get_js(Get::rel_path('base').'/docebocore/modules/_test_module/sample.js', true, true);
-			$script = 'YAHOO.util.Event.onDOMReady(function(e) {
+        case 'sample':
+            $libs = YuiLib::load(false, false, true);
+            $GLOBALS['page']->add($libs, 'page_head');
+            $GLOBALS['page']->add(Util::get_css('../yui-skin/datatable.css'), 'page_head');
+            Util::get_js(Get::rel_path('base') . '/docebocore/modules/_test_module/sample.js', true, true);
+            $script = 'YAHOO.util.Event.onDOMReady(function(e) {
 					initTable();
 				});';
-			//$GLOBALS['page']->add('<p>TITLE</p>');
-			$GLOBALS['page']->add('<div id="datatable"></div>');
-			$GLOBALS['page']->add('<script type="text/javascript">'.$script.'</script>');
-		} break;
+            //$GLOBALS['page']->add('<p>TITLE</p>');
+            $GLOBALS['page']->add('<div id="datatable"></div>');
+            $GLOBALS['page']->add('<script type="text/javascript">' . $script . '</script>');
+         break;
 
+        case 'datatable':
+                require_once _lms_ . '/lib/table_view/class.coursetableview.php';
 
-		case 'datatable': {
-				require_once(_lms_.'/lib/table_view/class.coursetableview.php');
-
-				$_temp_ = [
-						["idCourse"=>0, "code"=>"codice_001", "name"=>"nome_001", "status"=>"ok", "subscriptions"=>10],
-						["idCourse"=>1, "code"=>"codice_002", "name"=>"nome_002", "status"=>"ok", "subscriptions"=>20],
-						["idCourse"=>2, "code"=>"codice_003", "name"=>"nome_003", "status"=>"ok", "subscriptions"=>30],
-						["idCourse"=>3, "code"=>"codice_004", "name"=>"nome_004", "status"=>"no", "subscriptions"=>40],
-						["idCourse"=>4, "code"=>"codice_005", "name"=>"nome_005", "status"=>"ok", "subscriptions"=>50]
+                $_temp_ = [
+                        ['idCourse' => 0, 'code' => 'codice_001', 'name' => 'nome_001', 'status' => 'ok', 'subscriptions' => 10],
+                        ['idCourse' => 1, 'code' => 'codice_002', 'name' => 'nome_002', 'status' => 'ok', 'subscriptions' => 20],
+                        ['idCourse' => 2, 'code' => 'codice_003', 'name' => 'nome_003', 'status' => 'ok', 'subscriptions' => 30],
+                        ['idCourse' => 3, 'code' => 'codice_004', 'name' => 'nome_004', 'status' => 'no', 'subscriptions' => 40],
+                        ['idCourse' => 4, 'code' => 'codice_005', 'name' => 'nome_005', 'status' => 'ok', 'subscriptions' => 50],
                 ];
 
+                require_once _lms_ . '/lib/table_view/class.coursetableview.php';
+                $tableView = new CourseTableView('courses_table');
+                $tableView->useDOMReady = true; //to change
+                $tableView->isGlobalVariable = true; //just for debug purpose
+                $tableView->initLibraries();
+                $tableView->setInitialData($_temp_);
+                $temp = $tableView->get();
+                cout($temp['js'], 'page_head');
+                cout('<div style="border:solid 1px black; padding:8px;"><p>DATATABLE:</p>' . $temp['html'] . '</div>');
 
-				require_once(_lms_.'/lib/table_view/class.coursetableview.php');
-				$tableView = new CourseTableView("courses_table");
-				$tableView->useDOMReady = true; //to change
-				$tableView->isGlobalVariable = true; //just for debug purpose
-				$tableView->initLibraries();
-				$tableView->setInitialData($_temp_);
-				$temp = $tableView->get();
-				cout($temp['js'], 'page_head');
-				cout('<div style="border:solid 1px black; padding:8px;"><p>DATATABLE:</p>'.$temp['html'].'</div>');
+         break;
 
+        case 'catalogue' :
+            YuiLib::load();
 
-		} break;
+            cout('<div class="area_block"><h1 class="main_title_dashboard" id="main_area_title">Catalogo corsi</h1></div>', 'content');
+            cout('<div class="std_block">', 'content');
+            cout('<div id="course_cat" class="">', 'content');
 
-		case "catalogue" : {
-			YuiLib::load();
-
-			cout('<div class="area_block"><h1 class="main_title_dashboard" id="main_area_title">Catalogo corsi</h1></div>', 'content');
-			cout('<div class="std_block">', 'content');
-			cout('<div id="course_cat" class="">', 'content');
-
-			cout('<ul class="">
+            cout('<ul class="">
 					<li class="selected"><a href="#tab1"><em>Inviti</em></a></li>
 					<li><a href="#tab2"><em>Nuovi</em></a></li>
 					<li><a href="#tab3"><em>Consigliati</em></a></li>
@@ -206,36 +208,32 @@ function dispatch($op) {
 					<li><a href="#tab5"><em>Calendario</em></a></li>
 				</ul>
 				<div class="yui-content">
-					<div>'.Get::img(Get::rel_path('base').'/mycourses.jpg', false, false, false, true).'</div>
+					<div>' . Get::img(Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
 					<div>
 						<p>Lorem ipsum dolor sit amet consectetuer accumsan enim tempor neque urna. Tempus interdum euismod felis mauris Aliquam et vitae elit vel leo. Accumsan Phasellus sit natoque rutrum nibh auctor eu neque porta tincidunt. Ipsum enim ut felis nunc Pellentesque sed malesuada justo nec nec. Sem justo dolor mattis porta Quisque.</p>
 						<p>Interdum ut diam convallis Sed hendrerit est augue eget ipsum lacinia. Et at montes Sed est nec arcu cursus congue neque quis. Sagittis nec dictum nibh urna non urna justo consectetuer accumsan pretium. A risus velit ante id Donec nibh eros vitae at amet. Enim et hac Nam mus tellus consequat sapien eros nec sapien. Wisi Integer sapien suscipit tincidunt et tincidunt eu et neque et. Semper nisl et.</p>
 						<p>Justo nunc et Maecenas dictum Vestibulum vel a neque libero non. Hendrerit metus Vestibulum Pellentesque consectetuer augue malesuada Ut Vestibulum Vestibulum scelerisque. Elit tellus enim purus nascetur Cum condimentum est vitae pellentesque pellentesque. Nisl pretium vel dolor Integer et pharetra elit nulla et nonummy. Phasellus tempus malesuada cursus ipsum urna consectetuer ut quis condimentum consequat. Parturient pretium convallis accumsan.</p>
 						<p>Turpis vitae turpis lorem dignissim quis lorem rutrum pede mus justo. Morbi dictumst interdum ut dui elit faucibus ac tempor eget a. Pede penatibus urna mus id pellentesque commodo amet porta risus pede. Sapien semper congue nibh sit tortor enim nibh amet quis in. Vivamus condimentum egestas dictumst vel auctor ut Aenean malesuada mattis convallis. Ipsum Pellentesque libero Nullam Donec nec at enim faucibus sit orci. </p>
 					</div>
-					<div>'.Get::img(Get::rel_path('base').'/mycourses.jpg', false, false, false, true).'</div>
-					<div>'.Get::img(Get::rel_path('base').'/mycourses.jpg', false, false, false, true).'</div>
-					<div>'.Get::img(Get::rel_path('base').'/calendar.jpg', false, false, false, true).'</div>
-				</div>'
-			, 'content');
+					<div>' . Get::img(Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
+					<div>' . Get::img(Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
+					<div>' . Get::img(Get::rel_path('base') . '/calendar.jpg', false, false, false, true) . '</div>
+				</div>', 'content');
 
-			cout('</div>', 'content');
+            cout('</div>', 'content');
 
-			cout(''
-				.'<script type="text/javascript">'."\n"
-			//	."	var myTabs = new YAHOO.widget.TabView('course_cat'); "."\n"
-				.'</script>'."\n"
-			, 'scripts');
-		};break;
+            cout(''
+                . '<script type="text/javascript">' . "\n"
+            //	."	var myTabs = new YAHOO.widget.TabView('course_cat'); "."\n"
+                . '</script>' . "\n", 'scripts');
+        ; break;
 
+        default:
+            YuiLib::load();
 
-		default: {
-
-			YuiLib::load();
-			
-			//cout('<div class="area_block">PROVA ALBERO</div>', 'content');
-			cout('<div style="margin: 2em">', 'content');
-			cout('<div id="course_tag" class="yui-navset">', 'content');
+            //cout('<div class="area_block">PROVA ALBERO</div>', 'content');
+            cout('<div style="margin: 2em">', 'content');
+            cout('<div id="course_tag" class="yui-navset">', 'content');
 
 cout('<style>
 .subcatbox {
@@ -277,7 +275,7 @@ cout('
 					<li><a href="#"><em>Calendario</em></a></li>
 				</ul>
 			</div>
-			'.Get::img(Get::rel_path('base').'/mycourses.jpg', false, false, false, true).'
+			' . Get::img(Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '
 		</div>
 		<div>
         	<div class="subtab_list">
@@ -349,67 +347,58 @@ cout('
 				</ul>
 				
 			</div>
-				'.Get::img(Get::rel_path('base').'/calendar.jpg', false, false, false, true).'
+				' . Get::img(Get::rel_path('base') . '/calendar.jpg', false, false, false, true) . '
 
 		</div>
 		', 'content');
-		cout('</div>', 'content');
-		cout('</div>', 'content');
+        cout('</div>', 'content');
+        cout('</div>', 'content');
 
-		cout(''
-			.'<script type="text/javascript">'."\n"
-			."	var myTabs = new YAHOO.widget.TabView('course_tag'); "."\n"
-			.'</script>'."\n"
-		, 'scripts');
+        cout(''
+            . '<script type="text/javascript">' . "\n"
+            . "	var myTabs = new YAHOO.widget.TabView('course_tag'); " . "\n"
+            . '</script>' . "\n", 'scripts');
 
-
-
-
-			/*
+            /*
 
 
-			cout('<script type="text/javascript">
-		var temp;
-		YAHOO.util.Event.onDOMReady(function(e) {
-		  var oConfig = {
-				dragdrop: false,
-				initNodes: '.$nodes.',
-				ajax_url: "ajax.adm_server.php?plf=framework&file=category_tree&sf=folder_tree'.'"
-			};
-		  temp = new FolderTree("tree", oConfig);
-		});
-	  </script>', 'page_head');
+            cout('<script type="text/javascript">
+        var temp;
+        YAHOO.util.Event.onDOMReady(function(e) {
+          var oConfig = {
+                dragdrop: false,
+                initNodes: '.$nodes.',
+                ajax_url: "ajax.adm_server.php?plf=framework&file=category_tree&sf=folder_tree'.'"
+            };
+          temp = new FolderTree("tree", oConfig);
+        });
+      </script>', 'page_head');
 
-			cout('<div class="area_block">PROVA ALBERO</div>', 'content');
-			cout('<div class="std_block">', 'content');
-			cout('<div style="border:solid 1px" class="folder_tree">', 'content');
-			cout('<div id="tree"></div>', 'content');
-			cout('</div>', 'content');
-			cout('<br /><br />DEBUG:&nbsp;<button onclick="alert(temp.getCurrentSelection());">SELEZIONE</button>', 'content');
+            cout('<div class="area_block">PROVA ALBERO</div>', 'content');
+            cout('<div class="std_block">', 'content');
+            cout('<div style="border:solid 1px" class="folder_tree">', 'content');
+            cout('<div id="tree"></div>', 'content');
+            cout('</div>', 'content');
+            cout('<br /><br />DEBUG:&nbsp;<button onclick="alert(temp.getCurrentSelection());">SELEZIONE</button>', 'content');
 
-			cout('</div>', 'content');
-			require_once(_lms_.'/lib/folder_tree/class.category_tree.php');
-			$tree = new CategoryTree('categorytree');
+            cout('</div>', 'content');
+            require_once(_lms_.'/lib/folder_tree/class.category_tree.php');
+            $tree = new CategoryTree('categorytree');
 
-			$tree->initLibraries();
-			$tree->useDOMready = true;
-			$temp = $tree->get();
+            $tree->initLibraries();
+            $tree->useDOMready = true;
+            $temp = $tree->get();
 
-			cout($temp['js'], 'page_head');
-			cout('<div class="area_block">PROVA ALBERO</div>', 'content');
-			cout('<div class="std_block">', 'content');
-			cout('<div style="border:solid 1px" class="folder_tree">', 'content');
-			cout($temp['html'], 'content');
-			cout('</div>', 'content');
-			cout('<br /><br />DEBUG:&nbsp;<button onclick="alert(temp.getCurrentSelection());">SELEZIONE</button>', 'content');
+            cout($temp['js'], 'page_head');
+            cout('<div class="area_block">PROVA ALBERO</div>', 'content');
+            cout('<div class="std_block">', 'content');
+            cout('<div style="border:solid 1px" class="folder_tree">', 'content');
+            cout($temp['html'], 'content');
+            cout('</div>', 'content');
+            cout('<br /><br />DEBUG:&nbsp;<button onclick="alert(temp.getCurrentSelection());">SELEZIONE</button>', 'content');
 
-			cout('</div>', 'content');
-			*/
-		} break;
-
-	}
-
+            cout('</div>', 'content');
+            */
+         break;
+    }
 }
-
-
-?>

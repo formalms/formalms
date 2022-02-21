@@ -1,23 +1,36 @@
 <?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace appLms\Events\Lms;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
 class TestCousereportEvent extends Event
 {
-    const EVENT_NAME = 'lms.test.coursereport.coursereport';
+    public const EVENT_NAME = 'lms.test.coursereport.coursereport';
 
     /**
      * @var \Learning_Test
      */
     protected $object_test;
     /**
-     * @var String
+     * @var string
      */
     protected $overViewTestQuestionLink;
 
     /**
      * TestCreateEvent constructor.
+     *
      * @param \Learning_Test $object_test
      * @param $lang
      */
@@ -27,7 +40,7 @@ class TestCousereportEvent extends Event
     }
 
     /**
-     * @param String $overViewTestQuestionLink
+     * @param string $overViewTestQuestionLink
      */
     public function setOverViewTestQuestionLink($overViewTestQuestionLink)
     {
@@ -35,7 +48,7 @@ class TestCousereportEvent extends Event
     }
 
     /**
-     * @return String
+     * @return string
      */
     public function getOverViewTestQuestionLink()
     {
@@ -60,5 +73,4 @@ class TestCousereportEvent extends Event
             'overViewTestQuestionLink' => $this->overViewTestQuestionLink,
         ];
     }
-
 }
