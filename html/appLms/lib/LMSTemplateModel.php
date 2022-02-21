@@ -1,12 +1,6 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
-/* ======================================================================== \
-|   forma.lms - The E-Learning Suite                                        |
-|                                                                           |
-|   Copyright (c) 2013-2023 (forma.lms)                                     |
-|   http://www.formalms.org                                                 |
-|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
-\ ======================================================================== */
+
 
 class LMSTemplateModel {
 

@@ -1,14 +1,5 @@
 <?php //if (!defined('IN_FORMA')) { die('You can\'t access!'); }
 
-/* ======================================================================== \
-|   FORMA - The E-Learning Suite                                            |
-|                                                                           |
-|   Copyright (c) 2013 (Forma)                                              |
-|   http://www.formalms.org                                                 |
-|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
-|                                                                           |
-\ ======================================================================== */
-
 // if this file is not needed for a specific version,
 // just don't create it.
 

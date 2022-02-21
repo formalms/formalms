@@ -1,13 +1,6 @@
 <?php defined("IN_FORMA") or die('Direct access is forbidden.');
 
 
-/* ======================================================================== \
-|   FORMA - The E-Learning Suite                                            |
-|                                                                           |
-|   Copyright (c) 2013 (Forma)                                              |
-|   http://www.formalms.org                                                 |
-|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
-\ ======================================================================== */
 require_once( Forma::inc( _lms_.'/modules/organization/orglib.php' ) );
 require_once( Forma::inc( _lms_.'/modules/homerepo/homerepo.php') );
 

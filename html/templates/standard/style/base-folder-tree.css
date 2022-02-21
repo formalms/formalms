@@ -19,25 +19,7 @@ version: 2.6.0
 .folder_tree .ygtvlph{background:url(../images/tree/lph.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
 .folder_tree .ygtvloading{background:url(../images/tree/loading.gif) 0 0 no-repeat #ffffff;width:22px;height:26px;}
 .folder_tree .ygtvdepthcell{background:url(../images/tree/vline.gif) 0 0 no-repeat;width:22px;height:26px;}
-/* ======================================================================== \
 
-|   FORMA - The E-Learning Suite                                            |
-
-|                                                                           |
-
-|   Copyright (c) 2013 (Forma)                                              |
-
-|   http://www.formalms.org                                                 |
-
-|   License  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt           |
-
-|                                                                           |
-
-|   from docebo 4.0.5 CE 2008-2012 (c) docebo                               |
-
-|   License http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt            |
-
-\ ======================================================================== */
 
 .folder_tree .ygtvtn_disabled{background:url(../images/tree/disable/tn.png) 0 0 no-repeat;width:46px;height:26px;}
 .folder_tree .ygtvtm_disabled{background:url(../images/tree/disable/tm.png) 0 0 no-repeat;width:46px;height:26px;cursor:pointer}
