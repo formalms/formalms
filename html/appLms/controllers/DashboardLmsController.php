@@ -47,6 +47,14 @@ class DashboardLmsController extends LmsController
         checkPerm('view', true, $this->_mvc_name);
         $defaultLayout = $this->model->getDefaultLayout();
 
+        if (Get::req('mycourses_tab', DOTY_STRING, null)) {
+            $this->widget('lms_tab', [
+                'active' => 'dashboard',
+                'close' => false,
+            ]);
+        }
+       
+
         // manage permission template
         $idTemplate = $defaultLayout->getId();
         $listLayout = $this->model->getListLayout();
