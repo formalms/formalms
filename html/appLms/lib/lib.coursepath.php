@@ -1017,7 +1017,7 @@ class CoursePath_Manager
 
     public function updateUserDateExpireValidityInCourse($users_list, $id_path, $new_date_expire)
     {
-        if ($id_path <= 0 || strlen($new_date_begin) < 10) {
+        if ($id_path <= 0 || strlen($new_date_expire) < 10) {
             return false;
         }
         $output = false;
