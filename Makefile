@@ -13,6 +13,7 @@ help:
 	@echo '  dependencies        Installs composer dependencies'
 	@echo '  fix                 Fixes composer.json and code style'
 	@echo '  test                Execute all tests'
+	@echo '  fix-code-style      Fix code style'
 
 .PHONY: test
 test: clean fix
