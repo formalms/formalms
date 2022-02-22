@@ -108,26 +108,26 @@ switch ($fo) {
         $type_field = importVar('type_field');
 
         field_create($type_field, $back);
-    ; break;
+     break;
     case 'edit':
         $back = urldecode(importVar('back'));
         $id_field = importVar('id_field', true, 0);
         $type_field = importVar('type_field');
 
         field_edit($type_field, $id_field, $back);
-    ; break;
+     break;
     case 'del':
         $back = urldecode(importVar('back'));
         $id_field = importVar('id_field', true, 0);
         $type_field = importVar('type_field');
 
         field_del($type_field, $id_field, $back);
-    ; break;
+     break;
     case 'special':
         $back = urldecode(importVar('back'));
         $id_field = importVar('id_field', true, 0);
         $type_field = importVar('type_field');
 
         field_specialop($type_field, $id_field, $back);
-    ; break;
+     break;
 }

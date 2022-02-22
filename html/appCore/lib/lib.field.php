@@ -139,7 +139,12 @@ class FieldList
         if (!$rs = sql_query($query)) {
             return false;
         }
-        while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($rs)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             $output[$id_common] = [
                 'id' => $id_common,
                 'type' => $type_field,
@@ -171,7 +176,7 @@ class FieldList
     }
 
     /**
-     * @param  string	the content of the field mandatory of the GroupFieldsTable
+     * @param string    the content of the field mandatory of the GroupFieldsTable
      *
      * @return bool true if the field is mandatory
      **/
@@ -208,8 +213,8 @@ class FieldList
         $rs = sql_query($query);
         $result = [];
 
-        while ($arr = sql_fetch_row($rs)) {
-            $result[$arr[FIELD_INFO_ID]] = $arr;
+        foreach ($rs as $row) {
+            $result[$row['id_common']] = [$row['id_common'], $row['type_field'], $row['translation']];
         }
 
         return $result;
@@ -232,8 +237,8 @@ class FieldList
         $rs = $db->query($query);
         $result = [];
 
-        while ($arr = $db->fetch_row($rs)) {
-            $result[$arr[FIELD_INFO_ID]] = $arr[FIELD_INFO_TRANSLATION];
+        foreach ($rs as $row) {
+            $result[$row['id_common']] = $row['translation'];
         }
 
         return $result;
@@ -259,11 +264,11 @@ class FieldList
         }
 
         $output = [];
-        while (list($id_common, $type_field, $name_field, $type_file, $type_class) = $db->fetch_row($rs)) {
+        foreach ($rs as $row) {
             $output[] = [
-                'id' => $id_common,
-                'type' => $type_field,
-                'name' => $name_field,
+                'id' => $row['id_common'],
+                'type' => $row['type_field'],
+                'name' => $row['translation'],
             ];
         }
 
@@ -278,7 +283,7 @@ class FieldList
      **/
     public function getFieldsFromArray($field_list_arr)
     {
-        if ((!is_array($field_list_arr)) || (count($field_list_arr) < 1)) {
+        if (!is_array($field_list_arr) || count($field_list_arr) < 1) {
             return false;
         }
 
@@ -292,8 +297,8 @@ class FieldList
         $rs = sql_query($query);
         $result = [];
 
-        while ($arr = sql_fetch_row($rs)) {
-            $result[$arr[FIELD_INFO_ID]] = $arr;
+        foreach ($rs as $row) {
+            $result[$row['id_common']] = [$row['id_common'], $row['type_field'], $row['translation']];
         }
 
         return $result;
@@ -313,10 +318,10 @@ class FieldList
             . ($use_group ? ' g.groupid,' : '0,') . ' gft.mandatory, gft.useraccess, gft.user_inherit '
             . '  FROM ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getGroupFieldsTable() . ' AS gft'
-            . ($use_group ? ('  JOIN %adm_group AS g') : '')
+            . ($use_group ? '  JOIN %adm_group AS g' : '')
             . " WHERE ft.lang_code = '" . getLanguage() . "'"
             . '   AND ft.id_common = gft.id_field'
-            . ($use_group ? ('   AND gft.idst = g.idst') : '')
+            . ($use_group ? '   AND gft.idst = g.idst' : '')
             . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')"
             . ' ORDER BY ft.sequence';
         $rs = sql_query($query);
@@ -368,9 +373,17 @@ class FieldList
         $rs = sql_query($query);
 
         $result = [];
-        while (list($id_common, $type_field, $type_file, $type_class, $translation, $mandatory, $useraccess) = sql_fetch_row($rs)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+            $translation = $row['translation'];
+            $mandatory = $row['mandatory'];
+            $useraccess = $row['useraccess'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = new $type_class($id_common);
             if ($this->field_entry_table !== false) {
@@ -381,7 +394,7 @@ class FieldList
 
             $result[$id_common] = [
                 0 => $translation,
-                1 => (!$this->getUseMultiLang() ? $quest_obj->show($id_user) : $quest_obj->showInLang($id_user, getLanguage())),
+                1 => !$this->getUseMultiLang() ? $quest_obj->show($id_user) : $quest_obj->showInLang($id_user, getLanguage()),
                 2 => $mandatory,
                 3 => $useraccess,
                 4 => $type_field,
@@ -428,8 +441,8 @@ class FieldList
         $rs = sql_query($query);
 
         $result = [];
-        while (list($id, $value) = sql_fetch_row($rs)) {
-            $result[$id] = $value;
+        foreach ($rs as $row) {
+            $result[$row['id_user']] = [$row['id_user'], $row['user_entry']];
         }
 
         return $result;
@@ -480,8 +493,8 @@ class FieldList
         $rs = sql_query($query);
 
         $result = [];
-        while (list($id, $value) = sql_fetch_row($rs)) {
-            $result[$id] = $value;
+        foreach ($rs as $row) {
+            $result[$row['id_common']] = [$row['id_common'], $row['user_entry']];
         }
 
         return $result;
@@ -519,8 +532,9 @@ class FieldList
                 $sons_query .= ' AND idField IN (' . implode(',', $fields) . ')';
             }
             $sons_rs = sql_query($sons_query);
-            while (list($id_field, $id_son, $translation) = sql_fetch_row($sons_rs)) {
-                $sons_arr[$id_field][$id_son] = $translation;
+
+            foreach ($sons_rs as $row) {
+                $sons_arr[$row['idField']][$row['id_common_son']] = $row['translation'];
             }
 
             $yesno_fields = [];
@@ -529,8 +543,9 @@ class FieldList
                 $yn_query .= ' AND id_common IN ( ' . implode(',', $fields) . ' )';
             }
             $yn_rs = sql_query($yn_query);
-            while (list($id_field) = sql_fetch_row($yn_rs)) {
-                $yesno_fields[] = $id_field;
+
+            foreach ($yn_rs as $row) {
+                $yesno_fields[] = $row['id_common'];
             }
         }
 
@@ -627,8 +642,8 @@ class FieldList
     {
         $arr_result = sql_fetch_row(sql_query(
             'SELECT type_file, type_class '
-                . ' FROM ' . $this->getTypeFieldTable()
-                . " WHERE type_field = '" . $type_field . "'"
+            . ' FROM ' . $this->getTypeFieldTable()
+            . " WHERE type_field = '" . $type_field . "'"
         ));
 
         return $arr_result;
@@ -656,7 +671,7 @@ class FieldList
             return 'NULL';
         }
         list($type_file, $type_class) = sql_fetch_row($rs);
-        require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+        require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_field );");
         if ($this->field_entry_table !== false) {
             $quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -691,7 +706,7 @@ class FieldList
 
         if (count($arr_idst) > $index) {
             // Not only roots ocd_0 and oc_0
-            for ($i = 0; $i < count($arr_idst); ++$i) {
+            for ($i = 0, $iMax = count($arr_idst); $i < $iMax; ++$i) {
                 if ($arr_idst[$i] == 1) {
                     unset($arr_idst[$i]);
                 }
@@ -718,9 +733,16 @@ class FieldList
             return '';
         }
 
-        while (list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
+        //while (list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+            $mandatory = $row['mandatory'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -757,7 +779,7 @@ class FieldList
             return $res;
         }
         list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
-        require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+        require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_common );");
         if ($this->field_entry_table !== false) {
             $quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -796,9 +818,13 @@ class FieldList
             return 'NULL';
         }
 
-        while (list($id_common, $type_file, $type_class) = sql_fetch_row($rs)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -850,7 +876,7 @@ class FieldList
 
         list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
 
-        require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+        require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = new $type_class($id_common);
         if ($this->field_entry_table !== false) {
             $quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -893,7 +919,7 @@ class FieldList
             return 'NULL';
         }
         list($type_file, $type_class) = sql_fetch_row($rs);
-        require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+        require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
         $quest_obj = eval("return new $type_class( $id_field );");
         if ($this->field_entry_table !== false) {
             $quest_obj->setFieldEntryTable($this->field_entry_table);
@@ -913,7 +939,7 @@ class FieldList
      *                        if this parameter is skipped the groups will be taken
      *                        from $idst_user
      *
-     * @return html with the form code for play a set of fields
+     * @return string with the form code for play a set of fields
      **/
     public function playFieldsForUser($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false, $separate_output = false, $check_precompiled = false, $registrationLayout = false, $registrationErrors = false)
     {
@@ -927,17 +953,19 @@ class FieldList
         if ($add_root) {
             $acl_man = &$acl->getAclManager();
             $tmp = $acl_man->getGroup(false, '/oc_0');
-            $arr_idst[] = $tmp[0];
+            $arr_idst[] = (int) $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_0');
-            $arr_idst[] = $tmp[0];
+            $arr_idst[] = (int) $tmp[0];
             $index += 2;
         }
 
-        if (count($arr_idst) >= $index) {
-            // Not only roots ocd_0 and oc_0
-            for ($i = 0; $i < count($arr_idst); ++$i) {
-                if ($arr_idst[$i] == 1) {
-                    unset($arr_idst[$i]);
+        if (!$registrationLayout) {
+            if (count($arr_idst) >= $index) {
+                // Not only roots ocd_0 and oc_0
+                for ($i = 0, $iMax = count($arr_idst); $i < $iMax; ++$i) {
+                    if ($arr_idst[$i] == 1) {
+                        unset($arr_idst[$i]);
+                    }
                 }
             }
         }
@@ -951,8 +979,13 @@ class FieldList
             . '   AND ft.id_common = gft.id_field'
             . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
 
-        if (Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
-            $query .= "   AND gft.useraccess <> 'readwrite'"; // Hide invisible;
+        switch (Docebo::user()->getUserLevelId()) {
+            case ADMIN_GROUP_ADMIN:
+            case ADMIN_GROUP_USER:
+                $query .= "   AND gft.useraccess <> 'readwrite'"; // Hide invisible;
+                break;
+            default:
+                break;
         }
 
         if ($useraccess !== 'false' && is_array($useraccess)) {
@@ -983,9 +1016,15 @@ class FieldList
             return '';
         }
 
-        while (list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+            $mandatory = $row['mandatory'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $field_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1033,7 +1072,7 @@ class FieldList
 
         if (count($arr_idst) > $index) {
             // Not only roots ocd_0 and oc_0
-            for ($i = 0; $i < count($arr_idst); ++$i) {
+            for ($i = 0, $iMax = count($arr_idst); $i < $iMax; ++$i) {
                 if ($arr_idst[$i] == 1) {
                     unset($arr_idst[$i]);
                 }
@@ -1068,9 +1107,15 @@ class FieldList
         $play_txt = '';
         $re_fields = sql_query($query);
 
-        while (list($id_common, $type_field, $type_file, $type_class, $mandatory) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+            $mandatory = $row['mandatory'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1125,7 +1170,7 @@ class FieldList
 
         if (count($arr_idst) > $index) {
             // Not only roots ocd_0 and oc_0
-            for ($i = 0; $i < count($arr_idst); ++$i) {
+            for ($i = 0, $iMax = count($arr_idst); $i < $iMax; ++$i) {
                 if ($arr_idst[$i] == 1) {
                     unset($arr_idst[$i]);
                 }
@@ -1146,9 +1191,14 @@ class FieldList
         $mandatory_filled = true;
         $field_valid = true;
         $re_fields = sql_query($query);
-        while (list($id_common, $type_field, $type_file, $type_class, $is_mandatory) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+            $id_mandatory = $row['mandatory'];
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = new $type_class($id_common);
 
@@ -1206,7 +1256,7 @@ class FieldList
 
         if (count($arr_idst) > $index) {
             // Not only roots ocd_0 and oc_0
-            for ($i = 0; $i < count($arr_idst); ++$i) {
+            for ($i = 0, $iMax = count($arr_idst); $i < $iMax; ++$i) {
                 if ($arr_idst[$i] == 1) {
                     unset($arr_idst[$i]);
                 }
@@ -1228,9 +1278,14 @@ class FieldList
         $mandatory_filled = true;
         $field_valid = true;
         $re_fields = sql_query($query);
-        while (list($id_common, $type_field, $type_file, $type_class, $is_mandatory) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+            $is_mandatory = $row['mandatory'];
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = new $type_class($id_common);
 
@@ -1303,7 +1358,7 @@ class FieldList
 
         if (count($arr_idst) > $index) {
             // Not only roots ocd_0 and oc_0
-            for ($i = 0; $i < count($arr_idst); ++$i) {
+            for ($i = 0, $iMax = count($arr_idst); $i < $iMax; ++$i) {
                 if ($arr_idst[$i] == 1) {
                     unset($arr_idst[$i]);
                 }
@@ -1322,9 +1377,14 @@ class FieldList
 
         $save_result = true;
         $re_fields = sql_query($query);
-        while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1369,9 +1429,14 @@ class FieldList
         if ($re_fields === false) {
             return false;
         }
-        while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1424,9 +1489,14 @@ class FieldList
         if ($re_fields === false) {
             return false;
         }
-        while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = new $type_class($id_common);
             if ($this->field_entry_table !== false) {
@@ -1465,7 +1535,7 @@ class FieldList
         $query .= ' GROUP BY ft.id_common ';
         //				." ORDER BY ft.sequence";
 
-        if (($user_id === false) || (empty($user_id))) {
+        if ($user_id === false || empty($user_id)) {
             $user_id = -1;
         }
 
@@ -1473,15 +1543,20 @@ class FieldList
         $play_arr = [];
         $re_fields = sql_query($query);
 
-        while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
-            if ((isset($custom_mandatory[$id_common])) && ($custom_mandatory[$id_common])) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
+            if (isset($custom_mandatory[$id_common]) && $custom_mandatory[$id_common]) {
                 $mandatory = true;
             } else {
                 $mandatory = false;
             }
 
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1519,9 +1594,14 @@ class FieldList
         $query .= ' GROUP BY ft.id_common ';
 
         $re_fields = sql_query($query);
-        while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1529,7 +1609,7 @@ class FieldList
             }
 
             $quest_obj->setMainTable($this->getFieldTable());
-            $value = (isset($values[$id_common]) ? $values[$id_common] : false);
+            $value = isset($values[$id_common]) ? $values[$id_common] : false;
             $res .= $quest_obj->play_filter($id_common, $value, false, $field_prefix);
         }
 
@@ -1553,9 +1633,14 @@ class FieldList
 
         $save_result = true;
         $re_fields = sql_query($query);
-        while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1592,9 +1677,16 @@ class FieldList
 
         $filled_val = [];
         $re_fields = sql_query($query);
-        while (list($id_common, $translation, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
+
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $translation = $row['translation'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1718,8 +1810,8 @@ class FieldList
                     . " WHERE gft.idst IN ('" . implode("','", $allgroup_idst) . "')";
                 $rs = sql_query($query);
                 $result = [];
-                while (list($id) = sql_fetch_row($rs)) {
-                    $all_field[$id] = $id;
+                foreach ($rs as $row) {
+                    $all_field[$row['id_field']] = $row['id_field'];
                 }
             }
             $query = 'SELECT gft.id_field '
@@ -1727,9 +1819,9 @@ class FieldList
                 . " WHERE gft.idst = '" . $id_group . "'";
             $rs = sql_query($query);
             $to_remove = [];
-            while (list($id) = sql_fetch_row($rs)) {
-                if (!isset($all_field[$id])) {
-                    $to_remove[] = $id;
+            foreach ($rs as $row) {
+                if (!isset($all_field[$row['id_field']])) {
+                    $to_remove[] = $row['id_field'];
                 }
             }
         }
@@ -1743,7 +1835,7 @@ class FieldList
                 . " WHERE ft.lang_code = '" . getLanguage() . "'"
                 . '	 AND ft.type_field = tft.type_field'
                 . ' GROUP BY ft.id_common ';
-        } else {	// remove specific fields
+        } else {    // remove specific fields
             $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class'
                 . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
                 . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft )'
@@ -1756,9 +1848,15 @@ class FieldList
         }
 
         $re_fields = sql_query($query);
-        while (list($id_common, $type_field, $type_file, $type_class) = sql_fetch_row($re_fields)) {
+
+        foreach ($re_fields as $row) {
+            $id_common = $row['id_common'];
+            $type_field = $row['type_field'];
+            $type_file = $row['type_file'];
+            $type_class = $row['type_class'];
+
             if (!class_exists($type_class)) {
-                require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+                require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
             }
             $quest_obj = eval("return new $type_class( $id_common );");
             if ($this->field_entry_table !== false) {
@@ -1775,8 +1873,6 @@ class FieldList
     /**
      * Find wich users entries matches with search information.
      *
-     * @author Giovanni Derks
-     *
      * @param array  $fields     list of id_common values
      * @param string $method     "OR" or "AND"
      * @param array  $like       array($id_common => [off, both, start, end])
@@ -1784,12 +1880,14 @@ class FieldList
      * @param bool   $return_raw if TRUE then will return the raw array
      *
      * @return array list of user idst found (if $return_raw is FALSE)
+     *
+     * @author Giovanni Derks
      */
     public function quickSearchUsersFromEntry($fields, $method, $like, $search, $return_raw = false)
     {
         $res = [];
 
-        if ((Get::sett('do_debug') == 'on') && (count($fields) != count($search))) {
+        if (Get::sett('do_debug') == 'on' && count($fields) != count($search)) {
             echo '<b>Warning</b>: (lib.field.php) ';
             echo 'Please make sure that the search array have the same size of the fields one.<br />';
         }
@@ -1808,7 +1906,7 @@ class FieldList
 
                 $search_val = $search[$id_common];
 
-                if ((!isset($like[$id_common])) || ($like[$id_common] == 'off')) {
+                if (!isset($like[$id_common]) || $like[$id_common] == 'off') {
                     $where .= "='" . $search_val . "'";
                 } elseif ($like[$id_common] == 'both') {
                     $where .= " LIKE '%" . $search_val . "%'";
@@ -1835,8 +1933,8 @@ class FieldList
         $raw_res = [];
         $raw_res['field'] = [];
         $raw_res['user'] = [];
-        if (($q) && (sql_num_rows($q) > 0)) {
-            while ($row = sql_fetch_assoc($q)) {
+        if ($q && sql_num_rows($q) > 0) {
+            foreach ($q as $row) {
                 $id_common = $row['id_common'];
                 $id_user = $row['id_user'];
 
@@ -1862,7 +1960,7 @@ class FieldList
 
                 // ----------------------------------------------------------
 
-                if (($method == 'OR') && (!in_array($row['id_user'], $res))) {
+                if ($method == 'OR' && !in_array($row['id_user'], $res)) {
                     $res[] = $row['id_user'];
                 }
             }
@@ -1874,7 +1972,7 @@ class FieldList
             $tot = count($fields);
             foreach ($raw_res['user'] as $user_id => $field_arr) {
                 $tot_found = count($field_arr);
-                if (($tot_found > 0) && ($tot_found == $tot)) {
+                if ($tot_found > 0 && $tot_found == $tot) {
                     $res[] = $user_id;
                 }
             }
@@ -1906,7 +2004,7 @@ class FieldList
         }
 
         $output = [];
-        while ($row = $db->fetch_assoc($rs)) {
+        foreach ($rs as $row) {
             $output[] = $row;
         }
 
@@ -1962,8 +2060,8 @@ class FieldList
                 if (sql_num_rows($res) == 0) {
                     return true;
                 }
-                while ($obj = sql_fetch_object($res)) {
-                    if (!$obj->user_entry) {
+                foreach ($res as $row) {
+                    if (!$row['user_entry']) {
                         $output = false;
                         break;
                     }
@@ -2000,12 +2098,12 @@ class FieldList
             $res = sql_query($query);
 
             if ($res) {
-                while ($obj = sql_fetch_object($res)) {
-                    $output[$obj->id_common] = [
-                        'translation' => $obj->translation,
-                        'type_field' => $obj->type_field,
-                        'useraccess' => $obj->useraccess,
-                        'user_entry' => $obj->user_entry,
+                foreach ($res as $row) {
+                    $output[$row['id_common']] = [
+                        'translation' => $row['translation'],
+                        'type_field' => $row['type_field'],
+                        'useraccess' => $row['useraccess'],
+                        'user_entry' => $row['user_entry'],
                     ];
                 }
             }
@@ -2021,8 +2119,8 @@ class FieldList
         $res = sql_query($query);
         if ($res) {
             $output = [];
-            while (list($id_field) = sql_fetch_row($res)) {
-                $output[] = $id_field;
+            foreach ($res as $row) {
+                $output[] = $row['id_common'];
             }
         }
 
@@ -2042,8 +2140,8 @@ class FieldList
         $query = 'SELECT gm.idst FROM %adm_group_members AS gm JOIN %adm_group AS g ON (gm.idst = g.idst) '
             . " WHERE (g.groupid LIKE '/oc\_%' OR g.groupid LIKE '/ocd\_%' ) AND gm.idstMember = " . (int) $id_admin;
         $res = sql_query($query);
-        while (list($id_group) = sql_fetch_row($res)) {
-            $groups[] = (int) $id_group;
+        foreach ($res as $row) {
+            $groups[] = (int) $row['idst'];
         }
 
         if (!empty($groups)) {
@@ -2052,8 +2150,8 @@ class FieldList
                 . ' WHERE idst IN (' . implode(',', $groups) . ') '
                 . ' AND user_inherit = 1';
             $res = sql_query($query);
-            while ($obj = sql_fetch_object($res)) {
-                $fields[] = $obj->id_field;
+            foreach ($res as $row) {
+                $fields[] = $row['id_field'];
             }
 
             if (!empty($fields)) {
