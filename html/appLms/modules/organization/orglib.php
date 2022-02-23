@@ -2077,6 +2077,7 @@ class Org_TreeView extends RepoTreeView
             }
 
             $node['status_logo'] = getPathImage() . 'lobject/' . $img;
+            $node['status_label'] = $status;
 
             $node['type'] = $folder->otherValues[1];
 
