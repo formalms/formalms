@@ -22,8 +22,6 @@ const onDashboardVideoClick = (event) => {
         return;
     }
 
-    console.log(event.target.dataset.videoId);
-
     switch (event.target.dataset.videoType) {
         case 'yt':
             openYtVideo(event.target.dataset.videoDataVideoUrl);

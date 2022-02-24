@@ -12,7 +12,6 @@
 
   open(label = 'modal-' + this.ActiveModals.length, onOpen = null, onClose = null) {
     var modalCreated = new ModalElement(label);
-    console.log(modalCreated);
     modalCreated.Open(onOpen);
     modalCreated.OnClose = onClose;
     this.ActiveModals.push({

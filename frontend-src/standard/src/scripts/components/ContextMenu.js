@@ -137,7 +137,7 @@ class ContextMenu {
           });
           if (confirm(`Sei sicuro di voler eliminare ${objectsNames.length === 1 ? 'l\'elemento' : 'gli elementi'} "${objectsNames.join(',')}"?`)) {
             const deleteData = _this.getApiUrl('delete', { ids: _this.currentElsIds });
-            console.log(_this.currentElsIds);
+
             axios.get(deleteData).then(() => {
               _this.currentElsIds.forEach((elId) => {
                 const elTree = _this.container.querySelector('.folderTree__li[data-id="' + elId + '"]');

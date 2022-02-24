@@ -126,7 +126,6 @@ class FolderTree {
         this.currentElsIds = [this.currentElId];
         // this.selectItems();
       }
-      console.log(this.currentEls, 'onDragStart');
     }
   }
 
@@ -233,9 +232,8 @@ class FolderTree {
   async getData(endpoint) {
     const _this = this;
     try {
-      console.log(document.body.classList.contains('teacher-area'));
       await axios.get(endpoint).then((response) => {
-        console.log(Tree);
+
         const tree = Tree({ data: response.data.data[0].children });
 
         const treeView = _this.container.querySelector('.folderTree__ul .folderTree__ul');
