@@ -21,11 +21,6 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     public const COURSE_TYPE_ELEARNING = 'elearning';
     public const COURSE_TYPE_CLASSROOM = 'classroom';
 
-    public function __construct($jsonConfig)
-    {
-        parent::__construct($jsonConfig);
-    }
-
     public function parseConfig($jsonConfig)
     {
         $this->parseBaseConfig($jsonConfig);
@@ -33,12 +28,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     public function getAvailableTypesForBlock()
     {
-        return [
-            DashboardBlockLms::TYPE_1COL,
-            DashboardBlockLms::TYPE_2COL,
-            DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL,
-        ];
+        return self::ALLOWED_TYPES;
     }
 
     public function getViewData()
@@ -278,11 +268,10 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
     protected function getDatasFromCourse($course)
     {
         $dates = [];
-        $courseData = $this->getDataFromCourse($course, true);
+        $courseData = $this->getDataFromCourse($course);
 
         if ($course['course_type'] == self::COURSE_TYPE_CLASSROOM) {
-            $result = $this->db->query('
-                SELECT cr.name AS class, cl.location, cdd.date_begin, cdd.date_end, c.name 
+            $query = 'SELECT cr.name AS class, cl.location, cdd.date_begin, cdd.date_end, c.name 
                 FROM %lms_course_date_day cdd 
                 INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
                 INNER JOIN %lms_course_date_user cdu ON cd.id_date = cdu.id_date 
@@ -290,7 +279,8 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
                 LEFT JOIN %lms_classroom cr ON cdd.classroom = cr.idClassroom
                 LEFT JOIN %lms_class_location cl ON cr.location_id = cl.location_id
                 WHERE cd.id_course = ' . $course['course_id'] . '
-                AND cdu.id_user = ' . Docebo::user()->getId() . ' AND cdd.deleted = 0'
+                AND cdu.id_user = ' . Docebo::user()->getId() . ' AND cdd.deleted = 0 ORDER BY cdd.date_begin';
+            $result = $this->db->query($query
             );
 
             foreach ($result as $row) {

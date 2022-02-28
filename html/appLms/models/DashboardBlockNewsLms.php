@@ -18,11 +18,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 class DashboardBlockNewsLms extends DashboardBlockLms
 {
-    public function __construct($jsonConfig)
-    {
-        parent::__construct($jsonConfig);
-    }
-
     public function parseConfig($jsonConfig)
     {
         $this->parseBaseConfig($jsonConfig);
@@ -30,12 +25,7 @@ class DashboardBlockNewsLms extends DashboardBlockLms
 
     public function getAvailableTypesForBlock()
     {
-        return [
-            DashboardBlockLms::TYPE_1COL,
-            DashboardBlockLms::TYPE_2COL,
-            DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL,
-        ];
+        return self::ALLOWED_TYPES;
     }
 
     public function getViewData()

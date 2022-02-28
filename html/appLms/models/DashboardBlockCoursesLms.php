@@ -11,17 +11,18 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-defined('IN_FORMA') or exit('Direct access is forbidden.');
+defined('IN_FORMA') or die('Direct access is forbidden.');
+
 
 /**
- * Class DashboardBlockCoursesLms.
+ * Class DashboardBlockCoursesLms
  */
 class DashboardBlockCoursesLms extends DashboardBlockLms
 {
-    public const MAX_COURSES = 3;
-    public const COURSE_TYPE_LIMIT = 3;
-    public const COURSE_TYPE_ELEARNING = 'elearning';
-    public const COURSE_TYPE_CLASSROOM = 'classroom';
+    const COURSE_TYPE_ELEARNING = 'elearning';
+    const COURSE_TYPE_CLASSROOM = 'classroom';
+    const SORT_ORDER = [1 => ' cu.date_inscr DESC', 2 => 'cu.date_inscr ASC', 3 => 'cu.idCourse DESC', 4 => 'cu.idCourse ASC'];
+
 
     public function __construct($jsonConfig)
     {
@@ -35,12 +36,23 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
     public function getAvailableTypesForBlock()
     {
-        return [
-            DashboardBlockLms::TYPE_1COL,
-            DashboardBlockLms::TYPE_2COL,
-            DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL,
-        ];
+        return self::ALLOWED_TYPES;
+    }
+
+
+    public function getForm()
+    {
+        $form = parent::getForm();
+
+        array_push(
+            $form,
+            DashboardBlockForm::getFormItem($this, 'max_courses_number', DashboardBlockForm::FORM_TYPE_NUMBER, false),
+            DashboardBlockForm::getFormItem($this, 'course_type', DashboardBlockForm::FORM_TYPE_SELECT, false,
+                ['elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'COURSE'),  // ORDER -> CLOSEST DATE END
+                    'classroom' => Lang::t('_CLASSROOM')]) // ORDER -> CLOSEST COURSE DAY
+        );
+
+        return $form;
     }
 
     public function getViewData()
@@ -48,7 +60,6 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $data = $this->getCommonViewData();
 
         $data['courses'] = $this->getCourses();
-
         return $data;
     }
 
@@ -80,146 +91,95 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
     private function getCourses()
     {
-        $conditions = [
-            'cu.iduser = :id_user',
-        ];
 
-        $params = [
-            ':id_user' => (int) Docebo::user()->getId(),
-        ];
-
-        // course status : all status, new, completed, in progress
-        $conditions[] = '(c.status <> 3)';
-
+        $conditions = ['ID_USER' => 'cu.iduser =' . (int)Docebo::user()->getId()];
+        $conditions['COURSE_STATUS'] = '(c.status in  (1,2))'; // only available, confirmed
+        $conditions['COUSE_TYPE'] = "(c.course_type = '" . $this->data['course_type'] . "')";
+        $conditions['USER_ENROLLMENT_STATUS'] = '(cu.status in (0,1))'; // only enrolled and in progress
         $midnight = new DateTime('midnight');
         $midnight = date_format($midnight, 'Y-m-d H:i:s');
 
-        $elearningConditions = $conditions;
-        $elearningConditions[] = "c.course_type = ':course_type'";
-        $elearningConditions[] = "c.date_end >= '$midnight'";
-        $elearningConditions[] = "c.date_end != '0000-00-00'";
 
-        $elearningParams = $params;
-        $elearningParams[':course_type'] = 'elearning';
-
-        $courselist = $this->findAll($elearningConditions, $elearningParams, self::COURSE_TYPE_LIMIT);
-
-        if (count($courselist) < self::COURSE_TYPE_LIMIT || count($courselist) < self::MAX_COURSES) {
-            $classRoomConditions = $conditions;
-            $classRoomConditions[] = "c.course_type = ':course_type'";
-
-            $classRoomParams = $params;
-            $classRoomParams[':course_type'] = 'classroom';
-
-            $classRoomCourseList = $this->findAll($classRoomConditions, $classRoomParams, 0);
-
-            foreach ($classRoomCourseList as $id => $course) {
-                switch ($course['type']) {
-                    case self::COURSE_TYPE_CLASSROOM:
-                        $q = sql_query("
-		            	SELECT date_begin, date_end FROM %lms_course_date_day cdd 
-		            	INNER JOIN %lms_course_date cd ON cdd.id_date = cd.id_date 
-						INNER JOIN %lms_course_date_user cdu ON cdd.id_date = cdu.id_date
-		            	WHERE cd.id_course = $id
-		            	AND cdu.id_user = " . Docebo::user()->getId() . "
-		            	AND date_begin >= '$midnight'
-		            	AND cdd.deleted = 0
-		            	ORDER BY date_begin ASC
-	            	");
-                        foreach ($q as $row) {
-                            if (!$row['date_begin'] || !$row['date_end']) {
-                                break;
-                            }
-
-                            $course['startDateString'] = $course['startDate'] = date('d-m-Y', strtotime($row['date_begin']));
-                            $course['endDateString'] = $course['endDate'] = date('H:i', strtotime($row['date_begin'])) . ' ' . date('H:i', strtotime($row['date_end']));
-
-                            if (isset($course['dates'])) {
-                                unset($course['dates']);
-                            }
-
-                            $courselist[] = $course;
-                        }
-                        break;
-                    case self::COURSE_TYPE_ELEARNING:
-                    default:
-                        $courselist[] = $course;
-                        break;
-                }
-            }
+        if ($this->data['course_type'] === 'elearning') {
+            $conditions[] = "(c.date_end >= '$midnight')";
+        } else {
+            $conditions[] = "(cdd.date_begin >= '$midnight')";
+            $conditions[] = '(cd.status = 0)';
         }
 
-        // Order by startDate
-        usort($courselist, function ($element1, $element2) {
-            $datetime1 = strtotime($element1['startDate']);
-            $datetime2 = strtotime($element2['startDate']);
-
-            return $datetime1 - $datetime2;
-        });
-
-        // Limit to self::COURSE_TYPE_LIMIT
-        $i = 0;
-        foreach ($courselist as $cl) {
-            if ($i >= self::COURSE_TYPE_LIMIT) {
-                break;
-            }
-            $res[] = $cl;
-            ++$i;
-        }
-
-        return $res;
+        return $this->findAll($conditions, $this->data['max_courses_number']);
     }
 
-    private function findAll($conditions, $params, $limit = 0, $offset = 0)
+    private function findAll($conditions, $limit = 0)
     {
-        // exclude course belonging to pathcourse in which the user is enrolled as a student
-        $learning_path_enroll = $this->getUserCoursePathCourses($params[':id_user']);
-        $exclude_pathcourse = '';
-        if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
-            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $params[':id_user'] . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
-            $rs = $this->db->query($exclude_path_course);
-            while ($d = $this->db->fetch_assoc($rs)) {
-                $excl[] = $d['idCourse'];
-            }
-            $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
+
+        $exclude_pathcourse = $this->excludePathCourse();
+        switch ($this->data['course_type']) {
+            case self::COURSE_TYPE_CLASSROOM:
+                $query = 'SELECT c.idCourse course_id, c.name course_name, c.idCategory course_category_id, c.status course_status,
+                          c.course_type, c.box_description course_box_description, c.description, cd.name edition, 
+                          cdd.date_begin course_date_begin, cdd.date_end course_date_end,
+                          DATE_FORMAT(cdd.date_begin,"%H:%i") course_hour_begin, DATE_FORMAT(cdd.date_end,"%H:%i") course_hour_end'
+                    . ' FROM %lms_course AS c'
+                    . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)'
+                    . ' JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_Course)'
+                    . ' JOIN %lms_course_date_user AS cdu on (cdu.id_date = cd.id_date)'
+                    . ' JOIN %lms_course_date_day AS cdd ON (cd.id_date = cdd.id_date)'
+                    . ' WHERE ' . implode(' AND ', $conditions)
+                    . $exclude_pathcourse
+                    . ' ORDER BY cdd.date_begin ASC';
+                break;
+            case self::COURSE_TYPE_ELEARNING:
+            default:
+                $query = 'SELECT c.idCourse course_id, c.name course_name,  c.idCategory course_category_id, c.status course_status, c.description,  
+                          c.course_type, c.date_end course_date_end, c.hour_end course_hour_end, c.date_begin course_date_begin, 
+                          c.hour_begin course_hour_begin, c.box_description course_box_description, 
+                          c.img_course course_img_course, cu.status user_status, cu.level user_level, cu.date_inscr user_date_inscr'
+                    . ' FROM %lms_course AS c '
+                    . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
+                    . ' WHERE ' . implode(' AND ', $conditions)
+                    . $exclude_pathcourse
+                    . ' ORDER BY  c.date_end ASC';
+                break;
         }
-
-        $query = 'SELECT c.idCourse AS course_id, c.idCategory AS course_category_id, c.name AS course_name, c.status AS course_status, c.date_begin AS course_date_begin, c.date_end AS course_date_end, c.hour_begin AS course_hour_begin, c.hour_end AS course_hour_end, c.course_type AS course_type, c.box_description AS course_box_description, c.img_course AS course_img_course '
-            . ' ,cu.status AS user_status, cu.level AS user_level, cu.date_inscr AS user_date_inscr, cu.date_first_access AS user_date_first_access, cu.date_complete AS user_date_complete, cu.waiting AS user_waiting '
-            . ' FROM %lms_course AS c '
-            . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
-            . ' WHERE ' . $this->compileWhere($conditions, $params)
-            . $exclude_pathcourse
-            . ' ORDER BY c.idCourse';
-
         if ($limit > 0) {
             $query .= " LIMIT $limit";
         }
-        if ($offset > 0) {
-            $query .= " OFFSET $offset";
-        }
-
         $rs = $this->db->query($query);
 
         $result = [];
         foreach ($rs as $course) {
             $courseData = $this->getDataFromCourse($course);
-
-            if ($courseData['type'] === 'classroom') {
-                $dates = $this->getDatesForCourse($course);
-
-                $courseData['dates'] = $dates;
-            }
-
-            $result[$course['course_id']] = $courseData;
+            $result[$course['course_id']] ??= $courseData; // getting just first date for classroom courses
         }
 
         return $result;
     }
 
+    private function excludePathCourse()
+    {
+        // exclude course belonging to pathcourse in which the user is enrolled as a student
+        $exclude_pathcourse = '';
+        if (Get::sett('on_path_in_mycourses') == 'off') {
+            $id_user = (int)Docebo::user()->getId();
+            $learning_path_enroll = $this->getUserCoursePathCourses($id_user);
+            if (count($learning_path_enroll) >= 1) {
+                $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $id_user . ' and level <= 3 '
+                    . ' and idCourse in (' . implode(',', $learning_path_enroll) . ')';
+                $rs = $this->db->query($exclude_path_course);
+                foreach ($rs as $data){
+                    $excl[] = $data['idCourse'];
+                }
+                $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
+            }
+
+        }
+        return $exclude_pathcourse;
+    }
+
     private function getUserCoursePathCourses($id_user)
     {
-        require_once _lms_ . '/lib/lib.coursepath.php';
+        require_once(_lms_ . '/lib/lib.coursepath.php');
         $cp_man = new Coursepath_Manager();
         $output = [];
         $cp_list = $cp_man->getUserSubscriptionsInfo($id_user);
@@ -227,23 +187,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             $cp_list = array_keys($cp_list);
             $output = $cp_man->getAllCourses($cp_list);
         }
-
         return $output;
-    }
-
-    private function compileWhere($conditions, $params)
-    {
-        if (!is_array($conditions)) {
-            return '1';
-        }
-
-        $where = [];
-        $find = array_keys($params);
-        foreach ($conditions as $key => $value) {
-            $where[] = str_replace($find, $params, $value);
-        }
-
-        return implode(' AND ', $where);
     }
 
     private function getDatesForCourse($course)
@@ -260,6 +204,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
         $dates = [];
         foreach ($rs as $date) {
+
             if ($date['date_start_date'] !== '0000-00-00 00:00:00') {
                 $startDate = new DateTime($date['date_start_date']);
                 $startDateString = $startDate->format('d/m/Y');
@@ -286,7 +231,6 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 'endDateString' => $endDateString,
             ];
         }
-
         return $dates;
     }
 }

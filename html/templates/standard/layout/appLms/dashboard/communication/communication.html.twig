@@ -1,0 +1,170 @@
+{% extends "base/base.html.twig" %}
+
+  {% block content %}
+
+      {% if (block.type == '4-col') %}
+          {% set class =  'd-col--12--desktop' %}
+      {% elseif (block.type == '3-col') %}
+          {% set class =  'd-col--9--desktop' %}
+      {% elseif (block.type == '2-col') %}
+          {% set class =  'd-col--6--desktop' %}
+      {% elseif (block.type == '1-col') %}
+          {% set class =  'd-col--3--desktop' %}
+      {% endif %}
+
+      <div class="d-col d-col--12 {{ class }}">
+          <div class="d-courses d-widget" id="div_widget_communication">
+              <h3 class="d-title">
+                  {% if block.data.title is empty %}
+                      {{ Lang_translate('_DASHBOARDBLOCKCOMMUNICATIONLMS','dashboard') }}
+                  {% else %}
+                      {{ block.data.title }}
+                  {% endif %}
+              </h3>
+              <div>
+                  <ul class="list-group comunication_widget">
+                      <div class="comunication_table_head row">
+                          <div class="col-xs-11">
+                              <table width='100%'>
+                                  <tr class='communication-header'>
+                                      <th width='12%'>&nbsp;&nbsp;&nbsp;{{ Lang_translate('_DATE') }}</th>
+                                      <th width='48%'>{{ Lang_translate('_TITLE') }}</th>
+                                      <th width='22%'>{{ Lang_translate('_READ') }}</td>
+                                      <th>{{ Lang_translate('_TYPOLOGY') }}</th>
+                                  </tr>
+                              </table>
+                          </div>
+                          <div class="col-xs-1"></div>
+                      </div>
+                      {% if block.communication is empty %}
+                          {{ Lang_translate('_NO_COMMUNICATION', 'standard') }}
+                      {% endif %}
+                      {% for c in block.communication %}
+
+                          <li class="list-group-item comunication_item">
+                              <div class="row toggle" id="dropdown-detail-1" data-toggle="detail-{{c.id_comm}}">
+                                  <div class="col-xs-11">
+                                      <table width='100%' border=0 celldpadding=1 cellspacing=2>
+                                          <tr>
+                                              <td width='10%'>
+                                                  <span class="date_comunication_span">{{ c.publish_date|date("d")  }}/{{ c.publish_date|date("m")  }}/{{ c.publish_date|date("Y")  }}</span>
+                                              </td>
+                                              <td width='45%'>{{ c.title | raw}}</td>
+                                              <td width='20%'>
+                                                  {% if c.dateAttempt != null %}
+                                                      {{c.dateAttempt|date("d-m-Y H:i:s")}}
+                                                  {% endif %}
+                                                  <div id='{{c.id_comm}}_note'></div></td>
+
+                                              <td width='10%' align=center>
+                                                  {% if c.type_of != 'none' %}
+                                                      {{ c.type_of}}
+                                                  {% endif %}
+                                              </td>
+                                              <td width='5%'>
+                                                  <i class="fa fa-chevron-down pull-right"></i>
+                                              </td>
+                                      </table>
+                                  </div>
+                              </div>
+                              <div id="detail-{{c.id_comm}}">
+                                  <div class="comunication_content">
+                                      <div class="comunication_content_description">
+                                          {{c.description | raw}}
+                                          <div class="comunication_content_action">
+
+                                              {% if c.type_of=='none' and c.dateAttempt==null %}
+                                                  <a id="{{c.id_comm}}_none" href='javascript: mark_read({{c.id_comm}})'> <span><i class="fa fa-bookmark" aria-hidden="true"></i> {{ Lang_translate('_MARK_READ', 'message') }}</span></a>
+                                              {% endif%}
+
+
+                                              {% if c.type_of=='file'  %}
+                                                  <a id="{{c.id_comm}}_comm_file_download" href='javascript: mark_read({{c.id_comm}})'  ><span><i class="fa fa-download" aria-hidden="true"></i> {{ Lang_translate('_DOWNLOAD', 'standard') }}</span></a>
+                                              {% endif%}
+
+                                              {% if c.type_of=='scorm' %}
+                                                  <a id="comm_file_scorm js-scorm_lightbox" href='index.php?r=communication/play_w&id_comm={{c.id_comm}}'><span><i class="fa fa-play-circle" aria-hidden="true"></i> {{ Lang_translate('_PLAY', 'standard') }}</span></a>
+                                              {% endif%}
+
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </li>
+
+                      {% endfor %}
+
+
+                  </ul>
+                  {% if block.data.show_button %}
+                      <a class="forma-button   d-button--cert text-center" title="" href="{{ block.link }}">
+                          <span class="forma-button__label">{{ Lang_translate('_COMMUNICATIONS', 'standard') }}</span>
+                      </a>
+                  {% endif %}
+
+              </div>
+
+          </div>
+
+
+      </div>
+
+
+
+
+      <!-- for scorm player -->
+      <link rel="stylesheet" type="text/css" href="{{ templatePath }}yui-skin/container.css" />
+      <script type="text/javascript" src=".././addons/yui/utilities/utilities.js"></script>
+      <script type="text/javascript" src=".././addons/yui/container/container-min.js"></script>
+      <script type="text/javascript" src=".././addons/yui/selector/selector-min.js"></script>
+      <!-- -->
+
+      <script language='javascript'>
+
+
+          $(document).ready(function() {
+              $('[id^=detail-]').hide();
+              $('.toggle').click(function() {
+                  $input = $( this );
+                  $target = $('#'+$input.attr('data-toggle'));
+                  $target.slideToggle();
+              });
+          });
+
+          function mark_read(id_comm){
+
+              var posting = $.get(
+                  'ajax.adm_server.php',
+                  {
+                      r: 'lms/communication/get_info_communication',
+                      id_comm: id_comm
+                  }
+              );
+
+
+              posting.done(function (responseText) {
+
+                  ret = JSON.parse(responseText)
+                  const event = new Date(Date.now());
+                  now = String(event.toLocaleDateString(undefined) +'<br>'+ event.getHours() +':'+ event.getMinutes() +':'+ event.getSeconds());
+                  if(ret.type_of=="none"){
+                      $('#' + ret.id_comm + '_note').html(now);
+                      $('#' + ret.id_comm + '_none').removeClass("ico-wt-sprite subs_unread");
+                      $('#' + ret.id_comm + '_none').addClass("ico-wt-sprite subs_read");
+                      $('#' + ret.id_comm + '_none').hide();
+                  }
+                  if(ret.type_of=="file"){
+                      $("#" + ret.id_comm + "_comm_file_download").attr("href", "index.php?r=communication/play&id_comm=" + ret.id_comm);
+                      document.location.href="index.php?r=communication/play&id_comm=" + ret.id_comm;
+                  }
+              })
+
+          }
+
+
+      </script>
+
+
+
+
+  {% endblock %}

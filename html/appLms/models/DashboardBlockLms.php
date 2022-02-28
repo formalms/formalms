@@ -82,7 +82,7 @@ abstract class DashboardBlockLms extends Model
         $this->parseBaseConfig($jsonConfig);
         $this->parseConfig($jsonConfig);
 
-        $this->viewPath = _base_ . '/' . _folder_lms_ . '/views/dashboard/' . strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
+        $this->viewPath = _base_ .'/'. _folder_templates_ . '/' . getTemplate() . '/layout/appLms/dashboard/' . strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
         $this->viewFile = strtolower(str_replace('DashboardBlock', '', str_replace('Lms', '', get_class($this))));
     }
 

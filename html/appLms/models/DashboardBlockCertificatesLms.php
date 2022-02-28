@@ -36,12 +36,7 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     public function getAvailableTypesForBlock()
     {
-        return [
-            DashboardBlockLms::TYPE_1COL,
-            DashboardBlockLms::TYPE_2COL,
-            DashboardBlockLms::TYPE_3COL,
-            DashboardBlockLms::TYPE_4COL,
-        ];
+        return self::ALLOWED_TYPES;
     }
 
     public function getForm()
