@@ -31,14 +31,14 @@ function getApiMediaUrl(slug, params) {
 			searching: false,
 			paging: false,
 			columns: [  // definisco le colonne
-					{ data: 'fname', title: '{{ Lang_translate("_FILENAME", "standard") }}', sortable: true, width: 'auto' ,
+					{ data: 'fname', title: '{{ Lang_translate("_FILENAME", "standard") }}', sortable: true, width: '40%' ,
 						render: function(data, type, row, meta) {
 							return '<a href="' + row.url + '" target="_blank"><span style="width: 150px !important; display: inline-block; float: left; overflow-wrap: break-word;">'+ data +'</span></a>';
 						}
 					},
-					{ data: 'size', title: '{{ Lang_translate("_FILESIZE", "standard") }}', sortable: true, width: 'auto' },
-					{ data: 'type', title: '{{ Lang_translate("_FILEMIME", "standard") }}', sortable: true, width: 'auto' },
-					{ data: 'preview', title: '{{ Lang_translate("_PREVIEW", "standard") }}', sortable: false, width: '20%',
+					{ data: 'size', title: '{{ Lang_translate("_FILESIZE", "standard") }}', sortable: true, width: '15%' },
+					{ data: 'type', title: '{{ Lang_translate("_FILEMIME", "standard") }}', sortable: true, width: '15%' },
+					{ data: 'preview', title: '{{ Lang_translate("_PREVIEW", "standard") }}', sortable: false, width: '14%',
 						render: function(data, type, row, meta) {
 							var media = null;
 
@@ -55,7 +55,7 @@ function getApiMediaUrl(slug, params) {
 							return '<div class="text-center"><a href="' + row.url + '" target="_blank">'+ media +'</a></div>';
 						}
 					},
-					{ data: 'select', title: '&nbsp;', sortable: false, width: '10%', 
+					{ data: 'select', title: '&nbsp;', sortable: false, width: '8%',
 						render: function(data, type, row, meta) {
 							return '\
 								<div class="text-center">\
@@ -65,7 +65,7 @@ function getApiMediaUrl(slug, params) {
 								</div>';
 						}
 					},
-					{ data: 'delete', title: '&nbsp;', sortable: false, width: '10%', 
+					{ data: 'delete', title: '&nbsp;', sortable: false, width: '8%',
 						render: function(data, type, row, meta) {
 							return '\
 								<div class="text-center">\
