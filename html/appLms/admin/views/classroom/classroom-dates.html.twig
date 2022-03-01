@@ -191,6 +191,7 @@
         <div class="add-classroom-dates" id="js-add-classroom-dates" style="display: none">
             <div class="row mb-4">
                 <input type="hidden" id="form-day_id">
+                <input type="hidden" id="form-day_value">
                 <div class="col form-data-default">
                     <div class="form-outline">
                         <label for="form-day_date">Date</label>
@@ -356,6 +357,7 @@
         
         var id = document.getElementById('form-day_id').value;
         var date = document.getElementById('form-day_date').value;
+        var editDate = document.getElementById('form-day_value').value;
         var dateFormatted = dateToString(new Date(date));
         var dateBegin = document.getElementById('form-day_date_begin').value;
         var dateEnd = document.getElementById('form-day_date_end').value;
@@ -368,9 +370,11 @@
             return;
         }
 
-        if (insertedDays.includes(dateFormatted)) {
-                showError('{{ Lang_translate('_EXISTING_DATA','classroom') }}');
-                return;
+        if (editDate === '' || editDate != '' && editDate != dateFormatted ) {
+            if (insertedDays.includes(dateFormatted)) {
+                    showError('{{ Lang_translate('_EXISTING_DATA','classroom') }}');
+                    return;
+            }
         }
 
 
@@ -380,6 +384,7 @@
         clearForm();
         loadInsertedDays();
         enableSaveButton();
+       
     }
 
     function updateHours(e) {
@@ -396,8 +401,7 @@
             var date = stringToDate(row.dataset.date, 'DD-MM-YYYY');
             row.dataset.date = dateToString(date, 'YYYY-MM-DD')
             var dateFormatted = dateToString(date, 'DD-MM-YYYY');
-            console.log(row.dataset.date);
-            console.log(dateFormatted);
+        
             insertOrUpdateRow(row.dataset.day_id, row.dataset.date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
         }
 
@@ -494,6 +498,7 @@
     function clearForm() {
         document.getElementById('form-day_id').value = '';
         document.getElementById('form-day_date').value = '';
+        document.getElementById('form-day_value').value = '';
         document.getElementById('form-day_date_begin').value = '00:00';
         document.getElementById('form-day_date_end').value = '00:00';
         document.getElementById('form-day_pause_begin').value = '00:00';
@@ -512,6 +517,7 @@
             postData.push(JSON.parse(JSON.stringify(row.dataset)));
         }
 
+ 
         sendCalendar = document.getElementById('sendCalendar').checked ? '1' : '0';
 
         $.ajax({
@@ -548,7 +554,7 @@
                         }
 
 
-                        insertOrUpdateRow(day.id, day.date, day.date, day.date_begin, day.date_end, day.pause_begin, day.pause_end, day.classroom)
+                        insertOrUpdateRow(day.id, day.format_date, day.date, day.date_begin, day.date_end, day.pause_begin, day.pause_end, day.classroom)
                     }
                 }
                 document.getElementById('sendCalendar').checked = false;
@@ -576,12 +582,15 @@
         var rowData = getRowDatasetFromEvent(e);
 
         document.getElementById('form-day_id').value = rowData.day_id;
+     
 
         /** convert date string to date object (date string format 01-07-2021) */
         var date = stringToDate(rowData.date, 'DD-MM-YYYY');
         date.setHours(date.getHours() + 2);
 
         document.getElementById('form-day_date').valueAsDate = date;
+
+        document.getElementById('form-day_value').value = dateToString(new Date(date));;
 
         /** split date_begin string to use only time */
         date = rowData.date_begin.split(" ");

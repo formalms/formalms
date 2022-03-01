@@ -470,7 +470,7 @@ class DateManager
 
     public function getDateDay($id_date)
     {
-        $query = 'SELECT *, DATE_FORMAT(date_begin, "%d-%m-%Y") as date'
+        $query = 'SELECT *, DATE_FORMAT(date_begin, "%d-%m-%Y") as date, DATE_FORMAT(date_begin, "%Y-%m-%d") as format_date'
             . ' FROM %lms_course_date_day'
             . ' WHERE id_date = ' . $id_date
             . ' AND deleted = 0'
