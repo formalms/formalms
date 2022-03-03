@@ -55,9 +55,12 @@ class Get
      */
     public static function req($var_name, $typeof = DOTY_MIXED, $default_value = '', $only_from = false)
     {
+
+     
         $value = $default_value;
         if (empty($only_from)) {
             if (isset($_POST[$var_name])) {
+               
                 $value = $_POST[$var_name];
             } elseif (isset($_GET[$var_name])) {
                 $value = $_GET[$var_name];
@@ -65,6 +68,7 @@ class Get
                 $value = $_REQUEST[$var_name];
             }
         } elseif ($only_from === 'post' && isset($_POST[$var_name])) {
+        
             $value = $_POST[$var_name];
         } elseif ($only_from === 'get' && isset($_GET[$var_name])) {
             $value = $_GET[$var_name];
@@ -111,7 +115,7 @@ class Get
                     $value = $GLOBALS['obj']['json_service']->decode($value);
                 ;
                 break;
-            case DOTY_JSONDECODE:
+            case DOTY_JSONENCODE:
                     if (!isset($GLOBALS['obj']['json_service'])) {
                         require_once _base_ . '/lib/lib.json.php';
                         $GLOBALS['obj']['json_service'] = new Services_JSON();
@@ -130,6 +134,7 @@ class Get
                 ;
                 break;
             case DOTY_MIXED:
+           
             default:
         }
 
