@@ -83,7 +83,7 @@
                                               {% endif%}
 
                                               {% if c.type_of=='scorm' %}
-                                                  <a id="comm_file_scorm js-scorm_lightbox" href='index.php?r=communication/play_w&id_comm={{c.id_comm}}'><span><i class="fa fa-play-circle" aria-hidden="true"></i> {{ Lang_translate('_PLAY', 'standard') }}</span></a>
+                                                  <a id="comm_file_scorm" class="js-scorm_lightbox" href='index.php?r=communication/play_w&id_comm={{c.id_comm}}' title="{{c.description | raw}}"><span><i class="fa fa-play-circle" aria-hidden="true"></i> {{ Lang_translate('_PLAY', 'standard') }}</span></a>
                                               {% endif%}
 
                                           </div>
