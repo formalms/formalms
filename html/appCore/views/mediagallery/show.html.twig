@@ -33,7 +33,7 @@ function getApiMediaUrl(slug, params) {
 			columns: [  // definisco le colonne
 					{ data: 'fname', title: '{{ Lang_translate("_FILENAME", "standard") }}', sortable: true, width: '40%' ,
 						render: function(data, type, row, meta) {
-							return '<a href="' + row.url + '" target="_blank">'+ data +'</a>';
+							return '<a href="' + row.url + '" target="_blank"><span style="width: 150px !important; display: inline-block; float: left; overflow-wrap: break-word;">'+ data +'</span></a>';
 						}
 					},
 					{ data: 'size', title: '{{ Lang_translate("_FILESIZE", "standard") }}', sortable: true, width: '15%' },
