@@ -2224,43 +2224,58 @@ class Course_API extends API
     {
         $response = [];
 
+        $idUsers = $params['id_user'] ? $params['id_user'] : $params['id_users'];
+
         // recupera TRACK della risposta del test
         $db = DbConn::getInstance();
-        $qtxt = 'SELECT idTrack, idTest, date_end_attempt FROM learning_testtrack where idReference=' . $params['id_org'] . ' and idUser in (' . $params['id_users'] . ')';
-        $q = $db->query($qtxt);
-        $course_info = $db->fetch_assoc($q);
+        $qtxt = 'SELECT idTrack, idTest, date_end_attempt, idUser FROM learning_testtrack where idReference=' . $params['id_org'] . ' and idUser in (' . $idUsers . ')';
+        $courseInfoResult = $db->query($qtxt);
 
-        $id_track = $course_info['idTrack'];
-        $id_test = $course_info['idTest'];
-        $date_end_attempt = $course_info['date_end_attempt'];
+        foreach ($courseInfoResult as $courseInfo ){
 
-        $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
+            $idUser = $courseInfo['idUser'];
+            $idTrack = $courseInfo['idTrack'];
+            $idTest = $courseInfo['idTest'];
+            $date_end_attempt = $courseInfo['date_end_attempt'];
+
+            $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
                     from learning_testtrack_answer lta, learning_testquest ltq
-                    where lta.idTrack=' . $id_track . ' 
+                    where lta.idTrack=' . $idTrack . ' 
                     and lta.idQuest=ltq.idQuest and lta.user_answer=1';
 
-        $response['success'] = true;
-        $response['id_users'] = $params['id_users'];
-        $response['id_org'] = $params['id_org'];
-        $response['date_end_attempt'] = $date_end_attempt;
+            $response['success'] = true;
+            $response['id_users'] = $idUsers;
+            $response['id_org'] = $params['id_org'];
+            $response[$idUser]['date_end_attempt'] = $date_end_attempt;
 
-        $result = $db->query($q_test);
-        foreach ($result as $row) {
-            $vett_quest_answer = [];
-            $vett_quest_answer = $this->getAnswerQuest($row['idQuest'], $row['idAnswer']);
+            $result = $db->query($q_test);
 
-            $res_esito = 'wrong';
-            if ($row['score_assigned'] > 0) {
-                $res_esito = 'correct';
+            foreach ($result as $row) {
+
+                $resEsito = 'wrong';
+                if ($row['score_assigned'] > 0) {
+                    $resEsito = 'correct';
+                }
+
+                $response[$idUser]['quest_list'][$row['idQuest']] = [
+                    'id_quest' => $row['idQuest'],
+                    'title_quest' => $row['title_quest'],
+                    'score_assigned' => $row['score_assigned'],
+                    'answer' => $this->getAnswerQuest($row['idQuest'], $row['idAnswer']),
+                    'response' => $this->getTrackAnswer($row['idTrack'], $row['idQuest']),
+                    'esito' => $resEsito,
+                ];
             }
-            $response['quest_list'][$row['idQuest']] = [
-                'id_quest' => $row['idQuest'],
-                'title_quest' => $row['title_quest'],
-                'score_assigned' => $row['score_assigned'],
-                'answer' => $this->getAnswerQuest($row['idQuest'], $row['idAnswer']),
-                'response' => $this->getTrackAnswer($row['idTrack'], $row['idQuest']),
-                'esito' => $res_esito,
-            ];
+        }
+
+        if (count(explode(',',$idUsers)) === 1){
+
+            $userAttempt = $response[$idUsers];
+            $userAttempt['success'] = $response['success'];
+            $userAttempt['id_user'] = $response['id_users'];
+            $userAttempt['id_org'] = $response['id_org'];
+
+            return $userAttempt;
         }
 
         return $response;
