@@ -1,13 +1,13 @@
 <div id="forma-uploader"></div>
 <script>
-    Axios.defaults.headers.post['X-Signature'] = window.frontend.config.signature;
-    Axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
+    window.frontend.helpers.Axios.defaults.headers.post['X-Signature'] = window.frontend.config.signature;
+    window.frontend.helpers.Axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     document.getElementById('forma-uploader').FormaFileUploader({
         OnSubmitClick: function (obj) {
             this.Errors = {};
             obj.formData.append('back_url', '{{ back_url }}')
             this.Uploading = true;
-            Axios({
+            window.frontend.helpers.Axios({
                 method: 'post',
                 url: `${window.frontend.config.url.appLms}/index.php?modname=item&op=insitem`,
                 data: obj.formData
