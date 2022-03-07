@@ -5,13 +5,59 @@
   {# {{ dump(block) }} #}
 
     {% if (block.type == '4-col') %}
-        {% set class =  'd-col--12--desktop' %}
-    {% elseif (block.type == '3-col') %}
-        {% set class =  'd-col--9--desktop' %}
-    {% elseif (block.type == '2-col') %}
-        {% set class =  'd-col--6--desktop' %}
-    {% elseif (block.type == '1-col') %}
-        {% set class =  'd-col--3--desktop' %}
-    {% endif %}
+          {% set class =  'd-col--12--desktop' %}
+          {% set subclass =  'd-col--4--desktop' %}
+      {% elseif (block.type == '3-col') %}
+          {% set class =  'd-col--9--desktop' %}
+           {% set subclass =  'd-col--3--desktop' %}
+      {% elseif (block.type == '2-col') %}
+          {% set class =  'd-col--6--desktop' %}
+           {% set subclass =  'd-col--2--desktop' %}
+      {% elseif (block.type == '1-col') %}
+          {% set class =  'd-col--3--desktop' %}
+           {% set subclass =  'd-col--1--desktop' %}
+      {% endif %}
+
+       <div class="d-col d-col--12 {{ class }}">
+          <div class="d-news d-widget">
+            <h3 class="d-title">
+                  {% if block.data.title is empty %}
+                      {{ Lang_translate('_DASHBOARDBLOCKNEWSLMS','dashboard') }}
+                  {% else %}
+                      {{ block.data.title }}
+                  {% endif %}
+              </h3>
+              {% if block.news is empty %}
+                        {{ Lang_translate('_NO_NEWS', 'standard') }}
+            {% else %}
+              
+                 
+                    {% for n in block.news %}
+                        <div class="d-news__item {{ subclass }}" style="position: relative">
+                          
+                            <div class="d-news__date">
+                                {{ n.publish_date|date("d")  }}/{{ n.publish_date|date("m")  }}/{{ n.publish_date|date("Y") }}
+                            </div>
+                            <div class="d-news__title">
+                                {{ n.title | raw}}   
+                             
+                             </div>
+                            {% if n.shortDescriptions != '' %}
+                             <div class="d-news__desc">
+                                 {{n.shortDescriptions | raw}}
+                             </div>
+                            {% endif %}
+                        
+                        </div>
+              
+                    {% endfor %}
+                {% if block.data.show_button %}
+                    <a class="forma-button   d-button--cert text-center" title="" href="{{ block.link }}">
+                        <span class="forma-button__label">{{ Lang_translate('_NEWS', 'standard') }}</span>
+                    </a>
+                {% endif %}
+            {% endif %}
+          </div>
+        </div>
 
 {% endblock %}

@@ -1,0 +1,30 @@
+.d-communication__item {
+    height: 84px;
+    margin-top: 38px;
+    float: left;
+  }
+
+.d-communication__date {
+    font-weight: 700;
+    font-size: 10px;
+    line-height: 14px;
+    color: var(--color-0-870);
+  }
+
+.d-communication__title {
+    height: 17px;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--color-1-550);
+    overflow: hidden;
+  }
+
+.d-communication__desc {
+    height: 51px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--color-0-870);
+    overflow: hidden;
+  }
