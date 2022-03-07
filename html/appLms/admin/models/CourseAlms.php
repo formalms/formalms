@@ -1600,7 +1600,7 @@ class CourseAlms extends Model
 
         $query = 'SELECT idCourse, COUNT(*) as count FROM %lms_courseuser '
             . ' WHERE idCourse IN (' . implode(',', $courses) . ') '
-            . ' AND LEVEL = 3 AND waiting <= 0 and status = 0 ';
+            . ' AND LEVEL = 3 AND waiting <= 0 and status >= 0 ';
 
         if (count($usersFilterIds)) {
             $query .= 'AND idUser in (' . implode(',', $usersFilterIds) . ')';
@@ -1617,7 +1617,7 @@ class CourseAlms extends Model
         $class_real_count = 'SELECT cu.idCourse as idCourse,COUNT(*) as count FROM %lms_courseuser AS cu 
                 JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
             . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
-            . ' WHERE cu.idCourse IN (' . implode(',', $courses) . ') AND cu.level = 3 and cu.status >= 1 and cu.status < 4 ';
+            . ' WHERE cu.idCourse IN (' . implode(',', $courses) . ') AND cu.level = 3 and cu.status >= 0 and cu.status < 4 ';
 
         if (count($usersFilterIds)) {
             $class_real_count .= 'AND cu.idUser in (' . implode(',', $usersFilterIds) . ')';
