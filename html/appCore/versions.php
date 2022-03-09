@@ -11,5 +11,5 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('_file_version_', '3.0.2');
+define('_file_version_', '3.2');
 define('_template_min_version_', '3.0.1');

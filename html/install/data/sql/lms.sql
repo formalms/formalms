@@ -3467,13 +3467,15 @@ CREATE TABLE IF NOT EXISTS `dashboard_blocks`
 
 
 INSERT IGNORE INTO `dashboard_blocks` (`id`, `block_class`, `created_at`)
-VALUES (7, 'DashboardBlockCalendarLms', CURRENT_TIMESTAMP),
-       (3, 'DashboardBlockCertificatesLms',CURRENT_TIMESTAMP),
-       (6, 'DashboardBlockAnnouncementsLms',CURRENT_TIMESTAMP),
-       (5, 'DashboardBlockCoursesLms',CURRENT_TIMESTAMP),
-       (4, 'DashboardBlockMessagesLms',CURRENT_TIMESTAMP),
-       (9, 'DashboardBlockWelcomeLms',CURRENT_TIMESTAMP),
-       (8, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP);
+VALUES (1, 'DashboardBlockCalendarLms', CURRENT_TIMESTAMP),
+       (2, 'DashboardBlockCertificatesLms',CURRENT_TIMESTAMP),
+       (3, 'DashboardBlockAnnouncementsLms',CURRENT_TIMESTAMP),
+       (4, 'DashboardBlockCoursesLms',CURRENT_TIMESTAMP),
+       (5, 'DashboardBlockMessagesLms',CURRENT_TIMESTAMP),
+       (6, 'DashboardBlockWelcomeLms',CURRENT_TIMESTAMP),
+       (7, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP),
+       (8, 'DashboardBlockCommunicationLms',CURRENT_TIMESTAMP),
+       (9, 'DashboardBlockNewsLms',CURRENT_TIMESTAMP);
 
 INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
 VALUES ('tb_dashboard', '1', 'a:0:{}', '0');
@@ -3513,7 +3515,6 @@ INSERT IGNORE INTO `core_menu_under`(`idUnder`, `idMenu`, `module_name`, `defaul
                                      `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`)
 VALUES (@max, @max, 'dashboardsettings', '_DASHBOARD_CONFIGURATION', '', 'view', 'framework', 1, '', '',
         'adm/dashboardsettings/show');
-
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
