@@ -14,11 +14,11 @@
 	<!-- reset and font stylesheet -->
 	{{ Layout_getResetter() }}
 	<!-- common stylesheet -->
-	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/base.css" />
-	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms-home.css" />
+	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/base.css?v={{ Template_getVersion() }}" />
+	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms-home.css?v={{ Template_getVersion() }}" />
 
     {% if custom_css_path is defined %}
-		<link rel="stylesheet" type="text/css" href="{{ custom_css_path }}" />
+		<link rel="stylesheet" type="text/css" href="{{ custom_css_path }}?v={{ Template_getVersion() }}" />
     {% endif %}
 	{{ Layout_getRtl() }}
 	<!-- specific stylesheet -->
@@ -60,12 +60,12 @@
     {% endblock %}
 
 	<!-- Restyling -->
-	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.min.css">
+	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.min.css?v={{ Template_getVersion() }}">
 	<!--
     To use or edit the not minified css uncomment this portion of code
     <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.css">
     -->
-	<script type="text/js" src="{{ Layout_getPath() }}static/main.js"></script>
+	<script type="text/javascript" src="{{ Layout_getPath() }}static/main.js?v={{ Template_getVersion() }}"></script>
 </head>
 <body class="homepage js-router--homepage">
 {% if under_maintenence == false %}

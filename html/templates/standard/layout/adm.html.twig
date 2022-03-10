@@ -1,9 +1,9 @@
 {% extends "base.html.twig" %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/adm.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms-to-review.css"/>
-    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/reset-fonts-grids.css" />
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/adm.css?v={{ Template_getVersion() }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms-to-review.css?v={{ Template_getVersion() }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/reset-fonts-grids.css?v={{ Template_getVersion() }}" />
 
 {% endblock %}
 

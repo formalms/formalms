@@ -190,6 +190,12 @@ function checkTemplateVersion($template_name)
     return false;
 }
 
+function getTemplateVersion($template_name)
+{
+    require_once Forma::inc(_adm_ . '/versions.php');
+    return readTemplateManifest($template_name, 'forma_version');
+}
+
 /**
  * Retrive a list of template.
  *

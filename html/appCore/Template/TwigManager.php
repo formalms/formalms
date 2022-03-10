@@ -17,6 +17,7 @@ use appCore\Template\Extensions\FormExtension;
 use appCore\Template\Extensions\GetExtension;
 use appCore\Template\Extensions\LangExtension;
 use appCore\Template\Extensions\LayoutExtension;
+use appCore\Template\Extensions\TemplateExtension;
 use appCore\Template\Extensions\UiFeedbackExtension;
 use appCore\Template\Extensions\UtilExtension;
 use appCore\Template\Extensions\YuiExtension;
@@ -47,6 +48,7 @@ class TwigManager
         $this->twig->addExtension(new LangExtension());
         $this->twig->addExtension(new LayoutExtension());
         $this->twig->addExtension(new UiFeedbackExtension());
+        $this->twig->addExtension(new TemplateExtension());
         $this->twig->addExtension(new UtilExtension());
         $this->twig->addExtension(new YuiExtension());
 
