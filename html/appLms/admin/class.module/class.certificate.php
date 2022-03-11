@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author	 Claudio Demarinis <claudiodema [at] docebo [dot] com>
  */
-require_once dirname(__FILE__) . '/class.definition.php';
+require_once Forma::inc(_lms_ . '/admin/class.module/class.definition.php');
 
 class Module_Certificate extends LmsAdminModule
 {

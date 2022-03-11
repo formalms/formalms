@@ -1,7 +1,7 @@
 {% extends "base/base.html.twig" %}
 
 {% block content %}
-    {#courses#}
+    {# courses #}
 
     {% if (block.type == '4-col') %}
         {% set class =  ' d-col--12--desktop' %}
@@ -42,12 +42,12 @@
                         <div class="d-courses__date-wrapper status--{{ status_class }}">
                             {% if course.startDateString != '' %}
                                 <div class="d-courses__date d-courses__date--arrow d-courses__date--start">
-                                {{ course.startDateString }}
+                                    {{ course.startDateString }} {% if course.endDateString != '' and not course.startDateString == course.endDateString %} - {{ course.endDateString }} {% endif %}
                                 </div>
-                                {% if course.endDateString != '' %}
-                                    <div class="d-courses__date d-courses__date--arrow d-courses__date--end">
-                                    {{ course.endDateString }}
-                                  </div>
+                                {% if course.hours != '' %}
+                                    <div class="d-courses__date d-courses__date--arrow d-courses__date--hours">
+                                        {{ course.hours }}
+                                    </div>
                                 {% endif %}
                             {% endif %}
                         </div>
@@ -61,16 +61,18 @@
                 </a>
             {% endfor %}
 
-            <div class="d-courses__cta-wrapper">
-                <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title=""
-                   href="index.php?r=elearning/show&amp;sop=unregistercourse">
-                    <span class="forma-button__label">{{ Lang_translate('_ALL_COURSES', 'standard') }}</span>
-                </a>
-            </div>
+            {% if block.data.show_button %}
+                <div class="d-courses__cta-wrapper">
+                    <a class="forma-button forma-button--orange-hover forma-button--full d-button--cert" title=""
+                       href="index.php?r=elearning/show&amp;sop=unregistercourse">
+                        <span class="forma-button__label">{{ Lang_translate('_ALL_COURSES', 'standard') }}</span>
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 
-    {#<pre>
+    {# <pre>
      {{ dump(block.courses) }}
-   </pre>#}
+   </pre> #}
 {% endblock %}

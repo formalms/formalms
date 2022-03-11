@@ -222,10 +222,10 @@ class Report_User extends Report
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.directory.php';
-        require_once _base_ . '/lib/lib.userselector.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once Forma::inc(_adm_ . '/lib/lib.directory.php');
+        require_once Forma::inc(_base_ . '/lib/lib.userselector.php');
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
@@ -261,7 +261,7 @@ class Report_User extends Report
             if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
                 $acl_man = new DoceboACLManager();
 
-                require_once _base_ . '/lib/lib.preference.php';
+                require_once Forma::inc(_base_ . '/lib/lib.preference.php');
                 $adminManager = new AdminPreference();
                 $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
                 $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
@@ -306,8 +306,8 @@ class Report_User extends Report
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
@@ -332,8 +332,7 @@ class Report_User extends Report
             //...
         }
 
-        // user custom fields
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once Forma::inc(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();
         $fields = $fman->getFlatAllFields();
         $custom = [];
@@ -550,7 +549,7 @@ class Report_User extends Report
 
         //example selection options
 
-        require_once _base_ . '/lib/lib.json.php';
+        require_once Forma::inc(_base_ . '/lib/lib.json.php');
 
         $seldata = $this->courses_filter_definition;
 
@@ -843,7 +842,7 @@ class Report_User extends Report
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $cmodel = new CompetencesAdm();
         $lang = &DoceboLanguage::createInstance('report', 'framework');
@@ -998,7 +997,7 @@ class Report_User extends Report
                 break;
 
             case 'send_mail':
-                    require_once _base_ . '/lib/lib.form.php';
+                require_once Forma::inc(_base_ . '/lib/lib.form.php');
                     $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
@@ -1034,7 +1033,7 @@ class Report_User extends Report
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $output = '';
         $jump_url = '';
@@ -1748,14 +1747,6 @@ class Report_User extends Report
         $i = 0;
         $count_rows = 0;
 
-        // Luca
-        cout('
-        
-           
-
-
-                ', 'scripts');
-
         $buffer->openBody();
         $exclusive = ($filter_columns['filter_exclusive'] == 1 ? true : false); //1 if exclusive, 0 if inclusive
         while ($sql_row = sql_fetch_array($re_course_user)) {
@@ -1787,26 +1778,22 @@ class Report_User extends Report
                                 if (isset($session_list[$id_user . '_' . $id_course])) {
                                     $temp = $this->_check($session_list[$id_user . '_' . $id_course], $value['value'], $value['sign'], _FILTER_INTEGER);
                                 }
-
                             break;
 
                         case _COURSES_FILTER_SCORE_INIT:
                                 if (isset($score_start[$id_course][$id_user])) {
                                     $temp = $this->_check($score_start[$id_course][$id_user]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
                                 }
-
                             break;
 
                         case _COURSES_FILTER_SCORE_END:
                                 if (isset($score_final[$id_course][$id_user])) {
                                     $temp = $this->_check($score_final[$id_course][$id_user]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
                                 }
-
                             break;
 
                         case _COURSES_FILTER_INSCRIPTION_DATE:
                                 $temp = $this->_check($date_inscr, $value['value'], $value['sign'], _FILTER_DATE);
-
                             break;
 
                         case _COURSES_FILTER_END_DATE:
@@ -1816,21 +1803,18 @@ class Report_User extends Report
 
                         case _COURSES_FILTER_FIRSTACCESS_DATE:
                                 $temp = $this->_check($date_first_access, $value['value'], $value['sign'], _FILTER_DATE);
-
                             break;
 
                         case _COURSES_FILTER_LASTACCESS_DATE:
                                 if (isset($lastaccess_list[$id_user . '_' . $id_course])) {
                                     $temp = $this->_check($lastaccess_list[$id_user . '_' . $id_course], $value['value'], $value['sign'], _FILTER_DATE);
                                 }
-
                             break;
 
                         case _COURSES_FILTER_SCORE_COURSE:
                                 if (isset($score_course[$id_user][$id_course])) {
                                     $temp = $this->_check($score_course[$id_user][$id_course]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
                                 }
-
                             break;
                     }
 
@@ -2500,7 +2484,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         //back to columns category selection
         if (isset($_POST['undo_filter'])) {
@@ -3151,7 +3135,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
@@ -4451,7 +4435,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 

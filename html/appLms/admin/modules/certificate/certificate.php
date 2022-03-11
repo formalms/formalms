@@ -27,6 +27,7 @@ function certificate()
     require_once _base_ . '/lib/lib.table.php';
 
     $mod_perm = checkPerm('mod', true);
+    $currentPlatform = empty($_SESSION['current_action_platform']) ? 'framework' : $_SESSION['current_action_platform'];
     // create a language istance for module admin_certificate
     $lang = &DoceboLanguage::createInstance('certificate', 'lms');
     $out = &$GLOBALS['page'];
@@ -97,22 +98,28 @@ function certificate()
             Util::cut($descr),
         ];
         if ($mod_perm) {
-            $cont[] = '<a href="index.php?modname=certificate&amp;op=elemcertificate&amp;id_certificate=' . $id_certificate . '" title="' . Lang::t('_TEMPLATE', 'certificate') . '">'
+            $cont[] = '<a href="index.php?modname=certificate&amp;op=elemcertificate&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform . '" title="' . Lang::t('_TEMPLATE', 'certificate') . '">'
                 . Lang::t('_TEMPLATE', 'certificate') . '</a>';
         }
 
-        $cont[] = Get::sprite_link('subs_view', 'index.php?modname=certificate&amp;op=preview&amp;id_certificate=' . $id_certificate, Lang::t('_PREVIEW', 'certificate'));
+        $cont[] = Get::sprite_link('subs_view', 'index.php?modname=certificate&amp;op=preview&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform, Lang::t('_PREVIEW', 'certificate'));
 
         if ($mod_perm) {
-            $cont[] = Get::sprite_link('subs_print',
-                'index.php?modname=certificate&amp;op=report_certificate&amp;id_certificate=' . $id_certificate,
-                Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate'));
-            $cont[] = Get::sprite_link('subs_mod',
-                'index.php?modname=certificate&amp;op=modcertificate&amp;id_certificate=' . $id_certificate,
-                Lang::t('_MOD', 'certificate'));
-            $cont[] = Get::sprite_link('subs_del',
-                'index.php?modname=certificate&amp;op=delcertificate&amp;id_certificate=' . $id_certificate,
-                Lang::t('_DEL', 'certificate'));
+            $cont[] = Get::sprite_link(
+                'subs_print',
+                'index.php?modname=certificate&amp;op=report_certificate&of_platform=lms&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform,
+                Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate')
+            );
+            $cont[] = Get::sprite_link(
+                'subs_mod',
+                'index.php?modname=certificate&amp;op=modcertificate&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform,
+                Lang::t('_MOD', 'certificate')
+            );
+            $cont[] = Get::sprite_link(
+                'subs_del',
+                'index.php?modname=certificate&amp;op=delcertificate&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform,
+                Lang::t('_DEL', 'certificate')
+            );
         }
         $tb->addBody($cont);
     }
@@ -121,15 +128,14 @@ function certificate()
     setupHrefDialogBox('a[href*=delcertificate]');
 
     if ($mod_perm) {
-        $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="index.php?modname=certificate&amp;op=addcertificate" title="' . $lang->def('_ADD') . '">'
+        $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="index.php?modname=certificate&amp;op=addcertificate&of_platform=' . $currentPlatform . '" title="' . $lang->def('_ADD') . '">'
             . '<span>' . $lang->def('_ADD') . '</span></a>');
     }
 
     $out->add(getTitleArea($lang->def('_TITLE_CERTIFICATE'), 'certificate')
         . '<div class="std_block">'
-        . $form->openForm('certificate_filter', 'index.php?modname=certificate&amp;op=certificate')
-        . $form->getHidden('of_platform', 'of_platform', 'lms')
-        . '<div class="quick_search_form">
+        . $form->openForm('certificate_filter', 'index.php?modname=certificate&amp;op=certificate&of_platform=' . $currentPlatform)
+        . '<div class="quick_search_form" style="float: none;">
             <div>
                 <div class="simple_search_box">'
         . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', Get::req('filter_text', DOTY_MIXED, ''), '', 255, '')
@@ -656,7 +662,7 @@ function del_report_certificate()
 function send_zip_certificates()
 {
     require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
-    require_once _base_ . '/lib/lib.download.php';
+    require_once Forma::inc(_base_ . '/lib/lib.download.php');
 
     $files = [];
     $zipName = date('YmdHis') . '_certs.zip';
@@ -696,7 +702,7 @@ function send_zip_certificates()
 function send_certificate()
 {
     require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
-    require_once _base_ . '/lib/lib.download.php';
+    require_once Forma::inc(_base_ . '/lib/lib.download.php');
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
@@ -722,7 +728,7 @@ function send_certificate()
 function print_certificate()
 {
     require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
-    require_once _base_ . '/lib/lib.download.php';
+    require_once Forma::inc(_base_ . '/lib/lib.download.php');
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
@@ -845,5 +851,7 @@ function certificateDispatch($op)
         case 'preview':
             preview();
             break;
+        default:
+            
     }
 }

@@ -19,6 +19,7 @@ defined('IN_FORMA') or die('Direct access is forbidden.');
  */
 class DashboardBlockCoursesLms extends DashboardBlockLms
 {
+    const COURSE_TYPE_ALL = 'all';
     const COURSE_TYPE_ELEARNING = 'elearning';
     const COURSE_TYPE_CLASSROOM = 'classroom';
     const SORT_ORDER = [1 => ' cu.date_inscr DESC', 2 => 'cu.date_inscr ASC', 3 => 'cu.idCourse DESC', 4 => 'cu.idCourse ASC'];
@@ -48,8 +49,13 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             $form,
             DashboardBlockForm::getFormItem($this, 'max_courses_number', DashboardBlockForm::FORM_TYPE_NUMBER, false),
             DashboardBlockForm::getFormItem($this, 'course_type', DashboardBlockForm::FORM_TYPE_SELECT, false,
-                ['elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'COURSE'),  // ORDER -> CLOSEST DATE END
-                    'classroom' => Lang::t('_CLASSROOM')]) // ORDER -> CLOSEST COURSE DAY
+                [
+                    'all' => Lang::t('_VIEW_ALL', 'STANDARD'),
+                    'elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'COURSE'),  // ORDER -> CLOSEST DATE END
+                    'classroom' => Lang::t('_CLASSROOM')
+                ]
+            ),
+            DashboardBlockForm::getFormItem($this, 'show_button', DashboardBlockForm::FORM_TYPE_CHECKBOX, false, [1 => Lang::t('_SHOW_BUTTON', 'dashboardsetting')]),
         );
 
         return $form;
@@ -91,69 +97,125 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
     private function getCourses()
     {
+        $courses = [];
 
+        $limit = $this->data['max_courses_number'];
         $conditions = ['ID_USER' => 'cu.iduser =' . (int)Docebo::user()->getId()];
         $conditions['COURSE_STATUS'] = '(c.status in  (1,2))'; // only available, confirmed
-        $conditions['COUSE_TYPE'] = "(c.course_type = '" . $this->data['course_type'] . "')";
         $conditions['USER_ENROLLMENT_STATUS'] = '(cu.status in (0,1))'; // only enrolled and in progress
+
+        $queries = [];
+        switch ($this->data['course_type']) {
+            case self::COURSE_TYPE_CLASSROOM:
+                $conditions['COUSE_TYPE'] = "(c.course_type = '" . self::COURSE_TYPE_CLASSROOM . "')";
+                $queries[] = $this->geClassroomQuery($conditions, $limit);
+                break;
+            case self::COURSE_TYPE_ELEARNING:
+                $conditions['COUSE_TYPE'] = "(c.course_type = '" . self::COURSE_TYPE_ELEARNING . "')";
+                $queries[] = $this->getElearningQuery($conditions, $limit);
+                break;
+            case self::COURSE_TYPE_ALL:
+            default:
+                $conditions['COUSE_TYPE'] = "(c.course_type = '" . self::COURSE_TYPE_ELEARNING . "')";
+                $queries[] = $this->getElearningQuery($conditions, $limit);
+
+                $conditions['COUSE_TYPE'] = "(c.course_type = '" . self::COURSE_TYPE_CLASSROOM . "')";
+                $queries[] = $this->geClassroomQuery($conditions, $limit);
+                break;
+        }
+
+        foreach ($queries as $query) {
+            $queryResult = $this->db->query($query);
+            foreach ($queryResult as $course) {
+                $courseData = $this->getDataFromCourse($course);
+                $courses[$course['course_id']] ??= $courseData; // getting just first date for classroom courses
+            }
+        }
+
+        usort($courses, static function ($a , $b){
+            switch ($a['type']){
+                case self::COURSE_TYPE_ELEARNING:
+                    switch ($b['type']){
+                        case self::COURSE_TYPE_ELEARNING:
+                            return $a['endDate'] > $b['endDate'];
+                        case self::COURSE_TYPE_CLASSROOM:
+                            return $a['endDate'] > $b['startDate'];
+                        default:
+                    }
+                    break;
+                case self::COURSE_TYPE_CLASSROOM:
+                    switch ($b['type']){
+                        case self::COURSE_TYPE_ELEARNING:
+                            return $a['startDate'] > $b['endDate'];
+                        case self::COURSE_TYPE_CLASSROOM:
+                            return $a['startDate'] > $b['startDate'];
+                        default:
+                    }
+                    break;
+                default:
+            }
+            return $a['startDate'] > $b['startDate'];
+        });
+
+        return array_slice($courses,0,$limit);
+    }
+
+    private function getElearningQuery($conditions, $limit = 0)
+    {
         $midnight = new DateTime('midnight');
         $midnight = date_format($midnight, 'Y-m-d H:i:s');
 
+        $conditions[] = "(c.date_end >= '$midnight')";
 
-        if ($this->data['course_type'] === 'elearning') {
-            $conditions[] = "(c.date_end >= '$midnight')";
-        } else {
-            $conditions[] = "(cdd.date_begin >= '$midnight')";
-            $conditions[] = '(cd.status = 0)';
-        }
+        $excludePathcourse = $this->excludePathCourse();
 
-        return $this->findAll($conditions, $this->data['max_courses_number']);
-    }
-
-    private function findAll($conditions, $limit = 0)
-    {
-
-        $exclude_pathcourse = $this->excludePathCourse();
-        switch ($this->data['course_type']) {
-            case self::COURSE_TYPE_CLASSROOM:
-                $query = 'SELECT c.idCourse course_id, c.name course_name, c.idCategory course_category_id, c.status course_status,
-                          c.course_type, c.box_description course_box_description, c.description, cd.name edition, 
-                          cdd.date_begin course_date_begin, cdd.date_end course_date_end,
-                          DATE_FORMAT(cdd.date_begin,"%H:%i") course_hour_begin, DATE_FORMAT(cdd.date_end,"%H:%i") course_hour_end'
-                    . ' FROM %lms_course AS c'
-                    . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)'
-                    . ' JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_Course)'
-                    . ' JOIN %lms_course_date_user AS cdu on (cdu.id_date = cd.id_date)'
-                    . ' JOIN %lms_course_date_day AS cdd ON (cd.id_date = cdd.id_date)'
-                    . ' WHERE ' . implode(' AND ', $conditions)
-                    . $exclude_pathcourse
-                    . ' ORDER BY cdd.date_begin ASC';
-                break;
-            case self::COURSE_TYPE_ELEARNING:
-            default:
-                $query = 'SELECT c.idCourse course_id, c.name course_name,  c.idCategory course_category_id, c.status course_status, c.description,  
+        $query = 'SELECT c.idCourse course_id, c.name course_name,  c.idCategory course_category_id, c.status course_status, c.description,  
                           c.course_type, c.date_end course_date_end, c.hour_end course_hour_end, c.date_begin course_date_begin, 
                           c.hour_begin course_hour_begin, c.box_description course_box_description, 
                           c.img_course course_img_course, cu.status user_status, cu.level user_level, cu.date_inscr user_date_inscr'
-                    . ' FROM %lms_course AS c '
-                    . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
-                    . ' WHERE ' . implode(' AND ', $conditions)
-                    . $exclude_pathcourse
-                    . ' ORDER BY  c.date_end ASC';
-                break;
-        }
+            . ' FROM %lms_course AS c '
+            . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
+            . ' WHERE ' . implode(' AND ', $conditions)
+            . $excludePathcourse
+            . '	GROUP BY course_id'
+            . ' ORDER BY  c.date_end ASC';
+
         if ($limit > 0) {
             $query .= " LIMIT $limit";
         }
-        $rs = $this->db->query($query);
 
-        $result = [];
-        foreach ($rs as $course) {
-            $courseData = $this->getDataFromCourse($course);
-            $result[$course['course_id']] ??= $courseData; // getting just first date for classroom courses
+        return $query;
+    }
+
+    private function geClassroomQuery($conditions, $limit = 0)
+    {
+        $midnight = new DateTime('midnight');
+        $midnight = date_format($midnight, 'Y-m-d H:i:s');
+
+        $conditions[] = "(cdd.date_begin >= '$midnight')";
+        $conditions[] = '(cd.status = 0)';
+
+        $excludePathcourse = $this->excludePathCourse();
+
+        $query = 'SELECT c.idCourse course_id, c.name course_name, c.idCategory course_category_id, c.status course_status,
+                          c.course_type, c.box_description course_box_description, c.img_course course_img_course, c.description, cd.name edition, 
+                          cdd.date_begin course_date_begin, cdd.date_end course_date_end,
+                          DATE_FORMAT(cdd.date_begin,"%H:%i") course_hour_begin, DATE_FORMAT(cdd.date_end,"%H:%i") course_hour_end'
+            . ' FROM %lms_course AS c'
+            . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)'
+            . ' JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_Course)'
+            . ' JOIN %lms_course_date_user AS cdu on (cdu.id_date = cd.id_date)'
+            . ' JOIN %lms_course_date_day AS cdd ON (cd.id_date = cdd.id_date)'
+            . ' WHERE ' . implode(' AND ', $conditions)
+            . $excludePathcourse
+            . '	GROUP BY course_id'
+            . ' ORDER BY cdd.date_begin ASC';
+
+        if ($limit > 0) {
+            $query .= " LIMIT $limit";
         }
 
-        return $result;
+        return $query;
     }
 
     private function excludePathCourse()
@@ -167,7 +229,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $id_user . ' and level <= 3 '
                     . ' and idCourse in (' . implode(',', $learning_path_enroll) . ')';
                 $rs = $this->db->query($exclude_path_course);
-                foreach ($rs as $data){
+                foreach ($rs as $data) {
                     $excl[] = $data['idCourse'];
                 }
                 $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';

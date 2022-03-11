@@ -224,7 +224,7 @@ class SubscriptionAlmsController extends AlmsController
 
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        //require_once($GLOBALS['where_framework'].'/class.module/class.directory.php');
+        //require_once(_adm_.'/class.module/class.directory.php');
 
         $user_selector = new UserSelector();
         $cman = new CourseAlms();
@@ -294,7 +294,7 @@ class SubscriptionAlmsController extends AlmsController
             switch ($select_level_mode) {
                 case 'students':
                         // subscribe the selection with the students level
-                        require_once _lms_ . '/lib/lib.course.php';
+                        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
                         $course_info = $model->getCourseInfoForSubscription();
 
                         //check if the subscriber is a sub admin and, if true check it's limitation
@@ -322,7 +322,7 @@ class SubscriptionAlmsController extends AlmsController
                         }
 
                         if ($can_subscribe) {
-                            require_once _lms_ . '/lib/lib.course.php';
+                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
                             $docebo_course = new DoceboCourse($id_course);
 
                             $level_idst = &$docebo_course->getCourseLevel($id_course);
@@ -486,7 +486,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         //Course info
         $id_course = Get::req('id_course', DOTY_INT, 0);
@@ -529,7 +529,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         if ($can_subscribe) {
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
             $docebo_course = new DoceboCourse($id_course);
 
             $level_idst = &$docebo_course->getCourseLevel($id_course);
@@ -801,7 +801,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $id_user = Get::req('id_user', DOTY_INT, 0);
         $docebo_course = new DoceboCourse($this->id_course);
@@ -831,7 +831,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $users = Get::req('users', DOTY_STRING, '');
         $docebo_course = new DoceboCourse($this->id_course);
@@ -1098,7 +1098,7 @@ class SubscriptionAlmsController extends AlmsController
             $result = $this->model->subscribeUser($id_user, $level, $waiting);
 
             if ($result) {
-                require_once _lms_ . '/lib/lib.course.php';
+                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
                 $docebo_course = new DoceboCourse($this->id_course);
 
@@ -1481,7 +1481,7 @@ class SubscriptionAlmsController extends AlmsController
 
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $course_selector = new Selector_Course();
         //$user_selector = new Module__Directory();
@@ -1633,7 +1633,7 @@ class SubscriptionAlmsController extends AlmsController
 
             case '4':
                 //Start case 4
-                require_once _lms_ . '/lib/lib.course.php';
+                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
                 if (isset($_POST['undo'])) {
                     Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date);
@@ -1694,7 +1694,7 @@ class SubscriptionAlmsController extends AlmsController
                         $subscribe_method = $course_info['subscribe_method'];
 
                         if ($can_subscribe) {
-                            require_once _lms_ . '/lib/lib.course.php';
+                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
                             $docebo_course = new DoceboCourse($id_course);
 
@@ -1740,7 +1740,7 @@ class SubscriptionAlmsController extends AlmsController
                             $subscribe_method = $course_info['subscribe_method'];
 
                             if ($can_subscribe) {
-                                require_once _lms_ . '/lib/lib.course.php';
+                                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
                                 $docebo_course = new DoceboCourse($id_course);
 
@@ -1784,7 +1784,7 @@ class SubscriptionAlmsController extends AlmsController
                             $subscribe_method = $course_info['subscribe_method'];
 
                             if ($can_subscribe) {
-                                require_once _lms_ . '/lib/lib.course.php';
+                                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
                                 $docebo_course = new DoceboCourse($id_course);
 
@@ -1891,8 +1891,8 @@ class SubscriptionAlmsController extends AlmsController
                 break;
 
             case '2':
-                require_once _lms_ . '/lib/lib.course.php';
-                require_once _base_ . '/lib/lib.upload.php';
+                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+                require_once Forma::inc(_base_ . '/lib/lib.upload.php');
                 require_once _adm_ . '/lib/lib.import.php';
 
                 $separator = Get::req('import_separator', DOTY_MIXED, ',');
@@ -1984,7 +1984,7 @@ class SubscriptionAlmsController extends AlmsController
                         $id_user = $user_info[ACL_INFO_IDST];
 
                         if ($can_subscribe) {
-                            require_once _lms_ . '/lib/lib.course.php';
+                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
                             $docebo_course = new DoceboCourse($this->id_course);
 
                             $level_idst = &$docebo_course->getCourseLevel($this->id_course);
@@ -2048,7 +2048,7 @@ class SubscriptionAlmsController extends AlmsController
                         $id_user = $user_info[ACL_INFO_IDST];
 
                         if ($can_subscribe) {
-                            require_once _lms_ . '/lib/lib.course.php';
+                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
                             $docebo_course = new DoceboCourse($this->id_course);
 
                             $level_idst = &$docebo_course->getCourseLevel($this->id_course);
@@ -2162,7 +2162,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $course_selector = new Selector_Course();
         $course_selector->parseForState($_POST);
@@ -2178,7 +2178,7 @@ class SubscriptionAlmsController extends AlmsController
                 Util::jump_to('index.php?r=' . $this->link . '/import_course&amp;load=1&amp;id_course=' . $this->model->getIdCourse() . '&err=_no_course_sel');
             }
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
             $docebo_course = new DoceboCourse($this->id_course);
 
@@ -2216,7 +2216,7 @@ class SubscriptionAlmsController extends AlmsController
                 $direct_subscribe = true;
             }
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
             $docebo_course = new DoceboCourse($this->id_course);
 
@@ -2283,7 +2283,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $course_selector = new Selector_Course();
         $course_selector->parseForState($_POST);
@@ -2299,7 +2299,7 @@ class SubscriptionAlmsController extends AlmsController
                 Util::jump_to('index.php?r=' . $this->link . '/copy_course&amp;load=1&amp;id_course=' . $this->model->getIdCourse() . '&err=_no_course_sel');
             }
 
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
             foreach ($course_selected as $id_course) {
                 $docebo_course = new DoceboCourse($id_course);
@@ -2338,7 +2338,7 @@ class SubscriptionAlmsController extends AlmsController
                     $direct_subscribe = true;
                 }
 
-                require_once _lms_ . '/lib/lib.course.php';
+                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
                 $docebo_course = new DoceboCourse($id_course);
 
@@ -2916,7 +2916,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function fast_subscribe_dialog_action()
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         $man_course = new Man_Course();
         $acl_man = Docebo::user()->getAclManager();
 
@@ -3424,7 +3424,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //2 - check if there are any editions or classrooms
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         $course_man = new Man_Course();
 
         $classroom = $course_man->getAllCourses(false, 'classroom', $courses);
@@ -3493,7 +3493,7 @@ class SubscriptionAlmsController extends AlmsController
             ]);
         } else {
             $path_man->subscribeUserToCoursePath($id_path, $_to_add);
-            require_once _lms_ . '/lib/lib.course.php';
+            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
             foreach ($courses as $id_course) {
                 $docebo_course = new DoceboCourse($id_course);
@@ -3528,7 +3528,7 @@ class SubscriptionAlmsController extends AlmsController
         $editions = Get::req('editions', DOTY_MIXED, []);
 
         require_once _lms_ . '/lib/lib.coursepath.php';
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         $path_man = new CoursePath_Manager();
 
         foreach ($courses as $id_course) {
@@ -3581,7 +3581,7 @@ class SubscriptionAlmsController extends AlmsController
             exit("You can't access");
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
@@ -3815,7 +3815,7 @@ class SubscriptionAlmsController extends AlmsController
             exit("You can't access");
         }
 
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         require_once _base_ . '/lib/lib.preference.php';
 
         $id_course = Get::req('id_course', DOTY_INT, 0);
