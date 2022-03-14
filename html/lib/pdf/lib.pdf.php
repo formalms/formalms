@@ -126,7 +126,7 @@ class PDF extends TCPDF
         $html = $doc->saveHTML();
 
         $query = 'SELECT lang_browsercode, lang_direction'
-            . ' FROM ' . $GLOBALS['prefix_fw'] . '_lang_language'
+            . ' FROM %adm_lang_language'
             . " WHERE lang_code = '" . getLanguage() . "'";
         list($lang_code, $lang_direction) = sql_fetch_row(sql_query($query));
 
@@ -139,7 +139,7 @@ class PDF extends TCPDF
         $lg['a_meta_language'] = $lang_code;
         $lg['w_page'] = 'page';
         $this->setLanguageArray($lg);
-
+      
         /*
          * Protection for the PDF
          *
@@ -214,7 +214,7 @@ class PDF extends TCPDF
         //send file length info
         header('Content-Length:' . strlen($pdf));
         //content type forcing dowlad
-        header("Content-type: application/download\n");
+        header("Content-type: application/download\n charset: utf-8\n");
         //cache control
         header('Cache-control: private');
         //sending creation time

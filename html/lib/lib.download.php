@@ -82,13 +82,15 @@ function sendFileFromFS($path, $filename, $ext, $sendname)
         @DbConn::getInstance()->close();
 
         ob_end_clean();
+        ob_start();
         session_write_close();
+        header("Content-type: application/download; charset=utf-8");
         //ini_set("output_buffering", 0);
         //Download file
         //send file length info
         header('Content-Length:' . filesize($path . $filename));
         //content type forcing dowlad
-        header("Content-type: application/download; charset=utf-8\n");
+       
         //cache control
         header('Cache-control: private');
         //sending creation time

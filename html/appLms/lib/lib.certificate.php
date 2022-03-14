@@ -880,8 +880,7 @@ class Certificate
 
         $query_certificate = '
 		SELECT name, cert_structure, base_language, orientation, bgimage
-		FROM ' . $GLOBALS['prefix_lms'] . "_certificate
-		WHERE id_certificate = '" . $id_certificate . "'";
+		FROM %lms_certificate WHERE id_certificate = "' . $id_certificate . '"';
         list($name, $cert_structure, $base_language, $orientation, $bgimage) = sql_fetch_row(sql_query($query_certificate));
 
         require_once _base_ . '/lib/lib.upload.php';
@@ -910,7 +909,7 @@ class Certificate
         //save the generated file in database
         $the_date = date('Y-m-d H:i:s');
         if (!$isAggregatedCert) {
-            $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_certificate_assign '
+            $query = 'INSERT INTO %lms_certificate_assign '
                 . ' ( id_certificate, id_course, id_user, on_date, cert_file ) '
                 . ' VALUES '
                 . " ( '" . $id_certificate . "', '" . $id_course . "', '" . $id_user . "', '" . $the_date . "', '" . addslashes($cert_file) . "' ) ";
