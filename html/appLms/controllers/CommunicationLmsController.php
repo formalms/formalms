@@ -27,6 +27,23 @@ class CommunicationLmsController extends LmsController
         return true;
     }
 
+    public function track_communication()
+    {
+        $id_comm = Get::req('id_comm', DOTY_INT, 0);
+        $model = new CommunicationAlms();
+        $comm = $model->findByPk($id_comm, Docebo::user()->getArrSt());
+
+        if ($comm !== false && $comm['type_of'] == 'none') {
+            $model->markAsRead($id_comm, Docebo::user()->getId());
+        }
+        if(defined('IS_AJAX')) {
+            echo json_encode($comm);
+        } else {
+            return $comm; 
+        }
+      
+    }
+
     public function init()
     {
         YuiLib::load('base,tabview');

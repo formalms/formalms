@@ -2,6 +2,7 @@
 
   {% block content %}
 
+{% set ajaxUrl = 'lms/communication/track_communication' %}
       {% if (block.type == '4-col') %}
           {% set class =  'd-col--12--desktop' %}
           {% set subclass =  'd-col--4--desktop' %}
@@ -101,12 +102,10 @@
               var posting = $.get(
                   'ajax.adm_server.php',
                   {
-                      r: 'lms/communication/get_info_communication',
+                      r: '{{ ajaxUrl }}',
                       id_comm: id_comm
                   }
               );
-
-
               posting.done(function (responseText) {
 
                   ret = JSON.parse(responseText)

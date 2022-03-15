@@ -18,6 +18,7 @@ defined("IN_FORMA") or die('Direct access is forbidden.');
  */
 class DashboardBlockCommunicationLms extends DashboardBlockLms
 {
+    public const DEFAULT_RECORDS = 5;
 
     public function __construct($jsonConfig)
     {
@@ -40,7 +41,8 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
 
     public function getViewData(){
         $data = $this->getCommonViewData();
-        $limit = (int)$this->data['max_last_records'] ?? 0;
+        $limit = $this->data['max_last_records'] ? (int)$this->data['max_last_records'] : self::DEFAULT_RECORDS;
+
         $onlyToRead =  $this->data['showread'];
 
         $data['communication'] = $this->getCommunication($limit, $onlyToRead);

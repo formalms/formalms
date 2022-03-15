@@ -68,15 +68,16 @@ class DashboardBlockNewsLms extends DashboardBlockLms
         $ma = new Man_MiddleArea();
 
         if ($ma->currentCanAccessObj('news')) {
+     
             $user_assigned = Docebo::user()->getArrSt();
             $query_news = "
             SELECT idNews, publish_date, title, short_desc,long_desc, important, viewer
             FROM %lms_news_internal
-            WHERE language = '" . getLanguage() . "'
+            WHERE language = '" . Docebo::user()->preference->getLanguage() . "'
             OR language = 'all'
             ORDER BY important DESC, publish_date DESC ";
             $re_news = sql_query($query_news);
-
+        
             while (list($idNews, $publishDate, $title, $shortDesc, $longDesc, $important, $viewer) = sql_fetch_row($re_news)) {
                 $viewer = (is_string($viewer) && $viewer != false ? unserialize($viewer) : []);
                 $intersect = array_intersect($user_assigned, $viewer);
