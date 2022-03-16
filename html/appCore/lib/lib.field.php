@@ -370,7 +370,7 @@ class FieldList
                 : '')
             . 'ORDER BY ft.sequence';
 
-        $rs = sql_query($query);
+        $re_fields = sql_query($query);
 
         $result = [];
         foreach ($re_fields as $row) {
