@@ -15,11 +15,9 @@ class LearningObject {
         lightbox.OnClose = () => {
             try {
                 if (window.frames['overlay_iframe'].uiPlayer) {
-                    window.frames['overlay_iframe'].uiPlayer.scormPlayer.api.forceFinish();
                     window.frames['overlay_iframe'].uiPlayer.closePlayer(true, window);
                 }
                 else if (window.overlay_iframe.uiPlayer) {
-                    window.overlay_iframe.uiPlayer.scormPlayer.api.forceFinish();
                     window.overlay_iframe.uiPlayer.closePlayer(true, window);
                 }
             } catch (e) {
@@ -34,7 +32,6 @@ class LearningObject {
         }
         lightbox.Open();
     }
-
 }
 
 export default LearningObject;
