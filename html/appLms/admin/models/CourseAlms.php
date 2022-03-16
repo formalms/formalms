@@ -1046,7 +1046,7 @@ class CourseAlms extends Model
             level_show_user     = '" . $show_level . "',
             subscribe_method    = '" . (int) $data_params['course_subs'] . "',
             idCategory          = '" . (int) $data_params['idCategory'] . "',
-            credits             = '" . (int) $data_params['credits'] . "',
+            credits             = '" . $data_params['credits'] . "',
 
             linkSponsor         = '" . $data_params['course_sponsor_link'] . "',
 
