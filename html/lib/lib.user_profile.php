@@ -1416,8 +1416,8 @@ class UserProfileViewer
         $viewer = $this->getViewer();
 
         $this->loadUserData($viewer);
-        $user_field = $this->loadUserField($viewer);
-        $user_contacts = $this->loadUserContact($viewer);
+        $user_field = $this->loadUserField();
+        $user_contacts = $this->loadUserContact();
 
         $max_quota = $this->_up_data_man->getQuotaLimit($this->_user_profile->getIdUser());
         $actual_size = $this->_up_data_man->getUsedQuota($this->_user_profile->getIdUser());
@@ -2075,7 +2075,7 @@ class UserProfileViewer
     public function tinyUserInfo($picture)
     {
         $this->loadUserData($this->getViewer());
-        $user_field = $this->loadUserField($this->getViewer());
+        $user_field = $this->loadUserField();
 
         $edit_mode = $this->_user_profile->editMode();
 
@@ -2750,8 +2750,8 @@ class UserProfileViewer
 
         $field_policy = $this->_up_data_man->getFieldAccessList($this->_id_user);
 
-        $user_field = $this->loadUserField($this->_id_user);
-        $user_contacts = $this->loadUserContact($this->_id_user);
+        $user_field = $this->loadUserField();
+        $user_contacts = $this->loadUserContact();
 
         $html = '<div class="up_user_info">';
         // user standard info -----------------------------------------------------------------
@@ -4040,7 +4040,7 @@ class UserProfileData
      */
     public function getUserFieldNoRestriction($id_user)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $field_man = new FieldList();
         $field_founded = $field_man->getFieldsAndValueFromUser($id_user, false, true, ['standard']);
