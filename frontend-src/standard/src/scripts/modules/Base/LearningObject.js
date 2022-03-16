@@ -14,13 +14,16 @@ class LearningObject {
         lightbox.Title = title;
         lightbox.OnClose = () => {
             try {
-                window.frames['overlay_iframe'].uiPlayer.scormPlayer.api.forceFinish();
-                window.frames['overlay_iframe'].uiPlayer.closePlayer(true, window);
-            } catch (e) {
-                if (window.overlay_iframe.uiPlayer) {
+                if (window.frames['overlay_iframe'].uiPlayer) {
+                    window.frames['overlay_iframe'].uiPlayer.scormPlayer.api.forceFinish();
+                    window.frames['overlay_iframe'].uiPlayer.closePlayer(true, window);
+                }
+                else if (window.overlay_iframe.uiPlayer) {
                     window.overlay_iframe.uiPlayer.scormPlayer.api.forceFinish();
                     window.overlay_iframe.uiPlayer.closePlayer(true, window);
                 }
+            } catch (e) {
+                console.log(e);
             }
             const container = document.querySelector('*[data-container=' + type + ']');
             if (container) {
