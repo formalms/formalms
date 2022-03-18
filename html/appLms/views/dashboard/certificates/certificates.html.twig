@@ -53,11 +53,11 @@
                                         {% endif %#}
                                         {% if certificate.cert_file %}
                                             <div class="d-link text-center">
-                                                <a class="ico-wt-sprite subs_pdf" alt="{{ certificate.cert_file }}" href="?r=mycertificate/downloadCert&amp;id_certificate={{ certificate.id_certificate }}&amp;id_course={{ certificate.idCourse }}" title="{{ Lang_translate('_DOWNLOAD', 'certificate') }}"><span>{{ Lang_translate('_DOWNLOAD', 'certificate') }}</span></a>
+                                                <a class="ico-wt-sprite subs_pdf" alt="{{ certificate.cert_file }}" href="?r=mycertificate/downloadCert&amp;id_certificate={{ certificate.id_certificate }}&amp;id_course={{ certificate.id_course }}" title="{{ Lang_translate('_DOWNLOAD', 'certificate') }}"><span>{{ Lang_translate('_DOWNLOAD', 'certificate') }}</span></a>
                                             </div>
                                         {% else %}
                                             <div class="d-link text-center">
-                                                <a class="ico-wt-sprite subs_pdf" alt="{{ Lang_translate('_GENERATE', 'certificate') }}" href="#" onclick="genCertificate({{ certificate.idCourse }}, {{ certificate.id_certificate }})" title="{{ Lang_translate('_GENERATE', 'certificate') }}"><span>{{ Lang_translate('_GENERATE', 'certificate') }}</span></a>
+                                                <a class="ico-wt-sprite subs_pdf" alt="{{ Lang_translate('_GENERATE', 'certificate') }}" href="#" onclick="genCertificate({{ certificate.id_course }}, {{ certificate.id_certificate }})" title="{{ Lang_translate('_GENERATE', 'certificate') }}"><span>{{ Lang_translate('_GENERATE', 'certificate') }}</span></a>
                                             </div>
                                         {% endif %}
                                     </div>
