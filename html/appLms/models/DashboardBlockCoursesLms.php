@@ -128,6 +128,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             $queryResult = $this->db->query($query);
             foreach ($queryResult as $course) {
                 $courseData = $this->getDataFromCourse($course);
+
                 $courses[$course['course_id']] ??= $courseData; // getting just first date for classroom courses
             }
         }
@@ -294,5 +295,11 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             ];
         }
         return $dates;
+    }
+
+    protected function getDataFromCourse($course){
+        $courseData = parent::getDataFromCourse($course);
+        $courseData['hours'] = (new DateTime($courseData['hourBegin']))->format("H:i") . (!empty($courseData['hourEnd']) ? '-' . (new DateTime($courseData['hourEnd']))->format("H:i") : '');
+        return $courseData;
     }
 }
