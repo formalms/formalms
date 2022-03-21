@@ -78,6 +78,7 @@ class LomanagerLms extends Model
     public function getLearningObjects($rootId)
     {
         $this->treeView->reoderTree();
+
         return $this->treeView->getChildrensDataById($rootId);
     }
 

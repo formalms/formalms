@@ -84,13 +84,13 @@ function sendFileFromFS($path, $filename, $ext, $sendname)
         ob_end_clean();
         ob_start();
         session_write_close();
-        header("Content-type: application/download; charset=utf-8");
+        header('Content-type: application/download; charset=utf-8');
         //ini_set("output_buffering", 0);
         //Download file
         //send file length info
         header('Content-Length:' . filesize($path . $filename));
         //content type forcing dowlad
-       
+
         //cache control
         header('Cache-control: private');
         //sending creation time
@@ -124,7 +124,7 @@ function sendFileFromFS($path, $filename, $ext, $sendname)
 
 function sendStrAsFile($string, $filename, $charset = false)
 {
-        // UTF-8
+    // UTF-8
     $bom = "\xEF\xBB\xBF";
     $meta = '<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />';
 

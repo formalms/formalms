@@ -3019,9 +3019,9 @@ class SubscriptionAlmsController extends AlmsController
 
         // Get courses from path
         if ($id_path > 0) {
-            require_once(_lms_.'/lib/lib.coursepath.php');
+            require_once _lms_ . '/lib/lib.coursepath.php';
             $cman = new CoursePath_Manager();
-            $courses = $cman->getAllCourses(array($id_path));
+            $courses = $cman->getAllCourses([$id_path]);
         }
 
         if ($new_value === $old_value) {
@@ -3032,22 +3032,22 @@ class SubscriptionAlmsController extends AlmsController
                         $_new_date = date('Y-m-d H:i:s', $new_value); //convert the input in ISO format
                         //extract date_expire and check if less than date_begin
                         $res = false;
-                        
+
                         if ($id_path > 0) {
-                            $query = "SELECT  MIN(s.date_expire_validity) as date_expire_validity "
-                            ." FROM (%lms_courseuser as s JOIN %lms_coursepath_user as p "
-                            ." ON (s.idUser = p.idUser)) "
-                            ." WHERE p.id_path = ".(int)$id_path." AND s.idCourse IN (".implode(",", array_values($courses)).") ";
+                            $query = 'SELECT  MIN(s.date_expire_validity) as date_expire_validity '
+                            . ' FROM (%lms_courseuser as s JOIN %lms_coursepath_user as p '
+                            . ' ON (s.idUser = p.idUser)) '
+                            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') ';
                         } else {
-                            $query = "SELECT date_expire_validity FROM %lms_courseuser " . " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
+                            $query = 'SELECT date_expire_validity FROM %lms_courseuser ' . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
                         }
-                        
+
                         list($date_expire) = sql_fetch_row(sql_query($query));
-                        if ($date_expire == NULL || $date_expire == "" || $date_expire == "0000-00-00 00:00:00" || $date_expire > $_new_date) {
+                        if ($date_expire == null || $date_expire == '' || $date_expire == '0000-00-00 00:00:00' || $date_expire > $_new_date) {
                             if ($id_path > 0) {
-                                $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . " WHERE idCourse IN (".implode(",", array_values($courses)).") AND idUser=" . (int)$id_user;
+                                $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . ' WHERE idCourse IN (' . implode(',', array_values($courses)) . ') AND idUser=' . (int) $id_user;
                             } else {
-                                $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
+                                $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
                             }
                             $res = sql_query($query);
                         }
@@ -3065,27 +3065,26 @@ class SubscriptionAlmsController extends AlmsController
                         $_new_date = date('Y-m-d H:i:s', $new_value); //convert the input in ISO format
                         //extract date_begin and check if ggreater than date_expire
                         $res = false;
-                        
+
                         if ($id_path > 0) {
-                            $query = "SELECT  MIN(s.date_begin_validity) as date_begin_validity "
-                            ." FROM (%lms_courseuser as s JOIN %lms_coursepath_user as p "
-                            ." ON (s.idUser = p.idUser)) "
-                            ." WHERE p.id_path = ".(int)$id_path." AND s.idCourse IN (".implode(",", array_values($courses)).") ";
+                            $query = 'SELECT  MIN(s.date_begin_validity) as date_begin_validity '
+                            . ' FROM (%lms_courseuser as s JOIN %lms_coursepath_user as p '
+                            . ' ON (s.idUser = p.idUser)) '
+                            . ' WHERE p.id_path = ' . (int) $id_path . ' AND s.idCourse IN (' . implode(',', array_values($courses)) . ') ';
                         } else {
-                            $query = "SELECT date_begin_validity FROM %lms_courseuser " . " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
-                        }
-                        
-                        list($date_begin) = sql_fetch_row(sql_query($query));
-                        if ($date_begin == NULL || $date_begin == "" || $date_begin == "0000-00-00 00:00:00" || $date_begin < $_new_date) {
-                            if ($id_path > 0) {
-                                $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . " WHERE idCourse IN (".implode(",", array_values($courses)).") AND idUser=" . (int)$id_user;
-                            } else {
-                                $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . " WHERE idCourse=" . (int)$id_course . " AND idUser=" . (int)$id_user . " AND edition_id=" . (int)$id_edition;
-                            }
-                            
-                            $res = sql_query($query);
+                            $query = 'SELECT date_begin_validity FROM %lms_courseuser ' . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
                         }
 
+                        list($date_begin) = sql_fetch_row(sql_query($query));
+                        if ($date_begin == null || $date_begin == '' || $date_begin == '0000-00-00 00:00:00' || $date_begin < $_new_date) {
+                            if ($id_path > 0) {
+                                $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . ' WHERE idCourse IN (' . implode(',', array_values($courses)) . ') AND idUser=' . (int) $id_user;
+                            } else {
+                                $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . ' WHERE idCourse=' . (int) $id_course . ' AND idUser=' . (int) $id_user . ' AND edition_id=' . (int) $id_edition;
+                            }
+
+                            $res = sql_query($query);
+                        }
 
                         $output = ['success' => $res ? true : false];
                         if ($res) {

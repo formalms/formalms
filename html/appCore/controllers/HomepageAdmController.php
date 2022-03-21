@@ -389,8 +389,8 @@ class HomepageAdmController extends AdmController
 
         $res = $this->model->login($plugin);
 
-        if(!empty($loginRedirect)) {
-            $url = substr_replace($loginRedirect, "", 0, strlen(trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR)) + 1);
+        if (!empty($loginRedirect)) {
+            $url = substr_replace($loginRedirect, '', 0, strlen(trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR)) + 1);
             $redirection['req'] = $url;
         }
 
