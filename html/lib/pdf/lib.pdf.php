@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class PDF extends TCPDF
 {
     public $angle = 0;
-    /** @var boolean */
+    /** @var bool */
     public $encrypted;          //whether document is protected
     /** @var string */
     public $password;           //encryption password
@@ -139,7 +139,7 @@ class PDF extends TCPDF
         $lg['a_meta_language'] = $lang_code;
         $lg['w_page'] = 'page';
         $this->setLanguageArray($lg);
-      
+
         /*
          * Protection for the PDF
          *

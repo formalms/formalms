@@ -2231,8 +2231,7 @@ class Course_API extends API
         $qtxt = 'SELECT idTrack, idTest, date_end_attempt, idUser FROM learning_testtrack where idReference=' . $params['id_org'] . ' and idUser in (' . $idUsers . ')';
         $courseInfoResult = $db->query($qtxt);
 
-        foreach ($courseInfoResult as $courseInfo ){
-
+        foreach ($courseInfoResult as $courseInfo) {
             $idUser = $courseInfo['idUser'];
             $idTrack = $courseInfo['idTrack'];
             $idTest = $courseInfo['idTest'];
@@ -2251,7 +2250,6 @@ class Course_API extends API
             $result = $db->query($q_test);
 
             foreach ($result as $row) {
-
                 $resEsito = 'wrong';
                 if ($row['score_assigned'] > 0) {
                     $resEsito = 'correct';
@@ -2268,8 +2266,7 @@ class Course_API extends API
             }
         }
 
-        if (count(explode(',',$idUsers)) === 1){
-
+        if (count(explode(',', $idUsers)) === 1) {
             $userAttempt = $response[$idUsers];
             $userAttempt['success'] = $response['success'];
             $userAttempt['id_user'] = $response['id_users'];

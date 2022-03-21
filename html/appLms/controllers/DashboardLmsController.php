@@ -53,7 +53,6 @@ class DashboardLmsController extends LmsController
                 'close' => false,
             ]);
         }
-       
 
         // manage permission template
         $idTemplate = $defaultLayout->getId();

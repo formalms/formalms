@@ -55,12 +55,9 @@ class Get
      */
     public static function req($var_name, $typeof = DOTY_MIXED, $default_value = '', $only_from = false)
     {
-
-     
         $value = $default_value;
         if (empty($only_from)) {
             if (isset($_POST[$var_name])) {
-               
                 $value = $_POST[$var_name];
             } elseif (isset($_GET[$var_name])) {
                 $value = $_GET[$var_name];
@@ -68,7 +65,6 @@ class Get
                 $value = $_REQUEST[$var_name];
             }
         } elseif ($only_from === 'post' && isset($_POST[$var_name])) {
-        
             $value = $_POST[$var_name];
         } elseif ($only_from === 'get' && isset($_GET[$var_name])) {
             $value = $_GET[$var_name];
@@ -113,7 +109,7 @@ class Get
                         $GLOBALS['obj']['json_service'] = new Services_JSON();
                     }
                     $value = $GLOBALS['obj']['json_service']->decode($value);
-                ;
+
                 break;
             case DOTY_JSONENCODE:
                     if (!isset($GLOBALS['obj']['json_service'])) {
@@ -121,7 +117,7 @@ class Get
                         $GLOBALS['obj']['json_service'] = new Services_JSON();
                     }
                     $value = $GLOBALS['obj']['json_service']->encode($value);
-                ;
+
                 break;
             case DOTY_BOOL:
                 $value = ($value ? true : false);
@@ -131,10 +127,9 @@ class Get
                     if ($value[0] === '/') {
                         $value = '';
                     }
-                ;
+
                 break;
             case DOTY_MIXED:
-           
             default:
         }
 
@@ -787,23 +782,23 @@ class Get
         switch ($message_type) {
             case 'notice':
                     $class_name .= ' notice_display_notice';
-                ;
+
                 break;
             case 'success':
                     $class_name .= ' notice_display_success';
-                ;
+
                 break;
             case 'failure':
                     $class_name .= ' notice_display_failure';
-                ;
+
                 break;
             case 'error':
                     $class_name .= ' notice_display_error';
-                ;
+
                 break;
             default:
                     $class_name .= ' notice_display_default';
-                ;
+
                 break;
         }
         $html = '<div class="' . $class_name . '">'
