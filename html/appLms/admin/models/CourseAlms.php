@@ -669,7 +669,7 @@ class CourseAlms extends Model
             STATUS              = '" . (int) $data_params['course_status'] . "',
             level_show_user     = '" . $show_level . "',
             subscribe_method    = '" . (int) $data_params['course_subs'] . "',
-            credits             = '" . (int) $data_params['credits'] . "',
+            credits             = '" . $data_params['credits'] . "',
 
             create_date         = '" . date('Y-m-d H:i:s') . "',
 
