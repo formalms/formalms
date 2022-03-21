@@ -1826,7 +1826,6 @@ class Org_TreeView extends RepoTreeView
 
     public function getChildrensDataById($id)
     {
-        $this->reoderTree();
         $root_folder = $this->tdb->getFolderById($id);
         $childrens = $this->tdb->getChildrensIdById($root_folder->id);
 
