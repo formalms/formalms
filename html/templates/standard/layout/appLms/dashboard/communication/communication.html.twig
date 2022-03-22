@@ -4,17 +4,17 @@
 
 {% set ajaxUrl = 'lms/communication/track_communication' %}
       {% if (block.type == '4-col') %}
-          {% set class =  'd-col--12--desktop' %}
-          {% set subclass =  'd-col--4--desktop' %}
+        {% set class =  'd-col--12--desktop' %}
+        {% set subclass =  'd-col--3--desktop' %}
       {% elseif (block.type == '3-col') %}
-          {% set class =  'd-col--9--desktop' %}
-           {% set subclass =  'd-col--3--desktop' %}
+        {% set class =  'd-col--9--desktop' %}
+        {% set subclass =  'd-col--4--desktop' %}
       {% elseif (block.type == '2-col') %}
-          {% set class =  'd-col--6--desktop' %}
-           {% set subclass =  'd-col--2--desktop' %}
+        {% set class =  'd-col--6--desktop' %}
+        {% set subclass =  'd-col--6--desktop' %}
       {% elseif (block.type == '1-col') %}
-          {% set class =  'd-col--3--desktop' %}
-           {% set subclass =  'd-col--1--desktop' %}
+        {% set class =  'd-col--3--desktop' %}
+        {% set subclass =  'd-col--12--desktop' %}
       {% endif %}
 
       <div class="d-col d-col--12 {{ class }}">
@@ -36,43 +36,45 @@
                             {% if c.dateAttempt != null %}
                                             <div class="forma-tooltip">{{c.dateAttempt|date("d-m-Y H:i:s")}}</div>
                             {% endif %}
-                          
-                            <div class="d-communication__date">
-                                {{ c.publish_date|date("d")  }}/{{ c.publish_date|date("m")  }}/{{ c.publish_date|date("Y") }}
+                            <div class="d-communication__content-wrapper">
+                                <div class="d-communication__date">
+                                    {{ c.publish_date|date("d")  }}/{{ c.publish_date|date("m")  }}/{{ c.publish_date|date("Y") }}
+                                </div>
+                                <div class="d-communication__title">
+                                    {{ c.title | raw}}   
+                                    {% if c.type_of != 'none' %}
+                                    | <span>{{c.type_of}}</span>
+                                    {% endif %}
+                                </div>
+                                {% if c.description != '' %}
+                                <div class="d-communication__desc">
+                                    {{c.description | raw}}
+                                </div>
+                                {% endif%}
+                            
+                                {% if c.type_of=='none' and c.dateAttempt==null %}
+                                    <a id="{{c.id_comm}}_none" href='javascript: mark_read({{c.id_comm}})'> <span><i class="fa fa-bookmark" aria-hidden="true"></i> {{ Lang_translate('_MARK_READ', 'message') }}</span></a>
+                                {% endif%}
+
+
+                                {% if c.type_of=='file'  %}
+                                    <a id="{{c.id_comm}}_comm_file_download" href='index.php?r=communication/playTask&id_comm={{c.id_comm}}'  ><span><i class="fa fa-download" aria-hidden="true"></i> {{ Lang_translate('_DOWNLOAD', 'standard') }}</span></a>
+                                {% endif%}
+
+                                {% if c.type_of=='scorm' %}
+                                    <a id="comm_file_scorm" class="js-scorm_lightbox" href='index.php?r=communication/playTask&id_comm={{c.id_comm}}' title="{{c.description | raw}}"><span><i class="fa fa-play-circle" aria-hidden="true"></i> {{ Lang_translate('_PLAY', 'standard') }}</span></a>
+                                {% endif%}
                             </div>
-                            <div class="d-communication__title">
-                                {{ c.title | raw}}   
-                                {% if c.type_of != 'none' %}
-                                   | <span>{{c.type_of}}</span>
-                                {% endif %}
-                             </div>
-                            {% if c.description != '' %}
-                             <div class="d-communication__desc">
-                                 {{c.description | raw}}
-                             </div>
-                            {% endif%}
-                           
-                            {% if c.type_of=='none' and c.dateAttempt==null %}
-                                <a id="{{c.id_comm}}_none" href='javascript: mark_read({{c.id_comm}})'> <span><i class="fa fa-bookmark" aria-hidden="true"></i> {{ Lang_translate('_MARK_READ', 'message') }}</span></a>
-                            {% endif%}
-
-
-                            {% if c.type_of=='file'  %}
-                                <a id="{{c.id_comm}}_comm_file_download" href='javascript: mark_read({{c.id_comm}})'  ><span><i class="fa fa-download" aria-hidden="true"></i> {{ Lang_translate('_DOWNLOAD', 'standard') }}</span></a>
-                            {% endif%}
-
-                            {% if c.type_of=='scorm' %}
-                                <a id="comm_file_scorm" class="js-scorm_lightbox" href='index.php?r=communication/play_w&id_comm={{c.id_comm}}' title="{{c.description | raw}}"><span><i class="fa fa-play-circle" aria-hidden="true"></i> {{ Lang_translate('_PLAY', 'standard') }}</span></a>
-                            {% endif%}
-                        
          
                         </div>
               
                     {% endfor %}
                 {% if block.data.show_button %}
+                <div class="d-communication__button_wrapper">
                     <a class="forma-button   d-button--cert text-center" title="" href="{{ block.link }}">
                         <span class="forma-button__label">{{ Lang_translate('_COMMUNICATIONS', 'standard') }}</span>
                     </a>
+                </div>
                 {% endif %}
             {% endif %}
           </div>
@@ -117,10 +119,10 @@
                       $('#' + ret.id_comm + '_none').addClass("ico-wt-sprite subs_read");
                       $('#' + ret.id_comm + '_none').hide();
                   }
-                  if(ret.type_of=="file"){
-                      $("#" + ret.id_comm + "_comm_file_download").attr("href", "index.php?r=communication/play&id_comm=" + ret.id_comm);
-                      document.location.href="index.php?r=communication/play&id_comm=" + ret.id_comm;
-                  }
+                //  if(ret.type_of=="file"){
+                //      $("#" + ret.id_comm + "_comm_file_download").attr("href", "index.php?r=communication/play&id_comm=" + ret.id_comm);
+                //      document.location.href="index.php?r=communication/play&id_comm=" + ret.id_comm;
+                //  }
               })
 
           }

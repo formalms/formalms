@@ -5,17 +5,17 @@
   {# {{ dump(block) }} #}
 
     {% if (block.type == '4-col') %}
-          {% set class =  'd-col--12--desktop' %}
-          {% set subclass =  'd-col--4--desktop' %}
+        {% set class =  'd-col--12--desktop' %}
+        {% set subclass =  'd-col--3--desktop' %}
       {% elseif (block.type == '3-col') %}
-          {% set class =  'd-col--9--desktop' %}
-           {% set subclass =  'd-col--3--desktop' %}
+        {% set class =  'd-col--9--desktop' %}
+        {% set subclass =  'd-col--4--desktop' %}
       {% elseif (block.type == '2-col') %}
-          {% set class =  'd-col--6--desktop' %}
-           {% set subclass =  'd-col--2--desktop' %}
+        {% set class =  'd-col--6--desktop' %}
+        {% set subclass =  'd-col--6--desktop' %}
       {% elseif (block.type == '1-col') %}
-          {% set class =  'd-col--3--desktop' %}
-           {% set subclass =  'd-col--1--desktop' %}
+        {% set class =  'd-col--3--desktop' %}
+        {% set subclass =  'd-col--12--desktop' %}
       {% endif %}
 
        <div class="d-col d-col--12 {{ class }}">
@@ -38,16 +38,18 @@
                             <div class="d-news__date">
                                 {{ n.publish_date|date("d")  }}/{{ n.publish_date|date("m")  }}/{{ n.publish_date|date("Y") }}
                             </div>
-                            <div class="d-news__title">
-                                {{ n.title | raw}}   
-                             
-                             </div>
-                            {% if n.shortDescriptions != '' %}
-                             <div class="d-news__desc">
-                                 {{n.shortDescriptions | raw}}
-                             </div>
-                            {% endif %}
-                        
+
+                            <div class="d-news__content-wrapper">
+                                <div class="d-news__title">
+                                    {{ n.title | raw}}   
+                                
+                                </div>
+                                {% if n.shortDescriptions != '' %}
+                                <div class="d-news__desc">
+                                    {{n.shortDescriptions | raw}}
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
               
                     {% endfor %}

@@ -63,11 +63,12 @@ if (Docebo::user()->isLoggedIn()) {
 
     switch ($environment) {
     case 'communication':
-        [$idscorm_organization,$lo_title] = sql_fetch_row(sql_query('SELECT idscorm_organization,title FROM %lms_scorm_organizations where idscorm_package=' . $idResource));
+    
+        list($idscorm_organization,$lo_title) = sql_fetch_row(sql_query('SELECT idscorm_organization,title FROM %lms_scorm_organizations where idscorm_package=' . $idResource));
         break;
     default:
         $idscorm_organization = $idResource;
-        [$lo_title] = sql_fetch_row(sql_query('SELECT title'
+        list($lo_title) = sql_fetch_row(sql_query('SELECT title'
             . ' FROM ' . $GLOBALS['prefix_lms'] . '_organization'
             . " WHERE idResource = '$idResource'"
             . "   AND objectType = 'scormorg'"));
@@ -82,6 +83,7 @@ if (Docebo::user()->isLoggedIn()) {
     $scormVersion = getScormVersion('idscorm_organization', $idscorm_organization);
 
     /* get object title */
+
 
     $itemtrack = new Scorm_ItemsTrack(null, $GLOBALS['prefix_lms']);
     $rsItemTrack = $itemtrack->getItemTrack($idUser, $idReference, null, $idscorm_organization);
@@ -134,6 +136,7 @@ if ($cfg_keepalivetmo > 0) {
         }
     }
 }
+
 
     header('Content-Type: text/html; charset=utf-8');
 

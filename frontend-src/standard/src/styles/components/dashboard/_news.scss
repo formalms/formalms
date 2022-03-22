@@ -14,7 +14,6 @@
 .d-news__title {
     height: 17px;
     font-weight: 700;
-    font-size: 14px;
     line-height: 17px;
     color: var(--color-1-550);
     overflow: hidden;
@@ -23,8 +22,24 @@
 .d-news__desc {
     height: 51px;
     font-weight: 400;
-    font-size: 14px;
     line-height: 17px;
     color: var(--color-0-870);
     overflow: hidden;
+  }
+
+  .d-news__button_wrapper {
+    width: 100%;
+    margin: auto;
+    float: left;
+    padding: 5%;
+  }
+
+  .d-news__button_wrapper a {
+    margin: auto;
+    display:block;
+
+  }
+
+  .d-news__content-wrapper{
+    font-size: 12px;
   }
