@@ -103,10 +103,11 @@ function parseTemplateDomain($curr_domain = false)
     return false;
 }
 
-function getCurrentDomain($idOrg = null)
+function getCurrentDomain($idOrg = null, $baseUrl = false)
 {
-    if (!$domains = Get::sett('template_domain', false)) {
-        return false;
+    $domain = Get::site_url();
+    if (!($domains = Get::sett('template_domain', false)) || $baseUrl) {
+        return $domain;
     }
 
     $domains_tmp = json_decode($domains, true) ?: [];
@@ -127,7 +128,7 @@ function getCurrentDomain($idOrg = null)
         }
     }
 
-    return Get::site_url();
+    return $domain;
 }
 
 /**

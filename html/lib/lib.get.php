@@ -302,7 +302,7 @@ class Get
             }
         }
         $folder = str_replace(['//', '\\/', '/./'], '/', $folder);
-        $path = Get::site_url() . $folder;
+        $path = Get::site_url(true) . $folder;
 
         return rtrim($path, '/') . '/';
     }
@@ -411,9 +411,10 @@ class Get
      *
      * @return <string> (i.e. http://localhost)
      */
-    public static function site_url()
+    public static function site_url($disableUrlSetting = false)
     {
-        if (!$url = Get::sett('url')) {
+     
+        if (!($url = Get::sett('url')) || $disableUrlSetting) {
             $url = ClientService::getInstance()->getBaseUrl();
         }
 

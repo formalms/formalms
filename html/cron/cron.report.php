@@ -35,6 +35,7 @@ if (!function_exists('report_log')) {
 
 require_once _adm_ . '/lib/lib.permission.php';
 require_once _base_ . '/lib/lib.pagewriter.php';
+require_once _base_ . '/lib/lib.template.php';
 
 //--- here the specific code ---------------------------------------------------
 //#17598 - REPORT - CRON REPORT RICHIEDE UTENTE LOGGATO (patch)
@@ -57,11 +58,14 @@ function getEmailForSchedule($schedule): array
     }
 
     $recipients = Docebo::aclm()->getAllUsersFromSelection($recipients);
+  
     if (!empty($recipients)) {
-        $queryEmails = 'SELECT email FROM %adm_user WHERE idst IN (' . implode(',', $recipients) . ") AND email<>'' AND valid = 1";
+        $queryEmails = "SELECT u.email as email, su.value as lang FROM %adm_user AS u 
+				LEFT JOIN %adm_setting_user su ON su.id_user = u.idst AND su.path_name = 'ui.language'
+				WHERE u.idst IN (" . implode(',', $recipients) . ") AND u.email <> '' AND u.valid = 1";
         $emailsResult = sql_query($queryEmails);
         foreach ($emailsResult as $emailItem) {
-            $emails[] = $emailItem['email'];
+            $emails[] = ['email' => $emailItem['email'], 'language' => $emailItem['lang']];
         }
     }
 
@@ -84,10 +88,13 @@ function getReportRecipients($id_rep)
 			AND enabled = 1
 			AND (last_execution is null OR last_execution < CURDATE())
 		";
+
     $res = sql_query($qry);
 
     foreach ($res as $schedule) {
+        
         $emails = getEmailForSchedule($schedule);
+     
         if (count($emails) > 0) {
             array_push($output, ...$emails);
             $selected_schedules[] = [
@@ -239,45 +246,20 @@ function update_schedules($schedules)
     }
 }
 
-function parseBaseUrlFromRequest($atRoot = false, $atCore = false, $parse = false)
-{
-    if (isset($_SERVER['HTTP_HOST'])) {
-        $http = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
-        $hostname = $_SERVER['HTTP_HOST'];
-        $dir = str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 
-        $core = preg_split('@/@', str_replace($_SERVER['DOCUMENT_ROOT'], '', realpath(dirname(__FILE__))), null, PREG_SPLIT_NO_EMPTY);
-        $core = $core[0];
-
-        $tmplt = $atRoot ? ($atCore ? '%s://%s/%s/' : '%s://%s/') : ($atCore ? '%s://%s/%s/' : '%s://%s%s');
-        $end = $atRoot ? ($atCore ? $core : $hostname) : ($atCore ? $core : $dir);
-        $base_url = sprintf($tmplt, $http, $hostname, $end);
-    } else {
-        $base_url = 'http://localhost/';
-    }
-
-    if ($parse) {
-        $base_url = parse_url($base_url);
-        if (isset($base_url['path'])) {
-            if ($base_url['path'] == '/') {
-                $base_url['path'] = '';
-            }
-        }
-    }
-
-    return $base_url;
-}
 
 //******************************************************************************
 
 $report_persistence_days = Get::sett('report_persistence_days', 30);
 $report_max_email_size = Get::sett('report_max_email_size_MB', 0);
 $report_store_folder = Get::sett('report_storage_folder', '/' . _folder_files_ . '/common/report/');
-$base_url = Get::sett('url', '');
-if (empty($base_url)) {
-    $base_url = parseBaseUrlFromRequest(true);
-}
+$base_url = getCurrentDomain(null, true);
+
 $report_uuid_prefix = 'uuid';
+
+/**preg match remove eventually cron/ */
+$base_url = preg_replace('/\/cron\//','',$base_url);
+
 
 require_once _base_ . '/lib/lib.upload.php';
 
@@ -289,6 +271,7 @@ $json = new Services_JSON();
 $path = _files_ . '/tmp/';
 $qry = 'SELECT * FROM %lms_report_filter';
 $res = sql_query($qry);
+
 sl_open_fileoperations();
 
 $log_opened = false;
@@ -298,9 +281,13 @@ $log_opened = false;
 $lock_stream = !Get::cfg('CRON_SOCKET_SEMAPHORES', false) || @stream_socket_server('tcp://0.0.0.0:9999', $errno, $errmsg);
 
 if ($lock_stream) {
+    
     foreach ($res as $row) {
+     
         $recipients_data = getReportRecipients($row['id_filter']);
+     
         $recipients = $recipients_data['recipients'];
+
 
         if (count($recipients) > 0) {
             if (!$log_opened) {
@@ -394,38 +381,62 @@ if ($lock_stream) {
 
                     copy($path . $tmpfile, $async_report);
 
-                    //Sends an email containing the report link
-                    $subject = 'Sending scheduled report : ' . $row['filter_name'];
-                    $body = "You can download this report from <a href='$report_url'>here</a><br><br>
-								WARNING: This report will be available for $report_persistence_days days, after that it will be deleted from our system and it will not be accessible anymore.";
+             
+                      //Sends an email containing the report link
+                    foreach ($recipients as $recipient) {
+                        //Sends an email containing the report link
+                       
 
-                    $attachment = false;
-                    $attachmentName = false;
+             
+                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email',[], $recipient['language']));
+                        $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email',[], $recipient['language']));
+                        $body = str_replace('[report_persistence_days]', $report_persistence_days, $body);
+
+
+                        $response = $mailer->SendMail(Get::sett('sender_event'), //sender
+                            [$recipient['email']], //recipients
+                            $subject, //subject
+                            $body //body
+                        );
+                
+                        if (!$response[$recipient['email']]) {
+                            report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
+                        } else {
+                            report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipient));
+
+                            update_schedules($schedules);
+
+                            report_log($row['filter_name'] . ': Schedule info updated');
+                        }
+                    }
                 } else {
-                    $subject = 'Sending scheduled report : ' . $row['filter_name'];
-                    $body = date('Y-m-d H:i:s');
-                }
+                
+                    foreach ($recipients as $recipient) {
+                     
 
-                $mailer->Subject = 'Sending scheduled report : ' . $row['filter_name'];
+                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email',[], $recipient['language']));
 
-                $error = false;
+                        $mailer->Subject = $subject;
+                        $body = date('Y-m-d H:i:s');
 
-                if (!$mailer->SendMail(Get::sett('sender_event'), //sender
-                    $recipients, //recipients
-                    $subject, //subject
-                    $body, //body
-                    [$attachmentName => $attachment],
-                //params
-                )) {
-                    report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
-                    $error = true;
-                } else {
-                    report_log($row['filter_name'] . ': Mail sent to ' . implode(' - ', $recipients));
-                }
+                        $response = $mailer->SendMail(Get::sett('sender_event'), //sender
+                            [$recipient['email']], //recipients
+                            $subject, //subject
+                            $body, //body
+                            [$path . $tmpfile, $row['filter_name'] . '.xls'],
+                            []    //params
+                        );
 
-                if (!$error) {
-                    update_schedules($schedules);
-                    report_log($row['filter_name'] . ': Schedule info updated');
+                        if (!$response[$recipient['email']]) {
+                            report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
+                        } else {
+                            report_log($row['filter_name'] . ': Mail sent to ' . implode(',', $recipient));
+
+                            update_schedules($schedules);
+
+                            report_log($row['filter_name'] . ': Schedule info updated');
+                        }
+                    }
                 }
 
                 //delete temp file
