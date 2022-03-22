@@ -83,7 +83,7 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
         if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
             $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
-            foreach ($rs as $data){
+            foreach ($rs as $data) {
                 $excl[] = $data['idCourse'];
             }
             $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
@@ -99,7 +99,7 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
         $rs = $this->db->query($query);
 
         $result = [];
-        foreach ($rs as $data){
+        foreach ($rs as $data) {
             $result[] = $data['idCourse'];
         }
 
@@ -138,7 +138,7 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
         $rs = $this->db->query($query);
 
         $result = [];
-        foreach ($rs as $data){
+        foreach ($rs as $data) {
             $result[] = $this->getAdviceData($data);
         }
 

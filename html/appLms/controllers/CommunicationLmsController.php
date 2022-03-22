@@ -36,12 +36,11 @@ class CommunicationLmsController extends LmsController
         if ($comm !== false && $comm['type_of'] == 'none') {
             $model->markAsRead($id_comm, Docebo::user()->getId());
         }
-        if(defined('IS_AJAX')) {
+        if (defined('IS_AJAX')) {
             echo json_encode($comm);
         } else {
-            return $comm; 
+            return $comm;
         }
-      
     }
 
     public function init()
@@ -100,19 +99,19 @@ class CommunicationLmsController extends LmsController
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_unread" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                             . Lang::t('_MARK_AS_READ', 'communication')
                             . '</span></a>';
-                    ;
+
                     break;
                 case 'file':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_download" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                             . Lang::t('_DOWNLOAD', 'communication')
                             . '</span></a>';
-                    ;
+
                     break;
                 case 'scorm':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_play js-scorm_lightbox" rel="" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
                             . Lang::t('_PLAY', 'communication')
                             . '</span></a>';
-                    ;
+
                     break;
             }
         }
@@ -148,19 +147,19 @@ class CommunicationLmsController extends LmsController
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_unread" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                             . Lang::t('_MARK_AS_READ', 'communication')
                             . '</span></a>';
-                    ;
+
                     break;
                 case 'file':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_download" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                             . Lang::t('_DOWNLOAD', 'communication')
                             . '</span></a>';
-                    ;
+
                     break;
                 case 'scorm':
                         $communications[$id]['play'] = '<a class="ico-wt-sprite subs_play js-scorm_lightbox" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
                             . Lang::t('_PLAY', 'communication')
                             . '</span></a>';
-                    ;
+
                     break;
             }
         }

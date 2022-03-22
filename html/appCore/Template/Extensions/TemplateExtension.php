@@ -23,7 +23,7 @@ class TemplateExtension extends \Twig\Extension\AbstractExtension
     {
         return [
             new TwigFunction('Template_getBackUi', 'getBackUi', ['is_safe' => ['html']]),
-            new TwigFunction('Template_getVersion', fn() => getTemplateVersion(getDefaultTemplate())),
+            new TwigFunction('Template_getVersion', fn () => getTemplateVersion(getDefaultTemplate())),
         ];
     }
 }

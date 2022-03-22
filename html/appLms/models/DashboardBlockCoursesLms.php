@@ -11,19 +11,17 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-defined('IN_FORMA') or die('Direct access is forbidden.');
-
+defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * Class DashboardBlockCoursesLms
+ * Class DashboardBlockCoursesLms.
  */
 class DashboardBlockCoursesLms extends DashboardBlockLms
 {
-    const COURSE_TYPE_ALL = 'all';
-    const COURSE_TYPE_ELEARNING = 'elearning';
-    const COURSE_TYPE_CLASSROOM = 'classroom';
-    const SORT_ORDER = [1 => ' cu.date_inscr DESC', 2 => 'cu.date_inscr ASC', 3 => 'cu.idCourse DESC', 4 => 'cu.idCourse ASC'];
-
+    public const COURSE_TYPE_ALL = 'all';
+    public const COURSE_TYPE_ELEARNING = 'elearning';
+    public const COURSE_TYPE_CLASSROOM = 'classroom';
+    public const SORT_ORDER = [1 => ' cu.date_inscr DESC', 2 => 'cu.date_inscr ASC', 3 => 'cu.idCourse DESC', 4 => 'cu.idCourse ASC'];
 
     public function __construct($jsonConfig)
     {
@@ -40,7 +38,6 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         return self::ALLOWED_TYPES;
     }
 
-
     public function getForm()
     {
         $form = parent::getForm();
@@ -52,7 +49,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 [
                     'all' => Lang::t('_VIEW_ALL', 'STANDARD'),
                     'elearning' => Lang::t('_COURSE_TYPE_ELEARNING', 'COURSE'),  // ORDER -> CLOSEST DATE END
-                    'classroom' => Lang::t('_CLASSROOM')
+                    'classroom' => Lang::t('_CLASSROOM'),
                 ]
             ),
             DashboardBlockForm::getFormItem($this, 'show_button', DashboardBlockForm::FORM_TYPE_CHECKBOX, false, [1 => Lang::t('_SHOW_BUTTON', 'dashboardsetting')]),
@@ -66,6 +63,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $data = $this->getCommonViewData();
 
         $data['courses'] = $this->getCourses();
+
         return $data;
     }
 
@@ -100,7 +98,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $courses = [];
 
         $limit = $this->data['max_courses_number'];
-        $conditions = ['ID_USER' => 'cu.iduser =' . (int)Docebo::user()->getId()];
+        $conditions = ['ID_USER' => 'cu.iduser =' . (int) Docebo::user()->getId()];
         $conditions['COURSE_STATUS'] = '(c.status in  (1,2))'; // only available, confirmed
         $conditions['USER_ENROLLMENT_STATUS'] = '(cu.status in (0,1))'; // only enrolled and in progress
 
@@ -133,10 +131,10 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             }
         }
 
-        usort($courses, static function ($a , $b){
-            switch ($a['type']){
+        usort($courses, static function ($a, $b) {
+            switch ($a['type']) {
                 case self::COURSE_TYPE_ELEARNING:
-                    switch ($b['type']){
+                    switch ($b['type']) {
                         case self::COURSE_TYPE_ELEARNING:
                             return $a['endDate'] > $b['endDate'];
                         case self::COURSE_TYPE_CLASSROOM:
@@ -145,7 +143,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                     }
                     break;
                 case self::COURSE_TYPE_CLASSROOM:
-                    switch ($b['type']){
+                    switch ($b['type']) {
                         case self::COURSE_TYPE_ELEARNING:
                             return $a['startDate'] > $b['endDate'];
                         case self::COURSE_TYPE_CLASSROOM:
@@ -155,10 +153,11 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                     break;
                 default:
             }
+
             return $a['startDate'] > $b['startDate'];
         });
 
-        return array_slice($courses,0,$limit);
+        return array_slice($courses, 0, $limit);
     }
 
     private function getElearningQuery($conditions, $limit = 0)
@@ -224,7 +223,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $exclude_pathcourse = '';
         if (Get::sett('on_path_in_mycourses') == 'off') {
-            $id_user = (int)Docebo::user()->getId();
+            $id_user = (int) Docebo::user()->getId();
             $learning_path_enroll = $this->getUserCoursePathCourses($id_user);
             if (count($learning_path_enroll) >= 1) {
                 $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $id_user . ' and level <= 3 '
@@ -235,14 +234,14 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 }
                 $exclude_pathcourse = ' and c.idCourse not in (' . implode(',', $excl) . ' )';
             }
-
         }
+
         return $exclude_pathcourse;
     }
 
     private function getUserCoursePathCourses($id_user)
     {
-        require_once(_lms_ . '/lib/lib.coursepath.php');
+        require_once _lms_ . '/lib/lib.coursepath.php';
         $cp_man = new Coursepath_Manager();
         $output = [];
         $cp_list = $cp_man->getUserSubscriptionsInfo($id_user);
@@ -250,6 +249,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
             $cp_list = array_keys($cp_list);
             $output = $cp_man->getAllCourses($cp_list);
         }
+
         return $output;
     }
 
@@ -267,7 +267,6 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
         $dates = [];
         foreach ($rs as $date) {
-
             if ($date['date_start_date'] !== '0000-00-00 00:00:00') {
                 $startDate = new DateTime($date['date_start_date']);
                 $startDateString = $startDate->format('d/m/Y');
@@ -294,12 +293,15 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 'endDateString' => $endDateString,
             ];
         }
+
         return $dates;
     }
 
-    protected function getDataFromCourse($course){
+    protected function getDataFromCourse($course)
+    {
         $courseData = parent::getDataFromCourse($course);
-        $courseData['hours'] = (new DateTime($courseData['hourBegin']))->format("H:i") . (!empty($courseData['hourEnd']) ? '-' . (new DateTime($courseData['hourEnd']))->format("H:i") : '');
+        $courseData['hours'] = (new DateTime($courseData['hourBegin']))->format('H:i') . (!empty($courseData['hourEnd']) ? '-' . (new DateTime($courseData['hourEnd']))->format('H:i') : '');
+
         return $courseData;
     }
 }

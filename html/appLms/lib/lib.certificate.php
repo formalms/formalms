@@ -83,15 +83,15 @@ class Certificate
         switch ($aval_status) {
             case AVS_ASSIGN_FOR_ALL_STATUS:
                     $aval_status = ' 1 ';
-                ;
+
                 break;
             case AVS_ASSIGN_FOR_STATUS_INCOURSE:
                     $aval_status = ' cu.status = ' . _CUS_BEGIN . ' ';
-                ;
+
                 break;
             case AVS_ASSIGN_FOR_STATUS_COMPLETED:
                     $aval_status = ' cu.status = ' . _CUS_END . ' ';
-                ;
+
                 break;
         }
 
@@ -690,19 +690,19 @@ class Certificate
         switch ($av_for_status) {
             case AVS_NOT_ASSIGNED:
                     return false;
-                ;
+
                 break;
             case AVS_ASSIGN_FOR_ALL_STATUS:
                     return true;
-                ;
+
                 break;
             case AVS_ASSIGN_FOR_STATUS_INCOURSE:
                     return $user_status == _CUS_BEGIN;
-                ;
+
                 break;
             case AVS_ASSIGN_FOR_STATUS_COMPLETED:
                     return $user_status == _CUS_END;
-                ;
+
                 break;
         }
 

@@ -234,7 +234,7 @@ class UserProfile
      */
     public function setViewer($id_viewer)
     {
-        return  $id_viewer === false ? $this->_id_viewer = getLogUserId() : $this->_id_viewer = $id_viewer;
+        return $id_viewer === false ? $this->_id_viewer = getLogUserId() : $this->_id_viewer = $id_viewer;
     }
 
     /**
@@ -427,21 +427,21 @@ class UserProfile
                                     $this->_varname_action);
 
                 return $ext_prof->getProfile();
-            ;
+
             break;
             // display the mod info gui -------------------------------
             case 'mod_profile':
                 return $this->getModUser();
-            ;
+
             break;
             case 'mod_password':
                 return $this->_up_viewer->getUserPwdModUi();
-            ;
+
             break;
 
             case 'mod_policy':
                 return $this->_up_viewer->modUserPolicyGui();
-            ;
+
             break;
             // save modified info of the user -------------------------
             case 'save_policy':
@@ -460,7 +460,7 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_FAILSAVEPOLICY'))
                         . $this->_up_viewer->modUserPolicyGui();
                 }
-            ;
+
             break;
             // save modified info of the user -------------------------
             case 'saveinfo':
@@ -543,7 +543,7 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
                         . $this->getModUser();
                 }
-            ; break;
+             break;
             // save password -----------------------------------------
             case 'savepwd':
                 $re = $this->_up_viewer->checkUserPwd();
@@ -584,11 +584,11 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
                         . $this->_up_viewer->getUserPwdModUi();
                 }
-            ; break;
+             break;
 
             case 'uploadavatar':
                 return $this->_up_viewer->modAvatarGui();
-            ; break;
+             break;
             case 'saveavatar':
                 if ($this->saveUserAvatar()) {
                     // all ok --------------------------------------
@@ -605,14 +605,14 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
                         . $this->_up_viewer->modAvatarGui();
                 }
-            ; break;
+             break;
             // teacher curriculum
             case 'del_teach_curric':
                 return $this->_up_viewer->delTeacherCurriculumGui();
-            ; break;
+             break;
             case 'mod_teach_curric':
                 return $this->_up_viewer->modTeacherCurriculumGui();
-            ; break;
+             break;
             case 'save_teach_curric':
                 if ($this->_up_data_man->saveTeacherCurriculumAndPublication($this->_id_user, $this->_up_viewer->getFilledCurriculum(), false)) {
                     // all ok --------------------------------------
@@ -629,10 +629,10 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_OPERATION_FAILURE'))
                         . $this->_up_viewer->modTeacherCurriculumGui();
                 }
-            ; break;
+             break;
             case 'mod_teach_publ':
                 return $this->_up_viewer->modTeacherPublicationsGui();
-            ; break;
+             break;
             case 'save_teach_publ':
                 if ($this->_up_data_man->saveTeacherCurriculumAndPublication($this->_id_user, false, $this->_up_viewer->getFilledPublications())) {
                     // all ok --------------------------------------
@@ -649,23 +649,23 @@ class UserProfile
                     return getErrorUi($this->_lang->def('_FAILSAVEPUBLICATIONS'))
                         . $this->_up_viewer->modTeacherPublicationsGui();
                 }
-            ; break;
+             break;
             // display the profile ------------------------------------
             case 'view_files':
                 $this->_id_user = Get::req('id_user', DOTY_INT, getLogUserId());
 
                 return $this->_up_viewer->getViewUserFiles();
-            ; break;
+             break;
             case 'file_details':
                 $this->_id_user = Get::req('id_user', DOTY_INT, getLogUserId());
 
                 return $this->_up_viewer->getViewUserFileDetail();
-            ; break;
+             break;
 
             case 'profileview':
             default:
                 return $this->getProfile();
-            ; break;
+             break;
         }
     }
 
@@ -1171,11 +1171,11 @@ class UserProfileViewer
     {
         $this->loadUserData();
         if ($name_only) {
-            return  $this->user_info[ACL_INFO_FIRSTNAME]
+            return $this->user_info[ACL_INFO_FIRSTNAME]
                 ? $this->user_info[ACL_INFO_FIRSTNAME]
                 : $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]);
         } else {
-            return  $this->user_info[ACL_INFO_LASTNAME] . $this->user_info[ACL_INFO_FIRSTNAME]
+            return $this->user_info[ACL_INFO_LASTNAME] . $this->user_info[ACL_INFO_FIRSTNAME]
                 ? $this->user_info[ACL_INFO_LASTNAME] . ' ' . $this->user_info[ACL_INFO_FIRSTNAME]
                 : $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]);
         }
@@ -1244,23 +1244,23 @@ class UserProfileViewer
             case 'micro':
                 $class_picture = 'image_limit_micro';
                 $max_dim = '28';
-            ; break;
+             break;
             case 'small':
                 $class_picture = 'image_limit_small';
                 $max_dim = '50';
-            ; break;
+             break;
             case 'normal':
                 $class_picture = 'image_limit_normal';
                 $max_dim = '100';
-            ; break;
+             break;
             case 'medium':
                 $class_picture = 'image_limit_medium';
                 $max_dim = '150';
-            ; break;
+             break;
             case 'large':
                 $class_picture = 'image_limit_big';
                 $max_dim = '250';
-            ; break;
+             break;
         }
         if ($class_picture == false) {
             $class_picture = 'image_limit_medium';
@@ -1578,13 +1578,13 @@ class UserProfileViewer
                 $prefix = '';
                 $suffix = '';
                 if ($value['image']) {
-                // attach as prefix the image
+                    // attach as prefix the image
                     $prefix = '<img class="up_' . $value['field_type'] . '"
 								src="' . $value['image'] . '"
 								alt="' . $this->_lang->def('_ALT_' . strtoupper($value['field_type'])) . '" /> ';
                 }
                 if ($value['href']) {
-                //attach link
+                    //attach link
                     $prefix = '<a href="' . $value['href'] . '">' . $prefix;
                     if ($prefix != '') {
                         $prefix .= '</a>';
@@ -1887,7 +1887,7 @@ class UserProfileViewer
                 $html .= '<div class="nofloat"></div>'
                     . '</div>';
 
-            ; break;
+             break;
             case 'video':
                 $html .= '<h2 class="up_type1">' . $this->_lang->def('_USER_VIDEOS') . '</h2>'
 
@@ -1923,7 +1923,7 @@ class UserProfileViewer
                 $html .= '<div class="nofloat"></div>'
                     . '</div>';
 
-            ; break;
+             break;
             case 'audio':
                 $html .= '<h2 class="up_type1">' . $this->_lang->def('_USER_AUDIO') . '</h2>'
 
@@ -1959,7 +1959,7 @@ class UserProfileViewer
                 $html .= '<div class="nofloat"></div>'
                     . '</div>';
 
-            ; break;
+             break;
             case 'other':
                 $html .= '<h2 class="up_type1">' . $this->_lang->def('_USER_OTHER') . '</h2>'
 
@@ -1987,7 +1987,7 @@ class UserProfileViewer
                 $html .= '<div class="nofloat"></div>'
                     . '</div>';
 
-            ; break;
+             break;
         }
         $html .= $nav_bar->getNavBar($ini);
         $html .= '</div>';
@@ -2045,19 +2045,19 @@ class UserProfileViewer
             case 'image':
                 $html .= '<img src="' . $GLOBALS['where_files_relative'] . $user_file->getFileAddress($file[MYFILE_FILE_NAME]) . '" '
                         . 'title="' . strip_tags($file[MYFILE_DESCRIPTION]) . '" alt="' . strip_tags($file[MYFILE_TITLE]) . '" />';
-            ; break;
+             break;
             case 'video':
                 require_once _base_ . '/lib/lib.multimedia.php';
                 $html .= getEmbedPlay($GLOBALS['where_files_relative'] . $user_file->getFilePath(), $file[MYFILE_FILE_NAME]);
-            ; break;
+             break;
             case 'audio':
                 require_once _base_ . '/lib/lib.multimedia.php';
                 $html .= getEmbedPlay($GLOBALS['where_files_relative'] . $user_file->getFilePath(), $file[MYFILE_FILE_NAME]);
-            ; break;
+             break;
             case 'other':
                 require_once _base_ . '/lib/lib.multimedia.php';
                 $html .= getEmbedPlay($user_file->getFilePath(), $file[MYFILE_FILE_NAME]);
-            ; break;
+             break;
         }
         $html .= '</div>';
         $id_thread = Get::req('idThread', DOTY_INT, 0);
@@ -3259,7 +3259,7 @@ class UserProfileViewer
 
     public function getFilledCurriculum()
     {
-        return  isset($_POST['tp_curriculum']) ? $_POST['tp_curriculum'] : false;
+        return isset($_POST['tp_curriculum']) ? $_POST['tp_curriculum'] : false;
     }
 
     public function modTeacherPublicationsGui()
@@ -3290,7 +3290,7 @@ class UserProfileViewer
 
     public function getFilledPublications()
     {
-        return  isset($_POST['tp_publications']) ? $_POST['tp_publications'] : false;
+        return isset($_POST['tp_publications']) ? $_POST['tp_publications'] : false;
     }
 
     // stats -----------------------------------------------------------------------

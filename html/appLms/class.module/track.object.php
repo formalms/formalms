@@ -58,14 +58,14 @@ class Track_Object
         switch ($environment) {
             case 'communication':
                 return $GLOBALS['prefix_lms'] . '_communication_track';
-            ; break;
+             break;
             case 'games':
                 return $GLOBALS['prefix_lms'] . '_games_track';
-            ; break;
+             break;
             case 'course_lo':
             default:
                 return $GLOBALS['prefix_lms'] . '_commontrack';
-            ; break;
+             break;
         }
     }
 

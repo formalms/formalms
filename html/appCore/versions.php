@@ -12,4 +12,4 @@
  */
 
 const _file_version_ = '3.2.0';
-const _template_min_version_ = '3.2.0';
+const _template_min_version_ = '3.0.1';

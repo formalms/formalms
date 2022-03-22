@@ -194,6 +194,7 @@ function checkTemplateVersion($template_name)
 function getTemplateVersion($template_name)
 {
     require_once Forma::inc(_adm_ . '/versions.php');
+
     return readTemplateManifest($template_name, 'forma_version');
 }
 
@@ -441,12 +442,12 @@ function getBackUi($link, $name, $type = 'link')
         case 'button':
                 return '<div class="container-back_button">'
                     . '<input class="button" type="button" value="' . $name . '" /></div>';
-            ;
+
             break;
         case 'submit':
                 return '<div class="container-back_button">'
                     . '<input class="button" type="submit" value="' . $name . '" /></div>';
-            ;
+
             break;
         default:
                 return '<div class="container-back">' . "\n\t" . '<a href="' . $link . '" '
