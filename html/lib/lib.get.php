@@ -408,7 +408,6 @@ class Get
      */
     public static function site_url($disableUrlSetting = false)
     {
-     
         if (!($url = Get::sett('url')) || $disableUrlSetting) {
             $url = ClientService::getInstance()->getBaseUrl();
         }

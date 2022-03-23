@@ -58,7 +58,7 @@ function getEmailForSchedule($schedule): array
     }
 
     $recipients = Docebo::aclm()->getAllUsersFromSelection($recipients);
-  
+
     if (!empty($recipients)) {
         $queryEmails = "SELECT u.email as email, su.value as lang FROM %adm_user AS u 
 				LEFT JOIN %adm_setting_user su ON su.id_user = u.idst AND su.path_name = 'ui.language'
@@ -92,9 +92,8 @@ function getReportRecipients($id_rep)
     $res = sql_query($qry);
 
     foreach ($res as $schedule) {
-        
         $emails = getEmailForSchedule($schedule);
-     
+
         if (count($emails) > 0) {
             array_push($output, ...$emails);
             $selected_schedules[] = [
@@ -246,8 +245,6 @@ function update_schedules($schedules)
     }
 }
 
-
-
 //******************************************************************************
 
 $report_persistence_days = Get::sett('report_persistence_days', 30);
@@ -258,8 +255,7 @@ $base_url = getCurrentDomain(null, true);
 $report_uuid_prefix = 'uuid';
 
 /**preg match remove eventually cron/ */
-$base_url = preg_replace('/\/cron\//','',$base_url);
-
+$base_url = preg_replace('/\/cron\//', '', $base_url);
 
 require_once _base_ . '/lib/lib.upload.php';
 
@@ -281,13 +277,10 @@ $log_opened = false;
 $lock_stream = !Get::cfg('CRON_SOCKET_SEMAPHORES', false) || @stream_socket_server('tcp://0.0.0.0:9999', $errno, $errmsg);
 
 if ($lock_stream) {
-    
     foreach ($res as $row) {
-     
         $recipients_data = getReportRecipients($row['id_filter']);
-     
-        $recipients = $recipients_data['recipients'];
 
+        $recipients = $recipients_data['recipients'];
 
         if (count($recipients) > 0) {
             if (!$log_opened) {
@@ -381,24 +374,20 @@ if ($lock_stream) {
 
                     copy($path . $tmpfile, $async_report);
 
-             
-                      //Sends an email containing the report link
+                    //Sends an email containing the report link
                     foreach ($recipients as $recipient) {
                         //Sends an email containing the report link
-                       
 
-             
-                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email',[], $recipient['language']));
-                        $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email',[], $recipient['language']));
+                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email', [], $recipient['language']));
+                        $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']));
                         $body = str_replace('[report_persistence_days]', $report_persistence_days, $body);
-
 
                         $response = $mailer->SendMail(Get::sett('sender_event'), //sender
                             [$recipient['email']], //recipients
                             $subject, //subject
                             $body //body
                         );
-                
+
                         if (!$response[$recipient['email']]) {
                             report_log($row['filter_name'] . ': Error while sending mail.' . $mailer->ErrorInfo);
                         } else {
@@ -410,11 +399,8 @@ if ($lock_stream) {
                         }
                     }
                 } else {
-                
                     foreach ($recipients as $recipient) {
-                     
-
-                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email',[], $recipient['language']));
+                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email', [], $recipient['language']));
 
                         $mailer->Subject = $subject;
                         $body = date('Y-m-d H:i:s');
