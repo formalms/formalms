@@ -158,14 +158,14 @@ class User_API extends API
             } else {
                 switch ($userdata['role']) {
                     case 'godadmin':
-                                            $level = ADMIN_GROUP_GODADMIN;
-                                            break;
+                        $level = ADMIN_GROUP_GODADMIN;
+                        break;
                     case 'admin':
-                                            $level = ADMIN_GROUP_ADMIN;
-                                            break;
+                        $level = ADMIN_GROUP_ADMIN;
+                        break;
                     default:
-                                            $level = ADMIN_GROUP_USER;
-                                            break;
+                        $level = ADMIN_GROUP_USER;
+                        break;
                 }
             }
 
@@ -273,11 +273,11 @@ class User_API extends API
             require_once _base_ . '/lib/lib.eventmanager.php';
 
             $array_subst = [
-                            '[url]' => Get::site_url(),
-                            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
-                            '[userid]' => $userdata['userid'],
-                            '[password]' => $userdata['password'],
-                    ];
+                '[url]' => Get::site_url(),
+                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                '[userid]' => $userdata['userid'],
+                '[password]' => $userdata['password'],
+            ];
 
             $e_msg = new EventMessageComposer();
             $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
@@ -505,7 +505,8 @@ class User_API extends API
 
     public function getMyCourses($id_user, $params = false)
     {
-        require_once _lms_ . '/lib/lib.course.php';
+        require_once Forma::include(_lms_ . '/lib/', 'lib.course.php');
+        require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $output = [];
 
         $output['success'] = true;
@@ -518,17 +519,17 @@ class User_API extends API
                 case 'completed':
                     $search[] = 'cu.status = :status';
                     $search_params[':status'] = _CUS_END;
-                 break;
+                    break;
                 case 'notcompleted':
                     $search[] = 'cu.status >= :status_from';
                     $search_params[':status_from'] = _CUS_SUBSCRIBED;
                     $search[] = 'cu.status < :status_to';
                     $search_params[':status_to'] = _CUS_END;
-                 break;
+                    break;
                 case 'notstarted':
                     $search[] = 'cu.status = :status';
                     $search_params[':status'] = _CUS_SUBSCRIBED;
-                 break;
+                    break;
             }
         }
 
@@ -536,20 +537,40 @@ class User_API extends API
         $course_list = $model->findAll($search, $search_params);
 
         //check courses accessibility
-        $keys = array_keys($course_list);
-        for ($i = 0; $i < count($keys); ++$i) {
-            $course_list[$keys[$i]]['can_enter'] = Man_Course::canEnterCourse($course_list[$keys[$i]]);
+
+        foreach ($course_list as $key => $value) {
+            $course_list[$key]['can_enter'] = Man_Course::canEnterCourse($course_list[$key]);
         }
 
-        //$output['log']=var_export($course_list, true);
+        //$output['log'] = $course_list;
 
         foreach ($course_list as $key => $course_info) {
-            $output[]['course_info'] = [
+            $dates = [];
+
+            switch ($course_info['course_type']) {
+                case 'classroom':
+                    $classroomManager = new DateManager();
+                    $courseDates = $classroomManager->getCourseDate($course_info['idCourse']);
+
+                    foreach ($courseDates as $courseDate) {
+                        $userStatus = $classroomManager->getCourseEditionUserStatus($id_user, $course_info['idCourse'], $courseDate['id_date']);
+                        if (!empty($userStatus)) {
+                            $dates[] = $userStatus;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            $output['courses'][]['course_info'] = [
                 'course_id' => $course_info['idCourse'],
+                'course_type' => $course_info['course_type'],
                 'course_name' => str_replace('&', '&amp;', $course_info['name']),
                 'course_description' => str_replace('&', '&amp;', $course_info['description']),
                 'course_link' => Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course_info['idCourse'],
                 'user_status' => $course_info['user_status'],
+                'dates' => $dates,
             ];
         }
 
@@ -640,10 +661,10 @@ class User_API extends API
         switch ($status) {
             case 'active':
                 $qtxt .= 'AND valid=1';
-             break;
+                break;
             case 'suspended':
                 $qtxt .= 'AND valid=0';
-             break;
+                break;
         }
 
         $q = $this->db->query($qtxt);
@@ -693,9 +714,9 @@ class User_API extends API
     {
         $userid = $params['userid'];
         $query = 'SELECT idst, userid, firstname, lastname, pass, email, avatar, signature,'
-                . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
+            . ' level, lastenter, valid, pwd_expire_at, register_date, lastenter, force_change,
 					 facebook_id, twitter_id, linkedin_id, google_id, privacy_policy '
-                . ' FROM ' . $this->aclManager->_getTableUser();
+            . ' FROM ' . $this->aclManager->_getTableUser();
         $query .= " WHERE userid = '" . $this->aclManager->absoluteId($userid) . "'";
 
         if ($params['also_check_as_email']) {
@@ -764,11 +785,13 @@ class User_API extends API
     }
 
     /**
-       Assign an Admin Profile for a given username or email.
-       @param $params
-              - profile name
-              - username  or user email
-       @return boolean
+     * Assign an Admin Profile for a given username or email.
+     *
+     * @param $params
+     * - profile name
+     * - username  or user email
+     *
+     * @return bool
      */
     public function assignProfile($params)
     {
@@ -1194,7 +1217,7 @@ class User_API extends API
                 } else {
                     $output = ['success' => false];
                 }
-             break;
+                break;
 
             case 'userdetails':
                 if (count($params) > 0 && !isset($params['ext_not_found'])) { //params[0] should contain user id
@@ -1211,7 +1234,7 @@ class User_API extends API
                 } else {
                     $output = ['success' => false, 'message' => 'No parameter provided.'];
                 }
-             break;
+                break;
 
             case 'customfields':
                 $tmp_lang = false; //if not specified, use default language
@@ -1224,7 +1247,7 @@ class User_API extends API
                 } else {
                     $output = ['success' => false, 'message' => 'Error: unable to retrieve custom fields.'];
                 }
-             break;
+                break;
 
             case 'create':
             case 'createuser':
@@ -1236,7 +1259,7 @@ class User_API extends API
                 } else {
                     $output = ['success' => false, 'message' => 'Error: unable to create new user.'];
                 }
-             break;
+                break;
 
             case 'edit':
             case 'updateuser':
@@ -1251,7 +1274,7 @@ class User_API extends API
                 } else {
                     $output = ['success' => false, 'message' => 'Error: user id to update has not been specified.'];
                 }
-             break;
+                break;
 
             case 'delete':
             case 'deleteuser':
@@ -1260,7 +1283,7 @@ class User_API extends API
                 } else {
                     $output = ['success' => false, 'message' => 'Error: user id to update has not been specified.'];
                 }
-             break;
+                break;
 
             case 'userdetailsbyuserid':
                 $acl_man = new DoceboACLManager();
@@ -1270,13 +1293,13 @@ class User_API extends API
                 } else {
                     $output = $this->getUserDetails($idst);
                 }
-             break;
+                break;
 
             case 'userdetailsfromcredentials':
                 if (!isset($params['ext_not_found'])) {
                     $output = $this->getUserDetailsFromCredentials($_POST);
                 }
-             break;
+                break;
 
             case 'updateuserbyuserid':
                 if (count($params) > 0) { //params[0] should contain user id
@@ -1291,97 +1314,98 @@ class User_API extends API
                 } else {
                     $output = ['success' => false, 'message' => 'Error: user id to update has not been specified.'];
                 }
-             break;
+                break;
 
             case 'userCourses':
             case 'mycourses':
                 if (!isset($params['ext_not_found'])) {
                     $output = $this->getMyCourses($params['idst'], $_POST);
                 }
-             break;
+                break;
 
             case 'kbsearch':
                 if (!isset($params['ext_not_found'])) {
                     $output = $this->KbSearch($params['idst'], $_POST);
                 }
-             break;
+                break;
 
             case 'importextusers':
                 $output = $this->importExternalUsers($_POST);
-             break;
+                break;
 
             case 'importextusersfromemail':
                 $output = $this->importExternalUsersFromEmail($_POST);
-             break;
+                break;
 
             case 'countusers':
                 $output = $this->countUsers($_POST);
-             break;
+                break;
 
             case 'checkregcode':
                 $output = $this->checkRegistrationCode($_POST);
-             break;
+                break;
 
             case 'checkUsername':
             case 'checkusername':
                 $output = $this->checkUsername($_POST);
-             break;
+                break;
 
             case 'assignprofile':
             case 'assignProfile':
                 $output = $this->assignProfile($_POST);
-             break;
+                break;
 
             case 'admin_assignUsers':
             case 'admin_assignusers':
                 $output = $this->admin_assignUsers($_POST, 'assign');
-             break;
+                break;
 
             case 'admin_revokeUsers':
             case 'admin_revokeusers':
                 $output = $this->admin_assignUsers($_POST, 'revoke');
-             break;
+                break;
 
             case 'admin_assignCourses':
             case 'admin_assigncourses':
                 $output = $this->admin_assignCourses($_POST);
-             break;
+                break;
 
 // LRZ
-        case 'newOrg':
-        case 'neworg':
-        case 'addorg':
+            case 'newOrg':
+            case 'neworg':
+            case 'addorg':
                 $output = $this->newOrg($_POST);
 
-            break;
+                break;
 
-        case 'moveOrg':
-        case 'moveorg':
+            case 'moveOrg':
+            case 'moveorg':
                 $output = $this->moveOrg($_POST);
 
-            break;
+                break;
 
-        case 'moveOrgUser':
-        case 'moveorguser':
-            $output = $this->moveUserInOrg($_POST);
-             break;
+            case 'moveOrgUser':
+            case 'moveorguser':
+                $output = $this->moveUserInOrg($_POST);
+                break;
 
-        case 'removeUserFromOrg':
-        case 'removeuserfromorg':
-             $output = $this->removeUserFromOrg($_POST);
-             break;
+            case 'removeUserFromOrg':
+            case 'removeuserfromorg':
+                $output = $this->removeUserFromOrg($_POST);
+                break;
 
-        case 'renameOrg':
-        case 'renameorg':
-             $output = $this->renameOrg($_POST);
-             break;
+            case 'renameOrg':
+            case 'renameorg':
+                $output = $this->renameOrg($_POST);
+                break;
 
-        case 'removeOrg':
-        case 'removeorg':
-            $output = $this->removeOrg($_POST);
-             break;
+            case 'removeOrg':
+            case 'removeorg':
+                $output = $this->removeOrg($_POST);
+                break;
 
-            default: $output = parent::call($name, $_POST);
+            default:
+                $output = parent::call($name, $_POST);
         }
 
         return $output;

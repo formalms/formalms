@@ -1531,6 +1531,26 @@ class DateManager
         return $res;
     }
 
+    public function getCourseEditionUserStatus($idUser, $idCourse, $idDate)
+    {
+        $query = 'SELECT cd.id_date as idDate, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity '
+            . ' FROM %lms_courseuser  AS s'
+            . ' JOIN %lms_course_date_user AS cd ON s.idUser = cd.id_user'
+            . ' JOIN %adm_user  AS u ON s.idUser = u.idst'
+            . ' WHERE s.idCourse = ' . (int) $idCourse
+            . ' AND u.idst = ' . $idUser
+            . ' AND cd.id_date = ' . $idDate;
+
+        $result = sql_query($query);
+
+        $courseEditionData = [];
+        foreach ($result as $record) {
+            $courseEditionData = $record;
+        }
+
+        return $courseEditionData;
+    }
+
     public function getCourseEditionSubscription($id_course, $id_date, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false)
     {
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity '
@@ -1617,7 +1637,7 @@ class DateManager
         }
 
         ($start_index === false ? '' : $query .= ' LIMIT ' . $start_index . ', ' . $results);
-
+        dd($query);
         $result = sql_query($query);
         $res = [];
 
