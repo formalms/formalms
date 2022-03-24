@@ -17,6 +17,7 @@ EOF;
 $finder = PhpCsFixer\Finder::create()
     ->exclude(__DIR__ . '/../../html/vendor')
     ->exclude(__DIR__ . '/../../html/plugins')
+    ->exclude(__DIR__ . '/../../html/files')
     ->in(__DIR__ . '/../../html/plugins/ConferenceBBB')
     ->in(__DIR__ . '/../../html/plugins/Dummy')
     ->in(__DIR__ . '/../../html/plugins/FacebookAuth')
