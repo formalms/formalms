@@ -42,7 +42,7 @@ if (!Docebo::user()->isAnonymous()) {
             .'</div>', 'content');
     */
 
-        $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url], _lms_ . '/views/lo'), 'content');
+        $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'insitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
     }
 
     function insitem()
@@ -147,11 +147,16 @@ if (!Docebo::user()->isAnonymous()) {
 
         $back_coded = htmlentities(urlencode($object_item->back_url));
 
-        list($title, $description) = sql_fetch_row(sql_query('
-	SELECT title, description 
-	FROM ' . $GLOBALS['prefix_lms'] . "_materials_lesson 
-	WHERE idLesson = '" . $object_item->getId() . "'"));
+        list($filename) = sql_fetch_row(sql_query('SELECT path'
+        . ' FROM %lms_materials_lesson'
+        . ' WHERE idLesson = ' . (int) $object_item->id . ''));
 
+        $file['name'] = $filename;
+        $file['size'] = filesize(_base_.'/files/appLms/' . Get::sett('pathlesson').$filename);
+        $files[] = $file;
+
+
+    /*
         $GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
             . '<div class="std_block">'
             . getBackUi(Util::str_replace_once('&', '&amp;', $object_item->back_url) . '&amp;mod_result=0', $lang->def('_BACK'))
@@ -162,7 +167,6 @@ if (!Docebo::user()->isAnonymous()) {
             . Form::getHidden('idItem', 'idItem', $object_item->getId())
             . Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_item->back_url)))
             . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 100, $title)
-            . Form::getFilefield($lang->def('_FILE_MOD'), 'file', 'attach')
 
             . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $description)
             . Form::closeElementSpace()
@@ -171,6 +175,11 @@ if (!Docebo::user()->isAnonymous()) {
             . Form::closeButtonSpace()
             . Form::closeForm()
             . '</div>', 'content');
+            */
+           
+   
+            $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'upitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
+ 
     }
 
     function upitem()
@@ -178,80 +187,119 @@ if (!Docebo::user()->isAnonymous()) {
         //checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.upload.php';
+        $response = [];
+        $response['status'] = true;
+        $back_url = Get::pReq('back_url', DOTY_MIXED, '');
+        $idLesson = Get::pReq('id_comm', DOTY_INT, null);
+        $title = Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE', 'item', 'lms'));
+        
+        $idCourse = $_SESSION['idCourse'];
 
-        $back_url = urldecode($_POST['back_url']);
-
-        //scanning title
-        if (trim($_POST['title']) == '') {
-            $_POST['title'] = Lang::t('_NOTITLE', 'item', 'lms');
+        try {
+            $filesInfo = json_decode($_REQUEST['info'], true);
+        } catch (JsonException $e) {
+            $response['status'] = false;
+            $response['errors'][] = Lang::t('_INPUT_IS_NOT_VALID', 'item');
+            echo json_encode($response);
+            exit();
         }
-
+       
         //save file
-        if ($_FILES['attach']['name'] != '') {
+        if (count($filesInfo)) {
             $path = '/appLms/' . Get::sett('pathlesson');
 
             // retrive and delte ld file --------------------------------------------------
 
-            list($old_file) = sql_fetch_row(sql_query('
-		SELECT path 
-		FROM ' . $GLOBALS['prefix_lms'] . "_materials_lesson 
-		WHERE idLesson = '" . (int) $_POST['idItem'] . "'"));
+            list($old_file) = sql_fetch_row(sql_query("
+            SELECT path 
+            FROM %lms_materials_lesson 
+            WHERE idLesson = '" . (int) $idLesson . "'"));
 
             $size = Get::file_size(_files_ . $path . $old_file);
             if (!sl_unlink($path . $old_file)) {
                 sl_close_fileoperations();
                 Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
-                Util::jump_to($back_url . '&id_lo=' . (int) $_POST['idItem'] . '&mod_result=0');
+                Util::jump_to($back_url . '&id_los=' . (int) $idLesson . '&mod_result=0');
             }
-            $GLOBALS['course_descriptor']->subFileToUsedSpace(false, $size);
 
-            // control course quota ---------------------------------------------------
+            if (isset($idCourse) && defined('LMS')) {
+                $GLOBALS['course_descriptor']->subFileToUsedSpace(false, $size);
 
-            $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
-            $used = $GLOBALS['course_descriptor']->getUsedSpace();
+                // control course quota ---------------------------------------------------
 
-            if (Util::exceed_quota($_FILES['attach']['tmp_name'], $quota, $used)) {
-                Forma::addError(Lang::t('_QUOTA_EXCEDED'));
-                Util::jump_to($back_url . '&create_result=0');
+                $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
+                $used = $GLOBALS['course_descriptor']->getUsedSpace();
+
+                $totalSize = 0;
+                foreach ($filesInfo as $index => $fileItem) {
+                    $file = $_FILES['file' . $index];
+
+                    $totalSize += Get::dir_size($file['tmp_name']);
+                }
+                if (Util::exceed_quota('', $quota, $used, $totalSize)) {
+                    $response['errors']['quota'] = Lang::t('_QUOTA_EXCEDED', 'item');
+                    echo json_encode($response);
+                    exit();
+                }
             }
 
             // save new file ------------------------------------------------------------
-
-            sl_open_fileoperations();
-            $savefile = $_SESSION['idCourse'] . '_' . mt_rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
-            if (!file_exists(_files_ . $path . $savefile)) {
-                if (!sl_upload($_FILES['attach']['tmp_name'], $path . $savefile)) {
-                    sl_close_fileoperations();
-                    Forma::addError(Lang::t('_ERROR_UPLOAD', 'item', 'lms'));
-                    Util::jump_to($back_url . '&id_lo=' . (int) $_POST['idItem'] . '&mod_result=0');
+            foreach ($filesInfo as $index => $fileItem) {
+                $fileIndex = 'file' . $index;
+                $error = false;
+                if (empty(trim($fileItem['title']))) {
+                    $response['status'] = false;
+                    $response['errors']['files'][$fileIndex] = Lang::t('_ITEM_DOES_NOT_HAVE_TITLE', 'item');
+                    $error = true;
                 }
-                sl_close_fileoperations();
-            } else {
-                Forma::addError(Lang::t('_ERROR_UPLOAD', 'item', 'lms'));
-                Util::jump_to($back_url . '&id_lo=' . (int) $_POST['idItem'] . '&mod_result=0');
+    
+                $file = $_FILES[$fileIndex];
+    
+                if (empty($file['name'])) {
+                    $response['status'] = false;
+                    $response['errors']['files'][$fileIndex] = Lang::t('_FILE_IS_UNSPECIFIED', 'item');
+                    $error = true;
+                }
+    
+                if (!$error) {
+                    $path = '/' . _folder_lms_ . '/' . Get::sett('pathlesson');
+                    $savefile = ($idCourse ?? '0') . '_' . random_int(0, 100) . '_' . time() . '_' . $file['name'];
+                    $savefile = str_replace("'", "\'", $savefile); //Patch file con apostrofo
+    
+                    if (!file_exists(_files_ . $path . $savefile)) {
+                        sl_open_fileoperations();
+                        if (!sl_upload($file['tmp_name'], $path . $savefile)) {
+                            sl_close_fileoperations();
+                            $response['status'] = false;
+                            $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
+                        }
+                        sl_close_fileoperations();
+                    } else {
+                        $response['status'] = false;
+                        $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
+                    }
+    
+                    $update_query = "UPDATE %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'
+                    WHERE idLesson = '" . (int) $idLesson . "'";
+    
+                    if (!sql_query($update_query)) {
+                        sl_unlink($path . $savefile);
+                        $response['errors']['files'][$fileIndex] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
+                    }
+                    if (isset($_SESSION['idCourse']) && defined('LMS')) {
+                        $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_ . $path . $savefile);
+                    }
+              
+                }
             }
-            $new_file = ", path = '" . $savefile . "'";
+         
+        
         }
 
-        $insert_query = '
-	UPDATE ' . $GLOBALS['prefix_lms'] . "_materials_lesson 
-	SET title = '" . $_POST['title'] . "',
-		description = '" . $_POST['description'] . "'
-		$new_file
-	WHERE idLesson = '" . (int) $_POST['idItem'] . "'";
-
-        if (!sql_query($insert_query)) {
-            sl_unlink($path . $savefile);
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
-            Util::jump_to($back_url . '&id_lo=' . (int) $_POST['idItem'] . '&mod_result=0');
-        }
-        if (isset($_SESSION['idCourse']) && defined('LMS')) {
-            $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_ . $path . $savefile);
-            require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
-            Track_Object::updateObjectTitle($_POST['idItem'], 'item', $_POST['title']);
-        }
-
-        Util::jump_to($back_url . '&id_lo=' . (int) $_POST['idItem'] . '&mod_result=1');
+        $response['back_url'] = str_replace('&amp;', '&', $back_url . '&id_los=' . (int) $idLesson . '&mod_result=1');
+        echo json_encode($response);
+        exit();
+       
     }
 
     //= XXX: switch===================================================================

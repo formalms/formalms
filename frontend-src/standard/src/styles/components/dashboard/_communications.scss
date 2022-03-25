@@ -2,6 +2,7 @@
     height: 84px;
     margin-top: 38px;
     float: left;
+    padding: 0 2%;
   }
 
 .d-communication__date {
@@ -43,4 +44,8 @@
 
   .d-communication__content-wrapper{
     font-size: 12px;
+  }
+
+  .d-communication__button_wrapper .forma-button__label:after{
+    content: none;
   }

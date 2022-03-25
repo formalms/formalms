@@ -2,6 +2,7 @@
     height: 84px;
     margin-top: 38px;
     float: left;
+    padding: 0 2%;
   }
 
 .d-news__date {
@@ -42,4 +43,8 @@
 
   .d-news__content-wrapper{
     font-size: 12px;
+  }
+
+  .d-news__button_wrapper .forma-button__label:after{
+    content: none;
   }

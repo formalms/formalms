@@ -32,10 +32,8 @@
               
                  
                     {% for c in block.communication %}
-                        <div class="d-communication__item has-forma-tooltip {{ subclass }}" style="position: relative">
-                            {% if c.dateAttempt != null %}
-                                            <div class="forma-tooltip">{{c.dateAttempt|date("d-m-Y H:i:s")}}</div>
-                            {% endif %}
+                        <div class="d-communication__item  {{ subclass }}" style="position: relative">
+                         
                             <div class="d-communication__content-wrapper">
                                 <div class="d-communication__date">
                                     {{ c.publish_date|date("d")  }}/{{ c.publish_date|date("m")  }}/{{ c.publish_date|date("Y") }}

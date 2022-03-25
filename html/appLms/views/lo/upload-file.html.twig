@@ -6,10 +6,11 @@
         OnSubmitClick: function (obj) {
             this.Errors = {};
             obj.formData.append('back_url', '{{ back_url }}')
+            obj.formData.append('id_comm', '{{ id_comm }}')
             this.Uploading = true;
             window.frontend.helpers.Axios({
                 method: 'post',
-                url: `${window.frontend.config.url.appLms}/index.php?modname=item&op=insitem`,
+                url: `${window.frontend.config.url.appLms}/index.php?modname=item&op={{ op }}`,
                 data: obj.formData
             }).then(res => {
                 this.Uploading = false;

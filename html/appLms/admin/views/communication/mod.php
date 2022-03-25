@@ -6,7 +6,7 @@ echo getTitleArea([
 ?>
 <div class="std_block">
 <?php
-echo Form::openForm('add_comm', 'index.php?r=alms/communication/update', false, false, 'multipart/form-data')
+echo Form::openForm('add_comm', $data['type_of'] == 'none' ? 'index.php?r=alms/communication/update' : 'index.php?r=alms/communication/mod_obj&id_comm='.$data['id_comm'], false, false, 'multipart/form-data')
 
     . Form::getHidden('id_comm', 'id_comm', Get::req('id_comm', DOTY_MIXED, $data['id_comm']))
 
