@@ -1694,7 +1694,7 @@ class DateManager
         }
 
         ($start_index === false ? '' : $query .= ' LIMIT ' . $start_index . ', ' . $results);
-        dd($query);
+
         $result = sql_query($query);
         $res = [];
 

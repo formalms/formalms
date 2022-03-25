@@ -81,8 +81,8 @@ $str_all = Lang::t('_ALL_COURSE_TYPE', 'course');
                     
 
                     <div class="filterBar__searchAndReset input-group">
-                        <a href='#' class="filterBar__search" id='<?php echo $id; ?>_filter_set1'>Cerca<?php // echo Lang::t('_FILTER_APPLY', 'standard');?></a>
-                        <a href='#' class="filterBar__reset" id='<?php echo $id; ?>_filter_reset'>Azzera <?php //echo Lang::t('_FILTER_RESET', 'report');?></a>
+                        <a href='#' class="filterBar__search" id='<?php echo $id; ?>_filter_set1'><?php echo Lang::t('_FILTER_APPLY', 'standard');?></a>
+                        <a href='#' class="filterBar__reset" id='<?php echo $id; ?>_filter_reset'><?php echo Lang::t('_FILTER_RESET', 'standard');?></a>
                     </div>
 
 
