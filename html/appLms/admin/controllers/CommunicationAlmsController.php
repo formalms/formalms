@@ -225,7 +225,6 @@ class CommunicationAlmsController extends AlmsController
 
     protected function add_obj()
     {
-       
         if (!$this->permissions['add']) {
             $this->render('invalid', [
                 'message' => $this->_getMessage('no permission'),
@@ -374,7 +373,7 @@ class CommunicationAlmsController extends AlmsController
 
         $id_comm = Get::req('id_comm', DOTY_INT, 0);
         $data = $this->model->findByPk($id_comm);
-    
+
         $back_url = 'index.php?r=alms/communication/update_obj&id_comm=' . $id_comm;
 
         switch ($data['type_of']) {

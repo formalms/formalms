@@ -13,25 +13,26 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+class HomeLmsController extends LmsController
+{
     public $name = 'home';
 
-	public function show() {
-
-        require_once(_base_.'/lib/lib.navbar.php');
-        require_once(_lms_.'/lib/lib.middlearea.php');
+    public function show()
+    {
+        require_once _base_ . '/lib/lib.navbar.php';
+        require_once _lms_ . '/lib/lib.middlearea.php';
 
         $title = '';
         $content = '';
-        $query_home = "SELECT title, description FROM %lms_webpages where publish=1 and in_home = 1 AND language = '".Lang::getDefault()."' LIMIT 1";
+        $query_home = "SELECT title, description FROM %lms_webpages where publish=1 and in_home = 1 AND language = '" . Lang::getDefault() . "' LIMIT 1";
         $re_home = sql_query($query_home);
-		list($title, $content) = sql_fetch_row($re_home);
+        list($title, $content) = sql_fetch_row($re_home);
 
-        $this->render('_tabs',[]);
+        $this->render('_tabs', []);
 
-        $this->render('home-content',[
+        $this->render('home-content', [
             'title' => $title,
-            'content' => $content
+            'content' => $content,
         ]);
-        }
     }
 }

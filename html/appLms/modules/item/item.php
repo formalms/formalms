@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 if (!Docebo::user()->isAnonymous()) {
-// XXX: additem
+    // XXX: additem
     function additem($object_item)
     {
         //checkPerm('view', false, 'storage');
@@ -152,34 +152,31 @@ if (!Docebo::user()->isAnonymous()) {
         . ' WHERE idLesson = ' . (int) $object_item->id . ''));
 
         $file['name'] = $filename;
-        $file['size'] = filesize(_base_.'/files/appLms/' . Get::sett('pathlesson').$filename);
+        $file['size'] = filesize(_base_ . '/files/appLms/' . Get::sett('pathlesson') . $filename);
         $files[] = $file;
 
+        /*
+            $GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
+                . '<div class="std_block">'
+                . getBackUi(Util::str_replace_once('&', '&amp;', $object_item->back_url) . '&amp;mod_result=0', $lang->def('_BACK'))
 
-    /*
-        $GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
-            . '<div class="std_block">'
-            . getBackUi(Util::str_replace_once('&', '&amp;', $object_item->back_url) . '&amp;mod_result=0', $lang->def('_BACK'))
+                . Form::openForm('itemform', 'index.php?modname=item&amp;op=upitem', 'std_form', 'post', 'multipart/form-data')
+                . Form::openElementSpace()
 
-            . Form::openForm('itemform', 'index.php?modname=item&amp;op=upitem', 'std_form', 'post', 'multipart/form-data')
-            . Form::openElementSpace()
+                . Form::getHidden('idItem', 'idItem', $object_item->getId())
+                . Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_item->back_url)))
+                . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 100, $title)
 
-            . Form::getHidden('idItem', 'idItem', $object_item->getId())
-            . Form::getHidden('back_url', 'back_url', htmlentities(urlencode($object_item->back_url)))
-            . Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 100, $title)
+                . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $description)
+                . Form::closeElementSpace()
+                . Form::openButtonSpace()
+                . Form::getButton('additem', 'additem', $lang->def('_SAVE'))
+                . Form::closeButtonSpace()
+                . Form::closeForm()
+                . '</div>', 'content');
+                */
 
-            . Form::getTextarea($lang->def('_DESCRIPTION'), 'description', 'description', $description)
-            . Form::closeElementSpace()
-            . Form::openButtonSpace()
-            . Form::getButton('additem', 'additem', $lang->def('_SAVE'))
-            . Form::closeButtonSpace()
-            . Form::closeForm()
-            . '</div>', 'content');
-            */
-           
-   
-            $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'upitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
- 
+        $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'upitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
     }
 
     function upitem()
@@ -192,7 +189,7 @@ if (!Docebo::user()->isAnonymous()) {
         $back_url = Get::pReq('back_url', DOTY_MIXED, '');
         $idLesson = Get::pReq('id_comm', DOTY_INT, null);
         $title = Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE', 'item', 'lms'));
-        
+
         $idCourse = $_SESSION['idCourse'];
 
         try {
@@ -203,7 +200,7 @@ if (!Docebo::user()->isAnonymous()) {
             echo json_encode($response);
             exit();
         }
-       
+
         //save file
         if (count($filesInfo)) {
             $path = '/appLms/' . Get::sett('pathlesson');
@@ -252,20 +249,20 @@ if (!Docebo::user()->isAnonymous()) {
                     $response['errors']['files'][$fileIndex] = Lang::t('_ITEM_DOES_NOT_HAVE_TITLE', 'item');
                     $error = true;
                 }
-    
+
                 $file = $_FILES[$fileIndex];
-    
+
                 if (empty($file['name'])) {
                     $response['status'] = false;
                     $response['errors']['files'][$fileIndex] = Lang::t('_FILE_IS_UNSPECIFIED', 'item');
                     $error = true;
                 }
-    
+
                 if (!$error) {
                     $path = '/' . _folder_lms_ . '/' . Get::sett('pathlesson');
                     $savefile = ($idCourse ?? '0') . '_' . random_int(0, 100) . '_' . time() . '_' . $file['name'];
                     $savefile = str_replace("'", "\'", $savefile); //Patch file con apostrofo
-    
+
                     if (!file_exists(_files_ . $path . $savefile)) {
                         sl_open_fileoperations();
                         if (!sl_upload($file['tmp_name'], $path . $savefile)) {
@@ -278,10 +275,10 @@ if (!Docebo::user()->isAnonymous()) {
                         $response['status'] = false;
                         $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
                     }
-    
+
                     $update_query = "UPDATE %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'
                     WHERE idLesson = '" . (int) $idLesson . "'";
-    
+
                     if (!sql_query($update_query)) {
                         sl_unlink($path . $savefile);
                         $response['errors']['files'][$fileIndex] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
@@ -289,29 +286,25 @@ if (!Docebo::user()->isAnonymous()) {
                     if (isset($_SESSION['idCourse']) && defined('LMS')) {
                         $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_ . $path . $savefile);
                     }
-              
                 }
             }
-         
-        
         }
 
         $response['back_url'] = str_replace('&amp;', '&', $back_url . '&id_los=' . (int) $idLesson . '&mod_result=1');
         echo json_encode($response);
         exit();
-       
     }
 
     //= XXX: switch===================================================================
     switch ($GLOBALS['op']) {
         case 'insitem':
                 insitem();
-            ;
+
             break;
 
         case 'upitem':
                 upitem();
-            ;
+
             break;
     }
 }

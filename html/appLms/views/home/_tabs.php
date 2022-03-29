@@ -5,7 +5,7 @@
             <?php
             $this->widget('lms_tab', [
                 'active' => 'home',
-                'close' => false
+                'close' => false,
             ]);
             ?>
     </div>
