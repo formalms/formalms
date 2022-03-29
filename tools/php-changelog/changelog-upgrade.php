@@ -5,10 +5,11 @@ $changeLogFile = __DIR__ . '/changelog.txt';
 $lastHashFile = __DIR__ . '/last-hash.txt';
 
 $lastHash = file_get_contents($lastHashFile);
-
+echo 'Changelog is starting from commit hash : '.$lastHash.PHP_EOL;
 function exportGitLog($hash, $gitLogFile)
 {
-    echo exec("git log $hash.. --pretty=format:'#%h# *%s*' --shortstat --no-merges | paste - - - > " . $gitLogFile);
+    $hash = str_replace(' ','',$hash);
+    echo exec("git log $hash.. --pretty=format:'%h###%s###' --shortstat --no-merges | paste - - - > " . $gitLogFile);
 }
 
 function deleteFile($gitLogFile)
@@ -32,15 +33,7 @@ function getGitLines($gitLogFile)
     fclose($file);
 }
 
-function getStringBetween($string, $start, $end)
-{
-    $string = ' ' . $string;
-    $ini = strpos($string, $start);
-    if ($ini == 0) return '';
-    $ini += strlen($start);
-    $len = strpos($string, $end, $ini) - $ini;
-    return substr($string, $ini, $len);
-}
+
 
 deleteFile($gitLogFile);
 exportGitLog($lastHash, $gitLogFile);
@@ -48,8 +41,10 @@ exportGitLog($lastHash, $gitLogFile);
 $changeLog = '';
 $commitHash = '';
 foreach (getGitLines($gitLogFile) as $line) {
-    $commitHash = getStringBetween($line, '#', '#');
-    $commitMessage = getStringBetween($line, '*', '*');
+    $lineArray = explode('###',$line);
+
+    $commitHash = str_replace([' ',"\t"],['',''],$lineArray[0]);
+    $commitMessage = $lineArray[1];
     if (!empty($commitMessage)) {
         if (substr($commitMessage, 0, 2) !== '- ') {
             $commitMessage = '- ' . $commitMessage;
@@ -66,7 +61,11 @@ foreach (getGitLines($gitLogFile) as $line) {
     }
     // $line contains current line
 }
+
+deleteFile($changeLogFile);
 file_put_contents($changeLogFile, $changeLog);
+deleteFile($lastHashFile);
 file_put_contents($lastHashFile, $commitHash);
+echo 'Last commit hash is : '.$commitHash.PHP_EOL;
 deleteFile($gitLogFile);
 
