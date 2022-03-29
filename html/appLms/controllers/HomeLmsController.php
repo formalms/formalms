@@ -13,41 +13,25 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class HomeLmsController extends LmsController
-{
-    public function show()
-    {
-        require_once _base_ . '/lib/lib.navbar.php';
-        require_once _lms_ . '/lib/lib.middlearea.php';
+    public $name = 'home';
 
-        $ma = new Man_MiddleArea();
+	public function show() {
 
-        $block_list = [];
-        //if($ma->currentCanAccessObj('user_details_short')) $block_list['user_details_short'] = true;
-        if ($ma->currentCanAccessObj('user_details_full')) {
-            $block_list['user_details_full'] = true;
-        }
-        if ($ma->currentCanAccessObj('credits')) {
-            $block_list['credits'] = true;
-        }
-        if ($ma->currentCanAccessObj('news')) {
-            $block_list['news'] = true;
-        }
+        require_once(_base_.'/lib/lib.navbar.php');
+        require_once(_lms_.'/lib/lib.middlearea.php');
 
-        $query_home = "SELECT title, description FROM learning_webpages where publish=1 and in_home = 1 AND language = '" . getLanguage() . "' LIMIT 1";
+        $title = '';
+        $content = '';
+        $query_home = "SELECT title, description FROM %lms_webpages where publish=1 and in_home = 1 AND language = '".Lang::getDefault()."' LIMIT 1";
         $re_home = sql_query($query_home);
-        list($titolo, $descrizione) = sql_fetch_row($re_home);
+		list($title, $content) = sql_fetch_row($re_home);
 
-        if (!empty($block_list)) {
-            $this->render('_tabs_block', [
-                'active_tab' => 'home',
-                '_content' => '<div id="tabhome_title"><h1>' . $titolo . '</h1></div><div id="tabhome_description">' . $descrizione . '</div>',
-                'block_list' => $block_list, ]);
-        } else {
-            $this->render('_tabs', [
-                'active_tab' => 'home',
-                '_content' => '<div id="tabhome_title"><h1>' . $titolo . '</h1></div><div id="tabhome_description">' . $descrizione . '</div>', ]
-            );
+        $this->render('_tabs',[]);
+
+        $this->render('home-content',[
+            'title' => $title,
+            'content' => $content
+        ]);
         }
     }
 }

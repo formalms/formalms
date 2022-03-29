@@ -1,11 +1,11 @@
-<div style="margin:1em;">
-	<?php
-    $this->widget('lms_tab', [
-        'active' => 'home',
-    ]);
-    ?>
-	
-</div>
-<script type="text/javascript">
-	document.getElementById('tab_content').innerHTML = '<?php echo addslashes($_content); ?>';
-</script>
+<!-- welcome page (main tab) -->
+<div class="row">
+
+    <div class="col-md-12">
+            <?php
+            $this->widget('lms_tab', [
+                'active' => 'home',
+                'close' => false
+            ]);
+            ?>
+    </div>
