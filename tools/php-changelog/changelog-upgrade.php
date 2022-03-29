@@ -42,8 +42,9 @@ $changeLog = '';
 $commitHash = '';
 foreach (getGitLines($gitLogFile) as $line) {
     $lineArray = explode('###',$line);
-
-    $commitHash = str_replace([' ',"\t"],['',''],$lineArray[0]);
+    if (empty($commitHash)) {
+        $commitHash = str_replace([' ', "\t"], ['', ''], $lineArray[0]);
+    }
     $commitMessage = $lineArray[1];
     if (!empty($commitMessage)) {
         if (substr($commitMessage, 0, 2) !== '- ') {
@@ -60,6 +61,9 @@ foreach (getGitLines($gitLogFile) as $line) {
         }
     }
     // $line contains current line
+}
+if (empty($commitHash)){
+    $commitHash = $lastHash;
 }
 
 deleteFile($changeLogFile);
