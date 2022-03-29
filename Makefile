@@ -14,6 +14,7 @@ help:
 	@echo '  fix                 Fixes composer.json and code style'
 	@echo '  test                Execute all tests'
 	@echo '  fix-code-style      Fix code style'
+	@echo '  export-changelog    Export changelog'
 
 .PHONY: test
 test: clean fix
@@ -42,3 +43,7 @@ fix-composer:
 .PHONY: clean
 clean:
 	rm -rf $(CURRENT_PATH)/html/vendor $(CURRENT_PATH)/html/files/cache $(CURRENT_PATH)/tools/php-cs-fixer/vendor
+
+.PHONY: export-changelog
+export-changelog:
+	php $(CURRENT_PATH)/tools/php-changelog/changelog-upgrade.php
