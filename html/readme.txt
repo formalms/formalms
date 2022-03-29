@@ -1,7 +1,6 @@
-
 -----------------------------------------------------------------------------
-forma.lms 2.4.1
-Release date: 2020 february 20
+forma.lms 3.0.0
+Release date: 2021 november
 -----------------------------------------------------------------------------
 
 
@@ -22,8 +21,17 @@ Index
 
 
 ------------------------------------------------------------------------------
+0    RELEASE NOTES (3.0.0)
 
-0    RELEASE NOTES (2.4.1)
+For all bugfix and new features included in this release, please read changelog.txt
+Here are some notes from base release.
+
+Attention
+From release 3.0.0 the templates system checks the version of the template.
+check and update your templates manifest as described in par. 3.0.0
+
+
+0.1    RELEASE NOTES (2.4.1)
 
 For all bugfix and new features included in this release, please read changelog.txt
 Here are some notes from base release.
@@ -32,7 +40,7 @@ Attention
 From release 2.2 the templates system checks the version of the template.
 check and update your templates manifest as described in par. 2.1 
 
-0.1  RELEASE NOTES (2.0)
+0.2  RELEASE NOTES (2.0)
 
 Release date: 2018 june 19
 
@@ -43,9 +51,8 @@ For a list of all thenew features included in this release, please read changelo
 Here are some important notes:
 
 a) PHP support
-   Full support for PHP from 5.4.x to 7.0.x 
-   Known issues for PHP 7.1.x and 7.2.x  will be addressed in next releases
-   Dropped support for PHP < 5.4
+   Full support for PHP from 7.4.x
+   Dropped support for PHP < 7.4
    improved wrapper for mysqli - switch automatically to mysqli driver if mysql is missing
    
 b) Template System
