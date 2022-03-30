@@ -210,7 +210,7 @@ class CoursestatsLms extends Model
         return $res->count;
     }
 
-    public function getCourseUserStatsList($pagination, $id_course, $id_user)
+    public function getCourseUserStatsList($pagination, $id_course, $id_user, $export = true)
     {
         // Default order
         $sort = 'o.path';
@@ -261,7 +261,7 @@ class CoursestatsLms extends Model
             }
         }
 
-        $query = 'SELECT o.path, o.idOrg, o.title, o.objectType, o.idResource, c.status, '
+        $query = 'SELECT o.path, o.idOrg, o.title, o.objectType, o.idResource, o.visible, c.status, '
             . ' c.dateAttempt as last_access, c.firstAttempt as first_access, c.first_complete, c.last_complete '
             . ' FROM ' . $this->tables['organization'] . ' as o '
             . ' LEFT JOIN ' . $this->tables['commontrack'] . ' as c '
@@ -272,18 +272,25 @@ class CoursestatsLms extends Model
         if (is_array($pagination)) {
             $query .= 'LIMIT ' . $startIndex . ', ' . $rowsPerPage;
         }
-        //echo $query."\n";
+        
         $output = [];
         $res = $this->db->query($query);
 
+      
         if ($res) {
             $scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
 
             require_once Forma::inc(_lms_ . '/class.module/track.object.php');
 
-            while ($obj = $this->db->fetch_obj($res)) {
-                $obj->status = Track_Object::getStatusFromId($obj->idOrg, $id_user);
-                $history = $this->getUserScormHistoryTrackInfo($id_user, $obj->idOrg);
+
+            foreach ($res as $obj) {
+                
+                if(((bool) $obj['visible'] === false) && $export) {
+                    //it's a hidden obj, skip it only for export data
+                    continue;
+                }
+                $obj['status'] = Track_Object::getStatusFromId($obj['idOrg'], $id_user);
+                $history = $this->getUserScormHistoryTrackInfo($id_user, $obj['idOrg']);
                 $history_table_html = '<table class="timesDetail table table-striped table-bordered">';
 
                 if (is_array($history)) {
@@ -310,11 +317,11 @@ class CoursestatsLms extends Model
 						</tr>';
                 }
                 $history_table_html .= '</table>';
-                $obj->score = isset($scores[$obj->idOrg]) ? $scores[$obj->idOrg] : '';
-                $obj->history = isset($history) ? $history_table_html : ''; // by marco array sessioni
-                $obj->totaltime = $this->getUserScormHistoryTrackTotaltime($id_user, $obj->idOrg);
+                $obj['score'] = isset($scores[$obj['idOrg']]) ? $scores[$obj['idOrg']] : '';
+                $obj['history'] = isset($history) ? $history_table_html : ''; // by marco array sessioni
+                $obj['totaltime'] = $this->getUserScormHistoryTrackTotaltime($id_user, $obj['idOrg']);
 
-                $output[] = $obj;
+                $output[] = (object) $obj;
             }
         } else {
             return false;

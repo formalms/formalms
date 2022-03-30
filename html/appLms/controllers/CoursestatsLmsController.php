@@ -302,6 +302,8 @@ class CoursestatsLmsController extends LmsController
 
     public function show_userTask()
     {
+
+  
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
         if ((int) $id_course <= 0) {
             //...
@@ -362,7 +364,8 @@ class CoursestatsLmsController extends LmsController
             $pagination['order_dir'] = $order[0]['dir'];
         }
 
-        $list = $this->model->getCourseUserStatsList($pagination, $id_course, $id_user);
+    
+        $list = $this->model->getCourseUserStatsList($pagination, $id_course, $id_user, false);
         $total = $this->model->countTotalCourseUsersStats($id_course, $id_user, $pagination['search'], false);
         $total_filtered = $this->model->countTotalCourseUsersStats($id_course, $id_user, $pagination['search'], true);
 
