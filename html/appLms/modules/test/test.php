@@ -1092,51 +1092,6 @@ function defmodality()
         'content'
     );
 
-    // $event = new \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent($object_test, $lang);
-
-    // $event->addFormElementForSection(Form::getTextfield($lang->def('_MAX_ATTEMPT'), 'max_attempt', 'max_attempt', 3, $max_attempt), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection(Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection(Form::getCheckbox($lang->def('_USE_SUSPENSION'), 'use_suspension', 'use_suspension', 1, $use_suspension, 'onclick="setSuspension();"'), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection(Form::getTextfield($lang->def('_SUSPENSION_NUM_ATTEMPTS'), 'suspension_num_attempts', 'suspension_num_attempts', 5, $suspension_num_attempts), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection(Form::getTextfield($lang->def('_SUSPENSION_NUM_HOURS'), 'suspension_num_hours', 'suspension_num_hours', 5, $suspension_num_hours), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection(Form::getCheckBox($lang->def('_SUSPENSION_PREREQUISITES'), 'suspension_prerequisites', 'suspension_prerequisites', 1, $suspension_prerequisites), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<br /><br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection(Form::getCloseFieldset(), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-
-    // $event->addFormElementForSection(Form::getOpenFieldset($lang->def('_TEST_MM_FOUR')), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection($lang->def('_TEST_MM4_SHOWTOT') . '<br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_tot_no" name="show_tot" value="0"' . (!$show_score ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_tot_no">' . $lang->def('_NO') . '</label>&nbsp;&nbsp;', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_tot_yes" name="show_tot" value="1"' . ($show_score ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_tot_yes">' . $lang->def('_YES') . '</label>', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<br /><br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-
-    // $event->addFormElementForSection($lang->def('_TEST_MM4_SHOWCAT') . '<br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_cat_no" name="show_cat" value="0"' . (!$show_score_cat ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_cat_no">' . $lang->def('_NO') . '</label>&nbsp;&nbsp;', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_cat_yes" name="show_cat" value="1"' . ($show_score_cat ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_cat_yes">' . $lang->def('_YES') . '</label>', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<br /><br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-
-    // $event->addFormElementForSection($lang->def('_TEST_MM4_SHOWDOANSWER') . '<br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_doanswer_no" name="show_doanswer" value="0"' . ($show_doanswer == 0 ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_doanswer_no">' . $lang->def('_NO') . '</label>&nbsp;&nbsp;', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_doanswer_yes" name="show_doanswer" value="1"' . ($show_doanswer == 1 ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_doanswer_yes">' . $lang->def('_YES') . '</label>&nbsp;&nbsp;', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_doanswer_yes_if_passed" name="show_doanswer" value="2"' . ($show_doanswer == 2 ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_doanswer_yes_if_passed">' . $lang->def('_YES_IF_PASSED') . '</label>', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<br /><br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-
-    // $event->addFormElementForSection($lang->def('_TEST_MM4_SHOWSOL') . '<br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_solution_no" name="show_solution" value="0"' . ($show_solution == 0 ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_solution_no">' . $lang->def('_NO') . '</label>&nbsp;&nbsp;', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_solution_yes" name="show_solution" value="1"' . ($show_solution == 1 ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_solution_yes">' . $lang->def('_YES') . '</label>&nbsp;&nbsp;', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<input class="valign_middle" type="radio" id="show_solution_yes_if_passed" name="show_solution" value="2"' . ($show_solution == 2 ? '  checked="checked"' : '') . ' /> ', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<label for="show_solution_yes_if_passed">' . $lang->def('_YES_IF_PASSED') . '</label>', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection('<br /><br />', \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-    // $event->addFormElementForSection(Form::getCloseFieldset(), \appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_SECTION_BASE);
-
     $section_str = '';
     $section_str .= Form::getTextfield($lang->def('_MAX_ATTEMPT'), 'max_attempt', 'max_attempt', 3, $max_attempt);
     $section_str .= Form::getCheckBox($lang->def('_RETAIN_ANSWERS_HISTORY'), 'retain_answers_history', 'retain_answers_history', 1, $retain_answers_history);
@@ -1181,9 +1136,10 @@ function defmodality()
     $section_str .= '<br /><br />';
     $section_str .= Form::getCloseFieldset();
 
-    // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestConfigurationMethodOfUseRenderEvent::EVENT_NAME, $event);
-
-    // $GLOBALS['page']->add($event->getElementString(), 'content');
+    
+    $eventResult = Events::trigger('lms.defmodality.updating', ['idTest' => $idTest]);
+    $section_str .= $eventResult['htmlData'];
+   
     $GLOBALS['page']->add($section_str, 'content');
     $GLOBALS['page']->add(
         '<br /><br />'
@@ -1290,11 +1246,7 @@ function updatemodality()
         ' ,mandatory_answer = ' . Get::req('mandatory_answer', DOTY_INT, 0) .
         " WHERE idTest = '$idTest'";
 
-    // $event = new \appLms\Events\Lms\TestUpdateModalityEvent($idTest, $queryString);
-
-    // $event->setPostVars($_REQUEST);
-
-    // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestUpdateModalityEvent::EVENT_NAME, $event);
+    Events::trigger('lms.defmodality.updated', ['idTest' => $idTest, 'tutorComment' => $_REQUEST['tutor_comment'], 'showTutorComment' => $_REQUEST['show_tutor_comment'] ]);
 
     if (!sql_query($queryString)) {
         errorCommunication($lang->def('_OPERATION_FAILURE')
