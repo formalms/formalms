@@ -28,6 +28,7 @@ class CoursereportLmsController extends LmsController
     public function init()
     {
         $this->idCourse = (int) $_SESSION['idCourse'];
+        
         /* @var Services_JSON json */
         $this->json = new Services_JSON();
         $this->_mvc_name = 'coursereport';
