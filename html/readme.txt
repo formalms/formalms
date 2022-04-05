@@ -1,3 +1,14 @@
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 -----------------------------------------------------------------------------
 forma.lms 3.0.0
 Release date: 2021 november
@@ -23,98 +34,83 @@ Index
 ------------------------------------------------------------------------------
 0    RELEASE NOTES (3.0.0)
 
-For all bugfix and new features included in this release, please read changelog.txt
-Here are some notes from base release.
-
-Attention
-From release 3.0.0 the templates system checks the version of the template.
-check and update your templates manifest as described in par. 3.0.0
-
-
-0.1    RELEASE NOTES (2.4.1)
-
-For all bugfix and new features included in this release, please read changelog.txt
-Here are some notes from base release.
-
-Attention
-From release 2.2 the templates system checks the version of the template.
-check and update your templates manifest as described in par. 2.1
-
-0.2  RELEASE NOTES (2.0)
-
-Release date: 2018 june 19
-
 This is a new major release  with new features, redesign of the UI , many improvements
 
-For a list of all thenew features included in this release, please read changelog.txt
+For all new features and bugfixes included in this release, please read changelog.txt
+Here are some notes from base release.
+
+Attention
+From release 2.2.0 the templates system checks the version of the template.
+check and update your templates manifest as described in par. 3.0.0
+
 
 Here are some important notes:
 
 a) PHP support
    Full support for PHP from 7.4.x
    Dropped support for PHP < 7.4
-   improved wrapper for mysqli - switch automatically to mysqli driver if mysql is missing
    
 b) Template System
-   Refactored front-end (users) UI with native responsive system based on bootstrap,
+   Refactored front-end (users) UI with native responsive system based on bootstrap
    Enhanced administrator templates .
    forma.lms 1.x.x  templates are NOT supported 
-   During upgrade and running a 2.x version forma.lms will check the defined template and - if not
-   supported - will switch to the standard template. A template labeled "standard" must always exist.
-   A compliant 2.0 template must have a manifest file declaring the supported version 
-   (for now 2.0)
+   forma.lms 2.x.x templates are NOT supported
+   While upgrading and running a version >=2.2.x or 3.x forma.lms will check the defined template and
+   - if not supported - it will switch to the standard template. 
+   A template labeled "standard" (the distributed one in the package) must always exist.
+   A compliant template must have a manifest file that declares the version 
+   If there is a need for improvements or bug fixes, the minimum supported version of the template supported
+   will be changed also in minor release
    
-   As a suggestion, never change the standard template, if you need customisation, copy it into a new one 
-   and change it
+   As a tip, never change the standard template, if you need customization copy it to a new one and change it
    
 c) Privacy and GDPR compliance
-   forma.lms is released with a compliant set of privacy features. The default settings meet GDPR 
-   requirements. You can change these settings as per your requirements.
-   Acceptance of privacy policy registers who, when and wich privacy policy has been acknowledged.
-   Go to the privacy section of the administration section to set privacy messages. By default, forma.lms uses
-   the privacy messages taken from the language translation. Any modification must be made 
-   in the privacy settings section. 
-   Note that privacy language translation defaults might be dropped in future releases.
-   Each orgchart node can have its own privacy policy. A node without a specific policy will use the policy 
-   marked as "default"
+   forma.lms is released with a compliant set of privacy features. The default settings comply with the GDPR 
+   requirements. You can change these settings to suit your needs.
+   Acceptance of privacy policy records who, when and which privacy policy has been acknowledged.
+   Go to the privacy section of the administration section to setup privacy messages. 
+   By default, forma.lms uses the privacy messages taken from the language translation. 
+   Any modification must be made in the privacy settings section. 
+   Please note that the default language translation privacy settings may be dropped in future releases.
+   Each Organization chart node can have its own privacy policy. A node without a specific policy will used 
+   the policy marked as "default"
    
-   After the upgrade from the 1.xx release  all users must re-accept the privacy policy upon the first login.
+   After upgrading from version 1.xx, all users must re-accept the privacy policy at the first login.
 
 d) Public admin removed
-   The "public admin" feature has been dropped.
+   The "public admin" feature has been dropped since the 2.x.x versions.
    The "admin" feature remains and has been enhanced with new permissions
    
    During the upgrade from 1.xx, users with the "public admin" permissions will be reverted to standard 
-   users. However, the courses and orgchart node assigned to such users are retained. 
-   After the upgrade, you must update the interested users to the admin role and assign them an 
-   administration profile (create a new one if needed).
+   users. However, the courses and Organization chart node assigned to these users are preserved. 
+   After the upgrade, you need to upgrade the affected users to the administrator role and assign them an
+   administration profile (create a new one if necessary).
 
 e) direct SSO link.
-   The SSO direct link from an external site to forma.lms has changed .   
+   The SSO direct link from an external site to forma.lms has changed since 2.x.x:
    v1.xx url:  http://yourformalms.domain.com/appLms/index.php
    v2.xx url:  http://yourformalms.domain.com/index.php
    All other parameters (token included) have not changed
 
 f) Assessment
-   Feature dropped
+   Feature dropped in 2.x.x version
    
 g) Plugin system
-   The plugin system has been enhanced in the administration section and its use has been extended into the system.
-   Each plugin must have a manifest file to describe its version, forma.lms version and 
-   dependencies.
+   The plugin system has been enhanced in the administration section and its use has been extended 
+   into the system.
+   Each plugin must have a manifest file to describe its version, forma.lms version and dependencies.
    Many components has been converted to plugins, and distributed with the core system:
-   -- all the login module
+   -- all the autorizations module
    -- the base video conferencing systems
    -- some reports
    With next releases, other components will be converted.
 
 h) Back-end administration menu
-   DB tables and contents used by "admin menu components" have changed. During the upgrade any 
-   customization of these will be lost
+   DB tables and contents used by "admin menu components" have changed since 2.x.x. 
+   During the upgrade any customization of these will be lost
  
 
-------------------------------------------------------------------------------
-
+---------------------------------------------------------------------------------------------------
 1. LICENCE
 
 This software is released with GPL v2.0 license, please refer to the provided file license.txt for 
@@ -124,13 +120,13 @@ The hardcoded "Powered by forma.lms CE" credit must NOT be removed, in respect t
 project and community. 
 You are welcome to add your credits to the page footer using the provided configuration option.
 
-
+---------------------------------------------------------------------------------------------------
 2. REQUIREMENTS
 
 Server specs: Linux, Windows, MacOs, Unix, Sun with
-- Apache 2.2.x or above  (on Windows also IIS can be used)
-- PHP  5.4.x  5.5.x 5.6.x  7.0.x
-- Mysql 5.0 or higher, mariadb  5.5 or higher
+- Apache 2.2.x or above, Nginx or IIS on MS WIndows (other web server with php processing can be used)
+- PHP  7.4.x
+- Mysql 5.7 or higher, mariadb 10.1 or higher
   db server engine must have transaction support (innodb recommended)
 - Doesn't matter if safe mode or register global are on or off
 
@@ -141,14 +137,18 @@ easyphp, wamp/mamp or xampp.
 
 Minimum template version: 2.2
 
+---------------------------------------------------------------------------------------------------
 3. INSTALL PROCEDURE
 
 - Be sure you have your database parameters (host, user, password, dbname) available
 - If you want use at runtime FTP upload features, be sure you have your ftp parameters (host, user, 
   password), 
+- If you want use at runtime SMTP mailfeatures, be sure you have your smtp parameters (host, port, user, 
+  password, security protocol), 
+
 - Before install, create the database on your dbserver. You can use any db admin tool as phpmyadmin
-  If you use a prepackaged webserver on your PC , the default db admin link is 
-  http://localhost/mysql/ or http://localhost/phpmyadmin/
+  If you use a prepackaged webserver on your computer, the default db admin link is 
+  http://localhost/mysql/ or http://localhost/phpmyadmin/   , check your webserver configuration 
   If the db user have permissions, the installer can create database for you
   The database must be defined with UTF8 encoding
 - Upload all the files in your root directory or subfolder
@@ -165,6 +165,7 @@ At the end step of install procedure, the system will load XML file languages.
 Depending on number of language chosen, this operation can take some time in order to complete
 
 
+---------------------------------------------------------------------------------------------------
 4. UPGRADE PROCEDURE
 
 - Make a full backup of db and files
@@ -182,21 +183,26 @@ Depending on number of language chosen, this operation can take some time in ord
 - Launch http://www.yourwebsite.com/upgrade
 - Follow upgrade instructions.
 - As final step of the upgrade, the procedure imports and updates all languages previously defined
-  with the standard translations.
-- At the end of upgrade, go to the "Administration panel/Language" to import your own language files
-- To secure you installation, at the end of upgrade, remove or rename the folders install and 
-  upgrade. 
+  with the standard translations. Thee language import procedure has been enanched and can now not overwrite the customization
+- At the end of upgrade, go to the "Administration panel/Language" check and import if needed your own language files; 
+  you can import only modified labels
+- To secure you installation, at the end of upgrade, remove or rename the folders
+  install and upgrade. 
 
-  The procedure may change for you the config.php file (if writable, or require you to download it
-  and upload to the web root folder, if not)
+  The procedure may change for you the config.php file (if writable), or requires you to download it
+  and upload to the web root folder (if not writable)
 
 4.1 Upgrade from version 2.xx
 
 During upgrade from forma.lms 2.x  to forma.lms 2.2 and later, pay attention to
 a) Template
-   Template 2.0 and 2.1 are not compatible with 2.2 
+   Template 2.0 and 2.1 are not compatible with 2.2 and newer
    During the upgrade the site template is updated to "standard".
    Minimum template version required (see release notes)
+d) Customscripts
+   All customization made through customscripts/ must be reviewed and ported to the current 
+   version. forma.lms does not check base version file with your customized version in customscripts 
+   folder. There is no version check support for customscripts files
 
 4.2 Upgrade from version 1.xx
 
@@ -233,7 +239,9 @@ Coming from D36 review the config.php and add your own settings, if needed
 
 5. LOADING A NEW LANGUAGE
 
-- Make sure that you have the required xml file on your PC (get it from installation tarball)
+- Make sure that you have the required xml file on your computer. 
+  get it from installation tarball . 
+  The import procedure for the 3.x version can read the xml file directly from the web server folders
 - Go in the administration area
 - Go in language import/export
 - Select the xml file
