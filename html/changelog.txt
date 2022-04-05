@@ -2,6 +2,35 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.2.0
+---------------------------------------------------------------------------------------
+Release date: 2022 March
+
+- #      - Add Dropzone for upload files
+- #20052 - fix home page
+- #20051 - edit communication not working and not dropzone
+- #20047 - graphic fix news upload file
+- #20047 - graphic fix news and communication
+- #20046 - mail link report and transaltion for users
+- #      - update template version number
+- #20045 - remove seconds from next course widget
+- #      - fix scorm overlay
+- #20043 - Add decimal in course credits
+- #20041 fix widget communications and news
+- #20039 - Date not saved in coursepath
+- #      - Fix course widget
+- #      - add css and js versioning bind with template version
+- #20036 - fixed query related to user status
+- #      - fix scorm play
+- #      - new views modules news and communications
+- #      - update comunication html class scorm launcher
+- #      - fix folder view eventListeners for student area
+- #20031 - create custom fields for classroom
+- #20022 - fixed  addMenu method
+- #20007 - fixed not sanitized input param
+
+
+---------------------------------------------------------------------------------------
 forma.lms 3.1.0
 ---------------------------------------------------------------------------------------
 Release date: 2022 March
