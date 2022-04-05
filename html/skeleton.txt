@@ -1,188 +1,381 @@
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
+        application folder layout
+
+|------------------------------------------------------------------------------
++-- index.php                           Web application entry script file
++-- admin.php                           Web application backend entry script file
++-- config.php                          Main configuration file
++-- base.php                            base folders definition (absolute and relative path)
++-- addons/                             JS External components and widget
+|   +-- calendar/
+|   +-- fancyTree/
+|   +-- jquery/
+|   +-- shadowbox/                      Lightbox
+|   +-- tiny_mce/                       configuration file for tiny mce wyswyg editor
+|   +-- tree_window/
+|   '-- yui/                            YUI JS Framework
++-- api/                                api servers
+|   |-- lib/                            lib for api operations
+|   '-- rest.php                        rest server
++-- appCore/                            see relative section 
++-- appLms/                             see relative section 
++-- appScs/                             see relative section 
++-- cron/                               server for automatic tasks
+|   +-- cron.task.php                   IO Task
+|   +-- cron.report.php                 scheduled reports
+|   +-- cron.alerts.php                 Sending of automatic mail alerts
++-- customscripts/                      custom modification to core files
++-- db/                                 database drivers
+|   +-- drivers/
+|   '-- updates/                        docebo CE 3.x upgrade db scripts
++-- eventListeners/
++-- Exceptions/
++-- files/                              uploaded files, see relative section 
++-- i18n/                               Internationalization functions
++-- install/                            first installation setup, see relative section
++-- lib/
+|   +-- cache/
+|   +-- calendar/
+|   +-- dataexport/
+|   +-- folder_tree/
+|   +-- formatable/
+|   +-- Helpers/
+|   +-- installer/
+|   +-- layout/
+|   +-- loggers/
+|   +-- mvc/
+|   +-- pdf/
+|   +-- plugins/                        extended classes form plugin subsystem
+|   |   +-- Authentication/
+|   |   +-- Conference/
+|   |   '-- Report/
+|   '-- table_view/
++-- plugins/                            plugins folder with distributed plugin, see relative section
++-- templates/                          see relative section
++-- upgrade/                            see relative section
++-- vendor/                             third parties php libraries
++-- widget/                             Common interface widget
+|   +-- competenceselector/
+|   +-- coursefilter/
+|   +-- dialog/
+|   +-- kbcategorize/
+|   +-- lms_block/
+|   +-- lms_tab/
+|   +-- tab/
+|   +-- table/
+|   +-- tablefilter/
+|   +-- tree/
+|   +-- userselector/
+|   '-- yuilog/
+'-- xml_language/                       translations
+
+|------------------------------------------------------------------------------
++-- appCore/                            Core components and modules
+|   +-- addons/
+|   |   +-- mod_index/
+|   |   +-- mod_link/
+|   |   +-- mod_media/
+|   |   +-- players/
+|   |   '-- swfheader/
+|   +-- class/
+|   +-- class.module/
+|   +-- controllers/                    controllers for admin
+|   +-- Events/
+|   |   '-- Core/
+|   |       +-- Catalogue/
+|   |       +-- Courses/
+|   |       +-- FileSystem/
+|   |       '-- User/
+|   +-- lib/                            libraries
+|   |   +-- connectors/
+|   |   +-- resources/
+|   |   +-- Sms/
+|   |   '-- user_selector/
+|   +-- menu/
+|   +-- models/                         models for admin
+|   +-- modules/                        admin modules
+|   |   +-- code/
+|   |   +-- configuration/
+|   |   +-- customfield/
+|   |   +-- customfield_manager/
+|   |   +-- directory/
+|   |   +-- event_manager/
+|   |   +-- field/
+|   |   +-- field_manager/
+|   |   +-- iotask/
+|   |   +-- login/
+|   |   +-- newsletter/
+|   |   +-- org_chart/
+|   |   +-- regional_settings/
+|   |   '-- _test_module/
+|   +-- Template/                       template extentions for admin
+|   |   +-- Extensions/
+|   |   '-- Services/
+|   '-- views/                          views for admin
+|       +-- adminmanager/
+|       +-- adminrules/
+|       +-- competences/
+|       +-- dashboard/
+|       +-- dashboardsettings/
+|       +-- dbupgrades/
+|       +-- functionalroles/
+|       +-- groupmanagement/
+|       +-- homepage/
+|       +-- lang/
+|       +-- mediagallery/
+|       +-- pluginmanager/
+|       +-- privacypolicy/
+|       +-- setting/
+|       +-- templatelayout/
+|       '-- usermanagement/
+
+|------------------------------------------------------------------------------
++-- appLms/                             lms components and subsystem
+|   +-- admin/                          lms backend administration
+|   |   +-- class.module/
+|   |   +-- controllers/                lms backend /admin controllers
+|   |   +-- models/                     lms backend /admin models
+|   |   +-- modules/                    lms backend /admin modules
+|   |   |   +-- amanmenu/
+|   |   |   +-- catalogue/
+|   |   |   +-- category/
+|   |   |   +-- certificate/
+|   |   |   +-- classevent/
+|   |   |   +-- course/
+|   |   |   +-- coursepath/
+|   |   |   +-- internal_news/
+|   |   |   +-- middlearea/
+|   |   |   +-- report/
+|   |   |   +-- reservation/
+|   |   |   '-- webpages/
+|   |   '-- views/                      lms backend /admin views
+|   |       +-- aggregatedcertificate/
+|   |       +-- classroom/
+|   |       +-- communication/
+|   |       +-- course/
+|   |       +-- edition/
+|   |       +-- enrollrules/
+|   |       +-- games/
+|   |       +-- kb/
+|   |       +-- label/
+|   |       +-- location/
+|   |       +-- questcategory/
+|   |       +-- subscription/
+|   |       +-- timeperiods/
+|   |       '-- transaction/
+|   +-- class/
+|   +-- class.module/
+|   +-- controllers/                    lms controllers
+|   +-- Events/                         lms events
+|   |   +-- Api/
+|   |   +-- Lms/
+|   |   +-- Transaction/
+|   |   '-- Widget/
+|   +-- lib/                            lms libraries
+|   |   +-- category/
+|   |   +-- certificate/
+|   |   +-- folder_tree/
+|   |   +-- resources/
+|   |   '-- table_view/
+|   +-- menu/
+|   +-- models/                         lms models
+|   +-- modules/                        lms modules
+|   |   +-- advice/
+|   |   +-- calendar/
+|   |   +-- conference/
+|   |   +-- course/
+|   |   +-- coursecatalogue/
+|   |   +-- course_autoregistration/
+|   |   +-- customer_help/
+|   |   +-- faq/
+|   |   +-- forum/
+|   |   +-- glossary/
+|   |   +-- gradebook/
+|   |   +-- groups/
+|   |   +-- homerepo/
+|   |   +-- htmlfront/
+|   |   +-- htmlpage/
+|   |   +-- item/
+|   |   +-- light_repo/
+|   |   +-- link/
+|   |   +-- login/
+|   |   +-- manmenu/
+|   |   +-- mycompetences/
+|   |   +-- myfiles/
+|   |   +-- myfriends/
+|   |   +-- mygroup/
+|   |   +-- newsletter/
+|   |   +-- notes/
+|   |   +-- organization/
+|   |   +-- poll/
+|   |   +-- project/
+|   |   +-- public_forum/
+|   |   +-- pubrepo/
+|   |   +-- question/
+|   |   +-- question_poll/
+|   |   +-- quest_bank/
+|   |   +-- reservation/
+|   |   +-- scorm/
+|   |   +-- statistic/
+|   |   +-- stats/
+|   |   +-- storage/
+|   |   +-- tags/
+|   |   +-- test/
+|   |   '-- wiki/
+|   '-- views/                          lms views
+|       +-- calendar/
+|       +-- cart/
+|       +-- catalog/
+|       |   '-- partials/
+|       +-- classroom/
+|       +-- communication/
+|       +-- course/
+|       +-- coursepath/
+|       +-- coursereport/
+|       +-- coursestats/
+|       +-- dummy/
+|       +-- elearning/
+|       +-- games/
+|       +-- home/
+|       +-- homecatalogue/
+|       +-- kb/
+|       +-- lo/
+|       +-- lomanager/
+|       +-- menu/
+|       +-- message/
+|       +-- mycertificate/
+|       +-- partials/
+|       +-- plugins/
+|       +-- precompile/
+|       +-- presence/
+|       '-- videoconference/
+
+|------------------------------------------------------------------------------
++-- appScs/                             legacy communication components
+|   +-- admin/
+|   |   +-- class.module/
+|   |   '-- modules/
+|   +-- class/
+|   +-- lib/
+|   '-- modules/
+
+|------------------------------------------------------------------------------
++-- plugins/                            plugins folder contains also distributed plugin
+|   +-- ConferenceBBB/                  BBB conference
+|   +-- Dummy/                          sample plugin
+|   +-- FacebookAuth/                   facebook authentication
+|   +-- FormaAuth/                      formalms base authentication (core plugin)
+|   +-- GoogleAuth/                     google authentication
+|   +-- LinkedinAuth/                   Linkedin authentication
+|   +-- report_aggregate/
+|   +-- report_course/
+|   +-- report_user/
+|   '-- TwitterAuth/                    Twitter authentication
 
 
-		App. Skeleton
+|------------------------------------------------------------------------------
++-- files/                              workspace for uploaded and user files
+|   +-- appCore/
+|   |   +-- field/
+|   |   +-- newsletter/
+|   |   '-- photo/
+|   +-- appLms/
+|   |   +-- calendar/
+|   |   +-- certificate/
+|   |   +-- course/
+|   |   +-- forum/
+|   |   +-- htmlpages/
+|   |   +-- item/
+|   |   +-- label/
+|   |   +-- message/
+|   |   +-- project/
+|   |   +-- repo_light/
+|   |   +-- scorm/
+|   |   +-- sponsor/
+|   |   '-- test/
+|   +-- common/
+|   |   +-- comment/
+|   |   +-- iofiles/
+|   |   +-- report/
+|   |   '-- users/
+|   '-- tmp/
 
-/
- |- index.php								Web application entry script file
- |- admin.php								Web application backend entry script file
- |- config.php								Main configuration file
- |- base.php								File used only in order to calculate relative and absolute path to others part
- |- addons/									External classes and widget
- |	 |- calendar/							Calendar
- | 	 |- feeds/								Reading and generatin rss files
- |	 |- htmlpurifier/						Filtering html input
- |	 |- nusoap/								Soap and wsdl classess
- |	 |- shadowbox/							Lightbox
- |	 |- tiny_mce/							wyswyg editor
- |	 '- yui/								JS Framework
- |
- |-	api/									api servers
- |	 |- rest/								rest api files
- |	 |	 '- ...
- |	 |- soap/								soap api files
- |	 |	 '- ...
- |	 |- lib.api.php							lib for api operations
- |	 |- rest.php							rest server
- |	 |- soap.php							soap server
- |	 '- wsdl.php							wsdl server
- |
- |-	cron/									"server" for automatic tasks
- |	 |- cron.task.php						IO Task
- |	 |- cron.report.php						Sending of scheduled reports
- |	 '- cron.alerts.php						Sending of automatic mail alerts
- |
- |-	i18n/									Internationalization functions
- |	 |-	lib.regset.php						Main class for date/currenct/number formatting
- |	 '-	lib.lang.php						Main class for multilanguage phrases / content
- |
- |-	adodb/									Database functionalities
- |	 |- ar/									Active records
- |	 |	 '-	...
- |	 |-	schema/								Evolutive tables files
- |	 |	 |- ...
- |	 |	 |- ...
- |	 |	 |-	core_user.php					Evolutive history for the core_user table
- |	 |	 |- ...
- |	 |	 '- ...
- |	 |- driver.dbms.php						Main driver
- |	 |- driver.mysql.php					Connection driver for mysql
- |	 |- driver.mysqli.php					Connection driver for mysqli
- |	 '- driver.postgresql.php				Connection driver for postgresql
- |
- |-	widget/									Common interface widget
- |	 |-	combined/							Combined widget for tree + table
- |	 |	 |-	views/							View for the widget
- |	 |	 |	 |-	tree_over.php				Tree over the table
- |	 |	 |	 '-	tree_lateral.php			Tree on the table side (25/75)
- |	 |	 |-	class.tree_table.php			Main class for the widget
- |	 |	 '-	class.tree_table.php			Main js for the widget
- |	 |-	table/								Table widget
- |	 |	 |-	views/							View for the widget
- |	 |	 |	 '-	table.php					Standard table view
- |	 |	 |-	class.table.php					Main class for the widget
- |	 |	 '-	table.js						Main js for the widget
- |	 |-	tree/								Tree widget
- |	 |	 |-	views/							View for the widget
- |	 |	 |	 |-	tree.php					Standard tree view
- |	 |	 |	 '-	explorer.php				Tree explorer view (path and content for a single)
- |	 |	 |-	class.tree.php					Main class for the widget
- |	 |	 '-	tree.js							Main js for the widget
- |	 '-	dialog/								Dialog widget
- |		 |-	views/							View for the widget
- |		 |	 '-	dialog.php					View for the dialog
- |		 |-	class.dialog.php				Main class for the widget
- |		 '-	dialog.js						Main js for the widget
- |-	lib/									containing general application files
- |	 |-	special_tag/						containing special tag and function for the views
- |	 |-	form/								form rendering and management files
- | 	 |- connectors/							Connectors for the iotask module
- | 	 '- ...
- |
- ---------------------------------------------------------------------------------------------------
- |-	appCore/								Core
- |	 |- class/
- |	 |	 |- class.menu.php					Menu file
- |	 |	 '- class.dashboard.php				Dashboard blocks
- |	 |
- |	 |- lib/								Specific lib
- | 	 |	|- ...
- | 	 |	'- ...
- |	 |
- |	 |- models/								Models for the admin
- |	 |	 |-	AdminManager.php
- |	 |	 |-	Code.php
- |	 |	 |-	Configuration.php
- |	 |	 |-	Dashboard.php
- |	 |	 |-	DEvent.php
- |	 |	 |-	Field.php
- |	 |	 |-	Iotask.php
- |	 |	 |-	Lang.php
- |	 |	 |-	Newsletter.php
- |	 |	 |-	User.php
- |	 |	 '-	PublicAdmin.php
- |	 |
- |	 |- controllers/						Controllers for the admin
- |	 |	 |-	AdminManagerController.php
- |	 |	 |-	CodeController.php
- |	 |	 |-	ConfigurationController.php
- |	 |	 |-	DashboardController.php
- |	 |	 |-	DEventController.php
- |	 |	 |-	FieldController.php
- |	 |	 |-	IotaskController.php
- |	 |	 |-	LangController.php
- |	 |	 |-	NewsletterController.php
- |	 |	 |-	UserController.php
- |	 |	 '-	PublicAdminController.php
- |	 |
- |	 '- views/								Views for the admin module
- |		 |-	adminmanager/					sub-admin management view
- |		 |	 '-	list.php
- |		 |-	code/							code module view
- |		 |	 '-	list.php
- |		 |-	configuration/					configuration view
- |		 |	 '-	list.php
- |		 |-	dashboard/						dashboard view
- |		 |	 '-	list.php
- |		 |-	devent/							events view
- |		 |	 '-	list.php
- |		 |-	field/							extra field view
- |		 |	 '-	list.php
- |		 |-	iotask/							iotask view
- |		 |	 '-	list.php
- |		 |-	lang/							lang management view
- |		 |	 '-	list.php
- |		 |-	newsletter/						newsletter view
- |		 |	 '-	list.php
- |		 |- configuration/					configuration view
- |		 |	 '-	list.php
- |		 |- user/							user view
- |		 |	 |-	_form.php
- |		 |	 |-	add.php
- |		 |	 |-	mod.php
- |		 |	 |-	del.php
- |		 |	 |-	detail.php
- |		 |	 '-	list.php
- |		 '-	publicadmin/					public admin view
- |			 '-	list.php
- |
- ---------------------------------------------------------------------------------------------------
- |-	appLms/								lms
- |	 |- class/
- |	 |	 |- class.menu.php					Menu file
- |	 |	 '- calss.dashboard.php				Dashboard blocks
- |	 |
- |	 |- lib/								Specific lib
- | 	 |	|- ...
- | 	 |	'- ...
- |	 |
- |	 |- models/								Models for
- |	 |	 |-	.php
- |	 |	 '-	.php
- |	 |
- |	 |- controllers/						Controllers for
- |	 |	 |-	Controller.php
- |	 |	 '-	Controller.php
- |	 |
- |	 '- views/								Views for
- |		 |-	/
- |		 |	 '-	list.php
- |		 '-	/
- |			 '-	list.php
- |
- ---------------------------------------------------------------------------------------------------
- |-	scs/							vecchia appScs
- |
- |-	files/							containing user uploaded or runtime generated files
- |	 |-	...							multiples fodlers
- |	 |-	...
- |	 |-	...
- |	 '-	...
- |
- '-	templates/						containing themes for the app
- 	 '- standard/					"standard" theme
- 	 		|-	images/				images
- 	 		|	 '- ...
- 	 		|-	style/				stylesheets
- 	 		|	 '- ...
- 	 		'-	yui-skin/			yui-skin files
- 	 			 '- ...
+|------------------------------------------------------------------------------
++-- install/                            installation components
+|   +-- controllers/
+|   +-- data/
+|   |   +-- license/
+|   |   +-- role/
+|   |   '-- sql/
+|   +-- lib/
+|   +-- templates/
+|   |   '-- standard/
+|   |       +-- images/
+|   |       '-- style/
+|   '-- views/
++-- upgrade/                            upgrade components
+|   +-- controllers/
+|   +-- data/
+|   |   +-- menu/
+|   |   +-- role/
+|   |   +-- sql/
+|   |   +-- upg_conf/
+|   |   +-- upg_data/
+|   |   '-- warn/
+|   +-- templates/
+|   |   '-- standard/
+|   |       +-- images/
+|   |       '-- style/
+|   +-- version/
+|   '-- views/
+
+|------------------------------------------------------------------------------
++-- templates/                          themes
+|   '-- standard/                       ditributed standard theme 
+|       +-- cssdoc/                     css documentation
+|       +-- images/
+|       |   +-- config/
+|       |   +-- course/
+|       |   +-- emoticons/
+|       |   +-- language/
+|       |   +-- lobject/
+|       |   +-- login/
+|       |   +-- mimetypes/
+|       |   +-- mimetypes32/
+|       |   +-- scorm/
+|       |   +-- social/
+|       |   +-- standard/
+|       |   +-- tree/
+|       |   +-- treeview/
+|       |   +-- tree_rtl/
+|       |   +-- webpages/
+|       |   '-- wiki/
+|       +-- jsdoc/
+|       +-- layout/
+|       |   +-- appCore/
+|       |   +-- appLms/
+|       |   '-- mail/
+|       +-- player_scorm/
+|       |   '-- default/
+|       +-- script/
+|       +-- static/
+|       |   +-- fonts/
+|       |   '-- images/
+|       +-- style/
+|       |   '-- font-awesome/
+|       +-- styleguide/
+|       |   '-- public/
+|       '-- yui-skin/
+
+|------------------------------------------------------------------------------
+|------------------------------------------------------------------------------
