@@ -60,8 +60,8 @@ function checkRequirements()
         if (empty($mysqlVersion[1])) {
             $res['mysql'] = 'ok';
         } else {
-            $checkMysql = version_compare($mysqlVersion[1], '5.6') >= 0 && version_compare($mysqlVersion[1], '8.0') <= 0;
-            $checkMariaDB = version_compare($mysqlVersion[1], '10.0') >= 0 && version_compare($mysqlVersion[1], '10.7') < 0;
+            $checkMysql = version_compare($mysqlVersion[1], '5.6') >= 0 && version_compare($mysqlVersion[1], '8.1') < 0;
+            $checkMariaDB = version_compare($mysqlVersion[1], '10.0') >= 0 && version_compare($mysqlVersion[1], '11.0') < 0;
 
             if ($checkMysql || $checkMariaDB) {
                 $res['mysql'] = 'ok';
