@@ -385,7 +385,6 @@ class DateManager
 
         $result = sql_query($query);
 
-        $first = true;
         while (list($name, $location) = sql_fetch_row($result)) {
             $_name = ($show_location && trim($location) != '' ? $location . ' - ' : '') . $name;
             if ($first) {

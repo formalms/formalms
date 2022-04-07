@@ -341,6 +341,8 @@ class Report extends \ReportPlugin
                     . '<div id="use_classrooms" style="display:' . ($show_classrooms_editions ? 'block' : 'none') . '">'
                     . Form::getCheckBox(Lang::t('_NAME', 'standard'), 'col_sel_classroomname', 'cols[]', '_TH_CLASSROOM_CODE', is_showed('_TH_CLASSROOM_CODE', $ref))
                     . Form::getCheckBox(Lang::t('_CODE', 'standard'), 'col_sel_classroomcode', 'cols[]', '_TH_CLASSROOM_NAME', is_showed('_TH_CLASSROOM_NAME', $ref))
+                    . Form::getCheckBox(Lang::t('_LOCATION', 'standard'), 'col_sel_classroomlocation', 'cols[]', '_TH_CLASSROOM_LOCATION', is_showed('_TH_CLASSROOM_LOCATION', $ref))
+                    . Form::getCheckBox(Lang::t('_LOCATION_CLASSNAME', 'standard'), 'col_sel_classroomlocation_classname', 'cols[]', '_TH_CLASSROOM_LOCATION_CLASSNAME', is_showed('_TH_CLASSROOM_LOCATION_CLASSNAME', $ref))
                     . Form::getCheckBox(Lang::t('_DATE_BEGIN', 'standard'), 'col_sel_classroomdatebegin', 'cols[]', '_TH_CLASSROOM_MIN_DATE', is_showed('_TH_CLASSROOM_MIN_DATE', $ref))
                     . Form::getCheckBox(Lang::t('_DATE_END', 'standard'), 'col_sel_classroomdateend', 'cols[]', '_TH_CLASSROOM_MAX_DATE', is_showed('_TH_CLASSROOM_MAX_DATE', $ref))
                     . '</div>'
@@ -1580,6 +1582,9 @@ class Report extends \ReportPlugin
             if (in_array('_TH_CLASSROOM_NAME', $filter_cols)) {
                 ++$colspan_classrooms_editions;
             }
+            if (in_array('_TH_CLASSROOM_LOCATION', $filter_cols)) {
+                ++$colspan_classrooms_editions;
+            }
             if (in_array('_TH_CLASSROOM_MIN_DATE', $filter_cols)) {
                 ++$colspan_classrooms_editions;
             }
@@ -1697,6 +1702,9 @@ class Report extends \ReportPlugin
             }
             if (in_array('_TH_CLASSROOM_NAME', $filter_cols)) {
                 $th3[] = Lang::t('_CODE', 'standard');
+            }
+            if (in_array('_TH_CLASSROOM_LOCATION', $filter_cols)) {
+                $th3[] = Lang::t('_LOCATION', 'standard');
             }
             if (in_array('_TH_CLASSROOM_MIN_DATE', $filter_cols)) {
                 $th3[] = ['style' => 'align-center', 'value' => Lang::t('_DATE_BEGIN', 'standard')];
@@ -1900,10 +1908,11 @@ class Report extends \ReportPlugin
             }
 
             if ($show_classrooms_editions) {
-                $e_code = $e_name = $date_1 = $date_2 = '';
+                $e_code = $e_name = $date_1 = $date_2 = $e_location = '';
                 if ($id_date > 0 && isset($classrooms_editions_info['classrooms'][$id_date])) {
                     $e_code = $classrooms_editions_info['classrooms'][$id_date]->code;
                     $e_name = $classrooms_editions_info['classrooms'][$id_date]->name;
+                    $e_location = $classrooms_editions_info['classrooms'][$id_date]->classroom_location;
                     $date_1 = Format::date($classrooms_editions_info['classrooms'][$id_date]->date_1, 'datetime');
                     $date_2 = Format::date($classrooms_editions_info['classrooms'][$id_date]->date_2, 'datetime');
                 }
@@ -1913,6 +1922,10 @@ class Report extends \ReportPlugin
                 if (in_array('_TH_CLASSROOM_NAME', $filter_cols)) {
                     $trow[] = $e_name;
                 }
+                if (in_array('_TH_CLASSROOM_LOCATION', $filter_cols)) {
+                    $trow[] = $e_location;
+                }
+
                 if (in_array('_TH_CLASSROOM_MIN_DATE', $filter_cols)) {
                     $trow[] = ['style' => 'align-center', 'value' => $date_1];
                 }

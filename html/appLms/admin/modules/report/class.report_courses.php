@@ -13,8 +13,9 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-require_once dirname(__FILE__) . '/class.report.php';
+require_once Forma::include(_lms_ . '/lib/', 'lib.course.php');
+require_once __DIR__ . '/class.report.php';
+require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
 define('_RCS_CATEGORY_USERS', 'users');
 define('_RCS_CATEGORY_LO', 'LO');
@@ -206,96 +207,96 @@ class Report_Courses extends Report
 
         switch ($substep) {
             case _SUBSTEP_COLUMNS:
-                    //set session data
-                    if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-                        $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, []);
-                        $ref['show_percent'] = (Get::req('show_percent', DOTY_INT, 0) > 0 ? true : false);
-                        $ref['time_belt'] = [
-                            'time_range' => $_POST['time_belt'],
-                            'start_date' => Format::dateDb($_POST['start_time'], 'date'),
-                            'end_date' => Format::dateDb($_POST['end_time'], 'date'),
-                        ];
-                        $ref['org_chart_subdivision'] = (isset($_POST['org_chart_subdivision']) ? 1 : 0);
-                        $ref['show_classrooms_editions'] = (isset($_POST['show_classrooms_editions']) ? true : false);
-                        $ref['show_suspended'] = Get::req('show_suspended', DOTY_INT, 0) > 0;
-                        $ref['only_students'] = Get::req('only_students', DOTY_INT, 0) > 0;
-                        $ref['show_assessment'] = Get::req('show_assessment', DOTY_INT, 0) > 0;
+                //set session data
+                if (Get::req('is_updating', DOTY_INT, 0) > 0) {
+                    $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, []);
+                    $ref['show_percent'] = (Get::req('show_percent', DOTY_INT, 0) > 0 ? true : false);
+                    $ref['time_belt'] = [
+                        'time_range' => $_POST['time_belt'],
+                        'start_date' => Format::dateDb($_POST['start_time'], 'date'),
+                        'end_date' => Format::dateDb($_POST['end_time'], 'date'),
+                    ];
+                    $ref['org_chart_subdivision'] = (isset($_POST['org_chart_subdivision']) ? 1 : 0);
+                    $ref['show_classrooms_editions'] = (isset($_POST['show_classrooms_editions']) ? true : false);
+                    $ref['show_suspended'] = Get::req('show_suspended', DOTY_INT, 0) > 0;
+                    $ref['only_students'] = Get::req('only_students', DOTY_INT, 0) > 0;
+                    $ref['show_assessment'] = Get::req('show_assessment', DOTY_INT, 0) > 0;
+                } else {
+                    //...
+                }
+
+                //check action
+                if (isset($_POST['cancelselector'])) {
+                    Util::jump_to($jump_url . '&substep=users_selection');
+                }
+
+                if (isset($_POST['import_filter']) || isset($_POST['show_filter']) || isset($_POST['pre_filter'])) {
+                    $temp_url = $next_url;
+                    if (isset($_POST['pre_filter'])) {
+                        $temp_url .= '&show=1&nosave=1';
+                    }
+                    if (isset($_POST['show_filter'])) {
+                        $temp_url .= '&show=1';
+                    }
+                    Util::jump_to($temp_url);
+                }
+
+                cout($this->page_title, 'content');
+
+                function is_showed($which, &$arr)
+                {
+                    if (isset($arr['showed_cols'])) {
+                        return in_array($which, $arr['showed_cols']);
                     } else {
-                        //...
+                        return false;
                     }
+                }
 
-                    //check action
-                    if (isset($_POST['cancelselector'])) {
-                        Util::jump_to($jump_url . '&substep=users_selection');
-                    }
+                /*$go_to_second_step = (isset($_POST['go_to_second_step']) ? true : false);
+            $we_are_in_second_step = Get::req('second_step', DOTY_INT, false);*/
 
-                    if (isset($_POST['import_filter']) || isset($_POST['show_filter']) || isset($_POST['pre_filter'])) {
-                        $temp_url = $next_url;
-                        if (isset($_POST['pre_filter'])) {
-                            $temp_url .= '&show=1&nosave=1';
-                        }
-                        if (isset($_POST['show_filter'])) {
-                            $temp_url .= '&show=1';
-                        }
-                        Util::jump_to($temp_url);
-                    }
+                $time_belt = [
+                    0 => $lang->def('_CUSTOM_BELT'),
+                    7 => $lang->def('_LAST_WEEK'),
+                    31 => $lang->def('_LAST_MONTH'),
+                    93 => $lang->def('_LAST_THREE_MONTH'),
+                    186 => $lang->def('_LAST_SIX_MONTH'),
+                    365 => $lang->def('_LAST_YEAR'),];
 
-                    cout($this->page_title, 'content');
+                cout(
+                    Form::openForm('user_report_rows_courses', $jump_url) .
+                    Form::getHidden('update_tempdata', 'update_tempdata', 1) .
+                    Form::getHidden('is_updating', 'is_updating', 1) .
+                    Form::getHidden('substep', 'substep', 'columns_selection'), 'content');
 
-                    function is_showed($which, &$arr)
-                    {
-                        if (isset($arr['showed_cols'])) {
-                            return in_array($which, $arr['showed_cols']);
-                        } else {
-                            return false;
-                        }
-                    }
+                //box for time belt
+                $box = new ReportBox('timebelt_box');
+                $box->title = $lang->def('_REPORT_USER_TITLE_TIMEBELT');
+                $box->description = Lang::t('_TIME_PERIOD_FILTER', 'report');
+                $box->body =
+                    Form::getDropdown($lang->def('_TIME_BELT'), 'time_belt_' . $this->id_report, 'time_belt', $time_belt, (isset($ref['time_belt']['time_range']) ? $ref['time_belt']['time_range'] : ''), '', '',
+                        ' onchange="report_disableCustom( \'time_belt_' . $this->id_report . '\', \'start_time_' . $this->id_report . '\', \'end_time_' . $this->id_report . '\' )"')
+                    . Form::getOpenFieldset($lang->def('_CUSTOM_BELT'), 'fieldset_' . $this->id_report)
+                    . Form::getDatefield($lang->def('_START_TIME'), 'start_time_' . $this->id_report, 'start_time', Format::date($ref['time_belt']['start_date'], 'date'))
+                    . Form::getDatefield($lang->def('_TO'), 'end_time_' . $this->id_report, 'end_time', Format::date($ref['time_belt']['end_date'], 'date'))
+                    . Form::getCloseFieldset();
 
-                    /*$go_to_second_step = (isset($_POST['go_to_second_step']) ? true : false);
-                $we_are_in_second_step = Get::req('second_step', DOTY_INT, false);*/
+                cout($box->get() . Form::getBreakRow(), 'content');
 
-                    $time_belt = [
-                        0 => $lang->def('_CUSTOM_BELT'),
-                        7 => $lang->def('_LAST_WEEK'),
-                        31 => $lang->def('_LAST_MONTH'),
-                        93 => $lang->def('_LAST_THREE_MONTH'),
-                        186 => $lang->def('_LAST_SIX_MONTH'),
-                        365 => $lang->def('_LAST_YEAR'), ];
+                $box = new ReportBox('other_options');
+                $box->title = Lang::t('_OTHER_OPTION', 'course');
+                $box->description = false;
+                $box->body =
+                    Form::getCheckbox($lang->def('ORG_CHART_SUBDIVISION'), 'org_chart_subdivision_' . $this->id_report, 'org_chart_subdivision', 1, ($ref['org_chart_subdivision'] == 1 ? true : false))
+                    . Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$ref['show_suspended'])
+                    . Form::getCheckbox(Lang::t('_SHOW_ONLY', 'subscribe') . ': ' . Lang::t('_STUDENTS', 'coursereport'), 'only_students', 'only_students', 1, (bool)$ref['only_students'])
+                    . Form::getCheckbox(Lang::t('_SHOW', 'standard') . ': ' . Lang::t('_ASSESSMENT', 'standard'), 'show_assessment', 'show_assessment', 1, (bool)$ref['show_assessment']);
 
-                    cout(
-                        Form::openForm('user_report_rows_courses', $jump_url) .
-                        Form::getHidden('update_tempdata', 'update_tempdata', 1) .
-                        Form::getHidden('is_updating', 'is_updating', 1) .
-                        Form::getHidden('substep', 'substep', 'columns_selection'), 'content');
+                cout($box->get() . Form::getBreakRow(), 'content');
 
-                    //box for time belt
-                    $box = new ReportBox('timebelt_box');
-                    $box->title = $lang->def('_REPORT_USER_TITLE_TIMEBELT');
-                    $box->description = Lang::t('_TIME_PERIOD_FILTER', 'report');
-                    $box->body =
-                        Form::getDropdown($lang->def('_TIME_BELT'), 'time_belt_' . $this->id_report, 'time_belt', $time_belt, (isset($ref['time_belt']['time_range']) ? $ref['time_belt']['time_range'] : ''), '', '',
-                            ' onchange="report_disableCustom( \'time_belt_' . $this->id_report . '\', \'start_time_' . $this->id_report . '\', \'end_time_' . $this->id_report . '\' )"')
-                        . Form::getOpenFieldset($lang->def('_CUSTOM_BELT'), 'fieldset_' . $this->id_report)
-                        . Form::getDatefield($lang->def('_START_TIME'), 'start_time_' . $this->id_report, 'start_time', Format::date($ref['time_belt']['start_date'], 'date'))
-                        . Form::getDatefield($lang->def('_TO'), 'end_time_' . $this->id_report, 'end_time', Format::date($ref['time_belt']['end_date'], 'date'))
-                        . Form::getCloseFieldset();
-
-                    cout($box->get() . Form::getBreakRow(), 'content');
-
-                    $box = new ReportBox('other_options');
-                    $box->title = Lang::t('_OTHER_OPTION', 'course');
-                    $box->description = false;
-                    $box->body =
-                        Form::getCheckbox($lang->def('ORG_CHART_SUBDIVISION'), 'org_chart_subdivision_' . $this->id_report, 'org_chart_subdivision', 1, ($ref['org_chart_subdivision'] == 1 ? true : false))
-                        . Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $ref['show_suspended'])
-                        . Form::getCheckbox(Lang::t('_SHOW_ONLY', 'subscribe') . ': ' . Lang::t('_STUDENTS', 'coursereport'), 'only_students', 'only_students', 1, (bool) $ref['only_students'])
-                        . Form::getCheckbox(Lang::t('_SHOW', 'standard') . ': ' . Lang::t('_ASSESSMENT', 'standard'), 'show_assessment', 'show_assessment', 1, (bool) $ref['show_assessment']);
-
-                    cout($box->get() . Form::getBreakRow(), 'content');
-
-                    $glang = &DoceboLanguage::createInstance('course', 'lms');
-                    $show_classrooms_editions = $ref['show_classrooms_editions'];
-                    cout('<script type="text/javascript">
+                $glang = &DoceboLanguage::createInstance('course', 'lms');
+                $show_classrooms_editions = $ref['show_classrooms_editions'];
+                cout('<script type="text/javascript">
 						function activateClassrooms() {
 							var Y = YAHOO.util.Dom;
 							var b1 = Y.get("not_classrooms"), b2 = Y.get("use_classrooms");
@@ -313,144 +314,146 @@ class Report_Courses extends Report
 						}
 					</script>', 'page_head');
 
-                    $box = new ReportBox('columns_sel_box');
-                    $box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
-                    $box->description = false;
-                    $box->body = Form::getHidden('is_updating', 'is_updating', 2)
-                        //$glang->def('_COURSE_NAME')
-                        //.Form::openElementSpace()
-                        . Form::getOpenFieldset($lang->def('_COURSE_FIELDS'), 'fieldset_course_fields')
-                        . Form::getCheckBox($lang->def('_COURSE_CODE'), 'col_sel_coursecode', 'cols[]', '_CODE_COURSE', is_showed('_CODE_COURSE', $ref))
-                        //.Form::getCheckBox('', 'col_sel_coursename', 'cols[]', '_NAME_COURSE', true, "style='display:none;'")
-                        . Form::getCheckBox($glang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_COURSE_CATEGORY', is_showed('_COURSE_CATEGORY', $ref))
-                        . Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
-                        . Form::getCheckBox($glang->def('_CATALOGUE'), 'col_sel_catalogue', 'cols[]', '_COURSECATALOGUE', is_showed('_COURSECATALOGUE', $ref))
-                        . Form::getCheckBox($glang->def('_CREATION_DATE'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
-                        . Form::getCheckBox($glang->def('_LABEL'), 'col_sel_label', 'cols[]', '_COURSELABEL', is_showed('_COURSELABEL', $ref))
-                        . Form::getCloseFieldset();
+                $box = new ReportBox('columns_sel_box');
+                $box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
+                $box->description = false;
+                $box->body = Form::getHidden('is_updating', 'is_updating', 2)
+                    //$glang->def('_COURSE_NAME')
+                    //.Form::openElementSpace()
+                    . Form::getOpenFieldset($lang->def('_COURSE_FIELDS'), 'fieldset_course_fields')
+                    . Form::getCheckBox($lang->def('_COURSE_CODE'), 'col_sel_coursecode', 'cols[]', '_CODE_COURSE', is_showed('_CODE_COURSE', $ref))
+                    //.Form::getCheckBox('', 'col_sel_coursename', 'cols[]', '_NAME_COURSE', true, "style='display:none;'")
+                    . Form::getCheckBox($glang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_COURSE_CATEGORY', is_showed('_COURSE_CATEGORY', $ref))
+                    . Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
+                    . Form::getCheckBox($glang->def('_CATALOGUE'), 'col_sel_catalogue', 'cols[]', '_COURSECATALOGUE', is_showed('_COURSECATALOGUE', $ref))
+                    . Form::getCheckBox($glang->def('_CREATION_DATE'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
+                    . Form::getCheckBox($glang->def('_LABEL'), 'col_sel_label', 'cols[]', '_COURSELABEL', is_showed('_COURSELABEL', $ref))
+                    . Form::getCheckBox($glang->def('_NUM_CLASSROOM', 'report'), 'col_sel_numclassroom', 'cols[]', '_NUM_CLASSROOM', is_showed('_NUM_CLASSROOM', $ref))
+                    . Form::getCloseFieldset();
 
-                    // LRZ: manage custom fields for COURSE
-                    $box->body .= Form::getOpenFieldset($lang->def('_ADDITIONAL_FIELDS_COURSES', 'courses'), 'report');
-                    foreach ($customCourse as $keyCourse => $valCourse) {
-                        $box->body .= Form::getCheckBox($glang->def($valCourse['label']), 'col_sel_' . $valCourse['label'], 'cols[]', '_' . $valCourse['label'], is_showed('_' . $valCourse['label'], $ref));
-                    }
-                    $box->body .= Form::getCloseFieldset();
+                // LRZ: manage custom fields for COURSE
+                $box->body .= Form::getOpenFieldset($lang->def('_ADDITIONAL_FIELDS_COURSES', 'courses'), 'report');
+                foreach ($customCourse as $keyCourse => $valCourse) {
+                    $box->body .= Form::getCheckBox($glang->def($valCourse['label']), 'col_sel_' . $valCourse['label'], 'cols[]', '_' . $valCourse['label'], is_showed('_' . $valCourse['label'], $ref));
+                }
+                $box->body .= Form::getCloseFieldset();
 
-                    $box->body .= Form::getOpenFieldset(
-                            Form::getInputCheckbox('show_classrooms_editions', 'show_classrooms_editions', 1, $show_classrooms_editions, 'onclick=activateClassrooms();')
-                            . '&nbsp;&nbsp;' . Lang::t('_CLASSROOM_FIELDS', 'report'), 'fieldset_classroom_fields')
-                        . '<div id="not_classrooms" style="display:' . ($show_classrooms_editions ? 'none' : 'block') . '">'
-                        . Lang::t('_ACTIVATE_CLASSROOM_FIELDS', 'report')
-                        . '</div>'
-                        . '<div id="use_classrooms" style="display:' . ($show_classrooms_editions ? 'block' : 'none') . '">'
-                        . Form::getCheckBox(Lang::t('_NAME', 'standard'), 'col_sel_classroomname', 'cols[]', '_TH_CLASSROOM_CODE', is_showed('_TH_CLASSROOM_CODE', $ref))
-                        . Form::getCheckBox(Lang::t('_CODE', 'standard'), 'col_sel_classroomcode', 'cols[]', '_TH_CLASSROOM_NAME', is_showed('_TH_CLASSROOM_NAME', $ref))
-                        . Form::getCheckBox(Lang::t('_DATE_BEGIN', 'standard'), 'col_sel_classroomdatebegin', 'cols[]', '_TH_CLASSROOM_MIN_DATE', is_showed('_TH_CLASSROOM_MIN_DATE', $ref))
-                        . Form::getCheckBox(Lang::t('_DATE_END', 'standard'), 'col_sel_classroomdateend', 'cols[]', '_TH_CLASSROOM_MAX_DATE', is_showed('_TH_CLASSROOM_MAX_DATE', $ref))
-                        . '</div>'
-                        . Form::getCloseFieldset()
+                $box->body .= Form::getOpenFieldset(
+                        Form::getInputCheckbox('show_classrooms_editions', 'show_classrooms_editions', 1, $show_classrooms_editions, 'onclick=activateClassrooms();')
+                        . '&nbsp;&nbsp;' . Lang::t('_CLASSROOM_FIELDS', 'report'), 'fieldset_classroom_fields')
+                    . '<div id="not_classrooms" style="display:' . ($show_classrooms_editions ? 'none' : 'block') . '">'
+                    . Lang::t('_ACTIVATE_CLASSROOM_FIELDS', 'report')
+                    . '</div>'
+                    . '<div id="use_classrooms" style="display:' . ($show_classrooms_editions ? 'block' : 'none') . '">'
+                    . Form::getCheckBox(Lang::t('_NAME', 'standard'), 'col_sel_classroomname', 'cols[]', '_TH_CLASSROOM_CODE', is_showed('_TH_CLASSROOM_CODE', $ref))
+                    . Form::getCheckBox(Lang::t('_CODE', 'standard'), 'col_sel_classroomcode', 'cols[]', '_TH_CLASSROOM_NAME', is_showed('_TH_CLASSROOM_NAME', $ref))
+                    . Form::getCheckBox(Lang::t('_LOCATION', 'standard'), 'col_sel_classroomlocation', 'cols[]', '_TH_CLASSROOM_LOCATION', is_showed('_TH_CLASSROOM_LOCATION', $ref))
+                    . Form::getCheckBox(Lang::t('_DATE_BEGIN', 'standard'), 'col_sel_classroomdatebegin', 'cols[]', '_TH_CLASSROOM_MIN_DATE', is_showed('_TH_CLASSROOM_MIN_DATE', $ref))
+                    . Form::getCheckBox(Lang::t('_DATE_END', 'standard'), 'col_sel_classroomdateend', 'cols[]', '_TH_CLASSROOM_MAX_DATE', is_showed('_TH_CLASSROOM_MAX_DATE', $ref))
+                    . '</div>'
+                    . Form::getCloseFieldset()
 
-                        . Form::getOpenFieldset($lang->def('_COURSE_FIELDS_INFO'), 'fieldset_course_fields')
-                        . Form::getCheckBox($glang->def('_COURSE_LANG_METHOD'), 'col_course_lang_method', 'cols[]', '_LANGUAGE', is_showed('_LANGUAGE', $ref))
-                        . Form::getCheckBox($glang->def('_DIFFICULTY'), 'col_course_difficult', 'cols[]', '_DIFFICULT', is_showed('_DIFFICULT', $ref))
-                        . Form::getCheckBox($glang->def('_DATE_BEGIN'), 'col_date_begin', 'cols[]', '_DATE_BEGIN', is_showed('_DATE_BEGIN', $ref))
-                        . Form::getCheckBox($glang->def('_DATE_END'), 'col_date_end', 'cols[]', '_DATE_END', is_showed('_DATE_END', $ref))
-                        . Form::getCheckBox($glang->def('_HOUR_BEGIN'), 'col_time_begin', 'cols[]', '_TIME_BEGIN', is_showed('_TIME_BEGIN', $ref))
-                        . Form::getCheckBox($glang->def('_HOUR_END'), 'col_time_end', 'cols[]', '_TIME_END', is_showed('_TIME_END', $ref))
-                        . Form::getCheckBox($glang->def('_MAX_NUM_SUBSCRIBE'), 'col_max_num_subscribe', 'cols[]', '_MAX_NUM_SUBSCRIBED', is_showed('_MAX_NUM_SUBSCRIBED', $ref))
-                        . Form::getCheckBox($glang->def('_MIN_NUM_SUBSCRIBE'), 'col_min_num_subscribe', 'cols[]', '_MIN_NUM_SUBSCRIBED', is_showed('_MIN_NUM_SUBSCRIBED', $ref))
-                        . Form::getCheckBox(Lang::t('_CREDITS', 'standard'), 'col_credits', 'cols[]', '_CREDITS', is_showed('_CREDITS', $ref))
-                        . Form::getCheckBox($glang->def('_COURSE_PRIZE'), 'col_course_price', 'cols[]', '_PRICE', is_showed('_PRICE', $ref))
-                        . Form::getCheckBox($glang->def('_COURSE_ADVANCE'), 'col_course_advance', 'cols[]', '_ADVANCE', is_showed('_ADVANCE', $ref))
-                        . Form::getCheckBox($glang->def('_COURSE_TYPE'), 'col_course_type', 'cols[]', '_COURSE_TYPE', is_showed('_COURSE_TYPE', $ref))
-                        . Form::getCheckBox($glang->def('_COURSE_AUTOREGISTRATION_CODE'), 'col_autoregistration_code', 'cols[]', '_AUTOREGISTRATION_CODE', is_showed('_AUTOREGISTRATION_CODE', $ref))
-                        . Form::getCloseFieldset()
+                    . Form::getOpenFieldset($lang->def('_COURSE_FIELDS_INFO'), 'fieldset_course_fields')
+                    . Form::getCheckBox($glang->def('_COURSE_LANG_METHOD'), 'col_course_lang_method', 'cols[]', '_LANGUAGE', is_showed('_LANGUAGE', $ref))
+                    . Form::getCheckBox($glang->def('_DIFFICULTY'), 'col_course_difficult', 'cols[]', '_DIFFICULT', is_showed('_DIFFICULT', $ref))
+                    . Form::getCheckBox($glang->def('_DATE_BEGIN'), 'col_date_begin', 'cols[]', '_DATE_BEGIN', is_showed('_DATE_BEGIN', $ref))
+                    . Form::getCheckBox($glang->def('_DATE_END'), 'col_date_end', 'cols[]', '_DATE_END', is_showed('_DATE_END', $ref))
+                    . Form::getCheckBox($glang->def('_HOUR_BEGIN'), 'col_time_begin', 'cols[]', '_TIME_BEGIN', is_showed('_TIME_BEGIN', $ref))
+                    . Form::getCheckBox($glang->def('_HOUR_END'), 'col_time_end', 'cols[]', '_TIME_END', is_showed('_TIME_END', $ref))
+                    . Form::getCheckBox($glang->def('_MAX_NUM_SUBSCRIBE'), 'col_max_num_subscribe', 'cols[]', '_MAX_NUM_SUBSCRIBED', is_showed('_MAX_NUM_SUBSCRIBED', $ref))
+                    . Form::getCheckBox($glang->def('_MIN_NUM_SUBSCRIBE'), 'col_min_num_subscribe', 'cols[]', '_MIN_NUM_SUBSCRIBED', is_showed('_MIN_NUM_SUBSCRIBED', $ref))
+                    . Form::getCheckBox(Lang::t('_CREDITS', 'standard'), 'col_credits', 'cols[]', '_CREDITS', is_showed('_CREDITS', $ref))
+                    . Form::getCheckBox($glang->def('_COURSE_PRIZE'), 'col_course_price', 'cols[]', '_PRICE', is_showed('_PRICE', $ref))
+                    . Form::getCheckBox($glang->def('_COURSE_ADVANCE'), 'col_course_advance', 'cols[]', '_ADVANCE', is_showed('_ADVANCE', $ref))
+                    . Form::getCheckBox($glang->def('_COURSE_TYPE'), 'col_course_type', 'cols[]', '_COURSE_TYPE', is_showed('_COURSE_TYPE', $ref))
+                    . Form::getCheckBox($glang->def('_COURSE_AUTOREGISTRATION_CODE'), 'col_autoregistration_code', 'cols[]', '_AUTOREGISTRATION_CODE', is_showed('_AUTOREGISTRATION_CODE', $ref))
+                    . Form::getCloseFieldset()
 
-                        . Form::getOpenFieldset($lang->def('_STATS_FIELDS_INFO'), 'fieldset_course_fields')
+                    . Form::getOpenFieldset($lang->def('_STATS_FIELDS_INFO'), 'fieldset_course_fields')
 
-                        // ADD COL WAITING
-                        . Form::getCheckBox($lang->def('_WAITING', 'standard'), 'col_waiting', 'cols[]', '_WAITING', is_showed('_WAITING', $ref))
+                    // ADD COL WAITING
+                    . Form::getCheckBox($lang->def('_WAITING', 'standard'), 'col_waiting', 'cols[]', '_WAITING', is_showed('_WAITING', $ref))
 
-                        . Form::getCheckBox($lang->def('_USER_STATUS_SUBS'), 'col_inscr', 'cols[]', '_INSCR', is_showed('_INSCR', $ref))
-                        . Form::getCheckBox($lang->def('_MUSTBEGIN'), 'col_mustbegin', 'cols[]', '_MUSTBEGIN', is_showed('_MUSTBEGIN', $ref))
-                        . Form::getCheckBox($lang->def('_USER_STATUS_BEGIN'), 'col_user_status_begin', 'cols[]', '_USER_STATUS_BEGIN', is_showed('_USER_STATUS_BEGIN', $ref))
-                        . Form::getCheckBox($lang->def('_COMPLETED'), 'col_completecourse', 'cols[]', '_COMPLETECOURSE', is_showed('_COMPLETECOURSE', $ref))
-                        . Form::getCheckBox($lang->def('_TOTAL_SESSION'), 'col_total_session', 'cols[]', '_TOTAL_SESSION', is_showed('_TOTAL_SESSION', $ref))
-                        . Form::getBreakRow()
-                        . Form::getCheckBox($lang->def('_PERCENTAGE'), 'show_percent', 'show_percent', '1', $ref['show_percent'])
-                        . Form::getCloseFieldset();
+                    . Form::getCheckBox($lang->def('_USER_STATUS_SUBS'), 'col_inscr', 'cols[]', '_INSCR', is_showed('_INSCR', $ref))
+                    . Form::getCheckBox($lang->def('_MUSTBEGIN'), 'col_mustbegin', 'cols[]', '_MUSTBEGIN', is_showed('_MUSTBEGIN', $ref))
+                    . Form::getCheckBox($lang->def('_USER_STATUS_BEGIN'), 'col_user_status_begin', 'cols[]', '_USER_STATUS_BEGIN', is_showed('_USER_STATUS_BEGIN', $ref))
+                    . Form::getCheckBox($lang->def('_COMPLETED'), 'col_completecourse', 'cols[]', '_COMPLETECOURSE', is_showed('_COMPLETECOURSE', $ref))
+                    . Form::getCheckBox($lang->def('_TOTAL_SESSION'), 'col_total_session', 'cols[]', '_TOTAL_SESSION', is_showed('_TOTAL_SESSION', $ref))
+                    . Form::getBreakRow()
+                    . Form::getCheckBox($lang->def('_PERCENTAGE'), 'show_percent', 'show_percent', '1', $ref['show_percent'])
+                    . Form::getCloseFieldset();
 
-                    cout($box->get(), 'content');
+                cout($box->get(), 'content');
 
-                    cout(Form::openButtonSpace()
-                        . Form::getBreakRow()
-                        . Form::getButton('pre_filter', 'pre_filter', $lang->def('_SHOW_NOSAVE', 'report'))
-                        . Form::getButton('ok_filter', 'import_filter', $lang->def('_SAVE_BACK'))
-                        . Form::getButton('show_filter', 'show_filter', $lang->def('_SAVE_SHOW'))
-                        . Form::getButton('undo_filter', 'undo_filter', $lang->def('_UNDO'))
-                        . Form::closeButtonSpace()
-                        . Form::closeForm(), 'content');
-                    cout('</div>', 'content'); //stdblock div
+                cout(Form::openButtonSpace()
+                    . Form::getBreakRow()
+                    . Form::getButton('pre_filter', 'pre_filter', $lang->def('_SHOW_NOSAVE', 'report'))
+                    . Form::getButton('ok_filter', 'import_filter', $lang->def('_SAVE_BACK'))
+                    . Form::getButton('show_filter', 'show_filter', $lang->def('_SAVE_SHOW'))
+                    . Form::getButton('undo_filter', 'undo_filter', $lang->def('_UNDO'))
+                    . Form::closeButtonSpace()
+                    . Form::closeForm(), 'content');
+                cout('</div>', 'content'); //stdblock div
 
                 break;
 
             case _SUBSTEP_USERS:
-                    //$aclManager = new DoceboACLManager();
-                    $user_select = new UserSelector();
-                    $user_select->use_suspended = true;
+                //$aclManager = new DoceboACLManager();
+                $user_select = new UserSelector();
+                $user_select->use_suspended = true;
 
-                    if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-                        $ref['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
-                    } else { //maybe redoundant
-                        if (!isset($ref['all_users'])) {
-                            $ref['all_users'] = false;
-                        }
-                        if (!isset($ref['users'])) {
-                            $ref['users'] = [];
-                        }
-                        $user_select->requested_tab = PEOPLEVIEW_TAB;
-                        $user_select->resetSelection($ref['users']);
-                        //$ref['users'] = array(); it should already have been set to void array, if non existent
+                if (Get::req('is_updating', DOTY_INT, 0) > 0) {
+                    $ref['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+                } else { //maybe redoundant
+                    if (!isset($ref['all_users'])) {
+                        $ref['all_users'] = false;
                     }
-
-                    if (isset($_POST['cancelselector'])) {
-                        Util::jump_to($back_url);
-                    } elseif (isset($_POST['okselector'])) {
-                        $elem_selected = $user_select->getSelection($_POST);
-                        $ref['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
-                        $ref['users'] = $elem_selected;
-                        Util::jump_to($jump_url . '&substep=columns_selection');
+                    if (!isset($ref['users'])) {
+                        $ref['users'] = [];
                     }
+                    $user_select->requested_tab = PEOPLEVIEW_TAB;
+                    $user_select->resetSelection($ref['users']);
+                    //$ref['users'] = array(); it should already have been set to void array, if non existent
+                }
 
-                    //set page
-                    if ($org_chart_subdivision == 0) {
-                        $user_select->show_user_selector = true;
-                        $user_select->show_group_selector = true;
-                    } else {
-                        $user_select->show_user_selector = false;
-                        $user_select->show_group_selector = false;
-                    }
-                    $user_select->show_orgchart_selector = true;
-                    //$user_select->show_orgchart_simple_selector = FALSE;
-                    //$user_select->multi_choice = TRUE;
+                if (isset($_POST['cancelselector'])) {
+                    Util::jump_to($back_url);
+                } elseif (isset($_POST['okselector'])) {
+                    $elem_selected = $user_select->getSelection($_POST);
+                    $ref['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+                    $ref['users'] = $elem_selected;
+                    Util::jump_to($jump_url . '&substep=columns_selection');
+                }
 
-                    if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
-                        $user_select->addFormInfo(
-                            Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, ($ref['all_users'] ? 1 : 0)) .
-                            Form::getBreakRow() .
-                            Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
-                            Form::getHidden('is_updating', 'is_updating', 1) .
-                            Form::getHidden('substep', 'substep', 'user_selection') .
-                            Form::getHidden('second_step', 'second_step', 1)
-                        );
-                    }
+                //set page
+                if ($org_chart_subdivision == 0) {
+                    $user_select->show_user_selector = true;
+                    $user_select->show_group_selector = true;
+                } else {
+                    $user_select->show_user_selector = false;
+                    $user_select->show_group_selector = false;
+                }
+                $user_select->show_orgchart_selector = true;
+                //$user_select->show_orgchart_simple_selector = FALSE;
+                //$user_select->multi_choice = TRUE;
 
-                    cout($this->page_title, 'content');
+                if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+                    $user_select->addFormInfo(
+                        Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, ($ref['all_users'] ? 1 : 0)) .
+                        Form::getBreakRow() .
+                        Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
+                        Form::getHidden('is_updating', 'is_updating', 1) .
+                        Form::getHidden('substep', 'substep', 'user_selection') .
+                        Form::getHidden('second_step', 'second_step', 1)
+                    );
+                }
 
-                    $user_select->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
-                        false,
-                        $this->lang->def('_CHOOSE_USER_FOR_REPORT'),
-                        true);
+                cout($this->page_title, 'content');
+
+                $user_select->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
+                    false,
+                    $this->lang->def('_CHOOSE_USER_FOR_REPORT'),
+                    true);
 
                 break;
         }
@@ -512,6 +515,7 @@ class Report_Courses extends Report
             . Form::getCheckBox($glang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_COURSE_CATEGORY', is_showed('_COURSE_CATEGORY', $ref))
             . Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
             . Form::getCheckBox($glang->def('_CREATION_DATE', 'report'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
+            . Form::getCheckBox($glang->def('_NUM_CLASSROOM', 'report'), 'col_sel_numclassroom', 'cols[]', '_NUM_CLASSROOM', is_showed('_NUM_CLASSROOM', $ref))
             . Form::getCloseFieldset()
 
             . Form::getOpenFieldset($lang->def('_LEVEL_6', 'levels'), 'fieldset_course_fields')
@@ -587,6 +591,7 @@ class Report_Courses extends Report
             . Form::getCheckBox($glang->def('_STATUS'), 'col_sel_status', 'cols[]', '_COURSESTATUS', is_showed('_COURSESTATUS', $ref))
             . Form::getCheckBox($glang->def('_CREATION_DATE', 'report'), 'col_sel_publication', 'cols[]', '_PUBLICATION_DATE', is_showed('_PUBLICATION_DATE', $ref))
             . Form::getCheckBox($glang->def('_LABEL'), 'col_sel_label', 'cols[]', '_COURSELABEL', is_showed('_COURSELABEL', $ref))
+            . Form::getCheckBox($glang->def('_NUM_CLASSROOM', 'report'), 'col_sel_numclassroom', 'cols[]', '_NUM_CLASSROOM', is_showed('_NUM_CLASSROOM', $ref))
             . Form::getCloseFieldset()
 
             . Form::getOpenFieldset($lang->def('_COURSE', 'levels'), 'fieldset_course_fields')
@@ -718,8 +723,8 @@ class Report_Courses extends Report
             $result = sql_query($query);
 
             while ($row = sql_fetch_assoc($result)) {
-                $question_answer[$row['id_quest']]['min_value'] = (float) $row['min_answer'];
-                $question_answer[$row['id_quest']]['max_value'] = (float) $row['max_answer'];
+                $question_answer[$row['id_quest']]['min_value'] = (float)$row['min_answer'];
+                $question_answer[$row['id_quest']]['max_value'] = (float)$row['max_answer'];
                 $question_answer[$row['id_quest']]['everage_value'] = number_format(($row['sum_answer'] / $row['num_answer']), 2);
             }
 
@@ -808,8 +813,8 @@ class Report_Courses extends Report
             $result = sql_query($query);
 
             while ($row = sql_fetch_assoc($result)) {
-                $question_answer[$row['id_quest']]['min_value'] = (float) $row['min_answer'];
-                $question_answer[$row['id_quest']]['max_value'] = (float) $row['max_answer'];
+                $question_answer[$row['id_quest']]['min_value'] = (float)$row['min_answer'];
+                $question_answer[$row['id_quest']]['max_value'] = (float)$row['max_answer'];
                 $question_answer[$row['id_quest']]['everage_value'] = number_format(($row['sum_answer'] / $row['num_answer']), 2);
             }
 
@@ -837,13 +842,13 @@ class Report_Courses extends Report
         $end_time = $ref['columns_filter']['time_belt']['end_date'];
         $org_chart_subdivision = $ref['columns_filter']['org_chart_subdivision'];
         $filter_cols = $ref['columns_filter']['showed_cols'];
-        $show_percent = (isset($ref['columns_filter']['show_percent']) ? (bool) $ref['columns_filter']['show_percent'] : true);
+        $show_percent = (isset($ref['columns_filter']['show_percent']) ? (bool)$ref['columns_filter']['show_percent'] : true);
 
-        $show_suspended = (isset($ref['columns_filter']['show_suspended']) ? (bool) $ref['columns_filter']['show_suspended'] : false);
-        $only_students = (isset($ref['columns_filter']['only_students']) ? (bool) $ref['columns_filter']['only_students'] : false);
-        $show_assessment = (isset($ref['columns_filter']['show_assessment']) ? (bool) $ref['columns_filter']['show_assessment'] : false);
+        $show_suspended = (isset($ref['columns_filter']['show_suspended']) ? (bool)$ref['columns_filter']['show_suspended'] : false);
+        $only_students = (isset($ref['columns_filter']['only_students']) ? (bool)$ref['columns_filter']['only_students'] : false);
+        $show_assessment = (isset($ref['columns_filter']['show_assessment']) ? (bool)$ref['columns_filter']['show_assessment'] : false);
 
-        $show_classrooms_editions = (isset($ref['columns_filter']['show_classrooms_editions']) ? (bool) $ref['columns_filter']['show_classrooms_editions'] : false);
+        $show_classrooms_editions = (isset($ref['columns_filter']['show_classrooms_editions']) ? (bool)$ref['columns_filter']['show_classrooms_editions'] : false);
 
         if ($time_range != 0) {
             $start_time = date('Y-m-d H:i:s', time() - $time_range * 24 * 3600);
@@ -1005,7 +1010,14 @@ class Report_Courses extends Report
                 . ($show_assessment ? '' : " WHERE c.course_type <> 'assessment' ")
                 . ' ORDER BY c.code, c.name';
             $r_courses = sql_query($q_courses);
-            while (list($id, $code, $name, $description, $course_type) = sql_fetch_row($r_courses)) {
+            foreach ($r_courses as $courseData) {
+                //while (list($id, $code, $name, $description, $course_type) = sql_fetch_row($r_courses)) {
+                $id = $courseData['idCourse'];
+                $code = $courseData['code'];
+                $name = $courseData['name'];
+                $description = $courseData['description'];
+                $course_type = $courseData['course_type'];
+
                 $id_courses[$id] = [
                     'id_course' => $id,
                     'code' => $code,
@@ -1020,7 +1032,15 @@ class Report_Courses extends Report
                 . ($show_assessment ? '' : " WHERE c.course_type <> 'assessment' ")
                 . ' ORDER BY c.code, c.name, d.code, d.name';
             $r_courses = sql_query($q_courses);
-            while (list($id, $code, $name, $description, $course_type, $id_date) = sql_fetch_row($r_courses)) {
+            foreach ($r_courses as $courseData) {
+
+                $id = $courseData['idCourse'];
+                $code = $courseData['code'];
+                $name = $courseData['name'];
+                $description = $courseData['description'];
+                $course_type = $courseData['course_type'];
+                $id_date = $courseData['id_date'];
+
                 $index = $course_type == 'classroom' ? $id . '_' . $id_date : $id;
                 $id_courses[$index] = [
                     'id_course' => $id,
@@ -1051,6 +1071,11 @@ class Report_Courses extends Report
             $res = sql_query($query);
             while ($obj = sql_fetch_object($res)) {
                 $classrooms_editions_info['classrooms'][$obj->id_date] = $obj;
+
+                $dateManager = new DateManager();
+                $dateLocation = $dateManager->getDateClassrooms($obj->id_date, true);
+
+                $obj->date_location = $dateLocation;
             }
 
             //retrieve editions info
@@ -1088,34 +1113,29 @@ class Report_Courses extends Report
                     }
                     switch ($status) {
                         case _CUS_CONFIRMED:
-                            ;
                             break;
                         case _CUS_SUSPEND:
-                            ;
                             break;
                         case _CUS_SUBSCRIBED:
-                                if (isset($num_nobegin[$id_c])) {
-                                    ++$num_nobegin[$id_c];
-                                } else {
-                                    $num_nobegin[$id_c] = 1;
-                                }
-                            ;
+                            if (isset($num_nobegin[$id_c])) {
+                                ++$num_nobegin[$id_c];
+                            } else {
+                                $num_nobegin[$id_c] = 1;
+                            }
                             break;
                         case _CUS_BEGIN:
-                                if (isset($num_itinere[$id_c])) {
-                                    ++$num_itinere[$id_c];
-                                } else {
-                                    $num_itinere[$id_c] = 1;
-                                }
-                            ;
+                            if (isset($num_itinere[$id_c])) {
+                                ++$num_itinere[$id_c];
+                            } else {
+                                $num_itinere[$id_c] = 1;
+                            }
                             break;
                         case _CUS_END:
-                                if (isset($num_end[$id_c])) {
-                                    ++$num_end[$id_c];
-                                } else {
-                                    $num_end[$id_c] = 1;
-                                }
-                            ;
+                            if (isset($num_end[$id_c])) {
+                                ++$num_end[$id_c];
+                            } else {
+                                $num_end[$id_c] = 1;
+                            }
                             break;
                     }
 
@@ -1312,34 +1332,29 @@ class Report_Courses extends Report
                     }
                     switch ($status) {
                         case _CUS_CONFIRMED:
-                            ;
                             break;
                         case _CUS_SUSPEND:
-                            ;
                             break;
                         case _CUS_SUBSCRIBED:
-                                if (isset($num_nobegin[$index])) {
-                                    ++$num_nobegin[$index];
-                                } else {
-                                    $num_nobegin[$index] = 1;
-                                }
-                            ;
+                            if (isset($num_nobegin[$index])) {
+                                ++$num_nobegin[$index];
+                            } else {
+                                $num_nobegin[$index] = 1;
+                            }
                             break;
                         case _CUS_BEGIN:
-                                if (isset($num_itinere[$index])) {
-                                    ++$num_itinere[$index];
-                                } else {
-                                    $num_itinere[$index] = 1;
-                                }
-                            ;
+                            if (isset($num_itinere[$index])) {
+                                ++$num_itinere[$index];
+                            } else {
+                                $num_itinere[$index] = 1;
+                            }
                             break;
                         case _CUS_END:
-                                if (isset($num_end[$index])) {
-                                    ++$num_end[$index];
-                                } else {
-                                    $num_end[$index] = 1;
-                                }
-                            ;
+                            if (isset($num_end[$index])) {
+                                ++$num_end[$index];
+                            } else {
+                                $num_end[$index] = 1;
+                            }
                             break;
                     }
 
@@ -1655,13 +1670,21 @@ class Report_Courses extends Report
             if (in_array('_TH_CLASSROOM_NAME', $filter_cols)) {
                 ++$colspan_classrooms_editions;
             }
+            if (in_array('_TH_CLASSROOM_LOCATION', $filter_cols)) {
+                ++$colspan_classrooms_editions;
+            }
             if (in_array('_TH_CLASSROOM_MIN_DATE', $filter_cols)) {
                 ++$colspan_classrooms_editions;
             }
             if (in_array('_TH_CLASSROOM_MAX_DATE', $filter_cols)) {
                 ++$colspan_classrooms_editions;
             }
+        } else {
+            if (!$show_classrooms_editions && in_array('_NUM_CLASSROOM', $filter_cols)) {
+                ++$colspan_course;
+            }
         }
+
 
         $colspan_stats = 0;
         if (in_array('_WAITING', $filter_cols)) {
@@ -1734,6 +1757,11 @@ class Report_Courses extends Report
             $th3[] = $lang->def('_LABEL');
         }
 
+        if (!$show_classrooms_editions && in_array('_NUM_CLASSROOM', $filter_cols)) {
+            $th3[] = ['style' => 'align-center', 'value' => $lang->def('_NUM_CLASSROOM', 'report')];
+        }
+
+
         if (in_array('_LANGUAGE', $filter_cols)) {
             $th3[] = ['style' => 'align-center', 'value' => $lang->def('_COURSE_LANG_METHOD')];
         }
@@ -1788,6 +1816,9 @@ class Report_Courses extends Report
             }
             if (in_array('_TH_CLASSROOM_NAME', $filter_cols)) {
                 $th3[] = Lang::t('_CODE', 'standard');
+            }
+            if (in_array('_TH_CLASSROOM_LOCATION', $filter_cols)) {
+                $th3[] = Lang::t('_LOCATION', 'standard');
             }
             if (in_array('_TH_CLASSROOM_MIN_DATE', $filter_cols)) {
                 $th3[] = ['style' => 'align-center', 'value' => Lang::t('_DATE_BEGIN', 'standard')];
@@ -1851,7 +1882,7 @@ class Report_Courses extends Report
             CST_AVAILABLE => $lang->def('_CST_AVAILABLE', 'course', 'lms'),
             CST_EFFECTIVE => $lang->def('_CST_CONFIRMED', 'course', 'lms'),
             CST_CONCLUDED => $lang->def('_CST_CONCLUDED', 'course', 'lms'),
-            CST_CANCELLED => $lang->def('_CST_CANCELLED', 'course', 'lms'), ];
+            CST_CANCELLED => $lang->def('_CST_CANCELLED', 'course', 'lms'),];
 
         //extract course categories
         $query = 'SELECT idCategory, path'
@@ -1877,15 +1908,15 @@ class Report_Courses extends Report
         while (list($idcat, $entry, $type) = sql_fetch_row($result)) {
             switch ($type) {
                 case 'course':
-                        if (!isset($catalogue_entries[$entry])) {
-                            $catalogue_entries[$entry] = [];
-                        }
-                        $catalogue_entries[$entry][] = $idcat;
+                    if (!isset($catalogue_entries[$entry])) {
+                        $catalogue_entries[$entry] = [];
+                    }
+                    $catalogue_entries[$entry][] = $idcat;
 
                     break;
 
                 case 'coursepath':
-                        //...
+                    //...
 
                     break;
             } //end switch
@@ -1951,6 +1982,19 @@ class Report_Courses extends Report
                 }
             }
 
+            if (!$show_classrooms_editions && in_array('_NUM_CLASSROOM', $filter_cols)) {
+
+                $query = 'SELECT d.*, MIN(dd.date_begin) AS date_1, MAX(dd.date_end) AS date_2 '
+                    . ' FROM %lms_course_date AS d JOIN %lms_course_date_day AS dd ON (d.id_date = dd.id_date) ' . ' AND dd.deleted = 0 '
+                    . ' AND d.id_course = ' . $course_info['id_course']
+                    . ' GROUP BY dd.id_date';
+
+                $res = sql_query($query);
+                $numClassrooms = sql_num_rows($res);
+
+                $trow[] = $numClassrooms;
+            }
+
             if (in_array('_COURSECATALOGUE', $filter_cols)) {
                 $temp = [];
                 if (isset($catalogue_entries[$info_course['idCourse']])) {
@@ -2014,10 +2058,11 @@ class Report_Courses extends Report
             }
 
             if ($show_classrooms_editions) {
-                $e_code = $e_name = $date_1 = $date_2 = '';
+                $e_code = $e_name = $date_1 = $date_2 = $e_location = '';
                 if ($id_date > 0 && isset($classrooms_editions_info['classrooms'][$id_date])) {
                     $e_code = $classrooms_editions_info['classrooms'][$id_date]->code;
                     $e_name = $classrooms_editions_info['classrooms'][$id_date]->name;
+                    $e_location = $classrooms_editions_info['classrooms'][$id_date]->date_location;
                     $date_1 = Format::date($classrooms_editions_info['classrooms'][$id_date]->date_1, 'datetime');
                     $date_2 = Format::date($classrooms_editions_info['classrooms'][$id_date]->date_2, 'datetime');
                 }
@@ -2027,12 +2072,17 @@ class Report_Courses extends Report
                 if (in_array('_TH_CLASSROOM_NAME', $filter_cols)) {
                     $trow[] = $e_name;
                 }
+                if (in_array('_TH_CLASSROOM_LOCATION', $filter_cols)) {
+                    $trow[] = $e_location;
+                }
                 if (in_array('_TH_CLASSROOM_MIN_DATE', $filter_cols)) {
                     $trow[] = ['style' => 'align-center', 'value' => $date_1];
                 }
                 if (in_array('_TH_CLASSROOM_MAX_DATE', $filter_cols)) {
                     $trow[] = ['style' => 'align-center', 'value' => $date_2];
                 }
+            } else {
+
             }
 
             if (isset($num_iscr[$index])) {
@@ -2121,9 +2171,9 @@ class Report_Courses extends Report
                     if (isset($time_in_course[$idc])) {
                         $total_time += $time_in_course[$idc];
 
-                        $trow[] = ['style' => 'img-cell', 'value' => (((int) ($time_in_course[$idc] / 3600)) . 'h '
-                            . substr('0' . ((int) (($time_in_course[$idc] % 3600) / 60)), -2) . 'm '
-                            . substr('0' . ((int) ($time_in_course[$idc] % 60)), -2) . 's ')];
+                        $trow[] = ['style' => 'img-cell', 'value' => (((int)($time_in_course[$idc] / 3600)) . 'h '
+                            . substr('0' . ((int)(($time_in_course[$idc] % 3600) / 60)), -2) . 'm '
+                            . substr('0' . ((int)($time_in_course[$idc] % 60)), -2) . 's ')];
                     } else {
                         $trow[] = ['style' => 'img-cell', 'value' => ''];
                     }
@@ -2212,7 +2262,7 @@ class Report_Courses extends Report
             }
         }
         if (in_array('_TOTAL_SESSION', $filter_cols)) {
-            $tfoot[] = ((int) ($total_time / 3600)) . 'h ' . substr('0' . ((int) ($total_time / 60)), -2) . 'm ' . substr('0' . ((int) $total_time), -2) . 's ';
+            $tfoot[] = ((int)($total_time / 3600)) . 'h ' . substr('0' . ((int)($total_time / 60)), -2) . 'm ' . substr('0' . ((int)$total_time), -2) . 's ';
         }
 
         $buffer->setFoot($tfoot);
@@ -2275,7 +2325,7 @@ class Report_Courses extends Report
             CST_AVAILABLE => $glang->def('_CST_AVAILABLE'),
             CST_EFFECTIVE => $glang->def('_CST_CONFIRMED'),
             CST_CONCLUDED => $glang->def('_CST_CONCLUDED'),
-            CST_CANCELLED => $glang->def('_CST_CANCELLED'), ];
+            CST_CANCELLED => $glang->def('_CST_CANCELLED'),];
 
         $colspan_course = 1;
         if (in_array('_CODE_COURSE', $filter_cols)) {
@@ -2361,13 +2411,13 @@ class Report_Courses extends Report
             }
 
             if (in_array('_HIGH_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['max_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['max_value'] : '-');
             }
             if (in_array('_LESS_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['min_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['min_value'] : '-');
             }
             if (in_array('_MEDIUM_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['everage_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['everage_value'] : '-');
             }
 
             $buffer->addLine($trow);
@@ -2406,7 +2456,7 @@ class Report_Courses extends Report
             CST_AVAILABLE => $glang->def('_CST_AVAILABLE'),
             CST_EFFECTIVE => $glang->def('_CST_CONFIRMED'),
             CST_CONCLUDED => $glang->def('_CST_CONCLUDED'),
-            CST_CANCELLED => $glang->def('_CST_CANCELLED'), ];
+            CST_CANCELLED => $glang->def('_CST_CANCELLED'),];
 
         $colspan_course = 1;
 
@@ -2492,13 +2542,13 @@ class Report_Courses extends Report
             }
 
             if (in_array('_HIGH_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['max_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['max_value'] : '-');
             }
             if (in_array('_LESS_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['min_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['min_value'] : '-');
             }
             if (in_array('_MEDIUM_VOTE', $filter_cols)) {
-                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string) $stats[$course_info['id_quest']]['everage_value'] : '-');
+                $trow[] = (isset($stats[$course_info['id_quest']]) ? (string)$stats[$course_info['id_quest']]['everage_value'] : '-');
             }
 
             $buffer->addLine($trow);
