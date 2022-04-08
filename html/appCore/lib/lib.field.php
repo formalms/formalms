@@ -494,7 +494,7 @@ class FieldList
 
         $result = [];
         foreach ($rs as $row) {
-            $result[$row['id_common']] = [$row['id_common'], $row['user_entry']];
+            $result[$row['id_common']] = $row['user_entry'];
         }
 
         return $result;
