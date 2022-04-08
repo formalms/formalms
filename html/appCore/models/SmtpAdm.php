@@ -171,6 +171,9 @@ final class SmtpAdm extends Model
         $smtpConfigIsEnabled = Get::cfg('use_smtp_database');
 
         switch ($smtpConfigIsEnabled) {
+            case 'off':
+                return false;
+                break;
             case 'on':
             case 'true':
             case true:
