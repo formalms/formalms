@@ -526,8 +526,8 @@ class FieldList
 
         if ($translate) {
             $sons_arr = [];
-            $sons_query = 'SELECT idField, id_common_son, translation '
-                . " FROM %adm_field_son WHERE lang_code='" . Lang::get() . "' ";
+            $sons_query = 'SELECT cf.idField, id_common_son, cfs.translation'
+                . " FROM %adm_field_son as cfs JOIN %adm_field cf ON cf.idField=cfs.idField WHERE cf.lang_code='" . Lang::get() . "' AND cf.type_field NOT in ('textfield','freetext') ";
             if (!empty($fields)) {
                 $sons_query .= ' AND idField IN (' . implode(',', $fields) . ')';
             }
@@ -550,7 +550,7 @@ class FieldList
         }
 
         $query = 'SELECT id_user, id_common, user_entry AS uentry '
-            . ' FROM ' . $this->getFieldEntryTable() . ' '
+            . ' FROM %adm_field_userentry'
             . ' WHERE id_user IN (' . implode(',', $users) . ') ';
         if (!empty($fields)) {
             $query .= ' AND id_common IN ( ' . implode(',', $fields) . ' ) ';
