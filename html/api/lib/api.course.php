@@ -176,9 +176,29 @@ class Course_API extends API
                 $classroom_man = new DateManager();
                 $course_dates = $classroom_man->getCourseDate($course_info['idCourse']);
 
+                require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+                $courseCustomFields = [];
+                $fman = new CustomFieldList();
+                $fman->setFieldArea('COURSE_CLASSROOM');
+
+                if ($fman->getNumberFieldbyArea() > 0) {
+                    $courseCustomFields = $fman->playFieldsFlat($course_info['idCourse']);
+                }
+
                 foreach ($course_dates as $key => $course_date) {
+                    $classroomModel = new ClassroomAlms($course_info['idCourse'], $course_date['id_date']);
                     unset($course_dates[$key]['id_course']);
                     $course_dates[$key]['days'] = array_values($classroom_man->getAllDateDay($course_date['id_date'], ['id_day', 'id_date']));
+
+                    $customFields = $courseCustomFields;
+                    foreach ($customFields as $customFieldKey => $customField) {
+                        if ($customField['type_field'] === 'dropdown') {
+                            $customFields[$customFieldKey]['elems'] = $fman->getDropdownElems($customField['id']);
+                        }
+                        $customFields[$customFieldKey]['entry'] = $classroomModel->getCustomFieldsValue($course_date['id_date'], $customField['id']);
+                    }
+
+                    $course_dates[$key]['custom_fields'] = array_values($customFields);
 
                     $course_info['dates'] = array_values($course_dates);
                 }
