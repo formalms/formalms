@@ -372,9 +372,10 @@ class CommunicationAlms extends Model
     {
         $lang_code = ($language == false ? getLanguage() : $language);
         $sort = ($sort == false ? 't2.translation' : $sort);
-        $query = 'SELECT	t1.id_category, t2.translation, t1.level, t1.iLeft, t1.iRight '
-            . ' FROM %lms_communication_category AS t1 LEFT JOIN %lms_communication_category_lang AS t2 '
-            . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) ";
+        $query = 'SELECT t1.id_category as id, t2.translation as label, COALESCE(t3.translation, "--") as parentLabel '
+            . ' FROM %lms_communication_category AS t1 
+            LEFT JOIN %lms_communication_category_lang AS t2  ON (t1.id_category = t2.id_category AND t2.lang_code = "' . $lang_code . '" )
+            LEFT JOIN %lms_communication_category_lang AS t3  ON (t1.id_parent = t3.id_category AND t2.lang_code = "' . $lang_code . '" ) ';
        
 
         if ($sort && $dir) {
@@ -392,20 +393,14 @@ class CommunicationAlms extends Model
         $communicationCount = $this->getCategoryCommunicationsCount();
 
         $output = [];
-        while (list($id, $translation, $level, $left, $right) = $this->db->fetch_row($res)) {
-            $label = $translation;
-            $is_leaf = ($right - $left) == 1;
-            $count = (int) (($right - $left - 1) / 2);
-            $style = false;
+        while (list($id, $label, $parentLabel) = $this->db->fetch_row($res)) {
 
             //set node for output
             $output[$id] = [
                 'id' => $id,
                 'label' => $label,
-                'is_leaf' => $is_leaf,
-                'count_content' => $count,
-                'count_objects' => (isset($count_competences[$id]) ? (int) $count_competences[$id] : 0),
-                'style' => $style,
+                'parentLabel' => $parentLabel,
+                'countCommunications' => (isset($communicationCount[$id]) ? (int) $communicationCount[$id] : 0),
             ];
         }
 

@@ -1015,6 +1015,7 @@ class CommunicationAlmsController extends AlmsController
 
 
     public function showCategories() {
+
         require_once Forma::inc(_lib_ . '/formatable/include.php');
 
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
@@ -1031,18 +1032,14 @@ class CommunicationAlmsController extends AlmsController
         }
 
         $categoriesList = $this->model->getCategoryList($startIndex, $results, $sort, $dir);
-        
-        $total = $this->model->getCategoryTotal();
         foreach ($categoriesList as $i => $category) {
-            $lang->lang_translate = 'index.php?r=adm/lang/list&amp;lang_code=' . $lang->lang_code;
-            $lang->lang_export = 'index.php?r=adm/lang/export&amp;lang_code=' . $lang->lang_code;
-            $lang->lang_diff = 'index.php?r=adm/lang/diff&amp;lang_code=' . $lang->lang_code;
-            $lang->lang_mod = 'ajax.adm_server.php?r=adm/lang/mod&amp;lang_code=' . $lang->lang_code;
-            $lang->lang_del = 'ajax.adm_server.php?r=adm/lang/del&amp;lang_code=' . $lang->lang_code;
-            $lang_list[$i] = $lang;
+            $category->filterUrl = 'ajax.adm_server.php?r=adm/lang/mod&amp;lang_code=' . $category->id;
+            $category->editUrl = 'ajax.adm_server.php?r=adm/lang/mod&amp;lang_code=' . $category->id;
+            $category->deleteUrl = 'ajax.adm_server.php?r=adm/lang/del&amp;lang_code=' . $category->id;
+            $categoriesList[$i] = $category;
         }
 
-        $this->render('show', ['langList' => array_values($lang_list)]);
+        $this->render('show_categories', ['categoriesList' => array_values($categoriesList)]);
     }
 
     //----------------------------------------------------------------------------

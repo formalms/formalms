@@ -1,0 +1,83 @@
+{{ Get_title({
+	'index.php?r=alms/communication/showCategories' : Lang_translate('_CATEGORY', 'communication'),
+	'':Lang_translate('_CATEGORIES', 'communication')
+},false) }}
+
+<table class="table table-bordered display" style="width:100%" id="categorieslist"></table>
+<br>
+<a id="addlang_bottom" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
+
+<!-- Modal confirm -->
+<div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" data-val="body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ Lang_translate('_YES', 'standard') }}</button>
+                <button type="button" class="btn btn-default" data-val="no">{{ Lang_translate('_NO', 'standard') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var confirmDialog = function (modalSelector, message, onConfirm) {
+            var fClose = function() {
+                modal.modal("hide");
+            };
+            var modal = $(modalSelector);
+            modal.modal("show");
+            modal.find("*[data-val=body]").empty().append(message);
+            modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+            modal.find("*[data-val=no]").unbind().one("click", fClose);
+        }
+
+        var delFunc = function(id) {
+            confirmDialog("#confirmModal", "{{ Lang_translate('_AREYOUSURE', 'standard') }}", function() {
+                alert("SIIII!")
+            });
+        };
+        
+        var body = {{ categoriesList | json_encode(constant('JSON_HEX_APOS')) | raw }};
+
+        var columns = [
+            {data: 'label', title: '{{ Lang_translate('_LABEL', 'communication') }}', sortable: true},
+            {data: 'parentLabel', title: '{{ Lang_translate('_PARENT', 'communication') }}', sortable: false},
+            {data: 'countCommunications', title: '{{ Lang_translate('_COUNT', 'communication') }}', sortable: true},
+            {data: 'filterUrl', title: '{{ Lang_translate('_FILTER', 'communication') }}', sortable: false},
+            {data: 'editUrl', title: '<span class="ico-sprite subs_mod"><span>{{ Lang_translate("_MOD", "admin_lang") }}</span></span>', sortable: true},
+            {data: 'deleteUrl', title: '<span class="ico-sprite subs_del"><span>{{ Lang_translate("_DEL", "admin_lang") }}</span></span>', sortable: true}
+
+        ];
+        var rows = [];
+
+        body.forEach(function (item, k) {
+           link = '<a id="'+item.id+'" href="'+item.filterUrl+'" class="ico-sprite subs_download" title="{{ Lang_translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>'
+            item.filterUrl = link;
+            link = '<a id="'+item.id+'" href="'+item.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
+            item.editUrl = link;
+            link = '<a id="'+item.id+'" href="'+item.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
+            item.deleteUrl = link;
+
+            rows.push(Object.assign({}, item));
+        });
+
+        var t = $('#categorieslist').FormaTable({
+            rowId: function (row) {
+                return row[0];
+            },  // cambia
+            scrollX: true,
+            processing: true,
+            serverSide: false,
+            paging: true,
+            searching: true,
+            columns,
+            data: rows,
+            dom: 'Bfrtip',
+            stateSave: true,
+            deferRender: true,
+        });
+    });
+</script>
