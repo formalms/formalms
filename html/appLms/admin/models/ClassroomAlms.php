@@ -390,6 +390,12 @@ class ClassroomAlms extends Model
             $array_day[$i]['classroom'] = $_POST['classroom_' . $i];
         }
 
+        if (isset($date_info['customFields'])) {
+            foreach ($date_info['customFields'] as $idField => $customEntry) {
+                $this->classroom_man->addCustomFieldValue($this->id_date, $idField, $customEntry);
+            }
+        }
+
         $res = $this->classroom_man->upDate($this->id_date, $date_info['code'], $date_info['name'], $date_info['description'], $date_info['mediumTime'], $date_info['max_par'], $date_info['price'], $date_info['overbooking'], $date_info['status'], $date_info['test'], Format::dateDb($date_info['sub_start_date'], 'date') . ' 00:00:00', Format::dateDb($date_info['sub_end_date'], 'date') . ' 00:00:00', Format::dateDb($date_info['unsubscribe_date_limit'], 'date') . ' 00:00:00');
 
         if ($res) {
