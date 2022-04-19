@@ -512,12 +512,14 @@ class DoceboACLManager
                           $signature, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
                           $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
     {
+
         if ($idst === false) {
             $idst = $this->_createST();
         }
         if ($idst == 0) {
             return false;
         }
+
         $userid = $this->absoluteId($userid);
         if (Get::sett('pass_max_time_valid') != 0) {
             $pwd_expire_at = date('Y-m-d H:i:s', time() + Get::sett('pass_max_time_valid') * 24 * 3600);
@@ -591,6 +593,8 @@ class DoceboACLManager
 
             return $idst;
         } else {
+
+        
             return false;
         }
     }

@@ -368,6 +368,63 @@ class CommunicationAlms extends Model
         return array_values($output);
     }
 
+    public function getCategoryList($startIndex, $results, $sort = false, $dir = 'DESC', $language = false)
+    {
+        $lang_code = ($language == false ? getLanguage() : $language);
+        $sort = ($sort == false ? 't2.translation' : $sort);
+        $query = 'SELECT	t1.id_category, t2.translation, t1.level, t1.iLeft, t1.iRight '
+            . ' FROM %lms_communication_category AS t1 LEFT JOIN %lms_communication_category_lang AS t2 '
+            . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) ";
+       
+
+        if ($sort && $dir) {
+            $query .= " ORDER BY $sort $dir ";
+        }
+        if ($startIndex && $results) {
+            $query .= ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+        }
+        $res = $this->db->query($query);
+        if (!$res) {
+            return false;
+        }
+
+        //count competences contained in each extracted node
+        $communicationCount = $this->getCategoryCommunicationsCount();
+
+        $output = [];
+        while (list($id, $translation, $level, $left, $right) = $this->db->fetch_row($res)) {
+            $label = $translation;
+            $is_leaf = ($right - $left) == 1;
+            $count = (int) (($right - $left - 1) / 2);
+            $style = false;
+
+            //set node for output
+            $output[$id] = [
+                'id' => $id,
+                'label' => $label,
+                'is_leaf' => $is_leaf,
+                'count_content' => $count,
+                'count_objects' => (isset($count_competences[$id]) ? (int) $count_competences[$id] : 0),
+                'style' => $style,
+            ];
+        }
+
+        return array_values($output);
+    }
+
+    public function getCategoryTotal($language = false) {
+        $lang_code = ($language == false ? getLanguage() : $language);
+        $query = 'SELECT count(t1.id_category)'
+            . ' FROM %lms_communication_category AS t1 LEFT JOIN %lms_communication_category_lang AS t2 '
+            . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) ";
+
+        $res = $this->db->query($query);
+        if (!$res) {
+            return false;
+        }
+    }
+
+
     /*
      * returns an ordered list of ids (like a path)
      */

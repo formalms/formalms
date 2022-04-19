@@ -65,6 +65,7 @@ class CommunicationAlmsController extends AlmsController
 
     public function show()
     {
+   
         if (isset($_GET['error'])) {
             UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
         }
@@ -1010,6 +1011,38 @@ class CommunicationAlmsController extends AlmsController
             $output['message'] = UIFeedback::perror($this->_getMessage('move category'));
         }
         echo $this->json->encode($output);
+    }
+
+
+    public function showCategories() {
+        require_once Forma::inc(_lib_ . '/formatable/include.php');
+
+        $startIndex = Get::req('startIndex', DOTY_INT, 0);
+        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 100));
+        $dir = Get::req('dir', DOTY_STRING, 'asc');
+
+        switch ($dir) {
+            case 'desc':
+                    $dir = 'desc';
+                break;
+            default:
+                    $dir = 'asc';
+                break;
+        }
+
+        $categoriesList = $this->model->getCategoryList($startIndex, $results, $sort, $dir);
+        
+        $total = $this->model->getCategoryTotal();
+        foreach ($categoriesList as $i => $category) {
+            $lang->lang_translate = 'index.php?r=adm/lang/list&amp;lang_code=' . $lang->lang_code;
+            $lang->lang_export = 'index.php?r=adm/lang/export&amp;lang_code=' . $lang->lang_code;
+            $lang->lang_diff = 'index.php?r=adm/lang/diff&amp;lang_code=' . $lang->lang_code;
+            $lang->lang_mod = 'ajax.adm_server.php?r=adm/lang/mod&amp;lang_code=' . $lang->lang_code;
+            $lang->lang_del = 'ajax.adm_server.php?r=adm/lang/del&amp;lang_code=' . $lang->lang_code;
+            $lang_list[$i] = $lang;
+        }
+
+        $this->render('show', ['langList' => array_values($lang_list)]);
     }
 
     //----------------------------------------------------------------------------
