@@ -38,7 +38,7 @@ class DoceboUserNotifier extends DoceboEventConsumer
 
         $acl_man = &Docebo::user()->getACLManager();
         $field_man = new FieldList();
-        $send_to_field = Get::sett('sms_cell_num_field');
+        $send_to_field = Forma\lib\Get::sett('sms_cell_num_field');
 
         $arr_mail_recipients = [];
         $arr_sms_recipients = [];
@@ -139,14 +139,14 @@ class DoceboUserNotifier extends DoceboEventConsumer
             }
 
             $mailer->SendMail(
-                Get::sett('sender_event'),
+                Forma\lib\Get::sett('sender_event'),
                 [$mail],
                 $subject,
                 $base_body,
                 $attachments,
                 [
-                    MAIL_REPLYTO => Get::sett('sender_event'),
-                    MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname'),
+                    MAIL_REPLYTO => Forma\lib\Get::sett('sender_event'),
+                    MAIL_SENDER_ACLNAME => Forma\lib\Get::sett('use_sender_aclname'),
                 ]
             );
         }

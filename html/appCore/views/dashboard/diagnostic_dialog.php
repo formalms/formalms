@@ -66,7 +66,7 @@
             : Lang::t('_OFF')) . '</b>';
     }
 
-    if (Get::sett('uploadType', '') == 'ftp') {
+    if (Forma\lib\Get::sett('uploadType', '') == 'ftp') {
         if (function_exists('ftp_connect')) {
             require_once $GLOBALS['where_framework'] . '/lib/lib.upload.php';
             $re_con = sl_open_fileoperations();

@@ -42,7 +42,7 @@ class GroupmanagementAdm extends Model
         }
 
         $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-        $results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
+        $results = (isset($pagination['results']) ? $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
 
         $sort = 'g.groupid';
         if (isset($pagination['sort'])) {
@@ -501,7 +501,7 @@ class GroupmanagementAdm extends Model
     public function searchGroupsByGroupid($query, $limit = false, $filter = false)
     {
         if ((int) $limit <= 0) {
-            $limit = Get::sett('visuItem', 25);
+            $limit = Forma\lib\Get::sett('visuItem', 25);
         }
         $output = [];
 
@@ -635,7 +635,7 @@ class GroupmanagementAdm extends Model
             $pagination = [];
         }
         $_startIndex = (isset($pagination['startIndex']) ? (int) $pagination['startIndex'] : 0);
-        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Get::sett('visuItem', 25));
+        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
         $_sort = 'userid';
         $_dir = 'ASC';
 

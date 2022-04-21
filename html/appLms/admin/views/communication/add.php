@@ -8,17 +8,17 @@ echo getTitleArea([
 <?php
 echo Form::openForm('add_comm', 'index.php?r=alms/communication/insert', false, false, 'multipart/form-data')
 
-    . Form::getHidden('title', 'title', 255, Get::req('title', DOTY_MIXED, $data['title']))
+    . Form::getHidden('title', 'title', 255, Forma\lib\Get::req('title', DOTY_MIXED, $data['title']))
 
     . Form::openElementSpace()
-    . Form::getTextfield(Lang::t('_TITLE', 'communication'), 'title', 'title', 255, Get::req('title', DOTY_MIXED, $data['title']))
-    . Form::getDatefield(Lang::t('_DATE', 'communication'), 'publish_date', 'publish_date', Get::req('publish_date', DOTY_MIXED, $data['publish_date']))
+    . Form::getTextfield(Lang::t('_TITLE', 'communication'), 'title', 'title', 255, Forma\lib\Get::req('title', DOTY_MIXED, $data['title']))
+    . Form::getDatefield(Lang::t('_DATE', 'communication'), 'publish_date', 'publish_date', Forma\lib\Get::req('publish_date', DOTY_MIXED, $data['publish_date']))
     . Form::getRadioSet(Lang::t('_TYPE', 'communication'), 'type_of', 'type_of', [
         Lang::t('_NONE', 'communication') => 'none',
         Lang::t('_LONAME_item', 'storage') => 'file',
         Lang::t('_LONAME_scormorg', 'storage') => 'scorm',
-    ], Get::req('type_of', DOTY_STRING, $data['type_of']))
-    . Form::getTextarea(Lang::t('_DESCRIPTION', 'communication'), 'description', 'description', Get::req('description', DOTY_MIXED, $data['description']))
+    ], Forma\lib\Get::req('type_of', DOTY_STRING, $data['type_of']))
+    . Form::getTextarea(Lang::t('_DESCRIPTION', 'communication'), 'description', 'description', Forma\lib\Get::req('description', DOTY_MIXED, $data['description']))
 
     . '<div class="quick_search_form qsf_left">'
     . '<div class="form_line_l">'

@@ -37,7 +37,7 @@ class Password
     {
         $this->policies = PasswordPolicies::check($password);
         $this->password = $password;
-        $this->algorithm_default = (int) Get::sett('pass_algorithm', PASSWORD_MD5);
+        $this->algorithm_default = (int) Forma\lib\Get::sett('pass_algorithm', PASSWORD_MD5);
         $this->algorithm_options = [
             PASSWORD_BCRYPT => [
                 'cost' => 10,
@@ -182,12 +182,12 @@ class PasswordPolicies
     public static function check($password)
     {
         $policies = [
-            'pass_min_char' => Get::sett('pass_min_char'),
-            'pass_alfanumeric' => Get::sett('pass_alfanumeric'),
-            'pass_min_digits' => Get::sett('pass_min_digits'),
-            'pass_min_lower' => Get::sett('pass_min_lower'),
-            'pass_min_upper' => Get::sett('pass_min_upper'),
-            'pass_min_nonalphanum' => Get::sett('pass_min_nonalphanum'),
+            'pass_min_char' => Forma\lib\Get::sett('pass_min_char'),
+            'pass_alfanumeric' => Forma\lib\Get::sett('pass_alfanumeric'),
+            'pass_min_digits' => Forma\lib\Get::sett('pass_min_digits'),
+            'pass_min_lower' => Forma\lib\Get::sett('pass_min_lower'),
+            'pass_min_upper' => Forma\lib\Get::sett('pass_min_upper'),
+            'pass_min_nonalphanum' => Forma\lib\Get::sett('pass_min_nonalphanum'),
         ];
         $result = true;
         $messages = [];

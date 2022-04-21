@@ -1,11 +1,11 @@
 <?php
 define('IS_AJAX', true);
 $a_node = json_encode($model->GetGlobalJsonTree());
-$id_cat = Get::req('id_cat', DOTY_INT, 0);
-cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/bootstrap-treeview.js', true), 'page_head');
-cout(Util::get_js(Get::rel_path('lms') . '/views/catalog/catalog.js', true), 'page_head');
+$id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+cout(Util::get_js(Forma\lib\Get::rel_path('lms') . '/views/catalog/bootstrap-treeview.js', true), 'page_head');
+cout(Util::get_js(Forma\lib\Get::rel_path('lms') . '/views/catalog/catalog.js', true), 'page_head');
 
-cout(Util::get_js(Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js', true), 'page_head');
+cout(Util::get_js(Forma\lib\Get::rel_path('lms') . '/views/homecatalogue/homecatalogue.js', true), 'page_head');
 
 ?>
 

@@ -66,9 +66,9 @@ $rel_action_bottom = '<a class="ico-wt-sprite subs_actv" id="confirm_multi_botto
 $params = [
     'id' => 'waitingtable',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/getwaitinguserstabledata',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'userid',
     'dir' => 'desc',
     'columns' => [

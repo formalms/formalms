@@ -13,15 +13,18 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+$currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
 // access granted only if user is logged in
 if (Docebo::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
     // save requested page in session to call it after login
     $loginRedirect = $_SERVER[REQUEST_URI];
 
     // redirect to index
-
-    Util::jump_to(Get::rel_path('base') . '/index.php?login_redirect=' . $loginRedirect);
+    Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?login_redirect=' . $loginRedirect);
 }
+
+
 
 // get maintenence setting
 $query = ' SELECT param_value FROM %adm_setting'
@@ -32,25 +35,25 @@ $maintenance = $db->fetch_row($db->query($query))[0];
 // handling maintenece
 if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // only god admins can access maintenence - logout the user
-    Util::jump_to(Get::rel_path('base') . '/index.php?r=' . _logout_);
+    Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
 }
 
 // handling access from multiple sessions
-if (Get::sett('stop_concurrent_user') == 'on' && isset($_SESSION['idCourse'])) {
+if (Forma\lib\Get::sett('stop_concurrent_user') == 'on' && $currentSession->has('idCourse')) {
     // two user logged at the same time
     if (!TrackUser::checkSession(getLogUserId())) {
         TrackUser::resetUserSession(getLogUserId());
-        Util::jump_to(Get::rel_path('base') . '/index.php?r=' . _stopconcurrency_);
+        Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?r=' . _stopconcurrency_);
     }
 }
 
-if (isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1) {
+if ($currentSession->has('must_renew_pwd') && $currentSession->get('must_renew_pwd') == 1) {
     // handling required password renewal
 
     $GLOBALS['modname'] = '';
     $GLOBALS['op'] = '';
     $GLOBALS['req'] = 'lms/profile/renewalpwd';
-} elseif (isset($_SESSION['request_mandatory_fields_compilation']) && $_SESSION['request_mandatory_fields_compilation'] == 1 && $GLOBALS['req'] != 'precompile/set') {
+} elseif ($currentSession->has('request_mandatory_fields_compilation') && $currentSession->get('request_mandatory_fields_compilation') == 1 && $GLOBALS['req'] != 'precompile/set') {
     // handling required mandatory fields compilation
 
     $GLOBALS['modname'] = '';
@@ -60,12 +63,12 @@ if (isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1) {
     // setting default action
 
     // if course is in session, enter the course
-    if (isset($_SESSION['idCourse'])) {
+    if (!$currentSession->isEmpty('idCourse')) {
         // TODO: in corso
-        if ($_SESSION['sel_module_id'] != 0) {
+        if ($currentSession->has('sel_module_id') && $currentSession->get('sel_module_id') != 0) {
             $query = ' SELECT module_name, default_op, mvc_path'
                     . ' FROM %lms_module'
-                    . ' WHERE idModule = ' . (int) $_SESSION['sel_module_id'];
+                    . ' WHERE idModule = ' . (int) $currentSession->get('sel_module_id');
             list($modname, $op, $mvc_path) = sql_fetch_row(sql_query($query));
             if ($mvc_path !== '') {
                 $GLOBALS['req'] = $mvc_path;
@@ -75,15 +78,15 @@ if (isset($_SESSION['must_renew_pwd']) && $_SESSION['must_renew_pwd'] == 1) {
         }
     } else {
         // select default home page
-        $GLOBALS['req'] = Get::home_page_req();
+        $GLOBALS['req'] = Forma\lib\Get::home_page_req();
     }
 }
 
-$next_action = Get::req('act', DOTY_STRING, false);
-if ($next_action != false && Get::sett('sco_direct_play', 'off') == 'on') {
-    $id_course = Get::req('id_course', DOTY_INT, 0);
-    $id_item = Get::req('id_item', DOTY_INT, '');
-    $chapter = Get::req('chapter', DOTY_MIXED, false);
+$next_action = Forma\lib\Get::req('act', DOTY_STRING, false);
+if ($next_action != false && Forma\lib\Get::sett('sco_direct_play', 'off') == 'on') {
+    $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+    $id_item = Forma\lib\Get::req('id_item', DOTY_INT, '');
+    $chapter = Forma\lib\Get::req('chapter', DOTY_MIXED, false);
     if ($id_course) {
         // if we have a id_course setted we will log the user into the course,
         // if no specific action are required we will redirect the user into the first page
@@ -167,7 +170,7 @@ if ($sop) {
     }
     switch ($sop) {
         case 'setcourse':
-            $id_c = Get::req('sop_idc', DOTY_INT, 0);
+            $id_c = Forma\lib\Get::req('sop_idc', DOTY_INT, 0);
 
             if (isset($_SESSION['idCourse']) && $_SESSION['idCourse'] != $id_c) {
                 TrackUser::closeSessionCourseTrack();
@@ -199,7 +202,7 @@ if ($sop) {
             }
         ; break;
         case 'changelang':
-            Lang::set(Get::req('new_lang', DOTY_MIXED));
+            Lang::set(Forma\lib\Get::req('new_lang', DOTY_MIXED));
             $_SESSION['changed_lang'] = true;
         ; break;
     }

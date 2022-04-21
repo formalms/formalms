@@ -80,9 +80,9 @@ if ($permissions['del']) {
 $params = [
     'id' => 'groups_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/functionalroles/getgrouptabledata',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'name',
     'dir' => 'asc',
     'generateRequest' => 'Groups.requestBuilder',

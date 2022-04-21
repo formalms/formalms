@@ -182,12 +182,12 @@ class Config_Framework
                                     'templ_use_field',
                                     'templ_use_field',
                                     $drop_field,
-                                    Get::sett('templ_use_field'));
+                                    Forma\lib\Get::sett('templ_use_field'));
 
         $html .= Form::getButton('save_and_refresh', 'save_and_refresh', $lang->def('_SAVE_AND_REFRESH'));
 
-        if (Get::sett('templ_use_field') != 0) {
-            $field_obj = &$field_man->getFieldInstance(Get::sett('templ_use_field'));
+        if (Forma\lib\Get::sett('templ_use_field') != 0) {
+            $field_obj = &$field_man->getFieldInstance(Forma\lib\Get::sett('templ_use_field'));
             if ($field_obj === null) {
                 return $html . getErrorUi('_ERROR_WITH_THIS_FIELD');
             }
@@ -196,7 +196,7 @@ class Config_Framework
             $query_template_assigned = '
 			SELECT ref_id, template_code
 			FROM ' . $GLOBALS['prefix_fw'] . "_field_template
-			WHERE id_common = '" . Get::sett('templ_use_field') . "'";
+			WHERE id_common = '" . Forma\lib\Get::sett('templ_use_field') . "'";
             $re_templ_assigned = sql_query($query_template_assigned);
             while (list($ref_id, $template_code) = sql_fetch_row($re_templ_assigned)) {
                 $assignement[$ref_id] = $template_code;
@@ -245,7 +245,7 @@ class Config_Framework
         $query_template_assigned = '
 		SELECT ref_id, template_code
 		FROM ' . $GLOBALS['prefix_fw'] . "_field_template
-		WHERE id_common = '" . Get::sett('templ_use_field') . "'";
+		WHERE id_common = '" . Forma\lib\Get::sett('templ_use_field') . "'";
         $re_templ_assigned = sql_query($query_template_assigned);
         foreach ($re_templ_assigned as $ref_id => $template_code) {
             while (list($ref_id, $template_code) = sql_fetch_row($re_templ_assigned)) {
@@ -258,7 +258,7 @@ class Config_Framework
                 if (!sql_query('
 				UPDATE ' . $GLOBALS['prefix_fw'] . "_field_template
 				SET template_code = '" . $template_code . "'
-				WHERE id_common = '" . Get::sett('templ_use_field') . "'
+				WHERE id_common = '" . Forma\lib\Get::sett('templ_use_field') . "'
 					AND ref_id = '" . $ref_id . "'")) {
                     $re = false;
                 }
@@ -266,7 +266,7 @@ class Config_Framework
                 if (!sql_query('
 				INSERT INTO ' . $GLOBALS['prefix_fw'] . "_field_template
 				( id_common, ref_id, template_code ) VALUES (
-					'" . Get::sett('templ_use_field') . "',
+					'" . Forma\lib\Get::sett('templ_use_field') . "',
 					'" . $ref_id . "',
 					'" . $template_code . "'
 				)")) {
@@ -498,10 +498,10 @@ class Config_Framework
                         'category' => $lang_c->def('_TAB_VIEW_CATEGORY'),
                         'all' => $lang_c->def('_ALL'),
                     ];
-                    if (Get::sett('use_coursepath') == '1') {
+                    if (Forma\lib\Get::sett('use_coursepath') == '1') {
                         $tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
                     }
-                    if (Get::sett('use_social_courselist') == 'on') {
+                    if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
                         $tab_list['mostscore'] = $lang_c->def('_TAB_VIEW_MOSTSCORE');
                         $tab_list['popular'] = $lang_c->def('_TAB_VIEW_MOSTPOPULAR');
                         $tab_list['recent'] = $lang_c->def('_TAB_VIEW_RECENT');
@@ -521,10 +521,10 @@ class Config_Framework
                         'category' => $lang_c->def('_TAB_VIEW_CATEGORY'),
                         'all' => $lang_c->def('_ALL'),
                     ];
-                    if (Get::sett('use_coursepath') == '1') {
+                    if (Forma\lib\Get::sett('use_coursepath') == '1') {
                         $tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
                     }
-                    if (Get::sett('use_social_courselist') == 'on') {
+                    if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
                         $tab_list['mostscore'] = $lang_c->def('_TAB_VIEW_MOSTSCORE');
                         $tab_list['popular'] = $lang_c->def('_TAB_VIEW_MOSTPOPULAR');
                         $tab_list['recent'] = $lang_c->def('_TAB_VIEW_RECENT');

@@ -19,8 +19,8 @@ class Step5Controller extends StepController
 
     public function validate()
     {
-        $_SESSION['adm_info'] = Get::pReq('adm_info');
-        $_SESSION['lang_install'] = Get::pReq('lang_install');
+        $_SESSION['adm_info'] = Forma\lib\Get::pReq('adm_info');
+        $_SESSION['lang_install'] = Forma\lib\Get::pReq('lang_install');
 
         $this->saveConfig();
 

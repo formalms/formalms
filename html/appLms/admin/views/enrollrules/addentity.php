@@ -1,5 +1,5 @@
 <?php
-Get::title([
+Forma\lib\Get::title([
     'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
     'index.php?r=alms/enrollrules/rule&amp;' . $rule->id_rule => Lang::t('_MANAGE', 'enrollrules') . ': ' . $rule->title,
     $rule->rule_type_text,

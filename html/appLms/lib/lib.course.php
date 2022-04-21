@@ -166,19 +166,19 @@ class Selector_Course
         if ($this->show_filter === true) {
             $output .= '<div class="quick_search_form">'
                 . '<div class="common_options">'
-                . Form::getInputCheckbox('c_flatview', 'c_flatview', '1', (Get::req('c_flatview', DOTY_INT, '0') == '1' ? true : false), ' onclick="submit();" ')
+                . Form::getInputCheckbox('c_flatview', 'c_flatview', '1', (Forma\lib\Get::req('c_flatview', DOTY_INT, '0') == '1' ? true : false), ' onclick="submit();" ')
                 . ' <label class="label_normal" for="c_flatview">' . Lang::t('_DIRECTORY_FILTER_FLATMODE', 'admin_directory') . '</label>'
                 . '&nbsp;&nbsp;&nbsp;&nbsp;'
                 . '</div>'
                 . '<div>'
-                . Form::getInputTextfield('search_t', 'c_filter_name', 'c_filter_name', Get::req('c_filter_name', DOTY_ALPHANUM, ''), '', 255, '')
+                . Form::getInputTextfield('search_t', 'c_filter_name', 'c_filter_name', Forma\lib\Get::req('c_filter_name', DOTY_ALPHANUM, ''), '', 255, '')
                 . Form::getButton('c_filter_set', 'c_filter_set', Lang::t('_SEARCH', 'standard'), 'search_b')
                 . '</div>'
                 . '</div>';
         }
         // End Filter
 
-        $tb = new Table(Get::sett('visu_course'), $lang->def('_COURSE_LIST'), $lang->def('_COURSE_LIST_SUMMARY'));
+        $tb = new Table(Forma\lib\Get::sett('visu_course'), $lang->def('_COURSE_LIST'), $lang->def('_COURSE_LIST_SUMMARY'));
 
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
@@ -223,7 +223,7 @@ class Selector_Course
                             $admin_courses['course'][$idCourse] = $idCourse;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') === 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') === 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -263,7 +263,7 @@ class Selector_Course
         }
         list($tot_course) = sql_fetch_row(sql_query('SELECT COUNT(*) ' . $query_course));
         $query_course .= ' ORDER BY c.name
-							LIMIT ' . $ini . ',' . (int) Get::sett('visuItem', 25);
+							LIMIT ' . $ini . ',' . (int) Forma\lib\Get::sett('visuItem', 25);
 
         $re_course = sql_query($select . $query_course);
 
@@ -1196,7 +1196,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             $startIndex = 0;
         }
         if (!$records) {
-            $records = Get::sett('visuItem');
+            $records = Forma\lib\Get::sett('visuItem');
         }
 
         $filter_conds = '';
@@ -1297,7 +1297,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                             $admin_courses['course'][$idCourse] = $idCourse;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -1419,7 +1419,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                             $admin_courses['course'][$idCourse] = $idCourse;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -1515,7 +1515,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                             $admin_courses['course'][$idCourse] = $idCourse;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -1619,7 +1619,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                             $admin_courses['course'][$idCourse] = $idCourse;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -2201,7 +2201,7 @@ class DoceboCourse
     {
         $course_quota = $this->course_info['course_quota'];
         if ($course_quota == COURSE_QUOTA_INHERIT) {
-            $course_quota = Get::sett('course_quota');
+            $course_quota = Forma\lib\Get::sett('course_quota');
         }
 
         return $course_quota;
@@ -2217,7 +2217,7 @@ class DoceboCourse
     public function addFileToUsedSpace($path = false, $manual_size = false)
     {
         if ($manual_size === false) {
-            $size = Get::file_size($path);
+            $size = Forma\lib\Get::file_size($path);
         } else {
             $size = $manual_size;
         }
@@ -2230,7 +2230,7 @@ class DoceboCourse
     public function subFileToUsedSpace($path = false, $manual_size = false)
     {
         if ($manual_size === false) {
-            $size = Get::file_size($path);
+            $size = Forma\lib\Get::file_size($path);
         } else {
             $size = $manual_size;
         }
@@ -2410,7 +2410,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
         $query_courseuser .= ' ORDER BY u.lastname, u.firstname, u.userid';
     }
     if ($limit !== false) {
-        $query_courseuser .= ' LIMIT ' . (int) $limit . ', ' . (int) Get::sett('visuItem');
+        $query_courseuser .= ' LIMIT ' . (int) $limit . ', ' . (int) Forma\lib\Get::sett('visuItem');
     }
     $re_courseuser = sql_query($query_courseuser);
     while (list($id_user, $lv, $is_waiting, $status, $absent) = sql_fetch_row($re_courseuser)) {
@@ -2635,7 +2635,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
         if ($_SESSION['levelCourse'] >= 4) {
             // direct play with a teacher, basically it's not ok
             // check if we are managing the LOs from admin: if yes, jump into the test management
-            if ($course_info['course_type'] == 'assessment' && Get::req('from_admin', DOTY_INT, 0) > 0) {
+            if ($course_info['course_type'] == 'assessment' && Forma\lib\Get::req('from_admin', DOTY_INT, 0) > 0) {
                 // enter the assessment course and go to test editing if there is a test with no question in it
                 $query = 'SELECT idOrg, idResource '
                     . ' FROM %lms_organization '
@@ -2711,7 +2711,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     } else {
         if ($course_info['course_type'] == "assessment") {
             //check if we are managing the LOs from admin: if yes, jump into the test management
-            if (Get::req('from_admin', DOTY_INT, 0) > 0) {
+            if (Forma\lib\Get::req('from_admin', DOTY_INT, 0) > 0) {
                 //enter the assessment course and go to test editing
                 $query = "SELECT idOrg, idResource FROM %lms_organization WHERE idCourse=".(int)$_SESSION['idCourse']." AND objectType='test' "
                     ." ORDER BY path ASC, title ASC LIMIT 0,1";

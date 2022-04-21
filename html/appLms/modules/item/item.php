@@ -42,7 +42,7 @@ if (!Docebo::user()->isAnonymous()) {
             .'</div>', 'content');
     */
 
-        $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'insitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
+        $GLOBALS['page']->add(Forma\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'insitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
     }
 
     function insitem()
@@ -50,10 +50,10 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.upload.php';
         $response = [];
         $response['status'] = true;
-        $back_url = Get::pReq('back_url', DOTY_MIXED, '');
+        $back_url = Forma\lib\Get::pReq('back_url', DOTY_MIXED, '');
         //checkPerm('view', false, 'storage');
 
-        $idCourse = $_SESSION['idCourse'];
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
         try {
             $filesInfo = json_decode($_REQUEST['info'], true);
@@ -71,7 +71,7 @@ if (!Docebo::user()->isAnonymous()) {
             foreach ($filesInfo as $index => $fileItem) {
                 $file = $_FILES['file' . $index];
 
-                $totalSize += Get::dir_size($file['tmp_name']);
+                $totalSize += Forma\lib\Get::dir_size($file['tmp_name']);
             }
             if (Util::exceed_quota('', $quota, $used, $totalSize)) {
                 $response['errors']['quota'] = Lang::t('_QUOTA_EXCEDED', 'item');
@@ -99,7 +99,7 @@ if (!Docebo::user()->isAnonymous()) {
             }
 
             if (!$error) {
-                $path = '/' . _folder_lms_ . '/' . Get::sett('pathlesson');
+                $path = '/' . _folder_lms_ . '/' . Forma\lib\Get::sett('pathlesson');
                 $savefile = ($idCourse ?? '0') . '_' . random_int(0, 100) . '_' . time() . '_' . $file['name'];
                 $savefile = str_replace("'", "\'", $savefile); //Patch file con apostrofo
 
@@ -152,7 +152,7 @@ if (!Docebo::user()->isAnonymous()) {
         . ' WHERE idLesson = ' . (int) $object_item->id . ''));
 
         $file['name'] = $filename;
-        $file['size'] = filesize(_base_ . '/files/appLms/' . Get::sett('pathlesson') . $filename);
+        $file['size'] = filesize(_base_ . '/files/appLms/' . Forma\lib\Get::sett('pathlesson') . $filename);
         $files[] = $file;
 
         /*
@@ -176,7 +176,7 @@ if (!Docebo::user()->isAnonymous()) {
                 . '</div>', 'content');
                 */
 
-        $GLOBALS['page']->add(\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'upitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
+        $GLOBALS['page']->add(Forma\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'upitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
     }
 
     function upitem()
@@ -186,9 +186,9 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.upload.php';
         $response = [];
         $response['status'] = true;
-        $back_url = Get::pReq('back_url', DOTY_MIXED, '');
-        $idLesson = Get::pReq('id_comm', DOTY_INT, null);
-        $title = Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE', 'item', 'lms'));
+        $back_url = Forma\lib\Get::pReq('back_url', DOTY_MIXED, '');
+        $idLesson = Forma\lib\Get::pReq('id_comm', DOTY_INT, null);
+        $title = Forma\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE', 'item', 'lms'));
 
         $idCourse = $_SESSION['idCourse'];
 
@@ -203,7 +203,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         //save file
         if (count($filesInfo)) {
-            $path = '/appLms/' . Get::sett('pathlesson');
+            $path = '/appLms/' . Forma\lib\Get::sett('pathlesson');
 
             // retrive and delte ld file --------------------------------------------------
 
@@ -212,7 +212,7 @@ if (!Docebo::user()->isAnonymous()) {
             FROM %lms_materials_lesson 
             WHERE idLesson = '" . (int) $idLesson . "'"));
 
-            $size = Get::file_size(_files_ . $path . $old_file);
+            $size = Forma\lib\Get::file_size(_files_ . $path . $old_file);
             if (!sl_unlink($path . $old_file)) {
                 sl_close_fileoperations();
                 Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
@@ -231,7 +231,7 @@ if (!Docebo::user()->isAnonymous()) {
                 foreach ($filesInfo as $index => $fileItem) {
                     $file = $_FILES['file' . $index];
 
-                    $totalSize += Get::dir_size($file['tmp_name']);
+                    $totalSize += Forma\lib\Get::dir_size($file['tmp_name']);
                 }
                 if (Util::exceed_quota('', $quota, $used, $totalSize)) {
                     $response['errors']['quota'] = Lang::t('_QUOTA_EXCEDED', 'item');
@@ -259,7 +259,7 @@ if (!Docebo::user()->isAnonymous()) {
                 }
 
                 if (!$error) {
-                    $path = '/' . _folder_lms_ . '/' . Get::sett('pathlesson');
+                    $path = '/' . _folder_lms_ . '/' . Forma\lib\Get::sett('pathlesson');
                     $savefile = ($idCourse ?? '0') . '_' . random_int(0, 100) . '_' . time() . '_' . $file['name'];
                     $savefile = str_replace("'", "\'", $savefile); //Patch file con apostrofo
 

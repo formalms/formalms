@@ -21,8 +21,8 @@ function coursecatalogue($id_block, $title, $option = [])
         $_SESSION['chart'] = [];
     }
 
-    $id_course = Get::req('id_course', DOTY_INT, 0);
-    $action = Get::req('action', DOTY_STRING, '');
+    $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+    $action = Forma\lib\Get::req('action', DOTY_STRING, '');
 
     if ($id_course !== 0 && $action === '') {
         $_SESSION['chart'][$id_course]['idCourse'] = $id_course;
@@ -38,7 +38,7 @@ function coursecatalogue($id_block, $title, $option = [])
 
     cout('<link href="./modules/catalog/catalog.css" type="text/css" rel="stylesheet"/>', 'page_head');
 
-    $css_path = Get::tmpl_path('base') . 'yui-skin';
+    $css_path = Forma\lib\Get::tmpl_path('base') . 'yui-skin';
     cout(Util::get_css($css_path . '/tabview.css', true), 'page_head');
 
     $lang = &DoceboLanguage::CreateInstance('catalogue', 'cms');
@@ -47,7 +47,7 @@ function coursecatalogue($id_block, $title, $option = [])
 
     $array_id_block = explode('_', $id_block);
 
-    $page = Get::req('page', DOTY_INT, 0);
+    $page = Forma\lib\Get::req('page', DOTY_INT, 0);
     if ($page == 0) {
         $page = $this->getBlockPage($array_id_block[0]);
     }
@@ -63,7 +63,7 @@ function coursecatalogue($id_block, $title, $option = [])
         $all_course = true;
     }
 
-    $id_catalogue = Get::req('id_catalogue', DOTY_INT, -2);
+    $id_catalogue = Forma\lib\Get::req('id_catalogue', DOTY_INT, -2);
     if ($id_catalogue == -2) {
         if (count($catalogue)) {
             if (isset($catalogue[0])) {
@@ -76,15 +76,15 @@ function coursecatalogue($id_block, $title, $option = [])
         }
     }
 
-    $id_category = Get::req('id_cat', DOTY_INT, 0);
+    $id_category = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
 
     $number_courses = $man_cat->getCourseNumberForBlock($array_id_block[0], $id_catalogue, $id_category, $all_course);
 
-    $nav_bar = new NavBar('ini', Get::sett('visuItem'), $number_courses);
+    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), $number_courses);
     $nav_bar->setLink('index.php?pag=' . $page . '&amp;id_catalogue=' . $id_catalogue . ($id_category != 0 ? '&amp;id_cat=' . $id_category : ''));
 
     $ini = $nav_bar->getSelectedPage();
-    $limit = ($ini - 1) * Get::sett('visuItem');
+    $limit = ($ini - 1) * Forma\lib\Get::sett('visuItem');
 
     cout($nav_bar->getNavBar()
             . '<div id="demo" class="yui-navset">'

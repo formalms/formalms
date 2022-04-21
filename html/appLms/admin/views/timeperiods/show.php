@@ -12,20 +12,20 @@ $columns = [
 ];
 
 if ($permissions['mod']) {
-    $icon = Get::img('standard/edit.png', Lang::t('_MOD', 'standard'));
+    $icon = Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'standard'));
     $columns[] = ['key' => 'mod', 'label' => $icon, 'formatter' => 'doceboModify', 'className' => 'img-cell'];
 }
 if ($permissions['del']) {
-    $icon = Get::img('standard/delete.png', Lang::t('_DEL', 'standard'));
+    $icon = Forma\lib\Get::img('standard/delete.png', Lang::t('_DEL', 'standard'));
     $columns[] = ['key' => 'del', 'label' => $icon, 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 }
 
 $params = [
     'id' => 'timeperiods',
     'ajaxUrl' => 'ajax.adm_server.php?r=alms/timeperiods/gettimeperiodslist',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'title',
     'dir' => 'asc',
     'columns' => $columns,

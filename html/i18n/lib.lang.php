@@ -283,7 +283,7 @@ class Lang
         self::load_module($module, $lang_code, $includeDisabledPlugins);
 
         $translation = '';
-        if (Get::cfg('log_missing_translation_level', (int) 0) > 0) {
+        if (Forma\lib\Get::cfg('log_missing_translation_level', (int) 0) > 0) {
             // LOG MISSING TRANSLATIONS -->
             $missing = false;
             $missing_in_module = false;
@@ -299,7 +299,7 @@ class Lang
         } elseif (isset(self::$translations[$lang_code]['standard'][$key])) {
             //translation found in the standard module
             $translation = self::$translations[$lang_code]['standard'][$key];
-            if (Get::cfg('log_missing_translation_level', (int) 0) > 1) {
+            if (Forma\lib\Get::cfg('log_missing_translation_level', (int) 0) > 1) {
                 // LOG MISSING TRANSLATIONS -->
                 if ($module !== 'standard') {
                     $missing_in_module = true;
@@ -310,14 +310,14 @@ class Lang
         } elseif ($default == false) {
             //translation not found
             self::undefinedKey($key, $module, $lang_code);
-            if (Get::cfg('log_missing_translation_level', (int) 0) > 0) {
+            if (Forma\lib\Get::cfg('log_missing_translation_level', (int) 0) > 0) {
                 // LOG MISSING TRANSLATIONS -->
                 $missing = true;
                 // <-- LOG MISSING TRANSLATIONS
             }
         }
 
-        if (Get::cfg('log_missing_translation_level', (int) 0) == 1) {
+        if (Forma\lib\Get::cfg('log_missing_translation_level', (int) 0) == 1) {
             // LOG MISSING TRANSLATIONS -->
             if ($missing) {
                 $_substitutions = json_encode($substitution ? $substitution : []);
@@ -327,7 +327,7 @@ class Lang
                 file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
             }
             // <-- LOG MISSING TRANSLATIONS
-        } elseif (Get::cfg('log_missing_translation_level', (int) 0) == 2) {
+        } elseif (Forma\lib\Get::cfg('log_missing_translation_level', (int) 0) == 2) {
             // LOG MISSING TRANSLATIONS -->
             if ($missing or $missing_in_module) {
                 $_substitutions = json_encode($substitution ? $substitution : []);
@@ -343,7 +343,7 @@ class Lang
             if ($default != false) {
                 $translation = $default;
             } else {
-                $translation = (Get::sett('lang_check') == 'on' ? "§($module)" : '') . trim(strtolower(str_replace('_', ' ', $key)));
+                $translation = (Forma\lib\Get::sett('lang_check') == 'on' ? "§($module)" : '') . trim(strtolower(str_replace('_', ' ', $key)));
             }
         }
         if (empty($substitution) || !is_array($substitution)) {
@@ -362,7 +362,7 @@ class Lang
      */
     public static function undefinedKey($key, $module, $lang_code)
     {
-        if (Get::sett('lang_check') == 'on') {
+        if (Forma\lib\Get::sett('lang_check') == 'on') {
             $text = '<a id="totranslate-' . $module . '-' . $key . '" href="#">'
                 . '' . $module . ' : ' . strtolower($key) . ' </a><br/>';
             if (isset($GLOBALS['page'])) {
@@ -398,15 +398,15 @@ class Lang
 
         if (!isset($_SESSION['current_lang'])) {
             $_SESSION['current_lang'] = self::getDefault();
-            // we if (!Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {don't know which language we need
-            if (!Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {
+            // we if (!Forma\lib\Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {don't know which language we need
+            if (!Forma\lib\Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {
                 // load the language from the user setting
                 $_SESSION['current_lang'] = Docebo::user()->preference->getLanguage();
             } else {
                 // find the user language looking into the browser info
                 $langadm = new LangAdm();
                 $all_language = $langadm->getLangListNoStat();
-                $browser_lang = Get::user_acceptlang(false);
+                $browser_lang = Forma\lib\Get::user_acceptlang(false);
                 foreach ($browser_lang as $code) {
                     foreach ($all_language as $lang) {
                         if (strpos($lang->lang_browsercode, strval($code)) !== false) {
@@ -460,7 +460,7 @@ class Lang
      */
     public static function getDefault()
     {
-        return Get::sett('default_language', 'english');
+        return Forma\lib\Get::sett('default_language', 'english');
     }
 
     public static function direction($lang_code = false)
@@ -560,7 +560,7 @@ class DoceboLangManager
     private function __construct($param_prefix = false, $dbconn = null)
     {
         if ($param_prefix === false) {
-            $this->prefix = Get::cfg('prefix_fw');
+            $this->prefix = Forma\lib\Get::cfg('prefix_fw');
         } else {
             $this->prefix = $param_prefix;
         }
@@ -585,7 +585,7 @@ class DoceboLangManager
     public function getAllModules($platform = false)
     {
         if ($platform === false) {
-            $platform = Get::cur_plat();
+            $platform = Forma\lib\Get::cur_plat();
         }
         $query = 'SELECT text_module'
             . ' FROM ' . $this->_getTableText()

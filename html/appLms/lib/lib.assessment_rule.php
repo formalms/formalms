@@ -24,15 +24,15 @@ class AssessmentRuleManager
 
     public function loadJs()
     {
-        Util::get_js(Get::rel_path('base') . '/addons/yui/utilities/utilities.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/yui/dom/dom.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/yui/json/json.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/yui/selector/selector.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/yui/event/event.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/yui/datasource/datasource.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/yui/autocomplete/autocomplete.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/utilities/utilities.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/dom/dom.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/json/json.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/selector/selector.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/event/event.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/datasource/datasource.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/autocomplete/autocomplete.js', true, true);
 
-        Util::get_js(Get::rel_path('lms') . '/modules/test/assessment_rule.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/modules/test/assessment_rule.js', true, true);
     }
 
     public function getRules()
@@ -119,9 +119,9 @@ class AssessmentRuleManager
         $res .= Form::closeForm();
 
         $res .= '<script type="text/javascript">
-			var course_ac_url="' . Get::rel_path('adm')
+			var course_ac_url="' . Forma\lib\Get::rel_path('adm')
             . '/ajax.adm_server.php?mn=course&plf=lms&op=course_autocomplete&results=20' . '";
-			var competence_ac_url="' . Get::rel_path('adm')
+			var competence_ac_url="' . Forma\lib\Get::rel_path('adm')
             . '/ajax.adm_server.php?r=adm/competences/competences_autocomplete' . '";
 			var lang={"remove_item": "' . Lang::t('_DEL', 'test') . '"};
 			var course_arr=' . ($e && !empty($data['courses_list']) ? $data['courses_list'] : '{}') . ';
@@ -135,14 +135,14 @@ class AssessmentRuleManager
     {
         // TODO: check that user can access to the test object
 
-        $rule_id = Get::pReq('rule_id', DOTY_INT, 0);
-        $test_id = Get::pReq('test_id', DOTY_INT, 0);
-        $category_id = Get::pReq('category_id', DOTY_INT, 0);
-        $from_score = Get::pReq('from_score', DOTY_INT, 0);
-        $to_score = Get::pReq('to_score', DOTY_INT, 0);
-        $competences_list = Get::pReq('competences_list', DOTY_STRING, '');
-        $courses_list = Get::pReq('courses_list', DOTY_STRING, '');
-        $feedback_txt = Get::pReq('feedback_txt', DOTY_MIXED, '');
+        $rule_id = Forma\lib\Get::pReq('rule_id', DOTY_INT, 0);
+        $test_id = Forma\lib\Get::pReq('test_id', DOTY_INT, 0);
+        $category_id = Forma\lib\Get::pReq('category_id', DOTY_INT, 0);
+        $from_score = Forma\lib\Get::pReq('from_score', DOTY_INT, 0);
+        $to_score = Forma\lib\Get::pReq('to_score', DOTY_INT, 0);
+        $competences_list = Forma\lib\Get::pReq('competences_list', DOTY_STRING, '');
+        $courses_list = Forma\lib\Get::pReq('courses_list', DOTY_STRING, '');
+        $feedback_txt = Forma\lib\Get::pReq('feedback_txt', DOTY_MIXED, '');
 
         if ($rule_id <= 0) {
             $qtxt = "INSERT INTO %lms_assessment_rule

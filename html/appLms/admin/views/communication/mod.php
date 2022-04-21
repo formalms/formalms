@@ -8,14 +8,14 @@ echo getTitleArea([
 <?php
 echo Form::openForm('add_comm', $data['type_of'] == 'none' ? 'index.php?r=alms/communication/update' : 'index.php?r=alms/communication/mod_obj&id_comm=' . $data['id_comm'], false, false, 'multipart/form-data')
 
-    . Form::getHidden('id_comm', 'id_comm', Get::req('id_comm', DOTY_MIXED, $data['id_comm']))
+    . Form::getHidden('id_comm', 'id_comm', Forma\lib\Get::req('id_comm', DOTY_MIXED, $data['id_comm']))
 
     . Form::openElementSpace()
-    . Form::getTextfield(Lang::t('_TITLE', 'communication'), 'title', 'title', 255, Get::req('title', DOTY_MIXED, $data['title']))
-    . Form::getDatefield(Lang::t('_DATE', 'communication'), 'publish_date', 'publish_date', Get::req('publish_date', DOTY_MIXED, $data['publish_date']))
+    . Form::getTextfield(Lang::t('_TITLE', 'communication'), 'title', 'title', 255, Forma\lib\Get::req('title', DOTY_MIXED, $data['title']))
+    . Form::getDatefield(Lang::t('_DATE', 'communication'), 'publish_date', 'publish_date', Forma\lib\Get::req('publish_date', DOTY_MIXED, $data['publish_date']))
 
-    . Form::getTextarea(Lang::t('_DESCRIPTION', 'communication'), 'description', 'description', Get::req('description', DOTY_MIXED, $data['description']))
-    . Form::getHidden('type_of', 'type_of', Get::req('type_of', DOTY_MIXED, $data['type_of']))
+    . Form::getTextarea(Lang::t('_DESCRIPTION', 'communication'), 'description', 'description', Forma\lib\Get::req('description', DOTY_MIXED, $data['description']))
+    . Form::getHidden('type_of', 'type_of', Forma\lib\Get::req('type_of', DOTY_MIXED, $data['type_of']))
 /*
     .Form::getTextfield(Lang::t('_COURSE', 'course'), 'set_course', 'set_course', 255, $course_name)
     .'<div id="set_course_container"></div>'

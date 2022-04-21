@@ -110,7 +110,7 @@ class FieldList
             $query = 'SELECT ft.id_common, tft.type_file, tft.type_class'
                 . '  FROM ' . $this->getFieldTable() . ' AS ft'
                 . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft'
-                . ' WHERE ft.id_common = ' . Get::filter($id_field, DOTY_INT) . ' AND ft.type_field = tft.type_field';
+                . ' WHERE ft.id_common = ' . Forma\lib\Get::filter($id_field, DOTY_INT) . ' AND ft.type_field = tft.type_field';
             if (!$rs = sql_query($query)) {
                 $false_var = null;
 
@@ -161,7 +161,7 @@ class FieldList
         $query = 'SELECT ft.id_common, tft.type_file, tft.type_class'
             . '  FROM ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft'
-            . ' WHERE ft.id_common = ' . Get::filter($id_field, DOTY_INT) . ' AND ft.type_field = tft.type_field';
+            . ' WHERE ft.id_common = ' . Forma\lib\Get::filter($id_field, DOTY_INT) . ' AND ft.type_field = tft.type_field';
         if (!$rs = sql_query($query)) {
             $false_var = null;
 
@@ -1887,7 +1887,7 @@ class FieldList
     {
         $res = [];
 
-        if (Get::sett('do_debug') == 'on' && count($fields) != count($search)) {
+        if (Forma\lib\Get::sett('do_debug') == 'on' && count($fields) != count($search)) {
             echo '<b>Warning</b>: (lib.field.php) ';
             echo 'Please make sure that the search array have the same size of the fields one.<br />';
         }

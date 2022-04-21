@@ -22,7 +22,7 @@ class QuestBankMan
     public function _query($query)
     {
         $re = sql_query($query);
-        if (Get::sett('do_debug') == 'on' && isset($GLOBALS['page'])) {
+        if (Forma\lib\Get::sett('do_debug') == 'on' && isset($GLOBALS['page'])) {
             $GLOBALS['page']->add('<!-- ' . $query . ' :: ' . sql_error() . ' -->', 'debug');
         }
 
@@ -390,8 +390,8 @@ class QuestBank_Selector
     {
         $head = '';
         YuiLib::load('base,table');
-        Util::get_js(Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-        Util::get_js(Get::rel_path('lms') . '/modules/quest_bank/ajax.quest_bank.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/modules/quest_bank/ajax.quest_bank.js', true, true);
 
         return $head;
     }
@@ -500,7 +500,7 @@ class QuestBank_Selector
                                 'quest_category',
                                 'quest_category',
                                 $this->all_category,
-                                Get::req('quest_category', DOTY_INT));
+                                Forma\lib\Get::req('quest_category', DOTY_INT));
         }
         foreach ($this->all_categories as $idcat => $acat) {
             if (count($acat['cat']) > 1) {
@@ -508,7 +508,7 @@ class QuestBank_Selector
                                     'quest_extracategory_' . $idcat,
                                     'quest_extracategory_' . $idcat,
                                     $acat['cat'],
-                                    Get::req('quest_extracategory_' . $idcat, DOTY_INT));
+                                    Forma\lib\Get::req('quest_extracategory_' . $idcat, DOTY_INT));
             }
         }
 
@@ -516,13 +516,13 @@ class QuestBank_Selector
                                 'quest_difficult',
                                 'quest_difficult',
                                 $this->all_difficult,
-                                Get::req('quest_difficult', DOTY_INT))
+                                Forma\lib\Get::req('quest_difficult', DOTY_INT))
 
             . $this->form->getDropdown($this->lang->def('_TYPE'),
                                 'quest_type',
                                 'quest_type',
                                 $this->all_quest_type_long,
-                                Get::req('quest_type', DOTY_ALPHANUM))
+                                Forma\lib\Get::req('quest_type', DOTY_ALPHANUM))
 
             . $this->form->openButtonSpace('search_button')
             . $this->form->getButton('quest_reset',

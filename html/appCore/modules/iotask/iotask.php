@@ -90,7 +90,7 @@ function ioTask_UIConnectorsList(&$module)
     $out = &$module->get_out();
     $form = new Form();
 
-    $tb_connectors = new Table(Get::sett('visuItem'), $lang->def('_CONNECTORS_TITLE'), $lang->def('_CONNECTORS_TITLE'));
+    $tb_connectors = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CONNECTORS_TITLE'), $lang->def('_CONNECTORS_TITLE'));
 
     $content_h = [
         $lang->def('_TYPE'),
@@ -192,7 +192,7 @@ function ioTask_UIConnectionsList(&$module)
     $out = &$module->get_out();
     $form = new Form();
 
-    $tb_connections = new Table(Get::sett('visuItem'), $lang->def('_CONN_TITLE'), $lang->def('_CONN_TITLE'));
+    $tb_connections = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CONN_TITLE'), $lang->def('_CONN_TITLE'));
 
     $content_h = [
         $lang->def('_NAME'),
@@ -387,7 +387,7 @@ function ioTask_UITaskList(&$module)
     $out = &$module->get_out();
     $form = new Form();
 
-    $tb_tasks = new Table(Get::sett('visuItem'), $lang->def('_TASKS'), $lang->def('_TASKS'));
+    $tb_tasks = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_TASKS'), $lang->def('_TASKS'));
 
     $content_h = [
         $lang->def('_NAME'),

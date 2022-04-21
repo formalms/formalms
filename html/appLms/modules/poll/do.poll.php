@@ -291,8 +291,8 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
     $query_question = $report_man->getQuestions($id_poll);
 
     $treeview_value = str_replace('treeview_selected_' . $_SESSION['idCourse'], '', array_search($poll_info['title'], $_POST));
-    $editions_filter = Get::req('poll_editions_filter', DOTY_INT, -1);
-    if (Get::req('del_filter', DOTY_STRING, '') != '') {
+    $editions_filter = Forma\lib\Get::req('poll_editions_filter', DOTY_INT, -1);
+    if (Forma\lib\Get::req('del_filter', DOTY_STRING, '') != '') {
         $editions_filter = -1;
     }
 

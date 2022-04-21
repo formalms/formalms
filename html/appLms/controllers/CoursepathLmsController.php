@@ -52,7 +52,7 @@ class CoursepathLmsController extends LmsController
             _CUS_END => '_T_USER_STATUS_END',
         ];
 
-        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
 
         $this->model = new CoursepathLms();
     }
@@ -64,9 +64,9 @@ class CoursepathLmsController extends LmsController
 
     public function all()
     {
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_year = Get::req('filter_year', DOTY_INT, '');
-        $filter_status = Get::req('filter_status', DOTY_STRING, '');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_year = Forma\lib\Get::req('filter_year', DOTY_INT, '');
+        $filter_status = Forma\lib\Get::req('filter_status', DOTY_STRING, '');
 
         $conditions = '';
         if (!empty($filter_text)) {

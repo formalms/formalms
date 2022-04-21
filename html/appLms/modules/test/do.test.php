@@ -379,11 +379,11 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
                 //$event->setTestDate (date ('Y-m-d H:i:s'));
 
-                //$smsCellField = Get::sett ('sms_cell_num_field');
+                //$smsCellField = Forma\lib\Get::sett ('sms_cell_num_field');
 
                 //$query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user ()->getIdst ();
                 //list($userPhoneNumber) = sql_fetch_row (sql_query ($query));
-                //$userPhoneNumber = ltrim (Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
+                //$userPhoneNumber = ltrim (Forma\lib\Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
 
                 //$event->setUserPhoneNumber ($userPhoneNumber);
 
@@ -412,11 +412,11 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
                 //$event->setTestDate (date ('Y-m-d H:i:s'));
 
-                //$smsCellField = Get::sett ('sms_cell_num_field');
+                //$smsCellField = Forma\lib\Get::sett ('sms_cell_num_field');
 
                 //$query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user ()->getIdst ();
                 //list($userPhoneNumber) = sql_fetch_row (sql_query ($query));
-                //$userPhoneNumber = ltrim (Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
+                //$userPhoneNumber = ltrim (Forma\lib\Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
 
                 //$event->setUserPhoneNumber ($userPhoneNumber);
 
@@ -958,7 +958,7 @@ function play($object_test, $id_param)
 
     if ($test_info['mandatory_answer'] == 1) {
         YuiLib::load();
-        Util::get_js(Get::rel_path('lms') . '/modules/question/question.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/modules/question/question.js', true, true);
         cout('<script type="text/javascript">', 'content');
 
         $tot_correct_array = [];
@@ -1328,11 +1328,11 @@ function showResult($object_test, $id_param)
 
         //$event->setTestDate ($test_track->dateAttempt);
 
-        //$smsCellField = Get::sett ('sms_cell_num_field');
+        //$smsCellField = Forma\lib\Get::sett ('sms_cell_num_field');
 
         //$query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user ()->getIdst ();
         //list($userPhoneNumber) = sql_fetch_row (sql_query ($query));
-        //$userPhoneNumber = ltrim (Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
+        //$userPhoneNumber = ltrim (Forma\lib\Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
 
         //$event->setUserPhoneNumber ($userPhoneNumber);
 
@@ -1372,11 +1372,11 @@ function showResult($object_test, $id_param)
 
             //$event->setTestDate ($new_info[ 'date_end_attempt' ]);
 
-            //$smsCellField = Get::sett ('sms_cell_num_field');
+            //$smsCellField = Forma\lib\Get::sett ('sms_cell_num_field');
 
             //$query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user ()->getIdst ();
             //list($userPhoneNumber) = sql_fetch_row (sql_query ($query));
-            //$userPhoneNumber = ltrim (Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
+            //$userPhoneNumber = ltrim (Forma\lib\Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
 
             //$event->setUserPhoneNumber ($userPhoneNumber);
 

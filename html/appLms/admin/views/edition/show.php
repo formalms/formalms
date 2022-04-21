@@ -18,23 +18,23 @@ $_columns = [
 ];
 
 if ($permissions['subscribe']) {
-    $_columns[] = ['key' => 'subscription', 'label' => Get::img('course/subscribe.png', Lang::t('_SUBSCRIPTION', 'course')), 'className' => 'img-cell'];
+    $_columns[] = ['key' => 'subscription', 'label' => Forma\lib\Get::img('course/subscribe.png', Lang::t('_SUBSCRIPTION', 'course')), 'className' => 'img-cell'];
 }
 
 if ($permissions['mod']) {
-    $_columns[] = ['key' => 'edit', 'label' => Get::img('standard/edit.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell'];
+    $_columns[] = ['key' => 'edit', 'label' => Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell'];
 }
 
-if ($permissions['del'] && !Get::cfg('demo_mode')) {
-    $_columns[] = ['key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'course')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
+if ($permissions['del'] && !Forma\lib\Get::cfg('demo_mode')) {
+    $_columns[] = ['key' => 'del', 'label' => Forma\lib\Get::img('standard/delete.png', Lang::t('_DEL', 'course')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 }
 
 $_params = [
     'id' => 'edition_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $base_link_edition . '/geteditionlist&id_course=' . $model->getIdCourse(),
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'name',
     'dir' => 'asc',
     'columns' => $_columns,

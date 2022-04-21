@@ -40,7 +40,7 @@ class TransactionAlmsController extends AlmsController
     public function show()
     {
         if (isset($_GET['res'])) {
-            $res = Get::req('res', DOTY_STRING, '');
+            $res = Forma\lib\Get::req('res', DOTY_STRING, '');
 
             switch ($res) {
                 case 'ok':
@@ -60,10 +60,10 @@ class TransactionAlmsController extends AlmsController
     public function getTransactionData()
     {
         //Datatable info
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'date_creation');
-        $dir = Get::req('dir', DOTY_MIXED, 'desc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'date_creation');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'desc');
 
         $total_transaction = $this->model->getTotalTransaction();
         $array_transaction = $this->model->getTransaction($start_index, $results, $sort, $dir);
@@ -82,15 +82,15 @@ class TransactionAlmsController extends AlmsController
 
     public function mod()
     {
-        $id_trans = Get::req('id_trans', DOTY_INT, 0);
+        $id_trans = Forma\lib\Get::req('id_trans', DOTY_INT, 0);
 
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=alms/transaction/show');
         }
 
         if (isset($_POST['save']) || isset($_POST['not_paid'])) {
-            $product_to_activate = Get::req('product', DOTY_MIXED, []);
-            $id_user = Get::req('id_user', DOTY_MIXED, 0);
+            $product_to_activate = Forma\lib\Get::req('product', DOTY_MIXED, []);
+            $id_user = Forma\lib\Get::req('id_user', DOTY_MIXED, 0);
 
             if ($this->model->saveTransaction($product_to_activate, $id_trans, $id_user)) {
                 $this->model->controlActivation($id_trans, (isset($_POST['not_paid'])));

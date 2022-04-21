@@ -1,4 +1,4 @@
-<?php Get::title([
+<?php Forma\lib\Get::title([
     'index.php?r=alms/enrollrules/show' => Lang::t('_ENROLLRULES', 'enrollrules'),
     'index.php?r=alms/enrollrules/showlog' => Lang::t('_SHOW_LOGS', 'enrollrules'),
     Lang::t('_DETAILS', 'enrollrules'),

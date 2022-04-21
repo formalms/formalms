@@ -74,21 +74,22 @@ class DoceboUser
     {
         $this->userid = $userid;
         $this->sprefix = $sprefix;
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
         $this->db = DbConn::getInstance();
 
         $this->acl = new DoceboACL();
         $this->aclManager = &$this->acl->getACLManager();
 
-        if (isset($_SESSION[$sprefix . '_idst'])) {
-            $this->idst = $_SESSION[$sprefix . '_idst'];
+        if ($currentSession->has($sprefix . '_idst')) {
+            $this->idst = $currentSession->get($sprefix . '_idst');
         } else {
             $this->idst = $this->acl->getUserST($userid);
         }
-        if (isset($_SESSION[$sprefix . '_stlist'])) {
+        if ($currentSession->has($sprefix . '_stlist')) {
             require_once _base_ . '/lib/lib.json.php';
             $json = new Services_JSON();
-            $this->arrst = $json->decode($_SESSION[$sprefix . '_stlist']);
+            $this->arrst = $json->decode($currentSession->get($sprefix . '_stlist'));
         }
 
         $user_manager = new DoceboACLManager();
@@ -151,11 +152,12 @@ class DoceboUser
         if (strpos($ip, ',') !== false) {
             $ip = substr($ip, 0, strpos($ip, ','));
         }
-
-        $_SESSION[$this->sprefix . '_idst'] = $this->idst;
-        $_SESSION[$this->sprefix . '_username'] = $this->userid;
-        $_SESSION[$this->sprefix . '_stlist'] = $json->encode($this->arrst);
-        $_SESSION[$this->sprefix . '_log_ip'] = $ip;
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $currentSession->set($this->sprefix . '_idst', $this->idst);
+        $currentSession->set($this->sprefix . '_username',$this->userid);
+        $currentSession->set($this->sprefix . '_stlist',$json->encode($this->arrst));
+        $currentSession->set($this->sprefix . '_log_ip',$ip);
+        $currentSession->save();
     }
 
     public function isAnonymous()
@@ -170,7 +172,7 @@ class DoceboUser
 
     public function getLogIp()
     {
-        return $_SESSION[$this->sprefix . '_log_ip'];
+        return \Forma\lib\Session\SessionManager::getInstance()->getSession()->get($this->sprefix . '_log_ip');
     }
 
     public function getIdSt()
@@ -227,7 +229,7 @@ class DoceboUser
      */
     public function getAvatar()
     {
-        return Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
+        return Forma\lib\Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Forma\lib\Get::sett('pathphoto') . $this->avatar;
     }
 
     /**
@@ -272,32 +274,34 @@ class DoceboUser
      **/
     public static function &createDoceboUserFromSession($prefix = 'base')
     {
-        if (!isset($_SESSION['user_enter_time'])) {
-            $_SESSION['user_enter_time'] = date('Y-m-d H:i:s');
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if ($currentSession->has('user_enter_time')) {
+            $currentSession->set('user_enter_time',date('Y-m-d H:i:s'));
         }
 
-        if (isset($_SESSION[$prefix . '_username'])) {
-            $du = new DoceboUser($_SESSION[$prefix . '_username'], $prefix);
+        if ($currentSession->has($prefix . '_username')) {
+            $du = new DoceboUser($currentSession->get($prefix . '_username'), $prefix);
 
-            if (isset($_SESSION['user_enter_mark'])) {
-                if ($_SESSION['user_enter_mark'] < (time() - REFRESH_LAST_ENTER)) {
+            if ($currentSession->has('user_enter_mark')) {
+                if ($currentSession->get('user_enter_mark') < time() - REFRESH_LAST_ENTER) {
                     $du->setLastEnter(date('Y-m-d H:i:s'));
-                    $_SESSION['user_enter_mark'] = time();
+                    $currentSession->set('user_enter_mark',time());
                 }
             } else {
                 $du->setLastEnter(date('Y-m-d H:i:s'));
-                $_SESSION['user_enter_mark'] = time();
+                $currentSession->set('user_enter_mark',time());
             }
+            $currentSession->save();
 
             return $du;
         } else {
             // rest auth
-            if (Get::sett('use_rest_api') != 'off') {
+            if (Forma\lib\Get::sett('use_rest_api') != 'off') {
                 require_once _base_ . '/api/lib/lib.rest.php';
 
-                if (Get::sett('rest_auth_method') == _REST_AUTH_TOKEN) {
+                if (Forma\lib\Get::sett('rest_auth_method') == _REST_AUTH_TOKEN) {
                     //require_once(_base_.'/lib/lib.utils.php');
-                    $token = Get::req('auth', DOTY_ALPHANUM, '');
+                    $token = Forma\lib\Get::req('auth', DOTY_ALPHANUM, '');
 
                     if ($token) {
                         $id_user = RestAPI::getUserIdByToken($token);
@@ -308,13 +312,13 @@ class DoceboUser
                             if ($user_info != false) {
                                 $username = $user_info[ACL_INFO_USERID];
                                 $du = new DoceboUser($username, $prefix);
+                                $currentSession->set('last_enter',$user_info[ACL_INFO_LASTENTER]);
 
-                                $_SESSION['last_enter'] = $user_info[ACL_INFO_LASTENTER];
                                 $du->setLastEnter(date('Y-m-d H:i:s'));
-                                $_SESSION['user_enter_mark'] = time();
+                                $currentSession->set('user_enter_mark',time());
                                 $du->loadUserSectionST();
                                 $du->SaveInSession();
-
+                                $currentSession->save();
                                 return $du;
                             }
                         }
@@ -323,7 +327,7 @@ class DoceboUser
             }
 
             // kerberos and similar auth
-            if (Get::sett('auth_kerberos') == 'on') {
+            if (Forma\lib\Get::sett('auth_kerberos') == 'on') {
                 if (isset($_SERVER['REMOTE_USER'])) {
                     // extract username
                     $username = addslashes(substr($_SERVER['REMOTE_USER'], 0, strpos($_SERVER['REMOTE_USER'], '@')));
@@ -333,7 +337,8 @@ class DoceboUser
                         $du = new DoceboUser($username, $prefix);
 
                         $du->setLastEnter(date('Y-m-d H:i:s'));
-                        $_SESSION['user_enter_mark'] = time();
+                        $currentSession->set('user_enter_mark',time());
+                        $currentSession->save();
                         $du->loadUserSectionST();
                         $du->SaveInSession();
 
@@ -377,24 +382,24 @@ class DoceboUser
             return false;
         }
 
-        if (Get::sett('ldap_used') == 'on') {
+        if (Forma\lib\Get::sett('ldap_used') == 'on') {
             if ($password == '') {
                 $false_public = false;
 
                 return $false_public;
             }
             //connect to ldap server
-            if (!($ldap_conn = @ldap_connect(Get::sett('ldap_server'), Get::sett('ldap_port', '389')))) {
+            if (!($ldap_conn = @ldap_connect(Forma\lib\Get::sett('ldap_server'), Forma\lib\Get::sett('ldap_port', '389')))) {
                 exit('Could not connect to ldap server');
             }
 
             //bind on server
-            $ldap_user = preg_replace('/\$user/', $login, Get::sett('ldap_user_string'));
+            $ldap_user = preg_replace('/\$user/', $login, Forma\lib\Get::sett('ldap_user_string'));
             if (!(@ldap_bind($ldap_conn, $ldap_user, $password))) {
                 ldap_close($ldap_conn);
 
                 // Edited by Claudio Redaelli
-                if (Get::sett('ldap_alternate_check') == 'on') {
+                if (Forma\lib\Get::sett('ldap_alternate_check') == 'on') {
                     if (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
                         return false;
                     }
@@ -409,17 +414,18 @@ class DoceboUser
         } elseif (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
             return false;
         }
-        unset($_SESSION[$prefix . '_idst']);
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $currentSession->remove($prefix . '_idst');
         $du = new DoceboUser($login, $prefix);
 
         // language policy
-        if (!$new_lang && isset($_SESSION['forced_lang'])) {
+        if (!$new_lang && $currentSession->has('forced_lang')) {
             $new_lang = Lang::get();
         }
         if ($new_lang != false) {
             $du->preference->setLanguage($new_lang);
         } else {
-            if (!Get::cfg('demo_mode', false)) {
+            if (!Forma\lib\Get::cfg('demo_mode', false)) {
                 Lang::set($du->preference->getLanguage());
             }
         }
@@ -458,9 +464,11 @@ class DoceboUser
         resetTemplate();
 
         $GLOBALS['current_user'] = $user;
-        $_SESSION['last_enter'] = $user->getLastEnter();
-        $_SESSION['user_enter_mark'] = time();
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
+        $currentSession->set('last_enter',$user->getLastEnter());
+        $currentSession->set('user_enter_mark',time());
+        $currentSession->save();
         $user->setLastEnter(date('Y-m-d H:i:s'));
     }
 
@@ -504,7 +512,7 @@ class DoceboUser
     public function isPasswordElapsed()
     {
         //if the password is managed by an external program jump this procedure
-        if (Get::sett('ldap_used') == 'on') {
+        if (Forma\lib\Get::sett('ldap_used') == 'on') {
             return 0;
         }
 
@@ -519,7 +527,7 @@ class DoceboUser
         if (!$user_data[ACL_INFO_PWD_EXPIRE_AT]) {
             return 0;
         }
-        if (Get::sett('pass_max_time_valid', '0') != '0') {
+        if (Forma\lib\Get::sett('pass_max_time_valid', '0') != '0') {
             $pwd_expire = fromDatetimeToTimestamp($user_data[ACL_INFO_PWD_EXPIRE_AT]);
             if (time() > $pwd_expire) {
                 return 1;
@@ -538,8 +546,8 @@ class DoceboUser
     public function saveUserSectionSTInSession($section)
     {
         $sprefix = $this->sprefix;
-
-        if (!isset($_SESSION[$sprefix . '_stlist'])) {
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if ($currentSession->has($sprefix . '_stlist')) {
             $this->loadUserSectionST($section);
             $this->SaveInSession();
         }
@@ -664,7 +672,7 @@ class DoceboUser
     {
         $user_quota = $this->preference->getPreference('user_rules.user_quota');
         if ($user_quota == USER_QUOTA_INHERIT) {
-            $user_quota = Get::sett('user_quota');
+            $user_quota = Forma\lib\Get::sett('user_quota');
         }
 
         return $user_quota;

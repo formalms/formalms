@@ -35,7 +35,7 @@ class Tags
         $this->_resource_t = $GLOBALS['prefix_fw'] . '_tag_resource';
         $this->_id_course = (isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : 0);
 
-        $this->_use_tag = (Get::sett('use_tag', 'off') == 'on');
+        $this->_use_tag = (Forma\lib\Get::sett('use_tag', 'off') == 'on');
 
         if ($viewer == false) {
             $viewer = getLogUserId();
@@ -62,7 +62,7 @@ class Tags
         $this->tags_id = $tags_id;
         YuiLib::load(['autocomplete' => 'autocomplete-min.js', 'selector' => 'selector-beta-min.js'],
             ['assets/skins/sam' => 'autocomplete.css']);
-        Util::get_js(Get::rel_path('adm') . '/lib/lib.tags.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('adm') . '/lib/lib.tags.js', true, true);
 
         // setup some thing that we need in the tag editor
         $GLOBALS['page']->add('<script type="text/javascript">' . "\n"

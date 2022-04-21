@@ -1238,11 +1238,11 @@ function updatemodality()
         retain_answers_history = '" . $_REQUEST['retain_answers_history'] . "',
         max_attempt = '" . (int) $_REQUEST['max_attempt'] . "'"
         . ($time_dependent == 2 && $_REQUEST['display_type'] == 0 ? ' ,time_dependent = 0 ' : '')
-        . ' ,use_suspension = ' . Get::req('use_suspension', DOTY_INT, 0) .
-        " ,suspension_num_attempts = '" . Get::req('suspension_num_attempts', DOTY_INT, 0) . "' " .
-        " ,suspension_num_hours = '" . Get::req('suspension_num_hours', DOTY_INT, 0) . "' " .
-        ' ,suspension_prerequisites = ' . Get::req('suspension_prerequisites', DOTY_INT, 0) . ' ' .
-        ' ,mandatory_answer = ' . Get::req('mandatory_answer', DOTY_INT, 0) .
+        . ' ,use_suspension = ' . Forma\lib\Get::req('use_suspension', DOTY_INT, 0) .
+        " ,suspension_num_attempts = '" . Forma\lib\Get::req('suspension_num_attempts', DOTY_INT, 0) . "' " .
+        " ,suspension_num_hours = '" . Forma\lib\Get::req('suspension_num_hours', DOTY_INT, 0) . "' " .
+        ' ,suspension_prerequisites = ' . Forma\lib\Get::req('suspension_prerequisites', DOTY_INT, 0) . ' ' .
+        ' ,mandatory_answer = ' . Forma\lib\Get::req('mandatory_answer', DOTY_INT, 0) .
         " WHERE idTest = '$idTest'";
 
     Events::trigger('lms.defmodality.updated', ['idTest' => $idTest, 'tutorComment' => $_REQUEST['tutor_comment'], 'showTutorComment' => $_REQUEST['show_tutor_comment']]);
@@ -2000,9 +2000,9 @@ function doimportquest()
 
     $qb_man = new QuestBankMan();
 
-    $file_format = Get::req('file_format', DOTY_INT, 0);
-    $file_encode = Get::req('file_encode', DOTY_ALPHANUM, 'utf-8');
-    $autocreate_categories = Get::req('autocreate_categories', DOTY_BOOL, false);
+    $file_format = Forma\lib\Get::req('file_format', DOTY_INT, 0);
+    $file_encode = Forma\lib\Get::req('file_encode', DOTY_ALPHANUM, 'utf-8');
+    $autocreate_categories = Forma\lib\Get::req('autocreate_categories', DOTY_BOOL, false);
     $file_readed = file($_FILES['import_file']['tmp_name']);
 
     YuiLib::load('table');
@@ -2047,7 +2047,7 @@ function exportquest()
     require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
 
-    $file_format = Get::req('export_quest_select', DOTY_INT, 0);
+    $file_format = Forma\lib\Get::req('export_quest_select', DOTY_INT, 0);
 
     $quests = [];
 
@@ -2129,8 +2129,8 @@ function doexportquestqb()
     $back_coded = htmlentities(urlencode($back_url));
     $qb_man = new QuestBankMan();
 
-    $quest_category = Get::req('quest_category', DOTY_INT, 0);
-    $id_test = Get::pReq('idTest', DOTY_INT);
+    $quest_category = Forma\lib\Get::req('quest_category', DOTY_INT, 0);
+    $id_test = Forma\lib\Get::pReq('idTest', DOTY_INT);
 
     if (isset($_REQUEST['undo'])) {
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $id_test . '&back_url=' . $back_coded);
@@ -2208,8 +2208,8 @@ function feedbackman()
     require_once _lms_ . '/lib/lib.questcategory.php';
     require_once _lms_ . '/lib/lib.assessment_rule.php';
 
-    $id_test = Get::gReq('idTest', DOTY_INT, 0);
-    $back_url = urldecode(Get::gReq('back_url', DOTY_STRING));
+    $id_test = Forma\lib\Get::gReq('idTest', DOTY_INT, 0);
+    $back_url = urldecode(Forma\lib\Get::gReq('back_url', DOTY_STRING));
     $url_encode = htmlentities(urlencode($back_url));
     $back_link_url = 'index.php?modname=test&amp;op=modtestgui&amp;idTest=' . $id_test . '&amp;back_url=' . $url_encode;
     $url_base = 'index.php?modname=test&idTest=' . $id_test . '&back_url=' . $url_encode . '&op=';
@@ -2249,8 +2249,8 @@ function feedbackman()
                     [
                         Lang::t('_SCORE', 'test'),
                         Lang::t('_FEEDBACK_TEXT', 'test'),
-                        Get::sprite('subs_mod', Lang::t('_MOD', 'standard'), Lang::t('_MOD', 'standard')),
-                        Get::sprite('subs_del', Lang::t('_DEL', 'standard'), Lang::t('_DEL', 'standard')),
+                        Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'standard'), Lang::t('_MOD', 'standard')),
+                        Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'standard'), Lang::t('_DEL', 'standard')),
                         //'<span class="ico-sprite subs_mod"><span>'.Lang::t('_MOD', 'standard').'</span></span>',
                         //'<span class="ico-sprite subs_del"><span>'.Lang::t('_DEL', 'standard').'</span></span>',
                     ],
@@ -2357,16 +2357,16 @@ function addfbkrule()
     require_once _lms_ . '/lib/lib.questcategory.php';
     require_once _lms_ . '/lib/lib.assessment_rule.php';
 
-    $id_test = Get::gReq('idTest', DOTY_INT, 0);
-    $cat_id = Get::gReq('cat_id', DOTY_INT, 0);
-    $back_url = urldecode(Get::gReq('back_url', DOTY_STRING));
+    $id_test = Forma\lib\Get::gReq('idTest', DOTY_INT, 0);
+    $cat_id = Forma\lib\Get::gReq('cat_id', DOTY_INT, 0);
+    $back_url = urldecode(Forma\lib\Get::gReq('back_url', DOTY_STRING));
     $url_encode = htmlentities(urlencode($back_url));
     $url_base = 'index.php?modname=test&idTest=' . $id_test . '&back_url=' . $url_encode . '&op=';
     $back_link_url = $url_base . 'feedbackman';
 
     $asrule = new AssessmentRuleManager($id_test);
 
-    $save = Get::pReq('save', DOTY_INT, 0);
+    $save = Forma\lib\Get::pReq('save', DOTY_INT, 0);
     if ($save) {
         $asrule->save();
         Util::jump_to($url_base . 'feedbackman');
@@ -2404,17 +2404,17 @@ function editfbkrule()
     require_once _lms_ . '/lib/lib.questcategory.php';
     require_once _lms_ . '/lib/lib.assessment_rule.php';
 
-    $rule_id = Get::gReq('item_id', DOTY_INT, 0);
-    $id_test = Get::gReq('idTest', DOTY_INT, 0);
-    $cat_id = Get::gReq('cat_id', DOTY_INT, 0);
-    $back_url = urldecode(Get::gReq('back_url', DOTY_STRING));
+    $rule_id = Forma\lib\Get::gReq('item_id', DOTY_INT, 0);
+    $id_test = Forma\lib\Get::gReq('idTest', DOTY_INT, 0);
+    $cat_id = Forma\lib\Get::gReq('cat_id', DOTY_INT, 0);
+    $back_url = urldecode(Forma\lib\Get::gReq('back_url', DOTY_STRING));
     $url_encode = htmlentities(urlencode($back_url));
     $url_base = 'index.php?modname=test&idTest=' . $id_test . '&back_url=' . $url_encode . '&op=';
     $back_link_url = $url_base . 'feedbackman';
 
     $asrule = new AssessmentRuleManager($id_test);
 
-    $save = Get::pReq('save', DOTY_INT, 0);
+    $save = Forma\lib\Get::pReq('save', DOTY_INT, 0);
     if ($save) {
         $asrule->save();
         Util::jump_to($url_base . 'feedbackman');
@@ -2448,15 +2448,15 @@ function delfbkrule()
     require_once _lms_ . '/lib/lib.questcategory.php';
     require_once _lms_ . '/lib/lib.assessment_rule.php';
 
-    $rule_id = Get::gReq('item_id', DOTY_INT, 0);
-    $id_test = Get::gReq('idTest', DOTY_INT, 0);
-    $back_url = urldecode(Get::gReq('back_url', DOTY_STRING));
+    $rule_id = Forma\lib\Get::gReq('item_id', DOTY_INT, 0);
+    $id_test = Forma\lib\Get::gReq('idTest', DOTY_INT, 0);
+    $back_url = urldecode(Forma\lib\Get::gReq('back_url', DOTY_STRING));
     $url_encode = htmlentities(urlencode($back_url));
     $url_base = 'index.php?modname=test&idTest=' . $id_test . '&back_url=' . $url_encode . '&op=';
 
     $asrule = new AssessmentRuleManager($id_test);
 
-    if (Get::gReq('confirm', DOTY_INT, 0)) { //TODO: change me
+    if (Forma\lib\Get::gReq('confirm', DOTY_INT, 0)) { //TODO: change me
         $asrule->delete($rule_id);
         Util::jump_to($url_base . 'feedbackman');
         exit();
@@ -2496,7 +2496,7 @@ switch ($GLOBALS['op']) {
         break;
 
     case 'modtestgui':
-            Util::get_js(Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+            Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
             if (isset($_GET['test_saved']) || isset($_REQUEST['test_saved'])) {
                 //other enter
                 $var_save = importVar('test_saved');

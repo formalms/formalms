@@ -136,7 +136,7 @@ class Lang
 
     public static function setLanguage()
     {
-        $lang = Get::gReq('set_lang', DOTY_STRING, '');
+        $lang = Forma\lib\Get::gReq('set_lang', DOTY_STRING, '');
         if (!empty($lang)) {
             $_SESSION['sel_lang'] = $lang;
             self::init();

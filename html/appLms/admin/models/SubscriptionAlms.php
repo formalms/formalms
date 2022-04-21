@@ -335,7 +335,7 @@ class SubscriptionAlms extends Model
                             $body_key = '_NEW_USER_SUBSCRIBED_TEXT_MODERATORS';
                         }
                         $array_subst = [
-                            '[url]' => Get::site_url(),
+                            '[url]' => Forma\lib\Get::site_url(),
                             '[course]' => $course_info['name'],
                             '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME], //istantiate user_info with the user to enroll if you want to enable this
                             '[lastname]' => $userinfo[ACL_INFO_LASTNAME],
@@ -380,7 +380,7 @@ class SubscriptionAlms extends Model
                             }
 
                             $query = 'SELECT COUNT(*)'
-                                . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
+                                . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
                                 . " WHERE idst_user = '" . $id_user . "'"
                                 . " AND type_of_entry = 'course'"
                                 . ' AND id_entry in (-1,0,' . $id_course . ')';
@@ -388,26 +388,26 @@ class SubscriptionAlms extends Model
                             list($control_course) = sql_fetch_row(sql_query($query));
 
                             $query = 'SELECT COUNT(*)'
-                                . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
+                                . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
                                 . " WHERE idst_user = '" . $id_user . "'"
                                 . " AND type_of_entry = 'coursepath'"
                                 . ' AND id_entry IN'
                                 . ' ('
                                 . ' SELECT id_path'
-                                . ' FROM ' . Get::cfg('prefix_lms') . '_coursepath_courses'
+                                . ' FROM ' . Forma\lib\Get::cfg('prefix_lms') . '_coursepath_courses'
                                 . " WHERE id_item = '" . $id_course . "'"
                                 . ' )';
 
                             list($control_coursepath) = sql_fetch_row(sql_query($query));
 
                             $query = 'SELECT COUNT(*)'
-                                . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
+                                . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
                                 . " WHERE idst_user = '" . $id_user . "'"
                                 . " AND type_of_entry = 'catalogue'"
                                 . ' AND id_entry IN'
                                 . ' ('
                                 . ' SELECT idCatalogue'
-                                . ' FROM ' . Get::cfg('prefix_lms') . '_catalogue_entry'
+                                . ' FROM ' . Forma\lib\Get::cfg('prefix_lms') . '_catalogue_entry'
                                 . " WHERE idEntry = '" . $id_course . "'"
                                 . ' )';
 
@@ -427,7 +427,7 @@ class SubscriptionAlms extends Model
 
                     $user_info = $acl_man->getUser($user_to_enroll, false);
                     $array_subst = [
-                        '[url]' => Get::site_url(),
+                        '[url]' => Forma\lib\Get::site_url(),
                         '[course]' => $course_info['name'],
                         '[firstname]' => $user_info[ACL_INFO_FIRSTNAME],
                         '[lastname]' => $user_info[ACL_INFO_LASTNAME],
@@ -558,7 +558,7 @@ class SubscriptionAlms extends Model
     public function getFastSubscribeList($filter, $limit = false)
     {
         if (!$limit || !is_numeric($limit)) {
-            $limit = Get::sett('visuItem', 25);
+            $limit = Forma\lib\Get::sett('visuItem', 25);
         }
         $already_subscribed = $this->loadUserSelectorSelection();
 
@@ -754,7 +754,7 @@ class SubscriptionAlms extends Model
                             $view['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -1100,7 +1100,7 @@ class SubscriptionAlms extends Model
         if (($res) && (int) $cinfo['auto_unsubscribe'] == 1) {
             //moderated self unsubscribe
             $userinfo = $this->acl_man->getUser($id_user, false);
-            $array_subst = ['[url]' => Get::site_url(),
+            $array_subst = ['[url]' => Forma\lib\Get::site_url(),
                 '[course]' => $cinfo['name'],
                 '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
                 '[lastname]' => $userinfo[ACL_INFO_LASTNAME],
@@ -1144,7 +1144,7 @@ class SubscriptionAlms extends Model
                 $control_user = array_search(getLogUserId(), $array_user);
 
                 $query = 'SELECT COUNT(*)'
-                            . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
+                            . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
                             . " WHERE idst_user = '" . $id_user . "'"
                             . " AND type_of_entry = 'course'"
                             . " AND id_entry = '" . $id_course . "'";
@@ -1152,26 +1152,26 @@ class SubscriptionAlms extends Model
                 list($control_course) = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*)'
-                            . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
+                            . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
                             . " WHERE idst_user = '" . $id_user . "'"
                             . " AND type_of_entry = 'coursepath'"
                             . ' AND id_entry IN'
                             . ' ('
                             . ' SELECT id_path'
-                            . ' FROM ' . Get::cfg('prefix_lms') . '_coursepath_courses'
+                            . ' FROM ' . Forma\lib\Get::cfg('prefix_lms') . '_coursepath_courses'
                             . " WHERE id_item = '" . $id_course . "'"
                             . ' )';
 
                 list($control_coursepath) = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*)'
-                            . ' FROM ' . Get::cfg('prefix_fw') . '_admin_course'
+                            . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
                             . " WHERE idst_user = '" . $id_user . "'"
                             . " AND type_of_entry = 'catalogue'"
                             . ' AND id_entry IN'
                             . ' ('
                             . ' SELECT idCatalogue'
-                            . ' FROM ' . Get::cfg('prefix_lms') . '_catalogue_entry'
+                            . ' FROM ' . Forma\lib\Get::cfg('prefix_lms') . '_catalogue_entry'
                             . " WHERE idEntry = '" . $id_course . "'"
                             . ' )';
 

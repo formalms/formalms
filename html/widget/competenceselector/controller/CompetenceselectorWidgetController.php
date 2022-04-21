@@ -31,12 +31,12 @@ class CompetenceselectorWidgetController extends Controller
 
     public function gettreedataTask()
     {
-        $command = Get::req('command', DOTY_ALPHANUM, '');
+        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
 
         switch ($command) {
             case 'expand':
-                $node_id = Get::req('node_id', DOTY_INT, 0);
-                $initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+                $initial = (Forma\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
                 /*if ($initial) {
                     //get selected category from session and set the expanded tree
@@ -84,14 +84,14 @@ class CompetenceselectorWidgetController extends Controller
     public function gettabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $id_category = Get::req('id_category', DOTY_INT, 0);
-        $descendants = (Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $id_category = Forma\lib\Get::req('id_category', DOTY_INT, 0);
+        $descendants = (Forma\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,

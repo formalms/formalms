@@ -199,7 +199,7 @@ function getCompilationTable($id_user, $id_test)
 function getTrackingTable($id_user, $id_org)
 {
     require_once _base_ . '/lib/lib.table.php';
-    $tb = new Table(Get::sett('visu_course'));
+    $tb = new Table(Forma\lib\Get::sett('visu_course'));
 
     $lang = DoceboLanguage::CreateInstance('organization', 'lms');
 
@@ -287,9 +287,9 @@ function getTrackingTable($id_user, $id_org)
 function getHistoryTable($id_user, $id_obj)
 {
     require_once _base_ . '/lib/lib.table.php';
-    $tb = new Table(Get::sett('visu_course'));
+    $tb = new Table(Forma\lib\Get::sett('visu_course'));
 
-    $id_org = Get::req('id_org', DOTY_INT, 0);
+    $id_org = Forma\lib\Get::req('id_org', DOTY_INT, 0);
 
     $lang = DoceboLanguage::CreateInstance('organization', 'lms');
 
@@ -343,11 +343,11 @@ function getInteractionsTable($id_user, $idtrack)
 {
     require_once _base_ . '/lib/lib.domxml.php';
     require_once _base_ . '/lib/lib.table.php';
-    $tb = new Table(Get::sett('visu_course'));
+    $tb = new Table(Forma\lib\Get::sett('visu_course'));
 
     $lang = DoceboLanguage::CreateInstance('organization', 'lms');
 
-    $id_org = Get::req('id_org', DOTY_INT, 0);
+    $id_org = Forma\lib\Get::req('id_org', DOTY_INT, 0);
 
     $h_type = ['', '', ''];
     $h_content = [

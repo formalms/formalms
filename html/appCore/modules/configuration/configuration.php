@@ -159,7 +159,7 @@ function server_info()
             ? '<span class="font_red">' . $lang->def('_ON') . '</span>'
             : $lang->def('_OFF')));
     }
-    if (Get::cfg('uploadType') == 'ftp') {
+    if (Forma\lib\Get::cfg('uploadType') == 'ftp') {
         if (function_exists('ftp_connect')) {
             require_once _base_ . '/lib/lib.upload.php';
             $re_con = sl_open_fileoperations();
@@ -180,7 +180,7 @@ function server_info()
 
 function show_sms_panel(&$lang)
 {
-    $sms_credit = Get::sett('sms_credit', 0);
+    $sms_credit = Forma\lib\Get::sett('sms_credit', 0);
     if ($sms_credit == 0) {
         $credit_left = '0';
         $note = '(' . $lang->def('_SMS_CREDIT_UPDATE') . ')';

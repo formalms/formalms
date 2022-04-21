@@ -33,7 +33,7 @@ if (!Docebo::user()->isAnonymous()) {
         $mod_perm = checkPerm('mod', true);
         $del_perm = checkPerm('mod', true);
 
-        if (Get::cfg('demo_mode')) {
+        if (Forma\lib\Get::cfg('demo_mode')) {
             $del_perm = false;
         }
 
@@ -61,7 +61,7 @@ if (!Docebo::user()->isAnonymous()) {
                     $admin_courses['coursepath'][$id_path] = $id_path;
                 }
 
-                if (!empty($admin_courses['coursepath']) && Get::sett('on_catalogue_empty', 'off') == 'on') {
+                if (!empty($admin_courses['coursepath']) && Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -288,13 +288,13 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
 
-        if (Get::cfg('demo_mode')) {
+        if (Forma\lib\Get::cfg('demo_mode')) {
             exit('Cannot delete coursepath during demo mode.');
         }
 
         $id_path = importVar('id_path', true, 0);
 
-        if (Get::req('confirm', DOTY_INT, 0) == 1) {
+        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
             $re = true;
 
             if (!sql_query('
@@ -401,11 +401,11 @@ if (!Docebo::user()->isAnonymous()) {
         $cont_h = [$lang->def('_CODE'), $lang->def('_COURSE_NAME'), $lang->def('_PREREQUISITES')];
         $type_h = ['coursepath_code', 'coursepath_name', '', 'image'];
         if ($mod_perm) {
-            $cont_h[] = Get::img('standard/down.png', Lang::t('_DOWN', 'coursepath'));
+            $cont_h[] = Forma\lib\Get::img('standard/down.png', Lang::t('_DOWN', 'coursepath'));
             $type_h[] = 'image';
-            $cont_h[] = Get::img('standard/up.png', Lang::t('_UP', 'coursepath'));
+            $cont_h[] = Forma\lib\Get::img('standard/up.png', Lang::t('_UP', 'coursepath'));
             $type_h[] = 'image';
-            $cont_h[] = Get::img('standard/moderate.png', Lang::t('_MOD', 'coursepath'));
+            $cont_h[] = Forma\lib\Get::img('standard/moderate.png', Lang::t('_MOD', 'coursepath'));
             $type_h[] = 'image';
             $cont_h[] = '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />';
             $type_h[] = 'image';
@@ -454,7 +454,7 @@ if (!Docebo::user()->isAnonymous()) {
                                     $admin_courses['course'][$id_course] = $id_course;
                                 }
                             }
-                        } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                        } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                             $all_courses = true;
                         }
                     } else {
@@ -491,7 +491,7 @@ if (!Docebo::user()->isAnonymous()) {
                             if ($i != $num_course - 1) {
                                 $cont[] = '<a href="index.php?modname=coursepath&amp;op=downelem&amp;id_path=' . $id_path . '&amp;id_course=' . $id_item . '&amp;id_slot=' . $id_slot . '" '
                                         . 'title="' . $lang->def('_MOVE_DOWN') . ' : ' . $course_info[$id_item]['name'] . '">'
-                                    . Get::img('standard/down.png', Lang::t('_DOWN', 'coursepath')) . '</a>';
+                                    . Forma\lib\Get::img('standard/down.png', Lang::t('_DOWN', 'coursepath')) . '</a>';
                             } else {
                                 $cont[] = '';
                             }
@@ -499,14 +499,14 @@ if (!Docebo::user()->isAnonymous()) {
                             if ($i != 0) {
                                 $cont[] = '<a href="index.php?modname=coursepath&amp;op=upelem&amp;id_path=' . $id_path . '&amp;id_course=' . $id_item . '&amp;id_slot=' . $id_slot . '" '
                                         . 'title="' . $lang->def('_MOVE_UP') . ' : ' . $course_info[$id_item]['name'] . '">'
-                                    . Get::img('standard/up.png', Lang::t('_UP', 'coursepath')) . '</a>';
+                                    . Forma\lib\Get::img('standard/up.png', Lang::t('_UP', 'coursepath')) . '</a>';
                             } else {
                                 $cont[] = '';
                             }
 
                             $cont[] = '<a href="index.php?modname=coursepath&amp;op=modprerequisites&amp;id_path=' . $id_path . '&amp;id_course=' . $id_item . '&amp;id_slot=' . $id_slot . '" '
                                     . 'title="' . $lang->def('_MOD') . ' : ' . $course_info[$id_item]['name'] . '">'
-                                . Get::img('standard/moderate.png', Lang::t('_MOD', 'coursepath') . ' : ' . $course_info[$id_item]['name']) . '</a>';
+                                . Forma\lib\Get::img('standard/moderate.png', Lang::t('_MOD', 'coursepath') . ' : ' . $course_info[$id_item]['name']) . '</a>';
 
                             $cont[] = '<a href="index.php?modname=coursepath&amp;op=delcoursepath&amp;id_path=' . $id_path . '&amp;id_course=' . $id_item . '&amp;id_slot=' . $id_slot . '" '
                                     . 'title="' . $lang->def('_DEL') . ' : ' . $course_info[$id_item]['name'] . '">'
@@ -1169,8 +1169,8 @@ if (!Docebo::user()->isAnonymous()) {
         $cpath_man = new CoursePath_Manager();
         $subs_man = new CourseSubscribe_Management();
 
-        $id_path = Get::req('id_path', DOTY_INT, 0);
-        $user_selected = Util::unserialize(urldecode(Get::req('users', DOTY_MIXED, [])));
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
+        $user_selected = Util::unserialize(urldecode(Forma\lib\Get::req('users', DOTY_MIXED, [])));
 
         $courses = $cpath_man->getAllCourses([$id_path]);
 
@@ -1204,16 +1204,16 @@ if (!Docebo::user()->isAnonymous()) {
 
         if (!empty($classroom)) {
             foreach ($classroom as $id_course => $info) {
-                if (Get::req('classroom_' . $id_course, DOTY_INT, 0) != 0) {
-                    $array_id_date[Get::req('classroom_' . $id_course, DOTY_INT, 0)] = Get::req('classroom_' . $id_course, DOTY_INT, 0);
+                if (Forma\lib\Get::req('classroom_' . $id_course, DOTY_INT, 0) != 0) {
+                    $array_id_date[Forma\lib\Get::req('classroom_' . $id_course, DOTY_INT, 0)] = Forma\lib\Get::req('classroom_' . $id_course, DOTY_INT, 0);
                 }
             }
         }
 
         if (!empty($edition)) {
             foreach ($edition as $id_course => $info) {
-                if (Get::req('edition_' . $id_course, DOTY_INT, 0) != 0) {
-                    $array_id_edition[Get::req('edition_' . $id_course, DOTY_INT, 0)] = Get::req('edition_' . $id_course, DOTY_INT, 0);
+                if (Forma\lib\Get::req('edition_' . $id_course, DOTY_INT, 0) != 0) {
+                    $array_id_edition[Forma\lib\Get::req('edition_' . $id_course, DOTY_INT, 0)] = Forma\lib\Get::req('edition_' . $id_course, DOTY_INT, 0);
                 }
             }
         }

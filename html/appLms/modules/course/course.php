@@ -51,18 +51,18 @@ function mycourses(&$url)
 
     if ($access_user_details_short) {
         $profile = new UserProfile(getLogUserId());
-        $profile->init('profile', 'framework', 'index.php?' . Get::home_page_query(), 'ap');
+        $profile->init('profile', 'framework', 'index.php?' . Forma\lib\Get::home_page_query(), 'ap');
         $GLOBALS['page']->addStart($profile->userIdMailProfile('normal', false, false), 'content');
     }
     // user_details_full ------------------------------------------------------------------------
     if ($access_user_details_full) {
         $profile = new UserProfile(getLogUserId());
-        $profile->init('profile', 'framework', 'index.php?' . Get::home_page_query(), 'ap');
+        $profile->init('profile', 'framework', 'index.php?' . Forma\lib\Get::home_page_query(), 'ap');
         $GLOBALS['page']->addStart($profile->homeUserProfile('normal', false, false), 'content');
     }
     // career ------------------------------------------------------------------------
     if ($access_career) {
-        $base_url = 'index.php?' . Get::home_page_query() . '&amp;filter=';
+        $base_url = 'index.php?' . Forma\lib\Get::home_page_query() . '&amp;filter=';
         $end = 0;
         if (isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0) {
             $end = $course_stats['with_ustatus'][_CUS_END];
@@ -471,7 +471,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $group_by_course = ' GROUP BY c.idCourse ';
     $order_course = ' ORDER BY ';
 
-    $tablist = Get::sett('tablist_mycourses', '');
+    $tablist = Forma\lib\Get::sett('tablist_mycourses', '');
     if ($tablist != '') {
         $arr_order_course = explode(',', $tablist);
         $arr_temp = [];
@@ -1265,7 +1265,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
     // -----------------------------------------------------------------------------------------
 
     $html = '<div class="course_container'
-        . (Get::sett('use_social_courselist') == 'on' ? ' double_height' : '')
+        . (Forma\lib\Get::sett('use_social_courselist') == 'on' ? ' double_height' : '')
         . ($index == 0 ? ' course_container_first' : '')
 
         . ($courseuser_st == _CUS_SUBSCRIBED ? ' cc_inprogress' : '')
@@ -1274,13 +1274,13 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
         . '">';
 
     if (($cinfo['use_logo_in_courselist'] == '1' && $cinfo['img_course'] != '')
-        || Get::sett('use_social_courselist') == 'on') {
+        || Forma\lib\Get::sett('use_social_courselist') == 'on') {
         $html .= '<div class="course_info_container">';
     }
 
     if ($cinfo['use_logo_in_courselist'] == '1' && $cinfo['img_course'] != '') {
         $html .= '<ul class="course_score"><li>';
-        $html .= '<img height="70" src="' . $GLOBALS['where_files_relative'] . '/doceboLms/' . Get::sett('pathcourse')
+        $html .= '<img height="70" src="' . $GLOBALS['where_files_relative'] . '/doceboLms/' . Forma\lib\Get::sett('pathcourse')
                 . $cinfo['img_course'] . '" alt="' . $lang->def('_COURSE_LOGO') . '" />';
         $html .= '</li></ul>';
     }
@@ -1311,9 +1311,9 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
     }
 
     // course related extra option -------------------------------------------------------------
-    if (Get::sett('use_social_courselist') == 'on' || !empty($there_material)) {
+    if (Forma\lib\Get::sett('use_social_courselist') == 'on' || !empty($there_material)) {
         $li = '';
-        if (Get::sett('use_social_courselist') == 'on') {
+        if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
             $li .= '<li class="course_comment">'
                     . '<a href="javascript:;" onclick="openComment(\'' . $cinfo['idCourse'] . '\'); return false;">'
                     . '<span>' . $lang->def('_COMMENTS') . ' ('
@@ -1350,7 +1350,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
 
     // score and subscribe action ------------------------------------------------------------
 
-    if (Get::sett('use_social_courselist') == 'on') {
+    if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
         $html .= '<ul class="course_score">';
 
         $html .= '<li class="current_score"><span>' . $lang->def('_SCORE') . '</span><br />'
@@ -1384,7 +1384,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
     }
 
     if (($cinfo['use_logo_in_courselist'] == '1' && $cinfo['img_course'] != '')
-        || Get::sett('use_social_courselist') == 'on') {
+        || Forma\lib\Get::sett('use_social_courselist') == 'on') {
         $html .= '</div>';
     }
 
@@ -1450,7 +1450,7 @@ function dashAcourse($id_course, $h_number)
 
     require_once _base_ . '/lib/lib.urlmanager.php';
     $url = &UrlManager::getInstance('catalogue');
-    $url->setStdQuery(Get::home_page_query());
+    $url->setStdQuery(Forma\lib\Get::home_page_query());
     if ($normal_subs == 0) {
         $cinfo['can_subscribe'] = 0;
     }
@@ -1481,5 +1481,5 @@ function downloadMaterials()
     }
     require_once _base_ . '/lib/lib.download.php';
     $ext = end(explode('.', $file));
-    sendFile('/doceboLms/' . Get::sett('pathcourse'), $file, $ext);
+    sendFile('/doceboLms/' . Forma\lib\Get::sett('pathcourse'), $file, $ext);
 }

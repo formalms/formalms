@@ -77,5 +77,5 @@ function drawMenu($menu_label, $menu_url, $sel = '')
 
 function getPopupBaseUrl()
 {
-    return basename($_SERVER['SCRIPT_NAME']) . '?sn=' . Get::cur_plat();
+    return basename($_SERVER['SCRIPT_NAME']) . '?sn=' . Forma\lib\Get::cur_plat();
 }

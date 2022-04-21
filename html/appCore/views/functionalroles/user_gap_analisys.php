@@ -205,9 +205,9 @@ $rel_actions = '<a class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CS
 $this->widget('table', [
     'id' => 'fncroles_usergap_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/functionalroles/getusergaptabledata',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'competence',
     'dir' => 'asc',
     'generateRequest' => 'UserGapAnalisys.requestBuilder',

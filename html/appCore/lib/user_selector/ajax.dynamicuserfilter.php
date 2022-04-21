@@ -23,11 +23,11 @@ require_once _base_ . '/lib/lib.aclmanager.php';
 
 $db = DbConn::getInstance();
 
-$op = Get::req('op', DOTY_ALPHANUM);
+$op = Forma\lib\Get::req('op', DOTY_ALPHANUM);
 
 switch ($op) {
     case 'checkuser':
-    $user_to_check = Get::req('user', DOTY_INT, false);
+    $user_to_check = Forma\lib\Get::req('user', DOTY_INT, false);
     $lib = new DynamicUserFilter('dynfilter');
     $output = $lib->chechUser($user_to_check);
     $x = ['response' => ($output ? 'true' : 'false'), '_value' => $output, '_test' => $_testvar];
@@ -57,8 +57,8 @@ switch($op) {
 
         $output		= false;
         $_testvar	= '';
-        $user_to_check = Get::req('user', DOTY_INT, false);
-        $f_arr = urldecode( Get::req("dynuserfilter", DOTY_MIXED, false) );
+        $user_to_check = Forma\lib\Get::req('user', DOTY_INT, false);
+        $f_arr = urldecode( Forma\lib\Get::req("dynuserfilter", DOTY_MIXED, false) );
 
         if ($user_to_check) {
 
@@ -150,8 +150,8 @@ switch($op) {
         $a_obj		= new DoceboACLManager();
         $fman		= new FieldList();
 
-        $user_to_check = Get::req('user', DOTY_INT, false);
-        $f_arr = Get::req("dynuserfilter", DOTY_MIXED, false);
+        $user_to_check = Forma\lib\Get::req('user', DOTY_INT, false);
+        $f_arr = Forma\lib\Get::req("dynuserfilter", DOTY_MIXED, false);
 
         $filter		= $json->decode(stripslashes($f_arr));
         $exclusive	= $filter['exclusive'];

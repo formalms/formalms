@@ -137,9 +137,9 @@ function outPageView($link)
 
         $chart_data[$col]['y_axis'] = $number;
     }
-    Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
-    Util::get_js(Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
-    Util::get_css(Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
+    Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
+    Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
+    Util::get_css(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
 
     cout('<div class="statistic_chart" style="height: 300px;"></div>', 'content');
     //var_dump(array_values($chart_data));
@@ -244,7 +244,7 @@ function statistic()
     );
 
 
-    if (Get::sett('tracking') == 'on') {
+    if (Forma\lib\Get::sett('tracking') == 'on') {
         $GLOBALS['page']->add('<div class="title">' . $lang->def('_PAGE_VIEW') . '</div>', 'content');
         outPageView('index.php?modname=statistic&amp;op=statistic');
     }
@@ -332,7 +332,7 @@ function userdetails()
     $inv = importVar('inv', true, 0);
     $link = 'index.php?modname=statistic&amp;op=userdetails&amp;id=' . $idst_user . '';
 
-    //$nav_bar = new NavBar('ini', Get::sett('visuItem'), 0, 'link');
+    //$nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0, 'link');
     //$nav_bar->setLink($link . '&amp;ord=' . $ord . '&amp;inv=' . $inv);
     //if (!isset($_GET['p_ini'])) $ini = $nav_bar->getSelectedElement();
     //else $ini = $_GET['p_ini'];
@@ -389,7 +389,7 @@ function userdetails()
             $image_sst = ($inv ? $img_down : $img_up);;
             break;
     }
-    //$query_track .= " LIMIT " . $ini . ", " . Get::sett('visuItem');
+    //$query_track .= " LIMIT " . $ini . ", " . Forma\lib\Get::sett('visuItem');
     $re_tracks = sql_query($query_track);
 
     $GLOBALS['page']->add(
@@ -410,7 +410,7 @@ function userdetails()
         . $image_nop . ' ' . $lang->def('_NUMBER_OF_OP') . '</a>',
         $lang->def('_LAST_OP'),
     ];
-    if (Get::sett('tracking') == 'on') {
+    if (Forma\lib\Get::sett('tracking') == 'on') {
         $cont_h[] = '<img src="' . getPathImage() . 'standard/view.png" title="' . $lang->def('_VIEW_SESSION_DETAILS') . '" '
             . 'alt="' . $lang->def('_VIEW_SESSION_DETAILS_ALT') . '" />';
         $type_h[] = 'image';
@@ -443,7 +443,7 @@ function userdetails()
             $num_op,
             '<span class="text_bold">' . (isset($mods_names[$last_module]) ? $mods_names[$last_module] : $last_module) . '</span> [' . $last_op . ']',
         ];
-        if (Get::sett('tracking') == 'on') {
+        if (Forma\lib\Get::sett('tracking') == 'on') {
             $cont[] = '<a href="index.php?modname=statistic&amp;op=sessiondetails&amp;id=' . $idst_user . '&amp;id_enter=' . $id_enter
                 . '&amp;sid=' . $session_id . '" '
                 . 'title="' . $lang->def('_VIEW_SESSION_DETAILS') . ' : ' . $start . '">'
@@ -481,7 +481,7 @@ function sessiondetails()
     $p_ini = importVar('p_ini');
     $link = 'index.php?modname=statistic&amp;op=sessiondetails&amp;id=' . $idst_user . '&amp;id_enter=' . $id_enter;
 
-    $nav_bar = new NavBar('ini', Get::sett('visuItem'), 0, 'link');
+    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0, 'link');
     $nav_bar->setLink($link . '&amp;p_ini=' . $p_ini);
     $ini = $nav_bar->getSelectedElement();
 
@@ -495,7 +495,7 @@ function sessiondetails()
 	WHERE g.idCourse = '" . (int)$_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND " .
         " ( g.idEnter = '" . $id_enter . "' OR (  g.idEnter = 0 AND g.session_id = '" . importVar('sid') . "' ) ) "
         . ' ORDER BY g.timeof 
-	LIMIT ' . $ini . ', ' . Get::sett('visuItem');
+	LIMIT ' . $ini . ', ' . Forma\lib\Get::sett('visuItem');
     $re_tracks = sql_query($query_track);
 
     $query_tot_track = '
@@ -565,7 +565,7 @@ function sessiondetails()
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
 	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
 	WHERE g.idCourse = '" . (int)$_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND g.idEnter = '" . $id_enter . "' 
-	LIMIT " . ($ini + Get::sett('visuItem')) . ', 1';
+	LIMIT " . ($ini + Forma\lib\Get::sett('visuItem')) . ', 1';
     $re_track = sql_query($query_last_track);
     if (sql_num_rows($re_track) > 0) {
         $read = sql_fetch_assoc($re_track);

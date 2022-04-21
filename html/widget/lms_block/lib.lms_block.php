@@ -166,7 +166,7 @@ class Lms_BlockWidget extends Widget
         // extract checking period
         $year = date('Y');
         $p_list = [];
-        $p_selected = Get::req('credits_period', DOTY_INT, 0);
+        $p_selected = Forma\lib\Get::req('credits_period', DOTY_INT, 0);
         $p_res = sql_query('SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_time_period ORDER BY end_date DESC, start_date DESC');
         if (sql_num_rows($p_res) > 0) {
             while ($obj = sql_fetch_object($p_res)) {

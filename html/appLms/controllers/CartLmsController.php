@@ -34,7 +34,7 @@ class CartLmsController extends LmsController
     {
         YuiLib::load('base,tabview');
         Lang::init('course');
-        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
         $this->model = new CartLms();
 
         require_once _base_ . '/lib/lib.json.php';
@@ -42,7 +42,7 @@ class CartLmsController extends LmsController
 
         $this->acl_man = &Docebo::user()->getAclManager();
 
-        Util::get_css(Get::rel_path(_base_) . '/appLms/views/cart/cart.css', true, true);
+        Util::get_css(Forma\lib\Get::rel_path(_base_) . '/appLms/views/cart/cart.css', true, true);
     }
 
     protected function checkCartTransaction($id_trans, $cart_id)
@@ -62,7 +62,7 @@ class CartLmsController extends LmsController
 
     public function getPaypalUrl()
     {
-        return 'https://www.' . (Get::sett('paypal_sandbox', 'off') === 'off' ? '' : 'sandbox.') . 'paypal.com/cgi-bin/webscr';
+        return 'https://www.' . (Forma\lib\Get::sett('paypal_sandbox', 'off') === 'off' ? '' : 'sandbox.') . 'paypal.com/cgi-bin/webscr';
     }
 
     public function show()
@@ -70,8 +70,8 @@ class CartLmsController extends LmsController
         $new = true;
         $total_price = $this->model->getTotalPrice();
 
-        $id_trans = Get::req('id_transaction', DOTY_INT, 0);
-        $cart_id = Get::gReq('cart', DOTY_MIXED, 0);
+        $id_trans = Forma\lib\Get::req('id_transaction', DOTY_INT, 0);
+        $cart_id = Forma\lib\Get::gReq('cart', DOTY_MIXED, 0);
 
         require_once _lms_ . '/admin/models/TransactionAlms.php';
         $trman = new TransactionAlms();
@@ -169,12 +169,12 @@ class CartLmsController extends LmsController
 
                     $ok = true;
                     // check that receiver_email is your Primary PayPal email
-                    $ok = ($receiver_email == Get::sett('paypal_mail', '') ? $ok : false);
+                    $ok = ($receiver_email == Forma\lib\Get::sett('paypal_mail', '') ? $ok : false);
                     // check the payment_status is Completed
                     $ok = ($payment_status == 'Completed' ? $ok : false);
                     // check that payment_amount/payment_currency are correct
                     $ok = ($payment_amount == $total_price ? $ok : false);
-                    $ok = ($payment_currency == Get::sett('paypal_currency', 'EUR') ? $ok : false);
+                    $ok = ($payment_currency == Forma\lib\Get::sett('paypal_currency', 'EUR') ? $ok : false);
 
                     if ($ok) { // process payment
                         $to_activate = [];
@@ -191,10 +191,10 @@ class CartLmsController extends LmsController
                             $trman->saveTransaction($to_activate, $item_number, $id_user, true);
                         }
                     } elseif ($debug) {
-                        $log .= ($receiver_email == Get::sett('paypal_mail', '') ? '' : 'wrong receiver_email (' . $receiver_email . ' != ' . Get::sett('paypal_mail', '') . ")\n");
+                        $log .= ($receiver_email == Forma\lib\Get::sett('paypal_mail', '') ? '' : 'wrong receiver_email (' . $receiver_email . ' != ' . Forma\lib\Get::sett('paypal_mail', '') . ")\n");
                         $log .= ($payment_status == 'Completed' ? '' : 'wrong payment status (' . $payment_status . ")\n");
                         $log .= ($payment_amount == $transaction_info['price'] ? '' : 'wrong price (' . $payment_amount . ' != ' . $total_price . ")\n");
-                        $log .= ($payment_currency == Get::sett('paypal_currency', 'EUR') ? '' : 'wrong payment currency (' . $payment_currency . ' != ' . Get::sett('paypal_currency', 'EUR') . ")\n");
+                        $log .= ($payment_currency == Forma\lib\Get::sett('paypal_currency', 'EUR') ? '' : 'wrong payment currency (' . $payment_currency . ' != ' . Forma\lib\Get::sett('paypal_currency', 'EUR') . ")\n");
                     }
                 } elseif (strcmp($res, 'INVALID') == 0) {
                     // log for manual investigation
@@ -212,8 +212,8 @@ class CartLmsController extends LmsController
 
     public function getCartList()
     {
-        $sort = Get::req('sort', DOTY_MIXED, 'name');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'name');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $course_list = $this->model->getCartList();
 
@@ -241,7 +241,7 @@ class CartLmsController extends LmsController
 
     public function delSelectedElement()
     {
-        $del_list = Get::req('elements', DOTY_MIXED, '');
+        $del_list = Forma\lib\Get::req('elements', DOTY_MIXED, '');
         $del_list = explode(',', $del_list);
 
         $cart = $_SESSION['lms_cart'];
@@ -279,7 +279,7 @@ class CartLmsController extends LmsController
 
     public function makeOrder()
     {
-        $wire = Get::req('wire', DOTY_INT, 0);
+        $wire = Forma\lib\Get::req('wire', DOTY_INT, 0);
 
         $cart = $_SESSION['lms_cart'];
         require_once _lms_ . '/lib/lib.cart.php';
@@ -377,7 +377,7 @@ class CartLmsController extends LmsController
                 'message' => UIFeedback::info(Lang::t('_TRANS_CREATED', 'catalogue'), true),
                 'id_transaction' => $id_trans,
                 'total_price' => $total_price,
-                'link' => Get::site_url() . _folder_lms_ . '/index.php?r=cart/show&id_transaction=' . $id_trans . '&cart=' . $_SESSION['cart_id'],
+                'link' => Forma\lib\Get::site_url() . _folder_lms_ . '/index.php?r=cart/show&id_transaction=' . $id_trans . '&cart=' . $_SESSION['cart_id'],
             ];
         }
 
@@ -397,7 +397,7 @@ class CartLmsController extends LmsController
 
     public function sendPurchaseNotification($course, $id_trans, $total_price, $method)
     {
-        if ($purchase_user = Get::sett('purchase_user')) {
+        if ($purchase_user = Forma\lib\Get::sett('purchase_user')) {
             // Send Message
             require_once _base_ . '/lib/lib.eventmanager.php';
 
@@ -423,7 +423,7 @@ class CartLmsController extends LmsController
             $fields .= '</ul>';
 
             $array_subst = [
-                '[url]' => Get::site_url(),
+                '[url]' => Forma\lib\Get::site_url(),
                 '[userid]' => $user_data[0],
                 '[username]' => $username,
                 '[firstname]' => $user_data[2],
@@ -458,7 +458,7 @@ class CartLmsController extends LmsController
         require_once _lms_ . '/admin/models/TransactionAlms.php';
         $model = new TransactionAlms();
 
-        $id_trans = Get::req('id_transaction', DOTY_INT, 0);
+        $id_trans = Forma\lib\Get::req('id_transaction', DOTY_INT, 0);
 
         $transaction_info = $model->getTransactionInfo($id_trans);
 

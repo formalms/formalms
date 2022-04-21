@@ -68,11 +68,11 @@ class MycertificateLmsController extends LmsController
     {
         checkPerm('view', false, self::mod_name);
 
-        $startIndex = Get::req('start', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 10));
-        $rowsPerPage = Get::req('length', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_MIXED, 'year');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = Forma\lib\Get::req('start', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 10));
+        $rowsPerPage = Forma\lib\Get::req('length', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'year');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
         $pagination = [
             'startIndex' => $startIndex,

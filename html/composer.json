@@ -24,6 +24,10 @@
         "twig/string-extra": "^3.3",
         "twig/twig": "^v2.14",
         "vanilla/htmlawed": "^2.2",
+        "symfony/http-foundation": "^5.4",
+        "symfony/serializer": "^5.4",
+        "symfony/property-access": "^5.4"
+        "vanilla/htmlawed": "^2.2",
         "symfony/finder": "^5.4"
     },
     "require-dev": {
@@ -42,11 +46,9 @@
         "vendor-dir": "vendor"
     },
     "autoload": {
-        "psr-0": {
-            "appLms": "",
-            "appCore": ""
-        },
-        "psr-4": {}
+        "psr-4": {
+            "Forma\\" : ""
+        }
     },
     "repositories": [
         {

@@ -60,9 +60,9 @@ if ($permissions['mod']) {
 $params = [
     'id' => 'users_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/functionalroles/getusertabledata',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'userid',
     'dir' => 'asc',
     'generateRequest' => 'Users.requestBuilder',
@@ -246,7 +246,7 @@ var Users = {
 Users.init({
 	idFncrole: <?php echo (int) $id_fncrole; ?>,
 	filterText: "<?php echo isset($filter_text) ? $filter_text : ''; ?>",
-	imagesPath: "<?php echo Get::tmpl_path('base'); ?>",
+	imagesPath: "<?php echo Forma\lib\Get::tmpl_path('base'); ?>",
 	langs: {
 		_AREYOUSURE: "<?php echo Lang::t('_AREYOUSURE', 'standard'); ?>",
 		_DEL: "<?php echo Lang::t('_DEL', 'standard'); ?>",

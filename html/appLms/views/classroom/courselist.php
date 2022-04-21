@@ -28,7 +28,7 @@
 		<?php if ($course['use_logo_in_courselist'] && !$course['img_course']) { ?>
 		<div class="logo_container">
 			<img class="clogo cnologo"
-				 src="<?php echo Get::tmpl_path() . 'images/course/course_nologo.png'; ?>"
+				 src="<?php echo Forma\lib\Get::tmpl_path() . 'images/course/course_nologo.png'; ?>"
 				alt="<?php echo Util::purge($course['name']); ?>" />
 		</div>
 		<?php } ?>
@@ -37,11 +37,11 @@
 		<h2>
 			<?php if ($course['can_enter']['can']) { ?>
 			<a href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>">
-				<?php echo  $course['lang_code'] != 'none' ? Get::img('language/' . strtolower($course['lang_code']) . '.png', $course['lang_code']) : ''; ?>
+				<?php echo  $course['lang_code'] != 'none' ? Forma\lib\Get::img('language/' . strtolower($course['lang_code']) . '.png', $course['lang_code']) : ''; ?>
 				<?php echo $keyword != '' ? Layout::highlight($course['name'], $keyword) : $course['name']; ?>
 			</a>
 			<?php } else {
-            echo Get::img('standard/locked.png', Lang::t('_' . strtoupper($course['can_enter']['reason']), 'standard'));
+            echo Forma\lib\Get::img('standard/locked.png', Lang::t('_' . strtoupper($course['can_enter']['reason']), 'standard'));
             echo ' ' . ($keyword != '' ? Layout::highlight($course['name'], $keyword) : $course['name']);
         }
             ?>

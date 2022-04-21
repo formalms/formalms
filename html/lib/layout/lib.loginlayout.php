@@ -58,7 +58,7 @@ class LoginLayout
         $html = '<div id="link">';
         //add self_optin to enable registration
         if ($user_manager->_option->getOption('register_type') == 'self_optin' || $user_manager->_option->getOption('register_type') == 'self' || $user_manager->_option->getOption('register_type') == 'moderate') {
-            $html .= '<a class="first" href="' . Get::rel_path('base') . '/index.php?r=' . _register_ . '">' . Lang::t('_REGISTER', 'login') . '</a> ';
+            $html .= '<a class="first" href="' . Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_ . '">' . Lang::t('_REGISTER', 'login') . '</a> ';
         }
         $html .= '<a href="index.php?modname=login&amp;op=lostpwd">' . Lang::t('_LOG_LOSTPWD', 'login') . '</a>';
         $html .= '</div>';
@@ -80,7 +80,7 @@ class LoginLayout
 		FROM ' . $GLOBALS['prefix_lms'] . "_news
 		WHERE language = '" . getLanguage() . "'
 		ORDER BY important DESC, publish_date DESC
-		LIMIT 0," . Get::sett('visuNewsHomePage');
+		LIMIT 0," . Forma\lib\Get::sett('visuNewsHomePage');
 
         //do query
         $result = sql_query($textQuery);

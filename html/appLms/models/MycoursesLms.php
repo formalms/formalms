@@ -57,7 +57,7 @@ class MycoursesLms extends Model
 
     public function shouldRedirectToCatalogue()
     {
-        if (Get::sett('on_usercourse_empty') == 'on') {
+        if (Forma\lib\Get::sett('on_usercourse_empty') == 'on') {
             require_once _lms_ . '/lib/lib.course.php';
             $cu = new Man_CourseUser();
             if (!$cu->countUserCourses(Docebo::user()->getIdSt())) {
@@ -70,11 +70,11 @@ class MycoursesLms extends Model
 
     public function getCatalogueURL()
     {
-        return Get::rel_path('lms') . '/index.php?r=lms/catalog/show';
+        return Forma\lib\Get::rel_path('lms') . '/index.php?r=lms/catalog/show';
     }
 
     public function getMyCoursesURL()
     {
-        return Get::rel_path('lms') . '/index.php?r=lms/mycourses/show';
+        return Forma\lib\Get::rel_path('lms') . '/index.php?r=lms/mycourses/show';
     }
 }

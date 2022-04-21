@@ -64,12 +64,12 @@ class LocationAlmsController extends AlmsController
     {
         $sortable = ['location'];
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
-        $filter = Get::req('filter_text', DOTY_STRING, '');
+        $filter = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         if (!in_array($sort, $sortable)) {
             $sort = 'location';
@@ -150,7 +150,7 @@ class LocationAlmsController extends AlmsController
 
     public function mod()
     {
-        $location = Get::req('location', DOTY_STRING, '');
+        $location = Forma\lib\Get::req('location', DOTY_STRING, '');
 
         if ($location <= 0 || !$this->_canAdminLocation(Docebo::user()->idst, $location)) {
             $params = ['success' => false];
@@ -173,8 +173,8 @@ class LocationAlmsController extends AlmsController
 
     public function updatelocation()
     {
-        $location_id = Get::req('location_id', DOTY_STRING, '');
-        $location_new = Get::req('location_new', DOTY_STRING, '');
+        $location_id = Forma\lib\Get::req('location_id', DOTY_STRING, '');
+        $location_new = Forma\lib\Get::req('location_new', DOTY_STRING, '');
 
         if ($location_new != '') {
             $answ = $this->model->updateLocation($location_id, $location_new);
@@ -191,7 +191,7 @@ class LocationAlmsController extends AlmsController
 
     public function insertlocation()
     {
-        $location = Get::req('location', DOTY_STRING, '');
+        $location = Forma\lib\Get::req('location', DOTY_STRING, '');
         if ($location == '') {
             $result = ['success' => false, 'message' => Lang::t('_NO_TITLE', 'standard')];
             echo $this->json->encode($result);
@@ -209,7 +209,7 @@ class LocationAlmsController extends AlmsController
 
     public function delTask()
     {
-        $location = Get::req('location', DOTY_STRING, '');
+        $location = Forma\lib\Get::req('location', DOTY_STRING, '');
 
         if ($location <= 0 || !$this->_canAdminLocation(Docebo::user()->idst, $location)) {
             $params = ['success' => false];
@@ -233,7 +233,7 @@ class LocationAlmsController extends AlmsController
     {
         YuiLib::load('table');
 
-        $location_id = Get::req('location_id', DOTY_STRING, Lang::get());
+        $location_id = Forma\lib\Get::req('location_id', DOTY_STRING, Lang::get());
 
         $classroom_list = $this->model->getClassroomList();
         array_unshift($module_list, Lang::t('_ALL'));
@@ -251,7 +251,7 @@ class LocationAlmsController extends AlmsController
 
     public function show_classroom()
     {
-        $id_location = Get::req('id_location', DOTY_INT, 0);
+        $id_location = Forma\lib\Get::req('id_location', DOTY_INT, 0);
         $this->render('show_classroom',
                 ['id_location' => $id_location]
         );
@@ -261,13 +261,13 @@ class LocationAlmsController extends AlmsController
     {
         $sortable = ['classroom'];
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
-        $filter = Get::Req('filter_Text', DOTY_STRING, '');
-        $id_location = Get::req('location_id', DOTY_INT, 0);
+        $filter = Forma\lib\Get::Req('filter_Text', DOTY_STRING, '');
+        $id_location = Forma\lib\Get::req('location_id', DOTY_INT, 0);
 
         $sort = 'lc.name';
         if (!in_array($sort, $sortable)) {
@@ -306,7 +306,7 @@ class LocationAlmsController extends AlmsController
      */
     public function delClassroomTask()
     {
-        $classroom_id = Get::req('idClassroom', DOTY_INT, '');
+        $classroom_id = Forma\lib\Get::req('idClassroom', DOTY_INT, '');
 
         $re = false;
         if ($classroom_id != '') {
@@ -324,7 +324,7 @@ class LocationAlmsController extends AlmsController
      */
     public function addclassroom()
     {
-        $id_location = Get::req('id_location', DOTY_INT, 0);
+        $id_location = Forma\lib\Get::req('id_location', DOTY_INT, 0);
 
         $this->render('classroom_editmask', [
             'id_location' => $id_location,
@@ -337,23 +337,23 @@ class LocationAlmsController extends AlmsController
      */
     public function insertclassroom()
     {
-        $id_location = Get::req('id_location', DOTY_INT, 0);
-        $id_classroom = Get::req('id_classroom', DOTY_INT, 0);
-        $name = Get::Req('name', DOTY_STRING, '');
-        $description = Get::Req('description', DOTY_MIXED, '');
-        $room = Get::Req('room', DOTY_STRING, '');
-        $street = Get::Req('street', DOTY_STRING, '');
-        $city = Get::Req('city', DOTY_STRING, '');
-        $state = Get::Req('state', DOTY_STRING, '');
-        $zip_code = Get::Req('zip_code', DOTY_STRING, '');
-        $phone = Get::Req('phone', DOTY_STRING, '');
-        $fax = Get::Req('fax', DOTY_STRING, '');
-        $capacity = Get::Req('capacity', DOTY_STRING, '');
-        $disposition = Get::Req('disposition', DOTY_MIXED, '');
-        $instrument = Get::Req('instrument', DOTY_MIXED, '');
-        $available_instrument = Get::Req('available_instrument', DOTY_MIXED, '');
-        $note = Get::Req('note', DOTY_MIXED, '');
-        $responsable = Get::Req('responsable', DOTY_STRING, '');
+        $id_location = Forma\lib\Get::req('id_location', DOTY_INT, 0);
+        $id_classroom = Forma\lib\Get::req('id_classroom', DOTY_INT, 0);
+        $name = Forma\lib\Get::Req('name', DOTY_STRING, '');
+        $description = Forma\lib\Get::Req('description', DOTY_MIXED, '');
+        $room = Forma\lib\Get::Req('room', DOTY_STRING, '');
+        $street = Forma\lib\Get::Req('street', DOTY_STRING, '');
+        $city = Forma\lib\Get::Req('city', DOTY_STRING, '');
+        $state = Forma\lib\Get::Req('state', DOTY_STRING, '');
+        $zip_code = Forma\lib\Get::Req('zip_code', DOTY_STRING, '');
+        $phone = Forma\lib\Get::Req('phone', DOTY_STRING, '');
+        $fax = Forma\lib\Get::Req('fax', DOTY_STRING, '');
+        $capacity = Forma\lib\Get::Req('capacity', DOTY_STRING, '');
+        $disposition = Forma\lib\Get::Req('disposition', DOTY_MIXED, '');
+        $instrument = Forma\lib\Get::Req('instrument', DOTY_MIXED, '');
+        $available_instrument = Forma\lib\Get::Req('available_instrument', DOTY_MIXED, '');
+        $note = Forma\lib\Get::Req('note', DOTY_MIXED, '');
+        $responsable = Forma\lib\Get::Req('responsable', DOTY_STRING, '');
 
         $re = $this->model->InsertClassroomMod($name, $description, $id_location, $room, $street, $city, $state, $zip_code, $phone, $fax, $capacity, $disposition, $instrument, $available_instrument, $note, $responsable);
 
@@ -369,8 +369,8 @@ class LocationAlmsController extends AlmsController
      */
     public function modclassroom()
     {
-        $id_location = Get::req('id_location', DOTY_INT, 0);
-        $id_classroom = Get::req('id_classroom', DOTY_INT, 0);
+        $id_location = Forma\lib\Get::req('id_location', DOTY_INT, 0);
+        $id_classroom = Forma\lib\Get::req('id_classroom', DOTY_INT, 0);
 
         if ($id_classroom != '') {
             $re = $this->model->getClassroomDetails($id_classroom);
@@ -391,23 +391,23 @@ class LocationAlmsController extends AlmsController
      */
     public function saveclassroom()
     {
-        $id_location = Get::req('id_location', DOTY_INT, 0);
-        $idc = Get::req('id_classroom', DOTY_INT, 0);
-        $name = Get::Req('name', DOTY_STRING, '');
-        $description = Get::Req('description', DOTY_MIXED, '');
-        $room = Get::Req('room', DOTY_STRING, '');
-        $street = Get::Req('street', DOTY_STRING, '');
-        $city = Get::Req('city', DOTY_STRING, '');
-        $state = Get::Req('state', DOTY_STRING, '');
-        $zip_code = Get::Req('zip_code', DOTY_STRING, '');
-        $phone = Get::Req('phone', DOTY_STRING, '');
-        $fax = Get::Req('fax', DOTY_STRING, '');
-        $capacity = Get::Req('capacity', DOTY_STRING, '');
-        $disposition = Get::Req('disposition', DOTY_MIXED, '');
-        $instrument = Get::Req('instrument', DOTY_MIXED, '');
-        $available_instrument = Get::Req('available_instrument', DOTY_MIXED, '');
-        $note = Get::Req('note', DOTY_MIXED, '');
-        $responsable = Get::Req('responsable', DOTY_STRING, '');
+        $id_location = Forma\lib\Get::req('id_location', DOTY_INT, 0);
+        $idc = Forma\lib\Get::req('id_classroom', DOTY_INT, 0);
+        $name = Forma\lib\Get::Req('name', DOTY_STRING, '');
+        $description = Forma\lib\Get::Req('description', DOTY_MIXED, '');
+        $room = Forma\lib\Get::Req('room', DOTY_STRING, '');
+        $street = Forma\lib\Get::Req('street', DOTY_STRING, '');
+        $city = Forma\lib\Get::Req('city', DOTY_STRING, '');
+        $state = Forma\lib\Get::Req('state', DOTY_STRING, '');
+        $zip_code = Forma\lib\Get::Req('zip_code', DOTY_STRING, '');
+        $phone = Forma\lib\Get::Req('phone', DOTY_STRING, '');
+        $fax = Forma\lib\Get::Req('fax', DOTY_STRING, '');
+        $capacity = Forma\lib\Get::Req('capacity', DOTY_STRING, '');
+        $disposition = Forma\lib\Get::Req('disposition', DOTY_MIXED, '');
+        $instrument = Forma\lib\Get::Req('instrument', DOTY_MIXED, '');
+        $available_instrument = Forma\lib\Get::Req('available_instrument', DOTY_MIXED, '');
+        $note = Forma\lib\Get::Req('note', DOTY_MIXED, '');
+        $responsable = Forma\lib\Get::Req('responsable', DOTY_STRING, '');
 
         $re = $this->model->UpdateClassroomMod($name, $description, $id_location, $room, $street, $city, $state, $zip_code, $phone, $fax, $capacity, $disposition, $instrument, $available_instrument, $note, $responsable, $idc);
 
@@ -423,7 +423,7 @@ class LocationAlmsController extends AlmsController
      */
     public function show_calendar()
     {
-        $id_classroom = Get::req('id_classroom', DOTY_INT, 0);
+        $id_classroom = Forma\lib\Get::req('id_classroom', DOTY_INT, 0);
 
         $date_list = $this->model->getClassroomDates($id_classroom);
 
@@ -436,15 +436,15 @@ class LocationAlmsController extends AlmsController
 
     public function getclassroomdates()
     {
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
-        $date = Get::req('date_range', DOTY_STRING, '');
-        $filter = Get::Req('filter_Text', DOTY_STRING, '');
+        $date = Forma\lib\Get::req('date_range', DOTY_STRING, '');
+        $filter = Forma\lib\Get::Req('filter_Text', DOTY_STRING, '');
 
-        $id_classroom = Get::req('id_classroom', DOTY_INT, 0);
+        $id_classroom = Forma\lib\Get::req('id_classroom', DOTY_INT, 0);
 
         if ($date == 'false') {
             $date = date('n-Y');

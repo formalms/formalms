@@ -144,7 +144,7 @@ function editcustom($load = false)
 
         $page_title[] = $lang->def('_ADDCUSTOM');
 
-        $duplicate = Get::gReq('duplicate', DOTY_INT, 0);
+        $duplicate = Forma\lib\Get::gReq('duplicate', DOTY_INT, 0);
         if ($duplicate > 0) {
         }
     } else {
@@ -285,9 +285,9 @@ function delcustom()
     $lang = &DoceboLanguage::createInstance('manmenu');
     $acl_man = &Docebo::user()->getAclManager();
 
-    $id_custom = Get::req('id_custom', DOTY_INT, 0);
+    $id_custom = Forma\lib\Get::req('id_custom', DOTY_INT, 0);
 
-    if (Get::req('confirm', DOTY_INT, 0) == 1) {
+    if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         $re = true;
         $re_modules = sql_query('
 		SELECT idModule, idMain 
@@ -453,7 +453,7 @@ function editmenuvoice($load = false)
 
     // Find images
     $all_images = [];
-    /*$templ = dir( Get::tmpl_path('lms').'/images/menu/');
+    /*$templ = dir( Forma\lib\Get::tmpl_path('lms').'/images/menu/');
     while($elem = $templ->read()) {
         if(ereg('.gif', $elem)) $all_images[$elem] = $elem;
     }
@@ -558,7 +558,7 @@ function delmenuvoice()
     $lang = &DoceboLanguage::createInstance('manmenu');
     $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
 
-    $id_main = Get::req('id_main', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
 
     $query_custom = '
 	SELECT idCustom, name, image 
@@ -566,7 +566,7 @@ function delmenuvoice()
 	WHERE idMain = '" . $id_main . "'";
     list($id_custom, $name_db, $image) = sql_fetch_row(sql_query($query_custom));
 
-    if (Get::req('confirm', DOTY_INT, 0) == 1) {
+    if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         $re = true;
         $re_modules = sql_query('
 		SELECT idModule 
@@ -815,7 +815,7 @@ function editmodule($load = false)
     }
 
     require_once _base_ . '/lib/lib.form.php';
-    Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
+    Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
     $lang = &DoceboLanguage::createInstance('manmenu');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
@@ -1082,8 +1082,8 @@ function delmodule()
     require_once _base_ . '/lib/lib.form.php';
 
     $out = &$GLOBALS['page'];
-    $id_main = Get::req('id_main', DOTY_INT, 0);
-    $id_module = Get::req('id_module', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
 
     $lang = &DoceboLanguage::createInstance('manmenu');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
@@ -1092,7 +1092,7 @@ function delmodule()
         Util::jump_to('index.php?modname=amanmenu&op=manmodule&id_main=' . $id_main);
     }
 
-    if (Get::req('confirm', DOTY_INT, 0) == 1) {
+    if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         $re = removeModule($id_module, $id_main, getIdCustomFromMain($id_main));
         Util::jump_to('index.php?modname=amanmenu&op=manmodule&id_main=' . $id_main . '&result=' . ($re ? 1 : 0));
     }

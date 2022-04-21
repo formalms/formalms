@@ -1,4 +1,4 @@
-<?php Get::title([
+<?php Forma\lib\Get::title([
     'index.php?r=alms/location/show' => Lang::t('_LOCATION', 'classroom'),
     'index.php?r=alms/location/show_classroom&amp;id_location=' . $info->location_id => Lang::t('_CLASSROOM', 'classroom'),
     Lang::t('_CALENDAR', 'classroom'),

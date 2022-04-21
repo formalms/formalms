@@ -34,10 +34,10 @@ class CompetenceselectorWidget extends Widget
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
 
-        Util::get_js(Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
-        //$js_path = Get::rel_path('base').'/widget/competenceselector/';
+        //$js_path = Forma\lib\Get::rel_path('base').'/widget/competenceselector/';
         //Util::get_js($js_path.'competenceselector.js', true, true);
     }
 

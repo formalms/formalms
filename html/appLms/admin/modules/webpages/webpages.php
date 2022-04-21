@@ -36,7 +36,7 @@ function webpages()
     $out->setWorkingZone('content');
 
     $tb = new Table(0, $lang->def('_WEBPAGES_CAPTION'));
-    $nav_bar = new NavBar('ini', Get::sett('visuItem'), 0, 'button');
+    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0, 'button');
     $ini = $nav_bar->getSelectedElement();
 
     //search query
@@ -44,7 +44,7 @@ function webpages()
 	SELECT idPages, title, publish, in_home, sequence 
 	FROM ' . $GLOBALS['prefix_lms'] . "_webpages 
 	ORDER BY sequence 
-	LIMIT $ini," . Get::sett('visuItem');
+	LIMIT $ini," . Forma\lib\Get::sett('visuItem');
 
     $num_query_pages = '
 	SELECT COUNT(*) 
@@ -89,7 +89,7 @@ function webpages()
                         . '<img src="' . getPathImage() . 'standard/unpublish.png" alt="' . $lang->def('_UNPUBLISH') . ' : ' . $title . '" /></a>';
         }
         if ($mod_perm) {
-            if ($i != $tot_pages - ($ini * Get::sett('visuItem'))) {
+            if ($i != $tot_pages - ($ini * Forma\lib\Get::sett('visuItem'))) {
                 $cont[] = '<a href="index.php?modname=webpages&amp;op=movedown&amp;id_page=' . $id . '" title="' . $lang->def('_MOVE_DOWN') . ' : ' . $title . '">'
                         . '<img src="' . getPathImage() . 'standard/down.png" alt="' . $lang->def('_DOWN') . ' : ' . $title . '" /></a>';
             } else {
@@ -261,7 +261,7 @@ function delpages()
 	FROM ' . $GLOBALS['prefix_lms'] . "_webpages 
 	WHERE idPages = '" . $id_page . "'"));
 
-    if (Get::req('confirm', DOTY_INT, 0) == 1) {
+    if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         $query_delete = '
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_webpages 
 		WHERE idPages = '" . $id_page . "'";

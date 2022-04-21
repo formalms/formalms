@@ -55,7 +55,7 @@ function sendFile($path, $filename, $ext = null, $sendname = null)
 //function sendFileFromFS(\appCore\Events\Core\FileSystem\DownloadEvent $event){ //TODO: EVT_OBJECT (§)
 function sendFileFromFS($path, $filename, $ext, $sendname)
 {
-    if (Get::cfg('uploadType') == 'fs' || Get::cfg('uploadType') == 'ftp' || Get::cfg('uploadType', null) == null) {
+    if (Forma\lib\Get::cfg('uploadType') == 'fs' || Forma\lib\Get::cfg('uploadType') == 'ftp' || Forma\lib\Get::cfg('uploadType', null) == null) {
         //$path = $event->getPath(); //TODO: EVT_OBJECT (§)
         //$filename = $event->getFilename(); //TODO: EVT_OBJECT (§)
         //$ext = $event->getExt(); //TODO: EVT_OBJECT (§)
@@ -96,7 +96,7 @@ function sendFileFromFS($path, $filename, $ext, $sendname)
         //sending creation time
         header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
         //content type
-        if (Get::scheme() === 'https') {
+        if (Forma\lib\Get::scheme() === 'https') {
             header('Pragma: private');
         }
         header('Content-Disposition: attachment; filename="' . $sendname . '"');
@@ -155,7 +155,7 @@ function sendStrAsFile($string, $filename, $charset = false)
     //sending creation time
     header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
     //content type
-    if (Get::scheme() === 'https') {
+    if (Forma\lib\Get::scheme() === 'https') {
         header('Pragma: private');
     }
     header('Content-Encoding: UTF-8');

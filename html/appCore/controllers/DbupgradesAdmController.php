@@ -37,12 +37,12 @@ class DbupgradesAdmController extends AdmController
 
     public function getdbupgradestabledataTask()
     {
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $filter = Get::req('filter', DOTY_STRING, '');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
 
         $total = $this->model->getDbUpgradesTotal($filter);
         if ($startIndex >= $total) {

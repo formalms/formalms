@@ -118,7 +118,7 @@ class LomanagerLmsController extends LmsController
 
     public function get()
     {
-        $id = Get::req('id', DOTY_INT, false);
+        $id = Forma\lib\Get::req('id', DOTY_INT, false);
         $responseData = [];
         $responseData['data'] = $this->getFolders($this->idCourse, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
@@ -136,11 +136,11 @@ class LomanagerLmsController extends LmsController
 
     public function delete()
     {
-        $idsString = Get::req('ids', DOTY_MIXED, false);
+        $idsString = Forma\lib\Get::req('ids', DOTY_MIXED, false);
         $ids = explode(',', $idsString);
 
         $responseData = [];
-        if ($id = Get::req('id', DOTY_INT, false)) {
+        if ($id = Forma\lib\Get::req('id', DOTY_INT, false)) {
             $ids = [$id];
         }
         foreach ($ids as $id) {
@@ -155,17 +155,17 @@ class LomanagerLmsController extends LmsController
 
     public function rename()
     {
-        $id = Get::req('id', DOTY_INT, false);
-        $newName = Get::req('newName', DOTY_STRING, false);
+        $id = Forma\lib\Get::req('id', DOTY_INT, false);
+        $newName = Forma\lib\Get::req('newName', DOTY_STRING, false);
         echo $this->json->encode($this->model->renameFolder($id, $newName));
         exit;
     }
 
     public function move()
     {
-        $idsString = Get::req('ids', DOTY_MIXED, false);
+        $idsString = Forma\lib\Get::req('ids', DOTY_MIXED, false);
         $ids = explode(',', $idsString);
-        $newParent = Get::req('newParent', DOTY_INT, false);
+        $newParent = Forma\lib\Get::req('newParent', DOTY_INT, false);
 
         $responseData = [];
 
@@ -180,14 +180,14 @@ class LomanagerLmsController extends LmsController
 
     public function reorder()
     {
-        $newParent = Get::req('newParent', DOTY_INT, false);
-        $newOrderString = Get::req('newOrder', DOTY_STRING, false);
+        $newParent = Forma\lib\Get::req('newParent', DOTY_INT, false);
+        $newOrderString = Forma\lib\Get::req('newOrder', DOTY_STRING, false);
         $newOrder = explode(',', $newOrderString);
         $newOrder = array_filter($newOrder);
 
         $responseData = [];
 
-        if ($id = Get::req('id', DOTY_INT, false)) {
+        if ($id = Forma\lib\Get::req('id', DOTY_INT, false)) {
             $res = $this->model->reorder($id, $newParent, $newOrder ? $newOrder : null);
             $responseData = ['success' => $res, 'id' => $id];
         }
@@ -196,7 +196,7 @@ class LomanagerLmsController extends LmsController
 
     public function edit()
     {
-        $id = Get::req('id', DOTY_INT, false);
+        $id = Forma\lib\Get::req('id', DOTY_INT, false);
 
         require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
         $saveObj = new Session_Save();
@@ -210,8 +210,8 @@ class LomanagerLmsController extends LmsController
 
     public function createFolder()
     {
-        $selectedNode = Get::req('selectedNode', DOTY_INT, false);
-        $folderName = Get::req('folderName', DOTY_STRING, false);
+        $selectedNode = Forma\lib\Get::req('selectedNode', DOTY_INT, false);
+        $folderName = Forma\lib\Get::req('folderName', DOTY_STRING, false);
 
         if (!$folderName) {
             header('HTTP/1.1 400');
@@ -225,10 +225,10 @@ class LomanagerLmsController extends LmsController
 
     public function copy()
     {
-        $fromType = Get::req('type', DOTY_STRING, false);
-        $newtype = Get::req('newtype', DOTY_STRING, false);
+        $fromType = Forma\lib\Get::req('type', DOTY_STRING, false);
+        $newtype = Forma\lib\Get::req('newtype', DOTY_STRING, false);
 
-        if ($ids = Get::req('ids', DOTY_MIXED, false)) {
+        if ($ids = Forma\lib\Get::req('ids', DOTY_MIXED, false)) {
             $ids_arr = explode(',', $ids);
             $this->model->setTdb($fromType);
             foreach ($ids_arr as $id) {

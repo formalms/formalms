@@ -22,7 +22,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.table.php';
 
-        $tableGlossary = new Table(Get::sett('visuItem'), '', $lang->def('_GLOSSARY_SUMMARY'));
+        $tableGlossary = new Table(Forma\lib\Get::sett('visuItem'), '', $lang->def('_GLOSSARY_SUMMARY'));
 
         $tableGlossary->initNavBar('ini', 'link');
         $ini = $tableGlossary->getSelectedElement();
@@ -39,7 +39,7 @@ if (!Docebo::user()->isAnonymous()) {
 	FROM ' . $GLOBALS['prefix_lms'] . "_glossaryterm 
 	WHERE idGlossary = '" . $object_glos->getId() . "' 
 	ORDER BY term 
-	LIMIT $ini," . Get::sett('visuItem'));
+	LIMIT $ini," . Forma\lib\Get::sett('visuItem'));
 
         list($num_of_term) = sql_fetch_row(sql_query('
 	SELECT COUNT(*) 

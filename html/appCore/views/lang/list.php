@@ -1,4 +1,4 @@
-<?php Get::title([
+<?php Forma\lib\Get::title([
     'index.php?r=adm/lang/show' => Lang::t('_LANGUAGE', 'admin_lang'),
     Lang::t('_TRANSLATELANG', 'admin_lang'),
 ]); ?>
@@ -204,7 +204,7 @@
         'rowsPerPage'	=> 200,
         'row_per_page_select' => '[50,100,250,500,1000]',
         'startIndex'	=> 0,
-        'results'		=> Get::sett('visuItem', 250),
+        'results'		=> Forma\lib\Get::sett('visuItem', 250),
         'sort'			=> 'text_module',
         'dir'			=> 'asc',
         'generateRequest' => 'requestBuilder',

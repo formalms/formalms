@@ -24,12 +24,12 @@ $json = new Services_JSON();
 require_once _lms_ . '/lib/folder_tree/lib.category_tree.php';
 
 // Resolve the requested action
-$command = Get::req('command', DOTY_STRING, false);
+$command = Forma\lib\Get::req('command', DOTY_STRING, false);
 switch ($command) {
     case 'expand':
         $lang = &DoceboLanguage::CreateInstance('course', 'lms');
-        $node_id = Get::req('node_id', DOTY_INT, 0);
-        $initial = Get::req('initial', DOTY_INT, 0);
+        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+        $initial = Forma\lib\Get::req('initial', DOTY_INT, 0);
 
 //$initial = 0;
         $result = [];
@@ -91,8 +91,8 @@ switch ($command) {
     ; break;
 
     case 'modify':
-        $node_id = Get::req('node_id', DOTY_INT, 0);
-        $new_name = Get::req('name', DOTY_STRING, false);
+        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+        $new_name = Forma\lib\Get::req('name', DOTY_STRING, false);
 
         $result = ['success' => false];
         if ($new_name !== false) {
@@ -105,8 +105,8 @@ switch ($command) {
     ; break;
 
     case 'create':
-        $node_id = Get::req('node_id', DOTY_INT, false);
-        $node_name = Get::req('name', DOTY_STRING, false); //no multilang required for categories
+        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, false);
+        $node_name = Forma\lib\Get::req('name', DOTY_STRING, false); //no multilang required for categories
 
         $result = [];
         if ($node_id === false) {
@@ -133,22 +133,22 @@ switch ($command) {
     ; break;
 
     case 'delete':
-        $node_id = Get::req('node_id', DOTY_INT, 0);
+        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
 
         $result = ['success' => $treecat->deleteTreeById($node_id)];
         aout($json->encode($result));
     ; break;
 
     case 'movefolder':
-        $src = Get::req('src', DOTY_INT, 0);
-        $dest = Get::req('dest', DOTY_INT, 0);
+        $src = Forma\lib\Get::req('src', DOTY_INT, 0);
+        $dest = Forma\lib\Get::req('dest', DOTY_INT, 0);
 
         $result = ['success' => $treecat->move($src, $dest)];
         aout($json->encode($result));
     ; break;
 
     case 'options':
-        $node_id = Get::req('node_id', DOTY_INT, 0);
+        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
         //get properties from DB
 
         $count = $treecat->getChildrenCount($node_id);

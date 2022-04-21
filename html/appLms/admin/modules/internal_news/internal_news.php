@@ -36,8 +36,8 @@ function news()
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
-    $tb = new Table(Get::sett('visuItem'), $lang->def('_NEWS'), $lang->def('_NEWS_SUMMARY'));
-    $nav_bar = new NavBar('ini', Get::sett('visuItem'), 0, 'link');
+    $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_NEWS'), $lang->def('_NEWS_SUMMARY'));
+    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0, 'link');
 
     $ini = $nav_bar->getSelectedElement();
 
@@ -46,7 +46,7 @@ function news()
 	SELECT idNews, publish_date, title, short_desc, important
 	FROM ' . $GLOBALS['prefix_lms'] . "_news_internal
 	ORDER BY important DESC, publish_date DESC
-	LIMIT $ini," . Get::sett('visuItem');
+	LIMIT $ini," . Forma\lib\Get::sett('visuItem');
 
     $query_news_tot = '
 	SELECT COUNT(*)
@@ -132,7 +132,7 @@ function news()
     }
     if ($mod_perm) {
         $form = new Form();
-        $how_much = Get::sett('visuNewsHomePage');
+        $how_much = Forma\lib\Get::sett('visuNewsHomePage');
         if (isset($_POST['save_homepage'])) {
             $query_how_news = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_setting
@@ -325,10 +325,10 @@ function delnews()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $id_news = Get::req('id_news', DOTY_INT, 0);
+    $id_news = Forma\lib\Get::req('id_news', DOTY_INT, 0);
     $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
 
-    if (Get::req('confirm', DOTY_INT, 0) == 1) {
+    if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         $query_news = '
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_news_internal
 		WHERE idNews = '" . $id_news . "'";

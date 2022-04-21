@@ -226,7 +226,7 @@ class CourseAlms extends Model
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -373,7 +373,7 @@ class CourseAlms extends Model
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -505,14 +505,14 @@ class CourseAlms extends Model
         // calc quota limit
         $quota = $data_params['course_quota'];
         if (isset($data_params['inherit_quota'])) {
-            $quota = Get::sett('course_quota');
+            $quota = Forma\lib\Get::sett('course_quota');
             $data_params['course_quota'] = COURSE_QUOTA_INHERIT;
         }
 
         $quota = $quota * 1024 * 1024;
 
-        $path = Get::sett('pathcourse');
-        $path = '/appLms/' . Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+        $path = Forma\lib\Get::sett('pathcourse');
+        $path = '/appLms/' . Forma\lib\Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
         if ($data_params['course_name'] == '') {
             $data_params['course_name'] = Lang::t('_NO_NAME', 'course');
@@ -853,7 +853,7 @@ class CourseAlms extends Model
 
         if (is_null($id_course)) {
             // Backward compatibility.
-            $id_course = Get::req('id_course', DOTY_INT, 0);
+            $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
         }
 
         require_once _base_ . '/lib/lib.upload.php';
@@ -876,7 +876,7 @@ class CourseAlms extends Model
         // calc quota limit
         $quota = $data_params['course_quota'];
         if (isset($data_params['inherit_quota'])) {
-            $quota = Get::sett('course_quota');
+            $quota = Forma\lib\Get::sett('course_quota');
             $data_params['course_quota'] = COURSE_QUOTA_INHERIT;
         }
         $quota = $quota * 1024 * 1024;
@@ -917,8 +917,8 @@ class CourseAlms extends Model
         $error = false;
         $quota_exceeded = false;
 
-        $path = Get::sett('pathcourse');
-        $path = '/appLms/' . Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+        $path = Forma\lib\Get::sett('pathcourse');
+        $path = '/appLms/' . Forma\lib\Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
         $old_file_size = 0;
         if ((is_array($_FILES) && !empty($_FILES)) || (is_array($data_params['file_to_del']))) {
@@ -1227,7 +1227,7 @@ class CourseAlms extends Model
 
         if (($delete_old || $arr_new_file !== false) && $old_file != '') {
             // the flag for file delete is checked or a new file was uploaded ---------------------
-            $return['old_size'] = Get::file_size(_files_ . $path . $old_file);
+            $return['old_size'] = Forma\lib\Get::file_size(_files_ . $path . $old_file);
             if ($quota_available !== false) {
                 $quota_available -= $return['old_size'];
             }
@@ -1252,7 +1252,7 @@ class CourseAlms extends Model
                     $return['error'] = true;
                 } else {
                     // after resize check size ------------------------------------------------------------
-                    $size = Get::file_size(_files_ . $path . $filename);
+                    $size = Forma\lib\Get::file_size(_files_ . $path . $filename);
                     if ($quota_available != 0 && $size > $quota_available) {
                         $return['quota_exceeded'] = true;
                         sl_unlink($path . $filename);
@@ -1263,7 +1263,7 @@ class CourseAlms extends Model
                 }
             } else {
                 // check if the filesize don't exceed the quota ----------------------------------------
-                $size = Get::file_size($arr_new_file['tmp_name']);
+                $size = Forma\lib\Get::file_size($arr_new_file['tmp_name']);
 
                 if ($quota_available != 0 && $size > $quota_available) {
                     $return['quota_exceeded'] = true;
@@ -1328,7 +1328,7 @@ class CourseAlms extends Model
 
         require_once _base_ . '/lib/lib.upload.php';
 
-        $path = '/appLms/' . Get::sett('pathcourse');
+        $path = '/appLms/' . Forma\lib\Get::sett('pathcourse');
         if (substr($path, -1) != '/' && substr($path, -1) != '\\') {
             $path .= '/';
         }
@@ -1740,7 +1740,7 @@ class CourseAlms extends Model
             if ($on_date != null) {
                 $operation_url = $url . '&amp;op=send_certificate';
                 $cell_down_gen = "<a href='" . $operation_url . "' class='ico-wt-sprite subs_pdf'>" . Lang::t('_DOWNLOAD', 'certificate') . '</a>';
-                $cell_del_cert = Get::sprite_link('subs_del', $url . '&op=del_report_certificate&from=' . Get::req('from'), Lang::t('_DEL', 'certificate'));
+                $cell_del_cert = Forma\lib\Get::sprite_link('subs_del', $url . '&op=del_report_certificate&from=' . Forma\lib\Get::req('from'), Lang::t('_DEL', 'certificate'));
             } else {
                 $operation_url = $url . '&amp;op=print_certificate';
                 $generate = 'javascript:print_certificate(' . $id_user . ',' . $id_course . ',' . $id_certificate . ')';

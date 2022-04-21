@@ -811,8 +811,8 @@ class Certificate
         require_once Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
 
         $pdf = new PDF($orientation);
-        $pdf->setEncrypted(Get::cfg('certificate_encryption', true));
-        $pdf->setPassword(Get::cfg('certificate_password', null));
+        $pdf->setEncrypted(Forma\lib\Get::cfg('certificate_encryption', true));
+        $pdf->setPassword(Forma\lib\Get::cfg('certificate_password', null));
 
         if ($for_saving) {
             return $pdf->getPdf($html, $name, $img, $download, $facs_simile, $for_saving);
@@ -842,7 +842,7 @@ class Certificate
      */
     public function send_certificate($id_certificate, $id_user, $id_course, $array_substituton = false, $download = true, $from_multi = false, $id_association = 0)
     {
-        $isAggregatedCert = Get::req('aggCert', DOTY_INT, 0);
+        $isAggregatedCert = Forma\lib\Get::req('aggCert', DOTY_INT, 0);
         if ($isAggregatedCert) {
             require_once Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
             $aggCertLib = new AggregatedCertificate();

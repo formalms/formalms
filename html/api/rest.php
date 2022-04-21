@@ -37,7 +37,7 @@ function rest_cout($string)
 
 // -----------------------------------------------------------------------------
 
-if (Get::sett('use_rest_api', 'off') !== 'on') {
+if (Forma\lib\Get::sett('use_rest_api', 'off') !== 'on') {
     rest_cout(RestAPI::HandleError('Error: API not enabled.', $GLOBALS['REST_API_ACCEPT']));
     exit();
 }
@@ -52,7 +52,7 @@ if (!isset($_GET[_REST_PARAM_NAME])) {
 }
 
 //code provided by the user in the request
-$auth_code = Get::req('auth', DOTY_STRING, false);
+$auth_code = Forma\lib\Get::req('auth', DOTY_STRING, false);
 
 $rest_params = explode('/', $_GET[_REST_PARAM_NAME]);
 $numparams = count($rest_params);

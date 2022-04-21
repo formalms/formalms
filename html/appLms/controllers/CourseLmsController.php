@@ -39,7 +39,7 @@ class CourseLmsController extends LmsController
         $this->userProfileDataManager = new UserProfileData();
 
         if (!Docebo::user()->isAnonymous()) {
-            define('_PATH_COURSE', '/appLms/' . Get::sett('pathcourse'));
+            define('_PATH_COURSE', '/appLms/' . Forma\lib\Get::sett('pathcourse'));
 
             require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
         } elseif (!isset($_SESSION['idCourse'])) {
@@ -176,7 +176,7 @@ class CourseLmsController extends LmsController
 
     public function viewprofile()
     {
-        $idUser = Get::gReq('id_user');
+        $idUser = Forma\lib\Get::gReq('id_user');
 
         $acl_man = Docebo::user()->getAclManager();
 

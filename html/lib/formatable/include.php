@@ -13,5 +13,5 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Get::rel_path('lib') . '/formatable/formatable.php';
-Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
+require_once Forma\lib\Get::rel_path('lib') . '/formatable/formatable.php';
+Util::get_css(Forma\lib\Get::rel_path('lib') . '/formatable/formatable.css', true, true);

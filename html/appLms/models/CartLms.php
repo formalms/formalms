@@ -37,8 +37,8 @@ class CartLms extends Model
 
     public function getCartList($old_key = false)
     {
-        $sort = Get::req('sort', DOTY_MIXED, 'name');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'name');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $cart = $_SESSION['lms_cart'];
         $order = [];

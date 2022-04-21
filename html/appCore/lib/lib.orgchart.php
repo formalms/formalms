@@ -29,7 +29,7 @@ class OrgChartManager
     public function OrgChartManager()
     {
         $this->tree_db = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
-        $this->tree_view = new TreeView_OrgView($this->tree_db, 'organization_chart', Get::sett('title_organigram_chart'));
+        $this->tree_view = new TreeView_OrgView($this->tree_db, 'organization_chart', Forma\lib\Get::sett('title_organigram_chart'));
     }
 
     public function getFolderFormIdst(&$arr_idst)

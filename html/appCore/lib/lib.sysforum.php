@@ -295,7 +295,7 @@ class sys_forum
 
         $acl_man = &Docebo::user()->getAclManager();
 
-        $path = _files_ . '/appCore/' . Get::sett('pathphoto');
+        $path = _files_ . '/appCore/' . Forma\lib\Get::sett('pathphoto');
 
         $mod_perm = $perm['can_moderate'];
         $read_perm = $perm['can_read'];

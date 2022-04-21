@@ -585,7 +585,7 @@ class KbAlms extends Model
     public function getFolderTranslations($node_id, $array = false)
     {
         if ($node_id == 0) {
-            $node_title = Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', ''));
+            $node_title = Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', ''));
         }
 
         $query = 'SELECT * FROM %lms_kb_tree_info WHERE id_dir=' . (int) $node_id;
@@ -921,8 +921,8 @@ class KbAlms extends Model
     public function getSearchFilter($user_id = false, $filter_text = false, $course_filter = false, $res_id = false)
     {
         $res = [
-            'show_what' => (Get::sett('kb_show_uncategorized') == 'on' ? 'all' : 'categorized'),
-            'show_only_visible_by_user' => (Get::sett('kb_filter_by_user_access') == 'on' ? true : false),
+            'show_what' => (Forma\lib\Get::sett('kb_show_uncategorized') == 'on' ? 'all' : 'categorized'),
+            'show_only_visible_by_user' => (Forma\lib\Get::sett('kb_filter_by_user_access') == 'on' ? true : false),
             'where' => false,
             'search' => '',
         ];

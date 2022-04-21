@@ -81,7 +81,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/print.css" media="print" />
 		<?php echo Layout::accessibility(); ?>
 		<!-- Page Head area -->
-		<script type="text/javascript" src="<?php echo Get::rel_path('base'); ?>/lib/js_utils.js"></script>
+		<script type="text/javascript" src="<?php echo Forma\lib\Get::rel_path('base'); ?>/lib/js_utils.js"></script>
 		<?php echo Layout::zone('page_head'); ?>
         <script type="text/javascript" src="<?php echo Layout::path(); ?>resources/jquery/jquery.min.js"></script>
         <script src="<?php echo Layout::path(); ?>resources/jquery/jquery-ui.js"></script>

@@ -153,7 +153,7 @@ function get_report_table($url = '')
     if ($level == ADMIN_GROUP_GODADMIN || $can_mod) {//if ($can_mod) {
         cout('<script type="text/javascript">
 		var _FAILURE = "error";
-		var ajax_path = "' . Get::rel_path('lms') . '/ajax.adm_server.php?mn=report&plf=lms";
+		var ajax_path = "' . Forma\lib\Get::rel_path('lms') . '/ajax.adm_server.php?mn=report&plf=lms";
 
 		function public_report(o, id_rep) {
 			o.disabled=true; //no more operations allowed on the checkbox while ajaxing
@@ -217,13 +217,13 @@ function get_report_table($url = '')
         ];
     }
 
-    if (Get::req('search', DOTY_MIXED, false) !== false) {
-        $_SESSION['report_admin_filter']['author'] = Get::req('filter_author', DOTY_INT, (int) $_SESSION['report_admin_filter']['author']);
-        $_SESSION['report_admin_filter']['name'] = Get::req('filter_name', DOTY_STRING, $_SESSION['report_admin_filter']['name']);
-        $_SESSION['report_admin_filter']['type'] = Get::req('filter_type', DOTY_INT, (int) $_SESSION['report_admin_filter']['type']);
+    if (Forma\lib\Get::req('search', DOTY_MIXED, false) !== false) {
+        $_SESSION['report_admin_filter']['author'] = Forma\lib\Get::req('filter_author', DOTY_INT, (int) $_SESSION['report_admin_filter']['author']);
+        $_SESSION['report_admin_filter']['name'] = Forma\lib\Get::req('filter_name', DOTY_STRING, $_SESSION['report_admin_filter']['name']);
+        $_SESSION['report_admin_filter']['type'] = Forma\lib\Get::req('filter_type', DOTY_INT, (int) $_SESSION['report_admin_filter']['type']);
     }
 
-    if (Get::req('reset', DOTY_MIXED, false) !== false) {
+    if (Forma\lib\Get::req('reset', DOTY_MIXED, false) !== false) {
         $_SESSION['report_admin_filter']['author'] = 0;
         $_SESSION['report_admin_filter']['name'] = '';
         $_SESSION['report_admin_filter']['type'] = 0;
@@ -289,11 +289,11 @@ function get_report_table($url = '')
     //$_SESSION['report_admin_filter']['type']
     //end query
 
-    $tb = new Table(Get::sett('visu_course'));
+    $tb = new Table(Forma\lib\Get::sett('visu_course'));
     $tb->initNavBar('ini', 'button');
     $col_type = ['', '', 'align_center', 'image', 'image', 'img-cell', 'img-cell', 'image']; //,'image','image');
 
-    if (Get::sett('use_immediate_report') == 'on') {
+    if (Forma\lib\Get::sett('use_immediate_report') == 'on') {
         $col_content = [
             $lang->def('_NAME'),
             $lang->def('_TAB_REP_CREATOR'),
@@ -364,7 +364,7 @@ function get_report_table($url = '')
             $export_link_csv = '<a class="ico-sprite subs_csv" href="' . $export_url . '&dl=csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '"><span></span>' . Lang::t('_EXPORT_CSV', 'report') . '</a>';
             $export_link_xls = '<a class="ico-sprite subs_xls" href="' . $export_url . '&dl=xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '"><span></span>' . Lang::t('_EXPORT_XLS', 'report') . '</a>';
 
-            if (Get::sett('use_immediate_report') == 'on') {
+            if (Forma\lib\Get::sett('use_immediate_report') == 'on') {
                 //Check if user has already a send mail request for current report
                 $user_id = Docebo::User()->getId();
                 $qry = "
@@ -387,7 +387,7 @@ function get_report_table($url = '')
                 $_name = Layout::highlight($_name, $_SESSION['report_admin_filter']['name']);
             }
 
-            if (Get::sett('use_immediate_report') == 'on') {
+            if (Forma\lib\Get::sett('use_immediate_report') == 'on') {
                 $tb_content = [
                     _REP_KEY_NAME => $_name,
                     _REP_KEY_CREATOR => ($row['author'] == 0 ? '<div class="align_center">-</div>' : $acl_man->relativeId($row['userid'])),
@@ -458,10 +458,10 @@ function reportlist()
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/lib/lib.report.php';
 
-    if ($action = Get::req('action', DOTY_STRING, false)) {
+    if ($action = Forma\lib\Get::req('action', DOTY_STRING, false)) {
         switch ($action) {
             case 'sched_rem':
-                    report_delete_schedulation(Get::req('id_sched', DOTY_INT, false));
+                    report_delete_schedulation(Forma\lib\Get::req('id_sched', DOTY_INT, false));
 
                 break;
         }
@@ -471,7 +471,7 @@ function reportlist()
 
     $lang = &DoceboLanguage::createInstance('report');
 
-    $error = Get::req('err', DOTY_STRING, false);
+    $error = Forma\lib\Get::req('err', DOTY_STRING, false);
     switch ($error) {
         case 'plugin':
                 cout(getErrorUi($lang->def('_ERROR_NOTEXISTS')));
@@ -483,7 +483,7 @@ function reportlist()
     cout('<div class="std_block">');
     //cout(get_report_steplist($step_index));
 
-    switch (Get::req('saverep', DOTY_STRING, false)) {
+    switch (Forma\lib\Get::req('saverep', DOTY_STRING, false)) {
         case 'true':
             cout(getResultUi($lang->def('_SAVE_REPORT_OK')));
             break;
@@ -492,7 +492,7 @@ function reportlist()
             break;
     }
 
-    switch (Get::req('modrep', DOTY_STRING, false)) {
+    switch (Forma\lib\Get::req('modrep', DOTY_STRING, false)) {
         case 'true':
             cout(getResultUi($lang->def('_OPERATION_SUCCESSFUL')));
             break;
@@ -524,7 +524,7 @@ function report_category()
         ], 'report')
         . '<div class="std_block">');
 
-    $error = Get::req('err', DOTY_STRING, false);
+    $error = Forma\lib\Get::req('err', DOTY_STRING, false);
     switch ($error) {
         case 'noname':
                 cout(getErrorUi($lang->def('_ERROR_NONAME')));
@@ -559,19 +559,19 @@ function report_rows_filter()
 {
     checkPerm('mod');
 
-    if (Get::req('cat_undo', DOTY_MIXED, false)) {
+    if (Forma\lib\Get::req('cat_undo', DOTY_MIXED, false)) {
         Util::jump_to('index.php?modname=report&op=reportlist');
     }
 
     $lang = &DoceboLanguage::createInstance('report');
     $ref = &$_SESSION['report_tempdata'];
 
-    if (Get::req('set_category', DOTY_INT, 0) == 1) {
-        if (Get::req('report_name', DOTY_STRING, '') == '') {
+    if (Forma\lib\Get::req('set_category', DOTY_INT, 0) == 1) {
+        if (Forma\lib\Get::req('report_name', DOTY_STRING, '') == '') {
             Util::jump_to('index.php?modname=report&op=report_category&err=noname');
         }
-        $ref['id_report'] = Get::req('id_report', DOTY_ALPHANUM, false);
-        $ref['report_name'] = Get::req('report_name', DOTY_STRING, false);
+        $ref['id_report'] = Forma\lib\Get::req('id_report', DOTY_ALPHANUM, false);
+        $ref['report_name'] = Forma\lib\Get::req('report_name', DOTY_STRING, false);
     }
 
     $obj_report = openreport();
@@ -688,9 +688,9 @@ function report_save_filter()
     $ref = &$_SESSION['report_tempdata'];
     $report_id = $ref['id_report'];
     $report_name = $ref['report_name'];
-    $nosave = Get::req('nosave', DOTY_INT, 0);
-    $show = Get::req('show', DOTY_INT, 0);
-    $idrep = Get::req('modid', DOTY_INT, false);
+    $nosave = Forma\lib\Get::req('nosave', DOTY_INT, 0);
+    $show = Forma\lib\Get::req('show', DOTY_INT, 0);
+    $idrep = Forma\lib\Get::req('modid', DOTY_INT, false);
 
     if ($nosave > 0) {
         Util::jump_to('index.php?modname=report&op=show_results&nosave=1' . ($idrep ? '&modid=' . $idrep : ''));
@@ -725,7 +725,7 @@ function setup_report_js()
         'container/assets/skins/sam' => 'container.css',
         'button/assets/skins/sam' => 'button.css',
     ]);
-    Util::get_js(Get::rel_path('lms') . '/admin/modules/report/ajax.report.js', true, true);
+    Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/ajax.report.js', true, true);
 }
 
 function report_show_results($idrep = false)
@@ -738,9 +738,9 @@ function report_show_results($idrep = false)
 
     $lang = &DoceboLanguage::createInstance('report');
     $start_url = 'index.php?modname=report&op=reportlist';
-    $download = Get::req('dl', DOTY_STRING, false);
-    $no_download = Get::req('no_show_repdownload', DOTY_INT, 0);
-    $nosave = Get::req('nosave', DOTY_INT, 0);
+    $download = Forma\lib\Get::req('dl', DOTY_STRING, false);
+    $no_download = Forma\lib\Get::req('no_show_repdownload', DOTY_INT, 0);
+    $nosave = Forma\lib\Get::req('nosave', DOTY_INT, 0);
 
     if ($idrep == false) {
         //die( print_r($_SESSION['report_tempdata'], true ) );
@@ -827,7 +827,7 @@ function report_show_results($idrep = false)
         . getBackUi($start_url, $lang->def('_BACK_TO_LIST'), 'content'));
 
     if ($nosave > 0) {
-        $mod_id = Get::req('modid', DOTY_INT, false);
+        $mod_id = Forma\lib\Get::req('modid', DOTY_INT, false);
         cout('<br/>' . getBackUi('index.php?modname=report&op=report_save' . ($mod_id ? '&modid=' . $mod_id : ''), $lang->def('_SAVE_AND_BACK_TO_LIST')));
     }
     if ($no_download <= 0) {
@@ -857,8 +857,8 @@ function report_open_filter()
     require_once _lms_ . '/lib/lib.report.php';
 
     $url = 'index.php?modname=report&op=reportlist';
-    $filter_id = Get::req('idrep', DOTY_INT, false);
-    $action = Get::req('action', DOTY_STRING, '');
+    $filter_id = Forma\lib\Get::req('idrep', DOTY_INT, false);
+    $action = Forma\lib\Get::req('action', DOTY_STRING, '');
     if (!$filter_id) {
         Util::jump_to($url);
 
@@ -911,10 +911,10 @@ function schedulelist()
     //import yui pop-up stuff
     setup_report_js();
 
-    if ($action = Get::req('action', DOTY_STRING, false)) {
+    if ($action = Forma\lib\Get::req('action', DOTY_STRING, false)) {
         switch ($action) {
             case 'sched_rem':
-                    report_delete_schedulation(Get::req('id_sched', DOTY_INT, false));
+                    report_delete_schedulation(Forma\lib\Get::req('id_sched', DOTY_INT, false));
 
                 break;
         }
@@ -930,7 +930,7 @@ function schedulelist()
     require_once _base_ . '/lib/lib.form.php';
     $lang = &DoceboLanguage::createInstance('report');
 
-    $idrep = Get::req('idrep', DOTY_INT, false);
+    $idrep = Forma\lib\Get::req('idrep', DOTY_INT, false);
     cout(getTitleArea([
         'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
         $lang->def('_SCHEDULE') . '"<b>' . getReportNameById($idrep) . '</b>"', ]));
@@ -955,7 +955,7 @@ function report_modify_name()
 
     $lang = &DoceboLanguage::createInstance('report');
 
-    $idrep = Get::req('modid', DOTY_INT, false);
+    $idrep = Forma\lib\Get::req('modid', DOTY_INT, false);
     //if (!idrep) Util::jump_to(initial page ... )
 
     $page_title = getTitleArea([
@@ -1001,10 +1001,10 @@ function report_modify_rows()
     $lang = &DoceboLanguage::createInstance('report');
     $ref = &$_SESSION['report_tempdata'];
 
-    $idrep = Get::req('modid', DOTY_INT, false);
+    $idrep = Forma\lib\Get::req('modid', DOTY_INT, false);
 
-    if (Get::req('mod_name', DOTY_INT, 0) == 1) {
-        $ref['report_name'] = Get::req('report_name', DOTY_STRING, false);
+    if (Forma\lib\Get::req('mod_name', DOTY_INT, 0) == 1) {
+        $ref['report_name'] = Forma\lib\Get::req('report_name', DOTY_STRING, false);
     }
 
     $obj_report = openreport();
@@ -1053,7 +1053,7 @@ function report_modify_columns()
         $ref = $_POST['columns_filter'];
     }
 
-    $idrep = Get::req('modid', DOTY_INT, false);
+    $idrep = Forma\lib\Get::req('modid', DOTY_INT, false);
     $lang = &DoceboLanguage::createInstance('report');
 
     $obj_report = openreport();
@@ -1158,7 +1158,7 @@ function reportDispatch($op)
             break;
 
         case 'report_save':
-                if (Get::req('nosave', DOTY_INT, 0) > 0) {
+                if (Forma\lib\Get::req('nosave', DOTY_INT, 0) > 0) {
                     report_show_results(false);
                 }
                 report_save_filter();
@@ -1166,7 +1166,7 @@ function reportDispatch($op)
             break;
 
         case 'show_results':
-                report_show_results(Get::req('idrep', DOTY_INT, false));
+                report_show_results(Forma\lib\Get::req('idrep', DOTY_INT, false));
 
             break;
 

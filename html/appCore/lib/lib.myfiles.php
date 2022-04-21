@@ -277,7 +277,7 @@ class MyFile
             // save file
             $file_name = $this->saveFile($area, $file_descriptor);
         }
-        $file_size = Get::file_size(_files_ . $this->getFilePath() . $file_name);
+        $file_size = Forma\lib\Get::file_size(_files_ . $this->getFilePath() . $file_name);
         if (!$file_size) {
             $file_size = 0;
         }

@@ -102,7 +102,7 @@ class Report_Courses extends Report
 
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
-            $ref['all_courses'] = (Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
+            $ref['all_courses'] = (Forma\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
         } else {
             $selector->resetSelection($ref['selected_courses']);
         }
@@ -133,7 +133,7 @@ class Report_Courses extends Report
         $box->footer = $boxlang->def('_CURRENT_SELECTION') . ': <span id="csel_foot">' . ($ref['all_courses'] ? $boxlang->def('_ALL') : ($temp != '' ? $temp : '0')) . '</span>';
 
         YuiLib::load('datasource');
-        Util::get_js(Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
 
         cout('<script type="text/javascript"> ' . "\n" .
             'var courses_count="' . ($temp != '' ? $temp : '0') . '";' . "\n" .
@@ -180,7 +180,7 @@ class Report_Courses extends Report
 
         //detect the step in which we are
         $substep = _SUBSTEP_USERS; //first substep
-        switch (Get::req('substep', DOTY_STRING, 'no_step')) {
+        switch (Forma\lib\Get::req('substep', DOTY_STRING, 'no_step')) {
             case 'users_selection':
                 $substep = _SUBSTEP_USERS;
                 break;
@@ -208,9 +208,9 @@ class Report_Courses extends Report
         switch ($substep) {
             case _SUBSTEP_COLUMNS:
                 //set session data
-                if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-                    $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, []);
-                    $ref['show_percent'] = (Get::req('show_percent', DOTY_INT, 0) > 0 ? true : false);
+                if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
+                    $ref['showed_cols'] = Forma\lib\Get::req('cols', DOTY_MIXED, []);
+                    $ref['show_percent'] = (Forma\lib\Get::req('show_percent', DOTY_INT, 0) > 0 ? true : false);
                     $ref['time_belt'] = [
                         'time_range' => $_POST['time_belt'],
                         'start_date' => Format::dateDb($_POST['start_time'], 'date'),
@@ -218,9 +218,9 @@ class Report_Courses extends Report
                     ];
                     $ref['org_chart_subdivision'] = (isset($_POST['org_chart_subdivision']) ? 1 : 0);
                     $ref['show_classrooms_editions'] = (isset($_POST['show_classrooms_editions']) ? true : false);
-                    $ref['show_suspended'] = Get::req('show_suspended', DOTY_INT, 0) > 0;
-                    $ref['only_students'] = Get::req('only_students', DOTY_INT, 0) > 0;
-                    $ref['show_assessment'] = Get::req('show_assessment', DOTY_INT, 0) > 0;
+                    $ref['show_suspended'] = Forma\lib\Get::req('show_suspended', DOTY_INT, 0) > 0;
+                    $ref['only_students'] = Forma\lib\Get::req('only_students', DOTY_INT, 0) > 0;
+                    $ref['show_assessment'] = Forma\lib\Get::req('show_assessment', DOTY_INT, 0) > 0;
                 } else {
                     //...
                 }
@@ -253,7 +253,7 @@ class Report_Courses extends Report
                 }
 
                 /*$go_to_second_step = (isset($_POST['go_to_second_step']) ? true : false);
-            $we_are_in_second_step = Get::req('second_step', DOTY_INT, false);*/
+            $we_are_in_second_step = Forma\lib\Get::req('second_step', DOTY_INT, false);*/
 
                 $time_belt = [
                     0 => $lang->def('_CUSTOM_BELT'),
@@ -402,8 +402,8 @@ class Report_Courses extends Report
                 $user_select = new UserSelector();
                 $user_select->use_suspended = true;
 
-                if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-                    $ref['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+                if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
+                    $ref['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
                 } else { //maybe redoundant
                     if (!isset($ref['all_users'])) {
                         $ref['all_users'] = false;
@@ -420,7 +420,7 @@ class Report_Courses extends Report
                     Util::jump_to($back_url);
                 } elseif (isset($_POST['okselector'])) {
                     $elem_selected = $user_select->getSelection($_POST);
-                    $ref['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+                    $ref['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
                     $ref['users'] = $elem_selected;
                     Util::jump_to($jump_url . '&substep=columns_selection');
                 }
@@ -480,8 +480,8 @@ class Report_Courses extends Report
 
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
-        if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-            $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, []);
+        if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
+            $ref['showed_cols'] = Forma\lib\Get::req('cols', DOTY_MIXED, []);
         }
 
         function is_showed($which, &$arr)
@@ -555,8 +555,8 @@ class Report_Courses extends Report
 
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
-        if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-            $ref['showed_cols'] = Get::req('cols', DOTY_MIXED, []);
+        if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
+            $ref['showed_cols'] = Forma\lib\Get::req('cols', DOTY_MIXED, []);
         }
 
         function is_showed($which, &$arr)
@@ -921,7 +921,7 @@ class Report_Courses extends Report
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     //No filter
                 }
 

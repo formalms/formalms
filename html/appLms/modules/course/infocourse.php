@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 if (!Docebo::user()->isAnonymous()) {
-    define('_PATH_COURSE', '/appLms/' . Get::sett('pathcourse'));
+    define('_PATH_COURSE', '/appLms/' . Forma\lib\Get::sett('pathcourse'));
 
     require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
 
@@ -446,11 +446,11 @@ if (!Docebo::user()->isAnonymous()) {
         $msg_composer = new EventMessageComposer();
 
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
-        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => Get::site_url(),
+        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => Forma\lib\Get::site_url(),
                                                                         '[course_code]' => $_POST['course_code'],
                                                                         '[course]' => $_POST['course_name'], ]);
 
-        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => Get::site_url(),
+        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => Forma\lib\Get::site_url(),
                                                                         '[course_code]' => $_POST['course_code'],
                                                                         '[course]' => $_POST['course_name'], ]);
 
@@ -683,7 +683,7 @@ if (!Docebo::user()->isAnonymous()) {
 		FROM ' . $GLOBALS['prefix_lms'] . "_course_file 
 		WHERE id_course='" . $_SESSION['idCourse'] . "' AND id_file='" . (int) $_GET['id_file'] . "'"));
 
-            $size = Get::file_size(_files_ . _PATH_COURSE . $old_file);
+            $size = Forma\lib\Get::file_size(_files_ . _PATH_COURSE . $old_file);
             if (!sl_unlink(_PATH_COURSE . $old_file)) {
                 $GLOBALS['page']->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
 

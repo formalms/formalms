@@ -30,10 +30,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $form = '';
         if (isset($_SESSION['social'])) {
             if ($_SESSION['social']['plugin'] == Plugin::getName()) {
-                $form = Get::img('social/linkedin-24.png') . ' '
+                $form = Forma\lib\Get::img('social/linkedin-24.png') . ' '
                         . Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social')
                         . ' <b>' . $_SESSION['social']['data']['firstName'] . ' ' . $_SESSION['social']['data']['lastName'] . '</b>'
-                        . Form::openForm('cancel_social', Get::rel_path('base'))
+                        . Form::openForm('cancel_social', Forma\lib\Get::rel_path('base'))
                           . Form::openButtonSpace()
                               . Form::getButton('cancel', 'cancel_social', Lang::t('_CANCEL', 'standard'))
                           . Form::closeButtonSpace()
@@ -45,7 +45,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             $url = $linkedin_service->getAuthorizationUri();
 
             $form = "<a href='" . $url . "'>"
-                    // . Get::img("social/linkedin-24.png")
+                    // . Forma\lib\Get::img("social/linkedin-24.png")
                     . '<i class="fa fa-linkedin"></i>'
                       . '</a>';
         }
@@ -59,8 +59,8 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     public static function getUserFromLogin()
     {
-        $error = Get::req('error', DOTY_STRING, false);
-        $code = Get::req('code', DOTY_STRING, false);
+        $error = Forma\lib\Get::req('error', DOTY_STRING, false);
+        $code = Forma\lib\Get::req('code', DOTY_STRING, false);
 
         if ($error || !$code) {
             return UNKNOWN_SOCIAL_ERROR;
@@ -109,9 +109,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $storage = new Session(false);
 
         $credentials = new Credentials(
-            Get::sett('linkedin.oauth_key'),
-            Get::sett('linkedin.oauth_secret'),
-            Get::abs_path() . 'index.php?r=' . urlencode(_login_) . '&plugin=' . Plugin::getName()
+            Forma\lib\Get::sett('linkedin.oauth_key'),
+            Forma\lib\Get::sett('linkedin.oauth_secret'),
+            Forma\lib\Get::abs_path() . 'index.php?r=' . urlencode(_login_) . '&plugin=' . Plugin::getName()
         );
 
         return $serviceFactory->createService('linkedin', $credentials, $storage, ['r_basicprofile']);

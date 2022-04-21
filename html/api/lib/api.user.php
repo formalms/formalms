@@ -273,8 +273,8 @@ class User_API extends API
             require_once _base_ . '/lib/lib.eventmanager.php';
 
             $array_subst = [
-                '[url]' => Get::site_url(),
-                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                '[url]' => Forma\lib\Get::site_url(),
+                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
                 '[userid]' => $userdata['userid'],
                 '[password]' => $userdata['password'],
             ];
@@ -568,7 +568,7 @@ class User_API extends API
                 'course_type' => $course_info['course_type'],
                 'course_name' => str_replace('&', '&amp;', $course_info['name']),
                 'course_description' => str_replace('&', '&amp;', $course_info['description']),
-                'course_link' => Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course_info['idCourse'],
+                'course_link' => Forma\lib\Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course_info['idCourse'],
                 'user_status' => $course_info['user_status'],
                 'dates' => $dates,
             ];

@@ -274,11 +274,11 @@ function statuserfilter()
     $out->add(getTitleArea($lang->def('_STATFORUSER'), 'stats'));
     $out->add('<div class="std_block">');
 
-    $group_filter = Get::req('group_filter', DOTY_INT, STATFILTER_ALL_GROUP);
-    $status_filter = Get::req('status_filter', DOTY_INT, STATFILTER_ALL_STATUS);
-    $editions_filter = Get::req('editions_filter', DOTY_INT, STATFILTER_ALL_EDITION);
-    $date_filter = Get::req('date_filter', DOTY_INT, STATFILTER_ALL_EDITION);
-    $user_filter = Get::req('user_filter', DOTY_MIXED, '');
+    $group_filter = Forma\lib\Get::req('group_filter', DOTY_INT, STATFILTER_ALL_GROUP);
+    $status_filter = Forma\lib\Get::req('status_filter', DOTY_INT, STATFILTER_ALL_STATUS);
+    $editions_filter = Forma\lib\Get::req('editions_filter', DOTY_INT, STATFILTER_ALL_EDITION);
+    $date_filter = Forma\lib\Get::req('date_filter', DOTY_INT, STATFILTER_ALL_EDITION);
+    $user_filter = Forma\lib\Get::req('user_filter', DOTY_MIXED, '');
 
     $cs = new CourseSubscribe_Manager();
     /*
@@ -418,7 +418,7 @@ function statuserfilter()
      * For any student compute progress
      */
 
-    $tabStat = new Table(Get::sett('visuItem'), $lang->def('_STATS_USERS'), $lang->def('_STATS_USERS'));
+    $tabStat = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_STATS_USERS'), $lang->def('_STATS_USERS'));
     $tabStat->initNavBar('ini', 'button');
     $limit = $tabStat->getSelectedElement();
 
@@ -701,7 +701,7 @@ function statcourse()
         if ($lo !== false) {
             $out->add($lo->loadObjectReport());
         } else {
-            if (Get::sett('do_debug') == 'on') {
+            if (Forma\lib\Get::sett('do_debug') == 'on') {
                 $out->add('<!-- createLOTrack fallita' .
                             'oggetto type: ' . $values[REPOFIELDOBJECTTYPE] . '<br/>' .
                             ' resource id: ' . $values[REPOFIELDIDRESOURCE] . '<br/>' .
@@ -735,11 +735,11 @@ function statitem()
 
     $idItem = (int) $_GET['idItem'];
 
-    $group_filter = Get::req('group_filter', DOTY_INT, -1);
-    $status_filter = Get::req('status_filter', DOTY_INT, -1);
-    $user_filter = Get::req('user_filter', DOTY_MIXED, '');
+    $group_filter = Forma\lib\Get::req('group_filter', DOTY_INT, -1);
+    $status_filter = Forma\lib\Get::req('status_filter', DOTY_INT, -1);
+    $user_filter = Forma\lib\Get::req('user_filter', DOTY_MIXED, '');
 
-    $tabStat = new Table(Get::sett('visuItem'), $lang->def('_STATSITEM') . $titleLO, $lang->def('_STATSITEM') . $titleLO);
+    $tabStat = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_STATSITEM') . $titleLO, $lang->def('_STATSITEM') . $titleLO);
     $tabStat->initNavBar('ini', 'button');
     $limit = $tabStat->getSelectedElement();
 

@@ -49,7 +49,7 @@ class SmsGatewayManager
      */
     public static function getGateway()
     {
-        switch (Get::sett('sms_gateway')) {
+        switch (Forma\lib\Get::sett('sms_gateway')) {
             case 'skebby':
             default:
                 require_once Forma::inc(_adm_ . '/lib/Sms/SkebbySmsGateway.php');

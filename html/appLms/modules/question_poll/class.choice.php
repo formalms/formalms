@@ -496,7 +496,7 @@ class Choice_QuestionPoll extends QuestionPoll
                 . ($find_prev && $freeze ? ' disabled="disabled"' : '') . ' /> '
                 . '<label class="text_answer" for="quest_' . $id_quest . '_' . $id_answer . '">' . $answer . '</label><br />';
         }
-        if (Get::sett('no_answer_in_poll') == 'on') {
+        if (Forma\lib\Get::sett('no_answer_in_poll') == 'on') {
             $content .= '<input type="radio" id="quest_' . $id_quest . '_0" '
                     . 'name="quest[' . $id_quest . ']" value="0" '
                     . ($find_prev ? ($id_answer == $id_answer_do ? ' checked="checked"' : '') : ' checked="checked"')
@@ -577,7 +577,7 @@ class Choice_QuestionPoll extends QuestionPoll
             }
         }
 
-        if (Get::sett('no_answer_in_test') == 'on') {
+        if (Forma\lib\Get::sett('no_answer_in_test') == 'on') {
             $content .= '<tr><td>' . $lang->def('_NO_ANSWER') . '</td><td>'
                 . ($max != 0
                     ? '<div class="colored_row" style="width: ' . round($not_answer / $max * 90, 2) . '%;">' . ($not_answer != 0 ? $not_answer : '') . '</div>'
@@ -709,7 +709,7 @@ class Choice_QuestionPoll extends QuestionPoll
             }
         }
 
-        if (Get::sett('no_answer_in_test') == 'on') {
+        if (Forma\lib\Get::sett('no_answer_in_test') == 'on') {
             $content .= ';"' . $lang->def('_NO_ANSWER') . '";' . ($not_answer != 0 ? $not_answer : '') . ''
                 /*.( $max != 0
                     ? '"'.round(($not_answer / $max) * 100, 2).'%"'

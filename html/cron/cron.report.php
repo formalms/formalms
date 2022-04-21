@@ -247,9 +247,9 @@ function update_schedules($schedules)
 
 //******************************************************************************
 
-$report_persistence_days = Get::sett('report_persistence_days', 30);
-$report_max_email_size = Get::sett('report_max_email_size_MB', 0);
-$report_store_folder = Get::sett('report_storage_folder', '/' . _folder_files_ . '/common/report/');
+$report_persistence_days = Forma\lib\Get::sett('report_persistence_days', 30);
+$report_max_email_size = Forma\lib\Get::sett('report_max_email_size_MB', 0);
+$report_store_folder = Forma\lib\Get::sett('report_storage_folder', '/' . _folder_files_ . '/common/report/');
 $base_url = getCurrentDomain(null, true);
 
 $report_uuid_prefix = 'uuid';
@@ -274,7 +274,7 @@ $log_opened = false;
 
 //apply an execution lock by occupying port 9999
 /** @var resource|bool $lock_stream */
-$lock_stream = !Get::cfg('CRON_SOCKET_SEMAPHORES', false) || @stream_socket_server('tcp://0.0.0.0:9999', $errno, $errmsg);
+$lock_stream = !Forma\lib\Get::cfg('CRON_SOCKET_SEMAPHORES', false) || @stream_socket_server('tcp://0.0.0.0:9999', $errno, $errmsg);
 
 if ($lock_stream) {
     foreach ($res as $row) {
@@ -300,7 +300,7 @@ if ($lock_stream) {
                 list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
 
                 if ($file_name) {
-                    if (file_exists(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name) && Get::cfg('enable_customscripts', false) == true) {
+                    if (file_exists(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name) && Forma\lib\Get::cfg('enable_customscripts', false) == true) {
                         require_once _base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name;
                     } else {
                         require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
@@ -382,7 +382,7 @@ if ($lock_stream) {
                         $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']));
                         $body = str_replace('[report_persistence_days]', $report_persistence_days, $body);
 
-                        $response = $mailer->SendMail(Get::sett('sender_event'), //sender
+                        $response = $mailer->SendMail(Forma\lib\Get::sett('sender_event'), //sender
                             [$recipient['email']], //recipients
                             $subject, //subject
                             $body //body
@@ -405,7 +405,7 @@ if ($lock_stream) {
                         $mailer->Subject = $subject;
                         $body = date('Y-m-d H:i:s');
 
-                        $response = $mailer->SendMail(Get::sett('sender_event'), //sender
+                        $response = $mailer->SendMail(Forma\lib\Get::sett('sender_event'), //sender
                             [$recipient['email']], //recipients
                             $subject, //subject
                             $body, //body

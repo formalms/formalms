@@ -72,7 +72,7 @@ class Man_MiddleArea
         $c_status = $this->isDisabled($obj_index);
 
         // can not disable menu if it is set as home-page in system configuration
-        $which_home_page = Get::sett('home_page_option');
+        $which_home_page = Forma\lib\Get::sett('home_page_option');
         if (($obj_index == 'mo_1' && $which_home_page == 'my_courses' && $c_status == false) || ($obj_index == 'mo_46' && $which_home_page == 'catalogue' && $c_status == false)) {
             return true;
         }

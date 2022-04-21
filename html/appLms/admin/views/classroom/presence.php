@@ -1,4 +1,4 @@
-<?php Get::title([
+<?php Forma\lib\Get::title([
     'index.php?r=' . $base_link_course . '/show' => Lang::t('_COURSE', 'course'),
     'index.php?r=' . $base_link_classroom . '/classroom&id_course=' . $model->getIdCourse() => Lang::t('_CLASSROOM', 'course'),
     Lang::t('_ATTENDANCE', 'course') . ' : ' . $course_name,

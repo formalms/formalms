@@ -77,7 +77,7 @@ class CoursereportLmsController extends LmsController
         $org_tests = &$report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
 
-        $type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
+        $type_filter = Forma\lib\Get::pReq('type_filter', DOTY_MIXED, false);
 
         if ($type_filter == 'false') {
             $type_filter = false;
@@ -502,8 +502,8 @@ class CoursereportLmsController extends LmsController
             'activities' => $results_activity,
         ];
 
-        Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/coursereport.js', true, true);
-        Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/coursereport.css', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/appLms/views/coursereport/js/coursereport.js', true, true);
+        Util::get_css(Forma\lib\Get::rel_path('base') . '/appLms/views/coursereport/css/coursereport.css', true, true);
 
         $this->render('coursereport', $ajaxResponse);
     }
@@ -513,15 +513,15 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         require_once Forma::inc(_adm_ . '/lib/lib.field.php');
 
-        $redo_final = Get::pReq('redo_final', DOTY_MIXED, false);
-        $round_report = Get::pReq('round_report', DOTY_MIXED, false);
-        $round_test = Get::pReq('round_test', DOTY_MIXED, false);
+        $redo_final = Forma\lib\Get::pReq('redo_final', DOTY_MIXED, false);
+        $round_report = Forma\lib\Get::pReq('round_report', DOTY_MIXED, false);
+        $round_test = Forma\lib\Get::pReq('round_test', DOTY_MIXED, false);
 
-        $currentPage = Get::pReq('pagination', DOTY_INT, 0);
+        $currentPage = Forma\lib\Get::pReq('pagination', DOTY_INT, 0);
         /**
          * Set default students limit pagination at 50.
          **/
-        $paginationLimit = Get::pReq('limit', DOTY_INT, 50);
+        $paginationLimit = Forma\lib\Get::pReq('limit', DOTY_INT, 50);
 
         if ($paginationLimit == 0) {
             $currentPage = 0;
@@ -546,8 +546,8 @@ class CoursereportLmsController extends LmsController
         $report_man = new CourseReportManager();
 
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
-        $type_filter = Get::pReq('type_filter', DOTY_MIXED, false);
-        $edition_filter = Get::pReq('edition_filter', DOTY_MIXED, false);
+        $type_filter = Forma\lib\Get::pReq('type_filter', DOTY_MIXED, false);
+        $edition_filter = Forma\lib\Get::pReq('edition_filter', DOTY_MIXED, false);
 
         $org_tests = &$report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
@@ -1092,7 +1092,7 @@ class CoursereportLmsController extends LmsController
 
                 list($score) = sql_fetch_array($q);
 
-                if (Get::req('round_report') || Get::req('redo_final') || !$score) {
+                if (Forma\lib\Get::req('round_report') || Forma\lib\Get::req('redo_final') || !$score) {
                     $c = new CourseReportManager();
                     $users_scores = [$id_user => $final_score[$id_user]];
                     $c->saveReportScore($info_final[0]->getIdReport(), $users_scores, [$id_user => date('d-m-Y H:i:s')], '');
@@ -1171,8 +1171,8 @@ class CoursereportLmsController extends LmsController
 
     public function setVisibleInDetail()
     {
-        $idReport = Get::pReq('idReport');
-        $show_in_detail = Get::pReq('showInDetail', DOTY_INT, 0);
+        $idReport = Forma\lib\Get::pReq('idReport');
+        $show_in_detail = Forma\lib\Get::pReq('showInDetail', DOTY_INT, 0);
 
         $report = new ReportLms($idReport);
         $report->setShowInDetail(($show_in_detail === 1 ? true : false));
@@ -1198,12 +1198,12 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
 
-        $idTrack = Get::gReq('idTrack');
-        $idTest = Get::gReq('idTest');
+        $idTrack = Forma\lib\Get::gReq('idTrack');
+        $idTest = Forma\lib\Get::gReq('idTest');
 
-        $testName = Get::gReq('testName');
+        $testName = Forma\lib\Get::gReq('testName');
 
-        $studentName = Get::gReq('studentName');
+        $studentName = Forma\lib\Get::gReq('studentName');
 
         $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
@@ -1263,7 +1263,7 @@ class CoursereportLmsController extends LmsController
 
     public function scormreport()
     {
-        $idTest = Get::gReq('idTest');
+        $idTest = Forma\lib\Get::gReq('idTest');
         checkPerm('view', true, $this->_mvc_name);
         require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
@@ -1336,7 +1336,7 @@ class CoursereportLmsController extends LmsController
             return;
         }
         checkPerm('mod', true, $this->_mvc_name);
-        $undo = Get::pReq('undo', DOTY_MIXED, false);
+        $undo = Forma\lib\Get::pReq('undo', DOTY_MIXED, false);
 
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
@@ -1742,7 +1742,7 @@ class CoursereportLmsController extends LmsController
     public function testreview()
     {
         checkPerm('mod', true, $this->_mvc_name);
-        $undo = Get::pReq('undo_testreview', DOTY_MIXED, false);
+        $undo = Forma\lib\Get::pReq('undo_testreview', DOTY_MIXED, false);
         $id_test = importVar('id_test', true, 0);
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/testvote&id_test=' . $id_test);
@@ -2278,7 +2278,7 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $id_report = Get::req('id_report', DOTY_INT, 0);
+        $id_report = Forma\lib\Get::req('id_report', DOTY_INT, 0);
         $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -2490,7 +2490,7 @@ class CoursereportLmsController extends LmsController
     public function modactivity()
     {
         checkPerm('mod', true, $this->_mvc_name);
-        $undo = Get::pReq('undo', DOTY_MIXED, false);
+        $undo = Forma\lib\Get::pReq('undo', DOTY_MIXED, false);
 
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
@@ -2615,7 +2615,7 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        $undo = Get::pReq('undo', DOTY_MIXED, false);
+        $undo = Forma\lib\Get::pReq('undo', DOTY_MIXED, false);
 
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
@@ -2852,7 +2852,7 @@ class CoursereportLmsController extends LmsController
     public function delactivity()
     {
         checkPerm('mod', true, $this->_mvc_name);
-        $undo = Get::pReq('undo', DOTY_MIXED, false);
+        $undo = Forma\lib\Get::pReq('undo', DOTY_MIXED, false);
 
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
@@ -2862,7 +2862,7 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $id_report = Get::gReq('id_report', DOTY_MIXED, 0);
+        $id_report = Forma\lib\Get::gReq('id_report', DOTY_MIXED, 0);
 
         $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
@@ -2873,7 +2873,7 @@ class CoursereportLmsController extends LmsController
         $report_man = new CourseReportManager();
 
         if (isset($_POST['confirm'])) {
-            $id_report = Get::pReq('id_report', DOTY_MIXED, 0);
+            $id_report = Forma\lib\Get::pReq('id_report', DOTY_MIXED, 0);
 
             if (!$report_man->deleteReportScore($id_report)) {
                 Util::jump_to('index.php?r=coursereport/coursereport&amp;result=err');
@@ -3424,7 +3424,7 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('view', true, $this->_mvc_name);
         $responseValue = [];
-        $undo = Get::pReq('undo', DOTY_MIXED, false);
+        $undo = Forma\lib\Get::pReq('undo', DOTY_MIXED, false);
 
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
@@ -3434,8 +3434,8 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
         require_once Forma::inc(_lms_ . '/class.module/track.test.php');
 
-        Util::get_js(Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
-        Util::get_css(Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
+        Util::get_css(Forma\lib\Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
 
         $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
 
@@ -3444,7 +3444,7 @@ class CoursereportLmsController extends LmsController
         $test_man = new GroupTestManagement();
 
         $lev = false;
-        $type_filter = Get::gReq('type_filter', DOTY_MIXED, false);
+        $type_filter = Forma\lib\Get::gReq('type_filter', DOTY_MIXED, false);
 
         if (isset($type_filter) && $type_filter != null) {
             $lev = $type_filter;
@@ -3622,8 +3622,8 @@ class CoursereportLmsController extends LmsController
     public function extendedQuestDetails()
     {
         require_once Forma::inc(_lms_ . '/class.module/track.test.php');
-        $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
-        $idQuest = Get::pReq('id_quest', DOTY_MIXED, 0);
+        $idTest = Forma\lib\Get::pReq('id_test', DOTY_MIXED, 0);
+        $idQuest = Forma\lib\Get::pReq('id_quest', DOTY_MIXED, 0);
 
         $result = ['id_quest' => $idQuest];
 
@@ -3642,8 +3642,8 @@ class CoursereportLmsController extends LmsController
     public function fileUploadQuestDetails()
     {
         require_once Forma::inc(_lms_ . '/class.module/track.test.php');
-        $idTest = Get::pReq('id_test', DOTY_MIXED, 0);
-        $idQuest = Get::pReq('id_quest', DOTY_MIXED, 0);
+        $idTest = Forma\lib\Get::pReq('id_test', DOTY_MIXED, 0);
+        $idQuest = Forma\lib\Get::pReq('id_quest', DOTY_MIXED, 0);
 
         $result = ['id_quest' => $idQuest];
 
@@ -3687,7 +3687,7 @@ class CoursereportLmsController extends LmsController
         $test_man = new GroupTestManagement();
 
         $lev = false;
-        $type_filter = Get::gReq('type_filter', DOTY_MIXED, false);
+        $type_filter = Forma\lib\Get::gReq('type_filter', DOTY_MIXED, false);
 
         if (isset($type_filter) && $type_filter != null) {
             $lev = $type_filter;
@@ -3951,9 +3951,9 @@ class CoursereportLmsController extends LmsController
     {
         require_once Forma::inc(_lms_ . '/modules/test/charts.test.php');
 
-        $idTest = Get::req('id_test', DOTY_INT, -1);
-        $idUser = Get::req('id_user', DOTY_INT, -1);
-        $chartType = Get::req('chart_type', DOTY_STRING, 'column');
+        $idTest = Forma\lib\Get::req('id_test', DOTY_INT, -1);
+        $idUser = Forma\lib\Get::req('id_user', DOTY_INT, -1);
+        $chartType = Forma\lib\Get::req('chart_type', DOTY_STRING, 'column');
 
         $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
         $acl_man = Docebo::user()->getAclManager();

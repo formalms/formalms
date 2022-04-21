@@ -21,7 +21,7 @@ class CourseTableView extends TableView
     {
         parent::__construct($id);
 
-        $this->serverUrl = Get::rel_path('lms') . '/ajax.adm_server.php?plf=lms&file=coursetableview&sf=table_view';
+        $this->serverUrl = Forma\lib\Get::rel_path('lms') . '/ajax.adm_server.php?plf=lms&file=coursetableview&sf=table_view';
         $this->addFormatter('man_subscr', 'courseFormatters.man_subscr');
 
         $this->addFormatter('classroom', 'courseFormatters.classroom');
@@ -43,25 +43,25 @@ class CourseTableView extends TableView
         $array_columns[] = ['key' => 'waiting', 'label' => Lang::t('_WAITING_USERS', 'course', 'lms'), 'className' => 'img-cell'];
 
         if (checkPerm('subscribe', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'subscriptions', 'label' => Get::img('course/subscribe.png', Lang::t('_SUBSCRIBE', 'course', 'lms')), 'sortable' => true, 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('man_subscr')];
+            $array_columns[] = ['key' => 'subscriptions', 'label' => Forma\lib\Get::img('course/subscribe.png', Lang::t('_SUBSCRIBE', 'course', 'lms')), 'sortable' => true, 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('man_subscr')];
         }
         if (checkPerm('mod', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'classroom', 'label' => Get::img('course/classroom-cal.png', Lang::t('_CLASSROOM', 'course', 'lms')), 'className' => 'img-cell'];
-            $array_columns[] = ['key' => 'certificate', 'label' => Get::img('course/certificate.png', Lang::t('_CERTIFICATE', 'certificate', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('certificate')];
-            $array_columns[] = ['key' => 'competence', 'label' => Get::img('course/competences.png', Lang::t('_COMPETENCES', 'competences', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('competence')];
-            $array_columns[] = ['key' => 'menu', 'label' => Get::img('course/menu.png', Lang::t('_ASSIGN_MENU', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('menu')];
+            $array_columns[] = ['key' => 'classroom', 'label' => Forma\lib\Get::img('course/classroom-cal.png', Lang::t('_CLASSROOM', 'course', 'lms')), 'className' => 'img-cell'];
+            $array_columns[] = ['key' => 'certificate', 'label' => Forma\lib\Get::img('course/certificate.png', Lang::t('_CERTIFICATE', 'certificate', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('certificate')];
+            $array_columns[] = ['key' => 'competence', 'label' => Forma\lib\Get::img('course/competences.png', Lang::t('_COMPETENCES', 'competences', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('competence')];
+            $array_columns[] = ['key' => 'menu', 'label' => Forma\lib\Get::img('course/menu.png', Lang::t('_ASSIGN_MENU', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('menu')];
         }
 
         if (checkPerm('add', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'dup', 'label' => Get::img('standard/dup.png', Lang::t('_MAKE_A_COPY', 'course', 'lms')), 'className' => 'img-cell'];
+            $array_columns[] = ['key' => 'dup', 'label' => Forma\lib\Get::img('standard/dup.png', Lang::t('_MAKE_A_COPY', 'course', 'lms')), 'className' => 'img-cell'];
         }
 
         if (checkPerm('mod', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'mod', 'label' => Get::img('standard/edit.png', Lang::t('_MOD', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('mod')];
+            $array_columns[] = ['key' => 'mod', 'label' => Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('mod')];
         }
 
         if (checkPerm('del', true, 'course', 'lms')) {
-            $array_columns[] = ['key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('delete')];
+            $array_columns[] = ['key' => 'del', 'label' => Forma\lib\Get::img('standard/delete.png', Lang::t('_DEL', 'course', 'lms')), 'className' => 'img-cell', 'formatter' => $this->getCellFormatter('delete')];
         }
 
         $this->columns = $array_columns;
@@ -112,7 +112,7 @@ class CourseTableView extends TableView
         $filter = &$_SESSION['course_category']['filter_status'];
 
         $this->addOption('baseUrl', 'index.php');
-        $this->addOption('imageUrl', Get::tmpl_path('base') . 'images/');
+        $this->addOption('imageUrl', Forma\lib\Get::tmpl_path('base') . 'images/');
 
         $this->addOption('initialFilter', [
                 'c_category' => ['operator' => '', 'value' => $filter['c_category']],

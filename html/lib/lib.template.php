@@ -34,7 +34,7 @@ function getTemplate()
     }
 
     // force_standard mode
-    if (isset($_REQUEST['notuse_template']) || $GLOBALS['notuse_template'] == true) {
+    if ((array_key_exists('notuse_template',$_REQUEST) && isset($_REQUEST['notuse_template'])) || (array_key_exists('notuse_template',$GLOBALS) && $GLOBALS['notuse_template'] == true)) {
         $_SESSION['template'] = 'standard';
 
         return $_SESSION['template'];
@@ -88,7 +88,7 @@ function getTemplate()
  */
 function parseTemplateDomain($curr_domain = false)
 {
-    if (!$domains = Get::sett('template_domain', false)) {
+    if (!$domains = Forma\lib\Get::sett('template_domain', false)) {
         return false;
     }
 
@@ -105,8 +105,8 @@ function parseTemplateDomain($curr_domain = false)
 
 function getCurrentDomain($idOrg = null, $baseUrl = false)
 {
-    $domain = Get::site_url();
-    if (!($domains = Get::sett('template_domain', false)) || $baseUrl) {
+    $domain = Forma\lib\Get::site_url();
+    if (!($domains = Forma\lib\Get::sett('template_domain', false)) || $baseUrl) {
         return $domain;
     }
 
@@ -234,11 +234,12 @@ function getTemplateList($set_keys = false, $platform = false)
  */
 function getDefaultTemplate($platform = false)
 {
-    $plat_templ = Get::sett('defaultTemplate');
+    $plat_templ = Forma\lib\Get::sett('defaultTemplate');
     if (is_dir(_templates_ . '/' . $plat_templ)) {
         return $plat_templ;
     } else {
-        return array_pop(getTemplateList());
+        $array = getTemplateList();
+        return array_pop($array);
     }
 }
 
@@ -251,7 +252,7 @@ function getAbsoluteBasePathTemplate($platform = false)
         if (defined('CORE') && isset($_SESSION['current_action_platform'])) {
             $platform = $_SESSION['current_action_platform'];
         } else {
-            $platform = Get::cur_plat();
+            $platform = Forma\lib\Get::cur_plat();
         }
     }
     if ($platform == 'fw') {
@@ -282,7 +283,7 @@ function getRelativeBasePathTemplate($platform = false)
         if (defined('CORE') && isset($_SESSION['current_action_platform'])) {
             $platform = $_SESSION['current_action_platform'];
         } else {
-            $platform = Get::cur_plat();
+            $platform = Forma\lib\Get::cur_plat();
         }
     }
     if ($platform == 'fw') {
@@ -301,7 +302,7 @@ function getRelativeBasePathTemplate($platform = false)
  */
 function getPathTemplate($platform = false)
 {
-    return Get::tmpl_path($platform);
+    return Forma\lib\Get::tmpl_path($platform);
     //return getRelativeBasePathTemplate($platform).getTemplate().'/';
 }
 
@@ -355,7 +356,7 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
             $GLOBALS['page']->add('<li><a href="#main_area_title">' . Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
 
             if ($title) {
-                $GLOBALS['page_title'] = Get::sett('page_title', '') . ' &rsaquo; ' . $title;
+                $GLOBALS['page_title'] = Forma\lib\Get::sett('page_title', '') . ' &rsaquo; ' . $title;
             }
 
             // Init navigation
@@ -451,7 +452,7 @@ function getBackUi($link, $name, $type = 'link')
             break;
         default:
                 return '<div class="container-back">' . "\n\t" . '<a href="' . $link . '" '
-                    . (Get::sett('use_accesskey') == 'on' ? 'accesskey="b">' . $name . ' (b)' : '>' . $name) . '</a>' . "\n"
+                    . (Forma\lib\Get::sett('use_accesskey') == 'on' ? 'accesskey="b">' . $name . ' (b)' : '>' . $name) . '</a>' . "\n"
                     . '</div>' . "\n";
     }
 }
@@ -599,7 +600,7 @@ function getLegenda()
 
 function setAccessibilityStatus($new_status)
 {
-    if (Get::sett('accessibility', 'off') != 'off') {
+    if (Forma\lib\Get::sett('accessibility', 'off') != 'off') {
         $_SESSION['high_accessibility'] = $new_status;
     } else {
         $_SESSION['high_accessibility'] = false;
@@ -608,7 +609,7 @@ function setAccessibilityStatus($new_status)
 
 function getAccessibilityStatus()
 {
-    if (Get::sett('accessibility') == 'off') {
+    if (Forma\lib\Get::sett('accessibility') == 'off') {
         return false;
     }
 

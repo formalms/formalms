@@ -52,11 +52,11 @@ class AdminmanagerAdmController extends AdmController
 
     public function show()
     {
-        Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
         $rmodel = new AdminrulesAdm();
 
-        switch (Get::req('res', DOTY_ALPHANUM, '')) {
+        switch (Forma\lib\Get::req('res', DOTY_ALPHANUM, '')) {
             case 'ok_ins': UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
             case 'err_ins': UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard')); break;
             default: if ($rmodel->totalGroup() <= 0) {
@@ -88,12 +88,12 @@ class AdminmanagerAdmController extends AdmController
     public function getAdmin()
     {
         //read input data
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, $this->_getSessionValue('filter', ''));
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, $this->_getSessionValue('filter', ''));
         $this->_setSessionValue('filter', $filter_text);
 
         //retrieve records from model
@@ -150,7 +150,7 @@ class AdminmanagerAdmController extends AdmController
 
     public function updateFilter()
     {
-        $filter = Get::req('filter', DOTY_MIXED, '');
+        $filter = Forma\lib\Get::req('filter', DOTY_MIXED, '');
 
         $_SESSION['adminmanager']['filter'] = $filter;
 
@@ -161,8 +161,8 @@ class AdminmanagerAdmController extends AdmController
 
     public function update_profileTask()
     {
-        $id_user = Get::req('id_user', DOTY_INT, 0);
-        $idst_profile = Get::req('idst_profile', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $idst_profile = Forma\lib\Get::req('idst_profile', DOTY_INT, 0);
 
         $output = [];
         if ($idst_profile <= 0) {
@@ -185,7 +185,7 @@ class AdminmanagerAdmController extends AdmController
 
     public function users()
     {
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
 
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
@@ -226,7 +226,7 @@ class AdminmanagerAdmController extends AdmController
 
     public function courses()
     {
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
 
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.course.php';
@@ -287,7 +287,7 @@ class AdminmanagerAdmController extends AdmController
 
     public function classlocationsTask()
     {
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         $selection = $this->model->loadClasslocationsSelection($id_user);
         $this->render('classlocations', [
             'id_user' => $id_user,
@@ -300,12 +300,12 @@ class AdminmanagerAdmController extends AdmController
 
     public function classlocations_setTask()
     {
-        if (Get::req('undo', DOTY_MIXED, false) !== false) {
+        if (Forma\lib\Get::req('undo', DOTY_MIXED, false) !== false) {
             Util::jump_to('index.php?r=adm/adminmanager/show');
         }
 
-        $id_user = Get::req('id_user', DOTY_INT, 0);
-        $selection_str = Get::req('selection', DOTY_STRING, '');
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $selection_str = Forma\lib\Get::req('selection', DOTY_STRING, '');
 
         if (!$selection_str) {
             $selection = [];
@@ -332,7 +332,7 @@ class AdminmanagerAdmController extends AdmController
 
     public function getclasslocationstabledataTask()
     {
-        $op = Get::req('op', DOTY_MIXED, false);
+        $op = Forma\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
                 $this->selectallclasslocationsTask();
@@ -341,12 +341,12 @@ class AdminmanagerAdmController extends AdmController
              break;
         }
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, 'location');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, 'location');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,

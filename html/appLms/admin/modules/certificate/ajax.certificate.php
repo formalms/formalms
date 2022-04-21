@@ -41,9 +41,9 @@ switch ($op) {
 
     case 'print':
         $output = ['success' => false];
-        $id_certificate = Get::req('id_certificate', DOTY_INT, -1);
-        $id_course = Get::req('id_course', DOTY_INT, -1);
-        $id_user = Get::req('id_user', DOTY_INT, -1);
+        $id_certificate = Forma\lib\Get::req('id_certificate', DOTY_INT, -1);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, -1);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
         ob_start();
         if ($id_user > 0 && $id_course > 0 && $id_certificate > 0) {
             $cert = new Certificate();

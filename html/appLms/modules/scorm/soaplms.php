@@ -647,7 +647,7 @@ if ((isset($_GET['op']) && $_GET['op'] == 'Finish')) {
             $itemtrack->setStatus($_GET['idUser'], $_GET['idReference'], $_GET['idscorm_item'], 'completed');
         }
     }
-    $scopath = str_replace('\\', '/', $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathscorm'));
+    $scopath = str_replace('\\', '/', $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathscorm'));
 
     $parameters = '';
     $re = sql_query('SELECT parameters FROM ' . $GLOBALS['prefix_lms'] . "_scorm_items WHERE idscorm_item = '" . $_GET['idscorm_item'] . "'");

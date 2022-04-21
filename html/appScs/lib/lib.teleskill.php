@@ -77,7 +77,7 @@ class Teleskill_Management
     {
         $xml_answer = false;
 
-        $remote_url = Get::sett('url_checkin_teleskill');
+        $remote_url = Forma\lib\Get::sett('url_checkin_teleskill');
         $tmp_url = parse_url($remote_url);
 
         $post_data = urlencode('message') . '=' . urlencode($xml_request);
@@ -131,7 +131,7 @@ class Teleskill_Management
      */
     public function canOpenRoom($start_time, $end_time, $capacity)
     {
-        $bw_code = Get::user_acceptlang();
+        $bw_code = Forma\lib\Get::user_acceptlang();
 
         $gmt = date('P');
         $gmt_split = explode(':', $gmt);
@@ -139,7 +139,7 @@ class Teleskill_Management
 
         $request = '<?xml version="1.0" encoding="utf-8"?' . '>
 		<ews type="5" lang="' . $bw_code . '">
-			<clientcode>' . Get::sett('code_teleskill') . '</clientcode>
+			<clientcode>' . Forma\lib\Get::sett('code_teleskill') . '</clientcode>
 			<startdate>' . date('Y-m-d H:i:s', fromDatetimeToTimestamp($start_time) - $gmt_offset * 3600) . '</startdate>
 			<enddate>' . date('Y-m-d H:i:s', fromDatetimeToTimestamp($end_time) - $gmt_offset * 3600) . '</enddate>';
         if ($capacity) {
@@ -189,7 +189,7 @@ class Teleskill_Management
      */
     public function openRoom($idConference, $title, $start_date, $end_date, $descr = false, $logo = false, $capacity = '', $skin = '')
     {
-        $bw_code = Get::user_acceptlang();
+        $bw_code = Forma\lib\Get::user_acceptlang();
 
         $gmt = date('P');
         $gmt_split = explode(':', $gmt);
@@ -198,7 +198,7 @@ class Teleskill_Management
         $request = ''
         . '<?xml version="1.0" encoding="utf-8"?' . '>
 		<ews type="1" lang="' . $bw_code . '">
-			<clientcode>' . Get::sett('code_teleskill') . '</clientcode>
+			<clientcode>' . Forma\lib\Get::sett('code_teleskill') . '</clientcode>
 			<startdate>' . date('Y-m-d H:i:s', fromDatetimeToTimestamp($start_date) - $gmt_offset * 3600) . '</startdate>
 			<enddate>' . date('Y-m-d H:i:s', fromDatetimeToTimestamp($end_date) - $gmt_offset * 3600) . '</enddate>
 			<title>' . $title . '</title>
@@ -328,7 +328,7 @@ class Teleskill_Management
      */
     public function updateRoom($roomid, $uid, $title, $start_date, $end_date, $descr = false, $logo = false, $capacity = 1, $bookable = 0)
     {
-        $bw_code = Get::user_acceptlang();
+        $bw_code = Forma\lib\Get::user_acceptlang();
 
         $gmt = date('P');
         $gmt_split = explode(':', $gmt);
@@ -339,7 +339,7 @@ class Teleskill_Management
         $request = ''
         . '<?xml version="1.0" encoding="utf-8"?' . '>
 		<ews type="6" lang="' . $bw_code . '">
-			<clientcode>' . Get::sett('code_teleskill') . '</clientcode>
+			<clientcode>' . Forma\lib\Get::sett('code_teleskill') . '</clientcode>
 			<roomid>' . $teleskill_room_id . '</roomid>
 			<startdate>' . date('Y-m-d H:i:s', $start_date - $gmt_offset * 3600) . '</startdate>
 			<enddate>' . date('Y-m-d H:i:s', $end_date - $gmt_offset * 3600) . '</enddate>
@@ -411,7 +411,7 @@ class Teleskill_Management
      */
     public function loginIntoRoom($roomid, $role, $userid, $user_name, $email = false)
     {
-        $bw_code = Get::user_acceptlang();
+        $bw_code = Forma\lib\Get::user_acceptlang();
 
         if ($bw_code === 'it-IT') {
             $lang_code = 'IT';
@@ -421,7 +421,7 @@ class Teleskill_Management
 
         $request = '<?xml version="1.0" encoding="utf-8"?' . '>
 						<ews type="3" lang="' . $lang_code . '">
-							<clientcode>' . Get::sett('code_teleskill') . '</clientcode>
+							<clientcode>' . Forma\lib\Get::sett('code_teleskill') . '</clientcode>
 							<roomid>' . $roomid . '</roomid>
 							<lmsuserid>' . $userid . '</lmsuserid>
 							<role>' . $role . '</role>
@@ -472,11 +472,11 @@ class Teleskill_Management
         $conf = $this->nextRow($re_room);
         $roomid = $conf['roomid'];
 
-        $bw_code = Get::user_acceptlang();
+        $bw_code = Forma\lib\Get::user_acceptlang();
         $request = ''
         . '<?xml version="1.0" encoding="utf-8"?' . '>
 		<ews type="2" lang="' . $bw_code . '">
-			<clientcode>' . Get::sett('code_teleskill') . '</clientcode>
+			<clientcode>' . Forma\lib\Get::sett('code_teleskill') . '</clientcode>
 			<roomid>' . $roomid . '</roomid>';
         $request .= '</ews>';
 
@@ -651,11 +651,11 @@ class Teleskill_Management
     {
         $xml_answer = false;
 
-        $bw_code = Get::user_acceptlang();
+        $bw_code = Forma\lib\Get::user_acceptlang();
 
         $request = '<?xml version="1.0" encoding="utf-8"?' . '>
 		<ews type="10" lang="' . $bw_code . '">
-			<clientcode>' . Get::sett('code_teleskill') . '</clientcode>
+			<clientcode>' . Forma\lib\Get::sett('code_teleskill') . '</clientcode>
 			<roomid>' . $roomid . '</roomid>
 			<complete>1</complete>
 			</ews>';

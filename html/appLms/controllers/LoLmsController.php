@@ -113,7 +113,7 @@ class LoLmsController extends LmsController
 
     public function get()
     {
-        $id = Get::req('id', DOTY_INT, 0);
+        $id = Forma\lib\Get::req('id', DOTY_INT, 0);
         $responseData = [];
         $responseData['data'] = $this->getFolders($this->idCourse, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
@@ -131,8 +131,8 @@ class LoLmsController extends LmsController
 
     public function delete()
     {
-        $id = Get::req('id', DOTY_INT, false);
-        $ids = Get::req('ids', DOTY_MIXED, null);
+        $id = Forma\lib\Get::req('id', DOTY_INT, false);
+        $ids = Forma\lib\Get::req('ids', DOTY_MIXED, null);
 
         $ids = $ids ? explode(',', $ids) : [$id];
 
@@ -148,9 +148,9 @@ class LoLmsController extends LmsController
 
     public function rename()
     {
-        $id = Get::req('id', DOTY_INT, false);
-        $newName = Get::req('newName', DOTY_STRING, false);
-        $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+        $id = Forma\lib\Get::req('id', DOTY_INT, false);
+        $newName = Forma\lib\Get::req('newName', DOTY_STRING, false);
+        $type = Forma\lib\Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
         $this->model->setCurrentTab($type);
 
         echo $this->json->encode($this->model->renameFolder($id, $newName));
@@ -159,8 +159,8 @@ class LoLmsController extends LmsController
 
     public function move()
     {
-        $id = Get::req('id', DOTY_INT, false);
-        $newParentId = Get::req('newParentId', DOTY_INT, false);
+        $id = Forma\lib\Get::req('id', DOTY_INT, false);
+        $newParentId = Forma\lib\Get::req('newParentId', DOTY_INT, false);
 
         echo $this->json->encode($this->model->moveFolder($id, $newParentId));
         exit;
@@ -168,9 +168,9 @@ class LoLmsController extends LmsController
 
     public function reorder()
     {
-        $ids = Get::req('id', DOTY_MIXED, '');
-        $newParent = Get::req('newParent', DOTY_INT, false);
-        $newOrderString = Get::req('newOrder', DOTY_STRING, false);
+        $ids = Forma\lib\Get::req('id', DOTY_MIXED, '');
+        $newParent = Forma\lib\Get::req('newParent', DOTY_INT, false);
+        $newOrderString = Forma\lib\Get::req('newOrder', DOTY_STRING, false);
         $newOrder = explode(",", $newOrderString);
         $newOrder = array_filter($newOrder);
 
@@ -189,8 +189,8 @@ class LoLmsController extends LmsController
 
     public function edit()
     {
-        $id = Get::req('id', DOTY_INT, false);
-        $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+        $id = Forma\lib\Get::req('id', DOTY_INT, false);
+        $type = Forma\lib\Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
 
         $tdb = $this->model->setTdb($type, $_SESSION['idCourse']);
         $tree_view = new Org_TreeView($tdb, 'organization');
@@ -207,10 +207,10 @@ class LoLmsController extends LmsController
 
     public function createFolder()
     {
-        $selectedNode = Get::req('selectedNode', DOTY_INT, false);
-        $folderName = Get::req('folderName', DOTY_STRING, false);
-        // $currentState = Get::req('currentState', DOTY_STRING, false);
-        $type = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+        $selectedNode = Forma\lib\Get::req('selectedNode', DOTY_INT, false);
+        $folderName = Forma\lib\Get::req('folderName', DOTY_STRING, false);
+        // $currentState = Forma\lib\Get::req('currentState', DOTY_STRING, false);
+        $type = Forma\lib\Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
         $this->model->setCurrentTab($type);
 
         if (!$folderName) {
@@ -225,10 +225,10 @@ class LoLmsController extends LmsController
 
     public function copy()
     {
-        $fromType = Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
-        $newtype = Get::req('newtype', DOTY_STRING, false);
+        $fromType = Forma\lib\Get::req('type', DOTY_STRING, LoLms::ORGDIRDB);
+        $newtype = Forma\lib\Get::req('newtype', DOTY_STRING, false);
 
-        if ($ids = Get::req('ids', DOTY_MIXED, false)) {
+        if ($ids = Forma\lib\Get::req('ids', DOTY_MIXED, false)) {
             $ids_arr = explode(',', $ids);
             foreach ($ids_arr as $id) {
                 if ($id > 0 && $this->model->copy($id, $fromType)) {

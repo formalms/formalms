@@ -247,7 +247,7 @@ class CoreWikiAdmin
         $res .= $form->getTextfield($this->lang->def('_TITLE'), 'title', 'title', 255, $title);
         $res .= $form->getSimpleTextarea($this->lang->def('_DESCRIPTION'), 'description', 'description', $description);
 
-        if (Get::cur_plat() !== 'framework') {
+        if (Forma\lib\Get::cur_plat() !== 'framework') {
             $res .= $form->getHidden('public', 'public', 1);
         }
 
@@ -799,7 +799,7 @@ class CoreWikiPublic
         $res = '';
 
         /*
-        if (Get::cur_plat() == 'cms') {
+        if (Forma\lib\Get::cur_plat() == 'cms') {
             $res=getCmsTitleArea($text, $image = '', $alt_image = '');
         }
         else {
@@ -1434,7 +1434,7 @@ class CoreWikiPublic
         $rev = new WikiRevisionManager([$wiki_id, $page_info['page_id'], $wiki_lang]);
 
         if ($vis_item === false) {
-            $vis_item = Get::sett('visuItem');
+            $vis_item = Forma\lib\Get::sett('visuItem');
         }
 
         $table_caption = $this->lang->def('_HISTORY');

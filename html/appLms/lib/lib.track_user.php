@@ -70,7 +70,7 @@ class TrackUser
 		WHERE idEnter = '" . $_SESSION['id_enter_course'] . "' "
             . "AND idCourse = '" . $id_course . "' AND idUser = '" . $id_user . "'");
 
-        if (Get::sett('tracking') == 'on' && $_SESSION['levelCourse'] != '2') {
+        if (Forma\lib\Get::sett('tracking') == 'on' && $_SESSION['levelCourse'] != '2') {
             $query_track = '
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_trackingeneral
 			( idUser, idEnter, idCourse, function, type, timeof, session_id, ip ) VALUES (

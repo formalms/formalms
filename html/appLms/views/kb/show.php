@@ -1,5 +1,5 @@
 <script type="text/javascript">
-	var kb_pagination_items_per_page = <?php echo Get::sett('visuItem', 25); ?>;
+	var kb_pagination_items_per_page = <?php echo Forma\lib\Get::sett('visuItem', 25); ?>;
 	var ajax_url_select_folder = "<?php echo $url_select_folder; ?>";
 	var lb = new LightBox();
 	var kb_lang ={
@@ -73,9 +73,9 @@
                                     $this->widget('table', [
                                         'id' => 'kb_table',
                                         'ajaxUrl' => 'ajax.server.php?r=kb/getlist',
-                                        'rowsPerPage' => Get::sett('visuItem', 25),
+                                        'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
                                         'startIndex' => 0,
-                                        'results' => Get::sett('visuItem', 25),
+                                        'results' => Forma\lib\Get::sett('visuItem', 25),
                                         'sort' => 'r_name',
                                         'dir' => 'asc',
                                         'generateRequest' => 'KbManagement.requestBuilder',

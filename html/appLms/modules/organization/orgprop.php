@@ -514,7 +514,7 @@ function organization_access(&$treeView, $idItem)
 
     $aclManager = new DoceboACLManager();
     if (isset($_POST['okselector'])) {
-        $treeView->tdb->__setAccess($idItem, $user_select->getSelection($_POST), Get::req('relation'));
+        $treeView->tdb->__setAccess($idItem, $user_select->getSelection($_POST), Forma\lib\Get::req('relation'));
         Util::jump_to('index.php?modname=storage');
     } elseif (isset($_POST['cancelselector'])) {
         Util::jump_to('index.php?modname=storage');

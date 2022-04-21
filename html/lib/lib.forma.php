@@ -28,7 +28,7 @@ class Forma
 
     public static function useCustomScripts()
     {
-        return Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty($_SESSION['notuse_customscript']);
+        return Forma\lib\Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty($_SESSION['notuse_customscript']);
     }
 
     /**

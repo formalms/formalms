@@ -97,8 +97,8 @@ class FunctionalRoles_API extends API
     {
         try {
             $id_group = (isset($params['id_group'])) ? $params['id_group'] : 0;
-            $langs[Get::sett('default_language')]['name'] = (isset($params['name'])) ? $params['name'] : '';
-            $langs[Get::sett('default_language')]['description'] = (isset($params['description'])) ? $params['description'] : '';
+            $langs[Forma\lib\Get::sett('default_language')]['name'] = (isset($params['name'])) ? $params['name'] : '';
+            $langs[Forma\lib\Get::sett('default_language')]['description'] = (isset($params['description'])) ? $params['description'] : '';
 
             $functionalRole = new FunctionalrolesAdm();
             $result = $functionalRole->createFunctionalRole($id_group, $langs);
@@ -112,8 +112,8 @@ class FunctionalRoles_API extends API
     public function createGroup($params)
     {
         try {
-            $langs[Get::sett('default_language')]['name'] = (isset($params['name'])) ? $params['name'] : '';
-            $langs[Get::sett('default_language')]['description'] = (isset($params['description'])) ? $params['description'] : '';
+            $langs[Forma\lib\Get::sett('default_language')]['name'] = (isset($params['name'])) ? $params['name'] : '';
+            $langs[Forma\lib\Get::sett('default_language')]['description'] = (isset($params['description'])) ? $params['description'] : '';
 
             $functionalRole = new FunctionalrolesAdm();
             $result = $functionalRole->createGroup($langs);

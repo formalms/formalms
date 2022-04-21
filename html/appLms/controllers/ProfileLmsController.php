@@ -38,10 +38,10 @@ class ProfileLmsController extends LmsController
 
     protected function _profileBackUrl()
     {
-        $id_user = Get::req('id_user', DOTY_INT, 0);
-        $type = Get::req('type', DOTY_STRING, 'false');
-        $from = Get::req('from', DOTY_INT, 0);
-        $back_my_friend = Get::req('back', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $type = Forma\lib\Get::req('type', DOTY_STRING, 'false');
+        $from = Forma\lib\Get::req('from', DOTY_INT, 0);
+        $back_my_friend = Forma\lib\Get::req('back', DOTY_INT, 0);
         if ($type !== 'false') {
             if ($from == 0) {
                 return getBackUi('index.php?modname=profile&op=profile&id_user=' . $id_user . '&ap=goprofile', Lang::t('_BACK', 'standard'));
@@ -91,13 +91,13 @@ class ProfileLmsController extends LmsController
         //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserProfileShowEvent::EVENT_NAME, $event);
 
         //view part
-        if (Get::sett('profile_modify') == 'limit') {
+        if (Forma\lib\Get::sett('profile_modify') == 'limit') {
             echo $profile->getTitleArea();
             echo $profile->getHead();
             echo $profile->performAction(false, 'mod_password');
             echo $this->_profileBackUrl();
             echo $profile->getFooter();
-        } elseif (Get::sett('profile_modify') == 'allow') {
+        } elseif (Forma\lib\Get::sett('profile_modify') == 'allow') {
             echo $profile->getTitleArea();
             echo $profile->getHead();
             echo $profile->performAction();
@@ -170,7 +170,7 @@ class ProfileLmsController extends LmsController
         // extract checking period
         $year = date('Y');
         $p_list = [];
-        $p_selected = Get::pReq('credits_period', DOTY_INT, 0);
+        $p_selected = Forma\lib\Get::pReq('credits_period', DOTY_INT, 0);
         $p_res = sql_query('SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_time_period ORDER BY end_date DESC, start_date DESC');
         if (sql_num_rows($p_res) > 0) {
             while ($obj = sql_fetch_object($p_res)) {

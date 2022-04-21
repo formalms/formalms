@@ -77,7 +77,7 @@ class ClassroomLmsController extends LmsController
             _CUS_END => '_T_USER_STATUS_END',
         ];
         $this->levels = CourseLevel::getTranslatedLevels();
-        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
 
         $upd = new UpdatesLms();
         $this->info = $upd->courseUpdates();
@@ -87,7 +87,7 @@ class ClassroomLmsController extends LmsController
     {
         $model = new ClassroomLms();
 
-        if (Get::sett('on_usercourse_empty') === 'on') {
+        if (Forma\lib\Get::sett('on_usercourse_empty') === 'on') {
             $conditions_t = [
                 'cu.iduser = :id_user',
             ];
@@ -127,7 +127,7 @@ class ClassroomLmsController extends LmsController
         if (!$tb_label) {
             $_SESSION['id_common_label'] = 0;
         } else {
-            $id_common_label = Get::req('id_common_label', DOTY_INT, -1);
+            $id_common_label = Forma\lib\Get::req('id_common_label', DOTY_INT, -1);
 
             if ($id_common_label >= 0) {
                 $_SESSION['id_common_label'] = $id_common_label;
@@ -217,8 +217,8 @@ class ClassroomLmsController extends LmsController
     {
         $model = new ClassroomLms();
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_year = Get::req('filter_year', DOTY_INT, 0);
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_year = Forma\lib\Get::req('filter_year', DOTY_INT, 0);
 
         $conditions = [
             'cu.iduser = :id_user',
@@ -271,8 +271,8 @@ class ClassroomLmsController extends LmsController
     {
         $model = new ClassroomLms();
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_year = Get::req('filter_year', DOTY_INT, 0);
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_year = Forma\lib\Get::req('filter_year', DOTY_INT, 0);
 
         $conditions = [
             'cu.iduser = :id_user',
@@ -324,8 +324,8 @@ class ClassroomLmsController extends LmsController
     {
         $model = new ClassroomLms();
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_year = Get::req('filter_year', DOTY_INT, 0);
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_year = Forma\lib\Get::req('filter_year', DOTY_INT, 0);
 
         $conditions = [
             'cu.iduser = :id_user',
@@ -377,8 +377,8 @@ class ClassroomLmsController extends LmsController
     {
         $model = new ClassroomLms();
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_year = Get::req('filter_year', DOTY_INT, 0);
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_year = Forma\lib\Get::req('filter_year', DOTY_INT, 0);
 
         $conditions = [
             'cu.iduser = :id_user',
@@ -449,7 +449,7 @@ class ClassroomLmsController extends LmsController
     public function self_unsubscribe_dialog()
     {
         $dm = new DateManager();
-        $id_course = get::gReq('id_course', DOTY_INT);
+        $id_course = Forma\lib\Get::gReq('id_course', DOTY_INT);
         $id_user = Docebo::user()->getIdSt();
 
         $edition_arr = $dm->getUserDateForCourse($id_user, $id_course);

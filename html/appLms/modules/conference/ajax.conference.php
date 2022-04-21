@@ -76,7 +76,7 @@ $op = importVar('op');
 switch ($op) {
     case 'getmaxroom':
         $room_type = importVar('room_type');
-        $maxp = Get::sett($room_type . '_max_participant');
+        $maxp = Forma\lib\Get::sett($room_type . '_max_participant');
         aout($maxp);
         break;
 

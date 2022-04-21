@@ -103,7 +103,7 @@ class AuthenticationManager
 
     public function saveUser($user)
     {
-    //DoceboUser::setupUser($user); // TODO: secondo me meglio tenere la funzione qui ma valutare
+        //DoceboUser::setupUser($user); // TODO: secondo me meglio tenere la funzione qui ma valutare
         //////////////////////////////////
         $user->loadUserSectionST();
         $user->SaveInSession();
@@ -112,26 +112,29 @@ class AuthenticationManager
 
         resetTemplate();
 
-        $_SESSION['logged_in'] = true;
-        $_SESSION['last_enter'] = $user->getLastEnter();
-        $_SESSION['user_enter_mark'] = time();
-
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $currentSession->set('logged_in', true);
+        $currentSession->set('last_enter', $user->getLastEnter());
+        $currentSession->set('user_enter_mark', time());
+        $currentSession->set('user',$user);
         $user->setLastEnter(date('Y-m-d H:i:s'));
         //////////////////////////////////
 
         // force_standard mode
         if (isset($_REQUEST['notuse_plugin'])) {
-            $_SESSION['notuse_plugin'] = true;
+            $currentSession->set('notuse_plugin', true);
         }
         if (isset($_REQUEST['notuse_customscript'])) {
-            $_SESSION['notuse_customscript'] = true;
+            $currentSession->set('notuse_customscript', true);
         }
         if (isset($_REQUEST['notuse_template'])) {
-            $_SESSION['notuse_template'] = true;
+            $currentSession->set('notuse_template', true);
         }
 
-        if (isset($_SESSION['social'])) {
-            $this->plugin_manager->run_plugin($_SESSION['social']['plugin'], 'setSocial', ['id' => $_SESSION['social']['data']['id']]);
+        if ($currentSession->has('social')) {
+            $plugin = $currentSession->get('social')['plugin'];
+            $id = $currentSession->get('social')['data']['id'];
+            $this->plugin_manager->run_plugin($plugin, 'setSocial', ['id' => $id]);
         }
 
         if (self::_checkMandatoryFields()) {
@@ -140,6 +143,7 @@ class AuthenticationManager
         if (self::_checkPwdElapsed()) {
             return PWD_ELAPSED;
         }
+        $currentSession->save();
 
         return USER_SAVED;
     }

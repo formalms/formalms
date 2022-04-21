@@ -177,9 +177,9 @@ if (!Docebo::user()->isAnonymous()) {
                     $msg_composer = new EventMessageComposer();
 
                     $msg_composer->setSubjectLangText('email', '_TO_APPROVE_GROUP_USER_SBJ', false);
-                    $msg_composer->setBodyLangText('email', '_TO_APPROVE_GROUP_USER_TEXT', ['[url]' => Get::site_url()]);
+                    $msg_composer->setBodyLangText('email', '_TO_APPROVE_GROUP_USER_TEXT', ['[url]' => Forma\lib\Get::site_url()]);
 
-                    $msg_composer->setBodyLangText('sms', '_TO_APPROVE_GROUP_USER_TEXT_SMS', ['[url]' => Get::site_url()]);
+                    $msg_composer->setBodyLangText('sms', '_TO_APPROVE_GROUP_USER_TEXT_SMS', ['[url]' => Forma\lib\Get::site_url()]);
                     $idst_approve = $acl->getRoleST('/framework/admin/directory/editgroup');
                     $recipients = $acl_man->getAllRoleMembers($idst_approve);
 

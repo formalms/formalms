@@ -318,7 +318,7 @@ class Table
     public function __construct($max_rows = 10, $caption = '', $summary = '', $class = '')
     {
         if (!$max_rows) {
-            $max_rows = Get::sett('visuItem');
+            $max_rows = Forma\lib\Get::sett('visuItem');
         }
 
         $this->table_style = 'table-view ' . $class;
@@ -342,7 +342,7 @@ class Table
         /*i need this for the transiction from old to new*/
         $this->rows = 0;
         $this->maxRowsAtTime = $max_rows;
-        //Util::get_css(Get::tmpl_path('base').'yui-skin/datatable.css', true, true);
+        //Util::get_css(Forma\lib\Get::tmpl_path('base').'yui-skin/datatable.css', true, true);
     }
 
     public function setTableStyle($table_style)

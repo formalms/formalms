@@ -302,7 +302,7 @@ class PeopleListView extends ListView
 
     public function _getRowsPage()
     {
-        return Get::sett('visuUser');
+        return Forma\lib\Get::sett('visuUser');
     }
 
     public function __construct($title = '', &$data = '', &$rend = '', $id = '')
@@ -979,7 +979,7 @@ class PeopleListView extends ListView
     {
         YuiLib::load();
         //addJs($GLOBALS['where_framework_relative'].'/modules/directory/', 'ajax.directory.js');
-        Util::get_js(Get::rel_path('adm') . '/modules/directory/ajax.directory.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('adm') . '/modules/directory/ajax.directory.js', true, true);
 
         require_once _base_ . '/lib/lib.user_profile.php';
 
@@ -1414,7 +1414,7 @@ class GroupListView extends ListView
 
     public function _getRowsPage()
     {
-        return Get::sett('visuItem');
+        return Forma\lib\Get::sett('visuItem');
     }
 
     public function showOnlyGroupName()
@@ -1872,7 +1872,7 @@ class GroupMembersListView extends ListView
 
     public function _getRowsPage()
     {
-        return Get::sett('visuItem');
+        return Forma\lib\Get::sett('visuItem');
     }
 
     public function GroupMembersListView($idst, $title, &$data, &$rend, $id)

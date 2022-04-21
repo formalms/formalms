@@ -30,9 +30,9 @@ sql_query("SET CHARACTER SET 'utf8'");
 //TODO NO_Strict_MODE: to be confirmed
 sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 
-$platform_code = Get::pReq('platform', DOTY_STRING);
-$lang = Get::pReq('lang', DOTY_STRING);
-$upgrade = Get::pReq('upgrade', DOTY_INT);
+$platform_code = Forma\lib\Get::pReq('platform', DOTY_STRING);
+$lang = Forma\lib\Get::pReq('lang', DOTY_STRING);
+$upgrade = Forma\lib\Get::pReq('upgrade', DOTY_INT);
 
 $lang_arr = array_keys($_SESSION['lang_install']);
 $pl_arr = ['framework'];

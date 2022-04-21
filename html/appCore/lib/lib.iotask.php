@@ -197,7 +197,7 @@ class DoceboConnectionManager
         //		$description = Docebo::db()->escape($connection->get_description());
         $name = $connection->get_name();
         $description = $connection->get_description();
-        $type = Get::filter($connection->get_type_name(), DOTY_ALPHANUM);
+        $type = Forma\lib\Get::filter($connection->get_type_name(), DOTY_ALPHANUM);
         $params = $connection->get_config();
         $str_params = urlencode(Util::serialize($params));
         $lang = &$this->get_lang();
@@ -720,7 +720,7 @@ class DoceboImport
         require_once _base_ . '/lib/lib.form.php';
         $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
         $form = new Form();
-        $table = new Table(Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
+        $table = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
 
         $src_cols = $this->source->get_cols_descripor();
         $dst_cols = $this->destination->get_cols_descripor();

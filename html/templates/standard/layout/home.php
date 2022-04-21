@@ -24,8 +24,8 @@
 		<?php echo Layout::zone('page_head'); ?>
 		<!-- Restyling -->
 		<?php
-        Util::get_js(Get::rel_path('base') . '../web/static/main.js?v=' . getTemplateVersion(getDefaultTemplate()), true, true);
-        Util::get_css(Get::rel_path('base') . '../web/static/main.css?v=' . getTemplateVersion(getDefaultTemplate()), true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '../web/static/main.js?v=' . getTemplateVersion(getDefaultTemplate()), true, true);
+        Util::get_css(Forma\lib\Get::rel_path('base') . '../web/static/main.css?v=' . getTemplateVersion(getDefaultTemplate()), true, true);
         ?>
 	</head>
 	<body class="yui-skin-docebo yui-skin-sam">

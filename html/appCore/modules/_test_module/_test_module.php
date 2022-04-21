@@ -161,7 +161,7 @@ function dispatch($op)
             $libs = YuiLib::load(false, false, true);
             $GLOBALS['page']->add($libs, 'page_head');
             $GLOBALS['page']->add(Util::get_css('../yui-skin/datatable.css'), 'page_head');
-            Util::get_js(Get::rel_path('base') . '/docebocore/modules/_test_module/sample.js', true, true);
+            Util::get_js(Forma\lib\Get::rel_path('base') . '/docebocore/modules/_test_module/sample.js', true, true);
             $script = 'YAHOO.util.Event.onDOMReady(function(e) {
 					initTable();
 				});';
@@ -208,16 +208,16 @@ function dispatch($op)
 					<li><a href="#tab5"><em>Calendario</em></a></li>
 				</ul>
 				<div class="yui-content">
-					<div>' . Get::img(Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
+					<div>' . Forma\lib\Get::img(Forma\lib\Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
 					<div>
 						<p>Lorem ipsum dolor sit amet consectetuer accumsan enim tempor neque urna. Tempus interdum euismod felis mauris Aliquam et vitae elit vel leo. Accumsan Phasellus sit natoque rutrum nibh auctor eu neque porta tincidunt. Ipsum enim ut felis nunc Pellentesque sed malesuada justo nec nec. Sem justo dolor mattis porta Quisque.</p>
 						<p>Interdum ut diam convallis Sed hendrerit est augue eget ipsum lacinia. Et at montes Sed est nec arcu cursus congue neque quis. Sagittis nec dictum nibh urna non urna justo consectetuer accumsan pretium. A risus velit ante id Donec nibh eros vitae at amet. Enim et hac Nam mus tellus consequat sapien eros nec sapien. Wisi Integer sapien suscipit tincidunt et tincidunt eu et neque et. Semper nisl et.</p>
 						<p>Justo nunc et Maecenas dictum Vestibulum vel a neque libero non. Hendrerit metus Vestibulum Pellentesque consectetuer augue malesuada Ut Vestibulum Vestibulum scelerisque. Elit tellus enim purus nascetur Cum condimentum est vitae pellentesque pellentesque. Nisl pretium vel dolor Integer et pharetra elit nulla et nonummy. Phasellus tempus malesuada cursus ipsum urna consectetuer ut quis condimentum consequat. Parturient pretium convallis accumsan.</p>
 						<p>Turpis vitae turpis lorem dignissim quis lorem rutrum pede mus justo. Morbi dictumst interdum ut dui elit faucibus ac tempor eget a. Pede penatibus urna mus id pellentesque commodo amet porta risus pede. Sapien semper congue nibh sit tortor enim nibh amet quis in. Vivamus condimentum egestas dictumst vel auctor ut Aenean malesuada mattis convallis. Ipsum Pellentesque libero Nullam Donec nec at enim faucibus sit orci. </p>
 					</div>
-					<div>' . Get::img(Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
-					<div>' . Get::img(Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
-					<div>' . Get::img(Get::rel_path('base') . '/calendar.jpg', false, false, false, true) . '</div>
+					<div>' . Forma\lib\Get::img(Forma\lib\Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
+					<div>' . Forma\lib\Get::img(Forma\lib\Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '</div>
+					<div>' . Forma\lib\Get::img(Forma\lib\Get::rel_path('base') . '/calendar.jpg', false, false, false, true) . '</div>
 				</div>', 'content');
 
             cout('</div>', 'content');
@@ -275,7 +275,7 @@ cout('
 					<li><a href="#"><em>Calendario</em></a></li>
 				</ul>
 			</div>
-			' . Get::img(Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '
+			' . Forma\lib\Get::img(Forma\lib\Get::rel_path('base') . '/mycourses.jpg', false, false, false, true) . '
 		</div>
 		<div>
         	<div class="subtab_list">
@@ -347,7 +347,7 @@ cout('
 				</ul>
 				
 			</div>
-				' . Get::img(Get::rel_path('base') . '/calendar.jpg', false, false, false, true) . '
+				' . Forma\lib\Get::img(Forma\lib\Get::rel_path('base') . '/calendar.jpg', false, false, false, true) . '
 
 		</div>
 		', 'content');

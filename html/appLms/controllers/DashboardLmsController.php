@@ -47,7 +47,7 @@ class DashboardLmsController extends LmsController
         checkPerm('view', true, $this->_mvc_name);
         $defaultLayout = $this->model->getDefaultLayout();
 
-        if (Get::req('mycourses_tab', DOTY_STRING, null)) {
+        if (Forma\lib\Get::req('mycourses_tab', DOTY_STRING, null)) {
             $this->widget('lms_tab', [
                 'active' => 'dashboard',
                 'close' => false,
@@ -92,9 +92,9 @@ class DashboardLmsController extends LmsController
     public function ajaxAction()
     {
         $result = ['status' => 200];
-        $blockParameter = Get::pReq('block', DOTY_MIXED);
-        $actionParameter = Get::pReq('blockAction', DOTY_MIXED);
-        $dashboardLayoutIdParameter = Get::pReq('dashboardLayoutId', DOTY_MIXED);
+        $blockParameter = Forma\lib\Get::pReq('block', DOTY_MIXED);
+        $actionParameter = Forma\lib\Get::pReq('blockAction', DOTY_MIXED);
+        $dashboardLayoutIdParameter = Forma\lib\Get::pReq('dashboardLayoutId', DOTY_MIXED);
 
         $block = $this->model->getRegisteredBlock($dashboardLayoutIdParameter, $blockParameter);
         if (null !== $block) {

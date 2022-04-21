@@ -33,7 +33,7 @@ function certificate()
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
-    $tb = new Table(Get::sett('visuItem'), $lang->def('_CERTIFICATE_CAPTION'), $lang->def('_CERTIFICATE_SUMMARY'));
+    $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CERTIFICATE_CAPTION'), $lang->def('_CERTIFICATE_SUMMARY'));
     $tb->initNavBar('ini', 'link');
     $tb->setLink('index.php?modname=certificate&amp;op=certificate');
     $ini = $tb->getSelectedElement();
@@ -54,7 +54,7 @@ function certificate()
             " OR code LIKE '%" . $_POST['filter_text'] . "%')";
     }
     $query_certificate .= " ORDER BY id_certificate
-    LIMIT $ini," . Get::sett('visuItem');
+    LIMIT $ini," . Forma\lib\Get::sett('visuItem');
 
     $query_certificate_tot = '
     SELECT COUNT(*)
@@ -74,17 +74,17 @@ function certificate()
         $type_h[] = 'image';
     }
 
-    $cont_h[] = Get::sprite('subs_view', Lang::t('_PREVIEW', 'certificate'));
+    $cont_h[] = Forma\lib\Get::sprite('subs_view', Lang::t('_PREVIEW', 'certificate'));
     $type_h[] = 'image';
 
     if ($mod_perm) {
-        $cont_h[] = Get::sprite('subs_print', Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate'));
+        $cont_h[] = Forma\lib\Get::sprite('subs_print', Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate'));
         $type_h[] = 'image';
 
-        $cont_h[] = Get::sprite('subs_mod', Lang::t('_MOD', 'certificate'));
+        $cont_h[] = Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'certificate'));
         $type_h[] = 'image';
 
-        $cont_h[] = Get::sprite('subs_del', Lang::t('_DEL', 'certificate'));
+        $cont_h[] = Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'certificate'));
         $type_h[] = 'image';
     }
 
@@ -102,20 +102,20 @@ function certificate()
                 . Lang::t('_TEMPLATE', 'certificate') . '</a>';
         }
 
-        $cont[] = Get::sprite_link('subs_view', 'index.php?modname=certificate&amp;op=preview&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform, Lang::t('_PREVIEW', 'certificate'));
+        $cont[] = Forma\lib\Get::sprite_link('subs_view', 'index.php?modname=certificate&amp;op=preview&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform, Lang::t('_PREVIEW', 'certificate'));
 
         if ($mod_perm) {
-            $cont[] = Get::sprite_link(
+            $cont[] = Forma\lib\Get::sprite_link(
                 'subs_print',
                 'index.php?modname=certificate&amp;op=report_certificate&of_platform=lms&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform,
                 Lang::t('_CERTIFICATE_VIEW_CAPTION', 'certificate')
             );
-            $cont[] = Get::sprite_link(
+            $cont[] = Forma\lib\Get::sprite_link(
                 'subs_mod',
                 'index.php?modname=certificate&amp;op=modcertificate&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform,
                 Lang::t('_MOD', 'certificate')
             );
-            $cont[] = Get::sprite_link(
+            $cont[] = Forma\lib\Get::sprite_link(
                 'subs_del',
                 'index.php?modname=certificate&amp;op=delcertificate&amp;id_certificate=' . $id_certificate . '&of_platform=' . $currentPlatform,
                 Lang::t('_DEL', 'certificate')
@@ -138,7 +138,7 @@ function certificate()
         . '<div class="quick_search_form" style="float: none;">
             <div>
                 <div class="simple_search_box">'
-        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', Get::req('filter_text', DOTY_MIXED, ''), '', 255, '')
+        . Form::getInputTextfield('search_t', 'filter_text', 'filter_text', Forma\lib\Get::req('filter_text', DOTY_MIXED, ''), '', 255, '')
         . Form::getButton('filter_set', 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b')
         . Form::getButton('filter_reset', 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b')
         . '</div>
@@ -443,10 +443,10 @@ function delcertificate()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
+    $id_certificate = Forma\lib\Get::req('id_certificate', DOTY_INT, 0);
     $lang = &DoceboLanguage::createInstance('certificate', 'lms');
 
-    if (Get::req('confirm', DOTY_INT, 0) == 1) {
+    if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $certificate = new Certificate();
         $certificate_info = $certificate->getCertificateInfo($id_certificate);
@@ -524,7 +524,7 @@ function report_certificate()
             . getBackUi('index.php?modname=certificate&amp;op=certificate', $lang->def('_BACK'))
         );
 
-        $tb = new Table(Get::sett('visuItem'), $lang->def('_CHOOSE_COURSE'), $lang->def('_COURSE_LIST'));
+        $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CHOOSE_COURSE'), $lang->def('_COURSE_LIST'));
 
         $type_h = ['', '', 'min-cell'];
         $cont_h = [
@@ -588,7 +588,7 @@ function report_certificate()
             $certificate_info = $certificate->getCertificateList();
         }
 
-        $tb = new Table(Get::sett('visuItem'), $lang->def('_CHOOSE_CERTIFICATE'), $lang->def('_CERTIFICATE_LIST'));
+        $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CHOOSE_CERTIFICATE'), $lang->def('_CERTIFICATE_LIST'));
 
         $type_h = ['', ''];
         $cont_h = [
@@ -626,7 +626,7 @@ function del_report_certificate()
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
     $id_user = importVar('user_id', true, 0);
-    $from = Get::req('from', DOTY_MIXED, '');
+    $from = Forma\lib\Get::req('from', DOTY_MIXED, '');
 
     $certificate_info = [];
     $certificate_info = $certificate->getCertificateInfo($id_certificate);
@@ -634,9 +634,9 @@ function del_report_certificate()
     $c_infos = $certificate->getInfoForCourseCertificate($id_course, $id_certificate, $id_user);
     $certificate_info = current($c_infos);
 
-    if (Get::req('confirm_del_report_certificate', DOTY_INT, 0) == 1 || (isset($_GET['confirm']) && $_GET['confirm'] == 1)) {
+    if (Forma\lib\Get::req('confirm_del_report_certificate', DOTY_INT, 0) == 1 || (isset($_GET['confirm']) && $_GET['confirm'] == 1)) {
         require_once _base_ . '/lib/lib.upload.php';
-        Get::sett('pathcourse');
+        Forma\lib\Get::sett('pathcourse');
         $path = '/appLms/certificate/';
         $deletion_result = true;
         if ($certificate_info[CERT_NAME] != '') {
@@ -666,9 +666,9 @@ function send_zip_certificates()
 
     $files = [];
     $zipName = date('YmdHis') . '_certs.zip';
-    $list = explode(',', Get::req('list', DOTY_STRING));
-    $list_cert = explode(',', Get::req('list_cert', DOTY_STRING));
-    $id_course = Get::req('id_course', DOTY_INT, -1);
+    $list = explode(',', Forma\lib\Get::req('list', DOTY_STRING));
+    $list_cert = explode(',', Forma\lib\Get::req('list_cert', DOTY_STRING));
+    $id_course = Forma\lib\Get::req('id_course', DOTY_INT, -1);
 
     $zip = new PclZip('/tmp/' . $zipName);
 
