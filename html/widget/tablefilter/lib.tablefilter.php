@@ -39,7 +39,7 @@ class TablefilterWidget extends Widget
 
     public function init()
     {
-        //Util::get_js(Get::rel_path('base').'/lib/js_utils.js', true, true);
+        //Util::get_js(Forma\lib\Get::rel_path('base').'/lib/js_utils.js', true, true);
     }
 
     public function run()

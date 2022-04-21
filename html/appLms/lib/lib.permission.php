@@ -39,7 +39,7 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
         default:  $suff = $mode;
     }
 
-    $role = '/' . Get::cur_plat() . '/'
+    $role = '/' . Forma\lib\Get::cur_plat() . '/'
         . (isset($_SESSION['idCourse']) && $is_public == false ? 'course/private/' . $_SESSION['idCourse'] . '/' : 'course/public/')
         . $mod_name . '/' . $suff;
     if (!$return_value && isset($_SESSION['idCourse'])) {
@@ -78,7 +78,7 @@ function checkPermForCourse($mode, $id_course, $return_value = false, $use_mod_n
         default:  $suff = $mode;
     }
 
-    $role = '/' . Get::cur_plat() . '/course/private/' . $id_course . '/' . $mod_name . '/' . $suff;
+    $role = '/' . Forma\lib\Get::cur_plat() . '/course/private/' . $id_course . '/' . $mod_name . '/' . $suff;
 
     if (!$return_value && isset($_SESSION['idCourse'])) {
         TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], $mod_name, $suff);

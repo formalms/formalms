@@ -11,17 +11,17 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-namespace appCore\Template;
+namespace Forma\appCore\Template;
 
-use appCore\Template\Extensions\FormExtension;
-use appCore\Template\Extensions\GetExtension;
-use appCore\Template\Extensions\LangExtension;
-use appCore\Template\Extensions\LayoutExtension;
-use appCore\Template\Extensions\TemplateExtension;
-use appCore\Template\Extensions\UiFeedbackExtension;
-use appCore\Template\Extensions\UtilExtension;
-use appCore\Template\Extensions\YuiExtension;
-use appCore\Template\Services\ClientService;
+use Forma\appCore\Template\Extensions\FormExtension;
+use Forma\appCore\Template\Extensions\GetExtension;
+use Forma\appCore\Template\Extensions\LangExtension;
+use Forma\appCore\Template\Extensions\LayoutExtension;
+use Forma\appCore\Template\Extensions\TemplateExtension;
+use Forma\appCore\Template\Extensions\UiFeedbackExtension;
+use Forma\appCore\Template\Extensions\UtilExtension;
+use Forma\appCore\Template\Extensions\YuiExtension;
+use Forma\appCore\Template\Services\ClientService;
 use Twig\Extension\ExtensionInterface;
 use Twig\Extensions\IntlExtension;
 
@@ -36,7 +36,7 @@ class TwigManager
     private function __construct()
     {
         $loader = new \Twig\Loader\FilesystemLoader();
-        $debug = \Get::cfg('twig_debug', false);
+        $debug = \Forma\lib\Get::cfg('twig_debug', false);
         $this->twig = new \Twig\Environment($loader, [
             'cache' => $debug ? false : _files_ . '/cache/twig',
             'debug' => $debug,

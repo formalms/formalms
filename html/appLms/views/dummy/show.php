@@ -27,7 +27,7 @@
         'id' => 'tree',
         'ajaxUrl' => 'ajax.adm_server.php?plf=lms&file=category_tree&sf=folder_tree', //'ajax.server.php?r=dummy/testdata',
         'treeClass' => 'CourseFolderTree',
-        'treeFile' => Get::rel_path('base') . '/widget/tree/coursefoldertree.js',
+        'treeFile' => Forma\lib\Get::rel_path('base') . '/widget/tree/coursefoldertree.js',
         'languages' => $languages,
         'show' => 'tree',
     ];

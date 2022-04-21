@@ -38,7 +38,7 @@ class HomecatalogueLmsController extends LmsController
 
         YuiLib::load('base,tabview');
         Lang::init('course');
-        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
         $this->model = new HomecatalogueLms();
         $this->model_catalog = new CatalogLms();
 
@@ -59,11 +59,11 @@ class HomecatalogueLmsController extends LmsController
         require_once _lms_ . '/lib/lib.middlearea.php';
 
         $active_tab = 'all';
-        $action = Get::req('action', DOTY_STRING, '');
-        $page = Get::req('page', DOTY_INT, 1);
-        $id_cat = Get::req('id_cat', DOTY_INT, 0);
+        $action = Forma\lib\Get::req('action', DOTY_STRING, '');
+        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
+        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
 
-        $nav_bar = new NavBar('page', Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
+        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
         $nav_bar->setLink('index.php?r=homecatalogue/allCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
@@ -97,8 +97,8 @@ class HomecatalogueLmsController extends LmsController
     // AJAX
     public function allCourseForma()
     {
-        $id_cat = Get::req('id_cat', DOTY_INT, 0);
-        $typeCourse = Get::req('type_course', DOTY_STRING, '');
+        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $typeCourse = Forma\lib\Get::req('type_course', DOTY_STRING, '');
 
         $result = $this->model->getCourseList($typeCourse, 1);
 
@@ -111,11 +111,11 @@ class HomecatalogueLmsController extends LmsController
         require_once _lms_ . '/lib/lib.middlearea.php';
 
         $active_tab = 'new';
-        $action = Get::req('action', DOTY_STRING, '');
-        $page = Get::req('page', DOTY_INT, 1);
-        $id_cat = Get::req('id_cat', DOTY_INT, 0);
+        $action = Forma\lib\Get::req('action', DOTY_STRING, '');
+        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
+        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
 
-        $nav_bar = new NavBar('page', Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
+        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
         $nav_bar->setLink('index.php?r=homecatalogue/allCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
@@ -143,11 +143,11 @@ class HomecatalogueLmsController extends LmsController
         require_once _lms_ . '/lib/lib.middlearea.php';
 
         $active_tab = 'elearning';
-        $action = Get::req('action', DOTY_STRING, '');
-        $page = Get::req('page', DOTY_INT, 1);
-        $id_cat = Get::req('id_cat', DOTY_INT, 0);
+        $action = Forma\lib\Get::req('action', DOTY_STRING, '');
+        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
+        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
 
-        $nav_bar = new NavBar('page', Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
+        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
         $nav_bar->setLink('index.php?r=homecatalogue/allCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
@@ -175,11 +175,11 @@ class HomecatalogueLmsController extends LmsController
         require_once _lms_ . '/lib/lib.middlearea.php';
 
         $active_tab = 'classroom';
-        $action = Get::req('action', DOTY_STRING, '');
-        $page = Get::req('page', DOTY_INT, 1);
-        $id_cat = Get::req('id_cat', DOTY_INT, 0);
+        $action = Forma\lib\Get::req('action', DOTY_STRING, '');
+        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
+        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
 
-        $nav_bar = new NavBar('page', Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
+        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
         $nav_bar->setLink('index.php?r=homecatalogue/allCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
@@ -203,7 +203,7 @@ class HomecatalogueLmsController extends LmsController
 
     public function courseSelection()
     {
-        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
 
         $res = $this->model->courseSelectionInfo($id_course);
 
@@ -214,7 +214,7 @@ class HomecatalogueLmsController extends LmsController
     {
         require_once _base_ . '/lib/lib.download.php';
 
-        $id = Get::gReq('course_id', DOTY_INT);
+        $id = Forma\lib\Get::gReq('course_id', DOTY_INT);
         $db = DbConn::getInstance();
 
         $qtxt = 'SELECT course_demo FROM %lms_course WHERE idCourse=' . $id;

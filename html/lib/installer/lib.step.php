@@ -23,7 +23,7 @@ class StepManager
     public static function getCurrentStep()
     {
         if (!isset($GLOBALS['current_step'])) {
-            $GLOBALS['current_step'] = Get::pReq('current_step', DOTY_INT, 1);
+            $GLOBALS['current_step'] = Forma\lib\Get::pReq('current_step', DOTY_INT, 1);
         }
 
         return (int) $GLOBALS['current_step'];
@@ -72,7 +72,7 @@ class StepManager
 
     public static function goToNextStep()
     {
-        $current_step = Get::pReq('current_step', DOTY_INT, 1);
+        $current_step = Forma\lib\Get::pReq('current_step', DOTY_INT, 1);
         $sc = self::loadStepController($current_step);
 
         $next_step = $sc->getNextStep($current_step);
@@ -91,11 +91,11 @@ class StepManager
 
     public static function checkStep()
     {
-        $ajax_validate = Get::gReq('ajax_validate', DOTY_INT, 0);
-        $form_submit = Get::pReq('submit_form', DOTY_INT, 0);
+        $ajax_validate = Forma\lib\Get::gReq('ajax_validate', DOTY_INT, 0);
+        $form_submit = Forma\lib\Get::pReq('submit_form', DOTY_INT, 0);
 
         if ($ajax_validate) {
-            $current_step = Get::pReq('step', DOTY_INT, 0);
+            $current_step = Forma\lib\Get::pReq('step', DOTY_INT, 0);
             $sc = self::loadStepController($current_step);
             $sc->ajax_validate();
             exit();

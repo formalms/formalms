@@ -28,9 +28,9 @@ DbConn::getInstance(false, [
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
 
-$platform_code = Get::pReq('platform', DOTY_STRING);
-$lang = Get::pReq('lang', DOTY_STRING);
-$upgrade = Get::pReq('upgrade', DOTY_INT);
+$platform_code = Forma\lib\Get::pReq('platform', DOTY_STRING);
+$lang = Forma\lib\Get::pReq('lang', DOTY_STRING);
+$upgrade = Forma\lib\Get::pReq('upgrade', DOTY_INT);
 
 $lang_arr = array_keys($_SESSION['lang_install']);
 $pl_arr = ['framework'];

@@ -83,9 +83,9 @@ function canAccessPersonalMedia()
         return false;
     }
 
-    if ((Get::sett('htmledit_image_godadmin') && $level_id == ADMIN_GROUP_GODADMIN) ||
-        ((Get::sett('htmledit_image_admin')) && ($level_id == ADMIN_GROUP_ADMIN)) ||
-        ((Get::sett('htmledit_image_user')) && ($level_id == ADMIN_GROUP_USER))) {
+    if ((Forma\lib\Get::sett('htmledit_image_godadmin') && $level_id == ADMIN_GROUP_GODADMIN) ||
+        ((Forma\lib\Get::sett('htmledit_image_admin')) && ($level_id == ADMIN_GROUP_ADMIN)) ||
+        ((Forma\lib\Get::sett('htmledit_image_user')) && ($level_id == ADMIN_GROUP_USER))) {
         return true;
     } else {
         return false;
@@ -115,7 +115,7 @@ function show_personal_media(&$out, &$lang)
     $tab = new Table();
     $user_id = (int) Docebo::user()->getIdSt();
 
-    //if(Get::sett('hteditor') == 'tinymce') {
+    //if(Forma\lib\Get::sett('hteditor') == 'tinymce') {
 
     $GLOBALS['page']->add('<script type="text/javascript">'
         . 'var FileBrowserDialogue = {
@@ -196,7 +196,7 @@ function show_personal_media(&$out, &$lang)
             $sel_url = $url . '&amp;op=select&amp;from=personal&amp;type=' . $type . '&amp;item_id=' . $row['id'];
             $img = '<img src="' . getPathImage() . 'standard/download.png" alt="' . $lang->def('_ATTACHMENT') . '" title="' . $lang->def('_ATTACHMENT') . "\" />\n";
             $rowcnt[] = '<a href="' . $sel_url . '" '
-                . (Get::sett('hteditor') == 'tinymce'
+                . (Forma\lib\Get::sett('hteditor') == 'tinymce'
                     ? 'onclick="FileBrowserDialogue.mySubmit(\'' . $site_url . $row['real_fname'] . '\'); return false;"' : '')
                 . '>'
                 . $img . "</a>\n";
@@ -284,7 +284,7 @@ function ins_personal_media()
     }
 
     if (!$is_streaming) {
-        $valid_ext = explode(',', Get::sett('file_upload_whitelist', ''));
+        $valid_ext = explode(',', Forma\lib\Get::sett('file_upload_whitelist', ''));
         $ext = strtolower(end(explode('.', $fname)));
         if (!in_array($ext, $valid_ext)) {
             Util::jump_to($url . '&result=invalid_ext');
@@ -462,7 +462,7 @@ function select_media(&$out, &$lang)
             } else {
                 $cut_from = strlen($GLOBALS['where_files_relative']);
                 $base_relative_path = $GLOBALS['base_where_files_relative'] . substr($relative_path, $cut_from);
-                $current_pl = Get::cur_plat();
+                $current_pl = Forma\lib\Get::cur_plat();
                 $site_file_path = (getPLSetting($current_pl, 'url') . $base_relative_path);
                 $code = getEmbedPlay($site_file_path, $src, false, false, false, false, false, false, true);
             }
@@ -494,7 +494,7 @@ function addMediaPopupJS($src)
 {
     $res = '';
 
-    $sn = Get::cur_plat();
+    $sn = Forma\lib\Get::cur_plat();
 
     $path = (strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '') . '/';
     $path .= $GLOBALS['where_files_relative']; //."/";

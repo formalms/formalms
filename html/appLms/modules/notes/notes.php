@@ -21,7 +21,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.table.php';
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
 
-        $nav_bar = new NavBar('ini', Get::sett('visuItem'), 0);
+        $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0);
 
         $ini = $nav_bar->getSelectedElement();
         $ord = importVar('ord');
@@ -52,7 +52,7 @@ if (!Docebo::user()->isAnonymous()) {
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
 	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $_SESSION['idCourse'] . "' 
 	ORDER BY $order 
-	LIMIT $ini," . Get::sett('visuItem'));
+	LIMIT $ini," . Forma\lib\Get::sett('visuItem'));
 
         list($num_notes) = sql_fetch_row(sql_query('SELECT COUNT(*) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
@@ -61,7 +61,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $img_up = '<img class="valing-middle" src="' . getPathImage() . 'standard/up_arrow.png" alt="' . $lang->def('_UP') . '"/>';
         $img_down = '<img class="valing-middle" src="' . getPathImage() . 'standard/down_arrow.png" alt="' . $lang->def('_DOWN') . '"/>';
-        $tb = new Table(Get::sett('visuItem'),
+        $tb = new Table(Forma\lib\Get::sett('visuItem'),
                         $lang->def('_NOTES'),
                         $lang->def('_NOTES'));
 

@@ -69,7 +69,7 @@ class Util
     public static function get_css($css, $is_abspath = false, $print = false)
     {
         if (!$is_abspath) {
-            $css = Get::tmpl_path('base') . 'style/' . $css;
+            $css = Forma\lib\Get::tmpl_path('base') . 'style/' . $css;
         }
 
         if ($print && function_exists('cout')) {
@@ -82,7 +82,7 @@ class Util
     public static function get_js($js, $is_abspath = false, $print = false)
     {
         if (!$is_abspath) {
-            $js = Get::rel_path('base') . $js;
+            $js = Forma\lib\Get::rel_path('base') . $js;
         }
         if (isset(self::$_js_loaded[$js])) {
             return '';
@@ -102,7 +102,7 @@ class Util
 
         session_write_close();
 
-        $url = Get::abs_path() . $relative_url . $anchor;
+        $url = Forma\lib\Get::abs_path() . $relative_url . $anchor;
         header("Location: $url");
 
         ob_clean();
@@ -159,7 +159,7 @@ class Util
         //sending creation time
         header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
         //content type
-        if (Get::scheme() === 'https') {
+        if (Forma\lib\Get::scheme() === 'https') {
             header('Pragma: private');
         }
         header('Content-Disposition: attachment; filename="' . $sendname . '"');
@@ -228,7 +228,7 @@ class Util
     public static function checkSignature()
     {
         //signature from a post or get
-        $authentic_request = Get::req('authentic_request', DOTY_STRING, '');
+        $authentic_request = Forma\lib\Get::req('authentic_request', DOTY_STRING, '');
         // signature from a ajax request
         if (!$authentic_request && isset($_SERVER['HTTP_X_SIGNATURE'])) {
             $authentic_request = $_SERVER['HTTP_X_SIGNATURE'];
@@ -239,7 +239,7 @@ class Util
         ) {
             // Invalid request
             if (!defined('IS_AJAX')) {
-                Util::jump_to(Get::rel_path('lms') . '/index.php?modname=login&op=logout&msg=101');
+                Util::jump_to(Forma\lib\Get::rel_path('lms') . '/index.php?modname=login&op=logout&msg=101');
             }
             Util::fatal('Security issue, the request seem invalid ! Try a new login and retry.');
         }
@@ -264,7 +264,7 @@ class Util
         } else {
             // Browser request, html response
             $msg = '<p style="">'
-                . '<p style="margin:4em auto;text-align:center;width:50%;padding: 14px 12px 14px 42px;font-weight: bold;font-size: 100%;background: url(' . Get::tmpl_path() . '/images/standard/error_32.png) no-repeat 8px 50% #FFFFDD;border:4px solid red;">'
+                . '<p style="margin:4em auto;text-align:center;width:50%;padding: 14px 12px 14px 42px;font-weight: bold;font-size: 100%;background: url(' . Forma\lib\Get::tmpl_path() . '/images/standard/error_32.png) no-repeat 8px 50% #FFFFDD;border:4px solid red;">'
                 . $msg
                 . '</p>'
                 . '</p>';
@@ -352,7 +352,7 @@ class Util
         $quota = $quota * 1024 * 1024;
 
         if ($manual_file_size === false) {
-            $filesize = Get::dir_size($file_path);
+            $filesize = Forma\lib\Get::dir_size($file_path);
         } else {
             $filesize = $manual_file_size;
         }
@@ -526,7 +526,7 @@ class UIFeedback
  */
 function getSiteBaseUrl()
 {
-    $current_pl = Get::cur_plat();
+    $current_pl = Forma\lib\Get::cur_plat();
     $url = substr(getPLSetting($current_pl, 'url'), 0, -1);
 
     $search = str_replace('\\', '/', $GLOBALS['where_' . $current_pl]);
@@ -579,11 +579,11 @@ function getPLSetting($platform, $param_name, $default = false)
     $res = $default;
     if ($pl_man->isLoaded($platform)) {
         /*
-        if(!defined("LMS")) Util::load_setting(Get::cfg('prefix_lms').'_setting', 'lms');
-        elseif(!defined("CMS")) Util::load_setting(Get::cfg('prefix_cms').'_setting', 'cms');
-        elseif(!defined("SCS")) Util::load_setting(Get::cfg('prefix_scs').'_setting', 'scs');
+        if(!defined("LMS")) Util::load_setting(Forma\lib\Get::cfg('prefix_lms').'_setting', 'lms');
+        elseif(!defined("CMS")) Util::load_setting(Forma\lib\Get::cfg('prefix_cms').'_setting', 'cms');
+        elseif(!defined("SCS")) Util::load_setting(Forma\lib\Get::cfg('prefix_scs').'_setting', 'scs');
         */
-        $res = Get::sett($param_name);
+        $res = Forma\lib\Get::sett($param_name);
     }
 
     return $res;
@@ -605,7 +605,7 @@ function addCss($name, $platform = false, $folder = false, $add_start = false)
         return;
     }
     if ($platform === false) {
-        $platform = Get::cur_plat();
+        $platform = Forma\lib\Get::cur_plat();
     }
 
     $clean_name = getCleanTitle($name);
@@ -619,7 +619,7 @@ function addCss($name, $platform = false, $folder = false, $add_start = false)
     if (!in_array($css_id, $GLOBALS['_css_cache'])) {
         $GLOBALS['_css_cache'][] = $css_id;
 
-        $css = Get::tmpl_path($platform) . 'style' . ($folder !== false ? $folder : '') . '/' . $name . '.css';
+        $css = Forma\lib\Get::tmpl_path($platform) . 'style' . ($folder !== false ? $folder : '') . '/' . $name . '.css';
 
         $code = '<link href="' . $css . "\" rel=\"stylesheet\" type=\"text/css\" />\n";
 
@@ -734,10 +734,10 @@ function getCleanTitle($title, $max_length = false)
 function importVar($var, $cast_int = false, $default_value = '')
 {
     if ($cast_int) {
-        return Get::req($var, DOTY_INT, $default_value);
+        return Forma\lib\Get::req($var, DOTY_INT, $default_value);
     }
 
-    return Get::req($var, DOTY_MIXED, $default_value);
+    return Forma\lib\Get::req($var, DOTY_MIXED, $default_value);
 }
 
 function fromDatetimeToTimestamp($datetime)
@@ -911,7 +911,7 @@ function highlightText($string, $key, $classname = 'highlight')
 }
 function doDebug($text)
 {
-    if (Get::sett('do_debug') == 'on') {
+    if (Forma\lib\Get::sett('do_debug') == 'on') {
     }
 }
 

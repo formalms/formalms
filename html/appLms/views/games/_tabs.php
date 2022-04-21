@@ -39,9 +39,9 @@
                         $params = [
                             'id' => 'games',
                             'ajaxUrl' => 'ajax.server.php?r=games/' . $ajax_action,
-                            'rowsPerPage' => Get::sett('visuItem', 25),
+                            'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
                             'startIndex' => 0,
-                            'results' => Get::sett('visuItem', 25),
+                            'results' => Forma\lib\Get::sett('visuItem', 25),
                             'sort' => 'title',
                             'dir' => 'asc',
                             'columns' => $columns,
@@ -71,9 +71,9 @@
                         $params = [
                             'id' => 'games',
                             'ajaxUrl' => 'ajax.server.php?r=games/' . $ajax_action,
-                            'rowsPerPage' => Get::sett('visuItem', 25),
+                            'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
                             'startIndex' => 0,
-                            'results' => Get::sett('visuItem', 25),
+                            'results' => Forma\lib\Get::sett('visuItem', 25),
                             'sort' => 'title',
                             'dir' => 'asc',
                             'columns' => $columns,

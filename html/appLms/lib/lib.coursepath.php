@@ -138,14 +138,14 @@ class Selector_CoursePath
 
             $output .= '<div class="quick_search_form">'
                 . '<div>'
-                . Form::getInputTextfield('search_t', 'coursepath_filter_name', 'coursepath_filter_name', Get::req('coursepath_filter_name', DOTY_MIXED, ''), '', 255, '')
+                . Form::getInputTextfield('search_t', 'coursepath_filter_name', 'coursepath_filter_name', Forma\lib\Get::req('coursepath_filter_name', DOTY_MIXED, ''), '', 255, '')
                 . Form::getButton('coursepath_filter', 'coursepath_filter', Lang::t('_SEARCH', 'standard'), 'search_b')
                 . '</div>'
                 . '</div>';
         }
         // End Filter
 
-        $tb = new Table(Get::sett('visuItem'), $lang->def('_COURSE_PATH_CAPTION'), $lang->def('_COURSE_PATH_SUMMARY'));
+        $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_COURSE_PATH_CAPTION'), $lang->def('_COURSE_PATH_SUMMARY'));
 
         $tb->initNavBar('ini_cpath', 'button');
         $ini = $tb->getSelectedElement();
@@ -176,7 +176,7 @@ class Selector_CoursePath
                     $admin_courses['coursepath'][$id_path] = $id_path;
                 }
 
-                if (!empty($admin_courses['coursepath']) && Get::sett('on_catalogue_empty', 'off') == 'on') {
+                if (!empty($admin_courses['coursepath']) && Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             }
@@ -196,7 +196,7 @@ class Selector_CoursePath
 
         $query_coursepath .= '
 		ORDER BY path_name
-		LIMIT ' . $ini . ',' . (int) Get::sett('visuItem');
+		LIMIT ' . $ini . ',' . (int) Forma\lib\Get::sett('visuItem');
 
         $re_coursepath = sql_query($select . $query_coursepath);
 

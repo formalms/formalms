@@ -154,7 +154,7 @@ function editmenuvoice($load = false)
         $name = '';
         $image = 'blank.png';
     } else {
-        $id_main = Get::req('id_main', DOTY_INT, 0);
+        $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
         $query_custom = '
 		SELECT name, image 
 		FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main
@@ -235,7 +235,7 @@ function delmenuvoice()
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
 
-    $id_main = Get::req('id_main', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
 
     $query_custom = '
 	SELECT idCustom, name, image 
@@ -246,7 +246,7 @@ function delmenuvoice()
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=manmenu&op=manmenu&id_main=' . $id_main);
     } elseif (isset($_POST['confirm']) || isset($_GET['confirm'])) {
-        $id_main = Get::req('id_main', DOTY_INT, 0);
+        $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
 
         $re = true;
         $re_modules = sql_query('
@@ -297,7 +297,7 @@ function movemenuvoice($direction)
 {
     checkPerm('mod');
 
-    $id_main = Get::req('id_main', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
 
     list($seq) = sql_fetch_row(sql_query('
 	SELECT sequence 
@@ -331,7 +331,7 @@ function fixmenuvoice()
 {
     checkPerm('mod');
 
-    $id_custom = Get::req('id_custom', DOTY_INT, 0);
+    $id_custom = Forma\lib\Get::req('id_custom', DOTY_INT, 0);
 
     $query = '
 	SELECT idMain 
@@ -364,7 +364,7 @@ function manmodule()
     $mod_perm = checkPerm('mod', true);
 
     // Find main voice info
-    $id_main = Get::req('id_main', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
     $query_custom = '
 	SELECT name 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
@@ -504,15 +504,15 @@ function editmodule($load = false)
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
+    Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $id_main = Get::req('id_main', DOTY_INT, 0);
-    $id_module = Get::req('id_module', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
     $acl_man = &Docebo::user()->getAclManager();
     $perm = [];
 
@@ -609,9 +609,9 @@ function upmodule()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $id_main = Get::req('id_main', DOTY_INT, 0);
-    $new_id_main = Get::req('new_id_main', DOTY_INT, 0);
-    $id_module = Get::req('id_module', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+    $new_id_main = Forma\lib\Get::req('new_id_main', DOTY_INT, 0);
+    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
 
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $acl_man = &Docebo::user()->getAclManager();
@@ -757,8 +757,8 @@ function delmodule()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $id_main = Get::req('id_main', DOTY_INT, 0);
-    $id_module = Get::req('id_module', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
 
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
@@ -816,8 +816,8 @@ function movemodule($direction)
 {
     checkPerm('mod');
 
-    $id_main = Get::req('id_main', DOTY_INT, 0);
-    $id_module = Get::req('id_module', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
 
     list($seq) = sql_fetch_row(sql_query('
 	SELECT sequence 
@@ -851,8 +851,8 @@ function fixmodule()
 {
     checkPerm('mod');
 
-    $id_main = Get::req('id_main', DOTY_INT, 0);
-    $id_custom = Get::req('id_custom', DOTY_INT, 0);
+    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_custom = Forma\lib\Get::req('id_custom', DOTY_INT, 0);
 
     $query = '
 	SELECT idModule 

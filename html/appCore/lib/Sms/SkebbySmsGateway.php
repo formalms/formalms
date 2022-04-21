@@ -34,8 +34,8 @@ class SkebbySmsGateway implements SmsGatewayInterface
     public function getCredit()
     {
         $credit_result = $this->skebbyGatewayGetCredit(
-            Get::sett('sms_gateway_user'),
-            Get::sett('sms_gateway_pass')
+            Forma\lib\Get::sett('sms_gateway_user'),
+            Forma\lib\Get::sett('sms_gateway_pass')
         );
 
         if ($credit_result['status'] == 'success') {
@@ -67,13 +67,13 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
         // ------------- SMS Basic dispatch ----------------
         $result = $this->skebbyGatewaySendSMS(
-            Get::sett('sms_gateway_user'),
-            Get::sett('sms_gateway_pass'),
+            Forma\lib\Get::sett('sms_gateway_user'),
+            Forma\lib\Get::sett('sms_gateway_pass'),
             $recipients,
             $text,
             $type,
             '',
-            Get::sett('sms_sent_from', ''),
+            Forma\lib\Get::sett('sms_sent_from', ''),
             '',
             'UTF-8'
         );

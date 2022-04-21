@@ -23,8 +23,8 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     YuiLib::load('base');
     $db = DbConn::getInstance();
 
-    $id_main_sel = Get::req('id_main_sel', DOTY_INT, 0);
-    $id_module_sel = Get::req('id_module_sel', DOTY_INT, 0);
+    $id_main_sel = Forma\lib\Get::req('id_main_sel', DOTY_INT, 0);
+    $id_module_sel = Forma\lib\Get::req('id_module_sel', DOTY_INT, 0);
 
     if ($id_main_sel > 0) {
         $_SESSION['current_main_menu'] = $id_main_sel;
@@ -83,10 +83,10 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
     $logo_panel = '';
     if (isset($_SESSION['idCourse'])) {
-        $path = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse');
+        $path = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse');
         $course_name = Docebo::course()->getValue('name');
         if (Docebo::course()->getValue('use_logo_in_courselist')) {
-            $course_img = (Docebo::course()->getValue('img_course') == '' ? Get::tmpl_path() . 'images/course/course_nologo.png' : $path . Docebo::course()->getValue('img_course'));
+            $course_img = (Docebo::course()->getValue('img_course') == '' ? Forma\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path . Docebo::course()->getValue('img_course'));
         }
 
         $img_course = '';
@@ -206,7 +206,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
     if ($course_type === 'assessment' && Docebo::user()->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
         cout('<li class="main-v">'
-                . '<a class="main-av" href="' . Get::rel_path('adm') . '/index.php?modname=preassessment&op=assesmentlist&of_platform=lms">' . Lang::t('_BACK_TO_ADMINISTRATION', 'course') . '</a></li>', 'menu');
+                . '<a class="main-av" href="' . Forma\lib\Get::rel_path('adm') . '/index.php?modname=preassessment&op=assesmentlist&of_platform=lms">' . Lang::t('_BACK_TO_ADMINISTRATION', 'course') . '</a></li>', 'menu');
     }
     cout('</ul>'
         . '</div>'
@@ -215,7 +215,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     // todo: redo the following
     $info_panel = '';
     if (isset($_SESSION['idCourse'])) {
-        $path = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse');
+        $path = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse');
         $GLOBALS['page']->add('<li><a href="#your_info">' . Lang::t('_BLIND_YOUR_INFO', 'menu_over') . '</a></li>', 'blind_navigation');
 
         $userid = Docebo::user()->getUserId();
@@ -252,7 +252,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
                 }
                 $tot_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
-                Util::get_js(Get::rel_path('lms') . '/lib/lib.track_user.js', true, true);
+                Util::get_js(Forma\lib\Get::rel_path('lms') . '/lib/lib.track_user.js', true, true);
                 $GLOBALS['page']->add(
                     '<script type="text/javascript">'
                     . '	userCounterStart(' . (int) $partial_time_sec . ', ' . (int) $tot_time_sec . ');'
@@ -441,7 +441,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
                         </div>';
     $GLOBALS['page']->add($pop_up_modal, 'menu');
 
-    if ((Get::sett('use_tag', 'off') == 'on') && checkPerm('view', true, 'forum')) {
+    if ((Forma\lib\Get::sett('use_tag', 'off') == 'on') && checkPerm('view', true, 'forum')) {
         YuiLib::load(['tabview' => 'tabview-min.js'], ['tabview/assets/skins/sam/' => 'tabview.css']);
 
         require_once $GLOBALS['where_framework'] . '/lib/lib.tags.php';

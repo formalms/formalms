@@ -1,4 +1,4 @@
-<?php Get::title([
+<?php Forma\lib\Get::title([
     'index.php?r=adm/adminmanager/show' => Lang::t('_ADMIN_MANAGER', 'menu'),
     Lang::t('_ASSIGN_USERS', 'adminmanager') . ' : ' . $model->getAdminFullname($id_user),
 ]); ?>

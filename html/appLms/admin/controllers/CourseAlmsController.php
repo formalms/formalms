@@ -121,10 +121,10 @@ class CourseAlmsController extends AlmsController
         }
 
         if (isset($_POST['c_filter_set'])) {
-            $classroom = (bool) Get::req('classroom', DOTY_INT, false);
-            $descendants = (bool) Get::req('descendants', DOTY_INT, false);
-            $waiting = (bool) Get::req('waiting', DOTY_INT, false);
-            $filter_text = Get::req('text', DOTY_STRING, '');
+            $classroom = (bool) Forma\lib\Get::req('classroom', DOTY_INT, false);
+            $descendants = (bool) Forma\lib\Get::req('descendants', DOTY_INT, false);
+            $waiting = (bool) Forma\lib\Get::req('waiting', DOTY_INT, false);
+            $filter_text = Forma\lib\Get::req('text', DOTY_STRING, '');
         } else {
             $classroom = $_SESSION['course_filter']['classroom'];
             $descendants = $_SESSION['course_filter']['descendants'];
@@ -160,7 +160,7 @@ class CourseAlmsController extends AlmsController
         $params['base_link_classroom'] = $this->base_link_classroom;
         $params['base_link_edition'] = $this->base_link_edition;
         $params['base_link_subscription'] = $this->base_link_subscription;
-        $params['idCourse'] = Get::req('idCourse', DOTY_MIXED, 0);
+        $params['idCourse'] = Forma\lib\Get::req('idCourse', DOTY_MIXED, 0);
 
         $smodel = new SubscriptionAlms();
         $params['unsubscribe_requests'] = $smodel->countPendingUnsubscribeRequests();
@@ -187,10 +187,10 @@ class CourseAlmsController extends AlmsController
 
     public function filterevent()
     {
-        $_SESSION['course_filter']['classroom'] = Get::req('classroom', DOTY_MIXED, false);
-        $_SESSION['course_filter']['descendants'] = Get::req('descendants', DOTY_MIXED, false);
-        $_SESSION['course_filter']['waiting'] = Get::req('waiting', DOTY_MIXED, false);
-        $_SESSION['course_filter']['text'] = Get::req('text', DOTY_STRING, '');
+        $_SESSION['course_filter']['classroom'] = Forma\lib\Get::req('classroom', DOTY_MIXED, false);
+        $_SESSION['course_filter']['descendants'] = Forma\lib\Get::req('descendants', DOTY_MIXED, false);
+        $_SESSION['course_filter']['waiting'] = Forma\lib\Get::req('waiting', DOTY_MIXED, false);
+        $_SESSION['course_filter']['text'] = Forma\lib\Get::req('text', DOTY_STRING, '');
 
         if ($_SESSION['course_filter']['classroom'] === 'false') {
             $_SESSION['course_filter']['classroom'] = false;
@@ -259,11 +259,11 @@ class CourseAlmsController extends AlmsController
         require_once _lms_ . '/lib/category/class.categorytree.php';
         $treecat = new Categorytree();
 
-        $command = Get::req('command', DOTY_ALPHANUM, '');
+        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
         switch ($command) {
             case 'expand':
-                $node_id = Get::req('node_id', DOTY_INT, 0);
-                $initial = Get::req('initial', DOTY_INT, 0);
+                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+                $initial = Forma\lib\Get::req('initial', DOTY_INT, 0);
 
                 $db = DbConn::getInstance();
                 $result = [];
@@ -320,7 +320,7 @@ class CourseAlmsController extends AlmsController
                 break;
 
             case 'set_selected_node':
-                $id_node = Get::req('node_id', DOTY_INT, -1);
+                $id_node = Forma\lib\Get::req('node_id', DOTY_INT, -1);
                 if ($id_node >= 0) {
                     $this->_setSessionTreeData('id_category', $id_node);
                 }
@@ -334,8 +334,8 @@ class CourseAlmsController extends AlmsController
                     return;
                 }
 
-                $node_id = Get::req('node_id', DOTY_INT, 0);
-                $new_name = Get::req('name', DOTY_STRING, false);
+                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+                $new_name = Forma\lib\Get::req('name', DOTY_STRING, false);
 
                 $result = ['success' => false];
                 if ($new_name !== false) {
@@ -356,8 +356,8 @@ class CourseAlmsController extends AlmsController
                     return;
                 }
 
-                $node_id = Get::req('node_id', DOTY_INT, false);
-                $node_name = Get::req('name', DOTY_STRING, false); //no multilang required for categories
+                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, false);
+                $node_name = Forma\lib\Get::req('name', DOTY_STRING, false); //no multilang required for categories
 
                 $result = [];
                 if ($node_id === false) {
@@ -390,7 +390,7 @@ class CourseAlmsController extends AlmsController
                     return;
                 }
 
-                $node_id = Get::req('node_id', DOTY_INT, 0);
+                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
                 $result = ['success' => $treecat->deleteTreeById($node_id)];
                 echo $this->json->encode($result);
                 break;
@@ -403,8 +403,8 @@ class CourseAlmsController extends AlmsController
                     return;
                 }
 
-                $node_id = Get::req('src', DOTY_INT, 0);
-                $node_dest = Get::req('dest', DOTY_INT, 0);
+                $node_id = Forma\lib\Get::req('src', DOTY_INT, 0);
+                $node_dest = Forma\lib\Get::req('dest', DOTY_INT, 0);
                 $model = new CoursecategoryAlms();
                 $result = ['success' => $model->moveFolder($node_id, $node_dest)];
 
@@ -412,7 +412,7 @@ class CourseAlmsController extends AlmsController
                 break;
 
             case 'options':
-                $node_id = Get::req('node_id', DOTY_INT, 0);
+                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
 
                 //get properties from DB
                 $count = $treecat->getChildrenCount($node_id);
@@ -433,13 +433,13 @@ class CourseAlmsController extends AlmsController
     public function getcourselist()
     {
         //Datatable info
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
-        $idCourse = Get::req('idCourse', DOTY_MIXED, null);
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $idCourse = Forma\lib\Get::req('idCourse', DOTY_MIXED, null);
 
-        $id_category = Get::req('node_id', DOTY_INT, (int) $this->_getSessionTreeData('id_category', 0));
+        $id_category = Forma\lib\Get::req('node_id', DOTY_INT, (int) $this->_getSessionTreeData('id_category', 0));
         $filter_text = $_SESSION['course_filter']['text'];
         $classroom = $_SESSION['course_filter']['classroom'];
         $descendants = $_SESSION['course_filter']['descendants'];
@@ -503,7 +503,7 @@ class CourseAlmsController extends AlmsController
                     ? '<a href="index.php?r=' . $this->base_link_subscription . '/waitinguser&id_course=' . $row['idCourse'] . '" title="' . Lang::t('_WAITING', 'course') . '">' . ($row['pending'] + $num_overbooking) . '</a>'
                     : ''),
                 'user' => ($row['course_type'] !== 'classroom' && $row['course_edition'] != 1
-                    ? '<a class="nounder" href="index.php?r=' . $this->base_link_subscription . '/show&amp;id_course=' . $row['idCourse'] . '" title="' . Lang::t('_SUBSCRIPTION', 'course') . '">' . $num_subscribed . ' ' . Get::img('standard/moduser.png', Lang::t('_SUBSCRIPTION', 'course')) . '</a>'
+                    ? '<a class="nounder" href="index.php?r=' . $this->base_link_subscription . '/show&amp;id_course=' . $row['idCourse'] . '" title="' . Lang::t('_SUBSCRIPTION', 'course') . '">' . $num_subscribed . ' ' . Forma\lib\Get::img('standard/moduser.png', Lang::t('_SUBSCRIPTION', 'course')) . '</a>'
                     : ''),
                 'edition' => ($row['course_type'] === 'classroom'
                     ? '<a href="index.php?r=' . $this->base_link_classroom . '/classroom&amp;id_course=' . $row['idCourse'] . '" title="' . Lang::t('_CLASSROOM_EDITION', 'course') . '">' . $this->model->classroom_man->getDateNumber($row['idCourse'], true) . '</a>' : ($row['course_edition'] == 1 ? '<a href="index.php?r=' . $this->base_link_edition . '/show&amp;id_course=' . $row['idCourse'] . '" title="' . Lang::t('_EDITIONS', 'course') . '">' . $this->model->edition_man->getEditionNumber($row['idCourse']) . '</a>'
@@ -514,19 +514,19 @@ class CourseAlmsController extends AlmsController
             $perm_release = checkPerm('release', true, 'certificate', 'lms');
 
             if ($perm_assign) {
-                $list[$row['idCourse']]['certificate'] = '<a href="index.php?r=' . $this->base_link_course . '/certificate&amp;id_course=' . $row['idCourse'] . '">' . Get::sprite('subs_pdf' . (!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')) . '</a>';
+                $list[$row['idCourse']]['certificate'] = '<a href="index.php?r=' . $this->base_link_course . '/certificate&amp;id_course=' . $row['idCourse'] . '">' . Forma\lib\Get::sprite('subs_pdf' . (!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')) . '</a>';
             }
 
             if ($perm_release) {
-                $list[$row['idCourse']]['certreleased'] = '<a href="index.php?modname=certificate&op=view_report_certificate&amp;id_course=' . $row['idCourse'] . '&from=courselist&of_platform=lms">' . Get::sprite('subs_print' . (!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')) . '</a>';
-                $list[$row['idCourse']]['certreleased'] = '<a href="index.php?r=alms/course/list_certificate&amp;id_course=' . $row['idCourse'] . '&amp;from=courselist">' . Get::sprite('subs_print' . (!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')) . '</a>';
+                $list[$row['idCourse']]['certreleased'] = '<a href="index.php?modname=certificate&op=view_report_certificate&amp;id_course=' . $row['idCourse'] . '&from=courselist&of_platform=lms">' . Forma\lib\Get::sprite('subs_print' . (!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')) . '</a>';
+                $list[$row['idCourse']]['certreleased'] = '<a href="index.php?r=alms/course/list_certificate&amp;id_course=' . $row['idCourse'] . '&amp;from=courselist">' . Forma\lib\Get::sprite('subs_print' . (!isset($course_with_cert[$row['idCourse']]) ? '_grey' : ''), Lang::t('_CERTIFICATE_RELEASE', 'course')) . '</a>';
             }
 
             $list[$row['idCourse']] = array_merge($list[$row['idCourse']], [
-                'competences' => '<a href="index.php?r=' . $this->base_link_competence . '/man_course&amp;id_course=' . $row['idCourse'] . '">' . Get::sprite('subs_competence' . (!isset($course_with_competence[$row['idCourse']]) ? '_grey' : ''), Lang::t('_COMPETENCES', 'course')) . '</a>',
-                'menu' => '<a href="index.php?r=' . $this->base_link_course . '/menu&amp;id_course=' . $row['idCourse'] . '">' . Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')) . '</a>',
+                'competences' => '<a href="index.php?r=' . $this->base_link_competence . '/man_course&amp;id_course=' . $row['idCourse'] . '">' . Forma\lib\Get::sprite('subs_competence' . (!isset($course_with_competence[$row['idCourse']]) ? '_grey' : ''), Lang::t('_COMPETENCES', 'course')) . '</a>',
+                'menu' => '<a href="index.php?r=' . $this->base_link_course . '/menu&amp;id_course=' . $row['idCourse'] . '">' . Forma\lib\Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')) . '</a>',
                 'dup' => 'ajax.adm_server.php?r=' . $this->base_link_course . '/dupcourse&id_course=' . $row['idCourse'],
-                'mod' => '<a href="index.php?r=' . $this->base_link_course . '/modcourse&amp;id_course=' . $row['idCourse'] . '">' . Get::sprite('subs_mod', Lang::t('_MOD', 'standard')) . '</a>',
+                'mod' => '<a href="index.php?r=' . $this->base_link_course . '/modcourse&amp;id_course=' . $row['idCourse'] . '">' . Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'standard')) . '</a>',
                 'del' => 'ajax.adm_server.php?r=' . $this->base_link_course . '/delcourse&id_course=' . $row['idCourse'] . '&confirm=1',
             ]);
         }
@@ -599,7 +599,7 @@ class CourseAlmsController extends AlmsController
         //TO DO: make it a sqltransaction if possible
 
         if (isset($_POST['confirm'])) {
-            $id_dupcourse = Get::req('id_course', DOTY_INT, 0);
+            $id_dupcourse = Forma\lib\Get::req('id_course', DOTY_INT, 0);
             $id_orgs = [];
             $array_new_testobject = [];
 
@@ -690,8 +690,8 @@ class CourseAlmsController extends AlmsController
 
             //Create the new course file
             if (isset($_POST['image'])) {
-                $path = Get::sett('pathcourse');
-                $path = '/appLms/' . Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+                $path = Forma\lib\Get::sett('pathcourse');
+                $path = '/appLms/' . Forma\lib\Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
                 require_once _base_ . '/lib/lib.upload.php';
 
@@ -1102,10 +1102,10 @@ class CourseAlmsController extends AlmsController
         require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $cert = new Certificate();
 
-        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
 
         if (isset($_POST['assign'])) {
-            $point_required = Get::req('point_required', DOTY_INT, 0);
+            $point_required = Forma\lib\Get::req('point_required', DOTY_INT, 0);
 
             // , $list_of_assign_obj, $list_of_who
 
@@ -1220,10 +1220,10 @@ class CourseAlmsController extends AlmsController
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show');
         }
-        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
 
         if (isset($_POST['assign'])) {
-            $id_custom = Get::req('selected_menu', DOTY_INT, 0);
+            $id_custom = Forma\lib\Get::req('selected_menu', DOTY_INT, 0);
 
             require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
             require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
@@ -1336,7 +1336,7 @@ class CourseAlmsController extends AlmsController
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show');
         }
 
-        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
 
         if (isset($_POST['save'])) {
             //resolve course type
@@ -1367,12 +1367,12 @@ class CourseAlmsController extends AlmsController
             return;
         }
 
-        if (Get::cfg('demo_mode')) {
+        if (Forma\lib\Get::cfg('demo_mode')) {
             exit('Cannot del course during demo mode.');
         }
 
         if (isset($_GET['confirm'])) {
-            $id_course = Get::req('id_course', DOTY_INT, 0);
+            $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
 
             $op_res = $this->model->delCourse($id_course);
             if ($op_res && isset($_SESSION['idCourse']) && $_SESSION['idCourse'] == $id_course) {
@@ -1503,10 +1503,10 @@ class CourseAlmsController extends AlmsController
 
     public function list_certificate()
     {
-        $id_course = Get::req('id_course', DOTY_INT, 0);
-        $id_certificate = Get::req('id_certificate', DOTY_INT, 0);
-        $from = Get::req('from');
-        $op = Get::req('op');
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_certificate = Forma\lib\Get::req('id_certificate', DOTY_INT, 0);
+        $from = Forma\lib\Get::req('from');
+        $op = Forma\lib\Get::req('op');
 
         require_once Forma::inc(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();

@@ -31,7 +31,7 @@ class ElearningLms extends Model
     {
         // read order for the course from database
         if ($this->_t_order === false) {
-            $t_order = Get::sett('tablist_mycourses', false);
+            $t_order = Forma\lib\Get::sett('tablist_mycourses', false);
             if ($t_order !== false) {
                 $arr_order_course = explode(',', $t_order);
                 $arr_temp = [];
@@ -86,7 +86,7 @@ class ElearningLms extends Model
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $learning_path_enroll = $this->getUserCoursePathCourses($params[':id_user']);
         $exclude_pathcourse = '';
-        if (count($learning_path_enroll) > 1 && Get::sett('on_path_in_mycourses') == 'off') {
+        if (count($learning_path_enroll) > 1 && Forma\lib\Get::sett('on_path_in_mycourses') == 'off') {
             $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $params[':id_user'] . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $db->query($exclude_path_course);
             $excl = [];

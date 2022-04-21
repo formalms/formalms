@@ -1,17 +1,17 @@
 <?php
 if (!$id_date && !$id_edition) {
-    Get::title([
+    Forma\lib\Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSES', 'course'),
         Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
     ]);
 } elseif ($id_edition && !$id_date) {
-    Get::title([
+    Forma\lib\Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSE', 'course'),
         'index.php?r=' . $this->link_edition . '/show&amp;id_course=' . $id_course . '' => Lang::t('_EDITIONS', 'course'),
         Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
     ]);
 } else {
-    Get::title([
+    Forma\lib\Get::title([
         'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSE', 'course'),
         'index.php?r=' . $this->link_classroom . '/classroom&amp;id_course=' . $id_course . '' => Lang::t('_CLASSROOM', 'course'),
         Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
@@ -136,7 +136,7 @@ if (!$id_date && !$id_edition) {
         }
         $label .= '</select>';
         //$label .= '<a id="_dyn_field_sort_'.$i.'" href="javascript:;">';
-        //$label .= '<img src="'.Get::tmpl_path().'images/standard/sort.png" title="'.Lang::t('_SORT', 'standard').'" alt="'.Lang::t('_SORT', 'standard').'" />';
+        //$label .= '<img src="'.Forma\lib\Get::tmpl_path().'images/standard/sort.png" title="'.Lang::t('_SORT', 'standard').'" alt="'.Lang::t('_SORT', 'standard').'" />';
         //$label .= '</a>';
         $dyn_filter[$i] = $selected[$i];
         $dyn_labels[$i] = $label;
@@ -161,7 +161,7 @@ if (!$id_date && !$id_edition) {
         'editor' => 'new YAHOO.widget.DateCellEditor({asyncSubmitter: Subscription.asyncSubmitter})', 'className' => 'img-cell', 'hidden' => $hidden_validity, ];
     $columns[] = ['key' => 'date_unset', 'label' => $icon_unset, 'formatter' => 'Subscription.resetDatesFormatter', 'className' => 'img-cell', 'hidden' => $hidden_validity];
 
-    $columns[] = ['key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'subscribe')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
+    $columns[] = ['key' => 'del', 'label' => Forma\lib\Get::img('standard/delete.png', Lang::t('_DEL', 'subscribe')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 
     $tfields = ['id', 'userid', 'fullname', 'level', 'status', 'date_begin', 'date_expire', 'date_begin_timestamp', 'date_expire_timestamp', 'del', 'overbooking'];
     for ($i = 0; $i < $num_var_fields; ++$i) {
@@ -177,9 +177,9 @@ if (!$id_date && !$id_edition) {
     $this->widget('table', [
         'id' => 'subscribed_table',
         'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/getlist&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date . '&',
-        'rowsPerPage' => Get::sett('visuItem', 25),
+        'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
         'startIndex' => 0,
-        'results' => Get::sett('visuItem', 25),
+        'results' => Forma\lib\Get::sett('visuItem', 25),
         'sort' => 'userid',
         'dir' => 'asc',
         'columns' => $columns,
@@ -224,7 +224,7 @@ if (!$id_date && !$id_edition) {
             _OPERATION_SUCCESSFUL: "<?php echo Lang::t('_OPERATION_SUCCESSFUL', 'standard'); ?>",
             _OPERATION_FAILURE: "<?php echo Lang::t('_OPERATION_FAILURE', 'subscribe'); ?>"
         },
-        templatePath: "<?php echo Get::tmpl_path(); ?>",
+        templatePath: "<?php echo Forma\lib\Get::tmpl_path(); ?>",
         dynSelection: {},
         fieldList: <?php echo $fieldlist_js; ?>,
         numVarFields: <?php echo $num_var_fields; ?>

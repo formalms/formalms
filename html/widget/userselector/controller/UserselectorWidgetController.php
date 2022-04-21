@@ -34,15 +34,15 @@ class UserselectorWidgetController extends Controller
      */
     protected function _selectAllUsers()
     {
-        $idOrg = 0; //Get::req('id_org', DOTY_INT, 0);
-        $descendants = false; //(Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $learning_filter = Get::req('learning_filter', DOTY_STRING, 'none');
+        $idOrg = 0; //Forma\lib\Get::req('id_org', DOTY_INT, 0);
+        $descendants = false; //(Forma\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $learning_filter = Forma\lib\Get::req('learning_filter', DOTY_STRING, 'none');
         $searchFilter = [
             'text' => $filter_text,
-            'suspended' => (Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
+            'suspended' => (Forma\lib\Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
         ];
-        $dyn_filter = $this->_getDynamicFilter(Get::req('dyn_filter', DOTY_STRING, ''));
+        $dyn_filter = $this->_getDynamicFilter(Forma\lib\Get::req('dyn_filter', DOTY_STRING, ''));
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
@@ -75,7 +75,7 @@ class UserselectorWidgetController extends Controller
      */
     public function getusertabledataTask()
     {
-        $op = Get::req('op', DOTY_MIXED, false);
+        $op = Forma\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
                 $this->_selectAllUsers();
@@ -84,29 +84,29 @@ class UserselectorWidgetController extends Controller
              break;
         }
 
-        $idOrg = Get::req('id_org', DOTY_INT, 0);
-        $descendants = false; //(Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $learning_filter = Get::req('learning_filter', DOTY_STRING, 'none');
+        $idOrg = Forma\lib\Get::req('id_org', DOTY_INT, 0);
+        $descendants = false; //(Forma\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $learning_filter = Forma\lib\Get::req('learning_filter', DOTY_STRING, 'none');
 
-        $var_fields = Get::req('_dyn_field', DOTY_MIXED, []);
+        $var_fields = Forma\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
             $sort = $var_fields[(int) $index];
         }
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
-            'suspended' => (Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
+            'suspended' => (Forma\lib\Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
         ];
 
-        $dyn_filter = $this->_getDynamicFilter(Get::req('dyn_filter', DOTY_STRING, ''));
+        $dyn_filter = $this->_getDynamicFilter(Forma\lib\Get::req('dyn_filter', DOTY_STRING, ''));
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
@@ -205,14 +205,14 @@ class UserselectorWidgetController extends Controller
 
     protected function _selectAllGroups()
     {
-        $filter = Get::req('filter_text', DOTY_STRING, '');
+        $filter = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
         $output = $this->group_model->getAllGroups($filter, true);
         echo $this->json->encode($output);
     }
 
     public function getgrouptabledataTask()
     {
-        $op = Get::req('op', DOTY_MIXED, false);
+        $op = Forma\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
                 $this->_selectAllGroups();
@@ -221,13 +221,13 @@ class UserselectorWidgetController extends Controller
              break;
         }
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $filter = Get::req('filter', DOTY_STRING, '');
-        $learning_filter = Get::req('learning_filter', DOTY_STRING, 'none');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
+        $learning_filter = Forma\lib\Get::req('learning_filter', DOTY_STRING, 'none');
 
         $pagination = [
             'startIndex' => $startIndex,
@@ -317,13 +317,13 @@ class UserselectorWidgetController extends Controller
 
     public function getorgcharttreedataTask()
     {
-        $command = Get::req('command', DOTY_ALPHANUM, '');
+        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
 
         switch ($command) {
             case 'expand':
-                $node_id = Get::req('node_id', DOTY_STRING, '');
+                $node_id = Forma\lib\Get::req('node_id', DOTY_STRING, '');
                 $idOrg = $this->_getIdOrgByNodeId($node_id);
-                $initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $initial = (Forma\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
                 $_conversion_table = $this->user_model->getOrgchartIdstConversionTable();
 
                 if ($initial) {
@@ -362,12 +362,12 @@ class UserselectorWidgetController extends Controller
              break;
 
             case 'set_selected_node':
-                $node_id = Get::req('node_id', DOTY_STRING, '');
+                $node_id = Forma\lib\Get::req('node_id', DOTY_STRING, '');
                 $idOrg = $this->_getIdOrgByNodeId($node_id);
                 $this->_setSelectedNode($idOrg);
              break;
         }
-        /*$node_id = Get::req('id', DOTY_INT, -1);
+        /*$node_id = Forma\lib\Get::req('id', DOTY_INT, -1);
         if ($node_id >= 0) {
             $output = $this->user_model->getNodesById($node_id);
             echo $this->json->encode($output);
@@ -378,14 +378,14 @@ class UserselectorWidgetController extends Controller
 
     protected function _selectAllFncroles()
     {
-        $filter = Get::req('filter_text', DOTY_STRING, '');
+        $filter = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
         $output = $this->fncrole_model->getAllFunctionalRoles($filter, true);
         echo $this->json->encode($output);
     }
 
     public function getfncroletabledataTask()
     {
-        $op = Get::req('op', DOTY_MIXED, false);
+        $op = Forma\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
                 $this->_selectAllFncroles();
@@ -394,12 +394,12 @@ class UserselectorWidgetController extends Controller
              break;
         }
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $filter = Get::req('filter', DOTY_STRING, '');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
 
         $pagination = [
             'startIndex' => $startIndex,

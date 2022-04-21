@@ -163,7 +163,7 @@ function showWikiSelect(&$out, &$lang)
     require_once $GLOBALS['where_framework'] . '/lib/lib.wiki.php';
 
     $um = &UrlManager::getInstance();
-    $um->setStdQuery('sn=' . Get::cur_plat() . '&op=wiki_sel');
+    $um->setStdQuery('sn=' . Forma\lib\Get::cur_plat() . '&op=wiki_sel');
     //$um->setBaseUrl($_SERVER["script_name"]);
 
     $wiki_id = getEditorWikiId();
@@ -234,7 +234,7 @@ function addLinkPopupJS()
 {
     $res = '';
 
-    $sn = Get::cur_plat();
+    $sn = Forma\lib\Get::cur_plat();
     /*	if ($sn != "framework")
             $src=$GLOBALS[$sn]["url"].$GLOBALS["where_files_relative"]."/".$src;
         else

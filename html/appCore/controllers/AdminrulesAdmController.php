@@ -31,7 +31,7 @@ class AdminrulesAdmController extends AdmController
 
     public function show()
     {
-        $res = Get::req('res', DOTY_STRING, '');
+        $res = Forma\lib\Get::req('res', DOTY_STRING, '');
         $result_message = '';
 
         switch ($res) {
@@ -46,10 +46,10 @@ class AdminrulesAdmController extends AdmController
 
     public function getGroups()
     {
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $total_group = $this->model->totalGroup();
         $array_group = $this->model->loadGroup($start_index, $results, $sort, $dir);
@@ -69,8 +69,8 @@ class AdminrulesAdmController extends AdmController
 
     public function addGroup()
     {
-        if (Get::req('confirm', DOTY_INT, 0) == 1) {
-            $name = Get::req('name', DOTY_MIXED, '');
+        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
+            $name = Forma\lib\Get::req('name', DOTY_MIXED, '');
             $output = [];
 
             if ($name == '') {
@@ -101,7 +101,7 @@ class AdminrulesAdmController extends AdmController
 
     public function delGroup()
     {
-        $idst = Get::req('idst', DOTY_INT, 0);
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
         $output = [];
 
         $result = $this->model->delGroup($idst);
@@ -116,21 +116,21 @@ class AdminrulesAdmController extends AdmController
         require_once _base_ . '/lib/lib.preference.php';
         $preference = new AdminPreference();
 
-        $idst = Get::req('idst', DOTY_INT, 0);
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
         $output = [];
 
-        if (Get::req('confirm', DOTY_INT, 0) == 1) {
+        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
             $rules = $preference->getRules();
             $new_rules = [];
 
             foreach ($rules as $path => $info) {
                 switch ($info['type']) {
                     case 'enum':
-                        $new_rules[$path] = Get::req(str_replace('.', '_', $path), DOTY_MIXED, 'off');
+                        $new_rules[$path] = Forma\lib\Get::req(str_replace('.', '_', $path), DOTY_MIXED, 'off');
                     break;
 
                     case 'integer':
-                        $new_rules[$path] = Get::req(str_replace('.', '_', $path), DOTY_INT, 0);
+                        $new_rules[$path] = Forma\lib\Get::req(str_replace('.', '_', $path), DOTY_INT, 0);
                     break;
                 }
             }
@@ -158,10 +158,10 @@ class AdminrulesAdmController extends AdmController
         require_once _base_ . '/lib/lib.preference.php';
         $preference = new AdminPreference();
 
-        $idst = Get::req('idst', DOTY_INT, 0);
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
         $output = [];
 
-        if (Get::req('confirm', DOTY_INT, 0) == 1) {
+        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
             $new_lang = [];
 
             if (isset($_POST['admin_lang'])) {
@@ -195,8 +195,8 @@ class AdminrulesAdmController extends AdmController
             Util::jump_to('index.php?r=adm/adminrules/show');
         }
 
-        $idst = Get::req('idst', DOTY_INT, 0);
-        $active_tab = Get::req('active_tab', DOTY_INT, 0);
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
+        $active_tab = Forma\lib\Get::req('active_tab', DOTY_INT, 0);
 
         $menu = CoreMenu::getList(['framework', 'alms']);
 
@@ -226,7 +226,7 @@ class AdminrulesAdmController extends AdmController
 
     public function admin_manage()
     {
-        $idst = Get::req('idst', DOTY_INT, 0);
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
 
         $this->render('admin_manage',
                         [
@@ -237,12 +237,12 @@ class AdminrulesAdmController extends AdmController
 
     public function getAdmins()
     {
-        $idst = Get::req('idst', DOTY_INT, 0);
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
 
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $total_group = $this->model->totalAdmin($idst);
         $array_group = $this->model->loadAdmin($idst, $start_index, $results, $sort, $dir);
@@ -260,7 +260,7 @@ class AdminrulesAdmController extends AdmController
 
     public function add_admin()
     {
-        $idst = Get::req('idst', DOTY_INT, 0);
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
 
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
@@ -310,9 +310,9 @@ class AdminrulesAdmController extends AdmController
 
     public function saveDataTask()
     {
-        $idst = Get::req('idst', DOTY_INT, 0);
-        $old_value = Get::req('old_value', DOTY_STRING, '');
-        $new_value = Get::req('new_value', DOTY_STRING, '');
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
+        $old_value = Forma\lib\Get::req('old_value', DOTY_STRING, '');
+        $new_value = Forma\lib\Get::req('new_value', DOTY_STRING, '');
 
         $result = $this->model->renameProfile($idst, $new_value);
 
@@ -327,8 +327,8 @@ class AdminrulesAdmController extends AdmController
 
     public function delAdmin()
     {
-        $idst = Get::req('idst', DOTY_INT, 0);
-        $idst_member = Get::req('idstMember', DOTY_INT, 0);
+        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
+        $idst_member = Forma\lib\Get::req('idstMember', DOTY_INT, 0);
 
         $res = false;
         if ($idst > 0 && $idst_member > 0) {

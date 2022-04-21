@@ -1,4 +1,4 @@
-<?php Get::title(Lang::t('_LOCATION', 'classroom')); ?>
+<?php Forma\lib\Get::title(Lang::t('_LOCATION', 'classroom')); ?>
 <div class="std_block">
 
 	<?php

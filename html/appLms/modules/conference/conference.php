@@ -163,11 +163,11 @@ function conference_list(&$url)
     if (checkPerm('mod', true)) {
         cout('<br/><div class="table-container-below">', 'content');
         if (
-          Get::sett('code_teleskill')
+          Forma\lib\Get::sett('code_teleskill')
           or
-          (Get::sett('dimdim_server') and Get::sett('dimdim_user') and Get::sett('dimdim_password'))
+          (Forma\lib\Get::sett('dimdim_server') and Forma\lib\Get::sett('dimdim_user') and Forma\lib\Get::sett('dimdim_password'))
           or
-          (Get::sett('ConferenceBBB_server') and Get::sett('ConferenceBBB_user') and Get::sett('ConferenceBBB_salt') and Get::sett('ConferenceBBB_password_moderator') and Get::sett('ConferenceBBB_password_viewer'))
+          (Forma\lib\Get::sett('ConferenceBBB_server') and Forma\lib\Get::sett('ConferenceBBB_user') and Forma\lib\Get::sett('ConferenceBBB_salt') and Forma\lib\Get::sett('ConferenceBBB_password_moderator') and Forma\lib\Get::sett('ConferenceBBB_password_viewer'))
           ) {
             if ($conference->can_create_user_limit(getLogUserId(), $idCourse, time())) {
                 cout('<a class="ico-wt-sprite subs_add" href="' . $url->getUrl('op=startnewconf') . '"><span>' . $lang->def('_CREATE') . '</span></a>', 'content');
@@ -296,7 +296,7 @@ function conference_startnewconf($url)
                                 'maxparticipants',
                                 6,
                                 importVar('maxparticipants', true, $default_maxp)), 'content');
-    if (Get::sett('use_dimdim_api') === 'on') {
+    if (Forma\lib\Get::sett('use_dimdim_api') === 'on') {
         $GLOBALS['page']->add(
                 '<div id="dimdim_conf" style="' . ($default === 'dimdim' ? 'display:block;' : 'display:none;') . '">'
                 . Form::getOpenFieldset(Lang::t('_DIMDIM_FEATURES', 'conference'), 'dimdim_features')
@@ -355,7 +355,7 @@ function conference_delconf()
     $room = $conference->roomInfo($id);
 
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
-    if (Get::req('confirm', DOTY_INT, 0)) {
+    if (Forma\lib\Get::req('confirm', DOTY_INT, 0)) {
         $conference->deleteRoom($id);
 
         require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
@@ -386,7 +386,7 @@ function conference_modconf($url = null)
 {
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
 
-    $id_room = Get::req('id', DOTY_INT, 0);
+    $id_room = Forma\lib\Get::req('id', DOTY_INT, 0);
 
     $conference = new Conference_Manager();
 
@@ -505,7 +505,7 @@ function booking()
 
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
 
-    $room_id = Get::req('id', DOTY_INT, 0);
+    $room_id = Forma\lib\Get::req('id', DOTY_INT, 0);
 
     $booking = new RoomBooking();
 
@@ -524,7 +524,7 @@ function modBooking()
 
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
 
-    $room_id = Get::req('id', DOTY_INT, 0);
+    $room_id = Forma\lib\Get::req('id', DOTY_INT, 0);
 
     $booking = new RoomBooking();
 
@@ -669,7 +669,7 @@ function showHistory()
         unset($_POST['filter_date']);
     }
 
-    $date_filter = Get::req('filter_date', DOTY_MIXED, '');
+    $date_filter = Forma\lib\Get::req('filter_date', DOTY_MIXED, '');
 
     $rooms = $conference->getOldRoom($_SESSION['idCourse'], $ini);
     $rooms_number = $conference->getOldRoomNumber($_SESSION['idCourse']);
@@ -746,7 +746,7 @@ function showLog()
 
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
 
-    $id = Get::req('id', DOTY_INT, 0);
+    $id = Forma\lib\Get::req('id', DOTY_INT, 0);
 
     $conference = new Conference_Manager();
 

@@ -85,7 +85,7 @@ function field_list()
     );
 
     //display inserted field--------------------------------------------
-    $tb_field = new Table(Get::sett('visuItem'));
+    $tb_field = new Table(Forma\lib\Get::sett('visuItem'));
 
     $query_field_display = '
 	SELECT id_common, type_field, translation

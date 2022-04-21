@@ -23,14 +23,14 @@ class Step2Controller extends StepController
 
     public function validate()
     {
-        $_SESSION['start_version'] = Get::req('start_version', DOTY_ALPHANUM, '3603');
+        $_SESSION['start_version'] = Forma\lib\Get::req('start_version', DOTY_ALPHANUM, '3603');
 
         return true;
     }
 
     public function getNextStep($current_step)
     {
-        $version = Get::req('start_version', DOTY_ALPHANUM, '3603');
+        $version = Forma\lib\Get::req('start_version', DOTY_ALPHANUM, '3603');
         if (version_compare($version, '3600', '>=') &&
             version_compare($version, '4000', '<')) {
             //docebo ce v 3.x.x => go to step 3 (config upgrade )

@@ -34,7 +34,7 @@ function env_play($lobj, $options)
         $ti->status = 'completed';
         $ti->update();
     }
-    Util::download('/appLms/' . Get::sett('pathlesson'), $file);
+    Util::download('/appLms/' . Forma\lib\Get::sett('pathlesson'), $file);
 }
 
 function play($idResource, $idParams, $back_url)
@@ -85,5 +85,5 @@ function play($idResource, $idParams, $back_url)
     }
 
     //send file
-    sendFile('/appLms/' . Get::sett('pathlesson'), $file, $expFileName[$totPart]);
+    sendFile('/appLms/' . Forma\lib\Get::sett('pathlesson'), $file, $expFileName[$totPart]);
 }

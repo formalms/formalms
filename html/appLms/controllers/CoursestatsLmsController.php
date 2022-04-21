@@ -187,13 +187,13 @@ class CoursestatsLmsController extends LmsController
     {
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
-        $startIndex = Get::req('start', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-        $rowsPerPage = Get::req('length', DOTY_INT, $results);
+        $startIndex = Forma\lib\Get::req('start', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
+        $rowsPerPage = Forma\lib\Get::req('length', DOTY_INT, $results);
 
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
-        $id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
 
         $pagination = [
             'startIndex' => $startIndex,
@@ -310,7 +310,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_user = Get::req('id_user', DOTY_INT, -1);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             //...
             return;
@@ -345,14 +345,14 @@ class CoursestatsLmsController extends LmsController
 
     public function getusertabledataTask()
     {
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
 
         $pagination = [];
-        $pagination['startIndex'] = Get::req('start', DOTY_INT, 0);
-        $pagination['rowsPerPage'] = Get::req('length', DOTY_INT, 0);
+        $pagination['startIndex'] = Forma\lib\Get::req('start', DOTY_INT, 0);
+        $pagination['rowsPerPage'] = Forma\lib\Get::req('length', DOTY_INT, 0);
         if ($search = $_REQUEST['search']) {
             $pagination['search'] = $search['value'];
         } else {
@@ -418,11 +418,11 @@ class CoursestatsLmsController extends LmsController
     // esportazione xls
     public function getusertabledataxls($id_course, $id_user)
     {
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
         //get total from database and validate the results count
         $total = $this->model->getCourseUserStatsTotal($id_course, $id_user);
@@ -482,20 +482,20 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_user = Get::req('id_user', DOTY_INT, -1);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             //...
             return;
         }
 
-        $id_lo = Get::req('id_lo', DOTY_INT, -1);
+        $id_lo = Forma\lib\Get::req('id_lo', DOTY_INT, -1);
         if ($id_lo <= 0) {
             //...
             return;
         }
 
         $result_message = '';
-        $res = Get::req('res', DOTY_STRING, '');
+        $res = Forma\lib\Get::req('res', DOTY_STRING, '');
         switch ($res) {
             case 'ok_reset': $result_message = UIFeedback::info($this->_getErrorMessage('reset success')); break;
             case 'err_reset': $result_message = UIFeedback::error($this->_getErrorMessage('reset error')); break;
@@ -541,7 +541,7 @@ class CoursestatsLmsController extends LmsController
             'id_user' => $id_user,
             'id_lo' => $id_lo,
             'result_message' => $result_message,
-            'from_user' => Get::req('from_user', DOTY_INT, 0) > 0,
+            'from_user' => Forma\lib\Get::req('from_user', DOTY_INT, 0) > 0,
             'tracked' => $tracked,
             'info' => $info,
             'object_lo' => $this->model->getLOTrackObject($id_track, $lo_info->objectType),
@@ -561,7 +561,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_lo = Get::req('id_lo', DOTY_INT, -1);
+        $id_lo = Forma\lib\Get::req('id_lo', DOTY_INT, -1);
         if ($id_lo <= 0) {
             //...
             return;
@@ -604,13 +604,13 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_user = Get::req('id_user', DOTY_INT, -1);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             //...
             return;
         }
 
-        $id_lo = Get::req('id_lo', DOTY_INT, -1);
+        $id_lo = Forma\lib\Get::req('id_lo', DOTY_INT, -1);
         if ($id_lo <= 0) {
             //...
             return;
@@ -637,7 +637,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_user = Get::req('id_user', DOTY_INT, -1);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid user')];
             echo $this->json->encode($output);
@@ -645,8 +645,8 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $old_value = Get::req('old_value', DOTY_MIXED, false);
-        $new_value = Get::req('new_value', DOTY_MIXED, false);
+        $old_value = Forma\lib\Get::req('old_value', DOTY_MIXED, false);
+        $new_value = Forma\lib\Get::req('new_value', DOTY_MIXED, false);
 
         if ($old_value === false || $new_value === false) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid data')];
@@ -656,7 +656,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $output = [];
-        $col = Get::req('col', DOTY_STRING, '');
+        $col = Forma\lib\Get::req('col', DOTY_STRING, '');
         switch ($col) {
             case 'status':
                 $smodel = new SubscriptionAlms($id_course);
@@ -690,7 +690,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_user = Get::req('id_user', DOTY_INT, -1);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid user')];
             echo $this->json->encode($output);
@@ -698,7 +698,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_lo = Get::req('id_lo', DOTY_INT, -1);
+        $id_lo = Forma\lib\Get::req('id_lo', DOTY_INT, -1);
         if ($id_lo <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid lo')];
             echo $this->json->encode($output);
@@ -706,8 +706,8 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $old_value = Get::req('old_value', DOTY_MIXED, false);
-        $new_value = Get::req('new_value', DOTY_MIXED, false);
+        $old_value = Forma\lib\Get::req('old_value', DOTY_MIXED, false);
+        $new_value = Forma\lib\Get::req('new_value', DOTY_MIXED, false);
 
         if ($old_value === false || $new_value === false) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid data')];
@@ -782,7 +782,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $output = [];
-        $col = Get::req('col', DOTY_STRING, '');
+        $col = Forma\lib\Get::req('col', DOTY_STRING, '');
         switch ($col) {
             case 'LO_status':
                 $res = $this->model->changeLOUserStatus($id_lo, $id_user, $new_value);
@@ -1165,8 +1165,8 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        $id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         if ((int) $id_course <= 0) {
             //...
             return;
@@ -1402,8 +1402,8 @@ class CoursestatsLmsController extends LmsController
         $delimiter = '"';
         $line_end = "\r\n";
         $pagination = false;
-        $id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
 
         $output = '';
 

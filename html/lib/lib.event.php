@@ -506,7 +506,7 @@ class DoceboEventConsumer
      **/
     public function actionEvent(&$event)
     {
-        if (Get::sett('do_debug') == 'on') {
+        if (Forma\lib\Get::sett('do_debug') == 'on') {
             $log_event = $event->getProperty('_event_log');
             if ($log_event === false) {
                 $log_event = '';

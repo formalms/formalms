@@ -21,9 +21,9 @@ echo Form::openForm('entity_course_rule', 'index.php?r=alms/enrollrules/savebase
 $this->widget('table', [
     'id' => 'showrule',
     'ajaxUrl' => 'ajax.adm_server.php?r=alms/enrollrules/getbaserule&id_rule=' . $id_rule,
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => false,
     'dir' => 'asc',
     'columns' => $columns,

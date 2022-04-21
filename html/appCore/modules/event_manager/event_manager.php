@@ -64,11 +64,11 @@ function event_manager_view($op)
     $out->add($form->openElementSpace());
 
     //$ord = importVar('ord', false, 'trans');
-    $ord = Get::req('ord', DOTY_STRING, 'trans');
+    $ord = Forma\lib\Get::req('ord', DOTY_STRING, 'trans');
     //$flip = importVar('flip', true, 0);
-    $flip = Get::req('flip', DOTY_INT, 0);
+    $flip = Forma\lib\Get::req('flip', DOTY_INT, 0);
 
-    $tb_event_classes = new Table(Get::sett('visuItem'), $lang->def('_EVENT_SETTINGS'), $lang->def('_EVENT_SETTINGS'));
+    $tb_event_classes = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_EVENT_SETTINGS'), $lang->def('_EVENT_SETTINGS'));
 
     $content_h = [
         $lang->def('_EVENT_PLATFORM'),
@@ -185,7 +185,7 @@ function event_user_view($op)
     $ord = importVar('ord', false, 'trans');
     $flip = importVar('flip', true, 0);
 
-    $tb_event_classes = new Table(Get::sett('visuItem'), $lang->def('_EVENT_SETTINGS'), $lang->def('_EVENT_SETTINGS'));
+    $tb_event_classes = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_EVENT_SETTINGS'), $lang->def('_EVENT_SETTINGS'));
 
     $content_h = [
         $lang->def('_EVENT_PLATFORM'),

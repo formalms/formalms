@@ -69,7 +69,7 @@ class Report_Aggregate extends Report
             //already resolved in switch block
         }
 
-        $step = Get::req('step', DOTY_ALPHANUM, 'sel_type');
+        $step = Forma\lib\Get::req('step', DOTY_ALPHANUM, 'sel_type');
         switch ($step) {
             case 'sel_type':
                 $values = ['users' => $this->lang->def('_USERS'), 'groups' => $this->lang->def('_GROUPS')];
@@ -92,13 +92,13 @@ class Report_Aggregate extends Report
              break;
 
             case 'sel_data':
-                $type = Get::req('selection_type', DOTY_ALPHANUM, 'users');
+                $type = Forma\lib\Get::req('selection_type', DOTY_ALPHANUM, 'users');
 
                 //$aclManager = new DoceboACLManager();
                 $user_select = new UserSelector();
 
-                if (Get::req('is_updating', DOTY_INT, 0) > 0) {
-                    $ref['rows_filter']['select_all'] = (Get::req('select_all', DOTY_INT, 0) > 0 ? true : false);
+                if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
+                    $ref['rows_filter']['select_all'] = (Forma\lib\Get::req('select_all', DOTY_INT, 0) > 0 ? true : false);
                     $ref['rows_filter']['selection_type'] = $type;
                 //$ref['rows_filter']['selection'] = $user_select->getSelection($_POST);
                 } else { //maybe redoundant
@@ -193,12 +193,12 @@ class Report_Aggregate extends Report
             $selector->parseForState($_POST);
             $temp = $selector->getSelection($_POST);
             $ref['selected_courses'] = $temp;
-            $ref['all_courses'] = (Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
+            $ref['all_courses'] = (Forma\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
             $ref['showed_columns'] = [
-                'completed' => (Get::req('cols_completed', DOTY_INT, 0) > 0 ? true : false),
-                'initinere' => (Get::req('cols_initinere', DOTY_INT, 0) > 0 ? true : false),
-                'notstarted' => (Get::req('cols_notstarted', DOTY_INT, 0) > 0 ? true : false),
-                'show_percentages' => (Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false), ];
+                'completed' => (Forma\lib\Get::req('cols_completed', DOTY_INT, 0) > 0 ? true : false),
+                'initinere' => (Forma\lib\Get::req('cols_initinere', DOTY_INT, 0) > 0 ? true : false),
+                'notstarted' => (Forma\lib\Get::req('cols_notstarted', DOTY_INT, 0) > 0 ? true : false),
+                'show_percentages' => (Forma\lib\Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false), ];
         } else {
             $selector->resetSelection($ref['selected_courses']);
         }
@@ -249,7 +249,7 @@ class Report_Aggregate extends Report
         ], [
             '/assets/skins/sam' => 'skin.css',
         ]);
-        Util::get_js(Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
 
         cout('<script type="text/javascript"> ' . "\n" .
         'var courses_count="' . ($temp != '' ? $temp : '0') . '";' . "\n" .
@@ -393,7 +393,7 @@ class Report_Aggregate extends Report
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     //No filter
                 }
 
@@ -1053,7 +1053,7 @@ class Report_Aggregate extends Report
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $user_course = false;
                 }
 
@@ -1390,7 +1390,7 @@ class Report_Aggregate extends Report
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['years'] = Get::req('years', DOTY_INT, 1);
+            $ref['years'] = Forma\lib\Get::req('years', DOTY_INT, 1);
         } else {
             //...
         }
@@ -1766,10 +1766,10 @@ class Report_Aggregate extends Report
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['all_communications'] = Get::req('all_communications', DOTY_INT, 0) > 0;
-            $ref['comm_selection'] = Get::req('comm_selection', DOTY_MIXED, []);
-            $ref['comm_start_date'] = Format::dateDb(Get::req('comm_start_date', DOTY_STRING, ''), 'date');
-            $ref['comm_end_date'] = Format::datedb(Get::req('comm_end_date', DOTY_STRING, ''), 'date');
+            $ref['all_communications'] = Forma\lib\Get::req('all_communications', DOTY_INT, 0) > 0;
+            $ref['comm_selection'] = Forma\lib\Get::req('comm_selection', DOTY_MIXED, []);
+            $ref['comm_start_date'] = Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date');
+            $ref['comm_end_date'] = Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date');
         } else {
             //...
         }
@@ -2106,10 +2106,10 @@ class Report_Aggregate extends Report
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['all_games'] = Get::req('all_games', DOTY_INT, 0) > 0;
-            $ref['comp_selection'] = Get::req('comp_selection', DOTY_MIXED, []);
-            $ref['comp_start_date'] = Format::dateDb(Get::req('comp_start_date', DOTY_STRING, ''), 'date');
-            $ref['comp_end_date'] = Format::datedb(Get::req('comp_end_date', DOTY_STRING, ''), 'date');
+            $ref['all_games'] = Forma\lib\Get::req('all_games', DOTY_INT, 0) > 0;
+            $ref['comp_selection'] = Forma\lib\Get::req('comp_selection', DOTY_MIXED, []);
+            $ref['comp_start_date'] = Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date');
+            $ref['comp_end_date'] = Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date');
         } else {
             //...
         }

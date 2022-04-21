@@ -57,12 +57,12 @@ class QuestcategoryAlmsController extends AlmsController
     public function gettabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -162,8 +162,8 @@ class QuestcategoryAlmsController extends AlmsController
             return;
         }
 
-        $name = Get::req('name', DOTY_STRING, '');
-        $description = Get::req('description', DOTY_STRING, '');
+        $name = Forma\lib\Get::req('name', DOTY_STRING, '');
+        $description = Forma\lib\Get::req('description', DOTY_STRING, '');
         if ($name == '') {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
             echo $this->json->encode($output);
@@ -194,7 +194,7 @@ class QuestcategoryAlmsController extends AlmsController
             return;
         }
 
-        $id_questcategory = Get::req('id', DOTY_INT, 0);
+        $id_questcategory = Forma\lib\Get::req('id', DOTY_INT, 0);
         if ($id_questcategory <= 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
             echo $this->json->encode($output);
@@ -220,9 +220,9 @@ class QuestcategoryAlmsController extends AlmsController
             return;
         }
 
-        $id_questcategory = Get::req('id', DOTY_INT, 0);
-        $name = Get::req('name', DOTY_STRING, '');
-        $description = Get::req('description', DOTY_STRING, '');
+        $id_questcategory = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $name = Forma\lib\Get::req('name', DOTY_STRING, '');
+        $description = Forma\lib\Get::req('description', DOTY_STRING, '');
         if ($id_questcategory <= 0 || $name == '') {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
             echo $this->json->encode($output);
@@ -251,7 +251,7 @@ class QuestcategoryAlmsController extends AlmsController
             return;
         }
 
-        $id_questcategory = Get::req('id', DOTY_INT, 0);
+        $id_questcategory = Forma\lib\Get::req('id', DOTY_INT, 0);
         if ($id_questcategory <= 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
             echo $this->json->encode($output);

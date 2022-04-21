@@ -21,8 +21,8 @@ sql_query("SET CHARACTER SET 'utf8'");
 sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 
 $enabled_step = 4;
-$current_step = Get::gReq('cur_step', DOTY_INT);
-$upg_step = Get::gReq('upg_step', DOTY_INT);
+$current_step = Forma\lib\Get::gReq('cur_step', DOTY_INT);
+$upg_step = Forma\lib\Get::gReq('upg_step', DOTY_INT);
 
 if ($_SESSION['start_version'] < 3000 || $_SESSION['start_version'] >= 4000) {
     echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too new (v4)';

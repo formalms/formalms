@@ -101,7 +101,7 @@ class Controller
         }
         $paths[] = $this->viewPath();
 
-        $tplengine = Get::cfg('template_engine', []);
+        $tplengine = Forma\lib\Get::cfg('template_engine', []);
 
         foreach ($tplengine as $tplkey => $tpleng) {
             if (isset($tplengine[$tplkey]['ext']) && !is_array($tplengine[$tplkey]['ext'])) {
@@ -150,9 +150,9 @@ class Controller
                 $view_path = dirname($path);
 
                 foreach ($paths as $path) {
-                    \appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
+                    Forma\appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
                 }
-                echo \appCore\Template\TwigManager::getInstance()->render($view_name . $extension, $data_for_view, $view_path);
+                echo Forma\appCore\Template\TwigManager::getInstance()->render($view_name . $extension, $data_for_view, $view_path);
                 break;
             default:
                 //die( 'FILENOTFOUND');

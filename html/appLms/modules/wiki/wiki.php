@@ -331,9 +331,9 @@ function wikiMap()
         return false;
     }
 
-    $pi = Get::req('pi', DOTY_MIXED, '');
-    $lang = Get::req('lang', DOTY_MIXED, '');
-    $page = Get::req('page', DOTY_MIXED, '');
+    $pi = Forma\lib\Get::req('pi', DOTY_MIXED, '');
+    $lang = Forma\lib\Get::req('lang', DOTY_MIXED, '');
+    $page = Forma\lib\Get::req('page', DOTY_MIXED, '');
     $wiki_id = $_GET['wiki_id'];
 
     if (isset($_POST['del_selected'])) {

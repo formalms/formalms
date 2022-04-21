@@ -616,7 +616,7 @@ class InlineChoice_Question extends Question
 
         $select = '<select class="test_inline_select" id="quest_' . $id_quest . '" name="quest[' . $id_quest . ']"'
             . ($find_prev && $freeze ? ' disabled="disabled"' : '') . '>' . "\n"
-            . (Get::sett('no_answer_in_test') == 'on' ? '<option value="0"' . ($find_prev ? '' : ' selected="selected"') . '>' . $lang->def('_NO_ANSWER') . '</option>' : '');
+            . (Forma\lib\Get::sett('no_answer_in_test') == 'on' ? '<option value="0"' . ($find_prev ? '' : ' selected="selected"') . '>' . $lang->def('_NO_ANSWER') . '</option>' : '');
         while (list($id_answer, $answer) = sql_fetch_row($re_answer)) {
             $select .= '<option value="' . $id_answer . '"'
                 . (($find_prev && $id_answer == $id_answer_do) ? ' selected="selected"' : '')
@@ -794,7 +794,7 @@ class InlineChoice_Question extends Question
         $sql = 'select status from ' . $GLOBALS['prefix_lms'] . '_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
         list($status_test) = sql_fetch_row(sql_query($sql));
 
-        $select = (Get::sett('no_answer_in_test') == 'on' ? '<span class="text_bold">' . $lang->def('_NO_ANSWER') . '</span>' : '');
+        $select = (Forma\lib\Get::sett('no_answer_in_test') == 'on' ? '<span class="text_bold">' . $lang->def('_NO_ANSWER') . '</span>' : '');
         while (list($id_answer, $answer, $is_correct, $com) = sql_fetch_row($re_answer)) {
             if ($id_answer == $id_answer_do) {
                 $select = '<span class="text_bold">' . $answer . '</span>';

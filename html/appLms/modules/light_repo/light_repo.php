@@ -133,7 +133,7 @@ function modRepo(&$url)
         }
 
         if (!$file_man->saveRepo($id_repo, $data)) {
-            cout(Get::append_alert($lang->def('_ERR_MOD_REPO')), 'content');
+            cout(Forma\lib\Get::append_alert($lang->def('_ERR_MOD_REPO')), 'content');
         } else {
             Util::jump_to($url->getUrl('result=ok_mod'));
         }
@@ -178,7 +178,7 @@ function delRepo(&$url)
 
     $re = false;
     if (isset($_GET['confirm'])) {
-        $id_repo = Get::req('id_repo', DOTY_INT, 0);
+        $id_repo = Forma\lib\Get::req('id_repo', DOTY_INT, 0);
         $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
         $re = $file_man->deleteRepo($id_repo);
     }
@@ -320,14 +320,14 @@ function modFile(&$url)
                 $userInfo = $userManager->getUser($teacher, false);
                 $teacherRecipient = $userInfo[ACL_INFO_EMAIL];
                 $mailer->SendMail(
-                    Get::sett('sender_event'),
+                    Forma\lib\Get::sett('sender_event'),
                     [$teacherRecipient],
                     $subject,
                     $baseBody,
                     $attachments,
                     [
-                        MAIL_REPLYTO => Get::sett('sender_event'),
-                        MAIL_SENDER_ACLNAME => Get::sett('use_sender_aclname'),
+                        MAIL_REPLYTO => Forma\lib\Get::sett('sender_event'),
+                        MAIL_SENDER_ACLNAME => Forma\lib\Get::sett('use_sender_aclname'),
                     ]
                 );
             }
@@ -389,8 +389,8 @@ function delFile(&$url)
 
     $re = false;
     if (isset($_GET['confirm'])) {
-        $id_file = Get::req('id_file', DOTY_INT, 0);
-        $id_repo = Get::req('id_repo', DOTY_INT, 0);
+        $id_file = Forma\lib\Get::req('id_file', DOTY_INT, 0);
+        $id_repo = Forma\lib\Get::req('id_repo', DOTY_INT, 0);
 
         $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
         $re = $file_man->deleteFile($id_file);

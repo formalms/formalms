@@ -70,13 +70,13 @@ class TimeperiodsAlmsController extends AlmsController
     public function gettimeperiodslistTask()
     {
         //read input data (table parameters and filter)
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
         $searchFilter = [
             'text' => $filter_text,
             //... TO DO: make dates filtrable too
@@ -148,7 +148,7 @@ class TimeperiodsAlmsController extends AlmsController
             echo $this->json->encode($output);
         }
 
-        $id = get::req('id', DOTY_INT, 0);
+        $id = Forma\lib\Get::req('id', DOTY_INT, 0);
 
         //check if specified period is valid
         if ($id <= 0) {
@@ -183,9 +183,9 @@ class TimeperiodsAlmsController extends AlmsController
         //prepare output variable
         $output = ['success' => false];
 
-        $title = Get::req('title', DOTY_STRING, '');
-        $start_date = Get::req('start_date', DOTY_STRING, '');
-        $end_date = Get::req('end_date', DOTY_STRING, '');
+        $title = Forma\lib\Get::req('title', DOTY_STRING, '');
+        $start_date = Forma\lib\Get::req('start_date', DOTY_STRING, '');
+        $end_date = Forma\lib\Get::req('end_date', DOTY_STRING, '');
 
         $start_date = Format::dateDb($start_date, 'date');
         $end_date = Format::dateDb($end_date, 'date');
@@ -212,16 +212,16 @@ class TimeperiodsAlmsController extends AlmsController
         $output = ['success' => false];
 
         //read inputs and validate data
-        $id = Get::req('id', DOTY_INT, 0);
+        $id = Forma\lib\Get::req('id', DOTY_INT, 0);
         if ($id <= 0) {
             echo $this->json->encode($output);
 
             return;
         }
 
-        $title = Get::req('title', DOTY_STRING, '');
-        $start_date = Get::req('start_date', DOTY_STRING, '');
-        $end_date = Get::req('end_date', DOTY_STRING, '');
+        $title = Forma\lib\Get::req('title', DOTY_STRING, '');
+        $start_date = Forma\lib\Get::req('start_date', DOTY_STRING, '');
+        $end_date = Forma\lib\Get::req('end_date', DOTY_STRING, '');
 
         $start_date = Format::dateDb($start_date, 'date');
         $end_date = Format::dateDb($end_date, 'date');
@@ -248,7 +248,7 @@ class TimeperiodsAlmsController extends AlmsController
         //prepare output variable
         $output = ['success' => false];
 
-        $id = Get::req('id', DOTY_INT, 0);
+        $id = Forma\lib\Get::req('id', DOTY_INT, 0);
         if ($id <= 0) {
             echo $this->json->encode($output);
 

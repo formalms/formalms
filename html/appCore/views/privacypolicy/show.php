@@ -42,23 +42,23 @@ $columns = [
     ['key' => 'name', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
 ];
 if ($permissions['mod']) {
-    $columns[] = ['key' => 'assign', 'label' => Get::sprite('subs_elem', Lang::t('_ASSIGN', 'standard')), 'formatter' => 'PrivacyPolicies.assignformatter', 'className' => 'img-cell'];
+    $columns[] = ['key' => 'assign', 'label' => Forma\lib\Get::sprite('subs_elem', Lang::t('_ASSIGN', 'standard')), 'formatter' => 'PrivacyPolicies.assignformatter', 'className' => 'img-cell'];
 }
 
-//if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'formatter' => 'doceboModify', 'className' => 'img-cell');
+//if ($permissions['mod']) $columns[] = array('key' => 'mod', 'label' => Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'formatter' => 'doceboModify', 'className' => 'img-cell');
 if ($permissions['mod']) {
-    $columns[] = ['key' => 'mod', 'label' => Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'className' => 'img-cell'];
+    $columns[] = ['key' => 'mod', 'label' => Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'standard')), 'className' => 'img-cell'];
 }
 if ($permissions['del']) {
-    $columns[] = ['key' => 'del', 'label' => Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
+    $columns[] = ['key' => 'del', 'label' => Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 }
 
 $params = [
     'id' => 'policies_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/privacypolicy/gettabledata',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'name',
     'dir' => 'asc',
     //'checkableRows' => true,
@@ -100,9 +100,9 @@ $this->widget('tree', [
     'id' => 'assign_orgchart_tree',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/usermanagement/gettreedata_create',
     'treeClass' => 'DialogOrgFolderTree',
-    //'treeFile' => Get::rel_path('adm').'/views/usermanagement/orgchartfoldertree.js',
+    //'treeFile' => Forma\lib\Get::rel_path('adm').'/views/usermanagement/orgchartfoldertree.js',
     'languages' => [
-        '_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
+        '_ROOT' => Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
     ],
     'initialSelectedNode' => 0,
     'show' => 'tree',

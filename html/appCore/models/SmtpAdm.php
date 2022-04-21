@@ -168,7 +168,7 @@ final class SmtpAdm extends Model
 
     public static function isEnabledDatabase()
     {
-        $smtpConfigIsEnabled = Get::cfg('use_smtp_database');
+        $smtpConfigIsEnabled = Forma\lib\Get::cfg('use_smtp_database');
 
         switch ($smtpConfigIsEnabled) {
             case 'off':
@@ -212,14 +212,14 @@ final class SmtpAdm extends Model
                 $this->$property = $row['param_value'];
             }
         } else {
-            $this->useSmtp = Get::cfg('use_smtp');
-            $this->host = Get::cfg('smtp_host');
-            $this->port = Get::cfg('smtp_port');
-            $this->secure = Get::cfg('smtp_secure');
-            $this->autoTls = Get::cfg('smtp_auto_tls');
-            $this->user = Get::cfg('smtp_user');
-            $this->pwd = Get::cfg('smtp_pwd');
-            $this->debug = Get::cfg('smtp_debug', 0);
+            $this->useSmtp = Forma\lib\Get::cfg('use_smtp');
+            $this->host = Forma\lib\Get::cfg('smtp_host');
+            $this->port = Forma\lib\Get::cfg('smtp_port');
+            $this->secure = Forma\lib\Get::cfg('smtp_secure');
+            $this->autoTls = Forma\lib\Get::cfg('smtp_auto_tls');
+            $this->user = Forma\lib\Get::cfg('smtp_user');
+            $this->pwd = Forma\lib\Get::cfg('smtp_pwd');
+            $this->debug = Forma\lib\Get::cfg('smtp_debug', 0);
         }
     }
 }

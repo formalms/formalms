@@ -58,7 +58,7 @@ class DbupgradesAdm extends Model
         }
 
         $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-        $results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 25));
+        $results = (isset($pagination['results']) ? $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
 
         $dir = 'DESC';
         if (isset($pagination['dir'])) {

@@ -52,10 +52,10 @@ class TemplatelayoutAdmController extends AdmController
 
     public function tabledataTask()
     {
-        $this->_setTableStatus('filter', Get::req('filter', DOTY_STRING, ''));
+        $this->_setTableStatus('filter', Forma\lib\Get::req('filter', DOTY_STRING, ''));
 
         $startIndex = $this->_getTableStatus('startIndex', 0);
-        $page_size = Get::sett('visuItem', 25);
+        $page_size = Forma\lib\Get::sett('visuItem', 25);
         $sort = $this->_getTableStatus('sort', 'name');
         $dir = $this->_getTableStatus('dir', 'asc');
         $filter = $this->_getTableStatus('filter');
@@ -97,7 +97,7 @@ class TemplatelayoutAdmController extends AdmController
     public function deleteTask()
     {
         $output = ['success' => false];
-        $id = Get::req('id', DOTY_INT, -1);
+        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
         if ($id > 0) {
             $output['success'] = $this->model->deleteTemplate($id);
         }
@@ -113,7 +113,7 @@ class TemplatelayoutAdmController extends AdmController
     public function editTask()
     {
         YuiLib::load('colorpicker');
-        $id = Get::req('id', DOTY_INT, -1);
+        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
         if ($id > 0) {
             $params = [
                 'id' => $id,

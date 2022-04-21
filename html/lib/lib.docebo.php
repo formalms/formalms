@@ -74,7 +74,7 @@ class Docebo
         // change the cache based on the config
         if (!self::$_cache) {
             $type = 'dummy';
-            $cfg = Get::cfg('cache', false);
+            $cfg = Forma\lib\Get::cfg('cache', false);
             if (!empty($cfg['type'])) {
                 $type = $cfg['type'];
             }

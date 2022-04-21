@@ -72,7 +72,7 @@ class UserManager
      */
     public function UserManager($platform = false, $prefix = false, $db_conn = false)
     {
-        $this->_platform = ($platform !== false ? $platform : Get::cur_plat());
+        $this->_platform = ($platform !== false ? $platform : Forma\lib\Get::cur_plat());
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->db_conn = ($db_conn !== false ? $db_conn : null);
 
@@ -504,7 +504,7 @@ class UserManager
 
         $lang = DoceboLanguage::createInstance('register');
 
-        $random_code = Get::req('code', DOTY_MIXED, '');
+        $random_code = Forma\lib\Get::req('code', DOTY_MIXED, '');
         $exist_code = $this->getPwdRandomCode(false, $random_code);
 
         if (!isset($_POST['send'])) {
@@ -632,7 +632,7 @@ class UserManager
             $intestazione .= "X-Mailer: PHP/". phpversion().$GLOBALS['mail_br'];*/
 
                 $mail_text = $lang->def('_LOST_USERID_MAILTEXT');
-                $mail_text = str_replace(['[date_request]', '[url]', '[dynamic_link]', '[userid]'], [date('d-m-Y'), Get::site_url(), getCurrentDomain($reg_code) ?: Get::site_url(), $acl_man->relativeId($user_info[ACL_INFO_USERID])], $mail_text);
+                $mail_text = str_replace(['[date_request]', '[url]', '[dynamic_link]', '[userid]'], [date('d-m-Y'), Forma\lib\Get::site_url(), getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(), $acl_man->relativeId($user_info[ACL_INFO_USERID])], $mail_text);
 
                 //if(!@mail($user_info[ACL_INFO_EMAIL], $lang->def('_LOST_USERID_TITLE'), $mail_text, $from.$intestazione)) {
 
@@ -703,9 +703,9 @@ class UserManager
                     }
                 }
 
-                $dynamicUrl = getCurrentDomain($reg_code) ?: Get::site_url();
+                $dynamicUrl = getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url();
 
-                $link = Get::site_url() . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
+                $link = Forma\lib\Get::site_url() . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
                 $dynamicLink = $dynamicUrl . $mail_url . '&amp;pwd=retrpwd&amp;code=' . $code;
                 $mail_text = str_replace(['[link]', '[dynamic_link]'], [$link, $dynamicLink], $lang->def('_LOST_PWD_MAILTEXT'));
 
@@ -845,7 +845,7 @@ class UserManager
         $res = true;
 
         $uma = new UsermanagementAdm();
-        $code_is_mandatory = (Get::sett('mandatory_code', 'off') == 'on');
+        $code_is_mandatory = (Forma\lib\Get::sett('mandatory_code', 'off') == 'on');
 
         if ($reg_code != '') {
             switch ($registration_code_type) {
@@ -861,7 +861,7 @@ class UserManager
                     //control course registration
                     require_once _lms_ . '/lib/lib.course.php';
                     $man_course_user = new Man_CourseUser();
-                    $jolly_code = Get::sett('jolly_course_code', '');
+                    $jolly_code = Forma\lib\Get::sett('jolly_course_code', '');
                     if ($jolly_code == '' || $jolly_code != $course_code) {
                         $course_registration_result = $man_course_user->checkCode($course_code);
                         if ($course_registration_result <= 0 && $code_is_mandatory) {
@@ -970,7 +970,7 @@ class UserManagerRenderer
         $this->_lostpwd_type = '';
         $this->_lostpwd_info = '';
 
-        $this->_style_to_use = Get::rel_path(_base_) . '/template/standard/' . 'style/style_login.css';
+        $this->_style_to_use = Forma\lib\Get::rel_path(_base_) . '/template/standard/' . 'style/style_login.css';
         $this->_show_accessibility_button = true;
         $this->_show_language_selection = true;
     }
@@ -1047,13 +1047,13 @@ class UserManagerRenderer
     public function getLoginInfo()
     {
         $info = [
-            'userid' => Get::req('login_userid', DOTY_STRING),
-            'password' => Get::req('login_pwd', DOTY_STRING),
+            'userid' => Forma\lib\Get::req('login_userid', DOTY_STRING),
+            'password' => Forma\lib\Get::req('login_pwd', DOTY_STRING),
         ];
 
         $all_languages = Docebo::langManager()->getAllLangCode();
 
-        $info['lang'] = Get::req('login_lang', DOTY_STRING, false);
+        $info['lang'] = Forma\lib\Get::req('login_lang', DOTY_STRING, false);
         if ($info['lang'] === 'default') {
             $info['lang'] = false;
         } else {
@@ -1266,7 +1266,7 @@ class UserManagerRenderer
             $out .= '<div class="form_elem_button">'
                 . Form::getButton('login_button', 'login_button', $lang->def('_LOGIN'), 'yui-button', ' tabindex="' . $GLOBALS['login_tabindex']++ . '"');
             if ($this->_show_accessibility_button === true) {
-                if (Get::sett('accessibility') == 'on') {
+                if (Forma\lib\Get::sett('accessibility') == 'on') {
                     $out .= '<br />'
                         . Form::getButton(
                             'login_button_access',
@@ -1295,7 +1295,7 @@ class UserManagerRenderer
         if ($register_type == 'self' || $register_type == 'moderate') {
             switch ($this->_register_type) {
                 case 'link':
-                        if (Get::sett('register_with_code') == 'on') {
+                        if (Forma\lib\Get::sett('register_with_code') == 'on') {
                             $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_LOG_REGISTER_WITH_CODE') . '</a>';
                         } else {
                             $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_REGISTER') . '</a>';
@@ -1303,7 +1303,7 @@ class UserManagerRenderer
                     ;
                     break;
                 case 'button':
-                        if (Get::sett('register_with_code') == 'on') {
+                        if (Forma\lib\Get::sett('register_with_code') == 'on') {
                             $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_LOG_REGISTER_WITH_CODE'), 'button_as_link');
                         } else {
                             $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_REGISTER'), 'button_as_link');
@@ -1425,7 +1425,7 @@ class UserManagerRenderer
                     }
 
                     if ($this->error) {
-                        if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
+                        if ($options['use_advanced_form'] == 'on' || Forma\lib\Get::sett('register_with_code') == 'on') {
                             $out = $this->_special_field($options, $platform, $opt_link, $errors);
                         } else {
                             $out = $this->_first_of_all($options, $platform, $errors);
@@ -1520,7 +1520,7 @@ class UserManagerRenderer
         $res = ['success' => true, 'msg' => ''];
 
         $lang = &DoceboLanguage::createInstance('register', 'lms');
-        $code_is_mandatory = (Get::sett('mandatory_code', 'off') == 'on');
+        $code_is_mandatory = (Forma\lib\Get::sett('mandatory_code', 'off') == 'on');
 
         if ($reg_code != '') {
             switch ($registration_code_type) {
@@ -1536,7 +1536,7 @@ class UserManagerRenderer
                     //control course registration
                     require_once _lms_ . '/lib/lib.course.php';
                     $man_course_user = new Man_CourseUser();
-                    $jolly_code = Get::sett('jolly_course_code', '');
+                    $jolly_code = Forma\lib\Get::sett('jolly_course_code', '');
                     if ($jolly_code == '' || $jolly_code != $course_code) {
                         $course_registration_result = $man_course_user->subscribeUserWithCode($course_code, $iduser);
                         if ($course_registration_result <= 0 && $code_is_mandatory) {
@@ -1717,10 +1717,10 @@ class UserManagerRenderer
         }
 
         //if the user had enter a code we must check if there are folder related to it and add the folder's field
-        $registration_code_type = Get::sett('registration_code_type', '0');
+        $registration_code_type = Forma\lib\Get::sett('registration_code_type', '0');
 
-        $code_is_mandatory = (Get::sett('mandatory_code', 'off') == 'on');
-        $reg_code = Get::req('reg_code', DOTY_MIXED, '');
+        $code_is_mandatory = (Forma\lib\Get::sett('mandatory_code', 'off') == 'on');
+        $reg_code = Forma\lib\Get::req('reg_code', DOTY_MIXED, '');
         if ($registration_code_type === 'custom') {
             $reg_code = 'change_by_custom_operation';
         }
@@ -1756,8 +1756,8 @@ class UserManagerRenderer
         $sender_name = $options['mail_sender_name_from'];
 
         // FIX BUG 399
-        $dynamicUrl = getCurrentDomain($reg_code) ?: Get::site_url();
-        $url = Get::site_url();
+        $dynamicUrl = getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url();
+        $url = Forma\lib\Get::site_url();
         $link = $url . 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
         $dynamicLink = $dynamicUrl . 'index.php?r=adm/homepage/signup&random_code=' . $random_code;
         // END FIX BUG 399
@@ -1818,9 +1818,9 @@ class UserManagerRenderer
 
         // if the user had enter a code we must check if there are folder related to it and
         // add the folder's field
-        $registration_code_type = Get::sett('registration_code_type', '0');
-        $code_is_mandatory = Get::sett('mandatory_code', 'off');
-        $reg_code = Get::req('reg_code', DOTY_MIXED, '');
+        $registration_code_type = Forma\lib\Get::sett('registration_code_type', '0');
+        $code_is_mandatory = Forma\lib\Get::sett('mandatory_code', 'off');
+        $reg_code = Forma\lib\Get::req('reg_code', DOTY_MIXED, '');
 
         if ($registration_code_type === 'custom') {
             $reg_code = 'change_by_custom_operation';
@@ -2136,8 +2136,8 @@ class UserManagerRenderer
 
         $out .= Form::getHidden('sop', 'sop', 'changelang');
 
-        $registration_code_type = Get::sett('registration_code_type', '0');
-        $code_is_mandatory = Get::sett('mandatory_code', 'off');
+        $registration_code_type = Forma\lib\Get::sett('registration_code_type', '0');
+        $code_is_mandatory = Forma\lib\Get::sett('mandatory_code', 'off');
         switch ($registration_code_type) {
             case '0':
                     //nothin to do
@@ -2153,7 +2153,7 @@ class UserManagerRenderer
                         'form-control',
                         'reg_code',
                         'reg_code',
-                        Get::req('reg_code', DOTY_MIXED, ''),
+                        Forma\lib\Get::req('reg_code', DOTY_MIXED, ''),
                         '',
                         24,
                         'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"'
@@ -2175,7 +2175,7 @@ class UserManagerRenderer
                             'reg_code',
                             'reg_code',
                             $tree_names,
-                            Get::req('reg_code', DOTY_MIXED, ''),
+                            Forma\lib\Get::req('reg_code', DOTY_MIXED, ''),
                             '',
                             true
                         ) .
@@ -2259,7 +2259,7 @@ class UserManagerRenderer
             . '</div>';
 
         $out .= '<div class="homepage__row homepage__links">'
-            . '<a href="' . Get::rel_path('base') . '/index.php"><em>' . $lang->def('_LOGIN') . '</em></a>'
+            . '<a href="' . Forma\lib\Get::rel_path('base') . '/index.php"><em>' . $lang->def('_LOGIN') . '</em></a>'
             . '</div>';
 
         return $out;
@@ -2284,7 +2284,7 @@ class UserManagerRenderer
             $out = '<div class="reg_err_data">' . $lang->def('_REG_ELAPSEDREQUEST', 'register') . '</div>';
             $time_limit = time() - 3600 * ((int) $options['hour_request_limit']);
 
-            if (Get::sett('registration_code_type', '0') == 'code_module') {
+            if (Forma\lib\Get::sett('registration_code_type', '0') == 'code_module') {
                 // free the code from the old association
                 require_once _adm_ . '/lib/lib.code.php';
                 $code_manager = new CodeManager();
@@ -2350,9 +2350,9 @@ class UserManagerRenderer
                 $msg_c_new = new EventMessageComposer();
 
                 $msg_c_new->setSubjectLangText('email', '_TO_NEW_USER_SBJ', false);
-                $msg_c_new->setBodyLangText('email', '_TO_NEW_USER_TEXT', ['[url]' => Get::site_url()]);
+                $msg_c_new->setBodyLangText('email', '_TO_NEW_USER_TEXT', ['[url]' => Forma\lib\Get::site_url()]);
 
-                $msg_c_new->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', ['[url]' => Get::site_url()]);
+                $msg_c_new->setBodyLangText('sms', '_TO_NEW_USER_TEXT_SMS', ['[url]' => Forma\lib\Get::site_url()]);
                 $idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
 
                 $recipients = $acl_man->getAllRoleMembers($idst_approve);
@@ -2380,7 +2380,7 @@ class UserManagerRenderer
             }
         } elseif ($options['register_type'] == 'moderate') {
             if ($acl_man->confirmTempUser($request['idst'])) {
-                if (Get::sett('use_code_module') == 'on') {
+                if (Forma\lib\Get::sett('use_code_module') == 'on') {
                     require_once $GLOBALS['where_framework'] . '/lib/lib.code.php';
 
                     $code_manager = new CodeManager();
@@ -2425,9 +2425,9 @@ class UserManagerRenderer
                 $msg_c_approve = new EventMessageComposer();
 
                 $msg_c_approve->setSubjectLangText('email', '_TO_APPROVE_USER_SBJ', false);
-                $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', ['[url]' => Get::site_url()]);
+                $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', ['[url]' => Forma\lib\Get::site_url()]);
 
-                $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', ['[url]' => Get::site_url()]);
+                $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', ['[url]' => Forma\lib\Get::site_url()]);
                 $idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
 
                 $recipients = $acl_man->getAllRoleMembers($idst_approve);
@@ -2591,8 +2591,8 @@ class UserManagerRenderer
         if ($control_extra_field) {
             $arr_idst = (isset($_POST['group_sel_implode']) ? explode(',', $_POST['group_sel_implode']) : false);
 
-            if ($options['use_advanced_form'] == 'on' || Get::sett('register_with_code') == 'on') {
-                $reg_code = Get::req('reg_code', DOTY_MIXED, '');
+            if ($options['use_advanced_form'] == 'on' || Forma\lib\Get::sett('register_with_code') == 'on') {
+                $reg_code = Forma\lib\Get::req('reg_code', DOTY_MIXED, '');
                 $uma = new UsermanagementAdm();
                 $array_folder = $uma->getFolderGroups($reg_code);
 
@@ -2632,7 +2632,7 @@ class UserManagerRenderer
             . '<span class="text_bold">' . $lang->def('_LOST_TITLE_USER') . ' - </span>'
             . $lang->def('_LOST_INSTRUCTION_USER');
 
-        if (Get::sett('ldap_used') == 'off') {
+        if (Forma\lib\Get::sett('ldap_used') == 'off') {
             $html .= Form::openForm('lost_user', $jump_url)
                 . Form::openElementSpace('form_right')
                 . Form::getLabel('email', $lang->def('_EMAIL'), 'text_bold')
@@ -2711,7 +2711,7 @@ class UserManagerRenderer
         require_once _base_ . '/lib/lib.form.php';
         $lang = &DoceboLanguage::createInstance('profile', 'framework');
 
-        $path = Get::site_url() . $GLOBALS['where_files_relative'] . '/appCore/' . Get::sett('pathphoto');
+        $path = Forma\lib\Get::site_url() . $GLOBALS['where_files_relative'] . '/appCore/' . Forma\lib\Get::sett('pathphoto');
 
         $txt = '<div>'
             . '<div class="boxinfo_title">' . $lang->def('_USERPARAM') . '</div>'
@@ -2833,12 +2833,12 @@ class UserManagerRenderer
         }
         //check password history
 
-        if (Get::sett('user_pwd_history_length') != 0) {
+        if (Forma\lib\Get::sett('user_pwd_history_length') != 0) {
             $new_pwd = $acl_man->encrypt($_POST['newpwd']);
             if ($user_info[ACL_INFO_PASS] == $new_pwd) {
                 return [
                     'error' => true,
-                    'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
+                    'msg' => getErrorUi(str_replace('[diff_pwd]', Forma\lib\Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
                 ];
             }
             $re_pwd = sql_query('SELECT passw '
@@ -2847,11 +2847,11 @@ class UserManagerRenderer
                 . ' ORDER BY pwd_date DESC');
 
             list($pwd_history) = sql_fetch_row($re_pwd);
-            for ($i = 0; $pwd_history && $i < Get::sett('user_pwd_history_length'); ++$i) {
+            for ($i = 0; $pwd_history && $i < Forma\lib\Get::sett('user_pwd_history_length'); ++$i) {
                 if ($pwd_history == $new_pwd) {
                     return [
                         'error' => true,
-                        'msg' => getErrorUi(str_replace('[diff_pwd]', Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
+                        'msg' => getErrorUi(str_replace('[diff_pwd]', Forma\lib\Get::sett('user_pwd_history_length'), $lang->def('_REG_PASS_MUST_DIFF'))),
                     ];
                 }
                 list($pwd_history) = sql_fetch_row($re_pwd);

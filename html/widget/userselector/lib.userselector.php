@@ -111,17 +111,17 @@ class UserselectorWidget extends Widget
         $this->json = new Services_JSON();
 
         YuiLib::load('base,tabview,tree,datatable,selector');
-        Util::get_js(Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
         Util::get_css('base-folder-tree.css', false, true);
 
-        $js_path = Get::rel_path('base') . '/widget/tree/';
+        $js_path = Forma\lib\Get::rel_path('base') . '/widget/tree/';
         Util::get_js($js_path . 'foldernode.js', true, true);
         Util::get_js($js_path . 'foldertree.js', true, true);
         Util::get_js($js_path . 'selectortree.js', true, true);
 
-        $js_path = Get::rel_path('base') . '/widget/userselector/';
+        $js_path = Forma\lib\Get::rel_path('base') . '/widget/userselector/';
         Util::get_js($js_path . 'userselector.js', true, true);
     }
 

@@ -21,12 +21,12 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 // here all the specific code ==========================================================
 
-$op = Get::req('op', DOTY_ALPHANUM, '');
+$op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
 
 switch ($op) {
     case 'get_lang':
-        $module_name = Get::req('module_name', DOTY_ALPHANUM, '');
-        $platform = Get::req('platform', DOTY_ALPHANUM, '');
+        $module_name = Forma\lib\Get::req('module_name', DOTY_ALPHANUM, '');
+        $platform = Forma\lib\Get::req('platform', DOTY_ALPHANUM, '');
 
         $lang = &DoceboLanguage::createInstance('standard', 'framework');
         $lang->setGlobal();
@@ -54,8 +54,8 @@ switch ($op) {
     case 'send_ask_friend':
         require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
 
-        $module_name = Get::req('module_name', DOTY_ALPHANUM, '');
-        $platform = Get::req('platform', DOTY_ALPHANUM, '');
+        $module_name = Forma\lib\Get::req('module_name', DOTY_ALPHANUM, '');
+        $platform = Forma\lib\Get::req('platform', DOTY_ALPHANUM, '');
 
         $id_friend = importVar('id_friend');
         $message_request = importVar('message_request');

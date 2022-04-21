@@ -587,7 +587,7 @@ class DoceboImport
         require_once _base_ . '/lib/lib.form.php';
         $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
         $form = new Form();
-        $table = new Table(Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
+        $table = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
 
         $src_cols = $this->source->get_cols_descripor();
         $dst_cols = $this->destination->get_cols_descripor();

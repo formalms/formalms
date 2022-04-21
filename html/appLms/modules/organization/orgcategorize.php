@@ -50,10 +50,10 @@ function organization_categorize_sco()
 {
     $language = (isset($_SESSION['idCourse']) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
 
-    $idResource = Get::req('idResource', DOTY_INT, 0);
-    $sco_id = Get::req('sco_id', DOTY_INT, 0);
-    $idItem = Get::req('idItem', DOTY_INT, 0);
-    $scormorg_title = Get::req('scormorg_title', DOTY_STRING, '');
+    $idResource = Forma\lib\Get::req('idResource', DOTY_INT, 0);
+    $sco_id = Forma\lib\Get::req('sco_id', DOTY_INT, 0);
+    $idItem = Forma\lib\Get::req('idItem', DOTY_INT, 0);
+    $scormorg_title = Forma\lib\Get::req('scormorg_title', DOTY_STRING, '');
 
     $back_url = 'index.php?modname=storage&amp;op=org_select_sco
 		&amp;idResource=' . $idResource . '&amp;title=' . $scormorg_title;
@@ -93,23 +93,23 @@ function organization_categorize_save(&$treeView, $idItem)
     $folder = $treeView->tdb->getFolderById($idItem);
     $data = $folder->otherValues;
 
-    $res_id = Get::req('res_id', DOTY_INT, 0);
-    $name = Get::req('r_name', DOTY_STRING, '');
-    $original_name = Get::req('original_name', DOTY_STRING, '');
-    $desc = Get::req('r_desc', DOTY_STRING, '');
-    $r_item_id = Get::req('r_item_id', DOTY_INT, 0);
-    $type = Get::req('r_type', DOTY_STRING, '');
-    $env = Get::req('r_env', DOTY_STRING, '');
-    $env_parent_id = Get::req('r_env_parent_id', DOTY_INT, 0);
-    $param = ''; //Get::req('', DOTY_STRING, "");
+    $res_id = Forma\lib\Get::req('res_id', DOTY_INT, 0);
+    $name = Forma\lib\Get::req('r_name', DOTY_STRING, '');
+    $original_name = Forma\lib\Get::req('original_name', DOTY_STRING, '');
+    $desc = Forma\lib\Get::req('r_desc', DOTY_STRING, '');
+    $r_item_id = Forma\lib\Get::req('r_item_id', DOTY_INT, 0);
+    $type = Forma\lib\Get::req('r_type', DOTY_STRING, '');
+    $env = Forma\lib\Get::req('r_env', DOTY_STRING, '');
+    $env_parent_id = Forma\lib\Get::req('r_env_parent_id', DOTY_INT, 0);
+    $param = ''; //Forma\lib\Get::req('', DOTY_STRING, "");
     $alt_desc = '';
-    $lang_id = Get::req('r_lang', DOTY_INT, '');
+    $lang_id = Forma\lib\Get::req('r_lang', DOTY_INT, '');
     $lang_arr = Docebo::langManager()->getAllLangCode();
     $lang = $lang_arr[$lang_id];
-    $force_visible = Get::req('force_visible', DOTY_INT, 0);
-    $is_mobile = Get::req('is_mobile', DOTY_INT, 0);
-    $folders = Get::req('h_selected_folders', DOTY_STRING, '');
-    $json_tags = Util::strip_slashes(Get::req('tag_list', DOTY_STRING, '[]'));
+    $force_visible = Forma\lib\Get::req('force_visible', DOTY_INT, 0);
+    $is_mobile = Forma\lib\Get::req('is_mobile', DOTY_INT, 0);
+    $folders = Forma\lib\Get::req('h_selected_folders', DOTY_STRING, '');
+    $json_tags = Util::strip_slashes(Forma\lib\Get::req('tag_list', DOTY_STRING, '[]'));
 
     $kbres = new KbRes();
     $res_id = $kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
@@ -140,9 +140,9 @@ function organization_jump_select_sco(&$treeView, $idItem, $folder = false, $dat
 function organization_select_sco()
 {
     $form_url = '';
-    $idResource = Get::req('idResource', DOTY_INT, 0);
-    $idItem = Get::req('idItem', DOTY_INT, 0);
-    $scormorg_title = Get::req('scormorg_title', DOTY_STRING, '');
+    $idResource = Forma\lib\Get::req('idResource', DOTY_INT, 0);
+    $idItem = Forma\lib\Get::req('idItem', DOTY_INT, 0);
+    $scormorg_title = Forma\lib\Get::req('scormorg_title', DOTY_STRING, '');
 
     $title_arr = [];
     $title_arr['index.php?modname=storage&amp;op=display'] = stripslashes($scormorg_title);
@@ -189,7 +189,7 @@ function organization_select_sco()
 function getScoItemsTable($id_org, $scormorg_title, $idItem)
 {
     require_once _base_ . '/lib/lib.table.php';
-    $tb = new Table(Get::sett('visu_course'));
+    $tb = new Table(Forma\lib\Get::sett('visu_course'));
 
     $id_org = (int) $id_org;
 
@@ -281,7 +281,7 @@ function organization_categorize_switch_subcat(&$treeView, $idItem)
     $type = $data[REPOFIELDOBJECTTYPE];
     $r_data = $kbres->getResourceFromItem($data[REPOFIELDIDRESOURCE], $type, 'course_lo');
 
-    $cat_sub_items = Get::pReq('subcategorize_switch', DOTY_INT);
+    $cat_sub_items = Forma\lib\Get::pReq('subcategorize_switch', DOTY_INT);
     $res_id = (int) $r_data['res_id'];
     $r_env_parent_id = (int) $r_data['r_env_parent_id'];
 

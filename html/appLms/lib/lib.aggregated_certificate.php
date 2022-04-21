@@ -75,7 +75,7 @@ class AggregatedCertificate
 
         if (!$count) {
             $query_certificate .= ' ORDER BY id_certificate'
-                . " LIMIT $ini," . Get::sett('visuItem');
+                . " LIMIT $ini," . Forma\lib\Get::sett('visuItem');
         }
 
         $rs = sql_query($query_certificate);
@@ -139,7 +139,7 @@ class AggregatedCertificate
 
         if ($ini != -1) { // Setting offset for pagination
             $query .= ' ORDER BY idAssociation'
-                . " LIMIT $ini," . Get::sett('visuItem');
+                . " LIMIT $ini," . Forma\lib\Get::sett('visuItem');
         }
 
         $rs = sql_query($query);
@@ -656,11 +656,11 @@ class AggregatedCertificate
 
     public function saveCertAggregatedCert($assocArr)
     {
-        $this->_id_cert = Get::req('id_certificate', DOTY_INT);
-        $this->_title = addslashes(Get::req('title', DOTY_STRING));
-        $this->_description = addslashes(Get::req('description', DOTY_STRING));
-        $this->_idAssoc = intval(Get::req('id_assoc', DOTY_INT));
-        $this->_type_assoc = Get::req('type_assoc', DOTY_INT, -1);
+        $this->_id_cert = Forma\lib\Get::req('id_certificate', DOTY_INT);
+        $this->_title = addslashes(Forma\lib\Get::req('title', DOTY_STRING));
+        $this->_description = addslashes(Forma\lib\Get::req('description', DOTY_STRING));
+        $this->_idAssoc = intval(Forma\lib\Get::req('id_assoc', DOTY_INT));
+        $this->_type_assoc = Forma\lib\Get::req('type_assoc', DOTY_INT, -1);
 
         if ($this->_type_assoc == self::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
             $table = $this->table_cert_meta_association_courses;
@@ -677,7 +677,7 @@ class AggregatedCertificate
                 if ($this->_type_assoc == self::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
                     $sql1 = 'INSERT INTO ' . $table . ' (idAssociation, idUser, idCourse, idCourseEdition) VALUES ';
                     // insert placeholder for no user selected case
-                    $array_course = explode(',', Get::req('selected_courses', DOTY_NUMLIST));
+                    $array_course = explode(',', Forma\lib\Get::req('selected_courses', DOTY_NUMLIST));
                     $r = [];
                     foreach ($array_course as $the_course) {
                         $r[] = '(' . $this->_idAssoc . ',0,' . $the_course . ', 0)';
@@ -685,7 +685,7 @@ class AggregatedCertificate
                 } else {
                     $sql1 = 'INSERT INTO ' . $table . ' (idAssociation, idUser, idCoursePath) VALUES ';
                     // insert placeholder for no user selected case
-                    $array_path = explode(',', Get::req('selected_idsCoursePath', DOTY_NUMLIST));
+                    $array_path = explode(',', Forma\lib\Get::req('selected_idsCoursePath', DOTY_NUMLIST));
                     $r = [];
                     foreach ($array_path as $the_path) {
                         $r[] = '(' . $this->_idAssoc . ',0,' . $the_path . ')';
@@ -707,7 +707,7 @@ class AggregatedCertificate
             if ($this->_type_assoc == self::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
                 $sql2 = 'INSERT INTO ' . $table . ' (idAssociation, idUser, idCourse, idCourseEdition) VALUES ';
                 // insert placeholder for no user selected case
-                $array_course = explode(',', Get::req('selected_courses', DOTY_NUMLIST));
+                $array_course = explode(',', Forma\lib\Get::req('selected_courses', DOTY_NUMLIST));
                 $r = [];
                 foreach ($array_course as $the_course) {
                     $r[] = '(' . $this->_idAssoc . ',0,' . $the_course . ', 0)';
@@ -715,7 +715,7 @@ class AggregatedCertificate
             } else {
                 $sql2 = 'INSERT INTO ' . $table . ' (idAssociation, idUser, idCoursePath) VALUES ';
                 // insert placeholder for no user selected case
-                $array_path = explode(',', Get::req('selected_idsCoursePath', DOTY_NUMLIST));
+                $array_path = explode(',', Forma\lib\Get::req('selected_idsCoursePath', DOTY_NUMLIST));
                 $r = [];
                 foreach ($array_path as $the_path) {
                     $r[] = '(' . $this->_idAssoc . ',0,' . $the_path . ')';

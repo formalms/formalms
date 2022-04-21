@@ -17,8 +17,8 @@ include 'bootstrap.php';
 require '../config.php';
 
 $enabled_step = 3;
-$current_step = Get::gReq('cur_step', DOTY_INT);
-//$upg_step = Get::gReq('upg_step', DOTY_INT);
+$current_step = Forma\lib\Get::gReq('cur_step', DOTY_INT);
+//$upg_step = Forma\lib\Get::gReq('upg_step', DOTY_INT);
 
 //if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
 //	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';
@@ -88,7 +88,7 @@ if ($_SESSION['upgrade_ok']) {
 $config_saved = false;
 if ($_SESSION['upgrade_ok']) {
     if ($config_changed) {
-        $dwnl = Get::req('dwnl', DOTY_ALPHANUM, '0');
+        $dwnl = Forma\lib\Get::req('dwnl', DOTY_ALPHANUM, '0');
         if ($dwnl == 1) {
             // download new configuration
             downloadConfig($config);

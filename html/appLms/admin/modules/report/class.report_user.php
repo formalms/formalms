@@ -242,7 +242,7 @@ class Report_User extends Report
             $temp = $user_select->getSelection($_POST);
 
             $_SESSION['report_tempdata']['rows_filter']['users'] = $temp;
-            $_SESSION['report_tempdata']['rows_filter']['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+            $_SESSION['report_tempdata']['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
 
             Util::jump_to($next_url);
         } else {
@@ -270,9 +270,9 @@ class Report_User extends Report
                 $user_select->setUserFilter('group', $admin_tree);
             }
 
-            if (Get::req('is_updating', DOTY_INT, false)) {
+            if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
                 //$_SESSION['report_tempdata']['rows_filter']['users'] = $user_select->getSelection($_POST);
-                $_SESSION['report_tempdata']['rows_filter']['all_users'] = (Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+                $_SESSION['report_tempdata']['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
             } else {
                 $user_select->requested_tab = PEOPLEVIEW_TAB;
                 $user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
@@ -312,7 +312,7 @@ class Report_User extends Report
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
         YuiLib::load('datasource');
-        Util::get_js(Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
 
         Form::loadDatefieldScript();
 
@@ -848,17 +848,17 @@ class Report_User extends Report
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
         YuiLib::load();
-        Util::get_js(Get::rel_path('lms') . '/admin/modules/report/competences_filter.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/competences_filter.js', true, true);
         addJs($GLOBALS['where_lms_relative'] . '/admin/modules/report/', 'competences_filter.js');
 
         //back to columns category selection
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
         }
-        if (Get::req('is_updating', DOTY_INT, 0) > 0) {
+        if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
             $_SESSION['report_tempdata']['columns_filter'] = [
-                'filters_list' => Get::req('rc_filter', DOTY_MIXED, []),
-                'exclusive' => (Get::req('rc_filter_exclusive', DOTY_INT, 0) > 0 ? true : false),
+                'filters_list' => Forma\lib\Get::req('rc_filter', DOTY_MIXED, []),
+                'exclusive' => (Forma\lib\Get::req('rc_filter_exclusive', DOTY_INT, 0) > 0 ? true : false),
             ];
         } else {
             if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
@@ -973,11 +973,11 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
-                    $subject = Get::req('mail_object', DOTY_STRING, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
+                    $subject = Forma\lib\Get::req('mail_object', DOTY_STRING, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                     $body = $_REQUEST['mail_body'] ?? '';
                     $acl_man = new DoceboACLManager();
-                    $sender = Get::sett('sender_event');
-                    $mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+                    $sender = Forma\lib\Get::sett('sender_event');
+                    $mail_recipients = Util::unserialize(urldecode(Forma\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                     // send mail
                     $arr_recipients = [];
@@ -987,7 +987,7 @@ class Report_User extends Report
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
                     $mailer = FormaMailer::getInstance();
-                    $mailer->addReplyTo(Get::sett('sender_event'));
+                    $mailer->addReplyTo(Forma\lib\Get::sett('sender_event'));
                     $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -998,7 +998,7 @@ class Report_User extends Report
 
             case 'send_mail':
                 require_once Forma::inc(_base_ . '/lib/lib.form.php');
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
+                    $mail_recipients = Forma\lib\Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
                         . Form::getTextfield($lang->def('_SUBJECT'), 'mail_object', 'mail_object', 255)
@@ -1122,7 +1122,7 @@ class Report_User extends Report
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     //No filter
                 }
 
@@ -2193,16 +2193,16 @@ class Report_User extends Report
                     $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                     $body = importVar('mail_body', false, '');
                     $acl_man = new DoceboACLManager();
-                    $sender = Get::sett('sender_event');
-                    $mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+                    $sender = Forma\lib\Get::sett('sender_event');
+                    $mail_recipients = Util::unserialize(urldecode(Forma\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                     // prepare intestation for email
                     $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                     $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                         . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . Get::sett('sender_event') . $GLOBALS['mail_br'];
+                    $header .= 'Return-Path: ' . Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                    //$header .= "Reply-To: ".Forma\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
+                    $header .= 'X-Sender: ' . Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                     $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
@@ -2213,7 +2213,7 @@ class Report_User extends Report
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
                     $mailer = FormaMailer::getInstance();
-                    $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
+                    $mailer->addReplyTo(Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
                     $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -2225,7 +2225,7 @@ class Report_User extends Report
 
             case 'send_mail':
                     require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
+                    $mail_recipients = Forma\lib\Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(
                         ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
@@ -2507,9 +2507,9 @@ class Report_User extends Report
                 'all_courses' => ($_POST['all_courses'] == 1 ? true : false),
                 'selected_courses' => $selector->getSelection(),
                 'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : []),
-                'order_by' => Get::req('order_by', DOTY_STRING, 'userid'),
-                'order_dir' => Get::req('order_dir', DOTY_STRING, 'asc'),
-                'show_suspended' => Get::req('show_suspended', DOTY_INT, 0) > 0,
+                'order_by' => Forma\lib\Get::req('order_by', DOTY_STRING, 'userid'),
+                'order_dir' => Forma\lib\Get::req('order_dir', DOTY_STRING, 'asc'),
+                'show_suspended' => Forma\lib\Get::req('show_suspended', DOTY_INT, 0) > 0,
             ];
             $_SESSION['report_tempdata']['columns_filter'] = $temp; //$ref = $temp;
         } else {
@@ -2583,7 +2583,7 @@ class Report_User extends Report
         cout($box->get());
 
         YuiLib::load('datasource');
-        Util::get_js(Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
 
         //box for direct course selection
         $selection = &$ref['selected_courses'];
@@ -2695,16 +2695,16 @@ class Report_User extends Report
                     $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                     $body = importVar('mail_body', false, '');
                     $acl_man = new DoceboACLManager();
-                    $sender = Get::sett('sender_event');
-                    $mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+                    $sender = Forma\lib\Get::sett('sender_event');
+                    $mail_recipients = Util::unserialize(urldecode(Forma\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                     // prepare intestation for email
                     $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                     $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                         . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . Get::sett('sender_event') . $GLOBALS['mail_br'];
+                    $header .= 'Return-Path: ' . Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                    //$header .= "Reply-To: ".Forma\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
+                    $header .= 'X-Sender: ' . Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                     $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
@@ -2715,7 +2715,7 @@ class Report_User extends Report
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
                     $mailer = FormaMailer::getInstance();
-                    $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
+                    $mailer->addReplyTo(Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
                     $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -2727,7 +2727,7 @@ class Report_User extends Report
 
             case 'send_mail':
                     require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
+                    $mail_recipients = Forma\lib\Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(
                         ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
@@ -3140,7 +3140,7 @@ class Report_User extends Report
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         YuiLib::load();
-        Util::get_js(Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
 
         //back to columns category selection
         if (isset($_POST['undo_filter'])) {
@@ -3160,9 +3160,9 @@ class Report_User extends Report
                 'lo_milestones' => (isset($_POST['lo_milestones']) ? $_POST['lo_milestones'] : []),
                 'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : []),
                 'custom_fields' => [],
-                'order_by' => Get::req('order_by', DOTY_STRING, 'userid'),
-                'order_dir' => Get::req('order_dir', DOTY_STRING, 'asc'),
-                'show_suspended' => Get::req('show_suspended', DOTY_INT, 0) > 0,
+                'order_by' => Forma\lib\Get::req('order_by', DOTY_STRING, 'userid'),
+                'order_dir' => Forma\lib\Get::req('order_dir', DOTY_STRING, 'asc'),
+                'show_suspended' => Forma\lib\Get::req('show_suspended', DOTY_INT, 0) > 0,
             ];
 
             foreach ($ref['custom_fields'] as $val) {
@@ -3394,16 +3394,16 @@ class Report_User extends Report
                     $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                     $body = importVar('mail_body', false, '');
                     $acl_man = new DoceboACLManager();
-                    $sender = Get::sett('sender_event');
-                    $mail_recipients = Util::unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+                    $sender = Forma\lib\Get::sett('sender_event');
+                    $mail_recipients = Util::unserialize(urldecode(Forma\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                     // prepare intestation for email
                     $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                     $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                         . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . Get::sett('sender_event') . $GLOBALS['mail_br'];
+                    $header .= 'Return-Path: ' . Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                    //$header .= "Reply-To: ".Forma\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
+                    $header .= 'X-Sender: ' . Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                     $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
@@ -3414,7 +3414,7 @@ class Report_User extends Report
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
                     $mailer = FormaMailer::getInstance();
-                    $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
+                    $mailer->addReplyTo(Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
                     $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -3425,7 +3425,7 @@ class Report_User extends Report
 
             case 'send_mail':
                     require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
+                    $mail_recipients = Forma\lib\Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(
                         ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()
@@ -3915,10 +3915,10 @@ class Report_User extends Report
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['all_communications'] = Get::req('all_communications', DOTY_INT, 0) > 0;
-            $ref['comm_selection'] = Get::req('comm_selection', DOTY_MIXED, []);
-            $ref['comm_start_date'] = Format::dateDb(Get::req('comm_start_date', DOTY_STRING, ''), 'date');
-            $ref['comm_end_date'] = Format::datedb(Get::req('comm_end_date', DOTY_STRING, ''), 'date');
+            $ref['all_communications'] = Forma\lib\Get::req('all_communications', DOTY_INT, 0) > 0;
+            $ref['comm_selection'] = Forma\lib\Get::req('comm_selection', DOTY_MIXED, []);
+            $ref['comm_start_date'] = Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date');
+            $ref['comm_end_date'] = Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date');
         } else {
             //...
         }
@@ -4182,10 +4182,10 @@ class Report_User extends Report
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['all_games'] = Get::req('all_games', DOTY_INT, 0) > 0;
-            $ref['comp_selection'] = Get::req('comp_selection', DOTY_MIXED, []);
-            $ref['comp_start_date'] = Format::dateDb(Get::req('comp_start_date', DOTY_STRING, ''), 'date');
-            $ref['comp_end_date'] = Format::datedb(Get::req('comp_end_date', DOTY_STRING, ''), 'date');
+            $ref['all_games'] = Forma\lib\Get::req('all_games', DOTY_INT, 0) > 0;
+            $ref['comp_selection'] = Forma\lib\Get::req('comp_selection', DOTY_MIXED, []);
+            $ref['comp_start_date'] = Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date');
+            $ref['comp_end_date'] = Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date');
         } else {
             //...
         }
@@ -4440,7 +4440,7 @@ class Report_User extends Report
         $ref = &$_SESSION['report_tempdata']['columns_filter'];
 
         YuiLib::load();
-        Util::get_js(Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
 
         //back to columns category selection
         if (isset($_POST['undo_filter'])) {
@@ -4458,9 +4458,9 @@ class Report_User extends Report
                 'selected_courses' => $selector->getSelection(),
                 'showed_columns' => (isset($_POST['cols']) ? $_POST['cols'] : []),
                 'custom_fields' => [],
-                'order_by' => Get::req('order_by', DOTY_STRING, 'userid'),
-                'order_dir' => Get::req('order_dir', DOTY_STRING, 'asc'),
-                'show_suspended' => Get::req('show_suspended', DOTY_INT, 0) > 0,
+                'order_by' => Forma\lib\Get::req('order_by', DOTY_STRING, 'userid'),
+                'order_dir' => Forma\lib\Get::req('order_dir', DOTY_STRING, 'asc'),
+                'show_suspended' => Forma\lib\Get::req('show_suspended', DOTY_INT, 0) > 0,
             ];
 
             foreach ($ref['custom_fields'] as $val) {
@@ -4669,16 +4669,16 @@ class Report_User extends Report
                     $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                     $body = importVar('mail_body', false, '');
                     $acl_man = new DoceboACLManager();
-                    $sender = Get::sett('sender_event');
-                    $mail_recipients = unserialize(urldecode(Get::req('mail_recipients', DOTY_STRING, '')));
+                    $sender = Forma\lib\Get::sett('sender_event');
+                    $mail_recipients = unserialize(urldecode(Forma\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                     // prepare intestation for email
                     $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                     $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                         . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
-                    $header .= 'Return-Path: ' . Get::sett('sender_event') . $GLOBALS['mail_br'];
-                    //$header .= "Reply-To: ".Get::sett('sender_event').$GLOBALS['mail_br'];
-                    $header .= 'X-Sender: ' . Get::sett('sender_event') . $GLOBALS['mail_br'];
+                    $header .= 'Return-Path: ' . Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                    //$header .= "Reply-To: ".Forma\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
+                    $header .= 'X-Sender: ' . Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                     $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
 
                     // send mail
@@ -4689,7 +4689,7 @@ class Report_User extends Report
                         $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                     }
                     $mailer = FormaMailer::getInstance();
-                    $mailer->addReplyTo(Get::sett('sender_event') . $GLOBALS['mail_br']);
+                    $mailer->addReplyTo(Forma\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
                     $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
                     $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -4700,7 +4700,7 @@ class Report_User extends Report
 
             case 'send_mail':
                     require_once _base_ . '/lib/lib.form.php';
-                    $mail_recipients = Get::req('mail_recipients', DOTY_MIXED, []);
+                    $mail_recipients = Forma\lib\Get::req('mail_recipients', DOTY_MIXED, []);
                     cout(
                         ''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                         . Form::openElementSpace()

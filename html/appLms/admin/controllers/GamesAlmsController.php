@@ -61,11 +61,11 @@ class GamesAlmsController extends AlmsController
 
     public function getlist()
     {
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $total_games = $this->model->total($filter_text);
         $array_games = $this->model->findAll($start_index, $results, $sort, $dir, ['text' => $filter_text]);
@@ -170,12 +170,12 @@ class GamesAlmsController extends AlmsController
         }
 
         $data = [];
-        $data['title'] = Get::req('title', DOTY_MIXED, '');
-        $data['start_date'] = Get::req('start_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
-        $data['end_date'] = Get::req('end_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
-        $data['description'] = Get::req('description', DOTY_MIXED, '');
-        $data['type_of'] = Get::req('type_of', DOTY_STRING, '');
-        $data['play_chance'] = Get::req('play_chance', DOTY_STRING, '');
+        $data['title'] = Forma\lib\Get::req('title', DOTY_MIXED, '');
+        $data['start_date'] = Forma\lib\Get::req('start_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
+        $data['end_date'] = Forma\lib\Get::req('end_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
+        $data['description'] = Forma\lib\Get::req('description', DOTY_MIXED, '');
+        $data['type_of'] = Forma\lib\Get::req('type_of', DOTY_STRING, '');
+        $data['play_chance'] = Forma\lib\Get::req('play_chance', DOTY_STRING, '');
         $data['start_date'] = Format::dateDb($data['start_date'], 'date');
         $data['end_date'] = Format::dateDb($data['end_date'], 'date');
 
@@ -203,7 +203,7 @@ class GamesAlmsController extends AlmsController
             return;
         }
 
-        $id_game = Get::req('id_game', DOTY_INT, 0);
+        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
         $data = $this->model->findByPk($id_game);
         $back_url = 'index.php?r=alms/games/insert_obj&id_game=' . $id_game;
 
@@ -227,9 +227,9 @@ class GamesAlmsController extends AlmsController
             return;
         }
 
-        $data['id_game'] = Get::req('id_game', DOTY_INT, 0);
-        $data['id_resource'] = Get::req('id_los', DOTY_INT, 0);
-        $create_result = Get::req('create_result', DOTY_INT, 0);
+        $data['id_game'] = Forma\lib\Get::req('id_game', DOTY_INT, 0);
+        $data['id_resource'] = Forma\lib\Get::req('id_los', DOTY_INT, 0);
+        $create_result = Forma\lib\Get::req('create_result', DOTY_INT, 0);
         if ($create_result >= 1) {
             if ($this->model->save($data)) {
                 $data = $this->model->findByPk($data['id_game']);
@@ -262,7 +262,7 @@ class GamesAlmsController extends AlmsController
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $id_game = Get::req('id_game', DOTY_INT, 0);
+        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
         $data = $this->model->findByPk($id_game);
 
         $data['start_date'] = Format::date($data['start_date'], 'date');
@@ -283,13 +283,13 @@ class GamesAlmsController extends AlmsController
         }
 
         $data = [];
-        $data['id_game'] = Get::req('id_game', DOTY_MIXED, '');
-        $data['title'] = Get::req('title', DOTY_MIXED, '');
-        $data['start_date'] = Get::req('start_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
-        $data['end_date'] = Get::req('end_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
-        $data['play_chance'] = Get::req('play_chance', DOTY_STRING, '');
-        $data['description'] = Get::req('description', DOTY_MIXED, '');
-        $data['type_of'] = Get::req('type_of', DOTY_STRING, '');
+        $data['id_game'] = Forma\lib\Get::req('id_game', DOTY_MIXED, '');
+        $data['title'] = Forma\lib\Get::req('title', DOTY_MIXED, '');
+        $data['start_date'] = Forma\lib\Get::req('start_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
+        $data['end_date'] = Forma\lib\Get::req('end_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
+        $data['play_chance'] = Forma\lib\Get::req('play_chance', DOTY_STRING, '');
+        $data['description'] = Forma\lib\Get::req('description', DOTY_MIXED, '');
+        $data['type_of'] = Forma\lib\Get::req('type_of', DOTY_STRING, '');
 
         $data['start_date'] = Format::dateDb($data['start_date'], 'date');
         $data['end_date'] = Format::dateDb($data['end_date'], 'date');
@@ -316,7 +316,7 @@ class GamesAlmsController extends AlmsController
             return;
         }
 
-        $id_game = Get::req('id_game', DOTY_INT, 0);
+        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
         $data = $this->model->findByPk($id_game);
         $back_url = 'index.php?r=alms/games/update_obj&id_game=' . $id_game;
 
@@ -348,9 +348,9 @@ class GamesAlmsController extends AlmsController
             return;
         }
 
-        $data['id_game'] = Get::req('id_game', DOTY_INT, 0);
-        $data['id_resource'] = Get::req('id_los', DOTY_INT, 0);
-        $mod_result = Get::req('mod_result', DOTY_INT, 0);
+        $data['id_game'] = Forma\lib\Get::req('id_game', DOTY_INT, 0);
+        $data['id_resource'] = Forma\lib\Get::req('id_los', DOTY_INT, 0);
+        $mod_result = Forma\lib\Get::req('mod_result', DOTY_INT, 0);
         if ($mod_result >= 1) {
             if ($this->model->save($data)) {
                 Util::jump_to('index.php?r=alms/games/show&success=1');
@@ -368,7 +368,7 @@ class GamesAlmsController extends AlmsController
             return;
         }
 
-        $id_game = Get::req('id_game', DOTY_INT, 0);
+        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
         $data = $this->model->findByPk($id_game);
 
         if ($data['id_resource']) {
@@ -423,7 +423,7 @@ class GamesAlmsController extends AlmsController
             Util::jump_to('index.php?r=alms/games/show');
         }
 
-        $id_game = Get::req('id_game', DOTY_INT, 0);
+        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
         // instance of the user selector
         require_once _adm_ . '/class.module/class.directory.php';
         $user_selector = new UserSelector();
@@ -466,7 +466,7 @@ class GamesAlmsController extends AlmsController
             return;
         }
 
-        $id_game = Get::req('id_game', DOTY_INT, 0);
+        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
 
         require_once _lms_ . '/lib/lib.kbres.php';
         $kbres = new KbRes();
@@ -477,7 +477,7 @@ class GamesAlmsController extends AlmsController
         }
 
         if (isset($_POST['subcategorize_switch'])) {
-            $cat_sub_items = Get::pReq('subcategorize_switch', DOTY_INT);
+            $cat_sub_items = Forma\lib\Get::pReq('subcategorize_switch', DOTY_INT);
             $res_id = (int) $r_data['res_id'];
             $r_env_parent_id = (int) $r_data['r_env_parent_id'];
 
@@ -488,23 +488,23 @@ class GamesAlmsController extends AlmsController
         } elseif (isset($_POST['org_categorize_save'])) {
             require_once _lms_ . '/lib/lib.kbres.php';
 
-            $res_id = Get::req('res_id', DOTY_INT, 0);
-            $name = Get::req('r_name', DOTY_STRING, '');
+            $res_id = Forma\lib\Get::req('res_id', DOTY_INT, 0);
+            $name = Forma\lib\Get::req('r_name', DOTY_STRING, '');
             $original_name = ''; // won't update this field
-            $desc = Get::req('r_desc', DOTY_STRING, '');
-            $r_item_id = Get::req('r_item_id', DOTY_INT, 0);
-            $type = Get::req('r_type', DOTY_STRING, '');
-            $env = Get::req('r_env', DOTY_STRING, '');
-            $env_parent_id = Get::req('r_env_parent_id', DOTY_INT, 0);
-            $param = Get::req('r_param', DOTY_STRING, '');
+            $desc = Forma\lib\Get::req('r_desc', DOTY_STRING, '');
+            $r_item_id = Forma\lib\Get::req('r_item_id', DOTY_INT, 0);
+            $type = Forma\lib\Get::req('r_type', DOTY_STRING, '');
+            $env = Forma\lib\Get::req('r_env', DOTY_STRING, '');
+            $env_parent_id = Forma\lib\Get::req('r_env_parent_id', DOTY_INT, 0);
+            $param = Forma\lib\Get::req('r_param', DOTY_STRING, '');
             $alt_desc = '';
-            $lang_id = Get::req('r_lang', DOTY_INT, '');
+            $lang_id = Forma\lib\Get::req('r_lang', DOTY_INT, '');
             $lang_arr = Docebo::langManager()->getAllLangCode();
             $lang = $lang_arr[$lang_id];
-            $force_visible = Get::req('force_visible', DOTY_INT, 0);
-            $is_mobile = Get::req('is_mobile', DOTY_INT, 0);
-            $folders = Get::req('h_selected_folders', DOTY_STRING, '');
-            $json_tags = Util::strip_slashes(Get::req('tag_list', DOTY_STRING, '[]'));
+            $force_visible = Forma\lib\Get::req('force_visible', DOTY_INT, 0);
+            $is_mobile = Forma\lib\Get::req('is_mobile', DOTY_INT, 0);
+            $folders = Forma\lib\Get::req('h_selected_folders', DOTY_STRING, '');
+            $json_tags = Util::strip_slashes(Forma\lib\Get::req('tag_list', DOTY_STRING, '[]'));
 
             $kbres = new KbRes();
             $res_id = $kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
@@ -542,7 +542,7 @@ class GamesAlmsController extends AlmsController
             return;
         }
 
-        $sco_id = Get::req('sco_id', DOTY_INT, 0);
+        $sco_id = Forma\lib\Get::req('sco_id', DOTY_INT, 0);
 
         if ($sco_id > 0) {
             $qtxt = 'SELECT idscorm_item, title, identifierref FROM
@@ -585,7 +585,7 @@ class GamesAlmsController extends AlmsController
             return;
         }
 
-        $id_game = Get::req('id_game', DOTY_INT, 0);
+        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
 
         if (isset($_POST['org_categorize_cancel'])) {
             Util::jump_to('index.php?r=alms/games/categorize&id_game=' . $id_game);

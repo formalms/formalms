@@ -31,10 +31,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     {
         if (isset($_SESSION['social'])) {
             if ($_SESSION['social']['plugin'] == Plugin::getName()) {
-                return Get::img('social/twitter-24.png') . ' '
+                return Forma\lib\Get::img('social/twitter-24.png') . ' '
                         . Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social')
                         . ' <b>' . $_SESSION['social']['data']['name'] . '</b>'
-                        . Form::openForm('cancel_social', Get::rel_path('base'))
+                        . Form::openForm('cancel_social', Forma\lib\Get::rel_path('base'))
                           . Form::openButtonSpace()
                               . Form::getButton('cancel', 'cancel_social', Lang::t('_CANCEL', 'standard'))
                           . Form::closeButtonSpace()
@@ -51,7 +51,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             }
 
             return "<a href='" . $url . "'>"
-                  // . Get::img("social/twitter-24.png")
+                  // . Forma\lib\Get::img("social/twitter-24.png")
                     . '<i class="fa fa-twitter"></i>'
                       . '</a>';
         }
@@ -59,8 +59,8 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     public static function getUserFromLogin()
     {
-        $oauth_token = Get::req('oauth_token', DOTY_STRING, false);
-        $oauth_verifier = Get::req('oauth_verifier', DOTY_STRING, false);
+        $oauth_token = Forma\lib\Get::req('oauth_token', DOTY_STRING, false);
+        $oauth_verifier = Forma\lib\Get::req('oauth_verifier', DOTY_STRING, false);
 
         if (!$oauth_token || !$oauth_verifier) {
             return UNKNOWN_SOCIAL_ERROR;
@@ -115,9 +115,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $storage = new Session(false);
 
         $credentials = new Credentials(
-            Get::sett('twitter.oauth_key'),
-            Get::sett('twitter.oauth_secret'),
-            Get::abs_path() . 'index.php?r=' . _login_ . '&plugin=' . Plugin::getName()
+            Forma\lib\Get::sett('twitter.oauth_key'),
+            Forma\lib\Get::sett('twitter.oauth_secret'),
+            Forma\lib\Get::abs_path() . 'index.php?r=' . _login_ . '&plugin=' . Plugin::getName()
         );
 
         return $serviceFactory->createService('twitter', $credentials, $storage);

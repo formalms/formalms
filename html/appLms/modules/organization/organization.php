@@ -39,10 +39,10 @@ function organization(&$treeView)
     } elseif (isset($_POST['_orgrules_cancel']) || isset($_POST['_repoproperties_cancel'])) {
         $treeView->op = '';
     } elseif (
-        Get::req('op', DOTY_STRING, '') == 'org_select_sco' ||
-        Get::req('op', DOTY_STRING, '') == 'org_categorize_sco'
+        Forma\lib\Get::req('op', DOTY_STRING, '') == 'org_select_sco' ||
+        Forma\lib\Get::req('op', DOTY_STRING, '') == 'org_categorize_sco'
     ) {
-        $treeView->op = Get::req('op', DOTY_STRING, '');
+        $treeView->op = Forma\lib\Get::req('op', DOTY_STRING, '');
         require_once dirname(__FILE__) . '/orgcategorize.php';
     }
 

@@ -30,7 +30,7 @@ function groupCodeList()
     cout(getTitleArea($lang->def('_CODE'))
         . '<div class="std_block">');
 
-    $result = Get::req('result', DOTY_STRING, '');
+    $result = Forma\lib\Get::req('result', DOTY_STRING, '');
 
     if (isset($_GET['activation'])) {
         $query = 'UPDATE ' . $GLOBALS['prefix_fw'] . '_setting'
@@ -44,7 +44,7 @@ function groupCodeList()
         }
     }
 
-    if (Get::cfg('use_code_module') === 'off') {
+    if (Forma\lib\Get::cfg('use_code_module') === 'off') {
         cout(getResultUi('<a href="index.php?modname=code&amp;op=list&amp;activation=true">' . $lang->def('_MODULE_NOT_ACTIVATED') . '</a>'));
     }
 
@@ -66,13 +66,13 @@ function groupCodeList()
         $cont_h = [$lang->def('_TITLE'),
             $lang->def('_DESCRIPTION'),
             $lang->def('_CODE_USED_NUMBER'),
-            Get::sprite('subs_csv', Lang::t('_CODE', 'course')),
-            Get::sprite('subs_add', Lang::t('_GENERATE_CODE', 'course')),
-            Get::sprite('subs_import', Lang::t('_IMPORT', 'course')),
-            Get::sprite('subs_elem', Lang::t('_COURSES', 'course')),
-            Get::sprite('subs_users', Lang::t('_ASSIGN_USERS', 'course')),
-            Get::sprite('subs_mod', Lang::t('_MOD', 'course')),
-            Get::sprite('subs_del', Lang::t('_DEL', 'course')), ];
+            Forma\lib\Get::sprite('subs_csv', Lang::t('_CODE', 'course')),
+            Forma\lib\Get::sprite('subs_add', Lang::t('_GENERATE_CODE', 'course')),
+            Forma\lib\Get::sprite('subs_import', Lang::t('_IMPORT', 'course')),
+            Forma\lib\Get::sprite('subs_elem', Lang::t('_COURSES', 'course')),
+            Forma\lib\Get::sprite('subs_users', Lang::t('_ASSIGN_USERS', 'course')),
+            Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')),
+            Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'course')), ];
 
         $type_h = ['', '', 'min-cell', 'image', 'image', 'image', 'image', 'image', 'image', 'image'];
 
@@ -90,19 +90,19 @@ function groupCodeList()
 
             $cont[] = $group_code_info['code_used'];
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Get::sprite('subs_csv', Lang::t('_CODE', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Forma\lib\Get::sprite('subs_csv', Lang::t('_CODE', 'course')) . '</a>';
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=generate_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Get::sprite('subs_add', Lang::t('_GENERATE_CODE', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=generate_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Forma\lib\Get::sprite('subs_add', Lang::t('_GENERATE_CODE', 'course')) . '</a>';
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=import_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Get::sprite('subs_import', Lang::t('_IMPORT', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=import_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Forma\lib\Get::sprite('subs_import', Lang::t('_IMPORT', 'course')) . '</a>';
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=assign_course&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Get::sprite('subs_elem' . ($group_code_info['course_associated'] ? '' : '_grey'), Lang::t('_COURSES', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=assign_course&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Forma\lib\Get::sprite('subs_elem' . ($group_code_info['course_associated'] ? '' : '_grey'), Lang::t('_COURSES', 'course')) . '</a>';
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=assign_tree&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Get::sprite('subs_users' . ($group_code_info['folder_associated'] ? '' : '_grey'), Lang::t('_ASSIGN_USERS', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=assign_tree&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Forma\lib\Get::sprite('subs_users' . ($group_code_info['folder_associated'] ? '' : '_grey'), Lang::t('_ASSIGN_USERS', 'course')) . '</a>';
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=mod_group_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Get::sprite('subs_mod', Lang::t('_MOD', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=mod_group_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')) . '</a>';
 
-            $cont[] = '<a href="index.php?modname=code&amp;op=del_group_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Get::sprite('subs_del', Lang::t('_DEL', 'course')) . '</a>';
+            $cont[] = '<a href="index.php?modname=code&amp;op=del_group_code&amp;id_code_group=' . $group_code_info['id_code_group'] . '">' . Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'course')) . '</a>';
 
             $tb->addBody($cont);
         }
@@ -136,9 +136,9 @@ function addGroupCode()
                 $lang->def('_ADD'), ])
             . '<div class="std_block">');
 
-    if (Get::req('confirm', DOTY_MIXED, '')) {
-        $title = addslashes(Get::req('title', DOTY_MIXED, ''));
-        $description = addslashes(Get::req('description', DOTY_MIXED, ''));
+    if (Forma\lib\Get::req('confirm', DOTY_MIXED, '')) {
+        $title = addslashes(Forma\lib\Get::req('title', DOTY_MIXED, ''));
+        $description = addslashes(Forma\lib\Get::req('description', DOTY_MIXED, ''));
 
         if ($code_manager->addCodeGroup($title, $description)) {
             Util::jump_to('index.php?modname=code&amp;op=list&result=ok');
@@ -164,7 +164,7 @@ function modGroupCode()
 
     $lang = &DoceboLanguage::createInstance('code');
 
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     $code_manager = new CodeManager();
 
@@ -172,9 +172,9 @@ function modGroupCode()
                 $lang->def('_MOD'), ])
             . '<div class="std_block">');
 
-    if (Get::req('confirm', DOTY_MIXED, '')) {
-        $title = addslashes(Get::req('title', DOTY_MIXED, ''));
-        $description = addslashes(Get::req('description', DOTY_MIXED, ''));
+    if (Forma\lib\Get::req('confirm', DOTY_MIXED, '')) {
+        $title = addslashes(Forma\lib\Get::req('title', DOTY_MIXED, ''));
+        $description = addslashes(Forma\lib\Get::req('description', DOTY_MIXED, ''));
 
         if ($code_manager->updateCodeGroup($id_code_group, $title, $description)) {
             Util::jump_to('index.php?modname=code&amp;op=list&result=ok');
@@ -199,11 +199,11 @@ function modGroupCode()
 
 function delGroupCode()
 {
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     $code_manager = new CodeManager();
 
-    if (Get::req('confirm', DOTY_MIXED, '')) {
+    if (Forma\lib\Get::req('confirm', DOTY_MIXED, '')) {
         if ($code_manager->delCodeGroup($id_code_group)) {
             Util::jump_to('index.php?modname=code&amp;op=list&result=ok');
         }
@@ -218,7 +218,7 @@ function codeList()
 
     $lang = &DoceboLanguage::createInstance('code');
 
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     $code_manager = new CodeManager();
 
@@ -239,7 +239,7 @@ function codeList()
             . Form::getButton('undo_filter', 'undo_filter', Lang::t('_RESET', 'standard'), 'reset_b')
             . Form::closeForm()
             . '</div>');
-    $result = Get::req('result', DOTY_STRING, '');
+    $result = Forma\lib\Get::req('result', DOTY_STRING, '');
 
     switch ($result) {
         case 'ok':
@@ -357,16 +357,16 @@ function addCode()
 
     $code_manager = new CodeManager();
 
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
                 'index.php?modname=code&amp;op=code_list&amp;id_code_group=' . $id_code_group => $lang->def('_CODE_LIST'),
                 $lang->def('_ADD'), ])
             . '<div class="std_block">');
 
-    if (Get::req('confirm', DOTY_MIXED, '')) {
-        $code = addslashes(Get::req('code', DOTY_MIXED, ''));
-        $unlimited_use = Get::req('unlimited_use', DOTY_BOOL, false);
+    if (Forma\lib\Get::req('confirm', DOTY_MIXED, '')) {
+        $code = addslashes(Forma\lib\Get::req('code', DOTY_MIXED, ''));
+        $unlimited_use = Forma\lib\Get::req('unlimited_use', DOTY_BOOL, false);
 
         $result = $code_manager->addCode($code, $id_code_group, $unlimited_use);
 
@@ -399,8 +399,8 @@ function modCode()
 
     $code_manager = new CodeManager();
 
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
-    $code = stripslashes(Get::req('code', DOTY_MIXED, ''));
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
+    $code = stripslashes(Forma\lib\Get::req('code', DOTY_MIXED, ''));
     $is_unlimited = $code_manager->codeIsUnlimited($code);
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
@@ -408,10 +408,10 @@ function modCode()
                 $lang->def('_MOD'), ])
             . '<div class="std_block">');
 
-    if (Get::req('confirm', DOTY_MIXED, '')) {
-        $code = addslashes(Get::req('code', DOTY_MIXED, ''));
-        $old_code = addslashes(Get::req('old_code', DOTY_MIXED, ''));
-        $unlimited_use = Get::req('unlimited_use', DOTY_BOOL, false);
+    if (Forma\lib\Get::req('confirm', DOTY_MIXED, '')) {
+        $code = addslashes(Forma\lib\Get::req('code', DOTY_MIXED, ''));
+        $old_code = addslashes(Forma\lib\Get::req('old_code', DOTY_MIXED, ''));
+        $unlimited_use = Forma\lib\Get::req('unlimited_use', DOTY_BOOL, false);
 
         $result = $code_manager->modCode($code, $old_code, $unlimited_use);
 
@@ -439,12 +439,12 @@ function modCode()
 
 function delCode()
 {
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
-    $code = stripslashes(Get::req('code', DOTY_MIXED, '0'));
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
+    $code = stripslashes(Forma\lib\Get::req('code', DOTY_MIXED, '0'));
 
     $code_manager = new CodeManager();
 
-    if (Get::req('confirm', DOTY_MIXED, '')) {
+    if (Forma\lib\Get::req('confirm', DOTY_MIXED, '')) {
         if ($code_manager->delCode($code)) {
             Util::jump_to('index.php?modname=code&amp;op=code_list&id_code_group=' . $id_code_group . '&result=ok');
         }
@@ -463,9 +463,9 @@ function assignCourse()
 
     $selector = new Selector_Course();
 
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
 
-    if (Get::req('confirm', DOTY_MIXED, '')) {
+    if (Forma\lib\Get::req('confirm', DOTY_MIXED, '')) {
         $selector->parseForState($_POST);
         $course_selected = $selector->getSelection();
 
@@ -503,7 +503,7 @@ function assignTree()
 
     $lang = &DoceboLanguage::createInstance('code');
 
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     $code_manager = new CodeManager();
 
@@ -518,7 +518,7 @@ function assignTree()
 
     $selector->resetSelection($array_user_associated);
 
-    if (Get::req('okselector', DOTY_MIXED, '')) {
+    if (Forma\lib\Get::req('okselector', DOTY_MIXED, '')) {
         $folder_selected = $selector->getSelection($_POST);
 
         if ($code_manager->insertOrgAssociation($folder_selected, $id_code_group)) {
@@ -538,7 +538,7 @@ function importCode_step1()
 
     $lang = &DoceboLanguage::createInstance('code');
 
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
                 $lang->def('_IMPORT'), ])
@@ -599,14 +599,14 @@ function importCode_step2()
 
     $code_manager = new CodeManager();
 
-    $id_code_group = Get::req('id_code_group', DOTY_INT, '0');
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, '0');
 
     cout(getTitleArea($lang->def('_CODE'))
             . '<div class="std_block">');
 
-    $separator = Get::req('import_separator', DOTY_MIXED, ',');
+    $separator = Forma\lib\Get::req('import_separator', DOTY_MIXED, ',');
     $first_row_header = isset($_POST['import_first_row_header']) ? ($_POST['import_first_row_header'] == 'true') : false;
-    $import_charset = Get::req('import_charset', DOTY_MIXED, 'UTF-8');
+    $import_charset = Forma\lib\Get::req('import_charset', DOTY_MIXED, 'UTF-8');
     if (trim($import_charset) === '') {
         $import_charset = 'UTF-8';
     }
@@ -716,8 +716,8 @@ function generateCode()
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $step = Get::req('step', DOTY_INT, 1);
-    $id_code_group = Get::req('id_code_group', DOTY_INT, 0);
+    $step = Forma\lib\Get::req('step', DOTY_INT, 1);
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, 0);
 
     cout(getTitleArea(Lang::t('_CODE', 'code'))
             . '<div class="std_block">');
@@ -746,11 +746,11 @@ function generateCode()
 
             $code_man = new CodeManager();
 
-            $code_number = Get::req('code_number', DOTY_INT, 0);
-            $unlimited_use = Get::req('unlimited_use', DOTY_INT, 0);
-            $use_number = Get::req('use_number', DOTY_INT, 0);
-            $use_low_letter = Get::req('use_low_letter', DOTY_INT, 0);
-            $use_high_letter = Get::req('use_high_letter', DOTY_INT, 0);
+            $code_number = Forma\lib\Get::req('code_number', DOTY_INT, 0);
+            $unlimited_use = Forma\lib\Get::req('unlimited_use', DOTY_INT, 0);
+            $use_number = Forma\lib\Get::req('use_number', DOTY_INT, 0);
+            $use_low_letter = Forma\lib\Get::req('use_low_letter', DOTY_INT, 0);
+            $use_high_letter = Forma\lib\Get::req('use_high_letter', DOTY_INT, 0);
 
             if ($unlimited_use == 0) {
                 $unlimited_use = false;
@@ -879,7 +879,7 @@ function generateCode()
 
 function export()
 {
-    $id_code_group = Get::req('id_code_group', DOTY_INT, 0);
+    $id_code_group = Forma\lib\Get::req('id_code_group', DOTY_INT, 0);
 
     if ($id_code_group <= 0) {
         $this->render('invalid', [
@@ -897,7 +897,7 @@ function export()
 
     //prepare csv file
     require_once _base_ . '/lib/lib.download.php';
-    $format = Get::req('format', DOTY_STRING, 'csv');
+    $format = Forma\lib\Get::req('format', DOTY_STRING, 'csv');
 
     $buffer = '';
     $filename = preg_replace('/[\W]/i', '_', $codeGroupInfo['title']) . '_' . date('Y_m_d') . '.' . $format;
@@ -969,11 +969,11 @@ function codeDispatch($op)
 {
     checkPerm('view');
 
-    if (Get::req('undo_group', DOTY_MIXED, '') || Get::req('cancelselector', DOTY_MIXED, '')) {
+    if (Forma\lib\Get::req('undo_group', DOTY_MIXED, '') || Forma\lib\Get::req('cancelselector', DOTY_MIXED, '')) {
         $op = 'list';
     }
 
-    if (Get::req('undo_code', DOTY_MIXED, '')) {
+    if (Forma\lib\Get::req('undo_code', DOTY_MIXED, '')) {
         $op = 'code_list';
     }
 

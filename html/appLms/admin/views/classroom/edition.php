@@ -1,4 +1,4 @@
-<?php Get::title([
+<?php Forma\lib\Get::title([
     'index.php?r=' . $base_link_course . '/show' => Lang::t('_COURSE', 'course'),
     Lang::t('_CLASSROOM', 'course') . ' : ' . $course_name,
 ]); ?>
@@ -18,20 +18,20 @@ $_columns = [
 ];
 
 if ($permissions['add'] && $permissions['mod'] && $permissions['del']) {
-    $_columns[] = ['key' => 'registro', 'label' => Get::img('standard/date.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell'];
+    $_columns[] = ['key' => 'registro', 'label' => Forma\lib\Get::img('standard/date.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell'];
 }
 
 if ($permissions['subscribe']) {
-    $_columns[] = ['key' => 'subscription', 'label' => Get::sprite('subs_users', Lang::t('_SUBSCRIPTION', 'course')), 'className' => 'img-cell'];
+    $_columns[] = ['key' => 'subscription', 'label' => Forma\lib\Get::sprite('subs_users', Lang::t('_SUBSCRIPTION', 'course')), 'className' => 'img-cell'];
     $_columns[] = ['key' => 'presence', 'label' => Lang::t('_ATTENDANCE', 'course'), 'className' => 'img-cell'];
 }
 
 if ($permissions['mod']) {
-    $_columns[] = ['key' => 'mod', 'label' => Get::img('standard/edit.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell'];
+    $_columns[] = ['key' => 'mod', 'label' => Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')), 'className' => 'img-cell'];
 }
 
-if ($permissions['del'] && !Get::cfg('demo_mode')) {
-    $_columns[] = ['key' => 'del', 'label' => Get::img('standard/delete.png', Lang::t('_DEL', 'course')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
+if ($permissions['del'] && !Forma\lib\Get::cfg('demo_mode')) {
+    $_columns[] = ['key' => 'del', 'label' => Forma\lib\Get::img('standard/delete.png', Lang::t('_DEL', 'course')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 }
 
 $event = Events::trigger('core.course.edition.columns.listing', ['columns' => $_columns, 'fields' => ['id_date', 'code', 'name', 'status', 'date_begin', 'registro', 'date_end', 'classroom', 'students', 'num_subscribe', 'subscription', 'presence', 'mod', 'del']]);
@@ -39,9 +39,9 @@ $event = Events::trigger('core.course.edition.columns.listing', ['columns' => $_
 $_params = [
     'id' => 'classroom_edition_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $base_link_classroom . '/getclassroomedition&id_course=' . $model->getIdCourse() . '&',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'name',
     'dir' => 'asc',
     'columns' => $event['columns'],

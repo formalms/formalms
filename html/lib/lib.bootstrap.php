@@ -13,20 +13,21 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-define('BOOT_CONFIG', 0);
-define('BOOT_UTILITY', 1);
-define('BOOT_DATABASE', 2);
-define('BOOT_SETTING', 3);
-define('BOOT_PLUGINS', 4);
-define('BOOT_SESS_CKE', 5);
-define('BOOT_USER', 6);
-define('BOOT_INPUT', 7);
-define('BOOT_LANGUAGE', 8);
-define('BOOT_DATETIME', 9);
-define('BOOT_HOOKS', 10);
-define('BOOT_TEMPLATE', 11);
-define('BOOT_PAGE_WR', 12);
-define('BOOT_INPUT_ALT', 99);
+const BOOT_COMPOSER = 0;
+const BOOT_CONFIG = 1;
+const BOOT_SESS_CKE = 2;
+const BOOT_UTILITY = 3;
+const BOOT_DATABASE = 4;
+const BOOT_SETTING = 5;
+const BOOT_PLUGINS = 6;
+const BOOT_USER = 7;
+const BOOT_INPUT = 8;
+const BOOT_LANGUAGE = 9;
+const BOOT_DATETIME = 10;
+const BOOT_HOOKS = 11;
+const BOOT_TEMPLATE = 12;
+const BOOT_PAGE_WR = 13;
+const BOOT_INPUT_ALT = 99;
 
 /**
  * This class manage the startup operation needed.
@@ -34,15 +35,15 @@ define('BOOT_INPUT_ALT', 99);
  */
 class Boot
 {
-    public static $session_name = 'docebo_session';
 
     private static $_boot_seq = [
+        BOOT_COMPOSER => 'composer',
         BOOT_CONFIG => 'config',
+        BOOT_SESS_CKE => 'sessionCookie',
         BOOT_UTILITY => 'utility',
         BOOT_DATABASE => 'database',
         BOOT_SETTING => 'loadSetting',
         BOOT_PLUGINS => 'plugins',
-        BOOT_SESS_CKE => 'sessionCookie',
         BOOT_USER => 'user',
         BOOT_INPUT => 'filteringInput',
         BOOT_INPUT_ALT => 'anonFilteringInput',
@@ -55,6 +56,12 @@ class Boot
 
     public static $log_array = [];
 
+
+    public static function composer(){
+        // composer autoload
+        self::log('Load composer autoload.');
+        require_once _base_ . '/vendor/autoload.php';
+    }
     /**
      * Load all the step requested.
      *
@@ -140,12 +147,12 @@ class Boot
         self::log('Include configuration file.');
 
         $cfg = [];
-        if (!file_exists(dirname(__FILE__) . '/../config.php')) {
+        if (!file_exists(__DIR__ . '/../config.php')) {
             $path = _deeppath_
                 . str_replace(_base_, '.', constant('_base_'));
             header('Location: ' . str_replace(['//', '\\/', '/./'], '/', $path) . '/install/');
         }
-        require dirname(__FILE__) . '/../config.php';
+        require __DIR__ . '/../config.php';
         $GLOBALS['cfg'] = $cfg;
 
         $GLOBALS['prefix_fw'] = $cfg['prefix_fw'];
@@ -157,30 +164,6 @@ class Boot
         // setup some php.ini things
         $step_report[] = 'Setup some php.ini settings.';
         ini_set('arg_separator.output', '&amp;');
-        ini_set('session.cache_expire', (int) $cfg['session_lenght']);
-        ini_set('session.cache_limiter', 'none');
-        ini_set('session.cookie_lifetime', (int) $cfg['session_lenght']);
-        ini_set('session.use_only_cookies', 1);
-        ini_set('session.use_trans_sid', 0);
-        ini_set('url_rewriter.tags', '');
-        if (!empty($cfg['session_save_path'])) {
-            ini_set('session.save_path', $cfg['session_save_path']);
-        }
-
-        if (!empty($cfg['session_save_handler'])) {
-            switch ($cfg['session_save_handler']) {
-                case 'memcached':
-                    ini_set('session.save_handler', $cfg['session_save_handler']);
-                    ini_set('memcached.sess_prefix', $_SERVER['HTTP_HOST'] . '.forma.sess.key.');
-                    ini_set('memcached.sess_locking', '1');
-                    break;
-                case 'redis':
-                    ini_set('session.save_handler', $cfg['session_save_handler']);
-                    break;
-                default:
-                    break;
-            }
-        }
 
         // set default time zone TZ
         if (!isset($cfg['timezone'])) {    // timezone not speficied in config
@@ -235,9 +218,6 @@ class Boot
      */
     private static function utility()
     {
-        // composer autoload
-        self::log('Load composer autoload.');
-        require_once _base_ . '/vendor/autoload.php';
 
         self::log('Include autoload file.');
         require_once _base_ . '/lib/lib.autoload.php';
@@ -247,7 +227,6 @@ class Boot
 
         // config manager
         self::log('Include configuration file.');
-        require_once _base_ . '/lib/lib.get.php';
         require_once Forma::inc(_base_ . '/lib/lib.utils.php');
 
         // UTF8 Support
@@ -320,7 +299,7 @@ class Boot
         self::log('Connect to database.');
         DbConn::getInstance();
         if (!DbConn::$connected && file_exists(_base_ . '/install')) {
-            header('Location: ' . Get::rel_path('base') . '/install/');
+            header('Location: ' . Forma\lib\Get::rel_path('base') . '/install/');
         }
     }
 
@@ -332,9 +311,9 @@ class Boot
     private static function loadSetting()
     {
         self::log(' Load settings from database.');
-        Util::load_setting(Get::cfg('prefix_fw') . '_setting', 'framework');
+        Util::load_setting(Forma\lib\Get::cfg('prefix_fw') . '_setting', 'framework');
 
-        if (Get::sett('do_debug') === 'on') {
+        if (Forma\lib\Get::sett('do_debug') === 'on') {
             @error_reporting(E_ALL);
         }
     }
@@ -348,27 +327,20 @@ class Boot
      */
     private static function sessionCookie()
     {
+        require __DIR__ . '/../config.php';
+        Forma\lib\Session\SessionManager::getInstance()->initSession($cfg['session']);
         // start session
-        self::log(" Start session '" . self::$session_name . "'");
+        $currentSession = Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-        session_set_cookie_params(0);
-        ini_set('session.gc_maxlifetime', Get::cfg('session_lenght', 3600));
+        self::log(" Start session '" . $currentSession->getName() . "'");
 
-        session_name(self::$session_name);
-        session_start();
-
-        $session_time = Get::sett('ttlSession', 3600);
-        if (!isset($_SESSION['session_timeout'])) {
-            $_SESSION['session_timeout'] = time();
-        }
-        $session_time_passed = time() - $_SESSION['session_timeout'];
-
-        if ($session_time_passed > $session_time && isset($_SESSION['logged_in']) && $_SESSION['logged_in']) {
-            session_destroy();
-            Util::jump_to(Get::rel_path('base') . '/index.php?msg=103');
+        if (Forma\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
+            $currentSession->invalidate();
+            $currentSession->save();
+            Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?msg=103');
         }
 
-        $_SESSION['session_timeout'] = time();
+
     }
 
     /**
@@ -382,7 +354,8 @@ class Boot
      */
     private static function user()
     {
-        self::log("Load user from session '" . self::$session_name . "'");
+        $currentSession = Forma\lib\Session\SessionManager::getInstance()->getSession();
+        self::log("Load user from session '" . $currentSession->getName() . "'");
 
         // load current user from session
         require_once _base_ . '/lib/lib.user.php';
@@ -390,14 +363,14 @@ class Boot
 
         // ip coerency check
         self::log('Ip coerency check.');
-        if (Get::sett('session_ip_control', 'on') == 'on') {
+        if (Forma\lib\Get::sett('session_ip_control', 'on') == 'on') {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
             if (Docebo::user()->isLoggedIn() && (Docebo::user()->getLogIp() != $ip)) {
                 session_destroy();
-                Util::jump_to(Get::rel_path('base') . '/index.php?msg=104');
+                Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?msg=104');
                 //Util::fatal("logip: ".Docebo::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
                 //unlog the user
                 exit();
@@ -416,7 +389,7 @@ class Boot
         self::log('Sanitize the input.');
 
         $filter_input = new FilterInput();
-        $filter_input->tool = Get::cfg('filter_tool', 'htmlpurifier');
+        $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
 
         // Whitelist some tags if we're a teacher in a course:
         if (isset($_SESSION['idCourse']) && $_SESSION['levelCourse'] >= 6) {
@@ -438,7 +411,7 @@ class Boot
 
         // todo: check if we can do in other way the same thing
         // save login password from modification
-        $ldap_used = Get::sett('ldap_used');
+        $ldap_used = Forma\lib\Get::sett('ldap_used');
         if (($ldap_used === 'on') && isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
             $password_login = $_POST['passIns'];
         }
@@ -452,7 +425,7 @@ class Boot
             $filter_input->sanitize();
         } else {
             $filter_input = new FilterInput();
-            $filter_input->tool = Get::cfg('filter_tool', 'htmlpurifier');
+            $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
 
             // Whitelist some tags if we're a teacher in a course:
             if (isset($_SESSION['idCourse']) && $_SESSION['levelCourse'] >= 6) {
@@ -488,13 +461,13 @@ class Boot
         self::log('Loading session language functions');
 
         require_once Forma::inc(_i18n_ . '/lib.lang.php');
-        $sop = Get::req('sop', DOTY_ALPHANUM, false);
+        $sop = Forma\lib\Get::req('sop', DOTY_ALPHANUM, false);
         if (!$sop) {
-            $sop = Get::req('special', DOTY_ALPHANUM, false);
+            $sop = Forma\lib\Get::req('special', DOTY_ALPHANUM, false);
         }
         switch ($sop) {
             case 'changelang':
-                    $new_lang = Get::req('new_lang', DOTY_ALPHANUM, false);
+                    $new_lang = Forma\lib\Get::req('new_lang', DOTY_ALPHANUM, false);
 
                     self::log("Sop 'changelang' intercepted, changing lang to : $new_lang");
                     Lang::set($new_lang, isset($_GET['logout']));

@@ -510,7 +510,7 @@ class TreeView_OrgView extends TreeView
     public function __construct($tdb, $id, $rootname = 'root')
     {
         parent::__construct($tdb, $id, $rootname = 'root');
-        $this->multi_choice = Get::sett('use_org_chart_multiple_choice') == '1';
+        $this->multi_choice = Forma\lib\Get::sett('use_org_chart_multiple_choice') == '1';
     }
 
     public function _getRenameImage()
@@ -752,7 +752,7 @@ class TreeView_OrgView extends TreeView
     {
         $print_name = '';
         if ($folder->level == 0) {
-            $print_name = Get::sett('title_organigram_chart');
+            $print_name = Forma\lib\Get::sett('title_organigram_chart');
         } else {
             if ($this->filter_nodes === false) {
                 $print_name = str_replace('"', '&quot;', strip_tags($folder->otherValues[ORGDB_POS_TRANSLATION]));
@@ -853,9 +853,9 @@ class TreeView_OrgView extends TreeView
                         }
 
                         $array_subst = [
-                            '[url]' => Get::site_url(),
+                            '[url]' => Forma\lib\Get::site_url(),
                             '[userid]' => $this->aclManager->getUserid($userid),
-                            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
                             '[password]' => $pass,
                         ];
 
@@ -879,8 +879,8 @@ class TreeView_OrgView extends TreeView
                         $uinfo = Docebo::aclm()->getUser($idst, false);
 
                         $array_subst = [
-                            '[url]' => Get::site_url(),
-                            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                            '[url]' => Forma\lib\Get::site_url(),
+                            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
                             '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                             '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                             '[username]' => $userid,
@@ -910,7 +910,7 @@ class TreeView_OrgView extends TreeView
                         $uinfo = Docebo::aclm()->getUser($idst, false);
 
                         $array_subst = [
-                            '[url]' => Get::site_url(),
+                            '[url]' => Forma\lib\Get::site_url(),
                             '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                             '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                             '[username]' => $userid,
@@ -989,10 +989,10 @@ class TreeView_OrgView extends TreeView
                                     require_once _base_ . '/lib/lib.eventmanager.php';
                                     $pl_man = &PlatformManager::createInstance();
 
-                                    $array_subst = ['[url]' => Get::site_url(),
+                                    $array_subst = ['[url]' => Forma\lib\Get::site_url(),
                                         '[userid]' => $userid,
                                         '[password]' => $pass,
-                                        '[dynamic_link]' => getCurrentDomain($this->tree) ?: Get::site_url(),
+                                        '[dynamic_link]' => getCurrentDomain($this->tree) ?: Forma\lib\Get::site_url(),
                                     ];
                                     // message to user that is inserted
                                     $msg_composer = new EventMessageComposer();
@@ -1014,7 +1014,7 @@ class TreeView_OrgView extends TreeView
                                     require_once _base_ . '/lib/lib.eventmanager.php';
                                     $pl_man = &PlatformManager::createInstance();
 
-                                    $array_subst = ['[url]' => Get::site_url(),
+                                    $array_subst = ['[url]' => Forma\lib\Get::site_url(),
                                         '[userid]' => $userid,
                                         '[password]' => $pass, ];
 
@@ -1034,9 +1034,9 @@ class TreeView_OrgView extends TreeView
                                     $msg_c_approve = new EventMessageComposer();
 
                                     $msg_c_approve->setSubjectLangText('email', '_TO_APPROVE_USER_SBJ', false);
-                                    $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', ['[url]' => Get::site_url()]);
+                                    $msg_c_approve->setBodyLangText('email', '_TO_APPROVE_USER_TEXT', ['[url]' => Forma\lib\Get::site_url()]);
 
-                                    $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', ['[url]' => Get::site_url()]);
+                                    $msg_c_approve->setBodyLangText('sms', '_TO_APPROVE_USER_TEXT_SMS', ['[url]' => Forma\lib\Get::site_url()]);
                                     $idst_approve = $acl->getRoleST('/framework/admin/directory/approve_waiting_user');
                                     $recipients = $this->aclManager->getAllRoleMembers($idst_approve);
 
@@ -1058,7 +1058,7 @@ class TreeView_OrgView extends TreeView
                             require_once _base_ . '/lib/lib.eventmanager.php';
                             $pl_man = &PlatformManager::createInstance();
 
-                            $array_subst = ['[url]' => Get::site_url(),
+                            $array_subst = ['[url]' => Forma\lib\Get::site_url(),
                                 '[userid]' => $userid,
                                 '[password]' => $pass, ];
                             // message to user that is inserted
@@ -1099,7 +1099,7 @@ class TreeView_OrgView extends TreeView
 
                 $pl_man = &PlatformManager::createInstance();
 
-                $array_subst = ['[url]' => Get::site_url(),
+                $array_subst = ['[url]' => Forma\lib\Get::site_url(),
                     '[userid]' => $this->aclManager->relativeId($userid), ];
                 // message to user that is inserted
                 $msg_composer = new EventMessageComposer();
@@ -1354,7 +1354,7 @@ class TreeView_OrgView extends TreeView
 
     public function canAdd()
     {
-        return $this->isFolderAccessible() && (Get::sett('use_org_chart') == '1');
+        return $this->isFolderAccessible() && (Forma\lib\Get::sett('use_org_chart') == '1');
     }
 
     public function canInlineMove()
@@ -1416,7 +1416,7 @@ class TreeView_OrgView extends TreeView
         if (!$this->selector_mode) {
             // assign field to folder
             // assign field to user
-            if ($this->isFolderAccessible($stack[$level]['folder']) && Get::sett('use_user_fields') == '1') {
+            if ($this->isFolderAccessible($stack[$level]['folder']) && Forma\lib\Get::sett('use_user_fields') == '1') {
                 $tree .= '<input type="image" class="tree_view_image" '
                     . ' src="' . $this->_getImgAssignField() . '"'
                     . ' id="' . $this->id . '_' . $this->_getOpAssignField() . '_' . $stack[$level]['folder']->id . '" '
@@ -1438,7 +1438,7 @@ class TreeView_OrgView extends TreeView
                         . ' name="' . $this->id . '[' . $this->_getOpAssignUser() . '][' . $stack[$level]['folder']->id . ']" '
                         . ' title="' . $this->_getLabelAssignUser() . '" '
                         . ' alt="' . $this->_getLabelAssignUser() . '" />';
-                    if (Get::sett('use_org_chart_field') == '1') {
+                    if (Forma\lib\Get::sett('use_org_chart_field') == '1') {
                         $tree .= '<input type="image" class="tree_view_image" '
                             . ' src="' . $this->_getImgFolderField() . '"'
                             . ' id="' . $this->id . '_' . $this->_getOpFolderField() . '_' . $stack[$level]['folder']->id . '" '
@@ -1564,8 +1564,8 @@ class TreeView_OrgView extends TreeView
                 'rename_folder_root',
                 $this->id . '[rename_folder][root]',
                 255,
-                Get::sett('title_organigram_chart'),
-                Get::sett('title_organigram_chart')
+                Forma\lib\Get::sett('title_organigram_chart'),
+                Forma\lib\Get::sett('title_organigram_chart')
                 . ' ' . $this->lang->def('MOD'));
         } else {
             foreach ($array_lang as $k => $lang_code) {
@@ -1780,7 +1780,7 @@ class TreeView_OrgView extends TreeView
             if ($def_value == ORG_CHART_FIELD_INHERIT) {
                 $gid = $arr_fields_inherit[$field[FIELD_INFO_ID]][FIELD_INFO_GROUPID];
                 if ($gid == '/ocd_0') {
-                    $text = Get::sett('title_organigram_chart');
+                    $text = Forma\lib\Get::sett('title_organigram_chart');
                 } else {
                     if (isset($arr_tree_translations[$gid])) {
                         $text = $arr_tree_translations[$gid];
@@ -2096,7 +2096,7 @@ class TreeView_OrgView extends TreeView
         if (count($result) > 1) {
             require_once _base_ . '/lib/lib.table.php';
             $tree .= str_replace('%count%', count($result) - 1, $this->lang->def('_OPERATION_FAILURE'));
-            $table = new Table(Get::sett('visuItem'), $this->lang->def('_OPERATION_FAILURE'), $this->lang->def('_OPERATION_FAILURE'));
+            $table = new Table(Forma\lib\Get::sett('visuItem'), $this->lang->def('_OPERATION_FAILURE'), $this->lang->def('_OPERATION_FAILURE'));
             $table->setColsStyle(['', '']);
             $table->addHead([$this->lang->def('_OPERATION_FAILURE'),
                 $this->lang->def('_OPERATION_FAILURE'),

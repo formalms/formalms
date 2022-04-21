@@ -57,7 +57,7 @@ class LMSTemplateModel
 
     public function getLogoutUrl()
     {
-        return Get::rel_path('base') . '/index.php?r=' . _logout_;
+        return Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_;
     }
 
     public function getCart()
@@ -80,7 +80,7 @@ class LMSTemplateModel
         if ($ma->currentCanAccessObj('user_details_full')) {
             require_once Forma::inc(_lib_ . '/lib.user_profile.php');
             $profile = new UserProfile(getLogUserId());
-            $profile->init('profile', 'framework', 'index.php?' . Get::home_page_query(), 'ap');
+            $profile->init('profile', 'framework', 'index.php?' . Forma\lib\Get::home_page_query(), 'ap');
         }
 
         return $profile;
@@ -141,7 +141,7 @@ class LMSTemplateModel
 
     public function getHelpDeskEmail()
     {
-        return trim(Get::sett('customer_help_email', ''));
+        return trim(Forma\lib\Get::sett('customer_help_email', ''));
     }
 
     public function getCurrentPage()
@@ -161,6 +161,6 @@ class LMSTemplateModel
 
     public function getHomePage()
     {
-        return Get::home_page_abs_path();
+        return Forma\lib\Get::home_page_abs_path();
     }
 }

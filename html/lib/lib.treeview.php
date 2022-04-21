@@ -955,7 +955,7 @@ class TreeView
     {
         $tree = '';
         if ($this->canInlineDelete()) {
-            if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineDeleteItem($stack, $level) && !Get::cfg('demo_mode')))
+            if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineDeleteItem($stack, $level) && !Forma\lib\Get::cfg('demo_mode')))
             || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
@@ -972,7 +972,7 @@ class TreeView
             }
         }
         if ($this->canInlineMove()) {
-            if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineMoveItem($stack, $level) && !Get::cfg('demo_mode')))
+            if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineMoveItem($stack, $level) && !Forma\lib\Get::cfg('demo_mode')))
             || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
@@ -989,7 +989,7 @@ class TreeView
             }
         }
         if ($this->canInlineRename()) {
-            if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineRenameItem($stack, $level) && !Get::cfg('demo_mode')))
+            if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineRenameItem($stack, $level) && !Forma\lib\Get::cfg('demo_mode')))
             || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
@@ -1091,7 +1091,7 @@ class TreeView
                 . '<input type="submit" class="TreeViewAction" value="' . $this->_getMoveLabel() . '"'
                 . ' name="' . $this->_getMoveUrl() . '" />';
         }
-        if ($this->canDelete() && !Get::cfg('demo_mode')) {
+        if ($this->canDelete() && !Forma\lib\Get::cfg('demo_mode')) {
             $tree .= '<img src="' . $this->_getDeleteImage() . '" alt="' . $this->_getDeleteAlt() . '" /> '
                 . '<input type="submit" class="TreeViewAction" value="' . $this->_getDeleteLabel() . '"'
                 . ' name="' . $this->_getDeleteUrl() . '" />';

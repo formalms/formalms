@@ -34,7 +34,7 @@ $tabs = '<div id="profile_dialog_tabview" class="yui-navset">'
     .'<div id="profile_tab4" class="little_table">'.$profile->getUserGroupsList($id_user).'</div>'
     .'</div></div>';
 */
-$active_tab = Get::req('active_tab', DOTY_STRING, 'profile_tab1');
+$active_tab = Forma\lib\Get::req('active_tab', DOTY_STRING, 'profile_tab1');
 
 if ($active_tab != 'profile_tab1' && $active_tab != 'profile_tab2' && $active_tab != 'profile_tab3' && $active_tab != 'profile_tab4' && $active_tab != 'profile_tab5') {
     $active_tab = 'profile_tab1';

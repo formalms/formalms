@@ -47,7 +47,7 @@ class PlatformManager
         return $GLOBALS['platform_manager'];
     }
 
-    public function PlatformManager($db_conn = false, $prefix = false)
+    public function __construct($db_conn = false, $prefix = false)
     {
         if ($prefix === false) {
             $this->prefix = $GLOBALS['prefix_fw'];
@@ -56,6 +56,7 @@ class PlatformManager
         }
 
         if ($db_conn === false) {
+            $db_conn = new stdClass();
             $db_conn->prefix = null;
         } else {
             $this->db_conn = $db_conn;
@@ -210,7 +211,7 @@ class PlatformManager
 
     public function getLanguageForPlatform($platform = false)
     {
-        return Get::sett('default_language');
+        return Forma\lib\Get::sett('default_language');
     }
 
     public function getTemplateForPlatform($platform = false)

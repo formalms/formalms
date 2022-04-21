@@ -86,7 +86,7 @@ function insitem()
         $_SESSION['last_error'] = _FILEUNSPECIFIED;
         Util::jump_to('' . $back_url . '&create_result=0');
     }
-    $path = str_replace('\\', '/', '/' . _folder_lms_ . '/' . Get::sett('pathscorm'));
+    $path = str_replace('\\', '/', '/' . _folder_lms_ . '/' . Forma\lib\Get::sett('pathscorm'));
     $savefile = getLogUserId() . '_' . rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
     if (!file_exists(_files_ . $path . $savefile)) {
         sl_open_fileoperations();
@@ -263,7 +263,7 @@ function moditem($object_item)
         $line = [];
         $line[] = $row[2];
         $line[] = ($row[1] != 0
-            ? Get::abs_path('lms') . '/index.php?id_course=' . $_SESSION['idCourse'] . '&amp;act=playsco&amp;courseid=' . $_SESSION['idCourse'] . '&amp;id_item=' . $id_reference . '&amp;chapter=' . $row[0] . ''
+            ? Forma\lib\Get::abs_path('lms') . '/index.php?id_course=' . $_SESSION['idCourse'] . '&amp;act=playsco&amp;courseid=' . $_SESSION['idCourse'] . '&amp;id_item=' . $id_reference . '&amp;chapter=' . $row[0] . ''
             : '');
         $tb->addBody($line);
     }
@@ -312,14 +312,14 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
         or exit(sql_error());
 
         list($path) = sql_fetch_row($rs);
-        $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Get::sett('pathscorm'));
+        $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Forma\lib\Get::sett('pathscorm'));
         /* remove all zip directory */
         if (file_exists($scopath . $path)) {
             /* if is the only occurrence of path in db delete files */
             $rs = sql_query('SELECT idscorm_package FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package'
                 . " WHERE path = '" . $path . "'");
             if (sql_num_rows($rs) == 1) {
-                $size = Get::dir_size($scopath . $path);
+                $size = Forma\lib\Get::dir_size($scopath . $path);
 
                 require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php'); // for del tree
                 delDirTree($scopath . $path);
@@ -355,7 +355,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     }
 
     list($path) = sql_fetch_row($rs);
-    $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Get::sett('pathscorm'));
+    $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Forma\lib\Get::sett('pathscorm'));
 
     /* copy all zip directory */
     /* remove copy - use same files

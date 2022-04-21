@@ -120,7 +120,7 @@ class MessageModule
 
         $um = &UrlManager::getInstance('message');
 
-        $active_tab = Get::req('active_tab', DOTY_STRING, 'inbox');
+        $active_tab = Forma\lib\Get::req('active_tab', DOTY_STRING, 'inbox');
         if ($active_tab != 'inbox' && $active_tab != 'outbox') {
             $active_tab = 'inbox';
         }
@@ -133,8 +133,8 @@ class MessageModule
         $all_courses = $course_man->getUserCourses(getLogUserId());
         $all_value = $all_value + $all_courses;
 
-        $_filter_inbox = Get::req('msg_course_filter_inbox', DOTY_INT, 0);
-        $_filter_outbox = Get::req('msg_course_filter_outbox', DOTY_INT, 0);
+        $_filter_inbox = Forma\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
+        $_filter_outbox = Forma\lib\Get::req('msg_course_filter_outbox', DOTY_INT, 0);
         if ($_filter_inbox == '') {
             if (isset($_SESSION['idCourse'])) {
                 $_filter_inbox = $_SESSION['idCourse'];
@@ -266,8 +266,8 @@ class MessageModule
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
 
-        // $tb = new Table(Get::sett('visuItem', 25), '', '', 'messages-recv');
-        $tb = new Table(Get::sett('visuItem', 25), '', '', 'messages-recv');
+        // $tb = new Table(Forma\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
+        $tb = new Table(Forma\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
         $acl_man = &Docebo::user()->getAclManager();
@@ -280,7 +280,7 @@ class MessageModule
 			m.sender <> '" . getLogUserId() . "' AND
 			user.idUser = '" . getLogUserId() . "' AND
 			user.deleted = '" . _MESSAGE_VALID . "'";
-        $_filter = Get::req('msg_course_filter_inbox', DOTY_INT, 0);
+        $_filter = Forma\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
 
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
@@ -305,7 +305,7 @@ class MessageModule
                 case 'rid': $query .= 'user.read,'; break;
             }
         }
-        $query .= "m.posted DESC LIMIT $ini," . Get::sett('visuItem', 25);
+        $query .= "m.posted DESC LIMIT $ini," . Forma\lib\Get::sett('visuItem', 25);
         $re_message = $this->db->query($query);
 
         // -----------------------------------------------------
@@ -469,7 +469,7 @@ class MessageModule
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
         $acl_man = &Docebo::user()->getAclManager();
-        $tb = new Table(Get::sett('visuItem', 25), '', '', 'messages-sent');
+        $tb = new Table(Forma\lib\Get::sett('visuItem', 25), '', '', 'messages-sent');
         $tb->initNavBar('iniout', 'button');
         $ini = $tb->getSelectedElement('iniout');
         $acl_man = &Docebo::user()->getAclManager();
@@ -485,7 +485,7 @@ class MessageModule
         /*if(isset($_POST['msg_course_filter']) && ($_POST['msg_course_filter'] != false)) {
             $query .= " AND m.idCourse = '".$_POST['msg_course_filter']."'";
         }*/
-        $_filter = Get::req('msg_course_filter_outbox', DOTY_INT, 0);
+        $_filter = Forma\lib\Get::req('msg_course_filter_outbox', DOTY_INT, 0);
 
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
@@ -508,7 +508,7 @@ class MessageModule
                 case 'ath': $query .= 'm.attach DESC,'; break;
             }
         }
-        $query .= "m.posted DESC LIMIT $ini," . Get::sett('visuItem', 25);
+        $query .= "m.posted DESC LIMIT $ini," . Forma\lib\Get::sett('visuItem', 25);
         $re_message = $this->db->query($query);
 
         $query = "
@@ -1262,7 +1262,7 @@ class MessageModule
         $res = '';
 
         /*
-        if (Get::cur_plat() == "cms") {
+        if (Forma\lib\Get::cur_plat() == "cms") {
             $res = getCmsTitleArea($text, $image = '', $alt_image = '');
         }
         else {

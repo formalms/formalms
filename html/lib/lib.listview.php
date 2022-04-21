@@ -252,7 +252,7 @@ class ListView
         $this->id = $id;
         $this->itemSelected = [];
         $this->lang = &DoceboLanguage::createInstance('standard', 'framework');
-        $this->startRow = Get::req('ini', DOTY_INT, 0);
+        $this->startRow = Forma\lib\Get::req('ini', DOTY_INT, 0);
     }
 
     public function getOp()

@@ -40,7 +40,7 @@ if (Docebo::user()->isLoggedIn()) {
     if (!empty($GLOBALS['chapter'])) {
         $start_from_chapter = $GLOBALS['chapter'];
     } else {
-        $start_from_chapter = Get::req('start_from_chapter', DOTY_MIXED, false);
+        $start_from_chapter = Forma\lib\Get::req('start_from_chapter', DOTY_MIXED, false);
     }
 
     if ($autoplay == '') {
@@ -111,7 +111,7 @@ if (Docebo::user()->isLoggedIn()) {
         $class_extension = $nItem > 1 ? '' : '_hiddentree';
     }
 
-    $lms_base_url = Get::abs_path();
+    $lms_base_url = Forma\lib\Get::abs_path();
 
     $lms_url = $lms_base_url . $scormws;
     $xmlTreeUrl = $lms_base_url . $scormxmltree . '?idscorm_organization=' . $idscorm_organization . '&idReference=' . $idReference . '&environment=' . $environment;
@@ -119,7 +119,7 @@ if (Docebo::user()->isLoggedIn()) {
 
     // support for setting keepalive tmo
 $gc_maxlifetime = ini_get('session.gc_maxlifetime');	// seconds
-$cfg_keepalivetmo = Get::cfg('keepalivetmo', 0);	// minumum : 60 sec.
+$cfg_keepalivetmo = Forma\lib\Get::cfg('keepalivetmo', 0);	// minumum : 60 sec.
 
 if ($cfg_keepalivetmo > 0) {
     $keepalivetmo = $cfg_keepalivetmo;
@@ -142,19 +142,19 @@ if ($cfg_keepalivetmo > 0) {
     echo '<html xmlns="http://www.w3.org/1999/xhtml">' . "\n";
     echo '<head>';
     echo '	<title>' . $lo_title . '</title>';
-    echo '	<link href="' . Get::tmpl_path() . '/style/lms-scormplayer.css" rel="stylesheet" type="text/css" />';
+    echo '	<link href="' . Forma\lib\Get::tmpl_path() . '/style/lms-scormplayer.css" rel="stylesheet" type="text/css" />';
 
     if (trim($playertemplate) != '') {
-        echo '	<link href="' . Get::tmpl_path() . '/player_scorm/' . $playertemplate . '/def_style.css" rel="stylesheet" type="text/css" />';
+        echo '	<link href="' . Forma\lib\Get::tmpl_path() . '/player_scorm/' . $playertemplate . '/def_style.css" rel="stylesheet" type="text/css" />';
     }
 
     $rnd = 2007101900;
-    echo '<SCRIPT type="text/javascript" src="' . Get::rel_path('lms') . '/modules/scorm/prototype.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
-    echo '<SCRIPT type="text/javascript" src="' . Get::rel_path('lms') . '/modules/scorm/ScormTypes.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
-    echo '<SCRIPT type="text/javascript" src="' . Get::rel_path('lms') . '/modules/scorm/ScormCache.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
-    echo '<SCRIPT type="text/javascript" src="' . Get::rel_path('lms') . '/modules/scorm/ScormApi.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
-    echo '<SCRIPT type="text/javascript" src="' . Get::rel_path('lms') . '/modules/scorm/player.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
-    echo '<SCRIPT type="text/javascript" src="' . Get::rel_path('lms') . '/modules/scorm/StdPlayer.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
+    echo '<SCRIPT type="text/javascript" src="' . Forma\lib\Get::rel_path('lms') . '/modules/scorm/prototype.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
+    echo '<SCRIPT type="text/javascript" src="' . Forma\lib\Get::rel_path('lms') . '/modules/scorm/ScormTypes.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
+    echo '<SCRIPT type="text/javascript" src="' . Forma\lib\Get::rel_path('lms') . '/modules/scorm/ScormCache.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
+    echo '<SCRIPT type="text/javascript" src="' . Forma\lib\Get::rel_path('lms') . '/modules/scorm/ScormApi.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
+    echo '<SCRIPT type="text/javascript" src="' . Forma\lib\Get::rel_path('lms') . '/modules/scorm/player.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
+    echo '<SCRIPT type="text/javascript" src="' . Forma\lib\Get::rel_path('lms') . '/modules/scorm/StdPlayer.js' . "?v=$rnd" . '"></SCRIPT>' . "\n";
     echo '<SCRIPT type="text/javascript" >' . "\n";
     echo '<!--' . "\n";
 
@@ -181,7 +181,7 @@ if ($cfg_keepalivetmo > 0) {
     echo " auth_request: '" . Util::getSignature() . "',\n";
 
     echo " environment: '$environment',\n";
-    echo " useWaitDialog: '" . Get::sett('use_wait_dialog', 'off') . "',\n";
+    echo " useWaitDialog: '" . Forma\lib\Get::sett('use_wait_dialog', 'off') . "',\n";
 
     echo ' startFromChapter: ' . ($start_from_chapter ? "'" . $start_from_chapter . "'" : 'false') . "\n";
 

@@ -14,7 +14,7 @@ if ($permissions['approve_waiting_user'] && $num_waiting_users > 0) {
         . '</a>';
 }
 
-if ($permissions['view_user'] && Get::sett('register_deleted_user', 'off') == 'on') {
+if ($permissions['view_user'] && Forma\lib\Get::sett('register_deleted_user', 'off') == 'on') {
     $_other_links .= '<a class="ico-wt-sprite subs_unassoc" href="index.php?r=' . $this->link . '/show_deleted" '
         . ' title="' . Lang::t('_DELETED_USER_LIST', 'profile') . '" id="show_deleted_users">'
         . '<span>' . Lang::t('_DELETED_USER_LIST', 'profile') . ' (' . $num_deleted_users . ')</span>'
@@ -26,7 +26,7 @@ if ($permissions['view_user'] && Get::sett('register_deleted_user', 'off') == 'o
  */
 if ($permissions['view_org']) {
     $languages = [
-        '_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
+        '_ROOT' => Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
         '_YES' => Lang::t('_CONFIRM', 'organization_chart'),
         '_NO' => Lang::t('_UNDO', 'organization_chart'),
         '_LOADING' => Lang::t('_LOADING', 'standard'),
@@ -52,7 +52,7 @@ if ($permissions['view_org']) {
         'id' => 'usertree',
         'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettreedata',
         'treeClass' => 'OrgFolderTree',
-        'treeFile' => Get::rel_path('adm') . '/views/usermanagement/orgchartfoldertree.js',
+        'treeFile' => Forma\lib\Get::rel_path('adm') . '/views/usermanagement/orgchartfoldertree.js',
         'languages' => $languages,
         'initialSelectedNode' => (int) $selected_orgchart,
         'rootActions' => $root_node_actions,
@@ -130,7 +130,7 @@ $dyn_labels = [];
         }
         $label .= '</select>';
         $label .= '<a id="_dyn_field_sort_' . $i . '" href="javascript:;">';
-        $label .= '<img src="' . Get::tmpl_path() . 'images/standard/sort.png" title="' . Lang::t('_SORT', 'standard') . '" alt="' . Lang::t('_SORT', 'standard') . '" />';
+        $label .= '<img src="' . Forma\lib\Get::tmpl_path() . 'images/standard/sort.png" title="' . Lang::t('_SORT', 'standard') . '" alt="' . Lang::t('_SORT', 'standard') . '" />';
         $label .= '</a>';
         $dyn_filter[$i] = $selected[$i];
         $dyn_labels[$i] = $label;
@@ -160,7 +160,7 @@ $dyn_labels = [];
     if ($permissions['mod_user']) {
         $columns_arr[] = ['key' => 'mod', 'label' => $icon_mod, 'formatter' => 'doceboModify', 'className' => 'img-cell'];
     }
-    if ($permissions['del_user'] && !Get::cfg('demo_mode')) {
+    if ($permissions['del_user'] && !Forma\lib\Get::cfg('demo_mode')) {
         $columns_arr[] = ['key' => 'del', 'label' => $icon_del, 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
     }
 
@@ -168,7 +168,7 @@ $dyn_labels = [];
 
     if ($permissions['add_user']) {
         $languages = [
-        '_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
+        '_ROOT' => Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
         '_LOADING' => Lang::t('_LOADING', 'standard'),
     ];
 
@@ -176,7 +176,7 @@ $dyn_labels = [];
         'id' => 'createuser_orgchart_tree',
         'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettreedata_create',
         'treeClass' => 'DialogOrgFolderTree',
-        'treeFile' => Get::rel_path('adm') . '/views/usermanagement/orgchartfoldertree.js',
+        'treeFile' => Forma\lib\Get::rel_path('adm') . '/views/usermanagement/orgchartfoldertree.js',
         'languages' => $languages,
         'initialSelectedNode' => 0,
         'show' => 'tree',
@@ -192,7 +192,7 @@ $dyn_labels = [];
     . '<span>' . Lang::t('_NEW_USER', 'admin_directory') . '</span>'
     . '</a>' : '');
 
-    $_show_more = ($permissions['mod_user'] || ($permissions['del_user'] && !Get::cfg('demo_mode')) || $permissions['associate_user']);
+    $_show_more = ($permissions['mod_user'] || ($permissions['del_user'] && !Forma\lib\Get::cfg('demo_mode')) || $permissions['associate_user']);
 
     $rel_action_over = ' '
     . '<button id="ma_over" name="ma"></button> '
@@ -261,7 +261,7 @@ YAHOO.util.Event.onDOMReady(function() {
 
 UserManagement.init({
 	baseUrl: "<?php echo $this->link; ?>",
-	templatePath: "<?php echo Get::tmpl_path(); ?>",
+	templatePath: "<?php echo Forma\lib\Get::tmpl_path(); ?>",
 	selectedOrgBranch: <?php echo (int) $selected_orgchart; ?>,
 	showDescendants: <?php echo $show_descendants ? 'true' : 'false'; ?>,
 	showSuspended: <?php echo $show_suspended ? 'true' : 'false'; ?>,
@@ -272,7 +272,7 @@ UserManagement.init({
 	numVarFields: <?php echo $num_var_fields; ?>,
 	perms: {
 		mod_user: <?php echo $permissions['mod_user'] ? 'true' : 'false'; ?>,
-		del_user: <?php echo $permissions['del_user'] && !Get::cfg('demo_mode') ? 'true' : 'false'; ?>,
+		del_user: <?php echo $permissions['del_user'] && !Forma\lib\Get::cfg('demo_mode') ? 'true' : 'false'; ?>,
 		associate_user: <?php echo $permissions['associate_user'] ? 'true' : 'false'; ?>
 	},
 	langs: {

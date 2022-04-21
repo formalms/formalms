@@ -50,7 +50,7 @@ class KbAlmsController extends AlmsController
 
     public function show()
     {
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         if (isset($_GET['error'])) {
             UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'kb'));
@@ -75,7 +75,7 @@ class KbAlmsController extends AlmsController
             //'permissions' => $this->permissions
         ];
 
-        $res = Get::req('res', DOTY_STRING, '');
+        $res = Forma\lib\Get::req('res', DOTY_STRING, '');
         $result_message = '';
         switch ($res) {
             case 'ok': $result_message = UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
@@ -98,8 +98,8 @@ class KbAlmsController extends AlmsController
     {
         require_once _lms_ . '/lib/lib.kbres.php';
 
-        $type = Get::req('type', DOTY_STRING, '');
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $type = Forma\lib\Get::req('type', DOTY_STRING, '');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $kbres = new KbRes();
         $all_resources = $kbres->getRawResources();
@@ -120,22 +120,22 @@ class KbAlmsController extends AlmsController
         if (isset($_POST['org_categorize_save'])) {
             require_once _lms_ . '/lib/lib.kbres.php';
 
-            $name = Get::req('r_name', DOTY_STRING, '');
+            $name = Forma\lib\Get::req('r_name', DOTY_STRING, '');
             $original_name = ''; // won't update this field
-            $desc = Get::req('r_desc', DOTY_STRING, '');
-            $r_item_id = Get::req('r_item_id', DOTY_INT, 0);
-            $type = Get::req('r_type', DOTY_STRING, '');
-            $env = Get::req('r_env', DOTY_STRING, '');
-            $env_parent_id = Get::req('r_env_parent_id', DOTY_INT, 0);
-            $param = ''; //Get::req('', DOTY_STRING, "");
+            $desc = Forma\lib\Get::req('r_desc', DOTY_STRING, '');
+            $r_item_id = Forma\lib\Get::req('r_item_id', DOTY_INT, 0);
+            $type = Forma\lib\Get::req('r_type', DOTY_STRING, '');
+            $env = Forma\lib\Get::req('r_env', DOTY_STRING, '');
+            $env_parent_id = Forma\lib\Get::req('r_env_parent_id', DOTY_INT, 0);
+            $param = ''; //Forma\lib\Get::req('', DOTY_STRING, "");
             $alt_desc = '';
-            $lang_id = Get::req('r_lang', DOTY_INT, '');
+            $lang_id = Forma\lib\Get::req('r_lang', DOTY_INT, '');
             $lang_arr = Docebo::langManager()->getAllLangCode();
             $lang = $lang_arr[$lang_id];
-            $force_visible = Get::req('force_visible', DOTY_INT, 0);
-            $is_mobile = Get::req('is_mobile', DOTY_INT, 0);
-            $folders = Get::req('h_selected_folders', DOTY_STRING, '');
-            $json_tags = Util::strip_slashes(Get::req('tag_list', DOTY_STRING, '[]'));
+            $force_visible = Forma\lib\Get::req('force_visible', DOTY_INT, 0);
+            $is_mobile = Forma\lib\Get::req('is_mobile', DOTY_INT, 0);
+            $folders = Forma\lib\Get::req('h_selected_folders', DOTY_STRING, '');
+            $json_tags = Util::strip_slashes(Forma\lib\Get::req('tag_list', DOTY_STRING, '[]'));
 
             $kbres = new KbRes();
             $res_id = $kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
@@ -147,10 +147,10 @@ class KbAlmsController extends AlmsController
         } elseif (isset($_POST['org_categorize_cancel'])) {
             Util::jump_to('index.php?r=alms/kb/show');
         } else {
-            $r_type = Get::req('type', DOTY_STRING, '');
-            $r_env = Get::req('env', DOTY_STRING, '');
-            $r_item_id = Get::req('id', DOTY_INT, 0);
-            $original_name = Get::req('title', DOTY_STRING, '');
+            $r_type = Forma\lib\Get::req('type', DOTY_STRING, '');
+            $r_env = Forma\lib\Get::req('env', DOTY_STRING, '');
+            $r_item_id = Forma\lib\Get::req('id', DOTY_INT, 0);
+            $original_name = Forma\lib\Get::req('title', DOTY_STRING, '');
 
             $this->render('categorize', [
                 'r_type' => $r_type,
@@ -166,10 +166,10 @@ class KbAlmsController extends AlmsController
     {
         require_once _lms_ . '/lib/lib.kbres.php';
         $kbres = new KbRes();
-        $res_id = Get::req('id', DOTY_INT, 0);
+        $res_id = Forma\lib\Get::req('id', DOTY_INT, 0);
 
         if (isset($_POST['subcategorize_switch'])) {
-            $cat_sub_items = Get::pReq('subcategorize_switch', DOTY_INT);
+            $cat_sub_items = Forma\lib\Get::pReq('subcategorize_switch', DOTY_INT);
 
             $kbres->saveResourceSubCategorizePref($res_id, $cat_sub_items);
 
@@ -178,22 +178,22 @@ class KbAlmsController extends AlmsController
             exit();
         }
         if (isset($_POST['org_categorize_save'])) {
-            $name = Get::req('r_name', DOTY_STRING, '');
+            $name = Forma\lib\Get::req('r_name', DOTY_STRING, '');
             $original_name = ''; // won't update this field
-            $desc = Get::req('r_desc', DOTY_STRING, '');
-            $r_item_id = Get::req('r_item_id', DOTY_INT, 0);
-            $type = Get::req('r_type', DOTY_STRING, '');
-            $env = Get::req('r_env', DOTY_STRING, '');
-            $env_parent_id = Get::req('r_env_parent_id', DOTY_INT, 0);
-            $param = ''; //Get::req('', DOTY_STRING, "");
+            $desc = Forma\lib\Get::req('r_desc', DOTY_STRING, '');
+            $r_item_id = Forma\lib\Get::req('r_item_id', DOTY_INT, 0);
+            $type = Forma\lib\Get::req('r_type', DOTY_STRING, '');
+            $env = Forma\lib\Get::req('r_env', DOTY_STRING, '');
+            $env_parent_id = Forma\lib\Get::req('r_env_parent_id', DOTY_INT, 0);
+            $param = ''; //Forma\lib\Get::req('', DOTY_STRING, "");
             $alt_desc = '';
-            $lang_id = Get::req('r_lang', DOTY_INT, '');
+            $lang_id = Forma\lib\Get::req('r_lang', DOTY_INT, '');
             $lang_arr = Docebo::langManager()->getAllLangCode();
             $lang = $lang_arr[$lang_id];
-            $force_visible = Get::req('force_visible', DOTY_INT, 0);
-            $is_mobile = Get::req('is_mobile', DOTY_INT, 0);
-            $folders = Get::req('h_selected_folders', DOTY_STRING, '');
-            $json_tags = Util::strip_slashes(Get::req('tag_list', DOTY_STRING, '[]'));
+            $force_visible = Forma\lib\Get::req('force_visible', DOTY_INT, 0);
+            $is_mobile = Forma\lib\Get::req('is_mobile', DOTY_INT, 0);
+            $folders = Forma\lib\Get::req('h_selected_folders', DOTY_STRING, '');
+            $json_tags = Util::strip_slashes(Forma\lib\Get::req('tag_list', DOTY_STRING, '[]'));
 
             $res_id = $kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
                 $type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible,
@@ -213,14 +213,14 @@ class KbAlmsController extends AlmsController
 
     public function getlist()
     {
-        $folder_id = Get::req('folder_id', DOTY_INT, 0);
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $type_filter = Get::req('type_filter', DOTY_STRING, 'all');
-        $show_what = Get::req('categorized_filter', DOTY_STRING, 'all');
+        $folder_id = Forma\lib\Get::req('folder_id', DOTY_INT, 0);
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $type_filter = Forma\lib\Get::req('type_filter', DOTY_STRING, 'all');
+        $show_what = Forma\lib\Get::req('categorized_filter', DOTY_STRING, 'all');
 
         $where = (!empty($filter_text) ? "kr.r_name LIKE '%" . $filter_text . "%'" : '');
         $where .= (!empty($type_filter) ? (!empty($where) ? ' AND ' : '') . "kr.r_type='" . $type_filter . "'" : '');
@@ -301,13 +301,13 @@ class KbAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.kbres.php';
         $kbres = new KbRes();
 
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
-        $type = Get::req('type', DOTY_STRING, '');
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $type = Forma\lib\Get::req('type', DOTY_STRING, '');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $where = (!empty($filter_text) ? "items.title LIKE '%" . $filter_text . "%'" : '');
         $limit = $start_index . ', ' . $results;
@@ -337,8 +337,8 @@ class KbAlmsController extends AlmsController
         }
 
         $this->model->update(
-            ['force_visible' => (Get::req('is_active', DOTY_INT, 0) ? 0 : 1)],
-                ['res_id==' => Get::req('id', DOTY_INT, 0)]
+            ['force_visible' => (Forma\lib\Get::req('is_active', DOTY_INT, 0) ? 0 : 1)],
+                ['res_id==' => Forma\lib\Get::req('id', DOTY_INT, 0)]
         );
     }
 
@@ -462,23 +462,23 @@ class KbAlmsController extends AlmsController
 
     public function gettreedata()
     {
-        $command = Get::req('command', DOTY_ALPHANUM, '');
+        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
 
-        $show_actions = Get::req('show_actions', DOTY_INT, 1);
+        $show_actions = Forma\lib\Get::req('show_actions', DOTY_INT, 1);
         //$this->show_actions =$show_actions;
 
         switch ($command) {
             case 'set_selected_node':
-                $from_widget = Get::gReq('from_widget', DOTY_INT, 0);
+                $from_widget = Forma\lib\Get::gReq('from_widget', DOTY_INT, 0);
                 if (!$from_widget) {
-                    $node_id = Get::req('node_id', DOTY_INT, -1);
+                    $node_id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
                     $this->_setSelectedNode($node_id);
                 }
              break;
 
             case 'expand':
-                $node_id = Get::req('node_id', DOTY_INT, -1);
-                $initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
+                $initial = (Forma\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
                 if ($initial) {
                     //get selected node from session and set the expanded tree
@@ -526,7 +526,7 @@ class KbAlmsController extends AlmsController
                 }
 
                 $output = [];
-                $id = Get::req('node_id', DOTY_INT, -1);
+                $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
                 if ($id < 0) {
                     $output = [
                         'success' => false,
@@ -534,7 +534,7 @@ class KbAlmsController extends AlmsController
                     ];
                 } else {
                     if ($id == 0) {
-                        $root_name = Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
+                        $root_name = Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
                         $body = Form::openForm('modfolder_form', 'ajax.adm_server.php?r=alms/kb/modrootfolder')
                             . '<p id="addfolder_error_message"></p>'
                             . Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
@@ -569,7 +569,7 @@ class KbAlmsController extends AlmsController
 
             case 'delete': $this->delfolder(); break;
             case 'options':
-                $id = Get::req('node_id', DOTY_INT, -1);
+                $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
                 $output = [];
                 if ($id <= 0) {
                     $output['success'] = false;
@@ -653,12 +653,12 @@ class KbAlmsController extends AlmsController
         }
 
         $output = [];
-        $langs = Get::req('langs', DOTY_MIXED, false);
+        $langs = Forma\lib\Get::req('langs', DOTY_MIXED, false);
         if ($langs == false) {
             $output['success'] = false;
             $output['message'] = Lang::t('_INVALID_INPUT');
         } else {
-            $id_parent = Get::req('id_parent', DOTY_INT, -1);
+            $id_parent = Forma\lib\Get::req('id_parent', DOTY_INT, -1);
             if ($id_parent < 0) {
                 $id_parent = 0;
             }
@@ -696,8 +696,8 @@ class KbAlmsController extends AlmsController
         }
 
         $output = [];
-        $id = Get::req('node_id', DOTY_INT, -1);
-        $langs = Get::req('modfolder', DOTY_MIXED, false);
+        $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
+        $langs = Forma\lib\Get::req('modfolder', DOTY_MIXED, false);
         $res = $this->model->renameFolder($id, $langs);
         if ($res) {
             $output['success'] = true;
@@ -722,7 +722,7 @@ class KbAlmsController extends AlmsController
         }
 
         $output = [];
-        $root_name = Get::req('modfolder_root', DOTY_STRING, '');
+        $root_name = Forma\lib\Get::req('modfolder_root', DOTY_STRING, '');
         $res = $this->model->renameRootFolder($root_name);
         if ($res) {
             $output['success'] = true;
@@ -747,7 +747,7 @@ class KbAlmsController extends AlmsController
         }
 
         $output = ['success' => false];
-        $id = Get::req('node_id', DOTY_INT, -1);
+        $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
         if ($id > 0) {
             $output['success'] = $this->model->deleteFolder($id, true);
         }
@@ -768,7 +768,7 @@ class KbAlmsController extends AlmsController
             return;
         }
 
-        $id_parent = Get::req('id', DOTY_INT, 0);
+        $id_parent = Forma\lib\Get::req('id', DOTY_INT, 0);
         if ($id_parent < 0) {
             $id_parent = 0;
         }

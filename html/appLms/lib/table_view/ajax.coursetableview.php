@@ -13,16 +13,16 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-$command = Get::req('command', DOTY_ALPHANUM, false);
+$command = Forma\lib\Get::req('command', DOTY_ALPHANUM, false);
 
 switch ($command) {
     case 'get_rows':
         $lang = &DoceboLanguage::CreateInstance('course', 'lms');
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, 0); //GLOBALS --> visuItem
-        $sort = Get::req('sort', DOTY_ALPHANUM, 'name');
-        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, 0); //GLOBALS --> visuItem
+        $sort = Forma\lib\Get::req('sort', DOTY_ALPHANUM, 'name');
+        $dir = Forma\lib\Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $table_status = [];
         $table_status['startIndex'] = $startIndex;
@@ -30,7 +30,7 @@ switch ($command) {
         $table_status['dir'] = $dir;
         $_SESSION['course_category']['table_status'] = $table_status;
 
-        $filter = Get::req('filter', DOTY_MIXED, false);
+        $filter = Forma\lib\Get::req('filter', DOTY_MIXED, false);
 
         $filter_status = [];
         if (isset($filter['c_category']['value'])) {
@@ -105,7 +105,7 @@ switch ($command) {
                 'certificate' => true,
                 'competence' => true,
                 'menu' => true,
-                'dup' => '<a id="dup_' . $row['idCourse'] . '" href="index.php?modname=course&amp;op=dup_course&id_course=' . $row['idCourse'] . '">' . Get::img('standard/dup.png', $lang->def('_MAKE_A_COPY')) . '</a>',
+                'dup' => '<a id="dup_' . $row['idCourse'] . '" href="index.php?modname=course&amp;op=dup_course&id_course=' . $row['idCourse'] . '">' . Forma\lib\Get::img('standard/dup.png', $lang->def('_MAKE_A_COPY')) . '</a>',
                 'mod' => true,
                 'del' => true,
             ];
@@ -132,7 +132,7 @@ switch ($command) {
 
         $output = ['success' => false];
 
-        $id_course = Get::req('idrow', DOTY_INT, -1);
+        $id_course = Forma\lib\Get::req('idrow', DOTY_INT, -1);
         if ($id_course > 0) {
             $man_course = new Man_Course();
             $output['success'] = $man_course->deleteCourse($id_course);
@@ -144,8 +144,8 @@ switch ($command) {
 
     case 'set_name':
         $output = ['success' => false];
-        $id_course = Get::req('id_course', DOTY_INT, false);
-        $new_name = Get::req('new_name', DOTY_STRING, '');
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, false);
+        $new_name = Forma\lib\Get::req('new_name', DOTY_STRING, '');
 
         if (is_numeric($id_course)) {
             if (sql_query('UPDATE ' . $GLOBALS['prefix_lms'] . "_course SET name='" . $new_name . "' WHERE idCourse=" . $id_course)) {
@@ -161,10 +161,10 @@ switch ($command) {
 
         $json = new Services_JSON();
 
-        $id_course = Get::req('idCourse', DOTY_INT, false);
-        $field = Get::req('col', DOTY_MIXED, false);
-        $old_value = Get::req('old_value', DOTY_MIXED, false);
-        $new_value = Get::req('new_value', DOTY_MIXED, false);
+        $id_course = Forma\lib\Get::req('idCourse', DOTY_INT, false);
+        $field = Forma\lib\Get::req('col', DOTY_MIXED, false);
+        $old_value = Forma\lib\Get::req('old_value', DOTY_MIXED, false);
+        $new_value = Forma\lib\Get::req('new_value', DOTY_MIXED, false);
 
         switch ($field) {
             case 'name':

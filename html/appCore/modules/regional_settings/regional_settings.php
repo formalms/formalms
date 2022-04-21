@@ -39,7 +39,7 @@ function regional_settings()
 
     $arr = $regset->getAllRegions();
 
-    $table = new Table(Get::sett('visuItem'));
+    $table = new Table(Forma\lib\Get::sett('visuItem'));
     $out->add($table->OpenTable(''));
 
     $head = [$lang->def('_REGION_CODE'), $lang->def('_DESCRIPTION'),
@@ -49,7 +49,7 @@ function regional_settings()
 
     $out->add($table->WriteHeader($head, $head_type));
 
-    $tot = (count($arr) < ($ini + Get::sett('visuItem'))) ? count($arr) : $ini + Get::sett('visuItem');
+    $tot = (count($arr) < ($ini + Forma\lib\Get::sett('visuItem'))) ? count($arr) : $ini + Forma\lib\Get::sett('visuItem');
     for ($i = $ini; $i < $tot; ++$i) {
         $rowcnt = [];
         $rowcnt[] = $arr[$i];

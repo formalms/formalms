@@ -83,9 +83,9 @@ $columns[] = ['key' => 'del', 'label' => $icon_delete, 'formatter' => 'doceboDel
 $this->widget('table', [
     'id' => 'subscribed_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/getlist_coursepath&id_path=' . (int) $id_path,
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'userid',
     'dir' => 'asc',
     'columns' => $columns,

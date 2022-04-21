@@ -34,7 +34,7 @@ class Conference_Manager
 
     public function Conference_Manager()
     {
-        $this->creation_limit_per_user = Get::sett('conference_creation_limit_per_user');
+        $this->creation_limit_per_user = Forma\lib\Get::sett('conference_creation_limit_per_user');
 
         $this->PluginConferenceAdm = new PluginConferenceAdm();
     }
@@ -283,7 +283,7 @@ class Conference_Manager
                     . " WHERE idCourse = '" . $id_course . "'"
                     . " AND endtime < '" . time() . "'";
 
-        $date = Get::req('filter_date', DOTY_MIXED, '');
+        $date = Forma\lib\Get::req('filter_date', DOTY_MIXED, '');
 
         if ($date !== '') {
             $date = substr(Format::dateDb($date, 'date'), 0, 10);
@@ -313,7 +313,7 @@ class Conference_Manager
                     . " WHERE idCourse = '" . $id_course . "'"
                     . " AND endtime < '" . time() . "'";
 
-        $date = Get::req('filter_date', DOTY_MIXED, '');
+        $date = Forma\lib\Get::req('filter_date', DOTY_MIXED, '');
 
         if ($date !== '') {
             $date = substr(Format::dateDb($date, 'date'), 0, 10);
@@ -393,7 +393,7 @@ class Conference_Manager
     {
         $ok = true;
 
-        $room_limit = Get::sett($room_type . '_max_room');
+        $room_limit = Forma\lib\Get::sett($room_type . '_max_room');
 
         $query = 'SELECT * FROM  ' . $this->_getRoomTable() .
         " WHERE room_type='$room_type' AND idCourse='$idCourse' AND starttime<='$end_timestamp' AND endtime>='$start_timestamp'";

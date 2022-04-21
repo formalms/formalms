@@ -11,8 +11,8 @@ YAHOO.TemplateLayout.initPicker = function(id, color) {
 		var oColorPicker = new YAHOO.widget.ColorPicker(oColorPickerMenu.body.id, {
 			showcontrols: true,
 			images: {
-				PICKER_THUMB: "<?php echo Get::rel_path('base'); ?>/addons/yui/colorpicker/assets/picker_thumb.png",
-				HUE_THUMB: "<?php echo Get::rel_path('base'); ?>/addons/yui/colorpicker/assets/hue_thumb.png"
+				PICKER_THUMB: "<?php echo Forma\lib\Get::rel_path('base'); ?>/addons/yui/colorpicker/assets/picker_thumb.png",
+				HUE_THUMB: "<?php echo Forma\lib\Get::rel_path('base'); ?>/addons/yui/colorpicker/assets/hue_thumb.png"
 			},
 			ids: {
 				R: id+"-picker-r",

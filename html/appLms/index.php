@@ -38,9 +38,9 @@ require_once _lms_ . '/class.module/class.definition.php';
 // -----------------------------------------------------------------------------
 
 $module_cfg = false;
-$GLOBALS['modname'] = Get::req('modname', DOTY_ALPHANUM, '');
-$GLOBALS['op'] = Get::req('op', DOTY_ALPHANUM, '');
-$GLOBALS['req'] = Get::req('r', DOTY_MIXED, '');
+$GLOBALS['modname'] = Forma\lib\Get::req('modname', DOTY_ALPHANUM, '');
+$GLOBALS['op'] = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
+$GLOBALS['req'] = Forma\lib\Get::req('r', DOTY_MIXED, '');
 
 YuiLib::activateConnectLoadingBox();
 

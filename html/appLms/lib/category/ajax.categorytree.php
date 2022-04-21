@@ -16,12 +16,12 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _base_ . '/lib/lib.json.php';
 require_once _lms_ . '/lib/category/class.categorytree.php';
 
-$op = Get::req('op', DOTY_ALPHANUM);
+$op = Forma\lib\Get::req('op', DOTY_ALPHANUM);
 
 switch ($op) {
     case 'expand':
         $json = new Services_JSON();
-        $node_id = Get::req('query', DOTY_INT, 0);
+        $node_id = Forma\lib\Get::req('query', DOTY_INT, 0);
 
         $result = [];
         $treecat = new Categorytree();
@@ -39,8 +39,8 @@ switch ($op) {
      break;
 
     case 'getaddnodeform':
-    $url = Get::req('server_url', DOTY_ALPHANUM, false);
-    $parent_id = Get::req('parent_id', DOTY_ALPHANUM, false);
+    $url = Forma\lib\Get::req('server_url', DOTY_ALPHANUM, false);
+    $parent_id = Forma\lib\Get::req('parent_id', DOTY_ALPHANUM, false);
     $output = [];
     $output['body'] = '<form name="tree_addfolder_form" method="POST" action="' . $url . '">' .
         '<input type="hidden" id="authentic_request_addfolder" name="authentic_request" value="' . Util::getSignature() . '" />' .

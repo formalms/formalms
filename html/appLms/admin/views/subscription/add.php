@@ -1,4 +1,4 @@
-<?php Get::title([
+<?php Forma\lib\Get::title([
     'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSES', 'admin_course_managment'),
     'index.php?r=' . $this->link . '/show&id_course=' . (int) $id_course . ($id_edition ? '&id_edition=' . (int) $id_edition : '') . ($id_date ? '&id_date=' . (int) $id_date : '') => Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
     Lang::t('_ADD', 'subscribe'),

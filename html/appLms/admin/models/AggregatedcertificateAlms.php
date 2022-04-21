@@ -36,7 +36,7 @@ class AggregatedcertificateAlms extends Model
             }
         }
         $query_certificate .= " ORDER BY id_certificate
-	    LIMIT $ini," . Get::sett('visuItem');
+	    LIMIT $ini," . Forma\lib\Get::sett('visuItem');
 
         $row = sql_fetch_array(sql_query($query_certificate_tot));
 

@@ -216,7 +216,7 @@ class Upload_Question extends Question
 
         sl_open_fileoperations();
         while (list($file_path) = sql_fetch_row($re_path)) {
-            $path = '/appLms/' . Get::sett('pathtest');
+            $path = '/appLms/' . Forma\lib\Get::sett('pathtest');
             sl_unlink($path . $file_path);
         }
         sl_close_fileoperations();
@@ -278,7 +278,7 @@ class Upload_Question extends Question
             $find_prev = false;
         }
 
-        $acceptedTypes = explode(',', Get::sett('file_upload_whitelist'));
+        $acceptedTypes = explode(',', Forma\lib\Get::sett('file_upload_whitelist'));
         $index = 0;
         foreach ($acceptedTypes as $acceptedType) {
             $acceptedTypes[$index] = '.' . $acceptedType;
@@ -326,7 +326,7 @@ class Upload_Question extends Question
         $savefile = '';
         //save file--------------------------------------------------------
         if (isset($_FILES['quest']['name'][$this->id]) && ($_FILES['quest']['name'][$this->id] != '')) {
-            $path = '/appLms/' . Get::sett('pathtest');
+            $path = '/appLms/' . Forma\lib\Get::sett('pathtest');
 
             $savefile = $_SESSION['idCourse'] . '_' . $this->id . '_' . mt_rand(0, 100) . time() . '_' . $_FILES['quest']['name'][$this->id];
             if (!file_exists(_files_ . $path . $savefile)) {
@@ -396,7 +396,7 @@ class Upload_Question extends Question
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_answer 
 		WHERE idTrack = '" . (int) $id_track . "' AND 
 			idQuest = '" . $this->id . "'"));
-        $path = '/appLms/' . Get::sett('pathtest');
+        $path = '/appLms/' . Forma\lib\Get::sett('pathtest');
         sl_open_fileoperations();
         sl_unlink($path . $file_path);
         sl_close_fileoperations();
@@ -446,7 +446,7 @@ class Upload_Question extends Question
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
 
-        $path = '/appLms/' . Get::sett('pathtest');
+        $path = '/appLms/' . Forma\lib\Get::sett('pathtest');
 
         //recover previous information
         $recover_answer = '
@@ -481,7 +481,7 @@ class Upload_Question extends Question
     {
         require_once _base_ . '/lib/lib.download.php';
 
-        $path = '/appLms/' . Get::sett('pathtest');
+        $path = '/appLms/' . Forma\lib\Get::sett('pathtest');
 
         //recover previous information
         $recover_answer = '

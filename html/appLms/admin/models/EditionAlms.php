@@ -69,19 +69,19 @@ class EditionAlms extends Model
 
     protected function getEditionInfoFromPost()
     {
-        $res = ['code' => Get::req('code', DOTY_MIXED, ''),
-                        'name' => Get::req('name', DOTY_MIXED, ''),
-                        'description' => Get::req('description', DOTY_MIXED, ''),
-                        'status' => Get::req('status', DOTY_INT, 0),
-                        'max_par' => Get::req('max_par', DOTY_INT, 0),
-                        'min_par' => Get::req('min_par', DOTY_INT, 0),
-                        'price' => Get::req('price', DOTY_MIXED, ''),
-                        'date_begin' => Get::req('date_begin', DOTY_MIXED, ''),
-                        'date_end' => Get::req('date_end', DOTY_MIXED, ''),
-                        'overbooking' => Get::req('overbooking', DOTY_INT, 0),
-                        'can_subscribe' => Get::req('can_subscribe', DOTY_INT, 0),
-                        'sub_date_begin' => Get::req('sub_date_begin', DOTY_MIXED, ''),
-                        'sub_date_end' => Get::req('sub_date_end', DOTY_MIXED, ''), ];
+        $res = ['code' => Forma\lib\Get::req('code', DOTY_MIXED, ''),
+                        'name' => Forma\lib\Get::req('name', DOTY_MIXED, ''),
+                        'description' => Forma\lib\Get::req('description', DOTY_MIXED, ''),
+                        'status' => Forma\lib\Get::req('status', DOTY_INT, 0),
+                        'max_par' => Forma\lib\Get::req('max_par', DOTY_INT, 0),
+                        'min_par' => Forma\lib\Get::req('min_par', DOTY_INT, 0),
+                        'price' => Forma\lib\Get::req('price', DOTY_MIXED, ''),
+                        'date_begin' => Forma\lib\Get::req('date_begin', DOTY_MIXED, ''),
+                        'date_end' => Forma\lib\Get::req('date_end', DOTY_MIXED, ''),
+                        'overbooking' => Forma\lib\Get::req('overbooking', DOTY_INT, 0),
+                        'can_subscribe' => Forma\lib\Get::req('can_subscribe', DOTY_INT, 0),
+                        'sub_date_begin' => Forma\lib\Get::req('sub_date_begin', DOTY_MIXED, ''),
+                        'sub_date_end' => Forma\lib\Get::req('sub_date_end', DOTY_MIXED, ''), ];
 
         return $res;
     }

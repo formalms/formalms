@@ -23,7 +23,7 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/print.css" media="print" />
 		<?php echo Layout::accessibility(); ?>
 		<!-- Page Head area -->
-		<script type="text/javascript" src="<?php echo Get::rel_path('base'); ?>/lib/js_utils.js"></script>
+		<script type="text/javascript" src="<?php echo Forma\lib\Get::rel_path('base'); ?>/lib/js_utils.js"></script>
 		<?php echo Layout::zone('page_head'); ?>
 		<?php echo Layout::rtl(); ?>
 	</head>
@@ -50,7 +50,7 @@
 						<!-- <img src="<?php echo Layout::path(); ?>images/standard/identity.png" alt="" />&nbsp; -->
 						<span><?php echo Lang::t('_PROFILE', 'profile'); ?></span>
 					</a></li><li>
-					<a class="logout" href="<?php echo Get::rel_path('base') . '/index.php?r=' . _logout_; ?>">
+					<a class="logout" href="<?php echo Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_; ?>">
 						<!-- <img src="<?php echo Layout::path(); ?>images/standard/exit.png" alt="Left logo" />&nbsp; -->
 						<span><?php echo Lang::t('_LOGOUT', 'standard'); ?></span>
 					</a></li>

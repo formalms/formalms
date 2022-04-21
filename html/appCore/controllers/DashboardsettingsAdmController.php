@@ -39,8 +39,8 @@ class DashboardsettingsAdmController extends AdmController
         $this->json = new Services_JSON();
         $this->model = new DashboardsettingsAdm();
 
-        Util::get_js(Get::rel_path('base') . '/addons/tiny_mce/tinymce.min.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/addons/tiny_mce/forma.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/tiny_mce/tinymce.min.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/tiny_mce/forma.js', true, true);
 
         $this->permissions = [
             'view' => checkPerm('view', true, 'dashboard', 'framework'),
@@ -64,8 +64,8 @@ class DashboardsettingsAdmController extends AdmController
 
     public function show()
     {
-        require_once Get::rel_path('lib') . '/formatable/formatable.php';
-        Util::get_css(Get::rel_path('lib') . '/formatable/formatable.css', true, true);
+        require_once Forma\lib\Get::rel_path('lib') . '/formatable/formatable.php';
+        Util::get_css(Forma\lib\Get::rel_path('lib') . '/formatable/formatable.css', true, true);
 
         $data = [
             'ajaxUrl' => [
@@ -91,7 +91,7 @@ class DashboardsettingsAdmController extends AdmController
 
     public function edit()
     {
-        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        $dashboardId = Forma\lib\Get::req('dashboard', DOTY_INT, false);
         $dashboard = $this->model->getLayout($dashboardId);
 
         $data = [
@@ -121,7 +121,7 @@ class DashboardsettingsAdmController extends AdmController
     // add permission to layout
     public function permission()
     {
-        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        $dashboardId = Forma\lib\Get::req('dashboard', DOTY_INT, false);
 
         require_once _base_ . '/lib/lib.userselector.php';
         require_once _base_ . '/lib/lib.form.php';
@@ -170,7 +170,7 @@ class DashboardsettingsAdmController extends AdmController
 
     public function clone()
     {
-        $dashboardId = Get::req('dashboard', DOTY_INT, false);
+        $dashboardId = Forma\lib\Get::req('dashboard', DOTY_INT, false);
         $dashboard = $this->model->getLayout($dashboardId);
 
         $data = [
@@ -191,8 +191,8 @@ class DashboardsettingsAdmController extends AdmController
 
     public function getLayouts()
     {
-        $selectedDashboardId = Get::req('dashboard', DOTY_INT, false);
-        $search = Get::req('search', DOTY_MIXED, false);
+        $selectedDashboardId = Forma\lib\Get::req('dashboard', DOTY_INT, false);
+        $search = Forma\lib\Get::req('search', DOTY_MIXED, false);
         $layouts = $this->model->getLayouts();
         $res = [];
 
@@ -231,10 +231,10 @@ class DashboardsettingsAdmController extends AdmController
 
     public function saveLayout()
     {
-        $name = Get::pReq('name', DOTY_MIXED);
-        $caption = Get::pReq('caption', DOTY_MIXED);
-        $status = Get::pReq('status', DOTY_MIXED);
-        $default = Get::pReq('default', DOTY_BOOL);
+        $name = Forma\lib\Get::pReq('name', DOTY_MIXED);
+        $caption = Forma\lib\Get::pReq('caption', DOTY_MIXED);
+        $status = Forma\lib\Get::pReq('status', DOTY_MIXED);
+        $default = Forma\lib\Get::pReq('default', DOTY_BOOL);
 
         $data = [
             'name' => $name,
@@ -272,10 +272,10 @@ class DashboardsettingsAdmController extends AdmController
 
     public function cloneLayout()
     {
-        $id = Get::pReq('id', DOTY_INT);
-        $name = Get::pReq('name', DOTY_MIXED);
-        $caption = Get::pReq('caption', DOTY_MIXED);
-        $status = Get::pReq('status', DOTY_MIXED);
+        $id = Forma\lib\Get::pReq('id', DOTY_INT);
+        $name = Forma\lib\Get::pReq('name', DOTY_MIXED);
+        $caption = Forma\lib\Get::pReq('caption', DOTY_MIXED);
+        $status = Forma\lib\Get::pReq('status', DOTY_MIXED);
 
         $dashboard = $this->model->getLayout($id);
 
@@ -321,9 +321,9 @@ class DashboardsettingsAdmController extends AdmController
 
     public function editInlineLayout()
     {
-        $id = Get::pReq('id', DOTY_INT);
-        $col = Get::pReq('col', DOTY_STRING);
-        $new_value = Get::pReq('new_value', DOTY_STRING);
+        $id = Forma\lib\Get::pReq('id', DOTY_INT);
+        $col = Forma\lib\Get::pReq('col', DOTY_STRING);
+        $new_value = Forma\lib\Get::pReq('new_value', DOTY_STRING);
 
         $response = [];
 
@@ -352,7 +352,7 @@ class DashboardsettingsAdmController extends AdmController
     public function delLayout()
     {
         $status = 400;
-        if ($response = $this->model->delLayout(Get::pReq('id_layout'))) {
+        if ($response = $this->model->delLayout(Forma\lib\Get::pReq('id_layout'))) {
             $status = 200;
         }
 
@@ -363,7 +363,7 @@ class DashboardsettingsAdmController extends AdmController
     public function defaultLayout()
     {
         $status = 400;
-        if ($response = $this->model->defaultLayout(Get::pReq('id_layout'))) {
+        if ($response = $this->model->defaultLayout(Forma\lib\Get::pReq('id_layout'))) {
             $status = 200;
         }
 
@@ -392,8 +392,8 @@ class DashboardsettingsAdmController extends AdmController
 
     public function save()
     {
-        $dashboard = Get::req('dashboard', DOTY_MIXED);
-        $requestSettings = Get::pReq('settings', DOTY_MIXED);
+        $dashboard = Forma\lib\Get::req('dashboard', DOTY_MIXED);
+        $requestSettings = Forma\lib\Get::pReq('settings', DOTY_MIXED);
 
         $response = ['status' => 200];
         foreach ($requestSettings as $data) {
@@ -426,8 +426,8 @@ class DashboardsettingsAdmController extends AdmController
     {
         $response = ['status' => 200];
 
-        $block = Get::gReq('block', DOTY_MIXED);
-        $field = Get::gReq('field', DOTY_MIXED);
+        $block = Forma\lib\Get::gReq('block', DOTY_MIXED);
+        $field = Forma\lib\Get::gReq('field', DOTY_MIXED);
 
         //print_r($_FILES);
         //die();
@@ -473,9 +473,9 @@ class DashboardsettingsAdmController extends AdmController
 
     public function getBlockTypeForm()
     {
-        $block = Get::req('block', DOTY_STRING, false);
-        $index = Get::req('index', DOTY_INT, 99);
-        $type = Get::req('type', DOTY_STRING, 'col-1');
+        $block = Forma\lib\Get::req('block', DOTY_STRING, false);
+        $index = Forma\lib\Get::req('index', DOTY_INT, 99);
+        $type = Forma\lib\Get::req('type', DOTY_STRING, 'col-1');
 
         /** @var DashboardBlockLms $blockObj */
         $blockObj = new $block('');

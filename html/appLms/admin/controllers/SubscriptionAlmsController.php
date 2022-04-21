@@ -34,9 +34,9 @@ class SubscriptionAlmsController extends AlmsController
         require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
         //Course info
-        $this->id_course = Get::req('id_course', DOTY_INT, 0);
-        $this->id_edition = Get::req('id_edition', DOTY_INT, 0);
-        $this->id_date = Get::req('id_date', DOTY_INT, 0);
+        $this->id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $this->id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
+        $this->id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
 
         $this->model = new SubscriptionAlms($this->id_course, $this->id_edition, $this->id_date);
         $this->json = new Services_JSON();
@@ -132,9 +132,9 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        Util::get_js(Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(Get::rel_path('lms') . '/admin/views/subscription/subscription.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/views/subscription/subscription.js', true, true);
 
         if (isset($_GET['res']) && $_GET['res'] !== '') {
             UIFeedback::info(Lang::t(strtoupper($_GET['res']), 'subscription'));
@@ -230,9 +230,9 @@ class SubscriptionAlmsController extends AlmsController
         $cman = new CourseAlms();
 
         //Course info
-        $id_course = Get::req('id_course', DOTY_INT, 0);
-        $id_edition = Get::req('id_edition', DOTY_INT, 0);
-        $id_date = Get::req('id_date', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
+        $id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
 
         if (isset($_POST['cancelselector'])) {
             Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date);
@@ -279,10 +279,10 @@ class SubscriptionAlmsController extends AlmsController
                 Util::jump_to('index.php?r=' . $this->link . '/add&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date . '&err=_empty_selection');
             }
 
-            $sel_date_begin_validity = Get::req('sel_date_begin_validity', DOTY_INT, 0) > 0;
-            $sel_date_expire_validity = Get::req('sel_date_expire_validity', DOTY_INT, 0) > 0;
-            $date_begin_validity = $sel_date_begin_validity ? Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
-            $date_expire_validity = $sel_date_expire_validity ? Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
+            $sel_date_begin_validity = Forma\lib\Get::req('sel_date_begin_validity', DOTY_INT, 0) > 0;
+            $sel_date_expire_validity = Forma\lib\Get::req('sel_date_expire_validity', DOTY_INT, 0) > 0;
+            $date_begin_validity = $sel_date_begin_validity ? Forma\lib\Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
+            $date_expire_validity = $sel_date_expire_validity ? Forma\lib\Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
             if ($date_begin_validity) {
                 $date_begin_validity = Format::dateDb($date_begin_validity, 'date');
             }
@@ -290,7 +290,7 @@ class SubscriptionAlmsController extends AlmsController
                 $date_expire_validity = Format::dateDb($date_expire_validity, 'date');
             }
 
-            $select_level_mode = Get::req('select_level_mode', DOTY_STRING, '');
+            $select_level_mode = Forma\lib\Get::req('select_level_mode', DOTY_STRING, '');
             switch ($select_level_mode) {
                 case 'students':
                         // subscribe the selection with the students level
@@ -366,7 +366,7 @@ class SubscriptionAlmsController extends AlmsController
                             }
 
                             reset($user_selected);
-                            $send_alert = Get::req('send_alert', DOTY_INT, 0);
+                            $send_alert = Forma\lib\Get::req('send_alert', DOTY_INT, 0);
                             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
                             if (!empty($user_selected) && $send_alert) {
                                 require_once _base_ . '/lib/lib.eventmanager.php';
@@ -384,8 +384,8 @@ class SubscriptionAlmsController extends AlmsController
                                     }
 
                                     $array_subst = [
-                                        '[url]' => Get::site_url(),
-                                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                                        '[url]' => Forma\lib\Get::site_url(),
+                                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
                                         '[course]' => $course_info['name'],
                                         '[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
                                         '[course_name]' => $course_info['name'],
@@ -430,7 +430,7 @@ class SubscriptionAlmsController extends AlmsController
                 'model' => $model,
                 'course_info' => $cman->getInfo($id_course, $id_edition, $id_date),
                 'num_subscribed' => count($user_selected),
-                'send_alert' => Get::req('send_alert', DOTY_INT, 0),
+                'send_alert' => Forma\lib\Get::req('send_alert', DOTY_INT, 0),
                 'date_begin_validity' => $date_begin_validity,
                 'date_expire_validity' => $date_expire_validity,
                 'course_name' => $course_name,
@@ -489,9 +489,9 @@ class SubscriptionAlmsController extends AlmsController
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         //Course info
-        $id_course = Get::req('id_course', DOTY_INT, 0);
-        $id_edition = Get::req('id_edition', DOTY_INT, 0);
-        $id_date = Get::req('id_date', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
+        $id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
 
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date);
@@ -501,8 +501,8 @@ class SubscriptionAlmsController extends AlmsController
 
         $course_info = $model->getCourseInfoForSubscription();
 
-        $date_begin_validity = Get::req('set_date_begin_validity', DOTY_STRING, '');
-        $date_expire_validity = Get::req('set_date_expire_validity', DOTY_STRING, '');
+        $date_begin_validity = Forma\lib\Get::req('set_date_begin_validity', DOTY_STRING, '');
+        $date_expire_validity = Forma\lib\Get::req('set_date_expire_validity', DOTY_STRING, '');
 
         $can_subscribe = true;
         $subscribe_method = $course_info['subscribe_method'];
@@ -600,7 +600,7 @@ class SubscriptionAlmsController extends AlmsController
             }
 
             reset($user_selected);
-            $send_alert = Get::req('send_alert', DOTY_INT, 0);
+            $send_alert = Forma\lib\Get::req('send_alert', DOTY_INT, 0);
             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
             if (!empty($user_selected) && $send_alert) {
                 // message to user that is waiting
@@ -619,8 +619,8 @@ class SubscriptionAlmsController extends AlmsController
                     }
 
                     $array_subst = [
-                        '[url]' => Get::site_url(),
-                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                        '[url]' => Forma\lib\Get::site_url(),
+                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
                         '[course]' => $course_info['name'],
                         '[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
                         '[course_name]' => $course_info['name'],
@@ -657,7 +657,7 @@ class SubscriptionAlmsController extends AlmsController
                     $username = str_replace('/', '', $userData->userid);
 
                     $array_subst = [
-                        '[url]' => Get::site_url(),
+                        '[url]' => Forma\lib\Get::site_url(),
                         '[firstname]' => $userData->firstname,
                         '[lastname]' => $userData->lastname,
                         '[course]' => $course_info['name'],
@@ -689,10 +689,10 @@ class SubscriptionAlmsController extends AlmsController
     protected function _selectall()
     {
         $filter = [
-            'text' => Get::req('filter_text', DOTY_STRING, ''),
-            'orgchart' => Get::req('filter_orgchart', DOTY_INT, 0),
-            'descendants' => Get::req('filter_descendants', DOTY_INT, 0),
-            'date_valid' => Get::req('filter_date_valid', DOTY_STRING, ''),
+            'text' => Forma\lib\Get::req('filter_text', DOTY_STRING, ''),
+            'orgchart' => Forma\lib\Get::req('filter_orgchart', DOTY_INT, 0),
+            'descendants' => Forma\lib\Get::req('filter_descendants', DOTY_INT, 0),
+            'date_valid' => Forma\lib\Get::req('filter_date_valid', DOTY_STRING, ''),
         ];
         $output = array_values($this->model->getSubscriptionsList($filter));
         echo $this->json->encode($output);
@@ -700,7 +700,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function getlist()
     {
-        $op = Get::req('op', DOTY_MIXED, false);
+        $op = Forma\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
                     $this->_selectall();
@@ -710,19 +710,19 @@ class SubscriptionAlmsController extends AlmsController
                 break;
         }
 
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
-        $dyn_fields = Get::req('_dyn_field', DOTY_MIXED, []);
+        $dyn_fields = Forma\lib\Get::req('_dyn_field', DOTY_MIXED, []);
 
         $filter = [
-            'text' => Get::req('filter_text', DOTY_STRING, ''),
-            'orgchart' => Get::req('filter_orgchart', DOTY_INT, 0),
-            'descendants' => Get::req('filter_descendants', DOTY_INT, 0),
-            'date_valid' => Get::req('filter_date_valid', DOTY_STRING, ''),
-            'show' => Get::req('filter_show', DOTY_INT, 0),
+            'text' => Forma\lib\Get::req('filter_text', DOTY_STRING, ''),
+            'orgchart' => Forma\lib\Get::req('filter_orgchart', DOTY_INT, 0),
+            'descendants' => Forma\lib\Get::req('filter_descendants', DOTY_INT, 0),
+            'date_valid' => Forma\lib\Get::req('filter_date_valid', DOTY_STRING, ''),
+            'show' => Forma\lib\Get::req('filter_show', DOTY_INT, 0),
         ];
 
         $total_user = $this->model->totalUser($filter);
@@ -803,7 +803,7 @@ class SubscriptionAlmsController extends AlmsController
 
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         $docebo_course = new DoceboCourse($this->id_course);
 
         $level_idst = &$docebo_course->getCourseLevel($this->id_course);
@@ -833,7 +833,7 @@ class SubscriptionAlmsController extends AlmsController
 
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $users = Get::req('users', DOTY_STRING, '');
+        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
         $docebo_course = new DoceboCourse($this->id_course);
         $output = [];
 
@@ -873,7 +873,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         if ($id_user <= 0) {
             echo $this->json->encode(['succes' => true]);
 
@@ -881,9 +881,9 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //Update info
-        $new_value = Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
-        $old_value = Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
-        $col = Get::req('col', DOTY_STRING, '');
+        $new_value = Forma\lib\Get::req('new_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+        $old_value = Forma\lib\Get::req('old_value', DOTY_STRING, ''); //DOTY_MIXED  DOTY_INT
+        $col = Forma\lib\Get::req('col', DOTY_STRING, '');
 
         if ($new_value === $old_value) {
             echo $this->json->encode(['succes' => true]);
@@ -944,7 +944,7 @@ class SubscriptionAlmsController extends AlmsController
                                     $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
 
                                     $array_subst = [
-                                        '[url]' => Get::site_url(),
+                                        '[url]' => Forma\lib\Get::site_url(),
                                         '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                                         '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                                         '[username]' => $userid,
@@ -1022,7 +1022,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //Filter on user
-        $filter = str_replace('?query=', '', Get::req('filter', DOTY_MIXED, ''));
+        $filter = str_replace('?query=', '', Forma\lib\Get::req('filter', DOTY_MIXED, ''));
 
         //$this->model->setCourseData($id_course, $id_edition, $id_date);
         $list = $this->model->getFastSubscribeList($filter);
@@ -1061,8 +1061,8 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        $id_user = Get::req('idst', DOTY_INT, 0); //user idst
-        $userid = Get::req('userid', DOTY_STRING, ''); //user username
+        $id_user = Forma\lib\Get::req('idst', DOTY_INT, 0); //user idst
+        $userid = Forma\lib\Get::req('userid', DOTY_STRING, ''); //user username
         $result = false;
 
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -1123,7 +1123,7 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 //check if we have selected send alert checkbox
-                $send_alert = Get::req('send_alert', DOTY_INT, 0) > 0;
+                $send_alert = Forma\lib\Get::req('send_alert', DOTY_INT, 0) > 0;
 
                 require_once _base_ . '/lib/lib.eventmanager.php';
                 $userModel = new UsermanagementAdm();
@@ -1142,8 +1142,8 @@ class SubscriptionAlmsController extends AlmsController
                     }
 
                     $array_subst = [
-                        '[url]' => Get::site_url(),
-                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                        '[url]' => Forma\lib\Get::site_url(),
+                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
                         '[course]' => $course_info['name'],
                         '[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'),
                         '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
@@ -1178,8 +1178,8 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 $array_subst = [
-                    '[url]' => Get::site_url(),
-                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                    '[url]' => Forma\lib\Get::site_url(),
+                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                     '[course]' => $course_info['name'],
@@ -1266,7 +1266,7 @@ class SubscriptionAlmsController extends AlmsController
 
         $output = [];
 
-        if (Get::req('count_sel', DOTY_INT, 0) <= 0) {
+        if (Forma\lib\Get::req('count_sel', DOTY_INT, 0) <= 0) {
             $output['success'] = true;
             $output['header'] = Lang::t('_MOD', 'subscribe') . '&nbsp;';
             $output['body'] = '<p>' . Lang::t('_EMPTY_SELECTION', 'admin_directory') . '</p>';
@@ -1322,17 +1322,17 @@ class SubscriptionAlmsController extends AlmsController
 
         $output = [];
 
-        $users = Get::req('users', DOTY_STRING, '');
+        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
         if ($users == '') {
             $output['success'] = false;
             $output['message'] = Lang::t('_NO_USER_SELECTED', 'subscribe');
         } else {
-            $set_level = Get::req('multimod_level_set', DOTY_INT, 0);
-            $set_status = Get::req('multimod_status_set', DOTY_INT, 0);
-            $set_date_begin = Get::req('multimod_date_begin_set', DOTY_INT, 0);
-            $set_date_expire = Get::req('multimod_date_expire_set', DOTY_INT, 0);
-            $reset_date_begin = Get::req('multimod_date_begin_reset', DOTY_INT, 0);
-            $reset_date_expire = Get::req('multimod_date_expire_reset', DOTY_INT, 0);
+            $set_level = Forma\lib\Get::req('multimod_level_set', DOTY_INT, 0);
+            $set_status = Forma\lib\Get::req('multimod_status_set', DOTY_INT, 0);
+            $set_date_begin = Forma\lib\Get::req('multimod_date_begin_set', DOTY_INT, 0);
+            $set_date_expire = Forma\lib\Get::req('multimod_date_expire_set', DOTY_INT, 0);
+            $reset_date_begin = Forma\lib\Get::req('multimod_date_begin_reset', DOTY_INT, 0);
+            $reset_date_expire = Forma\lib\Get::req('multimod_date_expire_reset', DOTY_INT, 0);
 
             if ($set_level <= 0 && $set_status <= 0 && $set_date_begin <= 0 && $set_date_expire <= 0 && $reset_date_begin <= 0 && $reset_date_expire <= 0) {
                 $output['success'] = false;
@@ -1345,7 +1345,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 $res1 = true;
                 if ($set_level > 0) {
-                    $new_level = Get::req('multimod_level', DOTY_INT, -1);
+                    $new_level = Forma\lib\Get::req('multimod_level', DOTY_INT, -1);
                     if ($new_level > 0) {
                         $res1 = $sman->updateUserLeveInCourse($users_list, $this->id_course, $new_level);
                     }
@@ -1353,9 +1353,9 @@ class SubscriptionAlmsController extends AlmsController
 
                 $res2 = true;
                 if ($set_status > 0) {
-                    $new_date_complete = Get::req('multimod_date_complete', DOTY_STRING, '');
+                    $new_date_complete = Forma\lib\Get::req('multimod_date_complete', DOTY_STRING, '');
                     $new_date_complete = Format::dateDb($new_date_complete, 'date');
-                    $new_status = Get::req('multimod_status', DOTY_INT, -999);
+                    $new_status = Forma\lib\Get::req('multimod_status', DOTY_INT, -999);
                     if (in_array($new_status, array_keys($this->model->getUserStatusList()))) {
                         $res2 = $sman->updateUserStatusInCourse($users_list, $this->id_course, $new_status, $new_date_complete);
                     }
@@ -1373,7 +1373,7 @@ class SubscriptionAlmsController extends AlmsController
                                 $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
 
                                 $array_subst = [
-                                    '[url]' => Get::site_url(),
+                                    '[url]' => Forma\lib\Get::site_url(),
                                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                                     '[username]' => $userid,
@@ -1417,13 +1417,13 @@ class SubscriptionAlmsController extends AlmsController
 
                 $res3 = true;
                 if ($set_date_begin > 0) {
-                    $new_date_begin = Get::req('multimod_date_begin', DOTY_STRING, '');
+                    $new_date_begin = Forma\lib\Get::req('multimod_date_begin', DOTY_STRING, '');
                     $res3 = $sman->updateUserDateBeginValidityInCourse($users_list, $this->id_course, Format::dateDb($new_date_begin, 'date'));
                 }
 
                 $res4 = true;
                 if ($set_date_expire > 0) {
-                    $new_date_expire = Get::req('multimod_date_expire', DOTY_STRING, '');
+                    $new_date_expire = Forma\lib\Get::req('multimod_date_expire', DOTY_STRING, '');
                     $res4 = $sman->updateUserDateExpireValidityInCourse($users_list, $this->id_course, Format::dateDb($new_date_expire, 'date'));
                 }
 
@@ -1488,7 +1488,7 @@ class SubscriptionAlmsController extends AlmsController
         $user_selector = new UserSelector();
 
         //Step info
-        $step = Get::req('step', DOTY_INT, 1);
+        $step = Forma\lib\Get::req('step', DOTY_INT, 1);
 
         $model = new SubscriptionAlms();
 
@@ -1547,7 +1547,7 @@ class SubscriptionAlmsController extends AlmsController
                 break;
 
             case '2':
-                $id_cat = Get::req('id_cat', DOTY_INT, 0);
+                $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
 
                 if (isset($_POST['okselector'])) {
                     $_selection = $user_selector->getSelection($_POST);
@@ -1855,7 +1855,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once _base_ . '/lib/lib.form.php';
 
         //Step info
-        $step = Get::req('step', DOTY_INT, 1);
+        $step = Forma\lib\Get::req('step', DOTY_INT, 1);
 
         if (isset($_POST['next'])) {
             ++$step;
@@ -1895,9 +1895,9 @@ class SubscriptionAlmsController extends AlmsController
                 require_once Forma::inc(_base_ . '/lib/lib.upload.php');
                 require_once _adm_ . '/lib/lib.import.php';
 
-                $separator = Get::req('import_separator', DOTY_MIXED, ',');
-                $first_row_header = Get::req('import_first_row_header', DOTY_BOOL, false);
-                $import_charset = Get::req('import_charset', DOTY_MIXED, 'UTF-8');
+                $separator = Forma\lib\Get::req('import_separator', DOTY_MIXED, ',');
+                $first_row_header = Forma\lib\Get::req('import_first_row_header', DOTY_BOOL, false);
+                $import_charset = Forma\lib\Get::req('import_charset', DOTY_MIXED, 'UTF-8');
 
                 $docebo_course = new DoceboCourse($this->id_course);
 
@@ -2244,7 +2244,7 @@ class SubscriptionAlmsController extends AlmsController
 
             Util::jump_to('index.php?r=' . $this->link . '/show&amp;id_course=' . $this->model->getIdCourse() . '&res=_import_ok');
         } else {
-            $id_cat = Get::req('id_cat', DOTY_INT, 0);
+            $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
 
             if (isset($_GET['load']) && $_GET['load'] == 1) {
                 $course_selector->resetSelection([]);
@@ -2271,8 +2271,8 @@ class SubscriptionAlmsController extends AlmsController
 
     public function copy_course()
     {
-        $users = Get::req('users', DOTY_STRING, '');
-        $move = Get::req('move', DOTY_STRING, '');
+        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
+        $move = Forma\lib\Get::req('move', DOTY_STRING, '');
 
         if (!$this->permissions['subscribe_course']) {
             $this->render('invalid', [
@@ -2380,7 +2380,7 @@ class SubscriptionAlmsController extends AlmsController
 
         ////////////////////////////////
         } else {
-            $id_cat = Get::req('id_cat', DOTY_INT, 0);
+            $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
 
             if (isset($_GET['load']) && $_GET['load'] == 1) {
                 $course_selector->resetSelection([]);
@@ -2464,7 +2464,7 @@ class SubscriptionAlmsController extends AlmsController
         $edition_man = new EditionManager();
         $date_man = new DateManager();
 
-        $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
+        $id_catalogue = Forma\lib\Get::req('id_catalogue', DOTY_INT, 0);
 
         $back_url = 'index.php?modname=catalogue&op=catlist&of_platform=lms';
         $jump_url = 'index.php?r=' . $this->link . '/cataloguesubscribeusers';
@@ -2485,7 +2485,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
 
-                if (count($admin_courses['catalogue']) == 0 && Get::sett('on_catalogue_empty', 'off') == 'on') {
+                if (count($admin_courses['catalogue']) == 0 && Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             }
@@ -2711,7 +2711,7 @@ class SubscriptionAlmsController extends AlmsController
                 $user_select->setUserFilter('group', $admin_tree);
             }
 
-            if (Get::req('is_updating', DOTY_INT, false)) {
+            if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
                 //...
             } else {
                 $user_select->requested_tab = PEOPLEVIEW_TAB;
@@ -2749,7 +2749,7 @@ class SubscriptionAlmsController extends AlmsController
         $back_url = 'index.php?modname=catalogue&op=catlist&of_platform=lms';
 
         //invalid specified catalog
-        $id_catalogue = Get::req('id_catalogue', DOTY_INT, 0);
+        $id_catalogue = Forma\lib\Get::req('id_catalogue', DOTY_INT, 0);
         if ($id_catalogue <= 0) {
             $this->render('invalid', [
                 'message' => Lang::t('_INVALID_CATALOGUE', 'subscribe'),
@@ -2761,19 +2761,19 @@ class SubscriptionAlmsController extends AlmsController
 
         $courses_list = $this->_getCatalogueCourses($id_catalogue);
 
-        $editions = Get::req('sel_editions', DOTY_MIXED, []);
+        $editions = Forma\lib\Get::req('sel_editions', DOTY_MIXED, []);
         if (count($editions) <= 0) {
             //...
         }
 
-        $classrooms = Get::req('sel_classrooms', DOTY_MIXED, []);
+        $classrooms = Forma\lib\Get::req('sel_classrooms', DOTY_MIXED, []);
         if (count($classrooms) <= 0) {
             //...
         }
 
         //"unzip" user selection from user selector
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $user_selection = $json->decode(Get::req('user_selection', DOTY_STRING, '[]'));
+        $user_selection = $json->decode(Forma\lib\Get::req('user_selection', DOTY_STRING, '[]'));
 
         if (!is_array($user_selection) || count($user_selection) <= 0) {
             $this->render('invalid', [
@@ -2920,12 +2920,12 @@ class SubscriptionAlmsController extends AlmsController
         $man_course = new Man_Course();
         $acl_man = Docebo::user()->getAclManager();
 
-        $id_user = Get::req('id_user', DOTY_INT, 0);
-        $id_course = Get::Req('id_course', DOTY_INT, 0);
-        $level = Get::Req('level', DOTY_INT, 3); //default: student level
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::Req('id_course', DOTY_INT, 0);
+        $level = Forma\lib\Get::Req('level', DOTY_INT, 3); //default: student level
 
-        $userid = Get::req('userid', DOTY_STRING, '');
-        $course = Get::req('course', DOTY_STRING, '');
+        $userid = Forma\lib\Get::req('userid', DOTY_STRING, '');
+        $course = Forma\lib\Get::req('course', DOTY_STRING, '');
         if ($course != '') {
             $course = trim(preg_replace('|^\[([^\]]*)\][\s]*|i', '', $course));
         } //eliminates che code from the course name
@@ -2943,8 +2943,8 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //check if there are any edition/classroom selected
-        $edition = Get::req('edition', DOTY_INT, 0);
-        $classroom = Get::Req('classroom', DOTY_INT, 0);
+        $edition = Forma\lib\Get::req('edition', DOTY_INT, 0);
+        $classroom = Forma\lib\Get::Req('classroom', DOTY_INT, 0);
         $cinfo = $man_course->getCourseInfo($id_course);
         if ($cinfo['course_edition'] > 0) {
             $classroom = 0;
@@ -2997,10 +2997,10 @@ class SubscriptionAlmsController extends AlmsController
 
     public function show_inline_editorTask()
     {
-        $id_course = Get::req('id_course', DOTY_INT, 0);
-        $id_edition = Get::req('id_edition', DOTY_INT, 0);
-        $id_path = Get::req('id_path', DOTY_INT, 0);
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         $acl_man = new DoceboACLManager();
 
         require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
@@ -3013,9 +3013,9 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //Update info
-        $new_value = Get::req('new_value', DOTY_MIXED, '');
-        $old_value = Get::req('old_value', DOTY_MIXED, '');
-        $col = Get::req('col', DOTY_STRING, '');
+        $new_value = Forma\lib\Get::req('new_value', DOTY_MIXED, '');
+        $old_value = Forma\lib\Get::req('old_value', DOTY_MIXED, '');
+        $col = Forma\lib\Get::req('col', DOTY_STRING, '');
 
         // Get courses from path
         if ($id_path > 0) {
@@ -3125,9 +3125,9 @@ class SubscriptionAlmsController extends AlmsController
 
     public function reset_validity_datesTask()
     {
-        $id_course = Get::req('id_course', DOTY_INT, 0);
-        $id_edition = Get::req('id_edition', DOTY_INT, 0);
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         if ($id_course <= 0 || $id_user <= 0) {
             //...
             return;
@@ -3142,15 +3142,15 @@ class SubscriptionAlmsController extends AlmsController
 
     public function show_coursepathTask()
     {
-        $id_path = Get::req('id_path', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             //...
             return;
         }
 
-        Util::get_js(Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
 
-        $res = Get::req('res', DOTY_STRING, '');
+        $res = Forma\lib\Get::req('res', DOTY_STRING, '');
         $message = false;
         switch ($res) {
             case 'ok':
@@ -3184,10 +3184,10 @@ class SubscriptionAlmsController extends AlmsController
     protected function _selectall_coursepath()
     {
         $filter = [
-            'text' => Get::req('filter_text', DOTY_STRING, ''),
-            'orgchart' => Get::req('filter_orgchart', DOTY_INT, 0),
-            'descendants' => Get::req('filter_descendants', DOTY_INT, 0),
-            'date_valid' => Get::req('filter_date_valid', DOTY_STRING, ''),
+            'text' => Forma\lib\Get::req('filter_text', DOTY_STRING, ''),
+            'orgchart' => Forma\lib\Get::req('filter_orgchart', DOTY_INT, 0),
+            'descendants' => Forma\lib\Get::req('filter_descendants', DOTY_INT, 0),
+            'date_valid' => Forma\lib\Get::req('filter_date_valid', DOTY_STRING, ''),
         ];
         $output = array_values($this->model->getCoursePathSubscriptionsList($filter));
         echo $this->json->encode($output);
@@ -3195,7 +3195,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function getlist_coursepathTask()
     {
-        $op = Get::req('op', DOTY_MIXED, false);
+        $op = Forma\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
                     $this->_selectall_coursepath();
@@ -3205,23 +3205,23 @@ class SubscriptionAlmsController extends AlmsController
                 break;
         }
 
-        $id_path = Get::req('id_path', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             //...
             return;
         }
 
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $filter = [
-            'text' => Get::req('filter_text', DOTY_STRING, ''),
-            'orgchart' => Get::req('filter_orgchart', DOTY_INT, 0),
-            'descendants' => Get::req('filter_descendants', DOTY_INT, 0),
-            'date_valid' => Get::req('filter_date_valid', DOTY_STRING, ''),
-            'show' => Get::req('filter_show', DOTY_INT, 0),
+            'text' => Forma\lib\Get::req('filter_text', DOTY_STRING, ''),
+            'orgchart' => Forma\lib\Get::req('filter_orgchart', DOTY_INT, 0),
+            'descendants' => Forma\lib\Get::req('filter_descendants', DOTY_INT, 0),
+            'date_valid' => Forma\lib\Get::req('filter_date_valid', DOTY_STRING, ''),
+            'show' => Forma\lib\Get::req('filter_show', DOTY_INT, 0),
         ];
 
         $total_user = $this->model->getCoursePathUsersTotal($id_path, $filter);
@@ -3256,7 +3256,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function multimod_dialog_coursepathTask()
     {
-        $id_path = Get::req('id_path', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             //...
             return;
@@ -3264,7 +3264,7 @@ class SubscriptionAlmsController extends AlmsController
 
         $output = [];
 
-        if (Get::req('count_sel', DOTY_INT, 0) <= 0) {
+        if (Forma\lib\Get::req('count_sel', DOTY_INT, 0) <= 0) {
             $output['success'] = true;
             $output['header'] = Lang::t('_MOD', 'subscribe') . '&nbsp;';
             $output['body'] = '<p>' . Lang::t('_EMPTY_SELECTION', 'admin_directory') . '</p>';
@@ -3294,8 +3294,8 @@ class SubscriptionAlmsController extends AlmsController
 
     public function reset_validity_dates_coursepathTask()
     {
-        $id_path = Get::req('id_path', DOTY_INT, 0);
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         if ($id_path <= 0 || $id_user <= 0) {
             //...
             return;
@@ -3306,7 +3306,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function multimod_coursepath()
     {
-        $id_path = Get::req('id_path', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             //...
             return;
@@ -3314,13 +3314,13 @@ class SubscriptionAlmsController extends AlmsController
 
         $output = [];
 
-        $users = Get::req('users', DOTY_STRING, '');
+        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
         if ($users == '') {
             $output['success'] = false;
             $output['message'] = Lang::t('_NO_USER_SELECTED', 'subscribe');
         } else {
-            $set_date_begin = Get::req('multimod_date_begin_set', DOTY_INT, 0);
-            $set_date_expire = Get::req('multimod_date_expire_set', DOTY_INT, 0);
+            $set_date_begin = Forma\lib\Get::req('multimod_date_begin_set', DOTY_INT, 0);
+            $set_date_expire = Forma\lib\Get::req('multimod_date_expire_set', DOTY_INT, 0);
 
             if ($set_date_begin <= 0 && $set_date_expire <= 0) {
                 $output['success'] = false;
@@ -3333,13 +3333,13 @@ class SubscriptionAlmsController extends AlmsController
 
                 $res1 = true;
                 if ($set_date_begin > 0) {
-                    $new_date_begin = Get::req('multimod_date_begin', DOTY_STRING, '');
+                    $new_date_begin = Forma\lib\Get::req('multimod_date_begin', DOTY_STRING, '');
                     $res3 = $sman->updateUserDateBeginValidityInCourse($users_list, $id_path, Format::dateDb($new_date_begin, 'date'));
                 }
 
                 $res2 = true;
                 if ($set_date_expire > 0) {
-                    $new_date_expire = Get::req('multimod_date_expire', DOTY_STRING, '');
+                    $new_date_expire = Forma\lib\Get::req('multimod_date_expire', DOTY_STRING, '');
                     $res4 = $sman->updateUserDateExpireValidityInCourse($users_list, $id_path, Format::dateDb($new_date_expire, 'date'));
                 }
 
@@ -3363,7 +3363,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function multidel_coursepath()
     {
-        $id_path = Get::req('id_path', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             $output = ['success' => false];
             echo $this->json->encode($output);
@@ -3371,7 +3371,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        $users = trim(Get::req('users', DOTY_STRING, ''));
+        $users = trim(Forma\lib\Get::req('users', DOTY_STRING, ''));
         $output = [];
 
         if ($users == '') {
@@ -3387,8 +3387,8 @@ class SubscriptionAlmsController extends AlmsController
 
     public function del_coursepathTask()
     {
-        $id_path = Get::req('id_path', DOTY_INT, 0);
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
 
         $output = [];
         if ($id_path <= 0 || $id_user <= 0) {
@@ -3405,7 +3405,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function sel_users_coursepathTask()
     {
-        $id_path = Get::Req('id_path', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::Req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             //...
             return;
@@ -3421,13 +3421,13 @@ class SubscriptionAlmsController extends AlmsController
 
     public function sel_users_coursepath_actionTask()
     {
-        $id_path = Get::Req('id_path', DOTY_INT, 0);
+        $id_path = Forma\lib\Get::Req('id_path', DOTY_INT, 0);
         if ($id_path <= 0) {
             //...
             return;
         }
 
-        $selection = Get::req('userselector_input', DOTY_MIXED, true);
+        $selection = Forma\lib\Get::req('userselector_input', DOTY_MIXED, true);
         $new_selection = $selection['coursepath_subscriptions'];
         $old_selection = $this->model->getCoursePathSubscriptionsList($id_path);
 
@@ -3551,12 +3551,12 @@ class SubscriptionAlmsController extends AlmsController
             Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $_POST['id_path']);
         }
 
-        $courses = explode(',', Get::req('courses_list', DOTY_MIXED, ''));
-        $_to_add = explode(',', Get::req('users_to_add', DOTY_MIXED, ''));
-        $_to_del = explode(',', Get::req('users_to_del', DOTY_MIXED, ''));
-        $id_path = Get::req('id_path', DOTY_INT, 0);
-        $classrooms = Get::req('classrooms', DOTY_MIXED, []);
-        $editions = Get::req('editions', DOTY_MIXED, []);
+        $courses = explode(',', Forma\lib\Get::req('courses_list', DOTY_MIXED, ''));
+        $_to_add = explode(',', Forma\lib\Get::req('users_to_add', DOTY_MIXED, ''));
+        $_to_del = explode(',', Forma\lib\Get::req('users_to_del', DOTY_MIXED, ''));
+        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
+        $classrooms = Forma\lib\Get::req('classrooms', DOTY_MIXED, []);
+        $editions = Forma\lib\Get::req('editions', DOTY_MIXED, []);
 
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
@@ -3618,13 +3618,13 @@ class SubscriptionAlmsController extends AlmsController
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.user_profile.php';
 
-        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
         $man_course = new Man_Course();
         $course_info = $man_course->getCourseInfo($id_course);
 
         $is_classroom = $course_info['course_type'] == 'classroom';
 
-        $edition_id = Get::req('id_edition', DOTY_INT, 0);
+        $edition_id = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
         $ed_url_param = '&id_edition=' . $edition_id;
 
         $out = &$GLOBALS['page'];
@@ -3849,10 +3849,10 @@ class SubscriptionAlmsController extends AlmsController
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         require_once _base_ . '/lib/lib.preference.php';
 
-        $id_course = Get::req('id_course', DOTY_INT, 0);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
         $course_info = Man_Course::getCourseInfo($id_course);
 
-        $edition_id = Get::req('id_edition', DOTY_INT, 0);
+        $edition_id = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
 
         $re = true;
         $approve_user = [];
@@ -3928,7 +3928,7 @@ class SubscriptionAlmsController extends AlmsController
         }
         require_once _base_ . '/lib/lib.eventmanager.php';
         $array_subst = [
-            '[url]' => Get::site_url(),
+            '[url]' => Forma\lib\Get::site_url(),
             '[course]' => $course_info['name'],
         ];
         if (!empty($approve_user)) {
@@ -3981,8 +3981,8 @@ class SubscriptionAlmsController extends AlmsController
 
     public function unsubscriberequestsTask()
     {
-        Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(Get::rel_path('lms') . '/admin/views/subscription/unsubscriberequests.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/views/subscription/unsubscriberequests.js', true, true);
 
         $this->render('unsubscriberequests', [
             'filter_text' => '',
@@ -3992,20 +3992,20 @@ class SubscriptionAlmsController extends AlmsController
 
     public function getunsubscribetabledataTask()
     {
-        $op = Get::req('op', DOTY_STRING, '');
+        $op = Forma\lib\Get::req('op', DOTY_STRING, '');
         if ($op == 'selectall') {
             $this->_getUnsubscribeSelectAll();
 
             return;
         }
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_course = Get::req('filter_course', DOTY_INT, 0);
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_course = Forma\lib\Get::req('filter_course', DOTY_INT, 0);
 
         $filter = [];
         if ($filter_text != '') {
@@ -4041,7 +4041,7 @@ class SubscriptionAlmsController extends AlmsController
                             $view['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -4139,8 +4139,8 @@ class SubscriptionAlmsController extends AlmsController
 
     protected function _getUnsubscribeSelectAll()
     {
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
-        $filter_course = Get::req('filter_course', DOTY_INT, 0);
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_course = Forma\lib\Get::req('filter_course', DOTY_INT, 0);
 
         $courses_filter = false;
 
@@ -4171,7 +4171,7 @@ class SubscriptionAlmsController extends AlmsController
                             $view['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -4226,7 +4226,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function accept_unsubscribe_requestTask()
     {
-        $_id = Get::req('id', DOTY_ALPHANUM, '');
+        $_id = Forma\lib\Get::req('id', DOTY_ALPHANUM, '');
         if (!$_id) {
             //...
         }
@@ -4253,7 +4253,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function deny_unsubscribe_requestTask()
     {
-        $_id = Get::req('id', DOTY_ALPHANUM, '');
+        $_id = Forma\lib\Get::req('id', DOTY_ALPHANUM, '');
         if (!$_id) {
             //...
         }
@@ -4280,7 +4280,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function accept_unsubscribe_request_multiTask()
     {
-        $_requests = Get::req('requests', DOTY_MIXED, false);
+        $_requests = Forma\lib\Get::req('requests', DOTY_MIXED, false);
         if (!$_requests) {
             //...
         }
@@ -4312,7 +4312,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function deny_unsubscribe_request_multiTask()
     {
-        $_requests = Get::req('requests', DOTY_MIXED, false);
+        $_requests = Forma\lib\Get::req('requests', DOTY_MIXED, false);
         if (!$_requests) {
             //...
         }

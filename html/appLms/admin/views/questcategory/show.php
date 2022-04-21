@@ -30,9 +30,9 @@ if ($permissions['del']) {
 $_table_params = [
     'id' => 'questcategory_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=alms/questcategory/gettabledata',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'name',
     'dir' => 'asc',
     'columns' => $_columns_arr,

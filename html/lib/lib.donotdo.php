@@ -40,9 +40,9 @@ $GLOBALS['clean_url']['framework' . _sep_ . 'configuration' . _sep_ . 'config' .
 function checkSkipList(&$list, $field_name, $name_modname = 'modname', $name_op = 'op')
 {
     $res = false;
-    $platform = Get::cur_plat();
-    $modname = Get::req($name_modname, DOTY_ALPHANUM, '');
-    $op = Get::req($name_op, DOTY_ALPHANUM, '');
+    $platform = Forma\lib\Get::cur_plat();
+    $modname = Forma\lib\Get::req($name_modname, DOTY_ALPHANUM, '');
+    $op = Forma\lib\Get::req($name_op, DOTY_ALPHANUM, '');
 
     if (isset($list[$platform . _sep_ . $modname . _sep_ . $op . _sep_ . $field_name])) {
         $res = true;
@@ -67,9 +67,9 @@ function dontCleanHtml($field_name, $req_admin = true)
     if (($req_admin) && ($level_id != ADMIN_GROUP_GODADMIN) && ($level_id != ADMIN_GROUP_ADMIN)) {
         return $res;
     }
-    $platform = Get::cur_plat();
-    $modname = Get::req('modname', DOTY_ALPHANUM, '');
-    $op = Get::req('op', DOTY_ALPHANUM, '');
+    $platform = Forma\lib\Get::cur_plat();
+    $modname = Forma\lib\Get::req('modname', DOTY_ALPHANUM, '');
+    $op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
 
     $res = false;
     if (isset($GLOBALS['clean_html'][$platform . _sep_ . $modname . _sep_ . $op . _sep_ . $field_name])) {
@@ -92,9 +92,9 @@ function dontReplaceBaseUrl($field_name, $req_admin = true)
         return $res;
     }
 
-    $platform = Get::cur_plat();
-    $modname = Get::req('modname', DOTY_ALPHANUM, '');
-    $op = Get::req('op', DOTY_ALPHANUM, '');
+    $platform = Forma\lib\Get::cur_plat();
+    $modname = Forma\lib\Get::req('modname', DOTY_ALPHANUM, '');
+    $op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
 
     $res = false;
     if (isset($GLOBALS['clean_url'][$platform . _sep_ . $modname . _sep_ . $op . _sep_ . $field_name])) {

@@ -21,7 +21,7 @@ if ((Docebo::user()->isAnonymous()) || (!checkPerm('view', true))) {
     exit("You can't access!");
 }
 
-define('_FPATH_INTERNAL', '/appLms/' . Get::sett('pathprj'));
+define('_FPATH_INTERNAL', '/appLms/' . Forma\lib\Get::sett('pathprj'));
 define('_FPATH', $GLOBALS['where_files_relative'] . _FPATH_INTERNAL);
 
 require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';

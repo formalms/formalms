@@ -23,7 +23,7 @@ class DMemcache extends DCache
     public function init()
     {
         Log::add('Initializing memcache.');
-        $cfg = Get::cfg('cache');
+        $cfg = Forma\lib\Get::cfg('cache');
         $this->_cache = new Memcache();
         foreach ($cfg['servers'] as $server) {
             $this->_cache->addServer($server['host'], $server['port'], $server['persistent'], $server['weight']);

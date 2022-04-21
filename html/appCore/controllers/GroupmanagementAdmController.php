@@ -57,9 +57,9 @@ class GroupmanagementAdmController extends AdmController
      */
     public function show()
     {
-        Util::get_js(Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(Get::rel_path('adm') . '/views/groupmanagement/groupmanagement.js', true, true);
-        Util::get_js(Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('adm') . '/views/groupmanagement/groupmanagement.js', true, true);
+        Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
 
         $this->render('show', [
             'permissions' => $this->permissions,
@@ -89,12 +89,12 @@ class GroupmanagementAdmController extends AdmController
      */
     public function getdata()
     {
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $filter = Get::req('filter', DOTY_STRING, '');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
 
         //get total from database and validate the results count
         $total = $this->model->getTotalGroups($filter);
@@ -160,7 +160,7 @@ class GroupmanagementAdmController extends AdmController
             return;
         }
 
-        $id = Get::req('id', DOTY_INT, -1);
+        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
         $output['success'] = ($id > 0 ? $this->model->deleteGroup($id) : false);
         echo $this->json->encode($output);
     }
@@ -179,7 +179,7 @@ class GroupmanagementAdmController extends AdmController
         }
 
         $output = [];
-        $id = Get::req('id', DOTY_INT, -1);
+        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
 
         if ($id > 0) {
             $action = 'ajax.adm_server.php?r=adm/groupmanagement/moddata&id=' . $id;
@@ -207,15 +207,15 @@ class GroupmanagementAdmController extends AdmController
             return;
         }
 
-        $id = Get::req('id', DOTY_INT, -1);
+        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
 
         $output = [];
         if ($id > 0) {
             $types = $this->model->getGroupTypes(true);
 
-            $groupid = Get::req('groupid', DOTY_STRING, '');
-            $description = Get::req('description', DOTY_STRING, '');
-            $type = Get::req('type', DOTY_ALPHANUM, '');
+            $groupid = Forma\lib\Get::req('groupid', DOTY_STRING, '');
+            $description = Forma\lib\Get::req('description', DOTY_STRING, '');
+            $type = Forma\lib\Get::req('type', DOTY_ALPHANUM, '');
             if (!in_array($type, $types)) {
                 $type = $types['free'];
             }
@@ -250,7 +250,7 @@ class GroupmanagementAdmController extends AdmController
      */
     public function assignmembers()
     {
-        $id = Get::req('id_group', DOTY_INT, -1);
+        $id = Forma\lib\Get::req('id_group', DOTY_INT, -1);
 
         $base_url = 'index.php?r=adm/groupmanagement/';
         $back_url = $base_url . 'show_users&id=' . (int) $id;
@@ -266,8 +266,8 @@ class GroupmanagementAdmController extends AdmController
             $acl = Docebo::user()->getAclManager();
             $selector = new UserSelector();
 
-            $cancel = Get::req('cancelselector', DOTY_MIXED, false);
-            $save = Get::req('okselector', DOTY_MIXED, false);
+            $cancel = Forma\lib\Get::req('cancelselector', DOTY_MIXED, false);
+            $save = Forma\lib\Get::req('okselector', DOTY_MIXED, false);
 
             if ($cancel) {
                 Util::jump_to($back_url);
@@ -287,7 +287,7 @@ class GroupmanagementAdmController extends AdmController
 
                 $group = $this->model->getGroupInfo($id, true);
 
-                if (Get::req('is_updating', DOTY_INT, false)) {
+                if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
                 } else {
                     $members = $this->model->getGroupMembers($id);
                     $selector->requested_tab = PEOPLEVIEW_TAB;
@@ -375,9 +375,9 @@ class GroupmanagementAdmController extends AdmController
         $output = [];
         $types = $this->model->getGroupTypes(true);
 
-        $groupid = Get::req('groupid', DOTY_STRING, '');
-        $description = Get::req('description', DOTY_STRING, '');
-        $type = Get::req('type', DOTY_ALPHANUM, '');
+        $groupid = Forma\lib\Get::req('groupid', DOTY_STRING, '');
+        $description = Forma\lib\Get::req('description', DOTY_STRING, '');
+        $type = Forma\lib\Get::req('type', DOTY_ALPHANUM, '');
         if (!in_array($type, $types)) {
             $type = $types['free'];
         }
@@ -406,8 +406,8 @@ class GroupmanagementAdmController extends AdmController
 
     public function groups_autocompleteTask()
     {
-        $query = Get::req('query', DOTY_STRING, '');
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
+        $query = Forma\lib\Get::req('query', DOTY_STRING, '');
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
         $output = ['groups' => []];
         if ($query != '') {
             $groups = $this->model->searchGroupsByGroupid($query, $results, true);
@@ -426,7 +426,7 @@ class GroupmanagementAdmController extends AdmController
 
     public function importusers_step1Task()
     {
-        $id_group = Get::req('id_group', DOTY_INT, 0);
+        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
 
         $back_url = 'index.php?r=adm/groupmanagement/show';
 
@@ -444,15 +444,15 @@ class GroupmanagementAdmController extends AdmController
 
     public function importusers_step2Task()
     {
-        $id_group = Get::req('id_group', DOTY_INT, 0);
+        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
 
         if (isset($_POST['import_groupcancel'])) {
             Util::jump_to('index.php?r=adm/groupmanagement/show_users&id=' . $id_group);
         }
 
-        $separator = Get::req('import_separator', DOTY_STRING, ',');
-        $first_row_header = Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
-        $import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
+        $separator = Forma\lib\Get::req('import_separator', DOTY_STRING, ',');
+        $first_row_header = Forma\lib\Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
+        $import_charset = Forma\lib\Get::req('import_charset', DOTY_STRING, 'UTF-8');
         if (trim($import_charset) === '') {
             $import_charset = 'UTF-8';
         }
@@ -481,13 +481,13 @@ class GroupmanagementAdmController extends AdmController
 
     public function show_usersTask()
     {
-        $id_group = Get::req('id', DOTY_INT, 0);
+        $id_group = Forma\lib\Get::req('id', DOTY_INT, 0);
 
         if ($id_group <= 0) {
             return;
         }
 
-        $res = Get::req('res', DOTY_STRING, '');
+        $res = Forma\lib\Get::req('res', DOTY_STRING, '');
         switch ($res) {
             case 'ok_assignuser': $message = getResultUi(Lang::t('_OPERATION_SUCCESSFUL', 'admin_directory')); break;
             case 'err_assignuser': $message = getErrorUi(Lang::t('_GROUP_USERASSIGN_ERROR', 'admin_directory')); break;
@@ -507,15 +507,15 @@ class GroupmanagementAdmController extends AdmController
     public function getusertabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $id_group = Get::req('id_group', DOTY_INT, 0);
+        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
         //TO DO: if $id_group <= 0 ...
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -583,8 +583,8 @@ class GroupmanagementAdmController extends AdmController
         }
 
         //read input and validate it
-        $id_group = Get::req('id_group', DOTY_INT, 0);
-        $id_user = Get::req('id_user', DOTY_INT, 0);
+        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
+        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         if (!$id_group || !$id_user) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
             echo $this->json->encode($output);

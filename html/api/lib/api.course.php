@@ -220,8 +220,8 @@ class Course_API extends API
                 'sub_end_date' => $course_info['sub_end_date'],
                 'date_begin' => $course_info['date_begin'],
                 'date_end' => $course_info['date_end'],
-                'course_link' => Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$course_info['idCourse']}",
-                'img_course' => $course_info['img_course'] ? Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Get::sett('pathcourse') . $course_info['img_course'] : '',
+                'course_link' => Forma\lib\Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$course_info['idCourse']}",
+                'img_course' => $course_info['img_course'] ? Forma\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Forma\lib\Get::sett('pathcourse') . $course_info['img_course'] : '',
                 'category_id' => $course_info['idCategory'],
                 'category' => $category,
                 'dates' => $course_info['dates'],
@@ -280,7 +280,7 @@ class Course_API extends API
                 'sub_end_date' => $course_info['sub_date_end'],
                 'date_begin' => $course_info['date_begin'],
                 'date_end' => $course_info['date_end'],
-                'course_link' => Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course['idCourse'],
+                'course_link' => Forma\lib\Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course['idCourse'],
             ];
         }
 
@@ -339,7 +339,7 @@ class Course_API extends API
                 'date_end' => $course_info['date_end'],
                 'num_day' => $course_info['num_day'],
                 'classroom' => $course_info['classroom'],
-                'course_link' => Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course['idCourse'],
+                'course_link' => Forma\lib\Get::site_url() . _folder_lms_ . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $course['idCourse'],
             ];
         }
 
@@ -551,8 +551,8 @@ class Course_API extends API
             }
 
             $array_subst = [
-                '[url]' => Get::site_url(),
-                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
+                '[url]' => Forma\lib\Get::site_url(),
+                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
                 '[course]' => $course_info['name'], ];
 
             $msg_composer = new EventMessageComposer();
@@ -828,7 +828,7 @@ class Course_API extends API
                 'course_code' => $row['code'],
                 'course_name' => $row['name'],
                 'date_generate' => $row['on_date'],
-                'cert_file' => Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
+                'cert_file' => Forma\lib\Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
             ];
         }
 
@@ -903,7 +903,7 @@ class Course_API extends API
                 'userid' => $row['userid'],
                 'date_generate' => $row['on_date'],
 
-                'cert_file' => Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
+                'cert_file' => Forma\lib\Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
 
                 'custom_fields' => $fields,
             ];
@@ -1694,7 +1694,7 @@ class Course_API extends API
         $qres = sql_query($query_course);
         list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
 
-        $path = '/appLms/' . Get::sett('pathcourse');
+        $path = '/appLms/' . Forma\lib\Get::sett('pathcourse');
         if (substr($path, -1) != '/' && substr($path, -1) != '\\') {
             $path .= '/';
         }

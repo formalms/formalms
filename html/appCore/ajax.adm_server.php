@@ -36,8 +36,8 @@ require_once _adm_ . '/lib/lib.permission.php';
 
 // load the correct module
 $aj_file = '';
-$mn = Get::req('mn', DOTY_ALPHANUM, '');
-$plf = Get::req('plf', DOTY_ALPHANUM, ($_SESSION['current_action_platform'] ? $_SESSION['current_action_platform'] : Get::cur_plat()));
+$mn = Forma\lib\Get::req('mn', DOTY_ALPHANUM, '');
+$plf = Forma\lib\Get::req('plf', DOTY_ALPHANUM, ($_SESSION['current_action_platform'] ? $_SESSION['current_action_platform'] : Forma\lib\Get::cur_plat()));
 
 if (isset($_GET['r'])) {
     $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $_GET['r']);
@@ -47,8 +47,8 @@ if (!empty($GLOBALS['req'])) {
     $requesthandler->run(true);
 } else {
     if ($mn == '') {
-        $fl = Get::req('file', DOTY_ALPHANUM, '');
-        $sf = Get::req('sf', DOTY_ALPHANUM, '');
+        $fl = Forma\lib\Get::req('file', DOTY_ALPHANUM, '');
+        $sf = Forma\lib\Get::req('sf', DOTY_ALPHANUM, '');
         $aj_file = $GLOBALS['where_' . $plf] . '/lib/' . ($sf ? $sf . '/' : '') . 'ajax.' . $fl . '.php';
     } else {
         if ($plf == 'framework') {

@@ -398,7 +398,7 @@ class DoceboConnectorUI
     public function filterParams(&$params)
     {
         $filter_input = new FilterInput();
-        $filter_input->tool = Get::cfg('filter_tool', 'htmlpurifier');
+        $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
         $params = $filter_input->clean($params);
     }
 }

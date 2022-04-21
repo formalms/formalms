@@ -40,9 +40,9 @@ class LangAdmController extends AdmController
     {
         require_once Forma::inc(_lib_ . '/formatable/include.php');
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 100));
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 100));
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
         $sort = 'lang_code';
         switch ($dir) {
@@ -74,10 +74,10 @@ class LangAdmController extends AdmController
     {
         $sortable = ['lang_code', 'lang_description', 'lang_direction', 'lang_stats'];
 
-        $startIndex = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
         if (!in_array($sort, $sortable)) {
             $sort = 'lang_code';
@@ -137,10 +137,10 @@ class LangAdmController extends AdmController
 
     public function insertlang()
     {
-        $lang_code = Get::req('lang_code', DOTY_STRING, '');
-        $lang_description = Get::req('lang_description', DOTY_STRING, '');
-        $lang_direction = Get::req('lang_direction', DOTY_STRING, 'ltr');
-        $lang_browsercode = Get::req('lang_browsercode', DOTY_STRING, '');
+        $lang_code = Forma\lib\Get::req('lang_code', DOTY_STRING, '');
+        $lang_description = Forma\lib\Get::req('lang_description', DOTY_STRING, '');
+        $lang_direction = Forma\lib\Get::req('lang_direction', DOTY_STRING, 'ltr');
+        $lang_browsercode = Forma\lib\Get::req('lang_browsercode', DOTY_STRING, '');
 
         if ($lang_code == '') {
             $result = ['success' => false, 'message' => Lang::t('_NO_TITLE', 'standard')];
@@ -159,10 +159,10 @@ class LangAdmController extends AdmController
 
     public function updatelang()
     {
-        $lang_code = Get::req('lang_code', DOTY_STRING, '');
-        $lang_description = Get::req('lang_description', DOTY_STRING, '');
-        $lang_direction = Get::req('lang_direction', DOTY_STRING, 'ltr');
-        $lang_browsercode = Get::req('lang_browsercode', DOTY_STRING, '');
+        $lang_code = Forma\lib\Get::req('lang_code', DOTY_STRING, '');
+        $lang_description = Forma\lib\Get::req('lang_description', DOTY_STRING, '');
+        $lang_direction = Forma\lib\Get::req('lang_direction', DOTY_STRING, 'ltr');
+        $lang_browsercode = Forma\lib\Get::req('lang_browsercode', DOTY_STRING, '');
 
         $answ = $this->model->updateLanguage($lang_code, $lang_description, $lang_direction, $lang_browsercode);
 
@@ -175,7 +175,7 @@ class LangAdmController extends AdmController
 
     public function mod()
     {
-        $lang_code = Get::req('lang_code', DOTY_STRING, '');
+        $lang_code = Forma\lib\Get::req('lang_code', DOTY_STRING, '');
         $lang = $this->model->getLanguage($lang_code);
 
         $this->render('edit_form', ['lang' => $lang]);
@@ -209,7 +209,7 @@ class LangAdmController extends AdmController
 
     public function delTask()
     {
-        $lang_code = Get::req('lang_code', DOTY_STRING, '');
+        $lang_code = Forma\lib\Get::req('lang_code', DOTY_STRING, '');
 
         $re = false;
         if ($lang_code != '') {
@@ -224,15 +224,15 @@ class LangAdmController extends AdmController
 
     public function exportTask()
     {
-        $lang_code = Get::req('lang_code', DOTY_STRING, '');
-        $text_items = Get::req('text_items', DOTY_MIXED, []);
+        $lang_code = Forma\lib\Get::req('lang_code', DOTY_STRING, '');
+        $text_items = Forma\lib\Get::req('text_items', DOTY_MIXED, []);
 
         $this->model->exportTranslation($lang_code, $text_items);
     }
 
     public function importTask()
     {
-        $error = Get::req('error', DOTY_INT, 0);
+        $error = Forma\lib\Get::req('error', DOTY_INT, 0);
         if ($error) {
             UIFeedback::error(Lang::t('_ERROR_UPLOAD', 'standard'));
         }
@@ -249,11 +249,11 @@ class LangAdmController extends AdmController
 
     public function doimportTask()
     {
-        $importType = Get::req('import_type', DOTY_STRING, false);
-        $undo = Get::req('undo', DOTY_STRING, false);
-        $overwrite = (bool) Get::req('overwrite', DOTY_INT, 0);
-        $noadd_miss = (bool) Get::req('noadd_miss', DOTY_INT, 0);
-        $langFile = Get::req('lang_id', DOTY_STRING, '');
+        $importType = Forma\lib\Get::req('import_type', DOTY_STRING, false);
+        $undo = Forma\lib\Get::req('undo', DOTY_STRING, false);
+        $overwrite = (bool) Forma\lib\Get::req('overwrite', DOTY_INT, 0);
+        $noadd_miss = (bool) Forma\lib\Get::req('noadd_miss', DOTY_INT, 0);
+        $langFile = Forma\lib\Get::req('lang_id', DOTY_STRING, '');
 
         if (!empty($undo)) {
             Util::jump_to('index.php?r=adm/lang/show');
@@ -309,7 +309,7 @@ class LangAdmController extends AdmController
 
     public function inline_editTask()
     {
-        $id_text = Get::req('id_text', DOTY_INT, 0);
+        $id_text = Forma\lib\Get::req('id_text', DOTY_INT, 0);
 
         if ($id_text <= 0) {
             echo $this->json->encode(['success' => false]);
@@ -318,10 +318,10 @@ class LangAdmController extends AdmController
         }
 
         //Update info
-        $newValue = Get::req('new_value', DOTY_MIXED, '');
-        $oldValue = Get::req('old_value', DOTY_MIXED, '');
-        $column = Get::req('col', DOTY_STRING, '');
-        $language = Get::req('language', DOTY_STRING, Lang::get());
+        $newValue = Forma\lib\Get::req('new_value', DOTY_MIXED, '');
+        $oldValue = Forma\lib\Get::req('old_value', DOTY_MIXED, '');
+        $column = Forma\lib\Get::req('col', DOTY_STRING, '');
+        $language = Forma\lib\Get::req('language', DOTY_STRING, Lang::get());
 
         if ($newValue === $oldValue) {
             echo $this->json->encode(['success' => true]);
@@ -349,7 +349,7 @@ class LangAdmController extends AdmController
     {
         // YuiLib::load('table');
         require_once Forma::inc(_lib_ . '/formatable/include.php');
-        $lang_code = Get::req('lang_code', DOTY_STRING, Lang::get());
+        $lang_code = Forma\lib\Get::req('lang_code', DOTY_STRING, Lang::get());
 
         $module_list = $this->model->getModuleList();
         array_unshift($module_list, Lang::t('_ALL'));
@@ -361,15 +361,15 @@ class LangAdmController extends AdmController
         $language_list_diff = $language_list = $this->model->getLangCodeList();
         array_unshift($language_list_diff, Lang::t('_NONE'));
 
-        $sort = Get::req('sort', DOTY_MIXED, 'text_module');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'text_module');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
-        $la_module = Get::req('la_module', DOTY_ALPHANUM, false);
-        $la_text = Get::req('la_text', DOTY_MIXED, false);
-        $lang_code = Get::req('lang_code', DOTY_ALPHANUM, false);
-        $lang_code_diff = Get::req('lang_code_diff', DOTY_ALPHANUM, false);
-        $only_empty = Get::req('only_empty', DOTY_MIXED, 0);
-        $plugin_id = Get::req('plugin_id', DOTY_INT, false);
+        $la_module = Forma\lib\Get::req('la_module', DOTY_ALPHANUM, false);
+        $la_text = Forma\lib\Get::req('la_text', DOTY_MIXED, false);
+        $lang_code = Forma\lib\Get::req('lang_code', DOTY_ALPHANUM, false);
+        $lang_code_diff = Forma\lib\Get::req('lang_code_diff', DOTY_ALPHANUM, false);
+        $only_empty = Forma\lib\Get::req('only_empty', DOTY_MIXED, 0);
+        $plugin_id = Forma\lib\Get::req('plugin_id', DOTY_INT, false);
         if ($only_empty === 'true') {
             $only_empty = true;
         } else {
@@ -415,23 +415,23 @@ class LangAdmController extends AdmController
 
     public function getTask()
     {
-        $start_index = Get::req('start', DOTY_INT, 0);
-        $results = Get::req('length', DOTY_MIXED, Get::sett('visuItem', 250));
+        $start_index = Forma\lib\Get::req('start', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('length', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 250));
         $sort = $dir = null;
-        if ($order = Get::req('order', DOTY_MIXED)) {
+        if ($order = Forma\lib\Get::req('order', DOTY_MIXED)) {
             $sort = $order[0]['column'];
             $dir = $order[0]['dir'];
         }
-        $lang_code = Get::req('lang_code', DOTY_ALPHANUM, false);
-        $lang_code_diff = Get::req('lang_code_diff', DOTY_ALPHANUM, false);
+        $lang_code = Forma\lib\Get::req('lang_code', DOTY_ALPHANUM, false);
+        $lang_code_diff = Forma\lib\Get::req('lang_code_diff', DOTY_ALPHANUM, false);
 
-        $search = Get::req('search', DOTY_MIXED, false);
+        $search = Forma\lib\Get::req('search', DOTY_MIXED, false);
 
         $la_text = $this->removeSearchRegex($search['value']);
 
-        $plugin_id = Get::req('plugin_id', DOTY_INT, false);
+        $plugin_id = Forma\lib\Get::req('plugin_id', DOTY_INT, false);
         $search = [];
-        $columns = Get::req('columns', DOTY_MIXED, []);
+        $columns = Forma\lib\Get::req('columns', DOTY_MIXED, []);
         foreach ($columns as $column) {
             switch ($column['name']) {
                 case 'plugin_name':
@@ -452,7 +452,7 @@ class LangAdmController extends AdmController
             }
         }
 
-        $only_empty = Get::req('only_empty', DOTY_MIXED, 0);
+        $only_empty = Forma\lib\Get::req('only_empty', DOTY_MIXED, 0);
         if ($only_empty === 'true') {
             $only_empty = true;
         } else {
@@ -482,10 +482,10 @@ class LangAdmController extends AdmController
      */
     public function saveDataTask()
     {
-        $id_text = urldecode(Get::req('id_text', DOTY_INT, 0));
-        $lang_code = urldecode(Get::req('lang_code', DOTY_MIXED, Lang::get()));
-        $new_value = urldecode(Get::req('new_value', DOTY_MIXED, ''));
-        $old_value = urldecode(Get::req('old_value', DOTY_MIXED, ''));
+        $id_text = urldecode(Forma\lib\Get::req('id_text', DOTY_INT, 0));
+        $lang_code = urldecode(Forma\lib\Get::req('lang_code', DOTY_MIXED, Lang::get()));
+        $new_value = urldecode(Forma\lib\Get::req('new_value', DOTY_MIXED, ''));
+        $old_value = urldecode(Forma\lib\Get::req('old_value', DOTY_MIXED, ''));
 
         $re = $this->model->saveTranslation($id_text, $lang_code, $new_value);
         $res = [
@@ -515,8 +515,8 @@ class LangAdmController extends AdmController
 
     public function insertkey()
     {
-        $lang_module = Get::req('lang_module', DOTY_MIXED, '');
-        $lang_key = Get::req('lang_key', DOTY_MIXED, '');
+        $lang_module = Forma\lib\Get::req('lang_module', DOTY_MIXED, '');
+        $lang_key = Forma\lib\Get::req('lang_key', DOTY_MIXED, '');
 
         $id_text = $this->model->insertKey($lang_key, $lang_module, '');
         if (!$id_text) {
@@ -539,9 +539,9 @@ class LangAdmController extends AdmController
 
     public function resetKey()
     {
-        $idText = Get::req('id_text', DOTY_MIXED, '');
-        $langModule = Get::req('lang_module', DOTY_MIXED, '');
-        $translation = Get::req('translation', DOTY_MIXED, '');
+        $idText = Forma\lib\Get::req('id_text', DOTY_MIXED, '');
+        $langModule = Forma\lib\Get::req('lang_module', DOTY_MIXED, '');
+        $translation = Forma\lib\Get::req('translation', DOTY_MIXED, '');
 
         if (!empty($translation)) {
             $re = $this->model->updateTranslation($idText, $langModule, $translation);
@@ -556,7 +556,7 @@ class LangAdmController extends AdmController
 
     public function deleteKeyTask()
     {
-        $id_text = Get::req('id_text', DOTY_INT, 0);
+        $id_text = Forma\lib\Get::req('id_text', DOTY_INT, 0);
 
         $re = $this->model->deleteKey($id_text);
         $res = [
@@ -571,8 +571,8 @@ class LangAdmController extends AdmController
     {
         require_once Forma::inc(_lib_ . '/formatable/include.php');
 
-        $langCode = urldecode(Get::req('lang_code', DOTY_MIXED, Lang::get()));
-        $langFile = Get::req('lang_file', DOTY_MIXED, '');
+        $langCode = urldecode(Forma\lib\Get::req('lang_code', DOTY_MIXED, Lang::get()));
+        $langFile = Forma\lib\Get::req('lang_file', DOTY_MIXED, '');
 
         if (empty($langFile)) {
             $langFile = _base_ . '/xml_language/' . $this->getLangFileNameFromName($langCode);
@@ -590,7 +590,7 @@ class LangAdmController extends AdmController
 
     public function saveDiffTask()
     {
-        $langKeys = Get::req('langKeys', DOTY_MIXED, []);
+        $langKeys = Forma\lib\Get::req('langKeys', DOTY_MIXED, []);
 
         foreach ($langKeys as $langKey) {
             if (!empty($langKey['translation'])) {

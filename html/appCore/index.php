@@ -37,8 +37,8 @@ require_once _adm_ . '/class.module/class.definition.php';
 // -----------------------------------------------------------------------------
 
 $module_cfg = false;
-$GLOBALS['modname'] = Get::req('modname', DOTY_ALPHANUM, '');
-$GLOBALS['op'] = Get::req('op', DOTY_ALPHANUM, '');
+$GLOBALS['modname'] = Forma\lib\Get::req('modname', DOTY_ALPHANUM, '');
+$GLOBALS['op'] = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
 // create instance of StdPageWriter
 StdPageWriter::createInstance();
 

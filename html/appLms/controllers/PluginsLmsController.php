@@ -63,11 +63,11 @@ class PluginsLmsController extends LmsController
         if ($ma->currentCanAccessObj('news')) {
             $block_list['news'] = true;
         }
-        $tb_label = (Get::sett('use_course_label', false) == 'off' ? false : true);
+        $tb_label = (Forma\lib\Get::sett('use_course_label', false) == 'off' ? false : true);
         if (!$tb_label) {
             $_SESSION['id_common_label'] = 0;
         } else {
-            $id_common_label = Get::req('id_common_label', DOTY_INT, -1);
+            $id_common_label = Forma\lib\Get::req('id_common_label', DOTY_INT, -1);
             if ($id_common_label >= 0) {
                 $_SESSION['id_common_label'] = $id_common_label;
             } elseif ($id_common_label <= -1) {

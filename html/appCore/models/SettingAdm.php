@@ -122,7 +122,7 @@ class SettingAdm extends Model
                 ? '<span class="font_red">' . $lang->def('_ON') . '</span>'
                 : $lang->def('_OFF')));
         }
-        if (Get::cfg('uploadType') == 'ftp') {
+        if (Forma\lib\Get::cfg('uploadType') == 'ftp') {
             if (function_exists('ftp_connect')) {
                 require_once _base_ . '/lib/lib.upload.php';
                 $re_con = sl_open_fileoperations();

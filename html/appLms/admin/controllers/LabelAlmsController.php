@@ -77,10 +77,10 @@ class LabelAlmsController extends AlmsController
 
     public function getLabelsTask()
     {
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $labels = $this->model->getLabels($start_index, $results, $sort, $dir);
         $total_label = $this->model->getTotalLabelsCount();
@@ -107,7 +107,7 @@ class LabelAlmsController extends AlmsController
                             'description' => $this->_formatDescription($value[LABEL_DESCRIPTION], 100),
                             'position' => $position,
                             'sequence' => $value[LABEL_SEQUENCE],
-                            'mod' => '<a href="index.php?r=alms/label/mod&amp;id_common_label=' . $value[LABEL_ID_COMMON] . '" title="' . Lang::t('_MOD', 'label') . '">' . Get::img('standard/edit.png', Lang::t('_MOD', 'label')) . '</a>',
+                            'mod' => '<a href="index.php?r=alms/label/mod&amp;id_common_label=' . $value[LABEL_ID_COMMON] . '" title="' . Lang::t('_MOD', 'label') . '">' . Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'label')) . '</a>',
                             'del' => 'ajax.adm_server.php?r=alms/label/dellabel&id_common_label=' . $value[LABEL_ID_COMMON], ];
         }
 
@@ -124,8 +124,8 @@ class LabelAlmsController extends AlmsController
 
     public function move()
     {
-        $id_common_label = Get::req('id_common_label', DOTY_INT, 0);
-        $direction = Get::req('dir', DOTY_MIXED, 'down');
+        $id_common_label = Forma\lib\Get::req('id_common_label', DOTY_INT, 0);
+        $direction = Forma\lib\Get::req('dir', DOTY_MIXED, 'down');
         if ($direction == 'up') {
             $re = $this->model->move_up($id_common_label);
         } else {
@@ -181,8 +181,8 @@ class LabelAlmsController extends AlmsController
             }
 
             foreach ($all_languages as $lang_code) {
-                $title = Get::req($lang_code . '_title', DOTY_MIXED, '');
-                $description = Get::req($lang_code . '_description', DOTY_MIXED, '');
+                $title = Forma\lib\Get::req($lang_code . '_title', DOTY_MIXED, '');
+                $description = Forma\lib\Get::req($lang_code . '_description', DOTY_MIXED, '');
 
                 $tmp_res = $this->model->insertLabel($id_common_label, $lang_code, $title, $description, $file_name);
 
@@ -214,7 +214,7 @@ class LabelAlmsController extends AlmsController
             return;
         }
 
-        $id_common_label = Get::req('id_common_label', DOTY_INT, 0);
+        $id_common_label = Forma\lib\Get::req('id_common_label', DOTY_INT, 0);
 
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?r=alms/label/show');
@@ -260,8 +260,8 @@ class LabelAlmsController extends AlmsController
             }
 
             foreach ($all_languages as $lang_code) {
-                $title = Get::req($lang_code . '_title', DOTY_MIXED, '');
-                $description = Get::req($lang_code . '_description', DOTY_MIXED, '');
+                $title = Forma\lib\Get::req($lang_code . '_title', DOTY_MIXED, '');
+                $description = Forma\lib\Get::req($lang_code . '_description', DOTY_MIXED, '');
 
                 $tmp_res = $this->model->updateLabel($id_common_label, $lang_code, $title, $description, $file_name);
 
@@ -295,7 +295,7 @@ class LabelAlmsController extends AlmsController
             return;
         }
 
-        $id_common_label = Get::req('id_common_label', DOTY_INT, 0);
+        $id_common_label = Forma\lib\Get::req('id_common_label', DOTY_INT, 0);
 
         $res = ['success' => $this->model->delLabel($id_common_label)];
 

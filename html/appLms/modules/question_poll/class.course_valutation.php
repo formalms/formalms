@@ -114,8 +114,8 @@ class CourseValutation_QuestionPoll extends QuestionPoll
         if (isset($_POST['add_question'])) {
             //insert the new question
 
-            $min_value = Get::req('min_value', DOTY_INT, 0);
-            $max_value = Get::req('max_value', DOTY_INT, 0);
+            $min_value = Forma\lib\Get::req('min_value', DOTY_INT, 0);
+            $max_value = Forma\lib\Get::req('max_value', DOTY_INT, 0);
             $step_value = (float) str_replace(',', '.', $_POST['step_value']);
 
             $i = $min_value;
@@ -232,8 +232,8 @@ class CourseValutation_QuestionPoll extends QuestionPoll
                 $_POST['is_correct'] = -1;
             }
 
-            $min_value = Get::req('min_value', DOTY_INT, 0);
-            $max_value = Get::req('max_value', DOTY_INT, 0);
+            $min_value = Forma\lib\Get::req('min_value', DOTY_INT, 0);
+            $max_value = Forma\lib\Get::req('max_value', DOTY_INT, 0);
             $step_value = (float) str_replace(',', '.', $_POST['step_value']);
 
             if ($min_value >= $max_value || $step_value == 0) {

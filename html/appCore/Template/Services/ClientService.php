@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-namespace appCore\Template\Services;
+namespace Forma\appCore\Template\Services;
 
 class ClientService
 {

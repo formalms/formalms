@@ -45,7 +45,7 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
         $data['data'] = [
             'firstname' => $user[2],
             'lastname' => $user[3],
-            'platform' => Get::sett('page_title'),
+            'platform' => Forma\lib\Get::sett('page_title'),
         ];
 
         $msg = Lang::t($this->data['welcome_text'] ?: '_DASHBOARD_WELCOME_MESSAGE', 'dashboardsetting');

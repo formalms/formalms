@@ -38,7 +38,7 @@ class DummyLmsController extends LmsController
 
     public function show()
     {
-        $params['sett'] = Get::sett('dummy.foo', 'dummy');
+        $params['sett'] = Forma\lib\Get::sett('dummy.foo', 'dummy');
         $this->render('show', $params);
     }
 

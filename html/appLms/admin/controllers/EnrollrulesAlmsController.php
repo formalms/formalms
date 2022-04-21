@@ -53,10 +53,10 @@ class EnrollrulesAlmsController extends AlmsController
     {
         checkPerm('view', true, 'enrollrules', 'lms');
 
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
         if ($dir != 'asc' && $dir != 'desc') {
             $dir = 'asc';
         }
@@ -97,7 +97,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function activate()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
         $result = [
             'success' => ($this->model->changeActivationState($id_rule) ? 'true' : 'false'),
         ];
@@ -122,15 +122,15 @@ class EnrollrulesAlmsController extends AlmsController
         checkPerm('view', true, 'enrollrules', 'lms');
 
         //read input data
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'log_time');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'log_time');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
         if ($dir != 'asc' && $dir != 'desc') {
             $dir = 'asc';
         }
 
-        $filter_text = Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $logs = $this->model->getLogs($start_index, $results, $sort, $dir);
         $total_logs = $this->model->getTotalLogs();
@@ -159,7 +159,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function logdetails()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $id_log = Get::req('id_log', DOTY_INT, 0);
+        $id_log = Forma\lib\Get::req('id_log', DOTY_INT, 0);
 
         $data = $this->model->logInfo($id_log);
 
@@ -171,7 +171,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function logrollback()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $id_log = Get::req('id_log', DOTY_INT, 0);
+        $id_log = Forma\lib\Get::req('id_log', DOTY_INT, 0);
         $result = [
             'success' => ($this->model->rollbackLog($id_log) ? 'true' : 'false'),
         ];
@@ -202,9 +202,9 @@ class EnrollrulesAlmsController extends AlmsController
     {
         checkPerm('view', true, 'enrollrules', 'lms');
         $data = [
-            'title' => Get::req('title', DOTY_MIXED, ''),
-            'lang_code' => Get::req('lang_code', DOTY_MIXED, ''),
-            'rule_type' => Get::req('rule_type', DOTY_MIXED, ''),
+            'title' => Forma\lib\Get::req('title', DOTY_MIXED, ''),
+            'lang_code' => Forma\lib\Get::req('lang_code', DOTY_MIXED, ''),
+            'rule_type' => Forma\lib\Get::req('rule_type', DOTY_MIXED, ''),
         ];
         $result = [
             'success' => ($this->model->createRule($data) ? 'true' : 'false'),
@@ -219,7 +219,7 @@ class EnrollrulesAlmsController extends AlmsController
     {
         checkPerm('view', true, 'enrollrules', 'lms');
 
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
         $rule = $this->model->getRule($id_rule);
         $languages = Docebo::langManager()->getAllLangCode();
         array_unshift($languages, Lang::t('_ALL', 'enrollrules'));
@@ -237,9 +237,9 @@ class EnrollrulesAlmsController extends AlmsController
     {
         checkPerm('view', true, 'enrollrules', 'lms');
         $data = [
-            'id_rule' => Get::req('id_rule', DOTY_INT, 0),
-            'title' => Get::req('title', DOTY_MIXED, ''),
-            'lang_code' => Get::req('lang_code', DOTY_MIXED, ''),
+            'id_rule' => Forma\lib\Get::req('id_rule', DOTY_INT, 0),
+            'title' => Forma\lib\Get::req('title', DOTY_MIXED, ''),
+            'lang_code' => Forma\lib\Get::req('lang_code', DOTY_MIXED, ''),
         ];
         $result = [
             'success' => ($this->model->updateRule($data) ? 'true' : 'false'),
@@ -253,7 +253,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function del()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
         $result = [
             'success' => ($this->model->deleteRule($id_rule) ? 'true' : 'false'),
         ];
@@ -266,7 +266,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function modelem()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
 
         $rule = $this->model->getRule($id_rule);
         $types = $this->model->ruleTypes();
@@ -307,11 +307,11 @@ class EnrollrulesAlmsController extends AlmsController
     {
         checkPerm('view', true, 'enrollrules', 'lms');
 
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $rule = $this->model->getRule($id_rule);
         $course_selection = $this->json->decode($rule->course_list);
@@ -361,7 +361,7 @@ class EnrollrulesAlmsController extends AlmsController
             Util::jump_to('index.php?r=alms/enrollrules/show');
         }
 
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
         $prev_entities = $this->model->getEntityRule($id_rule);
 
         $re = true;
@@ -389,7 +389,7 @@ class EnrollrulesAlmsController extends AlmsController
         $course_selector->show_coursepath_selector = false;
         $course_selector->show_catalogue_selector = false;
 
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
         $rule = $this->model->getRule($id_rule);
 
         if (isset($_POST['undo'])) {
@@ -425,7 +425,7 @@ class EnrollrulesAlmsController extends AlmsController
         require_once _adm_ . '/class.module/class.directory.php';
         $user_selector = new UserSelector();
 
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
         $rule = $this->model->getRule($id_rule);
 
         $types = $this->model->ruleTypes();
@@ -436,7 +436,7 @@ class EnrollrulesAlmsController extends AlmsController
         }
         if (isset($_POST['save'])) {
             // Save the new course in the list
-            $selection = Get::req('userselector_input', DOTY_MIXED, []);
+            $selection = Forma\lib\Get::req('userselector_input', DOTY_MIXED, []);
             $newsel = explode(',', $selection['entity_selection']);
             $oldsel = array_keys($this->model->getEntityRule($id_rule));
 
@@ -470,7 +470,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function modbaseelem()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
 
         $rule = $this->model->getRule($id_rule);
         $types = $this->model->ruleTypes();
@@ -510,11 +510,11 @@ class EnrollrulesAlmsController extends AlmsController
     {
         checkPerm('view', true, 'enrollrules', 'lms');
 
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
-        $start_index = Get::req('startIndex', DOTY_INT, 0);
-        $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
+        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
+        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $rule = $this->model->getRule($id_rule);
         $course_selection = $this->json->decode($rule->course_list);
@@ -563,7 +563,7 @@ class EnrollrulesAlmsController extends AlmsController
             Util::jump_to('index.php?r=alms/enrollrules/show');
         }
 
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
         $prev_entities = $this->model->getBaseEntityRule($id_rule, false, true);
 
         $re = true;
@@ -594,7 +594,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function applyrule()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $id_rule = Get::req('id_rule', DOTY_INT, 0);
+        $id_rule = Forma\lib\Get::req('id_rule', DOTY_INT, 0);
         // Get rule info
         $rule = $this->model->getRule($id_rule);
         $types = $this->model->ruleTypes();

@@ -88,7 +88,7 @@ class CoursestatsLms extends Model
     {
         if (is_array($pagination)) {
             $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-            $results = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : Get::sett('visuItem', 25));
+            $results = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : Forma\lib\Get::sett('visuItem', 25));
 
             // Default order
             $sort = 'u.userid';
@@ -218,7 +218,7 @@ class CoursestatsLms extends Model
 
         if (is_array($pagination)) {
             $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-            $rowsPerPage = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : Get::sett('visuItem', 10));
+            $rowsPerPage = (isset($pagination['rowsPerPage']) ? $pagination['rowsPerPage'] : Forma\lib\Get::sett('visuItem', 10));
 
             if (isset($pagination['order_column'])) {
                 switch ($pagination['order_column']) {
@@ -335,7 +335,7 @@ class CoursestatsLms extends Model
     {
         if (is_array($pagination)) {
             $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-            $results = (isset($pagination['results']) ? $pagination['results'] : Get::sett('visuItem', 10));
+            $results = (isset($pagination['results']) ? $pagination['results'] : Forma\lib\Get::sett('visuItem', 10));
 
             $dir = 'ASC';
             if (isset($pagination['dir'])) {

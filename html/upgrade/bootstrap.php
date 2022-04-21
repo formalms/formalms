@@ -36,7 +36,6 @@ include _lib_ . '/installer/lib.template.php';
 
 PageWriter::init();
 
-include _base_ . '/lib/lib.get.php';
 include _base_ . '/lib/lib.utils.php';
 include _base_ . '/lib/lib.yuilib.php';
 include _base_ . '/lib/lib.form.php';

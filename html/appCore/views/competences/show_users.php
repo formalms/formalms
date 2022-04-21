@@ -135,9 +135,9 @@ $rel_actions = '<a class="ico-wt-sprite subs_add" title="' . Lang::t('_ASSIGN_US
 $this->widget('table', [
     'id' => 'competence_users_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/competences/getuserstabledata',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'userid',
     'dir' => 'asc',
     'generateRequest' => 'CompetenceUsers.requestBuilder',

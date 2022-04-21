@@ -27,7 +27,7 @@ if (Docebo::user()->isAnonymous()) {
 
 require_once $GLOBALS['where_framework'] . '/lib/lib.tags.php';
 
-$op = Get::req('op', DOTY_ALPHANUM, '');
+$op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {
     case 'get_platform_cloud':
         $tags = new Tags('*');
@@ -47,16 +47,16 @@ switch ($op) {
         aout($cloud);
     ; break;
     case 'save_tag':
-        $compiled_tags = Get::req('tags', DOTY_STRING, '');
-        $id_resource = Get::req('id_resource', DOTY_INT, '');
-        $resource_type = Get::req('resource_type', DOTY_ALPHANUM, '');
+        $compiled_tags = Forma\lib\Get::req('tags', DOTY_STRING, '');
+        $id_resource = Forma\lib\Get::req('id_resource', DOTY_INT, '');
+        $resource_type = Forma\lib\Get::req('resource_type', DOTY_ALPHANUM, '');
 
-        $title = Get::req('title', DOTY_STRING, '');
-        $sample = Get::req('sample_text', DOTY_STRING, '');
-        $permalink = Get::req('permalink', DOTY_STRING, '');
+        $title = Forma\lib\Get::req('title', DOTY_STRING, '');
+        $sample = Forma\lib\Get::req('sample_text', DOTY_STRING, '');
+        $permalink = Forma\lib\Get::req('permalink', DOTY_STRING, '');
 
         $private = false;
-        $req_private = Get::req('private', DOTY_INT, '0');
+        $req_private = Forma\lib\Get::req('private', DOTY_INT, '0');
         if ($req_private) {
             // requested to save as private, check if the user can do this operation
             if (isset($_SESSION['levelCourse']) && $_SESSION['levelCourse'] > 3) {
@@ -73,7 +73,7 @@ switch ($op) {
         aout($updated_tags);
     ; break;
     default:
-        $query = Get::req('query', DOTY_STRING, '');
+        $query = Forma\lib\Get::req('query', DOTY_STRING, '');
 
         $tags = new Tags('*');
         $suggestion = $tags->getAutoComplete($query);

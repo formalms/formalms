@@ -89,7 +89,7 @@
                                     'id' => 'createuser_orgchart_tree',
                                     'ajaxUrl' => 'ajax.adm_server.php?r=adm/usermanagement/gettreedata_create',
                                     'treeClass' => 'DialogOrgFolderTree',
-                                    'treeFile' => Get::rel_path('adm') . '/views/usermanagement/orgchartfoldertree.js',
+                                    'treeFile' => Forma\lib\Get::rel_path('adm') . '/views/usermanagement/orgchartfoldertree.js',
                                     'initialSelectedNode' => 0,
                                     'show' => 'tree',
                                     'useCheckboxes' => 'true',
@@ -98,7 +98,7 @@
                                     'hiddenSelection' => 'orgchart_hidden_selection',
                                     'runtime' => true,
                                     'languages' => [
-                                        '_ROOT' => Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
+                                        '_ROOT' => Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
                                         '_LOADING' => Lang::t('_LOADING', 'standard'),
                                     ],
                                 ]);
@@ -237,7 +237,7 @@
                                         . '<a href="../upgrade" class="red"><b>' . 'You need database upgrade' . '</b></a>';
                                 }
 
-                                if (Get::sett('welcome_use_feed') == 'on') {
+                                if (Forma\lib\Get::sett('welcome_use_feed') == 'on') {
                                     if (!$version['online_version']) {
                                         $version = ['string' => '<b class="red">' . Lang::t('_UNKNOWN_RELEASE', 'dashboard') . '</b>'];
                                     } elseif (version_compare($version['online_version'], $version['file_version']) == 1) {

@@ -21,15 +21,15 @@ class Step4Controller extends StepController
     {
         $err = 0;
         $res = ['success' => false, 'err' => [], 'ok' => [], 'msg' => ''];
-        $op = Get::pReq('op', DOTY_STRING);
+        $op = Forma\lib\Get::pReq('op', DOTY_STRING);
         // ---
-        $site_url = Get::pReq('site_url', DOTY_STRING);
+        $site_url = Forma\lib\Get::pReq('site_url', DOTY_STRING);
         // ---
-        $db_type = Get::pReq('db_type', DOTY_STRING);
-        $db_host = Get::pReq('db_host', DOTY_STRING);
-        $db_name = Get::pReq('db_name', DOTY_STRING);
-        $db_user = Get::pReq('db_user', DOTY_STRING);
-        $db_pass = Get::pReq('db_pass', DOTY_STRING);
+        $db_type = Forma\lib\Get::pReq('db_type', DOTY_STRING);
+        $db_host = Forma\lib\Get::pReq('db_host', DOTY_STRING);
+        $db_name = Forma\lib\Get::pReq('db_name', DOTY_STRING);
+        $db_user = Forma\lib\Get::pReq('db_user', DOTY_STRING);
+        $db_pass = Forma\lib\Get::pReq('db_pass', DOTY_STRING);
         if ($db_pass === '_fromconfig') {
             if (file_exists(_base_ . '/config.php')) {
                 define('IN_FORMA', true);
@@ -38,12 +38,12 @@ class Step4Controller extends StepController
             }
         }
         // ---
-        $upload_method = Get::pReq('upload_method', DOTY_STRING);
+        $upload_method = Forma\lib\Get::pReq('upload_method', DOTY_STRING);
         // ---
-        $ftp_host = Get::pReq('ftp_host', DOTY_STRING);
-        $ftp_port = Get::pReq('ftp_port', DOTY_STRING);
-        $ftp_user = Get::pReq('ftp_user', DOTY_STRING);
-        $ftp_pass = Get::pReq('ftp_pass', DOTY_STRING);
+        $ftp_host = Forma\lib\Get::pReq('ftp_host', DOTY_STRING);
+        $ftp_port = Forma\lib\Get::pReq('ftp_port', DOTY_STRING);
+        $ftp_user = Forma\lib\Get::pReq('ftp_user', DOTY_STRING);
+        $ftp_pass = Forma\lib\Get::pReq('ftp_pass', DOTY_STRING);
         // ---
 
         if (empty($site_url)) {
@@ -242,8 +242,8 @@ class Step4Controller extends StepController
 
     public function validate()
     {
-        $_SESSION['site_url'] = Get::pReq('site_url', DOTY_STRING);
-        $_SESSION['db_info'] = Get::pReq('db_info');
+        $_SESSION['site_url'] = Forma\lib\Get::pReq('site_url', DOTY_STRING);
+        $_SESSION['db_info'] = Forma\lib\Get::pReq('db_info');
         if ($_SESSION['db_info']['db_pass'] === '_fromconfig') {
             if (file_exists(_base_ . '/config.php')) {
                 define('IN_FORMA', true);
@@ -251,8 +251,8 @@ class Step4Controller extends StepController
                 $_SESSION['db_info']['db_pass'] = $cfg['db_pass'];
             }
         }
-        $_SESSION['upload_method'] = Get::pReq('upload_method');
-        $_SESSION['ul_info'] = Get::pReq('ul_info');
+        $_SESSION['upload_method'] = Forma\lib\Get::pReq('upload_method');
+        $_SESSION['ul_info'] = Forma\lib\Get::pReq('ul_info');
 
         return true;
     }

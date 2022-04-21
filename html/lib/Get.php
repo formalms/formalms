@@ -11,7 +11,9 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-use appCore\Template\Services\ClientService;
+namespace Forma\lib;
+
+use Forma\appCore\Template\Services\ClientService;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -297,7 +299,7 @@ class Get
             }
         }
         $folder = str_replace(['//', '\\/', '/./'], '/', $folder);
-        $path = Get::site_url(true) . $folder;
+        $path = self::site_url(true) . $folder;
 
         return rtrim($path, '/') . '/';
     }
@@ -312,7 +314,7 @@ class Get
     public static function tmpl_path($item = false)
     {
         if ($item === false) {
-            $platform = Get::cur_plat();
+            $platform = self::cur_plat();
         } else {
             $platform = $item;
         }
@@ -336,7 +338,7 @@ class Get
     {
         // where are we ?
         if (!$is_abspath) {
-            $src = Get::tmpl_path('base') . 'images/' . $src;
+            $src = self::tmpl_path('base') . 'images/' . $src;
         }
 
         return '<img src="' . $src . '" '
@@ -408,7 +410,7 @@ class Get
      */
     public static function site_url($disableUrlSetting = false)
     {
-        if (!($url = Get::sett('url')) || $disableUrlSetting) {
+        if (!($url = self::sett('url')) || $disableUrlSetting) {
             $url = ClientService::getInstance()->getBaseUrl();
         }
 
@@ -417,10 +419,10 @@ class Get
 
     public static function home_page_req()
     {
-        $home_page = Get::sett('home_page');
+        $home_page = self::sett('home_page');
 
         if (!$home_page) {
-            $home_page_option = Get::sett('home_page_option');
+            $home_page_option = self::sett('home_page_option');
             switch ($home_page_option) {
                 case 'my_courses':
                     $home_page = 'lms/mycourses/home';
@@ -555,7 +557,7 @@ class Get
 
                 if ($title) {
                     if (!defined('IS_AJAX')) {
-                        $GLOBALS['page_title'] = Get::sett('page_title', '') . ' &rsaquo; ' . $title;
+                        $GLOBALS['page_title'] = self::sett('page_title', '') . ' &rsaquo; ' . $title;
                     }
                 }
 
@@ -729,7 +731,7 @@ class Get
 
     public static function accessibilty()
     {
-        return Get::sett('boh');
+        return self::sett('boh');
     }
 
     /**
@@ -754,7 +756,7 @@ class Get
     public static function dir_size($path)
     {
         if (!is_dir($path)) {
-            return Get::file_size($path);
+            return self::file_size($path);
         }
         if ($scan_dir = opendir($path)) {
             $size = 0;

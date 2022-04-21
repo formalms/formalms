@@ -17,7 +17,7 @@ function loginDispatch($op)
 {
     switch ($op) {
         case 'login':
-            Util::jump_to(Get::rel_path('base') . '/index.php?modname=login&amp;op=login');
+            Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?modname=login&amp;op=login');
         ; break;
     }
 }

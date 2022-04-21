@@ -126,9 +126,9 @@ if ($type == 'scoitem') {
 $this->widget('table', [
     'id' => 'kb_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/getuncategorized',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'title',
     'dir' => 'asc',
     'generateRequest' => 'KbManagement.requestBuilder',

@@ -36,9 +36,9 @@ $rel_action_bottom = '<span class="ma_selected_users">'
 $_params = [
     'id' => 'classlocations_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/adminmanager/getclasslocationstabledata',
-    'rowsPerPage' => Get::sett('visuItem', 25),
+    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Get::sett('visuItem', 25),
+    'results' => Forma\lib\Get::sett('visuItem', 25),
     'sort' => 'location',
     'dir' => 'asc',
     'generateRequest' => 'ClassLocations.requestBuilder',

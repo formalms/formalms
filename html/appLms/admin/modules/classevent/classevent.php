@@ -177,7 +177,7 @@ function deleteClassEvent()
 
     if (isset($_POST['undo'])) {
         Util::jump_to($back_url);
-    } elseif (Get::req('conf_del', DOTY_INT, 0) == 1) {
+    } elseif (Forma\lib\Get::req('conf_del', DOTY_INT, 0) == 1) {
         $clm->deleteClassEvent($_POST['id']);
 
         Util::jump_to($back_url);

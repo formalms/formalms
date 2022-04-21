@@ -13,12 +13,12 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-$op = Get::req('op', DOTY_ALPHANUM, '');
+$op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
 
 // courtesy of elearnit.net
 function duplicateCourse()
 {
-    $id_dupcourse = Get::req('id_course', DOTY_INT, 0);
+    $id_dupcourse = Forma\lib\Get::req('id_course', DOTY_INT, 0);
 
     // read the old course info
     $query_sel = 'SELECT *
@@ -108,8 +108,8 @@ function duplicateCourse()
     $new_course_dup = sql_insert_id();
 
     //Create the new course file
-    $path = Get::sett('pathcourse');
-    $path = '/appLms/' . Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
+    $path = Forma\lib\Get::sett('pathcourse');
+    $path = '/appLms/' . Forma\lib\Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
     require_once _base_ . '/lib/lib.upload.php';
 
@@ -388,8 +388,8 @@ switch ($op) {
             'courses' => [],
         ];
 
-        $filter = Get::req('query', DOTY_STRING, '');
-        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
+        $filter = Forma\lib\Get::req('query', DOTY_STRING, '');
+        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
 
         if ($filter != '') {
             $query_filter = '';

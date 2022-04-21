@@ -49,7 +49,7 @@ class CourseLms extends Model
     {
         // read order for the course from database
         if ($this->_t_order == false) {
-            $t_order = Get::sett('tablist_mycourses', false);
+            $t_order = Forma\lib\Get::sett('tablist_mycourses', false);
             if ($t_order != false) {
                 $arr_order_course = explode(',', $t_order);
                 $arr_temp = [];
@@ -156,7 +156,7 @@ class CourseLms extends Model
 
     public static function getCourseParsedData($course)
     {
-        $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Get::sett('pathcourse') . '/';
+        $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
         $levels = CourseLevel::getTranslatedLevels();
         $infoEnroll = self::getInfoEnroll($course['idCourse'], Docebo::user()->getIdSt());
 
@@ -166,9 +166,9 @@ class CourseLms extends Model
         $parsedData['escaped_name'] = Util::purge($parsedData['name']); // and this for javascript calls
 
         if ($parsedData['use_logo_in_courselist']) {
-            $parsedData['img_course'] = $parsedData['img_course'] && is_file($path_course . $parsedData['img_course']) ? $path_course . $parsedData['img_course'] : Get::tmpl_path() . 'images/course/course_nologo.png';
+            $parsedData['img_course'] = $parsedData['img_course'] && is_file($path_course . $parsedData['img_course']) ? $path_course . $parsedData['img_course'] : Forma\lib\Get::tmpl_path() . 'images/course/course_nologo.png';
         } else {
-            $parsedData['img_course'] = Get::tmpl_path() . 'images/course/course_nologo.png';
+            $parsedData['img_course'] = Forma\lib\Get::tmpl_path() . 'images/course/course_nologo.png';
         }
 
         if (strlen($parsedData['nameCategory']) > 1) {

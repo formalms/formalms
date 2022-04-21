@@ -701,7 +701,7 @@ if (!Docebo::user()->isAnonymous()) {
             $subject = importVar('mail_object', false, '[Nessun Oggetto]');
             $body = importVar('mail_body', false, '');
 
-            $sender = Get::sett('sender_event');
+            $sender = Forma\lib\Get::sett('sender_event');
 
             //sendMail($recipients, $subject, $body, $sender);
 
@@ -977,7 +977,7 @@ if (!Docebo::user()->isAnonymous()) {
 
                 $acl_man = &Docebo::user()->getAclManager();
 
-                $sender = Get::sett('sender_event');
+                $sender = Forma\lib\Get::sett('sender_event');
 
                 $mailer = FormaMailer::getInstance();
                 $mailer->SendMail($sender, $re, $subject, $body, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
@@ -1701,7 +1701,7 @@ if (!Docebo::user()->isAnonymous()) {
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
-        $tb = new Table(Get::sett('visuItem'), $lang->def('_CLASSROOM_CAPTION'), $lang->def('_CLASSROOM_SUMMARY'));
+        $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CLASSROOM_CAPTION'), $lang->def('_CLASSROOM_SUMMARY'));
         $tb->initNavBar('ini', 'link');
         $tb->setLink('index.php?modname=reservation&amp;op=classroom&amp;id_course=' . $_SESSION['idCourse']);
         $ini = $tb->getSelectedElement();
@@ -1711,7 +1711,7 @@ if (!Docebo::user()->isAnonymous()) {
 		SELECT idClassroom, name, description
 		FROM ' . $GLOBALS['prefix_lms'] . "_classroom
 		ORDER BY name
-		LIMIT $ini," . Get::sett('visuItem');
+		LIMIT $ini," . Forma\lib\Get::sett('visuItem');
 
         $query_classroom_tot = '
 		SELECT COUNT(*)
@@ -2058,7 +2058,7 @@ function reservationSendMail()
         $subject = importVar('mail_object', false, '[Nessun Oggetto]');
         $body = importVar('mail_body', false, '');
 
-        $sender = Get::sett('sender_event');
+        $sender = Forma\lib\Get::sett('sender_event');
 
         //sendMail($recipients, $subject, $body, $sender);
 
