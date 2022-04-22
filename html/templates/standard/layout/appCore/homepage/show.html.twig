@@ -70,7 +70,7 @@
 <div class="homepage__row">
     <br/>
     <div class="collapse homepage__collapsed-text js-collapsed-text" id="description">
-        <p style="line-height: 26px;">{{ intro_text_body|raw }}</p>
+        <div style="line-height: 26px;">{{ intro_text_body|raw }}</div>
     </div>
     <div class="collapse-wrapper" data-toggle="collapse" data-target="#description">
         <a class="forma-button forma-button--orange is-hidden js-show-collapsed-text" href="#">
@@ -93,7 +93,7 @@
 <script>
     $(document).ready(function () {
         var $elem = $('.js-collapsed-text');
-        var _textHeight = $elem.children('p').height();
+        var _textHeight = $elem.children('div').height();
         var _containerHeight = $elem.height();
         var $btn = $('.js-show-collapsed-text');
 
