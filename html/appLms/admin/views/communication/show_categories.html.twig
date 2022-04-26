@@ -5,7 +5,7 @@
 
 <table class="table table-bordered display" style="width:100%" id="categorieslist"></table>
 <br>
-<a id="addlang_bottom" href="ajax.adm_server.php?r=adm/lang/addmask" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
+<a id="addcategory_bottom"  onclick="event.preventDefault();openModal(this);" href="ajax.adm_server.php?r=alms/communication/addCategoryMask" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
 
 <!-- Modal confirm -->
 <div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
@@ -19,6 +19,21 @@
             </div>
         </div>
     </div>
+</div>
+
+<!-- Modal add -->
+<div class="modal" id="addModal" style="display: none; z-index: 9999;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" data-val="body">
+			</div>
+			<div class="modal-footer">
+				<div class="alert alert-danger text-center" style="display: none;" data-val="message"></div>
+				<button type="button" class="btn btn-default" data-val="cancel"><?php echo Lang::t('_CANCEL', 'standard'); ?></button>
+				<button type="button" class="btn btn-primary" data-val="submit"><?php echo Lang::t('_SAVE', 'standard'); ?></button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script>
@@ -46,7 +61,7 @@
             {data: 'label', title: '{{ Lang_translate('_LABEL', 'communication') }}', sortable: true},
             {data: 'parentLabel', title: '{{ Lang_translate('_PARENT', 'communication') }}', sortable: false},
             {data: 'countCommunications', title: '{{ Lang_translate('_COUNT', 'communication') }}', sortable: true},
-            {data: 'filterUrl', title: '{{ Lang_translate('_FILTER', 'communication') }}', sortable: false},
+            {data: 'filterUrl', title: '<span class="ico-sprite subs_download"><span>{{ Lang_translate('_FILTER', 'communication') }}', sortable: false},
             {data: 'editUrl', title: '<span class="ico-sprite subs_mod"><span>{{ Lang_translate("_MOD", "admin_lang") }}</span></span>', sortable: true},
             {data: 'deleteUrl', title: '<span class="ico-sprite subs_del"><span>{{ Lang_translate("_DEL", "admin_lang") }}</span></span>', sortable: true}
 
@@ -80,4 +95,26 @@
             deferRender: true,
         });
     });
+
+    var openModal = function(button) {
+
+  
+        let url = $(button).attr('href');
+		var modalSelector = '#addModal';
+		var modal = $(modalSelector);
+		var fClose = function() {
+			modal.modal("hide");
+		};
+		$.ajax({
+			type: 'GET',
+			url: url,
+			success: function(data) {
+				var form = JSON.parse(data).body;
+				modal.find('*[data-val=body]').html(form);
+				modal.modal("show");
+				modal.find("*[data-val=cancel]").unbind().bind("click", fClose);
+				modal.find("*[data-val=submit]").unbind().bind("click", addFunc);
+			}
+		});
+	};
 </script>

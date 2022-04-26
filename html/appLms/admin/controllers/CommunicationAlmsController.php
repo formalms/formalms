@@ -1042,5 +1042,18 @@ class CommunicationAlmsController extends AlmsController
         $this->render('show_categories', ['categoriesList' => array_values($categoriesList)]);
     }
 
+    public function addCategoryMask() {
+
+        $this->render('category_mask', []);
+
+        $params = [
+            'success' => true,
+            'header' => Lang::t('_CATEGORIES', 'communication'),
+            'body' => ob_get_clean(),
+        ];
+        @ob_start();
+        echo $this->json->encode($params);
+    }
+
     //----------------------------------------------------------------------------
 }
