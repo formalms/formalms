@@ -30,7 +30,7 @@ class Folder
     public $countChildrens;
     public $nested;
 
-    public function Folder(&$tdb, $arrayValues, $childInfo = false, $nested = false)
+    public function __construct(&$tdb, $arrayValues, $childInfo = false, $nested = false)
     {
         $this->tdb = $tdb;
         $this->id = $arrayValues[0];

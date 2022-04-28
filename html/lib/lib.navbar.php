@@ -38,7 +38,7 @@ class NavBar
      * @param int    $element_total    the total number of element
      * @param enum   $kind_of          the type of navbar (link or button)
      */
-    public function NavBar($var_name, $element_per_page, $element_total, $kind_of = false, $modname = false, $platform = false)
+    public function __construct($var_name, $element_per_page, $element_total, $kind_of = false, $modname = false, $platform = false)
     {
         $this->var_name = $var_name;
         $this->element_per_page = $element_per_page;

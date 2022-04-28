@@ -48,7 +48,7 @@ class DoceboEventClass
      *                         - if is int $class_ref is used as class_id
      *                         - if is string is used as name
      **/
-    public function DoceboEventClass($class_ref)
+    public function __construct($class_ref)
     {
         if (is_int($class_ref)) {
             $this->class_id = $class_ref;

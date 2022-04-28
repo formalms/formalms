@@ -70,7 +70,7 @@ class UserManager
      * @param string $prefix   specified a prefix
      * @param string $db_conn  specified a db connection with the database
      */
-    public function UserManager($platform = false, $prefix = false, $db_conn = false)
+    public function __construct($platform = false, $prefix = false, $db_conn = false)
     {
         $this->_platform = ($platform !== false ? $platform : Get::cur_plat());
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);

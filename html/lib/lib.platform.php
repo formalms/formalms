@@ -47,7 +47,7 @@ class PlatformManager
         return $GLOBALS['platform_manager'];
     }
 
-    public function PlatformManager($db_conn = false, $prefix = false)
+    public function __construct($db_conn = false, $prefix = false)
     {
         if ($prefix === false) {
             $this->prefix = $GLOBALS['prefix_fw'];

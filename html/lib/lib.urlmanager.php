@@ -36,7 +36,7 @@ class UrlManager
     /**
      * UrlManager constructor.
      */
-    public function UrlManager($url = false)
+    public function __construct($url = false)
     {
         if ($url !== false) {
             $url_piece = explode('?', $url);

@@ -89,7 +89,7 @@ class UserProfile
     /**
      * class constructor.
      */
-    public function UserProfile($id_user, $edit_mode = false)
+    public function __construct($id_user, $edit_mode = false)
     {
         $this->_id_user = $id_user;
 

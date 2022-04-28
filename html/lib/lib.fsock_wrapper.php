@@ -33,7 +33,7 @@ class FSock
     public $_errno = 0;
     public $_errstr = '';
 
-    public function Fsock($protocol = false, $version = false)
+    public function __construct($protocol = false, $version = false)
     {
         if ($protocol != false) {
             $this->_protocol = $protocol;
