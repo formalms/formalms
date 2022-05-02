@@ -13,8 +13,9 @@
 
 @error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);
 
-session_name('docebo_session');
-session_start();
+\Forma\lib\Session\SessionManager::getInstance()->getSession();
+//session_name('docebo_session');
+//session_start();
 
 define('IN_FORMA', true);
 define('IN_DOCEBO', true);			// need for upgrade from doceboce

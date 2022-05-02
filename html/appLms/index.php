@@ -27,7 +27,7 @@ Boot::init(BOOT_PAGE_WR);
 $db = &DbConn::getInstance();
 
 //Remvoe session param layoutToRender
-unset($_SESSION['layoutToRender']);
+//unset($_SESSION['layoutToRender']);
 
 // some specific lib to load
 require_once _lms_ . '/lib/lib.istance.php';

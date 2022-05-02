@@ -13,7 +13,9 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-$currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+
+$currentSession = $request->getSession();
 
 // access granted only if user is logged in
 if (Docebo::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???

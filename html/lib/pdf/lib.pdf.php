@@ -208,7 +208,7 @@ class PDF extends TCPDF
 
         $pdf = $this->Output(('"' . $name . '.pdf"'), 'S');
 
-        session_write_close();
+        //session_write_close();
         //ini_set("output_buffering", 0);
         //Download file
         //send file length info

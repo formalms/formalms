@@ -89,7 +89,7 @@ ob_clean();
 echo $json->encode($jres);
 
 sql_close($db);
-session_write_close();
+//session_write_close();
 
 // -------------------------------------------------------------------------------
 

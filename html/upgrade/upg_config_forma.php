@@ -127,7 +127,7 @@ ob_clean();
 require_once _base_ . '/lib/lib.json.php';
 $json = new Services_JSON();
 echo $json->encode($res);
-session_write_close();
+//session_write_close();
 
 // flush buffer
 ob_end_flush();

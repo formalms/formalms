@@ -23,12 +23,12 @@ class Forma
 {
     public static function usePlugins()
     {
-        return empty($GLOBALS['notuse_plugin']) && empty($_SESSION['notuse_plugin']);
+        return empty($GLOBALS['notuse_plugin']) && empty(\Forma\lib\Session\SessionManager::getInstance()->getSession()->get('notuse_plugin'));
     }
 
     public static function useCustomScripts()
     {
-        return Forma\lib\Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty($_SESSION['notuse_customscript']);
+        return Forma\lib\Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty(\Forma\lib\Session\SessionManager::getInstance()->getSession()->get('notuse_customscript'));
     }
 
     /**

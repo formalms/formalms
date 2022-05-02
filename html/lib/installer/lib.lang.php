@@ -149,7 +149,7 @@ class Lang
             require_once _base_ . '/lib/lib.json.php';
             $json = new Services_JSON();
             echo $json->encode($res);
-            session_write_close();
+            //session_write_close();
             exit();
         }
         if (!isset($_SESSION['sel_lang'])) {
