@@ -309,9 +309,11 @@ class Layout
 
     public static function render($layout)
     {
-        if ($_SESSION['template'] != null && $_SESSION['template'] != getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        if ($currentSession->has('template') && $currentSession->get('template') !== getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
             $msgChangeTemplate = Lang::t('_MSG_CHANGE_TEMPLATE', 'standard');
-            $msgChangeTemplate = str_replace('[template_name]', $_SESSION['template'], $msgChangeTemplate);
+            $msgChangeTemplate = str_replace('[template_name]', $currentSession->get('template'), $msgChangeTemplate);
             $msgChangeTemplate = str_replace('[template_min_version]', _template_min_version_, $msgChangeTemplate);
 
             UIFeedback::notice($msgChangeTemplate);

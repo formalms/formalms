@@ -36,7 +36,7 @@ define('USER_QUOTA_UNLIMIT', 0);
 define('_US_EMPTY', 0);
 define('_NOT_DELETED', 0);
 
-class DoceboUser
+class DoceboUser implements Serializable
 {
     public $sprefix = '';
     public $acl = null;
@@ -123,7 +123,7 @@ class DoceboUser
             $lvl = current($level_st);
         }
 
-        $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int) $idst . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
+        $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int)$idst . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
             list($lvl) = $this->db->fetch_row($res);
@@ -154,9 +154,9 @@ class DoceboUser
         }
         $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         $currentSession->set($this->sprefix . '_idst', $this->idst);
-        $currentSession->set($this->sprefix . '_username',$this->userid);
-        $currentSession->set($this->sprefix . '_stlist',$json->encode($this->arrst));
-        $currentSession->set($this->sprefix . '_log_ip',$ip);
+        $currentSession->set($this->sprefix . '_username', $this->userid);
+        $currentSession->set($this->sprefix . '_stlist', $json->encode($this->arrst));
+        $currentSession->set($this->sprefix . '_log_ip', $ip);
         $currentSession->save();
     }
 
@@ -276,7 +276,7 @@ class DoceboUser
     {
         $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         if ($currentSession->has('user_enter_time')) {
-            $currentSession->set('user_enter_time',date('Y-m-d H:i:s'));
+            $currentSession->set('user_enter_time', date('Y-m-d H:i:s'));
         }
 
         if ($currentSession->has($prefix . '_username')) {
@@ -285,11 +285,11 @@ class DoceboUser
             if ($currentSession->has('user_enter_mark')) {
                 if ($currentSession->get('user_enter_mark') < time() - REFRESH_LAST_ENTER) {
                     $du->setLastEnter(date('Y-m-d H:i:s'));
-                    $currentSession->set('user_enter_mark',time());
+                    $currentSession->set('user_enter_mark', time());
                 }
             } else {
                 $du->setLastEnter(date('Y-m-d H:i:s'));
-                $currentSession->set('user_enter_mark',time());
+                $currentSession->set('user_enter_mark', time());
             }
             $currentSession->save();
 
@@ -312,10 +312,10 @@ class DoceboUser
                             if ($user_info != false) {
                                 $username = $user_info[ACL_INFO_USERID];
                                 $du = new DoceboUser($username, $prefix);
-                                $currentSession->set('last_enter',$user_info[ACL_INFO_LASTENTER]);
+                                $currentSession->set('last_enter', $user_info[ACL_INFO_LASTENTER]);
 
                                 $du->setLastEnter(date('Y-m-d H:i:s'));
-                                $currentSession->set('user_enter_mark',time());
+                                $currentSession->set('user_enter_mark', time());
                                 $du->loadUserSectionST();
                                 $du->SaveInSession();
                                 $currentSession->save();
@@ -337,7 +337,7 @@ class DoceboUser
                         $du = new DoceboUser($username, $prefix);
 
                         $du->setLastEnter(date('Y-m-d H:i:s'));
-                        $currentSession->set('user_enter_mark',time());
+                        $currentSession->set('user_enter_mark', time());
                         $currentSession->save();
                         $du->loadUserSectionST();
                         $du->SaveInSession();
@@ -355,9 +355,9 @@ class DoceboUser
     /**
      * static public function for load user from login e password.
      *
-     * @param string $login    login of the user
+     * @param string $login login of the user
      * @param string $password password of the user in clear text
-     * @param string $prefix   optional prefix for session publiciables
+     * @param string $prefix optional prefix for session publiciables
      *
      * @return mixed DoceboUser instance of logged in user if success in login
      *               FALSE otherwise
@@ -429,9 +429,8 @@ class DoceboUser
                 Lang::set($du->preference->getLanguage());
             }
         }
-        if (function_exists('session_regenerate_id')) {
-            session_regenerate_id();
-        }
+
+        \Forma\lib\Session\SessionManager::getInstance()->getSession()->migrate();
 
         return $du;
     }
@@ -466,8 +465,8 @@ class DoceboUser
         $GLOBALS['current_user'] = $user;
         $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-        $currentSession->set('last_enter',$user->getLastEnter());
-        $currentSession->set('user_enter_mark',time());
+        $currentSession->set('last_enter', $user->getLastEnter());
+        $currentSession->set('user_enter_mark', time());
         $currentSession->save();
         $user->setLastEnter(date('Y-m-d H:i:s'));
     }
@@ -749,6 +748,16 @@ class DoceboUser
 
             return false;
         }
+    }
+
+    public function serialize()
+    {
+        // TODO: Implement serialize() method.
+    }
+
+    public function unserialize($data)
+    {
+        // TODO: Implement unserialize() method.
     }
 }
 

@@ -26,9 +26,9 @@
         "vanilla/htmlawed": "^2.2",
         "symfony/http-foundation": "^5.4",
         "symfony/serializer": "^5.4",
-        "symfony/property-access": "^5.4"
-        "vanilla/htmlawed": "^2.2",
-        "symfony/finder": "^5.4"
+        "symfony/property-access": "^5.4",
+        "nyholm/dsn": "^2.0",
+        "symfony/cache": "^5.4"
     },
     "require-dev": {
         "phing/phing": "^2.13",

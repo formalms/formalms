@@ -87,16 +87,15 @@ class AuthenticationManager
         require_once _lms_ . '/lib/lib.track_user.php';
         TrackUser::logoutSessionCourseTrack();
 
-        $_SESSION = [];
-        session_destroy();
+        \Forma\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
 
         // recreate Anonymous user
         $GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
 
-        if ($session != null) {
+        /*if ($session != null) {
             $_SESSION = array_merge($_SESSION, $session);
             $_COOKIE = array_merge($_COOKIE, $session);
-        }
+        }*/
 
         Events::trigger('core.user.logged_out', ['user' => $user]);
     }
@@ -107,8 +106,6 @@ class AuthenticationManager
         //////////////////////////////////
         $user->loadUserSectionST();
         $user->SaveInSession();
-
-        $GLOBALS['current_user'] = $user;
 
         resetTemplate();
 

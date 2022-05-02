@@ -283,16 +283,18 @@ class ListView
             $this->cancel = false;
         }
 
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         if (isset($arrayState[$this->_getIdInitRowId()])) {
             $this->startRow = (key($arrayState[$this->_getIdInitRowId()]) - 1) * $this->_getRowsPage();
-            $_SESSION[$this->id . '_cache_page'] = $this->startRow;
+            $currentSession->set($this->id . '_cache_page',$this->startRow);
         } elseif (empty($arrayState)) {
-            if (isset($_SESSION[$this->id . '_cache_page']) && $_SESSION[$this->id . '_cache_page'] != false) {
-                $this->startRow = $_SESSION[$this->id . '_cache_page'];
+
+            if ($currentSession->has($this->id . '_cache_page') && $currentSession->get($this->id . '_cache_page') != false) {
+                $this->startRow = $currentSession->get($this->id . '_cache_page');
             }
         } else {
-            if (isset($_SESSION[$this->id . '_cache_page'])) {
-                unset($_SESSION[$this->id . '_cache_page']);
+            if ($currentSession->has($this->id . '_cache_page')) {
+                $currentSession->remove($this->id . '_cache_page');
             }
             $this->startRow = 0;
         }

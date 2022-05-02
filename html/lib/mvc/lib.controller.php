@@ -19,10 +19,15 @@ class Controller
 
     protected $_default_action = 'show';
 
+    protected \Symfony\Component\HttpFoundation\Request $request;
+
+    protected $session;
+
     public function __construct($mvc_name = '')
     {
         $this->_mvc_name = $mvc_name;
-
+        $this->request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+        $this->session = $this->request->getSession();
         $this->init();
     }
 

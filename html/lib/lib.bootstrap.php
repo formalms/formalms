@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
 const BOOT_CONFIG = 1;
-const BOOT_SESS_CKE = 2;
+const BOOT_REQUEST = 2;
 const BOOT_UTILITY = 3;
 const BOOT_DATABASE = 4;
 const BOOT_SETTING = 5;
@@ -39,7 +39,7 @@ class Boot
     private static $_boot_seq = [
         BOOT_COMPOSER => 'composer',
         BOOT_CONFIG => 'config',
-        BOOT_SESS_CKE => 'sessionCookie',
+        BOOT_REQUEST => 'request',
         BOOT_UTILITY => 'utility',
         BOOT_DATABASE => 'database',
         BOOT_SETTING => 'loadSetting',
@@ -57,11 +57,13 @@ class Boot
     public static $log_array = [];
 
 
-    public static function composer(){
+    public static function composer()
+    {
         // composer autoload
         self::log('Load composer autoload.');
         require_once _base_ . '/vendor/autoload.php';
     }
+
     /**
      * Load all the step requested.
      *
@@ -318,29 +320,25 @@ class Boot
         }
     }
 
-    /**
-     * - setup session configuration
-     * - init session
-     * - read cookie information (not used right now).
-     *
-     * @return array
-     */
-    private static function sessionCookie()
-    {
-        require __DIR__ . '/../config.php';
-        Forma\lib\Session\SessionManager::getInstance()->initSession($cfg['session']);
-        // start session
-        $currentSession = Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-        self::log(" Start session '" . $currentSession->getName() . "'");
+    private static function request()
+    {
+        $request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+        if (!$request->hasSession()) {
+            require __DIR__ . '/../config.php';
+            Forma\lib\Session\SessionManager::getInstance()->initSession($cfg['session']);
+
+            $currentSession = Forma\lib\Session\SessionManager::getInstance()->getSession();
+            self::log(" Start session '" . $currentSession->getName() . "'");
+            $request->setSession($currentSession);
+        }
+
 
         if (Forma\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $currentSession->invalidate();
             $currentSession->save();
-            Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?msg=103');
+            \Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?msg=103');
         }
-
-
     }
 
     /**
@@ -354,12 +352,11 @@ class Boot
      */
     private static function user()
     {
+        require_once _base_ . '/lib/lib.user.php';
         $currentSession = Forma\lib\Session\SessionManager::getInstance()->getSession();
         self::log("Load user from session '" . $currentSession->getName() . "'");
 
         // load current user from session
-        require_once _base_ . '/lib/lib.user.php';
-        $GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
 
         // ip coerency check
         self::log('Ip coerency check.');
@@ -369,7 +366,7 @@ class Boot
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
             if (Docebo::user()->isLoggedIn() && (Docebo::user()->getLogIp() != $ip)) {
-                session_destroy();
+                \Forma\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
                 Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?msg=104');
                 //Util::fatal("logip: ".Docebo::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
                 //unlog the user
@@ -391,8 +388,9 @@ class Boot
         $filter_input = new FilterInput();
         $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
 
+        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         // Whitelist some tags if we're a teacher in a course:
-        if (isset($_SESSION['idCourse']) && $_SESSION['levelCourse'] >= 6) {
+        if ($currentSession->has('idCourse') && $currentSession->get('levelCourse') >= 6) {
             $filter_input->appendToWhitelist([
                 'tag' => ['object', 'param'],
                 'attrib' => [
@@ -426,9 +424,9 @@ class Boot
         } else {
             $filter_input = new FilterInput();
             $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
-
+            $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
             // Whitelist some tags if we're a teacher in a course:
-            if (isset($_SESSION['idCourse']) && $_SESSION['levelCourse'] >= 6) {
+            if ($currentSession->has('idCourse') && $currentSession->get('levelCourse') >= 6) {
                 $filter_input->appendToWhitelist([
                     'tag' => ['object', 'param'],
                     'attrib' => [
@@ -467,11 +465,10 @@ class Boot
         }
         switch ($sop) {
             case 'changelang':
-                    $new_lang = Forma\lib\Get::req('new_lang', DOTY_ALPHANUM, false);
+                $new_lang = Forma\lib\Get::req('new_lang', DOTY_ALPHANUM, false);
 
-                    self::log("Sop 'changelang' intercepted, changing lang to : $new_lang");
-                    Lang::set($new_lang, isset($_GET['logout']));
-                ;
+                self::log("Sop 'changelang' intercepted, changing lang to : $new_lang");
+                Lang::set($new_lang, isset($_GET['logout']));;
                 break;
         }
 
@@ -521,7 +518,7 @@ class Boot
     {
         list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float) $usec + (float) $sec),
+            'time' => ((float)$usec + (float)$sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
@@ -529,7 +526,7 @@ class Boot
     public static function current_time()
     {
         list($usec, $sec) = explode(' ', microtime());
-        $now = ((float) $usec + (float) $sec);
+        $now = ((float)$usec + (float)$sec);
 
         return $now - $GLOBALS['start']['time'];
     }

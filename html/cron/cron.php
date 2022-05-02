@@ -34,8 +34,8 @@ ob_start();
 
 // load lms setting ------------------------------------------------------------------
 
-session_name('docebo_session');
-session_start();
+//session_name('docebo_session');
+//session_start();
 
 // load regional setting --------------------------------------------------------------
 

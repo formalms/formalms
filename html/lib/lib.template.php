@@ -24,27 +24,28 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 function getTemplate()
 {
+    $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     // If saved in session use this one
-    if (isset($_SESSION['template']) && $_SESSION['template'] != false) {
-        if (!checkTemplateVersion($_SESSION['template'])) {
+    if ($currentSession->has('template') && $currentSession->get('template') != false) {
+        if (!checkTemplateVersion($currentSession->get('template'))) {
             return 'standard';
         }
 
-        return $_SESSION['template'];
+        return $currentSession->get('template');
     }
 
     // force_standard mode
     if ((array_key_exists('notuse_template',$_REQUEST) && isset($_REQUEST['notuse_template'])) || (array_key_exists('notuse_template',$GLOBALS) && $GLOBALS['notuse_template'] == true)) {
-        $_SESSION['template'] = 'standard';
+        $currentSession->set('template','standard');
 
-        return $_SESSION['template'];
+        return $currentSession->get('template');
     }
 
     //search for a template associated to the current host
     $plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
     if ($plat_templ != false) {
-        $_SESSION['template'] = $plat_templ;
-        if (!checkTemplateVersion($_SESSION['template'])) {
+        $currentSession->set('template',$plat_templ);
+        if (!checkTemplateVersion($currentSession->get('template'))) {
             return 'standard';
         }
 
@@ -65,18 +66,18 @@ function getTemplate()
             list($template_code) = sql_fetch_row($re);
 
             setTemplate($template_code);
-            if (!checkTemplateVersion($_SESSION['template'])) {
+            if (!checkTemplateVersion($currentSession->get('template'))) {
                 return 'standard';
             }
 
-            return $_SESSION['template'];
+            return $currentSession->get('template');
         }
     }
 
     // search for the default template
-    $_SESSION['template'] = getDefaultTemplate();
+    $currentSession->set('template', getDefaultTemplate());
 
-    return $_SESSION['template'];
+    return $currentSession->get('template');
 }
 
 /**

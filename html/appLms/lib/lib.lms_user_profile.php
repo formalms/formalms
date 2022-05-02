@@ -25,7 +25,7 @@ class LmsUserProfile extends UserProfile
      */
     public function LmsUserProfile($id_user, $edit_mode = false)
     {
-        parent::UserProfile($id_user, $edit_mode);
+        parent::__construct($id_user, $edit_mode);
     }
 
     // initialize functions ===========================================================

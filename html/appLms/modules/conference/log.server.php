@@ -44,9 +44,9 @@ ob_start();
 
 // load lms setting ------------------------------------------------------------------
 require_once _base_ . '/lib/lib.json.php';
-
-session_name('docebo_session');
-session_start();
+\Forma\lib\Session\SessionManager::getInstance()->getSession();
+//session_name('docebo_session');
+//session_start();
 
 // load regional setting --------------------------------------------------------------
 

@@ -43,7 +43,10 @@ class Docebo
      */
     public static function user()
     {
-        return $GLOBALS['current_user'];
+        $sessionUser = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('user');
+
+        return $sessionUser ? $sessionUser : DoceboUser::createDoceboUserFromSession('public_area');
+
     }
 
     /**
@@ -53,7 +56,7 @@ class Docebo
      */
     public static function acl()
     {
-        return $GLOBALS['current_user']->getAcl();
+        return self::user()->getAcl();
     }
 
     /**
@@ -63,7 +66,7 @@ class Docebo
      */
     public static function aclm()
     {
-        return $GLOBALS['current_user']->getAclManager();
+        return self::user()->getAclManager();
     }
 
     /**

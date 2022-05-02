@@ -95,8 +95,6 @@ class Util
     {
         $relative_url = trim(str_replace('&amp;', '&', $relative_url));
 
-        session_write_close();
-
         $url = Forma\lib\Get::abs_path() . $relative_url . $anchor;
         header("Location: $url");
 
@@ -142,7 +140,7 @@ class Util
         $db->close();
 
         ob_end_clean();
-        session_write_close();
+        //session_write_close();
         //ini_set("output_buffering", 0);
         //Download file
         //send file length info
