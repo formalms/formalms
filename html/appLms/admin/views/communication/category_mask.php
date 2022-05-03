@@ -10,7 +10,7 @@ echo Form::openForm('add_category', 'ajax.adm_server.php?r=alms/communication/ad
     )
     . Form::getHidden('id_category', 'id_category', '')
 ?>
-<div class="dropdown dropdown-tree" id="categoryTree">
+
 <div id="translation_tab">
 	<ul class="nav nav-tabs">
 <?php

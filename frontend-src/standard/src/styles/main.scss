@@ -2,6 +2,7 @@
 @import '../../node_modules/slick-carousel/slick/slick.scss';
 @import '../../node_modules/@fullcalendar/core/main';
 @import '../../node_modules/@fullcalendar/daygrid/main';
+@import '../../node_modules/select2/src/scss/core.scss';
 
 //@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap-sprockets.scss';
 //@import '../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap.scss';
@@ -58,3 +59,6 @@
 //PAGES
 @import 'pages/homepage';
 @import 'pages/user-profile';
+
+//PLUGINS
+@import '../plugins/select2totree/css/select2totree';

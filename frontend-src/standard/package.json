@@ -54,6 +54,7 @@
     "react": "16.2.0",
     "react-dom": "^16.14.0",
     "reset-css": "2.2.1",
+    "select2": "^4.1.0-rc.0",
     "slick-carousel": "1.8.1",
     "sortablejs": "^1.13.0",
     "tinymce": "^5.10.3",

@@ -5,36 +5,11 @@
 
 <table class="table table-bordered display" style="width:100%" id="categorieslist"></table>
 <br>
-<a id="addcategory_bottom"  onclick="event.preventDefault();openModal(this);" href="ajax.adm_server.php?r=alms/communication/addCategoryMask" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
+<a id="addcategory_bottom"  onclick="event.preventDefault();openModal();" href="#" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
 
-<!-- Modal confirm -->
-<div class="modal" id="confirmModal" style="display: none; z-index: 9999;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body" data-val="body">
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="yes" class="btn btn-primary" data-val="yes">{{ Lang_translate('_YES', 'standard') }}</button>
-                <button type="button" class="btn btn-default" data-val="no">{{ Lang_translate('_NO', 'standard') }}</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Modal add -->
-<div class="modal" id="addModal" style="display: none; z-index: 9999;">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-body" data-val="body">
-			</div>
-			<div class="modal-footer">
-				<div class="alert alert-danger text-center" style="display: none;" data-val="message"></div>
-				<button type="button" class="btn btn-default" data-val="cancel"><?php echo Lang::t('_CANCEL', 'standard'); ?></button>
-				<button type="button" class="btn btn-primary" data-val="submit"><?php echo Lang::t('_SAVE', 'standard'); ?></button>
-			</div>
-		</div>
-	</div>
-</div>
+{% include 'partials/modal_confirm.html.twig' %}
+{% include 'partials/modal_category.html.twig' %}
 
 <script>
     $(function () {
@@ -96,25 +71,59 @@
         });
     });
 
-    var openModal = function(button) {
+    var openModal = function() {
 
-  
-        let url = $(button).attr('href');
-		var modalSelector = '#addModal';
+		var modalSelector = '#categoryModal';
 		var modal = $(modalSelector);
 		var fClose = function() {
 			modal.modal("hide");
 		};
-		$.ajax({
-			type: 'GET',
-			url: url,
-			success: function(data) {
-				var form = JSON.parse(data).body;
-				modal.find('*[data-val=body]').html(form);
-				modal.modal("show");
-				modal.find("*[data-val=cancel]").unbind().bind("click", fClose);
-				modal.find("*[data-val=submit]").unbind().bind("click", addFunc);
-			}
-		});
+
+		 modal.modal("show");
 	};
+
+    var data = {{ categoriesDropdownData | json_encode(constant('JSON_HEX_APOS')) | raw }};
+    var dropPlaceholder = '{{ Lang_translate('_OPTION','communication') }}';
+  
+    const categoryDropdown = new window.frontend.modules.Select2($("#category"),{
+ 
+    data: data,
+    width:"100%",
+    allowClear : true,
+    dropdownParent: $('#categoryModal'),
+  //  minimumResultsForSearch: 3,
+     formatSelection: function(item) {
+      return item.text
+    },
+    formatResult: function(item) {
+      return item.text
+    },
+    templateResult: function(item) {
+         var $result = $('<span style="padding-left:' + (20 * item.level) + 'px;">' + item.text + '</span>');
+    return $result;
+    },
+    placeholder: dropPlaceholder,
+
+  });
+
+
+ $('input[name=save]').on('click', function(e) {
+     e.preventDefault();
+     e.stopPropagation();
+
+     $form = $(this).parents('form');
+
+    
+     $.ajax({
+    type:  $form.attr("method"),
+    url:  $form.attr("action"),
+    data: $form.serialize() ,
+    dataType : 'json', // changing data type to json
+    success: function (data) { // here I'm adding data as a parameter which stores the response
+        console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
+    }
+});
+ })
+
+    
 </script>

@@ -407,6 +407,51 @@ class CommunicationAlms extends Model
         return array_values($output);
     }
 
+    public function getCategoryDropdown($language = false, $addRoot = false)
+    {
+        $tree = [];
+        $output = [];
+        $lang_code = ($language == false ? getLanguage() : $language);
+
+        if($addRoot) {
+            $objOut = new stdClass();
+            $objOut->id = '';
+            $objOut->level = 0;
+            $objOut->text = '';
+            $output[] = $objOut;
+        }
+
+        $query = 'SELECT t1.id_category as id, t2.translation as label, id_parent '
+            . ' FROM %lms_communication_category AS t1 
+            LEFT JOIN %lms_communication_category_lang AS t2  ON (t1.id_category = t2.id_category AND t2.lang_code = "' . $lang_code . '" )
+            ORDER BY id_parent ASC';
+       
+
+        $categories = $this->db->query($query);
+        if (!$categories) {
+            return false;
+        }
+
+        foreach($categories as $category) {
+    
+      
+            $tree[$category['id']]['level'] = (int) $category['id_parent'] ? $output[$category['id']] + 1 : 0;
+            $tree[$category['id']]['label'] = $category['label'];
+        }
+
+        foreach($tree as $id => $node) {
+            $objOut = new stdClass();
+            $objOut->id = $id;
+            $objOut->level = $node['level'];
+            $objOut->text = $node['label'];
+            $output[] = $objOut;
+
+        }
+
+
+        return $output;
+    }
+
     public function getCategoryTotal($language = false) {
         $lang_code = ($language == false ? getLanguage() : $language);
         $query = 'SELECT count(t1.id_category)'

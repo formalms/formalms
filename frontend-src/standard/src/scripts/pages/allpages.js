@@ -3,6 +3,7 @@ require('../modules/folder-view');
 require('../modules/slider-menu');
 require('../modules/text-editor');
 require('../modules/modal-accordion');
+require('../../plugins/select2totree/js/select2totree');
 
 import {InfoCourse} from '../modules/InfoCourse';
 import {DashBoardCalendar} from '../modules/DashboardCalendar';
@@ -14,6 +15,7 @@ import Lang from '../helpers/Lang';
 // eslint-disable-next-line no-unused-vars
 import FormaDropZone from './../components/Dropzone';
 import Axios from 'axios';
+import Select2 from 'select2';
 
 
 var Page = (function () {
@@ -25,8 +27,10 @@ var Page = (function () {
     window.frontend.modules.TeacherLearningObject = TeacherLearningObject;
     window.frontend.modules.StudentLearningObject = StudentLearningObject;
     window.frontend.modules.FormaDropZone = FormaDropZone;
+    window.frontend.modules.Select2 = Select2;
     window.frontend.helpers.Lang = Lang;
     window.frontend.helpers.Axios = Axios;
+   
 
     function setScroll(elem, action) {
         if (action === 'lock') {

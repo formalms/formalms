@@ -808,6 +808,8 @@ class CommunicationAlmsController extends AlmsController
 
     public function add_categoryTask()
     {
+
+     dd("task");
         //check permissions
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
@@ -868,6 +870,7 @@ class CommunicationAlmsController extends AlmsController
 
     public function add_category_actionTask()
     {
+    
         //check permissions
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
@@ -878,15 +881,15 @@ class CommunicationAlmsController extends AlmsController
 
         //set up the data to insert into DB
         $id_parent = Get::req('id_parent', DOTY_INT, -1);
-        if ($id_parent < 0) {
-            $output = [
-                'success' => false,
-                'message' => UIFeedback::perror($this->_getMessage('invalid category')),
-            ];
-            echo $this->json->encode($output);
-
-            return;
-        }
+        //if ($id_parent < 0) {
+        //    $output = [
+        //        'success' => false,
+        //        'message' => UIFeedback::perror($this->_getMessage('invalid category')),
+        //    ];
+        //    echo $this->json->encode($output);
+//
+        //    return;
+        //}
         $names = Get::req('name', DOTY_MIXED, []);
         $descriptions = Get::req('description', DOTY_MIXED, []);
         $langs = [];
@@ -1039,21 +1042,19 @@ class CommunicationAlmsController extends AlmsController
             $categoriesList[$i] = $category;
         }
 
-        $this->render('show_categories', ['categoriesList' => array_values($categoriesList)]);
+        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langCode = getLanguage();
+
+        $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
+
+        $this->render('show_categories', [
+                                            'categoriesList' => array_values($categoriesList), 
+                                            'langs' => array_keys($langs), 
+                                            'langCode' => $langCode, 
+                                            'categoriesDropdownData' => $categoriesDropdownData
+                                        ]);
     }
 
-    public function addCategoryMask() {
-
-        $this->render('category_mask', []);
-
-        $params = [
-            'success' => true,
-            'header' => Lang::t('_CATEGORIES', 'communication'),
-            'body' => ob_get_clean(),
-        ];
-        @ob_start();
-        echo $this->json->encode($params);
-    }
 
     //----------------------------------------------------------------------------
 }
