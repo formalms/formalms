@@ -128,7 +128,7 @@ class CoursestatsLms extends Model
             }
         }
 
-        $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, cu.status, cu.level '
+        $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, cu.status, cu.level, cu.date_inscr, cu.date_first_access, cu.date_complete '
             . ' FROM ' . $this->tables['courseuser'] . ' as cu '
             . ' JOIN ' . $this->tables['user'] . ' as u '
             . ' ON (cu.idUser = u.idst AND cu.idCourse=' . (int) $id_course . ') '

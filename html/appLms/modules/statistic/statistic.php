@@ -42,8 +42,7 @@ function outPageView($link)
                     'x_axis' => $c,
                     'y_axis' => 0,
                 ];
-            }
-        ;
+            };
             break;
         case 'week':
             $dateinit = date('Y-m-d H:i:s', time() - 7 * 24 * 3600);
@@ -58,8 +57,7 @@ function outPageView($link)
                     'x_axis' => $lang->def('_WEEK_DAY_' . ($c - 1) . '_SHORT'),
                     'y_axis' => 0,
                 ];
-            }
-        ;
+            };
             break;
         case 'month':
             echo $dateinit = date('Y-m-d H:i:s', time() - 30 * 24 * 3600);
@@ -80,8 +78,7 @@ function outPageView($link)
                     'x_axis' => $c,
                     'y_axis' => 0,
                 ];
-            }
-        ;
+            };
             break;
         case 'year':
             $dateinit = date('Y-m-d H:i:s', time() - 365 * 24 * 3600);
@@ -99,8 +96,7 @@ function outPageView($link)
                     'x_axis' => Lang::t('_MONTH_' . ($c < 10 ? '0' : '') . $c, 'standard'),
                     'y_axis' => 0,
                 ];
-            }
-        ;
+            };
             break;
     }
 
@@ -238,6 +234,16 @@ function statistic()
     $users_list = &$acl_man->getUsers($course_user);
     $GLOBALS['page']->add(getTitleArea(lang::t('_STAT', 'menu_course')), 'content');
 
+    $GLOBALS['page']->add(
+        '<div class="std_block">' .
+        '</br>'.
+        '<a href="index.php?r=coursestats/exportUsageStatistics" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">
+		<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span>
+	</a>'
+        . '</div>', 'content'
+    );
+
+
     if (Get::sett('tracking') == 'on') {
         $GLOBALS['page']->add('<div class="title">' . $lang->def('_PAGE_VIEW') . '</div>', 'content');
         outPageView('index.php?modname=statistic&amp;op=statistic');
@@ -351,14 +357,14 @@ function userdetails()
     $query_time = '
 	SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
 	FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-	WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'";
+	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'";
     list($tot_time) = sql_fetch_row(sql_query($query_time));
 
     $query_track = '
 	SELECT idEnter, enterTime, lastTime, (UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) AS howm, 
 		numOp, lastFunction, lastOp, session_id 
 	FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-	WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'
+	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'
 	ORDER BY ";
 
     $img_down = '<img src="' . getPathImage() . 'standard/ord_asc.png" alt="' . $lang->def('_ORD_ASC_TITLE') . '" '
@@ -370,20 +376,17 @@ function userdetails()
         case 'hm':
             $query_track .= ' howm ' . ($inv ? '  ' : ' DESC ');
             $order_for = $lang->def('_HOW_MUCH_TIME');
-            $image_hm = ($inv ? $img_down : $img_up);
-        ;
+            $image_hm = ($inv ? $img_down : $img_up);;
             break;
         case 'nop':
             $query_track .= ' numOp ' . ($inv ? '  ' : 'DESC');
             $order_for = $lang->def('_NUMBER_OF_OP');
-            $image_nop = ($inv ? $img_down : $img_up);
-        ;
+            $image_nop = ($inv ? $img_down : $img_up);;
             break;
         default:
             $query_track .= ' enterTime ' . ($inv ? ' DESC ' : '');
             $order_for = $lang->def('_SESSION_STARTED');
-            $image_sst = ($inv ? $img_down : $img_up);
-        ;
+            $image_sst = ($inv ? $img_down : $img_up);;
             break;
     }
     //$query_track .= " LIMIT " . $ini . ", " . Get::sett('visuItem');
@@ -421,9 +424,9 @@ function userdetails()
     $total_sec = 0;
     $chart_data = [];
     while (list($id_enter, $session_start_at, $last_action_at, $how, $num_op, $last_module, $last_op, $session_id) = sql_fetch_row($re_tracks)) {
-        $hours = (int) ($how / 3600);
-        $minutes = (int) (($how % 3600) / 60);
-        $seconds = (int) ($how % 60);
+        $hours = (int)($how / 3600);
+        $minutes = (int)(($how % 3600) / 60);
+        $seconds = (int)($how % 60);
         if ($minutes < 10) {
             $minutes = '0' . $minutes;
         }
@@ -449,9 +452,9 @@ function userdetails()
         $tb->addBody($cont);
     }
 
-    $hours = (int) ($tot_time / 3600);
-    $minutes = (int) (($tot_time % 3600) / 60);
-    $seconds = (int) ($tot_time % 60);
+    $hours = (int)($tot_time / 3600);
+    $minutes = (int)(($tot_time % 3600) / 60);
+    $seconds = (int)($tot_time % 60);
     if ($minutes < 10) {
         $minutes = '0' . $minutes;
     }
@@ -489,7 +492,7 @@ function sessiondetails()
     $query_track = '
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
 	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
-	WHERE g.idCourse = '" . (int) $_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND " .
+	WHERE g.idCourse = '" . (int)$_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND " .
         " ( g.idEnter = '" . $id_enter . "' OR (  g.idEnter = 0 AND g.session_id = '" . importVar('sid') . "' ) ) "
         . ' ORDER BY g.timeof 
 	LIMIT ' . $ini . ', ' . Get::sett('visuItem');
@@ -498,7 +501,7 @@ function sessiondetails()
     $query_tot_track = '
 	SELECT COUNT(*) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral 
-	WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "' AND idEnter = '" . $id_enter . "'";
+	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "' AND idEnter = '" . $id_enter . "'";
     list($tot_elem) = sql_fetch_row(sql_query($query_tot_track));
     $nav_bar->setElementTotal($tot_elem);
 
@@ -537,9 +540,9 @@ function sessiondetails()
     while ($read = sql_fetch_assoc($re_tracks)) {
         if ($read_previous !== false) {
             $time_in = $read['unix_time'] - $read_previous['unix_time'];
-            $hours = (int) ($time_in / 3600);
-            $minutes = (int) (($time_in % 3600) / 60);
-            $seconds = (int) ($time_in % 60);
+            $hours = (int)($time_in / 3600);
+            $minutes = (int)(($time_in % 3600) / 60);
+            $seconds = (int)($time_in % 60);
             if ($minutes < 10) {
                 $minutes = '0' . $minutes;
             }
@@ -561,15 +564,15 @@ function sessiondetails()
     $query_last_track = '
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
 	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
-	WHERE g.idCourse = '" . (int) $_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND g.idEnter = '" . $id_enter . "' 
+	WHERE g.idCourse = '" . (int)$_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND g.idEnter = '" . $id_enter . "' 
 	LIMIT " . ($ini + Get::sett('visuItem')) . ', 1';
     $re_track = sql_query($query_last_track);
     if (sql_num_rows($re_track) > 0) {
         $read = sql_fetch_assoc($re_track);
         $time_in = $read['unix_time'] - $read_previous['unix_time'];
-        $hours = (int) ($time_in / 3600);
-        $minutes = (int) (($time_in % 3600) / 60);
-        $seconds = (int) ($time_in % 60);
+        $hours = (int)($time_in / 3600);
+        $minutes = (int)(($time_in % 3600) / 60);
+        $seconds = (int)($time_in % 60);
         if ($minutes < 10) {
             $minutes = '0' . $minutes;
         }
@@ -599,16 +602,13 @@ function statisticDispatch($op)
 {
     switch ($op) {
         case 'statistic':
-            statistic();
-        ;
+            statistic();;
             break;
         case 'userdetails':
-            userdetails();
-        ;
+            userdetails();;
             break;
         case 'sessiondetails':
-            sessiondetails();
-        ;
+            sessiondetails();;
             break;
     }
 }

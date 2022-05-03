@@ -73,8 +73,8 @@ $(function() {
                         'passed': '<?php echo Lang::t('passed', 'standard'); ?>'
                     }
                 } },
-            { data: 'first_access', title: '<?php echo Lang::t('_DATE_FIRST_ACCESS', ''); ?>', sortable: true, edit: { type: 'date' } },
-            { data: 'last_access', title: '<?php echo Lang::t('_DATE_LAST_ACCESS', ''); ?>', sortable: true, edit: { type: 'date' } },
+            { data: 'first_access', title: '<?php echo Lang::t('_DATE_FIRST_ACCESS', ''); ?>', sortable: true, edit: { type: 'datetime' } },
+            { data: 'last_access', title: '<?php echo Lang::t('_DATE_LAST_ACCESS', ''); ?>', sortable: true, edit: { type: 'datetime' } },
             { data: 'history', title: '<?php echo Lang::t('_ACCESS_DETAIL', 'standard'); ?>', sortable: false },
             { data: 'totaltime', title: '<?php echo Lang::t('_ACCESS_TOTAL_TIME', 'standard'); ?>', sortable: true },
             { data: 'score', title: '<?php echo Lang::t('_SCORE', 'standard'); ?>', sortable: true } 

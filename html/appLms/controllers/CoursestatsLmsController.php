@@ -36,12 +36,24 @@ class CoursestatsLmsController extends LmsController
         $message = '';
 
         switch ($code) {
-            case 'invalid data': $message = ''; break;
-            case 'invalid column': $message = ''; break;
-            case 'reset success': $message = Lang::t('_TRACK_RESET_SUCCESS', 'error'); break;
-            case 'reset error': $message = Lang::t('_TRACK_RESET_ERROR', 'error'); break;
-            case '': $message = ''; break;
-            default: $message = ''; break;
+            case 'invalid data':
+                $message = '';
+                break;
+            case 'invalid column':
+                $message = '';
+                break;
+            case 'reset success':
+                $message = Lang::t('_TRACK_RESET_SUCCESS', 'error');
+                break;
+            case 'reset error':
+                $message = Lang::t('_TRACK_RESET_ERROR', 'error');
+                break;
+            case '':
+                $message = '';
+                break;
+            default:
+                $message = '';
+                break;
         }
 
         return $message;
@@ -118,7 +130,7 @@ class CoursestatsLmsController extends LmsController
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -128,10 +140,10 @@ class CoursestatsLmsController extends LmsController
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
             $pagination = [
-                    'startIndex' => 0,
-                    'results' => 9999999999,
-                    'sort' => '',
-                    'dir' => 'asc',
+                'startIndex' => 0,
+                'results' => 9999999999,
+                'sort' => '',
+                'dir' => 'asc',
             ];
 
             $list = $this->model->getCourseStatsList($pagination, $id_course, $filter);
@@ -174,7 +186,7 @@ class CoursestatsLmsController extends LmsController
             'is_active_advanced_filter' => false,
             'orgchart_list' => $umodel->getOrgChartDropdownList(),
             'groups_list' => $gmodel->getGroupsDropdownList(),
-            'total_users' => (int) $total_users,
+            'total_users' => (int)$total_users,
             'lo_totals_js' => $lo_totals_js,
             'status_list' => $this->_getJsArrayStatus(),
             'permissions' => $this->permissions,
@@ -260,10 +272,12 @@ class CoursestatsLmsController extends LmsController
                 $_userid = $acl_man->relativeId($record->userid);
                 $row = [
                     // 'id' => (int)$record->idst,
-                    'userid' => '<a href="./index.php?r=coursestats/show_user&id_user=' . (int) $record->idst . '">' . Layout::highlight($_userid, $filter_text) . '</a>',
+                    'userid' => '<a href="./index.php?r=coursestats/show_user&id_user=' . (int)$record->idst . '">' . Layout::highlight($_userid, $filter_text) . '</a>',
                     'firstname' => Layout::highlight($record->lastname, $filter_text) . ' ' . Layout::highlight($record->firstname, $filter_text),
                     'level' => isset($arr_level[$record->level]) ? $arr_level[$record->level] : '',
                     'status' => isset($arr_status[$record->status]) ? $arr_status[$record->status] : '',
+                    'first_access' => $record->date_first_access ? $record->date_first_access : '',
+                    'last_access' => $record->date_complete ? $record->date_complete : '',
                 ];
 
                 //get LO data
@@ -303,7 +317,7 @@ class CoursestatsLmsController extends LmsController
     public function show_userTask()
     {
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -474,7 +488,7 @@ class CoursestatsLmsController extends LmsController
     public function show_user_objectTask()
     {
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -494,8 +508,12 @@ class CoursestatsLmsController extends LmsController
         $result_message = '';
         $res = Get::req('res', DOTY_STRING, '');
         switch ($res) {
-            case 'ok_reset': $result_message = UIFeedback::info($this->_getErrorMessage('reset success')); break;
-            case 'err_reset': $result_message = UIFeedback::error($this->_getErrorMessage('reset error')); break;
+            case 'ok_reset':
+                $result_message = UIFeedback::info($this->_getErrorMessage('reset success'));
+                break;
+            case 'err_reset':
+                $result_message = UIFeedback::error($this->_getErrorMessage('reset error'));
+                break;
         }
 
         $acl_man = Docebo::user()->getACLManager();
@@ -553,7 +571,7 @@ class CoursestatsLmsController extends LmsController
     public function show_objectTask()
     {
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -596,7 +614,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -614,7 +632,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $res = $this->model->resetTrack($id_lo, $id_user);
-        Util::jump_to('index.php?r=coursestats/show_user_object&id_user=' . (int) $id_user . '&id_lo=' . (int) $id_lo . '&res=' . ($res ? 'ok_reset' : 'err_reset'));
+        Util::jump_to('index.php?r=coursestats/show_user_object&id_user=' . (int)$id_user . '&id_lo=' . (int)$id_lo . '&res=' . ($res ? 'ok_reset' : 'err_reset'));
     }
 
     public function inline_editorTask()
@@ -627,7 +645,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -661,7 +679,7 @@ class CoursestatsLmsController extends LmsController
                 $res = $smodel->updateUserStatus($id_user, $new_value);
                 $output['success'] = $res ? true : false;
                 $output['new_value'] = isset($slist[$new_value]) ? $slist[$new_value] : '';
-             break;
+                break;
 
             default:
                 $output['success'] = false;
@@ -680,7 +698,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -785,30 +803,30 @@ class CoursestatsLmsController extends LmsController
                 $res = $this->model->changeLOUserStatus($id_lo, $id_user, $new_value);
                 $output['success'] = $res ? true : false;
                 $output['new_value'] = $new_value;
-             break;
+                break;
 
             case 'first_access':
                 $res = $this->model->changeLOUserFirstAccess($id_lo, $id_user, $new_value);
                 $output['new_value'] = $new_value;
-             break;
+                break;
 
             case 'last_access':
                 $res = $this->model->changeLOUserLastAccess($id_lo, $id_user, $new_value);
                 $output['success'] = $res ? true : false;
                 $output['new_value'] = $new_value;
-             break;
+                break;
 
             case 'first_complete':
                 $res = $this->model->changeLOUserFirstComplete($id_lo, $id_user, $new_value);
                 $output['success'] = $res ? true : false;
                 $output['new_value'] = $new_value;
-             break;
+                break;
 
             case 'last_complete':
                 $res = $this->model->changeLOUserLastComplete($id_lo, $id_user, $new_value);
                 $output['success'] = $res ? true : false;
                 $output['new_value'] = $new_value;
-             break;
+                break;
 
             default:
                 $output['success'] = false;
@@ -847,7 +865,7 @@ class CoursestatsLmsController extends LmsController
         require_once _base_ . '/lib/lib.download.php';
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -938,7 +956,7 @@ class CoursestatsLmsController extends LmsController
         require_once _base_ . '/lib/lib.download.php';
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -1085,7 +1103,7 @@ class CoursestatsLmsController extends LmsController
         require_once _base_ . '/lib/lib.download.php';
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -1164,7 +1182,7 @@ class CoursestatsLmsController extends LmsController
 
         $id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
         $id_user = Get::req('id_user', DOTY_INT, 0);
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -1243,7 +1261,7 @@ class CoursestatsLmsController extends LmsController
         require_once _base_ . '/lib/lib.download.php';
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -1390,7 +1408,7 @@ class CoursestatsLmsController extends LmsController
         require_once _base_ . '/lib/lib.download.php';
 
         $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             //...
             return;
         }
@@ -1488,5 +1506,71 @@ class CoursestatsLmsController extends LmsController
             } // each list
         } // is array list
         sendStrAsFile($output, 'course_user_stats_export_' . $id_user . '_' . date('Ymd') . '.csv');
+    }
+
+    public function exportUsageStatistics()
+    {
+        $acl_man = Docebo::user()->getAclManager();
+        $course_man = new Man_Course();
+        $course_user = $course_man->getIdUserOfLevel($_SESSION['idCourse']);
+
+        //apply sub admin filters, if needed
+        if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+            //filter users
+            require_once _base_ . '/lib/lib.preference.php';
+            $ctrlManager = new ControllerPreference();
+            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $course_user = array_intersect($course_user, $ctrl_users);
+        }
+
+        $usersList = &$acl_man->getUsers($course_user);
+
+        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int)$_SESSION['idCourse'] . ' GROUP BY idUser';
+        $totalTimesResult = sql_query($queryTime);
+
+        $totalTimes = [];
+        foreach ($totalTimesResult as $totalTime){
+
+            $totTime = $totalTime['time'];
+            $hours = (int)($totTime / 3600);
+            $minutes = (int)(($totTime % 3600) / 60);
+            $seconds = (int)($totTime % 60);
+            if ($minutes < 10) {
+                $minutes = '0' . $minutes;
+            }
+            if ($seconds < 10) {
+                $seconds = '0' . $seconds;
+            }
+
+            $totalTimes[$totalTime['idUser']] = ['time' => $totalTime['time'], 'timeString' =>  $hours . 'h ' . $minutes . 'm ' . $seconds . 's '];
+        }
+
+        $separator = ',';
+        $delimiter = '"';
+        $lineEnd = "\r\n";
+        $head = [];
+        $head[] = $this->_formatCsvValue(Lang::t('_USERNAME', 'standard'), $delimiter);
+        $head[] = $this->_formatCsvValue(Lang::t('_LASTNAME', 'standard'), $delimiter);
+        $head[] = $this->_formatCsvValue(Lang::t('_FIRSTNAME', 'standard'), $delimiter);
+        $head[] = $this->_formatCsvValue(Lang::t('_USER_TOTAL_TIME', 'statistic'), $delimiter);
+
+        $output = implode($separator, $head) . $lineEnd;
+
+        foreach ($usersList as $userInfo){
+            $rowData = [
+                $acl_man->relativeId($userInfo[ACL_INFO_USERID]),
+                $userInfo[ACL_INFO_LASTNAME],
+                $userInfo[ACL_INFO_FIRSTNAME],
+                $totalTimes[$userInfo[ACL_INFO_IDST]]['timeString']
+            ];
+            $csvRow = [];
+            foreach ($rowData as $rowDatum){
+                $csvRow[] = $this->_formatCsvValue($rowDatum, $delimiter);
+            }
+            $output .= implode($separator, $csvRow) . $lineEnd;
+        }
+
+        require_once _base_ . '/lib/lib.download.php';
+        sendStrAsFile($output, 'course_usage_statistics' . date('Ymd') . '.csv');
     }
 }
