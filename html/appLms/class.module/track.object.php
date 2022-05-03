@@ -41,14 +41,14 @@ class Track_Object
         if ($idTrack) {
             $this->idTrack = $idTrack;
             $query = 'SELECT `idReference`, `idUser`, `idTrack`, `objectType`, `dateAttempt`, `status`, `firstAttempt`, `first_complete`, `last_complete` '
-                    . ' FROM `' . $this->_table . '`'
-                    . " WHERE idTrack='" . (int) $idTrack . "'"
-                    . "   AND objectType='" . $this->objectType . "'";
+                . ' FROM `' . $this->_table . '`'
+                . " WHERE idTrack='" . (int) $idTrack . "'"
+                . "   AND objectType='" . $this->objectType . "'";
             $rs = sql_query($query) or
-                    errorCommunication('Track_Object.Track_Object');
+            errorCommunication('Track_Object.Track_Object');
             if (sql_num_rows($rs) == 1) {
                 list($this->idReference, $this->idUser, $this->idTrack,
-                      $this->objectType, $this->dateAttempt, $this->status) = sql_fetch_row($rs);
+                    $this->objectType, $this->dateAttempt, $this->status) = sql_fetch_row($rs);
             }
         }
     }
@@ -58,14 +58,14 @@ class Track_Object
         switch ($environment) {
             case 'communication':
                 return $GLOBALS['prefix_lms'] . '_communication_track';
-             break;
+                break;
             case 'games':
                 return $GLOBALS['prefix_lms'] . '_games_track';
-             break;
+                break;
             case 'course_lo':
             default:
                 return $GLOBALS['prefix_lms'] . '_commontrack';
-             break;
+                break;
         }
     }
 
@@ -73,10 +73,10 @@ class Track_Object
     {
         // find prev info
         $query = 'SELECT max_score, current_score, num_attempts '
-                . 'FROM ' . self::getEnvironmentTable('games') . ' '
-                . "WHERE objectType = '" . $objectType . "' "
-                . '	AND idReference = ' . (int) $id_reference . ' '
-                . '	AND idUser = ' . (int) $id_user . ' ';
+            . 'FROM ' . self::getEnvironmentTable('games') . ' '
+            . "WHERE objectType = '" . $objectType . "' "
+            . '	AND idReference = ' . (int) $id_reference . ' '
+            . '	AND idUser = ' . (int) $id_user . ' ';
         list($max_score, $current_score, $num_attempts) = sql_fetch_row(sql_query($query));
 
         $data = Events::trigger('lms.lo_user.updating', [
@@ -97,12 +97,12 @@ class Track_Object
         ])['new_data'];
 
         $query = 'UPDATE ' . self::getEnvironmentTable('games') . ' SET '
-                . " current_score = '" . $data['current_score'] . "', "
-                . ' num_attempts = ' . $data['num_attempts'] . ' '
-                . ", max_score = '" . $data['max_score'] . "' "
-                . "WHERE objectType = '" . $objectType . "' "
-                . '	AND idReference = ' . (int) $id_reference . ' '
-                . '	AND idUser = ' . (int) $id_user . '';
+            . " current_score = '" . $data['current_score'] . "', "
+            . ' num_attempts = ' . $data['num_attempts'] . ' '
+            . ", max_score = '" . $data['max_score'] . "' "
+            . "WHERE objectType = '" . $objectType . "' "
+            . '	AND idReference = ' . (int) $id_reference . ' '
+            . '	AND idUser = ' . (int) $id_user . '';
         sql_query($query);
 
         Events::trigger('lms.lo_user.updated', [
@@ -161,19 +161,19 @@ class Track_Object
         ])['data'];
 
         $query = 'INSERT INTO ' . $table . ' '
-                . '( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )'
-                . ' VALUES ('
-                . " '" . (int) $idReference . "',"
-                . " '" . (int) $idUser . "',"
-                . " '" . (int) $idTrack . "',"
-                . " '" . $objectType . "',"
-                . " '" . $data['firstAttempt'] . "', "
-                . " '" . $data['dateAttempt'] . "', "
-                . " '" . $data['status'] . "'"
-                . ' )';
+            . '( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )'
+            . ' VALUES ('
+            . " '" . (int) $idReference . "',"
+            . " '" . (int) $idUser . "',"
+            . " '" . (int) $idTrack . "',"
+            . " '" . $objectType . "',"
+            . " '" . $data['firstAttempt'] . "', "
+            . " '" . $data['dateAttempt'] . "', "
+            . " '" . $data['status'] . "'"
+            . ' )';
 
         $result = sql_query($query)
-            or errorCommunication('createTrack' . sql_error());
+        or errorCommunication('createTrack' . sql_error());
 
         //TODO: EVT_OBJECT (§)
         // include_once (_base_.'/appLms/Events/Lms/LoStatusUpdate.php');
@@ -239,7 +239,8 @@ class Track_Object
 
     public function update()
     {
-        $old_track = new self($this->idTrack, $this->environment);
+        $class = get_class($this);
+        $old_track = new $class($this->idTrack, $this->environment);
 
         $data = Events::trigger('lms.lo_user.updating', [
             'id_reference' => $this->idReference,
@@ -258,11 +259,25 @@ class Track_Object
         ])['new_data'];
 
         $query = 'UPDATE ' . $this->_table . ' SET '
-                . " dateAttempt ='" . $data['dateAttempt'] . "',"
-                . " status ='" . $data['status'] . "'"
-                . " WHERE idTrack = '" . (int) $this->idTrack . "' AND objectType = '" . $this->objectType . "'";
-        if (!sql_query($query)) {
-            return false;
+            . " dateAttempt ='" . $data['dateAttempt'] . "',"
+            . " status ='" . $data['status'] . "'"
+            . " WHERE idTrack = '" . (int) $this->idTrack . "' AND objectType = '" . $this->objectType . "'";
+        if (!sql_query($query) || sql_affected_rows() === 0) {
+            $query = 'INSERT INTO ' . $this->_table . ' '
+                . '( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )'
+                . ' VALUES ('
+                . " '" . (int) $this->idReference . "',"
+                . " '" . (int) $this->idUser . "',"
+                . " '" . (int) $this->idTrack . "',"
+                . " '" . $this->objectType . "',"
+                . " '" . $data['dateAttempt'] . "', "
+                . " '" . $data['dateAttempt'] . "', "
+                . " '" . $data['status'] . "'"
+                . ' )';
+
+            if (!sql_query($query)) {
+                return false;
+            }
         }
         //TODO: EVT_OBJECT (§)
         // include_once (_base_.'/appLms/Events/Lms/LoStatusUpdate.php');
@@ -357,8 +372,8 @@ class Track_Object
                             */
             // the only way is a direct query :(, or else if more than one course is open only the last one will complete
             $query = 'SELECT idCourse '
-                    . 'FROM %lms_organization '
-                    . "WHERE idOrg = '" . (int) $this->idReference . "' ";
+                . 'FROM %lms_organization '
+                . "WHERE idOrg = '" . (int) $this->idReference . "' ";
             list($idCourse) = sql_fetch_row(sql_query($query));
             //}
             $useridst = $this->idUser;
@@ -422,7 +437,7 @@ class Track_Object
             $arrTokens = explode(',', $arrId);
             while (($val = current($arrTokens)) !== false) {
                 $arrPeer = explode('=', $val);
-                if ($arrPeer[0] !== 'rray') { 	// patch to skip wrong prerequisites
+                if ($arrPeer[0] !== 'rray') {    // patch to skip wrong prerequisites
                     // saved in db in first version of 3.0.1
                     if (count($arrPeer) > 1) {
                         $arrPre[$arrPeer[0]] = $arrPeer[1];
@@ -438,13 +453,13 @@ class Track_Object
             return true;
         } else {
             $query = 'SELECT idReference, status '
-                    . ' FROM ' . self::getEnvironmentTable($environment) . ''
-                    . ' WHERE ((idReference IN ( ' . rtrim(implode(',', $idList), ',') . ' ))'
-                    . "   AND (idUser = '" . (int) $idUser . "'))";
+                . ' FROM ' . self::getEnvironmentTable($environment) . ''
+                . ' WHERE ((idReference IN ( ' . rtrim(implode(',', $idList), ',') . ' ))'
+                . "   AND (idUser = '" . (int) $idUser . "'))";
         }
         // ."   AND ((status = 'completed') OR (status = 'passed')))";
         $rs = sql_query($query)
-            or exit("Error in query=[ $query ] " . sql_error());
+        or exit("Error in query=[ $query ] " . sql_error());
 
         //echo "\n".'<!-- sto controllando i prerequisiti con questa query : '.$query.' -->';
         while (list($id, $status) = sql_fetch_row($rs)) {
@@ -459,14 +474,14 @@ class Track_Object
                     if (isset($arrStatus[$id])) {
                         return false;
                     }
-                break;
+                    break;
                 case 'completed':
                 case 'passed':
                     if (!isset($arrStatus[$id])
                         || ($arrStatus[$id] != 'completed' && $arrStatus[$id] != 'passed')) {
                         return false;
                     }
-                break;
+                    break;
                 case 'failed':
                 case 'incomplete':
                 case 'not attempted':
@@ -474,13 +489,13 @@ class Track_Object
                 case 'ab-initio':
                     if (isset($arrStatus[$id])
                         && ($arrStatus[$id] != 'failed'
-                        && $arrStatus[$id] != 'incomplete'
-                        && $arrStatus[$id] != 'not attempted'
-                        && $arrStatus[$id] != 'attempted'
-                        && $arrStatus[$id] != 'ab-initio')) {
+                            && $arrStatus[$id] != 'incomplete'
+                            && $arrStatus[$id] != 'not attempted'
+                            && $arrStatus[$id] != 'attempted'
+                            && $arrStatus[$id] != 'ab-initio')) {
                         return false;
                     }
-                break;
+                    break;
             }
         }
 
@@ -493,12 +508,12 @@ class Track_Object
     public function getStatusFromId($idReference, $idUser, $environment = false)
     {
         $query = 'SELECT status '
-                . ' FROM ' . self::getEnvironmentTable($environment) . ''
-                . ' WHERE (idReference = ' . (int) $idReference . ')'
-                . "   AND (idUser = '" . (int) $idUser . "')"
-                . ' ORDER BY `dateAttempt` DESC';
+            . ' FROM ' . self::getEnvironmentTable($environment) . ''
+            . ' WHERE (idReference = ' . (int) $idReference . ')'
+            . "   AND (idUser = '" . (int) $idUser . "')"
+            . ' ORDER BY `dateAttempt` DESC';
         $rs = sql_query($query)
-            or exit("Error in query=[ $query ] " . sql_error());
+        or exit("Error in query=[ $query ] " . sql_error());
 
         if (sql_num_rows($rs) == 0) {
             return 'not attempted';
@@ -520,11 +535,11 @@ class Track_Object
     public function getIdTrackFromCommon($idReference, $idUser, $environment = false)
     {
         $query = 'SELECT idTrack '
-                . ' FROM ' . self::getEnvironmentTable($environment) . ''
-                . ' WHERE (idReference = ' . (int) $idReference . ')'
-                . "   AND (idUser = '" . (int) $idUser . "')";
+            . ' FROM ' . self::getEnvironmentTable($environment) . ''
+            . ' WHERE (idReference = ' . (int) $idReference . ')'
+            . "   AND (idUser = '" . (int) $idUser . "')";
         $rs = sql_query($query)
-            or exit("Error in query=[ $query ] " . sql_error());
+        or exit("Error in query=[ $query ] " . sql_error());
 
         if (sql_num_rows($rs) == 0) {
             return false;
@@ -550,7 +565,7 @@ class Track_Object
                 . ' WHERE (idReference IN (' . implode(',', $idReference) . '))';
         }
         $rs = sql_query($query)
-            or exit("Error in query=[ $query ] " . sql_error());
+        or exit("Error in query=[ $query ] " . sql_error());
 
         Events::trigger('lms.lo_user.deleted', [
             'ids_reference' => (array) $idReference,

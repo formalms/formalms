@@ -1136,10 +1136,9 @@ function defmodality()
     $section_str .= '<br /><br />';
     $section_str .= Form::getCloseFieldset();
 
-    
     $eventResult = Events::trigger('lms.defmodality.updating', ['idTest' => $idTest]);
     $section_str .= $eventResult['htmlData'];
-   
+
     $GLOBALS['page']->add($section_str, 'content');
     $GLOBALS['page']->add(
         '<br /><br />'
@@ -1246,7 +1245,7 @@ function updatemodality()
         ' ,mandatory_answer = ' . Get::req('mandatory_answer', DOTY_INT, 0) .
         " WHERE idTest = '$idTest'";
 
-    Events::trigger('lms.defmodality.updated', ['idTest' => $idTest, 'tutorComment' => $_REQUEST['tutor_comment'], 'showTutorComment' => $_REQUEST['show_tutor_comment'] ]);
+    Events::trigger('lms.defmodality.updated', ['idTest' => $idTest, 'tutorComment' => $_REQUEST['tutor_comment'], 'showTutorComment' => $_REQUEST['show_tutor_comment']]);
 
     if (!sql_query($queryString)) {
         errorCommunication($lang->def('_OPERATION_FAILURE')
@@ -1299,7 +1298,7 @@ function deftime()
                         return;
                     }
                     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=1');
-                ;
+
                 break;
             case 1:
                     $GLOBALS['page']->add(
@@ -1337,7 +1336,7 @@ function deftime()
                             . '</div>',
                         'content'
                     );
-                ;
+
                 break;
             case 2:
                     list($actual_tot_time) = sql_fetch_row(sql_query('
@@ -1385,7 +1384,7 @@ function deftime()
                             . '</div>',
                         'content'
                     );
-                ;
+
                 break;
         }
     } else {
@@ -1538,15 +1537,15 @@ function modassigntime()
             switch ($_GET['point_assignement']) {
                 case '0':
                         $new_time = (int) (($_GET['new_time'] / $tot_difficult) * $difficult);
-                    ;
+
                     break;
                 case '1':
                         $new_time = (int) ($_GET['new_time'] / $tot_quest);
-                    ;
+
                     break;
                 case '2':
                         $new_time = (int) ($time_assigned);
-                    ;
+
                     break;
             }
         }
@@ -1832,16 +1831,16 @@ function modassignpoint()
                 case '0':
                         $quest_score = $quest_obj->getRealMaxScore(round(round($_REQUEST['new_assigned_score'] / $tot_difficult, 2) * $difficult), 2);
                         //$quest_score = (( $_REQUEST['new_assigned_score'] / $tot_difficult ) * $difficult ), 2;
-                    ;
+
                     break;
                 case '1':
                         $quest_score = $quest_obj->getRealMaxScore(round($_REQUEST['new_assigned_score'] / $tot_quest, 2));
                         //$quest_score = round(( $_REQUEST['new_assigned_score'] / $tot_quest ), 2);
-                    ;
+
                     break;
                 case '2':
                         $quest_score = $quest_obj->getMaxScore();
-                    ;
+
                     break;
             }
         }
@@ -2479,12 +2478,12 @@ if ($_REQUEST['export_quest_select'] == 5) {
 switch ($GLOBALS['op']) {
     case 'instest':
             instest();
-        ;
+
         break;
 
     case 'modtest':
             modtest();
-        ;
+
         break;
     case 'uptest':
             $idTest = importVar('idTest', true, 0);
@@ -2493,7 +2492,7 @@ switch ($GLOBALS['op']) {
             $test_type = $db->fetch_row($res);
             $object_test = createLO($test_type[0], $idTest);
             uptest($object_test ? $object_test : null);
-        ;
+
         break;
 
     case 'modtestgui':
@@ -2517,7 +2516,7 @@ switch ($GLOBALS['op']) {
             $object_test = createLO($test_type[0], $idTest);
 
             $object_test->edit($idTest, urldecode($back_url));
-        ;
+
         break;
     case 'coursereportman':
             coursereportMan();
@@ -2529,95 +2528,95 @@ switch ($GLOBALS['op']) {
         break;
     case 'movequest':
             movequest();
-        ;
+
         break;
 
     case 'movedown':
             movequestion('down');
-        ;
+
         break;
     case 'moveup':
             movequestion('up');
-        ;
+
         break;
     case 'fixsequence':
             fixQuestSequence();
-        ;
+
         break;
 
     case 'addquest':
             addquest();
-        ;
+
         break;
     case 'modquest':
             modquest();
-        ;
+
         break;
     case 'delquest':
             delquest();
-        ;
+
         break;
 
         //modality setting
     case 'defmodality':
             defmodality();
-        ;
+
         break;
     case 'updatemodality':
             updatemodality();
-        ;
+
         break;
 
         //time setting
     case 'deftime':
             deftime();
-        ;
+
         break;
     case 'updatetime':
             updatetime();
-        ;
+
         break;
     case 'modassigntime':
             modassigntime();
-        ;
+
         break;
 
         //point setting
     case 'defpoint':
             defpoint();
-        ;
+
         break;
     case 'updatepoint':
             updatepoint();
-        ;
+
         break;
     case 'modassignpoint':
             modassignpoint();
-        ;
+
         break;
 
     case 'importquest':
             importquest();
-        ;
+
         break;
     case 'doimportquest':
             doimportquest();
-        ;
+
         break;
 
     case 'exportquest':
             exportquest();
-        ;
+
         break;
 
     case 'exportquestqb':
             exportquestqb();
-        ;
+
         break;
 
     case 'doexportquestqb':
             doexportquestqb();
-        ;
+
         break;
 
     case 'feedbackman':
@@ -2642,6 +2641,6 @@ switch ($GLOBALS['op']) {
 
     case 'defrelation':
             defrelation();
-        ;
+
         break;
 }

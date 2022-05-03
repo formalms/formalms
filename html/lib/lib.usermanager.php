@@ -876,7 +876,7 @@ class UserManager
                         if (empty($array_folder) && $code_is_mandatory) {
                             $res = false; // invalid code
                         }
-                    ;
+
                     break;
                 case 'code_module':
                         require_once _adm_ . '/lib/lib.code.php';
@@ -887,7 +887,7 @@ class UserManager
                         } elseif ($valid_code == -1 && $code_is_mandatory) {
                             $res = false; // invalid code
                         }
-                    ;
+
                     break;
                 case 'tree_drop':
                         // from the dropdown we will recive the id of the folder
@@ -896,7 +896,7 @@ class UserManager
                         if (empty($oc_folders)) {
                             $res = false; // invalid code
                         }
-                    ;
+
                     break;
                 case 'custom':
                         //Custom code
@@ -918,7 +918,7 @@ class UserManager
                         if (empty($array_folder) && $code_is_mandatory) {
                             $res = false; // invalid code
                         }
-                    ;
+
                     break;
                 default:
                         $res = false; // invalid code type
@@ -1030,7 +1030,7 @@ class UserManagerRenderer
                     $all_languages = Docebo::langManager()->getAllLangCode();
 
                     return $all_languages[$_POST['login_lang']];
-                ;
+
                 break;
         }
 
@@ -1300,7 +1300,7 @@ class UserManagerRenderer
                         } else {
                             $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_REGISTER') . '</a>';
                         }
-                    ;
+
                     break;
                 case 'button':
                         if (Get::sett('register_with_code') == 'on') {
@@ -1308,7 +1308,7 @@ class UserManagerRenderer
                         } else {
                             $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_REGISTER'), 'button_as_link');
                         }
-                    ;
+
                     break;
             }
         }
@@ -1318,11 +1318,11 @@ class UserManagerRenderer
         switch ($this->_lostpwd_type) {
             case 'link':
                     $out .= '<a href="' . $this->_lostpwd_info . '">' . $lang->def('_LOG_LOSTPWD', 'login') . '</a>';
-                ;
+
                 break;
             case 'button':
                     $out .= Form::getButton('lostwd_button', $this->_lostpwd_info, $lang->def('_LOG_LOSTPWD'), 'button_as_link');
-                ;
+
                 break;
         }
         $out .= '</p>';
@@ -1433,7 +1433,7 @@ class UserManagerRenderer
                     } else {
                         $out = $this->_opt_in($options, $platform, $opt_link);
                     }
-                ;
+
                 break;
             case 'special_field':
                     if (is_array($errors) && count($errors) > 0) {
@@ -1455,11 +1455,11 @@ class UserManagerRenderer
                     } else {
                         $out = $this->_special_field($options, $platform, $opt_link, $errors);
                     }
-                ;
+
                 break;
             case 'first_of_all':
                     $out = $this->_first_of_all($options, $platform, $errors);
-                ;
+
                 break;
         }
 
@@ -1571,7 +1571,7 @@ class UserManagerRenderer
 
                             return $res;
                         }
-                    ;
+
                     break;
                 case 'code_module':
                         require_once _adm_ . '/lib/lib.code.php';
@@ -1595,7 +1595,7 @@ class UserManagerRenderer
 
                             return $res;
                         }
-                    ;
+
                     break;
                 case 'tree_drop':
                         $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
@@ -1603,7 +1603,7 @@ class UserManagerRenderer
                         $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
                         $array_course = $this->getCodeCourses($reg_code);
                         $array_folder = $uma->getFoldersFromCode($reg_code);
-                    ;
+
                     break;
                 case 'custom':
                         //Custom code
@@ -1629,7 +1629,7 @@ class UserManagerRenderer
 
                             return $res;
                         }
-                    ;
+
                     break;
             }
         } elseif ($code_is_mandatory) {
@@ -1845,7 +1845,7 @@ class UserManagerRenderer
                         $uma = new UsermanagementAdm();
                         $reg_code = $this->getRegCodeFromNode($reg_code);
                         $array_folder = $uma->getFolderGroups($reg_code);
-                    ;
+
                     break;
                 case 'code_module':
                         require_once _adm_ . '/lib/lib.code.php';
@@ -1854,13 +1854,13 @@ class UserManagerRenderer
                         if ($valid_code == 1) {
                             $array_folder = $code_manager->getOrgAssociateWithCode($reg_code);
                         }
-                    ;
+
                     break;
                 case 'tree_drop':
                         // from the dropdown we will recive the id of the folder
                         // then we get the oc and ocd
                         $array_folder = $uma->getFolderGroups($reg_code);
-                    ;
+
                     break;
                 case 'custom':
                         //Custom code
@@ -1879,7 +1879,7 @@ class UserManagerRenderer
 
                         // resolving the tree_man
                         $array_folder = $uma->getFoldersFromCode($reg_code);
-                    ;
+
                     break;
             }
         }
@@ -2161,7 +2161,7 @@ class UserManagerRenderer
 
                     $out .= '</div>
                 </div>';
-                ;
+
                 break;
             case 'tree_drop':
                     // we must show to the user a selection of code
@@ -2181,7 +2181,7 @@ class UserManagerRenderer
                         ) .
                         '</div>
                 </div>';
-                ;
+
                 break;
         }
 
@@ -2924,7 +2924,7 @@ class UserManagerOption
                 //if is int cast it
                 case 'int':
                         $this->_options[$var_name] = (int) $var_value;
-                    ;
+
                     break;
                 //if is enum switch value to on or off
                 case 'enum':
@@ -2933,7 +2933,7 @@ class UserManagerOption
                         } else {
                             $this->_options[$var_name] = 'off';
                         }
-                    ;
+
                     break;
                 //else simple assignament
                 default:
@@ -3052,7 +3052,7 @@ class UserManagerOption
                                 ($var_value == 'admin')
                             )
                             . Form::getCloseCombo();
-                    ;
+
                     break;
 
                 case 'register_tree':
@@ -3069,7 +3069,7 @@ class UserManagerOption
                             $register_possible_option,
                             $var_value
                         );
-                    ;
+
                     break;
                 case 'field_tree':
                         require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
@@ -3121,7 +3121,7 @@ class UserManagerOption
                                 ($var_value == 'no')
                             )
                             . Form::getCloseCombo();
-                    ;
+
                     break;
                 case 'enum':
                         //on off
@@ -3136,7 +3136,7 @@ class UserManagerOption
                             . ' '
                             . Form::getLabel($var_name . '_on', $lang->def('_' . strtoupper($var_name)), 'label_bold')
                             . Form::closeFormLine();
-                    ;
+
                     break;
                 //uncrypted password
                 case 'password':
@@ -3186,7 +3186,7 @@ class UserManagerOption
             switch ($value_type) {
                 case 'int':
                         $new_value = (int) $_POST['option'][$var_name];
-                    ;
+
                     break;
                 //if is enum switch value to on or off
                 case 'enum':
@@ -3195,7 +3195,7 @@ class UserManagerOption
                         } else {
                             $new_value = 'off';
                         }
-                    ;
+
                     break;
                 //else simple assignament
                 default:

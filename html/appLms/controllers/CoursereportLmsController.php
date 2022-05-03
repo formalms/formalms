@@ -28,7 +28,7 @@ class CoursereportLmsController extends LmsController
     public function init()
     {
         $this->idCourse = (int) $_SESSION['idCourse'];
-        
+
         /* @var Services_JSON json */
         $this->json = new Services_JSON();
         $this->_mvc_name = 'coursereport';
@@ -1545,7 +1545,7 @@ class CoursereportLmsController extends LmsController
                 switch ($tests_score[$id_test][$idst_user]['score_status']) {
                     case CoursereportLms::TEST_STATUS_NOT_COMPLETED:
                             $cont[] = '-';
-                        ;
+
                         break;
                     case CoursereportLms::TEST_STATUS_NOT_CHECKED:
                             $cont[] = '<span class="cr_not_check">' . $lang->def('_NOT_CHECKED') . '</span><br />'
@@ -1558,7 +1558,7 @@ class CoursereportLmsController extends LmsController
                                     '8',
                                     ' tabindex="' . $i++ . '" '
                                 );
-                        ;
+
                         break;
                     case CoursereportLms::TEST_STATUS_NOT_PASSED:
                     case CoursereportLms::TEST_STATUS_PASSED:
@@ -1579,7 +1579,7 @@ class CoursereportLmsController extends LmsController
                                 '8',
                                 ' tabindex="' . $i++ . '" '
                             );
-                        ;
+
                         break;
                     case CoursereportLms::TEST_STATUS_VALID:
                             $cont[] = Form::getInputTextfield(
@@ -1591,7 +1591,7 @@ class CoursereportLmsController extends LmsController
                                 '8',
                                 ' tabindex="' . $i++ . '" '
                             );
-                        ;
+
                         break;
                     default:
                         $cont[] = '-';
@@ -3280,7 +3280,7 @@ class CoursereportLmsController extends LmsController
                                                 } else {
                                                     ++$test_details[$id_test]['not_checked'];
                                                 }
-                                            ;
+
                                             break;
                                         case CoursereportLms::TEST_STATUS_PASSED:
                                                 $csv .= ';"' . $lang->def('_PASSED') . '"';
@@ -3289,7 +3289,7 @@ class CoursereportLmsController extends LmsController
                                                 } else {
                                                     ++$test_details[$id_test]['passed'];
                                                 }
-                                            ;
+
                                             break;
                                         case CoursereportLms::TEST_STATUS_NOT_PASSED:
                                                 $csv .= ';"' . $lang->def('_NOT_PASSED') . '"';
@@ -3298,7 +3298,7 @@ class CoursereportLmsController extends LmsController
                                                 } else {
                                                     ++$test_details[$id_test]['not_passed'];
                                                 }
-                                            ;
+
                                             break;
                                         case CoursereportLms::TEST_STATUS_VALID:
                                                 $score = $tests_score[$id_test][$idst_user]['score'];
@@ -3333,7 +3333,7 @@ class CoursereportLmsController extends LmsController
                                                 } else {
                                                     $test_details[$id_test]['varianza'] = pow(($tests_score[$id_test][$idst_user]['score'] - $test_details[$id_test]['average']), 2);
                                                 }
-                                            ;
+
                                             break;
                                         default:
                                             $csv .= ';"-"';
@@ -3400,13 +3400,13 @@ class CoursereportLmsController extends LmsController
                                                 } else {
                                                     $report_details[$info_report->getIdReport()]['varianza'] = round(pow(($reports_score[$info_report->getIdReport()][$idst_user]['score'] - $report_details[$info_report->getIdReport()]['average']), 2), 2);
                                                 }
-                                            ;
+
                                             break;
                                     }
                                 } else {
                                     $csv .= ';"-"';
                                 }
-                            ;
+
                             break;
                     }
                 }

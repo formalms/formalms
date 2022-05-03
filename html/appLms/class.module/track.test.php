@@ -34,9 +34,9 @@ class Track_Test extends Track_Object
 
         $this->db = DbConn::getInstance();
         if ($idTrack !== null) {
-            $res = $this->db->query("SELECT idTest, number_of_attempt FROM %lms_testtrack WHERE idTrack = '" . (int) $idTrack . "'");
+            $res = $this->db->query("SELECT idTest,idUser,idReference, number_of_attempt FROM %lms_testtrack WHERE idTrack = '" . (int) $idTrack . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list($this->idTest, $this->number_of_attempt) = $this->db->fetch_row($res);
+                list($this->idTest, $this->idUser, $this->idReference, $this->number_of_attempt) = $this->db->fetch_row($res);
             }
         }
 

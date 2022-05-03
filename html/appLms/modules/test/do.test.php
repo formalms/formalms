@@ -553,8 +553,7 @@ function playTestDispatch($object_test, $id_param)
             }
         }
 
-        $is_end = $score_status == 'valid' || $score_status == 'not_checked' ||
-            $score_status == 'passed' || $score_status == 'not_passed';
+        $is_end = $score_status == 'valid' || $score_status == 'not_checked' || $score_status == 'passed' || $score_status == 'not_passed';
 
         if ($score_status == 'not_complete' || $is_end) {
             resetTrack($object_test, importVar('idTrack', true, 0));
@@ -1279,7 +1278,7 @@ function showResult($object_test, $id_param)
             $score_status = 'not_passed';
         }
     }
-    if (!$test_info['show_only_status']) {
+    if (!$test_info['']) {
         if ($num_manual != 0) {
             $score_status = 'not_checked';
         } else {
@@ -1288,7 +1287,7 @@ function showResult($object_test, $id_param)
     }
     $test_track = new Track_Test($id_track);
     $test_track->setDate($now);
-    if (!in_array($test_track->status, ['passed', 'completed'])) {
+    if (!in_array($test_track->status, ['passed', 'completed', 'valid'])) {
         $test_track->status = $next_status;
     }
     $test_track->update();

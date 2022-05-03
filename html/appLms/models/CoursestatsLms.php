@@ -272,20 +272,17 @@ class CoursestatsLms extends Model
         if (is_array($pagination)) {
             $query .= 'LIMIT ' . $startIndex . ', ' . $rowsPerPage;
         }
-        
+
         $output = [];
         $res = $this->db->query($query);
 
-      
         if ($res) {
             $scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
 
             require_once Forma::inc(_lms_ . '/class.module/track.object.php');
 
-
             foreach ($res as $obj) {
-                
-                if(((bool) $obj['visible'] === false) && $export) {
+                if (((bool) $obj['visible'] === false) && $export) {
                     //it's a hidden obj, skip it only for export data
                     continue;
                 }

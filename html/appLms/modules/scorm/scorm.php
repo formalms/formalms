@@ -134,9 +134,9 @@ function insitem()
     $zip->extract(PCLZIP_OPT_PATH, _files_ . $filepath);
 
     // If zip folders has \\ this code replace with slash
-    $files = glob(_files_ . $filepath. '/*');
+    $files = glob(_files_ . $filepath . '/*');
     foreach ($files as $file) {
-        $newFile = str_replace("\\", '/', $file);
+        $newFile = str_replace('\\', '/', $file);
 
         if (!is_dir(dirname($newFile))) {
             if (!mkdir($concurrentDirectory = dirname($newFile), 0777, true) && !is_dir($concurrentDirectory)) {

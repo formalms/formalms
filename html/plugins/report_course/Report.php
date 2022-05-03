@@ -1087,21 +1087,21 @@ class Report extends \ReportPlugin
                             } else {
                                 $num_nobegin[$id_c] = 1;
                             }
-                        ; break;
+                         break;
                         case _CUS_BEGIN:
                             if (isset($num_itinere[$id_c])) {
                                 ++$num_itinere[$id_c];
                             } else {
                                 $num_itinere[$id_c] = 1;
                             }
-                        ; break;
+                         break;
                         case _CUS_END:
                             if (isset($num_end[$id_c])) {
                                 ++$num_end[$id_c];
                             } else {
                                 $num_end[$id_c] = 1;
                             }
-                        ; break;
+                         break;
                     }
 
                     $effective_user[] = $id_u;
@@ -1295,21 +1295,21 @@ class Report extends \ReportPlugin
                             } else {
                                 $num_nobegin[$index] = 1;
                             }
-                        ; break;
+                         break;
                         case _CUS_BEGIN:
                             if (isset($num_itinere[$index])) {
                                 ++$num_itinere[$index];
                             } else {
                                 $num_itinere[$index] = 1;
                             }
-                        ; break;
+                         break;
                         case _CUS_END:
                             if (isset($num_end[$index])) {
                                 ++$num_end[$index];
                             } else {
                                 $num_end[$index] = 1;
                             }
-                        ; break;
+                         break;
                     }
 
                     if (!in_array($id_u, $effective_user)) {

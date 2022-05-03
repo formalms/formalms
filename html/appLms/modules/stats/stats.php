@@ -1256,15 +1256,15 @@ switch ($GLOBALS['op']) {  // --------------------------------------------------
 
     case 'add_atvt':
         add_edit_atvt();
-    ; break;
+     break;
 
     case 'edit_atvt':
         add_edit_atvt('edit');
-    ; break;
+     break;
 
     case 'del_atvt':
         confdel();
-    ; break;
+     break;
 
     case 'export_txt':
         exportTxt();
