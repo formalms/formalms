@@ -23,7 +23,8 @@
         "twig/extensions": "^1.5",
         "twig/string-extra": "^3.3",
         "twig/twig": "^v2.14",
-        "vanilla/htmlawed": "^2.2"
+        "vanilla/htmlawed": "^2.2",
+        "symfony/finder": "^5.4"
     },
     "require-dev": {
         "phing/phing": "^2.13",

@@ -132,6 +132,32 @@ function insitem()
     // extract zip ------------------------------------------------------
 
     $zip->extract(PCLZIP_OPT_PATH, _files_ . $filepath);
+
+    // If zip folders has \\ this code replace with slash
+    //$files = glob(_files_ . $filepath . '/*');
+    $finder = new Symfony\Component\Finder\Finder();
+    $finder->files()->in(_files_ . $filepath);
+
+    $notAllowedExtentions = ['php','exe'];
+    /** @var SplFileInfo $file */
+    foreach ($finder->sortByName() as $file) {
+
+        $fileParts = pathinfo($file->getPathname());
+        if (in_array($fileParts['extension'], $notAllowedExtentions, true)) {
+            unlink($file->getPathname());
+            continue;
+        }
+        $newFile = str_replace('\\', '/', $file);
+
+        if (!is_dir(dirname($newFile))) {
+            if (!mkdir($concurrentDirectory = dirname($newFile), 0777, true) && !is_dir($concurrentDirectory)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+            }
+        }
+
+        rename($file, $newFile);
+    }
+
     if ($zip->errorCode() != PCLZIP_ERR_NO_ERROR && $zip->errorCode() != 1) {
         sl_unlink($path . $savefile);
         $_SESSION['last_error'] = _ERROR_UPLOAD;
