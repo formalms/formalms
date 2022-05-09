@@ -134,8 +134,19 @@ function insitem()
     $zip->extract(PCLZIP_OPT_PATH, _files_ . $filepath);
 
     // If zip folders has \\ this code replace with slash
-    $files = glob(_files_ . $filepath . '/*');
-    foreach ($files as $file) {
+    //$files = glob(_files_ . $filepath . '/*');
+    $finder = new Symfony\Component\Finder\Finder();
+    $finder->files()->in(_files_ . $filepath);
+
+    $notAllowedExtentions = ['php','exe'];
+    /** @var SplFileInfo $file */
+    foreach ($finder->sortByName() as $file) {
+
+        $fileParts = pathinfo($file->getPathname());
+        if (in_array($fileParts['extension'], $notAllowedExtentions, true)) {
+            unlink($file->getPathname());
+            continue;
+        }
         $newFile = str_replace('\\', '/', $file);
 
         if (!is_dir(dirname($newFile))) {
