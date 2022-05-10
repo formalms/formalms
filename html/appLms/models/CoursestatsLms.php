@@ -758,7 +758,7 @@ class CoursestatsLms extends Model
         ])['new_data'];
 
         $output = false;
-        $query = 'UPDATE ' . $this->tables['commontrack'] . " SET dateAttempt='" . $data['date_attempt'] . "' "
+        $query = 'UPDATE ' . $this->tables['commontrack'] . " SET dateAttempt='" . $data['dateAttempt'] . "' "
             . ' WHERE idReference=' . (int) $id_lo . ' AND idUser=' . (int) $id_user;
         $res = $this->db->query($query);
 

@@ -397,7 +397,7 @@ class CoursestatsLmsController extends LmsController
                     $seconds_diff = strtotime('1970-01-01 ' . end($last_access)[3] . ' UTC');
                     $last_access = date('Y-m-d H:i:s', strtotime(end($last_access)[0]) - $seconds_diff);
                 } else {
-                    $last_access = $record->first_access;
+                    $last_access = $record->last_access;
                 }
 
                 $row = [
