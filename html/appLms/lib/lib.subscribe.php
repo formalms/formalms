@@ -190,7 +190,7 @@ class CourseSubscribe_Manager
         return $res;
     }
 
-    public function getCourseSubscription($id_course, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false)
+    public function getCourseSubscription($id_course, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false, $adminFilter = true)
     {
         require_once _base_ . '/lib/lib.form.php';
 
@@ -258,7 +258,7 @@ class CourseSubscribe_Manager
         $query .= " AND s.waiting = '" . ($waiting ? '1' : '0') . "' ";
         $query .= ' AND s.status <> 4 '; // exclude overbooking user
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($adminFilter && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');

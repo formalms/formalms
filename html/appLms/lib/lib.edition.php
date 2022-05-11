@@ -400,7 +400,7 @@ class EditionManager
         }
     }
 
-    public function getCourseEditionSubscription($id_course, $id_edition, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false)
+    public function getCourseEditionSubscription($id_course, $id_edition, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false,$adminFilter = true)
     {
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity'
             . ' FROM ' . $this->courseuser_table . ' AS s'
@@ -467,7 +467,7 @@ class EditionManager
             }
         }
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($adminFilter && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');

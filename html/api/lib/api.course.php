@@ -85,7 +85,7 @@ class Course_API extends API
      */
     private function getAndValidateSendCalendarFromParams($params)
     {
-        $sendCalendar = (bool) ($params['sendCalendar'] ?? false);
+        $sendCalendar = (bool)($params['sendCalendar'] ?? false);
 
         $response = [
             'success' => true,
@@ -158,7 +158,7 @@ class Course_API extends API
     {
         $response = ['success' => true, 'courses' => []];
 
-        $id_category = isset($params['category']) ? (int) $params['category'] : false;
+        $id_category = isset($params['category']) ? (int)$params['category'] : false;
 
         $course_man = new Man_Course();
         $course_list = $course_man->getAllCoursesWithMoreInfo($id_category);
@@ -238,12 +238,12 @@ class Course_API extends API
 
         $response['success'] = true;
 
-        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
 
         if (empty($courseId) && empty($course_code)) {
             return false;
-        // return array('success'=>true, 'debug'=>print_r($params, true));
+            // return array('success'=>true, 'debug'=>print_r($params, true));
         } elseif (empty($courseId) && !empty($course_code)) { // grab course info by code:
             $db = DbConn::getInstance();
             $qtxt = "SELECT * FROM %lms_course
@@ -252,7 +252,7 @@ class Course_API extends API
             $q = $db->query($qtxt);
             $course_info = $db->fetch_assoc($q);
             if (!empty($course_info)) {
-                $courseId = (int) $course_info['idCourse'];
+                $courseId = (int)$course_info['idCourse'];
             } else { // course not found
                 return false;
                 // return array('success'=>'true', 'debug'=>print_r($course_info));
@@ -295,12 +295,12 @@ class Course_API extends API
 
         $response['success'] = true;
 
-        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
 
         if (empty($courseId) && empty($course_code)) {
             return false;
-        // return array('success'=>true, 'debug'=>print_r($params, true));
+            // return array('success'=>true, 'debug'=>print_r($params, true));
         } elseif (empty($courseId) && !empty($course_code)) { // grab course info by code:
             $db = DbConn::getInstance();
             $qtxt = "SELECT * FROM %lms_course
@@ -309,7 +309,7 @@ class Course_API extends API
             $q = $db->query($qtxt);
             $course_info = $db->fetch_assoc($q);
             if (!empty($course_info)) {
-                $courseId = (int) $course_info['idCourse'];
+                $courseId = (int)$course_info['idCourse'];
             } else { // course not found
                 return false;
                 // return array('success'=>'true', 'debug'=>print_r($course_info));
@@ -364,7 +364,7 @@ class Course_API extends API
             'guest' => 1,
         ];
 
-        return (int) $lev_arr[$my_level];
+        return (int)$lev_arr[$my_level];
     }
 
     protected function getUserStatusId($my_status)
@@ -383,19 +383,20 @@ class Course_API extends API
             'overbooking' => _CUS_OVERBOOKING,
         ];
 
-        return (int) $lev_arr[$my_status];
+        return (int)$lev_arr[$my_status];
     }
 
     protected function fillCourseDataFromParams(
         &$params, &$db, &$courseId, &$edition_id, &$classroom_id,
         &$course_code, &$edition_code, &$classroom_code,
         &$course_info, &$edition_info, &$classroom_info, &$response
-    ) {
+    )
+    {
         // -- read course info / id ----------
 
         if (empty($courseId) && empty($course_code)) {
             return false;
-        // return array('success'=>true, 'debug'=>print_r($params, true));
+            // return array('success'=>true, 'debug'=>print_r($params, true));
         } elseif (empty($courseId) && !empty($course_code)) { // grab course info by code:
             $qtxt = "SELECT * FROM %lms_course
 					WHERE code='" . $course_code . "'
@@ -403,7 +404,7 @@ class Course_API extends API
             $q = $db->query($qtxt);
             $course_info = $db->fetch_assoc($q);
             if (!empty($course_info)) {
-                $courseId = (int) $course_info['idCourse'];
+                $courseId = (int)$course_info['idCourse'];
             } else { // course not found
                 return false;
             }
@@ -429,7 +430,7 @@ class Course_API extends API
                 $q = $db->query($qtxt);
                 $edition_info = $db->fetch_assoc($q);
                 if (!empty($edition_info)) {
-                    $edition_id = (int) $edition_info['id_edition'];
+                    $edition_id = (int)$edition_info['id_edition'];
                 } else { // edition not found
                     return false;
                 }
@@ -447,7 +448,7 @@ class Course_API extends API
                 $q = $db->query($qtxt);
                 $classroom_info = $db->fetch_assoc($q);
                 if (!empty($classroom_info)) {
-                    $classroom_id = (int) $classroom_info['id_date'];
+                    $classroom_id = (int)$classroom_info['id_date'];
                 } else { // classroom not found
                     return false;
                 }
@@ -462,7 +463,7 @@ class Course_API extends API
 
         $response['success'] = true;
 
-        if (empty($params['idst']) || (int) $params['idst'] <= 0) {
+        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
             $response['success'] = false;
             $response['message'] = 'INVALID REQUEST';
 
@@ -471,11 +472,11 @@ class Course_API extends API
             $user_id = $params['idst'];
         }
 
-        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
-        $edition_id = isset($params['edition_id']) ? (int) $params['edition_id'] : false;
+        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
         $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
-        $classroom_id = isset($params['classroom_id']) ? (int) $params['classroom_id'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
         $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : 'student');
@@ -553,7 +554,7 @@ class Course_API extends API
             $array_subst = [
                 '[url]' => Get::site_url(),
                 '[dynamic_link]' => getCurrentDomain($reg_code) ?: Get::site_url(),
-                '[course]' => $course_info['name'], ];
+                '[course]' => $course_info['name'],];
 
             $msg_composer = new EventMessageComposer();
             $msg_composer->setSubjectLangText('email', '_APPROVED_SUBSCRIBED_SUBJECT', false);
@@ -563,7 +564,7 @@ class Course_API extends API
 
             if ($course_info['sendCalendar']) {
                 $uinfo = Docebo::aclm()->getUser($user_id, false);
-                $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $courseId, (int) $classroom_id, (int) $uinfo[ACL_INFO_IDST]);
+                $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$courseId, (int)$classroom_id, (int)$uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }
 
@@ -581,18 +582,18 @@ class Course_API extends API
 
         $response['success'] = true;
 
-        if (empty($params['idst']) || (int) $params['idst'] <= 0) {
+        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
             return false;
-        // return array('success'=>true, 'debug'=>print_r($params, true));
+            // return array('success'=>true, 'debug'=>print_r($params, true));
         } else {
             $user_id = $params['idst'];
         }
 
-        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
-        $edition_id = isset($params['edition_id']) ? (int) $params['edition_id'] : false;
+        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
         $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
-        $classroom_id = isset($params['classroom_id']) ? (int) $params['classroom_id'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
         $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
@@ -675,18 +676,18 @@ class Course_API extends API
 
         $response['success'] = true;
 
-        if (empty($params['idst']) || (int) $params['idst'] <= 0) {
+        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
             return false;
-        // return array('success'=>true, 'debug'=>print_r($params, true));
+            // return array('success'=>true, 'debug'=>print_r($params, true));
         } else {
             $user_id = $params['idst'];
         }
 
-        $courseId = isset($params['course_id']) ? (int) $params['course_id'] : false;
+        $courseId = isset($params['course_id']) ? (int)$params['course_id'] : false;
         $course_code = isset($params['course_code']) ? $params['course_code'] : false;
-        $edition_id = isset($params['edition_id']) ? (int) $params['edition_id'] : false;
+        $edition_id = isset($params['edition_id']) ? (int)$params['edition_id'] : false;
         $edition_code = isset($params['edition_code']) ? $params['edition_code'] : false;
-        $classroom_id = isset($params['classroom_id']) ? (int) $params['classroom_id'] : false;
+        $classroom_id = isset($params['classroom_id']) ? (int)$params['classroom_id'] : false;
         $classroom_code = isset($params['classroom_code']) ? $params['classroom_code'] : false;
 
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
@@ -731,13 +732,72 @@ class Course_API extends API
         return $response;
     }
 
+    public function getUsersSubscription($params)
+    {
+        $response = [];
+
+        $response['success'] = true;
+
+        $idCourse = $params['course_id'];
+        $idEdition = $params['edition_id'];
+        $idDate = $params['date_id'];
+        $idUsers = !empty($params['user_ids']) ? explode(',', $params['user_ids']) : [];
+        $userFilterEnabled = count($idUsers) > 0;
+
+        try {
+
+            $subscriptionModel = new SubscriptionAlms($idCourse, $idEdition, $idDate);
+
+            $arrayUsers = $subscriptionModel->loadUser(false, false, false, false, false, false);
+
+            $list = [];
+            foreach ($arrayUsers as $value) {
+                if (!$userFilterEnabled || in_array($value['id_user'], $idUsers)) {
+                    $is_valid_begin = $value['date_begin_validity'] && $value['date_begin_validity'] != '0000-00-00 00:00:00';
+                    $is_valid_expire = $value['date_expire_validity'] && $value['date_expire_validity'] != '0000-00-00 00:00:00';
+
+                    $del_url = 'ajax.adm_server.php?r=' . $this->link . '/del&id_user=' . $value['id_user']
+                        . '&id_course=' . $this->id_course . '&id_edition=' . $this->id_edition . '&id_date=' . $this->id_date;
+
+                    $record = [
+                        'id' => $value['id_user'],
+                        'userid' => highlightText($value['userid'], $filter['text']),
+                        'fullname' => highlightText($value['fullname'], $filter['text']),
+                        'level' => $value['level_id'],
+                        'status' => $value['status_id'],
+                        'date_begin' => $is_valid_begin ? Format::date($value['date_begin_validity'], 'date') : false,
+                        'date_expire' => $is_valid_expire ? Format::date($value['date_expire_validity'], 'date') : false,
+                        'date_begin_timestamp' => $is_valid_begin ? Format::toTimestamp($value['date_begin_validity']) : 0,
+                        'date_expire_timestamp' => $is_valid_expire ? Format::toTimestamp($value['date_expire_validity']) : 0,
+                        'del' => $del_url,
+                        'date_complete' => $value['date_complete']
+                    ];
+                    if (isset($value['overbooking'])) {
+                        $record['overbooking'] = $value['overbooking'];
+                        if ($value['overbooking']) {
+                            $record['status'] = '' . _CUS_OVERBOOKING;
+                        }
+                    }
+                    $list[] = $record;
+                }
+            }
+
+            $response['courseSubscriptions'] = $list;
+        } catch (\Exception $exception) {
+            $response['success'] = false;
+            $response['message'] = $exception->getMessage();
+        }
+
+        return $response;
+    }
+
     public function subscribeUserWithCode($params)
     {
         $response = [];
 
         $response['success'] = true;
 
-        if (empty($params['idst']) || (int) $params['idst'] <= 0) {
+        if (empty($params['idst']) || (int)$params['idst'] <= 0) {
             return false;
         } else {
             $user_id = $params['idst'];
@@ -797,7 +857,7 @@ class Course_API extends API
         }
 
         if (!empty($params['course_id'])) {
-            $id_course = (int) $params['course_id'];
+            $id_course = (int)$params['course_id'];
         }
 
         $db = DbConn::getInstance();
@@ -806,7 +866,7 @@ class Course_API extends API
         $q = $db->query($qtxt);
         $user_info = $db->fetch_assoc($q);
 
-        $response['idst'] = (int) $user_info['idst'];
+        $response['idst'] = (int)$user_info['idst'];
         $response['firstname'] = $user_info['firstname'];
         $response['lastname'] = $user_info['lastname'];
         $response['userid'] = $username;
@@ -863,18 +923,18 @@ class Course_API extends API
 
         $db = DbConn::getInstance();
         $qtxt = 'SELECT idCourse, code, name, box_description  FROM learning_course 
-				WHERE idCourse=' . (int) $id_course;
+				WHERE idCourse=' . (int)$id_course;
         $q = $db->query($qtxt);
         $course_info = $db->fetch_assoc($q);
 
-        $response['course_id'] = (int) $id_course;
+        $response['course_id'] = (int)$id_course;
         $response['course_code'] = $course_info['code'];
         $response['course_name'] = $course_info['name'];
         // if ( strlen($course_info['box_description']) >=50 ){
         //     $course_info['box_description'] = substr($course_info['box_description'], 0, 47) . '...';
         // }
         $response['box_description'] = $course_info['box_description'];
-        if ((int) $course_info['idCourse'] == 0) {
+        if ((int)$course_info['idCourse'] == 0) {
             $response['message'] = 'Course not found';
         }
 
@@ -920,7 +980,7 @@ class Course_API extends API
     // node_name: category name
     public function addCategory($params)
     {
-        $category_id = isset($params['category_id']) ? (int) $params['category_id'] : 0;
+        $category_id = isset($params['category_id']) ? (int)$params['category_id'] : 0;
         $category_name = isset($params['name']) ? $params['name'] : false;
 
         if ($category_name == false) {
@@ -1655,7 +1715,7 @@ class Course_API extends API
     */
     private function _delCourse($id_course)
     {
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             return false;
         }
 
@@ -1680,7 +1740,7 @@ class Course_API extends API
         $course_man->removeCourseRole($id_course);
         $course_man->removeCourseMenu($id_course);
 
-        $query = "DELETE FROM %lms_courseuser WHERE idCourse = '" . (int) $id_course . "'";
+        $query = "DELETE FROM %lms_courseuser WHERE idCourse = '" . (int)$id_course . "'";
         $qres = sql_query($query);
         if (!$qres) {
             return false;
@@ -1690,7 +1750,7 @@ class Course_API extends API
 
         $query_course = "SELECT imgSponsor, img_course, img_material, img_othermaterial, course_demo, course_type, has_editions
             FROM %lms_course
-            WHERE idCourse = '" . (int) $id_course . "'";
+            WHERE idCourse = '" . (int)$id_course . "'";
         $qres = sql_query($query_course);
         list($file_sponsor, $file_logo, $file_material, $file_othermaterial, $file_demo, $course_type, $course_edition) = sql_fetch_row($qres);
 
@@ -1758,7 +1818,7 @@ class Course_API extends API
         $arr_lo_track = [];
         $arr_org_access = [];
 
-        $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int) $id_course;
+        $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$id_course;
         $ores = sql_query($query);
 
         while ($obj = sql_fetch_object($ores)) {
@@ -1777,10 +1837,10 @@ class Course_API extends API
         }
 
         //delete all organizations references for the course
-        $query = 'DELETE FROM %lms_organization WHERE idCourse = ' . (int) $id_course;
+        $query = 'DELETE FROM %lms_organization WHERE idCourse = ' . (int)$id_course;
         $res = sql_query($query);
 
-        $query = 'DELETE FROM %lms_course WHERE idCourse = ' . (int) $id_course;
+        $query = 'DELETE FROM %lms_course WHERE idCourse = ' . (int)$id_course;
         $res = sql_query($query);
 
         //delete LOs trackings
@@ -2156,7 +2216,7 @@ class Course_API extends API
             $response['message'] = 'Course not specified on deleting';
         } else {
             $course_man = new Man_Course();
-            $courseExists = $course_man->courseExists((int) $params['idCourse']);
+            $courseExists = $course_man->courseExists((int)$params['idCourse']);
             if (!$courseExists) {
                 $response['success'] = false;
                 $response['message'] = 'Course not found';
@@ -2186,7 +2246,7 @@ class Course_API extends API
             $response['message'] = 'New name not specified on renaming';
         }
 
-        if (!isset($params['learningObjectId']) || !(int) $params['learningObjectId'] > 0) {
+        if (!isset($params['learningObjectId']) || !(int)$params['learningObjectId'] > 0) {
             $response['success'] = false;
             $response['message'] = 'Learning Object not specified on renaming';
         }
@@ -2201,7 +2261,7 @@ class Course_API extends API
             $response['message'] = 'Course not specified on deleting';
         } else {
             $course_man = new Man_Course();
-            $courseExists = $course_man->courseExists((int) $params['idCourse']);
+            $courseExists = $course_man->courseExists((int)$params['idCourse']);
             if (!$courseExists) {
                 $response['success'] = false;
                 $response['message'] = 'Course not found';
@@ -2509,7 +2569,7 @@ class Course_API extends API
             $prereq_map = [];
 
             // retrive all the folders and object, the order by grant that folder are created before the elements contained in them
-            $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int) $id_dupcourse . ' ORDER BY path ASC';
+            $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$id_dupcourse . ' ORDER BY path ASC';
             $source_res = sql_query($query);
 
             // Go trough all the entry of learning_organization
@@ -2718,7 +2778,7 @@ class Course_API extends API
                     $certificateId = $aggregatedCertificatesRQItem['cert_id'] ?? '';
                     $nameAssociation = $aggregatedCertificatesRQItem['name_ass'] ?? '';
                     $descriptionAssociation = $aggregatedCertificatesRQItem['descr_ass'] ?? '';
-                    $certificateType = (int) ($aggregatedCertificatesRQItem['type'] ?? 0);
+                    $certificateType = (int)($aggregatedCertificatesRQItem['type'] ?? 0);
                     $courses = (array_key_exists('courses', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['courses'])) ? explode(',', $aggregatedCertificatesRQItem['courses']) : [];
                     $coursesPaths = (array_key_exists('course_paths', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['course_paths'])) ? explode(',', $aggregatedCertificatesRQItem['course_paths']) : [];
                     $users = (array_key_exists('users', $aggregatedCertificatesRQItem) && !empty($aggregatedCertificatesRQItem['users'])) ? explode(',', $aggregatedCertificatesRQItem['users']) : [];
@@ -3079,81 +3139,86 @@ class Course_API extends API
         switch ($name) {
             case 'listCourses':
             case 'courses':
-                    $response = $this->getCourses($params);
+                $response = $this->getCourses($params);
 
                 break;
 
             //e-learning editions
             case 'listEditions':
             case 'editions':
-                    $response = $this->getEditions($params);
+                $response = $this->getEditions($params);
 
                 break;
 
             case 'listClassrooms':
             case 'classrooms':
-                    $response = $this->getClassrooms($params);
+                $response = $this->getClassrooms($params);
 
                 break;
 
             case 'addUserSubscription':
             case 'addusersubscription':
-                    if (!isset($params['ext_not_found'])) {
-                        $response = $this->addUserSubscription($params);
-                    }
+                if (!isset($params['ext_not_found'])) {
+                    $response = $this->addUserSubscription($params);
+                }
 
                 break;
 
             case 'updateUserSubscription':
             case 'updateusersubscription':
-                    if (!isset($params['ext_not_found'])) {
-                        $response = $this->updateUserSubscription($params);
-                    }
+                if (!isset($params['ext_not_found'])) {
+                    $response = $this->updateUserSubscription($params);
+                }
 
                 break;
 
             case 'deleteUserSubscription':
             case 'deleteusersubscription':
-                    if (!isset($params['ext_not_found'])) {
-                        $response = $this->deleteUserSubscription($params);
-                    }
+                if (!isset($params['ext_not_found'])) {
+                    $response = $this->deleteUserSubscription($params);
+                }
 
                 break;
-
+            case 'getUsersSubscription':
+            case 'getuserssubscription':
+                if (!isset($params['ext_not_found'])) {
+                    $response = $this->getUsersSubscription($params);
+                }
+                break;
             case 'subscribeUserWithCode':
             case 'subscribeuserwithcode':
-                    if (!isset($params['ext_not_found'])) {
-                        $response = $this->subscribeUserWithCode($params);
-                    }
+                if (!isset($params['ext_not_found'])) {
+                    $response = $this->subscribeUserWithCode($params);
+                }
 
                 break;
 
             case 'getCertificateByUser':
             case 'getcertificatebyuser':
-                    if (!isset($params['ext_not_found'])) {
-                        $response = $this->getCertificateByUser($params);
-                    }
+                if (!isset($params['ext_not_found'])) {
+                    $response = $this->getCertificateByUser($params);
+                }
 
                 break;
 
             case 'getCertificateByCourse':
             case 'getcertificatebycourse':
-                    if (!isset($params['ext_not_found'])) {
-                        $response = $this->getCertificateByCourse($params);
-                    }
+                if (!isset($params['ext_not_found'])) {
+                    $response = $this->getCertificateByCourse($params);
+                }
 
                 break;
 
             // LRZ
             case 'addCategory':
             case 'addcategory':
-                    $response = $this->addCategory($params);
+                $response = $this->addCategory($params);
 
                 break;
 
             case 'updateCategory':
             case 'updatecategory':
-                    $response = $this->updateCategory($params);
+                $response = $this->updateCategory($params);
 
                 break;
 
@@ -3161,25 +3226,25 @@ class Course_API extends API
             // add elearning or ILT course
             case 'addCourse':
             case 'addcourse':
-                    $response = $this->addCourse($params);
+                $response = $this->addCourse($params);
 
                 break;
 
             case 'updateCourse':
             case 'updatecourse':
-                    $response = $this->updateCourse($params);
+                $response = $this->updateCourse($params);
 
                 break;
 
             case 'deleteCourse':
             case 'deletecourse':
-                    $response = $this->deleteCourse($params);
+                $response = $this->deleteCourse($params);
 
                 break;
 
             case 'copyCourse':
             case 'copycourse':
-                    $response = $this->copyCourse($params);
+                $response = $this->copyCourse($params);
 
                 break;
 
@@ -3187,113 +3252,113 @@ class Course_API extends API
             // add (ILT) classroom edition
             case 'addClassroom':
             case 'addclassroom':
-                    $response = $this->addClassroom($params);
+                $response = $this->addClassroom($params);
 
                 break;
 
             // update (ILT) classroom edition
             case 'updateClassroom':
             case 'updateclassroom':
-                    $response = $this->updateClassroom($params);
+                $response = $this->updateClassroom($params);
 
                 break;
 
             case 'deleteClassroom':
             case 'deleteclassroom':
-                    $response = $this->deteleClassroom($params);
+                $response = $this->deteleClassroom($params);
 
                 break;
 
             // add appointment for classroom edition
             case 'addDay':
             case 'addday':
-                    $response = $this->addDay($params);
+                $response = $this->addDay($params);
 
                 break;
 
             // delete appointment for classroom edition
             case 'deleteDay':
             case 'deleteday':
-                    $response = $this->deleteDay($params);
+                $response = $this->deleteDay($params);
 
                 break;
 
             // update appointment for classroom edition
             case 'updateDay':
             case 'updateday':
-                    $response = $this->updateDay($params);
+                $response = $this->updateDay($params);
 
                 break;
 
             // LO API
             case 'getLO':
             case 'getlo':
-                    $response = $this->getLo($params);
+                $response = $this->getLo($params);
 
                 break;
             case 'copyLearningObjects':
-                    $response = $this->copyLearningObjects($params);
+                $response = $this->copyLearningObjects($params);
 
                 break;
             case 'renameLearningObject':
-                    $response = $this->renameLearningObject($params);
+                $response = $this->renameLearningObject($params);
 
                 break;
             case 'deleteLearningObjects':
-                    $response = $this->deleteLearningObjects($params);
+                $response = $this->deleteLearningObjects($params);
 
                 break;
             case 'getAnswerTest':
             case 'getanswertest':
-                    $response = $this->getAnswerTest($params);
+                $response = $this->getAnswerTest($params);
 
                 break;
 
             //META CERTIFICATE
             case 'assignAggregateCertificateUsers':
-            case 'assignAggregateCertificateUsers':
-                    $response = $this->assignAggregateCertificateUsers($params);
+            case 'assignaggregatecertificateusers':
+                $response = $this->assignAggregateCertificateUsers($params);
 
                 break;
 
             case 'addAggregateCertificates':
             case 'addaggregatecertificates':
-                    $response = $this->addAssociationAggregateCertificates($params);
+                $response = $this->addAssociationAggregateCertificates($params);
 
                 break;
 
             case 'addCertificates':
             case 'addcertificates':
-                    $response = $this->addAssociationCertificates($params);
+                $response = $this->addAssociationCertificates($params);
 
                 break;
             case 'removeCertificates':
             case 'removecertificates':
-                    $response = $this->removeAssociationCertificates($params);
+                $response = $this->removeAssociationCertificates($params);
 
                 break;
 
             // manage introduction module of course
             case 'putintroductioncourse':
             case 'putIntroductionCourse':
-                    $response = $this->putIntroductionCourse($params);
+                $response = $this->putIntroductionCourse($params);
 
                 break;
             case 'deleteintroductioncourse':
             case 'deleteIntroductionCourse':
-                    $response = $this->deleteIntroductionCourse($params);
+                $response = $this->deleteIntroductionCourse($params);
 
                 break;
 
             // copy image from course source
             case 'copyimgfromcourse':
             case 'copyImgFromCourse':
-                    $response = $this->copyImgFromCourse($params);
+                $response = $this->copyImgFromCourse($params);
 
                 break;
             case 'getCalendar':
             case 'getcalendar':
-                    $response = $this->getCalendar($params);
+                $response = $this->getCalendar($params);
 
                 break;
             default:

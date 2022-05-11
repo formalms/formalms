@@ -1607,7 +1607,7 @@ class DateManager
         return $courseEditionData;
     }
 
-    public function getCourseEditionSubscription($id_course, $id_date, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false)
+    public function getCourseEditionSubscription($id_course, $id_date, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false,$adminFilter = true)
     {
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity '
             . ' FROM %lms_courseuser  AS s'
