@@ -561,7 +561,7 @@ class GroupmanagementAdm extends Model
 
         $count_total = 0;
         foreach ($users as $user) {
-            $users_list[] = $this->acl_man->absoluteId($user);
+            $users_list[] = strtolower($this->acl_man->absoluteId($user));
             ++$count_total;
         }
 
@@ -571,7 +571,7 @@ class GroupmanagementAdm extends Model
         $users_list = array_unique($users_list);
 
         $users_idst = [];
-        $query = "SELECT idst, userid FROM %adm_user WHERE userid IN ('" . implode("','", $users_list) . "') ";
+        $query = "SELECT idst, LOWER(userid) FROM %adm_user WHERE userid IN ('" . implode("','", $users_list) . "') ";
         $res = $this->db->query($query);
         while (list($idst, $userid) = $this->db->fetch_row($res)) {
             $users_idst[$this->acl_man->relativeId($userid)] = (int) $idst;
@@ -596,8 +596,8 @@ class GroupmanagementAdm extends Model
         $dup_counter = 0;
         $insert_values = [];
         foreach ($users as $key_u) {
-            if (isset($users_idst[$key_u])) {
-                $idst_u = $users_idst[$key_u];
+            if (isset($users_idst[strtolower($key_u)])) {
+                $idst_u = $users_idst[strtolower($key_u)];
 
                 //check if a duplicate exists
                 if (in_array($idst_u, $dup) !== false) {
