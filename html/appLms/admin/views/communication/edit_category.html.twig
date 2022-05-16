@@ -1,0 +1,66 @@
+{{ Get_title({
+	'index.php?r=alms/communication/editCategory' : title
+},false) }}
+
+  {{ Form_openForm('edit_category', 'ajax.adm_server.php?r=alms/communication/updateCategory', false, 'post', 'multipart/form-data') }}
+		
+    {{ Form_getHidden('idCategory', 'idCategory', idCategory) }}
+    {{ Form_getDropdown(Lang_translate('_CATEGORY','communication'), 'parent', 'id_parent', [], idParent) }}
+
+    <div id="translation_tab" style='margin-top:5%;'>
+        <ul class="nav nav-tabs">
+            {% for lang in langs %}
+                    <li {% if langCode == lang %} class='active' {% endif %}>
+                        <a data-toggle="tab" href="#langs_tab_{{ lang }}"><em>{{ lang }}</em></a>
+                    </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+        {% set textareaName = 'translation_' %}
+        {% set labelName = 'name_' %}
+            {% for lang in langs %}
+                {% set name = 'name[' ~ lang ~ ']' %}
+                {% set description = 'description[' ~ lang ~ ']' %}
+                <div class="tab-pane {% if langCode == lang %} active {% endif %}" id="langs_tab_{{ lang }}">
+                    {{ Form_getTextfield(Lang_translate('_LABEL','communication'), labelName ~ lang, name, 255, categoryLangs[lang]['name']) }}
+
+                    {{ Form_getTextarea(Lang_translate('_DESCRIPTION','standard'), textareaName ~ lang , description, categoryLangs[lang]['description']) }}
+                </div>
+            {% endfor %}
+        </div>
+
+    {{ Form_openButtonSpace() }}
+    {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+    {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+    {{ Form_closeButtonSpace() }}
+
+{{ Form_closeForm() }}
+
+<script>
+  var data = {{ categoriesDropdownData | json_encode(constant('JSON_HEX_APOS')) | raw }};
+    var dropPlaceholder = '{{ Lang_translate('_OPTION','communication') }}';
+    var selected = {{ idParent | json_encode(constant('JSON_HEX_APOS')) | raw }};
+  
+    const categoryDropdown = new window.frontend.modules.Select2($("#parent"),{
+ 
+    data: data,
+    width:"100%",
+    allowClear : true,
+  //  minimumResultsForSearch: 3,
+     formatSelection: function(item) {
+      return item.id
+    },
+    formatResult: function(item) {
+      return item.text
+    },
+    templateResult: function(item) {
+         var $result = $('<span style="padding-left:' + (20 * item.level) + 'px;">' + item.text + '</span>');
+    return $result;
+    },
+    placeholder: dropPlaceholder,
+
+  });
+
+console.log(selected);
+  categoryDropdown.val(selected);
+</script>

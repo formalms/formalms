@@ -21,10 +21,7 @@
       2,
       "safe"
     ],
-    "linebreak-style": [
-      2,
-      "unix"
-    ],
+    "linebreak-style": 0,
     "quotes": [
       2,
       "single"

@@ -20,3 +20,4 @@ VALUES
 	NULL,
 	'alms/communication/showCategories' 
 	);
+ALTER TABLE `learning_communication_category_lang` ADD COLUMN `description` TEXT AFTER `translation`;

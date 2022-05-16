@@ -806,71 +806,47 @@ class CommunicationAlmsController extends AlmsController
         }
     }
 
-    public function add_categoryTask()
-    {
 
-     dd("task");
-        //check permissions
-        if (!$this->permissions['add']) {
-            $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
-
-            return;
-        }
-
-        $id_parent = Get::req('id', DOTY_INT, -1);
-        if ($id_parent < 0) {
-            $output = [
-                'success' => false,
-                'message' => UIFeedback::perror($this->_getMessage('invalid category')),
-            ];
-            echo $this->json->encode($output);
-
-            return;
-        }
-
-        $this->render('category_editmask', [
-            'title' => Lang::t('_ADD', 'communication'),
-            'id_parent' => $id_parent,
-            'json' => $this->json,
-        ]);
-    }
-
-    public function mod_categoryTask()
+    public function editCategory()
     {
         //check permissions
         if (!$this->permissions['mod']) {
-            $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
-
+     
+            UIFeedback::error($this->_getMessage('no permission'));
             return;
         }
 
-        $id_category = Get::req('id', DOTY_INT, -1);
-        if ($id_category <= 0) {
-            $output = [
-                'success' => false,
-                'message' => UIFeedback::perror($this->_getMessage('invalid category')),
-            ];
-            echo $this->json->encode($output);
+        $idCategory = Get::req('id', DOTY_INT, -1);
+        if ($idCategory <= 0) {
 
+            UIFeedback::error($this->_getMessage('invalid category'));
             return;
         }
 
         //retrieve category info (name and description
-        $info = $this->model->getCategoryInfo($id_category);
+        $info = $this->model->getCategoryInfo($idCategory);
 
-        $this->render('category_editmask', [
+        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langCode = getLanguage();
+
+        $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
+
+        $objParent = new stdClass();
+        $objParent->id = (int) $info->id_parent;
+        $this->render('edit_category', [
             'title' => Lang::t('_MOD', 'communication'),
-            'id_category' => $id_category,
-            'category_langs' => $info->langs,
-            'json' => $this->json,
+            'idCategory' => $idCategory,
+            'idParent' => $info->id_parent,
+            'categoryLangs' => $info->langs,
+            'langs' => array_keys($langs),
+            'categoriesDropdownData' => $categoriesDropdownData,
+            'langCode' => $langCode
         ]);
     }
 
-    public function add_category_actionTask()
+    public function addCategoryActionTask()
     {
-    
+        $parentLabel = '--';
         //check permissions
         if (!$this->permissions['add']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
@@ -880,20 +856,11 @@ class CommunicationAlmsController extends AlmsController
         }
 
         //set up the data to insert into DB
-        $id_parent = Get::req('id_parent', DOTY_INT, -1);
-        //if ($id_parent < 0) {
-        //    $output = [
-        //        'success' => false,
-        //        'message' => UIFeedback::perror($this->_getMessage('invalid category')),
-        //    ];
-        //    echo $this->json->encode($output);
-//
-        //    return;
-        //}
+        $idParent = Get::req('id_category', DOTY_INT, -1);
         $names = Get::req('name', DOTY_MIXED, []);
         $descriptions = Get::req('description', DOTY_MIXED, []);
         $langs = [];
-
+     
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
@@ -907,20 +874,31 @@ class CommunicationAlmsController extends AlmsController
         }
 
         //insert data in the DB
-        $res = $this->model->createCategory($id_parent, $langs);
+        $res = $this->model->createCategory($idParent, $langs);
+
+        if($idParent) {
+            $parentLabel = $this->model->getCategory($idParent)[1];
+        }
+
         if ($res) {
+            $filterUrl = 'index.php?r=alms/communication/show&categoryId=' . $res;
+            $editUrl = 'index.php?r=alms/communication/editCategory&id=' . $res;
+            $deleteUrl = 'ajax.adm_server.php?r=alms/communication/deleteCategory';
             //return node data to add in the treeview of the page
             $nodedata = [
                 'id' => $res,
                 'label' => $this->model->getCategoryName($res, getLanguage()),
-                'is_leaf' => true,
-                'count_objects' => 0,
+                'parentLabel' => $parentLabel,
+                'countObjects' => 0,
+                'filterUrl' => $filterUrl,
+                'editUrl' => $editUrl,
+                'deleteUrl' => $deleteUrl,
             ];
             $nodedata['options'] = $this->_getNodeActions($nodedata);
             $output = [
                 'success' => true,
                 'node' => $nodedata,
-                'id_parent' => $id_parent,
+                'id_parent' => $idParent,
             ];
         } else {
             $output = [
@@ -931,33 +909,32 @@ class CommunicationAlmsController extends AlmsController
         echo $this->json->encode($output);
     }
 
-    public function mod_category_actionTask()
+    public function updateCategory()
     {
         //check permissions
         if (!$this->permissions['mod']) {
-            $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
-            echo $this->json->encode($output);
-
+            UIFeedback::error($this->_getMessage('no permission'));
             return;
         }
 
         //set up the data to insert into DB
-        $id_category = Get::req('id_category', DOTY_INT, -1);
-        if ($id_category < 0) {
-            $output = [
-                'success' => false,
-                'message' => UIFeedback::perror($this->_getMessage('invalid category')),
-            ];
-            echo $this->json->encode($output);
+        $idCategory = Get::req('idCategory', DOTY_INT, -1);
 
+      
+        if ($idCategory < 0) {
+            UIFeedback::error($this->_getMessage('invalid category'));
             return;
         }
         $names = Get::req('name', DOTY_MIXED, []);
         $descriptions = Get::req('description', DOTY_MIXED, []);
+
+        $idParent = Get::req('id_parent', DOTY_INT, 0);
         $langs = [];
 
         //validate inputs
         if (is_array($names)) {
+
+        
             //prepare langs array
             $lang_codes = Docebo::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
@@ -968,21 +945,12 @@ class CommunicationAlmsController extends AlmsController
             }
         }
 
+      
         //insert data in the DB
-        $res = $this->model->updateCategory($id_category, $langs);
-        if ($res) {
-            $_language = Get::req('lang', DOTY_ALPHANUM, getLanguage());
-            $output = [
-                'success' => true,
-                'new_name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
-            ];
-        } else {
-            $output = [
-                'success' => false,
-                'message' => UIFeedback::perror($this->_getMessage('edit category')),
-            ];
-        }
-        echo $this->json->encode($output);
+        $res = $this->model->updateCategory($idCategory, $idParent, $langs);
+     
+
+        Util::jump_to('index.php?r=alms/communication/showCategories&success=1');
     }
 
     public function move_categoryTask()
@@ -1036,16 +1004,18 @@ class CommunicationAlmsController extends AlmsController
 
         $categoriesList = $this->model->getCategoryList($startIndex, $results, $sort, $dir);
         foreach ($categoriesList as $i => $category) {
-            $category->filterUrl = 'ajax.adm_server.php?r=adm/lang/mod&amp;lang_code=' . $category->id;
-            $category->editUrl = 'ajax.adm_server.php?r=adm/lang/mod&amp;lang_code=' . $category->id;
-            $category->deleteUrl = 'ajax.adm_server.php?r=adm/lang/del&amp;lang_code=' . $category->id;
-            $categoriesList[$i] = $category;
+            
+            $categoriesList[$i]['filterUrl'] = 'index.php?r=alms/communication/show&categoryId=' . $category['id'];
+            $categoriesList[$i]['editUrl'] = 'index.php?r=alms/communication/editCategory&id=' . $category['id'];
+            $categoriesList[$i]['deleteUrl'] = 'ajax.adm_server.php?r=alms/communication/deleteCategory';
+
         }
 
         $langs = Docebo::langManager()->getAllLanguages(true);
         $langCode = getLanguage();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
+
 
         $this->render('show_categories', [
                                             'categoriesList' => array_values($categoriesList), 
@@ -1054,6 +1024,15 @@ class CommunicationAlmsController extends AlmsController
                                             'categoriesDropdownData' => $categoriesDropdownData
                                         ]);
     }
+
+    public function deleteCategoryTask() {
+        $idCategory = Get::req('idCategory', DOTY_INT, 0);
+      
+        $output['success'] = $this->model->deleteCategory($idCategory);
+
+        echo json_encode($output);
+    }
+    
 
 
     //----------------------------------------------------------------------------

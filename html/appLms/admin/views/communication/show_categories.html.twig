@@ -7,29 +7,58 @@
 <br>
 <a id="addcategory_bottom"  onclick="event.preventDefault();openModal();" href="#" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
 
-
 {% include 'partials/modal_confirm.html.twig' %}
 {% include 'partials/modal_category.html.twig' %}
 
 <script>
-    $(function () {
-        var confirmDialog = function (modalSelector, message, onConfirm) {
+
+    let t = null;
+    var delFunc = function(id, count, element) {
+
+            var selector = "#confirmModal";
+            var message = "{{ Lang_translate('_AREYOUSURE', 'standard') }}";
+
+            let $element = $(element);
+            let url = $element.attr('href');
+            var deleteFunction = function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: { idCategory: id },
+                        success: function(response) {
+                           if(response.success) {
+
+                           } else {
+                               
+                           }
+                        }
+                    });
+            };
+            if(count > 0) {
+                message = '{{ Lang_translate('_CATEGORY_WITH_POSTS', 'communication') }}';
+                deleteFunction = null;
+            }
+            confirmDialog(selector , message, deleteFunction);
+        };
+
+          var confirmDialog = function (modalSelector, message, onConfirm) {
             var fClose = function() {
                 modal.modal("hide");
             };
             var modal = $(modalSelector);
             modal.modal("show");
             modal.find("*[data-val=body]").empty().append(message);
-            modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+            if(onConfirm !== null) {
+                modal.find("*[data-val=yes]").show();
+                modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+            } else {
+                modal.find("*[data-val=yes]").hide();
+            }
+            
             modal.find("*[data-val=no]").unbind().one("click", fClose);
         }
-
-        var delFunc = function(id) {
-            confirmDialog("#confirmModal", "{{ Lang_translate('_AREYOUSURE', 'standard') }}", function() {
-                alert("SIIII!")
-            });
-        };
-        
+    $(function () {
+      
         var body = {{ categoriesList | json_encode(constant('JSON_HEX_APOS')) | raw }};
 
         var columns = [
@@ -46,15 +75,15 @@
         body.forEach(function (item, k) {
            link = '<a id="'+item.id+'" href="'+item.filterUrl+'" class="ico-sprite subs_download" title="{{ Lang_translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>'
             item.filterUrl = link;
-            link = '<a id="'+item.id+'" href="'+item.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
+            link = '<a id="'+item.id+'"  href="'+item.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
             item.editUrl = link;
-            link = '<a id="'+item.id+'" href="'+item.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
+            link = '<a id="'+item.id+'" onclick="event.preventDefault();delFunc(' + item.id + ',' + item.countCommunications + ', this )" href="'+item.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
             item.deleteUrl = link;
 
             rows.push(Object.assign({}, item));
         });
 
-        var t = $('#categorieslist').FormaTable({
+        t = $('#categorieslist').FormaTable({
             rowId: function (row) {
                 return row[0];
             },  // cambia
@@ -75,6 +104,20 @@
 
 		var modalSelector = '#categoryModal';
 		var modal = $(modalSelector);
+		var fClose = function() {
+			modal.modal("hide");
+		};
+
+		 modal.modal("show");
+	};
+
+      var editModal = function() {
+
+		var modalSelector = '#categoryModal';
+		var modal = $(modalSelector);
+
+        
+
 		var fClose = function() {
 			modal.modal("hide");
 		};
@@ -108,22 +151,38 @@
 
 
  $('input[name=save]').on('click', function(e) {
-     e.preventDefault();
-     e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
 
-     $form = $(this).parents('form');
-
+    let $form = $(this).parents('form');
+    var modalSelector = '#categoryModal';
+    let modal = $(modalSelector);
     
-     $.ajax({
-    type:  $form.attr("method"),
-    url:  $form.attr("action"),
-    data: $form.serialize() ,
-    dataType : 'json', // changing data type to json
-    success: function (data) { // here I'm adding data as a parameter which stores the response
-        console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
-    }
-});
+    $.ajax({
+        type:  $form.attr("method"),
+        url:  $form.attr("action"),
+        data: $form.serialize() ,
+        dataType : 'json', // changing data type to json
+        success: function (data) { // here I'm adding data as a parameter which stores the response
+            console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
+            if(data.success === true)  {
+                modal.modal("hide");
+                t._datatable.row.add( {
+                "label": data.node.label,
+                "parentLabel": data.node.parentLabel,
+                "countCommunications": data.node.countObjects,
+                "filterUrl": '<a id="'+data.node.id+'" href="'+data.node.filterUrl+'" class="ico-sprite subs_download" title="{{ Lang_translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>',
+                "editUrl": '<a id="'+data.node.id+'" href="'+data.node.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>',
+                "deleteUrl": '<a id="'+data.node.id+'" href="'+data.node.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
+                } ).draw();
+            }
+        }
+    });
+
+
+ 
  })
+
 
     
 </script>
