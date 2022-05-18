@@ -22,9 +22,6 @@ class General_Save
      * function General_Save()
      * class constructor.
      **/
-    public function General_Save()
-    {
-    }
 
     /**
      * function getName().

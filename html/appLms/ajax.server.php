@@ -34,14 +34,18 @@ if (!function_exists('aout')) {
 }
 require_once _lms_ . '/lib/lib.permission.php';
 
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
 // load the correct module
 $aj_file = '';
 $mn = Forma\lib\Get::req('mn', DOTY_ALPHANUM, '');
-$plf = Forma\lib\Get::req('plf', DOTY_ALPHANUM, ($_SESSION['current_action_platform'] ? $_SESSION['current_action_platform'] : Forma\lib\Get::cur_plat()));
+$plf = Forma\lib\Get::req('plf', DOTY_ALPHANUM, ($session->has('current_action_platform') ? $session->get('current_action_platform') : Forma\lib\Get::cur_plat()));
 
-if (isset($_GET['r'])) {
-    $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $_GET['r']);
+$request = \Forma\lib\Get::req('r',DOTY_ALPHANUM);
+if (!empty($request)) {
+    $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $request);
 }
+
 if (!empty($GLOBALS['req'])) {
     $requesthandler = new RequestHandler($GLOBALS['req'], 'lms');
     $requesthandler->run(true);

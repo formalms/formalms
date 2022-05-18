@@ -14,9 +14,9 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * @version 	$Id: lib.sessionsave.php 323 2006-05-10 16:35:25Z fabio $
+ * @version    $Id: lib.sessionsave.php 323 2006-05-10 16:35:25Z fabio $
  */
-require_once dirname(__FILE__) . '/lib.generalsave.php';
+require_once __DIR__ . '/lib.generalsave.php';
 
 class Session_Save extends General_Save
 {
@@ -33,53 +33,34 @@ class Session_Save extends General_Save
      **/
     public $max_try = 4;
 
-    public function Session_Save()
-    {
-        parent::General_Save();
-    }
 
     public function getName($basename = 'basename', $unique = false)
     {
         if ($unique !== false) {
-            $_SESSION[$basename] = '';
+            $this->session->set($basename, '');
+            $this->session->save();
 
             return $basename;
         }
-        $basename .= '_' . time();
+        $value = $basename . '_' . \Symfony\Component\Uid\Uuid::v4()->toRfc4122();
 
-        $num_try = 0;
-        $max = $this->max_ini_rand;
-
-        $name = $basename . '_' . mt_rand(0, $max);
-
-        while (($num_try < $this->max_try)) {
-            if (!isset($_SESSION[$name])) {
-                $_SESSION[$name] = '';
-
-                return $name;
-            } else {
-                ++$num_try;
-                $max *= $this->factor;
-                $name = $basename . '_' . mt_rand(0, $max);
-            }
+        if ($this->session->has($value)){
+            return $this->getName($basename,$unique);
         }
 
-        return false;
+        return $value;
     }
 
     public function nameExists($var_name)
     {
-        return isset($_SESSION[$var_name]);
+        return $this->session->has($var_name);
     }
 
     public function save($var_name, &$content, $serialize_for_me = true)
     {
         if ($this->nameExists($var_name)) {
-            if ($serialize_for_me) {
-                $_SESSION[$var_name] = addslashes(serialize($content));
-            } else {
-                $_SESSION[$var_name] = $content;
-            }
+            $this->session->set($var_name,$content);
+            $this->session->save();
 
             return true;
         }
@@ -90,17 +71,10 @@ class Session_Save extends General_Save
     public function &load($var_name, $deserialize_for_me = true)
     {
         if ($this->nameExists($var_name)) {
-            if ($deserialize_for_me) {
-                $temp = unserialize(stripslashes($_SESSION[$var_name]));
-
-                return $temp;
-            } else {
-                return $_SESSION[$var_name];
-            }
+            $this->session->get($var_name);
         }
-        $false_var = false;
 
-        return $false_var;
+        return false;
     }
 
     /**
@@ -111,7 +85,8 @@ class Session_Save extends General_Save
     public function delete($var_name)
     {
         if ($this->nameExists($var_name)) {
-            unset($_SESSION[$var_name]);
+            $this->session->remove($var_name);
+            $this->session->save();
         }
     }
 }

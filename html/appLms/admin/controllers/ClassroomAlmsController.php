@@ -133,22 +133,22 @@ class ClassroomAlmsController extends AlmsController
 
     protected function _getSessionTreeData($index, $default = false)
     {
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         if (!$index || !is_string($index)) {
             return false;
         }
-        if (!$currentSession->has('course_category') || !isset($currentSession->get('course_category')['filter_status'][$index])) {
-            $currentSession->set('course_category',['filter_status'=>[$index=>$default]]);
+        if (!$session->has('course_category') || !isset($session->get('course_category')['filter_status'][$index])) {
+            $session->set('course_category',['filter_status'=>[$index=>$default]]);
         }
 
-        return $currentSession->get('course_category')['filter_status'][$index];
+        return $session->get('course_category')['filter_status'][$index];
     }
 
     protected function _setSessionTreeData($index, $value)
     {
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        $currentSession->set('course_category',['filter_status'=>[$index=>$value]]);
-        $currentSession->save();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session->set('course_category',['filter_status'=>[$index=>$value]]);
+        $session->save();
     }
 
     protected function _getNodeActions($id_category, $is_leaf)

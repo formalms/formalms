@@ -52,7 +52,7 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
         }
 
         $this->category = importVar('category');
-        $this->idCourse = (isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : 0);
+        $this->idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     }
 
     public function getForm()

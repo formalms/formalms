@@ -29,16 +29,18 @@ class TemplatelayoutAdmController extends AdmController
 
     protected function _getTableStatus($paramName, $default = false)
     {
-        if (!isset($_SESSION['template_status'][$paramName])) {
-            $_SESSION['template_status'][$paramName] = $default;
+        if (!$this->session->has('template_status_'.$paramName)) {
+            $this->session->set('template_status_'.$paramName,$default);
+            $this->session->save();
         }
 
-        return $_SESSION['template_status'][$paramName];
+        return $this->session->get('template_status_'.$paramName);
     }
 
     protected function _setTableStatus($paramName, $value)
     {
-        $_SESSION['template_status'][$paramName] = $value;
+        $this->session->set('template_status_'.$paramName,$value);
+        $this->session->save();
     }
 
     public function showTask()

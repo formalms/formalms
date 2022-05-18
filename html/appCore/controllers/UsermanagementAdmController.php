@@ -2371,7 +2371,7 @@ class UsermanagementAdmController extends AdmController
                         }
                         sl_close_fileoperations();
                     } else {
-                        $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                        $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD'));
                         Util::jump_to($base_url . '&err=no_upload');
                     }
                 }
@@ -2549,6 +2549,8 @@ class UsermanagementAdmController extends AdmController
                 unlink($filename);
                 sl_close_fileoperations();
 
+                break;
+            default:
                 break;
         }
 

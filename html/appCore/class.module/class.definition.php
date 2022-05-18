@@ -32,7 +32,9 @@ class Module
 
     public $descr_long;
 
-    public function Module($module_name = '')
+    public $session;
+
+    public function __construct($module_name = '')
     {
         global $modname;
 
@@ -51,6 +53,8 @@ class Module
 
         $this->descr_short = 'General module : ' . $modname;
         $this->descr_long = 'General module : ' . $modname;
+
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function getName()

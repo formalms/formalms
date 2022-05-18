@@ -775,12 +775,13 @@ function getEditorWikiId()
 {
     $wiki_id = 0;
 
-    if (isset($_SESSION['editor_in_wiki'])) {
-        $wiki_id = $_SESSION['editor_in_wiki'];
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    if (!empty($session->get('editor_in_wiki'))) {
+        $wiki_id = $session->get('editor_in_wiki');
     }
 
-    if (isset($_GET['wiki_id'])) {
-        $wiki_id = $_GET['wiki_id'];
+    if (!empty(Forma\lib\Get::req('wiki_id',DOTY_ALPHANUM,''))) {
+        $wiki_id = Forma\lib\Get::req('wiki_id',DOTY_ALPHANUM,'');
     }
 
     return $wiki_id;

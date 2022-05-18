@@ -13,6 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+use Forma\lib\Session\SessionManager;
+
 class GroupmanagementAdm extends Model
 {
     protected $db;
@@ -47,20 +49,32 @@ class GroupmanagementAdm extends Model
         $sort = 'g.groupid';
         if (isset($pagination['sort'])) {
             switch ($pagination['sort']) {
-                case 'description': $sort = 'g.description'; break;
+                case 'description':
+                    $sort = 'g.description';
+                    break;
                 //case 'usercount': $sort = 'usercount'; break;
-                default: $sort = 'g.groupid';
+                default:
+                    $sort = 'g.groupid';
             }
         }
 
         $dir = 'ASC';
         if (isset($pagination['dir'])) {
             switch ($pagination['dir']) {
-                case 'yui-dt-asc': $dir = 'ASC'; break;
-                case 'yui-dt-desc': $dir = 'DESC'; break;
-                case 'asc': $dir = 'ASC'; break;
-                case 'desc': $dir = 'DESC'; break;
-                default: $dir = 'ASC';
+                case 'yui-dt-asc':
+                    $dir = 'ASC';
+                    break;
+                case 'yui-dt-desc':
+                    $dir = 'DESC';
+                    break;
+                case 'asc':
+                    $dir = 'ASC';
+                    break;
+                case 'desc':
+                    $dir = 'DESC';
+                    break;
+                default:
+                    $dir = 'ASC';
             }
         }
 
@@ -79,10 +93,12 @@ class GroupmanagementAdm extends Model
         if ($filter) {
             $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
         }
+        $session = SessionManager::getInstance()->getSession();
 
         switch ($learning_filter) {
             case 'message':
-                $id_course = $_SESSION['message_filter'];
+
+                $id_course = $session->get('message_filter');
 
                 if ($id_course != 0) {
                     $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
@@ -98,14 +114,14 @@ class GroupmanagementAdm extends Model
                 }
 
                 $query .= ' g.idst IN (' . implode(',', $res) . ') ';
-            break;
+                break;
             case 'course':
-                $id_course = $_SESSION['idCourse'];
+                $id_course = $session->get('idCourse');
 
                 $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
 
                 $query .= ' AND g.idst IN (' . implode(',', $res) . ') ';
-            break;
+                break;
         }
 
         $query .= ' GROUP BY g.idst ';
@@ -167,14 +183,14 @@ class GroupmanagementAdm extends Model
                 }
 
                 $query .= ' g.idst IN (' . implode(',', $res) . ') ';
-            break;
+                break;
             case 'course':
                 $id_course = $_SESSION['idCourse'];
 
                 $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
 
                 $query .= ' AND g.idst IN (' . implode(',', $res) . ') ';
-            break;
+                break;
         }
 
         if ($filter) {
@@ -213,7 +229,7 @@ class GroupmanagementAdm extends Model
 
         Events::trigger('core.group.deleting', ['id_group' => $idst, 'info_group' => $info_group]);
 
-        $query = 'DELETE FROM %adm_group WHERE idst=' . (int) $idst . ' LIMIT 1';
+        $query = 'DELETE FROM %adm_group WHERE idst=' . (int)$idst . ' LIMIT 1';
         $res = $this->db->query($query);
 
         if ($res) {
@@ -239,7 +255,7 @@ class GroupmanagementAdm extends Model
         $output = false;
 
         if ($idst > 0) {
-            $query = 'DELETE FROM %adm_group_members WHERE idst=' . (int) $idst . ' OR idstMember=' . (int) $idst;
+            $query = 'DELETE FROM %adm_group_members WHERE idst=' . (int)$idst . ' OR idstMember=' . (int)$idst;
             $output = $this->db->query($query);
         }
 
@@ -250,7 +266,7 @@ class GroupmanagementAdm extends Model
     {
         $output = false;
 
-        $query = 'SELECT * FROM %adm_group WHERE idst=' . (int) $idst;
+        $query = 'SELECT * FROM %adm_group WHERE idst=' . (int)$idst;
         $res = $this->db->query($query);
 
         if ($res && $this->db->num_rows($res) > 0) {
@@ -306,7 +322,7 @@ class GroupmanagementAdm extends Model
             }
 
             if (count($conditions) > 0) {
-                $query = 'UPDATE %adm_group SET ' . implode(',', $conditions) . ' WHERE idst=' . (int) $idst;
+                $query = 'UPDATE %adm_group SET ' . implode(',', $conditions) . ' WHERE idst=' . (int)$idst;
                 $output = $this->db->query($query);
             }
         }
@@ -396,7 +412,7 @@ class GroupmanagementAdm extends Model
             if ($ulevel == ADMIN_GROUP_ADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $preference = new AdminPreference();
-                $user_id = (int) $_SESSION['public_area_idst'];
+                $user_id = (int)$_SESSION['public_area_idst'];
                 $preference->addAdminTree($idst, $user_id);
             }
         }
@@ -410,7 +426,7 @@ class GroupmanagementAdm extends Model
     {
         $output = false;
 
-        $query = 'SELECT idstMember FROM %adm_group_members WHERE idst=' . (int) $idst;
+        $query = 'SELECT idstMember FROM %adm_group_members WHERE idst=' . (int)$idst;
         $res = $this->db->query($query);
 
         if ($res) {
@@ -462,7 +478,7 @@ class GroupmanagementAdm extends Model
             $insert_list = [];
             foreach ($members as $member) {
                 if (is_numeric($member) && $member > 0 && $member != $idst) {
-                    $insert_list[] = '(' . (int) $idst . ', ' . (int) $member . ')';
+                    $insert_list[] = '(' . (int)$idst . ', ' . (int)$member . ')';
                 }
             }
             if (count($insert_list) > 0) {
@@ -500,7 +516,7 @@ class GroupmanagementAdm extends Model
 
     public function searchGroupsByGroupid($query, $limit = false, $filter = false)
     {
-        if ((int) $limit <= 0) {
+        if ((int)$limit <= 0) {
             $limit = Forma\lib\Get::sett('visuItem', 25);
         }
         $output = [];
@@ -520,7 +536,7 @@ class GroupmanagementAdm extends Model
         $query = 'SELECT idst, groupid FROM %adm_group '
             . " WHERE groupid LIKE '%" . $query . "%' " . $_qfilter . ' '
             . " AND hidden='false' AND type<>'course' ORDER BY groupid "
-            . ((int) $limit > 0 ? ' LIMIT 0, ' . (int) $limit : '');
+            . ((int)$limit > 0 ? ' LIMIT 0, ' . (int)$limit : '');
         $res = $this->db->query($query);
         if ($res) {
             while ($obj = $this->db->fetch_obj($res)) {
@@ -574,7 +590,7 @@ class GroupmanagementAdm extends Model
         $query = "SELECT idst, userid FROM %adm_user WHERE userid IN ('" . implode("','", $users_list) . "') ";
         $res = $this->db->query($query);
         while (list($idst, $userid) = $this->db->fetch_row($res)) {
-            $users_idst[$this->acl_man->relativeId($userid)] = (int) $idst;
+            $users_idst[$this->acl_man->relativeId($userid)] = (int)$idst;
         }
 
         if (empty($users_idst)) {
@@ -584,7 +600,7 @@ class GroupmanagementAdm extends Model
         // select estrarre tutti dalla group_memeber
         $dup = [];
         $query = 'SELECT idstMember from %adm_group_members where idst = ' . $id_group
-                . " AND idstMember in ('" . implode("','", $users_idst) . "') ";
+            . " AND idstMember in ('" . implode("','", $users_idst) . "') ";
         $res = $this->db->query($query);
         while (list($idstMember) = $this->db->fetch_row($res)) {
             $dup[] = $idstMember;
@@ -634,22 +650,30 @@ class GroupmanagementAdm extends Model
         if (!is_array($pagination)) {
             $pagination = [];
         }
-        $_startIndex = (isset($pagination['startIndex']) ? (int) $pagination['startIndex'] : 0);
-        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $_startIndex = (isset($pagination['startIndex']) ? (int)$pagination['startIndex'] : 0);
+        $_results = (isset($pagination['results']) ? (int)$pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
         $_sort = 'userid';
         $_dir = 'ASC';
 
         if (isset($pagination['dir'])) {
             switch (strtoupper($pagination['dir'])) {
-                case 'ASC': $_dir = 'ASC'; break;
-                case 'DESC': $_dir = 'DESC'; break;
+                case 'ASC':
+                    $_dir = 'ASC';
+                    break;
+                case 'DESC':
+                    $_dir = 'DESC';
+                    break;
             }
         }
 
         if (isset($pagination['sort'])) {
             switch ($pagination['sort']) {
-                case 'firstname': $_sort = 'firstname ' . $_dir . ', lastname'; break;
-                case 'lastname': $_sort = 'lastname ' . $_dir . ', firstname'; break;
+                case 'firstname':
+                    $_sort = 'firstname ' . $_dir . ', lastname';
+                    break;
+                case 'lastname':
+                    $_sort = 'lastname ' . $_dir . ', firstname';
+                    break;
             }
         }
 
@@ -668,18 +692,18 @@ class GroupmanagementAdm extends Model
 
         //mount query
         if (count($sub_groups) <= 1) { //no sub groups in this group: go standard simple query
-                $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, gm.idst AS idst_group '
+            $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, gm.idst AS idst_group '
                 . ' FROM %adm_user AS u JOIN %adm_group_members AS gm '
                 . ' ON (u.idst = gm.idstMember) '
-                . ' WHERE gm.idst = ' . (int) $id_group . ' ' . $_filter . ' '
+                . ' WHERE gm.idst = ' . (int)$id_group . ' ' . $_filter . ' '
                 . ' ORDER BY ' . $_sort . ' ' . $_dir . ' '
-                . ' LIMIT ' . (int) $_startIndex . ', ' . (int) $_results;
+                . ' LIMIT ' . (int)$_startIndex . ', ' . (int)$_results;
         } else {
             $base_users = $this->acl_man->getGroupUMembers($id_group);
             $query = '(SELECT u.idst, u.userid, u.firstname, u.lastname, gm.idst AS idst_group '
                 . ' FROM %adm_user AS u JOIN %adm_group_members AS gm '
                 . ' ON (u.idst = gm.idstMember) '
-                . ' WHERE gm.idst = ' . (int) $id_group . ' ' . $_filter . ') '
+                . ' WHERE gm.idst = ' . (int)$id_group . ' ' . $_filter . ') '
 
                 . ' UNION '
 
@@ -691,7 +715,7 @@ class GroupmanagementAdm extends Model
                 . ' ) '
 
                 . ' ORDER BY ' . $_sort . ' ' . $_dir . ' '
-                . ' LIMIT ' . (int) $_startIndex . ', ' . (int) $_results;
+                . ' LIMIT ' . (int)$_startIndex . ', ' . (int)$_results;
         }
         $res = $this->db->query($query);
 
@@ -731,13 +755,13 @@ class GroupmanagementAdm extends Model
             $query = 'SELECT COUNT(*) as ucount '
                 . ' FROM %adm_user AS u JOIN %adm_group_members AS gm '
                 . ' ON (u.idst = gm.idstMember) '
-                . ' WHERE gm.idst = ' . (int) $id_group . ' ' . $_filter . ' ';
+                . ' WHERE gm.idst = ' . (int)$id_group . ' ' . $_filter . ' ';
         } else {
             $base_users = $this->acl_man->getGroupUMembers($id_group);
             $query = '(SELECT COUNT(*) as ucount '
                 . ' FROM %adm_user AS u JOIN %adm_group_members AS gm '
                 . ' ON (u.idst = gm.idstMember) '
-                . ' WHERE gm.idst = ' . (int) $id_group . ' ' . $_filter . ') '
+                . ' WHERE gm.idst = ' . (int)$id_group . ' ' . $_filter . ') '
                 . ' UNION '
                 . '(SELECT COUNT(DISTINCT u.idst) as ucount '
                 . ' FROM %adm_user AS u JOIN %adm_group_members AS gm '
@@ -766,7 +790,7 @@ class GroupmanagementAdm extends Model
             return false;
         }
         if (is_numeric($groups)) {
-            $groups = [(int) $groups];
+            $groups = [(int)$groups];
         }
         if (!is_array($groups)) {
             return false;
@@ -795,7 +819,7 @@ class GroupmanagementAdm extends Model
             return false;
         }
         if (is_numeric($groups)) {
-            $groups = [(int) $groups];
+            $groups = [(int)$groups];
         }
         if (!is_array($groups)) {
             return false;
@@ -819,11 +843,11 @@ class GroupmanagementAdm extends Model
 
     public function removeUsersFromGroup($id_group, $users)
     {
-        if ((int) $id_group <= 0) {
+        if ((int)$id_group <= 0) {
             return false;
         }
         if (is_numeric($users)) {
-            $users = [(int) $users];
+            $users = [(int)$users];
         }
         if (!is_array($users)) {
             return false;
@@ -838,11 +862,11 @@ class GroupmanagementAdm extends Model
         if ($res && $this->db->num_rows($res) > 0) {
             $to_delete = [];
             while (list($id_user) = $this->db->fetch_row($res)) {
-                $to_delete[] = (int) $id_user;
+                $to_delete[] = (int)$id_user;
             }
             $output = true;
             if (!empty($to_delete)) {
-                $query = 'DELETE FROM %adm_group_members WHERE idst = ' . (int) $id_group . ' '
+                $query = 'DELETE FROM %adm_group_members WHERE idst = ' . (int)$id_group . ' '
                     . ' AND idstMember IN (' . implode(',', $to_delete) . ')';
                 $res = $this->db->query($query);
                 $output = $res ? true : false;

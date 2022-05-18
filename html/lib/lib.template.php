@@ -24,28 +24,28 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 function getTemplate()
 {
-    $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     // If saved in session use this one
-    if ($currentSession->has('template') && $currentSession->get('template') != false) {
-        if (!checkTemplateVersion($currentSession->get('template'))) {
+    if ($session->has('template') && $session->get('template') != false) {
+        if (!checkTemplateVersion($session->get('template'))) {
             return 'standard';
         }
 
-        return $currentSession->get('template');
+        return $session->get('template');
     }
 
     // force_standard mode
     if ((array_key_exists('notuse_template',$_REQUEST) && isset($_REQUEST['notuse_template'])) || (array_key_exists('notuse_template',$GLOBALS) && $GLOBALS['notuse_template'] == true)) {
-        $currentSession->set('template','standard');
+        $session->set('template','standard');
 
-        return $currentSession->get('template');
+        return $session->get('template');
     }
 
     //search for a template associated to the current host
     $plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
     if ($plat_templ != false) {
-        $currentSession->set('template',$plat_templ);
-        if (!checkTemplateVersion($currentSession->get('template'))) {
+        $session->set('template',$plat_templ);
+        if (!checkTemplateVersion($session->get('template'))) {
             return 'standard';
         }
 
@@ -66,18 +66,18 @@ function getTemplate()
             list($template_code) = sql_fetch_row($re);
 
             setTemplate($template_code);
-            if (!checkTemplateVersion($currentSession->get('template'))) {
+            if (!checkTemplateVersion($session->get('template'))) {
                 return 'standard';
             }
 
-            return $currentSession->get('template');
+            return $session->get('template');
         }
     }
 
     // search for the default template
-    $currentSession->set('template', getDefaultTemplate());
+    $session->set('template', getDefaultTemplate());
 
-    return $currentSession->get('template');
+    return $session->get('template');
 }
 
 /**
@@ -139,11 +139,14 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
  */
 function setTemplate($new_template)
 {
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if (is_dir(_templates_ . '/' . $new_template)) {
-        $_SESSION['template'] = $new_template;
+
+        $session->set('template',$new_template);
     } else {
-        $_SESSION['template'] = getDefaultTemplate();
+        $session->set('template',getDefaultTemplate());
     }
+    $session->save();
 }
 
 /**
@@ -151,7 +154,9 @@ function setTemplate($new_template)
  */
 function resetTemplate()
 {
-    unset($_SESSION['template']);
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session->remove('template');
+    $session->save();
     setTemplate(getTemplate());
 }
 
@@ -249,9 +254,10 @@ function getDefaultTemplate($platform = false)
  */
 function getAbsoluteBasePathTemplate($platform = false)
 {
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if ($platform === false) {
-        if (defined('CORE') && isset($_SESSION['current_action_platform'])) {
-            $platform = $_SESSION['current_action_platform'];
+        if (defined('CORE') && $session->has('current_action_platform') && !empty($session->get('current_action_platform'))) {
+            $platform = $session->get('current_action_platform');
         } else {
             $platform = Forma\lib\Get::cur_plat();
         }
@@ -280,9 +286,10 @@ function getAbsolutePathTemplate($platform = false)
  */
 function getRelativeBasePathTemplate($platform = false)
 {
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if ($platform === false) {
-        if (defined('CORE') && isset($_SESSION['current_action_platform'])) {
-            $platform = $_SESSION['current_action_platform'];
+        if (defined('CORE') && $session->has('current_action_platform') && !empty($session->get('current_action_platform'))) {
+            $platform = $session->get('current_action_platform');
         } else {
             $platform = Forma\lib\Get::cur_plat();
         }
@@ -601,11 +608,13 @@ function getLegenda()
 
 function setAccessibilityStatus($new_status)
 {
-    if (Forma\lib\Get::sett('accessibility', 'off') != 'off') {
-        $_SESSION['high_accessibility'] = $new_status;
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    if (Forma\lib\Get::sett('accessibility', 'off') !== 'off') {
+        $session->set('high_accessibility',$new_status);
     } else {
-        $_SESSION['high_accessibility'] = false;
+        $session->set('high_accessibility',false);
     }
+    $session->save();
 }
 
 function getAccessibilityStatus()
@@ -613,9 +622,9 @@ function getAccessibilityStatus()
     if (Forma\lib\Get::sett('accessibility') == 'off') {
         return false;
     }
-
-    if (isset($_SESSION['high_accessibility'])) {
-        return $_SESSION['high_accessibility'] == 1;
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    if ($session->has('high_accessibility')) {
+        return $session->get('high_accessibility') == 1;
     } else {
         return true;
     }

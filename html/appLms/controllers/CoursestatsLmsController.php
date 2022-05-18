@@ -14,12 +14,15 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/lib/lib.json.php';
+use \Forma\lib\Session\SessionManager;
 
 class CoursestatsLmsController extends LmsController
 {
     protected $model;
     protected $json;
     protected $permissions;
+
+    protected $idCourse;
 
     public function init()
     {
@@ -29,6 +32,10 @@ class CoursestatsLmsController extends LmsController
             'view' => true,
             'mod' => true,
         ];
+        $this->idCourse =  false;
+        if (SessionManager::getInstance()->getSession()->has('idCourse') && SessionManager::getInstance()->getSession()->get('idCourse') > 0){
+            $this->idCourse = SessionManager::getInstance()->getSession()->get('idCourse');
+        }
     }
 
     protected function _getErrorMessage($code)
@@ -129,7 +136,7 @@ class CoursestatsLmsController extends LmsController
     {
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
+
         if ((int)$id_course <= 0) {
             //...
             return;
@@ -205,7 +212,7 @@ class CoursestatsLmsController extends LmsController
 
         $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
 
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, SessionManager::getInstance()->getSession()->get('idCourse'));
 
         $pagination = [
             'startIndex' => $startIndex,
@@ -316,7 +323,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_userTask()
     {
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
+
         if ((int)$id_course <= 0) {
             //...
             return;
@@ -359,7 +366,7 @@ class CoursestatsLmsController extends LmsController
     {
         $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
         $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, SessionManager::getInstance()->getSession()->get('idCourse'));
         $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
 
         $pagination = [];
@@ -487,7 +494,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_user_objectTask()
     {
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
+
         if ((int)$id_course <= 0) {
             //...
             return;
@@ -570,7 +577,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_objectTask()
     {
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
+
         if ((int)$id_course <= 0) {
             //...
             return;
@@ -613,7 +620,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
+
         if ((int)$id_course <= 0) {
             //...
             return;
@@ -643,8 +650,6 @@ class CoursestatsLmsController extends LmsController
 
             return;
         }
-
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
         if ((int)$id_course <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
@@ -697,8 +702,8 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int)$id_course <= 0) {
+
+        if ((int)$this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -734,7 +739,7 @@ class CoursestatsLmsController extends LmsController
         require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
         require_once _lms_ . '/lib/lib.param.php';
 
-        $repoDb = new OrgDirDb($id_course);
+        $repoDb = new OrgDirDb($this->idCourse);
         $folder = $repoDb->getFolderById($id_lo);
         $id_resource = $folder->otherValues[REPOFIELDIDRESOURCE];
         $id_param = $folder->otherValues[ORGFIELDIDPARAM];
@@ -864,8 +869,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int)$id_course <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -875,7 +879,7 @@ class CoursestatsLmsController extends LmsController
         $line_end = "\r\n";
 
         $output = '';
-        $lo_list = $this->model->getCourseLOs($id_course);
+        $lo_list = $this->model->getCourseLOs($this->idCourse);
         $lo_total = count($lo_list);
 
         $head = [];
@@ -890,7 +894,7 @@ class CoursestatsLmsController extends LmsController
 
         $output .= implode($separator, $head) . $line_end;
 
-        $records = $this->model->getCourseStatsList(false, $id_course, false);
+        $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
 
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
@@ -955,8 +959,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int)$id_course <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -966,10 +969,10 @@ class CoursestatsLmsController extends LmsController
         $line_end = "\r\n";
         $pagination = false;
         $output = '';
-        $lo_list = $this->model->getCourseLOs($id_course);
+        $lo_list = $this->model->getCourseLOs($this->idCourse);
         $lo_total = count($lo_list);
 
-        $records = $this->model->getCourseStatsList(false, $id_course, false);
+        $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
             $acl_man = Docebo::user()->getAclManager();
 
@@ -1016,7 +1019,7 @@ class CoursestatsLmsController extends LmsController
 
                     $output .= implode($separator, $head) . $line_end;
                     // dettaglio LO
-                    $list = $this->model->getCourseUserStatsList2csv($pagination, $id_course, $record->idst);
+                    $list = $this->model->getCourseUserStatsList2csv($pagination, $this->idCourse, $record->idst);
 
                     if (is_array($list)) {
                         foreach ($list as $recordlo) {
@@ -1102,17 +1105,16 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int)$id_course <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
 
         $output = '';
-        $lo_list = $this->model->getCourseLOs($id_course);
+        $lo_list = $this->model->getCourseLOs($this->idCourse);
         $lo_total = count($lo_list);
         $output = '<table border="1">';
-        $records = $this->model->getCourseStatsList(false, $id_course, false);
+        $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
             $acl_man = Docebo::user()->getAclManager();
 
@@ -1157,7 +1159,7 @@ class CoursestatsLmsController extends LmsController
                     }
                     $output .= '</tr>';
 
-                    $dettaglio = $this->getusertabledataxls($id_course, $record->idst);
+                    $dettaglio = $this->getusertabledataxls($this->idCourse, $record->idst);
                     // dettaglio LO
 
                     if ($dettaglio) {
@@ -1180,9 +1182,9 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $this->idCourse);
         $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
-        if ((int)$id_course <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1192,7 +1194,7 @@ class CoursestatsLmsController extends LmsController
 
         $acl_man = Docebo::user()->getACLManager();
         $user_info = $acl_man->getUser($id_user, false);
-        $course_info = $this->model->getUserCourseInfo($id_course, $id_user);
+        $course_info = $this->model->getUserCourseInfo($this->idCourse, $id_user);
         $info = new stdClass();
         $info->userid = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
         $info->firstname = $user_info[ACL_INFO_FIRSTNAME];
@@ -1237,7 +1239,7 @@ class CoursestatsLmsController extends LmsController
         }
         $output .= '</tr>';
 
-        $dettaglio = $this->getusertabledataxls($id_course, $id_user);
+        $dettaglio = $this->getusertabledataxls($this->idCourse, $id_user);
         // dettaglio LO
 
         if ($dettaglio) {
@@ -1260,8 +1262,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int)$id_course <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1271,10 +1272,10 @@ class CoursestatsLmsController extends LmsController
         $line_end = "\r\n";
         $pagination = false;
         $output = '';
-        $lo_list = $this->model->getCourseLOs($id_course);
+        $lo_list = $this->model->getCourseLOs($this->idCourse);
         $lo_total = count($lo_list);
 
-        $records = $this->model->getCourseStatsList(false, $id_course, false);
+        $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
             $acl_man = Docebo::user()->getAclManager();
 
@@ -1321,7 +1322,7 @@ class CoursestatsLmsController extends LmsController
 
                     $output .= implode($separator, $head) . $line_end;
                     // dettaglio LO
-                    $list = $this->model->getCourseUserStatsList2csv($pagination, $id_course, $record->idst);
+                    $list = $this->model->getCourseUserStatsList2csv($pagination, $this->idCourse, $record->idst);
 
                     if (is_array($list)) {
                         foreach ($list as $recordlo) {
@@ -1407,8 +1408,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        $id_course = isset($_SESSION['idCourse']) && $_SESSION['idCourse'] > 0 ? $_SESSION['idCourse'] : false;
-        if ((int)$id_course <= 0) {
+        if ((int)$this->idCourse <= 0) {
             //...
             return;
         }
@@ -1417,7 +1417,7 @@ class CoursestatsLmsController extends LmsController
         $delimiter = '"';
         $line_end = "\r\n";
         $pagination = false;
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
+        $this->idCourse = Forma\lib\Get::req('id_course', DOTY_INT, $this->idCourse);
         $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
 
         $output = '';
@@ -1437,7 +1437,7 @@ class CoursestatsLmsController extends LmsController
 
         $output .= implode($separator, $head) . $line_end;
 
-        $list = $this->model->getCourseUserStatsList2csv($pagination, $id_course, $id_user);
+        $list = $this->model->getCourseUserStatsList2csv($pagination, $this->idCourse, $id_user);
 
         $records = [];
         $acl_man = Docebo::user()->getAclManager();
@@ -1512,7 +1512,7 @@ class CoursestatsLmsController extends LmsController
     {
         $acl_man = Docebo::user()->getAclManager();
         $course_man = new Man_Course();
-        $course_user = $course_man->getIdUserOfLevel($_SESSION['idCourse']);
+        $course_user = $course_man->getIdUserOfLevel($this->idCourse);
 
         //apply sub admin filters, if needed
         if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
@@ -1525,7 +1525,7 @@ class CoursestatsLmsController extends LmsController
 
         $usersList = &$acl_man->getUsers($course_user);
 
-        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int)$_SESSION['idCourse'] . ' GROUP BY idUser';
+        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int)$this->idCourse . ' GROUP BY idUser';
         $totalTimesResult = sql_query($queryTime);
 
         $totalTimes = [];

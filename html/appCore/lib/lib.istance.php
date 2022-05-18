@@ -32,11 +32,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function &createModule($module_name, $class_name = null)
 {
     $module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
-    if (!isset($_SESSION['current_action_platform'])) {
-        $_SESSION['current_action_platform'] = 'framework';
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    if (!$session->has('current_action_platform')) {
+        $session->set('current_action_platform','framework');
+        $session->save();
     }
 
-    switch ($_SESSION['current_action_platform']) {
+    switch ($session->get('current_action_platform')) {
         case 'framework':
             $where = _adm_;
             $def_class_name = 'Module';

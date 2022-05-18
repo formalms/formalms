@@ -38,16 +38,18 @@ class AdminmanagerAdmController extends AdmController
 
     protected function _getSessionValue($index, $default = false)
     {
-        if (!isset($_SESSION['adminmanager'])) {
-            $_SESSION['adminmanager'] = [];
+        if (!$this->session->has('adminmanager_'.$index)) {
+            $this->session->set('adminmanager_'.$index,$default);
+            $this->session->save();
         }
 
-        return isset($_SESSION['adminmanager'][$index]) ? $_SESSION['adminmanager'][$index] : $default;
+        return $this->session->get('adminmanager_'.$index);
     }
 
     protected function _setSessionValue($index, $value)
     {
-        $_SESSION['adminmanager'][$index] = $value;
+        $this->session->set('adminmanager_'.$index,$value);
+        $this->session->save();
     }
 
     public function show()
@@ -152,7 +154,8 @@ class AdminmanagerAdmController extends AdmController
     {
         $filter = Forma\lib\Get::req('filter', DOTY_MIXED, '');
 
-        $_SESSION['adminmanager']['filter'] = $filter;
+        $this->session->set('adminmanager_filter',$filter);
+        $this->session->save();
 
         $res = ['success' => true, 'filter' => $filter];
 

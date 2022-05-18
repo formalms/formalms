@@ -242,9 +242,9 @@ class TabView
 
     /** This function extract from input (POST) the state of the tab.
      *	@param array &$data input data (POST)
-     *  @param array &$extra_data extra input data (SESSION)
+     *  @param \Symfony\Component\HttpFoundation\Session\Session &$extra_data extra input data (SESSION)
      **/
-    public function parseInput(&$data, &$extra_data)
+    public function parseInput(&$data, $extra_data)
     {
         // $extra_data are ingored in this context
         while (($key = key($this->arrTab)) != '') {
@@ -258,8 +258,8 @@ class TabView
         if ($this->activeId === null) {
             if (isset($data[$this->_getStateId()])) {
                 $this->setActiveTab($data[$this->_getStateId()]);
-            } elseif (isset($extra_data[$this->_getStateId()])) {
-                $this->setActiveTab($extra_data[$this->_getStateId()]);
+            } elseif ($extra_data->has($this->_getStateId())) {
+                $this->setActiveTab($extra_data->get($this->_getStateId()));
             }
         }
     }

@@ -38,7 +38,8 @@ class HomepageAdmController extends AdmController
         $params['msg'] = $this->_translateMsg($msg);
 
         if (Forma\lib\Get::req('cancel_social', DOTY_BOOL, false)) {
-            unset($_SESSION['social']);
+            $this->session->remove('social');
+            $this->session->save();
         }
 
         $params['block_attempts'] = false;
@@ -396,11 +397,11 @@ class HomepageAdmController extends AdmController
 
         switch ($res) {
             case PWD_ELAPSED:
-                $_SESSION['must_renew_pwd'] = 1;
+                $this->session->set('must_renew_pwd',1);
                 $redirection['req'] = 'lms/profile/renewalpwd';
                 break;
             case MANDATORY_FIELDS:
-                $_SESSION['request_mandatory_fields_compilation'] = 1;
+                $this->session->set('request_mandatory_fields_compilation',1);
                 $redirection['req'] = 'lms/precompile/show';
                 break;
             case USER_SAVED:
@@ -414,6 +415,7 @@ class HomepageAdmController extends AdmController
                 break;
         }
 
+        $this->session->save();
         self::redirect($redirection);
     }
 
@@ -534,11 +536,11 @@ class HomepageAdmController extends AdmController
         $redirection = [];
         switch ($this->model->saveUser($user)) {
             case PWD_ELAPSED:
-                $_SESSION['must_renew_pwd'] = 1;
+                $this->session->set('must_renew_pwd',1);
                 $redirection['req'] = 'lms/profile/renewalpwd';
                 break;
             case MANDATORY_FIELDS:
-                $_SESSION['request_mandatory_fields_compilation'] = 1;
+                $this->session->set('request_mandatory_fields_compilation',1);
                 $redirection['req'] = 'lms/precompile/show';
                 break;
             case USER_SAVED:
@@ -566,15 +568,16 @@ class HomepageAdmController extends AdmController
             $redirection['op'] = $next_action;
             $redirection['modname'] = $module;
 
-            $_SESSION['login_redirect'] = trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR) . '/' . _folder_lms_ . '/index.php?' . http_build_query($params, '', '&');
-
+            $loginRedirect = trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR) . '/' . _folder_lms_ . '/index.php?' . http_build_query($params, '', '&');
+            $this->session->set('login_redirect',$loginRedirect);
             switch ($next_action) {
                 case 'custom_playitem':
-                    $_SESSION['login_redirect'] += '&collapse_menu=1';
+                    $loginRedirect += '&collapse_menu=1';
+                    $this->session->set('login_redirect',$loginRedirect);
                     break;
             }
         }
-
+        $this->session->save();
         self::redirect($redirection);
     }
 

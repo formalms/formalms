@@ -52,7 +52,7 @@ class DoceboCalEvent_lms extends DoceboCalEvent_core
 
         $this->category = importVar('category');
         $this->private = importVar('private');
-        $this->idCourse = $_SESSION['idCourse'];
+        $this->idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     }
 
     public function getForm()
@@ -194,23 +194,19 @@ class DoceboCalEvent_lms extends DoceboCalEvent_core
 
     public function getPerm()
     {
-        switch ($_SESSION['levelCourse']) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        switch ($session->get('levelCourse')) {
             case '7':
             case '6':
             case '5':
             case '4':
                 $permissions = 2;
                 break;
-
             case '3':
                 $permissions = 1;
                 break;
-
             case '2':
             case '1':
-                $permissions = 0;
-                break;
-
             default:
                 $permissions = 0;
                 break;

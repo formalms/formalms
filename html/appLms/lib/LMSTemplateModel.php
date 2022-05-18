@@ -24,9 +24,10 @@ class LMSTemplateModel
 
     public function selectLayout()
     {
-        if (!empty($_SESSION['layoutToRender'])) {
-            return $_SESSION['layoutToRender'];
-        } elseif (isset($_SESSION['idCourse'])) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if ($session->has('layoutToRender') && !empty($session->get('layoutToRender'))) {
+            return $session->get('layoutToRender');
+        } elseif ($session->has('idCourse') && !empty($session->get('idCourse'))) {
             return 'lms';
         } else {
             return 'lms_user';

@@ -13,6 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+use \Forma\lib\Session\SessionManager;
+
 class Layout
 {
     public const LAYOUT_LMS = 'lms';
@@ -309,11 +311,11 @@ class Layout
 
     public static function render($layout)
     {
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = SessionManager::getInstance()->getSession();
 
-        if ($currentSession->has('template') && $currentSession->get('template') !== getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
+        if ($session->has('template') && $session->get('template') !== getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
             $msgChangeTemplate = Lang::t('_MSG_CHANGE_TEMPLATE', 'standard');
-            $msgChangeTemplate = str_replace('[template_name]', $currentSession->get('template'), $msgChangeTemplate);
+            $msgChangeTemplate = str_replace('[template_name]', $session->get('template'), $msgChangeTemplate);
             $msgChangeTemplate = str_replace('[template_min_version]', _template_min_version_, $msgChangeTemplate);
 
             UIFeedback::notice($msgChangeTemplate);
@@ -388,11 +390,13 @@ class Layout
                 $courseMenu = Layout::courseMenu();
                 $retArray = array_merge($courseMenu, $retArray);
 
-                if (!isset($_SESSION['direct_play'])) {
+                if (SessionManager::getInstance()->getSession()->has('direct_play') && !empty(SessionManager::getInstance()->getSession()->get('direct_play'))) {
                     $retArray['direct_play'] = '<div class="yui-b">' . Layout::zone('content') . '</div>';
                 } else {
                     $retArray['direct_play'] = Layout::zone('content');
                 }
+                break;
+            default:
                 break;
         }
 
@@ -401,10 +405,11 @@ class Layout
 
     public static function courseMenu()
     {
-        if (!Docebo::user()->isAnonymous() && $_SESSION['idCourse']) {
+        $sessionIdCourse = SessionManager::getInstance()->getSession()->get('idCourse');
+        if (!Docebo::user()->isAnonymous() && $sessionIdCourse) {
             $db = DbConn::getInstance();
 
-            $query_course = 'SELECT name, img_course FROM %lms_course WHERE idCourse = ' . $_SESSION['idCourse'] . ' ';
+            $query_course = 'SELECT name, img_course FROM %lms_course WHERE idCourse = ' . $sessionIdCourse . ' ';
             $course_data = $db->query($query_course);
             $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
             while ($course = $db->fetch_obj($course_data)) {
@@ -415,18 +420,20 @@ class Layout
             // get select menu
             $id_list = [];
             $dropdown_menu = [];
-            $query = 'SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ' . $_SESSION['idCourse'] . ' ORDER BY sequence';
+            $query = 'SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ' . $sessionIdCourse . ' ORDER BY sequence';
             $re_main = $db->query($query);
 
             $main_menu_id = Forma\lib\Get::req('id_main_sel', DOTY_INT, 0);
             $module_menu_id = Forma\lib\Get::req('id_module_sel', DOTY_INT, 0);
 
             if ($main_menu_id > 0) {
-                $_SESSION['current_main_menu'] = $main_menu_id;
+                SessionManager::getInstance()->getSession()->set('current_main_menu',$main_menu_id);
+                SessionManager::getInstance()->getSession()->save();
             }
 
             if ($module_menu_id > 0) {
-                $_SESSION['sel_module_id'] = $module_menu_id;
+                SessionManager::getInstance()->getSession()->set('sel_module_id',$module_menu_id);
+                SessionManager::getInstance()->getSession()->save();
             }
 
             while ($main = $db->fetch_obj($re_main)) {
@@ -434,7 +441,7 @@ class Layout
 
                 $slider_menu = [];
                 $query_menu = 'SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
-                            FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule) WHERE under.idCourse = ' . $_SESSION['idCourse'] . '
+                            FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule) WHERE under.idCourse = ' . $sessionIdCourse . '
                             AND under.idMain = ' . $main->id . ' ORDER BY under.idMain, under.sequence';
 
                 $re_menu_voice = $db->query($query_menu);
@@ -447,7 +454,7 @@ class Layout
                         $slider_menu[] = [
                             'id_submenu' => $obj->id,
                             'name' => $GLOBALS['module_assigned_name'][$obj->module_name],
-                            'selected' => ($obj->id === '' . $_SESSION['sel_module_id'] ? true : false),
+                            'selected' => ($obj->id === '' . SessionManager::getInstance()->getSession()->get('sel_module_id') ? true : false),
                             'link' => ($obj->mvc_path != ''
                                 ? 'index.php?r=' . $obj->mvc_path . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main
                                 : 'index.php?modname=' . $obj->module_name . '&op=' . $obj->default_op . '&id_module_sel=' . $obj->id . '&id_main_sel=' . $obj->id_main),
@@ -464,7 +471,7 @@ class Layout
                         'slug' => strtolower(str_replace(' ', '-', $main->name)),
                         'name' => Lang::t($main->name, 'menu_course', false, false, $main->name),
                         'link' => $slider_menu[0]['link'],
-                        'selected' => ($main->id === '' . $_SESSION['current_main_menu'] ? true : false),
+                        'selected' => ($main->id === '' . SessionManager::getInstance()->getSession()->get('current_main_menu') ? true : false),
                         'slider_menu' => $slider_menu,
                     ];
 
@@ -472,25 +479,25 @@ class Layout
                 }
             }
 
-            if ($_SESSION['current_main_menu'] === 0) {
+            if (SessionManager::getInstance()->getSession()->get('current_main_menu') === 0) {
                 $dropdown_menu[0]['selected'] = true;
             }
             // horizontal menu
             require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
             $total = getNumCourseItems(
-                $_SESSION['idCourse'],
+                $sessionIdCourse,
                 false,
                 getLogUserId(),
                 false
             );
             $tot_complete = getStatStatusCount(
                 getLogUserId(),
-                $_SESSION['idCourse'],
+                $sessionIdCourse,
                 ['completed', 'passed']
             );
             $tot_failed = getStatStatusCount(
                 getLogUserId(),
-                $_SESSION['idCourse'],
+                $sessionIdCourse,
                 ['failed']
             );
 
@@ -498,10 +505,10 @@ class Layout
             $perc_failed = round(($tot_failed / $total) * 100, 2);
 
             $stats = [];
-            if (!isset($_SESSION['is_ghost']) || $_SESSION['is_ghost'] !== true) {
+            if (SessionManager::getInstance()->getSession()->has('is_ghost') || SessionManager::getInstance()->getSession()->get('is_ghost') !== true) {
                 if (Docebo::course()->getValue('show_time') == 1) {
-                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $_SESSION['idCourse']);
-                    $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($_SESSION['idCourse']);
+                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $sessionIdCourse);
+                    $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($sessionIdCourse);
                     $tot_time_sec += $partial_time_sec;
 
                     $hours = (int) ($partial_time_sec / 3600);
@@ -534,7 +541,7 @@ class Layout
 
             // who is online ---------------------------------------------------------
             $stats['user_stats']['who_is_online']['type'] = Docebo::course()->getValue('show_who_online');
-            $stats['user_stats']['who_is_online']['user_online'] = TrackUser::getWhoIsOnline($_SESSION['idCourse']);
+            $stats['user_stats']['who_is_online']['user_online'] = TrackUser::getWhoIsOnline($sessionIdCourse);
 
             // print first pannel
 
@@ -543,14 +550,14 @@ class Layout
                 $show_progress = true;
                 require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
                 $total = getNumCourseItems(
-                    $_SESSION['idCourse'],
+                    $sessionIdCourse,
                     false,
                     getLogUserId(),
                     false
                 );
                 $tot_complete = getStatStatusCount(
                     getLogUserId(),
-                    $_SESSION['idCourse'],
+                    $sessionIdCourse,
                     ['completed', 'passed']
                 );
 
@@ -558,12 +565,12 @@ class Layout
 
                 $tot_passed = getStatStatusCount(
                     getLogUserId(),
-                    $_SESSION['idCourse'],
+                    $sessionIdCourse,
                     ['passed']
                 );
                 $tot_failed = getStatStatusCount(
                     getLogUserId(),
-                    $_SESSION['idCourse'],
+                    $sessionIdCourse,
                     ['failed']
                 );
 

@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 $request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
 
-$currentSession = $request->getSession();
+$session = $request->getSession();
 
 // access granted only if user is logged in
 if (Docebo::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
@@ -41,7 +41,7 @@ if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODA
 }
 
 // handling access from multiple sessions
-if (Forma\lib\Get::sett('stop_concurrent_user') == 'on' && $currentSession->has('idCourse')) {
+if (Forma\lib\Get::sett('stop_concurrent_user') == 'on' && $session->has('idCourse')) {
     // two user logged at the same time
     if (!TrackUser::checkSession(getLogUserId())) {
         TrackUser::resetUserSession(getLogUserId());
@@ -49,13 +49,13 @@ if (Forma\lib\Get::sett('stop_concurrent_user') == 'on' && $currentSession->has(
     }
 }
 
-if ($currentSession->has('must_renew_pwd') && $currentSession->get('must_renew_pwd') == 1) {
+if ($session->has('must_renew_pwd') && $session->get('must_renew_pwd') == 1) {
     // handling required password renewal
 
     $GLOBALS['modname'] = '';
     $GLOBALS['op'] = '';
     $GLOBALS['req'] = 'lms/profile/renewalpwd';
-} elseif ($currentSession->has('request_mandatory_fields_compilation') && $currentSession->get('request_mandatory_fields_compilation') == 1 && $GLOBALS['req'] != 'precompile/set') {
+} elseif ($session->has('request_mandatory_fields_compilation') && $session->get('request_mandatory_fields_compilation') == 1 && $GLOBALS['req'] != 'precompile/set') {
     // handling required mandatory fields compilation
 
     $GLOBALS['modname'] = '';
@@ -65,12 +65,12 @@ if ($currentSession->has('must_renew_pwd') && $currentSession->get('must_renew_p
     // setting default action
 
     // if course is in session, enter the course
-    if (!$currentSession->isEmpty('idCourse')) {
+    if (!$session->isEmpty('idCourse')) {
         // TODO: in corso
-        if ($currentSession->has('sel_module_id') && $currentSession->get('sel_module_id') != 0) {
+        if ($session->has('sel_module_id') && $session->get('sel_module_id') != 0) {
             $query = ' SELECT module_name, default_op, mvc_path'
                     . ' FROM %lms_module'
-                    . ' WHERE idModule = ' . (int) $currentSession->get('sel_module_id');
+                    . ' WHERE idModule = ' . (int) $session->get('sel_module_id');
             list($modname, $op, $mvc_path) = sql_fetch_row(sql_query($query));
             if ($mvc_path !== '') {
                 $GLOBALS['req'] = $mvc_path;
@@ -101,7 +101,7 @@ if ($next_action != false && Forma\lib\Get::sett('sco_direct_play', 'off') == 'o
             case 'playsco':
                 $linkto = 'index.php?modname=organization&op=custom_playitem&id_item=' . $id_item . '&start_from_chapter=' . $chapter . '&collapse_menu=1';
                 Util::jump_to($linkto);
-            ; break;
+                break;
         }
     }
 }
@@ -110,58 +110,68 @@ if ($next_action != false && Forma\lib\Get::sett('sco_direct_play', 'off') == 'o
 switch ($GLOBALS['op']) {
     case 'aula':
         require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        if (!logIntoCourse($_GET['idCourse'], true)) {
-            $_SESSION['current_main_menu'] = '1';
-            $_SESSION['sel_module_id'] = '1';
+        $idCourse =Forma\lib\Get::req('idCourse',DOTY_ALPHANUM);
+        if (!logIntoCourse($idCourse, true)) {
+            $session->set('current_main_menu','1');
+            $session->set('sel_module_id','1');
             $GLOBALS['modname'] = 'middlearea';
             $GLOBALS['op'] = 'show';
         }
-    ; break;
+        break;
     //registering menu information
     case 'unregistercourse':
         //if a course is selected the selection is deleted
-        if (isset($_SESSION['idCourse'])) {
+        if ($session->has('idCourse')) {
             TrackUser::closeSessionCourseTrack();
 
-            unset($_SESSION['idCourse']);
-            unset($_SESSION['idEdition']);
+            $session->remove('idCourse');
+            $session->remove('idEdition');
         }
-        if (isset($_SESSION['test_assessment'])) {
-            unset($_SESSION['test_assessment']);
+        if ($session->has('test_assessment')) {
+            $session->remove('test_assessment');
         }
-        if (isset($_SESSION['direct_play'])) {
-            unset($_SESSION['direct_play']);
+        if ($session->has('direct_play')) {
+            $session->remove('direct_play');
         }
-        if (isset($_SESSION['cp_assessment_effect'])) {
-            unset($_SESSION['cp_assessment_effect']);
+        if ($session->has('cp_assessment_effect')) {
+            $session->remove('cp_assessment_effect');
         }
-        $_SESSION['current_main_menu'] = '1';
-        $_SESSION['sel_module_id'] = '1';
-        $_SESSION['is_ghost'] = false;
+
+        $session->set('current_main_menu','1');
+        $session->set('sel_module_id','1');
+        $session->set('is_ghost',true);
+
+        $session->save();
         $GLOBALS['modname'] = 'middlearea';
         $GLOBALS['op'] = 'show';
-    ; break;
-    case 'selectMain':
-        $_SESSION['current_main_menu'] = (int) $_GET['idMain'];
-        $first_page = firstPage($_SESSION['current_main_menu']);
 
-        if ($first_page['modulename'] != '') {
-            Util::jump_to('index.php?modname=' . $first_page['modulename'] . '&op=' . $first_page['op'] . '&sel_module=' . $first_page['idModule']);
+        break;
+    case 'selectMain':
+        $idMain =Forma\lib\Get::req('idMain');
+        $session->set('current_main_menu',$idMain);
+        $session->save();
+        $firstPage = firstPage($idMain);
+
+        if ($firstPage['modulename'] != '') {
+            Util::jump_to('index.php?modname=' . $firstPage['modulename'] . '&op=' . $firstPage['op'] . '&sel_module=' . $firstPage['idModule']);
         }
-    ; break;
+        break;
     //change language for register user
     case 'registerconfirm':
-        setLanguage($_POST['language']);
-    ; break;
+        $language =Forma\lib\Get::pReq('language',DOTY_STRING);
+
+        Lang::set($language);
+        break;
     case 'registerme':
-        list($language_reg) = sql_fetch_row(sql_query('
-		SELECT language
-		FROM ' . $GLOBALS['prefix_lms'] . "_user_temp 
-		WHERE random_code = '" . $_GET['random_code'] . "'"));
-        if ($language_reg != '') {
-            setLanguage($language_reg);
+        $randomCode = Forma\lib\Get::req('random_code',DOTY_STRING);
+        list($language_reg) = sql_fetch_row(sql_query(' SELECT language FROM ' . $GLOBALS['prefix_lms'] . "_user_temp  WHERE random_code = '" . $randomCode . "'"));
+        if ($language_reg !== '') {
+            Lang::set($language_reg);
         }
-    ; break;
+        break;
+    default:
+
+        break;
 }
 
 // special operation
@@ -174,44 +184,50 @@ if ($sop) {
         case 'setcourse':
             $id_c = Forma\lib\Get::req('sop_idc', DOTY_INT, 0);
 
-            if (isset($_SESSION['idCourse']) && $_SESSION['idCourse'] != $id_c) {
+            if ($session->has('idCourse') && $session->get('idCourse') != $id_c) {
                 TrackUser::closeSessionCourseTrack();
-                unset($_SESSION['idCourse']);
-                unset($_SESSION['idEdition']);
+                $session->remove('idCourse');
+                $session->remove('idEdition');
 
-                require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+                require_once _lms_ . '/lib/lib.course.php';
                 logIntoCourse($id_c, false);
-            } elseif (!isset($_SESSION['idCourse'])) {
-                require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            } elseif (!$session->has('idCourse') || empty($session->get('idCourse'))) {
+                require_once _lms_ . '/lib/lib.course.php';
                 logIntoCourse($id_c, false);
             }
-            if (isset($_SESSION['cp_assessment_effect'])) {
-                unset($_SESSION['cp_assessment_effect']);
+            if ($session->has('cp_assessment_effect')) {
+                $session->remove('cp_assessment_effect');
             }
-
-        ; break;
+            $session->save();
+            break;
         case 'resetselmodule':
-            unset($_SESSION['sel_module_id']);
-        ; break;
+            $session->remove('sel_module_id');
+            $session->save();
+            break;
         case 'unregistercourse':
-            if (isset($_SESSION['idCourse'])) {
+            if ($session->has('idCourse')) {
                 TrackUser::closeSessionCourseTrack();
-                unset($_SESSION['idCourse']);
-                unset($_SESSION['idEdition']);
+                $session->remove('idCourse');
+                $session->remove('idEdition');
+
             }
-            if (isset($_SESSION['cp_assessment_effect'])) {
-                unset($_SESSION['cp_assessment_effect']);
+            if ($session->has('cp_assessment_effect')) {
+                $session->remove('cp_assessment_effect');
             }
-        ; break;
+            $session->save();
+            break;
         case 'changelang':
             Lang::set(Forma\lib\Get::req('new_lang', DOTY_MIXED));
-            $_SESSION['changed_lang'] = true;
-        ; break;
+            $session->set('changed_lang', true);
+            $session->save();
+            break;
+        default:
+            break;
     }
 }
 
 // istance the course description class
-if (isset($_SESSION['idCourse']) && !isset($GLOBALS['course_descriptor'])) {
+if ($session->has('idCourse') && !isset($GLOBALS['course_descriptor'])) {
     require_once _lms_ . '/lib/lib.course.php';
-    $GLOBALS['course_descriptor'] = new DoceboCourse($_SESSION['idCourse']);
+    $GLOBALS['course_descriptor'] = new DoceboCourse($session->get('idCourse'));
 }

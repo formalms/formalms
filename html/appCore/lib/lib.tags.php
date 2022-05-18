@@ -33,7 +33,7 @@ class Tags
         $this->_tag_t = $GLOBALS['prefix_fw'] . '_tag';
         $this->_tagrel_t = $GLOBALS['prefix_fw'] . '_tag_relation';
         $this->_resource_t = $GLOBALS['prefix_fw'] . '_tag_resource';
-        $this->_id_course = (isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : 0);
+        $this->_id_course = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
         $this->_use_tag = (Forma\lib\Get::sett('use_tag', 'off') == 'on');
 
@@ -42,7 +42,8 @@ class Tags
         }
 
         $this->_private_tag_enabled = false;
-        if (isset($_SESSION['levelCourse']) && $_SESSION['levelCourse'] > 3) {
+        $courseLevel = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
+        if (!empty($courseLevel) && $courseLevel > 3) {
             $this->_private_tag_enabled = true;
         }
         /*if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {

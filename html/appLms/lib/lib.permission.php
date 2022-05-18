@@ -39,22 +39,23 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
         default:  $suff = $mode;
     }
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = ($session->has('idCourse') && !empty($session->get('idCourse'))) ? $session->get('idCourse') : null;
+
     $role = '/' . Forma\lib\Get::cur_plat() . '/'
-        . (isset($_SESSION['idCourse']) && $is_public == false ? 'course/private/' . $_SESSION['idCourse'] . '/' : 'course/public/')
+        . ($idCourse && $is_public == false ? 'course/private/' . $idCourse . '/' : 'course/public/')
         . $mod_name . '/' . $suff;
-    if (!$return_value && isset($_SESSION['idCourse'])) {
+    if (!$return_value && $idCourse) {
         require_once _lms_ . '/lib/lib.track_user.php';
-        TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], $mod_name, $suff);
+        TrackUser::setActionTrack(getLogUserId(), $idCourse, $mod_name, $suff);
     }
 
     if (Docebo::user()->matchUserRole($role)) {
         return true;
+    } else if ($return_value) {
+        return false;
     } else {
-        if ($return_value) {
-            return false;
-        } else {
-            exit("You can't access" . $role);
-        }
+        exit("You can't access" . $role);
     }
 }
 
@@ -80,8 +81,8 @@ function checkPermForCourse($mode, $id_course, $return_value = false, $use_mod_n
 
     $role = '/' . Forma\lib\Get::cur_plat() . '/course/private/' . $id_course . '/' . $mod_name . '/' . $suff;
 
-    if (!$return_value && isset($_SESSION['idCourse'])) {
-        TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], $mod_name, $suff);
+    if (!$return_value && isset($id_course)) {
+        TrackUser::setActionTrack(getLogUserId(), $id_course, $mod_name, $suff);
     }
 
     if (Docebo::user()->matchUserRole($role)) {

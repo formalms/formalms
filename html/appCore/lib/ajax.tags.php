@@ -58,8 +58,9 @@ switch ($op) {
         $private = false;
         $req_private = Forma\lib\Get::req('private', DOTY_INT, '0');
         if ($req_private) {
+            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
             // requested to save as private, check if the user can do this operation
-            if (isset($_SESSION['levelCourse']) && $_SESSION['levelCourse'] > 3) {
+            if ($session->has('levelCourse') && $session->get('levelCourse') > 3) {
                 $private = true;
             }
             if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {

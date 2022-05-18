@@ -1145,11 +1145,15 @@ class FieldList
 
         // #BUG - 19799
         $acl_man = Docebo::user()->getAclManager();
-        if (isset($_SESSION['usermanagement']['selected_node']) && $_SESSION['usermanagement']['selected_node'] != 0) {
+
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $selectedNode = $session->get('usermanagement_selected_node');
+
+        if (!empty($selectedNode) && $selectedNode != 0) {
             $arr_idst = [];
-            $tmp = $acl_man->getGroup(false, '/oc_' . $_SESSION['usermanagement']['selected_node']);
+            $tmp = $acl_man->getGroup(false, '/oc_' . $selectedNode);
             $arr_idst[] = $tmp[0];
-            $tmp = $acl_man->getGroup(false, '/ocd_' . $_SESSION['usermanagement']['selected_node']);
+            $tmp = $acl_man->getGroup(false, '/ocd_' . $selectedNode);
             $arr_idst[] = $tmp[0];
             $acl = &Docebo::user()->getACL();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);

@@ -55,18 +55,19 @@ class DateManager
 
         $res = 0;
 
-        while ($row = sql_fetch_assoc($result)) {
+        foreach ($result as $row){
             if (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all) {
-                if (isset($_SESSION['date_begin_filter']) && $_SESSION['date_begin_filter'] !== '' && isset($_SESSION['date_end_filter']) && $_SESSION['date_end_filter'] !== '') {
-                    if (strcmp(Format::dateDb($_SESSION['date_begin_filter']), $row['date_begin']) <= 0 && strcmp(Format::dateDb($_SESSION['date_end_filter']), $row['date_end']) >= 0) {
+                $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+                if ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter')) && $session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
+                    if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0 && strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                         ++$res;
                     }
-                } elseif (isset($_SESSION['date_begin_filter']) && $_SESSION['date_begin_filter'] !== '') {
-                    if (strcmp(Format::dateDb($_SESSION['date_begin_filter']), $row['date_begin']) <= 0) {
+                } elseif ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter'))) {
+                    if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0) {
                         ++$res;
                     }
-                } elseif (isset($_SESSION['date_end_filter']) && $_SESSION['date_end_filter'] !== '') {
-                    if (strcmp(Format::dateDb($_SESSION['date_end_filter']), $row['date_end']) >= 0) {
+                } elseif ($session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
+                    if (strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                         ++$res;
                     }
                 } else {
@@ -92,17 +93,18 @@ class DateManager
 
         $res = 0;
 
-        while ($row = sql_fetch_assoc($result)) {
-            if (isset($_SESSION['date_begin_filter']) && $_SESSION['date_begin_filter'] !== '' && isset($_SESSION['date_end_filter']) && $_SESSION['date_end_filter'] !== '') {
-                if (strcmp(Format::dateDb($_SESSION['date_begin_filter']), $row['date_begin']) <= 0 && strcmp(Format::dateDb($_SESSION['date_end_filter']), $row['date_end']) >= 0) {
+        foreach ($result as $row){
+            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+            if ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter')) && $session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
+                if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0 && strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                     ++$res;
                 }
-            } elseif (isset($_SESSION['date_begin_filter']) && $_SESSION['date_begin_filter'] !== '') {
-                if (strcmp(Format::dateDb($_SESSION['date_begin_filter']), $row['date_begin']) <= 0) {
+            } elseif ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter'))) {
+                if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0) {
                     ++$res;
                 }
-            } elseif (isset($_SESSION['date_end_filter']) && $_SESSION['date_end_filter'] !== '') {
-                if (strcmp(Format::dateDb($_SESSION['date_end_filter']), $row['date_end']) >= 0) {
+            } elseif ($session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
+                if (strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                     ++$res;
                 }
             } else {
@@ -325,7 +327,7 @@ class DateManager
 
         $result = sql_query($query);
 
-        while ($row = sql_fetch_assoc($result)) {
+        foreach ($result as $row){
             if (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all) {
                 $row['classroom'] = $this->getDateClassrooms($row['id_date']);
 
@@ -333,16 +335,17 @@ class DateManager
                     $row['num_day'] = $row['num_day'] / $row['user_subscribed'];
                 }
 
-                if (isset($_SESSION['date_begin_filter']) && $_SESSION['date_begin_filter'] !== '' && isset($_SESSION['date_end_filter']) && $_SESSION['date_end_filter'] !== '') {
-                    if (strcmp(Format::dateDb($_SESSION['date_begin_filter']), $row['date_begin']) <= 0 && strcmp(Format::dateDb($_SESSION['date_end_filter']), $row['date_end']) >= 0) {
+                $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+                if ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter')) && $session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
+                    if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0 && strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                         $res[$row['id_date']] = $row;
                     }
-                } elseif (isset($_SESSION['date_begin_filter']) && $_SESSION['date_begin_filter'] !== '') {
-                    if (strcmp(Format::dateDb($_SESSION['date_begin_filter']), $row['date_begin']) <= 0) {
+                } elseif ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter'))) {
+                    if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0) {
                         $res[$row['id_date']] = $row;
                     }
-                } elseif (isset($_SESSION['date_end_filter']) && $_SESSION['date_end_filter'] !== '') {
-                    if (strcmp(Format::dateDb($_SESSION['date_end_filter']), $row['date_end']) >= 0) {
+                } elseif ($session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
+                    if (strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                         $res[$row['id_date']] = $row;
                     }
                 } else {

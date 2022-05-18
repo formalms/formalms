@@ -10,6 +10,7 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+use \Forma\lib\Session\SessionManager;
 
 class Learning_Cart
 {
@@ -20,15 +21,16 @@ class Learning_Cart
 
     public function init()
     {
-        if (!isset($_SESSION['lms_cart'])) {
-            $_SESSION['lms_cart'] = [];
+        if (!SessionManager::getInstance()->getSession()->has('lms_cart')) {
+            SessionManager::getInstance()->getSession()->set('lms_cart',[]);
+            SessionManager::getInstance()->getSession()->save();
         }
     }
 
     public function cartItemCount()
     {
         $count = 0;
-        $cart = $_SESSION['lms_cart'];
+        $cart = SessionManager::getInstance()->getSession()->get('lms_cart');
         $i = 0;
 
         foreach ($cart as $id_course => $extra) {
@@ -52,6 +54,7 @@ class Learning_Cart
 
     public function emptyCart()
     {
-        $_SESSION['lms_cart'] = [];
+        SessionManager::getInstance()->getSession()->set('lms_cart',[]);
+        SessionManager::getInstance()->getSession()->save();
     }
 }

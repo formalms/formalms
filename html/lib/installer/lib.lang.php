@@ -27,7 +27,7 @@ class Lang
 
     public static function getSelLang()
     {
-        return $_SESSION['sel_lang'];
+        return \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('sel_lang');
     }
 
     public static function t($keyword)
@@ -136,9 +136,11 @@ class Lang
 
     public static function setLanguage()
     {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         $lang = Forma\lib\Get::gReq('set_lang', DOTY_STRING, '');
         if (!empty($lang)) {
-            $_SESSION['sel_lang'] = $lang;
+            $session->set('sel_lang',$lang);
+            $session->save();
             self::init();
             StepManager::loadCurrentStep();
             ob_clean();
@@ -152,8 +154,9 @@ class Lang
             //session_write_close();
             exit();
         }
-        if (!isset($_SESSION['sel_lang'])) {
-            $_SESSION['sel_lang'] = 'english';
+        if (!$session->has('sel_lang')) {
+            $session->set('sel_lang','english');
+            $session->save();
         }
     }
 }

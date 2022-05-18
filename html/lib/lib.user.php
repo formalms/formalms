@@ -74,22 +74,22 @@ class DoceboUser implements Serializable
     {
         $this->userid = $userid;
         $this->sprefix = $sprefix;
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
         $this->db = DbConn::getInstance();
 
         $this->acl = new DoceboACL();
         $this->aclManager = &$this->acl->getACLManager();
 
-        if ($currentSession->has($sprefix . '_idst')) {
-            $this->idst = $currentSession->get($sprefix . '_idst');
+        if ($session->has($sprefix . '_idst')) {
+            $this->idst = $session->get($sprefix . '_idst');
         } else {
             $this->idst = $this->acl->getUserST($userid);
         }
-        if ($currentSession->has($sprefix . '_stlist')) {
+        if ($session->has($sprefix . '_stlist')) {
             require_once _base_ . '/lib/lib.json.php';
             $json = new Services_JSON();
-            $this->arrst = $json->decode($currentSession->get($sprefix . '_stlist'));
+            $this->arrst = $json->decode($session->get($sprefix . '_stlist'));
         }
 
         $user_manager = new DoceboACLManager();
@@ -152,12 +152,12 @@ class DoceboUser implements Serializable
         if (strpos($ip, ',') !== false) {
             $ip = substr($ip, 0, strpos($ip, ','));
         }
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        $currentSession->set($this->sprefix . '_idst', $this->idst);
-        $currentSession->set($this->sprefix . '_username', $this->userid);
-        $currentSession->set($this->sprefix . '_stlist', $json->encode($this->arrst));
-        $currentSession->set($this->sprefix . '_log_ip', $ip);
-        $currentSession->save();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session->set($this->sprefix . '_idst', $this->idst);
+        $session->set($this->sprefix . '_username', $this->userid);
+        $session->set($this->sprefix . '_stlist', $json->encode($this->arrst));
+        $session->set($this->sprefix . '_log_ip', $ip);
+        $session->save();
     }
 
     public function isAnonymous()
@@ -274,24 +274,24 @@ class DoceboUser implements Serializable
      **/
     public static function &createDoceboUserFromSession($prefix = 'base')
     {
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        if ($currentSession->has('user_enter_time')) {
-            $currentSession->set('user_enter_time', date('Y-m-d H:i:s'));
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if ($session->has('user_enter_time')) {
+            $session->set('user_enter_time', date('Y-m-d H:i:s'));
         }
 
-        if ($currentSession->has($prefix . '_username')) {
-            $du = new DoceboUser($currentSession->get($prefix . '_username'), $prefix);
+        if ($session->has($prefix . '_username')) {
+            $du = new DoceboUser($session->get($prefix . '_username'), $prefix);
 
-            if ($currentSession->has('user_enter_mark')) {
-                if ($currentSession->get('user_enter_mark') < time() - REFRESH_LAST_ENTER) {
+            if ($session->has('user_enter_mark')) {
+                if ($session->get('user_enter_mark') < time() - REFRESH_LAST_ENTER) {
                     $du->setLastEnter(date('Y-m-d H:i:s'));
-                    $currentSession->set('user_enter_mark', time());
+                    $session->set('user_enter_mark', time());
                 }
             } else {
                 $du->setLastEnter(date('Y-m-d H:i:s'));
-                $currentSession->set('user_enter_mark', time());
+                $session->set('user_enter_mark', time());
             }
-            $currentSession->save();
+            $session->save();
 
             return $du;
         } else {
@@ -312,13 +312,13 @@ class DoceboUser implements Serializable
                             if ($user_info != false) {
                                 $username = $user_info[ACL_INFO_USERID];
                                 $du = new DoceboUser($username, $prefix);
-                                $currentSession->set('last_enter', $user_info[ACL_INFO_LASTENTER]);
+                                $session->set('last_enter', $user_info[ACL_INFO_LASTENTER]);
 
                                 $du->setLastEnter(date('Y-m-d H:i:s'));
-                                $currentSession->set('user_enter_mark', time());
+                                $session->set('user_enter_mark', time());
                                 $du->loadUserSectionST();
                                 $du->SaveInSession();
-                                $currentSession->save();
+                                $session->save();
                                 return $du;
                             }
                         }
@@ -337,8 +337,8 @@ class DoceboUser implements Serializable
                         $du = new DoceboUser($username, $prefix);
 
                         $du->setLastEnter(date('Y-m-d H:i:s'));
-                        $currentSession->set('user_enter_mark', time());
-                        $currentSession->save();
+                        $session->set('user_enter_mark', time());
+                        $session->save();
                         $du->loadUserSectionST();
                         $du->SaveInSession();
 
@@ -414,12 +414,12 @@ class DoceboUser implements Serializable
         } elseif (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
             return false;
         }
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        $currentSession->remove($prefix . '_idst');
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session->remove($prefix . '_idst');
         $du = new DoceboUser($login, $prefix);
 
         // language policy
-        if (!$new_lang && $currentSession->has('forced_lang')) {
+        if (!$new_lang && $session->has('forced_lang')) {
             $new_lang = Lang::get();
         }
         if ($new_lang != false) {
@@ -463,11 +463,11 @@ class DoceboUser implements Serializable
         resetTemplate();
 
         $GLOBALS['current_user'] = $user;
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-        $currentSession->set('last_enter', $user->getLastEnter());
-        $currentSession->set('user_enter_mark', time());
-        $currentSession->save();
+        $session->set('last_enter', $user->getLastEnter());
+        $session->set('user_enter_mark', time());
+        $session->save();
         $user->setLastEnter(date('Y-m-d H:i:s'));
     }
 
@@ -545,8 +545,8 @@ class DoceboUser implements Serializable
     public function saveUserSectionSTInSession($section)
     {
         $sprefix = $this->sprefix;
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        if ($currentSession->has($sprefix . '_stlist')) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if ($session->has($sprefix . '_stlist')) {
             $this->loadUserSectionST($section);
             $this->SaveInSession();
         }

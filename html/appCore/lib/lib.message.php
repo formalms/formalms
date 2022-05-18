@@ -135,16 +135,18 @@ class MessageModule
 
         $_filter_inbox = Forma\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
         $_filter_outbox = Forma\lib\Get::req('msg_course_filter_outbox', DOTY_INT, 0);
+
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if ($_filter_inbox == '') {
-            if (isset($_SESSION['idCourse'])) {
-                $_filter_inbox = $_SESSION['idCourse'];
+            if (isset($idCourse)) {
+                $_filter_inbox = $idCourse;
             } else {
                 $_filter_inbox = 0;
             }
         }
         if ($_filter_outbox == '') {
-            if (isset($_SESSION['idCourse'])) {
-                $_filter_outbox = $_SESSION['idCourse'];
+            if (isset($idCourse)) {
+                $_filter_outbox = $idCourse;
             } else {
                 $_filter_outbox = 0;
             }
@@ -271,7 +273,7 @@ class MessageModule
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
         $acl_man = &Docebo::user()->getAclManager();
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $query = "
 		SELECT m.idMessage, m.idCourse, m.sender, m.posted, m.attach, m.title, m.priority, user.read
 		FROM %adm_message AS m JOIN
@@ -287,8 +289,8 @@ class MessageModule
             $res = $acl_man->getAllUsersFromIdst($res);
             $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Docebo::user()->getIdSt() . ') ';
         } else {
-            if (isset($_SESSION['idCourse']) && $_filter == '') {
-                $_filter = $_SESSION['idCourse'];
+            if (isset($idCourse) && $_filter == '') {
+                $_filter = $idCourse;
                 $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
                 $res = $acl_man->getAllUsersFromIdst($res);
                 $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Docebo::user()->getIdSt() . ') ';
@@ -486,14 +488,14 @@ class MessageModule
             $query .= " AND m.idCourse = '".$_POST['msg_course_filter']."'";
         }*/
         $_filter = Forma\lib\Get::req('msg_course_filter_outbox', DOTY_INT, 0);
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
             $res = $acl_man->getAllUsersFromIdst($res);
             $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Docebo::user()->getIdSt() . ') ';
         } else {
-            if (isset($_SESSION['idCourse']) && $_filter == '') {
-                $_filter = $_SESSION['idCourse'];
+            if (isset($idCourse) && $_filter == '') {
+                $_filter = $idCourse;
                 $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
                 $res = $acl_man->getAllUsersFromIdst($res);
                 $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Docebo::user()->getIdSt() . ') ';
@@ -695,7 +697,7 @@ class MessageModule
         $all_value = [0 => Lang::t('_ALL_COURSES')];
         $all_courses = $course_man->getUserCourses(getLogUserId());
         $all_value = $all_value + $all_courses;
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (count($all_value) > 0) {
             $drop = Form::getLineDropdown('form_line_right',
                                         'label_padded',
@@ -706,7 +708,7 @@ class MessageModule
                                         $all_value,
                                         (isset($_POST['msg_course_filter'])
                                             ? $_POST['msg_course_filter']
-                                            : (isset($_SESSION['idCourse']) ? $_SESSION['idCourse'] : 0)),
+                                            : (isset($idCourse) ? $idCourse : 0)),
                                         '',
                                         ' ' . Form::getButton('refresh_msg_filter', 'refresh_msg_filter', Lang::t('_REFRESH'), 'button_nowh'),
                                         '');
@@ -734,7 +736,11 @@ class MessageModule
             $filter = 0;
         }
 
-        $_SESSION['message_filter'] = $filter;
+
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session->set('message_filter',$filter);
+        $session->save();
+
         $user_select->learning_filter = 'message';
 
         //$user_select->requested_tab = PEOPLEVIEW_TAB;
@@ -861,9 +867,9 @@ class MessageModule
                     if (!empty($recip_alert)) {
                         require_once _lms_ . '/lib/lib.course.php';
                         require_once _base_ . '/lib/lib.eventmanager.php';
-
+                        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
                         $is_course = false;
-                        if ((isset($_SESSION['idCourse'])) && (isset($GLOBALS['course_descriptor']))) {
+                        if ((isset($idCourse)) && (isset($GLOBALS['course_descriptor']))) {
                             $course_name = $GLOBALS['course_descriptor']->getValue('name');
                             $is_course = true;
                         } elseif ($_POST['msg_course_filter'] != 0 && is_numeric($_POST['msg_course_filter'])) {

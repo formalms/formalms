@@ -225,9 +225,9 @@ class PluginmanagerAdm extends Model
 
     public function getActivePlugins()
     {
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         if (!isset(self::$plugins_active)) {
-            if ($currentSession->has('notuse_plugin') && $currentSession->get('notuse_plugin') === true) {
+            if ($session->has('notuse_plugin') && $session->get('notuse_plugin') === true) {
                 $query = 'SELECT * FROM ' . $this->table . ' WHERE core=1 ORDER BY priority ASC';
             } else {
                 $query = 'SELECT * FROM ' . $this->table . ' WHERE  active=1 or core=1 ORDER BY priority ASC';

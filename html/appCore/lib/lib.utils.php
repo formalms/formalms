@@ -196,12 +196,17 @@ class Util
 
     public static function generateSignature($addendum = false)
     {
-        if ($addendum == false) {
-            $addendum = time();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        if (!$session->has('mdsign')) {
+            $uuid = \Symfony\Component\Uid\Uuid::v4()->toRfc4122();
+            $session->set('mdsign',$uuid);
+            $session->set('mdsign_timestamp',time());
+            $session->save();
+            return $uuid;
         }
-        if (!isset($_SESSION['mdsign'])) {
-            $_SESSION['mdsign'] = md5(uniqid(rand(), true) . '|' . mt_rand() . '|' . $addendum);
-            $_SESSION['mdsign_timestamp'] = time();
+        else {
+            $session->get('mdsign');
         }
     }
 
@@ -212,14 +217,13 @@ class Util
      */
     public static function getSignature($for_link = false)
     {
-        if (!isset($_SESSION['mdsign'])) {
-            Util::generateSignature();
-        }
+        $uuid = Util::generateSignature();
+
         if ($for_link) {
-            return 'authentic_request=' . $_SESSION['mdsign'];
+            return 'authentic_request=' . $uuid;
         }
 
-        return $_SESSION['mdsign'];
+        return $uuid;
     }
 
     /**
@@ -234,9 +238,9 @@ class Util
             $authentic_request = $_SERVER['HTTP_X_SIGNATURE'];
         }
 
-        if (!isset($_SESSION['mdsign'])
-            || $authentic_request != $_SESSION['mdsign']
-        ) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        if (!$session->has('mdsign') || $authentic_request != $session->get('mdsign')) {
             // Invalid request
             if (!defined('IS_AJAX')) {
                 Util::jump_to(Forma\lib\Get::rel_path('lms') . '/index.php?modname=login&op=logout&msg=101');

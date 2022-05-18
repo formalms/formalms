@@ -109,28 +109,28 @@ class AuthenticationManager
 
         resetTemplate();
 
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        $currentSession->set('logged_in', true);
-        $currentSession->set('last_enter', $user->getLastEnter());
-        $currentSession->set('user_enter_mark', time());
-        $currentSession->set('user',$user);
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session->set('logged_in', true);
+        $session->set('last_enter', $user->getLastEnter());
+        $session->set('user_enter_mark', time());
+        $session->set('user',$user);
         $user->setLastEnter(date('Y-m-d H:i:s'));
         //////////////////////////////////
 
         // force_standard mode
         if (isset($_REQUEST['notuse_plugin'])) {
-            $currentSession->set('notuse_plugin', true);
+            $session->set('notuse_plugin', true);
         }
         if (isset($_REQUEST['notuse_customscript'])) {
-            $currentSession->set('notuse_customscript', true);
+            $session->set('notuse_customscript', true);
         }
         if (isset($_REQUEST['notuse_template'])) {
-            $currentSession->set('notuse_template', true);
+            $session->set('notuse_template', true);
         }
 
-        if ($currentSession->has('social')) {
-            $plugin = $currentSession->get('social')['plugin'];
-            $id = $currentSession->get('social')['data']['id'];
+        if ($session->has('social')) {
+            $plugin = $session->get('social')['plugin'];
+            $id = $session->get('social')['data']['id'];
             $this->plugin_manager->run_plugin($plugin, 'setSocial', ['id' => $id]);
         }
 
@@ -140,7 +140,7 @@ class AuthenticationManager
         if (self::_checkPwdElapsed()) {
             return PWD_ELAPSED;
         }
-        $currentSession->save();
+        $session->save();
 
         return USER_SAVED;
     }

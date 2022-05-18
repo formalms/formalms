@@ -328,15 +328,15 @@ class Boot
             require __DIR__ . '/../config.php';
             Forma\lib\Session\SessionManager::getInstance()->initSession($cfg['session']);
 
-            $currentSession = Forma\lib\Session\SessionManager::getInstance()->getSession();
-            self::log(" Start session '" . $currentSession->getName() . "'");
-            $request->setSession($currentSession);
+            $session = Forma\lib\Session\SessionManager::getInstance()->getSession();
+            self::log(" Start session '" . $session->getName() . "'");
+            $request->setSession($session);
         }
 
 
         if (Forma\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
-            $currentSession->invalidate();
-            $currentSession->save();
+            $session->invalidate();
+            $session->save();
             \Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?msg=103');
         }
     }
@@ -353,8 +353,8 @@ class Boot
     private static function user()
     {
         require_once _base_ . '/lib/lib.user.php';
-        $currentSession = Forma\lib\Session\SessionManager::getInstance()->getSession();
-        self::log("Load user from session '" . $currentSession->getName() . "'");
+        $session = Forma\lib\Session\SessionManager::getInstance()->getSession();
+        self::log("Load user from session '" . $session->getName() . "'");
 
         // load current user from session
 
@@ -388,9 +388,9 @@ class Boot
         $filter_input = new FilterInput();
         $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
 
-        $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         // Whitelist some tags if we're a teacher in a course:
-        if ($currentSession->has('idCourse') && $currentSession->get('levelCourse') >= 6) {
+        if ($session->has('idCourse') && $session->get('levelCourse') >= 6) {
             $filter_input->appendToWhitelist([
                 'tag' => ['object', 'param'],
                 'attrib' => [
@@ -424,9 +424,9 @@ class Boot
         } else {
             $filter_input = new FilterInput();
             $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
-            $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
             // Whitelist some tags if we're a teacher in a course:
-            if ($currentSession->has('idCourse') && $currentSession->get('levelCourse') >= 6) {
+            if ($session->has('idCourse') && $session->get('levelCourse') >= 6) {
                 $filter_input->appendToWhitelist([
                     'tag' => ['object', 'param'],
                     'attrib' => [

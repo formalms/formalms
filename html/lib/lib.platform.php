@@ -239,13 +239,13 @@ class PlatformManager
                 $menu = eval(' return new ' . $pl_info['class_name_menu'] . "( \$GLOBALS['current_user']); ");
                 $main_voice = $menu->getLevelOne();
 
-                $currentSession = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-                if (!$currentSession->has('current_admin_id_menu')) {
-                    $currentSession->set('current_admin_id_menu',key($main_voice));
+                $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+                if (!$session->has('current_admin_id_menu')) {
+                    $session->set('current_admin_id_menu',key($main_voice));
                 }
                 foreach ($main_voice as $id_m => $voice) {
                     $html .= '<li ' .
-                    ($currentSession->get('current_admin_id_menu') == $id_m && $currentSession->get('current_action_platform') == $platform_code ?
+                    ($session->get('current_admin_id_menu') == $id_m && $session->get('current_action_platform') == $platform_code ?
                         ' class="active"' :
                         '') . '>'
                     . '<a href="' . Util::str_replace_once('&', '&amp;', $voice['link'] . '">' . $voice['name']) . '</a></li>';

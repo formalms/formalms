@@ -36,6 +36,8 @@ require_once _adm_ . '/class.module/class.definition.php';
 
 // -----------------------------------------------------------------------------
 
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
 $module_cfg = false;
 $GLOBALS['modname'] = Forma\lib\Get::req('modname', DOTY_ALPHANUM, '');
 $GLOBALS['op'] = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
@@ -46,7 +48,8 @@ require_once Forma::inc(_adm_ . '/lib/lib.preoperation.php');
 
 if (empty($GLOBALS['modname']) && empty($GLOBALS['r'])) {
     $GLOBALS['req'] = (checkPerm('view', true, 'dashboard', 'framework') ? 'adm/dashboard/show' : '');
-    $_SESSION['current_action_platform'] = 'framework';
+    $session->set('current_action_platform','framework');
+    $session->save();
 }
 
 if ($GLOBALS['modname'] != '') {

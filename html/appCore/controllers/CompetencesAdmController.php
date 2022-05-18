@@ -168,7 +168,7 @@ class CompetencesAdmController extends AdmController
         if (!is_array($nodes)) {
             return;
         }
-        for ($i = 0; $i < count($nodes); ++$i) {
+        for ($i = 0, $iMax = count($nodes); $i < $iMax; ++$i) {
             $nodes[$i]['node']['options'] = $this->_getNodeActions($nodes[$i]['node']);
             if (isset($nodes[$i]['children']) && count($nodes[$i]['children']) > 0) {
                 $this->_assignActions($nodes[$i]['children']);
@@ -178,16 +178,18 @@ class CompetencesAdmController extends AdmController
 
     protected function _getFromSession($index, $default = null)
     {
-        if (!isset($_SESSION['_competences_status'][$index])) {
-            $_SESSION['_competences_status'][$index] = $default;
+        if (!$this->session->has('competences_status_'.$index)) {
+            $this->session->set('competences_status_'.$index,$default);
+            $this->session->save();
         }
 
-        return $_SESSION['_competences_status'][$index];
+        return $this->session->get('competences_status_'.$index);
     }
 
     protected function _setInSession($index, $value)
     {
-        $_SESSION['_competences_status'][$index] = $value;
+        $this->session->set('competences_status_'.$index,$value);
+        $this->session->save();
     }
 
     //--- Tasks ------------------------------------------------------------------

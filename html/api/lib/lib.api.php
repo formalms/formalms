@@ -41,6 +41,7 @@ class API
 {
     protected $db;
     protected $aclManager;
+    protected $session;
 
     protected $needAuthentication = true;
     protected $authenticated = false;
@@ -50,6 +51,7 @@ class API
     {
         $this->db = DbConn::getInstance();
         $this->aclManager = Docebo::user()->getAclManager();
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     /**

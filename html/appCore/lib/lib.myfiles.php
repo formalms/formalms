@@ -642,7 +642,9 @@ class MyFileSelector
             $tab_man->addTab($new_tab);
         }
         $this->parse();
-        $tab_man->parseInput($_POST, $_SESSION);
+
+        /** @todo check if this solution for new session works correctly */
+        $tab_man->parseInput($_POST, \Forma\lib\Session\SessionManager::getInstance()->getSession());
 
         $active_tab = $tab_man->getActiveTab();
         if (!$active_tab) {

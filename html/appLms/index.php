@@ -44,11 +44,12 @@ $GLOBALS['req'] = Forma\lib\Get::req('r', DOTY_MIXED, '');
 
 YuiLib::activateConnectLoadingBox();
 
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 // instanciate the page-writer that we want (maybe we can rewrite it in a
 // different way with the introduction of the layout manager)
 if (isset($_GET['no_redirect']) || isset($_POST['no_redirect'])) {
     onecolPageWriter::createInstance();
-} elseif (!isset($_SESSION['idCourse']) && !Docebo::user()->isAnonymous()) {
+} elseif ((!$session->has('idCourse') || empty($session->get('idCourse'))) && !Docebo::user()->isAnonymous()) {
     onecolPageWriter::createInstance();
 } elseif ($module_cfg !== false && $module_cfg->hideLateralMenu()) {
     onecolPageWriter::createInstance();

@@ -2039,7 +2039,8 @@ class Course_API extends API
             $idCourse = $params['idCourse'];
             $newName = $params['newName'];
             $learningObjectId = $params['learningObjectId'];
-            $_SESSION['idCourse'] = $idCourse;
+            $this->session->set('idCourse',$idCourse);
+            $this->session->save();
 
             $idUser = false;
             if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
@@ -2075,14 +2076,13 @@ class Course_API extends API
         if ($user_info != false) {
             $username = $user_info[ACL_INFO_USERID];
             $du = new DoceboUser($username, $prefix);
-
-            $_SESSION['last_enter'] = $user_info[ACL_INFO_LASTENTER];
+            $this->session->set('last_enter',$user_info[ACL_INFO_LASTENTER]);
             $du->setLastEnter(date('Y-m-d H:i:s'));
-            $_SESSION['user_enter_mark'] = time();
+            $this->session->set('user_enter_mark',time());
             $du->loadUserSectionST();
             $du->SaveInSession();
             $GLOBALS['current_user'] = &$du;
-
+            $this->session->save();
             return $user_info;
         } else {
             return false;
@@ -2099,7 +2099,8 @@ class Course_API extends API
         if ($response['success']) {
             $fromType = $params['fromType'];
             $idCourse = $params['idCourse'];
-            $_SESSION['idCourse'] = $idCourse;
+            $this->session->set('idCourse',$idCourse);
+            $this->session->save();
 
             $idUser = false;
             if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
@@ -2140,7 +2141,8 @@ class Course_API extends API
             $fromType = $params['fromType'];
             $newtype = $params['toType'];
             $idCourse = $params['idCourse'];
-            $_SESSION['idCourse'] = $idCourse;
+            $this->session->set('idCourse',$idCourse);
+            $this->session->save();
 
             $idUser = false;
             if (array_key_exists('idUser', $params) && !empty($params['idUser'])) {
