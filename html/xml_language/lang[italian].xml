@@ -3246,6 +3246,8 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="communication&amp;_COUNT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Conteggio]]></key>
         <key id="communication&amp;_NO_OPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nessuna selezione]]></key>
         <key id="communication&amp;_CATEGORY_WITH_POSTS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossiibile eliminare una categoria con articoli pubblicati]]></key>
+        <key id="communication&amp;_ERROR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Errore generico]]></key>
+        <key id="communication&amp;_CATEGORY_FATHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossibile eliminare una categoria padre]]></key>
       </module>
     </platform>
   </LANG>

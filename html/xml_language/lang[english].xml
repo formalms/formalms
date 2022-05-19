@@ -3248,8 +3248,10 @@ Username: [userid]]]></key>
         <key id="communication&amp;_PARENT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Upper Category]]></key>
         <key id="communication&amp;_FILTER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Filter communications by category]]></key>
         <key id="communication&amp;_COUNT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Count]]></key>
-                <key id="communication&amp;_NO_OPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[No Selection]]></key>
+        <key id="communication&amp;_NO_OPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[No Selection]]></key>
         <key id="communication&amp;_CATEGORY_WITH_POSTS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossiible deleting categories with published posts]]></key>
+        <key id="communication&amp;_ERROR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generic Error]]></key>
+        <key id="communication&amp;_CATEGORY_FATHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossible deleting a father category]]></key>
       </module>
     </platform>
   </LANG>

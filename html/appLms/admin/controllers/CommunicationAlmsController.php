@@ -65,7 +65,7 @@ class CommunicationAlmsController extends AlmsController
 
     public function show()
     {
-   
+        require_once Forma::inc(_lib_ . '/formatable/include.php');
         if (isset($_GET['error'])) {
             UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
         }
@@ -73,12 +73,39 @@ class CommunicationAlmsController extends AlmsController
             UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'communication'));
         }
 
+        $startIndex = Get::req('startIndex', DOTY_INT, 0);
+        $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 100));
+        $dir = Get::req('dir', DOTY_STRING, 'asc');
+
+        switch ($dir) {
+            case 'desc':
+                    $dir = 'desc';
+                break;
+            default:
+                    $dir = 'asc';
+                break;
+        }
+
+        $communicationList = $this->model->findAll($startIndex, $results, $sort, $dir);
+
+        foreach ($communicationList as $i => $communication) {
+            
+            $communicationList[$i]['editUrl'] = 'index.php?r=alms/communication/edit&idComm=' . $communication['id_comm'];
+            $communicationList[$i]['deleteUrl'] = 'ajax.adm_server.php?r=alms/communication/delete&idComm=' . $communication['id_comm'];
+
+        }
+
+     
+        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langCode = getLanguage();
+
+      
         $this->render('show', [
-            'selected_category' => 0,
-            'show_descendants' => true,
-            'filter_text' => '',
-            'permissions' => $this->permissions,
-        ]);
+                                'communicationList' => array_values($communicationList), 
+                                'langs' => array_keys($langs), 
+                                'langCode' => $langCode, 
+                                'permissions' => $this->permissions
+                            ]);
     }
 
     public function getlist()
@@ -171,6 +198,11 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
+        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langCode = getLanguage();
+
+        $categoriesDropdownData = $this->model->getCategoryDropdown($langCode);
+
         require_once _base_ . '/lib/lib.form.php';
         if (!$data) {
             $data = [
@@ -183,9 +215,19 @@ class CommunicationAlmsController extends AlmsController
             ];
         }
 
+        $types = [
+            Lang::t('_NONE', 'communication') => 'none',
+            Lang::t('_LONAME_item', 'storage') => 'file',
+            Lang::t('_LONAME_scormorg', 'storage') => 'scorm',
+        ];
+
         $this->render('add', [
             'data' => $data,
+            'langs' => array_keys($langs),
+            'langCode' => $langCode ,
             'course_name' => '',
+            'categoriesDropdownData' => $categoriesDropdownData,
+            'types' => $types
         ]);
     }
 
@@ -205,14 +247,30 @@ class CommunicationAlmsController extends AlmsController
         }
 
         $data = [];
-        $data['title'] = Get::req('title', DOTY_MIXED, '');
+
         $data['publish_date'] = Get::req('publish_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
-        $data['description'] = Get::req('description', DOTY_MIXED, '');
+  
         $data['type_of'] = Get::req('type_of', DOTY_STRING, '');
         $data['publish_date'] = Format::dateDb($data['publish_date'], 'date');
         $data['id_category'] = Get::req('id_category', DOTY_INT, 0);
-        $data['id_course'] = Get::req('id_course', DOTY_INT, 0);
+        $data['id_course'] = Get::req('idCourse', DOTY_STRING, 0);
 
+        $titles = Get::req('title', DOTY_MIXED, []);
+        $descriptions = Get::req('description', DOTY_MIXED, []);
+     
+    
+        //validate inputs
+        if (is_array($titles)) {
+            //prepare langs array
+            $lang_codes = Docebo::langManager()->getAllLangcode();
+            foreach ($lang_codes as $lang_code) {
+                $data['langs'][$lang_code] = [
+                    'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
+                    'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
+                ];
+            }
+        }
+     
         $id_comm = $this->model->save($data);
         if (!$id_comm) {
             UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
@@ -309,19 +367,42 @@ class CommunicationAlmsController extends AlmsController
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $id_comm = Get::req('id_comm', DOTY_INT, 0);
-        $data = $this->model->findByPk($id_comm);
+        $idComm = Get::req('idComm', DOTY_INT, 0);
+        $data = $this->model->findByPk($idComm);
 
         $data['publish_date'] = Format::date($data['publish_date'], 'date');
 
         $course_model = new CourseAlms();
         $cinfo = $course_model->getCourseModDetails($data['id_course']);
-        $course_name = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/ $cinfo['name'];
+        $courseName = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/ $cinfo['name'];
         YuiLib::load('autocomplete');
+        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langCode = getLanguage();
 
-        $this->render('mod', [
+        $langsMapped = array_map(fn($value): array => [$value['lang_code'] => [
+            'title' => $value['title'],
+            'description' => $value['description']
+        ]], $data['langs']);
+
+        $data['langs'] = array_merge(...$langsMapped);
+        //controllo che ci siano almeno un tile e una descrizione di fallback
+        if(!count($data['langs']) || !in_array($langCode,array_keys($data['langs']))) {
+            $tmpLang['title'] = $data['title'];
+            $tmpLang['description'] = $data['description'];
+            $data['langs'][$langCode] = $tmpLang;
+        } 
+        
+        $categoriesDropdownData = $this->model->getCategoryDropdown($langCode);
+
+        $this->render('edit', [
             'data' => $data,
-            'course_name' => $course_name,
+            'idCourse' => $data['id_course'],
+            'courseName' => $courseName,
+            'idComm' => $idComm,
+            'formUrl' => $data['type_of'] == 'none' ? 'index.php?r=alms/communication/update' : 'index.php?r=alms/communication/mod_obj&id_comm=' . $data['id_comm'],
+            'langs' => array_keys($langs),
+            'langCode' => $langCode ,
+            'categoriesDropdownData' => $categoriesDropdownData,
         ]);
     }
 
@@ -340,16 +421,34 @@ class CommunicationAlmsController extends AlmsController
             Util::jump_to('index.php?r=alms/communication/show');
         }
 
+     
         $data = [];
         $data['id_comm'] = Get::req('id_comm', DOTY_MIXED, '');
-        $data['title'] = Get::req('title', DOTY_MIXED, '');
+   
         $data['publish_date'] = Get::req('publish_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
-        $data['description'] = Get::req('description', DOTY_MIXED, '');
-        $data['type_of'] = Get::req('type_of', DOTY_STRING, '');
-        $data['id_course'] = Get::req('id_course', DOTY_INT, 0);
+
+        $data['type_of'] = Get::req('type_of', DOTY_STRING, 'none');
+        $data['id_course'] = Get::req('idCourse', DOTY_INT, 0);
 
         $data['publish_date'] = Format::dateDb($data['publish_date'], 'date');
 
+        $titles = Get::req('title', DOTY_MIXED, []);
+        $descriptions = Get::req('description', DOTY_MIXED, []);
+     
+        //validate inputs
+        if (is_array($titles)) {
+            $data['langs'] = [];
+            //prepare langs array
+            $lang_codes = Docebo::langManager()->getAllLangcode();
+            foreach ($lang_codes as $lang_code) {
+                $data['langs'][$lang_code] = [
+                    'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
+                    'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
+                ];
+            }
+        }
+
+  
         $id_comm = $this->model->save($data);
         if (!$id_comm) {
             UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
@@ -374,27 +473,49 @@ class CommunicationAlmsController extends AlmsController
 
         $id_comm = Get::req('id_comm', DOTY_INT, 0);
         $data = $this->model->findByPk($id_comm);
-
-        $back_url = 'index.php?r=alms/communication/update_obj&id_comm=' . $id_comm;
-
-        switch ($data['type_of']) {
-            case 'file' :
-                require_once _lms_ . '/class.module/learning.item.php';
-                $l_obj = new Learning_Item();
-                $l_obj->edit($data['id_resource'], $back_url);
-
-                break;
-            case 'scorm' :
-                //cannot be modified
-                Util::jump_to('index.php?r=alms/communication/show');
-
-                break;
-            case 'none' :
-            default:
-                Util::jump_to('index.php?r=alms/communication/show');
-
-            break;
+        $titles = Get::req('title', DOTY_MIXED, []);
+        $descriptions = Get::req('description', DOTY_MIXED, []);
+     
+        //validate inputs
+        if (is_array($titles)) {
+            $data['langs'] = [];
+            //prepare langs array
+            $lang_codes = Docebo::langManager()->getAllLangcode();
+            foreach ($lang_codes as $lang_code) {
+                $data['langs'][$lang_code] = [
+                    'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
+                    'description' => (isset($descriptions[$lang_code]) ? $descriptions[$lang_code] : ''),
+                ];
+            }
         }
+       
+        $result = $this->model->save($data);
+
+        if($result) {
+            $back_url = 'index.php?r=alms/communication/update_obj&id_comm=' . $id_comm;
+
+            switch ($data['type_of']) {
+                case 'file' :
+                    require_once _lms_ . '/class.module/learning.item.php';
+                    $l_obj = new Learning_Item();
+                    $l_obj->edit($data['id_resource'], $back_url);
+    
+                    break;
+                case 'scorm' :
+                    //cannot be modified
+                    Util::jump_to('index.php?r=alms/communication/show');
+    
+                    break;
+                case 'none' :
+                default:
+                    Util::jump_to('index.php?r=alms/communication/show');
+    
+                break;
+            }
+        } else {
+            Util::jump_to('index.php?r=alms/communication/show&error=1');
+        }
+        
     }
 
     protected function update_obj()
@@ -415,6 +536,7 @@ class CommunicationAlmsController extends AlmsController
             $data['id_resource'] = explode(',', $tmpReq)[0];
         }
         $mod_result = Get::req('mod_result', DOTY_INT, 0);
+     
         if ($mod_result >= 1) {
             if ($this->model->save($data)) {
                 Util::jump_to('index.php?r=alms/communication/show&success=1');
@@ -423,7 +545,7 @@ class CommunicationAlmsController extends AlmsController
         Util::jump_to('index.php?r=alms/communication/show&error=1');
     }
 
-    protected function del()
+    protected function delete()
     {
         if (!$this->permissions['del']) {
             $output = ['success' => false, 'message' => $this->_getMessage('no permission')];
@@ -432,8 +554,8 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $id_comm = Get::req('id_comm', DOTY_INT, 0);
-        $data = $this->model->findByPk($id_comm);
+        $idComm = Get::req('idComm', DOTY_INT, 0);
+        $data = $this->model->findByPk($idComm);
 
         if ($data['id_resource']) {
             switch ($data['type_of']) {
@@ -459,7 +581,7 @@ class CommunicationAlmsController extends AlmsController
             $re = true;
         }
         if ($re) {
-            $output['success'] = $this->model->delByPk($id_comm);
+            $output['success'] = $this->model->delByPk($idComm);
             if ($output['success'] && ($data['type_of'] == 'file' || $data['type_of'] == 'scorm')) {
                 require_once _lms_ . '/lib/lib.kbres.php';
                 $kbres = new KbRes();
@@ -831,8 +953,6 @@ class CommunicationAlmsController extends AlmsController
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
 
-        $objParent = new stdClass();
-        $objParent->id = (int) $info->id_parent;
         $this->render('edit_category', [
             'title' => Lang::t('_MOD', 'communication'),
             'idCategory' => $idCategory,
@@ -1021,14 +1141,15 @@ class CommunicationAlmsController extends AlmsController
                                             'categoriesList' => array_values($categoriesList), 
                                             'langs' => array_keys($langs), 
                                             'langCode' => $langCode, 
-                                            'categoriesDropdownData' => $categoriesDropdownData
+                                            'categoriesDropdownData' => $categoriesDropdownData,
+                                            'permissions' => $this->permissions
                                         ]);
     }
 
     public function deleteCategoryTask() {
         $idCategory = Get::req('idCategory', DOTY_INT, 0);
       
-        $output['success'] = $this->model->deleteCategory($idCategory);
+        $output = $this->model->deleteCategory($idCategory);
 
         echo json_encode($output);
     }
