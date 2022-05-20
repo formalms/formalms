@@ -17,7 +17,7 @@ class Module_Statistic extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/statistic/statistic.php';
+        require_once _lms_ . '/modules/statistic/statistic.php';
         statisticDispatch($GLOBALS['op']);
     }
 

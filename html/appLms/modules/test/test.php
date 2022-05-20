@@ -20,7 +20,7 @@ if (Docebo::user()->isAnonymous()) {
 // XXX: save status in session
 function saveTestStatus($save_this)
 {
-    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+    require_once _adm_ . '/lib/lib.sessionsave.php';
     $save = new Session_Save();
     $save_name = $save->getName('test');
 
@@ -31,7 +31,7 @@ function saveTestStatus($save_this)
 
 function &loadTestStatus($save_name)
 {
-    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+    require_once _adm_ . '/lib/lib.sessionsave.php';
     $save = new Session_Save();
 
     return $save->load($save_name);
@@ -178,7 +178,7 @@ function uptest(Learning_Test $obj_test = null)
 
             return;
         }
-        require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+        require_once _lms_ . '/class.module/track.object.php';
         Track_Object::updateObjectTitle($id_test, $obj_test->getObjectType(), $_REQUEST['title']);
     }
 
@@ -476,7 +476,7 @@ function modtestgui($object_test)
         );
     }
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
+    require_once _lms_ . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
@@ -715,7 +715,7 @@ function addquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once $GLOBALS['where_lms'] . '/modules/question/question.php';
+    require_once _lms_ . '/modules/question/question.php';
 
     quest_create($type_quest, $idTest, 'index.php?modname=test&op=modtestgui&test_saved=' . $var_save);
 }
@@ -759,7 +759,7 @@ function modquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once $GLOBALS['where_lms'] . '/modules/question/question.php';
+    require_once _lms_ . '/modules/question/question.php';
 
     quest_edit($type_quest, $idQuest, 'index.php?modname=test&op=modtestgui&test_saved=' . $var_save);
 }
@@ -1954,7 +1954,7 @@ function importquest()
     require_once _base_ . '/lib/lib.form.php';
 
     $form = new Form();
-    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
+    require_once _lms_ . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 
@@ -1996,7 +1996,7 @@ function doimportquest()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
+    require_once _lms_ . '/lib/lib.quest_bank.php';
 
     $qb_man = new QuestBankMan();
 
@@ -2044,7 +2044,7 @@ function exportquest()
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
+    require_once _lms_ . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
 
     $file_format = Forma\lib\Get::req('export_quest_select', DOTY_INT, 0);
@@ -2078,7 +2078,7 @@ function exportquestqb()
     require_once _base_ . '/lib/lib.form.php';
 
     $form = new Form();
-    require_once $GLOBALS['where_lms'] . '/lib/lib.quest_bank.php';
+    require_once _lms_ . '/lib/lib.quest_bank.php';
     $qb_man = new QuestBankMan();
     $supported_format = $qb_man->supported_format();
 

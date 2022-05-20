@@ -19,7 +19,7 @@ if (Docebo::user()->isAnonymous()) {
 
 addCss('style_wiki', 'fw');
 addCss('style_wiki_lms', 'lms');
-require_once $GLOBALS['where_lms'] . '/lib/lib.wiki.php';
+require_once _lms_ . '/lib/lib.wiki.php';
 
 function &cwaSetup()
 {

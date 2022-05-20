@@ -17,7 +17,7 @@ class Module_MyGroup extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/mygroup/mygroup.php';
+        require_once _lms_ . '/modules/mygroup/mygroup.php';
         mygroupDispatch($GLOBALS['op']);
     }
 

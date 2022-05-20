@@ -185,7 +185,7 @@ class PlayPollManagement
         $query_question = $this->getQuestionsForPage($page_to_save);
         $re_question = sql_query($query_question);
         while (list($id_quest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_question)) {
-            require_once $GLOBALS['where_lms'] . '/modules/question_poll/' . $type_file;
+            require_once _lms_ . '/modules/question_poll/' . $type_file;
             $quest_obj = eval("return new $type_class( $id_quest );");
             $storing = $quest_obj->storeAnswer($this->id_track, $_POST, $can_overwrite);
         }

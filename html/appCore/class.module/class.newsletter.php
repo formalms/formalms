@@ -30,6 +30,6 @@ class Module_Newsletter extends Module
     public function loadBody()
     {
         global $op, $modname, $prefix;
-        require_once $GLOBALS['where_framework'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once _adm_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
     }
 }

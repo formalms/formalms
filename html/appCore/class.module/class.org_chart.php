@@ -19,7 +19,7 @@ class Module_Org_chart extends Module
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_framework'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once _adm_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
         orgDispatch($GLOBALS['op'], false, $this);
     }
 }

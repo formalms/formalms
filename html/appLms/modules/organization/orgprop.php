@@ -290,7 +290,7 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang)
 
         $arrParamsInfo = $lo->getParamInfo();
         if ($arrParamsInfo !== false) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+            require_once _lms_ . '/lib/lib.param.php';
             $param_values = getLOParamArray($values['idParam']);
             if (is_callable([$lo, 'renderCustomSettings'])) {
                 $GLOBALS['page']->add($lo->renderCustomSettings($param_values,
@@ -504,7 +504,7 @@ function organization_access(&$treeView, $idItem)
 {
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.userselector.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.repo.php';
+    require_once _lms_ . '/lib/lib.repo.php';
     $lang = &DoceboLanguage::createInstance('organization', 'lms');
     $folder = $treeView->tdb->getFolderById($idItem);
 

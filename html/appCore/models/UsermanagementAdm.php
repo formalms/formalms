@@ -307,7 +307,7 @@ class UsermanagementAdm extends Model
 
         switch ($learning_filter) {
             case 'message':
-                $id_course = $_SESSION['message_filter'];
+                $id_course = $this->session->get('message_filter');
 
                 if ($id_course != 0) {
                     $res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -332,13 +332,15 @@ class UsermanagementAdm extends Model
                     . " AND u.idst <> '" . Docebo::user()->getIdSt() . "' ";
                 break;
             case 'course':
-                $id_course = $_SESSION['idCourse'];
+                $id_course = $this->session->get('idCourse');
 
                 $res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
 
                 $queryUserFilter_1 .= ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ';
                 $queryUserFilter_2 .= ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ';
                 $queryUserFilter_3 .= ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ';
+                break;
+            default:
                 break;
         }
 
@@ -767,7 +769,7 @@ class UsermanagementAdm extends Model
 
         switch ($learning_filter) {
             case 'message':
-                $id_course = $_SESSION['message_filter'];
+                $id_course = $this->session->get('message_filter');
 
                 if ($id_course != 0) {
                     $res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -788,7 +790,7 @@ class UsermanagementAdm extends Model
                     . " AND u.idst <> '" . Docebo::user()->getIdSt() . "' ";
                 break;
             case 'course':
-                $id_course = $_SESSION['idCourse'];
+                $id_course = $this->session->get('idCourse');
 
                 $res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
 
@@ -915,7 +917,7 @@ class UsermanagementAdm extends Model
 
         switch ($learning_filter) {
             case 'course':
-                $id_course = $_SESSION['idCourse'];
+                $id_course = $this->session->get('idCourse');
                 $res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
                 $query .= ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ';
                 break;

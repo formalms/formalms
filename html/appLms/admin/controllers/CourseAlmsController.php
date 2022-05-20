@@ -113,11 +113,14 @@ class CourseAlmsController extends AlmsController
         }
         $params = [];
 
-        if (!isset($_SESSION['course_filter'])) {
-            $_SESSION['course_filter']['text'] = '';
-            $_SESSION['course_filter']['classroom'] = false;
-            $_SESSION['course_filter']['descendants'] = false;
-            $_SESSION['course_filter']['waiting'] = false;
+        if (!$this->session->has('course_filter')) {
+            $courseFilter = [];
+            $courseFilter['text'] = '';
+            $courseFilter['classroom'] = false;
+            $courseFilter['descendants'] = false;
+            $courseFilter['waiting'] = false;
+            $this->session->set('course_filter',$courseFilter);
+            $this->session->save();
         }
 
         if (isset($_POST['c_filter_set'])) {
@@ -126,10 +129,10 @@ class CourseAlmsController extends AlmsController
             $waiting = (bool) Forma\lib\Get::req('waiting', DOTY_INT, false);
             $filter_text = Forma\lib\Get::req('text', DOTY_STRING, '');
         } else {
-            $classroom = $_SESSION['course_filter']['classroom'];
-            $descendants = $_SESSION['course_filter']['descendants'];
-            $waiting = $_SESSION['course_filter']['waiting'];
-            $filter_text = $_SESSION['course_filter']['text'];
+            $classroom = $this->session->get('course_filter')['classroom'];
+            $descendants = $this->session->get('course_filter')['descendants'];
+            $waiting = $this->session->get('course_filter')['waiting'];
+            $filter_text = $this->session->get('course_filter')['text'];
         }
 
         $filter_open = false;
@@ -146,10 +149,13 @@ class CourseAlmsController extends AlmsController
             'open' => $filter_open,
             'id_category' => $this->_getSessionTreeData('id_category', 0), ];
 
-        $_SESSION['course_filter']['text'] = $filter_text;
-        $_SESSION['course_filter']['classroom'] = $classroom;
-        $_SESSION['course_filter']['descendants'] = $descendants;
-        $_SESSION['course_filter']['waiting'] = $waiting;
+        $courseFilter = $this->session->get('course_filter');
+        $courseFilter['text'] = $filter_text;
+        $courseFilter['classroom'] = $classroom;
+        $courseFilter['descendants'] = $descendants;
+        $courseFilter['waiting'] = $waiting;
+        $this->session->set('course_filter',$courseFilter);
+        $this->session->save();
 
         $params['initial_selected_node'] = $this->_getSessionTreeData('id_category', 0);
         $params['filter'] = $filter;
@@ -173,52 +179,63 @@ class CourseAlmsController extends AlmsController
         if (!$index || !is_string($index)) {
             return false;
         }
-        if (!isset($_SESSION['course_category']['filter_status'][$index])) {
-            $_SESSION['course_category']['filter_status'][$index] = $default;
+        $courseCategory = $this->session->get('course_category');
+        if (!isset($courseCategory['filter_status'][$index])) {
+            $courseCategory = [];
+            $courseCategory['filter_status'][$index] = $default;
+            $this->session->set('course_category',$courseCategory);
+            $this->session->save();
         }
 
-        return $_SESSION['course_category']['filter_status'][$index];
+        return $courseCategory['filter_status'][$index];
     }
 
     protected function _setSessionTreeData($index, $value)
     {
-        $_SESSION['course_category']['filter_status'][$index] = $value;
+        $courseCategory = $this->session->get('course_category') ?: [];
+        $courseCategory['filter_status'][$index] = $value;
+        $this->session->set('course_category',$courseCategory);
+        $this->session->save();
     }
 
     public function filterevent()
     {
-        $_SESSION['course_filter']['classroom'] = Forma\lib\Get::req('classroom', DOTY_MIXED, false);
-        $_SESSION['course_filter']['descendants'] = Forma\lib\Get::req('descendants', DOTY_MIXED, false);
-        $_SESSION['course_filter']['waiting'] = Forma\lib\Get::req('waiting', DOTY_MIXED, false);
-        $_SESSION['course_filter']['text'] = Forma\lib\Get::req('text', DOTY_STRING, '');
+        $courseFilter = $this->session->get('course_filter');
 
-        if ($_SESSION['course_filter']['classroom'] === 'false') {
-            $_SESSION['course_filter']['classroom'] = false;
+        $courseFilter['classroom'] = Forma\lib\Get::req('classroom', DOTY_MIXED, false);
+        $courseFilter['descendants'] = Forma\lib\Get::req('descendants', DOTY_MIXED, false);
+        $courseFilter['waiting'] = Forma\lib\Get::req('waiting', DOTY_MIXED, false);
+        $courseFilter['text'] = Forma\lib\Get::req('text', DOTY_STRING, '');
+
+        if ($courseFilter['classroom'] === 'false') {
+            $courseFilter['classroom'] = false;
         } else {
-            $_SESSION['course_filter']['classroom'] = true;
+            $courseFilter['classroom'] = true;
         }
 
-        if ($_SESSION['course_filter']['descendants'] === 'false') {
-            $_SESSION['course_filter']['descendants'] = false;
+        if ($courseFilter['descendants'] === 'false') {
+            $courseFilter['descendants'] = false;
         } else {
-            $_SESSION['course_filter']['descendants'] = true;
+            $courseFilter['descendants'] = true;
         }
 
-        if ($_SESSION['course_filter']['waiting'] === 'false') {
-            $_SESSION['course_filter']['waiting'] = false;
+        if ($courseFilter['waiting'] === 'false') {
+            $courseFilter['waiting'] = false;
         } else {
-            $_SESSION['course_filter']['waiting'] = true;
+            $courseFilter['waiting'] = true;
         }
+
+
+        $this->session->set('course_filter',$courseFilter);
+        $this->session->save();
 
         echo $this->json->encode(['success' => true]);
     }
 
     public function resetevent()
     {
-        $_SESSION['course_filter']['text'] = '';
-        $_SESSION['course_filter']['classroom'] = false;
-        $_SESSION['course_filter']['descendants'] = false;
-        $_SESSION['course_filter']['waiting'] = false;
+        $this->session->remove('course_filter');
+        $this->session->save();
     }
 
     protected function _getNodeActions($id_category, $is_leaf, $associated_courses = 0)
@@ -440,10 +457,10 @@ class CourseAlmsController extends AlmsController
         $idCourse = Forma\lib\Get::req('idCourse', DOTY_MIXED, null);
 
         $id_category = Forma\lib\Get::req('node_id', DOTY_INT, (int) $this->_getSessionTreeData('id_category', 0));
-        $filter_text = $_SESSION['course_filter']['text'];
-        $classroom = $_SESSION['course_filter']['classroom'];
-        $descendants = $_SESSION['course_filter']['descendants'];
-        $waiting = $_SESSION['course_filter']['waiting'];
+        $filter_text = $this->session->get('course_filter')['text'];
+        $classroom = $this->session->get('course_filter')['classroom'];
+        $descendants = $this->session->get('course_filter')['descendants'];
+        $waiting = $this->session->get('course_filter')['waiting'];
 
         $filter_open = false;
 
@@ -1225,8 +1242,8 @@ class CourseAlmsController extends AlmsController
         if (isset($_POST['assign'])) {
             $id_custom = Forma\lib\Get::req('selected_menu', DOTY_INT, 0);
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.manmenu.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $acl_man = &Docebo::user()->getAclManager();
             $course_man = new Man_Course();
@@ -1242,21 +1259,22 @@ class CourseAlmsController extends AlmsController
 
             $result = createCourseMenuFromCustom($id_custom, $id_course, $course_idst);
 
-            if ($_SESSION['idCourse'] == $id_course) {
+            if ($this->session->get('idCourse') == $id_course) {
                 $query = 'SELECT module.idModule, main.idMain
 							FROM ( ' . $GLOBALS['prefix_lms'] . '_menucourse_main AS main JOIN
 							' . $GLOBALS['prefix_lms'] . '_menucourse_under AS un ) JOIN
 							' . $GLOBALS['prefix_lms'] . "_module AS module
 							WHERE main.idMain = un.idMain AND un.idModule = module.idModule
-							AND main.idCourse = '" . (int) $_SESSION['idCourse'] . "'
-							AND un.idCourse = '" . (int) $_SESSION['idCourse'] . "'
+							AND main.idCourse = '" . (int) $id_course . "'
+							AND un.idCourse = '" . (int) $id_course . "'
 							ORDER BY main.sequence, un.sequence
 							LIMIT 0,1";
 
                 list($id_module, $id_main) = sql_fetch_row(sql_query($query));
 
-                $_SESSION['current_main_menu'] = $id_main;
-                $_SESSION['sel_module_id'] = $id_module;
+                $this->session->set('current_main_menu',$id_main);
+                $this->session->set('sel_module_id',$id_module);
+                $this->session->save();
 
                 //loading related ST
                 Docebo::user()->loadUserSectionST('/lms/course/public/');
@@ -1269,7 +1287,7 @@ class CourseAlmsController extends AlmsController
 
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show&res=_up_menu_err');
         } else {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
+            require_once _lms_ . '/lib/lib.manmenu.php';
             $menu_custom = getAllCustom();
             $sel_custom = getAssociatedCustom($id_course);
 
@@ -1375,8 +1393,9 @@ class CourseAlmsController extends AlmsController
             $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
 
             $op_res = $this->model->delCourse($id_course);
-            if ($op_res && isset($_SESSION['idCourse']) && $_SESSION['idCourse'] == $id_course) {
-                unset($_SESSION['idCourse']);
+            if ($op_res && $this->session->has('idCourse') && $this->session->get('idCourse') == $id_course) {
+                $this->session->remove('idCourse');
+                $this->session->save();
             }
             $res = ['success' => $op_res];
 
@@ -1452,7 +1471,7 @@ class CourseAlmsController extends AlmsController
         ];
 
         if ($id_course === false) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
+            require_once _lms_ . '/lib/lib.manmenu.php';
             $menu_custom = getAllCustom();
             list($sel_custom) = current($menu_custom);
             reset($menu_custom);

@@ -455,7 +455,7 @@ function delCode()
 function assignCourse()
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
 
     $lang = &DoceboLanguage::createInstance('code');
 
@@ -570,7 +570,7 @@ function importCode_step1()
 function importCode_step2()
 {
     require_once _base_ . '/lib/lib.upload.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.import.php';
+    require_once _adm_ . '/lib/lib.import.php';
     require_once _base_ . '/lib/lib.table.php';
 
     if ($_FILES['file_import']['name'] == '') {
@@ -742,7 +742,7 @@ function generateCode()
             break;
 
         case 2:
-            require_once $GLOBALS['where_framework'] . '/lib/lib.code.php';
+            require_once _adm_ . '/lib/lib.code.php';
 
             $code_man = new CodeManager();
 

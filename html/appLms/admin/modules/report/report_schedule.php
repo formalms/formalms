@@ -31,9 +31,9 @@ function schedule_recipients($idrep)
     $end_url = 'index.php?modname=report&op=schedulelist&idrep=' . $idrep;
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.directory.php';
+    require_once _adm_ . '/lib/lib.directory.php';
     require_once _base_ . '/lib/lib.userselector.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.report.php';
+    require_once _lms_ . '/lib/lib.report.php';
     //require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 
     $aclManager = new DoceboACLManager();
@@ -41,12 +41,14 @@ function schedule_recipients($idrep)
 
     $lang = &DoceboLanguage::createInstance('report', 'framework');
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if (!isset($_POST['is_updating'])) {
             //save filter, if needed
-        require_once $GLOBALS['where_lms'] . '/lib/lib.report.php';
+        require_once _lms_ . '/lib/lib.report.php';
         //save schedulation data in session
-        if (!isset($_SESSION['schedule_tempdata'])) {
-            $_SESSION['schedule_tempdata'] = [];
+        if (!$session->has('schedule_tempdata')) {
+            $session->set('schedule_tempdata',[]);
+            $session->save();
         }
 
         switch ($_POST['cron_radio']) {
@@ -72,14 +74,16 @@ function schedule_recipients($idrep)
                     break;
             }
 
-        $ref = &$_SESSION['schedule_tempdata'];
+        $scheduleTempData = $session->get('schedule_tempdata',[]);
 
-        $ref['name'] = $_POST['sched_name'];
-        $ref['period'] = $_POST['cron_radio'];
-        $ref['period_info'] = $sched_info;
-        $ref['time'] = $sched_time;
+        $scheduleTempData['name'] = $_POST['sched_name'];
+        $scheduleTempData['period'] = $_POST['cron_radio'];
+        $scheduleTempData['period_info'] = $sched_info;
+        $scheduleTempData['time'] = $sched_time;
+        $session->set('schedule_tempdata',$scheduleTempData);
+        $session->save();
 
-        $user_select->resetSelection($ref['recipients']);
+        $user_select->resetSelection($scheduleTempData['recipients']);
     }
 
     $save_schedule_failed = false;
@@ -88,19 +92,19 @@ function schedule_recipients($idrep)
             //Util::jump_to($back_url);
         Util::jump_to('index.php?modname=report&op=schedulelist&idrep=' . $idrep);
     } elseif (isset($_POST['okselector'])) {
-        $ref = &$_SESSION['schedule_tempdata'];
+        $scheduleTempData = $session->get('schedule_tempdata',[]);
 
         $entity_selected = $user_select->getSelection($_POST);
 
         //$_temp = $ref['recipients'];
-        $_name = $ref['name'];
-        $_time = $ref['time'];
-        $_period = $ref['period'] . ',' . $ref['period_info'];
+        $_name = $scheduleTempData['name'];
+        $_time = $scheduleTempData['time'];
+        $_period = $scheduleTempData['period'] . ',' . $scheduleTempData['period_info'];
 
         //get current saved report ID from session (check if report is saved, otherwise -> error)
 
-        if (isset($_SESSION['schedule_update'])) {
-            $sched = report_update_schedulation($_SESSION['schedule_update'], $_name, $_period, $_time, $entity_selected);
+        if ($session->has('schedule_tempdata')) {
+            $sched = report_update_schedulation($scheduleTempData, $_name, $_period, $_time, $entity_selected);
         } else {
             $id_report = $idrep; //$_SESSION['report_saved_data']['id'];
             $sched = report_save_schedulation($id_report, $_name, $_period, $_time, $entity_selected);
@@ -150,19 +154,21 @@ function schedule_set($idrep, $checkperm = 'mod')
     }
 
     $lang = &DoceboLanguage::createInstance('report', 'framework');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     //initialize session data for schedulation, if not updating
-    if (!isset($_SESSION['schedule_tempdata'])) {
-        $_SESSION['schedule_tempdata'] = [
+    $scheduleTempData = $session->get('schedule_tempdata');
+    if (empty($scheduleTempData)) {
+        $scheduleTempData = [
                 'name' => '',
                 'period' => 'day',
                 'period_info' => '',
                 'time' => '',
                 'recipients' => [],
             ];
+        $session->set('schedule_tempdata',$scheduleTempData);
     }
 
-    $ref = &$_SESSION['schedule_tempdata'];
+
 
     require_once _base_ . '/lib/lib.form.php';
 
@@ -264,7 +270,7 @@ function modify_schedulation()
 {
     checkPerm('mod');
     //preload schedulation data in session
-    require_once $GLOBALS['where_lms'] . '/lib/lib.report.php';
+    require_once _lms_ . '/lib/lib.report.php';
 
     if ($id_sched = Forma\lib\Get::req('id_sched', DOTY_INT, false)) {
         $qry = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . "_report_schedule WHERE id_report_schedule=$id_sched";

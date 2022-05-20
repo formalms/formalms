@@ -93,9 +93,9 @@ class Course_Manager
     {
         require_once _base_ . '/lib/lib.tab.php';
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.catalogue.php';
 
         $this->show_filter = true;
 
@@ -585,8 +585,8 @@ class AdminCourseManagment
      */
     public function &getUserAllCourses($id_user)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.catalogue.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
 
         $courses = $this->getUserCourses($id_user);
         $coursepath = $this->getUserPathCourses($id_user);
@@ -612,8 +612,8 @@ class AdminCourseManagment
      */
     public function &getUserAllCoursePaths($id_user)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.catalogue.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
 
         $coursepath = &$this->getUserPathCourses($id_user);
         $catalogues = &$this->getUserCatalogues($id_user);

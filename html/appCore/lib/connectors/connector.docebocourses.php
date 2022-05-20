@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once dirname(__FILE__) . '/lib.connector.php';
-require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+require_once _lms_ . '/lib/lib.course.php';
 
 /**
  * class for define docebo courses connection to data source.
@@ -398,7 +398,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
             }
             $course_idst = DoceboCourse::createCourseLevel($id_course);
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
+            require_once _lms_ . '/lib/lib.manmenu.php';
 
             if (!createCourseMenuFromCustom($this->std_menu_to_assign, $id_course, $course_idst)) {
                 $this->last_error = 'Error in menu assignament';
@@ -460,7 +460,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
                                                                                     '[course_code]' => $row['code'],
                                                                                     '[course]' => $row['name'], ]);
 
-                    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+                    require_once _lms_ . '/lib/lib.course.php';
                     $course_man = new Man_Course();
                     $recipients = $course_man->getIdUserOfLevel($id_course);
                     createNewAlert('CoursePropModified',
@@ -494,7 +494,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
                 return false;
             }
         } else {
-            require_once $GLOBALS['where_lms'] . '/admin/modules/course/course.php';
+            require_once _lms_ . '/admin/modules/course/course.php';
             // delete the course
             if (removeCourse($id_course)) {
                 return true;
@@ -580,7 +580,7 @@ class DoceboConnectorDoceboCoursesUI extends DoceboConnectorUI
 
     public function DoceboConnectorDoceboCoursesUI(&$connector)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu_course.php';
+        require_once _lms_ . '/lib/lib.manmenu_course.php';
 
         $this->available_menu = getAllCustom();
 

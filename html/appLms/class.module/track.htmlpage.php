@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+require_once _lms_ . '/class.module/track.object.php';
 
 class Track_Htmlpage extends Track_Object
 {

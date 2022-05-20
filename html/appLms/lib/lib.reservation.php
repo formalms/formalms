@@ -43,7 +43,7 @@ define('LABORATORY_LOCATION', 2);
 define('LABORATORY_DESCRIPTION', 3);
 define('LABORATORY_ID_COURSE', 4);
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
+require_once _lms_ . '/lib/lib.classroom.php';
 
 /**
  * @author Marco Valloni

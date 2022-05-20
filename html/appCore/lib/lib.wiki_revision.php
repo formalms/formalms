@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 // ----------------------------------------------------------------------------
 
-require_once $GLOBALS['where_framework'] . '/lib/lib.revision.php';
+require_once _adm_ . '/lib/lib.revision.php';
 
 class WikiRevisionManager extends RevisionManager
 {

@@ -322,7 +322,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
         // print progress bar -------------------------------------------------
         if (Docebo::course()->getValue('show_progress') == 1) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
+            require_once _lms_ . '/lib/lib.stats.php';
             $total = getNumCourseItems($_SESSION['idCourse'],
                                         false,
                                         getLogUserId(),
@@ -444,7 +444,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     if ((Forma\lib\Get::sett('use_tag', 'off') == 'on') && checkPerm('view', true, 'forum')) {
         YuiLib::load(['tabview' => 'tabview-min.js'], ['tabview/assets/skins/sam/' => 'tabview.css']);
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.tags.php';
+        require_once _adm_ . '/lib/lib.tags.php';
         $tags = new Tags('*');
 
         //$GLOBALS['page']->add('<div id="tag_cloud" class="yui-navset"></div>', 'menu');

@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 if (!Docebo::user()->isAnonymous()) {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.repo.php';
+    require_once _lms_ . '/lib/lib.repo.php';
 
     function pubrepo(&$treeView)
     {
@@ -91,7 +91,7 @@ if (!Docebo::user()->isAnonymous()) {
     function pubrepo_import(&$treeView)
     {
         global $modname, $op;
-        require_once $GLOBALS['where_lms'] . '/lib/lib.homerepo.php';
+        require_once _lms_ . '/lib/lib.homerepo.php';
 
         // ----------------------------------
         $GLOBALS['page']->add('<div class="std_block">');

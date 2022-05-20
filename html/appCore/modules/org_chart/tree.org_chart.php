@@ -698,14 +698,15 @@ class TreeView_OrgView extends TreeView
 
     public function loadState()
     {
-        if (isset($_SESSION['org_chart_state'])) {
-            $this->setState(unserialize(stripslashes($_SESSION['org_chart_state'])));
+        if ($this->session->has('org_chart_state')) {
+            $this->setState($this->session->get('org_chart_state'));
         }
     }
 
     public function saveState()
     {
-        $_SESSION['org_chart_state'] = addslashes(serialize($this->getState()));
+        $this->session->set('org_chart_state',$this->getState());
+        $this->session->save();
     }
 
     public function _getOtherActions()
@@ -820,7 +821,7 @@ class TreeView_OrgView extends TreeView
 
             if ($idst !== '') {
                 //-extra field-----------------------------------------------
-                require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+                require_once _adm_ . '/lib/lib.field.php';
                 $fields = new FieldList();
                 //$re_filled = $fields->isFilledFieldsForUser($idst);
 
@@ -955,7 +956,7 @@ class TreeView_OrgView extends TreeView
                     $this->op = 'reedit_person';
                 } else {
                     //-verify mandatory extra field--------------------------------
-                    require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+                    require_once _adm_ . '/lib/lib.field.php';
                     $fields = new FieldList();
                     //$re_filled = $fields->isFilledFieldsForUser(0, $arr_idst_all);
                     if ($arr_idst_groups != false && $userid != '') {
@@ -1160,7 +1161,7 @@ class TreeView_OrgView extends TreeView
                     $acl = &Docebo::user()->getACL();
 
                     //-extra field check mandatory -----------------------------
-                    require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+                    require_once _adm_ . '/lib/lib.field.php';
                     $fields = new FieldList();
                     $fields->setGroupFieldsTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDTABLE);
                     $fields->setFieldEntryTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDENTRYTABLE);
@@ -1216,7 +1217,7 @@ class TreeView_OrgView extends TreeView
             } elseif ($key === 'next_formfield1') {
                 $this->op = 'folder_field2';
             } elseif ($key === 'save_formfield') {
-                require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+                require_once _adm_ . '/lib/lib.field.php';
 
                 if (isset($arrayState[$this->id]['field_set'])) {
                     $arr_fields = $arrayState[$this->id]['field_set'];
@@ -1256,7 +1257,7 @@ class TreeView_OrgView extends TreeView
                 $arr_fields = $arrayState[$this->id]['field_set'];
                 $arr_fields_mandatory = (isset($arrayState[$this->id]['field_mandatory']) ? $arrayState[$this->id]['field_mandatory'] : []);
                 $arr_fields_useraccess = (isset($arrayState[$this->id]['field_useraccess']) ? $arrayState[$this->id]['field_useraccess'] : []);
-                require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+                require_once _adm_ . '/lib/lib.field.php';
                 $fl = new FieldList();
 
                 foreach ($arr_fields as $id_filed => $status) {
@@ -1582,7 +1583,7 @@ class TreeView_OrgView extends TreeView
         // -- begin -- custom fields for folder
         $tree .= $form->getOpenFieldset($this->lang->def('_ASSIGNED_EXTRAFIELD'));
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $fields = new FieldList();
         $fields->setGroupFieldsTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDTABLE);
         $fields->setFieldEntryTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDENTRYTABLE);
@@ -1607,7 +1608,7 @@ class TreeView_OrgView extends TreeView
 
     public function loadFolderField()
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.form.php';
         $form = new Form();
         $fl = new FieldList();
@@ -1663,7 +1664,7 @@ class TreeView_OrgView extends TreeView
 
         $id_folder = $_POST[$this->id]['id_folder'];
         $id_folder_desc = $_POST[$this->id]['id_folder_desc'];
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $fl = new FieldList();
         $fl->setGroupFieldsTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDTABLE);
 
@@ -1720,7 +1721,7 @@ class TreeView_OrgView extends TreeView
         $tdb = &$this->tdb;
         $folder = $tdb->getFolderById($this->getSelectedFolderId());
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.form.php';
         $form = new Form();
         $fl = new FieldList();
@@ -1813,7 +1814,7 @@ class TreeView_OrgView extends TreeView
         $arr_fields = $_POST[$this->id]['field_set'];
         $idst_group = $_POST[$this->id]['idst_group'];
         $idst_desc = $_POST[$this->id]['idst_desc'];
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $fl = new FieldList();
         $arr_all_fields = $fl->getAllFields();
         require_once _base_ . '/lib/lib.form.php';
@@ -1927,7 +1928,7 @@ class TreeView_OrgView extends TreeView
     {
         $arr_fields = $_POST[$this->id]['field_set'];
         $idst_group = $_POST[$this->id]['idst_group'];
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $fl = new FieldList();
         $arr_all_fields = $fl->getAllFields();
         $arr_fields_normal = $fl->getFieldsFromIdst([$idst_group]);
@@ -1991,7 +1992,8 @@ class TreeView_OrgView extends TreeView
 
         // ----------- file upload -----------------------------------------
         if ($_FILES['file_import']['name'] == '') {
-            $_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
+
+            $this->session->getFlashBag()->add('error',Lang::t('_FILEUNSPECIFIED'));
             Util::jump_to($back_url . '&import_result=-1');
         } else {
             $path = '/appCore/';
@@ -2000,12 +2002,14 @@ class TreeView_OrgView extends TreeView
                 sl_open_fileoperations();
                 if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                     sl_close_fileoperations();
-                    $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+
+                    $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD'));
                     Util::jump_to($back_url . '&import_result=-1');
                 }
                 sl_close_fileoperations();
             } else {
-                $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD'));
+
                 Util::jump_to($back_url . '&create_result=-1');
             }
         }

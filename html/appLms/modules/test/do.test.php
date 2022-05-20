@@ -62,9 +62,9 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     }
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+    require_once _lms_ . '/class.module/track.test.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.test.php';
 
     $lang = &DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
@@ -496,9 +496,9 @@ function playTestDispatch($object_test, $id_param)
     }
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+    require_once _lms_ . '/class.module/track.test.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.test.php';
 
     $lang = &DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
@@ -581,9 +581,9 @@ function play($object_test, $id_param)
     }
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+    require_once _lms_ . '/class.module/track.test.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.test.php';
 
     if (!isset($_SESSION['test_date_begin'])) {
         $_SESSION['test_date_begin'] = date('Y-m-d H:i:s');
@@ -1050,9 +1050,9 @@ function saveAndExit($object_test, $id_param)
     }
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+    require_once _lms_ . '/class.module/track.test.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.test.php';
 
     $lang = &DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
@@ -1149,9 +1149,9 @@ function showResult($object_test, $id_param)
     }
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+    require_once _lms_ . '/class.module/track.test.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.test.php';
 
     $lang = &DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
@@ -1643,9 +1643,9 @@ function review($object_test, $id_param)
 {
     $lang = &DoceboLanguage::createInstance('test');
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/class.module/track.test.php';
+    require_once _lms_ . '/lib/lib.test.php';
 
     $idTest = $object_test->getId();
     $idTrack = importVar('idTrack', true, 0);
@@ -1712,7 +1712,7 @@ function review($object_test, $id_param)
     $GLOBALS['page']->add('<div class="test_answer_space">', 'content');
     $quest_sequence_number = 1;
     while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-        require_once $GLOBALS['where_lms'] . '/modules/question/' . $type_file;
+        require_once _lms_ . '/modules/question/' . $type_file;
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         $review = $quest_obj->displayUserResult($idTrack,
@@ -1784,8 +1784,8 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 	FROM %lms_testtrack
 	WHERE idTrack = '" . (int) $idTrack . "'"));
 
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+    require_once _lms_ . '/class.module/track.test.php';
+    require_once _lms_ . '/lib/lib.test.php';
 
     $test_man = new TestManagement($idTest);
     $play_man = new PlayTestManagement($idTest, Docebo::user()->getIdst(), $idTrack, $test_man);
@@ -2183,7 +2183,7 @@ function deleteUserReport($id_user, $id_test, $id_track, $number_time = null)
 
 function saveManualUserReport($id_user, $id_test, $id_track)
 {
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
+    require_once _lms_ . '/class.module/track.test.php';
 
     list($title , $mod_doanswer , $point_type , $point_required , $question_random_number ,
         $show_score , $show_score_cat , $show_doanswer,

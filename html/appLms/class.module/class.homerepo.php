@@ -37,12 +37,12 @@ class Module_Homerepo extends LmsModule
 
     public function initialize()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/homerepo/homerepo.php';
+        require_once _lms_ . '/modules/homerepo/homerepo.php';
         $ready = false;
         $this->lang = &DoceboLanguage::createInstance('homerepo', 'lms');
         if (isset($_GET['shr']) && false) {
             // reload from previously saved session
-            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
             $saveName = $_GET['shr'];
             if ($saveObj->nameExists($saveName)) {
@@ -67,7 +67,7 @@ class Module_Homerepo extends LmsModule
             $this->treeView = new RepoTreeView($this->repoDb, 'homerepo', Lang::t('_HOMEREPOROOTNAME', 'storage', 'lms'));
             $this->treeView->mod_name = 'homerepo';
 
-            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
             $saveName = 'homerepo' . getLogUserId();
             if ($saveObj->nameExists($saveName)) {
@@ -130,7 +130,7 @@ class Module_Homerepo extends LmsModule
     {
         global $modname;
         if ($this->isFindingDestination()) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
             $saveName = $_GET['crepo'];
             if ($saveObj->nameExists($saveName)) {
@@ -193,7 +193,7 @@ class Module_Homerepo extends LmsModule
             case 'createLO':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
@@ -206,7 +206,7 @@ class Module_Homerepo extends LmsModule
             case 'createLOSel':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
@@ -219,7 +219,7 @@ class Module_Homerepo extends LmsModule
             case 'editLO':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
@@ -232,7 +232,7 @@ class Module_Homerepo extends LmsModule
             case 'playitem':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('homerepo' . getLogUserId(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
@@ -256,7 +256,7 @@ class Module_Homerepo extends LmsModule
             case 'copyLOEndOk':
             case 'copyLOEndCancel':
                 global $modname;
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $_GET['crepo'];
                 if ($saveObj->nameExists($saveName)) {
@@ -269,7 +269,7 @@ class Module_Homerepo extends LmsModule
             case 'copyLO':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('crepo', true);
                 $folder = $this->treeView->tdb->getFolderById($this->treeView->selectedFolder);

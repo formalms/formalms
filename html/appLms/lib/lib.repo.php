@@ -954,7 +954,7 @@ class RepoTreeView extends TreeView
 
         if (isset($arrayState[$this->_getOpCopyLOEndOk()])) {
             // op now can be copyLOSel, but we override it
-            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
             $saveName = $_GET['crepo'];
             if ($saveObj->nameExists($saveName)) {

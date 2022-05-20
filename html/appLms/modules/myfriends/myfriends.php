@@ -29,7 +29,7 @@ function myfriends(&$url)
 {
     checkPerm('view');
 
-    require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+    require_once _adm_ . '/lib/lib.myfriends.php';
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &DoceboLanguage::createInstance('myfriends', 'lms');
@@ -90,7 +90,7 @@ function approveuser(&$url)
 {
     checkPerm('view');
 
-    require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+    require_once _adm_ . '/lib/lib.myfriends.php';
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &DoceboLanguage::createInstance('myfriends', 'lms');
@@ -151,7 +151,7 @@ function searchUser(&$url)
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+    require_once _adm_ . '/lib/lib.myfriends.php';
 
     $lang = &DoceboLanguage::createInstance('myfriends', 'lms');
     $my_fr = new MyFriends(getLogUserId());
@@ -230,7 +230,7 @@ function delfriend(&$url)
 {
     checkPerm('view');
 
-    require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+    require_once _adm_ . '/lib/lib.myfriends.php';
 
     $lang = &DoceboLanguage::createInstance('myfriends', 'lms');
     $my_fr = new MyFriends(getLogUserId());

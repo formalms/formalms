@@ -152,7 +152,7 @@ class Admin_Managment_Scs extends Admin_Managment
 
     public function savePreferences(&$source_array, $base_path, $adminidst, $all_admin_permission)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
+        require_once _adm_ . '/lib/lib.adminmanager.php';
         $aclManager = &Docebo::user()->getAclManager();
         $admin_manager = new AdminManager();
 
@@ -170,7 +170,7 @@ class Admin_Managment_Scs extends Admin_Managment
 
             while (list($id, $modname, $name, $op, $token, $class_file, $class_name) = sql_fetch_row($re_menu)) {
                 if (($class_file != '') || ($class_name != '')) {
-                    require_once $GLOBALS['where_lms'] . '/admin/class.module/' . $class_file;
+                    require_once _lms_ . '/admin/class.module/' . $class_file;
                     $module = eval("return new $class_name();");
 
                     // Retriving all token for this module
@@ -204,7 +204,7 @@ class Admin_Managment_Scs extends Admin_Managment
     public function getPermissionUi($all_admin_permission, $base_path, $form_name)
     {
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
+        require_once _adm_ . '/lib/lib.adminmanager.php';
 
         $lang = &DoceboLanguage::createInstance('menu', 'lms');
         $out = &$GLOBALS['page'];
@@ -229,7 +229,7 @@ class Admin_Managment_Scs extends Admin_Managment
 
             while (list($id, $modname, $name, $op, $token, $class_file, $class_name) = sql_fetch_row($re_menu)) {
                 if (($class_file != '') || ($class_name != '')) {
-                    require_once $GLOBALS['where_lms'] . '/admin/class.module/' . $class_file;
+                    require_once _lms_ . '/admin/class.module/' . $class_file;
                     $module = eval("return new $class_name();");
 
                     // Retriving all token for this module

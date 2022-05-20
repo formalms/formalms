@@ -41,7 +41,7 @@ class Module_Course extends LmsModule
             ; break;
             case 'mycourses' :
             case 'unregistercourse' :
-                require_once $GLOBALS['where_lms'] . '/modules/' . $this->module_name . '/course.php';
+                require_once _lms_ . '/modules/' . $this->module_name . '/course.php';
 
                 require_once _base_ . '/lib/lib.urlmanager.php';
                 $url = &UrlManager::getInstance('course');
@@ -53,7 +53,7 @@ class Module_Course extends LmsModule
                 downloadMaterials();
             break;
             default:
-                require_once $GLOBALS['where_lms'] . '/modules/' . $this->module_name . '/infocourse.php';
+                require_once _lms_ . '/modules/' . $this->module_name . '/infocourse.php';
                 infocourseDispatch($GLOBALS['op']);
             ; break;
         }

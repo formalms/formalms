@@ -21,4 +21,4 @@ if (!defined('IN_LMS')) {
     define('IN_LMS', true);
 }
 
-require_once $GLOBALS['where_framework'] . '/modules/newsletter/newsletter.php';
+require_once _adm_ . '/modules/newsletter/newsletter.php';

@@ -22,7 +22,7 @@ class CoreWikiAdmin
     public $source_platform = null;
     public $wikiManager = null;
 
-    public function CoreWikiAdmin($source_platform)
+    public function __construct($source_platform)
     {
         $this->lang = &DoceboLanguage::createInstance('wiki', 'framework');
         $this->source_platform = $source_platform;
@@ -759,11 +759,14 @@ class CoreWikiPublic
     public $wiki_language = false;
     public $internal_perm = [];
 
-    public function CoreWikiPublic($wiki_id)
-    {
-        $this->wiki_id = (int) $wiki_id;
-        $_SESSION['editor_in_wiki'] = $this->getWikiId();
+    protected $session;
 
+    public function __construct($wiki_id)
+    {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->wiki_id = (int) $wiki_id;
+        $this->session->set('editor_in_wiki', $wiki_id);
+        $this->session->save();
         $this->lang = &DoceboLanguage::createInstance('wiki', 'framework');
         $this->wikiManager = new CoreWikiManager();
 
@@ -1086,28 +1089,36 @@ class CoreWikiPublic
 
         $key = $page_code . '-' . $lang;
 
-        if ((!isset($_SESSION[$history_name])) || (!is_array($_SESSION[$history_name]))) {
-            $_SESSION[$history_name] = [];
+
+        if ((!$this->session->has($history_name)) || (!is_array($this->session->get($history_name)))) {
+            $this->session->set($history_name,[]);
+            $this->session->save();
         }
 
-        if (!in_array($key, $_SESSION[$history_name])) {
+        if (!in_array($key, $this->session->get($history_name), true)) {
             $arr = [];
             $arr['language'] = $lang;
             $arr['page_code'] = $page_code;
             $page_info = $this->wikiManager->getPageInfo($wiki_id, $lang, $page_code);
             $arr['page_title'] = $page_info['title'];
-            $_SESSION[$history_name][$key] = $arr;
+
+            $history = $this->session->get($history_name);
+            $history[$key] = $arr;
+            $this->session->set($history_name,$history);
+            $this->session->save();
         }
 
-        if (count($_SESSION[$history_name]) > 10) {
-            array_shift($_SESSION[$history_name]);
+        $history = $this->session->get($history_name);
+        if (count($history) > 10) {
+            $history = array_shift($history);
+            $this->session->set($history_name,$history);
         }
 
         $i = 1;
         $res .= '<ul class="wiki_history">';
         $res .= '<li class="label">';
         $res .= $this->lang->def('_HISTORY') . ':</li>';
-        foreach ($_SESSION[$history_name] as $val) {
+        foreach ($history as $val) {
             if (($val['page_code'] != $page_code) || ($val['language'] != $lang)) {
                 $res .= '<li>';
                 $url = $um->getUrl('lang=' . $val['language'] . '&page=' . $val['page_code']);
@@ -1246,14 +1257,21 @@ class CoreWikiPublic
         }
 
         if ((isset($_GET['parent'])) && (!empty($_GET['parent']))) {
-            $_SESSION['wiki_temp_info'][$wiki_id][$page_code]['parent_code'] = $_GET['parent'];
             $parent_info = $this->wikiManager->getPageInfo($wiki_id, $wiki_lang, $_GET['parent']);
-            $_SESSION['wiki_temp_info'][$wiki_id][$page_code]['parent_info'] = $parent_info;
+
+            $data = $this->session->get('wiki_temp_info') ?: [];
+            $data[$wiki_id][$page_code]['parent_code'] = $_GET['parent'];
+            $data[$wiki_id][$page_code]['parent_info'] = $parent_info;
+            $this->session->set('wiki_temp_info',$data);
+            $this->session->save();
         }
 
         if ((isset($_GET['title'])) && (!empty($_GET['title']))) {
             $title = rawurldecode($_GET['title']);
-            $_SESSION['wiki_temp_info'][$wiki_id][$page_code]['title'] = $title;
+            $data = $this->session->get('wiki_temp_info') ?: [];
+            $data[$wiki_id][$page_code]['title'] = $title;
+            $this->session->set('wiki_temp_info',$data);
+            $this->session->save();
         }
     }
 
@@ -1262,8 +1280,9 @@ class CoreWikiPublic
         $res = false;
         /* if (isset($_SESSION["wiki_temp_info"][$wiki_id][$page_code]))
             print_r($_SESSION["wiki_temp_info"][$wiki_id][$page_code]); */
-        if (isset($_SESSION['wiki_temp_info'][$wiki_id][$page_code])) {
-            $res = $_SESSION['wiki_temp_info'][$wiki_id][$page_code];
+        $data = $this->session->get('wiki_temp_info');
+        if (isset($data[$wiki_id][$page_code])) {
+            $res = $data[$wiki_id][$page_code];
         }
 
         return $res;
@@ -1271,14 +1290,17 @@ class CoreWikiPublic
 
     public function unsetPageTempInfo($wiki_id, $page_code)
     {
-        if (isset($_SESSION['wiki_temp_info'][$wiki_id][$page_code])) {
-            unset($_SESSION['wiki_temp_info'][$wiki_id][$page_code]);
+        $data = $this->session->get('wiki_temp_info');
+        if (isset($data[$wiki_id][$page_code])) {
+            unset($data[$wiki_id][$page_code]);
+            $this->session->set('wiki_temp_info',$data);
+            $this->session->save();
         }
     }
 
     public function getPageContent()
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.wiki_revision.php';
+        require_once _adm_ . '/lib/lib.wiki_revision.php';
         $res = '';
 
         $um = &UrlManager::getInstance();
@@ -1319,7 +1341,7 @@ class CoreWikiPublic
     public function editWikiPage()
     {
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.wiki_revision.php';
+        require_once _adm_ . '/lib/lib.wiki_revision.php';
         $res = '';
         $lang = &DoceboLanguage::createInstance('wiki', 'framework');
         $um = &UrlManager::getInstance();
@@ -1419,7 +1441,7 @@ class CoreWikiPublic
     public function wikiPageHistory($vis_item = false)
     {
         require_once _base_ . '/lib/lib.table.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.wiki_revision.php';
+        require_once _adm_ . '/lib/lib.wiki_revision.php';
         require_once _base_ . '/lib/lib.form.php';
         $res = '';
 
@@ -1520,7 +1542,7 @@ class CoreWikiPublic
 
     public function getFoundPages()
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.wiki_revision.php';
+        require_once _adm_ . '/lib/lib.wiki_revision.php';
 
         // TODO: set some time limit before a search and the next one
         // TODO: see if this function can be optimized
@@ -2309,7 +2331,7 @@ class CoreWikiManager
 
     public function savePage($wiki_id, $data, $language, $page_code = false, $page_temp_info = false)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.wiki_revision.php';
+        require_once _adm_ . '/lib/lib.wiki_revision.php';
         //require_once(_base_.'/lib/lib.utils.php');
 
         $page_id = (int) $data['page_id'];

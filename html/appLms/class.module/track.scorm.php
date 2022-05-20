@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+require_once _lms_ . '/class.module/track.object.php';
 
 //if( version_compare(phpversion(), "5.0.0") == -1 ) {
     define('_track_scorm_basepath', $GLOBALS['where_lms'] . '/modules/scorm/');
@@ -54,7 +54,7 @@ class Track_ScormOrg extends Track_Object
     public function loadReport($idUser = false, $mvc = false)
     {
         require_once _track_scorm_basepath . 'scorm_stats.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+        require_once _lms_ . '/lib/lib.param.php';
         if ($idUser !== false) {
             $this->idReference = getLOParam($this->idParams, 'idReference');
 

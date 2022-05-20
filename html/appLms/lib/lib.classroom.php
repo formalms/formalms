@@ -65,7 +65,7 @@ class ClassroomManager
 
     public function getClassroomList($ini = false, $vis_item = false, $where = false)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.classlocation.php';
+        require_once _lms_ . '/lib/lib.classlocation.php';
         $clm = new ClassLocationManager();
 
         $data_info = [];
@@ -108,7 +108,7 @@ class ClassroomManager
 
     public function getClassroomNameList($where = false)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.classlocation.php';
+        require_once _lms_ . '/lib/lib.classlocation.php';
         $clm = new ClassLocationManager();
 
         $data_info = [];
@@ -153,7 +153,7 @@ class ClassroomManager
     public function loadClassroomInfo($id)
     {
         $res = [];
-        require_once $GLOBALS['where_lms'] . '/lib/lib.classlocation.php';
+        require_once _lms_ . '/lib/lib.classlocation.php';
         $clm = new ClassLocationManager();
 
         $qtxt = ' SELECT * '

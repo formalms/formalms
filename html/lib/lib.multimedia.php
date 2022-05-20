@@ -344,7 +344,7 @@ function getAudioExtList()
 function getSwfInfoArray($fname)
 {
     $res = [];
-    require_once $GLOBALS['where_framework'] . '/addons/swfheader/swfheader.class.php';
+    require_once _adm_ . '/addons/swfheader/swfheader.class.php';
 
     $clean_fname = (strpos($fname, '?') !== false ? preg_replace("/(\?.*)/", '', $fname) : $fname);
 

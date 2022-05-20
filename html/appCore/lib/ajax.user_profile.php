@@ -52,7 +52,7 @@ switch ($op) {
         aout($output);
     ; break;
     case 'send_ask_friend':
-        require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+        require_once _adm_ . '/lib/lib.myfriends.php';
 
         $module_name = Forma\lib\Get::req('module_name', DOTY_ALPHANUM, '');
         $platform = Forma\lib\Get::req('platform', DOTY_ALPHANUM, '');
@@ -77,7 +77,7 @@ switch ($op) {
         aout($output);
     ; break;
     case 'send_message':
-        require_once $GLOBALS['where_framework'] . '/lib/lib.message.php';
+        require_once _adm_ . '/lib/lib.message.php';
 
         $module_name = importVar('module_name');
         $platform = importVar('platform');

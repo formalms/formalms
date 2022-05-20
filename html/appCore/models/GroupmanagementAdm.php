@@ -167,7 +167,7 @@ class GroupmanagementAdm extends Model
 
         switch ($learning_filter) {
             case 'message':
-                $id_course = $_SESSION['message_filter'];
+                $id_course = $this->session->get('message_filter');
 
                 if ($id_course != 0) {
                     $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
@@ -185,11 +185,13 @@ class GroupmanagementAdm extends Model
                 $query .= ' g.idst IN (' . implode(',', $res) . ') ';
                 break;
             case 'course':
-                $id_course = $_SESSION['idCourse'];
+                $id_course = $this->session->get('idCourse');
 
                 $res = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
 
                 $query .= ' AND g.idst IN (' . implode(',', $res) . ') ';
+                break;
+            default:
                 break;
         }
 
@@ -412,7 +414,7 @@ class GroupmanagementAdm extends Model
             if ($ulevel == ADMIN_GROUP_ADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $preference = new AdminPreference();
-                $user_id = (int)$_SESSION['public_area_idst'];
+                $user_id = (int)$this->session->get('public_area_idst');
                 $preference->addAdminTree($idst, $user_id);
             }
         }

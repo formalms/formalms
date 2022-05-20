@@ -380,7 +380,7 @@ class MyFilesPolicy extends MyFile
             return $this->_viewer_friend;
         }
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+        require_once _adm_ . '/lib/lib.myfriends.php';
         $mf = new MyFriends($this->_id_user);
 
         $this->_viewer_friend = $mf->isFriend($this->_viewer);
@@ -394,7 +394,7 @@ class MyFilesPolicy extends MyFile
             return $this->_viewer_teacher;
         }
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
         $re = Man_CourseUser::getUserWithLevelFilter(['4', '5', '6', '7'], [$this->_viewer]);
         $this->_viewer_teacher = !empty($re);
 

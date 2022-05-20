@@ -17,7 +17,7 @@ class Module_Light_repo extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/light_repo/light_repo.php';
+        require_once _lms_ . '/modules/light_repo/light_repo.php';
         lightrepoDispatch($GLOBALS['op']);
     }
 

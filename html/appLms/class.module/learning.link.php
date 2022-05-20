@@ -73,7 +73,7 @@ class Learning_Link extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/link/link.php';
+        require_once _lms_ . '/modules/link/link.php';
         addlinkcat($this);
     }
 
@@ -93,7 +93,7 @@ class Learning_Link extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/link/link.php';
+        require_once _lms_ . '/modules/link/link.php';
         modlinkgui($this);
     }
 
@@ -186,7 +186,7 @@ class Learning_Link extends Learning_Object
      **/
     public function play($id, $id_param, $back_url)
     {
-        require_once $GLOBALS['where_lms'] . '/modules/link/do.link.php';
+        require_once _lms_ . '/modules/link/do.link.php';
 
         $this->id = $id;
         $this->back_url = $back_url;

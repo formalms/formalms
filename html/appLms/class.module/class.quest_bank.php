@@ -17,7 +17,7 @@ class Module_Quest_Bank extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/quest_bank/quest_bank.php';
+        require_once _lms_ . '/modules/quest_bank/quest_bank.php';
         questbankDispatch($GLOBALS['op']);
     }
 

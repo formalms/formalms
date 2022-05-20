@@ -20,7 +20,7 @@ if (Docebo::user()->isAnonymous()) {
 // XXX: save status in session
 function savePollStatus($save_this)
 {
-    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+    require_once _adm_ . '/lib/lib.sessionsave.php';
     $save = new Session_Save();
     $save_name = $save->getName('poll');
 
@@ -31,7 +31,7 @@ function savePollStatus($save_this)
 
 function &loadPollStatus($save_name)
 {
-    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+    require_once _adm_ . '/lib/lib.sessionsave.php';
     $save = new Session_Save();
 
     return $save->load($save_name);
@@ -168,7 +168,7 @@ function uppoll()
         return;
     }
 
-    require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+    require_once _lms_ . '/class.module/track.object.php';
     Track_Object::updateObjectTitle($id_poll, 'poll', $_POST['title']);
 
     Util::jump_to('index.php?modname=poll&op=modpollgui&id_poll=' . $id_poll . '&back_url=' . $url_encode);
@@ -496,7 +496,7 @@ function &istanceQuest($type_of_quest, $id)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once $GLOBALS['where_lms'] . '/modules/question_poll/' . $type_file;
+    require_once _lms_ . '/modules/question_poll/' . $type_file;
     $quest_obj = eval("return new $type_class ( $id );");
 
     return $quest_obj;
@@ -529,7 +529,7 @@ function addquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once $GLOBALS['where_lms'] . '/modules/question_poll/question_poll.php';
+    require_once _lms_ . '/modules/question_poll/question_poll.php';
 
     quest_create($type_quest, $id_poll, 'index.php?modname=poll&op=modpollgui&poll_saved=' . $var_save);
 }
@@ -565,7 +565,7 @@ function modquest()
         $type_quest = $var_loaded['type_quest'];
     }
 
-    require_once $GLOBALS['where_lms'] . '/modules/question_poll/question_poll.php';
+    require_once _lms_ . '/modules/question_poll/question_poll.php';
 
     quest_edit($type_quest, $id_quest, 'index.php?modname=poll&op=modpollgui&poll_saved=' . $var_save);
 }

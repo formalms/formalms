@@ -83,6 +83,8 @@ class TreeView
 
     public $aclManager;
 
+    protected $session;
+
     public function __construct($tdb, $id, $rootname = 'root')
     {
         $this->tdb = $tdb;
@@ -96,6 +98,7 @@ class TreeView
         $this->rootname = $rootname;
         $this->lang = &DoceboLanguage::createInstance('treeview', 'framework');
         $this->aclManager = new DoceboACLManager();
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function setLanguage(&$lang)

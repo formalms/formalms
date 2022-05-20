@@ -1911,7 +1911,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 // ----------- file upload -----------------------------------------
                 if ($_FILES['file_import']['name'] == '') {
-                    $_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
+                    $this->session->getFlashBag()->add('error',Lang::t('_FILEUNSPECIFIED'));
                     jumpTo($back_url . '&err=_file_unspecified');
                 } else {
                     $path = '/appCore/';
@@ -1922,13 +1922,13 @@ class SubscriptionAlmsController extends AlmsController
 
                         if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                             sl_close_fileoperations();
-                            $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD', 'subscribe');
+                            $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD', 'subscribe'));
                             jumpTo($back_url . '&err=_err_upload');
                         }
 
                         sl_close_fileoperations();
                     } else {
-                        $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD', 'subscribe');
+                        $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD', 'subscribe'));
                         jumpTo($back_url . '&err=_err_upload');
                     }
                 }
@@ -2147,6 +2147,8 @@ class SubscriptionAlmsController extends AlmsController
                 ];
 
                 $this->render('import_csv_step_2', $params);
+                break;
+            default:
                 break;
         }
     }
@@ -3003,8 +3005,8 @@ class SubscriptionAlmsController extends AlmsController
         $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
         $acl_man = new DoceboACLManager();
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.subscribe.php';
 
         if ($id_user <= 0) {
             echo $this->json->encode(['success' => true]);
@@ -3810,7 +3812,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0, $start_date = false, $end_date = false)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/resources/lib.timetable.php';
+        require_once _adm_ . '/lib/resources/lib.timetable.php';
         $tt = new TimeTable();
         // ----------------------------------------
         $resource = 'user';

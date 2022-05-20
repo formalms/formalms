@@ -392,16 +392,18 @@ class Lang
      */
     public static function get($reset = false)
     {
-        if ($reset && isset($_SESSION['current_lang'])) {
-            unset($_SESSION['current_lang']);
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $currentLang = $session->get('current_lang');
+        if ($reset && isset($currentLang)) {
+            $currentLang = null;
         }
 
-        if (!isset($_SESSION['current_lang'])) {
-            $_SESSION['current_lang'] = self::getDefault();
+        if (!$currentLang) {
+            $currentLang = self::getDefault();
             // we if (!Forma\lib\Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {don't know which language we need
             if (!Forma\lib\Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {
                 // load the language from the user setting
-                $_SESSION['current_lang'] = Docebo::user()->preference->getLanguage();
+                $currentLang = Docebo::user()->preference->getLanguage();
             } else {
                 // find the user language looking into the browser info
                 $langadm = new LangAdm();
@@ -409,17 +411,18 @@ class Lang
                 $browser_lang = Forma\lib\Get::user_acceptlang(false);
                 foreach ($browser_lang as $code) {
                     foreach ($all_language as $lang) {
-                        if (strpos($lang->lang_browsercode, strval($code)) !== false) {
-                            $_SESSION['current_lang'] = $lang->lang_code;
-
-                            return $_SESSION['current_lang'];
+                        if (strpos($lang->lang_browsercode, (string)$code) !== false) {
+                            $currentLang = $lang->lang_code;
+                            break 2;
                         }
                     } // end foreach
                 } // end foreach
             }
         }
 
-        return $_SESSION['current_lang'];
+        $session->set('current_lang',$currentLang);
+        $session->save();
+        return $currentLang;
     }
 
     /**

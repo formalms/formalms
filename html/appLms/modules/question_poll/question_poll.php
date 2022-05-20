@@ -25,7 +25,7 @@ function quest_create($type_quest, $id_poll, $back_poll)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once $GLOBALS['where_lms'] . '/modules/question_poll/' . $type_file;
+    require_once _lms_ . '/modules/question_poll/' . $type_file;
 
     $quest_obj = eval("return new $type_class( 0 );");
     $quest_obj->create($id_poll, $back_poll);
@@ -43,7 +43,7 @@ function quest_edit($type_quest, $id_quest, $back_poll)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once $GLOBALS['where_lms'] . '/modules/question_poll/' . $type_file;
+    require_once _lms_ . '/modules/question_poll/' . $type_file;
 
     $quest_obj = eval("return new $type_class( $id_quest );");
 

@@ -339,8 +339,8 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
         $out = &$GLOBALS['page'];
@@ -530,7 +530,7 @@ if (!Docebo::user()->isAnonymous()) {
     function import()
     {
         checkPerm('mod');
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
         $id_cat = importVar('id_cat', true, 0);
@@ -671,7 +671,7 @@ if (!Docebo::user()->isAnonymous()) {
         $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
         $acl_man = &Docebo::user()->getAclManager();
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
 

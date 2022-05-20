@@ -59,7 +59,7 @@ class Learning_Item extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/item/item.php';
+        require_once _lms_ . '/modules/item/item.php';
         additem($this);
     }
 
@@ -76,7 +76,7 @@ class Learning_Item extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/item/item.php';
+        require_once _lms_ . '/modules/item/item.php';
         moditem($this);
     }
 

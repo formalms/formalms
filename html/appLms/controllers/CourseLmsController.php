@@ -41,7 +41,7 @@ class CourseLmsController extends LmsController
         if (!Docebo::user()->isAnonymous()) {
             define('_PATH_COURSE', '/appLms/' . Forma\lib\Get::sett('pathcourse'));
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
+            require_once _lms_ . '/lib/lib.levels.php';
         } elseif (!isset($_SESSION['idCourse'])) {
             errorCommunication($lang->def('_FIRSTACOURSE'));
         } else {

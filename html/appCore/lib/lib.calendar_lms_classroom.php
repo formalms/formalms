@@ -16,8 +16,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version  $Id:$
  */
-require_once $GLOBALS['where_framework'] . '/lib/lib.calevent_lms.php';
-require_once $GLOBALS['where_framework'] . '/lib/resources/lib.timetable.php';
+require_once _adm_ . '/lib/lib.calevent_lms.php';
+require_once _adm_ . '/lib/resources/lib.timetable.php';
 
 class DoceboCal_lms_classroom extends DoceboCal_core
 {

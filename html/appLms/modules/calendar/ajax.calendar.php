@@ -18,8 +18,8 @@ if (Docebo::user()->isAnonymous()) {
 }
 
 //load calendar core classes - extend'em for other type of events
-require_once $GLOBALS['where_framework'] . '/lib/lib.calendar_core.php';
-require_once $GLOBALS['where_framework'] . '/lib/lib.calevent_core.php';
+require_once _adm_ . '/lib/lib.calendar_core.php';
+require_once _adm_ . '/lib/lib.calevent_core.php';
 
 $op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
 $calClass = Forma\lib\Get::req('calClass', DOTY_MIXED, '');
@@ -47,7 +47,7 @@ switch ($op) {
         $end_date = "$year-$month-31 23:59:59";
 
         if ($calClass != 'core') {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.calendar_' . $calClass . '.php';
+            require_once _adm_ . '/lib/lib.calendar_' . $calClass . '.php';
         }
 
         $class = 'DoceboCal_' . $calClass;
@@ -70,7 +70,7 @@ switch ($op) {
         $calEventClass = Forma\lib\Get::req('calEventClass');
 
         if ($calEventClass != 'core') {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.calevent_' . $calEventClass . '.php';
+            require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';
         }
 
         $class = 'DoceboCalEvent_' . $calEventClass;
@@ -99,7 +99,7 @@ switch ($op) {
         $calEventClass = Forma\lib\Get::req('calEventClass');
 
         if ($calEventClass != 'core') {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.calevent_' . $calEventClass . '.php';
+            require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';
         }
 
         $class = 'DoceboCalEvent_' . $calEventClass;
@@ -119,7 +119,7 @@ switch ($op) {
         $calEventClass = Forma\lib\Get::req('calEventClass');
 
         if ($calEventClass != 'core') {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.calevent_' . $calEventClass . '.php';
+            require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';
         }
 
         $class = 'DoceboCalEvent_' . $calEventClass;

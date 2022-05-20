@@ -17,7 +17,7 @@ class Module_MyCompetences extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/mycompetences/mycompetences.php';
+        require_once _lms_ . '/modules/mycompetences/mycompetences.php';
         mycompetencesDispatch($GLOBALS['op']);
     }
 

@@ -307,7 +307,7 @@ class PeopleListView extends ListView
 
     public function __construct($title = '', &$data = '', &$rend = '', $id = '')
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $this->field_list = new FieldList();
         parent::ListView($title, $data, $rend, $id);
         $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
@@ -524,7 +524,7 @@ class PeopleListView extends ListView
     public function extendedParsing($arrayState)
     {
         // set filter for base fields
-        require_once $GLOBALS['where_framework'] . '/modules/field/class.field.php';
+        require_once _adm_ . '/modules/field/class.field.php';
         $field = new Field(0);
         $arr_fields = Field::getArrFieldValue_Filter($_POST, $this->add_nat_fields, $this->id, '_');
         foreach ($arr_fields as $fname => $fvalue) {
@@ -770,7 +770,7 @@ class PeopleListView extends ListView
             return;
         }
 
-        require_once $GLOBALS['where_framework'] . '/modules/field/class.field.php';
+        require_once _adm_ . '/modules/field/class.field.php';
         $field = new Field(0);
         foreach ($arr_filter as $fname => $fvalue) {
             if (is_numeric($fname)) {
@@ -1117,7 +1117,7 @@ class PeopleListView extends ListView
                     if (!isset($field_prop['fieldname'])) {
                         // custom field
                         $arr_field_info = $this->field_list->getBaseFieldInfo($field_prop[FIELD_INFO_TYPE]);
-                        require_once $GLOBALS['where_framework'] . '/modules/field/' . $arr_field_info[FIELD_BASEINFO_FILE];
+                        require_once _adm_ . '/modules/field/' . $arr_field_info[FIELD_BASEINFO_FILE];
                         $field_obj = new $arr_field_info[FIELD_BASEINFO_CLASS]($field_id);
 
                         $del_spot = '<input type="image" class="cancel_filter" '
@@ -1138,7 +1138,7 @@ class PeopleListView extends ListView
                     } else {
                         // base field
                         $arr_field_info = $this->field_list->getBaseFieldInfo($field_prop['field_type']);
-                        require_once $GLOBALS['where_framework'] . '/modules/field/' . $arr_field_info[FIELD_BASEINFO_FILE];
+                        require_once _adm_ . '/modules/field/' . $arr_field_info[FIELD_BASEINFO_FILE];
 
                         $field_obj = new $arr_field_info[FIELD_BASEINFO_CLASS](0);
 
@@ -1577,7 +1577,7 @@ class GroupListView extends ListView
 
         // Subscribe the user approved
         if (isset($arrayState['editwaitsave'])) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+            require_once _adm_ . '/lib/lib.field.php';
 
             $field_manager = new FieldList();
 

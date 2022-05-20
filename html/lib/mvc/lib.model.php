@@ -17,8 +17,11 @@ class Model
 {
     public $_record = [];
 
+    protected \Symfony\Component\HttpFoundation\Session\Session $session;
+
     public function __construct()
     {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function __get($name)

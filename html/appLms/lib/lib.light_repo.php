@@ -241,7 +241,7 @@ class LightRepoManager
 
     public function getRepoUserListWithFileCount($id_repo, $from_date = false)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $file_list = [];
         $acl_man = Docebo::user()->getAclManager();

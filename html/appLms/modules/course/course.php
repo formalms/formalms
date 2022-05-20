@@ -17,8 +17,8 @@ if (Docebo::user()->isAnonymous()) {
     exit("You can't access");
 }
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
-require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+require_once _lms_ . '/lib/lib.levels.php';
+require_once _lms_ . '/lib/lib.course.php';
 
 function mycourses(&$url)
 {
@@ -26,7 +26,7 @@ function mycourses(&$url)
     require_once _base_ . '/lib/lib.user_profile.php';
     $lang = &DoceboLanguage::createInstance('catalogue');
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
+    require_once _lms_ . '/lib/lib.middlearea.php';
     $ma = new Man_MiddleArea();
 
     $course_stats = userCourseList($url, $ma->currentCanAccessObj('lo_tab'));
@@ -39,7 +39,7 @@ function mycourses(&$url)
 
     $onecol = (!$access_career && !$access_news && !$access_user_details_full && !$access_user_details_short);
 
-    require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+    require_once _adm_ . '/lib/lib.myfriends.php';
     $friends = new MyFriends(getLogUserId());
     $pendent = count($friends->getPendentRequest());
 
@@ -84,7 +84,7 @@ function mycourses(&$url)
                 : ''), 'content');
 
         if (count($course_stats['with_ulevel']) > 1) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
+            require_once _lms_ . '/lib/lib.levels.php';
 
             $lvl = CourseLevel::getTranslatedLevels();
 
@@ -94,7 +94,7 @@ function mycourses(&$url)
             } //end foreach
         }
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.aggregated_certificate.php';
+        require_once _lms_ . '/lib/lib.aggregated_certificate.php';
         $aggrCertLib = new AggregatedCertificate();
 
         $query = 'SELECT c.idAssociation, m.idCertificate'
@@ -322,13 +322,13 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     require_once _base_ . '/lib/lib.form.php';
     require_once Forma::inc(_lib_ . '/lib.user_profile.php');
     require_once _base_ . '/lib/lib.navbar.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.ajax_comment.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
+    require_once _lms_ . '/lib/lib.preassessment.php';
+    require_once _lms_ . '/lib/lib.catalogue.php';
+    require_once _lms_ . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.coursereport.php';
+    require_once _lms_ . '/lib/lib.coursepath.php';
+    require_once _adm_ . '/lib/lib.ajax_comment.php';
+    require_once _lms_ . '/lib/lib.classroom.php';
 
     // pre-loading coursepath ------------------------------------------------------------------
     $path_man = new CoursePath_Manager();
@@ -529,19 +529,19 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     if (!empty($subscription['course'])) {
         $id_course_list = array_keys($subscription['course']);
         // find last access to the courses ---------------------------------------------------------------------
-        require_once $GLOBALS['where_lms'] . '/lib/lib.track_user.php';
+        require_once _lms_ . '/lib/lib.track_user.php';
         $last_access_courses = TrackUser::getLastAccessToCourse(getLogUserId());
 
         // retrive unreaded advice -----------------------------------------------------------------------------
-        require_once $GLOBALS['where_lms'] . '/lib/lib.advice.php';
+        require_once _lms_ . '/lib/lib.advice.php';
         $advices = Man_Advice::getCountUnreaded(getLogUserId(), $id_course_list, $last_access_courses);
 
         // retrive unreaded forum messages ---------------------------------------------------------------------
-        require_once $GLOBALS['where_lms'] . '/lib/lib.forum.php';
+        require_once _lms_ . '/lib/lib.forum.php';
         $forums = Man_Forum::getCountUnreaded(getLogUserId(), $id_course_list, $last_access_courses);
 
         // retrive new lesson ----------------------------------------------------------------------------------
-        require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
+        require_once _lms_ . '/lib/lib.orgchart.php';
         $org_chart = OrganizationManagement::getCountUnreaded(getLogUserId(), $id_course_list, $last_access_courses);
 
         if (!empty($path_courses['all_items'])) {
@@ -617,7 +617,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     }
 
     // page intest ------------------------------------------------------------
-    require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
+    require_once _lms_ . '/lib/lib.levels.php';
     $lvl = CourseLevel::getTranslatedLevels();
 
     $title = $lang->def('_COURSE_LIST');
@@ -985,7 +985,7 @@ function dashmyassess(&$url, $lang, $cinfo, $index)
 
 function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
 {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
+    require_once _lms_ . '/lib/lib.levels.php';
     $lvl = CourseLevel::getTranslatedLevels();
 
     $arr_status = [_CUS_RESERVED => $lang->def('_T_USER_STATUS_RESERVED'),
@@ -1398,11 +1398,11 @@ function dashAcourse($id_course, $h_number)
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.user_profile.php';
     require_once _base_ . '/lib/lib.navbar.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-    require_once $GLOBALS['where_lms'] . '/modules/coursecatalogue/lib.coursecatalogue.php';
+    require_once _lms_ . '/lib/lib.preassessment.php';
+    require_once _lms_ . '/lib/lib.catalogue.php';
+    require_once _lms_ . '/lib/lib.coursepath.php';
+    require_once _lms_ . '/lib/lib.course.php';
+    require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
     $lang = &DoceboLanguage::createInstance('standard', 'framework');
     $lang->setGlobal();
     $lang = &DoceboLanguage::createInstance('course', 'lms');
@@ -1461,7 +1461,7 @@ function dashAcourse($id_course, $h_number)
 
 function downloadMaterials()
 {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
     require_once _base_ . '/lib/lib.multimedia.php';
     $lang = DoceboLanguage::createInstance('course', 'lms');
 

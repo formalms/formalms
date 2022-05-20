@@ -19,7 +19,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author   Emanuele Sandri <esandri@docebo.com>
  */
 require_once _base_ . '/lib/lib.event.php';
-require_once $GLOBALS['where_framework'] . '/class.module/class.definition.php';
+require_once _adm_ . '/class.module/class.definition.php';
 
 class Module_Event_Manager extends Module
 {
@@ -35,7 +35,7 @@ class Module_Event_Manager extends Module
 
     public function loadBody()
     {
-        require_once $GLOBALS['where_framework'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once _adm_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
         eventDispatch($GLOBALS['op']);
     }
 

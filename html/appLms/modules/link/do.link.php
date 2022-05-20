@@ -23,11 +23,11 @@ if (!Docebo::user()->isAnonymous()) {
         $mode = importVar('mode', false, 'link');
         $back_coded = htmlentities(urlencode($object_link->back_url));
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+        require_once _lms_ . '/lib/lib.param.php';
         $idReference = getLOParam($id_param, 'idReference');
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
-            require_once $GLOBALS['where_lms'] . '/class.module/track.link.php';
+            require_once _lms_ . '/class.module/track.link.php';
             list($exist, $idTrack) = Track_Link::getIdTrack($idReference, getLogUserId(), $idCategory, true);
             if ($exist) {
                 $ti = new Track_Link($idTrack);

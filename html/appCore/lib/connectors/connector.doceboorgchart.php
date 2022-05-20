@@ -120,7 +120,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector
 
         list($this->tree_desc) = $this->tree_view->tdb->getDescendantsSTFromST([$this->tree]);
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         // load language for fields names
         $lang_dir = DoceboLanguage::createInstance('admin_directory', 'framework');
         $fl = new FieldList();
@@ -397,7 +397,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector
      */
     public function _add_custom_fields($id_folder, $arr_fields)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $fl = new FieldList();
         $fl->setGroupFieldsTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDTABLE);

@@ -160,7 +160,7 @@ function showWikiSelect(&$out, &$lang)
 {
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.urlmanager.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.wiki.php';
+    require_once _adm_ . '/lib/lib.wiki.php';
 
     $um = &UrlManager::getInstance();
     $um->setStdQuery('sn=' . Forma\lib\Get::cur_plat() . '&op=wiki_sel');

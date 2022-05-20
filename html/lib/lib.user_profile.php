@@ -480,7 +480,7 @@ class UserProfile
                         Util::jump_to($this->_end_url);
                     }
                     if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
-                        require_once $GLOBALS['where_lms'] . '/lib/lib.reservation.php';
+                        require_once _lms_ . '/lib/lib.reservation.php';
                         $id_event = Forma\lib\Get::req('id_event', DOTY_INT, 0);
                         $man_res = new Man_Reservation();
                         $result = $man_res->addSubscription(getLogUserId(), $id_event);
@@ -1837,7 +1837,7 @@ class UserProfileViewer
 
         $html .= $this->getUserRelatedAction($type);
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.myfiles.php';
+        require_once _adm_ . '/lib/lib.myfiles.php';
 
         $user_file = new MyFilesPolicy($this->_user_profile->getIdUser(),
                                         $this->getViewer(),
@@ -2011,7 +2011,7 @@ class UserProfileViewer
 
         $html .= $this->getUserRelatedAction($type);
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.myfiles.php';
+        require_once _adm_ . '/lib/lib.myfiles.php';
 
         $user_file = new MyFilesPolicy($this->_user_profile->getIdUser(),
                                         $this->getViewer(),
@@ -2223,7 +2223,7 @@ class UserProfileViewer
         $ma = new Man_MiddleArea();
         if ($ma->currentCanAccessObj('mo_message')) {
             $perm_message = true;
-            require_once $GLOBALS['where_framework'] . '/lib/lib.message.php';
+            require_once _adm_ . '/lib/lib.message.php';
             $msg = new Man_Message();
             $unread_num = $msg->getCountUnreaded(getLogUserId(), [], '', true);
         }
@@ -2297,8 +2297,8 @@ class UserProfileViewer
         }
 
         // box carriera
-        require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
-        require_once $GLOBALS['where_lms'] . '/modules/course/course.php';
+        require_once _lms_ . '/lib/lib.middlearea.php';
+        require_once _lms_ . '/modules/course/course.php';
         $ma = new Man_MiddleArea();
         $access_career = $ma->currentCanAccessObj('career');
 
@@ -2327,7 +2327,7 @@ class UserProfileViewer
                     : '');
 
             if (count($course_stats['with_ulevel']) > 1) {
-                require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
+                require_once _lms_ . '/lib/lib.levels.php';
                 $lvl = CourseLevel::getTranslatedLevels();
                 foreach ($course_stats['with_ulevel'] as $lvl_num => $quantity) {
                     $html .= '<li class="list-group-item">' . str_replace('[level]', $lvl[$lvl_num], $this->_lang->def('_COURSE_AS')) . '<span class="badge">' . $quantity . '</span></li>';
@@ -2529,7 +2529,7 @@ class UserProfileViewer
      */
     public function checkUserInfo()
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $extra_field = new FieldList();
         if (!$this->_user_profile->godMode()) {
@@ -3599,8 +3599,8 @@ class UserProfileData
     {
         require_once _base_ . '/lib/lib.user.php';
         require_once _base_ . '/lib/lib.preference.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _adm_ . '/lib/lib.myfriends.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $this->_db_conn = $db_conn;
 
@@ -3661,7 +3661,7 @@ class UserProfileData
         $this->_user_quota['limit'] = $this->acl_man->getSettingValueOfUsers('user_rules.user_quota', $arr_user);
 
         // caching user friends
-        require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+        require_once _adm_ . '/lib/lib.myfriends.php';
         $my_friend = new MyFriends(0);
         $this->_user_friend_list = $my_friend->getAllFriendsSubdividedForUsers($arr_user);
 
@@ -3862,7 +3862,7 @@ class UserProfileData
             return true;
         }
         if (!isset($this->_user_friend_list[$id_user])) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+            require_once _adm_ . '/lib/lib.myfriends.php';
             $my_friend = new MyFriends($id_user);
             $this->_user_friend_list[$id_user] = $my_friend->getAllFriendsSubdivided();
         }
@@ -3884,7 +3884,7 @@ class UserProfileData
         if ($id_user == $check_user) {
             return true;
         }
-        require_once $GLOBALS['where_framework'] . '/lib/lib.myfriends.php';
+        require_once _adm_ . '/lib/lib.myfriends.php';
         $mf = new MyFriends($id_user);
 
         return $mf->isFriend($check_user, $also_waiting);
@@ -3979,7 +3979,7 @@ class UserProfileData
      */
     public function getUserStats($id_user)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.forum.php';
+        require_once _lms_ . '/lib/lib.forum.php';
 
         $u_info = $this->getUserDataNoRestriction($id_user);
 
@@ -4006,7 +4006,7 @@ class UserProfileData
      */
     public function getUserField($id_user)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $viewer = $this->getViewer();
 
@@ -4101,7 +4101,7 @@ class UserProfileData
      */
     public function getUserContactNoRestriction($id_user)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $field_man = new FieldList();
         $field_founded = $field_man->getFieldsAndValueFromUser($id_user, false, false, ['contact']);
@@ -4126,7 +4126,7 @@ class UserProfileData
      */
     public function getPlayField($id_user, $god_mode = false)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $field_man = new FieldList();
         if ($god_mode) {
@@ -4167,7 +4167,7 @@ class UserProfileData
             }
         }
         if ($also_extra_field) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+            require_once _adm_ . '/lib/lib.field.php';
             $extra_field = new FieldList();
             if (!$extra_field->storeFieldsForUser($id_user)) {
                 return false;
@@ -4355,7 +4355,7 @@ class UserProfileData
         $is_teacher = $this->isTeacher($viewer);
 
         $files_info = [];
-        require_once $GLOBALS['where_framework'] . '/lib/lib.myfiles.php';
+        require_once _adm_ . '/lib/lib.myfiles.php';
         $user_file = new MyFilesPolicy($this->_user_profile->getIdUser(),
                                             $this->getViewer(),
                                             $is_friend,
@@ -4394,7 +4394,7 @@ class UserProfileData
 
     public function getCourseAtLevel($id_user, $lv)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $man_courseuser = new Man_CourseUser();
         $course = $man_courseuser->getUserCoursesLevelFilter($id_user, $lv, true);
@@ -4493,7 +4493,7 @@ class UserProfileData
      */
     public function getUserCourseStat($id_user)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $stats = [];
 
@@ -4540,10 +4540,10 @@ class UserProfileData
             $stats[$id_c]['point_do'] = '';
         }
         //recover start and final score
-        require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
+        require_once _lms_ . '/lib/lib.orgchart.php';
         $org_man = new OrganizationManagement(false);
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
+        require_once _lms_ . '/lib/lib.coursereport.php';
         $rep_man = new CourseReportManager();
         $score_course = $rep_man->getUserFinalScore([$id_user]);
 

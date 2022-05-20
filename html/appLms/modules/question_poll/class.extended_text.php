@@ -86,7 +86,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
             Util::jump_to('' . $back_poll);
         }
         //finding categories
-        require_once $GLOBALS['where_lms'] . '/lib/lib.questcategory.php';
+        require_once _lms_ . '/lib/lib.questcategory.php';
         $categories = Questcategory::getCategory();
         //create array of difficult
         $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
@@ -139,7 +139,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
             Util::jump_to('' . $back_poll);
         }
         //finding categories
-        require_once $GLOBALS['where_lms'] . '/lib/lib.questcategory.php';
+        require_once _lms_ . '/lib/lib.questcategory.php';
         $categories = Questcategory::getCategory();
         //create array of difficult
         $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];

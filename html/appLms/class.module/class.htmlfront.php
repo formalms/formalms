@@ -17,7 +17,7 @@ class Module_Htmlfront extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/htmlfront/htmlfront.php';
+        require_once _lms_ . '/modules/htmlfront/htmlfront.php';
         htmlfrontDispatch($GLOBALS['op']);
     }
 

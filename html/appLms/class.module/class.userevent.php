@@ -17,7 +17,7 @@ class Module_UserEvent extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_framework'] . '/modules/event_manager/event_manager.php';
+        require_once _adm_ . '/modules/event_manager/event_manager.php';
         eventDispatch($GLOBALS['op']);
     }
 

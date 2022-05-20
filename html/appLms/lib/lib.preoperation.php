@@ -109,7 +109,7 @@ if ($next_action != false && Forma\lib\Get::sett('sco_direct_play', 'off') == 'o
 //operation that is needed before loading grafiphs element, menu and so on
 switch ($GLOBALS['op']) {
     case 'aula':
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
         $idCourse =Forma\lib\Get::req('idCourse',DOTY_ALPHANUM);
         if (!logIntoCourse($idCourse, true)) {
             $session->set('current_main_menu','1');

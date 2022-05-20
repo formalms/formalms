@@ -15,9 +15,9 @@ if (!defined('IN_FORMA')) {
     exit('You cannot access this file directly');
 }
 
-require_once $GLOBALS['where_framework'] . '/addons/pchart/pChart/pData.class';
-require_once $GLOBALS['where_framework'] . '/addons/pchart/pChart/pChart.class';
-require_once $GLOBALS['where_framework'] . '/lib/lib.newtypeone.php';
+require_once _adm_ . '/addons/pchart/pChart/pData.class';
+require_once _adm_ . '/addons/pchart/pChart/pChart.class';
+require_once _adm_ . '/lib/lib.newtypeone.php';
 
 define('_STACKED_CHART', 'stacked');
 define('_BAR_CHART', 'bar');

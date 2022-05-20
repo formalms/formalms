@@ -13,8 +13,8 @@
 
 function lmsLoginOperation()
 {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
+    require_once _lms_ . '/lib/lib.subscribe.php';
+    require_once _lms_ . '/lib/lib.preassessment.php';
 
     $pa_man = new AssessmentList();
     $user_course_as_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());

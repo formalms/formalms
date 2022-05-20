@@ -22,7 +22,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 // ----------------------------------------------------------------------------
 
-require_once $GLOBALS['where_framework'] . '/lib/lib.wiki.php';
+require_once _adm_ . '/lib/lib.wiki.php';
 
 class LmsWikiAdmin extends CoreWikiAdmin
 {

@@ -311,14 +311,14 @@ class DoceboConnectionManager
      **/
     public function add_connector($file)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/connectors/lib.connector.php';
+        require_once _adm_ . '/lib/connectors/lib.connector.php';
         $directory = $GLOBALS['where_framework'] . '/lib/connectors';
         $scanned_directory = array_diff(scandir($directory), ['..', '.', 'index.htm', 'lib.connector.php']);
         if (!in_array($file, $scanned_directory)) {
             echo "Specified connector doesn't exist";
             exit();
         } else {
-            require_once $GLOBALS['where_framework'] . '/lib/connectors/' . $file;
+            require_once _adm_ . '/lib/connectors/' . $file;
         }
         // create function pointer. I file is connector.xxx.php the
         // factory function should be xxx_factory
@@ -360,7 +360,7 @@ class DoceboConnectionManager
         if ($arr_conn === false) {
             return false;
         }
-        require_once $GLOBALS['where_framework'] . '/lib/connectors/lib.connector.php';
+        require_once _adm_ . '/lib/connectors/lib.connector.php';
         require_once Forma::inc($GLOBALS['where_framework'] . '/lib/connectors/' . $arr_conn[CONNMGR_CONNTYPE_FILE]);
 
         return eval('return new ' . $arr_conn[CONNMGR_CONNTYPE_CLASS] . '(NULL);');

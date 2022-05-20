@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/modules/question_poll/class.question.php';
+require_once _lms_ . '/modules/question_poll/class.question.php';
 
 class Choice_QuestionPoll extends QuestionPoll
 {
@@ -161,7 +161,7 @@ class Choice_QuestionPoll extends QuestionPoll
         }
 
         //insert form
-        require_once $GLOBALS['where_lms'] . '/lib/lib.questcategory.php';
+        require_once _lms_ . '/lib/lib.questcategory.php';
         $categories = Questcategory::getCategory();
         //writing difficult array
 
@@ -307,7 +307,7 @@ class Choice_QuestionPoll extends QuestionPoll
         }
 
         //insert form
-        require_once $GLOBALS['where_lms'] . '/lib/lib.questcategory.php';
+        require_once _lms_ . '/lib/lib.questcategory.php';
         $categories = Questcategory::getCategory();
         //writing difficult
 
@@ -522,7 +522,7 @@ class Choice_QuestionPoll extends QuestionPoll
     {
         $lang = &DoceboLanguage::createInstance('poll');
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         list($id_quest, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 
@@ -664,7 +664,7 @@ class Choice_QuestionPoll extends QuestionPoll
     {
         $lang = &DoceboLanguage::createInstance('poll');
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         list($id_quest, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 

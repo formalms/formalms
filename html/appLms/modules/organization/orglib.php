@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/lib/lib.treedb.php';
 require_once _base_ . '/lib/lib.treeview.php';
-require_once $GLOBALS['where_lms'] . '/lib/lib.repo.php';
+require_once _lms_ . '/lib/lib.repo.php';
 
 define('ORGFIELDIDCOURSE', 13);
 define('ORGFIELDPREREQUISITES', 14);
@@ -399,7 +399,7 @@ class OrgDirDb extends RepoDirDb
                      $language, $resource, $objective, $dateInsert,
                      $otherData = null, $idCourse = false)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+        require_once _lms_ . '/lib/lib.param.php';
         $this->org_title = $title;
         $this->org_objectType = $objectType;
         $this->org_idResource = $idResource;
@@ -456,7 +456,7 @@ class OrgDirDb extends RepoDirDb
 
     public function addItemById($idParent, $idObject, $idCourse = false)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+        require_once _lms_ . '/lib/lib.param.php';
         $query = 'SELECT `title`, `objectType`, `idResource`'
             . ' FROM ' . $GLOBALS['prefix_lms'] . '_homerepo'
             . " WHERE idObject='" . (int) $idObject . "'";
@@ -693,7 +693,7 @@ class OrgDirDb extends RepoDirDb
             $arrParamsInfo = $lo->getParamInfo();
 
             if ($arrParamsInfo !== false) {
-                require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+                require_once _lms_ . '/lib/lib.param.php';
                 while ($param = current($arrParamsInfo)) {
                     if (isset($arrData[$param['param_name']])) {
                         setLOParam($this->org_idParam, $param['param_name'], $arrData[$param['param_name']]);
@@ -769,8 +769,8 @@ class OrgDirDb extends RepoDirDb
     public function deleteAllTree()
     {
         // loop on all items
-        require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-        require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+        require_once _lms_ . '/lib/lib.param.php';
+        require_once _lms_ . '/class.module/track.object.php';
         $nullVal = null;
         $coll = $this->getFoldersCollection($nullVal);
         while ($folder = $coll->getNext()) {
@@ -1466,7 +1466,7 @@ class Org_TreeView extends RepoTreeView
                         if (strlen($id) > 0) {
                             $folder = $this->tdb->getFolderById((int) $id);
                             if ($folder->otherValues[REPOFIELDOBJECTTYPE] != '') {
-                                require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+                                require_once _lms_ . '/class.module/track.object.php';
                                 if (Track_Object::isPrerequisitesSatisfied(
                                     $folder->otherValues[ORGFIELDPREREQUISITES],
                                     getLogUserId())) {
@@ -1485,7 +1485,7 @@ class Org_TreeView extends RepoTreeView
                 if (strlen($id) > 0) {
                     $folder = $this->tdb->getFolderById((int) $id);
                     if (isset($folder->otherValues[REPOFIELDOBJECTTYPE]) && $folder->otherValues[REPOFIELDOBJECTTYPE] != '') {
-                        require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+                        require_once _lms_ . '/class.module/track.object.php';
                         if (Track_Object::isPrerequisitesSatisfied(
                             $folder->otherValues[ORGFIELDPREREQUISITES],
                             getLogUserId())) {
@@ -1524,7 +1524,7 @@ class Org_TreeView extends RepoTreeView
         // 	return '';
         // }
 
-        require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+        require_once _lms_ . '/class.module/track.object.php';
 
         // $out = '<div class="TreeViewRowBase">';
         $out = '<td>';
@@ -1920,8 +1920,8 @@ class Org_TreeView extends RepoTreeView
         $idLoList = (array) $idLoList;
         include_once _base_ . '/customscripts/appLms/Events/Lms/OrgPropertiesPrintEvent.php';
         require_once _lms_ . '/lib/lib.kbres.php';
-        require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/class.module/track.object.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $res = [];
         $idx = 0;

@@ -187,7 +187,7 @@ cout(
         $type_h = ['', '', ''];
         $tb_courses->addHead($cont_h);
         $tb_courses->setColsStyle($type_h);
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
         foreach ($coursePathsArr as $coursePathInfo) {
             $tb_courses->addBody([$coursePathInfo[COURSEPATH_CODE],  $coursePathInfo[COURSEPATH_NAME], $coursePathInfo[COURSEPATH_DESCR]]);
         }

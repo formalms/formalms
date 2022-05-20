@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_framework'] . '/class/class.dashboard.php';
+require_once _adm_ . '/class/class.dashboard.php';
 
 class Dashboard_Lms extends Dashboard
 {
@@ -29,7 +29,7 @@ class Dashboard_Lms extends Dashboard
             return $html;
         }
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         $course_man = new AdminCourseManagment();
         $course_stats = $course_man->getCoursesStats();

@@ -224,7 +224,7 @@ HTML;
 
 function switch_active()
 {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
+    require_once _lms_ . '/lib/lib.middlearea.php';
 
     $man_ma = new Man_MiddleArea();
 
@@ -267,7 +267,7 @@ function switch_menu_active()
 
 function set_home_page()
 {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
+    require_once _lms_ . '/lib/lib.middlearea.php';
 
     $man_ma = new Man_MiddleArea();
     $obj_index = importVar('obj_index', false, '');
@@ -279,7 +279,7 @@ function select_permission()
 {
     checkPerm('view');
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
+    require_once _lms_ . '/lib/lib.middlearea.php';
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _base_ . '/lib/lib.form.php';
 
@@ -330,7 +330,7 @@ function select_menu_permission()
 {
     checkPerm('view');
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.middlearea.php';
+    require_once _lms_ . '/lib/lib.middlearea.php';
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _base_ . '/lib/lib.form.php';
 

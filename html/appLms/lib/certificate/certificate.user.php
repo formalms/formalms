@@ -27,7 +27,7 @@ class CertificateSubs_User extends CertificateSubstitution
         $subs['[lastname]'] = Lang::t('_LASTNAME', 'certificate', 'lms');
 
         //variable fields
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $temp = new FieldList();
         $fields = $temp->getFlatAllFields();
 
@@ -64,7 +64,7 @@ class CertificateSubs_User extends CertificateSubstitution
         $subs['[lastname]'] = $user[ACL_INFO_LASTNAME];
 
         //variable fields
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $temp = new FieldList();
         $fields = $temp->getFlatAllFields();

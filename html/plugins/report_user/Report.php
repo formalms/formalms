@@ -248,9 +248,9 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.directory.php';
+        require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
@@ -357,7 +357,7 @@ class Report extends \ReportPlugin
             //...
         }
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $fman = new FieldList();
         $fields = $fman->getFlatAllFields();
         $custom = [];
@@ -769,7 +769,7 @@ class Report extends \ReportPlugin
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $cmodel = new CompetencesAdm();
         $lang = &DoceboLanguage::createInstance('report', 'framework');
@@ -970,7 +970,7 @@ class Report extends \ReportPlugin
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $output = '';
         $jump_url = '';
@@ -1141,7 +1141,7 @@ class Report extends \ReportPlugin
 
         // if we must subdived the users into the org_chart folders we must retrive some extra info
         if ($org_chart_subdivision == 1) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.orgchart.php';
+            require_once _adm_ . '/lib/lib.orgchart.php';
             $org_man = new OrgChartManager();
             if ($alluser == 1) {
                 $elem_selected = $org_man->getAllGroupIdFolder();
@@ -1208,13 +1208,13 @@ class Report extends \ReportPlugin
             $lastaccess_list[$id_u . '_' . $id_c] = $last_num;
         }
         //recover start and final score
-        require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
+        require_once _lms_ . '/lib/lib.orgchart.php';
         $org_man = new OrganizationManagement(false);
 
         $score_start = $org_man->getStartObjectScore($user_selected, array_keys($id_courses));
         $score_final = $org_man->getFinalObjectScore($user_selected, array_keys($id_courses));
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
+        require_once _lms_ . '/lib/lib.coursereport.php';
         $rep_man = new CourseReportManager();
 
         $score_course = $rep_man->getUserFinalScore($user_selected, array_keys($id_courses));
@@ -1504,7 +1504,7 @@ class Report extends \ReportPlugin
             ++$colspanuser;
         }
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $aclManager = new DoceboACLManager();
         $aclManager->include_suspended = true;
         $_users = $aclManager->getAllUsersFromSelection($filter_rows);

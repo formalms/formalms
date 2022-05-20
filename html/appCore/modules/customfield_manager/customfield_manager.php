@@ -287,11 +287,11 @@ function movefield($direction)
         }
     }
 
-    require_once $GLOBALS['where_framework'] . '/modules/customfield/' . $type_file_1;
+    require_once _adm_ . '/modules/customfield/' . $type_file_1;
     $first_instance = eval("return new $type_class_1( $id_field );");
     $first_instance->movetoposition($next_seq);
 
-    require_once $GLOBALS['where_framework'] . '/modules/customfield/' . $type_file_2;
+    require_once _adm_ . '/modules/customfield/' . $type_file_2;
     $second_instance = eval("return new $type_class_2( $id_field_2 );");
     $second_instance->movetoposition($sequence);
 
@@ -311,7 +311,7 @@ function fixsequence($jump = true)
 
     $new_sequence = 1;
     while (list($type_file, $type_class, $id_field) = sql_fetch_row($re_field)) {
-        require_once $GLOBALS['where_framework'] . '/modules/customfield/' . $type_file;
+        require_once _adm_ . '/modules/customfield/' . $type_file;
         $first_instance = eval("return new $type_class( $id_field );");
         $first_instance->movetoposition($new_sequence++);
     }

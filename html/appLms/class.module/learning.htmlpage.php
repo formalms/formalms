@@ -76,7 +76,7 @@ class Learning_Htmlpage extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/htmlpage/htmlpage.php';
+        require_once _lms_ . '/modules/htmlpage/htmlpage.php';
         addpage($this);
     }
 
@@ -96,7 +96,7 @@ class Learning_Htmlpage extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/htmlpage/htmlpage.php';
+        require_once _lms_ . '/modules/htmlpage/htmlpage.php';
         modpage($this);
     }
 
@@ -203,11 +203,11 @@ class Learning_Htmlpage extends Learning_Object
             }
         }
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+        require_once _lms_ . '/lib/lib.param.php';
         $idReference = getLOParam($id_param, 'idReference');
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
-            require_once $GLOBALS['where_lms'] . '/class.module/track.htmlpage.php';
+            require_once _lms_ . '/class.module/track.htmlpage.php';
             list($exist, $idTrack) = Track_Htmlpage::getIdTrack($idReference, getLogUserId(), $this->id, true);
             if ($exist) {
                 $ti = new Track_Htmlpage($idTrack);

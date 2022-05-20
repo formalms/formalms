@@ -66,7 +66,7 @@ class CertificateSubs_Course extends CertificateSubstitution
         $subs = [];
 
         if ($this->id_meta == 0) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $acl_manager = &Docebo::user()->getAclManager();
             $man_course = new DoceboCourse($this->id_course);

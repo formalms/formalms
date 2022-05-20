@@ -57,7 +57,7 @@ class Module_Directory extends Module
         $this->aclManager = new DoceboACLManager();
         $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.selextend.php';
+        require_once _adm_ . '/lib/lib.selextend.php';
         $this->sel_extend = new ExtendSelector();
         $this->multi_choice = Forma\lib\Get::sett('use_org_chart_multiple_choice');
     }
@@ -748,7 +748,7 @@ class Module_Directory extends Module
             } else {
                 $userlevelid = Docebo::user()->getUserLevelId();
                 if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-                    require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
+                    require_once _adm_ . '/lib/lib.adminmanager.php';
                     $adminManager = new AdminManager();
                     $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
                 }
@@ -914,7 +914,7 @@ class Module_Directory extends Module
         $GLOBALS['page']->add( Form::openElementSpace(), 'content' );
         */
         //-extra field-----------------------------------------------
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $fields = new FieldList();
         if ($arr_idst_groups != false) {
             $acl = &Docebo::user()->getACL();
@@ -1114,7 +1114,7 @@ class Module_Directory extends Module
     {
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $acl = &Docebo::user()->getAcl();
         $groupLabel = $groupid;
         if ($groupid != '') {
@@ -1371,7 +1371,7 @@ class Module_Directory extends Module
 
         $tree .= $form->openElementSpace();
 
-        require_once $GLOBALS['where_framework'] . '/modules/org_chart/import.org_chart.php';
+        require_once _adm_ . '/modules/org_chart/import.org_chart.php';
         $separator = importVar('import_separator', false, ',');
         $first_row_header = isset($_POST['import_first_row_header']) ? ($_POST['import_first_row_header'] == 'true') : false;
         $import_charset = importVar('import_charset', false, 'UTF-8');
@@ -1420,7 +1420,7 @@ class Module_Directory extends Module
             $import_charset = 'UTF-8';
         }
 
-        require_once $GLOBALS['where_framework'] . '/modules/org_chart/import.org_chart.php';
+        require_once _adm_ . '/modules/org_chart/import.org_chart.php';
         $src = new DeceboImport_SourceCSV(['filename' => $filename,
             'separator' => $separator,
             'first_row_header' => $first_row_header,
@@ -1506,7 +1506,7 @@ class Module_Directory extends Module
         $treeView->aclManager = &$this->aclManager;
 
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
+            require_once _adm_ . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
             $treeView->setFilterNodes($adminManager->getAdminTree(Docebo::user()->getIdSt()));
         }
@@ -1728,7 +1728,7 @@ class Module_Directory extends Module
         }
         $userlevelid = Docebo::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
+            require_once _adm_ . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
             $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
         }
@@ -1854,7 +1854,7 @@ class Module_Directory extends Module
                 }
 
                 if (Docebo::user()->getUserLevelId() === '/framework/level/admin') {
-                    require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
+                    require_once _adm_ . '/lib/lib.adminmanager.php';
 
                     $adminManager = new AdminManager();
 
@@ -1878,7 +1878,7 @@ class Module_Directory extends Module
         checkPerm('approve_waiting_user', false, 'directory', 'framework');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.table.php';
         require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
 
@@ -2129,7 +2129,7 @@ class Module_Directory extends Module
             $description = $arrGroup[2];
         }
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.form.php';
 
         $form = new Form();
@@ -2203,7 +2203,7 @@ class Module_Directory extends Module
         $arr_fields = $_POST[DIRECTORY_ID][DIRECTORY_OP_ADDFIELD];
         $idst_group = $_POST[DIRECTORY_ID]['idst_group'];
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         if (isset($_POST[DIRECTORY_ID]['save_assignfield2'])) {
             $fl = new FieldList();

@@ -38,12 +38,12 @@ class Module_Pubrepo extends LmsModule
 
     public function initialize()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once _lms_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
         $ready = false;
         $this->lang = &DoceboLanguage::createInstance('homerepo', 'lms');
         if (isset($_GET['spr']) && false) {
             // reload from previously saved session
-            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
             $saveName = $_GET['spr'];
             if ($saveObj->nameExists($saveName)) {
@@ -67,7 +67,7 @@ class Module_Pubrepo extends LmsModule
 
             $this->treeView = new RepoTreeView($this->repoDb, 'pubrepo', Lang::t('_PUBREPOROOTNAME', 'storage', 'lms'));
             $this->treeView->mod_name = 'pubrepo';
-            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
             $saveName = 'pubrepo' . getLogUserId();
             if ($saveObj->nameExists($saveName)) {
@@ -130,7 +130,7 @@ class Module_Pubrepo extends LmsModule
     {
         global $modname;
         if ($this->isFindingDestination()) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+            require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
             $saveName = $_GET['crepo'];
             if ($saveObj->nameExists($saveName)) {
@@ -194,7 +194,7 @@ class Module_Pubrepo extends LmsModule
             case 'createLO':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
 
                 $saveName = $saveObj->getName('pubrepo' . getLogUserId(), true);
@@ -207,7 +207,7 @@ class Module_Pubrepo extends LmsModule
             case 'createLOSel':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('pubrepo' . getLogUserId(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
@@ -220,7 +220,7 @@ class Module_Pubrepo extends LmsModule
             case 'editLO':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('pubrepo' . getLogUserId(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
@@ -233,7 +233,7 @@ class Module_Pubrepo extends LmsModule
             case 'playitem':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('pubrepo' . getLogUserId(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
@@ -256,7 +256,7 @@ class Module_Pubrepo extends LmsModule
             case 'copyLOEndOk':
             case 'copyLOEndCancel':
                 global $modname;
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $_GET['crepo'];
                 if ($saveObj->nameExists($saveName)) {
@@ -269,7 +269,7 @@ class Module_Pubrepo extends LmsModule
             case 'copyLO':
                 global $modname;
                 // save state
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+                require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
                 $saveName = $saveObj->getName('crepo', true);
                 $folder = $this->treeView->tdb->getFolderById($this->treeView->selectedFolder);

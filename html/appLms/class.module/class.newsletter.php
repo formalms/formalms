@@ -17,7 +17,7 @@ class Module_Newsletter extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/newsletter/newsletter.php';
+        require_once _lms_ . '/modules/newsletter/newsletter.php';
     }
 
     public function useExtraMenu()

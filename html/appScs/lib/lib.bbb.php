@@ -552,7 +552,7 @@ class Bbb_Manager
         $res = $this->_query($query);
         $info = $this->nextRow($res);
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.json.php';
+        require_once _adm_ . '/lib/lib.json.php';
         $json = new Services_JSON();
         $info_decoded = $json->decode($info['schedule_info']);
 

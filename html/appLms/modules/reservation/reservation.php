@@ -20,8 +20,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 
 if (!Docebo::user()->isAnonymous()) {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.reservation.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
+    require_once _lms_ . '/lib/lib.reservation.php';
+    require_once _lms_ . '/lib/lib.classroom.php';
 
     function reservation()
     {
@@ -30,7 +30,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.tab.php';
         require_once _base_ . '/lib/lib.urlmanager.php';
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $mod_perm = checkPerm('mod', true);
 
@@ -110,7 +110,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.navbar.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.reservation_perm.php';
+        require_once _lms_ . '/lib/lib.reservation_perm.php';
         $roomperm = new ReservationRoomPermissions();
         $perm = 'view';
 
@@ -232,7 +232,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.navbar.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.reservation_perm.php';
+        require_once _lms_ . '/lib/lib.reservation_perm.php';
         $roomperm = new ReservationRoomPermissions();
         $perm = 'view';
 
@@ -337,7 +337,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.navbar.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.reservation_perm.php';
+        require_once _lms_ . '/lib/lib.reservation_perm.php';
         $roomperm = new ReservationRoomPermissions();
         $perm = 'view';
 
@@ -735,7 +735,7 @@ if (!Docebo::user()->isAnonymous()) {
 
     function getExcelFile()
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $lang = &DoceboLanguage::createInstance('reservation');
 
@@ -891,7 +891,7 @@ if (!Docebo::user()->isAnonymous()) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm) {
-                require_once $GLOBALS['where_lms'] . '/lib/lib.lms_user_profile.php';
+                require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
                 $out->add(getTitleArea('_RESERVATION_PROFILE_MODIFY') . '<div class="std_block">', 'content');
 
@@ -908,7 +908,7 @@ if (!Docebo::user()->isAnonymous()) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm) {
-                require_once $GLOBALS['where_lms'] . '/lib/lib.lms_user_profile.php';
+                require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
                 $out->add(
                     getTitleArea($lang->def('_RESERVATION_PROFILE_MODIFY')) . '<div class="std_block">', 'content');
@@ -1059,7 +1059,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
 
@@ -1780,7 +1780,7 @@ if (!Docebo::user()->isAnonymous()) {
         //checkPerm('mod');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.classlocation.php';
+        require_once _lms_ . '/lib/lib.classlocation.php';
 
         $lang = &DoceboLanguage::createInstance('classroom', 'lms');
         $form = new Form();
@@ -1984,7 +1984,7 @@ function setRoomViewPerm()
 
     $id_event = importVar('id_event', true, 0);
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.reservation_perm.php';
+    require_once _lms_ . '/lib/lib.reservation_perm.php';
     require_once _base_ . '/lib/lib.userselector.php';
     $mdir = new UserSelector();
 

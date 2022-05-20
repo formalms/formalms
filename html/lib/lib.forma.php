@@ -91,52 +91,33 @@ class Forma
         return $file;
     }
 
-    public static function initErrors(): void
-    {
-        if (!is_array($_SESSION['errors'])) {
-            $_SESSION['errors'] = [];
-        }
-    }
-
     public static function addError(string $error): string
     {
-        self::initErrors();
-
-        $_SESSION['errors'][] = $error;
+        \Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error',$error);
 
         return $error;
     }
 
-    public static function removeLastError(): void
-    {
-        if (is_array($_SESSION['errors']) && count($_SESSION['errors']) > 0) {
-            unset($_SESSION['errors'][count($_SESSION['errors']) - 1]);
-        }
-    }
-
     public static function removeErrors(): void
     {
-        $_SESSION['errors'] = [];
+        \Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->set('error',[]);
     }
 
     public static function errorsExists(): bool
     {
-        self::initErrors();
-
-        return count($_SESSION['errors']) > 0;
+        return count(\Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error')) > 0;
     }
 
     public static function getLastError($removeErrors = false): string
     {
-        $errors = self::getErrors();
+        $errors = \Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
 
         return end($errors);
     }
 
     public static function getErrors($removeErrors = false): array
     {
-        self::initErrors();
-        $errors = $_SESSION['errors'];
+        $errors = \Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
         if ($removeErrors) {
             self::removeErrors();
         }

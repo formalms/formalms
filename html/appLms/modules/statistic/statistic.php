@@ -213,7 +213,7 @@ function statistic()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.table.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
 
     $view_all_perm = checkPerm('view_all', true);
 
@@ -349,7 +349,7 @@ function userdetails()
     ];
 
     // Find modulename -> name int his course
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
     $course_man = new Man_Course();
     $mods_names = &$course_man->getModulesName($_SESSION['idCourse']);
 
@@ -506,7 +506,7 @@ function sessiondetails()
     $nav_bar->setElementTotal($tot_elem);
 
     // Find modulename -> name int his course
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
     $course_man = new Man_Course();
     $mods_names = &$course_man->getModulesName($_SESSION['idCourse']);
 

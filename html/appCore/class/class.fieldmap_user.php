@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_framework'] . '/class/class.fieldmap.php';
+require_once _adm_ . '/class/class.fieldmap.php';
 
 class FieldMapUser extends FieldMap
 {
@@ -50,7 +50,7 @@ class FieldMapUser extends FieldMap
 
     public function getCustomFields($with_prefix = true)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $res = [];
         $fl = new FieldList();
@@ -120,7 +120,7 @@ class FieldMapUser extends FieldMap
 
             // -- Custom fields ----------------------------------------------------
 
-            require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+            require_once _adm_ . '/lib/lib.field.php';
 
             $res = [];
             $fl = new FieldList();

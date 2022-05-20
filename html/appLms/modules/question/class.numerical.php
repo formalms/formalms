@@ -206,7 +206,7 @@ class Numerical_Question extends Question
         }
 
         //insert form
-        require_once $GLOBALS['where_lms'] . '/lib/lib.questcategory.php';
+        require_once _lms_ . '/lib/lib.questcategory.php';
         $categories = Questcategory::getCategory();
         //writing difficult array
         $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
@@ -378,7 +378,7 @@ class Numerical_Question extends Question
         }
 
         //insert form
-        require_once $GLOBALS['where_lms'] . '/lib/lib.questcategory.php';
+        require_once _lms_ . '/lib/lib.questcategory.php';
         $categories = Questcategory::getCategory();
         //writing difficult array
         $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];

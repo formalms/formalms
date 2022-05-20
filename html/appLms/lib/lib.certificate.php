@@ -341,8 +341,8 @@ class Certificate
     //fix: Php7.1+ compatibility
     public function canRelExceptional($perm_close_lo, $id_user, $id_course = '')
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
+        require_once _lms_ . '/lib/lib.coursereport.php';
+        require_once _lms_ . '/lib/lib.orgchart.php';
 
         $course_score_final = false;
         $org_man = new OrganizationManagement(false);

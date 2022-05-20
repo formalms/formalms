@@ -178,7 +178,7 @@ function send_newsletter($send_id)
         case 'sms':
                 // Collect users sms numbers
 
-                require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+                require_once _adm_ . '/lib/lib.field.php';
 
                 $acl_man = &Docebo::user()->getACLManager();
                 $field_man = new FieldList();
@@ -196,7 +196,7 @@ function send_newsletter($send_id)
                     }
                 }
 
-                require_once $GLOBALS['where_framework'] . '/lib/lib.sms.php';
+                require_once _adm_ . '/lib/lib.sms.php';
                 $sms_manager = new SmsManager();
                 $sms_manager->sendSms($msg, $arr_sms_recipients);
 
@@ -520,7 +520,7 @@ function selSendTo()
 
         $acl_manager = &Docebo::user()->getAclManager();
         if (defined('IN_LMS')) {
-            $id_course = (int) $_SESSION['idCourse'];
+            $id_course = (int) \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
             $mdir->setUserFilter('group', $arr_idstGroup);
             $mdir->setGroupFilter('path', '/lms/course/' . $id_course . '/group');

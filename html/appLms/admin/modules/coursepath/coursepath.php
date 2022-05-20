@@ -359,8 +359,8 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view');
 
         require_once _base_ . '/lib/lib.table.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
 
         $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
 
@@ -550,7 +550,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
 
         $id_path = importVar('id_path', true, 0);
         $id_slot = importVar('id_slot', true, 0);
@@ -565,7 +565,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
 
         $id_path = importVar('id_path', true, 0);
         $id_slot = importVar('id_slot', true, 0);
@@ -581,8 +581,8 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('mod');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
 
         $out = &$GLOBALS['page'];
         $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
@@ -627,8 +627,8 @@ if (!Docebo::user()->isAnonymous()) {
                 $re &= $re_s;
             }
             // update users course subscription
-            require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
+            require_once _lms_ . '/lib/lib.coursepath.php';
+            require_once _lms_ . '/lib/lib.subscribe.php';
 
             $cpath_man = new CoursePath_Manager();
             $subs_man = new CourseSubscribe_Management();
@@ -684,7 +684,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('mod');
 
         require_once _base_ . '/lib/lib.table.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
         require_once _base_ . '/lib/lib.form.php';
 
         $out = &$GLOBALS['page'];
@@ -802,13 +802,13 @@ if (!Docebo::user()->isAnonymous()) {
         $id_slot = importVar('id_slot', true, 0);
 
         if (isset($_POST['confirm'])) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+            require_once _lms_ . '/lib/lib.coursepath.php';
             $cpath_man = new CoursePath_Manager();
 
             $re = $cpath_man->delFromSlot($id_path, $id_slot, $id_course);
             if ($re) {
                 // update users course subscription
-                require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
+                require_once _lms_ . '/lib/lib.subscribe.php';
 
                 $subs_man = new CourseSubscribe_Management();
 
@@ -820,7 +820,7 @@ if (!Docebo::user()->isAnonymous()) {
             Util::jump_to('index.php?modname=coursepath&op=pathelem&amp;id_path=' . $id_path . '&amp;result=' . ($re ? 'ok' : 'err'));
         } else {
             require_once _base_ . '/lib/lib.form.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $arr_course = [$id_course => $id_course];
             $course_info = &getCoursesInfo($arr_course);
@@ -866,9 +866,9 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.subscribe.php';
 
         $id_path = importVar('id_path', true, 0);
         $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
@@ -1061,7 +1061,7 @@ if (!Docebo::user()->isAnonymous()) {
 
             $courses = $cpath_man->getAllCourses([$id_path]);
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+            require_once _lms_ . '/lib/lib.coursepath.php';
             $course_man = new Man_Course();
             $classroom = $course_man->getAllCourses(false, 'classroom', $courses);
             $edition = $course_man->getAllCourses(false, 'edition', $courses);
@@ -1126,7 +1126,7 @@ if (!Docebo::user()->isAnonymous()) {
                 }
                 $users_subsc = [];
 
-                require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+                require_once _lms_ . '/lib/lib.coursepath.php';
                 $course_man = new Man_Course();
                 $assessment = $course_man->getAllCourses(false, 'assessment', $courses);
 
@@ -1272,7 +1272,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('mod');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
 
         $out = &$GLOBALS['page'];
         $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
@@ -1331,7 +1331,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('mod');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
 
         $out = &$GLOBALS['page'];
         $lang = &DoceboLanguage::createInstance('coursepath', 'lms');

@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version 	$Id:$
  */
-require_once $GLOBALS['where_framework'] . '/modules/org_chart/tree.org_chart.php';
+require_once _adm_ . '/modules/org_chart/tree.org_chart.php';
 
 define('ORG_CHART_NORMAL', 1);
 define('ORG_CHART_WITH_DESCENDANTS', 2);

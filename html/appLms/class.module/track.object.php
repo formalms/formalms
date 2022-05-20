@@ -384,8 +384,8 @@ class Track_Object
             $isTerminator = (isset($values[ORGFIELDISTERMINATOR]) && $values[ORGFIELDISTERMINATOR]);
 
             if ($isTerminator) {
-                require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-                require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
+                require_once _lms_ . '/lib/lib.course.php';
+                require_once _lms_ . '/lib/lib.stats.php';
                 saveTrackStatusChange((int) $useridst, (int) $idCourse, _CUS_END);
             }
         }

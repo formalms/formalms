@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 if (!Docebo::user()->isAnonymous()) {
     define('_PATH_COURSE', '/appLms/' . Forma\lib\Get::sett('pathcourse'));
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
+    require_once _lms_ . '/lib/lib.levels.php';
 
     function statusNoEnter($perm, $status)
     {
@@ -100,7 +100,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view_info');
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         //finding course information
         $mod_perm = checkPerm('mod', true);
@@ -454,7 +454,7 @@ if (!Docebo::user()->isAnonymous()) {
                                                                         '[course_code]' => $_POST['course_code'],
                                                                         '[course]' => $_POST['course_name'], ]);
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
         $course_man = new Man_Course();
         $recipients = $course_man->getIdUserOfLevel($_SESSION['idCourse']);
 
@@ -726,7 +726,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view_info');
 
         $lang = &DoceboLanguage::createInstance('course');
-        require_once $GLOBALS['where_lms'] . '/lib/lib.lms_user_profile.php';
+        require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
         $profile = new LmsUserProfile(importVar('id_user', true, 0));
         $profile->init('profile', 'framework', 'modname=course&op=profile&infocourse', 'ap');

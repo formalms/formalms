@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/modules/question_poll/class.question.php';
+require_once _lms_ . '/modules/question_poll/class.question.php';
 
 class Title_QuestionPoll extends QuestionPoll
 {

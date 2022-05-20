@@ -22,9 +22,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * ( editor = Eclipse 3.2.0 [phpeclipse,subclipse,WTP], tabwidth = 4 )
  */
-require_once $GLOBALS['where_framework'] . '/lib/lib.calendar_core.php';
-require_once $GLOBALS['where_framework'] . '/lib/lib.calevent_core.php';
-require_once $GLOBALS['where_framework'] . '/lib/lib.calevent_lms.php';
+require_once _adm_ . '/lib/lib.calendar_core.php';
+require_once _adm_ . '/lib/lib.calevent_core.php';
+require_once _adm_ . '/lib/lib.calevent_lms.php';
 
 require_once _adm_ . '/models/PluginConferenceAdm.php';
 

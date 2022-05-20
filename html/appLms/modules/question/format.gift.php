@@ -134,7 +134,7 @@ class qformat_gift
 
     public function defaultquestion()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/question/class.question.php';
+        require_once _lms_ . '/modules/question/class.question.php';
         $question = new QuestionRaw();
 
         return $question;

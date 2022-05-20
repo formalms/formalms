@@ -88,7 +88,7 @@ class AssessmentList
 
     public function AssessmentList()
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
         $this->man_course = new Man_Course();
 
         ksort($this->user_field);

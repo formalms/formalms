@@ -20,7 +20,7 @@ if (Docebo::user()->isAnonymous()) {
 function tagslist()
 {
     require_once _base_ . '/lib/lib.table.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.tags.php';
+    require_once _adm_ . '/lib/lib.tags.php';
     $lang = &DoceboLanguage::createInstance('tags', 'framework');
 
     $id_tag = Forma\lib\Get::req('id_tag', DOTY_INT, 0);

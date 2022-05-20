@@ -218,15 +218,15 @@ function login_coursecatalogueJsSetup()
 
 function externalCourselist()
 {
-    require_once $GLOBALS['where_lms'] . '/modules/coursecatalogue/lib.coursecatalogue.php';
+    require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.user_profile.php';
     require_once _base_ . '/lib/lib.navbar.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.preassessment.php';
+    require_once _lms_ . '/lib/lib.catalogue.php';
+    require_once _lms_ . '/lib/lib.coursepath.php';
+    require_once _lms_ . '/lib/lib.course.php';
 
     require_once _base_ . '/lib/lib.urlmanager.php';
     $url = &UrlManager::getInstance('login');
@@ -307,7 +307,7 @@ function externalCourselist()
 
 function showdemo()
 {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
     require_once _base_ . '/lib/lib.multimedia.php';
     $lang = DoceboLanguage::createInstance('course', 'lms');
 
@@ -342,7 +342,7 @@ function showdemo()
 
 function donwloadmaterials()
 {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
     require_once _base_ . '/lib/lib.multimedia.php';
     $lang = DoceboLanguage::createInstance('course', 'lms');
 
@@ -367,8 +367,8 @@ function donwloadmaterials()
 
 function showprofile()
 {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.lms_user_profile.php';
+    require_once _lms_ . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
     $lang = &DoceboLanguage::createInstance('catalogue');
     $lang = &DoceboLanguage::createInstance('course');

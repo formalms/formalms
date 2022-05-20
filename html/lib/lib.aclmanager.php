@@ -1188,7 +1188,7 @@ class DoceboACLManager
 
         // Remove all the associated codes
         foreach ($idst_del as $idst) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.code.php';
+            require_once _adm_ . '/lib/lib.code.php';
             $code_manager = new CodeManager();
 
             if ($reset_code === true) {
@@ -3137,7 +3137,7 @@ class DoceboACLManager
 
     public function _getSearchUsersBaseQuery($internal_fields, $extra_fields = false, $idst_filter = false)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $field_names = $this->_getTableUserFieldNames();
 

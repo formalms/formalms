@@ -483,7 +483,7 @@ class Layout
                 $dropdown_menu[0]['selected'] = true;
             }
             // horizontal menu
-            require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
+            require_once _lms_ . '/lib/lib.stats.php';
             $total = getNumCourseItems(
                 $sessionIdCourse,
                 false,
@@ -548,7 +548,7 @@ class Layout
             // print progress bar -------------------------------------------------
             if (Docebo::course()->getValue('show_progress') == 1) {
                 $show_progress = true;
-                require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
+                require_once _lms_ . '/lib/lib.stats.php';
                 $total = getNumCourseItems(
                     $sessionIdCourse,
                     false,

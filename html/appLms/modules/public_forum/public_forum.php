@@ -575,7 +575,7 @@ function insforum()
     }
 
     if (!empty($recipients)) {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.usernotifier.php';
+        require_once _adm_ . '/lib/lib.usernotifier.php';
 
         $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewResponse');
 
@@ -2360,7 +2360,7 @@ function message()
         . Form::closeForm(), 'content');
 
     // NOTE: If notify request register it
-    require_once $GLOBALS['where_framework'] . '/lib/lib.usernotifier.php';
+    require_once _adm_ . '/lib/lib.usernotifier.php';
 
     $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewResponse');
 
@@ -3197,7 +3197,7 @@ function viewprofile()
         exit("You can't access");
     }
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.lms_user_profile.php';
+    require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
     $lang = &DoceboLanguage::createInstance('profile', 'framework');
 

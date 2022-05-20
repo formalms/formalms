@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 // ----------------------------------------------------------------------------
 
-require_once $GLOBALS['where_framework'] . '/lib/resources/lib.resource_model.php';
+require_once _adm_ . '/lib/resources/lib.resource_model.php';
 
 class ResourceCourse_edition extends ResourceModel
 {

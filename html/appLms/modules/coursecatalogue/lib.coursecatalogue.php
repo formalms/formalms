@@ -23,13 +23,13 @@ function displayCourseList(&$url, $order_type)
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.user_profile.php';
     require_once _base_ . '/lib/lib.navbar.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.ajax_comment.php';
+    require_once _lms_ . '/lib/lib.preassessment.php';
+    require_once _lms_ . '/lib/lib.catalogue.php';
+    require_once _lms_ . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.coursereport.php';
+    require_once _adm_ . '/lib/lib.ajax_comment.php';
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
+    require_once _lms_ . '/lib/lib.classroom.php';
 
     // cahce classroom
     $classroom_man = new ClassroomManager();
@@ -221,7 +221,7 @@ function displayCourseList(&$url, $order_type)
     $usercourses = $man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
     $user_score = $man_courseuser->getUserCourseScored(getLogUserId());
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
+    require_once _lms_ . '/lib/lib.orgchart.php';
     $first_is_scorm = OrganizationManagement::objectFilter(array_keys($usercourses), 'scormorg');
 
     // load search form ----------------------------------------------------------------
@@ -346,12 +346,12 @@ function displayCoursePathList(&$url, $selected_tab)
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.user_profile.php';
     require_once _base_ . '/lib/lib.navbar.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
+    require_once _lms_ . '/lib/lib.preassessment.php';
+    require_once _lms_ . '/lib/lib.catalogue.php';
+    require_once _lms_ . '/lib/lib.coursepath.php';
+    require_once _lms_ . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.preassessment.php';
+    require_once _lms_ . '/lib/lib.coursereport.php';
 
     $lang = &DoceboLanguage::createInstance('catalogue');
     $lang_c = &DoceboLanguage::createInstance('course');
@@ -1109,7 +1109,7 @@ function getCourseEditionList($course_id)
 {
     $res = '';
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
 
     $lang_c = &DoceboLanguage::createInstance('catalogue');
     $lang = &DoceboLanguage::createInstance('course');
@@ -1169,7 +1169,7 @@ function getCourseEditionTable($course_id)
     $res = '';
 
     require_once _base_ . '/lib/lib.table.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
 
     $lang_c = &DoceboLanguage::createInstance('catalogue');
     $lang = &DoceboLanguage::createInstance('course');

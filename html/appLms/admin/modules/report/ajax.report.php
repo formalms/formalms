@@ -58,7 +58,7 @@ switch ($op) {
      break;
 
     case 'show_recipients_window':
-        require_once $GLOBALS['where_lms'] . '/lib/lib.report.php';
+        require_once _lms_ . '/lib/lib.report.php';
         $lang = &DoceboLanguage::createInstance('report', 'framework');
         $output = [
             'success' => true,
@@ -153,17 +153,22 @@ switch ($op) {
         $data = urldecode($filter_data); //put serialized data in DB
 
         $name = Forma\lib\Get::req('filter_name', DOTY_ALPHANUM, '');
+
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $report = $session->get('report');
         $query = 'INSERT INTO %lms_report_filter ' .
             '(id_report, author, creation_date, filter_data, filter_name) VALUES ' .
-            '(' . $_SESSION['report']['id_report'] . ', ' . Docebo::user()->getIdst() . ', NOW(), ' .
-            " '" . addslashes(serialize($_SESSION['report'])) . "', '$name')";
+            '(' . $report['id_report'] . ', ' . Docebo::user()->getIdst() . ', NOW(), ' .
+            " '" . addslashes(serialize($report)) . "', '$name')";
 
         if (!$output['success'] = sql_query($query)) {
             $output['error'] = sql_error();
         } else {
             //if query is ok, I got the inserted ID and I put in session, telling the system I'm using it
             $row = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
-            $_SESSION['report_saved'] = $row[0];
+            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+            $session->set('report_saved',$row[0]);
+            $session->save();
         }
         $json = new Services_JSON();
         aout($json->encode($output));
@@ -212,6 +217,8 @@ switch ($op) {
         $json = new Services_JSON();
         aout($json->encode($output));
      break;
+    default:
+        break;
 }
 
  break;

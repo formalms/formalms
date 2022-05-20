@@ -19,7 +19,7 @@ if (!Docebo::user()->isAnonymous()) {
         !checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+        require_once _lms_ . '/lib/lib.param.php';
 
         $lang = &DoceboLanguage::createInstance('faq');
 
@@ -37,7 +37,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
-            require_once $GLOBALS['where_lms'] . '/class.module/track.faq.php';
+            require_once _lms_ . '/class.module/track.faq.php';
             list($exist, $idTrack) = Track_Faq::getIdTrack($idReference, getLogUserId(), $idCategory, true);
             if ($exist) {
                 $ti = new Track_Faq($idTrack);

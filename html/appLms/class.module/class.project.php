@@ -17,7 +17,7 @@ class Module_Project extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/project/project.php';
+        require_once _lms_ . '/modules/project/project.php';
         projectDispatch($GLOBALS['op']);
     }
 

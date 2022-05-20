@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_framework'] . '/addons/htmlpurifier/HTMLPurifier.auto.php';
+require_once _adm_ . '/addons/htmlpurifier/HTMLPurifier.auto.php';
 
 /**
  * Extension of HTMLPurifier for a couple of reason such as easy mantainance and commutation to singleton class.

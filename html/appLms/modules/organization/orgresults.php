@@ -40,9 +40,9 @@ function decodeSessionTime($stime)
 function getCompilationTable($id_user, $id_test)
 {
     require_once _base_ . '/lib/lib.table.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/class.module/track.test.php';
+    require_once _lms_ . '/lib/lib.test.php';
 
     $test_man = new TestManagement($id_test);
 

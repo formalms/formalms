@@ -76,7 +76,7 @@ class Learning_Poll extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/poll/poll.php';
+        require_once _lms_ . '/modules/poll/poll.php';
         addpoll($this);
     }
 
@@ -96,7 +96,7 @@ class Learning_Poll extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/poll/poll.php';
+        require_once _lms_ . '/modules/poll/poll.php';
         modpollgui($this);
     }
 
@@ -124,7 +124,7 @@ class Learning_Poll extends Learning_Object
         }
         //deleting answer
         while (list($id_quest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            require_once $GLOBALS['where_lms'] . '/modules/question_poll/' . $type_file;
+            require_once _lms_ . '/modules/question_poll/' . $type_file;
 
             $quest_obj = eval("return new $type_class( $id_quest );");
             if (!$quest_obj->del()) {
@@ -189,7 +189,7 @@ class Learning_Poll extends Learning_Object
 		WHERE q.id_poll = '" . $id . "' AND q.type_quest = t.type_quest");
         //retriving quest
         while (list($id_quest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            require_once $GLOBALS['where_lms'] . '/modules/question_poll/' . $type_file;
+            require_once _lms_ . '/modules/question_poll/' . $type_file;
             $quest_obj = eval("return new $type_class( $id_quest );");
             $new_id = $quest_obj->copy($id_new_poll);
             if (!$new_id) {
@@ -215,7 +215,7 @@ class Learning_Poll extends Learning_Object
      **/
     public function play($id, $id_param, $back_url)
     {
-        require_once $GLOBALS['where_lms'] . '/modules/poll/do.poll.php';
+        require_once _lms_ . '/modules/poll/do.poll.php';
 
         $this->id = $id;
         $this->back_url = $back_url;

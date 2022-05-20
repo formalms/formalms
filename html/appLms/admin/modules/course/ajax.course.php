@@ -166,9 +166,9 @@ function duplicateCourse()
     {
         return true;
     }
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
+    require_once _lms_ . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.manmenu.php';
+    require_once _lms_ . '/lib/lib.subscribe.php';
 
     $docebo_course = new DoceboCourse($id_dupcourse);
     $subscribe_man = new CourseSubscribe_Manager();
@@ -200,17 +200,17 @@ function duplicateCourse()
         $result_dupmen = sql_query($query_dupmen);
     }
 
-    require_once $GLOBALS['where_lms'] . '/modules/organization/orglib.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/learning.object.php';
+    require_once _lms_ . '/modules/organization/orglib.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/class.module/track.object.php';
+    require_once _lms_ . '/class.module/learning.object.php';
 
     function createLO($objectType, $idResource = null)
     {
         $query = 'SELECT className, fileName FROM ' . $GLOBALS['prefix_lms'] . "_lo_types WHERE objectType='" . $objectType . "'";
         $rs = sql_query($query);
         list($className, $fileName) = sql_fetch_row($rs);
-        require_once $GLOBALS['where_lms'] . '/class.module/' . $fileName;
+        require_once _lms_ . '/class.module/' . $fileName;
         $lo = new $className($idResource);
 
         return $lo;

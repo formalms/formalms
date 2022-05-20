@@ -40,9 +40,9 @@ function intro($object_poll, $id_param)
     //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.poll.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.poll.php';
+    require_once _lms_ . '/class.module/track.poll.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.poll.php';
 
     $lang = &DoceboLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();
@@ -96,9 +96,9 @@ function playPollDispatch($object_poll, $id_param)
     //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.poll.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.poll.php';
+    require_once _lms_ . '/class.module/track.poll.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.poll.php';
 
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
@@ -119,9 +119,9 @@ function play($object_poll, $id_param)
     //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.poll.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.poll.php';
+    require_once _lms_ . '/class.module/track.poll.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.poll.php';
 
     $lang = &DoceboLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();
@@ -187,7 +187,7 @@ function play($object_poll, $id_param)
     $GLOBALS['page']->add('<div class="test_answer_space">', 'content');
 
     while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($re_question)) {
-        require_once $GLOBALS['where_lms'] . '/modules/question_poll/' . $type_file;
+        require_once _lms_ . '/modules/question_poll/' . $type_file;
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         $GLOBALS['page']->add($quest_obj->play($quest_sequence_number,
@@ -223,9 +223,9 @@ function showResult($object_poll, $id_param)
     //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/class.module/track.poll.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.poll.php';
+    require_once _lms_ . '/class.module/track.poll.php';
+    require_once _lms_ . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.poll.php';
 
     $lang = &DoceboLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();

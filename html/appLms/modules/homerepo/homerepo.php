@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.repo.php';
+require_once _lms_ . '/lib/lib.repo.php';
 
 define('REPOFIELDIDOWNER', 13);
 

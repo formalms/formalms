@@ -20,7 +20,7 @@ class Module_Reservation extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/reservation/reservation.php';
+        require_once _lms_ . '/modules/reservation/reservation.php';
         reservationDispatch($GLOBALS['op']);
     }
 

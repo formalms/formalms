@@ -14,8 +14,8 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once dirname(__FILE__) . '/lib.connector.php';
-require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-require_once $GLOBALS['where_lms'] . '/lib/lib.edition.php';
+require_once _lms_ . '/lib/lib.course.php';
+require_once _lms_ . '/lib/lib.edition.php';
 require_once _base_ . '/lib/lib.eventmanager.php';
 
 /**
@@ -69,7 +69,7 @@ class ConnectorEditionUser extends DoceboConnector
      **/
     public function ConnectorEditionUser($params)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.edition.php';
+        require_once _lms_ . '/lib/lib.edition.php';
 
         $this->acl_man = new DoceboACLManager();
         $this->sub_man = new EditionManager();

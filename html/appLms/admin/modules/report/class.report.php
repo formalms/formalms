@@ -15,11 +15,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 //report session managemente class
 
-define('_REPORT_SESSION', 'report_tempdata');
-define('_RS_ID', 'id_report');
-define('_RS_ROWS_FILTER', 'rows_filter');
-define('_RS_COLS_FILTER', 'columns_filter');
-define('_RS_COLS_CATEGORY', 'columns_filter_category');
+const _REPORT_SESSION = 'report_tempdata';
+const _RS_ID = 'id_report';
+const _RS_ROWS_FILTER = 'rows_filter';
+const _RS_COLS_FILTER = 'columns_filter';
+const _RS_COLS_CATEGORY = 'columns_filter_category';
 
 //report superclass
 
@@ -44,7 +44,9 @@ class Report
 
     public $db = null;
 
-    public function Report($id_report, $report_name = false)
+    protected $session;
+
+    public function __construct($id_report, $report_name = false)
     {
         $this->id_report = $id_report;
         if ($report_name == false) {
@@ -56,6 +58,7 @@ class Report
         }
 
         $this->db = DbConn::getInstance();
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function get_name()
@@ -121,8 +124,9 @@ class Report
 
     public function useStandardTitle_Columns()
     {
-        if (isset($_SESSION['report_tempdata']['columns_filter_category'])) {
-            $temp = $_SESSION['report_tempdata']['columns_filter_category'];
+        $reportTempData = $this->session->get(_REPORT_SESSION);
+        if (array_key_exists('columns_filter_category', $reportTempData) && isset($reportTempData['columns_filter_category'])) {
+            $temp = $reportTempData['columns_filter_category'];
         } else {
             return true;
         }
@@ -136,8 +140,9 @@ class Report
 
     public function show_results($cat = false, $report_data = null)
     {
+        $reportTempData = $this->session->get(_REPORT_SESSION);
         if (!$cat) {
-            $cat = $_SESSION['report_tempdata']['columns_filter_category'];
+            $cat = $reportTempData['columns_filter_category'];
         }
         $name_func = $this->columns_categories[$cat]['show']; //['get_data'];
 
@@ -146,8 +151,9 @@ class Report
 
     public function _get_data($type = 'html', $cat = false, $report_data = null)
     {
+        $reportTempData = $this->session->get(_REPORT_SESSION);
         if (!$cat) {
-            $cat = $_SESSION['report_tempdata']['columns_filter_category'];
+            $cat = $reportTempData['columns_filter_category'];
         }
         $name_func = $this->columns_categories[$cat]['get_data'];
 
@@ -280,27 +286,30 @@ class ReportSessionManager
 {
     public $data = null;
 
-    public function ReportSessionManager()
+    protected $session;
+
+    public function __construct()
     {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         if (!$this->_is_initialized()) {
             $this->_initialize();
         }
-        $data = &$_SESSION[_REPORT_SESSION];
     }
 
     public function _is_initialized()
     {
-        return isset($_SESSION[_REPORT_SESSION]);
+        return $this->session->has(_REPORT_SESSION);
     }
 
     public function _initialize()
     {
-        $_SESSION[_REPORT_SESSION] = [
+        $this->session->set(_REPORT_SESSION, [
             _RS_ID => false,
             _RS_ROWS_FILTER => false,
             _RS_COLS_CATEGORY => false,
             _RS_COLS_FILTER => false,
-        ];
+        ]);
+        $this->session->save();
     }
 
     public function setId($id)

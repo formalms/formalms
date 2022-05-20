@@ -16,9 +16,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * Here we will process the dynamic filter actions ...
  */
-require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.dynamicuserfilter.php';
+require_once _adm_ . '/lib/user_selector/lib.dynamicuserfilter.php';
 require_once _base_ . '/lib/lib.json.php';
-require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+require_once _adm_ . '/lib/lib.field.php';
 require_once _base_ . '/lib/lib.aclmanager.php';
 
 $db = DbConn::getInstance();

@@ -1389,7 +1389,7 @@ class UserManagerRenderer
     {
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
 
         $lang = &DoceboLanguage::createInstance('register', $platform);
 
@@ -2381,7 +2381,7 @@ class UserManagerRenderer
         } elseif ($options['register_type'] == 'moderate') {
             if ($acl_man->confirmTempUser($request['idst'])) {
                 if (Forma\lib\Get::sett('use_code_module') == 'on') {
-                    require_once $GLOBALS['where_framework'] . '/lib/lib.code.php';
+                    require_once _adm_ . '/lib/lib.code.php';
 
                     $code_manager = new CodeManager();
 
@@ -2393,7 +2393,7 @@ class UserManagerRenderer
 
                         if (count($array_course)) {
                             foreach ($array_course as $id_course) {
-                                require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
+                                require_once _lms_ . '/lib/lib.subscribe.php';
 
                                 $subscribe = new CourseSubscribe_Management();
 
@@ -3072,7 +3072,7 @@ class UserManagerOption
 
                     break;
                 case 'field_tree':
-                        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+                        require_once _adm_ . '/lib/lib.field.php';
 
                         $fl = new FieldList();
                         $all_fields = $fl->getAllFields(false);

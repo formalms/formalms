@@ -106,7 +106,7 @@ class Admin_Managment
 
     public function savePreferences(&$source_array, $adminidst, $all_admin_permission)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
+        require_once _adm_ . '/lib/lib.adminmanager.php';
 
         $aclManager = &Docebo::user()->getAclManager();
         $admin_manager = new AdminManager();
@@ -164,7 +164,7 @@ class Admin_Managment
     {
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.adminmanager.php';
+        require_once _adm_ . '/lib/lib.adminmanager.php';
 
         $out = &$GLOBALS['page'];
         $aclManager = &Docebo::user()->getAclManager();

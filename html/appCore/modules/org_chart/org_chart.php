@@ -22,14 +22,14 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 function saveOrgChartState($data)
 {
-    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+    require_once _adm_ . '/lib/lib.sessionsave.php';
     $s_o = new Session_Save();
     $s_o->save('org_chart', $data);
 }
 
 function existOrgChartState()
 {
-    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+    require_once _adm_ . '/lib/lib.sessionsave.php';
     $s_o = new Session_Save();
 
     return $s_o->nameExists('org_chart');
@@ -37,7 +37,7 @@ function existOrgChartState()
 
 function &loadOrgChartState()
 {
-    require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+    require_once _adm_ . '/lib/lib.sessionsave.php';
     $s_o = new Session_Save();
 
     return $s_o->load('org_chart');
@@ -50,7 +50,7 @@ function orgChart()
 function assign_field($id_folder)
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+    require_once _adm_ . '/lib/lib.field.php';
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');

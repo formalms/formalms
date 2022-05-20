@@ -17,7 +17,7 @@ if (Docebo::user()->isAnonymous()) {
     exit("You can't access");
 }
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
+require_once _lms_ . '/lib/lib.levels.php';
 
 function loadUnreaded()
 {
@@ -1192,7 +1192,7 @@ function thread()
     }
 
     // NOTE: If notify request register it
-    require_once $GLOBALS['where_framework'] . '/lib/lib.usernotifier.php';
+    require_once _adm_ . '/lib/lib.usernotifier.php';
 
     $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewThread');
 
@@ -1856,7 +1856,7 @@ function message()
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.user_profile.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.tags.php';
+    require_once _adm_ . '/lib/lib.tags.php';
 
     $tags = new Tags('lms_forum');
     $tags->setupJs('a[id^=handler-tags-]', 'a[id^=private-handler-tags-]');
@@ -2156,7 +2156,7 @@ function message()
         . Form::closeForm(), 'content');
 
     // NOTE: If notify request register it
-    require_once $GLOBALS['where_framework'] . '/lib/lib.usernotifier.php';
+    require_once _adm_ . '/lib/lib.usernotifier.php';
 
     $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewResponse');
 
@@ -2899,7 +2899,7 @@ function delmessage()
             Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;result=err_del');
         }
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.tags.php';
+        require_once _adm_ . '/lib/lib.tags.php';
         $tags = new Tags('lms_forum');
         $tags->deleteResource($id_message, 'lms_forum');
 
@@ -2947,7 +2947,7 @@ function viewprofile()
 	FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
 	WHERE idMessage = '" . $id_message . "'"));
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.lms_user_profile.php';
+    require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
     $lang = &DoceboLanguage::createInstance('profile', 'framework');
 
@@ -3819,7 +3819,7 @@ function addUnreadNotice($id_forum)
 function export()
 {
     require_once _base_ . '/lib/lib.download.php';
-    require_once $GLOBALS['where_framework'] . '/lib/lib.tags.php';
+    require_once _adm_ . '/lib/lib.tags.php';
 
     $acl_man = &Docebo::user()->getAclManager();
     $tags = new Tags('lms_forum');

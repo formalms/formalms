@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+require_once _lms_ . '/class.module/track.object.php';
 
 class Track_Poll extends Track_Object
 {
@@ -167,7 +167,7 @@ class Track_Poll extends Track_Object
      **/
     public function loadObjectReport($mvc = false)
     {
-        require_once $GLOBALS['where_lms'] . '/modules/poll/do.poll.php';
+        require_once _lms_ . '/modules/poll/do.poll.php';
         $output = writePollReport($this->idResource, $this->idParams, $this->back_url, $mvc);
         if ($mvc) {
             return $output;

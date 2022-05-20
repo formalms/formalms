@@ -17,7 +17,7 @@ class Module_Wiki extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/wiki/wiki.php';
+        require_once _lms_ . '/modules/wiki/wiki.php';
         wikiDispatch($GLOBALS['op']);
     }
 

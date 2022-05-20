@@ -52,7 +52,7 @@
 
     foreach ($certificate_tags as $key => $value) {
         if (file_exists($GLOBALS['where_lms'] . '/lib/certificate/' . $value['file_name'])) {
-            require_once $GLOBALS['where_lms'] . '/lib/certificate/' . $value['file_name'];
+            require_once _lms_ . '/lib/certificate/' . $value['file_name'];
             $instance = new $value['class_name'](0, 0, 1);
             $this_subs = $instance->getSubstitutionTags();
             foreach ($this_subs as $tag => $description) {

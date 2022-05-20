@@ -27,7 +27,8 @@ function certificate()
     require_once _base_ . '/lib/lib.table.php';
 
     $mod_perm = checkPerm('mod', true);
-    $currentPlatform = empty($_SESSION['current_action_platform']) ? 'framework' : $_SESSION['current_action_platform'];
+
+    $currentPlatform = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('current_action_platform','framework');
     // create a language istance for module admin_certificate
     $lang = &DoceboLanguage::createInstance('certificate', 'lms');
     $out = &$GLOBALS['page'];
@@ -246,7 +247,7 @@ function list_element_certificate()
     $re_certificate_tags = sql_query($query_format_tag);
     while (list($file_name, $class_name) = sql_fetch_row($re_certificate_tags)) {
         if (file_exists($GLOBALS['where_lms'] . '/lib/certificate/' . $file_name)) {
-            require_once $GLOBALS['where_lms'] . '/lib/certificate/' . $file_name;
+            require_once _lms_ . '/lib/certificate/' . $file_name;
             $instance = new $class_name(0, 0);
             $this_subs = $instance->getSubstitutionTags();
             foreach ($this_subs as $tag => $description) {
@@ -493,7 +494,7 @@ function report_certificate()
 {
     require_once _base_ . '/lib/lib.form.php';
     require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+    require_once _lms_ . '/lib/lib.course.php';
     require_once _base_ . '/lib/lib.table.php';
 
     checkPerm('view');

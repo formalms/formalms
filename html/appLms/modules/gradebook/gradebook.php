@@ -21,8 +21,8 @@ function showgrade()
 {
     checkPerm('view');
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
+    require_once _lms_ . '/lib/lib.test.php';
+    require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
@@ -268,8 +268,8 @@ function coursereport()
 
     checkPerm('view');
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
-    require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
+    require_once _lms_ . '/lib/lib.test.php';
+    require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &DoceboLanguage::createInstance('gradebook', 'lms');

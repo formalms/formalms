@@ -70,10 +70,10 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_framework'] . '/lib/lib.directory.php';
+        require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
@@ -185,8 +185,8 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
@@ -306,7 +306,7 @@ class Report extends \ReportPlugin
 
     public function _get_courses_query($type = 'html', $report_data = null, $other = '')
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         if ($report_data == null) {
             $ref = &$_SESSION['report_tempdata'];
@@ -924,8 +924,8 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/category/lib.categorytree.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/category/lib.categorytree.php';
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
@@ -994,7 +994,7 @@ class Report extends \ReportPlugin
 
     public function _get_coursecategories_query($type = 'html', $report_data = null, $other = '')
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         if ($report_data == null) {
             $ref = &$_SESSION['report_tempdata'];
@@ -1452,7 +1452,7 @@ class Report extends \ReportPlugin
 
     public function _get_time_query($type = 'html', $report_data = null, $other = '')
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         if ($report_data == null) {
             $ref = &$_SESSION['report_tempdata'];

@@ -25,7 +25,7 @@ if (Docebo::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
-require_once $GLOBALS['where_framework'] . '/lib/lib.tags.php';
+require_once _adm_ . '/lib/lib.tags.php';
 
 $op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {

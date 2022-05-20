@@ -20,8 +20,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 
 if (Docebo::user()->isAnonymous()) {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-    require_once $GLOBALS['where_lms'] . '/modules/coursecatalogue/lib.coursecatalogue.php';
+    require_once _lms_ . '/lib/lib.course.php';
+    require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
     $lang = &DoceboLanguage::createInstance('standard', 'framework');
     $lang->setGlobal();
 
@@ -92,18 +92,18 @@ if (Docebo::user()->isAnonymous()) {
             aout($output);
         ; break;
         case 'getCourseEditionsTable':
-            require_once $GLOBALS['where_lms'] . '/modules/coursecatalogue/lib.coursecatalogue.php';
+            require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
             aout(getCourseEditionTable((int) $_POST['course_id']));
          break;
         case 'getdashcourse':
             require_once _base_ . '/lib/lib.form.php';
             require_once _base_ . '/lib/lib.user_profile.php';
             require_once _base_ . '/lib/lib.navbar.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.preassessment.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.catalogue.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-            require_once $GLOBALS['where_lms'] . '/modules/coursecatalogue/lib.coursecatalogue.php';
+            require_once _lms_ . '/lib/lib.preassessment.php';
+            require_once _lms_ . '/lib/lib.catalogue.php';
+            require_once _lms_ . '/lib/lib.coursepath.php';
+            require_once _lms_ . '/lib/lib.course.php';
+            require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
 
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
@@ -115,7 +115,7 @@ if (Docebo::user()->isAnonymous()) {
             $man_course = new DoceboCourse($id_course);
             $cinfo = $man_course->getAllInfo();
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
+            require_once _lms_ . '/lib/lib.classroom.php';
             // cahce classroom
             $classroom_man = new ClassroomManager();
             $classrooms = $classroom_man->getClassroomNameList();
@@ -176,8 +176,8 @@ if (Docebo::user()->isAnonymous()) {
          break;
         // -------------------------------------------------------------------------------
         case 'course_vote':
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-            require_once $GLOBALS['where_lms'] . '/modules/coursecatalogue/lib.coursecatalogue.php';
+            require_once _lms_ . '/lib/lib.course.php';
+            require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
 
             $id_course = importVar('id_course', true, 0);
             $evaluation = importVar('evaluation');
@@ -230,8 +230,8 @@ if (Docebo::user()->isAnonymous()) {
         // -----------------------------------------------------------------------------------
 
         case 'course_action_confirm':
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-            require_once $GLOBALS['where_lms'] . '/modules/coursecatalogue/lib.coursecatalogue.php';
+            require_once _lms_ . '/lib/lib.course.php';
+            require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
 
@@ -312,8 +312,8 @@ if (Docebo::user()->isAnonymous()) {
             aout($output);
          break;
         case 'course_action_confirm_edition':
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-            require_once $GLOBALS['where_lms'] . '/modules/coursecatalogue/lib.coursecatalogue.php';
+            require_once _lms_ . '/lib/lib.course.php';
+            require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
 
@@ -354,8 +354,8 @@ if (Docebo::user()->isAnonymous()) {
         // ------------------------------------------------------------------------------
 
         case 'addnewcomment':
-            require_once $GLOBALS['where_framework'] . '/lib/lib.ajax_comment.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _adm_ . '/lib/lib.ajax_comment.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $id_course = importVar('id_course', true, 0);
             $ax_comm = new AjaxComment('course', 'lms');
@@ -414,8 +414,8 @@ if (Docebo::user()->isAnonymous()) {
             break;
 
         case 'delcomment':
-            require_once $GLOBALS['where_framework'] . '/lib/lib.ajax_comment.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _adm_ . '/lib/lib.ajax_comment.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
@@ -464,8 +464,8 @@ if (Docebo::user()->isAnonymous()) {
             break;
 
         case 'comment_it':
-            require_once $GLOBALS['where_framework'] . '/lib/lib.ajax_comment.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _adm_ . '/lib/lib.ajax_comment.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
@@ -509,7 +509,7 @@ if (Docebo::user()->isAnonymous()) {
             aout($output);
         ; break;
         case 'course_materials':
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.course.php';
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
             $lang = &DoceboLanguage::createInstance('course', 'lms');
@@ -575,7 +575,7 @@ if (Docebo::user()->isAnonymous()) {
             aout($output);
         ; break;
         case 'play_demo':
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.course.php';
             require_once _base_ . '/lib/lib.multimedia.php';
 
             $lang = &DoceboLanguage::createInstance('standard', 'framework');

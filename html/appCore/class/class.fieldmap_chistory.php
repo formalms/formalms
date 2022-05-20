@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_framework'] . '/class/class.fieldmap.php';
+require_once _adm_ . '/class/class.fieldmap.php';
 
 class FieldMapChistory extends FieldMap
 {

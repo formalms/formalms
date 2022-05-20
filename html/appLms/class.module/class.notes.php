@@ -17,7 +17,7 @@ class Module_Notes extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/notes/notes.php';
+        require_once _lms_ . '/modules/notes/notes.php';
         notesDispatch($GLOBALS['op']);
     }
 

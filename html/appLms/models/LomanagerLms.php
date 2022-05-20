@@ -173,7 +173,7 @@ class LomanagerLms extends Model
 
     public function copy($id, $fromType)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+        require_once _adm_ . '/lib/lib.sessionsave.php';
         $saveObj = new Session_Save();
         $saveName = $saveObj->getName('crepo', true);
         $folder = $this->tdb->getFolderById((string) $id);
@@ -191,7 +191,7 @@ class LomanagerLms extends Model
 
     public function paste($folderId)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.sessionsave.php';
+        require_once _adm_ . '/lib/lib.sessionsave.php';
         $saveObj = new Session_Save();
         if ($saveObj->nameExists('crepo')) {
             $saveData = &$saveObj->load('crepo');

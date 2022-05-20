@@ -49,11 +49,11 @@ function play($idResource, $idParams, $back_url)
     $expFileName = explode('.', $file);
     $totPart = count($expFileName) - 1;
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.param.php';
     $idReference = getLOParam($idParams, 'idReference');
     // NOTE: Track only if $idReference is present
     if ($idReference !== false) {
-        require_once $GLOBALS['where_lms'] . '/class.module/track.item.php';
+        require_once _lms_ . '/class.module/track.item.php';
         list($exist, $idTrack) = Track_Item::getIdTrack($idReference, getLogUserId(), $idResource, true);
         if ($exist) {
             $ti = new Track_Item($idTrack, Docebo::user()->getIdSt());

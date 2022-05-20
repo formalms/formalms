@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_framework'] . '/class/class.dashboard.php';
+require_once _adm_ . '/class/class.dashboard.php';
 
 class Dashboard_Scs extends Dashboard
 {

@@ -149,7 +149,7 @@ class OrganizationManagement
         foreach ($obj_types as $type) {
             switch ($type) {
                 case 'scormorg':
-                    require_once $GLOBALS['where_lms'] . '/lib/lib.scorm.php';
+                    require_once _lms_ . '/lib/lib.scorm.php';
                     $group_test = new GroupScormObjMan();
                     $scorm_score = &$group_test->getSimpleScormScores($l_obj['scormorg'], $arr_user);
           foreach ($scorm_score as $id_test => $scorm_info) {
@@ -159,7 +159,7 @@ class OrganizationManagement
                 ; break;
                 // ------------------------------------------------------------
                 case 'test':
-                    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+                    require_once _lms_ . '/lib/lib.test.php';
                     $group_test = new GroupTestManagement();
                     $test_score = &$group_test->getSimpleTestsScores($l_obj['test'], $arr_user);
           foreach ($test_score as $id_test => $test_info) {
@@ -214,7 +214,7 @@ class OrganizationManagement
         foreach ($obj_types as $type) {
             switch ($type) {
                 case 'scormorg':
-                    require_once $GLOBALS['where_lms'] . '/lib/lib.scorm.php';
+                    require_once _lms_ . '/lib/lib.scorm.php';
                     $group_test = new GroupScormObjMan();
                     $scorm_score = &$group_test->getSimpleScormScores($r_obj['scormorg'], $arr_user);
 
@@ -225,7 +225,7 @@ class OrganizationManagement
                 ; break;
                 // ------------------------------------------------------------
                 case 'test':
-                    require_once $GLOBALS['where_lms'] . '/lib/lib.test.php';
+                    require_once _lms_ . '/lib/lib.test.php';
                     $group_test = new GroupTestManagement();
                     $test_score = &$group_test->getSimpleTestsScores($l_obj['test'], $arr_user);
 

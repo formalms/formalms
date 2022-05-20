@@ -55,9 +55,9 @@ class CertificateSubs_UserStat extends CertificateSubstitution
         $subs = [];
 
         if ($this->id_meta != 0) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.aggregated_certificate.php';
+            require_once _lms_ . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.coursereport.php';
+            require_once _lms_ . '/lib/lib.aggregated_certificate.php';
 
             $aggCertLib = new AggregatedCertificate();
 
@@ -85,7 +85,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                         . '<tbody>';
 
                     $path = $aggCertLib->getIdsCoursePath($this->id_meta, $this->id_user);
-                    require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+                    require_once _lms_ . '/lib/lib.coursepath.php';
                     $coursePath_man = new CoursePath_Manager();
                     foreach ($path as $id_path) {
                         $courses = $coursePath_man->getAllCourses($id_path);
@@ -189,7 +189,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $meta = sql_fetch_object($q);
             $subs['[meta_assoc]'] = $meta->title;
         } else {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $courseuser = new Man_CourseUser();
             $course_stat = &$courseuser->getUserCourses($this->id_user, false, false, false, [$this->id_course]);
@@ -209,13 +209,13 @@ class CertificateSubs_UserStat extends CertificateSubstitution
                 $subs['[user_level]'] = '';
             }
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
+            require_once _lms_ . '/lib/lib.orgchart.php';
             $org_man = new OrganizationManagement($this->id_course);
 
             $score_start = $org_man->getStartObjectScore([$this->id_user], [$this->id_course]);
             $score_final = $org_man->getFinalObjectScore([$this->id_user], [$this->id_course]);
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.coursereport.php';
+            require_once _lms_ . '/lib/lib.coursereport.php';
             $rep_man = new CourseReportManager();
 
             $score_course = $rep_man->getUserFinalScore([$this->id_user], [$this->id_course]);
@@ -230,7 +230,7 @@ class CertificateSubs_UserStat extends CertificateSubstitution
             $subs['[course_score_final]'] = (isset($score_course[$this->id_user][$this->id_course]) ? $score_course[$this->id_user][$this->id_course]['score'] : '');
             $subs['[course_score_final_max]'] = (isset($score_course[$this->id_user][$this->id_course]) ? $score_course[$this->id_user][$this->id_course]['max_score'] : '');
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.track_user.php';
+            require_once _lms_ . '/lib/lib.track_user.php';
             $time_in = TrackUser::getUserTotalCourseTime($this->id_user, $this->id_course);
 
             $hours = (int) ($time_in / 3600);

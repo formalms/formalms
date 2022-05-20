@@ -74,7 +74,7 @@ class Learning_Glossary extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/glossary/glossary.php';
+        require_once _lms_ . '/modules/glossary/glossary.php';
         addglossary($this);
     }
 
@@ -94,7 +94,7 @@ class Learning_Glossary extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/glossary/glossary.php';
+        require_once _lms_ . '/modules/glossary/glossary.php';
         modglossarygui($this);
     }
 
@@ -182,7 +182,7 @@ class Learning_Glossary extends Learning_Object
      **/
     public function play($id, $id_param, $back_url)
     {
-        require_once $GLOBALS['where_lms'] . '/modules/glossary/do.glossary.php';
+        require_once _lms_ . '/modules/glossary/do.glossary.php';
 
         $this->id = $id;
         $this->back_url = $back_url;

@@ -215,7 +215,7 @@ if (!Docebo::user()->isAnonymous()) {
             }
         }
 
-        require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+        require_once _lms_ . '/class.module/track.object.php';
         Track_Object::updateObjectTitle($_POST['idPage'], 'htmlpage', $_POST['title']);
 
         Util::jump_to($back_url . '&id_lo=' . $_POST['idPage'] . '&mod_result=1');

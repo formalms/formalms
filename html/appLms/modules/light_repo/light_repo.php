@@ -17,7 +17,7 @@ if (Docebo::user()->isAnonymous()) {
     exit("You can't access");
 }
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.light_repo.php';
+require_once _lms_ . '/lib/lib.light_repo.php';
 
 function repoList(&$url)
 {
@@ -174,7 +174,7 @@ function delRepo(&$url)
 {
     checkPerm('mod');
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.light_repo.php';
+    require_once _lms_ . '/lib/lib.light_repo.php';
 
     $re = false;
     if (isset($_GET['confirm'])) {
@@ -385,7 +385,7 @@ function delFile(&$url)
     checkPerm('view');
     $mod_perm = checkPerm('mod', true);
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.light_repo.php';
+    require_once _lms_ . '/lib/lib.light_repo.php';
 
     $re = false;
     if (isset($_GET['confirm'])) {

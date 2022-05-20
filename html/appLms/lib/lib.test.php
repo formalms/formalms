@@ -200,7 +200,7 @@ class GroupTestManagement
      */
     public function saveTestUsersScores($id_test, $users_scores, $date_attempts, $comments)
     {
-        require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
+        require_once _lms_ . '/class.module/track.test.php';
 
         $query_test = '
 		SELECT point_required, show_only_status 
@@ -274,7 +274,7 @@ class GroupTestManagement
      */
     public function roundTestScore($id_test, $id_users = false)
     {
-        require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
+        require_once _lms_ . '/class.module/track.test.php';
 
         $query_test = '
 		SELECT point_required, show_only_status 
@@ -366,7 +366,7 @@ class GroupTestManagement
 
     public function deleteTestTrack($id_test, $id_user)
     {
-        require_once $GLOBALS['where_lms'] . '/class.module/track.test.php';
+        require_once _lms_ . '/class.module/track.test.php';
         require_once _base_ . '/lib/lib.upload.php';
 
         $query = '

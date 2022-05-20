@@ -205,7 +205,7 @@ class FieldMapManager
         $res = [];
         $debug = false;
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         $fl = new FieldList();
 
         $field_map_info = $this->getFieldMap();

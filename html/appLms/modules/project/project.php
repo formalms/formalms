@@ -24,7 +24,7 @@ if ((Docebo::user()->isAnonymous()) || (!checkPerm('view', true))) {
 define('_FPATH_INTERNAL', '/appLms/' . Forma\lib\Get::sett('pathprj'));
 define('_FPATH', $GLOBALS['where_files_relative'] . _FPATH_INTERNAL);
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
+require_once _lms_ . '/lib/lib.stats.php';
 
 function project()
 {
@@ -701,7 +701,7 @@ function show_prj()
     if ($row['psmsg']) {
         $show_something = true;
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.sysforum.php';
+        require_once _adm_ . '/lib/lib.sysforum.php';
 
         $out->add('<h3 class="prjmsg_title">' . $lang->def('_MESSAGES') . '</h3>' . "\n");
 

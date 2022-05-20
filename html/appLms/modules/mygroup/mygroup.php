@@ -119,7 +119,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view');
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+        require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.form.php';
         $lang = &DoceboLanguage::createInstance('register', 'lms');
 

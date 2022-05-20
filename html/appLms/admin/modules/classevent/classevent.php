@@ -21,7 +21,7 @@ if (Docebo::user()->isAnonymous()) {
     exit("You can't access");
 }
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.classevent.php';
+require_once _lms_ . '/lib/lib.classevent.php';
 
 function classEventMain()
 {
@@ -38,7 +38,7 @@ function classEventMain()
     $res .= getTitleArea($title_arr, 'classevent');
     $res .= "<div class=\"std_block\">\n";
 
-    require_once $GLOBALS['where_framework'] . '/lib/resources/lib.timetable.php';
+    require_once _adm_ . '/lib/resources/lib.timetable.php';
 
     $tt = new TimeTable();
 
@@ -57,7 +57,7 @@ function classEventMain()
 
     $GLOBALS['page']->add("\n" . '<script type="text/javascript" src="' . $GLOBALS['where_lms_relative'] . '/modules/calendar/calendar_helper.js"></script>' . "\n", 'page_head');
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
+    require_once _lms_ . '/lib/lib.classroom.php';
     $cm = new ClassroomManager();
     $class_arr = $cm->getClassroomArray();
 
@@ -114,7 +114,7 @@ function addeditClassEvent($id = 0)
     } elseif ($id > 0) {
         $form_code = $form->openForm('main_form', $url . '&amp;op=save');
 
-        require_once $GLOBALS['where_lms'] . '/admin/modules/classevent/lib.classevent.php';
+        require_once _lms_ . '/admin/modules/classevent/lib.classevent.php';
 
         $clm = new ClassEventManager();
         $stored = $clm->getClassEventInfo($id);
@@ -153,7 +153,7 @@ function addeditClassEvent($id = 0)
 
 function saveClassEvent()
 {
-    require_once $GLOBALS['where_lms'] . '/admin/modules/classevent/lib.classevent.php';
+    require_once _lms_ . '/admin/modules/classevent/lib.classevent.php';
 
     $clm = new ClassEventManager();
 
@@ -166,7 +166,7 @@ function deleteClassEvent()
     $res = '';
 
     include_once _base_ . '/lib/lib.form.php';
-    require_once $GLOBALS['where_lms'] . '/admin/modules/classevent/lib.classevent.php';
+    require_once _lms_ . '/admin/modules/classevent/lib.classevent.php';
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');

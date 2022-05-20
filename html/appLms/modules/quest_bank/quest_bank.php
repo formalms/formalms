@@ -267,7 +267,7 @@ function exportquest(&$url)
 
                 $form = new Form();
 
-                require_once $GLOBALS['where_lms'] . '/lib/lib.orgchart.php';
+                require_once _lms_ . '/lib/lib.orgchart.php';
                 $orgman = new OrganizationManagement($_SESSION['idCourse']);
                 $test = &$orgman->getInfoWhereType('test', $_SESSION['idCourse']);
 

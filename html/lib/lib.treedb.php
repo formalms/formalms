@@ -141,6 +141,13 @@ class TreeDb
     // database connection
     public $dbconn = null;
 
+    protected $session;
+
+    public function __construct()
+    {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    }
+
     public function _listFields($tname = false)
     {
         return $this->_getBaseFields($tname)

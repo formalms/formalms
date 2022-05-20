@@ -384,8 +384,8 @@ class KbRes
 
     public function playResource($res_id, $back_url)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.module.php';
+        require_once _lms_ . '/lib/lib.param.php';
+        require_once _lms_ . '/lib/lib.module.php';
 
         $data = $this->getResource($res_id);
 

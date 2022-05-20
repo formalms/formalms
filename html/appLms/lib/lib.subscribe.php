@@ -764,7 +764,7 @@ class CourseSubscribe_Manager
 
         $status = $data['new_data']['status'];
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $extra = '';
         if ($prev_status != $status) {
@@ -836,7 +836,7 @@ class CourseSubscribe_Manager
                  */
             }
 
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.course.php';
             require_once _base_ . '/lib/lib.eventmanager.php';
 
             $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
@@ -918,8 +918,8 @@ class CourseSubscribe_Management
 
     public function CourseSubscribe_Management()
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.levels.php';
 
         $this->course_man = new Man_Course();
         $this->acl = &Docebo::user()->getAcl();
@@ -1194,7 +1194,7 @@ class CourseSubscribe_Management
      */
     public function suspendUser($id_user, $id_course)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $re = $this->_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_courseuser
@@ -1223,7 +1223,7 @@ class CourseSubscribe_Management
             return true;
         }
         if ($id_course == false) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $man = new Man_Course();
             $info = $man->getEditionInfo($id_edition);
@@ -1329,7 +1329,7 @@ class CourseSubscribe_Management
      */
     public function suspendUserWithConnection($id_user, $id_course, $connection)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $re = $this->_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_courseuser
@@ -1387,7 +1387,7 @@ class CourseSubscribe_Management
             return true;
         }
         if ($id_course == false) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.course.php';
 
             $man = new Man_Course();
             $info = $man->getEditionInfo($id_edition);

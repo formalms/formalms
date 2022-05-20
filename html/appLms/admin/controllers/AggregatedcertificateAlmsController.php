@@ -591,8 +591,8 @@ class AggregatedcertificateAlmsController extends AlmsController
      */
     public function associationCourses()
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         if (isset($_POST['undo_assign'])) {
             Util::jump_to($this->back_url);
@@ -629,8 +629,8 @@ class AggregatedcertificateAlmsController extends AlmsController
 
     public function associationPaths()
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         if (isset($_POST['cancelselector'])) {
             Util::jump_to($this->back_url);
@@ -648,7 +648,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         if ($this->id_association > 0) {
             $coursePathIdsArr = $this->aggCertLib->getIdsCoursePath($this->id_association);
             $params['idsCoursePath'] = '[' . implode(',', $coursePathIdsArr) . ']';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
+            require_once _lms_ . '/lib/lib.coursepath.php';
             $coursePath_man = new CoursePath_Manager();
             $params['coursePathsArr'] = $coursePath_man->getCoursepathAllInfo($coursePathIdsArr);
         } else {
@@ -715,9 +715,9 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         // Loading necessary libraries
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         YuiLib::load();
         Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
@@ -833,8 +833,8 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         // Loading necessary libraries
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         YuiLib::load();
         Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
@@ -990,8 +990,8 @@ class AggregatedcertificateAlmsController extends AlmsController
      */
     public function viewdetails()
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.coursepath.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $acl_man = &Docebo::user()->getAclManager();
 

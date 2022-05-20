@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/admin/modules/category/tree.category.php';
+require_once _lms_ . '/admin/modules/category/tree.category.php';
 
 class CategoryTree extends TreeDb_CatDb
 {

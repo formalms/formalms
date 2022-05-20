@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+require_once _lms_ . '/class.module/track.object.php';
 require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
 
 class Track_Test extends Track_Object

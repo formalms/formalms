@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 
 if (!Docebo::user()->isAnonymous()) {
-    require_once $GLOBALS['where_lms'] . '/lib/lib.reservation.php';
+    require_once _lms_ . '/lib/lib.reservation.php';
 
     function viewEvent()
     {
@@ -143,7 +143,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view');
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $lang = &DoceboLanguage::createInstance('reservation');
 
@@ -932,7 +932,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkperm('mod');
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
 
@@ -1076,7 +1076,7 @@ function setRoomViewPerm()
 
     $id_event = importVar('id_event', true, 0);
 
-    require_once $GLOBALS['where_lms'] . '/lib/lib.reservation_perm.php';
+    require_once _lms_ . '/lib/lib.reservation_perm.php';
     require_once _base_ . '/lib/lib.userselector.php';
     $mdir = new UserSelector();
 

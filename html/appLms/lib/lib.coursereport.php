@@ -21,7 +21,7 @@ class CourseReportManager
     public function __construct($idCourse = null)
     {
         if ($idCourse === null) {
-            $this->idCourse = (int) $_SESSION['idCourse'];
+            $this->idCourse = (int) \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         } else {
             $this->idCourse = (int) $idCourse;
         }

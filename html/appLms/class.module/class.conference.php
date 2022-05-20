@@ -28,7 +28,7 @@ class Module_Conference extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once _lms_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
         dispatchConference($GLOBALS['op']);
     }
 

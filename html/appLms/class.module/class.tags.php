@@ -17,7 +17,7 @@ class Module_Tags extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/tags/tags.php';
+        require_once _lms_ . '/modules/tags/tags.php';
         tags_dispatch($GLOBALS['op']);
     }
 

@@ -138,7 +138,7 @@ function organization_import(&$treeView)
 {
     $lang = &DoceboLanguage::createInstance('organization', 'lms');
     global $modname, $op;
-    require_once $GLOBALS['where_lms'] . '/lib/lib.homerepo.php';
+    require_once _lms_ . '/lib/lib.homerepo.php';
 
     // ----------------------------------
     $GLOBALS['page']->add('<div class="std_block">');
@@ -173,7 +173,7 @@ function organization_import(&$treeView)
 function organization_play(&$treeView, $idItem)
 {
     global $modname, $op;
-    require_once $GLOBALS['where_lms'] . '/lib/lib.param.php';
+    require_once _lms_ . '/lib/lib.param.php';
     $tdb = $treeView->getTreeDb();
     $item = $tdb->getFolderById($idItem);
     $values = $item->otherValues;

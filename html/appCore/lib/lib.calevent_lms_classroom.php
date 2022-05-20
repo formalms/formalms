@@ -57,7 +57,7 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
 
     public function getForm()
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.classroom.php';
+        require_once _lms_ . '/lib/lib.classroom.php';
         $cm = new ClassroomManager();
 
         $class_arr = $cm->getClassroomArray();
@@ -180,7 +180,7 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
                 }
 
                 // -- timetable setup ------------------------------------------------
-                require_once $GLOBALS['where_framework'] . '/lib/resources/lib.timetable.php';
+                require_once _adm_ . '/lib/resources/lib.timetable.php';
                 $tt = new TimeTable();
 
                 $resource = 'classroom';
@@ -215,7 +215,7 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
             $end_date = $this->end_year . '-' . $this->end_month . '-' . $this->end_day . ' ' . $this->end_hour . ':' . $this->end_min . ':' . $this->end_sec;
 
             // -- timetable setup ------------------------------------------------
-            require_once $GLOBALS['where_framework'] . '/lib/resources/lib.timetable.php';
+            require_once _adm_ . '/lib/resources/lib.timetable.php';
             $tt = new TimeTable();
 
             $resource = 'classroom';

@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version  $Id:$
  */
-require_once $GLOBALS['where_framework'] . '/lib/lib.calevent_lms.php';
+require_once _adm_ . '/lib/lib.calevent_lms.php';
 
 use Forma\lib\Session\SessionManager;
 

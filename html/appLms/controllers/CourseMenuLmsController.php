@@ -161,7 +161,7 @@ class CourseMenuLmsController extends LmsController
 
             // print progress bar -------------------------------------------------
             if (Docebo::course()->getValue('show_progress') == 1) {
-                require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
+                require_once _lms_ . '/lib/lib.stats.php';
                 $total = getNumCourseItems($_SESSION['idCourse'],
                     false,
                     getLogUserId(),

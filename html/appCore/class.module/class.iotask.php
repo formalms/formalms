@@ -48,7 +48,7 @@ class Module_IOTask extends Module
     public function &get_connMgr()
     {
         if ($this->connMgr === null) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.iotask.php';
+            require_once _adm_ . '/lib/lib.iotask.php';
             $this->connMgr = new DoceboConnectionManager();
         }
 
@@ -67,12 +67,12 @@ class Module_IOTask extends Module
 
     public function loadBody()
     {
-        require_once $GLOBALS['where_framework'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once _adm_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
         $out = &$this->get_out();
         $lang = &$this->get_lang();
 
         if (isset($_GET['addconnector']) && !isset($_POST['cancel'])) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.iotask.php';
+            require_once _adm_ . '/lib/lib.iotask.php';
             $connMgr = &$this->get_connMgr();
 
             $filename = key($_POST['file']);

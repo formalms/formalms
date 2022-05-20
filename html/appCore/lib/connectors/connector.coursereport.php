@@ -90,9 +90,9 @@ class DoceboConnectorCourseReport extends DoceboConnector
      **/
     public function DoceboConnectorCourseReport($params)
     {
-        require_once $GLOBALS['where_framework'] . '/lib/lib.directory.php';
+        require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $this->set_config($params);
     }

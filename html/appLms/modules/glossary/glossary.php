@@ -207,7 +207,7 @@ if (!Docebo::user()->isAnonymous()) {
 
             return;
         }
-        require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+        require_once _lms_ . '/class.module/track.object.php';
         Track_Object::updateObjectTitle($_POST['idGlossary'], 'glossary', $_POST['title']);
 
         Util::jump_to('index.php?modname=glossary&op=modglossarygui&idGlossary=' . (int) $_POST['idGlossary']

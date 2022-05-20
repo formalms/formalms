@@ -1085,8 +1085,8 @@ class DateManager
         $clear = $this->clearDatePresence($id_date);
 
         if ($clear) {
-            require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-            require_once $GLOBALS['where_lms'] . '/lib/lib.stats.php';
+            require_once _lms_ . '/lib/lib.course.php';
+            require_once _lms_ . '/lib/lib.stats.php';
             //require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
 
             //$cman = new Competences_Manager();

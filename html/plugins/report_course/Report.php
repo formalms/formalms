@@ -96,8 +96,8 @@ class Report extends \ReportPlugin
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course_managment.php';
+        require_once _lms_ . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course_managment.php';
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
@@ -849,7 +849,7 @@ class Report extends \ReportPlugin
 
         $lang = &DoceboLanguage::createInstance('course', 'framework');
 
-        require_once $GLOBALS['where_framework'] . '/lib/lib.directory.php';
+        require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
 
         $acl_man = new DoceboACLManager();
@@ -949,7 +949,7 @@ class Report extends \ReportPlugin
         }
 
         if ($org_chart_subdivision == 1) {
-            require_once $GLOBALS['where_framework'] . '/lib/lib.orgchart.php';
+            require_once _adm_ . '/lib/lib.orgchart.php';
             $org_man = new OrgChartManager();
             if ($alluser == 1) {
                 $user_level = Docebo::user()->getUserLevelId();
@@ -1506,7 +1506,7 @@ class Report extends \ReportPlugin
 
         $output = '';
 
-        require_once $GLOBALS['where_lms'] . '/lib/lib.course.php';
+        require_once _lms_ . '/lib/lib.course.php';
 
         $lang = &DoceboLanguage::createInstance('course', 'lms');
         $course_lang = &DoceboLanguage::createInstance('course', 'lms');

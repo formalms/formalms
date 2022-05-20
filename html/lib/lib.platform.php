@@ -289,7 +289,7 @@ class PlatformManager
             return $false_var;
         }
 
-        require_once $GLOBALS['where_framework'] . '/class/' . $this->platform[$platform]['class_file_menu'];
+        require_once _adm_ . '/class/' . $this->platform[$platform]['class_file_menu'];
         $menu = eval(' return new ' . $this->platform[$platform]['class_name_menu'] . "( \$GLOBALS['current_user']); ");
 
         return $menu;
@@ -323,7 +323,7 @@ class PlatformManager
             return $false_var;
         }
 
-        require_once $GLOBALS['where_framework'] . '/class/class.conf.php';
+        require_once _adm_ . '/class/class.conf.php';
         require_once $GLOBALS['where_' . $platform] . '/class/' . $this->platform[$platform]['file_class_config'];
         $conf = eval(' return new ' . $this->platform[$platform]['class_name_config'] . '(); ');
 

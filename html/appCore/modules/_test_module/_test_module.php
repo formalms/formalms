@@ -29,10 +29,10 @@ function dispatch($op)
                 ['tabview' => 'tabview-min.js'],
                 ['tabview/assets/skins/sam/' => 'tabview.css']
             );
-            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.basetree.php';
-            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.groupselectortable.php';
-            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.userselectortable.php';
-            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.dynamicuserfilter.php';
+            require_once _adm_ . '/lib/user_selector/lib.basetree.php';
+            require_once _adm_ . '/lib/user_selector/lib.groupselectortable.php';
+            require_once _adm_ . '/lib/user_selector/lib.userselectortable.php';
+            require_once _adm_ . '/lib/user_selector/lib.dynamicuserfilter.php';
 
             cout(getTitleArea(['Test manager e selettore utenti']));
             cout('<div class="std_block">');
@@ -84,7 +84,7 @@ function dispatch($op)
 
         case 'final' :
             require_once _base_ . '/lib/lib.form.php';
-            require_once $GLOBALS['where_framework'] . '/lib/user_selector/lib.fulluserselector.php';
+            require_once _adm_ . '/lib/user_selector/lib.fulluserselector.php';
 
             $selector = new FullUserSelector('selector');
             $selector->init();

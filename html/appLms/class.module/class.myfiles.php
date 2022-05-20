@@ -17,7 +17,7 @@ class Module_MyFiles extends LmsModule
 {
     public function loadBody()
     {
-        require_once $GLOBALS['where_lms'] . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        require_once _lms_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
         myfilesDispatch($GLOBALS['op']);
     }
 

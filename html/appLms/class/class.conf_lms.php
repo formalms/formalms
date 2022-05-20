@@ -76,7 +76,7 @@ class Config_Lms extends Config
         while (list($var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
             switch ($value_type) {
                 case 'point_field':
-                    require_once $GLOBALS['where_framework'] . '/lib/lib.field.php';
+                    require_once _adm_ . '/lib/lib.field.php';
                     $fl = new FieldList();
                     $all_fields = $fl->getAllFields();
                     $fields[0] = $lang->def('_NO_VALUE');
@@ -287,7 +287,7 @@ class Config_Lms extends Config
                     }
                 ; break;
                 case 'menuvoice':
-                    require_once $GLOBALS['where_framework'] . '/lib/lib.menu.php';
+                    require_once _adm_ . '/lib/lib.menu.php';
                     $menu_man = new MenuManager();
                     if (isset($_POST['option'][$var_name]) && $_POST['option'][$var_name] == 1) {
                         $menu_man->addPerm(ADMIN_GROUP_GODADMIN, '/lms/admin' . $extra_info);
@@ -299,7 +299,7 @@ class Config_Lms extends Config
                 ; break;
                 case 'menuvoice_course_public':
                     $after_reload_perm = true;
-                    require_once $GLOBALS['where_framework'] . '/lib/lib.menu.php';
+                    require_once _adm_ . '/lib/lib.menu.php';
                     $menu_man = new MenuManager();
                     if (isset($_POST['option'][$var_name]) && $_POST['option'][$var_name] == 1) {
                         $perm = explode(';', $extra_info);

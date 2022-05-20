@@ -29,7 +29,7 @@ class DoceboCourseNotifier extends DoceboEventConsumer
 
     public function actionEvent(&$event)
     {
-        require_once $GLOBALS['where_lms'] . '/lib/lib.subscribe.php';
+        require_once _lms_ . '/lib/lib.subscribe.php';
 
         parent::actionEvent($event);
 

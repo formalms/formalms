@@ -24,8 +24,8 @@ if (Docebo::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
-require_once $GLOBALS['where_lms'] . '/lib/lib.levels.php';
-require_once $GLOBALS['where_lms'] . '/lib/lib.manmenu.php';
+require_once _lms_ . '/lib/lib.levels.php';
+require_once _lms_ . '/lib/lib.manmenu.php';
 
 /**
  * User interface functions.

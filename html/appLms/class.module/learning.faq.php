@@ -73,7 +73,7 @@ class Learning_Faq extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/faq/faq.php';
+        require_once _lms_ . '/modules/faq/faq.php';
         addfaqcat($this);
     }
 
@@ -93,7 +93,7 @@ class Learning_Faq extends Learning_Object
 
         unset($_SESSION['last_error']);
 
-        require_once $GLOBALS['where_lms'] . '/modules/faq/faq.php';
+        require_once _lms_ . '/modules/faq/faq.php';
         modfaqgui($this);
     }
 
@@ -183,7 +183,7 @@ class Learning_Faq extends Learning_Object
      **/
     public function play($id, $id_param, $back_url)
     {
-        require_once $GLOBALS['where_lms'] . '/modules/faq/do.faq.php';
+        require_once _lms_ . '/modules/faq/do.faq.php';
 
         $this->id = $id;
         $this->back_url = $back_url;
