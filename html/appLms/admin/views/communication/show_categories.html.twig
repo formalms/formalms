@@ -79,7 +79,7 @@
         var rows = [];
 
         body.forEach(function (item, k) {
-           link = '<a id="'+item.id+'" href="'+item.filterUrl+'" class="ico-sprite subs_download" title="{{ Lang_translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>'
+           link = '<a id="'+item.id+'" href="'+item.filterUrl+'" class="ico-sprite subs_download" title="{{ Lang_translate("_FILTER", "communication") }}"><span></span></a>'
             item.filterUrl = link;
             link = '<a id="'+item.id+'"  href="'+item.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
             item.editUrl = link;
@@ -170,7 +170,6 @@
         data: $form.serialize() ,
         dataType : 'json', // changing data type to json
         success: function (data) { // here I'm adding data as a parameter which stores the response
-            console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
             if(data.success === true)  {
                 modal.modal("hide");
                 t._datatable.row.add( {
@@ -179,7 +178,7 @@
                 "countCommunications": data.node.countObjects,
                 "filterUrl": '<a id="'+data.node.id+'" href="'+data.node.filterUrl+'" class="ico-sprite subs_download" title="{{ Lang_translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>',
                 "editUrl": '<a id="'+data.node.id+'" href="'+data.node.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>',
-                "deleteUrl": '<a id="'+data.node.id+'" href="'+data.node.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
+                "deleteUrl": '<a id="'+data.node.id+'" onclick="event.preventDefault();delFunc(' + node.id + ',' + node.countCommunications + ', this )" href="'+data.node.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
                 } ).draw();
             }
         }

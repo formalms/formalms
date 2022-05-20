@@ -77,6 +77,9 @@ class CommunicationAlmsController extends AlmsController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 100));
         $dir = Get::req('dir', DOTY_STRING, 'asc');
 
+        $idCategory = Get::req('categoryId', DOTY_INT, 0);
+        $filter = Get::req('filter', DOTY_MIXED, false);
+
         switch ($dir) {
             case 'desc':
                     $dir = 'desc';
@@ -86,12 +89,13 @@ class CommunicationAlmsController extends AlmsController
                 break;
         }
 
-        $communicationList = $this->model->findAll($startIndex, $results, $sort, $dir);
+        $communicationList = $this->model->findAll($startIndex, $results, $sort, $dir, $filter, $idCategory);
 
         foreach ($communicationList as $i => $communication) {
             
             $communicationList[$i]['editUrl'] = 'index.php?r=alms/communication/edit&idComm=' . $communication['id_comm'];
             $communicationList[$i]['deleteUrl'] = 'ajax.adm_server.php?r=alms/communication/delete&idComm=' . $communication['id_comm'];
+            $communicationList[$i]['description'] =  (strlen(strip_tags($communication['description'])) > 150) ? substr(strip_tags($communication['description']),0,150) . '...' : strip_tags($communication['description']);
 
         }
 

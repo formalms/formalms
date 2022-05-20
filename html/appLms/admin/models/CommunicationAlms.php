@@ -38,32 +38,28 @@ class CommunicationAlms extends Model
         $sortable = ['title', 'description', 'type_of', 'publish_date'];
         $sortable = array_flip($sortable);
         $lang_code = ($language == false ? getLanguage() : $language);
-        $_categories = [];
-        if ($id_category !== false) {
-            if ($show_descendants) {
-                $_categories = $this->getSubCategories($id_category);
-            }
-            $_categories[] = (int) $id_category;
-        }
+       
 
         $records = [];
-        $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle '
+        $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cs.name,"--") as courseName, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle '
             . ' FROM %lms_communication AS c '
             . ' LEFT JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm)'
             . ' LEFT JOIN %lms_communication_category AS cc ON (c.id_category = cc.id_category)'
             . ' LEFT JOIN %lms_communication_category_lang AS ccl ON (cc.id_category = ccl.id_category) AND ccl.lang_code = "' . $lang_code . '"'
             . ' LEFT JOIN %lms_communication_lang AS cl ON (c.id_comm = cl.id_comm) AND cl.lang_code = "' . $lang_code . '"'
+            . ' LEFT JOIN %lms_course AS cs ON (c.id_course = cs.idCourse)'
             . ' WHERE 1 '
             . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
-            . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '')
-            . (!empty($_categories) ? ' AND c.id_category IN (' . implode(',', $_categories) . ') ' : '')
-            . ' GROUP BY c.id_comm'
+            . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '');
+            $qtxt .= ($id_category > 0) ? ' AND c.id_category = ' . $id_category : '';
+            
+            $qtxt .= ' GROUP BY c.id_comm'
             . (isset($sortable[$sort])
                 ? ' ORDER BY ' . $sort . ' ' . ($dir == 'asc' ? 'ASC' : 'DESC') . ' '
                 : '')
             . ($results != 0 ? ' LIMIT ' . (int) $start_index . ', ' . (int) $results : '');
 
-          //  echo $qtxt; exit;
+            
         $re = $this->db->query($qtxt);
 
         if (!$re) {

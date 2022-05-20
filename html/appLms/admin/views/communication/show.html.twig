@@ -69,8 +69,8 @@
         var body = {{ communicationList | json_encode(constant('JSON_HEX_APOS')) | raw }};
 
         var columns = [
-            {data: 'title', title: '{{ Lang_translate('_TITLE', 'communication') }}', sortable: true},
-            {data: 'description', title: '{{ Lang_translate('_DESCRIPTION', 'communication') }}', sortable: false},
+            {data: 'content', title: '{{ Lang_translate('_TITLE', 'communication') }}', sortable: true},
+            {data: 'courseName', title: '{{ Lang_translate('_COURSE', 'course') }}', sortable: false},
             {data: 'categoryTitle', title: '{{ Lang_translate('_CATEGORY', 'communication') }}', sortable: false},
             {data: 'type_of', title: '{{ Lang_translate('_TYPE', 'communication') }}', sortable: false}
         ];
@@ -85,6 +85,9 @@
 
         body.forEach(function (item, k) {
        
+            content = '<b><a id="title' + item.id + '"  href="' + item.editUrl + '">' + item.title + '</a></b><br /><br /><p>' + item.description + '</p>';
+          
+            item.content = content;
             link = '<a id="'+item.id+'"  href="'+item.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
             item.editUrl = link;
             link = '<a id="'+item.id+'" onclick="event.preventDefault();delFunc(' + item.id + ',' + item.countCommunications + ', this )" href="'+item.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
