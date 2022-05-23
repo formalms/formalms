@@ -91,7 +91,7 @@ class AdminmanagerAdmController extends AdmController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $filter_text = Get::req('filter_text', DOTY_STRING, $this->_getSessionValue('filter', ''));
         $this->_setSessionValue('filter', $filter_text);
@@ -345,7 +345,7 @@ class AdminmanagerAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, 'location');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [

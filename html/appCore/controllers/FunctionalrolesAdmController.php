@@ -96,7 +96,7 @@ class FunctionalrolesAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
         $id_group = Get::req('id_group', DOTY_INT, 0);
 
@@ -183,7 +183,7 @@ class FunctionalrolesAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = ['text' => $filter_text];
@@ -709,7 +709,7 @@ class FunctionalrolesAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
@@ -777,7 +777,7 @@ class FunctionalrolesAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
@@ -1402,7 +1402,7 @@ class FunctionalrolesAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
         $show_gap = Get::req('gap', DOTY_INT, 0);
         $show_expired = Get::req('expired', DOTY_INT, 0);
@@ -1544,7 +1544,7 @@ class FunctionalrolesAdmController extends AdmController
     {
         $id_fncrole = Get::req('id_fncrole', DOTY_INT, 0);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
@@ -1646,7 +1646,7 @@ class FunctionalrolesAdmController extends AdmController
         $id_fncrole = Get::req('id_fncrole', DOTY_INT, 0);
         $id_user = Get::req('id_user', DOTY_INT, 0);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
@@ -1818,7 +1818,7 @@ class FunctionalrolesAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $searchFilter = ['user' => $id_user];
 

@@ -86,7 +86,7 @@ class CommunicationLmsController extends LmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $model = new CommunicationAlms();
         $communications = $model->findAllUnread(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
@@ -134,7 +134,7 @@ class CommunicationLmsController extends LmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $model = new CommunicationAlms();
         $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [

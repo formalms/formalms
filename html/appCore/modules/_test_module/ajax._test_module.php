@@ -16,7 +16,7 @@ require_once _base_ . '/lib/lib.json.php';
 $startIndex = Get::req('startIndex', DOTY_INT, 0);
 $results = Get::req('results', DOTY_INT, 15);
 $sort = Get::req('sort', DOTY_STRING, 'id');
-$dir = Get::req('dir', DOTY_STRING, 'asc');
+$dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
 $query = 'SELECT idst as id, userid as name, firstname, lastname, email FROM core_user ORDER BY ' . $sort . ' ' . $dir . ' LIMIT ' . $startIndex . ', ' . $results;
 $res = sql_query($query);

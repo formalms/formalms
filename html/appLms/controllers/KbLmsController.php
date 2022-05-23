@@ -137,7 +137,7 @@ class KbLmsController extends LmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
         $course_filter = Get::req('course_filter', DOTY_INT, -1);
 

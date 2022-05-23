@@ -74,7 +74,7 @@ class TimeperiodsAlmsController extends AlmsController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
         $searchFilter = [

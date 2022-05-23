@@ -436,7 +436,7 @@ class CourseAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $idCourse = Get::req('idCourse', DOTY_MIXED, null);
 
         $id_category = Get::req('node_id', DOTY_INT, (int) $this->_getSessionTreeData('id_category', 0));

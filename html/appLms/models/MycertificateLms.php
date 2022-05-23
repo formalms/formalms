@@ -34,7 +34,7 @@ class MycertificateLms extends Model
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'year');
-        $dir = Get::req('dir', DOTY_MIXED, 'desc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'desc');
 
         $filter = ['id_user' => $this->id_user];
         $myCertificates = $this->certificate->getAssignment($filter, $pagination, $count);

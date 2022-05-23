@@ -42,7 +42,7 @@ class LangAdmController extends AdmController
 
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 100));
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $sort = 'lang_code';
         switch ($dir) {
@@ -77,7 +77,7 @@ class LangAdmController extends AdmController
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         if (!in_array($sort, $sortable)) {
             $sort = 'lang_code';
@@ -362,7 +362,7 @@ class LangAdmController extends AdmController
         array_unshift($language_list_diff, Lang::t('_NONE'));
 
         $sort = Get::req('sort', DOTY_MIXED, 'text_module');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $la_module = Get::req('la_module', DOTY_ALPHANUM, false);
         $la_text = Get::req('la_text', DOTY_MIXED, false);

@@ -67,7 +67,7 @@ class LocationAlmsController extends AlmsController
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $filter = Get::req('filter_text', DOTY_STRING, '');
 
@@ -264,7 +264,7 @@ class LocationAlmsController extends AlmsController
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $filter = Get::Req('filter_Text', DOTY_STRING, '');
         $id_location = Get::req('location_id', DOTY_INT, 0);
@@ -439,7 +439,7 @@ class LocationAlmsController extends AlmsController
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $date = Get::req('date_range', DOTY_STRING, '');
         $filter = Get::Req('filter_Text', DOTY_STRING, '');

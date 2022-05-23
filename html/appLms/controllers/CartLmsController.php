@@ -213,7 +213,7 @@ class CartLmsController extends LmsController
     public function getCartList()
     {
         $sort = Get::req('sort', DOTY_MIXED, 'name');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $course_list = $this->model->getCartList();
 
