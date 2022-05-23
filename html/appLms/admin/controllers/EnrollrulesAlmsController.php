@@ -56,7 +56,7 @@ class EnrollrulesAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         if ($dir != 'asc' && $dir != 'desc') {
             $dir = 'asc';
         }
@@ -125,7 +125,7 @@ class EnrollrulesAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'log_time');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         if ($dir != 'asc' && $dir != 'desc') {
             $dir = 'asc';
         }
@@ -311,7 +311,7 @@ class EnrollrulesAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $rule = $this->model->getRule($id_rule);
         $course_selection = $this->json->decode($rule->course_list);
@@ -514,7 +514,7 @@ class EnrollrulesAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $rule = $this->model->getRule($id_rule);
         $course_selection = $this->json->decode($rule->course_list);

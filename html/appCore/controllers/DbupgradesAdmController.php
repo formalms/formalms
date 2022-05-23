@@ -41,7 +41,7 @@ class DbupgradesAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter = Get::req('filter', DOTY_STRING, '');
 
         $total = $this->model->getDbUpgradesTotal($filter);

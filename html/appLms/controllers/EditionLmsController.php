@@ -48,7 +48,7 @@ class EditionLmsController extends LmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $model = new EditionLms($id_course);
 

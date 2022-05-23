@@ -63,7 +63,7 @@ class TransactionAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'date_creation');
-        $dir = Get::req('dir', DOTY_MIXED, 'desc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'desc');
 
         $total_transaction = $this->model->getTotalTransaction();
         $array_transaction = $this->model->getTransaction($start_index, $results, $sort, $dir);

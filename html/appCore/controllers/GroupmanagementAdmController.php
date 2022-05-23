@@ -93,7 +93,7 @@ class GroupmanagementAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter = Get::req('filter', DOTY_STRING, '');
 
         //get total from database and validate the results count
@@ -514,7 +514,7 @@ class GroupmanagementAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [

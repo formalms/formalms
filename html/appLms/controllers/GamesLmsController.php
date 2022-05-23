@@ -69,7 +69,7 @@ class GamesLmsController extends LmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $model = new GamesAlms();
         $games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), [
@@ -108,7 +108,7 @@ class GamesLmsController extends LmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $model = new GamesAlms();
         $games = $model->findAllReaded(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), [

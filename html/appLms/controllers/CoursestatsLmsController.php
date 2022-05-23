@@ -203,7 +203,7 @@ class CoursestatsLmsController extends LmsController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
         $rowsPerPage = Get::req('length', DOTY_INT, $results);
 
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
 
@@ -358,7 +358,7 @@ class CoursestatsLmsController extends LmsController
     public function getusertabledataTask()
     {
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $id_course = Get::req('id_course', DOTY_INT, $_SESSION['idCourse']);
         $id_user = Get::req('id_user', DOTY_INT, 0);
 
@@ -433,7 +433,7 @@ class CoursestatsLmsController extends LmsController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         //get total from database and validate the results count
         $total = $this->model->getCourseUserStatsTotal($id_course, $id_user);

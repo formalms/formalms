@@ -49,7 +49,7 @@ class AdminrulesAdmController extends AdmController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $total_group = $this->model->totalGroup();
         $array_group = $this->model->loadGroup($start_index, $results, $sort, $dir);
@@ -242,7 +242,7 @@ class AdminrulesAdmController extends AdmController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $total_group = $this->model->totalAdmin($idst);
         $array_group = $this->model->loadAdmin($idst, $start_index, $results, $sort, $dir);

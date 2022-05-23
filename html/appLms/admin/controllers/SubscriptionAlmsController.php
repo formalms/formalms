@@ -713,7 +713,7 @@ class SubscriptionAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $dyn_fields = Get::req('_dyn_field', DOTY_MIXED, []);
 
@@ -3214,7 +3214,7 @@ class SubscriptionAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $filter = [
             'text' => Get::req('filter_text', DOTY_STRING, ''),
@@ -4002,7 +4002,7 @@ class SubscriptionAlmsController extends AlmsController
         $startIndex = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $filter_text = Get::req('filter_text', DOTY_STRING, '');
         $filter_course = Get::req('filter_course', DOTY_INT, 0);

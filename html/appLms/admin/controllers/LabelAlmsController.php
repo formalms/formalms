@@ -80,7 +80,7 @@ class LabelAlmsController extends AlmsController
         $start_index = Get::req('startIndex', DOTY_INT, 0);
         $results = Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
         $sort = Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Get::req('dir', DOTY_MIXED, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $labels = $this->model->getLabels($start_index, $results, $sort, $dir);
         $total_label = $this->model->getTotalLabelsCount();
@@ -125,7 +125,7 @@ class LabelAlmsController extends AlmsController
     public function move()
     {
         $id_common_label = Get::req('id_common_label', DOTY_INT, 0);
-        $direction = Get::req('dir', DOTY_MIXED, 'down');
+        $direction = Get::req('dir', DOTY_ALPHANUM, 'down');
         if ($direction == 'up') {
             $re = $this->model->move_up($id_common_label);
         } else {

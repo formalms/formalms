@@ -90,7 +90,7 @@ class UserselectorWidgetController extends Controller
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $learning_filter = Get::req('learning_filter', DOTY_STRING, 'none');
 
         $var_fields = Get::req('_dyn_field', DOTY_MIXED, []);
@@ -225,7 +225,7 @@ class UserselectorWidgetController extends Controller
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter = Get::req('filter', DOTY_STRING, '');
         $learning_filter = Get::req('learning_filter', DOTY_STRING, 'none');
 
@@ -398,7 +398,7 @@ class UserselectorWidgetController extends Controller
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter = Get::req('filter', DOTY_STRING, '');
 
         $pagination = [

@@ -37,7 +37,7 @@ switch ($op) {
         }
 
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         if (!in_array($sort, $sortable)) {
             $sort = 'idQuest';
         }
@@ -91,7 +91,7 @@ switch ($op) {
         }
 
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         if (!in_array($sort, $sortable)) {
             $sort = 'sequence';
         }

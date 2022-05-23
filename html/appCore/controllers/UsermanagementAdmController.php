@@ -251,7 +251,7 @@ class UsermanagementAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $var_fields = Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
@@ -2784,7 +2784,7 @@ class UsermanagementAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter = Get::req('filter', DOTY_STRING, '');
 
         $total = $this->model->getDeletedUsersTotal($filter);
@@ -2859,7 +2859,7 @@ class UsermanagementAdmController extends AdmController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 25));
         $rowsPerPage = Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_STRING, '');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
         $filter = Get::req('filter', DOTY_STRING, '');
 
         $total = $this->model->getWaitingUsersTotal($filter);
