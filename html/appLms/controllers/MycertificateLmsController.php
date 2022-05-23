@@ -83,7 +83,7 @@ class MycertificateLmsController extends LmsController
         ];
 
         if ($search = $_REQUEST['search']) {
-            $pagination['search'] = $search['value'];
+            $pagination['search'] = Get::filter($search['value'], DOTY_ALPHANUM);
         } else {
             $pagination['search'] = null;
         }
