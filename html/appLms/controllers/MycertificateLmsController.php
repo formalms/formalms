@@ -72,7 +72,7 @@ class MycertificateLmsController extends LmsController
         $results = Get::req('results', DOTY_INT, Get::sett('visuItem', 10));
         $rowsPerPage = Get::req('length', DOTY_INT, $results);
         $sort = Get::req('sort', DOTY_MIXED, 'year');
-        $dir = Get::req('dir', DOTY_STRING, 'asc');
+        $dir = Get::req('dir', DOTY_ALPHANUM, 'asc');
 
         $pagination = [
             'startIndex' => $startIndex,
@@ -83,7 +83,7 @@ class MycertificateLmsController extends LmsController
         ];
 
         if ($search = $_REQUEST['search']) {
-            $pagination['search'] = $search['value'];
+            $pagination['search'] = Get::filter($search['value'], DOTY_ALPHANUM);
         } else {
             $pagination['search'] = null;
         }
