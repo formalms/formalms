@@ -32,8 +32,9 @@ class ElearningLmsController extends LmsController
     {
         YuiLib::load('base,tabview');
 
-        if (!isset($_SESSION['id_common_label'])) {
-            $_SESSION['id_common_label'] = -1;
+        if (!$this->session->has('id_common_label')) {
+            $this->session->set('id_common_label',-1);
+            $this->session->save();
         }
 
         require_once _lms_ . '/lib/lib.course.php';
@@ -81,7 +82,7 @@ class ElearningLmsController extends LmsController
         $model = new ElearningLms();
 
         // update behavior for on_usercourse_empty: applies only after login
-        if (Forma\lib\Get::sett('on_usercourse_empty') === 'on' && !$_SESSION['logged_in']) {
+        if (Forma\lib\Get::sett('on_usercourse_empty') === 'on' && !$this->session->get('logged_in')) {
             $conditions_t = [
                 'cu.iduser = :id_user',
             ];
@@ -105,12 +106,15 @@ class ElearningLmsController extends LmsController
         $block_list = [];
         $tb_label = (Forma\lib\Get::sett('use_course_label', false) == 'off' ? false : true);
         if (!$tb_label) {
-            $_SESSION['id_common_label'] = 0;
+            $this->session->set('id_common_label',0);
+            $this->session->save();
         } else {
             $id_common_label = Forma\lib\Get::req('id_common_label', DOTY_INT, -1);
-            $_SESSION['id_common_label'] = $id_common_label;
+            $this->session->set('id_common_label',$id_common_label);
             $block_list['labels'] = true;
         }
+
+        $this->session->save();
 
         if ($tb_label) {
             require_once _lms_ . '/admin/models/LabelAlms.php';

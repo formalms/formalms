@@ -20,7 +20,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
     protected function setTab()
     {
         checkPerm('lesson', false, 'storage');
-        $this->model->setTdb(LomanagerLms::ORGDIRDB, $_SESSION['idCourse']);
+        $this->model->setTdb(LomanagerLms::ORGDIRDB, $this->idCourse);
     }
 
     public function setCurrentTab()
@@ -40,7 +40,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                 'type' => $this->model::ORGDIRDB,
                 'edit' => true,
                 'title' => Lang::t('_ORGROOTNAME', 'storage'),
-                'data' => $this->getFolders($_SESSION['idCourse'], false),
+                'data' => $this->getFolders($this->idCourse, false),
                 'currentState' => serialize([$this->getCurrentState(0)]),
                 'scormPlayerEnabled' => true,
             ];

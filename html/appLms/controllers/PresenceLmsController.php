@@ -26,7 +26,7 @@ class PresenceLmsController extends LmsController
     public function init()
     {
         $this->id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
-        $this->model = new PresenceLms($_SESSION['idCourse'], $this->id_date);
+        $this->model = new PresenceLms($this->session->get('idCourse'), $this->id_date);
         $this->json = new Services_JSON();
         $this->permissions = [
             'view' => true,
@@ -50,7 +50,7 @@ class PresenceLmsController extends LmsController
 
         YuiLib::load();
 
-        $user_date = $this->model->getUserDateForCourse(getLogUserId(), $_SESSION['idCourse']);
+        $user_date = $this->model->getUserDateForCourse(getLogUserId(), $this->session->get('idCourse'));
         $date_info = $this->model->getDateInfoForPublicPresence($user_date);
 
         if ($this->id_date == 0) {

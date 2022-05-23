@@ -74,7 +74,7 @@ class Learning_Poll extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/poll/poll.php';
         addpoll($this);
@@ -94,7 +94,7 @@ class Learning_Poll extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/poll/poll.php';
         modpollgui($this);
@@ -112,7 +112,7 @@ class Learning_Poll extends Learning_Object
     {
         checkPerm('view', false, 'storage');
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         //finding quest
         $reQuest = sql_query('
@@ -128,23 +128,23 @@ class Learning_Poll extends Learning_Object
 
             $quest_obj = eval("return new $type_class( $id_quest );");
             if (!$quest_obj->del()) {
-                $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+                Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
                 return false;
             }
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_polltrack WHERE id_poll = '" . $id . "'")) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+            Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_pollquest WHERE id_poll = '" . $id . "'")) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+            Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_poll WHERE id_poll = '" . $id . "'")) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILUREPOLL');
+            Forma::addError(Lang::t('_OPERATION_FAILUREPOLL'));
 
             return false;
         }
@@ -195,7 +195,7 @@ class Learning_Poll extends Learning_Object
             if (!$new_id) {
                 $this->del($id_new_poll);
 
-                $_SESSION['last_error'] = Lang::t('_POLL_ERR_COPY_QUEST') . ' : ' . $type_class . '( ' . $id_quest . ' )';
+                Forma::addError(Lang::t('_POLL_ERR_COPY_QUEST') . ' : ' . $type_class . '( ' . $id_quest . ' )');
 
                 return false;
             }

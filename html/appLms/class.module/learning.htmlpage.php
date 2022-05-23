@@ -74,7 +74,7 @@ class Learning_Htmlpage extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/htmlpage/htmlpage.php';
         addpage($this);
@@ -94,7 +94,7 @@ class Learning_Htmlpage extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/htmlpage/htmlpage.php';
         modpage($this);
@@ -112,13 +112,13 @@ class Learning_Htmlpage extends Learning_Object
     {
         checkPerm('view', false, 'storage');
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         $delete_query = '
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_htmlpage 
 		WHERE idPage = '" . $id . "'";
         if (!sql_query($delete_query)) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'htmlpage');
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage'));
 
             return false;
         }
@@ -126,7 +126,7 @@ class Learning_Htmlpage extends Learning_Object
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_htmlpage_attachment
 		WHERE idpage = '" . $id . "'";
         if (!sql_query($delete_query)) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'htmlpage');
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage'));
 
             return false;
         }

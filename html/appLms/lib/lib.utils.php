@@ -29,14 +29,15 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  **/
 function firstPage($idMain = false)
 {
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $query_main = '
 	SELECT module.idModule, main.idMain, module.module_name, module.default_op, module.token_associated 
 	FROM ( ' . $GLOBALS['prefix_lms'] . '_menucourse_main AS main JOIN
 		' . $GLOBALS['prefix_lms'] . '_menucourse_under AS un ) JOIN
 		' . $GLOBALS['prefix_lms'] . "_module AS module
 	WHERE main.idMain = un.idMain AND un.idModule = module.idModule 
-		AND main.idCourse = '" . (int) $_SESSION['idCourse'] . "'
-		AND un.idCourse = '" . (int) $_SESSION['idCourse'] . "'
+		AND main.idCourse = '" . (int) $session->get('idCourse') . "'
+		AND un.idCourse = '" . (int) $session->get('idCourse') . "'
 		" . ($idMain !== false ? " AND main.idMain='" . $idMain . "' " : '') . '
 	ORDER BY main.sequence, un.sequence';
     $re_main = sql_query($query_main);

@@ -13,10 +13,12 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
     $query = 'SELECT course_type'
                 . ' FROM %lms_course'
-                . ' WHERE idCourse = ' . (int) $_SESSION['idCourse'];
+                . ' WHERE idCourse = ' . (int) $session->get('idCourse');
 
     list($course_type) = sql_fetch_row(sql_query($query));
 
@@ -27,18 +29,20 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     $id_module_sel = Forma\lib\Get::req('id_module_sel', DOTY_INT, 0);
 
     if ($id_main_sel > 0) {
-        $_SESSION['current_main_menu'] = $id_main_sel;
+        $session->set('current_main_menu',$id_main_sel);
+
     }
     if ($id_module_sel > 0) {
-        $_SESSION['sel_module_id'] = $id_module_sel;
+        $session->set('sel_module_id',$id_module_sel);
     }
+    $session->save();
 
     // recover main menu --------------------------------------------------------------------------------
     $counter = 0;
     $id_list = [];
     $menu_module = [];
 
-    $query = 'SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ' . (int) $_SESSION['idCourse'] . ' ORDER BY sequence';
+    $query = 'SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ' . (int) $session->get('idCourse') . ' ORDER BY sequence';
     $re_main = $db->query($query);
     while ($main = $db->fetch_obj($re_main)) {
         $menu_module[$main->id] = [
@@ -54,7 +58,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
     $query_menu = '
 	SELECT mo.idModule AS id, mo.module_name, mo.default_op, mo.default_name, mo.token_associated AS token, mo.mvc_path, under.idMain AS id_main, under.my_name
 	FROM %lms_module AS mo JOIN %lms_menucourse_under AS under ON (mo.idModule = under.idModule)
-	WHERE under.idCourse = ' . (int) $_SESSION['idCourse'] . '
+	WHERE under.idCourse = ' . (int) $session->get('idCourse') . '
 	ORDER BY under.idMain, under.sequence';
     $re_menu_voice = $db->query($query_menu);
 
@@ -82,7 +86,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         . '<ul class="main-v-ul">', 'menu');
 
     $logo_panel = '';
-    if (isset($_SESSION['idCourse'])) {
+    if ($session->get('idCourse')) {
         $path = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse');
         $course_name = Docebo::course()->getValue('name');
         if (Docebo::course()->getValue('use_logo_in_courselist')) {
@@ -153,7 +157,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             $active = "class='collapse'";
             $style = 'style="height: 0px;"';
             $li_class = 'class="active"';
-            if ($_SESSION['current_main_menu'] == $id_main) {
+            if ($session->get('current_main_menu') == $id_main) {
                 $active = '';
                 $style = 'style="height: auto;"';
             }
@@ -173,7 +177,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
                 $active_sub = '';
                 $sub_menu_name = $sub['name'];
-                if ($id_sub == $_SESSION['sel_module_id']) {
+                if ($id_sub == $session->get('sel_module_id')) {
                     $active_sub = 'class="active-sub"';
                 }
 
@@ -214,7 +218,7 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
 
     // todo: redo the following
     $info_panel = '';
-    if (isset($_SESSION['idCourse'])) {
+    if ($session->get('idCourse')) {
         $path = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse');
         $GLOBALS['page']->add('<li><a href="#your_info">' . Lang::t('_BLIND_YOUR_INFO', 'menu_over') . '</a></li>', 'blind_navigation');
 
@@ -224,10 +228,10 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         $info_panel .= '<div class="lmsmenu_block">' . "\n";
 
         $user_stats = ['head' => [], 'body' => []];
-        if (!isset($_SESSION['is_ghost']) || $_SESSION['is_ghost'] !== true) {
+        if (!$session->get('is_ghost',false) !== true) {
             if (Docebo::course()->getValue('show_time') == 1) {
-                $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $_SESSION['idCourse']);
-                $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($_SESSION['idCourse']);
+                $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $session->get('idCourse'));
+                $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($session->get('idCourse'));
                 $tot_time_sec += $partial_time_sec;
 
                 $hours = (int) ($partial_time_sec / 3600);
@@ -282,12 +286,12 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
             $user_stats['head'][2] = Lang::t('_WHOIS_ONLINE', 'course');
             $user_stats['body'][2] = '<b id="user_online_n">'
                 . '<a id="open_users_list" href="javascript:void(0)">'
-                    . TrackUser::getWhoIsOnline($_SESSION['idCourse'])
+                    . TrackUser::getWhoIsOnline($session->get('idCourse'))
                 . '</a></b>';
         } elseif (Docebo::course()->getValue('show_who_online') == _SHOW_COUNT) {
             $user_stats['head'][2] = Lang::t('_WHOIS_ONLINE', 'course');
             $user_stats['body'][2] = '<b id="user_online_n">'
-                    . TrackUser::getWhoIsOnline($_SESSION['idCourse'])
+                    . TrackUser::getWhoIsOnline($session->get('idCourse'))
                 . '</b>';
         }
         // print first pannel
@@ -323,15 +327,15 @@ if (!Docebo::user()->isAnonymous() && isset($_SESSION['idCourse'])) {
         // print progress bar -------------------------------------------------
         if (Docebo::course()->getValue('show_progress') == 1) {
             require_once _lms_ . '/lib/lib.stats.php';
-            $total = getNumCourseItems($_SESSION['idCourse'],
+            $total = getNumCourseItems($session->get('idCourse'),
                                         false,
                                         getLogUserId(),
                                         false);
             $tot_complete = getStatStatusCount(getLogUserId(),
-                                                $_SESSION['idCourse'],
+                $session->get('idCourse'),
                                                 ['completed', 'passed']);
             $tot_failed = getStatStatusCount(getLogUserId(),
-                                                $_SESSION['idCourse'],
+                $session->get('idCourse'),
                                                 ['failed']);
 
             $materiali = Lang::t('_PROGRESS_ALL', 'course');

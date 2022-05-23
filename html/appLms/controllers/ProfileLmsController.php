@@ -65,7 +65,8 @@ class ProfileLmsController extends LmsController
         }
 
         /* Force show lms_user template */
-        $_SESSION['layoutToRender'] = Layout::LAYOUT_LMS_USER;
+        $this->session->set('layoutToRender', Layout::LAYOUT_LMS_USER);
+        $this->session->save();
 
         require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
@@ -131,21 +132,26 @@ class ProfileLmsController extends LmsController
                 $_error_message = $error['msg'];
                 $_content = $user_manager->getElapsedPassword($url);
             } else {
-                unset($_SESSION['must_renew_pwd']);
+                $this->session->remove('must_renew_pwd');
+                $this->session->save();
                 //Util::jump_to('index.php?r=lms/profile/show');
                 $user = new DoceboUser(Docebo::user()->getUserId(), 'public_area');
                 $homepageAdm = new HomepageAdm();
                 switch ($homepageAdm->saveUser($user)) {
                     case MANDATORY_FIELDS:
-                        $_SESSION['request_mandatory_fields_compilation'] = 1;
+                        $this->session->set('request_mandatory_fields_compilation', 1);
+                        $this->session->save();
                         break;
                     case USER_SAVED:
+                    default:
                         break;
+
                 }
                 Util::jump_to('index.php');
             }
         } else {
-            $_SESSION['must_renew_pwd'] = 1;
+            $this->session->set('must_renew_pwd',1);
+            $this->session->save();
             $res = Docebo::user()->isPasswordElapsed();
             if ($res == 2) {
                 $_title = getTitleArea(Lang::t('_CHANGEPASSWORD', 'profile'));
@@ -197,7 +203,7 @@ class ProfileLmsController extends LmsController
 
         // extract courses which have been completed in the considered period and the credits associated
         $course_type_trans = getCourseTypes();
-        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM ' . $GLOBALS['prefix_lms'] . '_course as c ' . ' JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int) getLogUserId() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
+        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM ' . $GLOBALS['prefix_lms'] . '_course as c ' . ' JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int)getLogUserId() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
         $res = sql_query($query);
 
         $course_data = [];

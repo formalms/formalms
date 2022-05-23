@@ -84,7 +84,8 @@ class PrecompileLmsController extends LmsController
 
         if ($fields_checked && $policy_checked) {
             //send alert
-            unset($_SESSION['request_mandatory_fields_compilation']);
+            $this->session->remove('request_mandatory_fields_compilation');
+            $this->session->save();
             $this->login_post_privacy();
         } else {
             //send alert

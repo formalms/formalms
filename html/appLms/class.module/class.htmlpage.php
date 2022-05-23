@@ -17,13 +17,12 @@ class Module_Htmlpage extends LmsModule
 {
     public function hideLateralMenu()
     {
-        if (isset($_SESSION['test_assessment'])) {
+        if ($this->session->has('test_assessment')) {
             return true;
         }
-        if (isset($_SESSION['direct_play'])) {
+        if ($this->session->has('direct_play')) {
             return true;
         }
-
         return false;
     }
 

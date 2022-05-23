@@ -42,7 +42,7 @@ class CourseLmsController extends LmsController
             define('_PATH_COURSE', '/appLms/' . Forma\lib\Get::sett('pathcourse'));
 
             require_once _lms_ . '/lib/lib.levels.php';
-        } elseif (!isset($_SESSION['idCourse'])) {
+        } elseif (!$this->session->has('idCourse') || empty($this->session->get('idCourse'))) {
             errorCommunication($lang->def('_FIRSTACOURSE'));
         } else {
             echo "You can't access";
@@ -87,7 +87,7 @@ class CourseLmsController extends LmsController
         $course['difficulty_translate'] = $difficult_lang[$course['difficult']];
         $course['subscribe_method_translate'] = $subs_lang[$course['subscribe_method']];
 
-        if ($_SESSION['levelCourse'] >= 4) {
+        if ($this->session->get('levelCourse') >= 4) {
             $course['show_quota'] = true;
             $quota = [];
             $max_quota = $GLOBALS['course_descriptor']->getQuotaLimit();
@@ -108,22 +108,22 @@ class CourseLmsController extends LmsController
             $course['quota'] = $quota;
         }
 
-        $obj_course = new DoceboCourse($_SESSION['idCourse']);
+        $obj_course = new DoceboCourse($this->session->get('idCourse'));
         $info_course = $obj_course->getAllInfo();
-        $id_date = CourseLms::getMyDateCourse($_SESSION['idCourse']);
+        $id_date = CourseLms::getMyDateCourse($this->session->get('idCourse'));
         $info_date = ($info_course['course_type'] == 'classroom' ? CourseLms::getInfoDate($id_date) : '');
 
         foreach ($levels as $key => $level) {
             if ($course['level_show_user'] & (1 << $key)) {
                 $course['show_users'] = true;
                 if ($info_course['course_type'] == 'classroom') {
-                    if ($_SESSION['levelCourse'] == 7) {
-                        $users = &$acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
+                    if ($this->session->get('levelCourse') == 7) {
+                        $users = &$acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($this->session->get('idCourse'), $key, $this->session->get('idEdition'));
                     } else {
-                        $users = &$acl_man->getUsersMappedData(CourseLms::getIdUserOfLevelDate($_SESSION['idCourse'], $key, $id_date));
+                        $users = &$acl_man->getUsersMappedData(CourseLms::getIdUserOfLevelDate($this->session->get('idCourse'), $key, $id_date));
                     }
                 } else {
-                    $users = &$acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($_SESSION['idCourse'], $key, $_SESSION['idEdition']));
+                    $users = &$acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($this->session->get('idCourse'), $key, $this->session->get('idEdition')));
                 }
                 $course[$level] = ['name' => $level, 'users' => $users];
             }

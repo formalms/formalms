@@ -446,8 +446,8 @@ class CategoryTree extends TreeDb_CatDb
                 'WHERE iLeft <= ' . $limits['iLeft'] . ' AND iRight >= ' . $limits['iRight'] . ' AND idCategory > 0 ORDER BY iLeft';
         $res = sql_query($query);
         $folders = [0];
-        while (list($id_cat) = sql_fetch_row($res)) {
-            $folders[] = (int) $id_cat;
+        foreach ($res as $row) {
+            $folders[] = (int) $row['idCategory'];
         }
 
         return $folders;

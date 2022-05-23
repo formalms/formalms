@@ -20,7 +20,7 @@ class LomanagerrepoLmsController extends LomanagerLmsController
     protected function setTab()
     {
         checkPerm('public', false, 'storage');
-        $this->model->setTdb(LomanagerLms::REPODIRDB, $_SESSION['idCourse']);
+        $this->model->setTdb(LomanagerLms::REPODIRDB, $this->idCourse);
     }
 
     public function setCurrentTab()
@@ -40,7 +40,7 @@ class LomanagerrepoLmsController extends LomanagerLmsController
                 'type' => $this->model::REPODIRDB,
                 'edit' => true,
                 'title' => Lang::t('_PUBREPOROOTNAME', 'storage'),
-                'data' => $this->getFolders($_SESSION['idCourse'], false),
+                'data' => $this->getFolders($this->idCourse, false),
                 'currentState' => serialize([$this->getCurrentState(0)]),
                 'scormPlayerEnabled' => false,
             ];

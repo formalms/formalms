@@ -87,29 +87,35 @@ class CourseTableView extends TableView
             '_SERVER_CONNECTION_ERROR' => Lang::t('_SERVER_CONNECTION_ERROR', 'course', 'lms'),
         ]);
 
-        if (!isset($_SESSION['course_category']['filter_status'])) {
-            $_SESSION['course_category']['filter_status'] = [
+        $courseCategory = $this->session->get('course_category');
+
+        if (!isset($courseCategory['filter_status'])) {
+            $courseCategory['filter_status'] = [
                 'c_category' => 0,
                 'c_filter' => '',
                 'c_flatview' => true,
                 'c_waiting' => false,
             ];
+
         } else {
-            $filter = &$_SESSION['course_category']['filter_status'];
+            $filter = $courseCategory['filter_status'];
             if (!isset($filter['c_category'])) {
-                $_SESSION['course_category']['filter_status']['c_category'] = 0;
+                $courseCategory['filter_status']['c_category'] = 0;
             }
             if (!isset($filter['c_filter'])) {
-                $_SESSION['course_category']['filter_status']['c_filter'] = '';
+                $courseCategory['filter_status']['c_filter'] = '';
             }
             if (!isset($filter['c_flatview'])) {
-                $_SESSION['course_category']['filter_status']['c_flatview'] = true;
+                $courseCategory['filter_status']['c_flatview'] = true;
             }
             if (!isset($filter['c_waiting'])) {
-                $_SESSION['course_category']['filter_status']['c_waiting'] = '';
+                $courseCategory['filter_status']['c_waiting'] = '';
             }
         }
-        $filter = &$_SESSION['course_category']['filter_status'];
+        $this->session->set('course_category',$courseCategory);
+        $this->session->save();
+
+        $filter = $courseCategory['filter_status'];
 
         $this->addOption('baseUrl', 'index.php');
         $this->addOption('imageUrl', Forma\lib\Get::tmpl_path('base') . 'images/');

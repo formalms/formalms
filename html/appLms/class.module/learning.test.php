@@ -104,7 +104,7 @@ class Learning_Test extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once Forma::inc(_lms_ . '/modules/test/test.php');
         addtest($this);
@@ -124,7 +124,7 @@ class Learning_Test extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once Forma::inc(_lms_ . '/modules/test/test.php');
         modtestgui($this);
@@ -142,7 +142,7 @@ class Learning_Test extends Learning_Object
     {
         checkPerm('view', false, 'storage');
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         // finding track
         $re_quest_track = sql_query("
@@ -168,14 +168,14 @@ class Learning_Test extends Learning_Object
 
             $quest_obj = eval("return new $type_class( $idQuest );");
             if (!$quest_obj->del()) {
-                $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+                Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
                 return false;
             }
             if (!sql_query("
 			DELETE FROM %lms_testtrack_quest
 			WHERE idQuest = '" . (int) $idQuest . "'")) {
-                $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+                Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
                 return false;
             }
@@ -185,24 +185,24 @@ class Learning_Test extends Learning_Object
             if (!sql_query('
 			DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_page 
 			WHERE idTrack IN ('" . implode(',', $id_tracks) . "') ")) {
-                $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+                Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
                 return false;
             }
         }
 
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testtrack WHERE idTest = '" . $id . "'")) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+            Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testquest WHERE idTest = '" . $id . "'")) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+            Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id . "'")) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE');
+            Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
@@ -291,7 +291,7 @@ class Learning_Test extends Learning_Object
             $new_id = $quest_obj->copy($id_new_test);
             if (!$new_id) {
                 $this->del($id_new_test);
-                $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE') . ' : ' . $type_class . '( ' . $idQuest . ' )';
+                Forma::addError(Lang::t('_OPERATION_FAILURE') . ' : ' . $type_class . '( ' . $idQuest . ' )');
 
                 return false;
             }

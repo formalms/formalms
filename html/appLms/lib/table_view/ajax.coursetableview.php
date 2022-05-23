@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, false);
 
 switch ($command) {
@@ -28,7 +28,10 @@ switch ($command) {
         $table_status['startIndex'] = $startIndex;
         $table_status['sort'] = $sort;
         $table_status['dir'] = $dir;
-        $_SESSION['course_category']['table_status'] = $table_status;
+
+        $courseCategory = $session->get('course_category');
+
+        $courseCategory['table_status'] = $table_status;
 
         $filter = Forma\lib\Get::req('filter', DOTY_MIXED, false);
 
@@ -36,25 +39,27 @@ switch ($command) {
         if (isset($filter['c_category']['value'])) {
             $filter_status['c_category'] = $filter['c_category']['value'];
         } else {
-            $filter_status['c_category'] = $_SESSION['course_category']['filter_status']['c_category'];
+            $filter_status['c_category'] = $courseCategory['filter_status']['c_category'];
         }
         if (isset($filter['c_filter']['value'])) {
             $filter_status['c_filter'] = $filter['c_filter']['value'];
         } else {
-            $filter_status['c_filter'] = $_SESSION['course_category']['filter_status']['c_filter'];
+            $filter_status['c_filter'] = $courseCategory['filter_status']['c_filter'];
         }
         if (isset($filter['c_flatview']['value'])) {
             $filter_status['c_flatview'] = $filter['c_flatview']['value'];
         } else {
-            $filter_status['c_flatview'] = $_SESSION['course_category']['filter_status']['c_flatview'];
+            $filter_status['c_flatview'] = $courseCategory['filter_status']['c_flatview'];
         }
         if (isset($filter['c_waiting']['value'])) {
             $filter_status['c_waiting'] = $filter['c_waiting']['value'];
         } else {
-            $filter_status['c_waiting'] = $_SESSION['course_category']['filter_status']['c_waiting'];
+            $filter_status['c_waiting'] = $courseCategory['filter_status']['c_waiting'];
         }
 
-        $_SESSION['course_category']['filter_status'] = $filter_status;
+        $courseCategory['filter_status'] = $filter_status;
+        $session->set('course_category',$courseCategory);
+        $session->save();
 
         require_once _lms_ . '/lib/lib.course.php';
         $man_courses = new Man_Course();
@@ -82,7 +87,7 @@ switch ($command) {
             $moderate = true;
         }
 
-        while ($row = sql_fetch_assoc($course_list)) {
+        foreach ($course_list as $row){
             $row['status'] = $course_status[$row['status']];
 
             $highlight = false;

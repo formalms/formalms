@@ -49,7 +49,7 @@ class Track_Poll extends Track_Object
      **/
     public function createNewTrack($id_user, $id_resource, $idReference)
     {
-        if ($_SESSION['levelCourse'] < 6) {
+        if ($this->session->get('levelCourse') < 6) {
             $query = '
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_polltrack 
 			SET id_user = '" . (int) $id_user . "', 

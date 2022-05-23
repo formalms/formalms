@@ -48,7 +48,7 @@ class CartLmsController extends LmsController
     protected function checkCartTransaction($id_trans, $cart_id)
     {
         $req_code = md5($id_trans . $cart_id);
-        $ses_code = md5($_SESSION['cart_transaction'] . $_SESSION['cart_id']);
+        $ses_code = md5($this->session->get('cart_transaction') . $this->session->get('cart_id'));
 
         $res = ($req_code === $ses_code ? true : false);
 
@@ -96,7 +96,8 @@ class CartLmsController extends LmsController
         }
 
         if ($new) {
-            $_SESSION['cart_id'] = time() . substr(uniqid('cart'), 0, 20);
+            $this->session->set('cart_id', time() . substr(uniqid('cart', true), 0, 20));
+            $this->session->save();
         }
 
         $this->render('show', ['total_price' => $total_price, 'paypal_url' => $this->getPaypalUrl()]);
@@ -232,7 +233,8 @@ class CartLmsController extends LmsController
 
     public function emptyCart()
     {
-        $_SESSION['lms_cart'] = [];
+        $this->session->set('lms_cart',[]);
+        $this->session->save();
 
         $result['success'] = true;
 
@@ -244,7 +246,7 @@ class CartLmsController extends LmsController
         $del_list = Forma\lib\Get::req('elements', DOTY_MIXED, '');
         $del_list = explode(',', $del_list);
 
-        $cart = $_SESSION['lms_cart'];
+        $cart = $this->session->get('lms_cart',[]);
 
         foreach ($del_list as $id) {
             $id_details = explode('_', $id);
@@ -264,7 +266,8 @@ class CartLmsController extends LmsController
             }
         }
 
-        $_SESSION['lms_cart'] = $cart;
+        $this->session->set('lms_cart', $cart);
+        $this->session->save();
 
         require_once _lms_ . '/lib/lib.cart.php';
 
@@ -281,7 +284,7 @@ class CartLmsController extends LmsController
     {
         $wire = Forma\lib\Get::req('wire', DOTY_INT, 0);
 
-        $cart = $_SESSION['lms_cart'];
+        $cart = $this->session->get('lms_cart');
         require_once _lms_ . '/lib/lib.cart.php';
 
         if (Learning_Cart::cartItemCount() > 0) {
@@ -320,7 +323,12 @@ class CartLmsController extends LmsController
                         if (!$model->subscribeUser(Docebo::user()->getIdSt(), 3, $waiting)) {
                             $this->acl_man->removeFromGroup($level_idst[3], Docebo::user()->getIdSt());
                         } elseif ($this->model->addTransactionCourse($id_trans, $id_course, $id_date, 0, $course_info[$id_course . '_' . $id_date . '_0'])) {
-                            unset($_SESSION['lms_cart'][$id_course]['classroom'][$id_date]);
+
+                            $currentCart = $this->session->get('lms_cart');
+                            unset($currentCart[$id_course]['classroom'][$id_date]);
+                            $this->session->set('lms_cart',$currentCart);
+                            $this->session->save();
+
                             $query = 'UPDATE %lms_courseuser'
                                 . " SET status = '-2'"
                                 . ' WHERE idUser = ' . Docebo::user()->getIdSt()
@@ -337,7 +345,12 @@ class CartLmsController extends LmsController
                         if (!$model->subscribeUser(Docebo::user()->getIdSt(), 3, $waiting)) {
                             $this->acl_man->removeFromGroup($level_idst[3], Docebo::user()->getIdSt());
                         } elseif ($this->model->addTransactionCourse($id_trans, $id_course, 0, $id_edition, $course_info[$id_course . '_0_' . $id_edition])) {
-                            unset($_SESSION['lms_cart'][$id_course]['edition'][$id_edition]);
+
+                            $currentCart = $this->session->get('lms_cart');
+                            unset($currentCart[$id_course]['edition'][$id_edition]);
+                            $this->session->set('lms_cart',$currentCart);
+                            $this->session->save();
+
                             $query = 'UPDATE %lms_courseuser'
                                 . " SET status = '-2'"
                                 . ' WHERE idUser = ' . Docebo::user()->getIdSt()
@@ -353,7 +366,12 @@ class CartLmsController extends LmsController
                     if (!$model->subscribeUser(Docebo::user()->getIdSt(), 3, $waiting)) {
                         $this->acl_man->removeFromGroup($level_idst[3], Docebo::user()->getIdSt());
                     } elseif ($this->model->addTransactionCourse($id_trans, $id_course, 0, 0, $course_info[$id_course . '_0_0'])) {
-                        unset($_SESSION['lms_cart'][$id_course]);
+
+                        $currentCart = $this->session->get('lms_cart');
+                        unset($currentCart[$id_course]);
+                        $this->session->set('lms_cart',$currentCart);
+                        $this->session->save();
+
                         $query = 'UPDATE %lms_courseuser'
                             . " SET status = '-2'"
                             . ' WHERE idUser = ' . Docebo::user()->getIdSt()
@@ -368,16 +386,17 @@ class CartLmsController extends LmsController
 
             require_once _lms_ . '/lib/lib.cart.php';
             if (Learning_Cart::cartItemCount() == 0) {
-                $_SESSION['lms_cart'] = [];
+                $this->session->set('lms_cart',[]);
             }
 
-            $_SESSION['cart_transaction'] = $id_trans;
+            $this->session->set('cart_transaction',$id_trans);
+            $this->session->save();
             $result = [
                 'success' => true,
                 'message' => UIFeedback::info(Lang::t('_TRANS_CREATED', 'catalogue'), true),
                 'id_transaction' => $id_trans,
                 'total_price' => $total_price,
-                'link' => Forma\lib\Get::site_url() . _folder_lms_ . '/index.php?r=cart/show&id_transaction=' . $id_trans . '&cart=' . $_SESSION['cart_id'],
+                'link' => Forma\lib\Get::site_url() . _folder_lms_ . '/index.php?r=cart/show&id_transaction=' . $id_trans . '&cart=' . $this->session->get('cart_id'),
             ];
         }
 

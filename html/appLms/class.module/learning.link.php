@@ -71,7 +71,7 @@ class Learning_Link extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/link/link.php';
         addlinkcat($this);
@@ -91,7 +91,7 @@ class Learning_Link extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/link/link.php';
         modlinkgui($this);

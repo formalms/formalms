@@ -606,13 +606,16 @@ class CatalogLmsController extends LmsController
         $id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
         $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
 
+        $currentCart = $this->session->get('lms_cart');
         if ($id_edition != 0) {
-            $_SESSION['lms_cart'][$id_course]['edition'][$id_edition] = $id_edition;
+            $currentCart[$id_course]['edition'][$id_edition] = $id_edition;
         } elseif ($id_date != 0) {
-            $_SESSION['lms_cart'][$id_course]['classroom'][$id_date] = $id_date;
+            $currentCart[$id_course]['classroom'][$id_date] = $id_date;
         } else {
-            $_SESSION['lms_cart'][$id_course] = $id_course;
+            $currentCart[$id_course] = $id_course;
         }
+        $this->session->set('lms_cart',$currentCart);
+        $this->session->save();
 
         $res['success'] = true;
         $res['message'] = UIFeedback::info(Lang::t('_COURSE_ADDED_IN_CART', 'catalogue'), true);

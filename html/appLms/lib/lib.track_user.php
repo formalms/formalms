@@ -18,9 +18,16 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 class TrackUser
 {
+    protected $session;
+
+    public function __construct()
+    {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    }
+
     public function createSessionCourseTrack()
     {
-        if (isset($_SESSION['is_ghost']) && $_SESSION['is_ghost'] === true) {
+        if ($this->session->get('is_ghost', false) === true) {
             return;
         }
 
@@ -29,33 +36,32 @@ class TrackUser
         list($last_course_access) = sql_fetch_row(sql_query('
 		SELECT UNIX_TIMESTAMP(MAX(lastTime)) 
 		FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-		WHERE idCourse = '" . $_SESSION['idCourse'] . "' AND idUser = '" . getLogUserId() . "'"));
-        $_SESSION['lastCourseAccess'] = $last_course_access;
+		WHERE idCourse = '" . $this->session->get('idCourse') . "' AND idUser = '" . getLogUserId() . "'"));
 
-        sql_query('
-		UPDATE ' . $GLOBALS['prefix_lms'] . '_tracksession
-		SET active = 0
-		WHERE idUser = ' . (int) getLogUserId() . ' and active = 1');
+        $this->session->set('lastCourseAccess', $last_course_access);
+        $this->session->save();
 
-        sql_query('
-		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_tracksession 
+        sql_query('UPDATE %lms_tracksession SET active = 0 WHERE idUser = ' . (int)getLogUserId() . ' and active = 1');
+
+        sql_query("INSERT INTO _tracksession 
 		( idCourse, idUser, session_id, enterTime, lastTime, ip_address, active ) VALUES ( 
-			'" . $_SESSION['idCourse'] . "', 
+			'" . $this->session->get('idCourse') . "', 
 			'" . getLogUserId() . "',
-			'" . ''/*session_id()*/ . "',
-			'$now',
-			'$now',
+			'',
+			'" . $now . "',
+			'" . $now . "',
 			'" . $_SERVER['REMOTE_ADDR'] . "',
 			1 ) ");
         list($id) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if ($id) {
-            $_SESSION['id_enter_course'] = $id;
+            $this->session->set('id_enter_course', $id);
+            $this->session->save();
         }
     }
 
     public function setActionTrack($id_user, $id_course, $mod_name, $mode)
     {
-        if (isset($_SESSION['is_ghost']) && $_SESSION['is_ghost'] === true) {
+        if ($this->session->get('is_ghost', false) === true) {
             return;
         }
 
@@ -67,20 +73,20 @@ class TrackUser
 			lastOp = '" . $mode . "', 
 			lastTime = '" . $now . "',
 			ip_address = '" . $_SERVER['REMOTE_ADDR'] . "'
-		WHERE idEnter = '" . $_SESSION['id_enter_course'] . "' "
+		WHERE idEnter = '" . $this->session->get('id_enter_course') . "' "
             . "AND idCourse = '" . $id_course . "' AND idUser = '" . $id_user . "'");
 
-        if (Forma\lib\Get::sett('tracking') == 'on' && $_SESSION['levelCourse'] != '2') {
-            $query_track = '
-			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_trackingeneral
+        if (Forma\lib\Get::sett('tracking') == 'on' && $this->session->get('levelCourse') != '2') {
+            $query_track = "
+			INSERT INTO %lms_trackingeneral
 			( idUser, idEnter, idCourse, function, type, timeof, session_id, ip ) VALUES (
 				'" . $id_user . "',
-				'" . $_SESSION['id_enter_course'] . "',
+				'" . $this->session->get('id_enter_course') . "',
 				'" . $id_course . "',
 				'" . $mod_name . "',
 				'" . $mode . "',
 				'" . $now . "',
-				'" . ''/*.session_id()*/ . "',
+				'',
 				'" . $_SERVER['REMOTE_ADDR'] . "' )";
             sql_query($query_track);
         }
@@ -88,27 +94,25 @@ class TrackUser
 
     public function closeSessionCourseTrack()
     {
-        TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], '_COURSE_LIST', 'view');
+        TrackUser::setActionTrack(getLogUserId(), $this->session->get('idCourse'), '_COURSE_LIST', 'view');
     }
 
     public function logoutSessionCourseTrack()
     {
-        if (isset($_SESSION['idCourse'])) {
-            TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], '_LOGOUT', 'view');
+        if ($this->session->get('idCourse')) {
+            TrackUser::setActionTrack(getLogUserId(), $this->session->get('idCourse'), '_LOGOUT', 'view');
         }
     }
 
     public function getUserTotalCourseTime($idst_user, $id_course)
     {
-        if (isset($_SESSION['is_ghost']) && $_SESSION['is_ghost'] === true) {
+        if ($this->session->get('is_ghost', false) === true) {
             return 0;
         }
 
         $tot_time = 0;
-        $query_time = '
-		SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
-		FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-		WHERE idCourse = '" . $id_course . "' AND idUser = '" . $idst_user . "'";
+        $query_time = "SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
+		FROM %lms_tracksession WHERE idCourse = '" . $id_course . "' AND idUser = '" . $idst_user . "'";
         $re = sql_query($query_time);
         if ($re && sql_num_rows($re)) {
             list($tot_time) = sql_fetch_row(sql_query($query_time));
@@ -119,16 +123,14 @@ class TrackUser
 
     public function getUserPreviousSessionCourseTime($idst_user, $id_course)
     {
-        if (isset($_SESSION['is_ghost']) && $_SESSION['is_ghost'] === true) {
+        if ($this->session->get('is_ghost', false) === true) {
             return 0;
         }
 
         $tot_time = 0;
-        $query_time = '
-		SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
-		FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-		WHERE idCourse = '" . $id_course . "' AND idUser = '" . $idst_user . "' "
-                . " AND idEnter <> '" . $_SESSION['id_enter_course'] . "'";
+        $query_time = "SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
+		FROM %lms_tracksession  WHERE idCourse = '" . $id_course . "' AND idUser = '" . $idst_user . "' "
+            . " AND idEnter <> '" . $this->session->get('id_enter_course') . "'";
         $re = sql_query($query_time);
         if ($re && sql_num_rows($re)) {
             list($tot_time) = sql_fetch_row($re);
@@ -139,16 +141,14 @@ class TrackUser
 
     public function getUserCurrentSessionCourseTime($id_course)
     {
-        if (isset($_SESSION['is_ghost']) && $_SESSION['is_ghost'] === true) {
+        if ($this->session->get('is_ghost', false) === true) {
             return 0;
         }
 
-        if (isset($_SESSION['id_enter_course'])) {
-            $query_time = '
-			SELECT UNIX_TIMESTAMP(enterTime)
-			FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
+        if ($this->session->get('id_enter_course')) {
+            $query_time = "SELECT UNIX_TIMESTAMP(enterTime) FROM %lms_tracksession 
 			WHERE idCourse = '" . $id_course . "' AND idUser = '" . getLogUserId() . "' 
-				AND idEnter = '" . $_SESSION['id_enter_course'] . "'";
+				AND idEnter = '" . $this->session->get('id_enter_course') . "'";
             list($partial_time) = sql_fetch_row(sql_query($query_time));
 
             return time() - $partial_time;
@@ -159,7 +159,7 @@ class TrackUser
 
     /**
      * @param int $id_course id of thecourse
-     * @param int $gep_time  minute of last action
+     * @param int $gep_time minute of last action
      *
      * @return int the number of user in the course in the gap of time (logged included)
      */
@@ -195,7 +195,7 @@ class TrackUser
 
     public function getLastAccessToCourse($id_user)
     {
-        if (isset($_SESSION['is_ghost']) && $_SESSION['is_ghost'] === true) {
+        if ($this->session->get('is_ghost', false) === true) {
             return 0;
         }
 
@@ -215,16 +215,16 @@ class TrackUser
 
     public function checkSession($id_user)
     {
-        if (isset($_SESSION['is_ghost']) && $_SESSION['is_ghost'] === true) {
+        if ($this->session->get('is_ghost', false) === true) {
             return true;
         }
 
-        if (isset($_SESSION['id_enter_course'])) {
+        if ($this->session->get('id_enter_course')) {
             $query_time = '
 			SELECT COUNT(*) 
 			FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-			WHERE idUser = '" . $id_user . "' AND idEnter = '" . $_SESSION['id_enter_course'] . "' "
-                    . ' AND active = 1';
+			WHERE idUser = '" . $id_user . "' AND idEnter = '" . $this->session->get('id_enter_course') . "' "
+                . ' AND active = 1';
             list($num_active) = sql_fetch_row(sql_query($query_time));
 
             return $num_active == 1;

@@ -25,11 +25,11 @@ class LomanagerLmsController extends LmsController
      */
     protected $model;
 
+    protected $idCourse;
+
     public function init()
     {
-        if (isset($_SESSION['idCourse'])) {
-            $this->idCourse = (int) $_SESSION['idCourse'];
-        }
+        $this->idCourse = (int)$this->session->get('idCourse');
         checkPerm('view', false, 'storage');
         $this->json = new Services_JSON();
         $this->model = new LomanagerLms();
@@ -200,10 +200,10 @@ class LomanagerLmsController extends LmsController
 
         require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
         $saveObj = new Session_Save();
-        $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
+        $saveName = $saveObj->getName('organization' . $this->idCourse, true);
         $saveObj->save($saveName, $this->model->getTreeView()->getState());
 
-        $folder = $this->model->getTdb()->getFolderById((string) $id);
+        $folder = $this->model->getTdb()->getFolderById((string)$id);
         $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
         $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lomanager/completeAction');
     }
@@ -252,7 +252,7 @@ class LomanagerLmsController extends LmsController
     {
         switch ($learningObject['type']) {
             case 'item':
-                $resource = DbConn::getInstance()->query('SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = ' . (int) $learningObject['resource']);
+                $resource = DbConn::getInstance()->query('SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = ' . (int)$learningObject['resource']);
 
                 $result = DbConn::getInstance()->fetch_assoc($resource);
                 $fileTypeArray = explode('.', $result['path']);

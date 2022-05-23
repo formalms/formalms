@@ -16,11 +16,13 @@ $htmlData = '';
 
 <div class="std_block">
     <?php
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
     $htmlData .= (Form::openForm('maskcourse_form', 'index.php?r=' . $base_link_course . '/' . ($id_course === false ? 'newcourse' : 'modcourse'), false, 'post', 'multipart/form-data')
         . Form::getHidden('id_course', 'id_course', $id_course)
         . Form::openElementSpace()
         . ($id_course === false ? Form::getLineBox(Lang::t('_CATEGORY_SELECTED', 'course'), $name_category) .
-            Form::getHidden('idCategory', 'idCategory', $_SESSION['course_category']['filter_status']['id_category']) : Form::getDropdown(Lang::t('_CATEGORY_SELECTED', 'course'), 'idCategory', 'idCategory', $model->getCategoryForDropdown(), $course['idCategory']))
+            Form::getHidden('idCategory', 'idCategory', $session->get('course_category')['filter_status']['id_category']) : Form::getDropdown(Lang::t('_CATEGORY_SELECTED', 'course'), 'idCategory', 'idCategory', $model->getCategoryForDropdown(), $course['idCategory']))
         . Form::getTextfield(Lang::t('_CODE', 'course'), 'course_code', 'course_code', '50', $course['code'])
         . Form::getTextfield(Lang::t('_COURSE_NAME', 'course'), 'course_name', 'course_name', '255', $course['name']));
 

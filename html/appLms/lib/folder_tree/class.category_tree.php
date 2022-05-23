@@ -32,13 +32,16 @@ class CategoryFolderTree extends ClientTree
 
         $initialShowedNodes = [];
         if ($initFromSession) {
-            if (isset($_SESSION['course_category']['tree_status'])) {
-                $tree_status = &$_SESSION['course_category']['tree_status'];
+            $courseCategory = $session->get('course_category');
+
+            //----
+            if (isset($courseCategory['tree_status'])) {
+                $tree_status = $courseCategory['tree_status'];
                 //if (isset($tree_status['showed_nodes'])) {}
             }
 
-            if (isset($_SESSION['course_category']['filter_status'])) {
-                $filter_status = &$_SESSION['course_category']['filter_status'];
+            if (isset($courseCategory['filter_status'])) {
+                $filter_status = $courseCategory['filter_status'];
                 if (isset($filter_status['c_category'])) {
                     $this->setOption('initialSelectedNode', $filter_status['c_category']);
                 }
@@ -81,10 +84,14 @@ class CategoryFolderTree extends ClientTree
         require_once _lms_ . '/lib/category/class.categorytree.php';
         $treecat = new Categorytree();
 
-        if (!isset($_SESSION['course_category']['filter_status']['c_category'])) {
-            $_SESSION['course_category']['filter_status']['c_category'] = 0;
+        $courseCategory = $this->session->get('course_category');
+
+        if (!isset($courseCategory['filter_status']['c_category'])) {
+            $courseCategory['filter_status']['c_category'] = 0;
+            $this->session->set('course_category',$courseCategory);
+            $this->session->save();
         }
-        $treestatus = &$_SESSION['course_category']['filter_status']['c_category'];
+        $treestatus = $courseCategory['filter_status']['c_category'];
 
         $result = [];
         $folders = $treecat->getOpenedFolders($treestatus);
@@ -92,7 +99,7 @@ class CategoryFolderTree extends ClientTree
         $ref = &$result;
         foreach ($folders as $folder) {
             if ($folder > 0) {
-                for ($i = 0; $i < count($ref); ++$i) {
+                for ($i = 0, $iMax = count($ref); $i < $iMax; ++$i) {
                     if ($ref[$i]['id'] == $folder) {
                         $ref[$i]['expanded'] = true;
                         $ref[$i]['children'] = [];

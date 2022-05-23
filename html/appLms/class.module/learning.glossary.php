@@ -72,7 +72,7 @@ class Learning_Glossary extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/glossary/glossary.php';
         addglossary($this);
@@ -92,7 +92,7 @@ class Learning_Glossary extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/glossary/glossary.php';
         modglossarygui($this);
@@ -109,14 +109,14 @@ class Learning_Glossary extends Learning_Object
     public function del($id, $back_url = null)
     {
         checkPerm('view', false, 'storage');
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_glossaryterm WHERE idGlossary='" . $id . "'")) {
-            $_SESSION['last_error'] = _OPERATION_FAILURE;
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'standard'));
 
             return false;
         } elseif (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_glossary WHERE idGlossary = '" . (int) $id . "'")) {
-            $_SESSION['last_error'] = _OPERATION_FAILURE;
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'standard'));
 
             return false;
         }

@@ -20,7 +20,7 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
     protected function setTab()
     {
         checkPerm('home', false, 'storage');
-        $this->model->setTdb(LomanagerLms::HOMEREPODIRDB, $_SESSION['idCourse']);
+        $this->model->setTdb(LomanagerLms::HOMEREPODIRDB, $this->idCourse);
     }
 
     public function setCurrentTab()
@@ -39,7 +39,7 @@ class LomanagerhomerepoLmsController extends LomanagerLmsController
                 'controller' => 'lomanagerhomerepo',
                 'edit' => true,
                 'title' => Lang::t('_HOMEREPOROOTNAME', 'storage'),
-                'data' => $this->getFolders($_SESSION['idCourse'], false),
+                'data' => $this->getFolders($this->idCourse, false),
                 'currentState' => serialize([$this->getCurrentState(0)]),
                 'scormPlayerEnabled' => false,
             ];

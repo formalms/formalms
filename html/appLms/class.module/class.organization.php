@@ -58,7 +58,7 @@ class Module_Organization extends LmsModule
 
         if (!$ready) {
             // contruct and initialize TreeView to manage public repository
-            $id_course = (isset($_GET['courseid']) ? $_GET['courseid'] : $_SESSION['idCourse']);
+            $id_course = \Forma\lib\Get::req('courseid', DOTY_INT, $this->session->get('idCourse'));
             $this->repoDb = new OrgDirDb($id_course);
 
             /* TODO: ACL */
@@ -112,7 +112,7 @@ class Module_Organization extends LmsModule
     {
         if ($this->isFindingDestination()) {
             return '&amp;crepo=' . $_GET['crepo'] . '&amp;'
-                    . $this->treeView->_getOpCopyLOSel() . '=1"';
+                . $this->treeView->_getOpCopyLOSel() . '=1"';
         }
 
         return '';
@@ -157,17 +157,17 @@ class Module_Organization extends LmsModule
                 $saveData = &$saveObj->load($saveName);
 
                 return '<div class="std_block">'
-                        . '<form id="homereposhow" method="post"'
-                        . ' action="index.php?modname=' . $modname
-                        . '&amp;op=display&amp;crepo=' . $_GET['crepo'] . '&amp;'
-                        . $this->treeView->_getOpCopyLOSel() . '=1"'
-                        . ' >' . "\n"
-                        . '<input type="hidden" id="authentic_request_org" name="authentic_request" value="' . Util::getSignature() . '" />'
-                        . $this->lang->def('_REPOSELECTDESTINATION')
-                        . ' <img src="' . getPathImage() . 'lobject/' . $saveData['objectType']
-                        . '.gif" alt="' . $saveData['objectType']
-                        . '" title="' . $saveData['objectType'] . '"/>'
-                        . $saveData['name'];
+                    . '<form id="homereposhow" method="post"'
+                    . ' action="index.php?modname=' . $modname
+                    . '&amp;op=display&amp;crepo=' . $_GET['crepo'] . '&amp;'
+                    . $this->treeView->_getOpCopyLOSel() . '=1"'
+                    . ' >' . "\n"
+                    . '<input type="hidden" id="authentic_request_org" name="authentic_request" value="' . Util::getSignature() . '" />'
+                    . $this->lang->def('_REPOSELECTDESTINATION')
+                    . ' <img src="' . getPathImage() . 'lobject/' . $saveData['objectType']
+                    . '.gif" alt="' . $saveData['objectType']
+                    . '" title="' . $saveData['objectType'] . '"/>'
+                    . $saveData['name'];
             }
         }
 
@@ -179,13 +179,13 @@ class Module_Organization extends LmsModule
         global $modname;
         if ($this->isFindingDestination()) {
             return '<img src="' . $this->treeView->_getCopyImage() . '" alt="' . $this->lang->def('_REPOPASTELO') . '" /> '
-                    . '<input type="submit" value="' . $this->lang->def('_REPOPASTELO') . '" class="LVAction"'
-                    . ' name="' . $this->treeView->_getOpCopyLOEndOk() . '" />'
-                    . ' <img src="' . $this->treeView->_getCancelImage() . '" alt="' . $this->treeView->_getCancelAlt() . '" />'
-                    . '<input type="submit" class="LVAction" value="' . $this->treeView->_getCancelLabel() . '"'
-                    . ' name="' . $this->treeView->_getOpCopyLOEndCancel() . '" id="' . $this->treeView->_getOpCopyLOEndCancel() . '" />'
-                    . '</form>'
-                    . '</div>';
+                . '<input type="submit" value="' . $this->lang->def('_REPOPASTELO') . '" class="LVAction"'
+                . ' name="' . $this->treeView->_getOpCopyLOEndOk() . '" />'
+                . ' <img src="' . $this->treeView->_getCancelImage() . '" alt="' . $this->treeView->_getCancelAlt() . '" />'
+                . '<input type="submit" class="LVAction" value="' . $this->treeView->_getCancelLabel() . '"'
+                . ' name="' . $this->treeView->_getOpCopyLOEndCancel() . '" id="' . $this->treeView->_getOpCopyLOEndCancel() . '" />'
+                . '</form>'
+                . '</div>';
         }
 
         return '';
@@ -201,13 +201,12 @@ class Module_Organization extends LmsModule
 
     public function hideLateralMenu()
     {
-        if (isset($_SESSION['test_assessment'])) {
+        if ($this->session->has('test_assessment')) {
             return true;
         }
-        if (isset($_SESSION['direct_play'])) {
+        if ($this->session->has('direct_play')) {
             return true;
         }
-
         return false;
     }
 
@@ -272,7 +271,7 @@ class Module_Organization extends LmsModule
         if ($GLOBALS['op'] == 'custom_playitem') {
             require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
             $saveObj = new Session_Save();
-            $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
+            $saveName = $saveObj->getName('organization' . $this->session->get('idCourse'), true);
             $saveObj->save($saveName, $this->treeView->getState());
 
             $id_item = Forma\lib\Get::req('id_item', DOTY_INT, 0);
@@ -291,8 +290,8 @@ class Module_Organization extends LmsModule
                     $folder->otherValues[ORGFIELDPREREQUISITES],
                     getLogUserId()) || (isset($_GET['edit']) && $_GET['edit'])) {
                 $lo->play($idItem,
-                            $folder->otherValues[ORGFIELDIDPARAM],
-                            $back_url);
+                    $folder->otherValues[ORGFIELDIDPARAM],
+                    $back_url);
             } else {
                 exit("You don't have permissions");
             }
@@ -317,14 +316,14 @@ class Module_Organization extends LmsModule
             $isTerminator = $folder->otherValues[ORGFIELDISTERMINATOR];
             /*With this direct_play courses was set as finished if is passed the object automatically without needing to set it as finish course object
             $isTerminator = ( isset($_SESSION['direct_play']) ? true : $folder->otherValues[ORGFIELDISTERMINATOR] );*/
-            $idCourse = $_SESSION['idCourse'];
+            $idCourse = $this->session->get('idCourse');
 
             if ($isTerminator) {
                 require_once Forma::inc(_lms_ . '/lib/lib.course.php');
                 $idTrack = Track_Object::getIdTrackFromCommon($id_item, getLogUserId());
                 $track = createLOTrack($idTrack, $objectType, $idResource, $idParams, '');
                 if ($track->getStatus() == 'completed' || $track->getStatus() == 'passed') {
-                    if (!saveTrackStatusChange((int) getLogUserId(), (int) $idCourse, _CUS_END)) {
+                    if (!saveTrackStatusChange((int)getLogUserId(), (int)$idCourse, _CUS_END)) {
                         errorCommunication($lang->def('_OPERATION_FAILURE'));
 
                         return;
@@ -336,7 +335,7 @@ class Module_Organization extends LmsModule
                 Util::jump_to('index.php?modname=storage&op=display');
             }
 
-            if (isset($_SESSION['direct_play'])) {
+            if ($this->session->has('direct_play')) {
                 $from = Forma\lib\Get::req('from', DOTY_ALPHANUM, '');
                 //reset cache for the notication
                 UpdatesLms::resetCache();
@@ -344,29 +343,39 @@ class Module_Organization extends LmsModule
                 // autoplay with more than an object and the first one is completed
 
                 require_once Forma::inc(_lms_ . '/lib/lib.orgchart.php');
-                $orgman = new OrganizationManagement($_SESSION['idCourse']);
-                $first_lo = &$orgman->getInfoWhereType(false, $_SESSION['idCourse']);
+                $orgman = new OrganizationManagement($this->session->get('idCourse'));
+                $first_lo = &$orgman->getInfoWhereType(false, $this->session->get('idCourse'));
 
                 if (count($first_lo) >= 2) {
                     // if we have more than an object we need to play the first one until it's completed
                     $obj = array_shift($first_lo);
-                    $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) Docebo::user()->getId();
+                    $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int)$obj['id_org'] . ' AND idUser = ' . (int)Docebo::user()->getId();
                     list($status) = sql_fetch_row(sql_query($query));
                     if ($status == 'completed' || $status == 'passed') {
                         // we have more then one object and the first one is complete, we can go to the course first page
-                        unset($_SESSION['direct_play']);
+                        $this->session->remove('direct_play');
+                        $this->session->save();
                         $first_page = firstPage();
-                        $_SESSION['current_main_menu'] = $first_page['idMain'];
-                        $_SESSION['sel_module_id'] = $first_page['idModule'];
+                        $this->session->set('current_main_menu', $first_page['idMain']);
+                        $this->session->set('sel_module_id', $first_page['idModule']);
+                        $this->session->save();
                         Util::jump_to('index.php?modname=' . $first_page['modulename'] . '&op=' . $first_page['op'] . '&id_module_sel=' . $first_page['idModule']);
                     }
                 }
                 // back and out of the course
                 switch ($from) {
-                    case 'catalogue':  Util::jump_to('index.php?r=lms/catalog/show&sop=unregistercourse'); ; break;
-                    case 'lo_plan':  Util::jump_to('index.php?r=lms/mycourses/show&mycourses_tab=tb_elearning&sop=unregistercourse'); ; break;
-                    case 'lo_history':  Util::jump_to('index.php?r=lms/mycourses/show&mycourses_tab=tb_elearning&current_tab=lo_history&sop=unregistercourse'); ; break;
-                    default:  Util::jump_to('index.php?r=lms/mycourses/show&mycourses_tab=tb_elearning&sop=unregistercourse'); ; break;
+                    case 'catalogue':
+                        Util::jump_to('index.php?r=lms/catalog/show&sop=unregistercourse');
+                        break;
+                    case 'lo_plan':
+                        Util::jump_to('index.php?r=lms/mycourses/show&mycourses_tab=tb_elearning&sop=unregistercourse');
+                        break;
+                    case 'lo_history':
+                        Util::jump_to('index.php?r=lms/mycourses/show&mycourses_tab=tb_elearning&current_tab=lo_history&sop=unregistercourse');
+                        break;
+                    default:
+                        Util::jump_to('index.php?r=lms/mycourses/show&mycourses_tab=tb_elearning&sop=unregistercourse');
+                        break;
                 }
             }
         }
@@ -384,67 +393,64 @@ class Module_Organization extends LmsModule
         switch ($this->treeView->op) {
             case 'import':
                 import($this->treeView);
-            break;
+                break;
             case 'createLO':
                 global $modname;
                 // save state
 
                 require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
+                $saveName = $saveObj->getName('organization' . $this->session->get('idCourse'), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $GLOBALS['page']->add($this->treeView->LOSelector($modname, 'index.php?r=lms/lomanagerorganization/completeAction&op=display&sor=' . $saveName . '&'
-                            . $this->treeView->_getOpCreateLOEnd() . '=1'), 'content');
-            break;
+                    . $this->treeView->_getOpCreateLOEnd() . '=1'), 'content');
+                break;
             case 'createLOSel':
                 global $modname;
                 // save state
                 require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
+                $saveName = $saveObj->getName('organization' . $this->session->get('idCourse'), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
-                $parentId = (int) $_REQUEST['treeview_selected_organization'];
+                $parentId = (int)$_REQUEST['treeview_selected_organization'];
                 // start learning object creation
                 $lo = createLO($_REQUEST['radiolo']);
 
                 if ($lo !== false) {
                     $lo->create('index.php?r=lms/lomanagerorganization/completeAction&op=display&sor=' . $saveName . '&'
-                    . $this->treeView->_getOpCreateLOEnd() . '=1');
+                        . $this->treeView->_getOpCreateLOEnd() . '=1');
                 } else {
                     $GLOBALS['page']->addStart(
-                    getTitleArea($this->lang->def('_ORGANIZATION', 'organization', 'lms'), 'organization')
+                        getTitleArea($this->lang->def('_ORGANIZATION', 'organization', 'lms'), 'organization')
                         . '<div class="std_block">', 'content');
                     $GLOBALS['page']->addEnd('</div>', 'content');
-                    if (isset($_SESSION['last_error'])) {
-                        if ($_SESSION['last_error'] != '') {
-                            //$GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
-                            UIFeedback::error($_SESSION['last_error']);
-                            unset($_SESSION['last_error']);
-                        }
+                    if (Forma::errorsExists()) {
+                        //$GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
+                        UIFeedback::error(Forma::getFormattedErrors(true));
                     }
                     organization($this->treeView);
                 }
-            break;
+                break;
             case 'editLO':
                 global $modname;
                 // save state
                 require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
+                $saveName = $saveObj->getName('organization' . $this->session->get('idCourse'), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $folder = $this->repoDb->getFolderById($this->treeView->getSelectedFolderId());
                 $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE]);
                 $lo->edit($folder->otherValues[REPOFIELDIDRESOURCE], 'index.php?r=lms/lo/organization&id_course=1');
-            break;
+                break;
             case 'playitem':
                 global $modname;
                 // save state
                 require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('organization' . $_SESSION['idCourse'], true);
+                $saveName = $saveObj->getName('organization' . $this->session->get('idCourse'), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $folder = $this->repoDb->getFolderById($this->treeView->getItemToPlay());
@@ -453,16 +459,16 @@ class Module_Organization extends LmsModule
 
                 $idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
                 $back_url = 'index.php?r=lms/lomanagerorganization/completeAction&op=organization&sor=' . $saveName . '&'
-                            . $this->treeView->_getOpPlayEnd()
-                            . '=' . $folder->id;
+                    . $this->treeView->_getOpPlayEnd()
+                    . '=' . $folder->id;
 
                 $lo->play($idItem,
-                            $folder->otherValues[ORGFIELDIDPARAM],
-                            $back_url);
-            break;
+                    $folder->otherValues[ORGFIELDIDPARAM],
+                    $back_url);
+                break;
             case 'copyLOSel':
                 $GLOBALS['page']->add($this->treeView->load());
-            break;
+                break;
             case 'createLOEnd':
             case 'copyLOEndOk':
             case 'copyLOEndCancel':
@@ -476,7 +482,7 @@ class Module_Organization extends LmsModule
                     Util::jump_to(' index.php?r=lms/lomanagerorganization/completeAction&op=' . $saveData['repo']);
                 }
                 Util::jump_to('index.php?r=lms/lomanagerorganization/completeAction&op=display');
-            break;
+                break;
             case 'copyLO':
                 global $modname;
                 // save state
@@ -485,28 +491,25 @@ class Module_Organization extends LmsModule
                 $saveName = $saveObj->getName('crepo', true);
                 $folder = $this->treeView->tdb->getFolderById($this->treeView->selectedFolder);
                 $saveData = ['repo' => 'organization',
-                                    'id' => $this->treeView->getSelectedFolderId(),
-                                    'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
-                                    'name' => $folder->otherValues[REPOFIELDTITLE],
-                                    'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE],
+                    'id' => $this->treeView->getSelectedFolderId(),
+                    'objectType' => $folder->otherValues[REPOFIELDOBJECTTYPE],
+                    'name' => $folder->otherValues[REPOFIELDTITLE],
+                    'idResource' => $folder->otherValues[REPOFIELDIDRESOURCE],
                 ];
                 $saveObj->save($saveName, $saveData);
                 Util::jump_to('index.php?r=lms/lomanagerorganization/completeAction&op=display&crepo=' . $saveName . '&'
-                            . $this->treeView->_getOpCopyLOSel() . '=1');
-                            // no break
+                    . $this->treeView->_getOpCopyLOSel() . '=1');
+            // no break
             case 'display' :
             case 'organization' :
             default:
-                if (isset($_SESSION['last_error'])) {
-                    if ($_SESSION['last_error'] != '') {
-                        //$GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
-                        UIFeedback::error($_SESSION['last_error']);
-                        unset($_SESSION['last_error']);
-                    }
+                if (Forma::errorsExists()) {
+                    //$GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
+                    UIFeedback::error(Forma::getFormattedErrors(true));
                 }
                 organization($this->treeView);
 
-            break;
+                break;
         }
     }
 

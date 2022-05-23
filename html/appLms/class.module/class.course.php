@@ -20,15 +20,20 @@ class Module_Course extends LmsModule
         switch ($GLOBALS['op']) {
             case 'mycourses':
             case 'unregistercourse':
-                if (isset($_SESSION['idCourse'])) {
+                if ($this->session->has('idCourse')) {
                     TrackUser::closeSessionCourseTrack();
-                    unset($_SESSION['idCourse']);
-                    unset($_SESSION['idEdition']);
+                    $this->session->remove('idCourse');
+                    $this->session->remove('idEdition');
                 }
-                if (isset($_SESSION['cp_assessment_effect'])) {
-                    unset($_SESSION['cp_assessment_effect']);
+                if ($this->session->has('cp_assessment_effect')) {
+                    $this->session->remove('cp_assessment_effect');
                 }
+                $this->session->save();
+                break;
+            default:
+                break;
         }
+
     }
 
     public function loadBody()
@@ -36,7 +41,8 @@ class Module_Course extends LmsModule
         switch ($GLOBALS['op']) {
             case 'showresults':
                 $id_course = Forma\lib\Get::req('id_course', DOTY_INT, false);
-                $_SESSION['idCourse'] = $id_course;
+                $this->session->set('idCourse',$id_course);
+                $this->session->save();
                 Util::jump_to('index.php?modname=organization&op=showresults&idcourse=' . $id_course);
             ; break;
             case 'mycourses' :

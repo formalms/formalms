@@ -29,6 +29,8 @@ class Track_Object
 
     public $_table = '';
 
+    protected $session;
+
     /**
      * object constructor
      * Table : learning_commontrack
@@ -51,6 +53,7 @@ class Track_Object
                     $this->objectType, $this->dateAttempt, $this->status) = sql_fetch_row($rs);
             }
         }
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function getEnvironmentTable($environment)

@@ -166,9 +166,8 @@ function schedule_set($idrep, $checkperm = 'mod')
                 'recipients' => [],
             ];
         $session->set('schedule_tempdata',$scheduleTempData);
+        $session->save();
     }
-
-
 
     require_once _base_ . '/lib/lib.form.php';
 
@@ -271,6 +270,7 @@ function modify_schedulation()
     checkPerm('mod');
     //preload schedulation data in session
     require_once _lms_ . '/lib/lib.report.php';
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
     if ($id_sched = Forma\lib\Get::req('id_sched', DOTY_INT, false)) {
         $qry = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . "_report_schedule WHERE id_report_schedule=$id_sched";
@@ -284,18 +284,19 @@ function modify_schedulation()
         }
 
         $period = explode(',', $row['period']);
-        $_SESSION['schedule_update'] = $id_sched; //integer value, <>0 and <>false
-        $_SESSION['schedule_tempdata'] = [
+        $session->set('schedule_update',$id_sched);
+        $session->set('schedule_tempdata',[
             'name' => $row['name'],
             'period' => $period[0],
             'period_info' => $period[1],
             'time' => '',
             'recipients' => $recipients,
-        ];
+        ]);
 
         $rid = $row['id_report_filter'];
-        $_SESSION['report_saved'] = true;
-        $_SESSION['report_saved_data'] = ['id' => $rid, 'name' => getReportNameById($rid)];
+        $session->set('report_saved',true);
+        $session->set('report_saved_data',['id' => $rid, 'name' => getReportNameById($rid)]);
+        $session->save();
 
         schedule_report();
     } else {

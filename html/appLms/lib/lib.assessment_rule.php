@@ -229,13 +229,13 @@ class AssessmentRuleManager
             $feedback_txt[] = $row['feedback_txt'];
 
             //courses subscriptions - only students are affected
-            if (!empty($course_arr) && $_SESSION['levelCourse'] <= 3) {
+            if (!empty($course_arr) && $this->session->get('levelCourse') <= 3) {
                 $arr_courses = array_keys($course_arr);
                 $csm->multipleUserSubscribe(getLogUserId(), $arr_courses, 3);
             }
 
             //competences assignment - only students are affected
-            if (!empty($competence_arr) && $_SESSION['levelCourse'] <= 3) {
+            if (!empty($competence_arr) && $this->session->get('levelCourse') <= 3) {
                 foreach ($competence_arr as $c_id => $data) {
                     if ($data['type'] == 'score') {
                         $score = (isset($data['score']) ? $data['score'] : 0);

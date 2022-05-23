@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/learning.object.php';
+require_once __DIR__ . '/learning.object.php';
 
 class Learning_Item extends Learning_Object
 {
@@ -57,7 +57,7 @@ class Learning_Item extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/item/item.php';
         additem($this);
@@ -74,7 +74,7 @@ class Learning_Item extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _lms_ . '/modules/item/item.php';
         moditem($this);
@@ -88,7 +88,7 @@ class Learning_Item extends Learning_Object
     {
         //checkPerm('view', false, 'storage');
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -104,7 +104,7 @@ class Learning_Item extends Learning_Object
             sl_open_fileoperations();
             if (!sl_unlink($path_to_file . $old_file)) {
                 sl_close_fileoperations();
-                $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'item');
+                Forma::addError(Lang::t('_OPERATION_FAILURE', 'item'));
 
                 return false;
             }
@@ -118,7 +118,7 @@ class Learning_Item extends Learning_Object
 		WHERE idLesson = '" . $id . "'";
 
         if (!sql_query($delete_query)) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'item');
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'item'));
 
             return false;
         }
@@ -142,7 +142,7 @@ class Learning_Item extends Learning_Object
 
         //create the copy filename
         $path_to_file = '/appLms/' . Forma\lib\Get::sett('pathlesson');
-        $savefile = $_SESSION['idCourse'] . '_' . mt_rand(0, 100) . '_' . time() . '_'
+        $savefile = $this->session->get('idCourse') . '_' . mt_rand(0, 100) . '_' . time() . '_'
             . implode('_', array_slice(explode('_', $file), 3));
 
         //copy fisic file

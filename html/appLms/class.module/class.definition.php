@@ -30,11 +30,15 @@ class LmsModule
     //module long description
     public $descr_long;
 
+    protected $session;
+
     //class constructor
     public function __construct($module_name = '')
     {
         //EFFECTS: if a module_name is passed use it else use global reference
         global $modname;
+
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
         if ($module_name == '') {
             $this->module_name = $modname;

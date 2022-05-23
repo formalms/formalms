@@ -27,7 +27,7 @@ class CourseMenuLmsController extends LmsController
     public function init()
     {
         $this->_mvc_name = 'coursemenu';
-        $this->idCourse = $_SESSION['idCourse'];
+        $this->idCourse = $this->session->get('idCourse');
 
         YuiLib::load('base,tabview');
 
@@ -91,10 +91,10 @@ class CourseMenuLmsController extends LmsController
             } // end while
 
             $user_stats = [];
-            if (!isset($_SESSION['is_ghost']) || $_SESSION['is_ghost'] !== true) {
+            if (!$this->session->has('is_ghost') || $this->session->get('is_ghost') !== true) {
                 if (Docebo::course()->getValue('show_time') == 1) {
-                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $_SESSION['idCourse']);
-                    $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($_SESSION['idCourse']);
+                    $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $this->session->get('idCourse'));
+                    $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($this->session->get('idCourse'));
                     $tot_time_sec += $partial_time_sec;
 
                     $hours = (int) ($partial_time_sec / 3600);
@@ -127,7 +127,7 @@ class CourseMenuLmsController extends LmsController
 
             // who is online ---------------------------------------------------------
             $user_stats['who_is_online']['type'] = Docebo::course()->getValue('show_who_online');
-            $user_stats['who_is_online']['user_online_n'] = TrackUser::getWhoIsOnline($_SESSION['idCourse']);
+            $user_stats['who_is_online']['user_online_n'] = TrackUser::getWhoIsOnline($this->session->get('idCourse'));
 
             // print first pannel
             if (!empty($user_stats['head'])) {
@@ -162,15 +162,15 @@ class CourseMenuLmsController extends LmsController
             // print progress bar -------------------------------------------------
             if (Docebo::course()->getValue('show_progress') == 1) {
                 require_once _lms_ . '/lib/lib.stats.php';
-                $total = getNumCourseItems($_SESSION['idCourse'],
+                $total = getNumCourseItems($this->session->get('idCourse'),
                     false,
                     getLogUserId(),
                     false);
                 $tot_complete = getStatStatusCount(getLogUserId(),
-                    $_SESSION['idCourse'],
+                    $this->session->get('idCourse'),
                     ['completed', 'passed']);
                 $tot_failed = getStatStatusCount(getLogUserId(),
-                    $_SESSION['idCourse'],
+                    $this->session->get('idCourse'),
                     ['failed']);
 
                 $materiali = Lang::t('_PROGRESS_ALL', 'course');

@@ -19,6 +19,8 @@ $treecat = new Categorytree();
 require_once _base_ . '/lib/lib.json.php';
 $json = new Services_JSON();
 
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
 //checkPerm('view', true, 'course', 'lms');
 
 require_once _lms_ . '/lib/folder_tree/lib.category_tree.php';
@@ -34,10 +36,13 @@ switch ($command) {
 //$initial = 0;
         $result = [];
         if ($initial == 1) {
-            if (!isset($_SESSION['course_category']['filter_status']['c_category'])) {
-                $_SESSION['course_category']['filter_status']['c_category'] = 0;
+            $courseCategory = $session->get('course_category');
+
+            if (!isset($courseCategory['filter_status']['c_category'])) {
+                $courseCategory['filter_status']['c_category'] = 0;
+                $session->set('course_category',$courseCategory);
             }
-            $treestatus = &$_SESSION['course_category']['filter_status']['c_category'];
+            $treestatus = $courseCategory['filter_status']['c_category'];
 
             $result = [];
             $folders = $treecat->getOpenedFolders($treestatus);
@@ -45,7 +50,7 @@ switch ($command) {
             $ref = &$result;
             foreach ($folders as $folder) {
                 if ($folder > 0) {
-                    for ($i = 0; $i < count($ref); ++$i) {
+                    for ($i = 0, $iMax = count($ref); $i < $iMax; ++$i) {
                         if ($ref[$i]['node']['id'] == $folder) {
                             $ref[$i]['children'] = [];
                             $ref = &$ref[$i]['children'];

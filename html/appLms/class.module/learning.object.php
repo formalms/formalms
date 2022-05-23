@@ -33,6 +33,8 @@ class Learning_Object
 
     public $plugin_manager;
 
+    public $session;
+
     /**
      * function learning_Object()
      * class constructor.
@@ -50,6 +52,7 @@ class Learning_Object
         $this->table = '';
 
         $this->plugin_manager = new PluginManager('LearningObject');
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function getIdParam($env = false)

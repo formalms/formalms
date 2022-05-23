@@ -27,7 +27,7 @@ class CoursereportLmsController extends LmsController
 
     public function init()
     {
-        $this->idCourse = (int) $_SESSION['idCourse'];
+        $this->idCourse = (int) $this->session->get('idCourse');
 
         /* @var Services_JSON json */
         $this->json = new Services_JSON();

@@ -17,10 +17,10 @@ class Module_Faq extends LmsModule
 {
     public function hideLateralMenu()
     {
-        if (isset($_SESSION['test_assessment'])) {
+        if ($this->session->has('test_assessment')) {
             return true;
         }
-        if (isset($_SESSION['direct_play'])) {
+        if ($this->session->has('direct_play')) {
             return true;
         }
 
@@ -40,7 +40,9 @@ class Module_Faq extends LmsModule
             case 'modfaq':
             case 'upfaq':
                 loadHeaderHTMLEditor();
-            ; break;
+                break;
+            default:
+                break;
         }
 
         return;
@@ -66,8 +68,8 @@ class Module_Faq extends LmsModule
                 $back_url = importVar('back_url');
 
                 $object_faq = createLO('faq', $idCategory);
-                $object_faq->play($idCategory, $id_param, urldecode($back_url));
-            ; break;
+                $object_faq->play($idCategory, $id_param, urldecode($back_url));;
+                break;
             default:
                 parent::loadBody();
         }

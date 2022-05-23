@@ -30,9 +30,12 @@ class ClientTree
     protected $langs = [];
     protected $options = [];
 
+    protected $session;
+
     public function __construct($id)
     {
         $this->id = $id;
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     //libraries

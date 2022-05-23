@@ -16,16 +16,18 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class OrganizationManagement
 {
     public $id_course;
+    protected $session;
 
-    public function OrganizationManagement($id_course)
+    public function __construct($id_course)
     {
         $this->id_course = $id_course;
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function &getAllLoAbsoluteIdWhereType($objectType, $id_course = false)
     {
         if ($id_course === false) {
-            $id_course = $_SESSION['idCourse'];
+            $id_course = $this->session->get('idCourse');
         }
 
         $l_obj = [];
@@ -45,7 +47,7 @@ class OrganizationManagement
     public function &getInfoWhereType($objectType = false, $id_course = false)
     {
         if ($id_course === false) {
-            $id_course = $_SESSION['idCourse'];
+            $id_course = $this->session->get('idCourse');
         }
 
         $l_obj = [];

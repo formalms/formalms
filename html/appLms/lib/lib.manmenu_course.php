@@ -84,13 +84,13 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false)
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
     $acl_man = &Docebo::user()->getAclManager();
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     // find the idst of all the role of the selected module
     foreach ($all_token as $token) {
         $code = $token['code'];
-        $role_info = $acl_man->getRole(false, '/lms/course/private/' . $_SESSION['idCourse'] . '/' . $module_name . '/' . $code);
+        $role_info = $acl_man->getRole(false, '/lms/course/private/' . $idCourse . '/' . $module_name . '/' . $code);
         if ($role_info === false) {
-            $id_role = $acl_man->registerRole('/lms/course/private/' . $_SESSION['idCourse'] . '/' . $module_name . '/' . $code, '');
+            $id_role = $acl_man->registerRole('/lms/course/private/' . $idCourse . '/' . $module_name . '/' . $code, '');
         } else {
             $id_role = $role_info[ACL_INFO_IDST];
         }

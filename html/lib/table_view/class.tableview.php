@@ -36,6 +36,8 @@ class TableView
     protected $html_before = '';
     protected $html_after = '';
 
+    protected $session;
+
     /**
      * Constructor.
      *
@@ -47,6 +49,7 @@ class TableView
         $this->json = new Services_JSON();
 
         $this->addFormatter('delete', 'deleteFormatter');
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     /**

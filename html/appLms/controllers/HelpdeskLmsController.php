@@ -61,7 +61,8 @@ class HelpdeskLmsController extends LmsController
         }
         $msg .= '<p><strong>' . Lang::t('_TEXTOF', 'menu') . ':</strong> ' . $content . "</p>\r\n";
 
-        if ($id_course = $_SESSION['idCourse']) {
+        $id_course = $this->session->get('idCourse');
+        if ($id_course) {
             $sql = "SELECT c.code, c.name FROM %lms_course AS c WHERE c.idCourse = $id_course";
             $query = sql_query($sql);
 

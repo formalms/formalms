@@ -123,7 +123,7 @@ class Learning_ScormOrg extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
         additem($this);
@@ -143,7 +143,7 @@ class Learning_ScormOrg extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        unset($_SESSION['last_error']);
+        Forma::removeErrors();
 
         require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
         moditem($this);

@@ -216,7 +216,7 @@ function get_report_table($url = '')
     //initializa session variable for filters
     $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $reportAdminFilter = $session->get('report_admin_filter');
-    if (!isset($_SESSION['report_admin_filter'])) {
+    if (!isset($reportAdminFilter)) {
         $reportAdminFilter = [
             'author' => 0, //array_key_exists(Docebo::user()->getIdst(), $authors) ? Docebo::user()->getIdst() : 0,
             'name' => '',
@@ -392,7 +392,7 @@ function get_report_table($url = '')
             }
 
             $_name = ($row['author'] == 0 ? $lang->def($row['filter_name']) : $row['filter_name']);
-            if (trim($_SESSION['report_admin_filter']['name']) != '') {
+            if (trim($reportAdminFilter['name']) != '') {
                 $_name = Layout::highlight($_name, $reportAdminFilter['name']);
             }
 

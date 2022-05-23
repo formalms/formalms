@@ -34,7 +34,7 @@ class LoLmsController extends LmsController
         checkPerm('view', false, 'organization');
 
         $this->model = new LoLms();
-        $this->idCourse = $_SESSION['idCourse'];
+        $this->idCourse = $this->session->get('idCourse');
 
         $this->model->setTdb($this->idCourse);
 
