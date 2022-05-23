@@ -148,7 +148,7 @@ class MediagalleryAdmController extends AdmController
     public function deleteTask()
     {
         $user_id = (int) Docebo::user()->getIdSt();
-        $id = Get::req('id', DOTY_STRING, null);
+        $id = Get::req('id', DOTY_INT, null);
 
         define('_USER_FPATH_INTERNAL', '/common/users/');
         define('_USER_FPATH', $GLOBALS['where_files_relative'] . _USER_FPATH_INTERNAL);
