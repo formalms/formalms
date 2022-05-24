@@ -26,10 +26,13 @@ class Bbb_Manager
 {
     public $can_mod = false;
 
+    protected $session;
+
     public function Bbb_Manager()
     {
         $this->server = Forma\lib\Get::sett('ConferenceBBB_server');
         $this->port = Forma\lib\Get::sett('ConferenceBBB_port');
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function _getRoomTable()
@@ -395,8 +398,8 @@ class Bbb_Manager
 
     public function get_auth_code()
     {
-        if (isset($_SESSION[_BBB_AUTH_CODE]) && $_SESSION[_BBB_AUTH_CODE]) {
-            return $_SESSION[_BBB_AUTH_CODE];
+        if ($this->session->get(_BBB_AUTH_CODE)) {
+            return $this->session->get(_BBB_AUTH_CODE);
         }
 
         return false;
@@ -412,8 +415,9 @@ class Bbb_Manager
         $output = false;
         if ($res->result) {
             $auth_code = $res->response->authToken;
-            $_SESSION[_BBB_AUTH_CODE] = $auth_code;
-            $_SESSION[_BBB_AUTH_DATA] = $res->response;
+            $this->session->set(_BBB_AUTH_CODE,$auth_code);
+            $this->session->set(_BBB_AUTH_DATA,$res->response);
+            $this->session->save();
             $output = $auth_code;
         }
 

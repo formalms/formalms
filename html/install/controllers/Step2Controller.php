@@ -87,7 +87,9 @@ function checkFolderPerm()
 {
     $res = '';
 
-    $platform_folders = $_SESSION['platform_arr'];
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+    $platform_folders = $session->get('platform_arr');
     $file_to_check = ['config.php'];
     $dir_to_check = [];
     $empty_dir_to_check = [];

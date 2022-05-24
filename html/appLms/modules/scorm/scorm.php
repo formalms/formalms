@@ -79,11 +79,14 @@ function insitem()
     require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
     require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+    $idCourse = $session->get('idCourse');
     $back_url = urldecode($_POST['back_url']);
 
     // there is a file?
     if ($_FILES['attach']['name'] == '') {
-        $_SESSION['last_error'] = _FILEUNSPECIFIED;
+        Forma::addError(Lang::t('_FILEUNSPECIFIED'));
         Util::jump_to('' . $back_url . '&create_result=0');
     }
     $path = str_replace('\\', '/', '/' . _folder_lms_ . '/' . Forma\lib\Get::sett('pathscorm'));
@@ -93,12 +96,12 @@ function insitem()
         if (!sl_upload($_FILES['attach']['tmp_name'], $path . $savefile)) {
             //if( !move_uploaded_file($_FILES['attach']['tmp_name'], _files_.$path.$savefile ) ) {
             sl_close_fileoperations();
-            $_SESSION['last_error'] = _ERROR_UPLOAD;
+            Forma::addError(Lang::get('_ERROR_UPLOAD'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
     } else {
         sl_close_fileoperations();
-        $_SESSION['last_error'] = _ERROR_UPLOAD;
+        Forma::addError(Lang::get('_ERROR_UPLOAD'));
         Util::jump_to('' . $back_url . '&create_result=0');
     }
 
@@ -108,12 +111,13 @@ function insitem()
     $zip = new PclZip(_files_ . $path . $savefile);
 
     // check disk quota --------------------------------------------------
-    if (isset($_SESSION['idCourse']) && defined('LMS')) {
+    if ($idCourse && defined('LMS')) {
         $zip_content = $zip->listContent();
         $zip_extracted_size = 0;
         foreach ($zip_content as $file_info) {
             if (strpos($file_info['filename'], '../') !== false) {
-                $_SESSION['last_error'] = _ERROR_UPLOAD;
+                Forma::addError(Lang::get('_ERROR_UPLOAD'));
+
                 Util::jump_to('' . $back_url . '&create_result=0');
             }
             $zip_extracted_size += $file_info['size'];
@@ -124,7 +128,7 @@ function insitem()
 
         if (Util::exceed_quota(false, $quota, $used, $zip_extracted_size)) {
             sl_unlink($path . $savefile);
-            $_SESSION['last_error'] = Lang::t('_QUOTA_EXCEDED');
+            Forma::addError(Lang::t('_QUOTA_EXCEDED'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
         $GLOBALS['course_descriptor']->addFileToUsedSpace(false, $zip_extracted_size);
@@ -160,7 +164,7 @@ function insitem()
 
     if ($zip->errorCode() != PCLZIP_ERR_NO_ERROR && $zip->errorCode() != 1) {
         sl_unlink($path . $savefile);
-        $_SESSION['last_error'] = _ERROR_UPLOAD;
+        Forma::addError(Lang::get('_ERROR_UPLOAD'));
         sl_close_fileoperations();
 
         Util::jump_to('' . $back_url . '&create_result=0');
@@ -173,12 +177,12 @@ function insitem()
     $cpm = new CPManager();
     // try to open content package
     if (!$cpm->Open(_files_ . $filepath)) {
-        $_SESSION['last_error'] = 'Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']';
+        Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
         Util::jump_to('' . $back_url . '&create_result=0');
     }
     // and parse the manifest
     if (!$cpm->ParseManifest()) {
-        $_SESSION['last_error'] = 'Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']';
+        Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
         Util::jump_to('' . $back_url . '&create_result=0');
     }
 
@@ -192,7 +196,7 @@ function insitem()
         . "','" . $cpm->scorm_version
         . "')";
     if (!($result = sql_query($query))) {
-        $_SESSION['last_error'] = _OPERATION_FAILURE;
+        Forma::addError(Lang::get('_OPERATION_FAILURE'));
         Util::jump_to('' . $back_url . '&create_result=0');
     }
 
@@ -210,10 +214,10 @@ function insitem()
         $result = sql_query($query);
 
         if (!$result) {
-            $_SESSION['last_error'] = _OPERATION_FAILURE;
+            Forma::addError(Lang::get('_OPERATION_FAILURE'));
             Util::jump_to('' . $back_url . '&create_result=0');
         } elseif (sql_affected_rows() == 0) {
-            $_SESSION['last_error'] = _OPERATION_FAILURE;
+            Forma::addError(Lang::get('_OPERATION_FAILURE'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
     }
@@ -233,7 +237,7 @@ function insitem()
 
     $so = new Scorm_Organization($cpm->defaultOrg, $idscorm_package, $GLOBALS['dbConn']);
     if ($so->err_code > 0) {
-        $_SESSION['last_error'] = 'Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']';
+        Forma::addError('Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']');
         Util::jump_to('' . $back_url . '&create_result=0');
     } else {
         //Util::jump_to( ''.$back_url.'&id_lo='.$so->idscorm_organization.'&create_result=1' );
@@ -247,6 +251,8 @@ function moditem($object_item)
 
     $lang = &DoceboLanguage::createInstance('scorm', 'lms');
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
     //area title
     $query = 'SELECT idOrg ' .
         ' FROM %lms_organization ' .
@@ -270,11 +276,14 @@ function moditem($object_item)
         ' ORDER BY idscorm_item ';
 
     $res = sql_query($qry);
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
+
     while ($row = sql_fetch_row($res)) {
         $line = [];
         $line[] = $row[2];
         $line[] = ($row[1] != 0
-            ? Forma\lib\Get::abs_path('lms') . '/index.php?id_course=' . $_SESSION['idCourse'] . '&amp;act=playsco&amp;courseid=' . $_SESSION['idCourse'] . '&amp;id_item=' . $id_reference . '&amp;chapter=' . $row[0] . ''
+            ? Forma\lib\Get::abs_path('lms') . '/index.php?id_course=' . $idCourse . '&amp;act=playsco&amp;courseid=' . $idCourse . '&amp;id_item=' . $id_reference . '&amp;chapter=' . $row[0] . ''
             : '');
         $tb->addBody($line);
     }
@@ -324,6 +333,8 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
 
         list($path) = sql_fetch_row($rs);
         $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Forma\lib\Get::sett('pathscorm'));
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $idCourse = $session->get('idCourse');
         /* remove all zip directory */
         if (file_exists($scopath . $path)) {
             /* if is the only occurrence of path in db delete files */
@@ -335,7 +346,7 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
                 require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php'); // for del tree
                 delDirTree($scopath . $path);
 
-                if (isset($_SESSION['idCourse']) && defined('LMS')) {
+                if (isset($idCourse) && defined('LMS')) {
                     $GLOBALS['course_descriptor']->subFileToUsedSpace(false, $size);
                 }
             }
@@ -360,7 +371,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     if (($rs = sql_query('SELECT path FROM %lms_scorm_package '
             . "WHERE idscorm_package='"
             . (int) $idscorm_package . "'")) === false) {
-        $_SESSION['last_error'] = _OPERATION_FAILURE . ': ' . sql_error();
+        Forma::addError(Lang::t('_OPERATION_FAILURE', 'standard'). ': ' . sql_error());
 
         return false;
     }
@@ -424,14 +435,14 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     $cpm = new CPManager();
     // try to open content package
     if (!$cpm->Open($scopath . $path)) {
-        $_SESSION['last_error'] = 'Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']';
+        Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
 
         return false;
     }
 
     // and parse the manifest
     if (!$cpm->ParseManifest()) {
-        $_SESSION['last_error'] = 'Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']';
+        Forma::addError('Error: ' . $cpm->errText . ' [' . $cpm->errCode . ']');
 
         return false;
     }
@@ -453,7 +464,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
 
     $so = new Scorm_Organization(addslashes($org_identifier), $new_idscorm_package, $GLOBALS['dbConn']);
     if ($so->err_code > 0) {
-        $_SESSION['last_error'] = 'Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']';
+        Forma::addError('Error: ' . $so->getErrorText() . ' [' . $so->getErrorCode() . ']');
 
         return false;
     } else {

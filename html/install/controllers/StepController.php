@@ -18,6 +18,13 @@ class StepController
     public $step = 0;
     public $err = [];
 
+    protected $session;
+
+    public function __construct()
+    {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    }
+
     public function render()
     {
         include_once _installer_ . '/views/Step' . (int) $this->step . '.php';

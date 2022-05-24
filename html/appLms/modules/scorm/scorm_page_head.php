@@ -14,7 +14,10 @@
 ob_end_clean();
 ob_start();
 
-if (!Docebo::user()->isLoggedIn() || !isset($_SESSION['idCourse'])) {
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$idCourse = $session->get('idCourse');
+
+if (!Docebo::user()->isLoggedIn() || !$idCourse) {
     exit('Malformed request');
 }
 

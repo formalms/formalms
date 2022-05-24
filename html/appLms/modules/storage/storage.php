@@ -15,21 +15,27 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/lib/lib.tab.php';
 
-$_tab_op_map = ['homerepo' => 'storage_home',
-                        'organization' => 'storage_course',
-                        'pubrepo' => 'storage_pubrepo',
+$_tab_op_map = [
+    'homerepo' => 'storage_home',
+    'organization' => 'storage_course',
+    'pubrepo' => 'storage_pubrepo',
 ];
 
 function save_state(&$data)
 {
-    $_SESSION['storage'] = serialize($data);
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+    $session->set('storage', $data);
+    $session->save();
 }
 
 function &load_state()
 {
     $readed = [];
-    if (isset($_SESSION['storage'])) {
-        $readed = unserialize($_SESSION['storage']);
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+    if ($session->has('storage')) {
+        $readed = $session->get('storage');
     }
 
     return $readed;
@@ -72,12 +78,12 @@ function &create_activeTab(&$tv)
             if (checkPerm('home', true, 'storage')) {
                 $repo = createModule('homerepo');
             }
-        break;
+            break;
         case 'storage_pubrepo':
             if (checkPerm('public', true, 'storage')) {
                 $repo = createModule('pubrepo');
             }
-        break;
+            break;
         case 'storage_course':
         default:
             if (checkPerm('lesson', true, 'storage')) {
@@ -93,7 +99,7 @@ function &create_activeTab(&$tv)
                 $tv->setActiveTab('storage_course');
                 $repo = createModule('organization');
             }
-        break;
+            break;
     }
 
     return $repo;
@@ -108,9 +114,9 @@ function storage_display()
     $repo->initialize();
     $GLOBALS['page']->setWorkingZone('content');
     $GLOBALS['page']->add(
-                getTitleArea(lang::t('_STORAGE', 'menu_course'))
-                    . '<div class="std_block">'
-                );
+        getTitleArea(lang::t('_STORAGE', 'menu_course'))
+        . '<div class="std_block">'
+    );
 
     if (!$repo->hideTab()) {
         $GLOBALS['page']->add($tv->printTabView_Begin($repo->getUrlParams()));
@@ -132,45 +138,45 @@ function storage_display()
     require_once _base_ . '/lib/lib.dialog.php';
     switch ($tv->getActiveTab()) {
         case 'storage_course':
-          setupFormDialogBox(
-               'orgshow',
-               'index.php?modname=storage&op=organization',
-               'input[name*=treeview_opdeletefolder_organization]',
-               Lang::t('_AREYOUSURE', 'standard'),
-               Lang::t('_CONFIRM', 'standard'),
-               Lang::t('_UNDO', 'standard'),
-               'function(o) { return o.title; }',
-               'organization_treeview_opdeletefolder_organization_',
-               'treeview_selected_organization',
-               'treeview_delete_folder_organization');
-          break;
+            setupFormDialogBox(
+                'orgshow',
+                'index.php?modname=storage&op=organization',
+                'input[name*=treeview_opdeletefolder_organization]',
+                Lang::t('_AREYOUSURE', 'standard'),
+                Lang::t('_CONFIRM', 'standard'),
+                Lang::t('_UNDO', 'standard'),
+                'function(o) { return o.title; }',
+                'organization_treeview_opdeletefolder_organization_',
+                'treeview_selected_organization',
+                'treeview_delete_folder_organization');
+            break;
         case 'storage_home':
-          setupFormDialogBox(
-               'homereposhow',
-               'index.php?modname=storage&op=homerepo',
-               'input[name*=treeview_opdeletefolder_homerepo]',
+            setupFormDialogBox(
+                'homereposhow',
+                'index.php?modname=storage&op=homerepo',
+                'input[name*=treeview_opdeletefolder_homerepo]',
                 Lang::t('_AREYOUSURE', 'standard'),
                 Lang::t('_CONFIRM', 'standard'),
                 Lang::t('_UNDO', 'standard'),
-               'function(o) { return o.title; }',
-               'homerepo_treeview_opdeletefolder_homerepo_',
-               'treeview_selected_homerepo',
-               'treeview_delete_folder_homerepo');
-         break;
+                'function(o) { return o.title; }',
+                'homerepo_treeview_opdeletefolder_homerepo_',
+                'treeview_selected_homerepo',
+                'treeview_delete_folder_homerepo');
+            break;
         case 'storage_pubrepo':
-          setupFormDialogBox(
-               'pubreposhow',
-               'index.php?modname=storage&op=pubrepo',
-               'input[name*=treeview_opdeletefolder_pubrepo]',
+            setupFormDialogBox(
+                'pubreposhow',
+                'index.php?modname=storage&op=pubrepo',
+                'input[name*=treeview_opdeletefolder_pubrepo]',
                 Lang::t('_AREYOUSURE', 'standard'),
                 Lang::t('_CONFIRM', 'standard'),
                 Lang::t('_UNDO', 'standard'),
-               'function(o) { return o.title; }',
-               'pubrepo_treeview_opdeletefolder_pubrepo_',
-               'treeview_selected_pubrepo',
-               'treeview_delete_folder_pubrepo');
-         break;
-      }
+                'function(o) { return o.title; }',
+                'pubrepo_treeview_opdeletefolder_pubrepo_',
+                'treeview_selected_pubrepo',
+                'treeview_delete_folder_pubrepo');
+            break;
+    }
     $GLOBALS['page']->add('</div>');
     //if( !$repo->hideTab() )
     //	$GLOBALS['page']->add( $tv->printTabView_End() );
@@ -185,5 +191,5 @@ switch ($GLOBALS['op']) {
     case 'pubrepo':
     default:
         storage_display();
-    break;
+        break;
 }

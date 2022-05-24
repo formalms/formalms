@@ -27,8 +27,11 @@ function loadUnreaded()
 {
     $id_course = PUBLIC_FORUM_COURSE_ID;
 
-    if (!isset($_SESSION['unreaded_forum'][$id_course])) {
-        unset($_SESSION['unreaded_forum']);
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $unreadedForum = $session->get('unreaded_forum');
+    if (!isset($unreadedForum[$id_course])) {
+        $session->remove('unreaded_forum');
+        $session->save();
         //-find last access---------------------------------------------------------------
         $no_entry = false;
         $reLast = sql_query('SELECT UNIX_TIMESTAMP(lastenter)' .
@@ -62,7 +65,9 @@ function loadUnreaded()
                 }
             }
         }
-        $_SESSION['unreaded_forum'][$id_course] = $unreaded;
+        $unreadedForum[$id_course] = $unreaded;
+        $session->set('unreaded_forum',$unreadedForum);
+        $session->save();
         //-set as now the last forum access------------------------------------------------
         if ($no_entry) {
             sql_query('
@@ -192,6 +197,9 @@ function forum()
 
         // table body
         $i = 1;
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $unreadedForum = $session->get('unreaded_forum');
+
         while (list($idF, $title, $descr, $num_thread, $num_post, $locked, $emoticons) = sql_fetch_row($re_forum)) {
             if (checkPublicForumPerm('view', $idF) || checkPerm('mod', true)) {
                 $c_css = '';
@@ -200,9 +208,9 @@ function forum()
                 // NOTES: status
                 if ($locked) {
                     $status = '<span class="ico-sprite subs_locked"><span>' . Lang::t('_LOCKED', 'forum') . '</span></span>';
-                } elseif (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF])) {
-                    if (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF]) && is_array($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF])) {
-                        foreach ($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF] as $k => $n_mess) {
+                } elseif (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$idF])) {
+                    if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$idF]) && is_array($unreadedForum[PUBLIC_FORUM_COURSE_ID][$idF])) {
+                        foreach ($unreadedForum[PUBLIC_FORUM_COURSE_ID][$idF] as $k => $n_mess) {
                             if ($n_mess != 'new_thread') {
                                 $mess_notread += $n_mess;
                             } else {
@@ -322,9 +330,9 @@ function forum()
                 // NOTES: status
                 if ($locked) {
                     $status = '<span class="ico-sprite subs_locked"><span>' . Lang::t('_LOCKED', 'forum') . '</span></span>';
-                } elseif (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF])) {
-                    if (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF]) && is_array($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF])) {
-                        foreach ($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$idF] as $k => $n_mess) {
+                } elseif (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$idF])) {
+                    if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$idF]) && is_array($unreadedForum[PUBLIC_FORUM_COURSE_ID][$idF])) {
+                        foreach ($unreadedForum[PUBLIC_FORUM_COURSE_ID][$idF] as $k => $n_mess) {
                             if ($n_mess != 'new_thread') {
                                 $mess_notread += $n_mess;
                             } else {
@@ -898,15 +906,19 @@ function modforumaccess()
         }
         $user_select->resetSelection($users);
     }
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $unreadedForum = $session->get('unreaded_forum');
+    $idCourse = $session->get('idCourse');
+
     $query_forum_name = 'SELECT f.title
 	FROM %lms_forum AS f
-	WHERE f.idCourse = ' . (int) $_SESSION['idCourse'] . '
+	WHERE f.idCourse = ' . (int) $idCourse . '
 		AND f.idForum = ' . (int) $id_forum . ' ';
     $row = sql_fetch_row(sql_query($query_forum_name));
     $forum_name = $row[0];
-    $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $_SESSION['idCourse'] . '/subscribed/');
+    $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $idCourse . '/subscribed/');
     $user_select->setUserFilter('group', $arr_idstGroup);
-    $user_select->setGroupFilter('path', '/lms/course/' . $_SESSION['idCourse'] . '/group');
+    $user_select->setGroupFilter('path', '/lms/course/' . $idCourse . '/group');
 
     cout(getTitleArea([
             'index.php?modname=public_forum&amp;op=forum' => $lang->def('_FORUM'),
@@ -1157,7 +1169,11 @@ function thread()
     $all_read = importVar('allread', true, 0);
 
     if ($all_read) {
-        unset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID]);
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $unreadedForum = $session->get('unreaded_forum');
+        unset($unreadedForum[PUBLIC_FORUM_COURSE_ID]);
+        $session->set('unreaded_forum',$unreadedForum);
+        $session->save();
     }
 
     list($title, $tot_thread, $locked_f) = sql_fetch_row(sql_query('
@@ -1301,10 +1317,13 @@ function thread()
 
         $authorIsAdmin = ($user_level === ADMIN_GROUP_GODADMIN || $user_level === ADMIN_GROUP_ADMIN);
 
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $unreadedForum = $session->get('unreaded_forum');
+
         if ((int) $isPrivate === 0 || ((int) $isPrivate === 1 && ($t_author === $currentUserId || $authorIsAdmin) || $moderate)) {
             $msg_for_page = Forma\lib\Get::sett('visuItem');
-            if (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] != 'new_thread') {
-                $unread_message = $_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT];
+            if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] != 'new_thread') {
+                $unread_message = $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT];
                 $first_unread_message = $num_post - $unread_message + 2;
                 if ($first_unread_message % $msg_for_page) {
                     $ini_unread = ($first_unread_message - ($first_unread_message % $msg_for_page)) / $msg_for_page + 1;
@@ -1350,7 +1369,7 @@ function thread()
                 $status = '<img src="' . getPathImage() . 'standard/cancel.png" alt="' . $lang->def('_FREE') . '" />';
             } elseif ($locked) {
                 $status = '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKED') . '" />';
-            } elseif (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT])) {
+            } elseif (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT])) {
                 $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
                 $c_css = ' class="text_bold"';
             } else {
@@ -1384,9 +1403,9 @@ function thread()
             $content[] = $content_temp;
 
             $content[] = $num_post
-                . (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] != 'new_thread'
-                    ? '<br />(<span class="forum_notread">' . $_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] . ' ' . $lang->def('_ADD') . ')</span>'
-                    : (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] == 'new_thread'
+                . (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] != 'new_thread'
+                    ? '<br />(<span class="forum_notread">' . $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] . ' ' . $lang->def('_ADD') . ')</span>'
+                    : (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] == 'new_thread'
                         ? '<br />(<span class="forum_notread">' . $lang->def('_NEW_THREAD') . ')</span>'
                         : ''));
             $content[] = $t_author;
@@ -1465,7 +1484,7 @@ function thread()
 
     $GLOBALS['page']->add($nav_bar->getNavBar($ini), 'content');
     //if($text_inner != '') $GLOBALS['page']->add('<div class="forum_action_top"><ul class="link_list_inline">'.$text_inner.'</ul></div>', 'content');
-    if (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID]) && count($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID])) {
+    if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID]) && count($unreadedForum[PUBLIC_FORUM_COURSE_ID])) {
         $GLOBALS['page']->add('<div><p align="right"><a href="index.php?modname=public_forum&op=thread&idForum=' . $id_forum . '&amp;allread=1">' . $lang->def('_ALL_THREAD_READ') . '</a></p>', 'content');
     }
     $GLOBALS['page']->add($tb->getTable(), 'content');
@@ -2137,9 +2156,13 @@ function message()
     list($forum_title, $locked_f) = sql_fetch_row(sql_query($forum_query));
     ++$tot_message;
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $unreadedForum = $session->get('unreaded_forum');
     //set as readed if needed
-    if (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread])) {
-        unset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread]);
+    if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread])) {
+        unset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread]);
+        $session->set('unreaded_forum',$unreadedForum);
+        $session->save();
     }
 
     if (($ini == 0) && (!isset($_GET['result']))) {
@@ -3238,11 +3261,18 @@ function forumsearch()
 {
     //checkPerm('view');
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $unreadedForum = $session->get('unreaded_forum');
+    $idCourse = $session->get('idCourse');
+    $forum = $session->get('forum',[]);
+
     if (isset($_POST['search_arg'])) {
-        $_SESSION['forum']['search_arg'] = $_POST['search_arg'];
+        $forum['search_arg'] = $_POST['search_arg'];
+        $session->set('forum',$forum);
+        $session->save();
         $search_arg = importVar('search_arg');
     } else {
-        $search_arg = $_SESSION['forum']['search_arg'];
+        $search_arg = $forum['search_arg'];
     }
     $ord = importVar('ord');
     $mod_perm = checkPerm('mod', true);
@@ -3428,7 +3458,7 @@ function forumsearch()
             $status = '<img src="' . getPathImage() . 'standard/cancel.png" alt="' . $lang->def('_FREE') . '" />';
         } elseif ($locked) {
             $status = '<img src="' . getPathImage() . 'standard/locked.png" alt="' . $lang->def('_LOCKED') . '" />';
-        } elseif (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT])) {
+        } elseif (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT])) {
             $status = '<img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_UNREAD') . '" />';
             $c_css = ' class="text_bold"';
         } else {
@@ -3442,8 +3472,8 @@ function forumsearch()
                 ? preg_replace($search_arg, '<span class="filter_evidence">' . $search_arg . '</span>', $title)
                 : $title) . '</a>');
         $content[] = $num_post
-            . (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] != 'new_thread'
-                ? '<br />(<span class="forum_notread">' . $_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] . ' ' . $lang->def('_ADD') . ')</span>'
+            . (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] != 'new_thread'
+                ? '<br />(<span class="forum_notread">' . $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] . ' ' . $lang->def('_ADD') . ')</span>'
                 : '');
         $content[] = $t_author;
         $content[] = $num_view;
@@ -3468,7 +3498,10 @@ function forumsearch()
 
 function forumsearchmessage()
 {
-    $search_arg = $_SESSION['forum']['search_arg'];
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $forum = $session->get('forum',[]);
+
+    $search_arg = $forum['search_arg'];
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
@@ -3511,9 +3544,14 @@ function forumsearchmessage()
     list($forum_title, $locked_f) = sql_fetch_row(sql_query($forum_query));
     ++$tot_message;
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $unreadedForum = $session->get('unreaded_forum');
+
     //set as readed if needed
-    if (isset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread])) {
-        unset($_SESSION['unreaded_forum'][PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread]);
+    if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread])) {
+        unset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread]);
+        $session->set('unreaded_forum',$unreadedForum);
+        $session->save();
     }
 
     if (($ini == 0) && (!isset($_GET['result']))) {

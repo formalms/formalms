@@ -436,6 +436,7 @@ class Lang
     {
         // check lang_code:
         $langadm = new LangAdm();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         $all_language = $langadm->getLangListNoStat();
 
         if (!isset($all_language[$lang_code])) {
@@ -446,14 +447,15 @@ class Lang
             // if the user is anonymous we will remember it's forced selection and set up the selected language as
             // it's user preference when he login
             if ($force) {
-                $_SESSION['forced_lang'] = true;
+                $session->set('forced_lang',true);
             }
         } else {
             Docebo::user()->preference->setLanguage($lang_code);
         }
-        $_SESSION['current_lang'] = $lang_code;
+        $session->set('current_lang',$lang_code);
+        $session->save();
 
-        return $_SESSION['current_lang'];
+        return $lang_code;
     }
 
     /**

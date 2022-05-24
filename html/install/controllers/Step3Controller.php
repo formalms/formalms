@@ -20,10 +20,11 @@ class Step3Controller extends StepController
     public function validate()
     {
         $agree = Forma\lib\Get::pReq('agree', DOTY_INT, 0);
-        if ($agree != 1 && !isset($_SESSION['license_accepted'])) {
+        if ($agree != 1 && $this->session->get('license_accepted')) {
             return false;
         } else {
-            $_SESSION['license_accepted'] = 1;
+            $this->session->set('license_accepted',1);
+            $this->session->save();
 
             return true;
         }

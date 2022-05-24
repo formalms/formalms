@@ -65,8 +65,9 @@ if (!Docebo::user()->isAnonymous()) {
         if ($mod_perm) {
             $tab_man->addTab($tab_subscribed_user);
         }
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-        $tab_man->parseInput($_POST, $_SESSION);
+        $tab_man->parseInput($_POST, $session);
         $active_tab = $tab_man->getActiveTab();
 
         if ($active_tab != 'events' && $active_tab != 'my_events' && $active_tab != 'past_events' && $active_tab != 'subscribed_user') {
@@ -120,7 +121,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $id_course = $_SESSION['idCourse'];
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -240,7 +242,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $id_course = $_SESSION['idCourse'];
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
 
         $order_by = importVar('order_by', false, 'c.name, e.title, e.date, e.deadLine');
 
@@ -345,7 +348,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $id_course = $_SESSION['idCourse'];
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
 
         $order_by = importVar('order_by', false, 'c.name, e.title, e.date, e.deadLine');
 
@@ -435,7 +439,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $id_course = $_SESSION['idCourse'];
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
 
         $order_by = importVar('order_by', false, 'c.name, e.title, e.date, e.deadLine');
 
@@ -678,7 +683,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $id_course = $_SESSION['idCourse'];
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
         $id_event = importVar('id_event', true, 0);
         $id_user = importVar('id_user', true, 0);
 
@@ -1063,7 +1069,8 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
 
-        $id_course = $_SESSION['idCourse'];
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
         $id_event = importVar('id_event', true, 0);
 
         $man_res = new Man_Reservation();
@@ -1096,10 +1103,10 @@ if (!Docebo::user()->isAnonymous()) {
 
         $acl_man = &Docebo::user()->getAclManager();
 
-        $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $_SESSION['idCourse'] . '/subscribed/');
+        $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $id_course . '/subscribed/');
         $me = [getLogUserId()];
         $user_select->setUserFilter('group', $arr_idstGroup);
-        $user_select->setGroupFilter('path', '/lms/course/' . $_SESSION['idCourse'] . '/group');
+        $user_select->setGroupFilter('path', '/lms/course/' . $id_course . '/group');
 
         $user_select->loadSelector('index.php?modname=reservation&amp;op=add_registration&amp;id_course=' . $id_course . '&amp;id_event=' . $id_event,
                 $lang->def('_SUBSCRIBE_EVENT'),
@@ -1176,7 +1183,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         if (isset($_GET['confirm'])) {
             $confirm = importVar('confirm', true, 0);
-            $id_course = $_SESSION['idCourse'];
+            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
             $id_laboratory = importVar('id_laboratory', true, 0);
             $id_category = importVar('id_category', true, 0);
             $title = importVar('title', false, '');
@@ -1429,7 +1437,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $id_course = $id_course = $_SESSION['idCourse'];
+        $id_course = $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1698,12 +1707,14 @@ if (!Docebo::user()->isAnonymous()) {
         $mod_perm = true;
         // create a language istance for module classroom
         $lang = &DoceboLanguage::createInstance('classroom', 'lms');
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
         $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CLASSROOM_CAPTION'), $lang->def('_CLASSROOM_SUMMARY'));
         $tb->initNavBar('ini', 'link');
-        $tb->setLink('index.php?modname=reservation&amp;op=classroom&amp;id_course=' . $_SESSION['idCourse']);
+        $tb->setLink('index.php?modname=reservation&amp;op=classroom&amp;id_course=' . $id_course);
         $ini = $tb->getSelectedElement();
 
         //search query of classrooms
@@ -2023,11 +2034,14 @@ function setRoomViewPerm()
         $mdir->show_group_selector = true;
         $mdir->show_orgchart_selector = false;
 
-        $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . (int) $_SESSION['idCourse'] . '/subscribed/');
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
+
+        $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . (int) $id_course . '/subscribed/');
         $me = [getLogUserId()];
         $mdir->setUserFilter('exclude', $me);
         $mdir->setUserFilter('group', $arr_idstGroup);
-        $mdir->setGroupFilter('path', '/lms/course/' . $_SESSION['idCourse'] . '/group');
+        $mdir->setGroupFilter('path', '/lms/course/' . $id_course . '/group');
 
         $mdir->loadSelector($url,
             $lang->def('_VIEW_PERMISSION'), '', true);
@@ -2042,7 +2056,8 @@ function reservationSendMail()
 
     $mod_perm = checkPerm('mod', true);
 
-    $id_course = $_SESSION['idCourse'];
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session->get('idCourse');
     $id_event = importVar('id_event', true, 0);
 
     $out = $GLOBALS['page'];
@@ -2156,14 +2171,16 @@ function checkRoomPerm($perm_arr, $user_idst)
 
 function reservationDispatch($op)
 {
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $id_course = $session->get('idCourse');
     if (isset($_POST['add_event'])) {
         Util::jump_to('index.php?modname=reservation&amp;op=add_event');
     }
     if (isset($_POST['category_gestion'])) {
-        Util::jump_to('index.php?modname=reservation&amp;op=view_category&amp;id_course=' . $_SESSION['idCourse']);
+        Util::jump_to('index.php?modname=reservation&amp;op=view_category&amp;id_course=' . $id_course);
     }
     if (isset($_POST['location_gestion'])) {
-        Util::jump_to('index.php?modname=reservation&amp;op=classroom&amp;id_course=' . $_SESSION['idCourse']);
+        Util::jump_to('index.php?modname=reservation&amp;op=classroom&amp;id_course=' . $id_course);
     }
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=subscribed_user');

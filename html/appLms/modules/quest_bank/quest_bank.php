@@ -217,6 +217,9 @@ function exportquest(&$url)
 
     $lang = &DoceboLanguage::createInstance('test');
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
+
     $qb_man = new QuestBankMan();
 
     $file_format = Forma\lib\Get::pReq('export_quest_select', DOTY_INT, 0);
@@ -268,8 +271,8 @@ function exportquest(&$url)
                 $form = new Form();
 
                 require_once _lms_ . '/lib/lib.orgchart.php';
-                $orgman = new OrganizationManagement($_SESSION['idCourse']);
-                $test = &$orgman->getInfoWhereType('test', $_SESSION['idCourse']);
+                $orgman = new OrganizationManagement($idCourse);
+                $test = &$orgman->getInfoWhereType('test', $idCourse);
 
                 cout(getTitleArea([$lang->def('_QUEST_BANK', 'menu_course'), $lang->def('_EXPORT_QUESTIONS', 'storage')])
                     . '<div class="std_block yui-skin-docebo yui-skin-sam">', 'content');
@@ -300,7 +303,7 @@ function exportquest(&$url)
 
                 cout('</div>', 'content');
             } else {
-                $_SESSION['last_error'] = $lang->def('_EMPTY_SELECTION');
+                Forma::addError($lang->def('_EMPTY_SELECTION'));
                 questbank($url);
             }
         }
@@ -329,7 +332,7 @@ function exportquest(&$url)
 				( '" . (int) getLogUserId() . "', '" . $title . "', '" . $_POST['textof'] . "' )";
                 //TODO:
                 if (!sql_query($ins_query)) {
-                    $_SESSION['last_error'] = $lang->def('_OPERATION_FAILURE');
+                    Forma::addError($lang->def('_OPERATION_FAILURE'));
                 }
 
                 list($id_test) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -352,7 +355,7 @@ function exportquest(&$url)
 
                     require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
 
-                    $odb = new OrgDirDb($_SESSION['idCourse']);
+                    $odb = new OrgDirDb($idCourse);
 
                     $odb->addItem(0, $title, 'test', $id_test, '0', '0', getLogUserId(), '1.0', '_DIFFICULT_MEDIUM', '', '', '', '', date('Y-m-d H:i:s'));
                 }
@@ -388,7 +391,7 @@ function exportquest(&$url)
 
                 cout('</div>', 'content');
             } else {
-                $_SESSION['last_error'] = $lang->def('_EMPTY_SELECTION');
+                 Forma::addError($lang->def('_EMPTY_SELECTION'));
                 questbank($url);
             }
         }

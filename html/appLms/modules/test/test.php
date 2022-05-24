@@ -44,7 +44,7 @@ function addtest($object_test)
 
     $lang = &DoceboLanguage::createInstance('test');
     if (!is_a($object_test, 'Learning_Test')) {
-        $_SESSION['last_error'] = $lang->def('_OPERATION_FAILURE');
+        Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
@@ -92,7 +92,7 @@ function instest()
     ( '" . (int) getLogUserId() . "', '" . addslashes($_REQUEST['title']) . "', '" . addslashes($_REQUEST['textof']) . "', '" . $_REQUEST['obj_type'] . "' )";
 
     if (!sql_query($ins_query)) {
-        $_SESSION['last_error'] = $lang->def('_OPERATION_FAILURE');
+        Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&create_result=0');
     }
 
@@ -203,7 +203,7 @@ function modtestgui($object_test)
     // ----------------------------------------------------------------------------------------
 
     if (!is_a($object_test, 'Learning_Test')) {
-        $_SESSION['last_error'] = $lang->def('_OPERATION_FAILURE');
+        Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 

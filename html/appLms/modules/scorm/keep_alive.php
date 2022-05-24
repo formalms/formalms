@@ -32,10 +32,13 @@ if (!function_exists('aout')) {
     }
 }
 
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$idCourse = $session->get('idCourse');
+
 // here all the specific code ==========================================================
 
 require_once Forma::inc(_lms_ . '/lib/lib.track_user.php');
-TrackUser::setActionTrack(getLogUserId(), $_SESSION['idCourse'], 'scorm', 'close');
+TrackUser::setActionTrack(getLogUserId(), $idCourse, 'scorm', 'close');
 
 // update the tracking
 

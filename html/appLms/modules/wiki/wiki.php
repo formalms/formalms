@@ -25,7 +25,7 @@ function &cwaSetup()
 {
     $res = new LmsWikiAdmin();
     $res->urlManagerSetup('modname=wiki&op=main');
-    $res->setCourseId($_SESSION['idCourse']);
+    $res->setCourseId(\Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse'));
 
     return $res;
 }

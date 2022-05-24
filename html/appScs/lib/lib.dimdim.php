@@ -30,10 +30,13 @@ class DimDim_Manager
 {
     public $can_mod = false;
 
-    public function DimDim_Manager()
+    protected $session;
+
+    public function __construct()
     {
         $this->server = Forma\lib\Get::sett('dimdim_server');
         $this->port = Forma\lib\Get::sett('dimdim_port');
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function _getRoomTable()
@@ -420,8 +423,8 @@ class DimDim_Manager
 
     public function get_auth_code()
     {
-        if (isset($_SESSION[_DIMDIM_AUTH_CODE]) && $_SESSION[_DIMDIM_AUTH_CODE]) {
-            return $_SESSION[_DIMDIM_AUTH_CODE];
+        if ($this->session->get(_DIMDIM_AUTH_CODE)) {
+            return $this->session->get(_DIMDIM_AUTH_CODE);
         }
 
         return false;
@@ -437,8 +440,9 @@ class DimDim_Manager
         $output = false;
         if ($res->result) {
             $auth_code = $res->response->authToken;
-            $_SESSION[_DIMDIM_AUTH_CODE] = $auth_code;
-            $_SESSION[_DIMDIM_AUTH_DATA] = $res->response;
+            $this->session->set(_DIMDIM_AUTH_CODE,$auth_code);
+            $this->session->set(_DIMDIM_AUTH_DATA,$res->response);
+            $this->session->save();
             $output = $auth_code;
         }
 

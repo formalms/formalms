@@ -569,7 +569,7 @@ class ChoiceMultiple_QuestionPoll extends QuestionPoll
     public function storeAnswer($id_track, &$source, $can_overwrite = false)
     {
         $result = true;
-        if ($_SESSION['levelCourse'] < 6) {
+        if (\Forma\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse') < 6) {
             $this->deleteAnswer($id_track);
 
             $re_answer = sql_query('

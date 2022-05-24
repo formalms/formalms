@@ -19,8 +19,9 @@ class Step5Controller extends StepController
 
     public function validate()
     {
-        $_SESSION['adm_info'] = Forma\lib\Get::pReq('adm_info');
-        $_SESSION['lang_install'] = Forma\lib\Get::pReq('lang_install');
+        $this->session->set('adm_info',Forma\lib\Get::pReq('adm_info'));
+        $this->session->set('lang_install',Forma\lib\Get::pReq('lang_install'));
+        $this->session->save();
 
         $this->saveConfig();
 
@@ -47,6 +48,7 @@ class Step5Controller extends StepController
             @chmod($save_fn, 0644);
         }
 
-        $_SESSION['config_saved'] = $saved;
+        $this->session->set('config_saved',$saved);
+        $this->session->save();
     }
 }

@@ -83,10 +83,14 @@ class Step7Controller extends StepController
 
         if ($smtp_info['use_smtp_database'] === 'on') {
             $this->saveSettingsToDatabase($smtp_info);
-            $_SESSION['smtp_info']['use_smtp_database'] = 'on';
+
+            $smtp_info['use_smtp_database'] = 'on';
+            $this->session->set('smtp_info',$smtp_info);
+
         } else {
-            $_SESSION['smtp_info'] = $smtp_info;
+            $this->session->set('smtp_info',$smtp_info);
         }
+        $this->session->save();
 
         $this->saveConfig();
 
@@ -113,18 +117,21 @@ class Step7Controller extends StepController
             @chmod($save_fn, 0644);
         }
 
-        $_SESSION['config_saved'] = $saved;
+        $this->session->set('config_saved',$saved);
+        $this->session->save();
     }
 
     private function saveSettingsToDatabase($smtpInfo)
     {
+
+        $dbInfo = $this->session->get('db_info');
         DbConn::getInstance(false,
             [
-                'db_type' => $_SESSION['db_info']['db_type'],
-                'db_host' => $_SESSION['db_info']['db_host'],
-                'db_user' => $_SESSION['db_info']['db_user'],
-                'db_pass' => $_SESSION['db_info']['db_pass'],
-                'db_name' => $_SESSION['db_info']['db_name'],
+                'db_type' => $dbInfo['db_type'],
+                'db_host' => $dbInfo['db_host'],
+                'db_user' => $dbInfo['db_user'],
+                'db_pass' => $dbInfo['db_pass'],
+                'db_name' => $dbInfo['db_name'],
             ]
         );
 

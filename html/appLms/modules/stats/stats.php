@@ -260,6 +260,9 @@ function statuserfilter()
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/lib/lib.subscribe.php';
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
+
     $view_all_perm = checkPerm('view_all_statuser', true);
 
     $lang = &DoceboLanguage::createInstance('stats', 'lms');
@@ -287,11 +290,11 @@ function statuserfilter()
     $out->add($form->openForm('statuserfilter', 'index.php?modname=stats&amp;op=statuser'));
 
     // ------- Filter on group
-    $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int) $_SESSION['idCourse'] . '/group');
+    $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int) $idCourse . '/group');
     $arr_result_groups = $aclManager->getGroups($arr_idst);
 
     $std_content = $aclManager->getContext();
-    $aclManager->setContext('/lms/course/' . (int) $_SESSION['idCourse'] . '/group');
+    $aclManager->setContext('/lms/course/' . (int) $idCourse . '/group');
 
     $arr_groups = [STATFILTER_ALL_GROUP => $lang->def('_ALL')];
     foreach ($arr_result_groups as $idst_group => $info_group) {
@@ -325,7 +328,7 @@ function statuserfilter()
     //--- filter on edition ------------------------------------------------------
 
     //retrieve edition
-    $query = 'SELECT * FROM %lms_course_editions WHERE id_course = ' . (int) $_SESSION['idCourse'];
+    $query = 'SELECT * FROM %lms_course_editions WHERE id_course = ' . (int) $idCourse;
     $res = sql_query($query);
 
     //is there more any edition ?
@@ -365,7 +368,7 @@ function statuserfilter()
     $query = 'SELECT dt.id_date, dt.code, dt.name, MIN( dy.date_begin ) AS sub_start_date, MAX( dy.date_end ) AS sub_end_date
 		FROM %lms_course_date AS dt
 		JOIN %lms_course_date_day AS dy ON dy.id_date = dt.id_date
-		WHERE dt.id_course = ' . (int) $_SESSION['idCourse'] . '  AND dy.deleted = 0
+		WHERE dt.id_course = ' . (int) $idCourse . '  AND dy.deleted = 0
 		GROUP BY dt.id_date
 		ORDER BY dy.date_begin';
     $res = sql_query($query);
@@ -430,7 +433,7 @@ function statuserfilter()
     }
     //$students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, ( $status_filter != -1 ? $status_filter : false ), false, true);
     $students = getSubscribedInfo(
-        (int) $_SESSION['idCourse'],
+        (int) $idCourse,
         false,
         $lev,
         true,
@@ -446,7 +449,7 @@ function statuserfilter()
     $query = 'SELECT COUNT(*)'
             . ' FROM %lms_courseuser AS cu'
             . ($user_filter !== '' ? ' JOIN ' . $GLOBALS['prefix_fw'] . '_user AS u ON u.idst = cu.idUser' : '')
-            . ' WHERE cu.idCourse = ' . (int) $_SESSION['idCourse']
+            . ' WHERE cu.idCourse = ' . (int) $idCourse
             . ($status_filter != STATFILTER_ALL_STATUS ? " AND cu.status = '" . $status_filter . "'" : '')
             . ($user_filter !== '' ? " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')" : '')
             . ($group_all_members !== false ? ' AND c.idUser IN (' . implode(',', $group_all_members) . ')' : '');
@@ -504,16 +507,16 @@ function statuserfilter()
             $user_info = $aclManager->getUser($idst, false);
 
             if ($user_info != false) {
-                $totItems = getNumCourseItems((int) $_SESSION['idCourse'],
+                $totItems = getNumCourseItems((int) $idCourse,
                                                     false,
                                                     $idst,
                                                     false);
                 $totComplete = getStatStatusCount($idst,
-                                                    (int) $_SESSION['idCourse'],
+                                                    (int) $idCourse,
                                                     ['completed', 'passed']
                                                     );
                 $totFailed = getStatStatusCount($idst,
-                                                    (int) $_SESSION['idCourse'],
+                                                    (int) $idCourse,
                                                     ['failed']
                                                     );
                 $stat_status = $cs->getUserStatusTr($user_course_info['status']);
@@ -558,6 +561,9 @@ function statoneuser()
     $out = &$GLOBALS['page'];
     $aclManager = &Docebo::user()->getACLManager();
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
+
     $out->setWorkingZone('content');
     $out->add(getTitleArea($lang->def('_STATFORUSER'), 'stats', false, true));
     $out->add('<div class="std_block">');
@@ -566,7 +572,7 @@ function statoneuser()
     $user_info = $aclManager->getUser($idst, false);
 
     $orgDb = new StatOrg_TreeDb();
-    $treeView = new StatOrg_TreeView($orgDb, $_SESSION['idCourse']);
+    $treeView = new StatOrg_TreeView($orgDb, $idCourse);
     $treeView->stat_idUser = $idst;
     $treeView->parsePositionData($_POST, $_POST, $_POST);
 
@@ -621,6 +627,10 @@ function statcourse()
 
     $lang = &DoceboLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
+
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
+
     $aclManager = &Docebo::user()->getACLManager();
     $form = new Form();
 
@@ -634,7 +644,7 @@ function statcourse()
     if ($group_filter != '') {
         $orgDb->filterGroup = $group_filter;
     }
-    $treeView = new StatOrg_TreeView($orgDb, $_SESSION['idCourse']);
+    $treeView = new StatOrg_TreeView($orgDb, $idCourse);
     $treeView->kindOfView = ITEMSVIEW;
 
     $treeView->parsePositionData($_POST, $_POST, $_POST);
@@ -651,12 +661,12 @@ function statcourse()
      * Print form for group selection
      */
     // ------- Filter on group
-    $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int) $_SESSION['idCourse'] . '/');
+    $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int) $idCourse . '/');
     $arr_result_groups = $aclManager->getGroups($arr_idst);
     $arr_groups = ['' => $lang->def('_ALL')];
 
     $std_content = $aclManager->getContext();
-    $aclManager->setContext('/lms/course/' . (int) $_SESSION['idCourse'] . '/group');
+    $aclManager->setContext('/lms/course/' . (int) $idCourse . '/group');
 
     $arr_groups = ['' => $lang->def('_ALL')];
     foreach ($arr_result_groups as $idst_group => $info_group) {
@@ -729,6 +739,9 @@ function statitem()
 
     $lang = &DoceboLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
+
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
     $form = new Form();
     $aclManager = &Docebo::user()->getACLManager();
     $acl = &Docebo::user()->getACL();
@@ -753,7 +766,7 @@ function statitem()
         $group_all_members = $aclManager->getGroupAllUser($group_filter);
     }
     $students = getSubscribedInfo(
-        (int) $_SESSION['idCourse'],
+        (int) $idCourse,
         false,
         $lev,
         true,
@@ -767,7 +780,7 @@ function statitem()
     $query = 'SELECT COUNT(*)'
             . ' FROM %lms_courseuser AS cu'
             . ($user_filter !== '' ? ' JOIN ' . $GLOBALS['prefix_fw'] . '_user AS u ON u.idst = cu.idUser' : '')
-            . ' WHERE cu.idCourse = ' . (int) $_SESSION['idCourse']
+            . ' WHERE cu.idCourse = ' . (int) $idCourse
             . ($status_filter != -1 ? " AND cu.status = '" . $status_filter . "'" : '')
             . ($user_filter !== '' ? " AND (u.firstname LIKE '%" . $user_filter . "%' OR u.lastname LIKE '%" . $user_filter . "%' OR u.userid LIKE '%" . $user_filter . "%')" : '')
             . ($group_all_members !== false ? ' AND c.idUser IN (' . implode(',', $group_all_members) . ')' : '');
@@ -851,11 +864,11 @@ function statitem()
             . $form->getButton('back', 'back', $lang->def('_BACK'))
             . $form->closeButtonSpace());
     } else {
-        $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int) $_SESSION['idCourse'] . '/group');
+        $arr_idst = $aclManager->getBasePathGroupST('/lms/course/' . (int) $idCourse . '/group');
         $arr_result_groups = $aclManager->getGroups($arr_idst);
 
         $std_content = $aclManager->getContext();
-        $aclManager->setContext('/lms/course/' . (int) $_SESSION['idCourse'] . '/group');
+        $aclManager->setContext('/lms/course/' . (int) $idCourse . '/group');
 
         $arr_groups = [-1 => $lang->def('_ALL')];
         foreach ($arr_result_groups as $idst_group => $info_group) {
@@ -1133,6 +1146,8 @@ function modstatus()
     funAccess('statuser', 'OP');
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/lib/lib.subscribe.php';
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
 
     $lang = &DoceboLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
@@ -1153,7 +1168,7 @@ function modstatus()
 	SELECT status
 	FROM ' . $GLOBALS['prefix_lms'] . "_courseuser
 	WHERE idUser = '" . $idUser . "'
-		AND idCourse = '" . (int) $_SESSION['idCourse'] . "'";
+		AND idCourse = '" . (int) $idCourse . "'";
     list($status) = sql_fetch_row(sql_query($query));
 
     $out->add($form->openForm('modstatus', 'index.php?modname=stats&amp;op=upstatus'));
@@ -1176,8 +1191,9 @@ function modstatus()
 function upstatus()
 {
     funAccess('statuser', 'OP');
-
-    if (!saveTrackStatusChange($_POST['idUser'], $_SESSION['idCourse'], $_POST['status'])) {
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
+    if (!saveTrackStatusChange($_POST['idUser'], $idCourse, $_POST['status'])) {
         UiFeedback::error(_OPERATION_FAILURE);
 
         return;

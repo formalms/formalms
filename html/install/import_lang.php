@@ -17,12 +17,16 @@ require_once _installer_ . '/lib/lib.lang_import.php';
 require_once _lib_ . '/loggers/lib.logger.php';
 require_once _base_ . '/db/lib.docebodb.php';
 
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+$dbInfo = $session->get('db_info');
+
 DbConn::getInstance(false, [
-    'db_type' => $_SESSION['db_info']['db_type'],
-    'db_host' => $_SESSION['db_info']['db_host'],
-    'db_user' => $_SESSION['db_info']['db_user'],
-    'db_pass' => $_SESSION['db_info']['db_pass'],
-    'db_name' => $_SESSION['db_info']['db_name'],
+    'db_type' => $dbInfo['db_type'],
+    'db_host' => $dbInfo['db_host'],
+    'db_user' => $dbInfo['db_user'],
+    'db_pass' => $dbInfo['db_pass'],
+    'db_name' => $dbInfo['db_name'],
 ]);
 
 sql_query("SET NAMES 'utf8'");
@@ -34,7 +38,7 @@ $platform_code = Forma\lib\Get::pReq('platform', DOTY_STRING);
 $lang = Forma\lib\Get::pReq('lang', DOTY_STRING);
 $upgrade = Forma\lib\Get::pReq('upgrade', DOTY_INT);
 
-$lang_arr = array_keys($_SESSION['lang_install']);
+$lang_arr = array_keys($session->get('lang_install'));
 $pl_arr = ['framework'];
 
 $cur['value'] = current($pl_arr);

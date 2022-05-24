@@ -66,6 +66,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.test.php';
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $lang = &DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $test_type = $object_test->getObjectType();
@@ -348,7 +349,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
             $GLOBALS['page']->add(Form::getButton('restart', 'restart', $lang->def('_TEST_BEGIN')), 'content');
         }
     } elseif ($is_end) {
-        if ($_SESSION['levelCourse'] > '3') {
+        if ($session->get('levelCourse') > '3') {
             //--- check max attempts
             if ($maxAttempts) {
                 $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_MAX_DAILY_ATTEMPT') . '</span><br /><br />', 'content');
@@ -584,9 +585,11 @@ function play($object_test, $id_param)
     require_once _lms_ . '/class.module/track.test.php';
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.test.php';
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-    if (!isset($_SESSION['test_date_begin'])) {
-        $_SESSION['test_date_begin'] = date('Y-m-d H:i:s');
+    if (!$session->has('test_date_begin')) {
+        $session->set('test_date_begin',date('Y-m-d H:i:s'));
+        $session->save();
     }
 
     $lang = &DoceboLanguage::createInstance('test');
@@ -1153,6 +1156,8 @@ function showResult($object_test, $id_param)
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.test.php';
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
     $lang = &DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
@@ -1356,12 +1361,14 @@ function showResult($object_test, $id_param)
 
         $re_update = Track_Test::updateTrack($id_track, $new_info);
         if (!isset($_POST['show_review'])) {
-            $time = fromDatetimeToTimestamp(date('Y-m-d H:i:s')) - fromDatetimeToTimestamp($_SESSION['test_date_begin']);
+
+            $testDateBegin = $session->get('test_date_begin');
+            $time = fromDatetimeToTimestamp(date('Y-m-d H:i:s')) - fromDatetimeToTimestamp($testDateBegin);
 
             sql_query('
             INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_times
             (idTrack, idReference, idTest, date_attempt, number_time, score, score_status, date_begin, date_end, time) VALUES
-            ('" . $id_track . "', '" . $id_reference . "', '" . $id_test . "', now(), '" . $new_info['number_of_save'] . "', '" . $new_info['score'] . "', '" . $new_info['score_status'] . "', '" . $_SESSION['test_date_begin'] . "', '" . date('Y-m-d H:i:s') . "', '" . $time . "')");
+            ('" . $id_track . "', '" . $id_reference . "', '" . $id_test . "', now(), '" . $new_info['number_of_save'] . "', '" . $new_info['score'] . "', '" . $new_info['score_status'] . "', '" . $testDateBegin . "', '" . date('Y-m-d H:i:s') . "', '" . $time . "')");
 
             //TODO: EVT_OBJECT (§)
             //$event = new appLms\Events\Lms\TestCompletedEvent($object_test , Docebo::user ()->getIdst () , Docebo::user ()->getAclManager ());
@@ -1383,7 +1390,8 @@ function showResult($object_test, $id_param)
             //TODO: EVT_LAUNCH (&)
             //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME , $event);
 
-            unset($_SESSION['test_date_begin']);
+            $session->remove('test_date_begin');
+            $session->save();
         }
     }
 

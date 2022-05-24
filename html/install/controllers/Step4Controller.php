@@ -242,18 +242,20 @@ class Step4Controller extends StepController
 
     public function validate()
     {
-        $_SESSION['site_url'] = Forma\lib\Get::pReq('site_url', DOTY_STRING);
-        $_SESSION['db_info'] = Forma\lib\Get::pReq('db_info');
-        if ($_SESSION['db_info']['db_pass'] === '_fromconfig') {
+        $this->session->set('site_url', Forma\lib\Get::pReq('site_url', DOTY_STRING));
+        $dbInfo = Forma\lib\Get::pReq('db_info');
+        $this->session->set('db_info',$dbInfo);
+
+        if ($dbInfo['db_pass'] === '_fromconfig') {
             if (file_exists(_base_ . '/config.php')) {
                 define('IN_FORMA', true);
                 include _base_ . '/config.php';
-                $_SESSION['db_info']['db_pass'] = $cfg['db_pass'];
+                $dbInfo['db_pass'] = $cfg['db_pass'];
             }
         }
-        $_SESSION['upload_method'] = Forma\lib\Get::pReq('upload_method');
-        $_SESSION['ul_info'] = Forma\lib\Get::pReq('ul_info');
-
+        $this->session->set('upload_method',Forma\lib\Get::pReq('upload_method'));
+        $this->session->set('ul_info', Forma\lib\Get::pReq('ul_info'));
+        $this->session->save();
         return true;
     }
 }

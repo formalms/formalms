@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once dirname(__FILE__) . '/StepController.php';
+require_once __DIR__ . '/StepController.php';
 
 class Step1Controller extends StepController
 {
@@ -20,7 +20,8 @@ class Step1Controller extends StepController
     public function validate()
     {
         $platform_arr = getPlatformArray();
-        $_SESSION['platform_arr'] = $platform_arr;
+        $this->session->set('platform_arr',$platform_arr);
+        $this->session->save();
 
         return true;
     }

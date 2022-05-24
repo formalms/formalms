@@ -16,21 +16,25 @@ include_once _lib_ . '/loggers/lib.logger.php';
 require_once _base_ . '/db/lib.docebodb.php';
 set_time_limit(0);
 
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+$dbInfo = $session->get('db_info');
+
 DbConn::getInstance(false, [
-    'db_type' => $_SESSION['db_info']['db_type'],
-    'db_host' => $_SESSION['db_info']['db_host'],
-    'db_user' => $_SESSION['db_info']['db_user'],
-    'db_pass' => $_SESSION['db_info']['db_pass'],
+    'db_type' => $dbInfo['db_type'],
+    'db_host' => $dbInfo['db_host'],
+    'db_user' => $dbInfo['db_user'],
+    'db_pass' => $dbInfo['db_pass'],
 ]);
 
-sql_query('CREATE DATABASE IF NOT EXISTS ' . $_SESSION['db_info']['db_name']);
-sql_select_db($_SESSION['db_info']['db_name']);
+sql_query('CREATE DATABASE IF NOT EXISTS ' . $dbInfo['db_name']);
+sql_select_db($dbInfo['db_name']);
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
 //TODO NO_Strict_MODE: to be confirmed
 sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 
-$sq = 'ALTER DATABASE `' . $_SESSION['db_info']['db_name'] . '` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
+$sq = 'ALTER DATABASE `' . $dbInfo['db_name'] . '` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci';
 sql_query($sq);
 
 $result = true;
@@ -44,7 +48,7 @@ preg_match('/^\\d+\\.\\d+/', $version, $match);
 $sql_ver = $match[0] * 100;
 // --------------------------------------------
 
-$platform_arr = $_SESSION['platform_arr'];
+$platform_arr = $session->get('platform_arr',[]);
 foreach ($platform_arr as $platform_code => $platform_folder) {
     $fn = _installer_ . '/data/sql/' . $platform_code . '.sql';
 
@@ -59,7 +63,7 @@ foreach ($platform_arr as $platform_code => $platform_folder) {
 }
 $jres = [];
 if ($result) {
-    $lang_install = $_SESSION['lang_install'];
+    $lang_install = $session->get('lang_install');
     $lang_arr = Lang::getLanguageList('language');
 
     foreach ($lang_arr as $language) {
@@ -96,16 +100,19 @@ sql_close($db);
 function registerAdminUser()
 {
     // ----------- Registering admin user ---------------------------------
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-    $qtxt = "SELECT * FROM core_user WHERE userid='/" . $_SESSION['adm_info']['userid'] . "'";
+    $admInfo = $session->get('adm_info',[]);
+
+    $qtxt = "SELECT * FROM core_user WHERE userid='/" . $admInfo['userid'] . "'";
     $q = sql_query($qtxt);
 
     if (($q) && (sql_num_rows($q) > 0)) { // Did the user refreshed the page?
         // You never know..
-        $qtxt = "UPDATE core_user SET firstname='" . $_SESSION['adm_info']['firstname'] . "',
-			lastname='" . $_SESSION['adm_info']['lastname'] . "',
-			pass='" . md5($_SESSION['adm_info']['pass']) . "' ";
-        $qtxt .= "WHERE userid='/" . $_SESSION['adm_info']['userid'] . "'";
+        $qtxt = "UPDATE core_user SET firstname='" . $admInfo['firstname'] . "',
+			lastname='" . $admInfo['lastname'] . "',
+			pass='" . md5($admInfo['pass']) . "' ";
+        $qtxt .= "WHERE userid='/" . $admInfo['userid'] . "'";
         $q = sql_query($qtxt);
     } else { // Let's create the admin user..
         $qtxt = 'INSERT INTO core_st (idst) VALUES(NULL)';
@@ -133,9 +140,9 @@ function registerAdminUser()
         $q = sql_query($qtxt);
 
         $qtxt = 'INSERT INTO core_user (idst, userid, firstname, lastname, pass, email) ';
-        $qtxt .= "VALUES ('" . $user_idst . "', '/" . $_SESSION['adm_info']['userid'] . "',
-			'" . $_SESSION['adm_info']['firstname'] . "', '" . $_SESSION['adm_info']['lastname'] . "',
-			'" . md5($_SESSION['adm_info']['pass']) . "', '" . $_SESSION['adm_info']['email'] . "')";
+        $qtxt .= "VALUES ('" . $user_idst . "', '/" . $admInfo['userid'] . "',
+			'" . $admInfo['firstname'] . "', '" . $admInfo['lastname'] . "',
+			'" . md5($admInfo['pass']) . "', '" . $admInfo['email'] . "')";
         $q = sql_query($qtxt);
     }
 }
@@ -143,13 +150,14 @@ function registerAdminUser()
 function storeSettings()
 {
     require_once _adm_ . '/versions.php';
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-    $url = $_SESSION['site_url'];
+    $url = $session->get('site_url');
     $qtxt = "UPDATE core_setting SET param_value='" . $url . "' ";
     $qtxt .= "WHERE param_name='url'";
     $q = sql_query($qtxt);
 
-    $qtxt = "UPDATE core_setting SET param_value='" . $_SESSION['sel_lang'] . "' ";
+    $qtxt = "UPDATE core_setting SET param_value='" . $session->get('sel_lang') . "' ";
     $qtxt .= "WHERE param_name='default_language'";
     $q = sql_query($qtxt);
 
