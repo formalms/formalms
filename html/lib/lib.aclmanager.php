@@ -1090,7 +1090,7 @@ class DoceboACLManager
 
             $result = $this->_executeQuery($query);
 
-            $query1 = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_courseuser where idUser =' . $idst;
+            $query1 = 'DELETE FROM %lms_courseuser where idUser =' . $idst;
 
             $result = $this->_executeQuery($query1);
 

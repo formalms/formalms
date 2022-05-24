@@ -194,7 +194,7 @@ function homerepo_itemproperties(&$treeView, &$arrayData, $idItem)
     //finding category
     $reCategory = sql_query('
 	SELECT idCategory, title 
-	FROM ' . $GLOBALS['prefix_lms'] . '_coursecategory
+	FROM %lms_coursecategory
 	ORDER BY title');
 
     //searching languages

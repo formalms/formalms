@@ -149,7 +149,7 @@ class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
 
                 list($old_start_date, $old_end_date) = sql_fetch_row($q);
 
-                $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_classroom_calendar SET ';
+                $query = 'UPDATE %lms_classroom_calendar SET ';
             } else {
                 $action_add = true;
 

@@ -20,7 +20,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.table.php';
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0);
 
         $ini = $nav_bar->getSelectedElement();
@@ -50,13 +50,13 @@ if (!Docebo::user()->isAnonymous()) {
         $reNotes = sql_query('
 	SELECT idNotes, data, title 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $_SESSION['idCourse'] . "' 
+	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "' 
 	ORDER BY $order 
 	LIMIT $ini," . Forma\lib\Get::sett('visuItem'));
 
         list($num_notes) = sql_fetch_row(sql_query('SELECT COUNT(*) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $_SESSION['idCourse'] . "' "));
+	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "' "));
         $nav_bar->setElementTotal($num_notes);
 
         $img_up = '<img class="valing-middle" src="' . getPathImage() . 'standard/up_arrow.png" alt="' . $lang->def('_UP') . '"/>';
@@ -136,14 +136,14 @@ if (!Docebo::user()->isAnonymous()) {
     function displaynotes()
     {
         checkPerm('view');
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         require_once _base_ . '/lib/lib.table.php';
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
 
         list($data, $title, $textof) = sql_fetch_row(sql_query('
 	SELECT data,title,textof 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE idNotes='" . $_GET['idNotes'] . "' AND owner ='" . getLogUserid() . "' and idCourse='" . $_SESSION['idCourse'] . "'"));
+	WHERE idNotes='" . $_GET['idNotes'] . "' AND owner ='" . getLogUserid() . "' and idCourse='" . $idCourse . "'"));
 
         $page_title = [
         'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'),
@@ -198,7 +198,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view');
 
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?modname=notes&op=notes');
         }
@@ -209,7 +209,7 @@ if (!Docebo::user()->isAnonymous()) {
         $query_ins = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_notes 
 	SET owner = '" . getLogUserId() . "',
-		idCourse = '" . (int) $_SESSION['idCourse'] . "',
+		idCourse = '" . (int) $idCourse . "',
 		data = '" . date('Y-m-d H:i:s') . "',
 		title = '" . $_POST['title'] . "',
 		textof = '" . $_POST['description'] . "'";
@@ -223,11 +223,11 @@ if (!Docebo::user()->isAnonymous()) {
     function modnotes()
     {
         checkPerm('view');
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         list($title, $textof) = sql_fetch_row(sql_query('
 	SELECT title, textof 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE  idNotes = '" . $_GET['idNotes'] . "'  AND owner ='" . getLogUserId() . "' AND idCourse='" . $_SESSION['idCourse'] . "'"));
+	WHERE  idNotes = '" . $_GET['idNotes'] . "'  AND owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "'"));
 
         require_once _base_ . '/lib/lib.form.php';
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
@@ -287,11 +287,11 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view');
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (isset($_GET['confirm'])) {
             $query = '
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_notes
-		WHERE idNotes='" . $_GET['idNotes'] . "' AND owner='" . getLogUserId() . "' AND idCourse='" . $_SESSION['idCourse'] . "'";
+		WHERE idNotes='" . $_GET['idNotes'] . "' AND owner='" . getLogUserId() . "' AND idCourse='" . $idCourse . "'";
             if (!sql_query($query)) {
                 Util::jump_to('index.php?modname=notes&op=notes&amp;result=err');
             }

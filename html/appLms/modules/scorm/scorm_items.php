@@ -60,7 +60,7 @@ class Scorm_Item
         } else {
             $query = 'SELECT item.idscorm_item, item.idscorm_organization, item.item_identifier, item.identifierref, item.idscorm_resource, item.isvisible, item.parameters, item.title, '
                     . 'item.adlcp_prerequisites, item.adlcp_maxtimeallowed, item.adlcp_timelimitaction, item.adlcp_datafromlms, item.adlcp_masteryscore'
-                    . ' FROM ' . $this->itemtable . ' item, ' . $GLOBALS['prefix_lms'] . '_scorm_organization org'
+                    . ' FROM ' . $this->itemtable . ' item, %lms_scorm_organization org'
                     . ' WHERE item.idscorm_organization = org.idscorm_organization'
                     . ' AND org.idscorm_package = ' . $idpackage
                     . " AND item.item_identifier = '" . $item_identifier . "'";

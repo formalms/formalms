@@ -38,7 +38,7 @@ class GroupScormObjMan
         }
         $query_scores = '
 		SELECT idReference, idUser, score_raw, score_max 
-		FROM ' . $GLOBALS['prefix_lms'] . '_scorm_tracking 
+		FROM %lms_scorm_tracking 
 		WHERE idReference IN ( ' . implode(',', $id_scorms) . ' ) ';
         if ($id_students !== false) {
             $query_scores .= ' AND idUser IN ( ' . implode(',', $id_students) . ' )';

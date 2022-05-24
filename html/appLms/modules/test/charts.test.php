@@ -90,7 +90,7 @@ class Test_Charts
     public function _setTestInfo()
     {
         $json = new Services_JSON();
-        list($info) = sql_fetch_row(sql_query('SELECT chart_options FROM ' . $GLOBALS['prefix_lms'] . '_test WHERE idTest=' . $this->idTest));
+        list($info) = sql_fetch_row(sql_query('SELECT chart_options FROM %lms_test WHERE idTest=' . $this->idTest));
         if ($info != '') {
             $this->testInfo = $json->decode($info);
         } else {
@@ -297,7 +297,7 @@ class Test_Charts
 
     public function _getTestName()
     {
-        $query = 'SELECT title FROM ' . $GLOBALS['prefix_lms'] . '_test WHERE idTest=' . $this->idTest;
+        $query = 'SELECT title FROM %lms_test WHERE idTest=' . $this->idTest;
         list($name) = sql_fetch_row(sql_query($query));
 
         return $name;
@@ -306,8 +306,8 @@ class Test_Charts
     public function _getTestCategories()
     {
         $categories = [];
-        $query = 'SELECT DISTINCT c.idCategory, c.name FROM ' . $GLOBALS['prefix_lms'] . '_quest_category as c '
-            . ' JOIN ' . $GLOBALS['prefix_lms'] . '_testquest as q ON (q.idCategory = c.idCategory AND q.idTest=' . $this->idTest . ')';
+        $query = 'SELECT DISTINCT c.idCategory, c.name FROM %lms_quest_category as c '
+            . ' JOIN %lms_testquest as q ON (q.idCategory = c.idCategory AND q.idTest=' . $this->idTest . ')';
         $res = sql_query($query);
         while (list($idCategory, $name) = sql_fetch_row($res)) {
             $categories[$idCategory] = $name;
@@ -318,13 +318,13 @@ class Test_Charts
 
     public function _getUserStats()
     {
-        $query = 'SELECT idTrack FROM ' . $GLOBALS['prefix_lms'] . '_testtrack WHERE idUser=' . $this->idUser . ' AND idTest=' . $this->idTest;
+        $query = 'SELECT idTrack FROM %lms_testtrack WHERE idUser=' . $this->idUser . ' AND idTest=' . $this->idTest;
         $res = sql_query($query);
         list($idTrack) = sql_fetch_row($res);
 
         $user_values = [];
         $query = 'SELECT tq.idCategory, SUM(ta.score_assigned) '
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer as ta JOIN ' . $GLOBALS['prefix_lms'] . '_testquest as tq '
+            . ' FROM %lms_testtrack_answer as ta JOIN %lms_testquest as tq '
             . ' ON (ta.idQuest = tq.idQuest) '
             . ' WHERE ta.idTrack=' . $idTrack . ' GROUP BY tq.idCategory ';
         $res = sql_query($query);
@@ -338,7 +338,7 @@ class Test_Charts
     public function _getAverageStats()
     {
         $tracks = [];
-        $query = 'SELECT idTrack FROM ' . $GLOBALS['prefix_lms'] . '_testtrack WHERE idTest=' . $this->idTest;
+        $query = 'SELECT idTrack FROM %lms_testtrack WHERE idTest=' . $this->idTest;
         $res = sql_query($query);
         while (list($idTrack) = sql_fetch_row($res)) {
             $tracks[] = $idTrack;
@@ -347,7 +347,7 @@ class Test_Charts
         //TO DO: check count($tracks) ...
         $average_values = [];
         $query = 'SELECT tq.idCategory, COUNT(DISTINCT ta.idTrack), SUM(ta.score_assigned) '
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer as ta JOIN ' . $GLOBALS['prefix_lms'] . '_testquest as tq '
+            . ' FROM %lms_testtrack_answer as ta JOIN %lms_testquest as tq '
             . ' ON (ta.idQuest = tq.idQuest) '
             . ' WHERE ta.idTrack IN (' . implode(',', $tracks) . ') GROUP BY tq.idCategory ';
         $res = sql_query($query);

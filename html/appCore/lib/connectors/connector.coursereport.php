@@ -157,7 +157,7 @@ class DoceboConnectorCourseReport extends DoceboConnector
 
         $query_course_user = '
 		SELECT cu.idUser, cu.idCourse, cu.date_first_access, cu.date_complete
-		FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS cu 
+		FROM %lms_courseuser AS cu 
 		WHERE idUser IN ( ' . implode(',', $user_selected) . ' ) ';
 
         $re_course_user = sql_query($query_course_user);
@@ -195,7 +195,7 @@ class DoceboConnectorCourseReport extends DoceboConnector
         if (!empty($effective_user)) {
             $query_time = '
 			SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) 
-			FROM ' . $GLOBALS['prefix_lms'] . '_tracksession 
+			FROM %lms_tracksession 
 			GROUP BY idCourse ';
 
             $re_time = sql_query($query_time);

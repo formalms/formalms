@@ -164,14 +164,14 @@ class DoceboConnectorCourseExport extends DoceboConnector
         // perform the query for data retriving
 
         $query = 'SELECT COUNT(*)'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_course';
+                    . ' FROM %lms_course';
 
         list($number_of_course) = sql_fetch_row(sql_query($query));
 
         $this->tot_row = $number_of_course;
 
         $query = 'SELECT `code`, `name`, `description`, `lang_code`, `status`, `subscribe_method`, `mediumTime`, `permCloseLO`, `difficult`, `show_progress`, `show_time`, `show_extra_info`, `show_rules`, `date_begin`, `date_end`, `valid_time`, `max_num_subscribe`, `min_num_subscribe`, `selling`, `prize`, `create_date`, `idCourse`, `course_type`, `course_edition`'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_course'
+                    . ' FROM %lms_course'
                     . ' ORDER BY name';
 
         $result = sql_query($query);

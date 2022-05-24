@@ -109,7 +109,8 @@ class Learning_Item extends Learning_Object
                 return false;
             }
             sl_close_fileoperations();
-            if (isset($_SESSION['idCourse']) && defined('LMS')) {
+            $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            if (isset($idCourse) && defined('LMS')) {
                 $GLOBALS['course_descriptor']->subFileToUsedSpace(false, $size);
             }
         }

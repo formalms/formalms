@@ -117,7 +117,7 @@ class Learning_Poll extends Learning_Object
         //finding quest
         $reQuest = sql_query('
 		SELECT q.id_quest, q.type_quest, t.type_file, t.type_class 
-		FROM ' . $GLOBALS['prefix_lms'] . '_pollquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type_poll AS t 
+		FROM %lms_pollquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type_poll AS t 
 		WHERE q.id_poll = '" . $id . "' AND q.type_quest = t.type_quest");
         if (!sql_num_rows($reQuest)) {
             return true;
@@ -185,7 +185,7 @@ class Learning_Poll extends Learning_Object
         //finding quest
         $reQuest = sql_query('
 		SELECT q.id_quest, q.type_quest, t.type_file, t.type_class 
-		FROM ' . $GLOBALS['prefix_lms'] . '_pollquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type_poll AS t 
+		FROM %lms_pollquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type_poll AS t 
 		WHERE q.id_poll = '" . $id . "' AND q.type_quest = t.type_quest");
         //retriving quest
         while (list($id_quest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {

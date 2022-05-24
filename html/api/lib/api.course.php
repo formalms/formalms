@@ -1663,7 +1663,7 @@ class Course_API extends API
 
     private function updateDate($idDate, $code, $name, $description, $medium_time, $max_par, $price, $overbooking, $status, $test_type, $sub_start_date, $sub_end_date, $unsubscribe_date_limit)
     {
-        $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_course_date'
+        $query = 'UPDATE %lms_course_date'
             . " SET code = '" . $code . "',"
             . " name = '" . $name . "',"
             . " description = '" . $description . "',"

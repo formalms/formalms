@@ -25,7 +25,7 @@ class Track_Htmlpage extends Track_Object
 
     public function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
     {
-        $query = 'SELECT idTrack FROM ' . $GLOBALS['prefix_lms'] . '_materials_track'
+        $query = 'SELECT idTrack FROM %lms_materials_track'
                 . " WHERE idReference='" . (int) $idReference . "'"
                 . "   AND idUser='" . (int) $idUser . "'";
 
@@ -36,7 +36,7 @@ class Track_Htmlpage extends Track_Object
 
             return [true, $idTrack];
         } elseif ($createOnFail) {
-            $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_materials_track'
+            $query = 'INSERT INTO %lms_materials_track'
                     . '( idResource, idReference, idUser ) VALUES ('
                     . "'" . (int) $idResource . "','" . (int) $idReference . "','" . (int) $idUser . "')";
             sql_query($query)

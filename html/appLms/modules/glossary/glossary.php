@@ -47,7 +47,7 @@ if (!Docebo::user()->isAnonymous()) {
 	WHERE idGlossary = '" . $object_glos->getId() . "'"));
 
         if ($title == '') {
-            $_SESSION['last_error'] = $lang->def('_FILEUNSPECIFIED');
+            Forma::addError($lang->def('_FILEUNSPECIFIED'));
             Util::jump_to(Util::str_replace_once('&', '&amp;', $object_glos->back_url) . '&amp;create_result=0');
         }
 
@@ -137,7 +137,7 @@ if (!Docebo::user()->isAnonymous()) {
 		description = '" . $_POST['description'] . "',
 		author = '" . (int) getLogUserId() . "'";
         if (!sql_query($queryIns)) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'glossary');
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'glossary'));
             Util::jump_to(urldecode($_POST['back_url']) . '&create_result=0');
         }
         list($id) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));

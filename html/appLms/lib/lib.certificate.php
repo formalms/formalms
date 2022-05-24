@@ -61,7 +61,7 @@ class Certificate
             $whereConditions .= ' AND ('
                 . ' ca.on_date IS NOT NULL OR (('
                 . ' SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))'
-                . ' FROM ' . $GLOBALS['prefix_lms'] . '_tracksession'
+                . ' FROM %lms_tracksession'
                 . ' WHERE idCourse = cu.idCourse AND idUser = cu.idUser )'
                 . ' / 60 ) >= ' . $minutes_required
                 . ') ';
@@ -376,7 +376,7 @@ class Certificate
         $cert = [];
         $query_certificate = '
 		SELECT id_certificate, name, description, base_language, cert_structure, code
-		FROM ' . $GLOBALS['prefix_lms'] . '_certificate'
+		FROM %lms_certificate'
             . ' WHERE meta = 0';
 
         if ($name_filter && $code_filter) {
@@ -501,8 +501,8 @@ class Certificate
     {
         $query_certificate = ''
             . ' SELECT c.id_certificate, c.name, c.description, c.base_language, course.id_course, course.available_for_status, course.point_required '
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate AS c '
-            . ' 		JOIN ' . $GLOBALS['prefix_lms'] . '_certificate_course AS course'
+            . ' FROM %lms_certificate AS c '
+            . ' 		JOIN %lms_certificate_course AS course'
             . ' WHERE c.id_certificate = course.id_certificate '
             . " 		AND course.available_for_status <> '" . AVS_NOT_ASSIGNED . "' "
             . ' AND c.user_release = 1';
@@ -534,7 +534,7 @@ class Certificate
     {
         $query_certificate = '
 		SELECT id_certificate, COUNT(*)
-		FROM ' . $GLOBALS['prefix_lms'] . '_certificate_assign
+		FROM %lms_certificate_assign
 		WHERE 1 ';
         if ($id_certificate !== false) {
             $query_certificate .= " AND id_certificate = '" . $id_certificate . "' ";
@@ -583,8 +583,8 @@ class Certificate
     {
         $query_certificate = '
 		SELECT ca.id_course, c.id_certificate, c.name
-		FROM ' . $GLOBALS['prefix_lms'] . '_certificate AS c
-			JOIN ' . $GLOBALS['prefix_lms'] . '_certificate_assign AS ca
+		FROM %lms_certificate AS c
+			JOIN %lms_certificate_assign AS ca
 			ON (c.id_certificate = ca.id_certificate)
 		WHERE ca.id_user = ' . (int) $id_user . ' AND ca.id_course = ' . (int) $id_course . ' ';
 
@@ -605,7 +605,7 @@ class Certificate
     {
         $query_certificate = '
 		SELECT id_user, id_certificate, id_course, on_date
-		FROM ' . $GLOBALS['prefix_lms'] . '_certificate_assign
+		FROM %lms_certificate_assign
 		WHERE 1 ';
         if (is_array($arr_user) && !empty($arr_user)) {
             $query_certificate .= ' AND id_user IN ( ' . implode(',', $arr_user) . '';
@@ -963,7 +963,7 @@ class Certificate
     {
         // Get Course info
         $query = 'SELECT name' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_course' .
+            ' FROM %lms_course' .
             ' WHERE  idCourse = ' . $id_course;
         $result = sql_query($query);
         while ($row = sql_fetch_row($result)) {
@@ -996,7 +996,7 @@ class Certificate
         // Get Certificate info
         $info = [];
         $query = 'SELECT *' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_assign' .
+            ' FROM %lms_certificate_assign' .
             " WHERE id_certificate = '" . $id_certificate . "'" .
             " AND id_course = '" . $id_course . "'";
         if ($id_user) {
@@ -1022,7 +1022,7 @@ class Certificate
     public function getCertificateInfo($id_certificate)
     {
         $info = [];
-        $query = 'SELECT id_certificate, name, description, base_language, cert_structure FROM ' . $GLOBALS['prefix_lms'] . '_certificate ';
+        $query = 'SELECT id_certificate, name, description, base_language, cert_structure FROM %lms_certificate ';
         if (is_array($id_certificate) && count($id_certificate) > 0) {
             $query .= " WHERE id_certificate IN ('" . implode("','", $id_certificate) . "')";
         } else {
@@ -1040,7 +1040,7 @@ class Certificate
     public function delCertificateForUserInCourse($id_certificate, $id_user, $id_course)
     {
         $query = 'DELETE ' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_assign ' .
+            ' FROM %lms_certificate_assign ' .
             " WHERE id_certificate = '" . $id_certificate . "'" .
             " AND id_course = '" . $id_course . "'" .
             " AND id_user = '" . $id_user . "'";
@@ -1051,7 +1051,7 @@ class Certificate
     public function getNumberOfCertificateForCourse($id_certificate, $id_course)
     {
         $query = 'SELECT COUNT(*)' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_assign' .
+            ' FROM %lms_certificate_assign' .
             " WHERE id_certificate = '" . $id_certificate . "'" .
             " AND id_course = '" . $id_course . "'";
 
@@ -1098,7 +1098,7 @@ class Certificate
         }
 
         $query = 'SELECT t1.code, t1.name, YEAR(t2.on_date) as year, t3.firstname, t3.lastname '
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate as t1 JOIN ' . $GLOBALS['prefix_lms'] . '_certificate_assign as t2 JOIN ' . $GLOBALS['prefix_fw'] . '_user as t3 '
+            . ' FROM %lms_certificate as t1 JOIN %lms_certificate_assign as t2 JOIN ' . $GLOBALS['prefix_fw'] . '_user as t3 '
             . ' ON (t1.id_certificate = t2.id_certificate AND t2.id_user = t3.idst)  '
             . (count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '')
             . ' ORDER BY t3.lastname, t3.firstname, t1.name';
@@ -1132,7 +1132,7 @@ class Certificate
         }
 
         $query = 'SELECT COUNT(*) '
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate as t1 JOIN ' . $GLOBALS['prefix_lms'] . '_certificate_assign as t2 JOIN ' . $GLOBALS['prefix_fw'] . '_user as t3 '
+            . ' FROM %lms_certificate as t1 JOIN %lms_certificate_assign as t2 JOIN ' . $GLOBALS['prefix_fw'] . '_user as t3 '
             . ' ON (t1.id_certificate = t2.id_certificate AND t2.id_user = t3.idst)  '
             . (count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '');
 
@@ -1169,7 +1169,7 @@ function getCertificateQuery($users = false, $id_cert = false, $year = false)
     }
 
     $query = 'SELECT t1.code, t1.name, YEAR(t2.on_date) as year, t3.firstname, t3.lastname '
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate as t1 JOIN ' . $GLOBALS['prefix_lms'] . '_certificate_assign as t2 JOIN ' . $GLOBALS['prefix_fw'] . '_user as t3 '
+        . ' FROM %lms_certificate as t1 JOIN %lms_certificate_assign as t2 JOIN ' . $GLOBALS['prefix_fw'] . '_user as t3 '
         . ' ON (t1.id_certificate = t2.id_certificate AND t2.id_user = t3.idst)  '
         . (count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '')
         . ' ORDER BY t3.lastname, t3.firstname, t1.name';
@@ -1203,7 +1203,7 @@ function getCertificateQueryTotal($users = false, $id_cert = false, $year = fals
     }
 
     $query = 'SELECT COUNT(*) '
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate as t1 JOIN ' . $GLOBALS['prefix_lms'] . '_certificate_assign as t2 JOIN ' . $GLOBALS['prefix_fw'] . '_user as t3 '
+        . ' FROM %lms_certificate as t1 JOIN %lms_certificate_assign as t2 JOIN ' . $GLOBALS['prefix_fw'] . '_user as t3 '
         . ' ON (t1.id_certificate = t2.id_certificate AND t2.id_user = t3.idst)  '
         . (count($conditions) > 0 ? 'WHERE ' . implode(' AND ', $conditions) : '');
 

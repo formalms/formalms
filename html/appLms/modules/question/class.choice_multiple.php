@@ -798,7 +798,7 @@ class ChoiceMultiple_Question extends Question
         // the user_answer = NULL is for backward compatibility
         $recover_answer = '
 		SELECT idAnswer 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer 
+		FROM %lms_testtrack_answer 
 		WHERE idQuest = ' . (int) $this->id . ' AND 
 			idTrack = ' . (int) $id_track . ' AND ( user_answer = 1 OR user_answer = NULL ) ';
         if ($number_time != null) {
@@ -808,7 +808,7 @@ class ChoiceMultiple_Question extends Question
         }
 
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
-        $sql = 'select status from ' . $GLOBALS['prefix_lms'] . '_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
+        $sql = 'select status from %lms_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
         list($status_test) = sql_fetch_row(sql_query($sql));
 
         $re_answer_do = sql_query($recover_answer);
@@ -881,7 +881,7 @@ class ChoiceMultiple_Question extends Question
     {
         $res = 0;
         $query = 'SELECT COUNT(tta.idAnswer)
-		FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer AS tta
+		FROM %lms_testtrack_answer AS tta
 		INNER JOIN ' . $GLOBALS['prefix_lms'] . "_testquestanswer tqa ON tqa.idAnswer = tta.idAnswer
 		WHERE tta.idQuest = '" . (int) $this->id . "'
 		AND tta.idTrack = '" . (int) $id_track . "'

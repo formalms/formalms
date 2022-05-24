@@ -39,7 +39,8 @@ function fileList(&$url)
                                         getPathImage('fw') . 'myfiles/' . $id_page . '.gif');
         $tab_man->addTab($new_tab);
     }
-    $tab_man->parseInput($_POST, $_SESSION);
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $tab_man->parseInput($_POST, $session);
 
     $active_tab = $tab_man->getActiveTab();
     if (!$active_tab) {

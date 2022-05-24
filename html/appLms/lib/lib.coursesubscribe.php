@@ -139,7 +139,7 @@ class CourseSubscribe
         }
 
         $fields = "sum(waiting = '1') as waiting, COUNT(*) as user_count";
-        $qtxt = 'SELECT ' . $fields . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser ';
+        $qtxt = 'SELECT ' . $fields . ' FROM %lms_courseuser ';
         $qtxt .= 'WHERE ' . $id_name_user . "='" . $id_val . "' ";
         if (!$this->_isEdition($edition_id)) {
             $qtxt .= "AND edition_id='0' ";

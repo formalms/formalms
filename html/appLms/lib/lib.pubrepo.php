@@ -192,7 +192,7 @@ class PubDirDb extends TreeDb
 function manPurepo_save($idFolder, &$lo, $arrParam)
 {
     // a big insert query .... wow wooo ... yep
-    $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_pubrepo'
+    $query = 'INSERT INTO %lms_pubrepo'
             . ' ( `idFolder` , `idResource` , `idCategory` , `idAuthor` ,'
             . ' `objectType` , `title` , `public` , `version` , `difficult` ,'
             . ' `description` , `language` , `resource` , `objective` , `dateInsert` )'
@@ -394,7 +394,7 @@ function loadFields(&$arrayData, &$lo)
     //finding category
     $reCategory = sql_query('
 	SELECT idCategory, title 
-	FROM ' . $GLOBALS['prefix_lms'] . '_coursecategory
+	FROM %lms_coursecategory
 	ORDER BY title');
 
     //searching languages
@@ -535,8 +535,8 @@ function manPubRepo_ShowItem($itemId)
             . '`objectType` ,'
             . $GLOBALS['prefix_lms'] . '_pubrepo.title title, `public` , `version` , `difficult` ,'
             . '`description` , `language` , `resource` , `objective` , `dateInsert`'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_pubrepo, ' . $GLOBALS['prefix_lms'] . '_coursecategory'
-            . ' WHERE ' . $GLOBALS['prefix_lms'] . '_pubrepo.idCategory = ' . $GLOBALS['prefix_lms'] . '_coursecategory.idCategory'
+            . ' FROM %lms_pubrepo, %lms_coursecategory'
+            . ' WHERE %lms_pubrepo.idCategory = %lms_coursecategory.idCategory'
             . " AND idObject='" . (int) $itemId . "'";
     $rs = sql_query($query)
         or exit(sql_error());
@@ -596,7 +596,7 @@ function manPubRepo_getData($idObject)
         . '`idAuthor`, `objectType`, `title`, `public`,'
         . '`version`, `difficult`, `language`,'
         . '`resource`, `objective`, `dateInsert`'
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_pubrepo'
+        . ' FROM %lms_pubrepo'
         . " WHERE idObject='" . (int) $idObject . "'";
     $rs = sql_query($query) or exit(sql_error());
 

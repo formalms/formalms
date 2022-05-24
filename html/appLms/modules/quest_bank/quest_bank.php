@@ -249,7 +249,7 @@ function exportquest(&$url)
                     //Insert the question for the test
                     $reQuest = sql_query('
 					SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
-					FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . '_quest_type AS t
+					FROM %lms_testquest AS q JOIN %lms_quest_type AS t
 					WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
                     while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
@@ -339,7 +339,7 @@ function exportquest(&$url)
 
                     $reQuest = sql_query('
 					SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
-					FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . '_quest_type AS t
+					FROM %lms_testquest AS q JOIN %lms_quest_type AS t
 					WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
                     while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
@@ -414,7 +414,7 @@ function deletequest(&$url)
         //delete the question
         $reQuest = sql_query('
                 SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
-                FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . '_quest_type AS t
+                FROM %lms_testquest AS q JOIN %lms_quest_type AS t
                 WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {

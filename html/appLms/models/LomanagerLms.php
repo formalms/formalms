@@ -112,16 +112,19 @@ class LomanagerLms extends Model
 
     public function setCurrentTab($tab)
     {
-        $_SESSION['storage'] = serialize(['tabview_storage_status' => $tab]);
+        $storage = ['tabview_storage_status' => $tab];
+        $this->session->set('storage',$storage);
+        $this->session->save();
 
-        return $_SESSION['storage'];
+        return serialize($storage);
     }
 
     public function getCurrentTab()
     {
         $tab = self::STORAGE_ORGDIRDB;
-        if (isset($_SESSION['storage'])) {
-            $tab = unserialize($_SESSION['storage'])['tabview_storage_status'];
+        $storage = $this->session->get('storage');
+        if ($storage) {
+            $tab = $storage['tabview_storage_status'];
         } else {
             $this->setCurrentTab($tab);
         }
@@ -218,9 +221,9 @@ class LomanagerLms extends Model
 
                     return $idReference;
                 }
-            } elseif (isset($_SESSION['idCourse'])) {
+            } elseif ($this->session->get('idCourse')) {
                 // It's a directory
-                return $this->tdb->addFolderById(0, $saveData['name'], $_SESSION['idCourse']);
+                return $this->tdb->addFolderById(0, $saveData['name'], $this->session->get('idCourse'));
             }
         }
 

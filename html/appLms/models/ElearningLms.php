@@ -98,6 +98,8 @@ class ElearningLms extends Model
             }
         }
 
+        $commonLabel = $this->session->get('id_common_label');
+
         $query = 'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.box_description, c.difficult,  c.status, c.level_show_user, '
             . '	  c.course_edition, c.sub_start_date, c.sub_end_date, '
             . '    c.max_num_subscribe, c.create_date, '
@@ -111,7 +113,7 @@ class ElearningLms extends Model
             . ' left JOIN %lms_course_date AS cd ON (c.idCourse = cd.id_course)  '
             . ' left JOIN %lms_category AS cat ON (c.idCategory = cat.idCategory)  '
             . ' WHERE ' . $this->compileWhere($conditions, $params)
-            . ($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '" . $_SESSION['id_common_label'] . "')" : '')
+            . ($commonLabel > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '" . $commonLabel . "')" : '')
             . $exclude_pathcourse
             . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c']);
 

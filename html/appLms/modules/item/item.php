@@ -122,7 +122,8 @@ if (!Docebo::user()->isAnonymous()) {
                     sl_unlink($path . $savefile);
                     $response['errors']['files'][$fileIndex] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
                 }
-                if (isset($_SESSION['idCourse']) && defined('LMS')) {
+
+                if (isset($idCourse) && defined('LMS')) {
                     $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_ . $path . $savefile);
                 }
                 list($idLesson) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -190,7 +191,7 @@ if (!Docebo::user()->isAnonymous()) {
         $idLesson = Forma\lib\Get::pReq('id_comm', DOTY_INT, null);
         $title = Forma\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE', 'item', 'lms'));
 
-        $idCourse = $_SESSION['idCourse'];
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
         try {
             $filesInfo = json_decode($_REQUEST['info'], true);
@@ -283,7 +284,7 @@ if (!Docebo::user()->isAnonymous()) {
                         sl_unlink($path . $savefile);
                         $response['errors']['files'][$fileIndex] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
                     }
-                    if (isset($_SESSION['idCourse']) && defined('LMS')) {
+                    if (isset($idCourse) && defined('LMS')) {
                         $GLOBALS['course_descriptor']->addFileToUsedSpace(_files_ . $path . $savefile);
                     }
                 }

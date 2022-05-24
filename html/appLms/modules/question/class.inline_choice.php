@@ -791,7 +791,7 @@ class InlineChoice_Question extends Question
         list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
 
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
-        $sql = 'select status from ' . $GLOBALS['prefix_lms'] . '_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
+        $sql = 'select status from %lms_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
         list($status_test) = sql_fetch_row(sql_query($sql));
 
         $select = (Forma\lib\Get::sett('no_answer_in_test') == 'on' ? '<span class="text_bold">' . $lang->def('_NO_ANSWER') . '</span>' : '');

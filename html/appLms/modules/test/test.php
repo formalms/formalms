@@ -218,7 +218,7 @@ function modtestgui($object_test)
 
     $re_quest = sql_query('
     SELECT tq.idQuest, tq.type_quest, tq.title_quest, tq.sequence, tq.page, tq.idCategory, qc.name AS category 
-    FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS tq
+    FROM %lms_testquest AS tq
     LEFT JOIN ' . $GLOBALS['prefix_lms'] . "_quest_category qc ON qc.idCategory = tq.idCategory
     WHERE tq.idTest = '" . $object_test->getId() . "'
     ORDER BY tq.sequence");
@@ -420,7 +420,7 @@ function modtestgui($object_test)
 
     $re_type = sql_query('
     SELECT type_quest 
-    FROM ' . $GLOBALS['prefix_lms'] . '_quest_type
+    FROM %lms_quest_type
     ORDER BY sequence');
 
     $add_quest = '<form method="post" action="index.php?modname=test&amp;op=addquest">'
@@ -692,7 +692,7 @@ function addquest()
     if ($idTest) {
         $max_score = _getTestMaxScore($idTest);
         if ($max_score !== false) {
-            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
+            $query = 'UPDATE %lms_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
             $res = sql_query($query);
         }
     }
@@ -736,7 +736,7 @@ function modquest()
     if ($idTest) {
         $max_score = _getTestMaxScore($idTest);
         if ($max_score !== false) {
-            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
+            $query = 'UPDATE %lms_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
             $res = sql_query($query);
         }
     }
@@ -796,7 +796,7 @@ function delquest()
 
         $max_score = _getTestMaxScore($idTest);
         if ($max_score !== false) {
-            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
+            $query = 'UPDATE %lms_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $idTest;
             $res = sql_query($query);
         }
 
@@ -900,7 +900,7 @@ function defmodality()
 
     $has_categories = false;
     $categories = [];
-    $query = 'SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS tq LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_quest_category AS qc '
+    $query = 'SELECT tq.idCategory, qc.name, COUNT(tq.idcategory) FROM %lms_testquest AS tq LEFT JOIN %lms_quest_category AS qc '
         . " ON (tq.idCategory = qc.idCategory) WHERE idTest='" . (int) $idTest . "' GROUP BY tq.idCategory";
     $res = sql_query($query);
     if (sql_num_rows($res) > 0) {
@@ -1662,7 +1662,7 @@ function defpoint()
 
     $query_question = '
     SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult 
-    FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+    FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
     WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
     $query_question .= ' ORDER BY q.sequence';
     $re_quest = sql_query($query_question);
@@ -1758,7 +1758,7 @@ function modassignpoint()
     if (isset($_REQUEST['saveandexit'])) {
         $query_question = '
         SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
-        FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+        FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
         WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
         $query_question .= ' ORDER BY q.sequence';
         $re_quest = sql_query($query_question);
@@ -1788,7 +1788,7 @@ function modassignpoint()
 
     $query_question = '
     SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult 
-    FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+    FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
     WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest";
     $query_question .= ' ORDER BY q.sequence';
     $re_quest = sql_query($query_question);
@@ -2137,7 +2137,7 @@ function doexportquestqb()
     }
 
     // Get quest from id test
-    $reQuest = sql_query(' SELECT q.idQuest FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q WHERE q.idTest = ' . $id_test);
+    $reQuest = sql_query(' SELECT q.idQuest FROM %lms_testquest AS q WHERE q.idTest = ' . $id_test);
 
     while (list($idQuest) = sql_fetch_row($reQuest)) {
         $quest_selection[] = $idQuest;
@@ -2147,7 +2147,7 @@ function doexportquestqb()
         //Insert the question for the test
         $reQuest = sql_query('
                         SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
-                        FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . '_quest_type AS t
+                        FROM %lms_testquest AS q JOIN %lms_quest_type AS t
                         WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
@@ -2167,7 +2167,7 @@ function _getTestMaxScore($idTest)
     }
 
     $query_question = 'SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.title_quest, q.difficult '
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . '_quest_type AS t '
+        . ' FROM %lms_testquest AS q JOIN %lms_quest_type AS t '
         . " WHERE q.idTest = '" . (int) $idTest . "' AND q.type_quest = t.type_quest ORDER BY q.sequence";
     $re_quest = sql_query($query_question);
 
@@ -2183,7 +2183,7 @@ function _getTestMaxScore($idTest)
 
 function _adjustAllTestMaxScore()
 {
-    $query = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_test';
+    $query = 'SELECT * FROM %lms_test';
     $res = sql_query($query);
     if (!$res) {
         return;
@@ -2193,7 +2193,7 @@ function _adjustAllTestMaxScore()
         if ($obj->idTest) {
             $max_score = _getTestMaxScore($obj->idTest);
             if ($max_score !== false) {
-                $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $obj->idTest;
+                $query = 'UPDATE %lms_test SET score_max=' . (int) $max_score . ' WHERE idTest=' . (int) $obj->idTest;
                 $res2 = sql_query($query);
             }
         }

@@ -278,7 +278,7 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
 {
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.poll.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $poll_man = new PollManagement($id_poll);
     $report_man = new ReportPollManagement();
 
@@ -290,7 +290,7 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
     $quest_sequence_number = $poll_man->getInitQuestSequenceNumberForPage(1);
     $query_question = $report_man->getQuestions($id_poll);
 
-    $treeview_value = str_replace('treeview_selected_' . $_SESSION['idCourse'], '', array_search($poll_info['title'], $_POST));
+    $treeview_value = str_replace('treeview_selected_' . $idCourse, '', array_search($poll_info['title'], $_POST));
     $editions_filter = Forma\lib\Get::req('poll_editions_filter', DOTY_INT, -1);
     if (Forma\lib\Get::req('del_filter', DOTY_STRING, '') != '') {
         $editions_filter = -1;
@@ -308,7 +308,7 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
     //--- filter on edition ------------------------------------------------------
 
     //retrieve editions
-    $query = 'SELECT * FROM %lms_course_editions WHERE id_course = ' . (int) $_SESSION['idCourse'];
+    $query = 'SELECT * FROM %lms_course_editions WHERE id_course = ' . (int) $idCourse;
     $res = sql_query($query);
 
     //is there any edition ?
@@ -337,9 +337,9 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
         //draw editions dropdown and filter
         $str =
             Form::openForm('tree_filter_form', 'index.php?modname=stats&amp;op=statcourse')
-            . Form::getHidden('seq_0.' . $treeview_value, 'treeview_selected_' . $_SESSION['idCourse'] . $treeview_value, $poll_info['title'])
-            . Form::getHidden('treeview_selected_' . $_SESSION['idCourse'], 'treeview_selected_' . $_SESSION['idCourse'], $treeview_value)
-            . Form::getHidden('treeview_state_' . $_SESSION['idCourse'], 'treeview_state_' . $_SESSION['idCourse'], $_POST['treeview_state_' . $_SESSION['idCourse']])
+            . Form::getHidden('seq_0.' . $treeview_value, 'treeview_selected_' . $idCourse . $treeview_value, $poll_info['title'])
+            . Form::getHidden('treeview_selected_' . $idCourse, 'treeview_selected_' . $idCourse, $treeview_value)
+            . Form::getHidden('treeview_state_' . $idCourse, 'treeview_state_' . $idCourse, $_POST['treeview_state_' . $idCourse])
             . Form::openElementSpace()
             . Form::getDropdown(Lang::t('_FILTEREDITIONSELECTTITLE', 'stats', 'lms'),
                                         'poll_editions_filter',
@@ -367,7 +367,7 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
 
     if ($editions_filter > 0) {
         $query = 'SELECT idUser FROM %lms_courseuser '
-            . " WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "' AND edition_id = '" . $editions_filter . "'";
+            . " WHERE idCourse = '" . (int) $idCourse . "' AND edition_id = '" . $editions_filter . "'";
         $res = sql_query($query);
         while (list($idUser) = sql_fetch_row($res)) {
             $users[] = $idUser;
@@ -432,13 +432,13 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
         sendStrAsFile($filetext, $filename);
     }
 
-    $treeview_value = str_replace('treeview_selected_' . $_SESSION['idCourse'], '', array_search($poll_info['title'], $_POST));
+    $treeview_value = str_replace('treeview_selected_' . $idCourse, '', array_search($poll_info['title'], $_POST));
 
     $str =
         Form::openForm('tree_export_form', 'index.php?modname=stats&amp;op=statcourse')
-        . Form::getHidden('seq_0.' . $treeview_value, 'treeview_selected_' . $_SESSION['idCourse'] . $treeview_value, $poll_info['title'])
-        . Form::getHidden('treeview_selected_' . $_SESSION['idCourse'], 'treeview_selected_' . $_SESSION['idCourse'], $treeview_value)
-        . Form::getHidden('treeview_state_' . $_SESSION['idCourse'], 'treeview_state_' . $_SESSION['idCourse'], $_POST['treeview_state_' . $_SESSION['idCourse']])
+        . Form::getHidden('seq_0.' . $treeview_value, 'treeview_selected_' . $idCourse . $treeview_value, $poll_info['title'])
+        . Form::getHidden('treeview_selected_' . $idCourse, 'treeview_selected_' . $idCourse, $treeview_value)
+        . Form::getHidden('treeview_state_' . $idCourse, 'treeview_state_' . $idCourse, $_POST['treeview_state_' . $idCourse])
         . Form::openButtonSpace()
         . Form::getButton('export', 'export', Lang::t('_EXPORT_CSV', 'standard'))
         . Form::closeButtonSpace()

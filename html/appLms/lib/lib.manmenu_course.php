@@ -24,7 +24,7 @@ function getAllCustom()
 {
     $query = '
 	SELECT idCustom, title 
-	FROM ' . $GLOBALS['prefix_lms'] . '_menucustom 
+	FROM %lms_menucustom 
 	ORDER BY title';
     $re_custom = sql_query($query);
 

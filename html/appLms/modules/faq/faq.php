@@ -142,7 +142,7 @@ if (!Docebo::user()->isAnonymous()) {
 		description = '" . addslashes($_REQUEST['description']) . "',
 		author = '" . (int) getLogUserId() . "'";
         if (!sql_query($query_ins)) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURECAT', 'faq', 'lms');
+            Forma::addError(Lang::t('_OPERATION_FAILURECAT', 'faq', 'lms'));
             Util::jump_to($back_url . '&create_result=0');
         }
 

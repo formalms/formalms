@@ -126,7 +126,7 @@ if (Docebo::user()->isAnonymous()) {
             $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
 
             $select_edition = ' SELECT * ';
-            $from_edition = ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition';
+            $from_edition = ' FROM %lms_course_edition';
             $where_edition = " WHERE idCourse = '" . $id_course . "' ";
             $order_edition = ' ORDER BY date_begin ';
             $re_edition = sql_query($select_edition . $from_edition . $where_edition . $order_edition);
@@ -142,7 +142,7 @@ if (Docebo::user()->isAnonymous()) {
             }
 
             $select_ed_count = 'SELECT idCourse, edition_id, sum(waiting) as waiting, COUNT(*) as user_count ';
-            $from_ed_count = 'FROM ' . $GLOBALS['prefix_lms'] . '_courseuser ';
+            $from_ed_count = 'FROM %lms_courseuser ';
             $where_ed_count = "WHERE edition_id <> 0 AND idCourse = '" . $id_course . "'";
             $group_ed_count = 'GROUP BY edition_id ';
             $re_ed_count = sql_query($select_ed_count . $from_ed_count . $where_ed_count . $group_ed_count);
@@ -270,7 +270,7 @@ if (Docebo::user()->isAnonymous()) {
 
                 // retrive subscribed -----------------------------------------------------
                 $select_count = 'SELECT COUNT(*) as user_count ';
-                $from_count = ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u';
+                $from_count = ' FROM %lms_courseuser AS u';
                 $where_count = " WHERE u.idCourse = '" . $id_course . "' " .
                         " AND u.level = '3'" .
                         " AND u.status IN ('" . _CUS_CONFIRMED . "', '" . _CUS_SUBSCRIBED . "', '" . _CUS_BEGIN . "', '" . _CUS_END . "', '" . _CUS_SUSPEND . "', '" . _CUS_WAITING_LIST . "')" .
@@ -531,7 +531,7 @@ if (Docebo::user()->isAnonymous()) {
                     . '</li>';
             }
             $select_edition = ' SELECT idCourseEdition, idCourse, code, name, img_material, date_begin, date_end ';
-            $from_edition = ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition';
+            $from_edition = ' FROM %lms_course_edition';
             $where_edition = " WHERE idCourse = '" . $id_course . "' ";
             $order_edition = ' ORDER BY date_begin ';
             $re_edition = sql_query($select_edition . $from_edition . $where_edition . $order_edition);

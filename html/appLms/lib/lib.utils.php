@@ -32,8 +32,8 @@ function firstPage($idMain = false)
     $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $query_main = '
 	SELECT module.idModule, main.idMain, module.module_name, module.default_op, module.token_associated 
-	FROM ( ' . $GLOBALS['prefix_lms'] . '_menucourse_main AS main JOIN
-		' . $GLOBALS['prefix_lms'] . '_menucourse_under AS un ) JOIN
+	FROM ( %lms_menucourse_main AS main JOIN
+		%lms_menucourse_under AS un ) JOIN
 		' . $GLOBALS['prefix_lms'] . "_module AS module
 	WHERE main.idMain = un.idMain AND un.idModule = module.idModule 
 		AND main.idCourse = '" . (int) $session->get('idCourse') . "'

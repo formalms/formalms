@@ -24,8 +24,9 @@ function repoList(&$url)
     checkPerm('view');
 
     $lang = &DoceboLanguage::createInstance('light_repo');
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
-    $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+    $file_man = new LightRepoManager(getLogUserId(), $idCourse);
 
     $mod_perm = checkPerm('mod', true);
 
@@ -98,9 +99,9 @@ function modRepo(&$url)
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &DoceboLanguage::createInstance('light_repo');
-    $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+    $file_man = new LightRepoManager(getLogUserId(), $idCourse);
 
     $id_repo = importVar('id_repo', true, 0);
 
@@ -123,7 +124,7 @@ function modRepo(&$url)
 
     // save modification if needed
     if (isset($_POST['save'])) {
-        $data[LR_IDCOURSE] = $_SESSION['idCourse'];
+        $data[LR_IDCOURSE] = $idCourse;
         $data[LR_TITLE] = importVar('repo_title', false, '');
         $data[LR_DESCR] = importVar('repo_descr', false, '');
         $data[LR_TEACHER_ALERT] = (int) importVar('repo_teacher_alert');
@@ -175,11 +176,11 @@ function delRepo(&$url)
     checkPerm('mod');
 
     require_once _lms_ . '/lib/lib.light_repo.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $re = false;
     if (isset($_GET['confirm'])) {
         $id_repo = Forma\lib\Get::req('id_repo', DOTY_INT, 0);
-        $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+        $file_man = new LightRepoManager(getLogUserId(), $idCourse);
         $re = $file_man->deleteRepo($id_repo);
     }
     Util::jump_to($url->getUrl('op=repolist&result=' . ($re ? 'ok_del' : 'err')));
@@ -190,9 +191,9 @@ function repoMyDetails(&$url, $passed_repo = 0)
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.table.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &DoceboLanguage::createInstance('light_repo');
-    $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+    $file_man = new LightRepoManager(getLogUserId(), $idCourse);
     $acl_man = &Docebo::user()->getAclManager();
 
     $id_repo = importVar('id_repo', true, $passed_repo);
@@ -279,9 +280,9 @@ function modFile(&$url)
     $mod_perm = checkPerm('mod', true);
 
     require_once _base_ . '/lib/lib.form.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &DoceboLanguage::createInstance('light_repo');
-    $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+    $file_man = new LightRepoManager(getLogUserId(), $idCourse);
 
     $id_repo = importVar('id_repo', true, 0);
     $id_file = importVar('id_file', true, 0);
@@ -302,8 +303,8 @@ function modFile(&$url)
         $repo = $file_man->getRepoDetails($id_repo);
         if ((int) $repo[LR_TEACHER_ALERT]) {
             $mailer = FormaMailer::getInstance();
-            $teachers = Man_Course::getIdUserOfLevel($_SESSION['idCourse'], '6');
-            $courseInfo = Man_Course::getCourseInfo($_SESSION['idCourse']);
+            $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
+            $courseInfo = Man_Course::getCourseInfo($idCourse);
             $userId = Docebo::user()->getIdst();
             $teacherRecipients = [];
             //pick the parmas for translations
@@ -386,13 +387,13 @@ function delFile(&$url)
     $mod_perm = checkPerm('mod', true);
 
     require_once _lms_ . '/lib/lib.light_repo.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $re = false;
     if (isset($_GET['confirm'])) {
         $id_file = Forma\lib\Get::req('id_file', DOTY_INT, 0);
         $id_repo = Forma\lib\Get::req('id_repo', DOTY_INT, 0);
 
-        $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+        $file_man = new LightRepoManager(getLogUserId(), $idCourse);
         $re = $file_man->deleteFile($id_file);
     }
     Util::jump_to($url->getUrl('op=' . ($mod_perm ? 'repo_manager_details' : 'repo_my_details') . '&id_repo=' . $id_repo . '&result=' . ($re ? 'file_ok' : 'file_err')));
@@ -405,7 +406,8 @@ function repoManagerDetails(&$url)
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &DoceboLanguage::createInstance('light_repo');
-    $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $file_man = new LightRepoManager(getLogUserId(), $idCourse);
 
     $id_repo = importVar('id_repo', true, 0);
 
@@ -462,7 +464,8 @@ function repoUserDetails(&$url, $passed_repo = 0)
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &DoceboLanguage::createInstance('light_repo');
-    $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $file_man = new LightRepoManager(getLogUserId(), $idCourse);
     $acl_man = &Docebo::user()->getAclManager();
 
     $id_repo = importVar('id_repo', true, $passed_repo);
@@ -536,7 +539,8 @@ function downloadFile(&$url)
 
     // retrive file info
     $id_file = importVar('id_file', true, 0);
-    $file_man = new LightRepoManager(getLogUserId(), $_SESSION['idCourse']);
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $file_man = new LightRepoManager(getLogUserId(), $idCourse);
 
     $file = $file_man->getFileInfo($id_file);
     if ($file !== false) {

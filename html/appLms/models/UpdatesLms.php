@@ -34,14 +34,16 @@ class UpdatesLms extends Model
 
     public function clean()
     {
-        unset($_SESSION['updates']);
+        $this->session->remove('updates');
+        $this->session->save();
     }
 
     public function getAll()
     {
-        if (!isset($_SESSION['updates'])) {
+        $updates = $this->session->get('updates');
+        if (!$updates) {
             $courses_updates = $this->courseUpdates();
-            $u = [
+            $updates = [
                 'elearning' => isset($courses_updates['elearning'][0]) ? $courses_updates['elearning'][0] : 0,
                 'classroom' => isset($courses_updates['classroom'][0]) ? $courses_updates['classroom'][0] : 0,
                 'catalog' => $this->catalogUpdates(),
@@ -55,19 +57,19 @@ class UpdatesLms extends Model
             if (isset($courses_updates['assessment'][1])) {
                 $assessment = $courses_updates['assessment'][1];
             }
-            $u['assessment'] = $assessment;
+            $updates['assessment'] = $assessment;
 
-            $_SESSION['updates'] = $u;
-        } else {
-            $u = $_SESSION['updates'];
+            $this->session->set('updates',$updates);
+            $this->session->save();
         }
 
-        return $u;
+        return $updates;
     }
 
     public static function resetCache()
     {
-        unset($_SESSION['updates']);
+        \Forma\lib\Session\SessionManager::getInstance()->getSession()->remove('updates');
+        \Forma\lib\Session\SessionManager::getInstance()->getSession()->save();
     }
 
     public function courseUpdates()
@@ -102,7 +104,7 @@ class UpdatesLms extends Model
         $qtxt = 'SELECT COUNT(*)'
             . ' FROM %lms_coursepath_user '
             . ' WHERE idUser = ' . (int) $this->id_user
-            . " AND ( course_completed = 0 OR date_assign >= '" . $_SESSION['last_enter'] . "') ";
+            . " AND ( course_completed = 0 OR date_assign >= '" . $this->session->get('last_enter') . "') ";
         $re = $this->db->query($qtxt);
         if (!$re) {
             return 0;

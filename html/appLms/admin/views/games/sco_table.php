@@ -28,7 +28,7 @@ echo getTitleArea($title_arr);
     $tb->addHead($h_content);
 
     $qry = 'SELECT t1.idscorm_item, t1.title ' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_items as t1 ' .
+        ' FROM %lms_scorm_items as t1 ' .
         " WHERE t1.idscorm_organization='" . $id_resource . "'
 		  AND t1.idscorm_resource != 0
 			ORDER BY t1.idscorm_item";

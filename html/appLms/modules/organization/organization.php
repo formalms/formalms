@@ -23,8 +23,8 @@ function organization(&$treeView)
         $treeView->tdb->setFilterVisibility( TRUE );
         $treeView->tdb->setFilterAccess( Docebo::user()-> );
     }
-
-    $treeView = new Org_TreeView($orgDb, $_SESSION['idCourse']);
+$idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $treeView = new Org_TreeView($orgDb, $idCourse);
 
     $treeView->parsePositionData($_POST, $_POST, $_POST);*/
 
@@ -192,17 +192,18 @@ function organization_play(&$treeView, $idItem)
 
 function import()
 {
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $orgDb = new OrgDirDb();
-    $treeView = new Org_TreeView($orgDb, $_SESSION['idCourse']);
+    $treeView = new Org_TreeView($orgDb, $idCourse);
     $treeView->parsePositionData($_POST, $_POST, $_POST);
 
     organization_import($treeView);
 }
 
 function edit()
-{
+{$idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $orgDb = new OrgDirDb();
-    $treeView = new Org_TreeView($orgDb, $_SESSION['idCourse']);
+    $treeView = new Org_TreeView($orgDb, $idCourse);
     $treeView->parsePositionData($_POST, $_POST, $_POST);
 
     organization_properties($treeView);

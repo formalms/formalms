@@ -543,7 +543,7 @@ class CatalogLms extends Model
         $full_classrooms = $this->classroom_man->getFullDateForCourse($id_course);
         $overbooking_classrooms = $this->classroom_man->getOverbookingDateForCourse($id_course);
         foreach ($available_classrooms as $id_date => $classroom_info) {
-            $available_classrooms[$id_date]['in_cart'] = isset($_SESSION[$id_course]['classroom'][$id_date]);
+            $available_classrooms[$id_date]['in_cart'] = isset($this->session->get($id_course)['classroom'][$id_date]);
             $available_classrooms[$id_date]['selling'] = $selling;
             $available_classrooms[$id_date]['price'] = $price;
             $available_classrooms[$id_date]['days'] = $this->classroom_man->getDateDayDateDetails($id_date);
@@ -595,8 +595,8 @@ class CatalogLms extends Model
                     } else {
                         $classroom_in_chart = [];
 
-                        if (isset($_SESSION['lms_cart'][$row['idCourse']]['classroom'])) {
-                            $classroom_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['classroom'];
+                        if ($this->session->has('lms_cart') && isset($this->session->get('lms_cart')[$row['idCourse']]['classroom'])) {
+                            $classroom_in_chart = $this->session->get('lms_cart')[$row['idCourse']]['classroom'];
                         }
 
                         $control = array_diff($control, $classroom_in_chart);
@@ -622,8 +622,8 @@ class CatalogLms extends Model
                 } else {
                     $edition_in_chart = [];
 
-                    if (isset($_SESSION['lms_cart'][$row['idCourse']]['editions'])) {
-                        $edition_in_chart = $_SESSION['lms_cart'][$row['idCourse']]['editions'];
+                    if ($this->session->has('lms_cart') && isset($this->session->get('lms_cart')[$row['idCourse']]['editions'])) {
+                        $edition_in_chart = $this->session->get('lms_cart')[$row['idCourse']]['editions'];
                     }
 
                     $editions = array_diff($editions, $edition_in_chart);

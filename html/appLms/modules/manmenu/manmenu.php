@@ -25,7 +25,7 @@ function manmenu()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.table.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
@@ -36,7 +36,7 @@ function manmenu()
     $query_voice = '
 	SELECT idMain, name, image, sequence 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
-	WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "'
+	WHERE idCourse = '" . (int) $idCourse . "'
 	ORDER BY sequence";
     $re_voice = sql_query($query_voice);
     $tot_voice = sql_num_rows($re_voice);
@@ -191,7 +191,7 @@ function editmenuvoice($load = false)
 function savemenuvoice()
 {
     checkPerm('mod');
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $re = true;
     if (isset($_POST['undomenuvoice'])) {
         if (isset($_POST['id_main'])) {
@@ -211,14 +211,14 @@ function savemenuvoice()
         $query_seq = '
 		SELECT MAX(sequence)
 		FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
-		WHERE idCourse = '" . (int) $_SESSION['idCourse'] . "'";
+		WHERE idCourse = '" . (int) $idCourse . "'";
         list($seq) = sql_fetch_row(sql_query($query_seq));
         ++$seq;
 
         $re = sql_query('
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
 		( idCourse, name, image, sequence ) VALUES 
-		( '" . $_SESSION['idCourse'] . "', '" . $_POST['name'] . "', '', '" . $seq . "' )");
+		( '" . $idCourse . "', '" . $_POST['name'] . "', '', '" . $seq . "' )");
 
         Util::jump_to('index.php?modname=manmenu&op=manmenu&result=' . ($re ? 1 : 0));
     }
@@ -298,7 +298,7 @@ function movemenuvoice($direction)
     checkPerm('mod');
 
     $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     list($seq) = sql_fetch_row(sql_query('
 	SELECT sequence 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
@@ -308,7 +308,7 @@ function movemenuvoice($direction)
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
 		SET sequence = '$seq' 
-		WHERE idCourse = '" . $_SESSION['idCourse'] . "' AND sequence = '" . ($seq - 1) . "'");
+		WHERE idCourse = '" . $idCourse . "' AND sequence = '" . ($seq - 1) . "'");
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
 		SET sequence = sequence - 1 
@@ -318,7 +318,7 @@ function movemenuvoice($direction)
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
 		SET sequence = '$seq' 
-		WHERE idCourse = '" . $_SESSION['idCourse'] . "' AND sequence = '" . ($seq + 1) . "'");
+		WHERE idCourse = '" . $idCourse . "' AND sequence = '" . ($seq + 1) . "'");
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
 		SET sequence = '" . ($seq + 1) . "' 
@@ -332,11 +332,11 @@ function fixmenuvoice()
     checkPerm('mod');
 
     $id_custom = Forma\lib\Get::req('id_custom', DOTY_INT, 0);
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $query = '
 	SELECT idMain 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
-	WHERE idCourse = '" . $_SESSION['idCourse'] . "' 
+	WHERE idCourse = '" . $idCourse . "' 
 	ORDER BY sequence";
     $reField = sql_query($query);
 
@@ -360,7 +360,7 @@ function manmodule()
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $mod_perm = checkPerm('mod', true);
 
     // Find main voice info
@@ -374,7 +374,7 @@ function manmodule()
     // Find all modules in this voice
     $query_module = '
 	SELECT module.idModule, module.default_name, menu.my_name, menu.sequence, module.module_name
-	FROM ' . $GLOBALS['prefix_lms'] . '_menucourse_under AS menu JOIN
+	FROM %lms_menucourse_under AS menu JOIN
 		' . $GLOBALS['prefix_lms'] . "_module AS module
 	WHERE module.idModule = menu.idModule AND menu.idMain = '" . (int) $id_main . "' 
 	ORDER BY menu.sequence";
@@ -384,10 +384,10 @@ function manmodule()
     $used_module = '';
     $query_used_module = '
 	SELECT module.idModule 
-	FROM ' . $GLOBALS['prefix_lms'] . '_menucourse_under AS menu JOIN 
+	FROM %lms_menucourse_under AS menu JOIN 
 		' . $GLOBALS['prefix_lms'] . "_module AS module 
 	WHERE module.idModule = menu.idModule AND 
-		( menu.idCourse = '" . $_SESSION['idCourse'] . "' OR menu.idCourse = 0 )";
+		( menu.idCourse = '" . $idCourse . "' OR menu.idCourse = 0 )";
     $re_used_module = sql_query($query_used_module);
 
     while (list($id_mod_used) = sql_fetch_row($re_used_module)) {
@@ -508,7 +508,7 @@ function editmodule($load = false)
 
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
@@ -540,7 +540,7 @@ function editmodule($load = false)
         // Find personalized name
         $query_seq = '
 		SELECT u.my_name, m.default_op 
-		FROM ' . $GLOBALS['prefix_lms'] . '_menucourse_under AS u JOIN
+		FROM %lms_menucourse_under AS u JOIN
 			' . $GLOBALS['prefix_lms'] . "_module AS m 
 		WHERE u.idModule = m.idModule AND u.idMain = '" . $id_main . "' AND u.idModule = '" . $id_module . "'";
         list($my_name, $def_op) = sql_fetch_row(sql_query($query_seq));
@@ -550,7 +550,7 @@ function editmodule($load = false)
         $levels = CourseLevel::getTranslatedLevels();
         $tokens = $module_obj->getAllToken($module_op);
 
-        $map_level_idst = &getCourseLevelSt($_SESSION['idCourse']);
+        $map_level_idst = &getCourseLevelSt($idCourse);
         $map_all_role = &getModuleRoleSt($module_name, $tokens, true);
         $group_idst_roles = &getAllModulesPermissionSt($map_level_idst, $map_all_role);
         $perm = &fromStToToken($group_idst_roles, $map_all_role);
@@ -559,7 +559,7 @@ function editmodule($load = false)
     $query_mains = '
 	SELECT idMain, name 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
-	WHERE idCourse = '" . $_SESSION['idCourse'] . "'
+	WHERE idCourse = '" . $idCourse . "'
 	ORDER BY sequence";
     $re_mains = sql_query($query_mains);
     while (list($id_db_main, $main_name) = sql_fetch_row($re_mains)) {
@@ -612,7 +612,7 @@ function upmodule()
     $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
     $new_id_main = Forma\lib\Get::req('new_id_main', DOTY_INT, 0);
     $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $acl_man = &Docebo::user()->getAclManager();
 
@@ -638,7 +638,7 @@ function upmodule()
     // corresponding of token -> idst role
     $map_idst_token = &getModuleRoleSt($module_name, $all_token);
     // corresponding of level -> idst level
-    $map_idst_level = &getCourseLevelSt($_SESSION['idCourse']);
+    $map_idst_level = &getCourseLevelSt($idCourse);
     // idst of the selected perm
     $idst_new_perm = &fromTokenToSt($new_token, $map_idst_token);
     // old permission of all module
@@ -704,7 +704,7 @@ function upmodule()
         $re = sql_query('
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_menucourse_under 
 		( idCourse, idMain, idModule, sequence, my_name ) VALUES 
-		( '" . $_SESSION['idCourse'] . "', '" . $new_id_main . "', '" . $id_module . "', '" . $seq . "', '" . $my_name . "' ) ");
+		( '" . $idCourse . "', '" . $new_id_main . "', '" . $id_module . "', '" . $seq . "', '" . $my_name . "' ) ");
     }
     Docebo::user()->loadUserSectionST();
     Docebo::user()->SaveInSession();
@@ -743,7 +743,7 @@ function removeModule($id_module, $id_main, $id_course)
     if ($re) {
         $re = sql_query('
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_under 
-		WHERE idMain = '" . (int) $id_main . "' AND idModule = '" . (int) $id_module . "' AND idCourse = '" . $_SESSION['idCourse'] . "'");
+		WHERE idMain = '" . (int) $id_main . "' AND idModule = '" . (int) $id_module . "' AND idCourse = '" .$id_course. "'");
     }
 
     return $re;
@@ -754,7 +754,7 @@ function delmodule()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
@@ -768,7 +768,7 @@ function delmodule()
     }
 
     if (isset($_POST['confirm']) || isset($_GET['confirm'])) {
-        $re = removeModule($id_module, $id_main, $_SESSION['idCourse']);
+        $re = removeModule($id_module, $id_main, $idCourse);
 
         Docebo::user()->loadUserSectionST();
         Docebo::user()->SaveInSession();
@@ -853,7 +853,7 @@ function fixmodule()
 
     $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
     $id_custom = Forma\lib\Get::req('id_custom', DOTY_INT, 0);
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $query = '
 	SELECT idModule 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_under 
@@ -866,7 +866,7 @@ function fixmodule()
         sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_menucourse_under 
 		SET sequence = '" . ($i++) . "' 
-		WHERE idModule = '$id' AND idCourse = '" . $_SESSION['idCourse'] . "' ");
+		WHERE idModule = '$id' AND idCourse = '" . $idCourse . "' ");
     }
     Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $id_main . '&id_custom=' . $id_custom);
 }

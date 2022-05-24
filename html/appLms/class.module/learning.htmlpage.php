@@ -190,7 +190,7 @@ class Learning_Htmlpage extends Learning_Object
 
         // recuper gli allegati
         $path = '/appLms/htmlpages/';
-        $query = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_htmlpage_attachment WHERE idpage = ' . $id;
+        $query = 'SELECT * FROM %lms_htmlpage_attachment WHERE idpage = ' . $id;
         $res = sql_query($query);
         $attachments = [];
         if ($res) {

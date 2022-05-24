@@ -19,9 +19,10 @@ if (Docebo::user()->isAnonymous()) {
 
 function adviceList()
 {
+
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _base_ . '/lib/lib.table.php';
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $lang = &DoceboLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
@@ -33,40 +34,38 @@ function adviceList()
 
     $user_idst = Docebo::user()->getArrSt(); // $acl->getUserGroupsST(getLogUserId());
 
-    $query_my_advice = '
-		SELECT DISTINCT idAdvice
-		FROM ' . $GLOBALS['prefix_lms'] . '_adviceuser
+    $query_my_advice = 'SELECT DISTINCT idAdvice FROM %lms_adviceuser
 		WHERE ( idUser IN ( ' . implode(',', $user_idst) . " ) AND archivied = '0' )";
     $re_my_advice = sql_query($query_my_advice);
 
     $advice_all = [];
-    while (list($id) = sql_fetch_row($re_my_advice)) {
-        $advice_all[$id] = $id;
+    foreach ($re_my_advice as $row){
+        $advice_all[$row['idAdvice']] = $row['idAdvice'];
     }
-    $query_my_arch_advice = '
-		SELECT DISTINCT idAdvice
-		FROM ' . $GLOBALS['prefix_lms'] . "_adviceuser
+    $query_my_arch_advice = "SELECT DISTINCT idAdvice FROM %lms_adviceuser
 		WHERE idUser = '" . getLogUserId() . "' AND archivied = '1'";
     $re_my_arch_advice = sql_query($query_my_arch_advice);
-    while (list($id) = sql_fetch_row($re_my_arch_advice)) {
-        $advice_arch[] = $id;
+
+    foreach ($re_my_arch_advice as $row){
+        $advice_arch[] = $row['idAdvice'];
     }
     if (isset($advice_arch) && is_array($advice_arch)) {
         $advice_all = array_diff($advice_all, $advice_arch);
     }
+
     if (!empty($advice_all)) {
-        $query_advice = '
+        $query_advice = "
 			SELECT idAdvice, posted, title, description, important, author
-			FROM ' . $GLOBALS['prefix_lms'] . "_advice
-			WHERE idCourse='" . $_SESSION['idCourse'] . "' AND idAdvice IN ( " . implode(',', $advice_all) . " )
+			FROM %lms_advice
+			WHERE idCourse='" . $session->get('idCourse') . "' AND idAdvice IN ( " . implode(',', $advice_all) . " )
 			ORDER BY posted DESC
 			LIMIT $ini," . Forma\lib\Get::sett('visuItem');
         $re_advice = sql_query($query_advice);
 
-        list($numofadvice) = sql_fetch_row(sql_query('
+        list($numofadvice) = sql_fetch_row(sql_query("
 			SELECT COUNT(DISTINCT idAdvice)
-			FROM ' . $GLOBALS['prefix_lms'] . "_advice
-			WHERE idCourse='" . $_SESSION['idCourse'] . "' AND idAdvice IN ( " . implode(',', $advice_all) . ' )'));
+			FROM %lms_advice
+			WHERE idCourse='" . $session->get('idCourse') . "' AND idAdvice IN ( " . implode(',', $advice_all) . ' )'));
         $nav_bar->setElementTotal($numofadvice);
 
         if (isset($_GET['result'])) {
@@ -82,6 +81,7 @@ function adviceList()
                     break;
             }
         }
+
         if (sql_num_rows($re_advice) >= 1 && $mod_perm) {
             $out->add('<div class="table-container-over">'
                 . '<a class="ico-wt-sprite subs_add" href="index.php?modname=advice&amp;op=addadvice" title="' . $lang->def('_ADD_ADVICE') . '">'
@@ -136,7 +136,7 @@ function adviceList()
 function archiveList()
 {
     require_once _base_ . '/lib/lib.table.php';
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $lang = &DoceboLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
@@ -157,7 +157,7 @@ function archiveList()
         $query_advice = '
 			SELECT idAdvice, posted, title, description, important, author
 			FROM ' . $GLOBALS['prefix_lms'] . "_advice
-			WHERE idCourse='" . $_SESSION['idCourse'] . "' AND idAdvice IN ( " . implode(',', $advice_arch) . " )
+			WHERE idCourse='" . $session->get('idCourse') . "' AND idAdvice IN ( " . implode(',', $advice_arch) . " )
 			ORDER BY posted DESC
 			LIMIT $ini," . Forma\lib\Get::sett('visuItem');
         $re_advice = sql_query($query_advice);
@@ -165,7 +165,7 @@ function archiveList()
         list($numofadvice) = sql_fetch_row(sql_query('
 			SELECT COUNT(DISTINCT idAdvice)
 			FROM ' . $GLOBALS['prefix_lms'] . "_advice
-			WHERE idCourse='" . $_SESSION['idCourse'] . "' AND idAdvice IN ( " . implode(',', $advice_arch) . ' )'));
+			WHERE idCourse='" . $session->get('idCourse') . "' AND idAdvice IN ( " . implode(',', $advice_arch) . ' )'));
         $nav_bar->setElementTotal($numofadvice);
 
         if (isset($_GET['result'])) {
@@ -271,18 +271,18 @@ function advice()
 function addadvice()
 {
     checkPerm('mod');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.form.php';
     $lang = &DoceboLanguage::createInstance('advice');
     $form = new Form();
 
     //finding group
     $acl_man = &Docebo::user()->getAclManager();
-    $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $_SESSION['idCourse'] . '/group/', true);
+    $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $session->get('idCourse') . '/group/', true);
     $groups = [];
     $groups['me'] = $lang->def('_YOUONLY');
     foreach ($db_groups as $idst => $groupid) {
-        $groupid = substr($groupid, strlen('/lms/course/' . $_SESSION['idCourse'] . '/group/'));
+        $groupid = substr($groupid, strlen('/lms/course/' . $session->get('idCourse') . '/group/'));
         if ($groupid == 'alluser') {
             $groupid = $lang->def('_ALL');
             $sel = $idst;
@@ -317,7 +317,7 @@ function addadvice()
 function insadvice()
 {
     checkPerm('mod');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if ($_REQUEST['title'] == '') {
         $_REQUEST['title'] = Lang::t('_NOTITLE');
     }
@@ -330,7 +330,7 @@ function insadvice()
     $queryIns = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_advice
 		( idCourse, author, title, description, posted, important ) VALUES
-		( 	'" . (int) $_SESSION['idCourse'] . "',
+		( 	'" . (int) $session->get('idCourse') . "',
 			'" . getLogUserId() . "',
 			'" . addslashes($_REQUEST['title']) . "',
 			'" . addslashes($_REQUEST['description']) . "',
@@ -406,7 +406,7 @@ function insadvice()
         'advice',
         'add',
         '1',
-        'Inserted advice in course ' . $_SESSION['idCourse'],
+        'Inserted advice in course ' . $session->get('idCourse'),
         $members,
         $msg_composer
     );
@@ -482,7 +482,7 @@ function upadvice()
 function modreader()
 {
     checkPerm('mod');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
     $lang = &DoceboLanguage::createInstance('advice', 'lms');
     $out = &$GLOBALS['page'];
@@ -513,19 +513,19 @@ function modreader()
             $users[] = $id_user;
         }
         if ($all_reader == true) {
-            $query_reader = '
+            $query_reader = "
 				SELECT idUser
-				FROM ' . $GLOBALS['prefix_lms'] . "_courseuser
-				WHERE idCourse = '" . $_SESSION['idCourse'] . "'";
+				FROM %lms_courseuser
+				WHERE idCourse = '" . $session->get('idCourse') . "'";
             $re_reader = sql_query($query_reader);
             $users = [];
-            while (list($id_user) = sql_fetch_row($re_reader)) {
-                $users[] = $id_user;
+            foreach ($re_reader as $row){
+                $users[] = $row['idUser'];
             }
         }
         $user_select->resetSelection($users);
     }
-    $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $_SESSION['idCourse'] . '/subscribed/');
+    $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $session->get('idCourse') . '/subscribed/');
     $me = [getLogUserId()];
     $user_select->setUserFilter('exclude', $me);
     $user_select->setUserFilter('group', $arr_idstGroup);
@@ -551,7 +551,7 @@ function modreader()
 function updreader()
 {
     checkPerm('mod');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
 
     $lang = &DoceboLanguage::createInstance('advice', 'lms');
@@ -634,7 +634,7 @@ function updreader()
             'advice',
             'add',
             '1',
-            'Inserted advice ' . $title . ' in course ' . $_SESSION['idCourse'],
+            'Inserted advice ' . $title . ' in course ' . $session->get('idCourse'),
             $dest,
             $msg_composer
         );
@@ -709,7 +709,7 @@ function archiveadvice()
 
     $query_my_advice = '
 		SELECT DISTINCT idAdvice, idUser
-		FROM ' . $GLOBALS['prefix_lms'] . '_adviceuser
+		FROM %lms_adviceuser
 		WHERE idUser IN ( ' . implode(',', $user_idst) . " ) AND idAdvice = '" . $id_advice . "'";
     $re_my_advice = sql_query($query_my_advice);
 

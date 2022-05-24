@@ -146,7 +146,7 @@ class Track_Poll extends Track_Object
             return true;
         }
         $query = '
-		UPDATE ' . $GLOBALS['prefix_lms'] . '_polltrack 
+		UPDATE %lms_polltrack 
 		SET ';
         foreach ($new_info as $field_name => $field_value) {
             $query .= ($first ? '' : ', ') . $field_name . " = '" . $field_value . "'";

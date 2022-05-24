@@ -143,7 +143,7 @@ if (!Docebo::user()->isAnonymous()) {
         //finding category
         $reCategory = sql_query('
 	SELECT idCategory, title 
-	FROM ' . $GLOBALS['prefix_lms'] . '_coursecategory
+	FROM %lms_coursecategory
 	ORDER BY title');
 
         //searching languages
@@ -162,7 +162,7 @@ if (!Docebo::user()->isAnonymous()) {
                 $query = 'SELECT idCategory, idAuthor,'
                     . ' objectType, title, version, difficult,'
                     . ' description, language, resource, objective'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_repo'
+                    . ' FROM %lms_repo'
                     . " WHERE idRepo='" . (int) $idItem . "'";
 
                 $rs = sql_query($query)

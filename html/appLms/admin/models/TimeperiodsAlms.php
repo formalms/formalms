@@ -176,7 +176,7 @@ class TimeperiodsAlms extends Model
         }
 
         $output = [];
-        $query = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_time_period '
+        $query = 'SELECT * FROM %lms_time_period '
             . ($labels != false ? ' WHERE label IN (' . implode(',', $labels) . ') ' : '')
             . ' ORDER BY end_date DESC, start_date DESC';
         $res = $this->db->query($query);

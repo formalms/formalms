@@ -136,7 +136,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
 
         $query_course_user = '
 		SELECT cu.idUser, c.idCourse, c.code, cu.date_complete
-		FROM  ' . $GLOBALS['prefix_lms'] . '_courseuser AS cu 
+		FROM  %lms_courseuser AS cu 
 			JOIN ' . $GLOBALS['prefix_lms'] . "_course AS c
 		WHERE cu.idCourse = c.idCourse 
 			AND cu.status = '" . _CUS_END . "' ";

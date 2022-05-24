@@ -171,7 +171,7 @@ class PlayPollManagement
         // Query base
         $query_question = '
 		SELECT q.id_quest, q.type_quest, t.type_file, t.type_class 
-		FROM ' . $GLOBALS['prefix_lms'] . '_pollquest AS q 
+		FROM %lms_pollquest AS q 
 			JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type_poll AS t 
 		WHERE  q.type_quest = t.type_quest AND q.id_poll = '" . $this->id_poll . "' 
 			AND q.page = '" . $page_number . "' 
@@ -249,7 +249,7 @@ class ReportPollManagement
         // Query base
         $query_question = '
 		SELECT q.id_quest, q.type_quest, t.type_file, t.type_class 
-		FROM ' . $GLOBALS['prefix_lms'] . '_pollquest AS q 
+		FROM %lms_pollquest AS q 
 			JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type_poll AS t 
 		WHERE  q.type_quest = t.type_quest AND q.id_poll = '" . $id_poll . "' 
 		 ORDER BY q.sequence";

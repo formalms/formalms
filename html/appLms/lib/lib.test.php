@@ -27,7 +27,7 @@ class GroupTestManagement
         }
         $query_test = '
 		SELECT idTest, title, point_required, show_only_status, show_score, point_type,	order_type, retain_answers_history
-		FROM ' . $GLOBALS['prefix_lms'] . '_test 
+		FROM %lms_test 
 		WHERE idTest IN  ( ' . implode(',', $id_tests) . ' )';
         $re_test = sql_query($query_test);
         while ($test = sql_fetch_assoc($re_test)) {
@@ -62,7 +62,7 @@ class GroupTestManagement
 
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t 
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t 
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest";
         $re_quest = sql_query($query_question);
 
@@ -122,14 +122,14 @@ class GroupTestManagement
         }
         $query_scores = '
 		SELECT idTest, idTrack, idUser, date_attempt, date_attempt_mod, score, score_status, comment, bonus_score
-		FROM ' . $GLOBALS['prefix_lms'] . '_testtrack
+		FROM %lms_testtrack
 		WHERE idTest IN ( ' . implode(',', $id_tests) . ' ) ';
         if ($id_students !== false) {
             $query_scores .= ' AND idUser IN ( ' . implode(',', $id_students) . ' )';
         }
         $re_scores = sql_query($query_scores);
         while ($test_data = sql_fetch_assoc($re_scores)) {
-            $times_sql = 'SELECT idReference FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_times
+            $times_sql = 'SELECT idReference FROM %lms_testtrack_times
                         WHERE idTrack = ' . $test_data['idTrack'] . ' AND idTest = ' . $test_data['idTest'];
             $re_times = sql_query($times_sql);
             $test_data['times'] = sql_num_rows($re_times);
@@ -286,7 +286,7 @@ class GroupTestManagement
         $re = true;
         $query_scores = '
 		SELECT idTrack, idUser, score, score_status, bonus_score 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testtrack
+		FROM %lms_testtrack
 		WHERE idTest = ' . $id_test . '';
         if ($id_users !== false) {
             $query_scores .= ' AND idUser IN ( ' . implode(',', $id_users) . ' ) ';
@@ -385,7 +385,7 @@ class GroupTestManagement
 
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t 
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t 
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
         $re_quest = sql_query($query_question);
@@ -641,7 +641,7 @@ class TestManagement
     {
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t 
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t 
 		WHERE q.idTest = '" . $this->id_test . "' AND q.type_quest = t.type_quest";
         $re_quest = sql_query($query_question);
 
@@ -742,7 +742,7 @@ class TestManagement
     public function getPrerequisite()
     {
         $query_prerequisite = 'SELECT prerequisites'
-                            . ' FROM ' . $GLOBALS['prefix_lms'] . '_organization'
+                            . ' FROM %lms_organization'
                             . " WHERE idResource = '" . $this->id_test . "'"
                             . "	AND objectType = 'test'";
 
@@ -973,7 +973,7 @@ class PlayTestManagement
         // Query base
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.time_assigned 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q 
+		FROM %lms_testquest AS q 
 			JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t 
 		WHERE  q.type_quest = t.type_quest AND q.idTest = '" . $this->id_test . "' ";
 
@@ -1118,7 +1118,7 @@ class PlayTestManagement
           $cat_seen = [];
           $query_cat_seen = '
 			     SELECT idCategory, COUNT(*)
-			     FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_quest as ttq JOIN ' . $GLOBALS['prefix_lms'] . "_testquest as tq
+			     FROM %lms_testtrack_quest as ttq JOIN ' . $GLOBALS['prefix_lms'] . "_testquest as tq
 			     ON (ttq.idQuest = tq.idQuest) WHERE idTrack = '" . $this->id_track . "' GROUP BY idCategory";
           $re_seen = sql_query($query_cat_seen);
           while (list($id_cat, $num) = sql_fetch_row($re_seen)) {

@@ -39,9 +39,9 @@ $idscorm_organization = (int) $_GET['idscorm_organization'];
 $idReference = (int) $_GET['idReference'];
 $environment = (int) $_GET['environment'];
 
-$query = 'SELECT ' . $GLOBALS['prefix_lms'] . '_scorm_package.idscorm_package, path, org_identifier, scormVersion'
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_organizations, ' . $GLOBALS['prefix_lms'] . '_scorm_package '
-        . ' WHERE ' . $GLOBALS['prefix_lms'] . '_scorm_organizations.idscorm_package = ' . $GLOBALS['prefix_lms'] . '_scorm_package.idscorm_package'
+$query = 'SELECT %lms_scorm_package.idscorm_package, path, org_identifier, scormVersion'
+        . ' FROM %lms_scorm_organizations, %lms_scorm_package '
+        . ' WHERE %lms_scorm_organizations.idscorm_package = %lms_scorm_package.idscorm_package'
         . "   AND idscorm_organization = '" . $idscorm_organization . "'";
 
 $resultProg = sql_query($query, $GLOBALS['dbConn']);

@@ -135,7 +135,7 @@ if (!Docebo::user()->isAnonymous()) {
 		description = '" . $_POST['description'] . "',
 		author = '" . (int) getLogUserId() . "'";
         if (!sql_query($query_ins)) {
-            $_SESSION['last_error'] = $lang->def('_OPERATION_FAILURE');
+            Forma::addError($lang->def('_OPERATION_FAILURE'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
         list($idLink) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));

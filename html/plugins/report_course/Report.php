@@ -664,9 +664,9 @@ class Report extends \ReportPlugin
         }
 
         $query = 'SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest, p.title_quest'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_course AS c'
-            . ' JOIN ' . $GLOBALS['prefix_lms'] . '_organization AS o ON o.idCourse = c.idCourse'
-            . ' JOIN ' . $GLOBALS['prefix_lms'] . '_pollquest AS p ON p.id_poll = o.idResource'
+            . ' FROM %lms_course AS c'
+            . ' JOIN %lms_organization AS o ON o.idCourse = c.idCourse'
+            . ' JOIN %lms_pollquest AS p ON p.id_poll = o.idResource'
             . " WHERE o.objectType = 'poll'"
             . " AND p.type_quest = 'doc_valutation'"
             . ($all_courses ? '' : ' AND c.idCourse IN (' . implode(',', $course_selected) . ')')
@@ -697,12 +697,12 @@ class Report extends \ReportPlugin
         } else {
             if (!$view_all_perm) {
                 $query = 'SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_polltrack_answer AS pta, ' . $GLOBALS['prefix_lms'] . '_polltrack AS pt'
+                    . ' FROM %lms_polltrack_answer AS pta, %lms_polltrack AS pt'
                     . ' WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (' . implode(',', $ctrl_users) . ') AND pta.id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY pta.id_quest';
             } else {
                 $query = 'SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_polltrack_answer'
+                    . ' FROM %lms_polltrack_answer'
                     . ' WHERE id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY id_quest';
             }
@@ -755,9 +755,9 @@ class Report extends \ReportPlugin
         }
 
         $query = 'SELECT c.idCourse, c.code, c.name, c.idCategory, c.status, c.create_date, p.id_quest'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_course AS c'
-            . ' JOIN ' . $GLOBALS['prefix_lms'] . '_organization AS o ON o.idCourse = c.idCourse'
-            . ' JOIN ' . $GLOBALS['prefix_lms'] . '_pollquest AS p ON p.id_poll = o.idResource'
+            . ' FROM %lms_course AS c'
+            . ' JOIN %lms_organization AS o ON o.idCourse = c.idCourse'
+            . ' JOIN %lms_pollquest AS p ON p.id_poll = o.idResource'
             . " WHERE o.objectType = 'poll'"
             . " AND p.type_quest = 'course_valutation'"
             . ($all_courses ? '' : ' AND c.idCourse IN (' . implode(',', $course_selected) . ')');
@@ -786,12 +786,12 @@ class Report extends \ReportPlugin
         } else {
             if (!$view_all_perm) {
                 $query = 'SELECT pta.id_quest, MIN(CAST(pta.more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(pta.more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(pta.more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_polltrack_answer AS pta, ' . $GLOBALS['prefix_lms'] . '_polltrack AS pt'
+                    . ' FROM %lms_polltrack_answer AS pta, %lms_polltrack AS pt'
                     . ' WHERE 1 AND pta.id_track = pt.id_track AND pt.id_user IN (' . implode(',', $ctrl_users) . ') AND pta.id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY pta.id_quest';
             } else {
                 $query = 'SELECT id_quest, MIN(CAST(more_info AS DECIMAL(65,30))) AS min_answer, MAX(CAST(more_info AS DECIMAL(65,30))) AS max_answer, SUM(CAST(more_info AS DECIMAL(65,30))) AS sum_answer, COUNT(*) AS num_answer'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_polltrack_answer'
+                    . ' FROM %lms_polltrack_answer'
                     . ' WHERE id_quest IN (' . implode(',', $question_id) . ')'
                     . ' GROUP BY id_quest';
             }
@@ -1761,7 +1761,7 @@ class Report extends \ReportPlugin
 
         //extract course categories
         $query = 'SELECT idCategory, path'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_category';
+            . ' FROM %lms_category';
         $result = sql_query($query);
         $array_category = [0 => $lang->def('_NONE')];
         while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
@@ -1770,7 +1770,7 @@ class Report extends \ReportPlugin
 
         //extract course catalogues and relations
         $query = 'SELECT idCatalogue, name'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_catalogue';
+            . ' FROM %lms_catalogue';
         $result = sql_query($query);
         $array_catalogue = [];
         while (list($id_cat, $name_cat) = sql_fetch_row($result)) {
@@ -1778,7 +1778,7 @@ class Report extends \ReportPlugin
         }//strrpos($name_cat, '/') + 1 );
 
         $catalogue_entries = [];
-        $query = 'select * FROM ' . $GLOBALS['prefix_lms'] . '_catalogue_entry '; //where idst_member in (...)
+        $query = 'select * FROM %lms_catalogue_entry '; //where idst_member in (...)
         $result = sql_query($query);
         while (list($idcat, $entry, $type) = sql_fetch_row($result)) {
             switch ($type) {
@@ -2100,7 +2100,7 @@ class Report extends \ReportPlugin
         $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
 
         $query = 'SELECT idCategory, path'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_category';
+            . ' FROM %lms_category';
 
         $result = sql_query($query);
 
@@ -2231,7 +2231,7 @@ class Report extends \ReportPlugin
         $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
 
         $query = 'SELECT idCategory, path'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_category';
+            . ' FROM %lms_category';
 
         $result = sql_query($query);
 

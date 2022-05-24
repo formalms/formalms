@@ -26,10 +26,10 @@ function groups()
     $acl_man = &Docebo::user()->getAclManager();
     $mod_perm = checkPerm('mod', true);
     $subs_perm = checkPerm('subscribe', true);
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     // Retrive groups
-    $acl_man->setContext('/lms/course/' . $_SESSION['idCourse'] . '/group');
-    $id_groups = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_SESSION['idCourse'] . '/group', ['course']);
+    $acl_man->setContext('/lms/course/' .$idCourse . '/group');
+    $id_groups = $acl_man->getGroupsIdstFromBasePath('/lms/course/' .$idCourse . '/group', ['course']);
     if (!empty($id_groups)) {
         $groups = $acl_man->getGroups($id_groups);
     } else {
@@ -110,9 +110,9 @@ function editgroup()
 
     $acl_man = &Docebo::user()->getAclManager();
     $lang = &DoceboLanguage::createInstance('groups', 'lms');
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     if (isset($_GET['id_group'])) {
-        $acl_man->setContext('/lms/course/' . $_SESSION['idCourse'] . '/group');
+        $acl_man->setContext('/lms/course/' .$idCourse . '/group');
         $group = $acl_man->getGroup($_GET['id_group'], false);
         $group_name = $acl_man->relativeId($group[ACL_INFO_GROUPID]);
         $group_descr = $group[ACL_INFO_GROUPDESCRIPTION];
@@ -148,8 +148,9 @@ function editgroup()
 function savegroup()
 {
     checkPerm('mod');
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $acl_man = &Docebo::user()->getAclManager();
-    $acl_man->setContext('/lms/course/' . $_SESSION['idCourse'] . '/group');
+    $acl_man->setContext('/lms/course/' .$idCourse . '/group');
     if (isset($_POST['id_group'])) {
         $groupoid = $_POST['group']['groupid'];
         if ($acl_man->updateGroup($_POST['id_group'], $groupoid, $_POST['group_description'], false, 'course', 'lms,')) {
@@ -172,10 +173,10 @@ function delgroup()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &DoceboLanguage::createInstance('groups', 'lms');
     $acl_man = &Docebo::user()->getAclManager();
-    $acl_man->setContext('/lms/course/' . $_SESSION['idCourse'] . '/group');
+    $acl_man->setContext('/lms/course/' .$idCourse . '/group');
     $id_group = importVar('id_group', true, 0);
 
     if (isset($_POST['confirm']) || isset($_GET['confirm'])) {
@@ -185,7 +186,7 @@ function delgroup()
             Util::jump_to('index.php?modname=groups&op=groups&result=err');
         }
     } else {
-        $acl_man->setContext('/lms/course/' . $_SESSION['idCourse'] . '/group');
+        $acl_man->setContext('/lms/course/' .$idCourse . '/group');
         $group = $acl_man->getGroup($_GET['id_group'], false);
 
         $form = new Form();
@@ -214,6 +215,7 @@ function subscribe()
 
     require_once _base_ . '/lib/lib.userselector.php';
     $lang = &DoceboLanguage::createInstance('groups', 'lms');
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $id_group = importVar('id_group', true, 0);
 
@@ -232,7 +234,7 @@ function subscribe()
         $users = $acl_man->getGroupUMembers($id_group);
         $user_select->resetSelection($users);
     }
-    $arr_idstGroup = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . (int) $_SESSION['idCourse'] . '/subscribed/');
+    $arr_idstGroup = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . (int)$idCourse . '/subscribed/');
     $user_select->setUserFilter('group', $arr_idstGroup);
 
     $user_select->setPageTitle(getTitleArea(

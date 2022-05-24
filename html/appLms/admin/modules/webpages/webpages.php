@@ -48,7 +48,7 @@ function webpages()
 
     $num_query_pages = '
 	SELECT COUNT(*) 
-	FROM ' . $GLOBALS['prefix_lms'] . '_webpages ';
+	FROM %lms_webpages ';
 
     //do query
     $re_pages = sql_query($query_pages);
@@ -230,7 +230,7 @@ function savepages()
     } else {
         list($seq) = sql_fetch_row(sql_query('
 		SELECT MAX(sequence) + 1
-		FROM ' . $GLOBALS['prefix_lms'] . '_webpages'));
+		FROM %lms_webpages'));
 
         $query_insert = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_webpages

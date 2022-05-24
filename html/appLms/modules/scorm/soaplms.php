@@ -601,8 +601,8 @@ if ((isset($_GET['op']) && $_GET['op'] == 'Finish')) {
      * idscorm_tracking to initialize fields.
      **/
     $query = 'SELECT path, href, scormtype, scormVersion'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_resources, ' . $GLOBALS['prefix_lms'] . '_scorm_package'
-            . ' WHERE ' . $GLOBALS['prefix_lms'] . '_scorm_resources.idscorm_package = ' . $GLOBALS['prefix_lms'] . '_scorm_package.idscorm_package'
+            . ' FROM %lms_scorm_resources, %lms_scorm_package'
+            . ' WHERE %lms_scorm_resources.idscorm_package = %lms_scorm_package.idscorm_package'
             . "   AND idscorm_resource = '" . $_GET['idscorm_resource'] . "'";
     $result = sql_query($query)
                 or exit('Error on load sco: ' . sql_error() . "[ $query ]");

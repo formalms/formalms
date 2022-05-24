@@ -99,6 +99,7 @@ class CourseLms extends Model
 
     public function findAll($conditions, $params)
     {
+        $commonLabel = $this->session->get('id_common_label');
         $db = DbConn::getInstance();
         $queryResult = $db->query(
             'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.difficult, c.status AS course_status, c.course_edition, '
@@ -112,7 +113,7 @@ class CourseLms extends Model
             . ' FROM %lms_course AS c '
             . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
             . ' WHERE ' . $this->compileWhere($conditions, $params)
-            . ($_SESSION['id_common_label'] > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '" . $_SESSION['id_common_label'] . "')" : '')
+            . ($commonLabel > 0 ? " AND c.idCourse IN (SELECT id_course FROM %lms_label_course WHERE id_common_label = '" . $commonLabel . "')" : '')
             . ' ORDER BY ' . $this->_resolveOrder(['cu', 'c'])
         );
 
@@ -242,8 +243,9 @@ class CourseLms extends Model
 
         $parsedData['userCanUnsubscribe'] = self::userCanUnsubscribe($parsedData);
 
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         if (!$parsedData['course_full'] && $parsedData['selling']) {
-            $parsedData['in_cart'] = isset($_SESSION['lms_cart'][$parsedData['idCourse']]);
+            $parsedData['in_cart'] = ($session->has('lms_cart') && isset($session->get('lms_cart')[$parsedData['idCourse']]));
         }
 
         $parsedData['show_options'] = $parsedData['course_demo'] ||
@@ -412,7 +414,7 @@ class CourseLms extends Model
         $full_classrooms = $this->classroom_man->getFullDateForCourse($id_course);
         $overbooking_classrooms = $this->classroom_man->getOverbookingDateForCourse($id_course);
         foreach ($available_classrooms as $id_date => $classroom_info) {
-            $available_classrooms[$id_date]['in_cart'] = isset($_SESSION[$id_course]['classroom'][$id_date]);
+            $available_classrooms[$id_date]['in_cart'] = ($this->session->has($id_course) && isset($this->session->get($id_course)['classroom'][$id_date]));
             $available_classrooms[$id_date]['selling'] = $selling;
             $available_classrooms[$id_date]['price'] = $price;
             $available_classrooms[$id_date]['days'] = $this->classroom_man->getDateDayDateDetails($id_date);

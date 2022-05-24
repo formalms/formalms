@@ -76,7 +76,7 @@ if (!Docebo::user()->isAnonymous()) {
 		textof = '" . addslashes($_REQUEST['textof']) . "',
 		author = '" . (int) getLogUserId() . "'";
         if (!sql_query($insert_query)) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms');
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
             Util::jump_to($back_url . '&create_result=0');
         }
         list($idPage) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -112,7 +112,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         // recuper gli allegati
         $path = '/appLms/htmlpages/';
-        $query = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_htmlpage_attachment WHERE idpage = ' . $object_page->getId();
+        $query = 'SELECT * FROM %lms_htmlpage_attachment WHERE idpage = ' . $object_page->getId();
         $res = sql_query($query);
         $attachments = [];
         if ($res) {
@@ -189,7 +189,7 @@ if (!Docebo::user()->isAnonymous()) {
 		textof = '" . addslashes($_REQUEST['textof']) . "'
 	WHERE idPage = '" . (int) $_REQUEST['idPage'] . "'";
         if (!sql_query($insert_query)) {
-            $_SESSION['last_error'] = Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms');
+            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
             Util::jump_to($back_url . '&mod_result=0');
         }
 
@@ -226,9 +226,9 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.upload.php';
 
         $path = '/appLms/htmlpages/';
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if ($file['name'] != '') {
-            $savefile = $_SESSION['idCourse'] . '_' . rand(0, 100) . '_' . time() . '_' . $file['name'];
+            $savefile = $idCourse . '_' . rand(0, 100) . '_' . time() . '_' . $file['name'];
             if (!file_exists(_files_ . $path . $savefile)) {
                 sl_open_fileoperations();
                 if (!sl_upload($file['tmp_name'], $path . $savefile)) {

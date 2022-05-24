@@ -144,7 +144,7 @@ class DocValutation_QuestionPoll extends QuestionPoll
                     $GLOBALS['page']->add(getErrorUi($lang->def('_POLL_ERR_INS_ANSWER') . getBackUi(str_replace('&', '&amp;', $back_poll), $lang->def('_BACK'))), 'content');
                 }
 
-                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_pollquestanswer'
+                $query = 'INSERT INTO %lms_pollquestanswer'
                             . ' (id_quest, answer, sequence)'
                             . " VALUES ('" . $id_quest . "', '" . $min_value . "', '0'),"
                             . " ('" . $id_quest . "', '" . $max_value . "', '1'),"
@@ -244,7 +244,7 @@ class DocValutation_QuestionPoll extends QuestionPoll
                 if (!sql_query($del_answer_query)) {
                     getErrorUi($lang->def('_POLL_ERR_INS_ANSWER') . getBackUi(str_replace('&', '&amp;', $back_poll), $lang->def('_BACK')));
                 } else {
-                    $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_pollquestanswer'
+                    $query = 'INSERT INTO %lms_pollquestanswer'
                                 . ' (id_quest, answer, sequence)'
                                 . " VALUES ('" . $this->id . "', '" . $min_value . "', '0'),"
                                 . " ('" . $this->id . "', '" . $max_value . "', '1'),"

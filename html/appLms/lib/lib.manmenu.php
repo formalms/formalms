@@ -80,7 +80,7 @@ function getAllCustom()
 {
     $query = '
 	SELECT idCustom, title 
-	FROM ' . $GLOBALS['prefix_lms'] . '_menucustom 
+	FROM %lms_menucustom 
 	ORDER BY title';
     $re_custom = sql_query($query);
 
@@ -102,7 +102,7 @@ function getAssociatedCustom($id_course)
     WHERE idCourse=".$id_course;*/
     $query = '
 	SELECT id_menucustom 
-	FROM ' . $GLOBALS['prefix_lms'] . '_course 
+	FROM %lms_course 
 	WHERE idCourse=' . $id_course;
     $re_asscustom = sql_query($query);
 

@@ -50,7 +50,7 @@ function news()
 
     $query_news_tot = '
 	SELECT COUNT(*)
-	FROM ' . $GLOBALS['prefix_lms'] . '_news_internal ';
+	FROM %lms_news_internal ';
 
     $re_news = sql_query($query_news);
     list($tot_news) = sql_fetch_row(sql_query($query_news_tot));

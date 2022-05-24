@@ -48,7 +48,7 @@ function certificate()
     //search query of certificates
     $query_certificate = '
     SELECT id_certificate, code, name, description
-    FROM ' . $GLOBALS['prefix_lms'] . '_certificate'
+    FROM %lms_certificate'
         . ' WHERE meta = 0';
     if (isset($_POST['filter_text'])) {
         $query_certificate .= " AND (name LIKE '%" . $_POST['filter_text'] . "%'" .
@@ -59,7 +59,7 @@ function certificate()
 
     $query_certificate_tot = '
     SELECT COUNT(*)
-    FROM ' . $GLOBALS['prefix_lms'] . '_certificate';
+    FROM %lms_certificate';
 
     $re_certificate = sql_query($query_certificate);
     list($tot_certificate) = sql_fetch_row(sql_query($query_certificate_tot));
@@ -243,7 +243,7 @@ function list_element_certificate()
     //search query of certificates tag
     $query_format_tag = '
     SELECT file_name, class_name 
-    FROM ' . $GLOBALS['prefix_lms'] . '_certificate_tags ';
+    FROM %lms_certificate_tags ';
     $re_certificate_tags = sql_query($query_format_tag);
     while (list($file_name, $class_name) = sql_fetch_row($re_certificate_tags)) {
         if (file_exists($GLOBALS['where_lms'] . '/lib/certificate/' . $file_name)) {

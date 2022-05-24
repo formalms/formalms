@@ -15,6 +15,11 @@ $GLOBALS['debug'] = '';
 
 function generateConfig($tpl_fn)
 {
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+    $dbInfo = $session->get('db_info');
+    $ulInfo = $session->get('ul_info');
+    $smtpInfo = $session->get('smtp_info');
     $config = '';
 
     if (file_exists($tpl_fn)) {
@@ -22,39 +27,44 @@ function generateConfig($tpl_fn)
         $config = fread($handle, filesize($tpl_fn));
         fclose($handle);
     }
-    $config = str_replace('[%-DB_TYPE-%]', addslashes($_SESSION['db_info']['db_type']), $config);
-    $config = str_replace('[%-DB_HOST-%]', addslashes($_SESSION['db_info']['db_host']), $config);
-    $config = str_replace('[%-DB_USER-%]', addslashes($_SESSION['db_info']['db_user']), $config);
-    $config = str_replace('[%-DB_PASS-%]', addslashes($_SESSION['db_info']['db_pass']), $config);
-    $config = str_replace('[%-DB_NAME-%]', addslashes($_SESSION['db_info']['db_name']), $config);
+    $config = str_replace('[%-DB_TYPE-%]', addslashes($dbInfo['db_type']), $config);
+    $config = str_replace('[%-DB_HOST-%]', addslashes($dbInfo['db_host']), $config);
+    $config = str_replace('[%-DB_USER-%]', addslashes($dbInfo['db_user']), $config);
+    $config = str_replace('[%-DB_PASS-%]', addslashes($dbInfo['db_pass']), $config);
+    $config = str_replace('[%-DB_NAME-%]', addslashes($dbInfo['db_name']), $config);
 
-    if ($_SESSION['upload_method'] == 'http') {
-        $upload_method = 'fs';
+    switch ($session->get('upload_method')){
+        case 'http':
+            $upload_method = 'fs';
 
-        $config = str_replace('[%-FTP_HOST-%]', 'localhost', $config);
-        $config = str_replace('[%-FTP_PORT-%]', '21', $config);
-        $config = str_replace('[%-FTP_USER-%]', '', $config);
-        $config = str_replace('[%-FTP_PASS-%]', '', $config);
-        $config = str_replace('[%-FTP_PATH-%]', '/', $config);
-    } elseif ($_SESSION['upload_method'] == 'ftp') {
-        $upload_method = 'ftp';
+            $config = str_replace('[%-FTP_HOST-%]', 'localhost', $config);
+            $config = str_replace('[%-FTP_PORT-%]', '21', $config);
+            $config = str_replace('[%-FTP_USER-%]', '', $config);
+            $config = str_replace('[%-FTP_PASS-%]', '', $config);
+            $config = str_replace('[%-FTP_PATH-%]', '/', $config);
+            break;
+        case 'ftp':
+            $upload_method = 'ftp';
 
-        $config = str_replace('[%-FTP_HOST-%]', addslashes($_SESSION['ul_info']['ftp_host']), $config);
-        $config = str_replace('[%-FTP_PORT-%]', addslashes($_SESSION['ul_info']['ftp_port']), $config);
-        $config = str_replace('[%-FTP_USER-%]', addslashes($_SESSION['ul_info']['ftp_user']), $config);
-        $config = str_replace('[%-FTP_PASS-%]', addslashes($_SESSION['ul_info']['ftp_pass']), $config);
-        $config = str_replace('[%-FTP_PATH-%]', addslashes($_SESSION['ul_info']['ftp_path']), $config);
+            $config = str_replace('[%-FTP_HOST-%]', addslashes($ulInfo['ftp_host']), $config);
+            $config = str_replace('[%-FTP_PORT-%]', addslashes($ulInfo['ftp_port']), $config);
+            $config = str_replace('[%-FTP_USER-%]', addslashes($ulInfo['ftp_user']), $config);
+            $config = str_replace('[%-FTP_PASS-%]', addslashes($ulInfo['ftp_pass']), $config);
+            $config = str_replace('[%-FTP_PATH-%]', addslashes($ulInfo['ftp_path']), $config);
+            break;
+        default:
+            break;
     }
 
-    if ($_SESSION['smtp_info']) {
-        $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes($_SESSION['smtp_info']['use_smtp_database']), $config);
-        $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes($_SESSION['smtp_info']['use_smtp']), $config);
-        $config = str_replace('[%-SMTP_HOST-%]', addslashes($_SESSION['smtp_info']['smtp_host']), $config);
-        $config = str_replace('[%-SMTP_PORT-%]', addslashes($_SESSION['smtp_info']['smtp_port']), $config);
-        $config = str_replace('[%-SMTP_SECURE-%]', addslashes($_SESSION['smtp_info']['smtp_secure']), $config);
-        $config = str_replace('[%-SMTP_AUTO_TLS-%]', addslashes($_SESSION['smtp_info']['smtp_auto_tls']), $config);
-        $config = str_replace('[%-SMTP_USER-%]', addslashes($_SESSION['smtp_info']['smtp_user']), $config);
-        $config = str_replace('[%-SMTP_PWD-%]', addslashes($_SESSION['smtp_info']['smtp_pwd']), $config);
+    if ($smtpInfo) {
+        $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes($smtpInfo['use_smtp_database']), $config);
+        $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes($smtpInfo['use_smtp']), $config);
+        $config = str_replace('[%-SMTP_HOST-%]', addslashes($smtpInfo['smtp_host']), $config);
+        $config = str_replace('[%-SMTP_PORT-%]', addslashes($smtpInfo['smtp_port']), $config);
+        $config = str_replace('[%-SMTP_SECURE-%]', addslashes($smtpInfo['smtp_secure']), $config);
+        $config = str_replace('[%-SMTP_AUTO_TLS-%]', addslashes($smtpInfo['smtp_auto_tls']), $config);
+        $config = str_replace('[%-SMTP_USER-%]', addslashes($smtpInfo['smtp_user']), $config);
+        $config = str_replace('[%-SMTP_PWD-%]', addslashes($smtpInfo['smtp_pwd']), $config);
         $config = str_replace('[%-SMTP_DEBUG-%]', addslashes('0'), $config);
     } else {
         $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes('off'), $config);
@@ -117,8 +127,10 @@ function getToUpgradeArray()
 {
     $to_upgrade_arr = [];
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
     foreach ($GLOBALS['cfg']['versions'] as $ver => $label) {
-        if ($ver > $_SESSION['start_version']) {
+        if ($ver > $session->get('start_version')) {
             $to_upgrade_arr[] = $ver;
         }
     }

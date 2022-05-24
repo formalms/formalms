@@ -452,13 +452,13 @@ function isTrackingAvailable($idscorm_package, $idProg)
 {
     if ($idscorm_package == null) {
         $query = 'SELECT st.idscorm_tracking'
-                . ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_tracking st,' . $GLOBALS['prefix_lms'] . '_scorm_resources sr,' . $GLOBALS['prefix_lms'] . '_scorm_package sp'
+                . ' FROM %lms_scorm_tracking st,%lms_scorm_resources sr,%lms_scorm_package sp'
                 . ' WHERE sp.idProg=' . $idProg
                 . ' AND sp.idscorm_package=sr.idscorm_package'
                 . ' AND sr.idscorm_resource=st.idscorm_resource';
     } else {
         $query = 'SELECT st.idscorm_tracking'
-                . ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_tracking st,' . $GLOBALS['prefix_lms'] . '_scorm_resources sr'
+                . ' FROM %lms_scorm_tracking st,%lms_scorm_resources sr'
                 . ' WHERE sr.idscorm_package=' . $idscorm_package
                 . ' AND sr.idscorm_resource=st.idscorm_resource';
     }
@@ -477,24 +477,24 @@ function getScormVersion($idtype, $id)
     switch ($idtype) {
         case 'idscorm_package':
             $query = 'SELECT scormVersion '
-                    . '  FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package'
+                    . '  FROM %lms_scorm_package'
                     . ' WHERE idscorm_package=' . $id;
             break;
         case 'scorm_package_path': /*slow*/
             $query = 'SELECT scormVersion '
-                    . '  FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package'
+                    . '  FROM %lms_scorm_package'
                     . ' WHERE path=' . $id;
             break;
         case 'idscorm_organization':
             $query = 'SELECT scormVersion '
-                    . '  FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package as lp, '
+                    . '  FROM %lms_scorm_package as lp, '
                               . $GLOBALS['prefix_lms'] . '_scorm_organizations as lo'
                     . ' WHERE idscorm_organization=' . $id
                     . '   AND lp.idscorm_package=lo.idscorm_package';
             break;
         case 'idscorm_item':
             $query = 'SELECT scormVersion '
-                    . '  FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package as lp, '
+                    . '  FROM %lms_scorm_package as lp, '
                               . $GLOBALS['prefix_lms'] . '_scorm_organizations as lo, '
                               . $GLOBALS['prefix_lms'] . '_scorm_items as li '
                     . ' WHERE idscorm_item=' . $id
@@ -503,7 +503,7 @@ function getScormVersion($idtype, $id)
             break;
         case 'idscorm_item_track':
             $query = 'SELECT scormVersion '
-                    . '  FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package as lp, '
+                    . '  FROM %lms_scorm_package as lp, '
                               . $GLOBALS['prefix_lms'] . '_scorm_organizations as lo, '
                               . $GLOBALS['prefix_lms'] . '_scorm_items_track as lit '
                     . ' WHERE idscorm_item_track=' . $id
@@ -512,7 +512,7 @@ function getScormVersion($idtype, $id)
             break;
         case 'idscorm_tracking':
             $query = 'SELECT scormVersion '
-                    . '  FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package as lp, '
+                    . '  FROM %lms_scorm_package as lp, '
                               . $GLOBALS['prefix_lms'] . '_scorm_organizations as lo, '
                               . $GLOBALS['prefix_lms'] . '_scorm_items_track as lit, '
                               . $GLOBALS['prefix_lms'] . '_scorm_tracking as ltr '

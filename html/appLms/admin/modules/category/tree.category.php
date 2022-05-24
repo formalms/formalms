@@ -104,7 +104,7 @@ class TreeView_CatView extends TreeView
 
     public function TreeView_CatView($tdb, $id, $rootname = 'root')
     {
-        $query_course = 'SELECT idCategory, COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . '_course GROUP BY idCategory ';
+        $query_course = 'SELECT idCategory, COUNT(*) FROM %lms_course GROUP BY idCategory ';
         $re_course = sql_query($query_course);
         while ($row = sql_fetch_row($re_course)) {
             $this->cat_not_empty[$row[0]] = $row[1];

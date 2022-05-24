@@ -103,7 +103,7 @@ class Track_Test extends Track_Object
     public static function getIdTracksFromTest($id_test)
     {
         $query_track = 'SELECT idTrack'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack'
+            . ' FROM %lms_testtrack'
             . " WHERE idTest = '" . $id_test . "'";
 
         $re = sql_query($query_track);
@@ -227,7 +227,7 @@ class Track_Test extends Track_Object
             return true;
         }
         $query = '
-		UPDATE ' . $GLOBALS['prefix_lms'] . '_testtrack 
+		UPDATE %lms_testtrack 
 		SET ';
         foreach ($new_info as $field_name => $field_value) {
             $query .= ($first ? '' : ', ');
@@ -315,7 +315,7 @@ class Track_Test extends Track_Object
             'environment' => 'course_lo',
         ]);
 
-        $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_commontrack '
+        $query = 'DELETE FROM %lms_commontrack '
             . " WHERE idTrack='" . (int) $idTrack . "'"
             . "   AND objectType='test'";
         if (!sql_query($query)) {
@@ -442,7 +442,7 @@ class Track_Test extends Track_Object
     public static function getValidTestTrackFromTestAndUsers($idTest, $idStrudents)
     {
         $query_track = 'SELECT idTrack'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack'
+            . ' FROM %lms_testtrack'
             . " WHERE idTest = '" . $idTest . "'"
             . " AND score_status = 'valid'"
             . ' AND idUser in (' . implode(',', $idStrudents) . ')';
@@ -460,7 +460,7 @@ class Track_Test extends Track_Object
     public static function getValidTotalPlaysTestTrackFromTestAndUsers($idTest, $idStrudents)
     {
         $query_total_play = 'SELECT COUNT(*)'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack'
+            . ' FROM %lms_testtrack'
             . " WHERE idTest = '" . $idTest . "'"
             . " AND score_status = 'valid'"
             . ' AND idUser in (' . implode(',', $idStrudents) . ')';
@@ -473,7 +473,7 @@ class Track_Test extends Track_Object
     public static function getTestTrackAnswersFromTrack($idTrack)
     {
         $query_track_answer = 'SELECT idQuest, idAnswer, more_info'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer'
+            . ' FROM %lms_testtrack_answer'
             . " WHERE idTrack = '" . $idTrack . "' AND user_answer = 1";
 
         $result_track_answer = sql_query($query_track_answer);

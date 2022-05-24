@@ -153,7 +153,7 @@ class Selector_CoursePath
         $select = '
 		SELECT id_path, path_name, path_descr ';
         $query_coursepath = '
-		FROM ' . $GLOBALS['prefix_lms'] . '_coursepath
+		FROM %lms_coursepath
 		WHERE 1 ';
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;

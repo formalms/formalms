@@ -127,7 +127,7 @@ function duplicateCourse()
 	WHERE idCourse = '" . $id_dupcourse . "' ";
     $result_selmen = sql_query($query_selmen);
     while ($list_selmen = sql_fetch_array($result_selmen)) {
-        $query_dupmen = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_menucourse_main ' .
+        $query_dupmen = 'INSERT INTO %lms_menucourse_main ' .
             ' (idCourse, sequence, name, image) ' .
             ' VALUES ' .
             " ( '" . $new_course_dup . "', '" . $list_selmen['sequence'] . "', '" . $list_selmen['name'] . "', '" . $list_selmen['image'] . "' )";

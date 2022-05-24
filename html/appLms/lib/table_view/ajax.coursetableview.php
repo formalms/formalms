@@ -176,7 +176,7 @@ switch ($command) {
                 $res = false;
 
                 if ($new_value !== '') {
-                    $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_course'
+                    $query = 'UPDATE %lms_course'
                                 . " SET name = '" . $new_value . "'"
                                 . ' WHERE idCourse = ' . (int) $id_course;
 
@@ -190,7 +190,7 @@ switch ($command) {
                 $res = false;
 
                 if ($new_value !== '') {
-                    $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_course'
+                    $query = 'UPDATE %lms_course'
                                 . " SET code = '" . $new_value . "'"
                                 . ' WHERE idCourse = ' . (int) $id_course;
 

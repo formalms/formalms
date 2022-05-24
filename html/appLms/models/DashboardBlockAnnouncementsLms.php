@@ -123,8 +123,8 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
     private function getAdvicesForCourses($courses, $limit = 0, $offset = 0)
     {
         $query = 'SELECT a.idAdvice, a.title, a.description, a.important, a.author, a.posted, a.idCourse, c.name AS courseName 
-					FROM ' . $GLOBALS['prefix_lms'] . '_advice AS a
-					INNER JOIN ' . $GLOBALS['prefix_lms'] . '_course AS c ON c.idCourse = a.idCourse
+					FROM %lms_advice AS a
+					INNER JOIN %lms_course AS c ON c.idCourse = a.idCourse
 					WHERE a.idCourse IN (' . implode(',', $courses) . ')
 					ORDER BY a.posted DESC ';
 

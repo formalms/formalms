@@ -1113,7 +1113,7 @@ class RepoTreeView extends TreeView
 
     public function LOSelector($module, $back_url)
     {
-        $query = 'SELECT objectType FROM ' . $GLOBALS['prefix_lms'] . '_lo_types';
+        $query = 'SELECT objectType FROM %lms_lo_types';
         $rs = sql_query($query)
             or exit('Table _lo_types not present');
 

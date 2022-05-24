@@ -35,7 +35,7 @@ class EcomProductCourse extends EcomProduct
         //$res = $this->subs_man->subscribeUser(	$id_user, $id_course, '3');
         //if ($res)
         //{
-        $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_courseuser' .
+        $query = 'UPDATE %lms_courseuser' .
                     " SET status = '0'," .
                     " waiting = '0'" .
                     " WHERE idUser = '" . $id_user . "'" .
@@ -69,7 +69,7 @@ class EcomProductCourseEdition extends EcomProduct
         //$res = $this->subs_man->subscribeEditionUsers(	array($id_user), $id_edition, '3', false);
         //if ($res)
         //{
-        $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_courseuser' .
+        $query = 'UPDATE %lms_courseuser' .
                     " SET status = '0'," .
                     " waiting = '0'" .
                     " WHERE idUser = '" . $id_user . "'" .

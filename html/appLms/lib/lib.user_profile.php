@@ -2935,7 +2935,7 @@ class UserProfileViewer
     public function userCourseSubscrived($id_course)
     {
         $query = 'SELECT COUNT(*)' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser' .
+                ' FROM %lms_courseuser' .
                 " WHERE idCourse = '" . $id_course . "'" .
                 " AND idUser = '" . getLogUserId() . "'";
 
@@ -2947,7 +2947,7 @@ class UserProfileViewer
     public function delTeacherCurriculumGui()
     {
         if (isset($_GET['confirm'])) {
-            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_teacher_profile' .
+            $query = 'UPDATE %lms_teacher_profile' .
                     " SET curriculum = ''" .
                     " WHERE id_user = '" . getLogUserId() . "'";
 
@@ -4205,7 +4205,7 @@ class UserProfileData
         list($num_of) = sql_fetch_row($re);
         if ($num_of) {
             $query = '
-			UPDATE ' . $GLOBALS['prefix_lms'] . '_teacher_profile
+			UPDATE %lms_teacher_profile
 			SET ' . ($curriculum !== false
                     ? " curriculum = '" . $curriculum . "' " . ($publications !== false ? ', ' : '')
                     : '')
@@ -4216,7 +4216,7 @@ class UserProfileData
             $re = $this->_query($query);
         } else {
             $query = '
-			INSERT INTO ' . $GLOBALS['prefix_lms'] . '_teacher_profile
+			INSERT INTO %lms_teacher_profile
 			( id_user ' . ($curriculum !== false ? ', curriculum ' : '') . ($publications !== false ? ', publications ' : '') . " ) VALUES (
 				'" . $id_user . "'
 				" . ($curriculum !== false ? ", '" . $curriculum . "' " : '') . '
@@ -4248,7 +4248,7 @@ class UserProfileData
         $query_course_user = '
 		SELECT c.idCourse, c.code, c.name, c.status,
 			cu.status, cu.date_inscr, cu.date_first_access, cu.date_complete
-		FROM  ' . $GLOBALS['prefix_lms'] . '_courseuser AS cu
+		FROM  %lms_courseuser AS cu
 			JOIN ' . $GLOBALS['prefix_lms'] . "_course AS c
 		WHERE cu.idCourse = c.idCourse
 			AND cu.idUser = '" . $id_user . "'";

@@ -271,10 +271,13 @@ function externalCourselist()
         $first_coursecatalogue_tab = key($tab_list);
     }
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if (isset($_GET['tab']) || isset($_POST['tab'])) {
-        $selected_tab = $_SESSION['cc_tab'] = Forma\lib\Get::req('tab', DOTY_MIXED, $first_coursecatalogue_tab);
-    } elseif (isset($_SESSION['cc_tab'])) {
-        $selected_tab = $_SESSION['cc_tab'];
+        $selected_tab = Forma\lib\Get::req('tab', DOTY_MIXED, $first_coursecatalogue_tab);
+        $session->set('cc_tab',$selected_tab);
+        $session->save();
+    } elseif ($session->has('cc_tab')) {
+        $selected_tab = $session->get('cc_tab');
     } else {
         $selected_tab = $first_coursecatalogue_tab;
     }
@@ -355,7 +358,7 @@ function donwloadmaterials()
     }
     if ($edition_id != 0) {
         $select_edition = ' SELECT img_material ';
-        $from_edition = ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition';
+        $from_edition = ' FROM %lms_course_edition';
         $where_edition = " WHERE idCourseEdition = '" . $edition_id . "' ";
 
         list($file) = sql_fetch_row(sql_query($select_edition . $from_edition . $where_edition));

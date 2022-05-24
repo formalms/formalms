@@ -743,7 +743,7 @@ class CourseAlms extends Model
                 }
 
                 $control_query = 'SELECT COUNT(*)' .
-                    ' ' . $GLOBALS['prefix_lms'] . '_course' .
+                    ' %lms_course' .
                     " WHERE autoregistration_code = '" . $str . "'";
 
                 $control_result = sql_query($control_query);
@@ -1120,7 +1120,7 @@ class CourseAlms extends Model
                 }
 
                 $control_query = 'SELECT COUNT(*)' .
-                    ' ' . $GLOBALS['prefix_lms'] . '_course' .
+                    ' %lms_course' .
                     " WHERE autoregistration_code = '" . $str . "'" .
                     " AND idCourse <> '" . $id_course . "'";
 

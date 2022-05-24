@@ -68,7 +68,7 @@ if (Docebo::user()->isLoggedIn()) {
     default:
         $idscorm_organization = $idResource;
         list($lo_title) = sql_fetch_row(sql_query('SELECT title'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_organization'
+            . ' FROM %lms_organization'
             . " WHERE idResource = '$idResource'"
             . "   AND objectType = 'scormorg'"));
         break;

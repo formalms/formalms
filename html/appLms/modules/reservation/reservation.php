@@ -1715,7 +1715,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $query_classroom_tot = '
 		SELECT COUNT(*)
-		FROM ' . $GLOBALS['prefix_lms'] . '_classroom';
+		FROM %lms_classroom';
 
         $re_classroom = sql_query($query_classroom);
         list($tot_classroom) = sql_fetch_row(sql_query($query_classroom_tot));

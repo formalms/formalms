@@ -1144,7 +1144,7 @@ class CourseSubscribe_Management
             }
         }
         $re = $this->_query('
-		DELETE FROM ' . $GLOBALS['prefix_lms'] . '_courseuser
+		DELETE FROM %lms_courseuser
 		WHERE idUser IN ( ' . implode(',', $arr_users) . " ) AND idCourse = '" . $id_course . "'");
 
         return $re;
@@ -1397,13 +1397,13 @@ class CourseSubscribe_Management
         $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
 
         $re = $this->_query('
-		DELETE FROM ' . $GLOBALS['prefix_lms'] . '_courseuser
+		DELETE FROM %lms_courseuser
 		WHERE idUser IN ( ' . implode(',', $arr_users) . " ) AND idCourse = '" . $id_course . "' AND editon_id = '" . $id_edition . "'");
 
         $survivor = [];
         $query = '
 		SELECT idUser
-		FROM ' . $GLOBALS['prefix_lms'] . '_courseuser
+		FROM %lms_courseuser
 		WHERE idUser IN ( ' . implode(',', $arr_users) . " ) AND idCourse = '" . $id_course . "'";
         $re_query = sql_query($query);
         while (list($idu) = sql_fetch_row($re_query)) {
@@ -1443,7 +1443,7 @@ class CourseSubscribe_Management
         $acl_man = &Docebo::user()->getAclManager();
 
         $query = 'SELECT idCourse'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser'
+                    . ' FROM %lms_courseuser'
                     . ' WHERE idUser = ' . $id_user;
 
         $result = sql_query($query);
@@ -1461,7 +1461,7 @@ class CourseSubscribe_Management
             $level_idst = &DoceboCourse::createCourseLevel($id_course);
         }
 
-        list($subscribe_method) = sql_fetch_row(sql_query('SELECT subscribe_method FROM ' . $GLOBALS['prefix_lms'] . '_course WHERE idCourse = ' . $id_course));
+        list($subscribe_method) = sql_fetch_row(sql_query('SELECT subscribe_method FROM %lms_course WHERE idCourse = ' . $id_course));
 
         $waiting = 0;
         if ($subscribe_method == '1') {

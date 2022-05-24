@@ -117,7 +117,7 @@ function mycourses(&$url)
             $result_released = sql_query($query_released);
 
             $query = 'SELECT user_release'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate'
+                        . ' FROM %lms_certificate'
                         . " WHERE id_certificate = '" . $id_certificate . "'";
 
             list($user_release) = sql_fetch_row(sql_query($query));
@@ -139,7 +139,7 @@ function mycourses(&$url)
 
                 foreach ($assocArr as $assoc) {
                     $query = 'SELECT COUNT(*)'
-                                . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser'
+                                . ' FROM %lms_courseuser'
                                 . " WHERE idCourse = '" . $assoc . "'"
                                 . " AND idUser = '" . getLogUserId() . "'"
                                 . " AND status = '" . _CUS_END . "'";
@@ -176,7 +176,7 @@ function mycourses(&$url)
     if ($access_search_form) {
         $year_array = [0 => $lang->def('_ALL_YEAR')];
         $query_year = 'SELECT DISTINCT create_date' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_course';
+            ' FROM %lms_course';
 
         $result = sql_query($query_year);
         while (list($year) = sql_fetch_row($result)) {
@@ -425,7 +425,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $subcourse_list = sql_query(''
         . ' SELECT u.idCourse, u.edition_id, level, u.date_inscr, u.date_first_access, '
         . '		u.date_complete, u.status AS user_status, u.waiting, u.edition_id '
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u'
+        . ' FROM %lms_courseuser AS u'
         . " WHERE idUser = '" . getLogUserId() . "'");
 
     $subscription = [];
@@ -445,8 +445,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
     . ', c.use_logo_in_courselist, c.img_course, c.direct_play ';
 
-    $from_course = ' FROM ' . $GLOBALS['prefix_lms'] . '_course AS c '
-    . '	 JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS u ';
+    $from_course = ' FROM %lms_course AS c '
+    . '	 JOIN %lms_courseuser AS u ';
 
     $where_course = ' c.idCourse = u.idCourse '
         . " AND u.idUser = '" . getLogUserId() . "' "
@@ -500,8 +500,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     // retrive editions ----------------------------------------------------------------
 
     $select_edition = ' SELECT e.* ';
-    $from_edition = ' FROM ' . $GLOBALS['prefix_lms'] . '_course_editions AS e '
-        . ' JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS u ';
+    $from_edition = ' FROM %lms_course_editions AS e '
+        . ' JOIN %lms_courseuser AS u ';
     $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' AND e.id_edition = u.edition_id ";
 
     $re_edition = sql_query($select_edition
@@ -552,7 +552,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
         $enroll_list = sql_query(''
             . ' SELECT u.idCourse, u.edition_id, COUNT(*) as number '
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u'
+            . ' FROM %lms_courseuser AS u'
             . ' WHERE u.idCourse IN (' . implode(',', $id_course_list) . ') '
             . " AND u.level = '3'"
             . " AND u.status IN ('" . _CUS_CONFIRMED . "', '" . _CUS_SUBSCRIBED . "', '" . _CUS_BEGIN . "', '" . _CUS_END . "', '" . _CUS_SUSPEND . "', '" . _CUS_WAITING_LIST . "')"
@@ -575,8 +575,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     . '	c.can_subscribe, c.sub_start_date, c.sub_end_date, c.valid_time, c.userStatusOp, '
     . '	u.level, u.date_inscr, u.date_first_access, u.date_complete, u.status AS user_status, u.waiting, c.advance, u.waiting ';
 
-    $from_assess = ' FROM ' . $GLOBALS['prefix_lms'] . '_course AS c '
-    . '	 JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS u ';
+    $from_assess = ' FROM %lms_course AS c '
+    . '	 JOIN %lms_courseuser AS u ';
 
     $where_assess = ' c.idCourse = u.idCourse '
         . " AND u.idUser = '" . getLogUserId() . "' "
@@ -1416,7 +1416,7 @@ function dashAcourse($id_course, $h_number)
     $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
 
     $select_edition = ' SELECT * ';
-    $from_edition = ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition';
+    $from_edition = ' FROM %lms_course_edition';
     $where_edition = " WHERE idCourse = '" . $id_course . "' ";
     $order_edition = ' ORDER BY date_begin ';
     $re_edition = sql_query($select_edition . $from_edition . $where_edition . $order_edition);
@@ -1432,7 +1432,7 @@ function dashAcourse($id_course, $h_number)
     }
 
     $select_ed_count = 'SELECT idCourse, edition_id, sum(waiting) as waiting, COUNT(*) as user_count ';
-    $from_ed_count = 'FROM ' . $GLOBALS['prefix_lms'] . '_courseuser ';
+    $from_ed_count = 'FROM %lms_courseuser ';
     $where_ed_count = "WHERE edition_id <> 0 AND idCourse = '" . $id_course . "'";
     $group_ed_count = 'GROUP BY edition_id ';
     $re_ed_count = sql_query($select_ed_count . $from_ed_count . $where_ed_count . $group_ed_count);
@@ -1474,7 +1474,7 @@ function downloadMaterials()
     }
     if ($edition_id != 0) {
         $select_edition = ' SELECT img_othermaterial ';
-        $from_edition = ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition';
+        $from_edition = ' FROM %lms_course_edition';
         $where_edition = " WHERE idCourseEdition = '" . $edition_id . "' ";
 
         list($file) = sql_fetch_row(sql_query($select_edition . $from_edition . $where_edition));

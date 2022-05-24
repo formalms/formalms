@@ -149,7 +149,7 @@ class Selector_Catalogue
         $select = '
 		SELECT c.idCatalogue, c.name, c.description';
         $query_catalogue = '
-		FROM ' . $GLOBALS['prefix_lms'] . '_catalogue AS c
+		FROM %lms_catalogue AS c
 		WHERE 1';
         // Retriving data
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {

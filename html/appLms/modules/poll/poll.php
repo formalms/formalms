@@ -44,7 +44,7 @@ function addpoll($object_poll)
 
     $lang = &DoceboLanguage::createInstance('poll');
     if (!is_a($object_poll, 'Learning_Poll')) {
-        $_SESSION['last_error'] = $lang->def('_POLL_INCORRECTOBJECT');
+        Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
         Util::jump_to('' . $object_poll->back_url . '&amp;create_result=0');
     }
 
@@ -90,7 +90,7 @@ function inspoll()
 	( '" . (int) getLogUserId() . "', '" . $_POST['title'] . "', '" . $_POST['textof'] . "' )";
 
     if (!sql_query($ins_query)) {
-        $_SESSION['last_error'] = $lang->def('_POLL_ERR_INSERT');
+        Forma::addError($lang->def('_POLL_ERR_INSERT'));
         Util::jump_to('' . urldecode($_POST['back_url']) . '&create_result=0');
     }
 
@@ -181,7 +181,7 @@ function modpollgui($object_poll)
     $lang = &DoceboLanguage::createInstance('poll');
 
     if (!is_a($object_poll, 'Learning_Poll')) {
-        $_SESSION['last_error'] = $lang->def('_POLL_INCORRECTOBJECT');
+        Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
         Util::jump_to('' . $object_poll->back_url . '&amp;create_result=0');
     }
 
@@ -296,7 +296,7 @@ function modpollgui($object_poll)
     //------------------------------------------------------------------
     $re_type = sql_query('
 	SELECT type_quest 
-	FROM ' . $GLOBALS['prefix_lms'] . '_quest_type_poll 
+	FROM %lms_quest_type_poll 
 	ORDER BY sequence');
     $add_quest = '<form method="post" action="index.php?modname=poll&amp;op=addquest">'
         . '<div>'

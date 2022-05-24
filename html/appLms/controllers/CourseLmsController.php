@@ -118,7 +118,7 @@ class CourseLmsController extends LmsController
                 $course['show_users'] = true;
                 if ($info_course['course_type'] == 'classroom') {
                     if ($this->session->get('levelCourse') == 7) {
-                        $users = &$acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($this->session->get('idCourse'), $key, $this->session->get('idEdition'));
+                        $users = &$acl_man->getUsersMappedData(Man_Course::getIdUserOfLevel($this->session->get('idCourse'), $key, $this->session->get('idEdition')));
                     } else {
                         $users = &$acl_man->getUsersMappedData(CourseLms::getIdUserOfLevelDate($this->session->get('idCourse'), $key, $id_date));
                     }

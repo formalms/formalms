@@ -620,7 +620,7 @@ class TextEntry_Question extends Question
     public static function getTextEntryFromIdTrackAndIdQuest($idTrak, $idQuest)
     {
         $query_track_answer = 'SELECT more_info'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer'
+            . ' FROM %lms_testtrack_answer'
             . " WHERE idTrack = '" . $idTrak . "'"
             . " AND idQuest = '" . $idQuest . "'";
 

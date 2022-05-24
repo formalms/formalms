@@ -222,8 +222,9 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang)
                                         $values['milestone']));
             $GLOBALS['page']->add('<br />');
 
-            $startFolder = $treeView->tdb->getMilestone('start', (int) $_SESSION['idCourse']);
-            $endFolder = $treeView->tdb->getMilestone('end', (int) $_SESSION['idCourse']);
+            $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            $startFolder = $treeView->tdb->getMilestone('start', (int) $idCourse);
+            $endFolder = $treeView->tdb->getMilestone('end', (int) $idCourse);
             $jsOut = '';
             if ($startFolder !== false && $startFolder->id != $folder->id) {
                 $GLOBALS['page']->add('<div class="form_line_l">' . "\n"

@@ -132,10 +132,10 @@ function renderCoursepathProgress($complete, $total)
  **/
 function getNumCourseItems($idCourse, $countHidden = true, $idUser = false, $countNotAccessible = true)
 {
-    $query = 'SELECT count(idOrg) FROM ' . $GLOBALS['prefix_lms'] . '_organization';
+    $query = 'SELECT count(idOrg) FROM %lms_organization';
     if (!$countNotAccessible) {
-        $query .= ' LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_organization_access'
-                 . ' ON ( ' . $GLOBALS['prefix_lms'] . '_organization.idOrg = ' . $GLOBALS['prefix_lms'] . '_organization_access.idOrgAccess )';
+        $query .= ' LEFT JOIN %lms_organization_access'
+                 . ' ON ( %lms_organization.idOrg = %lms_organization_access.idOrgAccess )';
     }
     $query .= " WHERE (idCourse = '" . (int) $idCourse . "')"
             . '   AND (idResource <> 0)';
@@ -146,7 +146,7 @@ function getNumCourseItems($idCourse, $countHidden = true, $idUser = false, $cou
     if (!$countNotAccessible) {
         $query .= ' AND ( (' . $GLOBALS['prefix_lms'] . "_organization_access.kind = 'user'"
                  . ' 	AND ' . $GLOBALS['prefix_lms'] . "_organization_access.value = '" . (int) $idUser . "')"
-                 . '	    OR ' . $GLOBALS['prefix_lms'] . '_organization_access.idOrgAccess IS NULL'
+                 . '	    OR %lms_organization_access.idOrgAccess IS NULL'
                  . ')';
     }
 
@@ -174,7 +174,7 @@ function getNumCourseItems($idCourse, $countHidden = true, $idUser = false, $cou
 function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts)
 {
     $query = 'SELECT count(ct.idreference)'
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_commontrack ct, ' . $GLOBALS['prefix_lms'] . '_organization org'
+        . ' FROM %lms_commontrack ct, %lms_organization org'
         . ' WHERE (ct.idReference = org.idOrg)'
         . "   AND (ct.idUser = '" . (int) $stat_idUser . "')"
         . "   AND (idCourse = '" . (int) $stat_idCourse . "')"

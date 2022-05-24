@@ -69,7 +69,7 @@ class Questcategory
         //search query
         $query_quest_cat = '
 		SELECT idCategory, name 
-		FROM ' . $GLOBALS['prefix_lms'] . '_quest_category 
+		FROM %lms_quest_category 
 		WHERE idCategory IN ( ' . implode(',', $category) . ' ) 
 		ORDER BY name';
         $categories = [0 => Lang::t('_NONE', 'test')];

@@ -17,15 +17,20 @@ function coursecatalogue($id_block, $title, $option = [])
 {
     YuiLib::load(['animation' => 'my_animation', 'container' => 'container-min', 'container' => 'container_core-min']);
 
-    if (!isset($_SESSION['chart'])) {
-        $_SESSION['chart'] = [];
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    if (!$session->has('chart')) {
+        $session->set('chart',[]);
+        $session->save();
     }
 
     $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
     $action = Forma\lib\Get::req('action', DOTY_STRING, '');
 
     if ($id_course !== 0 && $action === '') {
-        $_SESSION['chart'][$id_course]['idCourse'] = $id_course;
+        $sessionChart = $session->get('chart');
+        $sessionChart[$id_course]['idCourse'] = $id_course;
+        $session->set('chart',$sessionChart);
+        $session->save();
     } else {
         require_once _lms_ . '/lib/lib.subscribe.php';
 
@@ -109,21 +114,21 @@ function coursecatalogue($id_block, $title, $option = [])
         //Category Visualization
         if ($id_category == 0) {
             $query = 'SELECT ca.idCategory, ca.path, ca.lev, ca.iLeft, ca.iRight, COUNT(co.idCourse)'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_category AS ca'
-                        . ' LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_course AS co ON co.idCategory = ca.idCategory'
+                        . ' FROM %lms_category AS ca'
+                        . ' LEFT JOIN %lms_course AS co ON co.idCategory = ca.idCategory'
                         . ' WHERE ca.lev = 1'
                         . ' GROUP BY ca.idCategory'
                         . ' ORDER BY ca.lev, ca.path';
         } else {
             $query = 'SELECT iLeft, iRight'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_category'
+                        . ' FROM %lms_category'
                         . ' WHERE idCategory = ' . $id_category;
 
             list($ileft, $iright) = sql_fetch_row(sql_query($query));
 
             $query = 'SELECT ca.idCategory, ca.path, ca.lev, ca.iLeft, ca.iRight, COUNT(co.idCourse)'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_category AS ca'
-                        . ' LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_course AS co ON co.idCategory = ca.idCategory'
+                        . ' FROM %lms_category AS ca'
+                        . ' LEFT JOIN %lms_course AS co ON co.idCategory = ca.idCategory'
                         . ' WHERE ca.iLeft >= ' . $ileft
                         . ' AND ca.iRight <= ' . $iright
                         . ' GROUP BY ca.idCategory'
@@ -145,7 +150,7 @@ function coursecatalogue($id_block, $title, $option = [])
 
                 if ($lev > 1) {
                     $query_parent = 'SELECT idCategory, path'
-                                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_category'
+                                    . ' FROM %lms_category'
                                     . ' WHERE iLeft < ' . $ileft
                                     . ' AND iRight > ' . $iright
                                     . ' ORDER BY lev ASC';
@@ -237,7 +242,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
     $acl_manger = Docebo::user()->getAclManager();
 
     $lang = &DoceboLanguage::CreateInstance('catalogue', 'cms');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if ($course_info['course_type'] !== 'elearning') {
         if (!isset($course_info['dates'])) {
             return '<p class="cannot_subscribe">' . $lang->def('_NO_EDITIONS') . '</p>';
@@ -272,10 +277,12 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
                 return '<a href="javascript:;" onClick="datePrenotationPopUp(\'' . $course_info['idCourse'] . '\', \'' . $lang->def('_CHART_EDITION_FOR') . ' : ' . addslashes($course_info['name']) . '\')"><p class="can_subscribe">' . $lang->def('_CAN_SUBSCRIBE') . '</p></a>';
             }
         } else {
+
             $date_in_chart = [];
 
-            if (isset($_SESSION['chart'][$course_info['idCourse']])) {
-                $date_in_chart = $_SESSION['chart'][$course_info['idCourse']]['dates'];
+            $sessionChart = $session->get('chart');
+            if (isset($sessionChart[$course_info['idCourse']])) {
+                $date_in_chart = $sessionChart[$course_info['idCourse']]['dates'];
             }
 
             $control = array_diff($control, $date_in_chart);
@@ -284,13 +291,12 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
                 return '<p class="subscribed">' . $lang->def('_ALL_EDITION_BUYED') . '</p>';
             }
 
-            $query = 'SELECT id_date'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_transaction_info'
+            $query = 'SELECT id_date  FROM %lms_transaction_info'
                         . ' WHERE id_course = ' . $course_info['idCourse']
                         . ' AND id_transaction IN'
                         . ' ('
                         . ' SELECT id_transaction'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_transaction'
+                        . ' FROM %lms_transaction'
                         . ' WHERE id_user = ' . getLogUserId()
                         . ' AND status = 0'
                         . ' )';
@@ -300,8 +306,8 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
             if (sql_num_rows($res)) {
                 $waiting_payment = [];
 
-                while (list($id_date) = sql_fetch_row($query)) {
-                    $waiting_payment[$id_date] = $id_date;
+                foreach ($res as $row){
+                    $waiting_payment[$row['id_date']] = $row['id_date'];
                 }
 
                 $control = array_diff($control, $waiting_payment);
@@ -314,14 +320,15 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
             return '<a href="javascript:;" onClick="datePrenotationPopUp(\'' . $course_info['idCourse'] . '\', \'' . $lang->def('_CHART_EDITION_FOR') . ' : ' . addslashes($course_info['name']) . '\')"><p class="can_subscribe">' . $lang->def('_CAN_SUBSCRIBE') . '</p></a>';
         }
     } else {
-        $course_in_chart = array_keys($_SESSION['chart']);
+        $sessionChart = $session->get('chart');
+        $course_in_chart = array_keys($sessionChart);
 
         if (array_search($course_info['idCourse'], $course_in_chart) !== false) {
             return '<p class="subscribed">' . $lang->def('_COURSE_IN_CART') . '</p>';
         }
 
         $query = 'SELECT status, waiting'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser'
+                    . ' FROM %lms_courseuser'
                     . ' WHERE idCourse = ' . $course_info['idCourse']
                     . ' AND idUser = ' . getLogUserId();
 
@@ -339,7 +346,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 
         if ($course_info['max_num_subscribe'] !== 0) {
             $query = 'SELECT COUNT(*)'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . 'courseuser'
+                        . ' FROM %lmscourseuser'
                         . ' WHERE idCourse = ' . $course_info['idCourse'];
 
             list($control) = sql_fetch_row(sql_query($query));
@@ -357,13 +364,13 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
             }
         } else {
             $query = 'SELECT COUNT(*)'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_transaction_info'
+                        . ' FROM %lms_transaction_info'
                         . ' WHERE id_date = 0'
                         . ' AND id_course = ' . $course_info['idCourse']
                         . ' AND id_transaction IN'
                         . ' ('
                         . ' SELECT id_transaction'
-                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_transaction'
+                        . ' FROM %lms_transaction'
                         . ' WHERE id_user = ' . getLogUserId()
                         . ' AND status = 0'
                         . ' )';
@@ -391,8 +398,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
     $acl_man = &Docebo::user()->getAclManager();
 
     $query = 'SELECT idCourse'
-                . ' FROM ' . $this->table_courseuser
-                . ' WHERE idUser = ' . $id_user;
+                . ' FROM %adm_courseuser WHERE idUser = ' . $id_user;
 
     $result = sql_query($query);
     $courses = [];

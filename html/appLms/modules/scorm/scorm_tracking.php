@@ -104,7 +104,7 @@ class Scorm_Tracking
         }
         if ($id_isitemid) {
             $query = 'SELECT tracking.idscorm_item, tracking.idscorm_tracking'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_tracking tracking'
+                    . ' FROM %lms_scorm_tracking tracking'
                     . ' WHERE tracking.idscorm_item=' . $id
                     . ' AND tracking.idUser=' . $idUser;
         }

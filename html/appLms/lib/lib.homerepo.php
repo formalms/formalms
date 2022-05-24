@@ -669,7 +669,7 @@ function manHomerepo_save($idFolder, &$lo, &$arrParam)
 function manHomerepo_saveIdResource($idFolder, $idResource, $objectType, $title, &$arrParam)
 {
     // a big insert query .... wow wooo ... yep
-    $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_homerepo'
+    $query = 'INSERT INTO %lms_homerepo'
             . ' ( `idFolder` , `idResource` , `idCategory` , `idUser` ,'
             . ' `idAuthor` , `objectType` , `title`, `version` , `difficult` ,'
             . ' `description` , `language` , `resource` , `objective` , `dateInsert` )'
@@ -694,7 +694,7 @@ function manHomerepo_saveIdResource($idFolder, $idResource, $objectType, $title,
 function manHomerepo_update($idFolder, $idObject, &$arrParam)
 {
     // a big insert query .... wow wooo ... yep
-    $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_homerepo'
+    $query = 'UPDATE %lms_homerepo'
             . " SET `idFolder` = '" . (int) $idFolder . "',"
             . " `idCategory` = '" . (int) (isset($arrParam['idCategory']) ? ($arrParam['idCategory']) : '') . "',"
             . " `idAuthor` = '" . (int) (isset($arrParam['idAuthor']) ? ($arrParam['idAuthor']) : (getLogUserId())) . "',"
@@ -1028,7 +1028,7 @@ function loadFields($arrayData, &$lo, $idLO)
     //finding category
     $reCategory = sql_query('
 	SELECT idCategory, title 
-	FROM ' . $GLOBALS['prefix_lms'] . '_coursecategory
+	FROM %lms_coursecategory
 	ORDER BY title');
 
     //searching languages
@@ -1047,7 +1047,7 @@ function loadFields($arrayData, &$lo, $idLO)
             $query = 'SELECT idFolder, idCategory, idAuthor,'
                     . ' objectType, title, version, difficult,'
                     . ' description, language, resource, objective'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_homerepo'
+                    . ' FROM %lms_homerepo'
                     . " WHERE idObject='" . (int) $idLO . "'";
 
             $rs = sql_query($query)
@@ -1182,8 +1182,8 @@ function manHomeRepo_ShowItem($itemId)
             . '`objectType` ,'
             . $GLOBALS['prefix_lms'] . '_homerepo.title title, `version` , `difficult` ,'
             . '`description` , `language` , `resource` , `objective` , `dateInsert`'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_homerepo, ' . $GLOBALS['prefix_lms'] . '_coursecategory'
-            . ' WHERE ' . $GLOBALS['prefix_lms'] . '_homerepo.idCategory = ' . $GLOBALS['prefix_lms'] . '_coursecategory.idCategory'
+            . ' FROM %lms_homerepo, %lms_coursecategory'
+            . ' WHERE %lms_homerepo.idCategory = %lms_coursecategory.idCategory'
             . " AND idObject='" . (int) $itemId . "'";
 
     $rs = sql_query($query)
@@ -1235,7 +1235,7 @@ function manHomeRepo_getData($idObject)
         . '`idAuthor`, `objectType`, `title`,'
         . '`version`, `difficult`, `language`,'
         . '`resource`, `objective`, `dateInsert`'
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_homerepo'
+        . ' FROM %lms_homerepo'
         . " WHERE idObject='" . (int) $idObject . "'";
     $rs = sql_query($query) or exit(sql_error());
 

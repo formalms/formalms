@@ -43,7 +43,7 @@ function loadUnreaded()
         $unreaded = [];
         $reUnreaded = sql_query('
 		SELECT t.idThread, t.idForum, m.generator, COUNT(m.idMessage)
-		FROM ' . $GLOBALS['prefix_lms'] . '_forumthread AS t JOIN ' . $GLOBALS['prefix_lms'] . "_forummessage AS m
+		FROM %lms_forumthread AS t JOIN ' . $GLOBALS['prefix_lms'] . "_forummessage AS m
 		WHERE t.idThread = m.idThread AND m.author <> '" . getLogUserId() . "' AND UNIX_TIMESTAMP(m.posted) >= '" . $last_forum_access_time . "'
 		GROUP BY t.idThread, t.idForum, m.generator");
 
@@ -72,7 +72,7 @@ function loadUnreaded()
 				idCourse = '" . PUBLIC_FORUM_COURSE_ID . "'");
         } else {
             sql_query('
-			UPDATE ' . $GLOBALS['prefix_lms'] . '_forum_timing
+			UPDATE %lms_forum_timing
 			SET  last_access = NOW()
 			WHERE idUser = ' . (int) getLogUserId() . " AND idCourse = '" . PUBLIC_FORUM_COURSE_ID . "'");
         }
@@ -125,7 +125,7 @@ function forum()
 
         $query_view_forum = '
 		SELECT DISTINCT f.idForum, f.title, f.description, f.num_thread, f.num_post, f.locked, f.emoticons
-		FROM ' . $GLOBALS['prefix_lms'] . '_forum AS f
+		FROM %lms_forum AS f
 			LEFT JOIN ' . $GLOBALS['prefix_lms'] . "_forum_access AS fa ON ( f.idForum = fa.idForum )
 		WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND
 			( fa.idMember IS NULL OR fa.idMember IN (" . implode(',', $all_user_idst) . ' )  )
@@ -142,7 +142,7 @@ function forum()
 
     $re_last_post = sql_query('
 	SELECT f.idForum, m.idThread, m.posted, m.title, m.author
-	FROM ' . $GLOBALS['prefix_lms'] . '_forum AS f LEFT JOIN
+	FROM %lms_forum AS f LEFT JOIN
 		' . $GLOBALS['prefix_lms'] . "_forummessage AS m ON ( f.last_post = m.idMessage )
 	WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "'");
     while (list($idF_p, $idT_p, $posted, $title_p, $id_a) = sql_fetch_row($re_last_post)) {
@@ -899,7 +899,7 @@ function modforumaccess()
         $user_select->resetSelection($users);
     }
     $query_forum_name = 'SELECT f.title
-	FROM ' . $GLOBALS['prefix_lms'] . '_forum AS f
+	FROM %lms_forum AS f
 	WHERE f.idCourse = ' . (int) $_SESSION['idCourse'] . '
 		AND f.idForum = ' . (int) $id_forum . ' ';
     $row = sql_fetch_row(sql_query($query_forum_name));
@@ -1118,7 +1118,7 @@ function thread()
 	WHERE idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND idForum = '" . $idForum . "'"));
 
         $authorId = Docebo::user()->getId();
-        $query = 'SELECT COUNT(*) AS numThread FROM ' . $GLOBALS['prefix_lms'] . '_forumthread WHERE `author`=' . $authorId . ' AND `idForum`= ' . $idForum;
+        $query = 'SELECT COUNT(*) AS numThread FROM %lms_forumthread WHERE `author`=' . $authorId . ' AND `idForum`= ' . $idForum;
 
         list($numThread) = sql_fetch_row(sql_query($query));
 
@@ -1172,7 +1172,7 @@ function thread()
 
     $query_thread = '
 	SELECT t.idThread, t.author AS thread_author, t.posted, t.title, t.num_post, t.num_view, t.locked, t.erased, t.rilevantForum, t.privateThread
-	FROM ' . $GLOBALS['prefix_lms'] . '_forumthread AS t LEFT JOIN
+	FROM %lms_forumthread AS t LEFT JOIN
 			' . $GLOBALS['prefix_lms'] . "_forummessage AS m ON ( t.last_post = m.idMessage )
 	WHERE t.idForum = '$id_forum'";
 
@@ -1208,7 +1208,7 @@ function thread()
 
     $re_last_post = sql_query('
 	SELECT m.idThread, t.author AS thread_author, m.posted, m.title, m.author  AS mess_author, m.generator
-	FROM ' . $GLOBALS['prefix_lms'] . '_forumthread AS t LEFT JOIN
+	FROM %lms_forumthread AS t LEFT JOIN
 		' . $GLOBALS['prefix_lms'] . "_forummessage AS m ON ( t.last_post = m.idMessage )
 	WHERE t.idForum = '" . $id_forum . "'");
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
@@ -1496,7 +1496,7 @@ function addthread()
     $canInsert = true;
     if ($moderate === false) {
         $authorId = Docebo::user()->getId();
-        $query = 'SELECT COUNT(*) AS numThread FROM ' . $GLOBALS['prefix_lms'] . '_forumthread WHERE `author`=' . $authorId . ' AND `idForum`= ' . $idForum;
+        $query = 'SELECT COUNT(*) AS numThread FROM %lms_forumthread WHERE `author`=' . $authorId . ' AND `idForum`= ' . $idForum;
 
         list($numThread) = sql_fetch_row(sql_query($query));
 
@@ -1820,7 +1820,7 @@ function upthread()
     $ini = importVar('ini');
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -1967,7 +1967,7 @@ function delthread()
         }
 
         if (!sql_query('
-		UPDATE ' . $GLOBALS['prefix_lms'] . '_forum
+		UPDATE %lms_forum
 		SET num_thread = num_thread - 1,
 			num_post = num_post - ' . $post_deleted
             . ($last_post_forum == $last_post ? " , last_post = '" . $id_new . "' " : ' ')
@@ -2077,7 +2077,7 @@ function message()
     $id_thread = importVar('idThread', true, 0);
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -2106,14 +2106,14 @@ function message()
 
     $set_important = importVar('important', true, 0);
     if ($set_important == 1) {
-        $query_set_important = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        $query_set_important = 'UPDATE %lms_forumthread' .
             ' SET rilevantForum = 1' .
             " WHERE idThread = '" . $id_thread . "'";
 
         $result_set_important = sql_query($query_set_important);
     }
     if ($set_important == 2) {
-        $query_set_important = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        $query_set_important = 'UPDATE %lms_forumthread' .
             ' SET rilevantForum = 0' .
             " WHERE idThread = '" . $id_thread . "'";
 
@@ -2165,7 +2165,7 @@ function message()
     // Who have semantic evaluation
     $re_sema = sql_query('
 	SELECT DISTINCT idmsg
-	FROM ' . $GLOBALS['prefix_lms'] . '_forum_sema');
+	FROM %lms_forum_sema');
     while (list($msg_sema) = sql_fetch_row($re_sema)) {
         $forum_sema[$msg_sema] = 1;
     }
@@ -2195,7 +2195,7 @@ function message()
     if (!empty($authors)) {
         $re_num_post = sql_query('
 		SELECT u.idUser, u.level, COUNT(*)
-		FROM ' . $GLOBALS['prefix_lms'] . '_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+		FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
 		WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
 		GROUP BY u.idUser, u.level');
         while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
@@ -2440,7 +2440,7 @@ function moderatemessage()
 	WHERE idMessage = '" . (int) $_GET['idMessage'] . "'"));
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -2468,7 +2468,7 @@ function modstatusthread()
     $id_thread = importVar('idThread', true, 0);
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -2501,7 +2501,7 @@ function changeerase()
     $id_thread = importVar('idThread', true, 0);
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -2564,7 +2564,7 @@ function showMessageForAdd($id_thread, $how_much)
     // Retriving level and number of post of th authors
     $re_num_post = sql_query('
 	SELECT u.idUser, u.level, COUNT(*)
-	FROM ' . $GLOBALS['prefix_lms'] . '_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+	FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
 	WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
 	GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
@@ -2655,7 +2655,7 @@ function addmessage()
     $ini = importVar('ini');
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -2743,7 +2743,7 @@ function insmessage()
     $ini = importVar('ini');
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -2898,7 +2898,7 @@ function modmessage()
     list($id_thread, $title, $textof, $author) = sql_fetch_row(sql_query($mess_query));
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -3095,7 +3095,7 @@ function delmessage()
         }
 
         if (!sql_query('
-		UPDATE ' . $GLOBALS['prefix_lms'] . '_forum
+		UPDATE %lms_forum
 		SET num_post = num_post - 1
 			' . ($num_post == 0 ? ' ,num_thread = num_thread - 1 ' : ' ') . "
 		WHERE idForum = '" . $id_forum . "'")
@@ -3122,7 +3122,7 @@ function delmessage()
             unsetNotify('thread', $id_thread);
         } else {
             if (!sql_query('
-			UPDATE ' . $GLOBALS['prefix_lms'] . '_forumthread
+			UPDATE %lms_forumthread
 			SET num_post = num_post - 1 '
                 . (($last_post == $id_message) ? " , last_post = '" . $id_new . "'" : '') . "
 			WHERE idThread = '" . $id_thread . "'")
@@ -3188,7 +3188,7 @@ function viewprofile()
 	WHERE idMessage = '" . $id_message . "'"));
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $idThread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -3290,8 +3290,8 @@ function forumsearch()
     }
     $query_num_thread = '
 	SELECT COUNT(DISTINCT t.idThread)
-	FROM ' . $GLOBALS['prefix_lms'] . '_forumthread AS t JOIN
-			' . $GLOBALS['prefix_lms'] . '_forummessage AS m
+	FROM %lms_forumthread AS t JOIN
+			%lms_forummessage AS m
 	WHERE t.idThread = m.idThread AND t.idForum IN ( ' . implode(',', $forums) . ' )';
 
     if (isset($search_arg)) {
@@ -3308,8 +3308,8 @@ function forumsearch()
 
     $query_thread = '
 	SELECT DISTINCT t.idThread, t.idForum, t.author AS thread_author, t.posted, t.title, t.num_post, t.num_view, t.locked, t.erased
-	FROM ' . $GLOBALS['prefix_lms'] . '_forumthread AS t JOIN
-			' . $GLOBALS['prefix_lms'] . '_forummessage AS m
+	FROM %lms_forumthread AS t JOIN
+			%lms_forummessage AS m
 	WHERE t.idThread = m.idThread AND t.idForum IN ( ' . implode(',', $forums) . " )
 		AND ( m.title LIKE '%" . $search_arg . "%' OR m.textof LIKE '%" . $search_arg . "%' ) ";
     switch ($ord) {
@@ -3339,8 +3339,8 @@ function forumsearch()
 
     $re_last_post = sql_query('
 	SELECT m.idThread, t.author AS thread_author, m.posted, m.title, m.author  AS mess_author, m.generator
-	FROM ' . $GLOBALS['prefix_lms'] . '_forumthread AS t LEFT JOIN
-		' . $GLOBALS['prefix_lms'] . '_forummessage AS m ON ( t.last_post = m.idMessage )
+	FROM %lms_forumthread AS t LEFT JOIN
+		%lms_forummessage AS m ON ( t.last_post = m.idMessage )
 	WHERE t.idForum IN ( ' . implode(',', $forums) . ' )');
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
@@ -3477,7 +3477,7 @@ function forumsearchmessage()
     $ini_thread = importVar('ini_thread');
 
     $query_id_forum = 'SELECT idForum' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+        ' FROM %lms_forumthread' .
         " WHERE idThread = '" . $id_thread . "'";
 
     list($id_forum) = sql_fetch_row(sql_query($query_id_forum));
@@ -3539,7 +3539,7 @@ function forumsearchmessage()
     // Who have semantic evaluation
     $re_sema = sql_query('
 	SELECT DISTINCT idmsg
-	FROM ' . $GLOBALS['prefix_lms'] . '_forum_sema');
+	FROM %lms_forum_sema');
     while (list($msg_sema) = sql_fetch_row($re_sema)) {
         $forum_sema[$msg_sema] = 1;
     }
@@ -3568,7 +3568,7 @@ function forumsearchmessage()
     // Retriving level and number of post of th authors
     $re_num_post = sql_query('
 	SELECT u.idUser, u.level, COUNT(*)
-	FROM ' . $GLOBALS['prefix_lms'] . '_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
+	FROM %lms_forummessage AS m, ' . $GLOBALS['prefix_lms'] . "_courseuser AS u
 	WHERE m.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND m.author = u.idUser AND m.author IN ( " . implode(',', $authors) . ' )
 	GROUP BY u.idUser, u.level');
     while (list($id_u, $level_u, $num_post_a) = sql_fetch_row($re_num_post)) {
@@ -3912,7 +3912,7 @@ function moveThread($id_thread, $id_forum)
 
         if ($confirm) {
             // Move the thread to the new forum
-            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+            $query = 'UPDATE %lms_forumthread' .
                 " SET idForum = '" . $id_new_forum . "'" .
                 " WHERE idThread = '" . $id_thread . "'";
 
@@ -3920,14 +3920,14 @@ function moveThread($id_thread, $id_forum)
 
             // Select thenumber of the post in the thread
             $query_2 = 'SELECT num_post' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+                ' FROM %lms_forumthread' .
                 " WHERE idThread = '" . $id_thread . "'";
 
             list($num_post) = sql_fetch_row(sql_query($query_2));
 
             // Update the forum info
             $query_3 = 'SELECT idForum, num_thread, num_post' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_forum' .
+                ' FROM %lms_forum' .
                 " WHERE idForum = '" . $id_forum . "'" .
                 " OR idForum = '" . $id_new_forum . "'";
 
@@ -3949,11 +3949,11 @@ function moveThread($id_thread, $id_forum)
             $last_message_update = [];
 
             $query_4 = 'SELECT idMessage' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_forummessage' .
+                ' FROM %lms_forummessage' .
                 ' WHERE idThread IN' .
                 '(' .
                 ' SELECT idThread' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+                ' FROM %lms_forumthread' .
                 " WHERE idForum = '" . $id_forum . "'" .
                 ')' .
                 ' ORDER BY posted DESC' .
@@ -3962,11 +3962,11 @@ function moveThread($id_thread, $id_forum)
             list($last_message_update[$id_forum]) = sql_fetch_row(sql_query($query_4));
 
             $query_5 = 'SELECT idMessage' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_forummessage' .
+                ' FROM %lms_forummessage' .
                 ' WHERE idThread IN' .
                 '(' .
                 ' SELECT idThread' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+                ' FROM %lms_forumthread' .
                 " WHERE idForum = '" . $id_new_forum . "'" .
                 ')' .
                 ' ORDER BY posted DESC' .
@@ -3974,7 +3974,7 @@ function moveThread($id_thread, $id_forum)
 
             list($last_message_update[$id_new_forum]) = sql_fetch_row(sql_query($query_5));
 
-            $query_update_1 = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_forum' .
+            $query_update_1 = 'UPDATE %lms_forum' .
                 " SET num_post = '" . $num_post_update[$id_forum] . "'," .
                 " num_thread='" . $num_thread_update[$id_forum] . "'," .
                 " last_post = '" . $last_message_update[$id_forum] . "'" .
@@ -3982,7 +3982,7 @@ function moveThread($id_thread, $id_forum)
 
             $result_update_1 = sql_query($query_update_1);
 
-            $query_update_2 = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_forum' .
+            $query_update_2 = 'UPDATE %lms_forum' .
                 " SET num_post = '" . $num_post_update[$id_new_forum] . "'," .
                 " num_thread='" . $num_thread_update[$id_new_forum] . "'," .
                 " last_post = '" . $last_message_update[$id_new_forum] . "'" .
@@ -3999,15 +3999,15 @@ function moveThread($id_thread, $id_forum)
         $id_forum = importVar('id_forum', true, 0);
 
         list($title) = sql_fetch_row(sql_query('SELECT title' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+            ' FROM %lms_forumthread' .
             " WHERE idThread = '" . $id_thread . "'"));
 
         list($from_forum) = sql_fetch_row(sql_query('SELECT title' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+            ' FROM %lms_forumthread' .
             " WHERE idForum = '" . $id_forum . "'"));
 
         list($to_forum) = sql_fetch_row(sql_query('SELECT title' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_forum' .
+            ' FROM %lms_forum' .
             " WHERE idForum = '" . $id_new_forum . "'"));
 
         $GLOBALS['page']->add(
@@ -4028,7 +4028,7 @@ function moveThread($id_thread, $id_forum)
         $list_forum = [];
 
         $query = 'SELECT idForum, title' .
-            ' FROM ' . $GLOBALS['prefix_lms'] . '_forum' .
+            ' FROM %lms_forum' .
             " WHERE idCourse = '" . $id_course . "'" .
             " AND idForum <> '" . $id_forum . "'";
 
@@ -4066,7 +4066,7 @@ function export()
 
     if ($id_forum) {
         $query = 'SELECT idThread, title, num_post'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread'
+            . ' FROM %lms_forumthread'
             . " WHERE idForum = '" . $id_forum . "'";
 
         $result = sql_query($query);
@@ -4080,7 +4080,7 @@ function export()
             $tmp['int'] = '"nomethread";"n.msg";"titolomsg";"autore";"data";"corpomsg";"allegato";"id_msg"';
 
             $query_msg = 'SELECT title, author, posted, textof, attach, idMessage'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_forummessage'
+                    . ' FROM %lms_forummessage'
                     . " WHERE idThread = '" . $id_thread . "'";
 
             $result_msg = sql_query($query_msg);
@@ -4150,7 +4150,7 @@ function export()
         }
 
         $query_forum = 'SELECT title'
-                . ' FROM ' . $GLOBALS['prefix_lms'] . '_forum'
+                . ' FROM %lms_forum'
                 . " WHERE idForum = '" . $id_forum . "'";
 
         list($forum_title) = sql_fetch_row(sql_query($query_forum));
@@ -4426,11 +4426,11 @@ function forumDispatch($op)
         //-----------------------------------------------//
         case 'download':
             $query = 'SELECT idForum' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_forumthread' .
+                ' FROM %lms_forumthread' .
                 ' WHERE idThread = ' .
                 '(' .
                 ' SELECT idThread' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_forummessage' .
+                ' FROM %lms_forummessage' .
                 " WHERE idMessage = '" . (int) $_GET['id'] . "'" .
                 ')';
 

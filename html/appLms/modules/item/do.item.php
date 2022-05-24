@@ -42,7 +42,7 @@ function play($idResource, $idParams, $back_url)
     //if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
     //echo ("idResource = ".$idResource."; idParams = ".$idParams."; back_url = ".$back_url);
     list($file) = sql_fetch_row(sql_query('SELECT path'
-                                            . ' FROM ' . $GLOBALS['prefix_lms'] . '_materials_lesson'
+                                            . ' FROM %lms_materials_lesson'
                                             . " WHERE idLesson = '" . $idResource . "'"));
 
     //recognize mime type
@@ -65,23 +65,28 @@ function play($idResource, $idParams, $back_url)
             $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'item');
         }
     }
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
-    if ($_SESSION['direct_play'] == 1) {
-        if (isset($_SESSION['idCourse'])) {
+
+    if ($session->get('direct_play') == 1) {
+        if ($session->has('idCourse')) {
             TrackUser::closeSessionCourseTrack();
 
-            unset($_SESSION['idCourse']);
-            unset($_SESSION['idEdition']);
+            $session->remove('idCourse');
+            $session->remove('idEdition');
         }
-        if (isset($_SESSION['test_assessment'])) {
-            unset($_SESSION['test_assessment']);
+
+        if ($session->has('test_assessment')) {
+            $session->remove('test_assessment');
         }
-        if (isset($_SESSION['cp_assessment_effect'])) {
-            unset($_SESSION['cp_assessment_effect']);
+        if ($session->has('cp_assessment_effect')) {
+            $session->remove('cp_assessment_effect');
         }
-        $_SESSION['current_main_menu'] = '1';
-        $_SESSION['sel_module_id'] = '1';
-        $_SESSION['is_ghost'] = false;
+
+        $session->set('current_main_menu','1');
+        $session->set('sel_module_id','1');
+        $session->set('is_ghost',false);
+        $session->save();
     }
 
     //send file

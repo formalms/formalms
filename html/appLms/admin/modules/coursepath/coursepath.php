@@ -39,7 +39,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $query_pathlist = '
 	SELECT id_path, path_code, path_name, path_descr
-	FROM ' . $GLOBALS['prefix_lms'] . '_coursepath ';
+	FROM %lms_coursepath ';
 
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
@@ -90,7 +90,7 @@ if (!Docebo::user()->isAnonymous()) {
         $subscriptions = [];
         $query_subcription = '
 	SELECT id_path, COUNT(idUser), SUM(waiting)
-	FROM ' . $GLOBALS['prefix_lms'] . '_coursepath_user
+	FROM %lms_coursepath_user
 	GROUP BY id_path';
 
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {

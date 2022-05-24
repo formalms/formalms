@@ -167,7 +167,7 @@ class Lms_BlockWidget extends Widget
         $year = date('Y');
         $p_list = [];
         $p_selected = Forma\lib\Get::req('credits_period', DOTY_INT, 0);
-        $p_res = sql_query('SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_time_period ORDER BY end_date DESC, start_date DESC');
+        $p_res = sql_query('SELECT * FROM %lms_time_period ORDER BY end_date DESC, start_date DESC');
         if (sql_num_rows($p_res) > 0) {
             while ($obj = sql_fetch_object($p_res)) {
                 if ($p_selected == 0) {
@@ -193,7 +193,7 @@ class Lms_BlockWidget extends Widget
 
         // extract courses which have been completed in the considered period and the credits associated
         $course_type_trans = getCourseTypes();
-        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM ' . $GLOBALS['prefix_lms'] . '_course as c ' . ' JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int) getLogUserId() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
+        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM %lms_course as c ' . ' JOIN %lms_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int) getLogUserId() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
         $res = sql_query($query);
 
         $course_data = [];

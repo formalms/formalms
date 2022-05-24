@@ -54,16 +54,15 @@ function displayCourseList(&$url, $order_type)
     // searching courses
     $use_category = ($order_type == 'category');
 
-    $select_course = ''
-    . ' SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.lang_code, c.difficult, '
+    $select_course = 'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.lang_code, c.difficult, '
     . '	c.subscribe_method, c.date_begin, c.date_end, c.max_num_subscribe, '
     . '	c.selling, c.prize, c.create_date, c.status AS course_status, c.course_edition, '
     . '	c.classrooms, c.img_material, c.course_demo, c.course_vote, COUNT(*) as enrolled, '
     . '	c.can_subscribe, c.sub_start_date, c.sub_end_date, c.allow_overbooking, c.max_num_subscribe, c.min_num_subscribe, c.direct_play, '
     . '	c.valid_time, c.userStatusOp, u.level, u.date_inscr, u.date_first_access, u.date_complete, u.status AS user_status, u.waiting, c.advance ';
 
-    $from_course = ' FROM ' . $GLOBALS['prefix_lms'] . '_course AS c '
-    . '	LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS u '
+    $from_course = ' FROM %lms_course AS c '
+    . '	LEFT JOIN %lms_courseuser AS u '
     . '		ON ( c.idCourse = u.idCourse ) ';
     $where_course = " c.status <> '" . CST_PREPARATION . "' ";
 
@@ -104,8 +103,10 @@ function displayCourseList(&$url, $order_type)
         $where_course .= ' AND 0 ';
     }
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if (!Docebo::user()->isAnonymous()) {
-        if (!isset($_SESSION['cp_assessment_effect'])) {
+
+        if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
             $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
 
@@ -114,9 +115,10 @@ function displayCourseList(&$url, $order_type)
 
             $rule_man = new AssessmentRule();
             $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-            $_SESSION['cp_assessment_effect'] = urlencode(Util::serialize($ass_elem));
+            $session->set('cp_assessment_effect',urlencode(Util::serialize($ass_elem)));
+            $session->save();
         } else {
-            $ass_elem = Util::unserialize(urldecode($_SESSION['cp_assessment_effect']));
+            $ass_elem = Util::unserialize(urldecode($session->get('cp_assessment_effect'));
         }
         if (!empty($ass_elem['parsed']['course'])) {
             $where_course = ' ( ( ' . $where_course . ' ) OR c.idCourse IN (' . implode(',', $ass_elem['parsed']['course']) . ') ) ';
@@ -164,13 +166,13 @@ function displayCourseList(&$url, $order_type)
         . $order_course . $limit_course);
 
     list($course_number) = sql_fetch_row(sql_query('SELECT COUNT(*) '
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_course AS c '
+        . ' FROM %lms_course AS c '
         . ' WHERE ' . $where_course));
     $nav_bar->setElementTotal($course_number);
 
     // retrive editions ----------------------------------------------------------------
     $select_edition = ' SELECT e.* ';
-    $from_edition = ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition AS e';
+    $from_edition = ' FROM %lms_course_edition AS e';
     $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' ";
 
     $where_edition .= " AND (e.date_begin > '" . date('Y-m-d H:i:s') . "' OR e.date_begin = '0000-00-00 00:00:00')";
@@ -200,7 +202,7 @@ function displayCourseList(&$url, $order_type)
 
     // retrive editions subscribed -----------------------------------------------------
     $select_ed_count = 'SELECT u.idCourse, u.edition_id, sum(u.waiting) as waiting, COUNT(*) as user_count ';
-    $from_ed_count = ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS u';
+    $from_ed_count = ' FROM %lms_courseuser AS u';
     $where_ed_count = ' WHERE u.edition_id <> 0 ' .
             " AND u.level = '3'" .
             " AND u.status IN ('" . _CUS_CONFIRMED . "', '" . _CUS_SUBSCRIBED . "', '" . _CUS_BEGIN . "', '" . _CUS_END . "', '" . _CUS_SUSPEND . "', '" . _CUS_WAITING_LIST . "')" .
@@ -355,7 +357,7 @@ function displayCoursePathList(&$url, $selected_tab)
 
     $lang = &DoceboLanguage::createInstance('catalogue');
     $lang_c = &DoceboLanguage::createInstance('course');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0);
     $nav_bar->setLink($url->getUrl());
     $ini = $nav_bar->getSelectedElement();
@@ -382,7 +384,7 @@ function displayCoursePathList(&$url, $selected_tab)
     }
 
     if (!Docebo::user()->isAnonymous()) {
-        if (!isset($_SESSION['cp_assessment_effect'])) {
+        if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
             $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
 
@@ -391,9 +393,10 @@ function displayCoursePathList(&$url, $selected_tab)
 
             $rule_man = new AssessmentRule();
             $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-            $_SESSION['cp_assessment_effect'] = urlencode(Util::serialize($ass_elem));
+            $session->set('cp_assessment_effect',urlencode(Util::serialize($ass_elem)));
+            $session->save();
         } else {
-            $ass_elem = Util::unserialize(urldecode($_SESSION['cp_assessment_effect']));
+            $ass_elem = Util::unserialize(urldecode($session->get('cp_assessment_effect')));
         }
         if (!empty($ass_elem['parsed']['coursepath'])) {
             $path_man->filterOrInPath($ass_elem['parsed']['coursepath']);
@@ -792,7 +795,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
     if ($enable_actions) {
         if ($has_edition) {
             list($edition_for_enter) = sql_fetch_row(sql_query('SELECT edition_id'
-                                                                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser'
+                                                                    . ' FROM %lms_courseuser'
                                                                     . " WHERE idUser = '" . getLogUserId() . "'"
                                                                     . " AND idCourse = '" . $cinfo['idCourse'] . "'"
                                                                     . ' ORDER BY edition_id DESC'
@@ -875,36 +878,41 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 
 function must_search_filter()
 {
-    return  isset($_SESSION['coursecatalogue']['in_search']) && $_SESSION['coursecatalogue']['in_search'] == true;
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $courseCatalogue = $session->get('coursecatalogue');
+    return  $courseCatalogue && isset($courseCatalogue['in_search']) && $courseCatalogue['in_search'] == true;
 }
 
 function get_searched($var, $default)
 {
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $prefix = 'coursecatalogue';
     if (isset($_POST['do_search'])) {
-        $_SESSION[$prefix]['in_search'] = true;
+        $session->set($prefix,['in_search' => true]);
+        $session->save();
     }
     if (isset($_POST['reset_search'])) {
-        if (isset($_SESSION[$prefix])) {
-            $_SESSION[$prefix] = [];
-            unset($_SESSION[$prefix]);
+        if ($session->has($prefix)) {
+            $session->remove($prefix);
+            $session->save();
         }
 
         return $default;
     }
 
-    if (isset($_POST[$var])) {
-        $_SESSION[$prefix][$var] = $_POST[$var];
+    if (isset($_REQUEST[$var])) {
+        $sessionData = $session->get($prefix);
 
-        return $_POST[$var];
+        $sessionData[$var] = $_REQUEST[$var];
+
+        $session->set($prefix,$sessionData);
+        $session->save();
+
+        return $_REQUEST[$var];
     }
-    if (isset($_GET[$var])) {
-        $_SESSION[$prefix][$var] = $_GET[$var];
 
-        return $_GET[$var];
-    }
-
-    return  isset($_SESSION[$prefix][$var]) ? $_SESSION[$prefix][$var] : $default;
+    $sessionData = $session->get($prefix);
+    return $sessionData[$var] ?? $default;
 }
 
 function searchForm(&$url, &$lang)
@@ -915,6 +923,8 @@ function searchForm(&$url, &$lang)
     $all_lang = ['all' => $lang->def('_ALL_LANGUAGE')];
     $all_lang = array_merge($all_lang, $langs);
 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $sessionData = $session->get('coursecatalogue');
     $html = '';
     $html .= Form::openForm('search_coursecatalogue', $url->getUrl())
 
@@ -935,7 +945,7 @@ function searchForm(&$url, &$lang)
 
     . '<div class="nofloat align_right">'
     . Form::getButton('do_search', 'do_search', $lang->def('_SEARCH'), '')
-    . (isset($_SESSION['coursecatalogue']['in_search']) && $_SESSION['coursecatalogue']['in_search'] == true
+    . ($sessionData && isset($sessionData['in_search']) && $sessionData['in_search'] == true
         ? ' ' . Form::getButton('reset_search', 'reset_search', $lang->def('_CANCEL'), '') : '')
     . '</div>'
 
@@ -1124,8 +1134,8 @@ function getCourseEditionList($course_id)
         2 => $lang->def('_COURSE_S_FREE'),
         3 => $lang->def('_COURSE_S_SECURITY_CODE'), ];
 
-    $qtxt = 'SELECT t1.*, COUNT(t2.idUser) as enrolled FROM ' . $GLOBALS['prefix_lms'] . '_course_edition as t1 ';
-    $qtxt .= 'LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS t2 ON ( t1.idCourseEdition = t2.edition_id ) ';
+    $qtxt = 'SELECT t1.*, COUNT(t2.idUser) as enrolled FROM %lms_course_edition as t1 ';
+    $qtxt .= 'LEFT JOIN %lms_courseuser AS t2 ON ( t1.idCourseEdition = t2.edition_id ) ';
     $qtxt .= "WHERE t1.idCourse='" . (int) $course_id . "'  ";
     $qtxt .= " AND t1.status <> '" . CST_PREPARATION . "' ";
 
@@ -1215,8 +1225,8 @@ function getCourseEditionTable($course_id)
     $tab->addHead($cont_h);
 
     $qtxt = 'SELECT t1.*, COUNT(t2.idUser) as enrolled ';
-    $qtxt .= 'FROM ' . $GLOBALS['prefix_lms'] . '_course_edition as t1 ';
-    $qtxt .= '	LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS t2 ON ( t1.idCourseEdition = t2.edition_id ) ';
+    $qtxt .= 'FROM %lms_course_edition as t1 ';
+    $qtxt .= '	LEFT JOIN %lms_courseuser AS t2 ON ( t1.idCourseEdition = t2.edition_id ) ';
     $qtxt .= "WHERE t1.idCourse='" . (int) $course_id . "' ";
     $qtxt .= "	AND t1.status <> '" . CST_PREPARATION . "' ";
     $qtxt .= 'GROUP BY t1.idCourseEdition  ';

@@ -374,7 +374,7 @@ class QuestBank_Selector
         $this->all_quest_type_long[0] = $this->lang->def('_ALL_QUEST_TYPE');
         $re_type = sql_query('
 		SELECT type_quest
-		FROM ' . $GLOBALS['prefix_lms'] . '_quest_type
+		FROM %lms_quest_type
 		ORDER BY sequence');
         while (list($type_quest) = sql_fetch_row($re_type)) {
             $this->all_quest_type[$type_quest] = $this->lang->def('_QUEST_ACRN_' . strtoupper($type_quest));

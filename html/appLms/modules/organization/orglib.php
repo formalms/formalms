@@ -77,7 +77,7 @@ class OrgDirDb extends RepoDirDb
     public function OrgDirDb($idCourse = false)
     {
         if ($idCourse === false) {
-            $this->idCourse = $_SESSION['idCourse'];
+            $this->idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');;
         } else {
             $this->idCourse = $idCourse;
         }
@@ -223,11 +223,11 @@ class OrgDirDb extends RepoDirDb
     {
         if ($this->filterAccess !== false) {
             if ($tname === false) {
-                return ' LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_organization_access'
-                    . ' ON ( ' . $GLOBALS['prefix_lms'] . '_organization.idOrg = ' . $GLOBALS['prefix_lms'] . '_organization_access.idOrgAccess )';
+                return ' LEFT JOIN %lms_organization_access'
+                    . ' ON ( %lms_organization.idOrg = %lms_organization_access.idOrgAccess )';
             } else {
-                return ' LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_organization_access'
-                    . ' ON ( ' . $tname . '.idOrg = ' . $GLOBALS['prefix_lms'] . '_organization_access.idOrgAccess )';
+                return ' LEFT JOIN %lms_organization_access'
+                    . ' ON ( ' . $tname . '.idOrg = %lms_organization_access.idOrgAccess )';
             }
         } else {
             return '';
@@ -273,7 +273,7 @@ class OrgDirDb extends RepoDirDb
             $result .= ' AND ( '
                 . '(' . $GLOBALS['prefix_lms'] . "_organization_access.kind IN ('user','group') "
                 . ' 	AND ' . $GLOBALS['prefix_lms'] . "_organization_access.value IN ('" . implode("','", $this->filterAccess) . "'))"
-                . ' OR (' . $GLOBALS['prefix_lms'] . '_organization_access.idOrgAccess IS NULL )'
+                . ' OR (%lms_organization_access.idOrgAccess IS NULL )'
                 . ')';
         }
 
@@ -430,7 +430,7 @@ class OrgDirDb extends RepoDirDb
         if ($lo) { // Add object to the uncategorized resources
             require_once _lms_ . '/lib/lib.kbres.php';
             $kbres = new KbRes();
-            $lang = (isset($_SESSION['idCourse']) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
+            $lang = (isset($this->org_idCourse) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
             $kbres->saveUncategorizedResource($title, $idResource, $objectType, 'course_lo', $this->org_idCourse, false, $lang);
         }
 
@@ -458,7 +458,7 @@ class OrgDirDb extends RepoDirDb
     {
         require_once _lms_ . '/lib/lib.param.php';
         $query = 'SELECT `title`, `objectType`, `idResource`'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_homerepo'
+            . ' FROM %lms_homerepo'
             . " WHERE idObject='" . (int) $idObject . "'";
         list($title, $objectType, $idResource) = sql_fetch_row(sql_query($query));
         $this->org_idObject = $idObject;
@@ -804,7 +804,7 @@ class OrgDirDb extends RepoDirDb
     {
         return true;
 
-        $query = 'SELECT value FROM ' . $GLOBALS['prefix_lms'] . '_organization_access'
+        $query = 'SELECT value FROM %lms_organization_access'
             . " WHERE idOrgAccess = '" . (int) $idOrgAccess . "'"
             . "   AND kind = '" . $kind . "'";
         $rs = sql_query($query);
@@ -863,7 +863,7 @@ class OrgDirDb extends RepoDirDb
     {
         return true;
 
-        $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_organization_access'
+        $query = 'INSERT INTO %lms_organization_access'
             . ' (idOrgAccess, kind, value) VALUES ('
             . " '" . (int) $idOrgAccess . "','" . $kind . "','" . (int) $id . "')";
         $rs = sql_query($query);
@@ -885,7 +885,7 @@ class OrgDirDb extends RepoDirDb
      **/
     public function deleteAllAccessUG($idOrgAccess)
     {
-        $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_organization_access'
+        $query = 'DELETE FROM %lms_organization_access'
             . " WHERE idOrgAccess = '" . (int) $idOrgAccess . "'";
         $rs = sql_query($query);
         if ($rs === false) {
@@ -904,7 +904,7 @@ class OrgDirDb extends RepoDirDb
      */
     public function _deleteAccessUG($idOrgAccess, $kind, $id)
     {
-        $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_organization_access'
+        $query = 'DELETE FROM %lms_organization_access'
             . " WHERE idOrgAccess = '" . (int) $idOrgAccess . "'"
             . "   AND kind = '" . $kind . "'"
             . "   AND value = '" . (int) $id . "'";
@@ -973,7 +973,7 @@ class OrgDirDb extends RepoDirDb
      */
     public function getAllGroups()
     {
-        $query = 'SELECT idGroup, groupName FROM ' . $GLOBALS['prefix_lms'] . '_coursegroup'
+        $query = 'SELECT idGroup, groupName FROM %lms_coursegroup'
             . " WHERE idCourse = '" . (int) $this->idCourse . "'"
             . '   AND level >= 6 ';
         $rs = sql_query($query);
@@ -997,7 +997,7 @@ class OrgDirDb extends RepoDirDb
     public function getAllUsers()
     {
         $query = 'SELECT u.idUser, u.userid '
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser cu, ' . $GLOBALS['prefix_lms'] . '_user u '
+            . ' FROM %lms_courseuser cu, %lms_user u '
             . " WHERE idCourse = '" . (int) $this->idCourse . "'"
             . '   AND u.idUser = cu.idUser ';
         $rs = sql_query($query);
@@ -1596,8 +1596,8 @@ class Org_TreeView extends RepoTreeView
             $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(
                 $stack[$level]['folder']->otherValues[ORGFIELDPREREQUISITES],
                 getLogUserId());
-
-            if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) {
+            $levelCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
+            if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                 return false;
             } elseif ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
                 $out .= ' <span class="' . $classStyle . '" ' .
@@ -1741,7 +1741,8 @@ class Org_TreeView extends RepoTreeView
                                     $stack[$level]['folder']->id,
                                     getLogUserId());
 
-                                if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) {
+
+                                if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                                     return false;
                                 } elseif ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
                                     $out .= '<input type="image" class="tree_view_image" '
@@ -1911,10 +1912,11 @@ class Org_TreeView extends RepoTreeView
     /** @deprecated */
     public function getLoData($idLoList)
     {
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';
             $man_date = new DateManager();
-            $this->user_presence = $man_date->checkUserPresence(getLogUserId(), $_SESSION['idCourse']);
+            $this->user_presence = $man_date->checkUserPresence(getLogUserId(), $idCourse);
         }
 
         $idLoList = (array) $idLoList;
@@ -1989,7 +1991,9 @@ class Org_TreeView extends RepoTreeView
 
             $node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
 
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) {
+            $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            $levelCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
+            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                 break;
             }
 
@@ -2014,12 +2018,12 @@ class Org_TreeView extends RepoTreeView
             }
             //$node['is_folder']=count($this->tdb->getidLosIdById($folder->id)) != 0;
 
-            if (($folder->otherValues[ORGFIELD_PUBLISHFROM] != '' && $folder->otherValues[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') && ($_SESSION['levelCourse'] <= 3)) {
+            if (($folder->otherValues[ORGFIELD_PUBLISHFROM] != '' && $folder->otherValues[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
                 if ($folder->otherValues[ORGFIELD_PUBLISHFROM] > date('Y-m-d H:i:s')) {
                     continue;
                 }
             }
-            if (($folder->otherValues[ORGFIELD_PUBLISHTO] != '' && $folder->otherValues[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') && ($_SESSION['levelCourse'] <= 3)) {
+            if (($folder->otherValues[ORGFIELD_PUBLISHTO] != '' && $folder->otherValues[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
                 if ($folder->otherValues[ORGFIELD_PUBLISHTO] < date('Y-m-d H:i:s')) {
                     continue;
                 }
@@ -2027,7 +2031,7 @@ class Org_TreeView extends RepoTreeView
 
             $status = Track_Object::getStatusFromId($folder->id, getLogUserId());
 
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $_SESSION['levelCourse'] <= 3) {
+            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                 continue;
             } elseif ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
                 $node['locked'] = true;
@@ -2120,12 +2124,12 @@ class Org_TreeView extends RepoTreeView
     public function load()
     {
         $isFirst = true;
-
+        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         // check if the user attende the course
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';
             $man_date = new DateManager();
-            $this->user_presence = $man_date->checkUserPresence(getLogUserId(), $_SESSION['idCourse']);
+            $this->user_presence = $man_date->checkUserPresence(getLogUserId(), $idCourse);
         }
 
         $tree = $this->printState();

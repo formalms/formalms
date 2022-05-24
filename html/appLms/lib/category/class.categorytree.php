@@ -442,7 +442,7 @@ class CategoryTree extends TreeDb_CatDb
     public function getOpenedFolders($idFolder)
     {
         $limits = $this->_getFolderLimits($idFolder);
-        $query = 'SELECT idCategory FROM ' . $GLOBALS['prefix_lms'] . '_category ' .
+        $query = 'SELECT idCategory FROM %lms_category ' .
                 'WHERE iLeft <= ' . $limits['iLeft'] . ' AND iRight >= ' . $limits['iRight'] . ' AND idCategory > 0 ORDER BY iLeft';
         $res = sql_query($query);
         $folders = [0];

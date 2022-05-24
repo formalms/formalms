@@ -16,7 +16,7 @@
  **/
 function getLOParam($idParam, $param_name)
 {
-    $query = 'SELECT param_value FROM ' . $GLOBALS['prefix_lms'] . '_lo_param '
+    $query = 'SELECT param_value FROM %lms_lo_param '
             . "WHERE idParam = '" . (int) $idParam . "'"
             . "  AND param_name = '" . $param_name . "'";
     $rs = sql_query($query) or
@@ -35,7 +35,7 @@ function getLOParam($idParam, $param_name)
  **/
 function getLOParamArray($idParam)
 {
-    $query = 'SELECT param_name, param_value FROM ' . $GLOBALS['prefix_lms'] . '_lo_param '
+    $query = 'SELECT param_name, param_value FROM %lms_lo_param '
             . "WHERE idParam = '" . (int) $idParam . "'";
     $rs = sql_query($query) or
             errorCommunication('getLOParam');
@@ -54,13 +54,13 @@ function getLOParamArray($idParam)
 function setLOParam($idParam, $param_name, $param_value)
 {
     if ($idParam === null) {
-        $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_lo_param '
+        $query = 'INSERT INTO %lms_lo_param '
                 . '( idParam, param_name, param_value )'
                 . ' VALUES '
                 . "( '0', '" . $param_name . "', '" . $param_value . "' )";
         if (sql_query($query)) {
             $idParam = sql_insert_id();
-            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_lo_param SET '
+            $query = 'UPDATE %lms_lo_param SET '
                     . " idParam='" . (int) $idParam . "'"
                     . "WHERE id = '" . (int) $idParam . "'";
         } else {
@@ -69,12 +69,12 @@ function setLOParam($idParam, $param_name, $param_value)
     } else {
         $val = getLOParam($idParam, $param_name);
         if ($val === false) {
-            $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_lo_param '
+            $query = 'INSERT INTO %lms_lo_param '
                     . '( idParam, param_name, param_value )'
                     . ' VALUES '
                     . "( '" . (int) $idParam . "', '" . $param_name . "', '" . $param_value . "' )";
         } else {
-            $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . '_lo_param SET '
+            $query = 'UPDATE %lms_lo_param SET '
                     . " param_value='" . $param_value . "'"
                     . "WHERE idParam = '" . (int) $idParam . "'"
                     . "  AND param_name = '" . $param_name . "'";
@@ -88,7 +88,7 @@ function setLOParam($idParam, $param_name, $param_value)
 
 function delLOParam($idParam, $param_name)
 {
-    $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_lo_param '
+    $query = 'DELETE FROM %lms_lo_param '
             . "WHERE idParam = '" . (int) $idParam . "'"
             . "  AND param_name = '" . $param_name . "'";
     $rs = sql_query($query) or
@@ -97,7 +97,7 @@ function delLOParam($idParam, $param_name)
 
 function delAllLOParam($idParam)
 {
-    $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_lo_param '
+    $query = 'DELETE FROM %lms_lo_param '
             . "WHERE idParam = '" . (int) $idParam . "'";
     $rs = sql_query($query) or
             errorCommunication('delLOParam');

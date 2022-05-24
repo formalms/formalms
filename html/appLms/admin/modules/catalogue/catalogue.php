@@ -53,26 +53,26 @@ if (!Docebo::user()->isAnonymous()) {
             if ($all_courses) {
                 $query_catalogue = '
 			SELECT idCatalogue, name, description
-			FROM ' . $GLOBALS['prefix_lms'] . '_catalogue
+			FROM %lms_catalogue
 			WHERE 1
 			ORDER BY name';
             } elseif (empty($admin_courses['catalogue'])) {
                 $query_catalogue = '
 			SELECT idCatalogue, name, description
-			FROM ' . $GLOBALS['prefix_lms'] . '_catalogue
+			FROM %lms_catalogue
 			WHERE 0
 			ORDER BY name';
             } else {
                 $query_catalogue = '
 			SELECT idCatalogue, name, description
-			FROM ' . $GLOBALS['prefix_lms'] . '_catalogue
+			FROM %lms_catalogue
 			WHERE idCatalogue IN (' . implode(',', $admin_courses['catalogue']) . ')
 			ORDER BY name';
             }
         } else {
             $query_catalogue = '
 		SELECT idCatalogue, name, description
-		FROM ' . $GLOBALS['prefix_lms'] . '_catalogue
+		FROM %lms_catalogue
 		ORDER BY name';
         }
         $re_catalogue = sql_query($query_catalogue);

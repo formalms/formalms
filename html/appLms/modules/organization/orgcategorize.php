@@ -15,7 +15,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 function organization_categorize(&$treeView, $idItem)
 {
-    $language = (isset($_SESSION['idCourse']) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $language = (isset($idCourse) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
 
     $folder = $treeView->tdb->getFolderById($idItem);
     $data = $folder->otherValues;
@@ -34,7 +35,7 @@ function organization_categorize(&$treeView, $idItem)
             'r_item_id' => $data[REPOFIELDIDRESOURCE],
             'r_type' => $type,
             'r_env' => 'course_lo',
-            'r_env_parent_id' => (int) $_SESSION['idCourse'],
+            'r_env_parent_id' => (int) $idCourse,
             'language' => $language,
             'back_url' => 'index.php?modname=storage&amp;op=display',
             'form_url' => 'index.php?modname=storage&amp;op=display',
@@ -48,7 +49,8 @@ function organization_categorize(&$treeView, $idItem)
 
 function organization_categorize_sco()
 {
-    $language = (isset($_SESSION['idCourse']) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $language = (isset($idCourse) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
 
     $idResource = Forma\lib\Get::req('idResource', DOTY_INT, 0);
     $sco_id = Forma\lib\Get::req('sco_id', DOTY_INT, 0);
@@ -74,7 +76,7 @@ function organization_categorize_sco()
         'scormorg_id' => (int) $idResource,
         'r_type' => 'scoitem',
         'r_env' => 'course_lo',
-        'r_env_parent_id' => (int) $_SESSION['idCourse'],
+        'r_env_parent_id' => (int) $idCourse,
         'r_param' => 'chapter=' . $row['identifierref'],
         'language' => $language,
         'back_url' => $back_url,
@@ -207,7 +209,7 @@ function getScoItemsTable($id_org, $scormorg_title, $idItem)
     $tb->addHead($h_content);
 
     $qry = 'SELECT t1.idscorm_item, t1.title ' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_items as t1 ' .
+        ' FROM %lms_scorm_items as t1 ' .
         " WHERE t1.idscorm_organization='" . $id_org . "'
 		  AND t1.idscorm_resource != 0
 			ORDER BY t1.idscorm_item";

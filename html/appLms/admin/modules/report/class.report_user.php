@@ -1270,7 +1270,7 @@ class Report_User extends Report
 
         $re_category = sql_query('
 		SELECT idCategory, path
-		FROM ' . $GLOBALS['prefix_lms'] . '_category');
+		FROM %lms_category');
         $category_list = [0 => $lang->def('_NONE')];
         $category_path_list = [0 => '/'];
         while (list($id_cat, $name_cat) = sql_fetch_row($re_category)) {
@@ -1284,7 +1284,7 @@ class Report_User extends Report
 
         $query = '
 		SELECT idUser, idCourse, COUNT(*), SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)), MAX(lastTime)
-		FROM ' . $GLOBALS['prefix_lms'] . '_tracksession
+		FROM %lms_tracksession
 		WHERE 1 ' .
             ($alluser > 0 ? '' : 'AND idUser IN ( ' . implode(',', $user_selected) . ' ) ') .
             ($filter_allcourses ? '' : 'AND idCourse IN (' . implode(',', $filter_courseselection) . ') ');
@@ -2900,7 +2900,7 @@ class Report_User extends Report
 				SELECT cu.idUser, cu.idCourse, cu.edition_id, cu.date_inscr, cu.date_first_access,
 				cu.date_complete, cu.status, cu.level,
 				u.userid, u.firstname, u.lastname, u.email, u.valid
-				FROM ' . $GLOBALS['prefix_lms'] . '_courseuser AS cu ' .
+				FROM %lms_courseuser AS cu ' .
                 ' JOIN ' . $GLOBALS['prefix_fw'] . '_user as u ON cu.idUser = u.idst
 				WHERE cu.idCourse > 0 ' . $query_show_suspended .
                 ($alluser ? '' : ' AND cu.idUser IN ( ' . implode(',', $user_selected) . ' ) ') .
@@ -2940,7 +2940,7 @@ class Report_User extends Report
                         if ($status_condition) {
                             if ($id_e > 0) {
                                 $query = 'SELECT date_end'
-                                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition'
+                                    . ' FROM %lms_course_edition'
                                     . " WHERE idCourseEdition = '" . $id_e . "'";
                                 list($date_end) = sql_fetch_row(sql_query($query));
                                 $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
@@ -2949,7 +2949,7 @@ class Report_User extends Report
                                 }
                             } else {
                                 $query = 'SELECT date_end'
-                                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_course'
+                                    . ' FROM %lms_course'
                                     . " WHERE idCourse = '" . $id_c . "'";
                                 list($date_end) = sql_fetch_row(sql_query($query));
                                 $user_timestamp = mktime('0', '0', '0', $date_end[5] . $date_end[6], ($date_end[8] . $date_end[9]) - $day_until_course_end, $date_end[0] . $date_end[1] . $date_end[2] . $date_end[3]);
@@ -2964,7 +2964,7 @@ class Report_User extends Report
                         if ($status_condition) {
                             if ($id_e > 0) {
                                 $query = 'SELECT COUNT(*)'
-                                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_course_edition'
+                                    . ' FROM %lms_course_edition'
                                     . " WHERE idCourseEdition = '" . $id_e . "'"
                                     . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
                                 list($control) = sql_fetch_row(sql_query($query));
@@ -2973,7 +2973,7 @@ class Report_User extends Report
                                 }
                             } else {
                                 $query = 'SELECT COUNT(*)'
-                                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_course'
+                                    . ' FROM %lms_course'
                                     . " WHERE idCourse = '" . $id_c . "'"
                                     . " AND date_end < '" . Format::dateDb($date_until_course_end, 'date') . "'";
                                 list($control) = sql_fetch_row(sql_query($query));

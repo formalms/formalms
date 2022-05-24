@@ -404,7 +404,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
         require_once _base_ . '/lib/lib.table.php';
 
         $query_quest = 'SELECT id_quest, title_quest' .
-                                     ' FROM ' . $GLOBALS['prefix_lms'] . '_pollquest' .
+                                     ' FROM %lms_pollquest' .
                                      " WHERE id_quest = '" . (int) $this->id . "'";
 
         $result_quest = sql_query($query_quest);
@@ -419,7 +419,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
         $tb->addHead($cont_h);
 
         $query_answer = 'SELECT more_info' .
-                                        ' FROM ' . $GLOBALS['prefix_lms'] . '_polltrack_answer' .
+                                        ' FROM %lms_polltrack_answer' .
                                         " WHERE id_quest = '" . $id_quest . "'";
 
         if (is_array($valid_track) && !empty($valid_track)) {
@@ -453,7 +453,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
         require_once _base_ . '/lib/lib.table.php';
 
         $query_quest = 'SELECT id_quest, title_quest' .
-                                     ' FROM ' . $GLOBALS['prefix_lms'] . '_pollquest' .
+                                     ' FROM %lms_pollquest' .
                                      " WHERE id_quest = '" . (int) $this->id . "'";
 
         $result_quest = sql_query($query_quest);
@@ -465,7 +465,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
         $csv .= '"' . $num_quest . '";"' . str_replace('"', '""', $title_quest) . '";"' . $lang->def('_QUEST_EXTENDED_TEXT') . '"' . "\r\n";
 
         $query_answer = 'SELECT more_info' .
-                                        ' FROM ' . $GLOBALS['prefix_lms'] . '_polltrack_answer' .
+                                        ' FROM %lms_polltrack_answer' .
                                         " WHERE id_quest = '" . $id_quest . "'";
 
         if (is_array($valid_track) && !empty($valid_track)) {

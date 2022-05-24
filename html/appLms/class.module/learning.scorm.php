@@ -231,7 +231,7 @@ class Learning_ScormOrg extends Learning_Object
     {
         $arrMultiResources = [];
         $rs = sql_query('SELECT idscorm_organization '
-                            . ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_organizations '
+                            . ' FROM %lms_scorm_organizations '
                             . " WHERE idscorm_package = '" . (int) $idMultiResource . "'");
         while (list($idscorm_organization) = sql_fetch_row($rs)) {
             $arrMultiResources[] = $idscorm_organization;

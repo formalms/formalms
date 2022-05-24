@@ -288,7 +288,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
                 }
 
                 if (count($req_arr) > 0) {
-                    $query = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_commontrack WHERE idReference IN (' . implode(',', $req_arr) . ') '
+                    $query = 'SELECT * FROM %lms_commontrack WHERE idReference IN (' . implode(',', $req_arr) . ') '
                         . " AND dateAttempt>'" . $last_suspension_date . "' AND status IN ('completed','passed')";
                     $res = sql_query($query);
                     if (sql_num_rows($res) < count($req_arr)) {
@@ -932,7 +932,7 @@ function play($object_test, $id_param)
             case 'associate':
             case 'text_entry':
                 $query = 'SELECT idAnswer, is_correct'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_testquestanswer'
+                    . ' FROM %lms_testquestanswer'
                     . ' WHERE idQuest = ' . (int) $idQuest;
                 $result = sql_query($query);
                 while (list($id_answer, $is_correct) = sql_fetch_assoc($result)) {
@@ -1688,14 +1688,14 @@ function review($object_test, $id_param)
 
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND q.idQuest IN (" . implode(',', $quest_see) . ")
 			 AND q.type_quest <> 'break_page' AND q.type_quest <> 'title'
 		ORDER BY q.sequence";
     } else {
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest
 			 AND q.type_quest <> 'break_page'
 		ORDER BY q.sequence";
@@ -2042,13 +2042,13 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
 
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode(',', $quest_see) . ')
 		ORDER BY q.sequence';
     } else {
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
     }
@@ -2145,19 +2145,19 @@ function deleteUserReport($id_user, $id_test, $id_track, $number_time = null)
 {
     require_once Forma::inc(_lms_ . '/lib/lib.test.php');
 
-    list($idTrack, $idUser, $idReference, $idTest, $number_of_save) = $res = sql_fetch_row(sql_query('SELECT `idTrack`,`idUser`,`idReference`,`idTest`,`number_of_save` FROM ' . $GLOBALS['prefix_lms'] . '_testtrack
+    list($idTrack, $idUser, $idReference, $idTest, $number_of_save) = $res = sql_fetch_row(sql_query('SELECT `idTrack`,`idUser`,`idReference`,`idTest`,`number_of_save` FROM %lms_testtrack
     WHERE `idTrack`=' . $id_track . ' AND `idUser`=' . $id_user . ' AND `idTest`=' . $id_test));
 
     if ($res) {
         if ($number_time === null) {
-            list($number_of_attempt) = $attemptRes = sql_fetch_row(sql_query('SELECT MAX(number_time) FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest));
+            list($number_of_attempt) = $attemptRes = sql_fetch_row(sql_query('SELECT MAX(number_time) FROM %lms_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest));
 
             $number_time = $number_of_attempt;
         }
 
-        sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest . ' AND `number_time`=' . $number_time);
+        sql_query('DELETE FROM %lms_testtrack_times WHERE `idTrack`=' . $idTrack . ' AND `idReference`=' . $idReference . ' AND `idTest`=' . $idTest . ' AND `number_time`=' . $number_time);
 
-        $response = sql_query('SELECT `idQuest`,`idAnswer` FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time);
+        $response = sql_query('SELECT `idQuest`,`idAnswer` FROM %lms_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time);
 
         $quests = [];
 
@@ -2165,11 +2165,11 @@ function deleteUserReport($id_user, $id_test, $id_track, $number_time = null)
             $quests[] = $idQuest;
         }
 
-        $deleteQuery = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_quest WHERE idTrack=' . $idTrack . ' AND idQuest IN(' . implode(',', $quests) . ')';
+        $deleteQuery = 'DELETE FROM %lms_testtrack_quest WHERE idTrack=' . $idTrack . ' AND idQuest IN(' . implode(',', $quests) . ')';
 
         sql_query($deleteQuery);
 
-        $deleteQuery = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time;
+        $deleteQuery = 'DELETE FROM %lms_testtrack_answer WHERE `idTrack`=' . $idTrack . ' AND `number_time`=' . $number_time;
 
         sql_query($deleteQuery);
 
@@ -2210,13 +2210,13 @@ function saveManualUserReport($id_user, $id_test, $id_track)
 
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode(',', $quest_see) . ')
 		ORDER BY q.sequence';
     } else {
         $query_question = '
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
     }

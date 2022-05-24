@@ -801,7 +801,7 @@ class Question
     public static function getTestQuestsFromTest($idTest)
     {
         $query_quest = 'SELECT idQuest, type_quest, title_quest'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testquest'
+            . ' FROM %lms_testquest'
             . " WHERE idTest = '" . $idTest . "'"
             . ' ORDER BY sequence';
 
@@ -820,11 +820,11 @@ class Question
     public static function getTestQuestAnswerFromQuestAndStudents($idQuest, $idStudents)
     {
         $query_answer = 'SELECT tqa.idAnswer, tqa.is_correct, tqa.answer'
-            . ' FROM ' . $GLOBALS['prefix_lms'] . '_testquestanswer AS tqa'
+            . ' FROM %lms_testquestanswer AS tqa'
             . ' LEFT JOIN'
-            . ' ' . $GLOBALS['prefix_lms'] . '_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer'
+            . ' %lms_testtrack_answer tta ON tqa.idAnswer = tta.idAnswer'
             . ' LEFT JOIN'
-            . ' ' . $GLOBALS['prefix_lms'] . '_testtrack tt ON tt.idTrack = tta.idTrack'
+            . ' %lms_testtrack tt ON tt.idTrack = tta.idTrack'
             . " WHERE tqa.idQuest = '" . $idQuest . "'";
         $query_answer .= ' and tt.idUser in (' . implode(',', $idStudents) . ')';
         $query_answer .= ' ORDER BY tqa.sequence';
@@ -871,7 +871,7 @@ class QuestionRaw
     public function setCategoryFromName($category_name, $autocreate_categories = false)
     {
         $qtxt = 'SELECT idCategory '
-            . 'FROM ' . $GLOBALS['prefix_lms'] . '_quest_category '
+            . 'FROM %lms_quest_category '
             . "WHERE name = '" . $category_name . "' AND ( author = 0 OR author = " . (int) getLogUserId() . ' ) ';
         $re = sql_query($qtxt);
         if (!$re || !sql_num_rows($re)) {

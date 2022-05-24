@@ -123,7 +123,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference)
     $tb->addHead($h_content);
 
     $query = 'SELECT idscorm_item, status ' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_items_track  ' .
+        ' FROM %lms_scorm_items_track  ' .
         " WHERE idscorm_organization=$id_org " .
         " AND idUser=$id_user ";
     $lessons_status = [];
@@ -134,9 +134,9 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference)
 
     $qry = 'SELECT t3.title, t1.lesson_status, t1.score_raw, t1.score_max, t1.session_time, t1.total_time, ' .
         ' MAX(t2.date_action) as last_access, COUNT(*) as attempts, t1.idscorm_item as item, t1.idscorm_tracking as id_track ' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_tracking as t1, ' .
-        ' ' . $GLOBALS['prefix_lms'] . '_scorm_tracking_history as t2, ' .
-        ' ' . $GLOBALS['prefix_lms'] . '_scorm_items as t3 ' .
+        ' FROM %lms_scorm_tracking as t1, ' .
+        ' %lms_scorm_tracking_history as t2, ' .
+        ' %lms_scorm_items as t3 ' .
         ' WHERE t1.idscorm_item=t3.idscorm_item AND ' .
         " t2.idscorm_tracking=t1.idscorm_tracking AND t3.idscorm_organization=$id_org " .
         " AND t1.idUser=$id_user AND t1.idscorm_item=$idscorm_item " .

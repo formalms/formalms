@@ -790,7 +790,7 @@ function statitem()
     }
 
     // get idst of the access in item
-    $query = 'SELECT value FROM ' . $GLOBALS['prefix_lms'] . '_organization_access'
+    $query = 'SELECT value FROM %lms_organization_access'
             . " WHERE idOrgAccess = '" . $idItem . "'";
     if (($rs = sql_query($query)) === false) {
         UiFeedback::error('Error on query to load item access');
@@ -810,13 +810,13 @@ function statitem()
     $out->add($form->openForm('orgshow', 'index.php?modname=stats&amp;op=statitem&amp;idItem=' . $idItem));
     if (isset($_POST['view_open_quest'])) {
         $query_resource = 'SELECT idResource' .
-                            ' FROM ' . $GLOBALS['prefix_lms'] . '_organization' .
+                            ' FROM %lms_organization' .
                             " WHERE idOrg = '" . $idItem . "'";
 
         list($id_poll) = sql_fetch_row(sql_query($query_resource));
 
         $query_quest = 'SELECT id_quest, title_quest' .
-                        ' FROM ' . $GLOBALS['prefix_lms'] . '_pollquest' .
+                        ' FROM %lms_pollquest' .
                         " WHERE id_poll = '" . $id_poll . "'" .
                         " AND type_quest = 'extended_text'";
 
@@ -831,7 +831,7 @@ function statitem()
             $tb->addHead($cont_h);
 
             $query_answer = 'SELECT more_info' .
-                            ' FROM ' . $GLOBALS['prefix_lms'] . '_polltrack_answer' .
+                            ' FROM %lms_polltrack_answer' .
                             " WHERE id_quest = '" . $id_quest . "'";
 
             $result_answer = sql_query($query_answer);
@@ -927,13 +927,13 @@ function statitem()
         $out->add($tabStat->getNavBar($limit, $total_user));
 
         $query = 'SELECT idResource' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_organization' .
+                ' FROM %lms_organization' .
                 " WHERE idOrg = '" . $idItem . "'";
 
         list($id_poll) = sql_fetch_row(sql_query($query));
 
         $query = 'SELECT id_quest' .
-                ' FROM ' . $GLOBALS['prefix_lms'] . '_pollquest' .
+                ' FROM %lms_pollquest' .
                 " WHERE id_poll = '" . $id_poll . "'" .
                 " AND type_quest = 'extended_text'";
 
@@ -1192,7 +1192,7 @@ function exportTxt()
     $id_quest = importVar('id_quest', true, 0);
 
     $query_quest = 'SELECT id_quest, title_quest' .
-                    ' FROM ' . $GLOBALS['prefix_lms'] . '_pollquest' .
+                    ' FROM %lms_pollquest' .
                     " WHERE id_quest = '" . $id_quest . "'";
 
     $result_quest = sql_query($query_quest);
@@ -1204,7 +1204,7 @@ function exportTxt()
     $txt = $title_quest . "\r\n" . "\r\n";
 
     $query_answer = 'SELECT more_info' .
-                    ' FROM ' . $GLOBALS['prefix_lms'] . '_polltrack_answer' .
+                    ' FROM %lms_polltrack_answer' .
                     " WHERE id_quest = '" . $id_quest . "'";
 
     $result_answer = sql_query($query_answer);

@@ -2012,7 +2012,7 @@ class SubscriptionAlmsController extends AlmsController
                                     --$max_subscribe;
                                 } else {
                                     $query = 'SELECT COUNT(*)'
-                                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser'
+                                        . ' FROM %lms_courseuser'
                                         . " WHERE idUser = '" . $id_user . "'"
                                         . " AND idCourse = '" . $this->id_course . "'";
 
@@ -2076,7 +2076,7 @@ class SubscriptionAlmsController extends AlmsController
                                     --$max_subscribe;
                                 } else {
                                     $query = 'SELECT COUNT(*)'
-                                        . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser'
+                                        . ' FROM %lms_courseuser'
                                         . " WHERE idUser = '" . $id_user . "'"
                                         . " AND idCourse = '" . $this->id_course . "'";
 

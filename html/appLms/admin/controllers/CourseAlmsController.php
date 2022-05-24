@@ -1261,8 +1261,8 @@ class CourseAlmsController extends AlmsController
 
             if ($this->session->get('idCourse') == $id_course) {
                 $query = 'SELECT module.idModule, main.idMain
-							FROM ( ' . $GLOBALS['prefix_lms'] . '_menucourse_main AS main JOIN
-							' . $GLOBALS['prefix_lms'] . '_menucourse_under AS un ) JOIN
+							FROM ( %lms_menucourse_main AS main JOIN
+							%lms_menucourse_under AS un ) JOIN
 							' . $GLOBALS['prefix_lms'] . "_module AS module
 							WHERE main.idMain = un.idMain AND un.idModule = module.idModule
 							AND main.idCourse = '" . (int) $id_course . "'

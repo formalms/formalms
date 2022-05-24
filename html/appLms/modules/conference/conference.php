@@ -13,6 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+
 /**
  * @category driver with external
  *
@@ -35,11 +36,11 @@ function conference_list(&$url)
 
     require_once _base_ . '/lib/lib.table.php';
     require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
-
-    $idCourse = $_SESSION['idCourse'];
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
 
     $conference = new Conference_Manager();
-    $re_room = $conference->roomActive($_SESSION['idCourse'], fromDatetimeToTimestamp(date('Y-m-d H:i:s')));
+    $re_room = $conference->roomActive($idCourse, fromDatetimeToTimestamp(date('Y-m-d H:i:s')));
     $room_number = $conference->totalRoom($re_room);
 
     $GLOBALS['page']->setWorkingZone('content');
@@ -191,7 +192,7 @@ function conference_startnewconf($url)
     $mod_perm = checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
 
     if (isset($_POST['create_conf'])) {
@@ -213,7 +214,7 @@ function conference_startnewconf($url)
 
         $maxparticipants = (int) $_POST['maxparticipants'];
 
-        $idCourse = $_SESSION['idCourse'];
+        $idCourse = $session->get('idCourse');
         $room_type = $_POST['room_type'];
 
         if ($conference->can_create_room_limit(getLogUserId(), $idCourse, $room_type, $start_timestamp, $end_timestamp) &&
@@ -414,7 +415,6 @@ function conference_modconf($url = null)
 
         $maxparticipants = (int) $_POST['maxparticipants'];
 
-        $idCourse = $_SESSION['idCourse'];
         $room_type = $_POST['room_type'];
 
         $conference->updateRoom($id_room, $conference_name, $room_type, $start_timestamp, $end_timestamp, $meetinghours, $maxparticipants, (isset($_POST['bookable']) ? 1 : 0),
@@ -640,7 +640,7 @@ function showHistory()
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
 
     $conference = new Conference_Manager();
@@ -671,8 +671,8 @@ function showHistory()
 
     $date_filter = Forma\lib\Get::req('filter_date', DOTY_MIXED, '');
 
-    $rooms = $conference->getOldRoom($_SESSION['idCourse'], $ini);
-    $rooms_number = $conference->getOldRoomNumber($_SESSION['idCourse']);
+    $rooms = $conference->getOldRoom($session->get('idCourse'), $ini);
+    $rooms_number = $conference->getOldRoomNumber($session->get('idCourse'));
 
     if ($rooms_number == 0) {
         $GLOBALS['page']->add(Form::openForm('history_table', 'index.php?modname=conference&amp;op=history')

@@ -183,7 +183,7 @@ function insitem()
     }
 
     // create entry in content package table
-    $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_scorm_package'
+    $query = 'INSERT INTO %lms_scorm_package'
         . ' (idpackage,idProg,path,defaultOrg,idUser,scormVersion) VALUES'
         . " ('" . addslashes($cpm->identifier)
         . "','0','" . str_replace("'", "\'", $savefile) . STRPOSTCONTENT
@@ -201,7 +201,7 @@ function insitem()
     // create the n entries in resources table
     for ($i = 0; $i < $cpm->GetResourceNumber(); ++$i) {
         $info = $cpm->GetResourceInfo($cpm->GetResourceIdentifier($i));
-        $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_scorm_resources (idsco,idscorm_package,scormtype,href)'
+        $query = 'INSERT INTO %lms_scorm_resources (idsco,idscorm_package,scormtype,href)'
             . " VALUES ('" . addslashes($info['identifier']) . "','"
             . (int) $idscorm_package . "','"
             . $info['scormtype'] . "','"
@@ -249,7 +249,7 @@ function moditem($object_item)
 
     //area title
     $query = 'SELECT idOrg ' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_organization ' .
+        ' FROM %lms_organization ' .
         ' WHERE idResource = ' . (int) $object_item->id . " AND objectType = 'scormorg' ";
     list($id_reference) = sql_fetch_row(sql_query($query));
 
@@ -265,7 +265,7 @@ function moditem($object_item)
     $tb->addHead($h_content);
 
     $qry = 'SELECT item_identifier, idscorm_resource, title ' .
-        ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_items ' .
+        ' FROM %lms_scorm_items ' .
         ' WHERE idscorm_organization = ' . (int) $object_item->id . '' .
         ' ORDER BY idscorm_item ';
 
@@ -303,20 +303,20 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
     //$rs = sql_query("SELECT idscorm_organization FROM ".$prefix."_scorm_organizations WHERE idscorm_package=".$idscorm_package);
     //while(list($idscorm_organization) = sql_fetch_row($rs)) {
     if ($erasetrackcontent) { // selected tracking remove
-        $rsItems = sql_query('SELECT idscorm_item FROM ' . $GLOBALS['prefix_lms'] . '_scorm_items WHERE idscorm_organization=' . $idscorm_organization);
+        $rsItems = sql_query('SELECT idscorm_item FROM %lms_scorm_items WHERE idscorm_organization=' . $idscorm_organization);
         while (list($idscorm_item) = sql_fetch_row($rsItems)) {
-            sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_scorm_tracking WHERE idscorm_resource=' . $idscorm_item);
+            sql_query('DELETE FROM %lms_scorm_tracking WHERE idscorm_resource=' . $idscorm_item);
         }
     }
-    sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_scorm_items WHERE idscorm_organization=' . $idscorm_organization);
+    sql_query('DELETE FROM %lms_scorm_items WHERE idscorm_organization=' . $idscorm_organization);
 
     //}
 
     /* remove organizations */
-    sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_scorm_organizations WHERE idscorm_organization=' . $idscorm_organization);
+    sql_query('DELETE FROM %lms_scorm_organizations WHERE idscorm_organization=' . $idscorm_organization);
 
     // detect if there are other organization in package
-    $rs = sql_query('SELECT idscorm_organization FROM ' . $GLOBALS['prefix_lms'] . '_scorm_organizations WHERE idscorm_package=' . $idscorm_package);
+    $rs = sql_query('SELECT idscorm_organization FROM %lms_scorm_organizations WHERE idscorm_package=' . $idscorm_package);
 
     if (sql_num_rows($rs) == 0) {
         $rs = sql_query('SELECT path FROM ' . $GLOBALS['prefix_lms'] . "_scorm_package WHERE idscorm_package='" . (int) $idscorm_package . "'")
@@ -327,7 +327,7 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
         /* remove all zip directory */
         if (file_exists($scopath . $path)) {
             /* if is the only occurrence of path in db delete files */
-            $rs = sql_query('SELECT idscorm_package FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package'
+            $rs = sql_query('SELECT idscorm_package FROM %lms_scorm_package'
                 . " WHERE path = '" . $path . "'");
             if (sql_num_rows($rs) == 1) {
                 $size = Forma\lib\Get::dir_size($scopath . $path);
@@ -342,10 +342,10 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
         }
 
         /* remove resources */
-        sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_scorm_resources WHERE idscorm_package=' . $idscorm_package);
+        sql_query('DELETE FROM %lms_scorm_resources WHERE idscorm_package=' . $idscorm_package);
 
         /* remove packages */
-        sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package WHERE idscorm_package=' . $idscorm_package);
+        sql_query('DELETE FROM %lms_scorm_package WHERE idscorm_package=' . $idscorm_package);
     }
 }
 
@@ -357,7 +357,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
     require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 
-    if (($rs = sql_query('SELECT path FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package '
+    if (($rs = sql_query('SELECT path FROM %lms_scorm_package '
             . "WHERE idscorm_package='"
             . (int) $idscorm_package . "'")) === false) {
         $_SESSION['last_error'] = _OPERATION_FAILURE . ': ' . sql_error();
@@ -383,14 +383,14 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     */
     /* copy package record */
     $rs_package = sql_query("SELECT idpackage,idProg,'" . $path . "',defaultOrg,idUser,scormVersion "
-        . ' FROM ' . $GLOBALS['prefix_lms'] . '_scorm_package '
+        . ' FROM %lms_scorm_package '
         . " WHERE idscorm_package='" . (int) $idscorm_package . "'");
 
     $arr_package = sql_fetch_row($rs_package);
     for ($i = 0; $i < count($arr_package); ++$i) {
         $arr_package[$i] = addslashes($arr_package[$i]);
     }
-    sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . '_scorm_package '
+    sql_query('INSERT INTO %lms_scorm_package '
         . ' (idpackage,idProg,path,defaultOrg,idUser,scormVersion) VALUES '
         . "('" . implode("','", $arr_package) . "')");
 
@@ -404,14 +404,14 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
 
     /* copy resources */
     $rs_resources = sql_query(" SELECT idsco,'" . $new_idscorm_package . "',scormtype,href "
-        . '  FROM ' . $GLOBALS['prefix_lms'] . '_scorm_resources '
+        . '  FROM %lms_scorm_resources '
         . " WHERE idscorm_package='" . (int) $idscorm_package . "'");
 
     while ($arr_resource = sql_fetch_row($rs_resources)) {
         for ($i = 0; $i < count($arr_resource); ++$i) {
             $arr_resource[$i] = addslashes($arr_resource[$i]);
         }
-        sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . '_scorm_resources '
+        sql_query('INSERT INTO %lms_scorm_resources '
             . ' (idsco,idscorm_package,scormtype,href) VALUES '
             . "('" . implode("','", $arr_resource) . "')");
     }
@@ -443,7 +443,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
         $cpm->RenderOrganization( $org->get_attribute('identifier'), $rdb );*/
 
     list($org_identifier) = sql_fetch_row(sql_query(
-        'SELECT org_identifier FROM ' . $GLOBALS['prefix_lms'] . '_scorm_organizations '
+        'SELECT org_identifier FROM %lms_scorm_organizations '
         . " WHERE idscorm_organization='" . (int) $idscorm_organization . "'"));
 
     $cpm->RenderOrganization($org_identifier, $rdb);

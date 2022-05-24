@@ -117,7 +117,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core
         // We first grab edition information so we also find the course id of the
         // editions to later load the related course information too.
         // ------------------------- - -  -   -
-        $qtxt = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_course_edition ';
+        $qtxt = 'SELECT * FROM %lms_course_edition ';
         $qtxt .= 'WHERE idCourseEdition IN (' . implode(',', $loaded['course_edition']) . ') ';
 
         $q = sql_query($qtxt);
@@ -140,7 +140,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core
         // ------------------------- - -  -   -
         // Then we grab the course information too
         // ------------------------- - -  -   -
-        $qtxt = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_course ';
+        $qtxt = 'SELECT * FROM %lms_course ';
         $qtxt .= 'WHERE idCourse IN (' . implode(',', $loaded['course']) . ') ';
 
         $q = sql_query($qtxt);
@@ -179,7 +179,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core
         }
         // --------------------------------------------------------------------
 
-        $qtxt = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_classroom_calendar';
+        $qtxt = 'SELECT * FROM %lms_classroom_calendar';
         $qtxt .= (!empty($where) ? ' WHERE ' . $where : '');
         $q = sql_query($qtxt);
 

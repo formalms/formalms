@@ -837,10 +837,10 @@ class DashboardAdm extends Model
     public function getDashBoardCertList($id_course, $id_user)
     {
         $query = 'SELECT cc.id_certificate, ce.name, available_for_status, cu.status '
-            . ' FROM (' . $GLOBALS['prefix_lms'] . '_certificate AS ce '
-            . ' JOIN ' . $GLOBALS['prefix_lms'] . '_certificate_course AS cc '
+            . ' FROM (%lms_certificate AS ce '
+            . ' JOIN %lms_certificate_course AS cc '
             . '        ON (ce.id_certificate = cc.id_certificate) )'
-            . ' JOIN ' . $GLOBALS['prefix_lms'] . '_courseuser AS cu '
+            . ' JOIN %lms_courseuser AS cu '
             . '        ON (cu.idCourse = cc.id_course)'
             . ' WHERE cu.idCourse = ' . (int) $id_course . ' '
             . '    AND idUser = ' . (int) $id_user . ' ';

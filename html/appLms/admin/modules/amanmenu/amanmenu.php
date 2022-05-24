@@ -43,7 +43,7 @@ function mancustom()
 
     $query = '
 	SELECT idCustom, title, description 
-	FROM ' . $GLOBALS['prefix_lms'] . '_menucustom 
+	FROM %lms_menucustom 
 	ORDER BY title';
     $re_custom = sql_query($query);
 
@@ -170,7 +170,7 @@ function editcustom($load = false)
         $custom = [0 => $lang->def('_NOT_ASSIGNED')];
         $query = '
 		SELECT idCustom, title 
-		FROM ' . $GLOBALS['prefix_lms'] . '_menucustom 
+		FROM %lms_menucustom 
 		ORDER BY title';
         $re_custom = sql_query($query);
         while (list($id_c, $title_c) = sql_fetch_row($re_custom)) {
@@ -232,7 +232,7 @@ function savecustom()
 
             $main_values = [];
             $query_ins_main = '
-			INSERT INTO ' . $GLOBALS['prefix_lms'] . '_menucustom_main (idMain, idCustom, sequence, name, image ) VALUES';
+			INSERT INTO %lms_menucustom_main (idMain, idCustom, sequence, name, image ) VALUES';
             while (list($id_main, $seq, $name, $image) = sql_fetch_row($re_main)) {
                 if (!sql_query($query_ins_main . "( '', '" . $id_custom . "','" . $seq . "', '" . $name . "', '" . $image . "')")) {
                     $map_main_id[$id_main] = false;
@@ -249,7 +249,7 @@ function savecustom()
 
             $module_values = [];
             $query_ins_module = '
-			INSERT INTO ' . $GLOBALS['prefix_lms'] . '_menucustom_under ( idCustom, idModule, idMain, sequence, my_name ) VALUES';
+			INSERT INTO %lms_menucustom_under ( idCustom, idModule, idMain, sequence, my_name ) VALUES';
             while (list($id_module, $id_main, $seq, $my_name) = sql_fetch_row($re_module)) {
                 if (isset($map_main_id[$id_main]) && ($map_main_id[$id_main] !== false)) {
                     $module_values[] = "('" . $id_custom . "', '" . $id_module . "', '" . $map_main_id[$id_main] . "', '" . $seq . "', '" . $my_name . "')";
@@ -680,7 +680,7 @@ function manmodule()
     // Find all modules in this voice
     $query_module = '
 	SELECT module.idModule, module.default_name, menu.my_name 
-	FROM ' . $GLOBALS['prefix_lms'] . '_menucustom_under AS menu JOIN
+	FROM %lms_menucustom_under AS menu JOIN
 		' . $GLOBALS['prefix_lms'] . "_module AS module
 	WHERE module.idModule = menu.idModule AND menu.idMain = '" . (int) $id_main . "' 
 	ORDER BY menu.sequence";
@@ -690,7 +690,7 @@ function manmodule()
     $used_module = '';
     $query_used_module = '
 	SELECT module.idModule 
-	FROM ' . $GLOBALS['prefix_lms'] . '_menucustom_under AS menu JOIN 
+	FROM %lms_menucustom_under AS menu JOIN 
 		' . $GLOBALS['prefix_lms'] . "_module AS module 
 	WHERE module.idModule = menu.idModule AND 
 		( menu.idCustom = '" . (int) $id_custom . "' OR menu.idCustom = 0 )";
@@ -702,7 +702,7 @@ function manmodule()
 
     $query_free_module = '
 	SELECT idModule, default_name 
-	FROM ' . $GLOBALS['prefix_lms'] . '_module AS module 
+	FROM %lms_module AS module 
 	WHERE 1=1 ';
 
     if ($used_module != '') {

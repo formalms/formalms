@@ -241,7 +241,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
     {
         $search_query = '
 		SELECT idCourse, imported_from_connection 
-		FROM ' . $GLOBALS['prefix_lms'] . '_course 
+		FROM %lms_course 
 		WHERE 1';
         foreach ($pk as $fieldname => $fieldvalue) {
             $search_query .= " AND $fieldname = '" . addslashes($fieldvalue) . "'";

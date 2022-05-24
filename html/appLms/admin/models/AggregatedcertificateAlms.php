@@ -48,7 +48,7 @@ class AggregatedcertificateAlms extends Model
         //search query of certificates
         $query_certificate = '
 	        SELECT id_certificate, code, name, description
-	        FROM ' . $GLOBALS['prefix_lms'] . '_certificate'
+	        FROM %lms_certificate'
             . ' WHERE meta = 1';
 
         $rs = sql_query($query_certificate);
@@ -63,7 +63,7 @@ class AggregatedcertificateAlms extends Model
     {
        //Take courses for the meta certificate
         $query = 'SELECT DISTINCT idCourse'
-                . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_course'
+                . ' FROM %lms_certificate_meta_course'
                 . " WHERE idMetaCertificate = '" . $id_meta . "'";
 
         $rs = sql_query($query);
@@ -94,7 +94,7 @@ class AggregatedcertificateAlms extends Model
     public function getUsersFromIdMeta($id_meta)
     {
         $query = 'SELECT DISTINCT idUser'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_course'
+                    . ' FROM %lms_certificate_meta_course'
                     . " WHERE idMetaCertificate = '" . $id_meta . "'";
 
         $rs = sql_query($query);
@@ -109,7 +109,7 @@ class AggregatedcertificateAlms extends Model
     public function getIdsMetaCertificate($idCert)
     { // get all associations.
         $query = 'SELECT idMetaCertificate'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta'
+                    . ' FROM %lms_certificate_meta'
                     . " WHERE idCertificate = '" . $idCert . "'";
 
         $rs = sql_query($query);
@@ -123,7 +123,7 @@ class AggregatedcertificateAlms extends Model
     public function getUsersCourseCompleted()
     {
         $query = 'SELECT idCourse, idUser'
-                . ' FROM ' . $GLOBALS['prefix_lms'] . '_courseuser'
+                . ' FROM %lms_courseuser'
                 . " WHERE status = '" . _CUS_END . "'";
 
         $rs = sql_query($query);
@@ -137,7 +137,7 @@ class AggregatedcertificateAlms extends Model
     public function getTitleAssociationsArr()
     {
         $query = 'SELECT idMetaCertificate, title'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta';
+                    . ' FROM %lms_certificate_meta';
 
         $rs = sql_query($query);
         while ($rows = sql_fetch_assoc($rs)) {
@@ -150,7 +150,7 @@ class AggregatedcertificateAlms extends Model
     public function getCountMetaCertUsers()
     {
         $query = 'SELECT idUser, idMetaCertificate, COUNT(*)'
-                . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_course'
+                . ' FROM %lms_certificate_meta_course'
                 . ' GROUP BY idUser, idMetaCertificate';
 
         $rs = sql_query($query);
@@ -168,7 +168,7 @@ class AggregatedcertificateAlms extends Model
         // userid = username
 
         $query = 'SELECT m.idUser, u.lastname, u.firstname, u.userid'
-                . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_course as m'
+                . ' FROM %lms_certificate_meta_course as m'
                 . ' JOIN ' . $GLOBALS['prefix_fw'] . '_user as u ON u.idst = m.idUser'
                 . ' WHERE m.idMetaCertificate IN (' . implode(',', $idsMetacertArr) . ')'
                 . (isset($_POST['filter_username']) ? "AND u.userid LIKE '%" . $_POST['filter_username'] . "%'" : '')
@@ -196,7 +196,7 @@ class AggregatedcertificateAlms extends Model
     public function getIdCourseFromIdUserAndIdMeta($idUser, $idMeta)
     {
         $query = 'SELECT idCourse'
-                            . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_course'
+                            . ' FROM %lms_certificate_meta_course'
                             . " WHERE idUser = '" . $idUser . "'"
                             . " AND idMetaCertificate = '" . $idMeta . "'";
 
@@ -210,7 +210,7 @@ class AggregatedcertificateAlms extends Model
 
     public function getCertReleased($idUser, $idMeta)
     {
-        $query = 'SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_assign'
+        $query = 'SELECT COUNT(*) FROM %lms_certificate_meta_assign'
                     . " WHERE idUser = '" . $idUser . "'"
                     . " AND idMetaCertificate = '" . $idMeta . "'";
 
@@ -255,7 +255,7 @@ class AggregatedcertificateAlms extends Model
 
     public function deleteAssociationsCourses($coursesIdsArr, $idMeta)
     {
-        $query2 = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_course'
+        $query2 = 'DELETE FROM %lms_certificate_meta_course'
         . ' WHERE idMetaCertificate = ' . $idMeta
         . ' AND idCourse IN (' . implode(',', $coursesIdsArr) . ')';
 
@@ -266,7 +266,7 @@ class AggregatedcertificateAlms extends Model
 
     public function getPathsFromIdParent($idParent)
     {
-        $q = 'SELECT path,idCategory,lev, iLeft, iRight FROM ' . $GLOBALS['prefix_lms'] . '_category'
+        $q = 'SELECT path,idCategory,lev, iLeft, iRight FROM %lms_category'
             . ' WHERE idParent = ' . $idParent . '';
 
         $rs = sql_query($q);
@@ -289,7 +289,7 @@ class AggregatedcertificateAlms extends Model
 
     public function getNodesFromIdParent($idParent)
     {
-        $q = 'SELECT path,idCategory,lev, iLeft, iRight FROM ' . $GLOBALS['prefix_lms'] . '_category'
+        $q = 'SELECT path,idCategory,lev, iLeft, iRight FROM %lms_category'
             . ' WHERE idParent = ' . $idParent . '';
 
         $rs = sql_query($q);
@@ -314,7 +314,7 @@ class AggregatedcertificateAlms extends Model
     public function getCatalogCourse()
     {
         $q = ' SELECT idCatalogue, name, description
-             FROM ' . $GLOBALS['prefix_lms'] . '_catalogue ';
+             FROM %lms_catalogue ';
         $rs = sql_query($q);
 
         $catalogCourseArr['data'] = [];
@@ -335,7 +335,7 @@ class AggregatedcertificateAlms extends Model
     public function getCertFile($id_user, $id_meta)
     {
         $query = 'SELECT cert_file'
-                    . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_assign'
+                    . ' FROM %lms_certificate_meta_assign'
                     . " WHERE idUser = '" . $id_user . "'"
                     . " AND idMetaCertificate = '" . $id_meta . "'";
 
@@ -344,7 +344,7 @@ class AggregatedcertificateAlms extends Model
 
     public function deleteReleasedCert($id_user, $id_meta)
     {
-        $query = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_assign'
+        $query = 'DELETE FROM %lms_certificate_meta_assign'
                             . " WHERE idUser = '" . $id_user . "'"
                             . " AND idMetaCertificate = '" . $id_meta . "'";
 
@@ -353,7 +353,7 @@ class AggregatedcertificateAlms extends Model
 
     public function insertCertificateMeta($metadataAssocArr)
     {
-        $q = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_certificate_meta (idCertificate, title, description)'
+        $q = 'INSERT INTO %lms_certificate_meta (idCertificate, title, description)'
                                     . " VALUES ('" . $metadataAssocArr['id_certificate'] . "', '" . addslashes($metadataAssocArr['title']) . "', '" . addslashes($metadataAssocArr['description']) . "')";
 
         return sql_query($q);
@@ -362,7 +362,7 @@ class AggregatedcertificateAlms extends Model
     public function getAssociationMetadata($id_metacertificate)
     {
         $query = 'SELECT title, description'
-         . ' FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta'
+         . ' FROM %lms_certificate_meta'
          . ' WHERE idMetaCertificate = ' . $id_metacertificate;
 
         $rs = sql_query($query);
@@ -376,7 +376,7 @@ class AggregatedcertificateAlms extends Model
 
     public function getLastInsertedIdCertificateMeta()
     {
-        return sql_fetch_row(sql_query('SELECT LAST_INSERT_ID() FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta'))[0];
+        return sql_fetch_row(sql_query('SELECT LAST_INSERT_ID() FROM %lms_certificate_meta'))[0];
     }
 
     public function userBelongCourseMeta($idMetaCert, $id_user, $id_course)
@@ -510,7 +510,7 @@ class AggregatedcertificateAlms extends Model
 
         foreach ($coursesTypeArr as $key => $table) {
             $q = 'SELECT * 
-                FROM ' . $GLOBALS['prefix_lms'] . '_certificate_meta_' . $table . '
+                FROM %lms_certificate_meta_' . $table . '
                 WHERE idMetaCertificate = ' . $id_metacert
                 . ' LIMIT 1';
 

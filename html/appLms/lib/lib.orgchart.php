@@ -75,13 +75,13 @@ class OrganizationManagement
         foreach ($courses as $id_c) {
             $query_unreaded = '
 				SELECT count(idOrg) 
-				FROM ' . $GLOBALS['prefix_lms'] . '_organization LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_organization_access '
-                    . ' ON ( ' . $GLOBALS['prefix_lms'] . '_organization.idOrg = ' . $GLOBALS['prefix_lms'] . "_organization_access.idOrgAccess ) 
+				FROM %lms_organization LEFT JOIN %lms_organization_access '
+                    . ' ON ( %lms_organization.idOrg = ' . $GLOBALS['prefix_lms'] . "_organization_access.idOrgAccess ) 
 				WHERE idCourse = '" . $id_c . "' AND (idResource <> 0)
 					AND (visible = '1')"
                     . ' AND ( (' . $GLOBALS['prefix_lms'] . "_organization_access.kind = 'user'"
                     . ' 	AND ' . $GLOBALS['prefix_lms'] . "_organization_access.value = '" . (int) $id_user . "')"
-                    . '	    OR ' . $GLOBALS['prefix_lms'] . '_organization_access.idOrgAccess IS NULL'
+                    . '	    OR %lms_organization_access.idOrgAccess IS NULL'
                     . ") AND UNIX_TIMESTAMP(dateInsert) >= '" . (isset($last_access[$id_c]) ? $last_access[$id_c] : 0) . "'";
 
             list($obj_unreaded) = sql_fetch_row(sql_query($query_unreaded));

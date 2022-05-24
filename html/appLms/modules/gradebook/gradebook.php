@@ -24,6 +24,7 @@ function showgrade()
     require_once _lms_ . '/lib/lib.test.php';
     require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _base_ . '/lib/lib.table.php';
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
     $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
     $out = &$GLOBALS['page'];
@@ -43,13 +44,13 @@ function showgrade()
     $query_tot_report = '
 	SELECT COUNT(*)
 	FROM ' . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "'";
+	WHERE id_course = '" . $idCourse . "'";
     list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
 
     $query_tests = '
 	SELECT id_report, id_source
 	FROM ' . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "' AND source_of = 'test'";
+	WHERE id_course = '" . $idCourse . "' AND source_of = 'test'";
     $re_tests = sql_query($query_tests);
     while (list($id_r, $id_t) = sql_fetch_row($re_tests)) {
         $i_test[$id_t] = $id_t;
@@ -87,7 +88,7 @@ function showgrade()
     $query_report = '
 	SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
 	FROM ' . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "' AND show_to_user = 'true'
+	WHERE id_course = '" . $idCourse . "' AND show_to_user = 'true'
 	ORDER BY sequence ";
     $re_report = sql_query($query_report);
 
@@ -267,7 +268,7 @@ function coursereport()
     global $test_title;
 
     checkPerm('view');
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     require_once _lms_ . '/lib/lib.test.php';
     require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _base_ . '/lib/lib.table.php';
@@ -290,13 +291,13 @@ function coursereport()
     $query_tot_report = '
 	SELECT COUNT(*)
 	FROM ' . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "'";
+	WHERE id_course = '" . $idCourse . "'";
     list($tot_report) = sql_fetch_row(sql_query($query_tot_report));
 
     $query_tests = '
 	SELECT id_report, id_source
 	FROM ' . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "' AND source_of = 'test'";
+	WHERE id_course = '" . $idCourse . "' AND source_of = 'test'";
     $re_tests = sql_query($query_tests);
     while (list($id_r, $id_t) = sql_fetch_row($re_tests)) {
         $i_test[$id_t] = $id_t;
@@ -335,15 +336,17 @@ function coursereport()
     $query_report = '
 	SELECT id_report, title, max_score, required_score, weight, show_to_user, use_for_final, source_of, id_source
 	FROM ' . $GLOBALS['prefix_lms'] . "_coursereport
-	WHERE id_course = '" . $_SESSION['idCourse'] . "' AND show_to_user = 'true'
+	WHERE id_course = '" . $idCourse . "' AND show_to_user = 'true'
 	ORDER BY sequence ";
     $re_report = sql_query($query_report);
 
-    while ($info_report = sql_fetch_assoc($re_report)) {
+    foreach ($re_report as $info_report){
         switch ($info_report['source_of']) {
             case 'test':
                 $id_test[] = $info_report['id_source'];
-            ; break;
+            break;
+            default:
+                break;
         }
     }
 
@@ -375,7 +378,7 @@ function coursereport()
             $test_title = $tests_info[$id_test[$i]]['title'];
             $GLOBALS['page']->add('<tr><td colspan="3"><br /><strong>' . $test_title . '</strong></td></tr>', 'content');
 
-            $query_track = 'SELECT idTrack FROM ' . $GLOBALS['prefix_lms'] . '_testtrack '
+            $query_track = 'SELECT idTrack FROM %lms_testtrack '
                             . 'WHERE idTest =' . $id_test[$i] . ' AND idUser=' . $id_user;
             $re_track = sql_query($query_track);
             $track = sql_fetch_assoc($re_track);
@@ -454,13 +457,13 @@ function user_test_report($idUser, $idTest, $id_track)
 
             $query_question = '
 		SELECT q.idQuest, q.title_quest, q.type_quest, t.type_file, t.type_class, q.idCategory
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode(',', $quest_see) . ')
 		ORDER BY q.sequence';
         } else {
             $query_question = '
 		SELECT q.idQuest, q.title_quest, q.type_quest, t.type_file, t.type_class, q.idCategory
-		FROM ' . $GLOBALS['prefix_lms'] . '_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
+		FROM %lms_testquest AS q JOIN ' . $GLOBALS['prefix_lms'] . "_quest_type AS t
 		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest
 		ORDER BY q.sequence";
         }

@@ -701,7 +701,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         //cache course name
         $search_course = '
 		SELECT idCourse, name
-		FROM ' . $GLOBALS['prefix_lms'] . '_course
+		FROM %lms_course
 		WHERE 1';
         $re_course = sql_query($search_course);
         while (list($id_course, $name) = sql_fetch_row($re_course)) {
@@ -710,7 +710,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $search_query = '
 		SELECT idCourse, idUser
-		FROM ' . $GLOBALS['prefix_lms'] . '_courseuser 
+		FROM %lms_courseuser 
 		WHERE 1';
         if (!empty($this->arr_pair_inserted)) {
             $search_query .= " AND CONCAT(idCourse, '_', idUser) NOT IN (" . implode($this->arr_pair_inserted, ',') . ') ';

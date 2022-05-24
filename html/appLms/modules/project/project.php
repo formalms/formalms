@@ -137,9 +137,9 @@ function user_projects($userid)
 {
     $user_grp = getUserGrpArray($userid);
     $grp_list = implode(',', $user_grp);
-
-    $qtxt = 'SELECT id FROM ' . $GLOBALS['prefix_lms'] . '_prj ';
-    $qtxt .= "WHERE cid='" . $_SESSION['idCourse'] . "' AND pgroup IN (" . $grp_list . ') ';
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $qtxt = 'SELECT id FROM %lms_prj ';
+    $qtxt .= "WHERE cid='" . $idCourse . "' AND pgroup IN (" . $grp_list . ') ';
     $qtxt .= 'ORDER BY ptitle'; //echo("\n\n<!-- ".$qtxt." -->\n\n");
 
     $res = [];
@@ -172,11 +172,11 @@ function userProjectsList($userid)
 {
     $user_grp = getUserGrpArray($userid);
     $grp_list = implode(',', $user_grp);
-
-    $qtxt = 'SELECT t1.*, t2.flag FROM ' . $GLOBALS['prefix_lms'] . '_prj as t1 ';
-    $qtxt .= 'LEFT JOIN ' . $GLOBALS['prefix_lms'] . '_prj_users as t2 ';
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $qtxt = 'SELECT t1.*, t2.flag FROM %lms_prj as t1 ';
+    $qtxt .= 'LEFT JOIN %lms_prj_users as t2 ';
     $qtxt .= "ON (t1.id=t2.pid AND t2.userid='" . $userid . "') ";
-    $qtxt .= "WHERE t1.cid='" . $_SESSION['idCourse'] . "' AND t1.pgroup IN (" . $grp_list . ') ';
+    $qtxt .= "WHERE t1.cid='" . $idCourse . "' AND t1.pgroup IN (" . $grp_list . ') ';
     $qtxt .= 'GROUP BY t1.id ORDER BY t1.ptitle'; //echo("\n\n<!-- ".$qtxt." -->\n\n");
 
     $res = [];
@@ -193,13 +193,13 @@ function userProjectsList($userid)
 function getGroupsForProject(&$lang)
 {
     $acl_man = Docebo::user()->getAclManager();
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     //finding group
-    $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $_SESSION['idCourse'] . '/group/', true);
+    $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $idCourse . '/group/', true);
     $groups = [];
     $groups[getLogUserId()] = $lang->def('_YOUONLY');
     foreach ($db_groups as $idst => $groupid) {
-        $groupid = substr($groupid, strlen('/lms/course/' . $_SESSION['idCourse'] . '/group/'));
+        $groupid = substr($groupid, strlen('/lms/course/' . $idCourse . '/group/'));
         if ($groupid == 'alluser') {
             $groupid = $lang->def('_ALL');
             $sel = $idst;
@@ -220,13 +220,13 @@ function addprj()
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('project', 'lms');
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     //=groups=selection==============================================================
     /* if( $_SESSION['levelCourse'] >= '5' ) {
         $query_group = "
         SELECT idGroup, groupName, description, level, owner
         FROM ".$GLOBALS["prefix_lms"]."_coursegroup
-        WHERE idCourse='".$_SESSION['idCourse']."'
+        WHERE idCourse='".$idCourse."'
         ORDER BY groupName";
     }
     else {
@@ -234,7 +234,7 @@ function addprj()
         SELECT t1.idGroup, t1.groupName, t1.description, t1.level, t1.owner
         FROM ".$GLOBALS["prefix_lms"]."_coursegroup AS t1, ".$GLOBALS["prefix_lms"]."_coursegroupuser AS t2
         WHERE t1.idGroup = t2.idGroup AND
-            t1.idCourse='".$_SESSION['idCourse']."'  AND
+            t1.idCourse='".$idCourse."'  AND
             (t1.owner = '".$_SESSION['sesUser']."' OR t2.idUser = '".$_SESSION['sesUser']."')
         GROUP BY t1.idGroup
         ORDER BY t1.groupName";
@@ -336,7 +336,7 @@ function addprj_now()
     $psnews = (isset($_POST['psnews']) ? $_POST['psnews'] : 0);
     $pstodo = (isset($_POST['pstodo']) ? $_POST['pstodo'] : 0);
     $psmsg = (isset($_POST['psmsg']) ? $_POST['psmsg'] : 0);
-    $idCourse = $_SESSION['idCourse'];
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
     if ($ptitle == '') {
         $err = $lang->def('_PRJNOTITLE');
@@ -354,7 +354,7 @@ function addprj_now()
         $query = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_prj (ptitle,pgroup,psfiles,pstasks,psnews,pstodo,psmsg,cid) VALUES('$ptitle','$pgroup','$psfiles','$pstasks','$psnews','$pstodo','$psmsg','$idCourse');");
 
         if ($query) {
-            $query = sql_query('SELECT * FROM ' . $GLOBALS['prefix_lms'] . '_prj ORDER BY id DESC;');
+            $query = sql_query('SELECT * FROM %lms_prj ORDER BY id DESC;');
             $row = sql_fetch_array($query);
             $id = $row['id'];
 
@@ -740,6 +740,7 @@ function manprjadmin()
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $from = new Form();
 
     if ((!isset($_GET['id'])) || ($_GET['id'] < 1)) {
@@ -777,31 +778,31 @@ function manprjadmin()
             //$arr_unselected=$user_select->getUnselected();
 
             foreach ($arr_unselected as $userid) {
-                $qtxt = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_prj_users ';
+                $qtxt = 'DELETE FROM %lms_prj_users ';
                 $qtxt .= "WHERE pid='" . $id . "' AND flag='1' AND userid='" . $userid . "'";
                 $q = sql_query($qtxt);
             }
 
             foreach ($arr_selection as $userid) {
-                $qtxt = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . '_prj_users ';
+                $qtxt = 'INSERT INTO %lms_prj_users ';
                 $qtxt .= "(pid,userid,flag) VALUES('" . $id . "','$userid','1')";
                 $q = sql_query($qtxt);
             }
 
             Util::jump_to(str_replace('&amp;', '&', $back_url));
         } else {
-            //$user_select->setGroupFilter('path', '/lms/course/'.$_SESSION['idCourse'].'/group');
+            //$user_select->setGroupFilter('path', '/lms/course/'.$idCourse.'/group');
 
-            $group_all = $aclManager->getGroupST('/lms/course/' . (int) $_SESSION['idCourse'] . '/group/alluser');
+            $group_all = $aclManager->getGroupST('/lms/course/' . (int) $idCourse . '/group/alluser');
 
             $query = '
 			SELECT pgroup
 			FROM ' . $GLOBALS['prefix_lms'] . "_prj
-			WHERE cid='" . $_SESSION['idCourse'] . "'
+			WHERE cid='" . $idCourse . "'
 				AND id = '" . $id . "'";
             list($group) = sql_fetch_array(sql_query($query));
             if ($group == $group_all) {
-                $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $_SESSION['idCourse'] . '/subscribed/');
+                $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $idCourse . '/subscribed/');
                 $user_select->setUserFilter('group', $arr_idstGroup);
             } else {
                 $user_select->setUserFilter('group', [$group]);
@@ -1218,7 +1219,7 @@ function edit_files($mode = 'edit')
     require_once _base_ . '/lib/lib.upload.php';
     require_once _base_ . '/lib/lib.form.php';
     $form = new Form();
-
+    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('project', 'lms');
@@ -1256,7 +1257,7 @@ function edit_files($mode = 'edit')
                 if ((!isset($_FILES['attach'])) || ($_FILES['attach']['name'] == '')) {
                     $savefile = '';
                 } else {
-                    $savefile = $_SESSION['idCourse'] . '_' . mt_rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
+                    $savefile = $idCourse . '_' . mt_rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
                     if (!file_exists(_FPATH_INTERNAL . $savefile)) {
                         if (!sl_upload($_FILES['attach']['tmp_name'], _FPATH_INTERNAL . $savefile)) {
                             $savefile = '';
@@ -1401,7 +1402,7 @@ function send_msg()
                 sl_open_fileoperations();
                 if($_FILES['attach']['name'] == '') $savefile = '';
                 else {
-                    $savefile = $_SESSION['idCourse'].$lang->def("_").rand(0,100).$lang->def("_").time().$lang->def("_").$_FILES['attach']['name'];
+                    $savefile = $idCourse.$lang->def("_").rand(0,100).$lang->def("_").time().$lang->def("_").$_FILES['attach']['name'];
                     if(!file_exists ($pathprj.$savefile)) {
                         if(!sl_upload($_FILES['attach']['tmp_name'], $pathprj.$savefile))
                         {
@@ -1618,7 +1619,7 @@ function mod_prj()
             if ($pgroup != $old_pgroup) {
                 if (in_group(getLogUserId(), $pgroup)) {
                     // Removing all admins:
-                    $pgroup_qtxt = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_prj_users ';
+                    $pgroup_qtxt = 'DELETE FROM %lms_prj_users ';
                     $pgroup_qtxt .= "WHERE flag='1' AND pid='" . $id . "'";
 
                     $q = sql_query($pgroup_qtxt);
@@ -1798,7 +1799,7 @@ function del_prj_now($id)
     require_once _base_ . '/lib/lib.upload.php';
 
     // -------------------------------------- Cancello i messaggi:
-    $qtxt = 'DELETE FROM ' . $GLOBALS['prefix_lms'] . '_sysforum ';
+    $qtxt = 'DELETE FROM %lms_sysforum ';
     $qtxt .= "WHERE key1='project_message' AND key2='" . $id . "'";
     $query = sql_query($qtxt);
     // ------------------------------------------------------------
