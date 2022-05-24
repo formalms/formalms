@@ -16,7 +16,10 @@ abstract class PluginAuthentication extends FormaPlugin
     public const AUTH_TYPE_BASE = 'baseLogin';
     public const AUTH_TYPE_SOCIAL = 'socialLogin';
 
+    protected static $session = null;
+
     public function __construct()
     {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 }

@@ -25,12 +25,14 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 {
     public static function getLoginGUI()
     {
+        $session = self::$session;
+        $social = $session->get('social');
         $form = '';
-        if (isset($_SESSION['social'])) {
-            if ($_SESSION['social']['plugin'] == Plugin::getName()) {
+        if (isset($social)) {
+            if ($social['plugin'] == Plugin::getName()) {
                 $form = '<i class="fa fa-google"></i>' . ' '
                         . Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social')
-                        . ' <b>' . ($_SESSION['social']['data']['name'] != '' ? $_SESSION['social']['data']['name'] : $_SESSION['social']['data']['email']) . '</b>'
+                        . ' <b>' . ($social['data']['name'] != '' ? $social['data']['name'] : $social['data']['email']) . '</b>'
                         . Form::openForm('cancel_social', Forma\lib\Get::rel_path('base'))
                           . Form::openButtonSpace()
                               . Form::getButton('cancel', 'cancel_social', Lang::t('_CANCEL', 'standard'))
@@ -79,10 +81,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $user = \DoceboUser::createDoceboUserFromField('google_id', $user_info['id'], 'public_area');
 
         if (!$user) {
-            $_SESSION['social'] = [
-                'plugin' => Plugin::getName(),
-                'data' => $user_info,
-            ];
+            (self::$session)->set('social',['plugin' => Plugin::getName(),
+                        'data' => $user_info,
+            ]);
+            (self::$session)->save();
 
             return USER_NOT_FOUND;
         }

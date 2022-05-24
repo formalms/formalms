@@ -27,11 +27,13 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     public static function getLoginGUI($redirect = '')
     {
         $form = '';
-        if (isset($_SESSION['social'])) {
-            if ($_SESSION['social']['plugin'] == Plugin::getName()) {
+        $session = self::$session;
+        $social = $session->get('social');
+        if (isset($social)) {
+            if ($social['plugin'] == Plugin::getName()) {
                 $form = Forma\lib\Get::img('social/facebook-24.png') . ' '
                         . Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social')
-                        . ' <b>' . $_SESSION['social']['data']['name'] . '</b>'
+                        . ' <b>' . $social['data']['name'] . '</b>'
                         . Form::openForm('cancel_social', Forma\lib\Get::rel_path('base'))
                           . Form::openButtonSpace()
                               . Form::getButton('cancel', 'cancel_social', Lang::t('_CANCEL', 'standard'))
@@ -44,7 +46,6 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             $url = $facebook_service->getAuthorizationUri();
 
             $form = "<a href='" . $url . "'>"
-                  // . Forma\lib\Get::img("social/facebook-24.png")
                     . '<i class="fa fa-facebook"></i>'
                       . '</a>';
         }
@@ -81,11 +82,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $user = \DoceboUser::createDoceboUserFromField('facebook_id', $user_info['id'], 'public_area');
 
         if (!$user) {
-            $_SESSION['social'] = [
-                'plugin' => Plugin::getName(),
-                'data' => $user_info,
-            ];
-
+            (self::$session)->set('social',['plugin' => Plugin::getName(),
+                                            'data' => $user_info,
+                ]);
+            (self::$session)->save();
             return USER_NOT_FOUND;
         }
 

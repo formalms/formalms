@@ -79,25 +79,28 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     private static function _incrementSessionLoginFailuresNumber()
     {
-        $_SESSION['user_attempt_lasttime'] = time();
+        $session = (self::$session);
+        $session->set('user_attempt_lasttime', time());
 
-        if (!isset($_SESSION['user_attempt_number'])) {
-            $_SESSION['user_attempt_number'] = 1;
+        if (!$session->get('user_attempt_number')) {
+            $session->set('user_attempt_lasttime', 1);
         } else {
-            ++$_SESSION['user_attempt_number'];
+            $session->set('user_attempt_lasttime', $session->get('user_attempt_number') + 1);
         }
+
+        $session->save();
     }
 
     private static function _logLoginFailure($username)
     {
         new UserManager(); // TODO: rimuovere workaround
         $options = new UserManagerOption();
-
+        $session = self::$session;
         $save_log_attempts = $options->getOption('save_log_attempt');
 
         switch ($save_log_attempts) {
             case 'after_max':
-        if ($_SESSION['user_attempt_number'] > $options->getOption('max_log_attempt')) {
+        if ($session->get('user_attempt_number') > $options->getOption('max_log_attempt')) {
             $save = true;
         } else {
                     $save = false;
@@ -118,7 +121,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
                     . ' ('
                     . "     '" . $username . "',"
                     . "     '" . date() . "',"
-                    . "     '" . $_SESSION['user_attempt_number'] . "',"
+                    . "     '" . $session->get('user_attempt_number') . "',"
                     . "     '" . $_SERVER['REMOTE_ADDR'] . "' )";
 
             sql_query($query);
