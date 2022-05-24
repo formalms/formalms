@@ -101,37 +101,39 @@ class Report extends \ReportPlugin
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
-        //$sel = new Course_Manager();
-        //$sel->setLink('index.php?modname=report&op=report_rows_filter');
+        $reportTempData = $this->session->get('report_tempdata');
 
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
-        if (!isset($_SESSION['report_tempdata']['rows_filter'])) {
-            $_SESSION['report_tempdata']['rows_filter'] = [
+
+        if (!isset($reportTempData['rows_filter'])) {
+            $reportTempData->set('rows_filter', [
                 'all_courses' => true,
                 'selected_courses' => [],
-            ];
+            ]);
+            $reportTempData->save();
         }
-        $ref = &$_SESSION['report_tempdata']['rows_filter'];
+        $ref = $reportTempData['rows_filter'];
         $selector = new Selector_Course();
 
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
-            $ref['all_courses'] = (Forma\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
+            $ref->set('all_courses', (Forma\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false));
+            $ref->save();
         } else {
             $selector->resetSelection($ref['selected_courses']);
         }
 
         //filter setting done, go to next step
         if (isset($_POST['import_filter'])) {
-            $ref['selected_courses'] = $selector->getSelection($_POST);
+            $ref->set('selected_courses', $selector->getSelection($_POST));
+            $ref->save();
             Util::jump_to($next_url);
         }
 
-        $ref = &$_SESSION['report_tempdata']['rows_filter'];
+        $ref = $reportTempData['rows_filter'];
         $temp = count($ref['selected_courses']);
 
         $box = new ReportBox('courses_selector');
@@ -185,6 +187,7 @@ class Report extends \ReportPlugin
         $lang = &DoceboLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
 
+        $reportTempData = $this->session->get('report_tempdata');
         //detect the step in which we are
         $substep = _SUBSTEP_USERS; //first substep
         switch (Forma\lib\Get::req('substep', DOTY_STRING, 'no_step')) {
@@ -193,8 +196,8 @@ class Report extends \ReportPlugin
         }
 
         //draw page depending on the $substep variable
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', [
                 'time_belt' => ['time_range' => '', 'start_date' => '', 'end_date' => ''],
                 'org_chart_subdivision' => 0,
                 'show_classrooms_editions' => false,
@@ -203,26 +206,28 @@ class Report extends \ReportPlugin
                 'show_suspended' => false,
                 'only_students' => false,
                 'show_assessment' => false,
-            ];
+            ]);
+            $reportTempData->save();
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = $reportTempData['columns_filter'];
 
         switch ($substep) {
             case _SUBSTEP_COLUMNS:
                 //set session data
                 if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
-                    $ref['showed_cols'] = Forma\lib\Get::req('cols', DOTY_MIXED, []);
-                    $ref['show_percent'] = (Forma\lib\Get::req('show_percent', DOTY_INT, 0) > 0 ? true : false);
-                    $ref['time_belt'] = [
+                    $ref->set('showed_cols', Forma\lib\Get::req('cols', DOTY_MIXED, []));
+                    $ref->set('show_percent', (Forma\lib\Get::req('show_percent', DOTY_INT, 0) > 0 ? true : false));
+                    $ref->set('time_belt', [
                         'time_range' => $_POST['time_belt'],
                         'start_date' => Format::dateDb($_POST['start_time'], 'date'),
                         'end_date' => Format::dateDb($_POST['end_time'], 'date'),
-                    ];
-                    $ref['org_chart_subdivision'] = (isset($_POST['org_chart_subdivision']) ? 1 : 0);
-                    $ref['show_classrooms_editions'] = (isset($_POST['show_classrooms_editions']) ? true : false);
-                    $ref['show_suspended'] = Forma\lib\Get::req('show_suspended', DOTY_INT, 0) > 0;
-                    $ref['only_students'] = Forma\lib\Get::req('only_students', DOTY_INT, 0) > 0;
-                    $ref['show_assessment'] = Forma\lib\Get::req('show_assessment', DOTY_INT, 0) > 0;
+                    ]);
+                    $ref->set('org_chart_subdivision', (isset($_POST['org_chart_subdivision']) ? 1 : 0));
+                    $ref->set('show_classrooms_editions', (isset($_POST['show_classrooms_editions']) ? true : false));
+                    $ref->set('show_suspended', Forma\lib\Get::req('show_suspended', DOTY_INT, 0) > 0);
+                    $ref->set('only_students', Forma\lib\Get::req('only_students', DOTY_INT, 0) > 0);
+                    $ref->set('show_assessment', Forma\lib\Get::req('show_assessment', DOTY_INT, 0) > 0);
+                    $ref->save();
                 } else {
                     //...
                 }
@@ -465,14 +470,16 @@ class Report extends \ReportPlugin
         $lang = &DoceboLanguage::createInstance('report', 'framework');
         $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [];
+        $reportTempData = $this->session->get('report_tempdata');
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', []);
         }
 
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = $reportTempData['columns_filter'];
 
         if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
-            $ref['showed_cols'] = Forma\lib\Get::req('cols', DOTY_MIXED, []);
+            $ref->set('showed_cols', Forma\lib\Get::req('cols', DOTY_MIXED, []));
+            $ref->save();
         }
 
         function is_showed($which, &$arr)
@@ -539,14 +546,18 @@ class Report extends \ReportPlugin
         $lang = &DoceboLanguage::createInstance('report', 'framework');
         $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [];
+        $reportTempData = $this->session->get('report_tempdata');
+
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', []);
+            $reportTempData->save();
         }
 
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = $reportTempData['columns_filter'];
 
         if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
-            $ref['showed_cols'] = Forma\lib\Get::req('cols', DOTY_MIXED, []);
+            $ref->set('showed_cols', Forma\lib\Get::req('cols', DOTY_MIXED, []));
+            $ref->save();
         }
 
         function is_showed($which, &$arr)
@@ -637,9 +648,9 @@ class Report extends \ReportPlugin
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = $this->session->get('report_tempdata');
         } else {
-            $ref = &$report_data;
+            $ref = $report_data;
         }
 
         $all_courses = $ref['rows_filter']['all_courses'];
@@ -728,9 +739,9 @@ class Report extends \ReportPlugin
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = $this->session->get('report_tempdata');
         } else {
-            $ref = &$report_data;
+            $ref = $report_data;
         }
 
         $all_courses = $ref['rows_filter']['all_courses'];
@@ -815,9 +826,9 @@ class Report extends \ReportPlugin
 
         //$jump_url, $alluser, $org_chart_subdivision, $start_time, $end_time
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = $this->session->get('report_tempdata');
         } else {
-            $ref = &$report_data;
+            $ref = $report_data;
         }
 
         $all_courses = $ref['rows_filter']['all_courses'];

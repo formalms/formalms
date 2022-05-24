@@ -236,11 +236,13 @@ class Report extends \ReportPlugin
 
     public function get_rows_filter()
     {
-        if (!isset($_SESSION['report_tempdata']['rows_filter'])) {
-            $_SESSION['report_tempdata']['rows_filter'] = [
+        $reportTempData = $this->session->get('report_tempdata');
+        if (!isset($reportTempData['rows_filter'])) {
+            $reportTempData->set('rows_filter', [
                 'users' => [],
                 'all_users' => false,
-            ];
+            ]);
+            $reportTempData->save();
         }
 
         $back_url = $this->back_url;
@@ -266,9 +268,9 @@ class Report extends \ReportPlugin
 
             $temp = $user_select->getSelection($_POST);
 
-            $_SESSION['report_tempdata']['rows_filter']['users'] = $temp;
-            $_SESSION['report_tempdata']['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
-
+            $reportTempData->set('rows_filter', ['users' => $temp]);
+            $reportTempData->set('rows_filter', ['all_users' => (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false)]);
+            $reportTempData->save();
             Util::jump_to($next_url);
         } else {
             // first step load selector
@@ -296,16 +298,16 @@ class Report extends \ReportPlugin
             }
 
             if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
-                //$_SESSION['report_tempdata']['rows_filter']['users'] = $user_select->getSelection($_POST);
-                $_SESSION['report_tempdata']['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+                $reportTempData->set('rows_filter', ['all_users' => (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false)]);
+                $reportTempData->save();
             } else {
                 $user_select->requested_tab = PEOPLEVIEW_TAB;
-                $user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
+                $user_select->resetSelection($reportTempData['rows_filter']['users']);
             }
 
             if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
                 $user_select->addFormInfo(
-                    Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $_SESSION['report_tempdata']['rows_filter']['all_users']) . //($_SESSION['report_tempdata']['rows_filter']['all_users'] ? 1 : 0)).
+                    Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $reportTempData['rows_filter']['all_users']) . 
                     Form::getBreakRow() .
                     Form::getHidden('org_chart_subdivision', 'org_chart_subdivision', $org_chart_subdivision) .
                     Form::getHidden('is_updating', 'is_updating', 1)
@@ -313,7 +315,6 @@ class Report extends \ReportPlugin
             }
             //$user_select->setPageTitle($this->page_title);
             cout($this->page_title, 'content');
-            //$user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
             $user_select->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
                 false,
                 $lang->def('_CHOOSE_USER_FOR_REPORT'),
@@ -341,6 +342,7 @@ class Report extends \ReportPlugin
 
         Form::loadDatefieldScript();
 
+        $reportDataTemp = $this->session->get('report_tempdata');
         $time_belt = [
             0 => $lang->def('_CUSTOM_BELT'),
             7 => $lang->def('_LAST_WEEK'),
@@ -365,9 +367,9 @@ class Report extends \ReportPlugin
             $custom[] = ['id' => $key, 'label' => $val, 'selected' => false];
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportDataTemp->set('columns_filter', [
                 'org_chart_subdivision' => 0,
                 'all_courses' => true,
                 'selected_courses' => [],
@@ -379,9 +381,10 @@ class Report extends \ReportPlugin
                 'show_suspended' => false,
                 'custom_fields' => $custom,
                 'show_classrooms_editions' => false,
-            ];
+            ]);
+            $reportDataTemp->save();
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter']; //echo print_r($ref,true);
+        $ref = $reportDataTemp['columns_filter']; //echo print_r($ref,true);
 
         $selector = new Selector_Course();
         $selection = &$ref['selected_courses'];
@@ -425,7 +428,8 @@ class Report extends \ReportPlugin
                 ];
             }
 
-            $ref = $temp;
+            $reportDataTemp->set('columns_filter', $temp);
+            $reportDataTemp->save();
         } else {
             $selector->resetSelection($selection);
 
@@ -522,7 +526,7 @@ class Report extends \ReportPlugin
             '</script>', 'page_head');
 
         //box for course filter conditions
-        $temp = &$_SESSION['report_tempdata']['columns_filter']['sub_filters'];
+        $temp = $reportDataTemp['columns_filter']['sub_filters'];
         $inc_counter = count($temp);
         $already = '';
         $script_init = 'YAHOO.util.Event.onDOMReady( function() {' . "\n";
@@ -603,7 +607,7 @@ class Report extends \ReportPlugin
         $script_init .= '} );';
         $already .= '<script type="text/javascript">' . $script_init . '</script>';
 
-        $temp = (isset($_SESSION['report_tempdata']['columns_filter']['filter_exclusive']) ? $_SESSION['report_tempdata']['columns_filter']['filter_exclusive'] : 1);
+        $temp = (isset($reportDataTemp['columns_filter']['filter_exclusive']) ? $reportDataTemp['columns_filter']['filter_exclusive'] : 1);
         $selected = ' checked="checked"';
 
         $box = new ReportBox('course_subfilters');
@@ -641,8 +645,8 @@ class Report extends \ReportPlugin
 
         function is_showed($which)
         {
-            if (isset($_SESSION['report_tempdata']['columns_filter'])) {
-                return in_array($which, $_SESSION['report_tempdata']['columns_filter']['showed_columns']);
+            if (isset($reportDataTemp['columns_filter'])) {
+                return in_array($which, $reportDataTemp['columns_filter']['showed_columns']);
             } else {
                 return false;
             }
@@ -783,19 +787,21 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
         if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+            $reportDataTemp->set('columns_filter'] = [
                 'filters_list' => Forma\lib\Get::req('rc_filter', DOTY_MIXED, []),
                 'exclusive' => (Forma\lib\Get::req('rc_filter_exclusive', DOTY_INT, 0) > 0 ? true : false),
-            ];
+            ]);
+            $reportDataTemp->save();
         } else {
-            if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-                $_SESSION['report_tempdata']['columns_filter'] = [
+            if (!isset($reportDataTemp['columns_filter'])) {
+                $reportDataTemp->set('columns_filter', [
                     'filters_list' => [],
                     'exclusive' => true,
-                ];
+                ]);
+                $reportDataTemp->save();
             }
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = &$reportDataTemp['columns_filter'];
 
         //filter setting done, go to next step
         if (isset($_POST['import_filter']) || isset($_POST['show_filter']) || isset($_POST['pre_filter'])) {
@@ -983,14 +989,14 @@ class Report extends \ReportPlugin
         $course_man = new Man_Course();
 
         // read form _SESSION (XXX: change this) the report setting
-        $filter_userselection = (!$report_data && isset($_SESSION['report_tempdata']['rows_filter']['users'])
-            ? $_SESSION['report_tempdata']['rows_filter']['users'] : $report_data['rows_filter']['users']);
+        $filter_userselection = (!$report_data && isset( $reportDataTemp['rows_filter']['users'])
+            ? $reportDataTemp['rows_filter']['users'] : $report_data['rows_filter']['users']);
 
-        $filter_columns = (!$report_data && $_SESSION['report_tempdata']['columns_filter']
-            ? $_SESSION['report_tempdata']['columns_filter'] : $report_data['columns_filter']);
+        $filter_columns = (!$report_data && $reportDataTemp['columns_filter']
+            ? $reportDataTemp['columns_filter'] : $report_data['columns_filter']);
 
-        if (!$report_data && isset($_SESSION['report_tempdata']['rows_filter']['all_users'])) {
-            $alluser = ($_SESSION['report_tempdata']['rows_filter']['all_users'] ? 1 : 0);
+        if (!$report_data && isset($reportDataTemp['rows_filter']['all_users'])) {
+            $alluser = ($reportDataTemp['rows_filter']['all_users'] ? 1 : 0);
         } else {
             $alluser = ($report_data['rows_filter']['all_users'] ? 1 : 0);
         }
@@ -2070,7 +2076,7 @@ class Report extends \ReportPlugin
         $cmodel = new CompetencesAdm();
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = &$this->session->get('report_tempdata');
         } else {
             $ref = &$report_data;
         }
@@ -2308,8 +2314,8 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+    
+        $ref = &$reportDataTemp['columns_filter'];
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
@@ -2327,13 +2333,13 @@ class Report extends \ReportPlugin
                 'order_dir' => Forma\lib\Get::req('order_dir', DOTY_STRING, 'asc'),
                 'show_suspended' => Forma\lib\Get::req('show_suspended', DOTY_INT, 0) > 0,
             ];
-            $_SESSION['report_tempdata']['columns_filter'] = $temp; //$ref = $temp;
+            $reportDataTemp->set('columns_filter', $temp); //$ref = $temp;
+            $reportDataTemp->save();
         } else {
-            //first loading of this page -> prepare $_SESSION data structure
-            //if (isset($_SESSION['report_update']) /* && is equal to id_report */) break;
+       
 
-            if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-                $_SESSION['report_tempdata']['columns_filter'] = [//$ref = array(
+            if (!isset($reportDataTemp['columns_filter'])) {
+                $reportDataTemp->set('columns_filter', [//$ref = array(
                     'report_type_completed' => false,
                     'report_type_started' => false,
                     'day_from_subscription' => '',
@@ -2347,7 +2353,8 @@ class Report extends \ReportPlugin
                     'order_by' => 'userid',
                     'order_dir' => 'asc',
                     'show_suspended' => false,
-                ];
+                ]);
+                $reportDataTemp->save();
             }
         }
         //filter setting done, go to next step
@@ -2569,7 +2576,7 @@ class Report extends \ReportPlugin
     public function _get_delay_query($type = 'html', $report_data = null, $other = '')
     {
         if ($report_data == null) {
-            $report_data = &$_SESSION['report_tempdata'];
+            $report_data = &$this->session->get('report_tempdata');
         }
 
         $rdata = &$report_data['rows_filter'];
@@ -2946,7 +2953,8 @@ class Report extends \ReportPlugin
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $reportTempData = $this->session->get('report_tempdata');
+        $ref = &$reportTempData['columns_filter'];
 
         YuiLib::load();
         Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
@@ -2957,7 +2965,6 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
@@ -2982,10 +2989,10 @@ class Report extends \ReportPlugin
                 ];
             }
 
-            $_SESSION['report_tempdata']['columns_filter'] = $temp;
+            $reportTempData->set('columns_filter', $temp);
+            $reportTempData->save();
         } else {
-            //first loading of this page -> prepare $_SESSION data structure
-            //if (isset($_SESSION['report_update']) /* && is equal to id_report */) break;
+ 
             //get users' custom fields
             require_once _adm_ . '/lib/lib.field.php';
             $fman = new FieldList();
@@ -2995,8 +3002,8 @@ class Report extends \ReportPlugin
                 $custom[] = ['id' => $key, 'label' => $val, 'selected' => false];
             }
 
-            if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-                $_SESSION['report_tempdata']['columns_filter'] = [
+            if (!isset($reportTempData['columns_filter'])) {
+                $reportTempData->set('columns_filter', [
                     //'org_chart_subdivision'   => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                     'all_courses' => false,
                     'selected_courses' => $selector->getSelection(),
@@ -3007,7 +3014,8 @@ class Report extends \ReportPlugin
                     'order_by' => 'userid',
                     'order_dir' => 'asc',
                     'show_suspended' => 'show_suspended',
-                ];
+                ]);
+                $reportTempData->save();
             }
         }
 
@@ -3080,8 +3088,8 @@ class Report extends \ReportPlugin
 
         function is_showed($which)
         {
-            if (isset($_SESSION['report_tempdata']['columns_filter'])) {
-                return in_array($which, $_SESSION['report_tempdata']['columns_filter']['showed_columns']);
+            if (isset($reportTempData['columns_filter'])) {
+                return in_array($which, $reportTempData['columns_filter']['showed_columns']);
             } else {
                 return false;
             }
@@ -3284,7 +3292,7 @@ class Report extends \ReportPlugin
         }
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = &$this->session->get('report_tempdata');
         } else {
             $ref = &$report_data;
         }
@@ -3714,21 +3722,23 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', [
                 'comm_selection' => [],
                 'all_communications' => false,
                 'comm_start_date' => '',
                 'comm_end_date' => '',
-            ];
+            ]);
+            $reportTempData->save();
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = &$reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['all_communications'] = Forma\lib\Get::req('all_communications', DOTY_INT, 0) > 0;
-            $ref['comm_selection'] = Forma\lib\Get::req('comm_selection', DOTY_MIXED, []);
-            $ref['comm_start_date'] = Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date');
-            $ref['comm_end_date'] = Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date');
+            $ref->set('all_communications'] = Forma\lib\Get::req('all_communications', DOTY_INT, 0) > 0);
+            $ref->set('comm_selection'] = Forma\lib\Get::req('comm_selection', DOTY_MIXED, []));
+            $ref->set('comm_start_date'] = Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date'));
+            $ref->set('comm_end_date'] = Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date'));
+            $ref->save();
         } else {
             //...
         }
@@ -3778,7 +3788,7 @@ class Report extends \ReportPlugin
         require_once _lms_ . '/admin/modules/report/report_tableprinter.php';
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = &$this->session->get('report_tempdata');
         } else {
             $ref = &$report_data;
         }
@@ -3981,21 +3991,25 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        $reportTempData = $this->session->get('report_tempdata');
+
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', [
                 'comp_selection' => [],
                 'all_games' => false,
                 'comp_start_date' => '',
                 'comp_end_date' => '',
-            ];
+            ]);
+            $reportTempData->save();
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = &$reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['all_games'] = Forma\lib\Get::req('all_games', DOTY_INT, 0) > 0;
-            $ref['comp_selection'] = Forma\lib\Get::req('comp_selection', DOTY_MIXED, []);
-            $ref['comp_start_date'] = Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date');
-            $ref['comp_end_date'] = Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date');
+            $ref->set('all_games', Forma\lib\Get::req('all_games', DOTY_INT, 0) > 0);
+            $ref->set('comp_selection', Forma\lib\Get::req('comp_selection', DOTY_MIXED, []));
+            $ref->set('comp_start_date', Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date'));
+            $ref->set('comp_end_date', Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date'));
+            $ref->save();
         } else {
             //...
         }
@@ -4045,7 +4059,7 @@ class Report extends \ReportPlugin
         require_once _lms_ . '/admin/modules/report/report_tableprinter.php';
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = &$this->session->get('report_tempdata');
         } else {
             $ref = &$report_data;
         }
@@ -4247,7 +4261,8 @@ class Report extends \ReportPlugin
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $reportTempData = $this->session->get('report_tempdata');
+        $ref = &$reportTempData['columns_filter'];
 
         YuiLib::load();
         Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
@@ -4258,7 +4273,7 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
+
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
@@ -4281,10 +4296,10 @@ class Report extends \ReportPlugin
                 ];
             }
 
-            $_SESSION['report_tempdata']['columns_filter'] = $temp;
+            $reportTempData->set('columns_filter', $temp);
+            $reportTempData->save();
         } else {
-            //first loading of this page -> prepare $_SESSION data structure
-            //if (isset($_SESSION['report_update']) /* && is equal to id_report */) break;
+
             //get users' custom fields
             require_once _adm_ . '/lib/lib.field.php';
             $fman = new FieldList();
@@ -4294,8 +4309,8 @@ class Report extends \ReportPlugin
                 $custom[] = ['id' => $key, 'label' => $val, 'selected' => false];
             }
 
-            if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-                $_SESSION['report_tempdata']['columns_filter'] = [
+            if (!isset($reportTempData['columns_filter'])) {
+                $reportTempData->set('columns_filter', [
                     //'org_chart_subdivision'   => (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                     'all_courses' => false,
                     'selected_courses' => $selector->getSelection(),
@@ -4304,7 +4319,8 @@ class Report extends \ReportPlugin
                     'order_by' => 'userid',
                     'order_dir' => 'asc',
                     'show_suspended' => 'show_suspended',
-                ];
+                ]);
+                $reportTempData->save();
             }
         }
 
@@ -4356,8 +4372,8 @@ class Report extends \ReportPlugin
 
         function is_showed($which)
         {
-            if (isset($_SESSION['report_tempdata']['columns_filter'])) {
-                return in_array($which, $_SESSION['report_tempdata']['columns_filter']['showed_columns']);
+            if (isset($reportTempData['columns_filter'])) {
+                return in_array($which, $reportTempData['columns_filter']['showed_columns']);
             } else {
                 return false;
             }
@@ -4547,7 +4563,7 @@ class Report extends \ReportPlugin
         }
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = &$this->session->get('report_tempdata');
         } else {
             $ref = &$report_data;
         }

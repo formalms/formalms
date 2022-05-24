@@ -29,11 +29,12 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 {
     public static function getLoginGUI()
     {
-        if (isset($_SESSION['social'])) {
-            if ($_SESSION['social']['plugin'] == Plugin::getName()) {
+        $social = $session->get('social');
+        if (isset($social)) {
+            if ($social['plugin'] == Plugin::getName()) {
                 return Forma\lib\Get::img('social/twitter-24.png') . ' '
                         . Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social')
-                        . ' <b>' . $_SESSION['social']['data']['name'] . '</b>'
+                        . ' <b>' . $social['data']['name'] . '</b>'
                         . Form::openForm('cancel_social', Forma\lib\Get::rel_path('base'))
                           . Form::openButtonSpace()
                               . Form::getButton('cancel', 'cancel_social', Lang::t('_CANCEL', 'standard'))
@@ -88,10 +89,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $user = DoceboUser::createDoceboUserFromField('twitter_id', $user_info->id, 'public_area');
 
         if (!$user) {
-            $_SESSION['social'] = [
-                'plugin' => Plugin::getName(),
-                'data' => get_object_vars($user_info),
-            ];
+            (self::$session)->set('social',['plugin' => Plugin::getName(),
+                                'data' => $user_info,
+                    ]);
+            (self::$session)->save();
 
             return USER_NOT_FOUND;
         }

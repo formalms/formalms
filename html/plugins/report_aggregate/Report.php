@@ -78,13 +78,14 @@ class Report extends \ReportPlugin
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
         //update session
-        $ref = &$_SESSION['report_tempdata'];
+        $ref = $session->get('report_tempdata');
         if (!isset($ref['rows_filter'])) {
-            $ref['rows_filter'] = [ //default values
+            $ref->set('rows_filter', [ //default values
                 'select_all' => false,
                 'selection_type' => 'users',
                 'selection' => [],
-            ];
+            ]);
+            $ref->save();
         } else {
             //already resolved in switch block
         }
@@ -123,13 +124,13 @@ class Report extends \ReportPlugin
                 //$ref['rows_filter']['selection'] = $user_select->getSelection($_POST);
                 } else { //maybe redoundant
                     if (!isset($ref['rows_filter']['select_all'])) {
-                        $ref['rows_filter']['select_all'] = false;
+                        $ref->set('rows_filter', ['select_all' => false]);
                     }
                     if (!isset($ref['rows_filter']['selection_type'])) {
-                        $ref['rows_filter']['selection_type'] = 'groups';
+                        $ref->set('rows_filter', ['selection_type' => 'groups']);
                     }
                     if (!isset($ref['rows_filter']['selection'])) {
-                        $ref['rows_filter']['selection'] = [];
+                        $ref->set('rows_filter', ['selection' => []]);
                     }
                     $user_select->resetSelection($ref['rows_filter']['selection']);
                     //$ref['users'] = array(); it should already have been set to void array, if non existent
@@ -138,7 +139,7 @@ class Report extends \ReportPlugin
                 if (isset($_POST['cancelselector'])) {
                     Util::jump_to($back_url);
                 } elseif (isset($_POST['okselector'])) {
-                    $ref['rows_filter']['selection'] = $user_select->getSelection($_POST);
+                    $ref->set('rows_filter', ['selection' =>  $user_select->getSelection($_POST)]);
                     Util::jump_to($next_url);
                 }
 
@@ -173,7 +174,8 @@ class Report extends \ReportPlugin
                     false,
                     $this->lang->def('_CHOOSE_USER_FOR_REPORT'),
                     true);
-
+            
+            $ref->save();
              break;
         }
     }
@@ -190,39 +192,41 @@ class Report extends \ReportPlugin
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
-        //$sel = new Course_Manager();
-        //$sel->setLink('index.php?modname=report&op=report_rows_filter');
+        $reportTempData = $this->session->get('report_tempdata');
 
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
+       
         $selector = new Selector_Course();
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', [
                 'all_courses' => true,
                 'selected_courses' => [],
                 'showed_columns' => ['completed' => true, 'initinere' => true, 'notstarted' => true, 'show_percentages' => true],
-            ];
+            ]);
+
+            $reportTempData->save();
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = $reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
             $temp = $selector->getSelection($_POST);
-            $ref['selected_courses'] = $temp;
-            $ref['all_courses'] = (Forma\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
-            $ref['showed_columns'] = [
+            $ref->set('selected_courses', $temp);
+            $ref->set('all_courses', Forma\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
+            $ref->set('showed_columns' , [
                 'completed' => (Forma\lib\Get::req('cols_completed', DOTY_INT, 0) > 0 ? true : false),
                 'initinere' => (Forma\lib\Get::req('cols_initinere', DOTY_INT, 0) > 0 ? true : false),
                 'notstarted' => (Forma\lib\Get::req('cols_notstarted', DOTY_INT, 0) > 0 ? true : false),
-                'show_percentages' => (Forma\lib\Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false), ];
+                'show_percentages' => (Forma\lib\Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false), ]);
         } else {
             $selector->resetSelection($ref['selected_courses']);
         }
 
+        $ref->save();
         //back to columns category selection
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
@@ -309,9 +313,9 @@ class Report extends \ReportPlugin
         require_once _lms_ . '/lib/lib.course.php';
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = $this->session->get('report_tempdata');
         } else {
-            $ref = &$report_data;
+            $ref = $report_data;
         }
 
         $fw = $GLOBALS['prefix_fw'];
@@ -336,16 +340,7 @@ class Report extends \ReportPlugin
                 $courses[] = $key;
             }
         }
-        /*
-                if(Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 
-                    // if the usre is a subadmin with only few course assigned
-                    require_once(_base_.'/lib/lib.preference.php');
-                    $adminManager = new AdminPreference();
-                    $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-                    $courses = array_intersect($courses, $admin_tree['courses']);
-                }
-        */
         $increment = 0;
         if ($cols['completed']) {
             ++$increment;
@@ -359,17 +354,7 @@ class Report extends \ReportPlugin
         if ($cols['show_percentages']) {
             $increment = $increment * 2;
         }
-        /*
-                //admin users filter
-                $acl_man = Docebo::user()->getACLManager();
-                $userlevelid = Docebo::user()->getUserLevelId();
-                if ( $userlevelid != ADMIN_GROUP_GODADMIN ) {
-                    require_once(_base_.'/lib/lib.preference.php');
-                    $adminManager = new AdminPreference();
-                    $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-                    $admin_users = $acl_man->getAllUsersFromSelection($admin_tree);
-                    $admin_users = array_unique($admin_users);
-                }*/
+     
         $userlevelid = Docebo::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
             //filter users
@@ -929,25 +914,29 @@ class Report extends \ReportPlugin
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
+        $reportTempData = $this->session->get('report_tempdata');
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
         }
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', [
                 'all_categories' => true,
                 'selected_categories' => [],
                 'showed_columns' => [/*'completed'=>true, 'initinere'=>true, 'notstarted'=>true, 'show_percentages'=>true*/],
-            ];
+            ]);
+
+            $reportTempData->save();
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = $reportTempData['columns_filter'];
 
         $tree = new \CourseCategoryTree('course_categories_selector', false, false, _TREE_COLUMNS_TYPE_RADIO);
         $tree->init();
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['selected_categories'] = isset($_POST['course_categories_selector_input']) ? explode(',', $_POST['course_categories_selector_input']) : [];
-            $ref['showed_columns'] = [];
+            $ref->set('selected_categories', isset($_POST['course_categories_selector_input']) ? explode(',', $_POST['course_categories_selector_input']) : []);
+            $ref->set('showed_columns', []);
+            $ref->save();
         } else {
             if (isset($ref['selected_categories']) && count($ref['selected_categories']) > 0) {
                 $tree->setInitialSelection($ref['selected_categories']);
@@ -997,7 +986,7 @@ class Report extends \ReportPlugin
         require_once _lms_ . '/lib/lib.course.php';
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = $this->session->get('report_tempdata');
         } else {
             $ref = &$report_data;
         }
@@ -1390,6 +1379,7 @@ class Report extends \ReportPlugin
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
 
+        $reportTempData = $this->session->get('report_tempdata');
         //$sel = new Course_Manager();
         //$sel->setLink('index.php?modname=report&op=report_rows_filter');
 
@@ -1397,17 +1387,19 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', [
                 'timetype' => 'years',
                 'years' => 1,
                 'months' => 12,
-            ];
+            ]);
+            $reportTempData->save();
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = $reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['years'] = Forma\lib\Get::req('years', DOTY_INT, 1);
+            $ref->set('years', Forma\lib\Get::req('years', DOTY_INT, 1));
+            $ref->save();
         } else {
             //...
         }
@@ -1455,9 +1447,9 @@ class Report extends \ReportPlugin
         require_once _lms_ . '/lib/lib.course.php';
 
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = $this->session->get('report_tempdata');
         } else {
-            $ref = &$report_data;
+            $ref = $report_data;
         }
 
         $fw = $GLOBALS['prefix_fw'];
@@ -1771,21 +1763,24 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        $reportTempData = $this->session->get('report_tempdata');
+
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', [
                 'comm_selection' => [],
                 'all_communications' => false,
                 'comm_start_date' => '',
                 'comm_end_date' => '',
-            ];
+            ]);
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = $reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['all_communications'] = Forma\lib\Get::req('all_communications', DOTY_INT, 0) > 0;
-            $ref['comm_selection'] = Forma\lib\Get::req('comm_selection', DOTY_MIXED, []);
-            $ref['comm_start_date'] = Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date');
-            $ref['comm_end_date'] = Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date');
+            $ref->set('all_communications', Forma\lib\Get::req('all_communications', DOTY_INT, 0) > 0);
+            $ref->set('comm_selection', Forma\lib\Get::req('comm_selection', DOTY_MIXED, []));
+            $ref->set('comm_start_date', Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date'));
+            $ref->set('comm_end_date', Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date'));
+            $ref->save();
         } else {
             //...
         }
@@ -1833,9 +1828,9 @@ class Report extends \ReportPlugin
     public function _get_communications_query($type = 'html', $report_data = null, $other = '')
     {
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = $this->session->get('report_tempdata');
         } else {
-            $ref = &$report_data;
+            $ref = $report_data;
         }
 
         $_ERR_NOUSER = Lang::t('_EMPTY_SELECTION', 'report');
@@ -2110,21 +2105,25 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-        if (!isset($_SESSION['report_tempdata']['columns_filter'])) {
-            $_SESSION['report_tempdata']['columns_filter'] = [
+        $reportTempData = $this->session->get('report_tempdata');
+
+        if (!isset($reportTempData['columns_filter'])) {
+            $reportTempData->set('columns_filter', [
                 'comp_selection' => [],
                 'all_games' => false,
                 'comp_start_date' => '',
                 'comp_end_date' => '',
-            ];
+            ]);
+            $reportTempData->save();
         }
-        $ref = &$_SESSION['report_tempdata']['columns_filter'];
+        $ref = $reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref['all_games'] = Forma\lib\Get::req('all_games', DOTY_INT, 0) > 0;
-            $ref['comp_selection'] = Forma\lib\Get::req('comp_selection', DOTY_MIXED, []);
-            $ref['comp_start_date'] = Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date');
-            $ref['comp_end_date'] = Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date');
+            $ref->set('all_games', Forma\lib\Get::req('all_games', DOTY_INT, 0) > 0);
+            $ref->set('comp_selection', Forma\lib\Get::req('comp_selection', DOTY_MIXED, []));
+            $ref->set('comp_start_date', Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date'));
+            $ref->set('comp_end_date', Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date'));
+            $ref->save();
         } else {
             //...
         }
@@ -2172,9 +2171,9 @@ class Report extends \ReportPlugin
     public function _get_games_query($type = 'html', $report_data = null, $other = '')
     {
         if ($report_data == null) {
-            $ref = &$_SESSION['report_tempdata'];
+            $ref = $this->session->get('report_tempdata');
         } else {
-            $ref = &$report_data;
+            $ref = $report_data;
         }
 
         $_ERR_NOUSER = Lang::t('_EMPTY_SELECTION', 'report');
@@ -2359,16 +2358,6 @@ class Report extends \ReportPlugin
             $arr_average[$obj->idReference] = $obj;
         }
 
-        /*
-                //user details buffer
-                $acl_man = Docebo::user()->getAclManager();
-                $user_details = array();
-                $query = "SELECT idst, userid FROM %adm_user WHERE idst IN (".implode(",", $_all_users).")";
-                $res = $this->db->query($query);
-                while ($obj = $this->db->fetch_obj($res)) {
-                    $user_details[$obj->idst] = $acl_man($obj->userid);
-                }
-        */
         //set table properties and buffer
         $head = [
             Lang::t('_GAMES_TITLE', 'report'),

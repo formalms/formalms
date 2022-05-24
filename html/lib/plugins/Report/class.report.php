@@ -43,6 +43,7 @@ class ReportPlugin
     public $columns_categories = [];
 
     public $db = null;
+    public $session = null;
 
     public function __construct($id_report, $report_name = false)
     {
@@ -56,6 +57,7 @@ class ReportPlugin
         }
 
         $this->db = DbConn::getInstance();
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function get_name()
