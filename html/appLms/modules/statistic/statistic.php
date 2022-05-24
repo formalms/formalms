@@ -24,6 +24,10 @@ function outPageView($link)
     $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $for = importVar('for', false, 'week');
     $times = ['day', 'week', 'month', 'year'];
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
+    $labels = [];
+    $series = [];
 
     $dateend = date('Y-m-d H:i:s');
     $walk = [];
@@ -102,7 +106,7 @@ function outPageView($link)
 
     $view_all_perm = checkPerm('view_all', true);
     $course_man = new Man_Course();
-    $course_user = $course_man->getIdUserOfLevel($_SESSION['idCourse']);
+    $course_user = $course_man->getIdUserOfLevel($idCourse);
 
     //apply sub admin filters, if needed
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
@@ -116,16 +120,16 @@ function outPageView($link)
     $page_views = [];
     $query_stat = '
 	SELECT ' . $select . ', COUNT(*) 
-	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral 
-	WHERE idCourse='" . $_SESSION['idCourse'] . "' ";
+	FROM %lms_trackingeneral 
+	WHERE idCourse="' . $idCourse . '"';
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
-        $query_stat .= ' AND idUser IN (' . implode($course_user, ',') . ') ';
+        $query_stat .= ' AND idUser IN (' . implode(',', $course_user) . ') ';
     }
     if ($_REQUEST['op'] == 'userdetails' && isset($_REQUEST['id'])) {
         $query_stat .= ' AND idUser = ' . $_REQUEST['id'];
     }
-    $query_stat .= " AND timeof >= '$dateinit' AND timeof <= '$dateend' 
-	GROUP BY " . $group_by . '
+    $query_stat .= ' AND timeof >= ' . $dateinit . ' AND timeof <= ' . $dateend . ' 
+	GROUP BY ' . $group_by . '
 	ORDER BY timeof';
     $max = 0;
     $re_stat = sql_query($query_stat);
@@ -142,13 +146,12 @@ function outPageView($link)
     Util::get_css(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
 
     cout('<div class="statistic_chart" style="height: 300px;"></div>', 'content');
-    //var_dump(array_values($chart_data));
-    $labels = [];
-    $series = [];
+  
     foreach ($chart_data as $row) {
         $labels[] = $row['x_axis'];
         $series[] = $row['y_axis'];
     }
+
     $json = new Services_JSON();
     cout('<script type="text/javascript">
         new Chartist.Bar(".statistic_chart", {
@@ -172,28 +175,6 @@ function outPageView($link)
                             });
         </script>', 'content');
 
-    /*$GLOBALS['page']->add(
-        '<div class="container_graphic">'."\n"
-        .'<table cellspacing="0">'
-        .'<tr class="colum_isto">', 'content');
-
-    $left_space = 0;
-    $out_index = '';
-    $width = round(100 / $colums, 1);
-    while(list($i, $number) = each($walk)) {
-
-        $value = ( isset($page_views[$number]) ? $page_views[$number] : 0 );
-        $GLOBALS['page']->add(
-            '<td style="width: '.$width.'%;">'
-                .( $value != 0 ? $value.'<div class="colored_isto" style="height: '.((150 / $max) * $value).'px;">&nbsp;</div>' : '' )
-            .'</td>', 'content');
-        $out_index .= '<td>'.( isset($walk_name[$i]) ? $walk_name[$i] : $number ).'</td>';
-    }
-    $GLOBALS['page']->add(
-        '</tr>'
-        .'<tr class="colum_index" scope="col">'.$out_index.'</tr>'
-        .'</table>'
-        .'</div>'."\n"*/
     cout('<div class="align-center">'
         . '<ul class="link_list_inline">', 'content');
     while (list(, $value) = each($times)) {
@@ -214,13 +195,15 @@ function statistic()
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _lms_ . '/lib/lib.course.php';
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
 
     $view_all_perm = checkPerm('view_all', true);
 
     $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $acl_man = Docebo::user()->getAclManager();
     $course_man = new Man_Course();
-    $course_user = $course_man->getIdUserOfLevel($_SESSION['idCourse']);
+    $course_user = $course_man->getIdUserOfLevel($idCourse);
 
     //apply sub admin filters, if needed
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
@@ -275,6 +258,7 @@ function statistic()
 
 function getTable($tb, $title = null, $id)
 {
+
     $table_head = '';
     foreach ($tb->table_head as $row) {
         $table_head .= '<tr>';
@@ -324,18 +308,14 @@ function getTable($tb, $title = null, $id)
 function userdetails()
 {
     checkPerm('view');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
     require_once _base_ . '/lib/lib.table.php';
 
     $idst_user = importVar('id', true, 0);
     $ord = importVar('ord');
     $inv = importVar('inv', true, 0);
     $link = 'index.php?modname=statistic&amp;op=userdetails&amp;id=' . $idst_user . '';
-
-    //$nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0, 'link');
-    //$nav_bar->setLink($link . '&amp;ord=' . $ord . '&amp;inv=' . $inv);
-    //if (!isset($_GET['p_ini'])) $ini = $nav_bar->getSelectedElement();
-    //else $ini = $_GET['p_ini'];
 
     $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $acl_man = Docebo::user()->getAclManager();
@@ -351,21 +331,21 @@ function userdetails()
     // Find modulename -> name int his course
     require_once _lms_ . '/lib/lib.course.php';
     $course_man = new Man_Course();
-    $mods_names = &$course_man->getModulesName($_SESSION['idCourse']);
+    $mods_names = &$course_man->getModulesName($idCourse);
 
     // find total time in the course
     $query_time = '
 	SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
-	FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'";
+	FROM %lms_tracksession 
+	WHERE idCourse = "' . (int)$idCourse . '" AND idUser = "' . $idst_user . '"';
     list($tot_time) = sql_fetch_row(sql_query($query_time));
 
     $query_track = '
 	SELECT idEnter, enterTime, lastTime, (UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) AS howm, 
 		numOp, lastFunction, lastOp, session_id 
-	FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "'
-	ORDER BY ";
+	FROM %lms_tracksession 
+	WHERE idCourse = "' . (int)$idCourse . '" AND idUser = "' . $idst_user . '"
+	ORDER BY ';
 
     $img_down = '<img src="' . getPathImage() . 'standard/ord_asc.png" alt="' . $lang->def('_ORD_ASC_TITLE') . '" '
         . 'title="' . $lang->def('_ORD_ASC_TITLE') . '" />';
@@ -473,7 +453,8 @@ function userdetails()
 function sessiondetails()
 {
     checkPerm('view');
-
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $idCourse = $session->get('idCourse');
     require_once _base_ . '/lib/lib.table.php';
 
     $idst_user = importVar('id', true, 0);
@@ -491,24 +472,24 @@ function sessiondetails()
 
     $query_track = '
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
-	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
-	WHERE g.idCourse = '" . (int)$_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND " .
-        " ( g.idEnter = '" . $id_enter . "' OR (  g.idEnter = 0 AND g.session_id = '" . importVar('sid') . "' ) ) "
+	FROM %lms_trackingeneral AS g
+	WHERE g.idCourse = "' . $idCourse . '" AND g.idUser = "' . $idst_user . '" AND ' .
+        ' ( g.idEnter = "' . $id_enter . '" OR (  g.idEnter = 0 AND g.session_id = "' . importVar('sid') . '" ) ) '
         . ' ORDER BY g.timeof 
 	LIMIT ' . $ini . ', ' . Forma\lib\Get::sett('visuItem');
     $re_tracks = sql_query($query_track);
 
     $query_tot_track = '
 	SELECT COUNT(*) 
-	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral 
-	WHERE idCourse = '" . (int)$_SESSION['idCourse'] . "' AND idUser = '" . $idst_user . "' AND idEnter = '" . $id_enter . "'";
+	FROM %lms_trackingeneral 
+	WHERE idCourse = "' . (int)$idCourse . '" AND idUser = "' . $idst_user . '" AND idEnter = "' . $id_enter . '"';
     list($tot_elem) = sql_fetch_row(sql_query($query_tot_track));
     $nav_bar->setElementTotal($tot_elem);
 
     // Find modulename -> name int his course
     require_once _lms_ . '/lib/lib.course.php';
     $course_man = new Man_Course();
-    $mods_names = &$course_man->getModulesName($_SESSION['idCourse']);
+    $mods_names = &$course_man->getModulesName($idCourse);
 
     $page_title = [
         'index.php?modname=statistic&amp;op=statistic' => $lang->def('_STATISTICS'),
@@ -563,9 +544,9 @@ function sessiondetails()
     }
     $query_last_track = '
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
-	FROM ' . $GLOBALS['prefix_lms'] . "_trackingeneral AS g
-	WHERE g.idCourse = '" . (int)$_SESSION['idCourse'] . "' AND g.idUser = '" . $idst_user . "' AND g.idEnter = '" . $id_enter . "' 
-	LIMIT " . ($ini + Forma\lib\Get::sett('visuItem')) . ', 1';
+	FROM %lms_trackingeneral AS g
+	WHERE g.idCourse = "' . (int)$idCourse . '" AND g.idUser = "' . $idst_user . '" AND g.idEnter = "' . $id_enter . '" 
+	LIMIT ' . ($ini + Forma\lib\Get::sett('visuItem')) . ', 1';
     $re_track = sql_query($query_last_track);
     if (sql_num_rows($re_track) > 0) {
         $read = sql_fetch_assoc($re_track);
