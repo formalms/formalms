@@ -62,13 +62,15 @@ class UserManager
      */
     public $_time_before_reactive;
 
+    protected $session;
+
     /**
      * This is the class constructor, set the default value for the varaible and instance
      * the class that it use.
      *
      * @param string $platform specified a different platform for localization
-     * @param string $prefix   specified a prefix
-     * @param string $db_conn  specified a db connection with the database
+     * @param string $prefix specified a prefix
+     * @param string $db_conn specified a db connection with the database
      */
     public function __construct($platform = false, $prefix = false, $db_conn = false)
     {
@@ -81,6 +83,7 @@ class UserManager
         $this->_option = new UserManagerOption();
 
         $this->_time_before_reactive = 10 * 60;
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     /**
@@ -96,7 +99,7 @@ class UserManager
     /**
      * simply execute a query.
      *
-     * @param string $query  the query
+     * @param string $query the query
      * @param string $prefix specified a prefix
      * @param mixed     the result of sql_query
      */
@@ -148,11 +151,12 @@ class UserManager
      */
     public function getAttemptNumber()
     {
-        if (!isset($_SESSION['user_attempt_number'])) {
-            $_SESSION['user_attempt_number'] = 0;
+        if (!$this->session->has('user_attempt_number')) {
+            $this->session->set('user_attempt_number', 0);
+            $this->session->save();
         }
 
-        return $_SESSION['user_attempt_number'];
+        return $this->session->get('user_attempt_number');
     }
 
     /**
@@ -162,11 +166,7 @@ class UserManager
      */
     public function getLastAttemptTime()
     {
-        if (!isset($_SESSION['user_attempt_lasttime'])) {
-            return 0;
-        }
-
-        return $_SESSION['user_attempt_lasttime'];
+        return $this->session->get('user_attempt_lasttime', 0);
     }
 
     /**
@@ -176,16 +176,21 @@ class UserManager
      */
     public function _incAttemptNumber()
     {
-        if (!isset($_SESSION['user_attempt_number'])) {
-            $_SESSION['user_attempt_number'] = 1;
+        $userAttemptNumber = $this->session->get('user_attempt_number',0);
+        if ($userAttemptNumber === 0) {
+            $userAttemptNumber = 1;
+
         } else {
-            ++$_SESSION['user_attempt_number'];
+            ++$userAttemptNumber;
         }
+        $this->session->set('user_attempt_number',$userAttemptNumber);
+        $this->session->save();
     }
 
     public function _updateLastAttemptTime()
     {
-        $_SESSION['user_attempt_lasttime'] = time();
+        $this->session->set('user_attempt_lasttime', time());
+        $this->session->save();
     }
 
     /**
@@ -195,8 +200,9 @@ class UserManager
      */
     public function resetAttemptNumber()
     {
-        $_SESSION['user_attempt_lasttime'] = 0;
-        $_SESSION['user_attempt_number'] = 0;
+        $this->session->set('user_attempt_lasttime', 0);
+        $this->session->set('user_attempt_number', 0);
+        $this->session->save();
     }
 
     /**
@@ -226,7 +232,7 @@ class UserManager
     }
 
     /**
-     * @param string $what       enum('link', 'button')
+     * @param string $what enum('link', 'button')
      * @param string $info_about set the link ref for the link typre or the button name
      */
     public function setRegisterTo($what, $info_about)
@@ -243,7 +249,7 @@ class UserManager
     }
 
     /**
-     * @param string $what       enum('link', 'button')
+     * @param string $what enum('link', 'button')
      * @param string $info_about set the link ref for the link typre or the button name
      */
     public function setLostpwdTo($what, $info_about)
@@ -276,7 +282,7 @@ class UserManager
      * return information about the login attempt for the user.
      *
      * @param string $jump_url an url for jump
-     * @param string $extra    extra information to display in the field
+     * @param string $extra extra information to display in the field
      *
      * @return bool return TRUE if the user as try to loggin
      *              return FALSE if the user dont'try to login
@@ -300,7 +306,7 @@ class UserManager
                 $actual_attempt = $this->getAttemptNumber();
                 if ($actual_attempt > $max_log_attempt) {
                     if (($last_attempt + $this->_time_before_reactive) > time()) {
-                        $wait_for = (int) ((($last_attempt + $this->_time_before_reactive) - time()) / 60);
+                        $wait_for = (int)((($last_attempt + $this->_time_before_reactive) - time()) / 60);
                         if ($wait_for < 1) {
                             $wait_for = ' < 1';
                         }
@@ -418,8 +424,8 @@ class UserManager
 
     /**
      * @param string $platform specified a different platform for localization
-     * @param string $prefix   specified a prefix
-     * @param string $db_conn  specified a db connection with the database
+     * @param string $prefix specified a prefix
+     * @param string $db_conn specified a db connection with the database
      *
      * @return array array(group_id => group_name) with the regroup unit
      */
@@ -850,7 +856,7 @@ class UserManager
         if ($reg_code != '') {
             switch ($registration_code_type) {
                 case '0':
-                     //nothin to do
+                    //nothin to do
                     ;
                     break;
                 case 'tree_course':
@@ -868,60 +874,60 @@ class UserManager
                             $res = false; // invalid code
                         }
                     }
-                 //procced with tree_man
-                 // no break
+                //procced with tree_man
+                // no break
                 case 'tree_man':
-                        // resolving the tree_man
-                        $array_folder = $uma->getFoldersFromCode($reg_code);
-                        if (empty($array_folder) && $code_is_mandatory) {
-                            $res = false; // invalid code
-                        }
+                    // resolving the tree_man
+                    $array_folder = $uma->getFoldersFromCode($reg_code);
+                    if (empty($array_folder) && $code_is_mandatory) {
+                        $res = false; // invalid code
+                    }
 
                     break;
                 case 'code_module':
-                        require_once _adm_ . '/lib/lib.code.php';
-                        $code_manager = new CodeManager();
-                        $valid_code = $code_manager->controlCodeValidity($reg_code);
-                        if ($valid_code == 0) {
-                            $res = false; // code already used
-                        } elseif ($valid_code == -1 && $code_is_mandatory) {
-                            $res = false; // invalid code
-                        }
+                    require_once _adm_ . '/lib/lib.code.php';
+                    $code_manager = new CodeManager();
+                    $valid_code = $code_manager->controlCodeValidity($reg_code);
+                    if ($valid_code == 0) {
+                        $res = false; // code already used
+                    } elseif ($valid_code == -1 && $code_is_mandatory) {
+                        $res = false; // invalid code
+                    }
 
                     break;
                 case 'tree_drop':
-                        // from the dropdown we will recive the id of the folder
-                        $array_folder = [$reg_code => $reg_code];
-                        $oc_folders = $uma->getOcFolders($array_folder);
-                        if (empty($oc_folders)) {
-                            $res = false; // invalid code
-                        }
+                    // from the dropdown we will recive the id of the folder
+                    $array_folder = [$reg_code => $reg_code];
+                    $oc_folders = $uma->getOcFolders($array_folder);
+                    if (empty($oc_folders)) {
+                        $res = false; // invalid code
+                    }
 
                     break;
                 case 'custom':
-                        //Custom code
-                        require_once _adm_ . '/lib/lib.field.php';
-                        $field_man = new FieldList();
+                    //Custom code
+                    require_once _adm_ . '/lib/lib.field.php';
+                    $field_man = new FieldList();
 
-                        $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
-                        $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
-                        $query = 'SELECT `translation`'
-                            . ' FROM core_field_son'
-                            . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                            . " AND lang_code = '" . getLanguage() . "'";
-                        list($filed_1_translation) = sql_fetch_row(sql_query($query));
-                        $code_part = substr($filed_1_translation, 1, 1);
-                        $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
+                    $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
+                    $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
+                    $query = 'SELECT `translation`'
+                        . ' FROM core_field_son'
+                        . ' WHERE id_common_son = ' . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        . " AND lang_code = '" . getLanguage() . "'";
+                    list($filed_1_translation) = sql_fetch_row(sql_query($query));
+                    $code_part = substr($filed_1_translation, 1, 1);
+                    $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
 
-                        // resolving the tree_man
-                        $array_folder = $uma->getFoldersFromCode($reg_code);
-                        if (empty($array_folder) && $code_is_mandatory) {
-                            $res = false; // invalid code
-                        }
+                    // resolving the tree_man
+                    $array_folder = $uma->getFoldersFromCode($reg_code);
+                    if (empty($array_folder) && $code_is_mandatory) {
+                        $res = false; // invalid code
+                    }
 
                     break;
                 default:
-                        $res = false; // invalid code type
+                    $res = false; // invalid code type
 
                     break;
             }
@@ -1021,15 +1027,15 @@ class UserManagerRenderer
             //case 'high_accessibility' : return ( isset($_POST['login_high_accessibility']) ? true : false );break;
             //case 'remember' : return ( isset($_POST['login_remember']) ? true : false );break;
             case 'language':
-                    if (!isset($_POST['login_lang'])) {
-                        return '';
-                    }
-                    if ($_POST['login_lang'] == 'default') {
-                        return '';
-                    }
-                    $all_languages = Docebo::langManager()->getAllLangCode();
+                if (!isset($_POST['login_lang'])) {
+                    return '';
+                }
+                if ($_POST['login_lang'] == 'default') {
+                    return '';
+                }
+                $all_languages = Docebo::langManager()->getAllLangCode();
 
-                    return $all_languages[$_POST['login_lang']];
+                return $all_languages[$_POST['login_lang']];
 
                 break;
         }
@@ -1130,7 +1136,7 @@ class UserManagerRenderer
     }
 
     /**
-     * @param string $what       enum('link', 'button')
+     * @param string $what enum('link', 'button')
      * @param string $info_about set the link ref for the link type or the button name
      */
     public function setRegisterTo($what, $info_about)
@@ -1159,7 +1165,7 @@ class UserManagerRenderer
     }
 
     /**
-     * @param string $what       enum('link', 'button')
+     * @param string $what enum('link', 'button')
      * @param string $info_about set the link ref for the link type or the button name
      */
     public function setLostpwdTo($what, $info_about)
@@ -1206,10 +1212,10 @@ class UserManagerRenderer
      *    |-----------------------------------------------|
      *
      * @param string $platform the platoform of which you want the login
-     * @param string $advice   the text of an advice to dispaly
-     * @param string $extra    wathever you want to display
-     * @param bool   $disable  disable the field
-     * @param bool   $jump_url the url for the link
+     * @param string $advice the text of an advice to dispaly
+     * @param string $extra wathever you want to display
+     * @param bool $disable disable the field
+     * @param bool $jump_url the url for the link
      *
      * @return string the html code for the login mask
      */
@@ -1295,19 +1301,19 @@ class UserManagerRenderer
         if ($register_type == 'self' || $register_type == 'moderate') {
             switch ($this->_register_type) {
                 case 'link':
-                        if (Forma\lib\Get::sett('register_with_code') == 'on') {
-                            $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_LOG_REGISTER_WITH_CODE') . '</a>';
-                        } else {
-                            $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_REGISTER') . '</a>';
-                        }
+                    if (Forma\lib\Get::sett('register_with_code') == 'on') {
+                        $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_LOG_REGISTER_WITH_CODE') . '</a>';
+                    } else {
+                        $out .= '<a href="' . $this->_register_info . '">' . $lang->def('_REGISTER') . '</a>';
+                    }
 
                     break;
                 case 'button':
-                        if (Forma\lib\Get::sett('register_with_code') == 'on') {
-                            $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_LOG_REGISTER_WITH_CODE'), 'button_as_link');
-                        } else {
-                            $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_REGISTER'), 'button_as_link');
-                        }
+                    if (Forma\lib\Get::sett('register_with_code') == 'on') {
+                        $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_LOG_REGISTER_WITH_CODE'), 'button_as_link');
+                    } else {
+                        $out .= Form::getButton('register_button', $this->_register_info, $lang->def('_REGISTER'), 'button_as_link');
+                    }
 
                     break;
             }
@@ -1317,11 +1323,11 @@ class UserManagerRenderer
         }
         switch ($this->_lostpwd_type) {
             case 'link':
-                    $out .= '<a href="' . $this->_lostpwd_info . '">' . $lang->def('_LOG_LOSTPWD', 'login') . '</a>';
+                $out .= '<a href="' . $this->_lostpwd_info . '">' . $lang->def('_LOG_LOSTPWD', 'login') . '</a>';
 
                 break;
             case 'button':
-                    $out .= Form::getButton('lostwd_button', $this->_lostpwd_info, $lang->def('_LOG_LOSTPWD'), 'button_as_link');
+                $out .= Form::getButton('lostwd_button', $this->_lostpwd_info, $lang->def('_LOG_LOSTPWD'), 'button_as_link');
 
                 break;
         }
@@ -1379,7 +1385,7 @@ class UserManagerRenderer
      * This function must be called into a open form and it will execute the entire registration process for a user.
      *
      * @param string $platform the platform
-     * @param array  $options  (register_type, use_advanced_form, pass_alfanumeric,
+     * @param array $options (register_type, use_advanced_form, pass_alfanumeric,
      *                         pass_min_char, hour_request_limit, privacy_policy, mail_sender)
      * @param string $opt_link the link used as the base of the confirmation link in the confirm mail
      *
@@ -1420,45 +1426,45 @@ class UserManagerRenderer
 
         switch ($do) {
             case 'opt_in':
-                    if (is_array($errors) && count($errors) > 0) {
-                        $this->error = true;
-                    }
+                if (is_array($errors) && count($errors) > 0) {
+                    $this->error = true;
+                }
 
-                    if ($this->error) {
-                        if ($options['use_advanced_form'] == 'on' || Forma\lib\Get::sett('register_with_code') == 'on') {
-                            $out = $this->_special_field($options, $platform, $opt_link, $errors);
-                        } else {
-                            $out = $this->_first_of_all($options, $platform, $errors);
-                        }
+                if ($this->error) {
+                    if ($options['use_advanced_form'] == 'on' || Forma\lib\Get::sett('register_with_code') == 'on') {
+                        $out = $this->_special_field($options, $platform, $opt_link, $errors);
                     } else {
-                        $out = $this->_opt_in($options, $platform, $opt_link);
+                        $out = $this->_first_of_all($options, $platform, $errors);
                     }
+                } else {
+                    $out = $this->_opt_in($options, $platform, $opt_link);
+                }
 
                 break;
             case 'special_field':
-                    if (is_array($errors) && count($errors) > 0) {
-                        foreach ($errors as $key => $error) {
-                            if (!is_numeric($key)) {
-                                $this->error = true;
-                            }
-                        }
-
-                        if ($this->error === false) {
-                            if ($postRequest['next_step'] === $do) {
-                                $errors = [];
-                            }
+                if (is_array($errors) && count($errors) > 0) {
+                    foreach ($errors as $key => $error) {
+                        if (!is_numeric($key)) {
+                            $this->error = true;
                         }
                     }
 
-                    if ($this->error) {
-                        $out = $this->_first_of_all($options, $platform, $errors);
-                    } else {
-                        $out = $this->_special_field($options, $platform, $opt_link, $errors);
+                    if ($this->error === false) {
+                        if ($postRequest['next_step'] === $do) {
+                            $errors = [];
+                        }
                     }
+                }
+
+                if ($this->error) {
+                    $out = $this->_first_of_all($options, $platform, $errors);
+                } else {
+                    $out = $this->_special_field($options, $platform, $opt_link, $errors);
+                }
 
                 break;
             case 'first_of_all':
-                    $out = $this->_first_of_all($options, $platform, $errors);
+                $out = $this->_first_of_all($options, $platform, $errors);
 
                 break;
         }
@@ -1471,7 +1477,7 @@ class UserManagerRenderer
     /**
      * getCodeCourses.
      *
-     * @param int  $reg_code
+     * @param int $reg_code
      * @param bool $byName
      *
      * @return array
@@ -1507,11 +1513,11 @@ class UserManagerRenderer
     /**
      * processRegistrationCode.
      *
-     * @param AclManager       $acl_man
+     * @param AclManager $acl_man
      * @param UserManagerAdmin $uma
-     * @param int              $iduser
-     * @param string           $reg_code
-     * @param string           $registration_code_type
+     * @param int $iduser
+     * @param string $reg_code
+     * @param string $registration_code_type
      *
      * @return array 'success'=>boolean, 'msg'=>string
      */
@@ -1525,7 +1531,7 @@ class UserManagerRenderer
         if ($reg_code != '') {
             switch ($registration_code_type) {
                 case '0':
-                     //nothin to do
+                    //nothin to do
                     ;
                     break;
                 case 'tree_course':
@@ -1546,89 +1552,89 @@ class UserManagerRenderer
                             return $res;
                         }
                     }
-                 //procced with tree_man
-                 // no break
+                //procced with tree_man
+                // no break
                 case 'tree_man':
-                        // resolving the tree_man
-                        $org = sql_fetch_object(sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE code = '" . $reg_code . "'"));
-                        $org_id = sql_fetch_object(sql_query("SELECT idOrg, code FROM %adm_org_chart_tree WHERE idOrg = '" . $reg_code . "' AND code IS NOT NULL"));
+                    // resolving the tree_man
+                    $org = sql_fetch_object(sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE code = '" . $reg_code . "'"));
+                    $org_id = sql_fetch_object(sql_query("SELECT idOrg, code FROM %adm_org_chart_tree WHERE idOrg = '" . $reg_code . "' AND code IS NOT NULL"));
 
-                        if ($org) {
-                            $reg_id = $org->idOrg;
-                        } elseif ($org_id) {
-                            $reg_id = $org_id->idOrg;
-                            $reg_code = $org_id->code;
-                        }
+                    if ($org) {
+                        $reg_id = $org->idOrg;
+                    } elseif ($org_id) {
+                        $reg_id = $org_id->idOrg;
+                        $reg_code = $org_id->code;
+                    }
 
-                        $array_course = $this->getCodeCourses($reg_code);
+                    $array_course = $this->getCodeCourses($reg_code);
 
-                        $array_folder = [$reg_code => $reg_id];
+                    $array_folder = [$reg_code => $reg_id];
 
-                        if (empty($reg_id) && $code_is_mandatory) {
-                            //invalid code
-                            $res['success'] = false;
-                            $res['msg'] = $lang->def('_INVALID_CODE');
+                    if (empty($reg_id) && $code_is_mandatory) {
+                        //invalid code
+                        $res['success'] = false;
+                        $res['msg'] = $lang->def('_INVALID_CODE');
 
-                            return $res;
-                        }
+                        return $res;
+                    }
 
                     break;
                 case 'code_module':
-                        require_once _adm_ . '/lib/lib.code.php';
-                        $code_manager = new CodeManager();
-                        $valid_code = $code_manager->controlCodeValidity($reg_code);
-                        if ($valid_code == 1) {
-                            $array_folder = $code_manager->getOrgAssociateWithCode($reg_code);
-                            $array_course = $code_manager->getCourseAssociateWithCode($reg_code);
+                    require_once _adm_ . '/lib/lib.code.php';
+                    $code_manager = new CodeManager();
+                    $valid_code = $code_manager->controlCodeValidity($reg_code);
+                    if ($valid_code == 1) {
+                        $array_folder = $code_manager->getOrgAssociateWithCode($reg_code);
+                        $array_course = $code_manager->getCourseAssociateWithCode($reg_code);
 
-                            $code_manager->setCodeUsed($reg_code, $iduser);
-                        } elseif ($valid_code == 0) {
-                            //duplicated code entered
-                            $res['success'] = false;
-                            $res['msg'] = $lang->def('_CODE_ALREDY_USED');
+                        $code_manager->setCodeUsed($reg_code, $iduser);
+                    } elseif ($valid_code == 0) {
+                        //duplicated code entered
+                        $res['success'] = false;
+                        $res['msg'] = $lang->def('_CODE_ALREDY_USED');
 
-                            return $res;
-                        } elseif ($valid_code == -1 && $code_is_mandatory) {
-                            //invalid code entered
-                            $res['success'] = false;
-                            $res['msg'] = $lang->def('_INVALID_CODE');
+                        return $res;
+                    } elseif ($valid_code == -1 && $code_is_mandatory) {
+                        //invalid code entered
+                        $res['success'] = false;
+                        $res['msg'] = $lang->def('_INVALID_CODE');
 
-                            return $res;
-                        }
+                        return $res;
+                    }
 
                     break;
                 case 'tree_drop':
-                        $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
-                        $reg_code = sql_fetch_array($query)['code'];
-                        $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
-                        $array_course = $this->getCodeCourses($reg_code);
-                        $array_folder = $uma->getFoldersFromCode($reg_code);
+                    $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
+                    $reg_code = sql_fetch_array($query)['code'];
+                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                    $array_course = $this->getCodeCourses($reg_code);
+                    $array_folder = $uma->getFoldersFromCode($reg_code);
 
                     break;
                 case 'custom':
-                        //Custom code
-                        require_once _adm_ . '/lib/lib.field.php';
-                        $field_man = new FieldList();
+                    //Custom code
+                    require_once _adm_ . '/lib/lib.field.php';
+                    $field_man = new FieldList();
 
-                        $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
-                        $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
-                        $query = 'SELECT `translation`'
-                            . ' FROM core_field_son'
-                            . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                            . " AND lang_code = '" . getLanguage() . "'";
-                        list($filed_1_translation) = sql_fetch_row(sql_query($query));
-                        $code_part = substr($filed_1_translation, 1, 1);
-                        $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
+                    $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
+                    $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
+                    $query = 'SELECT `translation`'
+                        . ' FROM core_field_son'
+                        . ' WHERE id_common_son = ' . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        . " AND lang_code = '" . getLanguage() . "'";
+                    list($filed_1_translation) = sql_fetch_row(sql_query($query));
+                    $code_part = substr($filed_1_translation, 1, 1);
+                    $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
 
-                        // resolving the tree_man
-                        $array_folder = $uma->getFoldersFromCode($reg_code);
-                        if (empty($array_folder) && $code_is_mandatory) {
-                            //invalid code
-                            $res['success'] = false;
-                            $res['msg'] = $lang->def('_INVALID_CODE');
+                    // resolving the tree_man
+                    $array_folder = $uma->getFoldersFromCode($reg_code);
+                    if (empty($array_folder) && $code_is_mandatory) {
+                        //invalid code
+                        $res['success'] = false;
+                        $res['msg'] = $lang->def('_INVALID_CODE');
 
-                            return $res;
-                        }
+                        return $res;
+                    }
 
                     break;
             }
@@ -1711,7 +1717,7 @@ class UserManagerRenderer
                 $acl_man->addToGroup($idst, $iduser);
                 // FORMA: added the inscription policy
                 $enrollrules = new EnrollrulesAlms();
-                $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', [(string) $iduser], false, (int) $idst, true);
+                $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', [(string)$iduser], false, (int)$idst, true);
                 // END FORMA
             }
         }
@@ -1832,53 +1838,53 @@ class UserManagerRenderer
         if ($reg_code != '') {
             switch ($registration_code_type) {
                 case '0':
-                     //nothin to do
+                    //nothin to do
                     ;
                     break;
                 case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man
                     $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
-                 //procced with tree_man
-                 // no break
+                //procced with tree_man
+                // no break
                 case 'tree_man':
-                        // resolving the tree_man
-                        $uma = new UsermanagementAdm();
-                        $reg_code = $this->getRegCodeFromNode($reg_code);
-                        $array_folder = $uma->getFolderGroups($reg_code);
+                    // resolving the tree_man
+                    $uma = new UsermanagementAdm();
+                    $reg_code = $this->getRegCodeFromNode($reg_code);
+                    $array_folder = $uma->getFolderGroups($reg_code);
 
                     break;
                 case 'code_module':
-                        require_once _adm_ . '/lib/lib.code.php';
-                        $code_manager = new CodeManager();
-                        $valid_code = $code_manager->controlCodeValidity($reg_code);
-                        if ($valid_code == 1) {
-                            $array_folder = $code_manager->getOrgAssociateWithCode($reg_code);
-                        }
+                    require_once _adm_ . '/lib/lib.code.php';
+                    $code_manager = new CodeManager();
+                    $valid_code = $code_manager->controlCodeValidity($reg_code);
+                    if ($valid_code == 1) {
+                        $array_folder = $code_manager->getOrgAssociateWithCode($reg_code);
+                    }
 
                     break;
                 case 'tree_drop':
-                        // from the dropdown we will recive the id of the folder
-                        // then we get the oc and ocd
-                        $array_folder = $uma->getFolderGroups($reg_code);
+                    // from the dropdown we will recive the id of the folder
+                    // then we get the oc and ocd
+                    $array_folder = $uma->getFolderGroups($reg_code);
 
                     break;
                 case 'custom':
-                        //Custom code
-                        require_once _adm_ . '/lib/lib.field.php';
-                        $field_man = new FieldList();
+                    //Custom code
+                    require_once _adm_ . '/lib/lib.field.php';
+                    $field_man = new FieldList();
 
-                        $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
-                        $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
-                        $query = 'SELECT `translation`'
-                            . ' FROM core_field_son'
-                            . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                            . " AND lang_code = '" . getLanguage() . "'";
-                        list($filed_1_translation) = sql_fetch_row(sql_query($query));
-                        $code_part = substr($filed_1_translation, 1, 1);
-                        $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
+                    $id_common_filed_1 = $field_man->getFieldIdCommonFromTranslation('Filiale');
+                    $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
+                    $query = 'SELECT `translation`'
+                        . ' FROM core_field_son'
+                        . ' WHERE id_common_son = ' . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        . " AND lang_code = '" . getLanguage() . "'";
+                    list($filed_1_translation) = sql_fetch_row(sql_query($query));
+                    $code_part = substr($filed_1_translation, 1, 1);
+                    $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
 
-                        // resolving the tree_man
-                        $array_folder = $uma->getFoldersFromCode($reg_code);
+                    // resolving the tree_man
+                    $array_folder = $uma->getFoldersFromCode($reg_code);
 
                     break;
             }
@@ -2140,46 +2146,46 @@ class UserManagerRenderer
         $code_is_mandatory = Forma\lib\Get::sett('mandatory_code', 'off');
         switch ($registration_code_type) {
             case '0':
-                    //nothin to do
+                //nothin to do
                 ;
                 break;
             case 'tree_course':
             case 'code_module':
             case 'tree_man':
-                    // we must ask the user to insert a manual code
-                    $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+                // we must ask the user to insert a manual code
+                $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">';
-                    $out .= Form::getInputTextfield(
-                        'form-control',
-                        'reg_code',
-                        'reg_code',
-                        Forma\lib\Get::req('reg_code', DOTY_MIXED, ''),
-                        '',
-                        24,
-                        'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"'
-                    );
+                $out .= Form::getInputTextfield(
+                    'form-control',
+                    'reg_code',
+                    'reg_code',
+                    Forma\lib\Get::req('reg_code', DOTY_MIXED, ''),
+                    '',
+                    24,
+                    'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"'
+                );
 
-                    $out .= '</div>
+                $out .= '</div>
                 </div>';
 
                 break;
             case 'tree_drop':
-                    // we must show to the user a selection of code
-                    $uma = new UsermanagementAdm();
-                    $tree_names = ['-' => $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_span : '')];
-                    $tree_names = $tree_names + $uma->getAllFolderNames(true);
-                    $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
+                // we must show to the user a selection of code
+                $uma = new UsermanagementAdm();
+                $tree_names = ['-' => $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_span : '')];
+                $tree_names = $tree_names + $uma->getAllFolderNames(true);
+                $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">'
-                        . Form::getInputDropdown(
-                            'form-control',
-                            'reg_code',
-                            'reg_code',
-                            $tree_names,
-                            Forma\lib\Get::req('reg_code', DOTY_MIXED, ''),
-                            '',
-                            true
-                        ) .
-                        '</div>
+                    . Form::getInputDropdown(
+                        'form-control',
+                        'reg_code',
+                        'reg_code',
+                        $tree_names,
+                        Forma\lib\Get::req('reg_code', DOTY_MIXED, ''),
+                        '',
+                        true
+                    ) .
+                    '</div>
                 </div>';
 
                 break;
@@ -2280,9 +2286,9 @@ class UserManagerRenderer
 
         $request = $acl_man->getTempUserInfo(false, $random_code);
 
-        if (time() > (fromDatetimeToTimestamp($request['request_on']) + (3600 * (int) $options['hour_request_limit']))) {
+        if (time() > (fromDatetimeToTimestamp($request['request_on']) + (3600 * (int)$options['hour_request_limit']))) {
             $out = '<div class="reg_err_data">' . $lang->def('_REG_ELAPSEDREQUEST', 'register') . '</div>';
-            $time_limit = time() - 3600 * ((int) $options['hour_request_limit']);
+            $time_limit = time() - 3600 * ((int)$options['hour_request_limit']);
 
             if (Forma\lib\Get::sett('registration_code_type', '0') == 'code_module') {
                 // free the code from the old association
@@ -2456,7 +2462,7 @@ class UserManagerRenderer
     /**
      * Control the contents of the field.
      *
-     * @param array $source  the values to check
+     * @param array $source the values to check
      * @param array $options the values needed for control
      *
      * @return array ( [error]  => true o false , [msg] => error message)
@@ -2843,7 +2849,7 @@ class UserManagerRenderer
             }
             $re_pwd = sql_query('SELECT passw '
                 . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
-                . ' WHERE idst_user = ' . (int) $idst . ''
+                . ' WHERE idst_user = ' . (int)$idst . ''
                 . ' ORDER BY pwd_date DESC');
 
             list($pwd_history) = sql_fetch_row($re_pwd);
@@ -2923,16 +2929,16 @@ class UserManagerOption
             switch ($value_type) {
                 //if is int cast it
                 case 'int':
-                        $this->_options[$var_name] = (int) $var_value;
+                    $this->_options[$var_name] = (int)$var_value;
 
                     break;
                 //if is enum switch value to on or off
                 case 'enum':
-                        if ($var_value == 'on') {
-                            $this->_options[$var_name] = 'on';
-                        } else {
-                            $this->_options[$var_name] = 'off';
-                        }
+                    if ($var_value == 'on') {
+                        $this->_options[$var_name] = 'on';
+                    } else {
+                        $this->_options[$var_name] = 'off';
+                    }
 
                     break;
                 //else simple assignament
@@ -2974,8 +2980,8 @@ class UserManagerOption
 
     /**
      * @param string $platform specified a different platform for localization
-     * @param string $prefix   specified a prefix
-     * @param string $db_conn  specified a db connection with the database
+     * @param string $prefix specified a prefix
+     * @param string $db_conn specified a db connection with the database
      *
      * @return array array(group_id => group_name) with the regroup unit
      */
@@ -3012,141 +3018,141 @@ class UserManagerOption
         while (list($var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
             switch ($value_type) {
                 case 'register_type':
-                        //on off
+                    //on off
 
-                        $html .= Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
-                            . Form::getLineRadio(
-                                '',
-                                'label_bold',
-                                $lang->def('_REGISTER_TYPE_SELF'),
-                                $var_name . '_self',
-                                'option[' . $var_name . ']',
-                                'self',
-                                ($var_value == 'self')
-                            )
-                            . Form::getLineRadio(
-                                '',
-                                'label_bold',
-                                $lang->def('_REGISTER_TYPE_SELF_OPTIN'),
-                                $var_name . '_self_optin',
-                                'option[' . $var_name . ']',
-                                'self_optin',
-                                ($var_value == 'self_optin')
-                            )
-                            . Form::getLineRadio(
-                                '',
-                                'label_bold',
-                                $lang->def('_REGISTER_TYPE_MODERATE'),
-                                $var_name . '_moderate',
-                                'option[' . $var_name . ']',
-                                'moderate',
-                                ($var_value == 'moderate')
-                            )
-                            . Form::getLineRadio(
-                                '',
-                                'label_bold',
-                                $lang->def('_REGISTER_TYPE_ADMIN'),
-                                $var_name . '_admin',
-                                'option[' . $var_name . ']',
-                                'admin',
-                                ($var_value == 'admin')
-                            )
-                            . Form::getCloseCombo();
+                    $html .= Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
+                        . Form::getLineRadio(
+                            '',
+                            'label_bold',
+                            $lang->def('_REGISTER_TYPE_SELF'),
+                            $var_name . '_self',
+                            'option[' . $var_name . ']',
+                            'self',
+                            ($var_value == 'self')
+                        )
+                        . Form::getLineRadio(
+                            '',
+                            'label_bold',
+                            $lang->def('_REGISTER_TYPE_SELF_OPTIN'),
+                            $var_name . '_self_optin',
+                            'option[' . $var_name . ']',
+                            'self_optin',
+                            ($var_value == 'self_optin')
+                        )
+                        . Form::getLineRadio(
+                            '',
+                            'label_bold',
+                            $lang->def('_REGISTER_TYPE_MODERATE'),
+                            $var_name . '_moderate',
+                            'option[' . $var_name . ']',
+                            'moderate',
+                            ($var_value == 'moderate')
+                        )
+                        . Form::getLineRadio(
+                            '',
+                            'label_bold',
+                            $lang->def('_REGISTER_TYPE_ADMIN'),
+                            $var_name . '_admin',
+                            'option[' . $var_name . ']',
+                            'admin',
+                            ($var_value == 'admin')
+                        )
+                        . Form::getCloseCombo();
 
                     break;
 
                 case 'register_tree':
-                        $register_possible_option = [
-                            'off' => $lang->def('_DONT_USE_TREE_REGISTRATION'),
-                            'manual_insert' => $lang->def('_USE_WITH_MANUALEINSERT'),
-                            'selection' => $lang->def('_USE_WITH_SELECTION'),
-                        ];
+                    $register_possible_option = [
+                        'off' => $lang->def('_DONT_USE_TREE_REGISTRATION'),
+                        'manual_insert' => $lang->def('_USE_WITH_MANUALEINSERT'),
+                        'selection' => $lang->def('_USE_WITH_SELECTION'),
+                    ];
 
-                        $html .= Form::getDropdown(
-                            $lang->def('_' . strtoupper($var_name)),
-                            $var_name,
-                            'option[' . $var_name . ']',
-                            $register_possible_option,
-                            $var_value
-                        );
+                    $html .= Form::getDropdown(
+                        $lang->def('_' . strtoupper($var_name)),
+                        $var_name,
+                        'option[' . $var_name . ']',
+                        $register_possible_option,
+                        $var_value
+                    );
 
                     break;
                 case 'field_tree':
-                        require_once _adm_ . '/lib/lib.field.php';
+                    require_once _adm_ . '/lib/lib.field.php';
 
-                        $fl = new FieldList();
-                        $all_fields = $fl->getAllFields(false);
-                        $fields[0] = $lang->def('_NO_VALUE');
-                        foreach ($all_fields as $key => $val) {
-                            $fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
-                        }
-                        $html .= Form::getDropdown(
-                            $lang->def('_' . strtoupper($var_name)),
-                            $var_name,
-                            'option[' . $var_name . ']',
-                            $fields,
-                            $var_value
-                        );
+                    $fl = new FieldList();
+                    $all_fields = $fl->getAllFields(false);
+                    $fields[0] = $lang->def('_NO_VALUE');
+                    foreach ($all_fields as $key => $val) {
+                        $fields[$val[FIELD_INFO_ID]] = $val[FIELD_INFO_TRANSLATION];
+                    }
+                    $html .= Form::getDropdown(
+                        $lang->def('_' . strtoupper($var_name)),
+                        $var_name,
+                        'option[' . $var_name . ']',
+                        $fields,
+                        $var_value
+                    );
 
                     break;
                 case 'save_log_attempt':
-                        //on off
+                    //on off
 
-                        $html .= Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
-                            . Form::getLineRadio(
-                                '',
-                                'label_bold',
-                                $lang->def('_SAVE_LA_ALL'),
-                                $var_name . '_all',
-                                'option[' . $var_name . ']',
-                                'all',
-                                ($var_value == 'all')
-                            )
-                            . Form::getLineRadio(
-                                '',
-                                'label_bold',
-                                $lang->def('_SAVE_LA_AFTER_MAX'),
-                                $var_name . '_after_max',
-                                'option[' . $var_name . ']',
-                                'after_max',
-                                ($var_value == 'after_max')
-                            )
-                            . Form::getLineRadio(
-                                '',
-                                'label_bold',
-                                $lang->def('_NO'),
-                                $var_name . '_no',
-                                'option[' . $var_name . ']',
-                                'no',
-                                ($var_value == 'no')
-                            )
-                            . Form::getCloseCombo();
+                    $html .= Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
+                        . Form::getLineRadio(
+                            '',
+                            'label_bold',
+                            $lang->def('_SAVE_LA_ALL'),
+                            $var_name . '_all',
+                            'option[' . $var_name . ']',
+                            'all',
+                            ($var_value == 'all')
+                        )
+                        . Form::getLineRadio(
+                            '',
+                            'label_bold',
+                            $lang->def('_SAVE_LA_AFTER_MAX'),
+                            $var_name . '_after_max',
+                            'option[' . $var_name . ']',
+                            'after_max',
+                            ($var_value == 'after_max')
+                        )
+                        . Form::getLineRadio(
+                            '',
+                            'label_bold',
+                            $lang->def('_NO'),
+                            $var_name . '_no',
+                            'option[' . $var_name . ']',
+                            'no',
+                            ($var_value == 'no')
+                        )
+                        . Form::getCloseCombo();
 
                     break;
                 case 'enum':
-                        //on off
-                        $html .= Form::openFormLine()
-                            . Form::getInputCheckbox(
-                                $var_name . '_on',
-                                'option[' . $var_name . ']',
-                                'on',
-                                ($var_value == 'on'),
-                                ''
-                            )
-                            . ' '
-                            . Form::getLabel($var_name . '_on', $lang->def('_' . strtoupper($var_name)), 'label_bold')
-                            . Form::closeFormLine();
+                    //on off
+                    $html .= Form::openFormLine()
+                        . Form::getInputCheckbox(
+                            $var_name . '_on',
+                            'option[' . $var_name . ']',
+                            'on',
+                            ($var_value == 'on'),
+                            ''
+                        )
+                        . ' '
+                        . Form::getLabel($var_name . '_on', $lang->def('_' . strtoupper($var_name)), 'label_bold')
+                        . Form::closeFormLine();
 
                     break;
                 //uncrypted password
                 case 'password':
-                        $html .= Form::getPassword(
-                            $lang->def('_' . strtoupper($var_name)),
-                            $var_name,
-                            'option[' . $var_name . ']',
-                            $max_size,
-                            $var_value
-                        );
+                    $html .= Form::getPassword(
+                        $lang->def('_' . strtoupper($var_name)),
+                        $var_name,
+                        'option[' . $var_name . ']',
+                        $max_size,
+                        $var_value
+                    );
 
                     break;
                 //string or int
@@ -3185,16 +3191,16 @@ class UserManagerOption
         while (list($var_name, $value_type) = sql_fetch_row($reSetting)) {
             switch ($value_type) {
                 case 'int':
-                        $new_value = (int) $_POST['option'][$var_name];
+                    $new_value = (int)$_POST['option'][$var_name];
 
                     break;
                 //if is enum switch value to on or off
                 case 'enum':
-                        if (isset($_POST['option'][$var_name])) {
-                            $new_value = 'on';
-                        } else {
-                            $new_value = 'off';
-                        }
+                    if (isset($_POST['option'][$var_name])) {
+                        $new_value = 'on';
+                    } else {
+                        $new_value = 'off';
+                    }
 
                     break;
                 //else simple assignament

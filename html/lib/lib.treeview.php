@@ -959,7 +959,7 @@ class TreeView
         $tree = '';
         if ($this->canInlineDelete()) {
             if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineDeleteItem($stack, $level) && !Forma\lib\Get::cfg('demo_mode')))
-            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
+            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
                         . ' src="' . $this->_getDeleteImage() . '"'
@@ -976,7 +976,7 @@ class TreeView
         }
         if ($this->canInlineMove()) {
             if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineMoveItem($stack, $level) && !Forma\lib\Get::cfg('demo_mode')))
-            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
+            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
                         . ' src="' . $this->_getMoveImage() . '"'
@@ -993,7 +993,7 @@ class TreeView
         }
         if ($this->canInlineRename()) {
             if ((($stack[1]['folder']->tdb->table != 'learning_repo') && ($this->canInlineRenameItem($stack, $level) && !Forma\lib\Get::cfg('demo_mode')))
-            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $_SESSION['public_area_idst'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
+            || (($stack[1]['folder']->tdb->table == 'learning_repo') && ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN))) {
                 $tree .= '<input type="image"'
                         . ' class="tree_view_image" '
                         . ' src="' . $this->_getRenameImage() . '"'
