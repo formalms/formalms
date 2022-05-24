@@ -106,12 +106,11 @@ function schedule_recipients($idrep)
         if ($session->has('schedule_tempdata')) {
             $sched = report_update_schedulation($scheduleTempData, $_name, $_period, $_time, $entity_selected);
         } else {
-            $id_report = $idrep; //$_SESSION['report_saved_data']['id'];
+            $id_report = $idrep; 
             $sched = report_save_schedulation($id_report, $_name, $_period, $_time, $entity_selected);
         }
 
         if ($sched !== false) {
-            //unset($_SESSION['schedule_tempdata']);
             Util::jump_to($end_url);
         } else {
             $save_schedule_failed = true;

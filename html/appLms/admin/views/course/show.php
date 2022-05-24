@@ -88,7 +88,7 @@ echo '<div class="quick_search_form">'
         . '</div>'
         . '<div>'
         . Form::openForm('course_filters', 'index.php?r=' . $base_link_course . '/show')
-        . Form::getInputTextfield('search_t', 'text', 'text', $filter['text'], '', 255, '') //TO DO: value from $_SESSION
+        . Form::getInputTextfield('search_t', 'text', 'text', $filter['text'], '', 255, '') //TO DO: value from SESSION
         . Form::getButton('c_filter_set', 'c_filter_set', Lang::t('_SEARCH', 'standard'), 'search_b')
         . Form::getButton('c_filter_reset', 'c_filter_reset', Lang::t('_RESET', 'standard'), 'reset_b')
         . Form::closeForm()

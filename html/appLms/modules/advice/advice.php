@@ -531,7 +531,7 @@ function modreader()
     $user_select->setUserFilter('group', $arr_idstGroup);
     $arr_idstUser = $aclManager->getAllUsersFromIdst($arr_idstGroup);
     $user_select->setUserFilter('user', $arr_idstUser);
-    //$user_select->setGroupFilter('path', '/lms/course/'.$_SESSION['idCourse'].'/group');
+    //$user_select->setGroupFilter('path', '/lms/course/'.SESSION['idCourse'].'/group');
 
     $user_select->setPageTitle(getTitleArea(
         [

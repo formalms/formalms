@@ -68,7 +68,7 @@ class UsermanagementAdmController extends AdmController
     protected function _setSessionValue($index, $value)
     {
         $this->session->set($this->sessionPrefix . '_' . $index, $value);
-        //$_SESSION[$this->sessionPrefix][$index] = $value;
+       
     }
 
     protected function _getSessionValue($index, $default = false)
@@ -2357,7 +2357,7 @@ class UsermanagementAdmController extends AdmController
 
                 // ----------- file upload -----------------------------------------
                 if ($_FILES['file_import']['name'] == '') {
-                    //$_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
+           
                     Util::jump_to($base_url . '&res=no_file');
                 } else {
                     $path = '/appCore/';
@@ -2366,7 +2366,7 @@ class UsermanagementAdmController extends AdmController
                         sl_open_fileoperations();
                         if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                             sl_close_fileoperations();
-                            //$_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                
                             Util::jump_to($base_url . '&err=no_upload');
                         }
                         sl_close_fileoperations();

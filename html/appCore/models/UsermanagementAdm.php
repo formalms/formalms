@@ -1132,16 +1132,7 @@ class UsermanagementAdm extends Model
 
                 $acl_man->addToGroup($oc, $user_idst);
                 $acl_man->addToGroup($ocd, $user_idst);
-                /*
-                if(isset($_SESSION[$this->sessionPrefix]['selected_node']) && $_SESSION[$this->sessionPrefix]['selected_node'] !== 0)
-                {
-                    $oc_sn = $acl_man->getGroupST('oc_'.(int)$_SESSION[$this->sessionPrefix]['selected_node']);
-                    $ocd_sn = $acl_man->getGroupST('ocd_'.(int)$_SESSION[$this->sessionPrefix]['selected_node']);
-
-                    $acl_man->addToGroup($oc_sn, $user_idst);
-                    $acl_man->addToGroup($ocd_sn, $user_idst);
-                }
-*/
+           
                 //apply enroll rules
                 $langs = Docebo::langManager()->getAllLangCode();
                 $lang_code = (isset($langs[(isset($_POST['user_preference']['ui.language']) ? $_POST['user_preference']['ui.language'] : 'eng')]) ? $langs[$_POST['user_preference']['ui.language']] : false);

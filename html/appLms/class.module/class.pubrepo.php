@@ -288,15 +288,7 @@ class Module_Pubrepo extends LmsModule
             case 'display' :
             case 'pubrepo' :
             default:
-                /*$GLOBALS['page']->addStart(
-                    getTitleArea(Lang::t('_PUBREPO', 'pubrepo', 'lms'), 'pubrepo')
-                    .'<div class="std_block">', 'content');
-                $GLOBALS['page']->addEnd('</div>', 'content');
-                if( isset($_SESSION['last_error']) )
-                    if( $_SESSION['last_error'] != "" ) {
-                        $GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
-                        unset( $_SESSION['last_error'] );
-                    }*/
+         
                 pubrepo($this->treeView);
             break;
         }

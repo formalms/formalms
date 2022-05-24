@@ -77,9 +77,7 @@ function sl_sal_getUserId()
 
 function sl_sal_getUserName()
 {
-    /*$dbconn = $GLOBALS['dbConn'];
-    $result = sql_query("SELECT surname,name FROM ".$GLOBALS['prefix_lms']."_user WHERE idUser=".$_SESSION['sesUser']."");
-    list($surname, $name) = sql_fetch_array($result);*/
+
     $aclManager = Docebo::user()->getACLManager();
     $arr_result = $aclManager->getUser(Docebo::user()->getIdSt(), false);
 

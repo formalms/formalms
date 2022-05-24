@@ -52,11 +52,6 @@ class CartLmsController extends LmsController
 
         $res = ($req_code === $ses_code ? true : false);
 
-        /* if (!$res) {
-            echo $id_trans." -- ".$cart_id." .. ".$_SESSION['cart_transaction']." -- ".$_SESSION['cart_id'];
-            die();
-        } */
-
         return $res;
     }
 

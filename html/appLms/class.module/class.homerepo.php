@@ -288,15 +288,7 @@ class Module_Homerepo extends LmsModule
             case 'display' :
             case 'homerepo' :
             default:
-                /*$GLOBALS['page']->addStart(
-                    getTitleArea(Lang::t('_HOMEREPO', 'homerepo', 'lms'), 'homerepo')
-                    .'<div class="std_block">', 'content');
-                $GLOBALS['page']->addEnd('</div>', 'content');
-                if( isset($_SESSION['last_error']) )
-                    if( $_SESSION['last_error'] != "" ) {
-                        $GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
-                        unset( $_SESSION['last_error'] );
-                    }*/
+         
                 homerepo($this->treeView);
             break;
         }

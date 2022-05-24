@@ -2729,8 +2729,6 @@ class SubscriptionAlmsController extends AlmsController
                 Form::getHidden('is_updating', 'is_updating', 1) .
                 Form::getHidden('id_catalogue', 'id_catalogue', $id_catalogue)
             );
-            //$user_select->setPageTitle($page_title_arr);
-            //$user_select->resetSelection($_SESSION['report_tempdata']['rows_filter']['users']);
             $user_select->loadSelector(
                 Util::str_replace_once('&', '&amp;', $jump_url),
                 $page_title_arr,

@@ -115,13 +115,7 @@ function openreport($idrep = false)
 function get_update_info()
 {
     $output = '';
-    /*$lang =& DoceboLanguage::createInstance('report');
-    if (isset($_SESSION['report_update'])) {
-        $ref =& $_SESSION['report_update'];
-        if (is_int($ref) && $ref>0) {
-            //$output .= $lang->def('_REPORT_MODIFYING').getReportNameById($_SESSION['report_update']);
-        }
-    }*/
+  
     return $output;
 }
 
@@ -288,14 +282,13 @@ function get_report_table($url = '')
     }
 
     if (trim($reportAdminFilter['type']) > 0) {
-        //$qconds[] = " t1.filter_name LIKE '".$_SESSION['report_admin_filter']['name']."' ";
+        //$qconds[] = " t1.filter_name LIKE '".SESSION['report_admin_filter']['name']."' ";
     }
 
     if (!empty($qconds)) {
         $query .= ' WHERE ' . implode(' AND ', $qconds);
     }
 
-    //$_SESSION['report_admin_filter']['type']
     //end query
 
     $tb = new Table(Forma\lib\Get::sett('visu_course'));
@@ -760,7 +753,7 @@ function report_show_results($idrep = false)
 
     $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     if ($idrep == false) {
-        //die( print_r($_SESSION['report_tempdata'], true ) );
+     
         if (empty($session->get(_REPORT_SESSION))) {
             $reportTempData = $session->get('report');
         } else {
@@ -856,7 +849,6 @@ function report_show_results($idrep = false)
 
     // css -----------------------------------------------------------
     cout('<link href="' . getPathTemplate('lms') . 'style/report/style_report_user.css" rel="stylesheet" type="text/css" />' . "\n", 'page_head');
-    // $_SESSION['report_tempdata']['columns_filter_category']
 
     $query_update = "UPDATE %lms_report_filter SET views = views+1 WHERE id_filter = '" . $idrep . "'";
     $re_update = sql_query($query_update);

@@ -152,20 +152,7 @@ function user_projects($userid)
 
     return $res;
 
-    // --------------------------------------
-    // OLD:
-/*	$res=array();
-
-    $query=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_prj WHERE cid='".$_SESSION["idCourse"]."' ORDER BY ptitle;");
-
-    if (($query) && (sql_num_rows($query) > 0)) {
-        while ($row=sql_fetch_array($query)) {
-            $grpqry=sql_query("SELECT * FROM ".$GLOBALS["prefix_lms"]."_coursegroupuser WHERE (idGroup='".$row["pgroup"]."' AND idUser='$userid');");
-            if (sql_num_rows($grpqry) > 0) array_push($res, $row["id"]);
-        }
-    }
-
-    return $res; */
+    
 }
 
 function userProjectsList($userid)
@@ -221,26 +208,7 @@ function addprj()
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('project', 'lms');
     $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    //=groups=selection==============================================================
-    /* if( $_SESSION['levelCourse'] >= '5' ) {
-        $query_group = "
-        SELECT idGroup, groupName, description, level, owner
-        FROM ".$GLOBALS["prefix_lms"]."_coursegroup
-        WHERE idCourse='".$idCourse."'
-        ORDER BY groupName";
-    }
-    else {
-        $query_group = "
-        SELECT t1.idGroup, t1.groupName, t1.description, t1.level, t1.owner
-        FROM ".$GLOBALS["prefix_lms"]."_coursegroup AS t1, ".$GLOBALS["prefix_lms"]."_coursegroupuser AS t2
-        WHERE t1.idGroup = t2.idGroup AND
-            t1.idCourse='".$idCourse."'  AND
-            (t1.owner = '".$_SESSION['sesUser']."' OR t2.idUser = '".$_SESSION['sesUser']."')
-        GROUP BY t1.idGroup
-        ORDER BY t1.groupName";
-    } */
-    //===============================================================================
-
+   
     $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
 
     $out->add('<div class="std_block">' . "\n");
@@ -273,39 +241,7 @@ function addprj()
     $out->add($form->closeButtonSpace());
     $out->add($form->closeForm());
 
-    /*
-    $out->add("<form method=\"post\" action=\"index.php?modname=project&amp;op=addprj_now\">"."\n");
-
-    $out->add("<table>\n");
-    $out->add("<tr><td><b>".$lang->def("_PTITLE").":</b>\n");
-    $out->add("</td><td><input type=\"text\" id=\"ptitle\" name=\"ptitle\" size=\"40\" />\n");
-    $out->add("</td></tr>\n");
-    $out->add("<tr><td><b>".$lang->def("_PGROUP").":</b>\n");
-    $out->add("</td><td>\n");
-
-    $out->add("<select id=\"pgroup\" name=\"pgroup\">\n");
-
-
-    foreach ($groups as $group_id=>$group_info) {
-        $out->add("<option value=\"".$group_id."\">".$group_info["groupid"]."</option>\n");
-    }
-
-    $out->add("</select>\n");
-
-    $out->add("</td></tr>\n");
-    $out->add("<tr><td style=\"vertical-align: top;\"><b>".$lang->def("_POPTIONS").":</b>\n");
-    $out->add("</td><td>\n");
-    $out->add("<input type=\"checkbox\" id=\"psfiles\" name=\"psfiles\" value=\"1\" checked />".$lang->def("_PSFILES")."<br />\n");
-    $out->add("<input type=\"checkbox\" id=\"pstasks\" name=\"pstasks\" value=\"1\" checked />".$lang->def("_PSTASKS")."<br />\n");
-    $out->add("<input type=\"checkbox\" id=\"psnews\" name=\"psnews\" value=\"1\" checked />".$lang->def("_PSNEWS")."<br />\n");
-    $out->add("<input type=\"checkbox\" id=\"pstodo\" name=\"pstodo\" value=\"1\" checked />".$lang->def("_PSTODO")."<br />\n");
-    $out->add("<input type=\"checkbox\" id=\"psmsg\" name=\"psmsg\" value=\"1\" checked />".$lang->def("_PSMSG")."<br />\n");
-    $out->add("</td></tr>\n");
-    $out->add("</table>\n");
-
-    $out->add("<input class=\"button\" type=\"submit\" value=\"".$lang->def("_NEW_PROJECT")."\" />\n");
-    $out->add("</form>\n");
-    */
+  
     $out->add('</div>');
 }
 

@@ -143,16 +143,6 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
         }
 
         if (!empty($menu['submenu'])) {
-            /*
-             cout('<li class="main-v main-'.( $_SESSION['current_main_menu'] == $id_main ? 'open' : 'close' ).'">'
-
-                 .'<a class="main-av" href="#"
-                 onclick="( this.parentNode.className != \'main-v main-close\' ? this.parentNode.className = \'main-v main-close\' : this.parentNode.className = \'main-v main-open\' )"
-                 >'.$menu['main']['name'].'</a>'
-                 .'<div class="bd">'
-                 .'<ul>'
-             , 'menu');
-                */
 
             $active = "class='collapse'";
             $style = 'style="height: 0px;"';

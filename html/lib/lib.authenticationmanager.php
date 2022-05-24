@@ -92,11 +92,6 @@ class AuthenticationManager
         // recreate Anonymous user
         $GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
 
-        /*if ($session != null) {
-            $_SESSION = array_merge($_SESSION, $session);
-            $_COOKIE = array_merge($_COOKIE, $session);
-        }*/
-
         Events::trigger('core.user.logged_out', ['user' => $user]);
     }
 

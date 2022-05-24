@@ -47,7 +47,7 @@ YAHOO.util.Event.addListener(window, "load", function() {
 			checkbox.id 	= 'competence['+id+']';
 			checkbox.name 	= 'competence['+id+']';
 			checkbox.value 	= id;
-			checkbox.checked = sel; //false; //check selected rows (maybe keep them in $_SESSION on server) 
+			checkbox.checked = sel; //false; //check selected rows (maybe keep them in session on server) 
 
 			
 			YAHOO.util.Event.addListener(checkbox, "click", function(e) {

@@ -200,14 +200,6 @@ echo "<div id=\"headnav\">\n"
     . "	</div>\n"
     . "</div>\n";
 
-/*echo '<div id="headerLogo">';
-echo '<img src="'.$imagesPath.'logo.jpg" alt="logo spaghettilearning scorm" />';
-echo '</div>';*/
-        //echo '<div class="header">'."\n"
-        //	."\t".'<img class="immagineSx logo_sx" src="'.getPathImage().'scorm/logo.png" alt="Left logo" />'."\n";
-
-//echo "<img id=\"immagineSx\" src=\"../../templates/".$_SESSION["sesTemplate"]."/images/scorm/logo.png\" alt=\"Logo\" />\n";
-
 // statistics
 echo '<div id="statistics">';
 $itemtrack = new Scorm_ItemsTrack($dbconn, $GLOBALS['prefix_lms']);

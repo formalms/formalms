@@ -61,7 +61,7 @@ class CategoryFolderTree extends ClientTree
         $this->addLangKey('_DEL', $lang->def('_DEL'));
         //$this->addLangKey('_', $lang->def(''));
 
-        //$selected_node = (isset($_SESSION['course_category']['filter_status']) ? $_SESSION['course_category']['filter_status']['c_category'] : 0); //0 = root node
+        //$selected_node = (isset($SESSION['course_category']['filter_status']) ? $SESSION['course_category']['filter_status']['c_category'] : 0); //0 = root node
         $tree_status = $this->_getCourseTreeStatus(); //0 = root node
 
         $this->setOption('iconPath', Forma\lib\Get::tmpl_path() . 'images/');
@@ -128,49 +128,5 @@ class CategoryFolderTree extends ClientTree
         return $result;
     }
 
-    /*
-    function _getCourseTreeStatus() {
-        require_once(_lms_.'/lib/category/class.categorytree.php');
-        $treecat = new Categorytree();
-
-        if (!isset($_SESSION['course_category']['filter_status']['c_category']))
-            $_SESSION['course_category']['filter_status']['c_category'] = 0;
-        $treestatus =& $_SESSION['course_category']['filter_status']['c_category'];
-
-        $result = array();
-        $folders = $treecat->getOpenedFolders( $treestatus );
-
-        $ref =& $result;
-        foreach ($folders as $folder) {
-
-            if ($folder > 0) {
-                for ($i=0; $i<count($ref); $i++) {
-                    if ($ref[$i]['node']['id'] == $folder) {
-                        $ref[$i]['children'] = array();
-                        $ref =& $ref[$i]['children'];
-                        break;
-                    }
-                }
-            }
-
-            $childrens = $treecat->getChildrensById($folder);
-            while (list($id_category, $idParent, $path, $lev, $left, $right) = sql_fetch_row($childrens)) {
-                $is_leaf = ($right-$left) == 1;
-                $node_options = getNodeOptions($id_category, $is_leaf);
-                $ref[] = array(
-                    'node' => array(
-                        'id' => $id_category,
-                        'label' => end(explode('/', $path)),
-                        'is_leaf' => $is_leaf,
-                        'count_content' => (int)(($right-$left-1)/2),
-                        'options' => $node_options
-                    )
-                );
-            }
-
-        }
-
-        return $result;
-    }
-    */
+   
 }

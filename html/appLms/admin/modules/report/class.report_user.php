@@ -274,7 +274,7 @@ class Report_User extends Report
             }
 
             if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
-                //$_SESSION['report_tempdata']['rows_filter']['users'] = $user_select->getSelection($_POST);
+
                 $reportTempData['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
                 $this->session->set(_REPORT_SESSION,$reportTempData);
                 $this->session->save();
@@ -359,8 +359,6 @@ class Report_User extends Report
         foreach ($fieldsCourse as $keyCourse => $valCourse) {
             $customCourse[] = ['id' => $keyCourse, 'label' => $valCourse, 'selected' => false];
         }
-
-        //set $_POST data in $_SESSION['report_tempdata']
         $reportTempData = $this->session->get(_REPORT_SESSION);
 
         if (!isset($reportTempData['columns_filter'])) {
@@ -2523,8 +2521,6 @@ class Report_User extends Report
 
         $reportTempData = $this->session->get(_REPORT_SESSION);
 
-        //set $_POST data in $_SESSION['report_tempdata']
-
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
@@ -3183,7 +3179,6 @@ class Report_User extends Report
             Util::jump_to($back_url);
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
@@ -3212,8 +3207,8 @@ class Report_User extends Report
             $this->session->set(_REPORT_SESSION,$reportTempData);
             $this->session->save();
         } else {
-            //first loading of this page -> prepare $_SESSION data structure
-            //if (isset($_SESSION['report_update']) /* && is equal to id_report */) break;
+            //first loading of this page -> prepare session data structure
+
             //get users' custom fields
             require_once _adm_ . '/lib/lib.field.php';
             $fman = new FieldList();
@@ -4491,7 +4486,6 @@ class Report_User extends Report
             Util::jump_to($back_url);
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
@@ -4518,8 +4512,7 @@ class Report_User extends Report
             $this->session->set(_REPORT_SESSION,$reportTempData);
             $this->session->save();
         } else {
-            //first loading of this page -> prepare $_SESSION data structure
-            //if (isset($_SESSION['report_update']) /* && is equal to id_report */) break;
+            //first loading of this page -> prepare SESSION data structure
             //get users' custom fields
             require_once _adm_ . '/lib/lib.field.php';
             $fman = new FieldList();

@@ -367,12 +367,7 @@ class Track_Object
                 ]);
             }
             //---
-            /*
-                        if(isset($_SESSION['idCourse'])) {
-
-                            $idCourse = $_SESSION['idCourse'];
-                        } else {
-                            */
+       
             // the only way is a direct query :(, or else if more than one course is open only the last one will complete
             $query = 'SELECT idCourse '
                 . 'FROM %lms_organization '

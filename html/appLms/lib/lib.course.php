@@ -2609,7 +2609,6 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     $session->set('levelCourse',$course_info['level']);
 
     //we need to redo this
-    //$_SESSION['idEdition'] 		= $id_e;
 
     Docebo::user()->loadUserSectionST('/lms/course/private/' . $course_info['level'] . '/');
     Docebo::user()->SaveInSession();
@@ -2687,99 +2686,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     } else {
         return true;
     }
-    /*
 
-        // i need to play directly the course if it's not completed and is the only object of the course
-        require_once(_lms_.'/lib/lib.orgchart.php');
-        $orgman = new OrganizationManagement($_SESSION['idCourse']);
-        $first_lo =& $orgman->getInfoWhereType(false, $_SESSION['idCourse']);
-
-        if(count($first_lo) >= 1) {
-            $obj = array_shift($first_lo);
-            $_SESSION['direct_play'] = 1;
-            // is it completed ?
-            if(count($first_lo) >= 2) {
-
-
-            } else {
-                Util::jump_to('index.php?modname=organization&op=custom_playitem&id_item='.$obj['id_org'].'');
-            }
-        }
-        if($gotofirst_page) Util::jump_to($jumpurl);
-        else return true;
-    } else {
-        if ($course_info['course_type'] == "assessment") {
-            //check if we are managing the LOs from admin: if yes, jump into the test management
-            if (Forma\lib\Get::req('from_admin', DOTY_INT, 0) > 0) {
-                //enter the assessment course and go to test editing
-                $query = "SELECT idOrg, idResource FROM %lms_organization WHERE idCourse=".(int)$_SESSION['idCourse']." AND objectType='test' "
-                    ." ORDER BY path ASC, title ASC LIMIT 0,1";
-                $res = sql_query($query);
-                if ($res && sql_num_rows($res)>0) {
-
-                    list($id_org, $id_test) = sql_fetch_row($res);
-
-                    if ($id_test > 0) {
-                        require_once(_lms_.'/lib/lib.test.php');
-                        $tman = new TestManagement($id_test);
-
-                        if ($tman->getNumberOfQuestion() <= 0) {
-                            Util::jump_to('index.php?modname=test&op=modtestgui&idTest='.$id_test.'&back_url='.urlencode($jumpurl));
-                        }
-                    }
-                }
-            }
-        }
-        if($gotofirst_page) Util::jump_to($jumpurl);
-        else return true;
-    }
-
-
-    switch($course_info['course_type']) {
-        case "assessment" : {
-
-            if($_SESSION['levelCourse'] <= 3) {
-
-                // i need to play directly the test
-                require_once(_lms_.'/lib/lib.orgchart.php');
-                $orgman = new OrganizationManagement($_SESSION['idCourse']);
-                $test =& $orgman->getInfoWhereType('test', $_SESSION['idCourse']);
-
-                if(count($test) == 1) {
-                    $obj = array_shift($test);
-                    $_SESSION['test_assessment'] = 1;
-                    Util::jump_to('index.php?modname=organization&op=custom_playitem&id_item='.$obj['id_org'].'');
-                }
-                if($gotofirst_page) Util::jump_to($jumpurl);
-                else return true;
-            } else {
-                if($gotofirst_page) {
-                    //...
-                    Util::jump_to($jumpurl);
-                }
-                else return true;
-            }
-        };break;
-        default: {
-            if($gotofirst_page) Util::jump_to($jumpurl);
-            else return true;
-        }
-    }
-    /* not used in
-    // now analyze the course type and select the acton to perform
-    if(isset($_GET['showresult'])) {
-
-        require_once(_lms_.'/lib/lib.orgchart.php');
-        $orgman = new OrganizationManagement($_SESSION['idCourse']);
-        $scorm =& $orgman->getInfoWhereType('scormorg', $_SESSION['idCourse']);
-
-        if(count($scorm) == '1') {
-            $obj = array_shift($scorm);
-            Util::jump_to('index.php?modname=organization&op=scorm_track&id_user='.getLogUserId().'&id_org='.$obj['id_resource'].'&amp;back='.$GLOBALS['course_descriptor']->getValue('direct_play'));
-        }
-        Util::jump_to('index.php?modname=course&op=showresults&id_course='.$_SESSION['idCourse']);
-    }
-    */
 }
 
 function getModuleFromId($id_module)

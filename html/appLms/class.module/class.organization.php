@@ -314,8 +314,7 @@ class Module_Organization extends LmsModule
             $idResource = $folder->otherValues[REPOFIELDIDRESOURCE];
             $idParams = $folder->otherValues[ORGFIELDIDPARAM];
             $isTerminator = $folder->otherValues[ORGFIELDISTERMINATOR];
-            /*With this direct_play courses was set as finished if is passed the object automatically without needing to set it as finish course object
-            $isTerminator = ( isset($_SESSION['direct_play']) ? true : $folder->otherValues[ORGFIELDISTERMINATOR] );*/
+            //With this direct_play courses was set as finished if is passed the object automatically without needing to set it as finish course object
             $idCourse = $this->session->get('idCourse');
 
             if ($isTerminator) {
@@ -427,7 +426,7 @@ class Module_Organization extends LmsModule
                         . '<div class="std_block">', 'content');
                     $GLOBALS['page']->addEnd('</div>', 'content');
                     if (Forma::errorsExists()) {
-                        //$GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
+  
                         UIFeedback::error(Forma::getFormattedErrors(true));
                     }
                     organization($this->treeView);
@@ -504,7 +503,7 @@ class Module_Organization extends LmsModule
             case 'organization' :
             default:
                 if (Forma::errorsExists()) {
-                    //$GLOBALS['page']->add( $_SESSION['last_error'], 'content' );
+               
                     UIFeedback::error(Forma::getFormattedErrors(true));
                 }
                 organization($this->treeView);

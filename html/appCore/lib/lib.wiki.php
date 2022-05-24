@@ -1278,8 +1278,7 @@ class CoreWikiPublic
     public function getPageTempInfo($wiki_id, $page_code)
     {
         $res = false;
-        /* if (isset($_SESSION["wiki_temp_info"][$wiki_id][$page_code]))
-            print_r($_SESSION["wiki_temp_info"][$wiki_id][$page_code]); */
+ 
         $data = $this->session->get('wiki_temp_info');
         if (isset($data[$wiki_id][$page_code])) {
             $res = $data[$wiki_id][$page_code];

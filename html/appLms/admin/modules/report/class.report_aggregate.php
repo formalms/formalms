@@ -182,7 +182,6 @@ class Report_Aggregate extends Report
             Util::jump_to($back_url);
         }
 
-        //set $_POST data in $_SESSION['report_tempdata']
         $selector = new Selector_Course();
         $reportTempData = $this->session->get(_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {

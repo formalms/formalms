@@ -379,19 +379,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     list($path) = sql_fetch_row($rs);
     $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Forma\lib\Get::sett('pathscorm'));
 
-    /* copy all zip directory */
-    /* remove copy - use same files
-    $fname = explode ( '_', $path, 4);
-    $savefile = $_SESSION['sesUser'].'_'.rand(0,100).'_'.time().'_'.$fname[3];
-    $filepath = $pathscorm.$savefile;
 
-    if(file_exists($path)) {
-        if( !sl_copyr($path, $filepath ) ) {
-            $_SESSION['last_error'] = _ERRORCOPYFILE;
-            return FALSE;
-        }
-    }
-    */
     /* copy package record */
     $rs_package = sql_query("SELECT idpackage,idProg,'" . $path . "',defaultOrg,idUser,scormVersion "
         . ' FROM %lms_scorm_package '

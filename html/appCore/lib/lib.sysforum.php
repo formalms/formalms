@@ -577,8 +577,7 @@ class sys_forum
             $name_file = $this->save_file($_FILES['attach']);
         }
 
-        //if ((int)$_SESSION['sesCmsUser'] > 1) $author=(int)$_SESSION['sesCmsUser']; else $author=1;
-        $author = Docebo::user()->getIdSt();
+       $author = Docebo::user()->getIdSt();
         $ins_mess_query = '
 		INSERT INTO ' . $this->prefix . '_sysforum
 		SET ' . get_sql_tk_str($tk, '', ', ') . ",

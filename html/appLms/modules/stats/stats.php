@@ -364,8 +364,7 @@ function statuserfilter()
     //--- filter on class ------------------------------------------------------
 
     //retrieve class (date)
-    //$query = "SELECT * FROM %lms_course_date WHERE id_course = ".(int)$_SESSION['idCourse'];
-    $query = 'SELECT dt.id_date, dt.code, dt.name, MIN( dy.date_begin ) AS sub_start_date, MAX( dy.date_end ) AS sub_end_date
+   $query = 'SELECT dt.id_date, dt.code, dt.name, MIN( dy.date_begin ) AS sub_start_date, MAX( dy.date_end ) AS sub_end_date
 		FROM %lms_course_date AS dt
 		JOIN %lms_course_date_day AS dy ON dy.id_date = dt.id_date
 		WHERE dt.id_course = ' . (int) $idCourse . '  AND dy.deleted = 0
@@ -431,7 +430,6 @@ function statuserfilter()
     if ($group_filter != STATFILTER_ALL_GROUP) {
         $group_all_members = $aclManager->getGroupAllUser($group_filter);
     }
-    //$students = getSubscribedInfo((int)$_SESSION['idCourse'], FALSE, $lev, TRUE, ( $status_filter != -1 ? $status_filter : false ), false, true);
     $students = getSubscribedInfo(
         (int) $idCourse,
         false,

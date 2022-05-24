@@ -1121,7 +1121,7 @@ function setRoomViewPerm()
         $me = [getLogUserId()];
         $mdir->setUserFilter('exclude', $me);
         $mdir->setUserFilter('group', $arr_idstGroup);
-        //$mdir->setGroupFilter('path', '/lms/course/'.$_SESSION['idCourse'].'/group');
+     
 
         $mdir->loadSelector($url,
             $lang->def('_VIEW_PERMISSION'), '', true);
