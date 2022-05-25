@@ -33,6 +33,13 @@ class Util
 {
     protected static $_js_loaded = [];
 
+    protected static $session;
+
+    public function __construct()
+    {
+        self::$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    }
+
     public static function purge($html)
     {
         return addslashes(strip_tags($html));
@@ -192,9 +199,10 @@ class Util
         if ($addendum == false) {
             $addendum = time();
         }
-        if (!isset($_SESSION['mdsign'])) {
-            $_SESSION['mdsign'] = md5(uniqid(rand(), true) . '|' . mt_rand() . '|' . $addendum);
-            $_SESSION['mdsign_timestamp'] = time();
+        if (!self::$session->has('mdsign')) {
+            self::$session->set('mdsign', md5(uniqid(mt_rand(), true) . '|' . mt_rand() . '|' . $addendum));
+            self::$session->set('mdsign_timestamp',time());
+            self::$session->save();
         }
     }
 
@@ -205,14 +213,14 @@ class Util
      */
     public static function getSignature($for_link = false)
     {
-        if (!isset($_SESSION['mdsign'])) {
+        if (!self::$session->has('mdsign')) {
             Util::generateSignature();
         }
         if ($for_link) {
-            return 'authentic_request=' . $_SESSION['mdsign'];
+            return 'authentic_request=' . self::$session->get('mdsign');
         }
 
-        return $_SESSION['mdsign'];
+        return self::$session->get('mdsign');
     }
 
     /**
@@ -231,8 +239,7 @@ class Util
             $authentic_request = Forma\lib\Get::req('RelayState', DOTY_STRING, '');
         }
 
-        if (!isset($_SESSION['mdsign']) || $authentic_request !== $_SESSION['mdsign']
-        ) {
+        if (!self::$session->has('mdsign') || $authentic_request !== self::$session->get('mdsign')) {
             // Invalid request
             if (!defined('IS_AJAX')) {
                 Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_); // TODO: msg 101

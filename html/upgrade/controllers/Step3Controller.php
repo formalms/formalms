@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once dirname(__FILE__) . '/StepController.php';
+require_once __DIR__ . '/StepController.php';
 
 /**
  * Upgrade config file.
@@ -27,7 +27,7 @@ class Step3Controller extends StepController
 
     public function getNextStep($current_step)
     {
-        $version = $_SESSION['start_version'];
+        $version = $this->session->get('start_version');
         if (version_compare($version, '3600', '>=') &&
              version_compare($version, '4000', '<')) {
             //docebo ce v 3.x.x =>  step 4: specific 3.x db upgrade
