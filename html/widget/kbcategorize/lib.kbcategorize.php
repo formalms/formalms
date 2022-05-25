@@ -28,7 +28,7 @@ class kbcategorizeWidget extends Widget
     public $back_url = '';
     public $form_url = '';
     public $form_extra_hidden = [];
-
+    public $session = null;
     /**
      * Constructor.
      *
@@ -38,6 +38,7 @@ class kbcategorizeWidget extends Widget
     {
         parent::__construct();
         $this->_widget = 'kbcategorize';
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function run()
@@ -105,15 +106,17 @@ class kbcategorizeWidget extends Widget
 
     protected function _getSelectedNode()
     {
-        if (!isset($_SESSION['kb_categorize_sel']['selected_node'])) {
-            $_SESSION['kb_categorize_sel']['selected_node'] = 0;
+        if (!isset($this->session->get('kb_categorize_sel')['selected_node'])) {
+            $this->session->set('kb_categorize_sel', ['selected_node' => 0]);
+            $this->session->save();
         }
 
-        return $_SESSION['kb_categorize_sel']['selected_node'];
+        return $this->session->get('kb_categorize_sel')['selected_node'];
     }
 
     protected function _setSelectedNode($node_id)
     {
-        $_SESSION['kb_categorize_sel']['selected_node'] = (int) $node_id;
+        $this->session->set('kb_categorize_sel', ['selected_node' => (int) $node_id]);
+        $this->session->save();
     }
 }

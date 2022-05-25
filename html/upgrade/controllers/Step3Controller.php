@@ -20,6 +20,12 @@ class Step3Controller extends StepController
 {
     public $step = 3;
 
+    public $session = null;
+
+    public function __construct() {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    }
+
     public function validate()
     {
         return true;

@@ -16,12 +16,15 @@ require_once dirname(__FILE__) . '/StepController.php';
 class Step6Controller extends StepController
 {
     public $step = 6;
-
+    public $session = null;
+    public function __construct() {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    }
     public function render()
     {
         $platform_arr = getPlatformArray();
-        $_SESSION['platform_arr'] = $platform_arr;
-
+        $this->session->set('platform_arr', $platform_arr);
+        $this->session->save();
         $qtxt = 'SELECT lang_code FROM core_lang_language WHERE 1';
         // $q =sql_query($qtxt);
         require_once _base_ . '/config.php';
@@ -32,7 +35,7 @@ class Step6Controller extends StepController
         if ($q) {
             while ($row = sql_fetch_assoc($q)) {
                 $lang_code = $row['lang_code'];
-                $_SESSION['lang_install'][$lang_code] = 1;
+                $session->get('lang_install')[$lang_code] = 1;
             }
         }
 
