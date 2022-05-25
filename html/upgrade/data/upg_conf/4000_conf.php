@@ -41,21 +41,35 @@ function upgradeConfig4000($config)
         $config_sts = 2;
 
         require_once _base_ . '/config.php';
-        $_SESSION['db_info']['db_host'] = $GLOBALS['dbhost'];
-        $_SESSION['db_info']['db_user'] = $GLOBALS['dbuname'];
-        $_SESSION['db_info']['db_pass'] = $GLOBALS['dbpass'];
-        $_SESSION['db_info']['db_name'] = $GLOBALS['dbname'];
 
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        $dbInfo = $session->get('db_info');
+
+        $dbInfo['db_host'] = $GLOBALS['dbhost'];
+        $dbInfo['db_user'] = $GLOBALS['dbuname'];
+        $dbInfo['db_pass'] = $GLOBALS['dbpass'];
+        $dbInfo['db_name'] = $GLOBALS['dbname'];
+
+        $session->set('db_info',$dbInfo);
+
+        $uploadMethod = 'http';
         if ($GLOBALS['uploadType'] == 'fs') {
-            $_SESSION['upload_method'] = 'http';
+            $uploadMethod = 'http';
         } else {
-            $_SESSION['upload_method'] = 'ftp';
+            $uploadMethod = 'ftp';
         }
-        $_SESSION['ul_info']['ftp_host'] = $GLOBALS['ftphost'];
-        $_SESSION['ul_info']['ftp_port'] = $GLOBALS['ftpport'];
-        $_SESSION['ul_info']['ftp_user'] = $GLOBALS['ftpuser'];
-        $_SESSION['ul_info']['ftp_pass'] = $GLOBALS['ftppass'];
-        $_SESSION['ul_info']['ftp_path'] = $GLOBALS['ftppath'];
+        $session->set('upload_method',$uploadMethod);
+
+        $ulInfo['ftp_host'] = $GLOBALS['ftphost'];
+        $ulInfo['ftp_port'] = $GLOBALS['ftpport'];
+        $ulInfo['ftp_user'] = $GLOBALS['ftpuser'];
+        $ulInfo['ftp_pass'] = $GLOBALS['ftppass'];
+        $ulInfo['ftp_path'] = $GLOBALS['ftppath'];
+
+        $session->set('ul_info',$ulInfo);
+
+        $session->save();
 
         $fn = _upgrader_ . '/data/config_template.php';
 
