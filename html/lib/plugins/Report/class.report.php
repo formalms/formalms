@@ -123,8 +123,9 @@ class ReportPlugin
 
     public function useStandardTitle_Columns()
     {
-        if (isset($_SESSION['report_tempdata']['columns_filter_category'])) {
-            $temp = $_SESSION['report_tempdata']['columns_filter_category'];
+        $reportTempData = $this->session->get('report_tempdata');
+        if (isset($reportTempData['columns_filter_category'])) {
+            $temp = $reportTempData['columns_filter_category'];
         } else {
             return true;
         }
@@ -138,8 +139,9 @@ class ReportPlugin
 
     public function show_results($cat = false, $report_data = null)
     {
+        $reportTempData = $this->session->get('report_tempdata');
         if (!$cat) {
-            $cat = $_SESSION['report_tempdata']['columns_filter_category'];
+            $cat = $reportTempData['columns_filter_category'];
         }
         $name_func = $this->columns_categories[$cat]['show']; //['get_data'];
 
@@ -148,8 +150,9 @@ class ReportPlugin
 
     public function _get_data($type = 'html', $cat = false, $report_data = null)
     {
+        $reportTempData = $this->session->get('report_tempdata');
         if (!$cat) {
-            $cat = $_SESSION['report_tempdata']['columns_filter_category'];
+            $cat = $reportTempData['columns_filter_category'];
         }
         $name_func = $this->columns_categories[$cat]['get_data'];
 
@@ -282,27 +285,31 @@ class ReportSessionManager
 {
     public $data = null;
 
-    public function ReportSessionManager()
+    protected $session = null;
+
+    public function __construct()
     {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         if (!$this->_is_initialized()) {
             $this->_initialize();
         }
-        $data = &$_SESSION[_REPORT_SESSION];
     }
 
     public function _is_initialized()
     {
-        return isset($_SESSION[_REPORT_SESSION]);
+        return $this->session->has(_REPORT_SESSION);
     }
 
     public function _initialize()
     {
-        $_SESSION[_REPORT_SESSION] = [
+        $reportSessionData = [
             _RS_ID => false,
             _RS_ROWS_FILTER => false,
             _RS_COLS_CATEGORY => false,
             _RS_COLS_FILTER => false,
         ];
+        $this->session->set(_REPORT_SESSION,$reportSessionData);
+        $this->session->save();
     }
 
     public function setId($id)

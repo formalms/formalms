@@ -15,6 +15,7 @@ namespace Plugin\ConferenceBBB;
 
 use BigBlueButton;
 use Docebo;
+use Forma\lib\Session\SessionManager;
 use Get;
 use stdClass;
 
@@ -22,7 +23,7 @@ define('_BBB_STREAM_TIMEOUT', 30);
 define('_BBB_AUTH_CODE', 'X-BBB-Auth-Token');
 define('_BBB_AUTH_DATA', 'bbb_login_data');
 
-include_once dirname(__FILE__) . '/../lib.bbb.api.php';
+include_once __DIR__ . '/../lib.bbb.api.php';
 
 class Conference extends \PluginConference
 {
@@ -401,8 +402,10 @@ class Conference extends \PluginConference
 
     public static function get_auth_code()
     {
-        if (isset($_SESSION[_BBB_AUTH_CODE]) && $_SESSION[_BBB_AUTH_CODE]) {
-            return $_SESSION[_BBB_AUTH_CODE];
+        $session = SessionManager::getInstance()->getSession();
+
+        if ($session->has(_BBB_AUTH_CODE) && $session->get(_BBB_AUTH_CODE)) {
+            return $session->get(_BBB_AUTH_CODE);
         }
 
         return false;
@@ -410,6 +413,7 @@ class Conference extends \PluginConference
 
     public static function api_login()
     {
+        $session = SessionManager::getInstance()->getSession();
         $params = new stdClass();
         $params->account = Forma\lib\Get::sett('ConferenceBBB_user', '');
         $params->password = Forma\lib\Get::sett('ConferenceBBB_password', '');
@@ -418,8 +422,9 @@ class Conference extends \PluginConference
         $output = false;
         if ($res->result) {
             $auth_code = $res->response->authToken;
-            $_SESSION[_BBB_AUTH_CODE] = $auth_code;
-            $_SESSION[_BBB_AUTH_DATA] = $res->response;
+            $session->set(_BBB_AUTH_CODE,$auth_code);
+            $session->set(_BBB_AUTH_DATA,$res->response);
+            $session->save();
             $output = $auth_code;
         }
 
