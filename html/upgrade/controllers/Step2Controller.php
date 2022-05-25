@@ -20,11 +20,18 @@ require_once dirname(__FILE__) . '/StepController.php';
 class Step2Controller extends StepController
 {
     public $step = 2;
+    public $session = null;
+
+
+    public function __construct() {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    }
 
     public function validate()
     {
-        $_SESSION['start_version'] = Forma\lib\Get::req('start_version', DOTY_ALPHANUM, '3603');
-
+        
+        $this->session->set('start_version', Forma\lib\Get::req('start_version', DOTY_ALPHANUM, '3603'));
+        $this->session->save();
         return true;
     }
 
@@ -178,7 +185,7 @@ class Step2Controller extends StepController
     {
         $res = '';
 
-        $platform_folders = $_SESSION['platform_arr'];
+        $platform_folders = $session->get('platform_arr');
         $file_to_check = ['config.php'];
         $dir_to_check = [];
         $empty_dir_to_check = [];

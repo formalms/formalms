@@ -18,12 +18,7 @@ require '../config.php';
 
 $enabled_step = 3;
 $current_step = Forma\lib\Get::gReq('cur_step', DOTY_INT);
-//$upg_step = Forma\lib\Get::gReq('upg_step', DOTY_INT);
-
-//if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
-//	echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';
-//	die();
-//}
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
 // Collapse the upgrade from docebo 3.6xx into this procedure
 
@@ -32,8 +27,8 @@ if ($current_step != $enabled_step) {
     exit();
 }
 
-if (!empty($_SESSION['to_upgrade_arr'])) {
-    $to_upgrade_arr = $_SESSION['to_upgrade_arr'];
+if (!empty($session->get('to_upgrade_arr'))) {
+    $to_upgrade_arr = $session->get('to_upgrade_arr');
 } else {
     $to_upgrade_arr = getToUpgradeArray();
 }
@@ -50,10 +45,11 @@ if (file_exists($fn_config)) {
     fclose($handle);
 }
 
-$_SESSION['upgrade_ok'] = true;
+$session->set('upgrade_ok', true);
+$session->save();
 $config_changed = false;
 
-if ($_SESSION['upgrade_ok']) {
+if ($session->get('upgrade_ok')) {
     $GLOBALS['debug'] .= '<br/>' . 'Upgrading config ';
 
     // for all upgrade step required
@@ -73,7 +69,8 @@ if ($_SESSION['upgrade_ok']) {
                 $GLOBALS['debug'] .= ' <br/>' . 'Execute upgrade config func: ' . $func;
                 list($sts, $config) = $func($config);
                 if ($sts <= 0) {
-                    $_SESSION['upgrade_ok'] = false;
+                    $session->set('upgrade_ok', false);
+                    $session->save();
                     break;
                 } elseif ($sts > 1) { // made change in config
                     $config_changed = true;
@@ -86,7 +83,7 @@ if ($_SESSION['upgrade_ok']) {
 }
 
 $config_saved = false;
-if ($_SESSION['upgrade_ok']) {
+if ($session->get('upgrade_ok')) {
     if ($config_changed) {
         $dwnl = Forma\lib\Get::req('dwnl', DOTY_ALPHANUM, '0');
         if ($dwnl == 1) {
@@ -105,10 +102,9 @@ if ($_SESSION['upgrade_ok']) {
 }
 
 $GLOBALS['debug'] = ''
-                    //. '<br/>' . 'Result: ' . ( $_SESSION['upgrade_ok'] ? 'OK ' : 'ERROR !!! ' )
                     . '<br/> ----<br>' . $GLOBALS['debug']
                     . '<br> -----';
-if (!$_SESSION['upgrade_ok']) {
+if (!$session->get('upgrade_ok')) {
     $res = ['res' => 'Error', 'msg' => $GLOBALS['debug']];
 } elseif (!$config_changed) {
     $res = ['res' => 'not_change', 'msg' => $GLOBALS['debug']];

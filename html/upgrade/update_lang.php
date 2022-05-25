@@ -16,6 +16,9 @@ include 'bootstrap.php';
 require_once _installer_ . '/lib/lib.lang_import.php';
 require_once _lib_ . '/loggers/lib.logger.php';
 require_once _base_ . '/db/lib.docebodb.php';
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$dbInfo = $session->get('db_info');
+$langInstall = $session->get('lang_install');
 
 $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
@@ -36,7 +39,7 @@ $platform_code = Forma\lib\Get::pReq('platform', DOTY_STRING);
 $lang = Forma\lib\Get::pReq('lang', DOTY_STRING);
 $upgrade = Forma\lib\Get::pReq('upgrade', DOTY_INT);
 
-$lang_arr = array_keys($_SESSION['lang_install']);
+$lang_arr = array_keys($langInstall);
 $pl_arr = ['framework'];
 
 $cur['value'] = current($pl_arr);

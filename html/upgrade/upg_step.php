@@ -23,9 +23,11 @@ sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 $enabled_step = 4;
 $current_step = Forma\lib\Get::gReq('cur_step', DOTY_INT);
 $upg_step = Forma\lib\Get::gReq('upg_step', DOTY_INT);
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$startVersion = $session->get('start_version');
 
-if ($_SESSION['start_version'] < 3000 || $_SESSION['start_version'] >= 4000) {
-    echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too new (v4)';
+if ($startVersion < 3000 || $startVersion >= 4000) {
+    echo 'error: version (' . $startVersion . ') not supported for upgrade: too new (v4)';
     exit();
 }
 
@@ -115,7 +117,8 @@ switch ($upg_step) {
     case '9':  // --- Post upgrade queries --------------------------------------
         $fn = _upgrader_ . '/data/sql/post_upgrade.sql';
         importSqlFile($fn);
-        $_SESSION['start_version'] = 4040;
+        $session->set('start_version', 4040);
+        $session->save();
      break;
 }
 

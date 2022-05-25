@@ -22,8 +22,10 @@ class Step1Controller extends StepController
 
     public function validate()
     {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         $platform_arr = getPlatformArray();
-        $_SESSION['platform_arr'] = $platform_arr;
+        $session->set('platform_arr', $platform_arr);
+        $session->save();
 
         return true;
     }

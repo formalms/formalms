@@ -25,15 +25,16 @@ sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 $enabled_step = 5;
 $current_step = Forma\lib\Get::gReq('cur_step', DOTY_INT);
 $upg_step = Forma\lib\Get::gReq('upg_step', DOTY_INT);
-
+$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$startVersion = $session->get('start_version');
 // allowed err codes
 $allowed_err_codes = [];
 array_push($allowed_err_codes, 1060); // ER_DUP_FIELDNAME
 array_push($allowed_err_codes, 1068); // ER_MULTIPLE_PRI_KEY
 array_push($allowed_err_codes, 1091); // ER_CANT_DROP_FIELD_OR_KEY
 
-if ($_SESSION['start_version'] >= 3000 && $_SESSION['start_version'] < 4000) {
-    echo 'error: version (' . $_SESSION['start_version'] . ') not supported for upgrade: too old (v3)';
+if ($startVersion >= 3000 && $startVersion < 4000) {
+    echo 'error: version (' . $startVersion . ') not supported for upgrade: too old (v3)';
     exit();
 }
 
@@ -42,15 +43,15 @@ if ($current_step != $enabled_step) {
     exit();
 }
 
-if (!empty($_SESSION['to_upgrade_arr'])) {
-    $to_upgrade_arr = $_SESSION['to_upgrade_arr'];
+if (!empty($session->get('to_upgrade_arr'))) {
+    $to_upgrade_arr = $session->get('to_upgrade_arr');
 } else {
     $to_upgrade_arr = getToUpgradeArray();
 }
 
 $last_ver = (int) $GLOBALS['cfg']['endversion'];
 
-if ($_SESSION['upgrade_ok']) {
+if ($session->get('upgrade_ok')) {
     $current_ver = $to_upgrade_arr[$upg_step - 1];
     if ($current_ver != $last_ver) {
         $formalms_version = $GLOBALS['cfg']['versions'][$current_ver];
@@ -70,24 +71,26 @@ if ($_SESSION['upgrade_ok']) {
             $GLOBALS['debug'] .= ' <br/>' . 'Execute pre-upgrade func: ' . $func;
             $res = $func();
             if (!$res) {
-                $_SESSION['upgrade_ok'] = false;
+                $session->set('upgrade_ok', false);
+                $session->save();
             }
         }
     }
 
-    if ($_SESSION['upgrade_ok']) {
+    if ($session->get('upgrade_ok')) {
         // --- sql upgrade -----------------------------------------------------------
         $fn = _upgrader_ . '/data/upg_data/' . $GLOBALS['cfg']['detailversions'][$current_ver]['mysql'];
         if (file_exists($fn) && !is_dir($fn)) {
             $GLOBALS['debug'] .= ' <br/>' . 'Upgrade db with file: ' . $fn;
             $res = importSqlFile($fn, $allowed_err_codes);
             if (!$res['ok']) {
-                $_SESSION['upgrade_ok'] = false;
+                $session->set('upgrade_ok', false);
+                $session->save();
             }
         }
     }
 
-    if ($_SESSION['upgrade_ok']) {
+    if ($session->get('upgrade_ok')) {
         // --- post upgrade ----------------------------------------------------------
         $fn = _upgrader_ . '/data/upg_data/' . $GLOBALS['cfg']['detailversions'][$current_ver]['post'];
         if (file_exists($fn) && !is_dir($fn)) {
@@ -98,13 +101,14 @@ if ($_SESSION['upgrade_ok']) {
                 $GLOBALS['debug'] .= ' <br/>' . 'Execute post-upgrade func: ' . $func;
                 $res = $func();
                 if (!$res) {
-                    $_SESSION['upgrade_ok'] = false;
+                    $session->set('upgrade_ok', false);
+                    $session->save();
                 }
             }
         }
     }
 
-    if ($_SESSION['upgrade_ok']) {
+    if ($session->get('upgrade_ok')) {
         // --- roles -----------------------------------------------------------------
         require_once _lib_ . '/installer/lib.role.php';
         $fn = _upgrader_ . '/data/upg_data/' . $GLOBALS['cfg']['detailversions'][$current_ver]['role'];
@@ -136,7 +140,7 @@ if ($_SESSION['upgrade_ok']) {
 }
 
 // Save version number if upgrade was successfull:
-if ($_SESSION['upgrade_ok']) {
+if ($session->get('upgrade_ok')) {
     $qtxt = "UPDATE core_setting SET param_value = '" . $formalms_version . "' WHERE param_name = 'core_version' ";
     $q = sql_query($qtxt);
 
@@ -146,13 +150,13 @@ if ($_SESSION['upgrade_ok']) {
 }
 
 $GLOBALS['debug'] = $upgrade_msg
-                    . '<br/>' . 'Result: ' . ($_SESSION['upgrade_ok'] ? 'OK ' : 'ERROR !!! ')
+                    . '<br/>' . 'Result: ' . ($session->get('upgrade_ok') ? 'OK ' : 'ERROR !!! ')
                     . '<br/>' . $GLOBALS['debug']
                     . '<br>------';
 
 //echo $GLOBALS['debug'];
 
-if ($_SESSION['upgrade_ok']) {
+if ($session->get('upgrade_ok')) {
     $res = ['res' => 'ok', 'msg' => $GLOBALS['debug']];
 } else {
     $res = ['res' => 'Error', 'msg' => $GLOBALS['debug']];
