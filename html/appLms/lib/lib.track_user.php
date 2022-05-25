@@ -193,9 +193,10 @@ class TrackUser
         return $who_is_online_list;
     }
 
-    public function getLastAccessToCourse($id_user)
+    public static function getLastAccessToCourse($id_user)
     {
-        if ($this->session->get('is_ghost', false) === true) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if ($session->get('is_ghost', false) === true) {
             return 0;
         }
 
@@ -215,7 +216,9 @@ class TrackUser
 
     public function checkSession($id_user)
     {
-        if ($this->session->get('is_ghost', false) === true) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        if ($session->get('is_ghost', false) === true) {
             return true;
         }
 
@@ -223,7 +226,7 @@ class TrackUser
             $query_time = '
 			SELECT COUNT(*) 
 			FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-			WHERE idUser = '" . $id_user . "' AND idEnter = '" . $this->session->get('id_enter_course') . "' "
+			WHERE idUser = '" . $id_user . "' AND idEnter = '" . $session->get('id_enter_course') . "' "
                 . ' AND active = 1';
             list($num_active) = sql_fetch_row(sql_query($query_time));
 

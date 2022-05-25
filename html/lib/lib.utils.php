@@ -33,13 +33,6 @@ class Util
 {
     protected static $_js_loaded = [];
 
-    protected static $session;
-
-    public function __construct()
-    {
-        self::$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-    }
-
     public static function purge($html)
     {
         return addslashes(strip_tags($html));
@@ -199,10 +192,11 @@ class Util
         if ($addendum == false) {
             $addendum = time();
         }
-        if (!self::$session->has('mdsign')) {
-            self::$session->set('mdsign', md5(uniqid(mt_rand(), true) . '|' . mt_rand() . '|' . $addendum));
-            self::$session->set('mdsign_timestamp',time());
-            self::$session->save();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if (!$session->has('mdsign')) {
+            $session->set('mdsign', md5(uniqid(mt_rand(), true) . '|' . mt_rand() . '|' . $addendum));
+            $session->set('mdsign_timestamp',time());
+            $session->save();
         }
     }
 
@@ -213,14 +207,15 @@ class Util
      */
     public static function getSignature($for_link = false)
     {
-        if (!self::$session->has('mdsign')) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if (!$session->has('mdsign')) {
             Util::generateSignature();
         }
         if ($for_link) {
-            return 'authentic_request=' . self::$session->get('mdsign');
+            return 'authentic_request=' . $session->get('mdsign');
         }
 
-        return self::$session->get('mdsign');
+        return $session->get('mdsign');
     }
 
     /**
@@ -230,6 +225,7 @@ class Util
     {
         //signature from a post or get
         $authentic_request = Forma\lib\Get::req('authentic_request', DOTY_STRING, '');
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         // signature from a ajax request
         if (!$authentic_request && isset($_SERVER['HTTP_X_SIGNATURE'])) {
             $authentic_request = $_SERVER['HTTP_X_SIGNATURE'];
@@ -239,7 +235,7 @@ class Util
             $authentic_request = Forma\lib\Get::req('RelayState', DOTY_STRING, '');
         }
 
-        if (!self::$session->has('mdsign') || $authentic_request !== self::$session->get('mdsign')) {
+        if (!$session->has('mdsign') || $authentic_request !== $session->get('mdsign')) {
             // Invalid request
             if (!defined('IS_AJAX')) {
                 Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_); // TODO: msg 101

@@ -20,6 +20,7 @@ class UpdatesLms extends Model
 
     public function __construct()
     {
+        parent::__construct();
         require_once _lms_ . '/lib/lib.date.php';
         require_once _lms_ . '/lib/lib.course.php';
 

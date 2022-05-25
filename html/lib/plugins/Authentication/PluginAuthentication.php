@@ -20,6 +20,6 @@ abstract class PluginAuthentication extends FormaPlugin
 
     public function __construct()
     {
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        self::$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     }
 }
