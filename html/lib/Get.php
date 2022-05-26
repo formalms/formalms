@@ -552,7 +552,7 @@ class Get
                     . '</h1>' . "\n";
 
                 if (!defined('IS_AJAX')) {
-                    $GLOBALS['page']->add('<li><a href="#main_area_title">' . Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
+                    $GLOBALS['page']->add('<li><a href="#main_area_title">' . \Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
                 }
 
                 if ($title) {
