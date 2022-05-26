@@ -21,6 +21,13 @@ require_once _base_ . '/lib/lib.form.php';
 require_once _lms_ . '/lib/lib.report.php';
 require_once _lms_ . '/admin/modules/report/report_schedule.php';
 
+define('_REPORT_SESSION', 'report_tempdata');
+define('_RS_ID', 'id_report');
+define('_RS_ROWS_FILTER', 'rows_filter');
+define('_RS_COLS_FILTER', 'columns_filter');
+define('_RS_COLS_CATEGORY', 'columns_filter_category');
+
+
 function _encode(&$data)
 {
     return serialize($data);
@@ -81,6 +88,7 @@ function openreport($idrep = false)
     if ($idrep != false && $idrep > 0) {
         $id_report = $idrep;
     } else {
+      
         $id_report = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get(_REPORT_SESSION)['id_report'];
 
         if ($id_report != false && $idrep > 0) {
@@ -98,13 +106,16 @@ function openreport($idrep = false)
 
         return;
     }
+
     list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
     //when file name set use old style
     if ($file_name) {
-        require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
 
+        require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
+      
         $obj_report = new $class_name($id_report);
     } else {
+        dd("qui");
         $pg = new PluginManager('Report');
         $obj_report = $pg->get_plugin($class_name, [$id_report]);
     }
@@ -565,6 +576,7 @@ function report_rows_filter()
         Util::jump_to('index.php?modname=report&op=reportlist');
     }
 
+ 
     $lang = &DoceboLanguage::createInstance('report');
     $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
@@ -584,6 +596,7 @@ function report_rows_filter()
     $obj_report->jump_url = 'index.php?modname=report&op=report_rows_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_sel_columns';
 
+  
     $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             'index.php?modname=report&amp;op=report_category' => $lang->def('_NEW'),
@@ -642,9 +655,11 @@ function report_columns_filter()
     $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
     if (isset($_POST['columns_filter'])) {
+   
         $reportTempData['columns_filter_category'] = $_POST['columns_filter'];
         $session->set(_REPORT_SESSION,$reportTempData);
         $session->save();
+       
     }
 
     $lang = &DoceboLanguage::createInstance('report');
@@ -1060,7 +1075,7 @@ function report_modify_columns()
 
     require_once _base_ . '/lib/lib.form.php';
 
-
+ 
     if (isset($_POST['columns_filter'])) {
         $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
         $reportTempData = $session->get(_REPORT_SESSION);

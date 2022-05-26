@@ -15,11 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 //report session managemente class
 
-const _REPORT_SESSION = 'report_tempdata';
-const _RS_ID = 'id_report';
-const _RS_ROWS_FILTER = 'rows_filter';
-const _RS_COLS_FILTER = 'columns_filter';
-const _RS_COLS_CATEGORY = 'columns_filter_category';
+
 
 //report superclass
 
@@ -45,6 +41,12 @@ class Report
     public $db = null;
 
     protected $session;
+
+    const _REPORT_SESSION = 'report_tempdata';
+    const _RS_ID = 'id_report';
+    const _RS_ROWS_FILTER = 'rows_filter';
+    const _RS_COLS_FILTER = 'columns_filter';
+    const _RS_COLS_CATEGORY = 'columns_filter_category';
 
     public function __construct($id_report, $report_name = false)
     {
@@ -124,7 +126,7 @@ class Report
 
     public function useStandardTitle_Columns()
     {
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (array_key_exists('columns_filter_category', $reportTempData) && isset($reportTempData['columns_filter_category'])) {
             $temp = $reportTempData['columns_filter_category'];
         } else {
@@ -140,18 +142,18 @@ class Report
 
     public function show_results($cat = false, $report_data = null)
     {
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
+       
         if (!$cat) {
             $cat = $reportTempData['columns_filter_category'];
         }
         $name_func = $this->columns_categories[$cat]['show']; //['get_data'];
-
         return $this->$name_func($report_data);
     }
 
     public function _get_data($type = 'html', $cat = false, $report_data = null)
     {
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!$cat) {
             $cat = $reportTempData['columns_filter_category'];
         }
@@ -288,6 +290,12 @@ class ReportSessionManager
 
     protected $session;
 
+    const _REPORT_SESSION = 'report_tempdata';
+    const _RS_ID = 'id_report';
+    const _RS_ROWS_FILTER = 'rows_filter';
+    const _RS_COLS_FILTER = 'columns_filter';
+    const _RS_COLS_CATEGORY = 'columns_filter_category';
+
     public function __construct()
     {
         $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
@@ -298,62 +306,66 @@ class ReportSessionManager
 
     public function _is_initialized()
     {
-        return $this->session->has(_REPORT_SESSION);
+        return $this->session->has(self::_REPORT_SESSION);
     }
 
     public function _initialize()
     {
-        $this->session->set(_REPORT_SESSION, [
-            _RS_ID => false,
-            _RS_ROWS_FILTER => false,
-            _RS_COLS_CATEGORY => false,
-            _RS_COLS_FILTER => false,
+        $this->session->set(self::_REPORT_SESSION, [
+            self::_RS_ID => false,
+            self::_RS_ROWS_FILTER => false,
+            self::_RS_COLS_CATEGORY => false,
+            self::_RS_COLS_FILTER => false,
         ]);
         $this->session->save();
     }
 
     public function setId($id)
     {
-        $this->data[_RS_ID] = $id;
+        $this->data[self::_RS_ID] = $id;
     }
 
     public function getId()
     {
-        return $this->data[_RS_ID];
+        return $this->data[self::_RS_ID];
     }
 
     public function setRowsFilter(&$data)
     {
-        $this->data[_RS_ROWS_FILTER] = $data;
+        $this->data[self::_RS_ROWS_FILTER] = $data;
     }
 
     public function getRowsFilter()
     {
-        return $this->data[_RS_ROWS_FILTER];
+        return $this->data[self::_RS_ROWS_FILTER];
     }
 
     public function setColsFilter(&$data)
     {
-        $this->data[_RS_COLS_FILTER] = $data;
+        $this->data[self::_RS_COLS_FILTER] = $data;
     }
 
     public function getColsFilter()
     {
-        return $this->data[_RS_COLS_FILTER];
+        return $this->data[self::_RS_COLS_FILTER];
     }
 
     public function setColsCategory($category)
     {
-        $this->data[_RS_COLS_CATEGORY] = $category;
+        $this->data[self::_RS_COLS_CATEGORY] = $category;
     }
 
     public function getColsCategory()
     {
-        return $this->data[_RS_COLS_CATEGORY];
+        return $this->data[self::_RS_COLS_CATEGORY];
     }
 
     public function flush()
     {
         $this->initialize();
+    }
+
+    private function initialize() {
+        
     }
 }

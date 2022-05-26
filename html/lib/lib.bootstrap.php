@@ -11,6 +11,8 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use function GuzzleHttp\default_ca_bundle;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
@@ -180,7 +182,25 @@ class Boot
         // debugging ?
         self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
-            @error_reporting(E_ALL);
+            switch($cfg['debug_level']) {
+                case 'error':
+                    @error_reporting(E_ERROR);
+                    break;
+                case 'warning':
+                    @error_reporting(E_WARNING);
+                    break;
+                case 'notice':
+                    @error_reporting(E_NOTICE);
+                    break;
+                case 'deprecated':
+                    @error_reporting(E_DEPRECATED);
+                    break;
+                default:
+                    @error_reporting(E_ALL);
+                    break;
+                
+            }
+            
             @ini_set('display_errors', 1);
         } else {
             @error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);

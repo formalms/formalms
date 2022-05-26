@@ -42,6 +42,7 @@ define('_MILESTONE_NONE', 'ml_none');
 define('_MILESTONE_START', 'ml_start');
 define('_MILESTONE_END', 'ml_end');
 
+
 class Report_User extends Report
 {
     //var $rows_filter = array();
@@ -61,7 +62,7 @@ class Report_User extends Report
 
     public function Report_User($id_report, $report_name = false)
     {
-        parent::Report($id_report, $report_name);
+        parent::__construct($id_report, $report_name);
         $this->lang = &DoceboLanguage::createInstance('report', 'framework');
         $this->usestandardtitle_rows = false;
 
@@ -211,7 +212,7 @@ class Report_User extends Report
 
     public function get_rows_filter()
     {
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!isset($reportTempData['rows_filter'])) {
             $reportTempData['rows_filter'] = [
                 'users' => [],
@@ -244,7 +245,7 @@ class Report_User extends Report
 
             $reportTempData['rows_filter']['rows_filter']['users'] = $temp;
             $reportTempData['rows_filter']['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
 
             Util::jump_to($next_url);
@@ -276,7 +277,7 @@ class Report_User extends Report
             if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
 
                 $reportTempData['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             } else {
                 $user_select->requested_tab = PEOPLEVIEW_TAB;
@@ -359,7 +360,7 @@ class Report_User extends Report
         foreach ($fieldsCourse as $keyCourse => $valCourse) {
             $customCourse[] = ['id' => $keyCourse, 'label' => $valCourse, 'selected' => false];
         }
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
@@ -439,7 +440,7 @@ class Report_User extends Report
                 ];
             }
             $reportTempData['columns_filter'] = $temp;
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         } else {
             $selector->resetSelection($selection);
@@ -447,7 +448,7 @@ class Report_User extends Report
             //get users' custom fields
             if (!isset($reportTempData['columns_filter']['custom_fields'])) {
                 $reportTempData['columns_filter']['custom_fields'] = $custom;
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             } else {
                 $t_arr = [];
@@ -466,13 +467,13 @@ class Report_User extends Report
                     ];
                 }
                 $reportTempData['columns_filter']['custom_fields'] = $t_arr;
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             }
 
             if (!isset($reportTempData['columns_filter']['custom_fields_org'])) {
                 $reportTempData['columns_filter']['custom_fields_org'] = $customOrg;
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             } else {
                 $t_arr = [];
@@ -493,13 +494,13 @@ class Report_User extends Report
                     ];
                 }
                 $reportTempData['columns_filter']['custom_fields_org'] = $t_arr;
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             }
 
             if (!isset($reportTempData['columns_filter']['custom_fields_course'])) {
                 $reportTempData['columns_filter']['custom_fields_course'] = $customCourse;
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             } else {
                 $t_arr = [];
@@ -520,7 +521,7 @@ class Report_User extends Report
                     ];
                 }
                 $reportTempData['columns_filter']['custom_fields_course'] = $t_arr;
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             }
         }
@@ -711,16 +712,7 @@ class Report_User extends Report
 
             . '</div>';
         cout($box->get());
-
-        function is_showed($which)
-        {
-            $reportTempData = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get(_REPORT_SESSION);
-            if (isset($reportTempData['columns_filter'])) {
-                return in_array($which, $reportTempData['columns_filter']['showed_columns']);
-            } else {
-                return false;
-            }
-        }
+    
 
         //box for columns selection
         $box = new ReportBox('columns_selection');
@@ -729,12 +721,12 @@ class Report_User extends Report
         //Form::openElementSpace()
 
         $box->body .= Form::getOpenFieldset($lang->def('_USER_CUSTOM_FIELDS'), 'fieldset_course_fields');
-        $box->body .= Form::getCheckBox(Lang::t('_LASTNAME', 'standard'), 'col_sel_lastname', 'cols[]', '_TH_LASTNAME', is_showed('_TH_LASTNAME'));
-        $box->body .= Form::getCheckBox(Lang::t('_FIRSTNAME', 'standard'), 'col_sel_firstname', 'cols[]', '_TH_FIRSTNAME', is_showed('_TH_FIRSTNAME'));
-        $box->body .= Form::getCheckBox(Lang::t('_EMAIL', 'standard'), 'col_sel_email', 'cols[]', '_TH_EMAIL', is_showed('_TH_EMAIL'));
-        $box->body .= Form::getCheckBox(Lang::t('_REGISTER_DATE', 'standard'), 'col_sel_register_date', 'cols[]', '_TH_REGISTER_DATE', is_showed('_TH_REGISTER_DATE'));
-        $box->body .= Form::getCheckBox(Lang::t('_SUSPENDED', 'standard'), 'col_sel_suspended', 'cols[]', '_TH_SUSPENDED', is_showed('_TH_SUSPENDED'));
-        $box->body .= Form::getCheckBox(Lang::t('_ORGCHART', 'standard') . '', 'col_sel_organization_chart', 'cols[]', '_TH_ORGANIZATION_CHART', is_showed('_TH_ORGANIZATION_CHART'));
+        $box->body .= Form::getCheckBox(Lang::t('_LASTNAME', 'standard'), 'col_sel_lastname', 'cols[]', '_TH_LASTNAME', $this->is_showed('_TH_LASTNAME'));
+        $box->body .= Form::getCheckBox(Lang::t('_FIRSTNAME', 'standard'), 'col_sel_firstname', 'cols[]', '_TH_FIRSTNAME', $this->is_showed('_TH_FIRSTNAME'));
+        $box->body .= Form::getCheckBox(Lang::t('_EMAIL', 'standard'), 'col_sel_email', 'cols[]', '_TH_EMAIL', $this->is_showed('_TH_EMAIL'));
+        $box->body .= Form::getCheckBox(Lang::t('_REGISTER_DATE', 'standard'), 'col_sel_register_date', 'cols[]', '_TH_REGISTER_DATE', $this->is_showed('_TH_REGISTER_DATE'));
+        $box->body .= Form::getCheckBox(Lang::t('_SUSPENDED', 'standard'), 'col_sel_suspended', 'cols[]', '_TH_SUSPENDED', $this->is_showed('_TH_SUSPENDED'));
+        $box->body .= Form::getCheckBox(Lang::t('_ORGCHART', 'standard') . '', 'col_sel_organization_chart', 'cols[]', '_TH_ORGANIZATION_CHART', $this->is_showed('_TH_ORGANIZATION_CHART'));
         if (count($custom) > 0) {
             foreach ($custom as $key => $val) {
                 $box->body .= Form::getCheckBox($val['label'], 'col_custom_' . $val['id'], 'custom[' . $val['id'] . ']', $val['id'], $reportTempData['columns_filter']['custom_fields'][$key]['selected']);
@@ -768,13 +760,13 @@ class Report_User extends Report
 
         $box->body .=
             Form::getOpenFieldset($lang->def('_COURSE_FIELDS'), 'fieldset_course_fields')
-            . Form::getCheckBox($lang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_TH_CAT', is_showed('_TH_CAT'))
-            . Form::getCheckBox($lang->def('_CODE'), 'col_sel_coursecode', 'cols[]', '_TH_CODE', is_showed('_TH_CODE'))
-            . Form::getCheckBox($lang->def('_COURSE_TYPE'), 'col_sel_coursetype', 'cols[]', '_TH_COURSETYPE', is_showed('_TH_COURSETYPE'))
-            . Form::getCheckBox($lang->def('_TH_COURSEPATH'), 'col_sel_coursepath', 'cols[]', '_TH_COURSEPATH', is_showed('_TH_COURSEPATH'))
-            . Form::getCheckBox($lang->def('_STATUS'), 'col_sel_status', 'cols[]', '_TH_COURSESTATUS', is_showed('_TH_COURSESTATUS'))
-            . Form::getCheckBox(Lang::t('_CREDITS', 'standard'), 'col_sel_credits', 'cols[]', '_TH_COURSECREDITS', is_showed('_TH_COURSECREDITS'))
-            . Form::getCheckBox(Lang::t('_LABEL', 'standard'), 'col_sel_label', 'cols[]', '_TH_COURSELABEL', is_showed('_TH_COURSELABEL'))
+            . Form::getCheckBox($lang->def('_CATEGORY'), 'col_sel_category', 'cols[]', '_TH_CAT', $this->is_showed('_TH_CAT'))
+            . Form::getCheckBox($lang->def('_CODE'), 'col_sel_coursecode', 'cols[]', '_TH_CODE', $this->is_showed('_TH_CODE'))
+            . Form::getCheckBox($lang->def('_COURSE_TYPE'), 'col_sel_coursetype', 'cols[]', '_TH_COURSETYPE', $this->is_showed('_TH_COURSETYPE'))
+            . Form::getCheckBox($lang->def('_TH_COURSEPATH'), 'col_sel_coursepath', 'cols[]', '_TH_COURSEPATH', $this->is_showed('_TH_COURSEPATH'))
+            . Form::getCheckBox($lang->def('_STATUS'), 'col_sel_status', 'cols[]', '_TH_COURSESTATUS', $this->is_showed('_TH_COURSESTATUS'))
+            . Form::getCheckBox(Lang::t('_CREDITS', 'standard'), 'col_sel_credits', 'cols[]', '_TH_COURSECREDITS', $this->is_showed('_TH_COURSECREDITS'))
+            . Form::getCheckBox(Lang::t('_LABEL', 'standard'), 'col_sel_label', 'cols[]', '_TH_COURSELABEL', $this->is_showed('_TH_COURSELABEL'))
             . Form::getCloseFieldset();
 
         $box->body .= Form::getOpenFieldset($lang->def('_ADDITIONAL_FIELDS_COURSES', 'courses'), 'report');
@@ -790,32 +782,32 @@ class Report_User extends Report
             . Lang::t('_ACTIVATE_CLASSROOM_FIELDS', 'report')
             . '</div>'
             . '<div id="use_classrooms" style="display:' . ($show_classrooms_editions ? 'block' : 'none') . '">'
-            . Form::getCheckBox(Lang::t('_NAME', 'standard'), 'col_sel_classroomname', 'cols[]', '_TH_CLASSROOM_CODE', is_showed('_TH_CLASSROOM_CODE', $reportTempData['columns_filter']))
-            . Form::getCheckBox(Lang::t('_CODE', 'standard'), 'col_sel_classroomcode', 'cols[]', '_TH_CLASSROOM_NAME', is_showed('_TH_CLASSROOM_NAME', $reportTempData['columns_filter']))
-            . Form::getCheckBox(Lang::t('_DATE_BEGIN', 'standard'), 'col_sel_classroomdatebegin', 'cols[]', '_TH_CLASSROOM_MIN_DATE', is_showed('_TH_CLASSROOM_MIN_DATE', $reportTempData['columns_filter']))
-            . Form::getCheckBox(Lang::t('_DATE_END', 'standard'), 'col_sel_classroomdateend', 'cols[]', '_TH_CLASSROOM_MAX_DATE', is_showed('_TH_CLASSROOM_MAX_DATE', $reportTempData['columns_filter']))
+            . Form::getCheckBox(Lang::t('_NAME', 'standard'), 'col_sel_classroomname', 'cols[]', '_TH_CLASSROOM_CODE', $this->is_showed_data('_TH_CLASSROOM_CODE', $reportTempData['columns_filter']))
+            . Form::getCheckBox(Lang::t('_CODE', 'standard'), 'col_sel_classroomcode', 'cols[]', '_TH_CLASSROOM_NAME', $this->is_showed_data('_TH_CLASSROOM_NAME', $reportTempData['columns_filter']))
+            . Form::getCheckBox(Lang::t('_DATE_BEGIN', 'standard'), 'col_sel_classroomdatebegin', 'cols[]', '_TH_CLASSROOM_MIN_DATE', $this->is_showed_data('_TH_CLASSROOM_MIN_DATE', $reportTempData['columns_filter']))
+            . Form::getCheckBox(Lang::t('_DATE_END', 'standard'), 'col_sel_classroomdateend', 'cols[]', '_TH_CLASSROOM_MAX_DATE', $this->is_showed_data('_TH_CLASSROOM_MAX_DATE', $reportTempData['columns_filter']))
             . '</div>'
             . Form::getCloseFieldset()
 
             . Form::getOpenFieldset($lang->def('_COURSE_FIELDS_INFO'), 'fieldset_course_fields')
-            . Form::getCheckBox($lang->def('_TH_USER_INSCRIPTION_DATE'), 'user_inscription_date', 'cols[]', '_TH_USER_INSCRIPTION_DATE', is_showed('_TH_USER_INSCRIPTION_DATE'))
-            . Form::getCheckBox($lang->def('_DATE_FIRST_ACCESS'), 'user_start_date', 'cols[]', '_TH_USER_START_DATE', is_showed('_TH_USER_START_DATE'))
-            . Form::getCheckBox($lang->def('_COMPLETED'), 'user_end_date', 'cols[]', '_TH_USER_END_DATE', is_showed('_TH_USER_END_DATE'))
-            . Form::getCheckBox($lang->def('_DATE_LAST_ACCESS'), 'last_access_date', 'cols[]', '_TH_LAST_ACCESS_DATE', is_showed('_TH_LAST_ACCESS_DATE'))
-            . Form::getCheckBox($lang->def('_LEVEL'), 'user_level', 'cols[]', '_TH_USER_LEVEL', is_showed('_TH_USER_LEVEL'))
-            . Form::getCheckBox($lang->def('_STATUS'), 'user_status', 'cols[]', '_TH_USER_STATUS', is_showed('_TH_USER_STATUS'))
-            . Form::getCheckBox($lang->def('_TH_USER_START_SCORE'), 'user_start_score', 'cols[]', '_TH_USER_START_SCORE', is_showed('_TH_USER_START_SCORE'))
-            . Form::getCheckBox($lang->def('_FINAL_SCORE'), 'user_final_score', 'cols[]', '_TH_USER_FINAL_SCORE', is_showed('_TH_USER_FINAL_SCORE'))
-            . Form::getCheckBox($lang->def('_TH_USER_COURSE_SCORE'), 'user_course_score', 'cols[]', '_TH_USER_COURSE_SCORE', is_showed('_TH_USER_COURSE_SCORE'))
-            . Form::getCheckBox($lang->def('_TH_USER_NUMBER_SESSION'), 'user_number_session', 'cols[]', '_TH_USER_NUMBER_SESSION', is_showed('_TH_USER_NUMBER_SESSION'))
-            . Form::getCheckBox($lang->def('_TOTAL_TIME'), 'user_elapsed_time', 'cols[]', '_TH_USER_ELAPSED_TIME', is_showed('_TH_USER_ELAPSED_TIME'))
-            . Form::getCheckBox($lang->def('_TH_ESTIMATED_TIME'), 'estimated_time', 'cols[]', '_TH_ESTIMATED_TIME', is_showed('_TH_ESTIMATED_TIME'))
+            . Form::getCheckBox($lang->def('_TH_USER_INSCRIPTION_DATE'), 'user_inscription_date', 'cols[]', '_TH_USER_INSCRIPTION_DATE',  $this->is_showed('_TH_USER_INSCRIPTION_DATE'))
+            . Form::getCheckBox($lang->def('_DATE_FIRST_ACCESS'), 'user_start_date', 'cols[]', '_TH_USER_START_DATE', $this->is_showed('_TH_USER_START_DATE'))
+            . Form::getCheckBox($lang->def('_COMPLETED'), 'user_end_date', 'cols[]', '_TH_USER_END_DATE',  $this->is_showed('_TH_USER_END_DATE'))
+            . Form::getCheckBox($lang->def('_DATE_LAST_ACCESS'), 'last_access_date', 'cols[]', '_TH_LAST_ACCESS_DATE',  $this->is_showed('_TH_LAST_ACCESS_DATE'))
+            . Form::getCheckBox($lang->def('_LEVEL'), 'user_level', 'cols[]', '_TH_USER_LEVEL',  $this->is_showed('_TH_USER_LEVEL'))
+            . Form::getCheckBox($lang->def('_STATUS'), 'user_status', 'cols[]', '_TH_USER_STATUS',  $this->is_showed('_TH_USER_STATUS'))
+            . Form::getCheckBox($lang->def('_TH_USER_START_SCORE'), 'user_start_score', 'cols[]', '_TH_USER_START_SCORE',  $this->is_showed('_TH_USER_START_SCORE'))
+            . Form::getCheckBox($lang->def('_FINAL_SCORE'), 'user_final_score', 'cols[]', '_TH_USER_FINAL_SCORE',  $this->is_showed('_TH_USER_FINAL_SCORE'))
+            . Form::getCheckBox($lang->def('_TH_USER_COURSE_SCORE'), 'user_course_score', 'cols[]', '_TH_USER_COURSE_SCORE',  $this->is_showed('_TH_USER_COURSE_SCORE'))
+            . Form::getCheckBox($lang->def('_TH_USER_NUMBER_SESSION'), 'user_number_session', 'cols[]', '_TH_USER_NUMBER_SESSION',  $this->is_showed('_TH_USER_NUMBER_SESSION'))
+            . Form::getCheckBox($lang->def('_TOTAL_TIME'), 'user_elapsed_time', 'cols[]', '_TH_USER_ELAPSED_TIME',  $this->is_showed('_TH_USER_ELAPSED_TIME'))
+            . Form::getCheckBox($lang->def('_TH_ESTIMATED_TIME'), 'estimated_time', 'cols[]', '_TH_ESTIMATED_TIME',  $this->is_showed('_TH_ESTIMATED_TIME'))
             . Form::getCloseFieldset()
 
             //** LUCA
             . Form::getOpenFieldset($lang->def('_PROGRESS'), 'fieldset_course_fields')
-            . Form::getCheckBox($lang->def('_PERCENTAGE'), 'perc_lo', 'cols[]', '_TH_PERC_LO', is_showed('_TH_PERC_LO'))
-            . Form::getCheckBox($lang->def('_GRAPHIC_REPORT'), 'perc_lo', 'cols[]', '_TH_PERC_LO_GRAPH', is_showed('_TH_PERC_LO_GRAPH'))
+            . Form::getCheckBox($lang->def('_PERCENTAGE'), 'perc_lo', 'cols[]', '_TH_PERC_LO', $this->is_showed('_TH_PERC_LO'))
+            . Form::getCheckBox($lang->def('_GRAPHIC_REPORT'), 'perc_lo', 'cols[]', '_TH_PERC_LO_GRAPH',  $this->is_showed('_TH_PERC_LO_GRAPH'))
 
             . Form::getCloseFieldset();
 
@@ -856,6 +848,25 @@ class Report_User extends Report
         cout($box->get());
     }
 
+    function is_showed($which)
+    {
+        $reportTempData = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get(self::_REPORT_SESSION);
+        if (isset($reportTempData['columns_filter'])) {
+            return in_array($which, $reportTempData['columns_filter']['showed_columns']);
+        } else {
+            return false;
+        }
+    }
+
+    function is_showed_data($which, $data)
+    {
+        if (isset($data['columns_filter'])) {
+            return in_array($which, $data['columns_filter']['showed_columns']);
+        } else {
+            return false;
+        }
+    }
+
     public function get_competences_filter()
     {
         $back_url = $this->back_url;
@@ -875,13 +886,13 @@ class Report_User extends Report
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
         }
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
             $reportTempData['columns_filter'] = [
                 'filters_list' => Forma\lib\Get::req('rc_filter', DOTY_MIXED, []),
                 'exclusive' => (Forma\lib\Get::req('rc_filter_exclusive', DOTY_INT, 0) > 0 ? true : false),
             ];
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         } else {
             if (!isset($reportTempData['columns_filter'])) {
@@ -889,7 +900,7 @@ class Report_User extends Report
                     'filters_list' => [],
                     'exclusive' => true,
                 ];
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             }
         }
@@ -983,6 +994,7 @@ class Report_User extends Report
     {
         $jump_url = ''; //show_report
 
+    
         checkPerm('view');
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
@@ -1069,19 +1081,21 @@ class Report_User extends Report
         $acl_man->include_suspended = true;
         $course_man = new Man_Course();
 
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+       
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
+        $rowsFilter = $reportTempData['rows_filter'];
         // read form _SESSION (XXX: change this) the report setting
-        $filter_userselection = (!$report_data && isset($reportTempData['rows_filter']['users'])
-            ? $reportTempData['rows_filter']['users'] : $report_data['rows_filter']['users']);
+        $filter_userselection = (!$report_data && isset($rowsFilter['rows_filter']['users'])
+            ? $rowsFilter['rows_filter']['users'] : $report_data['rows_filter']['users']);
 
         $filter_columns = (!$report_data && $reportTempData['columns_filter']
             ? $reportTempData['columns_filter'] : $report_data['columns_filter']);
 
-        if (!$report_data && isset($reportTempData['rows_filter']['all_users'])) {
-            $alluser = ($reportTempData['rows_filter']['all_users'] ? 1 : 0);
+        if (!$report_data && isset($rowsFilter['rows_filter']['all_users'])) {
+            $alluser = ($rowsFilter['rows_filter']['all_users'] ? 1 : 0);
         } else {
-            $alluser = ($report_data['rows_filter']['all_users'] ? 1 : 0);
+            $alluser = ($rowsFilter['rows_filter']['all_users'] ? 1 : 0);
         }
         // break filters into a more usable format
         $filter_allcourses = $filter_columns['all_courses'];
@@ -1095,6 +1109,7 @@ class Report_User extends Report
             $show_suspended = 'all';
         }
 
+
         // retrive the user selected
         if ($alluser > 0) {
             // all the user selected (we can avoid this ? no we need to hide the suspended users)
@@ -1104,6 +1119,7 @@ class Report_User extends Report
             $user_selected = &$acl_man->getAllUsersFromSelection($filter_userselection);
         }
 
+       
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
             //filter users
@@ -1209,6 +1225,8 @@ class Report_User extends Report
                 $filter_allcourses = false;
             }
         }
+
+    
         $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool) $filter_columns['show_classrooms_editions'] : false;
 
         $classrooms_editions_info = [];
@@ -1254,6 +1272,7 @@ class Report_User extends Report
             }
         }
 
+      
         if (empty($user_selected)) {
             cout($lang->def('_NULL_SELECTION'), 'content');
 
@@ -1394,6 +1413,8 @@ class Report_User extends Report
                     ($filter_allcourses ? '' : 'AND c.idCourse IN (' . implode(',', $filter_courseselection) . ') ')
                     . ' ORDER BY ' . $query_order_by;
             }
+
+
 
             $output .= $this->_printTable_courses(
                 $type,
@@ -2280,7 +2301,7 @@ class Report_User extends Report
 
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
@@ -2519,7 +2540,7 @@ class Report_User extends Report
             Util::jump_to($back_url);
         }
 
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
         $selector = new Selector_Course();
         if (isset($_POST['update_tempdata'])) {
@@ -2539,7 +2560,7 @@ class Report_User extends Report
                 'show_suspended' => Forma\lib\Get::req('show_suspended', DOTY_INT, 0) > 0,
             ];
             $reportTempData['columns_filter'] = $temp; //$ref = $temp;
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         } else {
             if (!isset($reportTempData['columns_filter']['columns_filter'])) {
@@ -2558,7 +2579,7 @@ class Report_User extends Report
                     'order_dir' => 'asc',
                     'show_suspended' => false,
                 ];
-                $this->session->set(_REPORT_SESSION, $reportTempData);
+                $this->session->set(self::_REPORT_SESSION, $reportTempData);
                 $this->session->save();
             }
         }
@@ -2781,7 +2802,7 @@ class Report_User extends Report
     public function _get_delay_query($type = 'html', $report_data = null, $other = '')
     {
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         }
         else {
             $reportTempData = $report_data;
@@ -3168,7 +3189,7 @@ class Report_User extends Report
         require_once _base_ . '/lib/lib.form.php';
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
         YuiLib::load();
         Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
@@ -3204,7 +3225,7 @@ class Report_User extends Report
             }
 
             $reportTempData['columns_filter'] = $temp;
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         } else {
             //first loading of this page -> prepare session data structure
@@ -3231,7 +3252,7 @@ class Report_User extends Report
                     'order_dir' => 'asc',
                     'show_suspended' => 'show_suspended',
                 ];
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             }
         }
@@ -3303,16 +3324,7 @@ class Report_User extends Report
 
         cout($box->get(), 'content');
 
-        function is_showed($which)
-        {
-            $reportTempData = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get(_REPORT_SESSION);
-            if (isset($reportTempData['columns_filter'])) {
-                return in_array($which, $reportTempData['columns_filter']['showed_columns']);
-            } else {
-                return false;
-            }
-        }
-
+  
         //box for columns selection
         $arr_fieldset = [
             'user' => '',
@@ -3327,7 +3339,7 @@ class Report_User extends Report
         //prepare fieldsets
         foreach ($this->LO_columns as $val) {
             if ($val['select']) {
-                $line = Form::getCheckBox($val['label'], 'col_sel_' . $val['key'], 'cols[]', $val['key'], is_showed($val['key']));
+                $line = Form::getCheckBox($val['label'], 'col_sel_' . $val['key'], 'cols[]', $val['key'], $this->is_showed($val['key']));
                 switch ($val['group']) {
                     case 'user':
                         $arr_fieldset['user'] .= $line;
@@ -3498,17 +3510,10 @@ class Report_User extends Report
 
         require_once 'report_tableprinter.php';
 
-        function is_showed($which, $data)
-        {
-            if (isset($data['columns_filter'])) {
-                return in_array($which, $data['columns_filter']['showed_columns']);
-            } else {
-                return false;
-            }
-        }
+       
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
@@ -3940,7 +3945,7 @@ class Report_User extends Report
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
         }
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'comm_selection' => [],
@@ -3956,7 +3961,7 @@ class Report_User extends Report
             $reportTempData['columns_filter']['comm_selection'] = Forma\lib\Get::req('comm_selection', DOTY_MIXED, []);
             $reportTempData['columns_filter']['comm_start_date'] = Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date');
             $reportTempData['columns_filter']['comm_end_date'] = Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date');
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         }
 
@@ -4005,7 +4010,7 @@ class Report_User extends Report
         require_once __DIR__ . '/report_tableprinter.php';
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
@@ -4208,7 +4213,7 @@ class Report_User extends Report
             Util::jump_to($back_url);
         }
 
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'comp_selection' => [],
@@ -4225,7 +4230,7 @@ class Report_User extends Report
             $reportTempData['columns_filter']['comp_start_date'] = Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date');
             $reportTempData['columns_filter']['comp_end_date'] = Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date');
         }
-        $this->session->set(_REPORT_SESSION,$reportTempData);
+        $this->session->set(self::_REPORT_SESSION,$reportTempData);
         $this->session->save();
 
         //filter setting done, go to next step
@@ -4273,7 +4278,7 @@ class Report_User extends Report
         require_once dirname(__FILE__) . '/report_tableprinter.php';
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
@@ -4475,7 +4480,7 @@ class Report_User extends Report
         require_once _base_ . '/lib/lib.form.php';
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
         YuiLib::load();
         Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
@@ -4509,7 +4514,7 @@ class Report_User extends Report
             }
 
             $reportTempData['columns_filter']['columns_filter'] = $temp;
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         } else {
             //first loading of this page -> prepare SESSION data structure
@@ -4533,7 +4538,7 @@ class Report_User extends Report
                     'order_dir' => 'asc',
                     'show_suspended' => 'show_suspended',
                 ];
-                $this->session->set(_REPORT_SESSION,$reportTempData);
+                $this->session->set(self::_REPORT_SESSION,$reportTempData);
                 $this->session->save();
             }
         }
@@ -4584,15 +4589,7 @@ class Report_User extends Report
             'courses_all="' . Lang::t('_ALL', 'standard') . '";' . "\n" .
             'YAHOO.util.Event.addListener(window, "load", courses_selector_init);</script>', 'page_head');
 
-        function is_showed($which)
-        {
-            $reportTempData = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get(_REPORT_SESSION);
-            if (isset($reportTempData['columns_filter'])) {
-                return in_array($which, $reportTempData['columns_filter']['showed_columns']);
-            } else {
-                return false;
-            }
-        }
+      
 
         //box for columns selection
         $arr_fieldset = [
@@ -4608,7 +4605,7 @@ class Report_User extends Report
         //prepare fieldsets
         foreach ($this->TESTSTAT_columns as $val) {
             if ($val['select']) {
-                $line = Form::getCheckBox($val['label'], 'col_sel_' . $val['key'], 'cols[]', $val['key'], is_showed($val['key']));
+                $line = Form::getCheckBox($val['label'], 'col_sel_' . $val['key'], 'cols[]', $val['key'], $this->is_showed($val['key']));
                 switch ($val['group']) {
                     case 'user':
                         $arr_fieldset['user'] .= $line;
@@ -4766,17 +4763,9 @@ class Report_User extends Report
     {
         require_once _lms_ . '/admin/modules/report/report_tableprinter.php';
 
-        function is_showed($which, $data)
-        {
-            if (isset($data['columns_filter'])) {
-                return in_array($which, $data['columns_filter']['showed_columns']);
-            } else {
-                return false;
-            }
-        }
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
@@ -5124,3 +5113,4 @@ class Report_User extends Report
         return $output;
     }
 }
+

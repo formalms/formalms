@@ -25,10 +25,13 @@ define('_RA_CATEGORY_GAMES', 'games');
 define('_DECIMAL_SEPARATOR', '.');
 define('_PERCENT_SIMBOL', '%');
 
+
 class Report_Aggregate extends Report
 {
     public $page_title = false;
     public $db = null;
+
+    
 
     public function __construct()
     {
@@ -59,7 +62,7 @@ class Report_Aggregate extends Report
 
         //update session
         $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        $reportTempData = $session->get(_REPORT_SESSION);
+        $reportTempData = $session->get(self::_REPORT_SESSION);
         if (!array_key_exists('rows_filter',$reportTempData) || empty($reportTempData['rows_filter'])) {
             $reportTempData['rows_filter'] = [ //default values
                 'select_all' => false,
@@ -113,14 +116,14 @@ class Report_Aggregate extends Report
                     $user_select->resetSelection($reportTempData['rows_filter']['selection']);
                     //$ref['users'] = array(); it should already have been set to void array, if non existent
                 }
-                $session->set(_REPORT_SESSION,$reportTempData);
+                $session->set(self::_REPORT_SESSION,$reportTempData);
                 $session->save();
 
                 if (isset($_POST['cancelselector'])) {
                     Util::jump_to($back_url);
                 } elseif (isset($_POST['okselector'])) {
                     $reportTempData['rows_filter']['selection'] = $user_select->getSelection($_POST);
-                    $session->set(_REPORT_SESSION,$reportTempData);
+                    $session->set(self::_REPORT_SESSION,$reportTempData);
                     $session->save();
                     Util::jump_to($next_url);
                 }
@@ -183,7 +186,7 @@ class Report_Aggregate extends Report
         }
 
         $selector = new Selector_Course();
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'all_courses' => true,
@@ -203,7 +206,7 @@ class Report_Aggregate extends Report
                 'initinere' => (Forma\lib\Get::req('cols_initinere', DOTY_INT, 0) > 0 ? true : false),
                 'notstarted' => (Forma\lib\Get::req('cols_notstarted', DOTY_INT, 0) > 0 ? true : false),
                 'show_percentages' => (Forma\lib\Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false)];
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         } else {
             $selector->resetSelection($reportTempData['columns_filter']['selected_courses']);
@@ -283,6 +286,7 @@ class Report_Aggregate extends Report
 
     public function show_report_courses($data = null, $other = '')
     {
+        
         if ($data === null) {
             cout($this->_get_courses_query());
         } else {
@@ -296,11 +300,11 @@ class Report_Aggregate extends Report
         require_once __DIR__ . '/report_tableprinter.php';
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
-
+   
         $fw = $GLOBALS['prefix_fw'];
         $lms = $GLOBALS['prefix_lms'];
 
@@ -934,7 +938,7 @@ class Report_Aggregate extends Report
         }
 
         $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        $reportTempData = $session->get(_REPORT_SESSION);
+        $reportTempData = $session->get(self::_REPORT_SESSION);
         if (!array_key_exists('columns_filter',$reportTempData) || empty($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'all_categories' => true,
@@ -955,7 +959,7 @@ class Report_Aggregate extends Report
             }
         }
 
-        $session->set(_REPORT_SESSION,$reportTempData);
+        $session->set(self::_REPORT_SESSION,$reportTempData);
         $session->save();
 
         //back to columns category selection
@@ -1003,7 +1007,7 @@ class Report_Aggregate extends Report
 
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
@@ -1414,7 +1418,7 @@ class Report_Aggregate extends Report
             Util::jump_to($back_url);
         }
 
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'timetype' => 'years',
@@ -1427,7 +1431,7 @@ class Report_Aggregate extends Report
         if (isset($_POST['update_tempdata'])) {
             $reportTempData['columns_filter']['years'] = Forma\lib\Get::req('years', DOTY_INT, 1);
         }
-        $this->session->save(_REPORT_SESSION,$reportTempData);
+        $this->session->save(self::_REPORT_SESSION,$reportTempData);
         $this->session->save();
 
         //back to columns category selection
@@ -1474,7 +1478,7 @@ class Report_Aggregate extends Report
         require_once dirname(__FILE__) . '/report_tableprinter.php';
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
@@ -1789,7 +1793,7 @@ class Report_Aggregate extends Report
             Util::jump_to($back_url);
         }
 
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'comm_selection' => [],
@@ -1805,7 +1809,7 @@ class Report_Aggregate extends Report
             $reportTempData['columns_filter']['comm_selection'] = Forma\lib\Get::req('comm_selection', DOTY_MIXED, []);
             $reportTempData['columns_filter']['comm_start_date'] = Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date');
             $reportTempData['columns_filter']['comm_end_date'] = Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date');
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         }
 
@@ -1854,7 +1858,7 @@ class Report_Aggregate extends Report
         require_once __DIR__ . '/report_tableprinter.php';
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
@@ -2131,7 +2135,7 @@ class Report_Aggregate extends Report
             Util::jump_to($back_url);
         }
 
-        $reportTempData = $this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(self::_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'comp_selection' => [],
@@ -2147,7 +2151,7 @@ class Report_Aggregate extends Report
             $reportTempData['columns_filter']['comp_selection'] = Forma\lib\Get::req('comp_selection', DOTY_MIXED, []);
             $reportTempData['columns_filter']['comp_start_date'] = Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date');
             $reportTempData['columns_filter']['comp_end_date'] = Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date');
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
         }
 
@@ -2196,7 +2200,7 @@ class Report_Aggregate extends Report
         require_once __DIR__ . '/report_tableprinter.php';
 
         if ($report_data == null) {
-            $reportTempData = $this->session->get(_REPORT_SESSION);
+            $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
             $reportTempData = $report_data;
         }
