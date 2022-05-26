@@ -11,19 +11,30 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+
 @error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);
 
 //session_name('docebo_session');
 //session_start();
-\Forma\lib\Session\SessionManager::getInstance()->getSession();
-define('IN_FORMA', true);
-define('INSTALL_ENV', 'install');
-define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+
+const IN_FORMA = true;
+const INSTALL_ENV = 'install';
+const _deeppath_ = '../';
+require __DIR__ . '/../base.php';
 if (file_exists(_base_ . '/config.php')) {
     require _base_ . '/config.php';
 } // FOR upgrade import_lang
-define('_installer_', _base_ . '/install');
+require_once _base_ . '/vendor/autoload.php';
+
+$request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+if (!$request->hasSession()) {
+    $config = $cfg && isset($cfg['session']) ? $cfg['session'] : [];
+    Forma\lib\Session\SessionManager::getInstance()->initSession($config);
+    $session = Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $request->setSession($session);
+}
+
+const _installer_ = _base_ . '/install';
 
 include _lib_ . '/lib.forma.php';
 include _lib_ . '/lib.docebo.php';
@@ -32,6 +43,8 @@ include _lib_ . '/installer/lib.lang.php';
 include _lib_ . '/installer/lib.step.php';
 include _lib_ . '/installer/lib.pagewriter.php';
 include _lib_ . '/installer/lib.template.php';
+
+
 PageWriter::init();
 
 include _base_ . '/lib/lib.utils.php';

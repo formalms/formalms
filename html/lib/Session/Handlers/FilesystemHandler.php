@@ -9,6 +9,6 @@ class FilesystemHandler extends NativeFileSessionHandler
 {
     public function __construct(Config $config)
     {
-        parent::__construct($config->getHost());
+        parent::__construct($config->getUrl());
     }
 }

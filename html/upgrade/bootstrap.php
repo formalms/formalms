@@ -13,19 +13,28 @@
 
 @error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);
 
-\Forma\lib\Session\SessionManager::getInstance()->getSession();
 //session_name('docebo_session');
 //session_start();
 
-define('IN_FORMA', true);
-define('IN_DOCEBO', true);			// need for upgrade from doceboce
-define('INSTALL_ENV', 'upgrade');
+const IN_FORMA = true;
+const IN_DOCEBO = true;            // need for upgrade from doceboce
+const INSTALL_ENV = 'upgrade';
 
-define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+const _deeppath_ = '../';
+require __DIR__ . '/../base.php';
 require _base_ . '/config.php';
-define('_installer_', _base_ . '/install');
-define('_upgrader_', _base_ . '/upgrade');
+const _installer_ = _base_ . '/install';
+const _upgrader_ = _base_ . '/upgrade';
+
+require_once _base_ . '/vendor/autoload.php';
+
+$request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+if (!$request->hasSession()) {
+    $config = $cfg && isset($cfg['session']) ? $cfg['session'] : [];
+    Forma\lib\Session\SessionManager::getInstance()->initSession($config);
+    $session = Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $request->setSession($session);
+}
 
 require_once _base_ . '/lib/loggers/lib.logger.php';
 

@@ -13,9 +13,17 @@ class RedisHandler extends RedisSessionHandler
     public function __construct(Config $config)
     {
         try {
-            $connection = RedisAdapter::createConnection($config->getHost());
-        }
-        catch (\Exception $exception){
+            if (empty($config->getUrl())) {
+                if ($config->isAuthentication()) {
+                    $url = sprintf('redis://%s@%s:%f?timeout=%d&prefix=%s', $config->getPassword(), $config->getHost(),$config->getPort(), $config->getTimeout(), $config->getPrefix());
+                }
+                else {
+                    $url = sprintf('redis://%s:%f?timeout=%d&prefix=%s', $config->getHost(),$config->getPort(), $config->getTimeout(), $config->getPrefix());
+                }
+                $config->setUrl($url);
+            }
+            $connection = RedisAdapter::createConnection($config->getUrl());
+        } catch (\Exception $exception) {
             die($exception->getMessage());
         }
 

@@ -30,7 +30,7 @@ class SessionManager
     public const FILESYSTEM = 'filesystem';
     public const MEMCACHED = 'memcached';
     public const PDO = 'pdo';
-    public const MONGO = 'mongo';
+    //public const MONGO = 'mongo';
     public const REDIS = 'redis';
 
     private static ?SessionManager $instance = null;
@@ -71,10 +71,15 @@ class SessionManager
                     break;
                 case self::PDO:
                     $this->sessionHandler = new PdoHandler($config);
+                    try {
+                        $this->sessionHandler->createTable();
+                    } catch (\PDOException $exception) {
+                        // the table could not be created for some reason
+                    }
                     break;
-                case self::MONGO:
+                /*case self::MONGO:
                     $this->sessionHandler = new MongoDbHandler($config);
-                    break;
+                    break;*/
                 case self::FILESYSTEM:
                 default:
                     $this->sessionHandler = new FilesystemHandler($config);

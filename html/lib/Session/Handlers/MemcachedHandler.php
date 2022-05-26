@@ -12,7 +12,20 @@ class MemcachedHandler extends MemcachedSessionHandler
     public function __construct(Config $config)
     {
         try {
-            $connection = MemcachedAdapter::createConnection($config->getHost());
+            if (empty($config->getUrl())) {
+                if ($config->isAuthentication()){
+                    $url = sprintf('memcached://%s:%s@%s:%f',$config->getUser(),$config->getPassword(),$config->getHost(),$config->getPort());
+                }
+                else {
+                    $url = sprintf('memcached://%s:%f',$config->getHost(),$config->getPort());
+                }
+                $config->setUrl($url);
+            }
+
+            $connection = MemcachedAdapter::createConnection($config->getUrl(),[
+                'prefix_key' => $config->getPrefix(),
+                'connect_timeout' => $config->getTimeout()
+            ]);
         }
         catch (\Exception $exception){
             die($exception->getMessage());

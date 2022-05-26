@@ -29,7 +29,6 @@ class Step2Controller extends StepController
 
     public function validate()
     {
-        
         $this->session->set('start_version', Forma\lib\Get::req('start_version', DOTY_ALPHANUM, '3603'));
         $this->session->save();
         return true;
@@ -84,9 +83,9 @@ class Step2Controller extends StepController
 
         //TODO PHP7x: set const for Minimum PHP required version: 7.4
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
-        if (version_compare(PHP_VERSION, '7.4', '<')) {
+        if (PHP_VERSION_ID < 70400) {
             $res['php'] = 'err';
-        } elseif (version_compare(PHP_VERSION, '8.0', '>=')) {
+        } elseif (PHP_VERSION_ID >= 80000) {
             $res['php'] = 'warn';
         } else {
             $res['php'] = 'ok';

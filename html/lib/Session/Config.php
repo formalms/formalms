@@ -7,7 +7,10 @@ class Config
     private array $config;
 
     private string $handler = SessionManager::FILESYSTEM;
+    private ?string $url = null;
     private ?string $host = null;
+    private ?int $port = null;
+    private float $timeout = 2.5;
     private int $lifetime = 7200;
     private string $prefix = 'forma.';
     private string $name = 'forma_session';
@@ -54,6 +57,24 @@ class Config
     /**
      * @return string|null
      */
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string|null $url
+     * @return Config
+     */
+    public function setUrl(?string $url): Config
+    {
+        $this->url = $url;
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getHost(): ?string
     {
         return $this->host;
@@ -66,6 +87,42 @@ class Config
     public function setHost(?string $host): Config
     {
         $this->host = $host;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPort(): ?int
+    {
+        return $this->port;
+    }
+
+    /**
+     * @param int|null $port
+     * @return Config
+     */
+    public function setPort(?int $port): Config
+    {
+        $this->port = $port;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTimeout(): float
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @param float $timeout
+     * @return Config
+     */
+    public function setTimeout(float $timeout): Config
+    {
+        $this->timeout = $timeout;
         return $this;
     }
 
