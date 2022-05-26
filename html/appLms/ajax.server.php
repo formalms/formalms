@@ -11,11 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('LMS', true);
-define('IN_FORMA', true);
-define('IS_AJAX', true);
-define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+const LMS = true;
+const IN_FORMA = true;
+const IS_AJAX = true;
+const _deeppath_ = '../';
+require __DIR__ . '/../base.php';
 
 // start buffer
 ob_start();
@@ -41,7 +41,7 @@ $aj_file = '';
 $mn = Forma\lib\Get::req('mn', DOTY_ALPHANUM, '');
 $plf = Forma\lib\Get::req('plf', DOTY_ALPHANUM, ($session->has('current_action_platform') ? $session->get('current_action_platform') : Forma\lib\Get::cur_plat()));
 
-$request = \Forma\lib\Get::req('r',DOTY_ALPHANUM);
+$request = \Forma\lib\Get::req('r',DOTY_MIXED);
 if (!empty($request)) {
     $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $request);
 }

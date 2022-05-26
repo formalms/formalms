@@ -13,14 +13,14 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-define('_DATE_STATUS_ACTIVE', 0);
-define('_DATE_STATUS_FINISHED', 1);
-define('_DATE_STATUS_CANCELLED', 2);
-define('_DATE_STATUS_PREPARATION', 3);
+const _DATE_STATUS_ACTIVE = 0;
+const _DATE_STATUS_FINISHED = 1;
+const _DATE_STATUS_CANCELLED = 2;
+const _DATE_STATUS_PREPARATION = 3;
 
-define('_DATE_TEST_TYPE_WEB', 0);
-define('_DATE_TEST_TYPE_PAPER', 1);
-define('_DATE_TEST_TYPE_NONE', 2);
+const _DATE_TEST_TYPE_WEB = 0;
+const _DATE_TEST_TYPE_PAPER = 1;
+const _DATE_TEST_TYPE_NONE = 2;
 
 class DateManager
 {
@@ -1294,7 +1294,7 @@ class DateManager
     public function getUserDateForCourse($id_user, $id_course)
     {
         $res = [];
-        $aclManager = $GLOBALS['current_user']->getAclManager();
+        $aclManager = Docebo::user()->getAclManager();
 
         if ($id_user !== $aclManager->getAnonymousId()) {
             $query = 'SELECT id_date  FROM %lms_course_date_user   WHERE id_user = ' . $id_user

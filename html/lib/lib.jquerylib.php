@@ -23,18 +23,20 @@ class JQueryLib
     public const _bootstrap_version = '3.3.6';
     public const _path = 'jquery';
 
-    public static $array_js_addons = ['html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+    public static $array_js_addons = [
+        'html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
         'helpdesk',
         'fancybox',
         'swipe',
         'select',
-         'datepicker',
-         'bootstrap-treeview',
-         'datatables',
-         'moment',
-         'table-edits',
-         'malihu-custom-scrollbar-plugin',
-         'cookie', ]; // malihu custom scrollbar
+        'datepicker',
+        'bootstrap-treeview',
+        'datatables',
+        'moment',
+        'table-edits',
+        'malihu-custom-scrollbar-plugin',
+        'cookie'
+    ]; // malihu custom scrollbar
 
     public static $array_css_addons = ['table',    //  media query for table formatting
         'helpdesk',
@@ -43,7 +45,7 @@ class JQueryLib
         'select',
         'datepicker',
         'datatables',
-        'malihu-custom-scrollbar-plugin', ]; // malihu custom scrollbar
+        'malihu-custom-scrollbar-plugin',]; // malihu custom scrollbar
 
     public static function loadJQuery($which_version = '')
     {
@@ -88,7 +90,7 @@ class JQueryLib
 
         $local_link = "\n\t\t";
         foreach (self::$array_js_addons as $a_addon_path) {
-            if (is_array($exclude_addons) && !in_array($a_addon_path, $exclude_addons, true)) {
+            if (!$exclude_addons  || (is_array($exclude_addons) && !in_array($a_addon_path, $exclude_addons, true))) {
                 $full_path = '/addons/' . self::_path . '/' . $a_addon_path . '/';
                 $addon_files = self::select_file($full_path, $which_version . '.js');
                 if (count($addon_files) > 0) {
@@ -111,7 +113,7 @@ class JQueryLib
 
         $local_link = "\n\t\t";
         foreach (self::$array_css_addons as $a_addon_path) {
-            if (is_array($exclude_addons) && !in_array($a_addon_path, $exclude_addons)) {
+            if (!$exclude_addons  || (is_array($exclude_addons) && !in_array($a_addon_path, $exclude_addons, true))) {
                 $full_path = '/addons/' . self::_path . '/' . $a_addon_path . '/';
                 $addon_files = self::select_file($full_path, $which_version . '.css');
                 if (count($addon_files) > 0) {

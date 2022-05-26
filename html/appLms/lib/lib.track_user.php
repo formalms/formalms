@@ -18,16 +18,10 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 class TrackUser
 {
-    protected $session;
-
-    public function __construct()
+    public static function createSessionCourseTrack()
     {
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-    }
-
-    public function createSessionCourseTrack()
-    {
-        if ($this->session->get('is_ghost', false) === true) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if ($session->get('is_ghost', false) === true) {
             return;
         }
 
@@ -36,16 +30,16 @@ class TrackUser
         list($last_course_access) = sql_fetch_row(sql_query('
 		SELECT UNIX_TIMESTAMP(MAX(lastTime)) 
 		FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-		WHERE idCourse = '" . $this->session->get('idCourse') . "' AND idUser = '" . getLogUserId() . "'"));
+		WHERE idCourse = '" . $session->get('idCourse') . "' AND idUser = '" . getLogUserId() . "'"));
 
-        $this->session->set('lastCourseAccess', $last_course_access);
-        $this->session->save();
+        $session->set('lastCourseAccess', $last_course_access);
+        $session->save();
 
         sql_query('UPDATE %lms_tracksession SET active = 0 WHERE idUser = ' . (int)getLogUserId() . ' and active = 1');
 
         sql_query("INSERT INTO _tracksession 
 		( idCourse, idUser, session_id, enterTime, lastTime, ip_address, active ) VALUES ( 
-			'" . $this->session->get('idCourse') . "', 
+			'" . $session->get('idCourse') . "', 
 			'" . getLogUserId() . "',
 			'',
 			'" . $now . "',
@@ -54,14 +48,16 @@ class TrackUser
 			1 ) ");
         list($id) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if ($id) {
-            $this->session->set('id_enter_course', $id);
-            $this->session->save();
+            $session->set('id_enter_course', $id);
+            $session->save();
         }
     }
 
-    public function setActionTrack($id_user, $id_course, $mod_name, $mode)
+    public static function setActionTrack($id_user, $id_course, $mod_name, $mode)
     {
-        if ($this->session->get('is_ghost', false) === true) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        if ($session->get('is_ghost', false) === true) {
             return;
         }
 
@@ -73,15 +69,15 @@ class TrackUser
 			lastOp = '" . $mode . "', 
 			lastTime = '" . $now . "',
 			ip_address = '" . $_SERVER['REMOTE_ADDR'] . "'
-		WHERE idEnter = '" . $this->session->get('id_enter_course') . "' "
+		WHERE idEnter = '" . $session->get('id_enter_course') . "' "
             . "AND idCourse = '" . $id_course . "' AND idUser = '" . $id_user . "'");
 
-        if (Forma\lib\Get::sett('tracking') == 'on' && $this->session->get('levelCourse') != '2') {
+        if (Forma\lib\Get::sett('tracking') == 'on' && $session->get('levelCourse') != '2') {
             $query_track = "
 			INSERT INTO %lms_trackingeneral
 			( idUser, idEnter, idCourse, function, type, timeof, session_id, ip ) VALUES (
 				'" . $id_user . "',
-				'" . $this->session->get('id_enter_course') . "',
+				'" . $session->get('id_enter_course') . "',
 				'" . $id_course . "',
 				'" . $mod_name . "',
 				'" . $mode . "',
@@ -92,21 +88,26 @@ class TrackUser
         }
     }
 
-    public function closeSessionCourseTrack()
+    public static function closeSessionCourseTrack()
     {
-        TrackUser::setActionTrack(getLogUserId(), $this->session->get('idCourse'), '_COURSE_LIST', 'view');
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        TrackUser::setActionTrack(getLogUserId(), $session->get('idCourse'), '_COURSE_LIST', 'view');
     }
 
-    public function logoutSessionCourseTrack()
+    public static function logoutSessionCourseTrack()
     {
-        if ($this->session->get('idCourse')) {
-            TrackUser::setActionTrack(getLogUserId(), $this->session->get('idCourse'), '_LOGOUT', 'view');
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        if ($session->get('idCourse')) {
+            TrackUser::setActionTrack(getLogUserId(), $session->get('idCourse'), '_LOGOUT', 'view');
         }
     }
 
-    public function getUserTotalCourseTime($idst_user, $id_course)
+    public static function getUserTotalCourseTime($idst_user, $id_course)
     {
-        if ($this->session->get('is_ghost', false) === true) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        if ($session->get('is_ghost', false) === true) {
             return 0;
         }
 
@@ -121,16 +122,18 @@ class TrackUser
         return $tot_time;
     }
 
-    public function getUserPreviousSessionCourseTime($idst_user, $id_course)
+    public static function getUserPreviousSessionCourseTime($idst_user, $id_course)
     {
-        if ($this->session->get('is_ghost', false) === true) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        if ($session->get('is_ghost', false) === true) {
             return 0;
         }
 
         $tot_time = 0;
         $query_time = "SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
 		FROM %lms_tracksession  WHERE idCourse = '" . $id_course . "' AND idUser = '" . $idst_user . "' "
-            . " AND idEnter <> '" . $this->session->get('id_enter_course') . "'";
+            . " AND idEnter <> '" . $session->get('id_enter_course') . "'";
         $re = sql_query($query_time);
         if ($re && sql_num_rows($re)) {
             list($tot_time) = sql_fetch_row($re);
@@ -139,16 +142,18 @@ class TrackUser
         return $tot_time;
     }
 
-    public function getUserCurrentSessionCourseTime($id_course)
+    public static function getUserCurrentSessionCourseTime($id_course)
     {
-        if ($this->session->get('is_ghost', false) === true) {
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
+        if ($session->get('is_ghost', false) === true) {
             return 0;
         }
 
-        if ($this->session->get('id_enter_course')) {
+        if ($session->get('id_enter_course')) {
             $query_time = "SELECT UNIX_TIMESTAMP(enterTime) FROM %lms_tracksession 
 			WHERE idCourse = '" . $id_course . "' AND idUser = '" . getLogUserId() . "' 
-				AND idEnter = '" . $this->session->get('id_enter_course') . "'";
+				AND idEnter = '" . $session->get('id_enter_course') . "'";
             list($partial_time) = sql_fetch_row(sql_query($query_time));
 
             return time() - $partial_time;
@@ -214,7 +219,7 @@ class TrackUser
         return $last_access;
     }
 
-    public function checkSession($id_user)
+    public static function checkSession($id_user)
     {
         $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
 
@@ -222,7 +227,7 @@ class TrackUser
             return true;
         }
 
-        if ($this->session->get('id_enter_course')) {
+        if ($session->get('id_enter_course')) {
             $query_time = '
 			SELECT COUNT(*) 
 			FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
@@ -236,11 +241,8 @@ class TrackUser
         }
     }
 
-    public function resetUserSession($id_user)
+    public static function resetUserSession($id_user)
     {
-        sql_query('
-		UPDATE ' . $GLOBALS['prefix_lms'] . "_tracksession 
-		SET active = 0 
-		WHERE idUser = '" . $id_user . "'");
+        sql_query("UPDATE %lms_tracksession  SET active = 0 WHERE idUser = '" . $id_user . "'");
     }
 }

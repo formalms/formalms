@@ -438,7 +438,7 @@ class Util
         if (!is_array($arr)) {
             return false;
         }
-        for ($i = 0; $i < count($arr); ++$i) {
+        for ($i = 0, $iMax = count($arr); $i < $iMax; ++$i) {
             switch ($type) {
                 case DOTY_INT: $arr[$i] = (int) $arr[$i]; break;
                 case DOTY_STRING: $arr[$i] = (string) $arr[$i]; break;

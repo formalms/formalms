@@ -114,8 +114,6 @@ class ElearningLmsController extends LmsController
             $block_list['labels'] = true;
         }
 
-        $this->session->save();
-
         if ($tb_label) {
             require_once _lms_ . '/admin/models/LabelAlms.php';
             $label_model = new LabelAlms();

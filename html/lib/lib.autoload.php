@@ -78,7 +78,7 @@ function docebo_autoload($classname)
         'Plugin' => _lib_ . '/lib.plugin.php',
         'PluginManager' => _lib_ . '/lib.pluginmanager.php',
          // lib jquery
-        'jquerylib' => _lib_ . '/lib.jquerylib.php',
+        'JQueryLib' => _lib_ . '/lib.jquerylib.php',
     ];
 
     //search for a base class and include the file if found
