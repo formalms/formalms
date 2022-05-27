@@ -243,8 +243,8 @@ class Report_User extends Report
 
             $temp = $user_select->getSelection($_POST);
 
-            $reportTempData['rows_filter']['rows_filter']['users'] = $temp;
-            $reportTempData['rows_filter']['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+            $reportTempData['rows_filter']['users'] = $temp;
+            $reportTempData['rows_filter']['all_users'] = (Forma\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
             $this->session->set(self::_REPORT_SESSION,$reportTempData);
             $this->session->save();
 
@@ -995,6 +995,7 @@ class Report_User extends Report
         $jump_url = ''; //show_report
 
     
+ 
         checkPerm('view');
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
@@ -1084,18 +1085,17 @@ class Report_User extends Report
        
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
-        $rowsFilter = $reportTempData['rows_filter'];
         // read form _SESSION (XXX: change this) the report setting
-        $filter_userselection = (!$report_data && isset($rowsFilter['rows_filter']['users'])
-            ? $rowsFilter['rows_filter']['users'] : $report_data['rows_filter']['users']);
+        $filter_userselection = (!$report_data && isset($reportTempData['rows_filter']['users'])
+            ? $reportTempData['rows_filter']['users'] : $report_data['rows_filter']['users']);
 
         $filter_columns = (!$report_data && $reportTempData['columns_filter']
             ? $reportTempData['columns_filter'] : $report_data['columns_filter']);
 
-        if (!$report_data && isset($rowsFilter['rows_filter']['all_users'])) {
-            $alluser = ($rowsFilter['rows_filter']['all_users'] ? 1 : 0);
+        if (!$report_data && isset($reportTempData['rows_filter']['all_users'])) {
+            $alluser = ($reportTempData['rows_filter']['all_users'] ? 1 : 0);
         } else {
-            $alluser = ($rowsFilter['rows_filter']['all_users'] ? 1 : 0);
+            $alluser = ($reportTempData['rows_filter']['all_users'] ? 1 : 0);
         }
         // break filters into a more usable format
         $filter_allcourses = $filter_columns['all_courses'];
@@ -1109,7 +1109,6 @@ class Report_User extends Report
             $show_suspended = 'all';
         }
 
-
         // retrive the user selected
         if ($alluser > 0) {
             // all the user selected (we can avoid this ? no we need to hide the suspended users)
@@ -1119,7 +1118,6 @@ class Report_User extends Report
             $user_selected = &$acl_man->getAllUsersFromSelection($filter_userselection);
         }
 
-       
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
             //filter users
@@ -1272,7 +1270,7 @@ class Report_User extends Report
             }
         }
 
-      
+    
         if (empty($user_selected)) {
             cout($lang->def('_NULL_SELECTION'), 'content');
 

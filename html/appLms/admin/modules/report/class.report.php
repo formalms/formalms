@@ -142,12 +142,16 @@ class Report
 
     public function show_results($cat = false, $report_data = null)
     {
+     
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
        
         if (!$cat) {
             $cat = $reportTempData['columns_filter_category'];
         }
+
+        
         $name_func = $this->columns_categories[$cat]['show']; //['get_data'];
+
         return $this->$name_func($report_data);
     }
 
@@ -366,6 +370,6 @@ class ReportSessionManager
     }
 
     private function initialize() {
-        
+
     }
 }
