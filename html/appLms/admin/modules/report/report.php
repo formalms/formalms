@@ -1024,6 +1024,7 @@ function report_modify_rows()
 
     $lang = &DoceboLanguage::createInstance('report');
     $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+
     $reportTempData = $session->get(_REPORT_SESSION);
 
     $idrep = Forma\lib\Get::req('modid', DOTY_INT, false);
@@ -1074,11 +1075,11 @@ function report_modify_columns()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-
- 
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $reportTempData = $session->get(_REPORT_SESSION);
     if (isset($_POST['columns_filter'])) {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        $reportTempData = $session->get(_REPORT_SESSION);
+       
+     
         $reportTempData['columns_filter_category'] = $_POST['columns_filter'];
         $session->set(_REPORT_SESSION,$reportTempData);
         $session->save();
@@ -1088,6 +1089,7 @@ function report_modify_columns()
     $lang = &DoceboLanguage::createInstance('report');
 
     $obj_report = openreport();
+
     $obj_report->back_url = 'index.php?modname=report&op=modify_rows&modid=' . $idrep;
     $obj_report->jump_url = 'index.php?modname=report&op=modify_cols&modid=' . $idrep;
     $obj_report->next_url = 'index.php?modname=report&op=report_save&modid=' . $idrep;
