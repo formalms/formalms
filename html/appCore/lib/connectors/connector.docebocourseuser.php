@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/lib.connector.php';
+require_once __DIR__ . '/lib.connector.php';
 require_once _lms_ . '/lib/lib.course.php';
 require_once _base_ . '/lib/lib.eventmanager.php';
 
@@ -67,7 +67,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
      *
      * @param array params
      **/
-    public function DoceboConnector_DoceboCourseUser($params)
+    public function __construct($params)
     {
         require_once _lms_ . '/lib/lib.subscribe.php';
 
@@ -150,7 +150,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
         $this->tot_row = $tot_row;
 
-        $query = ' SELECT';
+        $query = ' SELECT %adm_user.idst as userIdst,';
 
         $numberCols = count($this->all_cols);
         foreach ($this->all_cols as $index => $column) {
@@ -197,7 +197,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
             }
 
             $idCourse = $row['idCourse'];
-            $idUser = $row['userid'];
+            $idstUser = $row['userIdst'];
             // MANAGE CUSTOM FIELD COURSE
             foreach ($courseCustomFields as $value) {
                 $data[$counter][] = $this->get_value_custom_field_by_type($value[1], $value[2], $idCourse);   //$value[1]."-".$value[2]."  ** ".$idCourse;
@@ -205,7 +205,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
             // MANAGE CUSTOM FIELD COURSE
             foreach ($userCustomFields as $value) {
-                $data[$counter][] = $this->get_value_custom_field_user_by_type($value[1], $value[2], $idUser); //$value[1]."-".$value[2]."  ** ".$idUser;
+                $data[$counter][] = $this->get_value_custom_field_user_by_type($value[1], $value[2], $idstUser); //$value[1]."-".$value[2]."  ** ".$idUser;
             }
 
             ++$counter;
