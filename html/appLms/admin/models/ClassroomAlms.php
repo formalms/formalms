@@ -35,6 +35,7 @@ class ClassroomAlms extends Model
         $this->classroom_man = new DateManager();
         $this->course_man = new Man_Course();
         $this->acl_man = &Docebo::user()->getAclManager();
+        parent::__construct();
     }
 
     public function getPerm()

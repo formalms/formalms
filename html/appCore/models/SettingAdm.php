@@ -13,6 +13,7 @@ class SettingAdm extends Model
     {
         $this->db = DbConn::getInstance();
         $this->table = $GLOBALS['prefix_fw'] . '_setting';
+        parent::__construct();
     }
 
     public function getPerm()

@@ -43,6 +43,7 @@ class CourseAlms extends Model
         $this->edition_man = new EditionManager();
 
         $this->acl_man = &Docebo::user()->getAclManager();
+        parent::__construct();
     }
 
     public function getPerm()

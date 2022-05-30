@@ -49,6 +49,7 @@ class CatalogLms extends Model
         $this->show_all_category = Forma\lib\Get::sett('hide_empty_category') == 'off';
 
         $this->currentCatalogue = 0;
+        parent::__construct();
     }
 
     public function enrolledStudent($idCourse)

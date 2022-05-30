@@ -30,6 +30,7 @@ class LomanagerLms extends Model
     public function __construct()
     {
         $this->setTdb();
+        parent::__construct();
     }
 
     public function setTdb($type = self::ORGDIRDB, $idCourse = false, $idUser = false)

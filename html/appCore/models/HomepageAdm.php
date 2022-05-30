@@ -26,6 +26,7 @@ class HomepageAdm extends Model
         $this->authentication = new AuthenticationManager();
         $this->user_manager = new UserManager();
         $this->options = new UserManagerOption();
+        parent::__construct();
     }
 
     public function getLoginGUI()

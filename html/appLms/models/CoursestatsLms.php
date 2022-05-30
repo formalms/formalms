@@ -33,6 +33,7 @@ class CoursestatsLms extends Model
             'scorm_tracking' => '%lms_scorm_tracking',
         ];
         $this->cache = [];
+        parent::__construct();
     }
 
     public function getPerm()

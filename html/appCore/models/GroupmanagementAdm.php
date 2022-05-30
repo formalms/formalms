@@ -24,6 +24,7 @@ class GroupmanagementAdm extends Model
     {
         $this->db = DbConn::getInstance();
         $this->acl_man = Docebo::user()->getACLManager();
+        parent::__construct();
     }
 
     public function getPerm()

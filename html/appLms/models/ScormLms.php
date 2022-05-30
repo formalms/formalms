@@ -114,6 +114,7 @@ class ScormLms extends Model
         $this->varianza = $varianza;
         $this->maxScore = $votomassimo;
         $this->minScore = $votominimo;
+        parent::__construct();
     }
 
     /**

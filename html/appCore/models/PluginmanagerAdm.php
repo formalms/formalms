@@ -27,6 +27,7 @@ class PluginmanagerAdm extends Model
         $this->plugin_core = [
             'FormaAuth',
         ];
+        parent::__construct();
     }
 
     public function getPerm()

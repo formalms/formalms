@@ -34,6 +34,7 @@ class SubscriptionAlms extends Model
         $this->db = DbConn::getInstance();
         $this->acl_man = Docebo::user()->getAclManager();
         $this->setCourseData($id_course, $id_edition, $id_date);
+        parent::__construct();
     }
 
     public function setCourseData($id_course, $id_edition = false, $id_date = false)

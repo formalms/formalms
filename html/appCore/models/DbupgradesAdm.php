@@ -23,6 +23,7 @@ class DbupgradesAdm extends Model
     {
         $this->db = DbConn::getInstance();
         $this->table = $GLOBALS['prefix_fw'] . '_db_upgrades';
+        parent::__construct();
     }
 
     public function getPerm()

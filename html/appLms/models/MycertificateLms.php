@@ -27,6 +27,7 @@ class MycertificateLms extends Model
     {
         $this->id_user = (int) $id_user;
         $this->certificate = new Certificate();
+        parent::__construct();
     }
 
     public function loadMyCertificates($pagination = false, $count = false)

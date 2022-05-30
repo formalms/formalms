@@ -44,6 +44,7 @@ class HomecatalogueLms extends Model
                                 CST_CANCELLED => '_CST_CANCELLED', ];
 
         $this->acl_man = &Docebo::user()->getAclManager();
+        parent::__construct();
     }
 
     public function getTotalCourseNumber($type = '')

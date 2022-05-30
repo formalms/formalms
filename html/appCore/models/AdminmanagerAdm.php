@@ -34,6 +34,7 @@ class AdminmanagerAdm extends Model
         $this->idst_admin_group = $idst;
 
         $this->model_adminrules = new AdminrulesAdm();
+        parent::__construct();
     }
 
     public function getPerm()

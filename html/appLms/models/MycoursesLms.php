@@ -15,6 +15,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class MycoursesLms extends Model
 {
+
+    public function __construct()
+    {
+
+        parent::__construct();
+    }
+    
     public function getDefaultTab()
     {
         $query = ' SELECT ma.obj_index'

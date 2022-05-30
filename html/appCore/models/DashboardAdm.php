@@ -91,6 +91,7 @@ class DashboardAdm extends Model
             }
             //if "$all_courses" is true, than leave "$this->courses_filter" as false
         }
+        parent::__construct();
     }
 
     public function getPerm()

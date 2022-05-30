@@ -35,6 +35,7 @@ class EditionAlms extends Model
 
         $this->id_course = $id_course;
         $this->id_edition = $id_edition;
+        parent::__construct();
     }
 
     public function getPerm()

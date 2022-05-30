@@ -112,6 +112,8 @@ class ReportLms extends Model
             $this->idSource = $id_source;
             $this->showInDetail = $show_in_detail;
         }
+
+        parent::__construct();
     }
 
     /**

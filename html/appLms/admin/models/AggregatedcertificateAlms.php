@@ -18,6 +18,7 @@ class AggregatedcertificateAlms extends Model
     public function __construct()
     {
         $this->db = DbConn::getInstance();
+        parent::__construct();
     }
 
     /**

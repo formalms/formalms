@@ -26,6 +26,7 @@ class TemplatelayoutAdm extends Model
         $this->db = DbConn::getInstance();
         $this->aclManager = Docebo::user()->getAclManager();
         $this->json = new Services_JSON();
+        parent::__construct();
     }
 
     public function getPerm()

@@ -24,6 +24,7 @@ class PrecompileLms extends Model
         $this->db = DbConn::getInstance();
         $this->error = false;
         $this->pmodel = new PrivacypolicyAdm();
+        parent::__construct();
     }
 
     public function compileRequired()

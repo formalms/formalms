@@ -32,6 +32,7 @@ class DashboardsettingsAdm extends Model
         $this->loadLayouts();
         $this->loadInstalledBlocks();
         $this->loadEnabledBlocks();
+        parent::__construct();
     }
 
     public function loadLayouts()

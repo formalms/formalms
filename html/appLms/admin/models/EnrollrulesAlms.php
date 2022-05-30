@@ -25,6 +25,7 @@ class EnrollrulesAlms extends Model
         parent::__construct();
         $this->json = new Services_JSON();
         $this->db = DbConn::getInstance();
+        parent::__construct();
     }
 
     public function getPerm()

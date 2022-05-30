@@ -20,6 +20,7 @@ class TimeperiodsAlms extends Model
     public function __construct($id_course = 0, $id_date = 0)
     {
         $this->db = DbConn::getInstance();
+        parent::__construct();
     }
 
     public function getPerm()

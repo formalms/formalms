@@ -15,4 +15,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class ProfileLms extends Model
 {
+    public function __construct()
+    {
+   
+        parent::__construct();
+    }
 }

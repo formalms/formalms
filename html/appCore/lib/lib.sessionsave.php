@@ -33,6 +33,16 @@ class Session_Save extends General_Save
      **/
     public $max_try = 4;
 
+    /**
+     * session.
+     **/
+    public $session;
+
+
+    public function __construct()
+    {
+        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    }
 
     public function getName($basename = 'basename', $unique = false)
     {

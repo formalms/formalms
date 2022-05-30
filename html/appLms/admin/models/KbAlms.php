@@ -24,6 +24,7 @@ class KbAlms extends Model
         require_once _base_ . '/lib/lib.json.php';
         $this->db = DbConn::getInstance();
         $this->json = new Services_JSON();
+        parent::__construct();
     }
 
     public function getPerm()

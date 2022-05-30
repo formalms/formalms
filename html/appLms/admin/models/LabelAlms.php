@@ -29,6 +29,7 @@ class LabelAlms extends Model
     {
         $this->db = DbConn::getInstance();
         $this->acl_man = Docebo::user()->getAclManager();
+        parent::__construct();
     }
 
     public function getPerm()

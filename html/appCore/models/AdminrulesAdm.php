@@ -27,6 +27,7 @@ class AdminrulesAdm extends Model
         $this->acl_man = &Docebo::user()->getAclManager();
         $this->rules_path = '/framework/adminrules/';
         $this->rules_cache = null;
+        parent::__construct();
     }
 
     public function getPerm()

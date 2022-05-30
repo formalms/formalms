@@ -19,6 +19,7 @@ class CoursepathLms extends Model
 
     public function __construct()
     {
+        parent::__construct();
     }
 
     public function getCoursepath($id_user, $conditions = '', $filter_status = '')

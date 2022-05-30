@@ -26,6 +26,7 @@ class FunctionalrolesAdm extends Model
         $this->db = DbConn::getInstance();
         $this->acl_man = Docebo::user()->getACLManager();
         $this->_ugroups_cache = false;
+        parent::__construct();
     }
 
     public function getPerm()

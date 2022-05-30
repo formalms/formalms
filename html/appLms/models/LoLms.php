@@ -24,6 +24,7 @@ class LoLms extends Model
     public function __construct()
     {
         $this->setTdb();
+        parent::__construct();
     }
 
     public function setTdb($idCourse = false)

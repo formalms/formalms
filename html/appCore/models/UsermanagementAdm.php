@@ -32,6 +32,7 @@ class UsermanagementAdm extends Model
         $this->orgUser = false;
         $this->orgCache = false;
         $this->sessionPrefix = 'usermanagement';
+        parent::__construct();
     }
 
     public function getPerm()

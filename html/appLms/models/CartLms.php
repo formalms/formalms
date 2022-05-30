@@ -33,6 +33,7 @@ class CartLms extends Model
         $this->classroom_man = new DateManager();
 
         $this->acl_man = &Docebo::user()->getAclManager();
+        parent::__construct();
     }
 
     public function getCartList($old_key = false)

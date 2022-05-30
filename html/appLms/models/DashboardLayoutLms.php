@@ -31,6 +31,12 @@ class DashboardLayoutLms extends Model
 
     protected $default = false;
 
+    public function __construct()
+    {
+ 
+        parent::__construct();
+    }
+
     /**
      * @return mixed
      */

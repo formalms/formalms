@@ -20,6 +20,7 @@ class TransactionAlms extends Model
     public function __construct()
     {
         $this->acl_man = &Docebo::user()->getAclManager();
+        parent::__construct();
     }
 
     public function getPerm()
