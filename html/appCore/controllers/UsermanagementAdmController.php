@@ -97,8 +97,8 @@ class UsermanagementAdmController extends AdmController
                 break;
             case 'password mismatch':
                 $message = Lang::t('PASSWRONG', 'register');
-                //...
-                // no break
+            //...
+            // no break
             case '':
                 $message = '';
                 break;
@@ -162,16 +162,16 @@ class UsermanagementAdmController extends AdmController
                 break;
 
             case 'err_alreadyassigned':
-                    $countassigned = Get::req('count', DOTY_STRING, '');
-                    $id_first = Get::req('id_first', DOTY_STRING, '');
-                    $profile_user = $this->model->getProfileData($id_first);
+                $countassigned = Get::req('count', DOTY_STRING, '');
+                $id_first = Get::req('id_first', DOTY_STRING, '');
+                $profile_user = $this->model->getProfileData($id_first);
 
-                    if ($countassigned == 1) {
-                        $message = getErrorUi(Lang::t('_USER') . ' ' . $profile_user->firstname . ' ' . $profile_user->lastname . ' ' . Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
-                    } else {
-                        $message = getErrorUi($countassigned . ' ' . Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory') . ' (' . $profile_user->firstname . ' ' . $profile_user->lastname . '...)');
-                    }
-                    break;
+                if ($countassigned == 1) {
+                    $message = getErrorUi(Lang::t('_USER') . ' ' . $profile_user->firstname . ' ' . $profile_user->lastname . ' ' . Lang::t('_ALREADY_ASSIGNED', 'admin_directory'));
+                } else {
+                    $message = getErrorUi($countassigned . ' ' . Lang::t('_USERS_ALREADY_ASSIGNED', 'admin_directory') . ' (' . $profile_user->firstname . ' ' . $profile_user->lastname . '...)');
+                }
+                break;
 
             default:
                 $message = '';
@@ -238,9 +238,9 @@ class UsermanagementAdmController extends AdmController
         $op = Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
-                    $this->selectall();
+                $this->selectall();
 
-                    return;
+                return;
 
                 break;
         }
@@ -816,11 +816,11 @@ class UsermanagementAdmController extends AdmController
                     }
                 }
                 // SET DELETE USER EVENT
-            //TODO: EVT_OBJECT (§)
-            //$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
-            //$event->setUser($userToDelete);
-            //TODO: EVT_LAUNCH (&)
-            //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
+                //TODO: EVT_OBJECT (§)
+                //$event = new \appCore\Events\Core\User\UsersManagementDeleteEvent();
+                //$event->setUser($userToDelete);
+                //TODO: EVT_LAUNCH (&)
+                //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementDeleteEvent::EVENT_NAME, $event);
             } else {
                 $output = ['success' => false, 'message' => 'Error: unable to delete user #' . $id_user . '.'];
             }
@@ -973,7 +973,7 @@ class UsermanagementAdmController extends AdmController
                     $msg_composer
                 );
 
-            // SET SUSPAND USER EVENT
+                // SET SUSPAND USER EVENT
                 //TODO: EVT_OBJECT (§)
                 //$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
                 //$event->setUser($user);
@@ -1151,207 +1151,207 @@ class UsermanagementAdmController extends AdmController
 
         switch ($command) {
             case 'expand':
-                    //check permissions
-                    if (!$this->permissions['view_org']) {
-                        $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                        echo $this->json->encode($output);
+                //check permissions
+                if (!$this->permissions['view_org']) {
+                    $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
+                    echo $this->json->encode($output);
 
-                        return;
-                    }
+                    return;
+                }
 
-                    $idOrg = Get::req('node_id', DOTY_INT, -1);
-                    $initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $idOrg = Get::req('node_id', DOTY_INT, -1);
+                $initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
-                    if ($initial) {
-                        //get selected node from session and set the expanded tree
-                        $idOrg = $this->_getSessionValue('selected_node', 0); //$this->_getSelectedNode();
-                        $nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
-                        //create actions for every node
-                        $this->_assignActions($nodes);
-                        //set output
-                        if (is_array($nodes)) {
-                            $output = [
-                                'success' => true,
-                                'nodes' => $nodes,
-                                'initial' => $initial,
-                            ];
-                        } else {
-                            $output = ['success' => false];
-                        }
-                    } else {
-                        //extract node data
-                        $nodes = $this->model->getOrgChartNodes($idOrg, false, false, true);
-                        //create actions for every node
-                        for ($i = 0; $i < count($nodes); ++$i) {
-                            $nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
-                        }
-                        //set output
+                if ($initial) {
+                    //get selected node from session and set the expanded tree
+                    $idOrg = $this->_getSessionValue('selected_node', 0); //$this->_getSelectedNode();
+                    $nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
+                    //create actions for every node
+                    $this->_assignActions($nodes);
+                    //set output
+                    if (is_array($nodes)) {
                         $output = [
                             'success' => true,
                             'nodes' => $nodes,
                             'initial' => $initial,
                         ];
+                    } else {
+                        $output = ['success' => false];
                     }
-                    echo $this->json->encode($output);
+                } else {
+                    //extract node data
+                    $nodes = $this->model->getOrgChartNodes($idOrg, false, false, true);
+                    //create actions for every node
+                    for ($i = 0; $i < count($nodes); ++$i) {
+                        $nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
+                    }
+                    //set output
+                    $output = [
+                        'success' => true,
+                        'nodes' => $nodes,
+                        'initial' => $initial,
+                    ];
+                }
+                echo $this->json->encode($output);
 
                 break;
 
             case 'set_selected_node':
-                    $idOrg = Get::req('node_id', DOTY_INT, -1);
-                    $this->_setSessionValue('selected_node', $idOrg); //_setSelectedNode($idOrg);
+                $idOrg = Get::req('node_id', DOTY_INT, -1);
+                $this->_setSessionValue('selected_node', $idOrg); //_setSelectedNode($idOrg);
 
                 break;
 
             case 'delete':
-                    //check permissions
-                    if (!$this->permissions['del_org']) {
-                        $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                        echo $this->json->encode($output);
+                //check permissions
+                if (!$this->permissions['del_org']) {
+                    $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
+                    echo $this->json->encode($output);
 
-                        return;
-                    }
+                    return;
+                }
 
-                    $this->delfolder();
+                $this->delfolder();
 
                 break;
 
             case 'getmodform':
-                    //check permissions
-                    if (!$this->permissions['mod_org']) {
-                        $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                        echo $this->json->encode($output);
-
-                        return;
-                    }
-
-                    $output = [];
-                    $id = Get::req('node_id', DOTY_INT, -1);
-                    if ($id < 0) {
-                        $output = [
-                            'success' => false,
-                            'message' => Lang::t('_INVALID_INPUT'),
-                        ];
-                    } else {
-                        if ($id == 0) {
-                            $root_name = Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
-                            $body = Form::openForm('modfolder_form', 'ajax.adm_server.php?r=' . $this->link . '/modrootfolder')
-                                . '<p id="addfolder_error_message"></p>'
-                                . Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
-                                . Form::closeForm();
-                        } else {
-                            $folder_info = $this->model->getFolderById($id);
-                            $languages = Docebo::langManager()->getAllLanguages(true); //getAllLangCode();
-                            $std_lang = getLanguage();
-
-                            $template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : getDefaultTemplate());
-                            $template_arr = getTemplateList();
-                            $template_tmp_arr = array_flip($template_arr);
-                            $template_id = $template_tmp_arr[$template];
-                            unset($template_tmp_arr);
-
-                            $form_content = Form::getHidden('modfolder_id', 'node_id', $id);
-                            $form_content .= Form::getTextfield(Lang::t('_CODE', 'organization_chart'), 'org_code', 'org_code', 50, $folder_info->code);
-                            $form_content .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_arr, $template_id);
-                            $form_content .= Form::getBreakRow();
-
-                            $translations = $this->model->getFolderTranslations($id, true);
-                            foreach ($languages as $language) {
-                                $lang_code = $language['code'];
-                                $lang_name = $language['description'];
-                                $translation = (isset($translations[$lang_code]) ? $translations[$lang_code] : '');
-                                $form_content .= Form::getTextfield($lang_name, 'modfolder_' . $lang_code, 'modfolder[' . $lang_code . ']', 255, $translation);
-                            }
-                            // LRZ
-                            // Add custom fiels for org chart tree
-                            $form_content .= '<hr>';
-                            $vett_custom_org = $this->model->getCustomFieldOrg($id);
-                            foreach ($vett_custom_org as $key => $value) {
-                                $valueField = $this->model->getValueCustom($id, $value['id_field']);
-                                if ($value['type_field'] == 'dropdown') {
-                                    // recover field son of id_field
-                                    $vett_value_custom = $this->model->getLO_Custom_Value_Array($value['id_field']);
-                                    $form_content .= Form::getDropdown($value['translation'], 'custom_' . $value['id_field'], 'custom_' . $value['id_field'], $vett_value_custom, $valueField);
-                                }
-                                if ($value['type_field'] == 'textfield') {
-                                    $form_content .= Form::getTextfield($value['translation'], 'custom_' . $value['id_field'], 'custom_' . $value['id_field'], 50, $valueField);
-                                }
-                            }
-                            $body = Form::openForm('modfolder_form', 'ajax.adm_server.php?r=' . $this->link . '/modfolder')
-                                . '<p id="addfolder_error_message"></p>'
-                                . $form_content
-                                . Form::closeForm();
-                        }
-
-                        $output = [
-                            'success' => true,
-                            'body' => $body,
-                        ];
-                    }
-
+                //check permissions
+                if (!$this->permissions['mod_org']) {
+                    $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
                     echo $this->json->encode($output);
+
+                    return;
+                }
+
+                $output = [];
+                $id = Get::req('node_id', DOTY_INT, -1);
+                if ($id < 0) {
+                    $output = [
+                        'success' => false,
+                        'message' => Lang::t('_INVALID_INPUT'),
+                    ];
+                } else {
+                    if ($id == 0) {
+                        $root_name = Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
+                        $body = Form::openForm('modfolder_form', 'ajax.adm_server.php?r=' . $this->link . '/modrootfolder')
+                            . '<p id="addfolder_error_message"></p>'
+                            . Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
+                            . Form::closeForm();
+                    } else {
+                        $folder_info = $this->model->getFolderById($id);
+                        $languages = Docebo::langManager()->getAllLanguages(true); //getAllLangCode();
+                        $std_lang = getLanguage();
+
+                        $template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : getDefaultTemplate());
+                        $template_arr = getTemplateList();
+                        $template_tmp_arr = array_flip($template_arr);
+                        $template_id = $template_tmp_arr[$template];
+                        unset($template_tmp_arr);
+
+                        $form_content = Form::getHidden('modfolder_id', 'node_id', $id);
+                        $form_content .= Form::getTextfield(Lang::t('_CODE', 'organization_chart'), 'org_code', 'org_code', 50, $folder_info->code);
+                        $form_content .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_arr, $template_id);
+                        $form_content .= Form::getBreakRow();
+
+                        $translations = $this->model->getFolderTranslations($id, true);
+                        foreach ($languages as $language) {
+                            $lang_code = $language['code'];
+                            $lang_name = $language['description'];
+                            $translation = (isset($translations[$lang_code]) ? $translations[$lang_code] : '');
+                            $form_content .= Form::getTextfield($lang_name, 'modfolder_' . $lang_code, 'modfolder[' . $lang_code . ']', 255, $translation);
+                        }
+                        // LRZ
+                        // Add custom fiels for org chart tree
+                        $form_content .= '<hr>';
+                        $vett_custom_org = $this->model->getCustomFieldOrg($id);
+                        foreach ($vett_custom_org as $key => $value) {
+                            $valueField = $this->model->getValueCustom($id, $value['id_field']);
+                            if ($value['type_field'] == 'dropdown') {
+                                // recover field son of id_field
+                                $vett_value_custom = $this->model->getLO_Custom_Value_Array($value['id_field']);
+                                $form_content .= Form::getDropdown($value['translation'], 'custom_' . $value['id_field'], 'custom_' . $value['id_field'], $vett_value_custom, $valueField);
+                            }
+                            if ($value['type_field'] == 'textfield') {
+                                $form_content .= Form::getTextfield($value['translation'], 'custom_' . $value['id_field'], 'custom_' . $value['id_field'], 50, $valueField);
+                            }
+                        }
+                        $body = Form::openForm('modfolder_form', 'ajax.adm_server.php?r=' . $this->link . '/modfolder')
+                            . '<p id="addfolder_error_message"></p>'
+                            . $form_content
+                            . Form::closeForm();
+                    }
+
+                    $output = [
+                        'success' => true,
+                        'body' => $body,
+                    ];
+                }
+
+                echo $this->json->encode($output);
 
                 break;
 
             case 'assignfields':
-                    //check permissions
-                    if (!$this->permissions['mod_org']) {
-                        $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                        echo $this->json->encode($output);
+                //check permissions
+                if (!$this->permissions['mod_org']) {
+                    $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
+                    echo $this->json->encode($output);
 
-                        return;
-                    }
+                    return;
+                }
 
-                    $this->assignfields();
+                $this->assignfields();
 
                 break;
 
             case 'options':
-                    //check permissions
-                    if (!$this->permissions['view_org']) {
-                        $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                        echo $this->json->encode($output);
-
-                        return;
-                    }
-
-                    $id = Get::req('node_id', DOTY_INT, -1);
-                    $output = [];
-                    if ($id <= 0) {
-                        $output['success'] = false;
-                    } else {
-                        $output['success'] = true;
-                        $output['options'] = $this->_getNodeActions($id);
-                    }
+                //check permissions
+                if (!$this->permissions['view_org']) {
+                    $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
                     echo $this->json->encode($output);
+
+                    return;
+                }
+
+                $id = Get::req('node_id', DOTY_INT, -1);
+                $output = [];
+                if ($id <= 0) {
+                    $output['success'] = false;
+                } else {
+                    $output['success'] = true;
+                    $output['options'] = $this->_getNodeActions($id);
+                }
+                echo $this->json->encode($output);
 
                 break;
 
             case 'movefolder':
-                    //check permissions
-                    if (!$this->permissions['mod_org']) {
-                        $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                        echo $this->json->encode($output);
-
-                        return;
-                    }
-
-                    $src_folder = Get::req('src', DOTY_INT, -1);
-                    $dest_folder = Get::req('dest', DOTY_INT, -1);
-
-                    $output = [];
-                    if ($this->model->moveFolder($src_folder, $dest_folder)) {
-                        $output['success'] = true;
-                    } else {
-                        $output['success'] = false;
-                    }
+                //check permissions
+                if (!$this->permissions['mod_org']) {
+                    $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
                     echo $this->json->encode($output);
+
+                    return;
+                }
+
+                $src_folder = Get::req('src', DOTY_INT, -1);
+                $dest_folder = Get::req('dest', DOTY_INT, -1);
+
+                $output = [];
+                if ($this->model->moveFolder($src_folder, $dest_folder)) {
+                    $output['success'] = true;
+                } else {
+                    $output['success'] = false;
+                }
+                echo $this->json->encode($output);
 
                 break;
 
             default:
-                    $output = [];
-                    $output['success'] = false;
-                    echo $this->json->encode($output);
+                $output = [];
+                $output['success'] = false;
+                echo $this->json->encode($output);
         } // end switch
     }
 
@@ -1464,7 +1464,13 @@ class UsermanagementAdmController extends AdmController
             $id_parent = 0;
         }
 
-        $template = getDefaultTemplate();
+        if ($this->permissions['mod_org']) {
+            $template = getDefaultTemplate();
+        } else {
+            $template = getTemplateFromIdOrg($id_parent);
+        }
+
+
         $template_arr = getTemplateList();
         $template_tmp_arr = array_flip($template_arr);
         $template_id = $template_tmp_arr[$template];
@@ -1475,6 +1481,8 @@ class UsermanagementAdmController extends AdmController
             'title' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
             'json' => $this->json,
             'default_template' => $template_id,
+            'template_array' => $template_arr,
+            'mod_org' => $this->permissions['mod_org'],
         ]);
     }
 
@@ -1501,11 +1509,11 @@ class UsermanagementAdmController extends AdmController
             }
 
             Events::trigger('core.orgchart.creating', ['node' => ['label' => ($code != '' ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, getLanguage()),
-                                                                        'is_leaf' => true,
-                                                                        'count_content' => 0,
+                'is_leaf' => true,
+                'count_content' => 0,
             ]]);
 
-            $id = $this->model->addFolder($id_parent, $langs, $code);
+            $id = $this->model->addFolder($id_parent, $langs, $code, Get::req('associated_template', DOTY_STRING, ''));
             if ($id > 0) {
                 $output['success'] = true;
                 $nodedata = [
@@ -1533,7 +1541,6 @@ class UsermanagementAdmController extends AdmController
                 $output['message'] = Lang::t('_CONNECTION_ERROR');
             }
         }
-
         echo $this->json->encode($output);
     }
 
@@ -1772,7 +1779,7 @@ class UsermanagementAdmController extends AdmController
                 }
                 $selector->addFormInfo(
                     Form::getHidden('is_updating', 'is_updating', 1) .
-                        Form::getHidden('id', 'id', $id)
+                    Form::getHidden('id', 'id', $id)
                 );
                 $selector->loadSelector(
                     Util::str_replace_once('&', '&amp;', $jump_url),
@@ -1842,23 +1849,23 @@ class UsermanagementAdmController extends AdmController
 
             switch ($def_value) {
                 case GROUP_FIELD_NORMAL:
-                        $is_mandatory = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_MANDATORY] == 'true';
-                        $is_invisible = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
-                        $is_userinherit = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERINHERIT] == '1';
+                    $is_mandatory = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_MANDATORY] == 'true';
+                    $is_invisible = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
+                    $is_userinherit = isset($arr_fields_normal[$id_field]) && $arr_fields_normal[$id_field][FIELD_INFO_USERINHERIT] == '1';
 
                     break;
 
                 case GROUP_FIELD_INHERIT:
-                        $is_mandatory = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_MANDATORY] == 'true';
-                        $is_invisible = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
-                        $is_userinherit = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERINHERIT] == '1';
+                    $is_mandatory = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_MANDATORY] == 'true';
+                    $is_invisible = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERACCESS] == 'readwrite';
+                    $is_userinherit = isset($arr_fields_inherit[$id_field]) && $arr_fields_inherit[$id_field][FIELD_INFO_USERINHERIT] == '1';
 
                     break;
 
                 default:
-                        $is_mandatory = false;
-                        $is_invisible = false;
-                        $is_userinherit = false;
+                    $is_mandatory = false;
+                    $is_invisible = false;
+                    $is_userinherit = false;
             }
 
             $selected = $def_value != GROUP_FIELD_NO;
@@ -2349,203 +2356,203 @@ class UsermanagementAdmController extends AdmController
                 break;
 
             case 2:
-                    $params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
+                $params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
 
-                    require_once Forma::inc(_base_ . '/lib/lib.upload.php');
+                require_once Forma::inc(_base_ . '/lib/lib.upload.php');
 
-                    // ----------- file upload -----------------------------------------
-                    if ($_FILES['file_import']['name'] == '') {
-                        //$_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
-                        Util::jump_to($base_url . '&res=no_file');
-                    } else {
-                        $path = '/appCore/';
-                        $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES['file_import']['name'];
-                        if (!file_exists(_files_ . $path . $savefile)) {
-                            sl_open_fileoperations();
-                            if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
-                                sl_close_fileoperations();
-                                //$_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
-                                Util::jump_to($base_url . '&err=no_upload');
-                            }
+                // ----------- file upload -----------------------------------------
+                if ($_FILES['file_import']['name'] == '') {
+                    //$_SESSION['last_error'] = Lang::t('_FILEUNSPECIFIED');
+                    Util::jump_to($base_url . '&res=no_file');
+                } else {
+                    $path = '/appCore/';
+                    $savefile = mt_rand(0, 100) . '_' . time() . '_' . $_FILES['file_import']['name'];
+                    if (!file_exists(_files_ . $path . $savefile)) {
+                        sl_open_fileoperations();
+                        if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                             sl_close_fileoperations();
-                        } else {
-                            $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                            //$_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
                             Util::jump_to($base_url . '&err=no_upload');
                         }
+                        sl_close_fileoperations();
+                    } else {
+                        $_SESSION['last_error'] = Lang::t('_ERROR_UPLOAD');
+                        Util::jump_to($base_url . '&err=no_upload');
                     }
+                }
 
-                    require_once _adm_ . '/modules/org_chart/import.org_chart.php';
-                    $separator_info = Get::req('import_separator', DOTY_STRING, ',');
-                    $separator = false;
-                    switch ($separator_info) {
-                        case 'comma':
-                            $separator = ',';
-                            break;
-                        case 'dotcomma':
-                            $separator = ';';
-                            break;
-                        case 'manual':
-                            $separator = Get::req('import_separator_manual', DOTY_STRING, '');
-                            break;
-                    }
-                    $first_row_header = (Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true');
-                    $import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
-                    if (trim($import_charset) === '') {
-                        $import_charset = 'UTF-8';
-                    }
+                require_once _adm_ . '/modules/org_chart/import.org_chart.php';
+                $separator_info = Get::req('import_separator', DOTY_STRING, ',');
+                $separator = false;
+                switch ($separator_info) {
+                    case 'comma':
+                        $separator = ',';
+                        break;
+                    case 'dotcomma':
+                        $separator = ';';
+                        break;
+                    case 'manual':
+                        $separator = Get::req('import_separator_manual', DOTY_STRING, '');
+                        break;
+                }
+                $first_row_header = (Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true');
+                $import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
+                if (trim($import_charset) === '') {
+                    $import_charset = 'UTF-8';
+                }
 
-                    $pwd_force_change_policy = Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing');
-                    $set_password = Get::req('set_password', DOTY_STRING, 'no_action');
-                    $use_manual_password = Get::req('use_manual_password', DOTY_BOOL, false);
-                    $manual_password = Get::req('manual_password', DOTY_STRING, '');
+                $pwd_force_change_policy = Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing');
+                $set_password = Get::req('set_password', DOTY_STRING, 'no_action');
+                $use_manual_password = Get::req('use_manual_password', DOTY_BOOL, false);
+                $manual_password = Get::req('manual_password', DOTY_STRING, '');
 
-                    $src = new DeceboImport_SourceCSV([
-                        'filename' => _files_ . $path . $savefile,
-                        'separator' => $separator,
-                        'first_row_header' => $first_row_header,
-                        'import_charset' => $import_charset,
-                    ]);
-                    $dst = new ImportUser([
-                        'dbconn' => $GLOBALS['dbConn'],
-                        'tree' => $idOrg,
-                        'pwd_force_change_policy' => $pwd_force_change_policy,
-                        'set_password' => $set_password,
-                        'use_manual_password' => false,
-                        'manual_password' => null,
-                        'send_alert' => 0,
-                        'action_on_users' => 'create_and_update',
-                    ]);
+                $src = new DeceboImport_SourceCSV([
+                    'filename' => _files_ . $path . $savefile,
+                    'separator' => $separator,
+                    'first_row_header' => $first_row_header,
+                    'import_charset' => $import_charset,
+                ]);
+                $dst = new ImportUser([
+                    'dbconn' => $GLOBALS['dbConn'],
+                    'tree' => $idOrg,
+                    'pwd_force_change_policy' => $pwd_force_change_policy,
+                    'set_password' => $set_password,
+                    'use_manual_password' => false,
+                    'manual_password' => null,
+                    'send_alert' => 0,
+                    'action_on_users' => 'create_and_update',
+                ]);
 
-                    $src->connect();
-                    $dst->connect();
+                $src->connect();
+                $dst->connect();
 
-                    $importer = new DoceboImport();
-                    $importer->setSource($src);
-                    $importer->setDestination($dst);
+                $importer = new DoceboImport();
+                $importer->setSource($src);
+                $importer->setDestination($dst);
 
-                    $params['UIMap'] = $importer->getUIMap();
-                    $params['tot_row'] = $importer->getTotRow();
-                    $params['filename'] = _files_ . $path . $savefile;
-                    $params['first_row_header'] = $first_row_header;
-                    $params['separator'] = $separator;
-                    $params['import_charset'] = $import_charset;
+                $params['UIMap'] = $importer->getUIMap();
+                $params['tot_row'] = $importer->getTotRow();
+                $params['filename'] = _files_ . $path . $savefile;
+                $params['first_row_header'] = $first_row_header;
+                $params['separator'] = $separator;
+                $params['import_charset'] = $import_charset;
 
                 break;
 
             case 3:
-                    //if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
-                    //    Util::jump_to($base_url.'&res=need_to_alert' );
-                    //}
+                //if (!Get::pReq('send_alert', DOTY_INT, 0) && Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
+                //    Util::jump_to($base_url.'&res=need_to_alert' );
+                //}
 
-                    $filename = Get::req('filename', DOTY_STRING, '');
-                    if ($filename == '') {
-                        return false;
+                $filename = Get::req('filename', DOTY_STRING, '');
+                if ($filename == '') {
+                    return false;
+                }
+                $separator = Get::req('import_separator', DOTY_STRING, ',');
+                $first_row_header = Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
+                $import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
+                if (trim($import_charset) === '') {
+                    $import_charset = 'UTF-8';
+                }
+
+                require_once _adm_ . '/modules/org_chart/import.org_chart.php';
+                $src = new DeceboImport_SourceCSV([
+                    'filename' => $filename,
+                    'separator' => $separator,
+                    'first_row_header' => $first_row_header,
+                    'import_charset' => $import_charset,
+                ]);
+                $dst = new ImportUser([
+                    'dbconn' => $GLOBALS['dbConn'],
+                    'tree' => $idOrg,
+                    'pwd_force_change_policy' => Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing'),
+                    'set_password' => Get::req('set_password', DOTY_STRING, 'from_file'),
+                    'manual_password' => Get::req('password_to_insert', DOTY_STRING, 'automatic_password') == 'use_manual_password' ? Get::req('manual_password', DOTY_STRING, null) : null,
+                    'send_alert' => Get::pReq('send_alert', DOTY_INT, 0),
+                    'action_on_users' => Get::pReq('action_on_users', DOTY_STRING, 'create_and_update'),
+                ]);
+                $src->connect();
+                $dst->connect();
+
+                $importer = new DoceboImport();
+                $importer->setSource($src);
+                $importer->setDestination($dst);
+
+                $importer->parseMap();
+                if (
+                    !in_array('userid', $importer->import_map)
+                    || !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))
+                ) {
+                    Util::jump_to($base_url . '&res=userid_needed');
+                }
+
+                foreach ($importer->import_map as $im) {
+                    if ($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1) {
+                        Util::jump_to($base_url . '&res=field_repeated');
                     }
-                    $separator = Get::req('import_separator', DOTY_STRING, ',');
-                    $first_row_header = Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
-                    $import_charset = Get::req('import_charset', DOTY_STRING, 'UTF-8');
-                    if (trim($import_charset) === '') {
-                        $import_charset = 'UTF-8';
+                }
+
+                $results = $importer->doImport();
+
+                $users = $dst->getNewImportedIdst();
+                //apply enroll rules
+                if (!empty($users)) {
+                    $model = new UsermanagementAdm();
+                    $arr_users = [];
+                    foreach ($users as $idst) {
+                        $arr_users[] = $model->getProfileData($idst);
                     }
 
-                    require_once _adm_ . '/modules/org_chart/import.org_chart.php';
-                    $src = new DeceboImport_SourceCSV([
-                        'filename' => $filename,
-                        'separator' => $separator,
-                        'first_row_header' => $first_row_header,
-                        'import_charset' => $import_charset,
+                    //TODO: EVT_OBJECT (§)
+                    //$event = new \appCore\Events\Core\User\UsersManagementCSVimportEvent();
+                    //$event->setUsers($arr_users);
+                    //TODO: EVT_LAUNCH (&)
+                    //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementCSVimportEvent::EVENT_NAME, $event);
+
+                    $enrollrules = new EnrollrulesAlms();
+                    $enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $idOrg);
+                }
+
+                $src->close();
+                $dst->close();
+
+                $buffer = '';
+                if (count($results) > 1) {
+                    require_once _base_ . '/lib/lib.table.php';
+                    $buffer .= Lang::t('_ERRORS', 'admin_directory') . ': <b>' . (count($results) - 1) . '</b><br/>';
+                    $table = new Table(
+                        Get::sett('visuItem', 25),
+                        Lang::t('_ERRORS', 'admin_directory'),
+                        Lang::t('_ERRORS', 'admin_directory')
+                    );
+                    $table->setColsStyle(['', '']);
+                    $table->addHead([
+                        Lang::t('_ROW', 'admin_directory'),
+                        Lang::t('_DESCRIPTION', 'admin_directory'),
                     ]);
-                    $dst = new ImportUser([
-                        'dbconn' => $GLOBALS['dbConn'],
-                        'tree' => $idOrg,
-                        'pwd_force_change_policy' => Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing'),
-                        'set_password' => Get::req('set_password', DOTY_STRING, 'from_file'),
-                        'manual_password' => Get::req('password_to_insert', DOTY_STRING, 'automatic_password') == 'use_manual_password' ? Get::req('manual_password', DOTY_STRING, null) : null,
-                        'send_alert' => Get::pReq('send_alert', DOTY_INT, 0),
-                        'action_on_users' => Get::pReq('action_on_users', DOTY_STRING, 'create_and_update'),
-                    ]);
-                    $src->connect();
-                    $dst->connect();
 
-                    $importer = new DoceboImport();
-                    $importer->setSource($src);
-                    $importer->setDestination($dst);
-
-                    $importer->parseMap();
-                    if (
-                        !in_array('userid', $importer->import_map)
-                        || !in_array(array_search('userid', $importer->import_map), array_keys($importer->import_tocompare))
-                    ) {
-                        Util::jump_to($base_url . '&res=userid_needed');
-                    }
-
-                    foreach ($importer->import_map as $im) {
-                        if ($im != DOCEBOIMPORT_IGNORE && count(array_keys($importer->import_map, $im)) > 1) {
-                            Util::jump_to($base_url . '&res=field_repeated');
+                    foreach ($results as $key => $err_val) {
+                        if ($key != 0) {
+                            $table->addBody([$key, $err_val]);
                         }
                     }
+                    $buffer .= $table->getTable();
+                }
 
-                    $results = $importer->doImport();
+                if ($buffer === '') {
+                    $buffer = '<br/><br/>';
+                }
 
-                    $users = $dst->getNewImportedIdst();
-                    //apply enroll rules
-                    if (!empty($users)) {
-                        $model = new UsermanagementAdm();
-                        $arr_users = [];
-                        foreach ($users as $idst) {
-                            $arr_users[] = $model->getProfileData($idst);
-                        }
+                $params['backUi'] = getBackUi($base_url, Lang::t('_BACK', 'standard'));
+                $params['resultUi'] = Lang::t('_IMPORT', 'standard') . ': <b>' . ($first_row_header ? $results[0] - 1 : $results[0]) . '</b><br />';
+                $params['results'] = $results;
+                $params['table'] = $buffer;
 
-                        //TODO: EVT_OBJECT (§)
-                        //$event = new \appCore\Events\Core\User\UsersManagementCSVimportEvent();
-                        //$event->setUsers($arr_users);
-                        //TODO: EVT_LAUNCH (&)
-                        //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementCSVimportEvent::EVENT_NAME, $event);
-
-                        $enrollrules = new EnrollrulesAlms();
-                        $enrollrules->newRules('_NEW_IMPORTED_USER', $users, 'all', $idOrg);
-                    }
-
-                    $src->close();
-                    $dst->close();
-
-                    $buffer = '';
-                    if (count($results) > 1) {
-                        require_once _base_ . '/lib/lib.table.php';
-                        $buffer .= Lang::t('_ERRORS', 'admin_directory') . ': <b>' . (count($results) - 1) . '</b><br/>';
-                        $table = new Table(
-                            Get::sett('visuItem', 25),
-                            Lang::t('_ERRORS', 'admin_directory'),
-                            Lang::t('_ERRORS', 'admin_directory')
-                        );
-                        $table->setColsStyle(['', '']);
-                        $table->addHead([
-                            Lang::t('_ROW', 'admin_directory'),
-                            Lang::t('_DESCRIPTION', 'admin_directory'),
-                        ]);
-
-                        foreach ($results as $key => $err_val) {
-                            if ($key != 0) {
-                                $table->addBody([$key, $err_val]);
-                            }
-                        }
-                        $buffer .= $table->getTable();
-                    }
-
-                    if ($buffer === '') {
-                        $buffer = '<br/><br/>';
-                    }
-
-                    $params['backUi'] = getBackUi($base_url, Lang::t('_BACK', 'standard'));
-                    $params['resultUi'] = Lang::t('_IMPORT', 'standard') . ': <b>' . ($first_row_header ? $results[0] - 1 : $results[0]) . '</b><br />';
-                    $params['results'] = $results;
-                    $params['table'] = $buffer;
-
-                    // remove uploaded file:
-                    require_once Forma::inc(_base_ . '/lib/lib.upload.php');
-                    sl_open_fileoperations();
-                    unlink($filename);
-                    sl_close_fileoperations();
+                // remove uploaded file:
+                require_once Forma::inc(_base_ . '/lib/lib.upload.php');
+                sl_open_fileoperations();
+                unlink($filename);
+                sl_close_fileoperations();
 
                 break;
         }
@@ -3260,44 +3267,44 @@ class UsermanagementAdmController extends AdmController
 
         switch ($command) {
             case 'expand':
-                    //check permissions
-                    if (!$this->permissions['view_org']) {
-                        $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
-                        echo $this->json->encode($output);
+                //check permissions
+                if (!$this->permissions['view_org']) {
+                    $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
+                    echo $this->json->encode($output);
 
-                        return;
-                    }
+                    return;
+                }
 
-                    $idOrg = Get::req('node_id', DOTY_INT, -1);
-                    $initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $idOrg = Get::req('node_id', DOTY_INT, -1);
+                $initial = (Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
-                    if ($initial) {
-                        //get selected node from session and set the expanded tree
-                        $idOrg = $this->_getSessionValue('selected_node', 0); //$this->_getSelectedNode();
-                        $nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
+                if ($initial) {
+                    //get selected node from session and set the expanded tree
+                    $idOrg = $this->_getSessionValue('selected_node', 0); //$this->_getSelectedNode();
+                    $nodes = $this->model->getOrgChartInitialNodes($idOrg, true);
 
-                        //set output
-                        if (is_array($nodes)) {
-                            $output = [
-                                'success' => true,
-                                'nodes' => $nodes,
-                                'initial' => $initial,
-                            ];
-                        } else {
-                            $output = ['success' => false];
-                        }
-                    } else {
-                        //extract node data
-                        $nodes = $this->model->getOrgChartNodes($idOrg, false, false, true);
-
-                        //set output
+                    //set output
+                    if (is_array($nodes)) {
                         $output = [
                             'success' => true,
                             'nodes' => $nodes,
                             'initial' => $initial,
                         ];
+                    } else {
+                        $output = ['success' => false];
                     }
-                    echo $this->json->encode($output);
+                } else {
+                    //extract node data
+                    $nodes = $this->model->getOrgChartNodes($idOrg, false, false, true);
+
+                    //set output
+                    $output = [
+                        'success' => true,
+                        'nodes' => $nodes,
+                        'initial' => $initial,
+                    ];
+                }
+                echo $this->json->encode($output);
 
                 break;
 
@@ -3305,9 +3312,9 @@ class UsermanagementAdmController extends AdmController
                 break;
 
             default:
-                    $output = [];
-                    $output['success'] = false;
-                    echo $this->json->encode($output);
+                $output = [];
+                $output['success'] = false;
+                echo $this->json->encode($output);
         } // end switch
     }
 
