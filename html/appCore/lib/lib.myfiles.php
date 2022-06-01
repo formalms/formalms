@@ -644,8 +644,9 @@ class MyFileSelector
         $this->parse();
 
         /** @todo check if this solution for new session works correctly */
-        $tab_man->parseInput($_POST, \Forma\lib\Session\SessionManager::getInstance()->getSession());
-
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $tab_man->parseInput($_POST, $session);
+        
         $active_tab = $tab_man->getActiveTab();
         if (!$active_tab) {
             $active_tab = importVar('working_area', true, $file_man->getDefaultArea());

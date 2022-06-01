@@ -246,6 +246,10 @@ class TabView
      **/
     public function parseInput(&$data, $extra_data)
     {
+
+        if($extra_data instanceof \Symfony\Component\HttpFoundation\Session\Session) {
+            $extra_data = iterator_to_array($extra_data->getIterator());
+        }
         // $extra_data are ingored in this context
         while (($key = key($this->arrTab)) != '') {
             $this->arrTab[$key]->parseInput($data, $extra_data);
@@ -258,8 +262,8 @@ class TabView
         if ($this->activeId === null) {
             if (isset($data[$this->_getStateId()])) {
                 $this->setActiveTab($data[$this->_getStateId()]);
-            } elseif ($extra_data->has($this->_getStateId())) {
-                $this->setActiveTab($extra_data->get($this->_getStateId()));
+            } elseif (isset($extra_data[$this->_getStateId()])) {
+                $this->setActiveTab($extra_data[$this->_getStateId()]);
             }
         }
     }

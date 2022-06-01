@@ -29,17 +29,6 @@ function save_state(&$data)
     $session->save();
 }
 
-function &load_state()
-{
-    $readed = [];
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-
-    if ($session->has('storage')) {
-        $readed = $session->get('storage');
-    }
-
-    return $readed;
-}
 
 function &create_TabView($op)
 {
@@ -56,7 +45,9 @@ function &create_TabView($op)
         $tv->addTab(new TabElemDefault('storage_pubrepo', Lang::t('_PUBREPOROOTNAME', 'storage'), getPathImage() . 'area_title/pubrepo.gif'));
     }
 
-    $extra_data = load_state();
+   
+    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $extra_data = $session->get('storage',[]);
 
     $tv->parseInput($_POST, $extra_data);
     if (isset($_tab_op_map[$op])) {
