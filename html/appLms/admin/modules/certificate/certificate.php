@@ -738,7 +738,7 @@ function print_certificate()
     $cert = new Certificate();
 
     $subs = $cert->getSubstitutionArray($id_user, $id_course);
-    $cert->send_certificate($id_certificate, $id_user, $id_course, $subs, true);
+    $cert->send_certificate($id_certificate, $id_user, $id_course, $subs, false,true);
 }
 
 function preview()
