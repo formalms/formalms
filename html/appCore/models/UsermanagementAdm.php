@@ -2005,7 +2005,7 @@ class UsermanagementAdm extends Model
     /*
      * add a node the the org chart tree
      */
-    public function addFolder($id_parent, $langs, $code = '')
+    public function addFolder($id_parent, $langs, $code = '', $id_template = 0)
     {
         $output = false;
 
@@ -2039,9 +2039,11 @@ class UsermanagementAdm extends Model
             $rsr = $this->db->query($query);
             //TO DO: handle error case (if !$rs ... )
 
+            $templates_name_array = getTemplateList();
+            $template_name = $templates_name_array[$id_template];
             //insert node in the table, with newly calculated iLeft and iRight
-            $query = 'INSERT into %adm_org_chart_tree (idOrg, idParent, path, lev, iLeft, iRight, code) VALUES '
-                . "(NULL, '" . (int) $id_parent . "', '" . $path . "', '" . (int) $level . "', " . (int) $new_limits['iLeft'] . ', ' . ((int) $new_limits['iRight'] + 1) . ", '" . $code . "')";
+            $query = 'INSERT into %adm_org_chart_tree (idOrg, idParent, path, lev, iLeft, iRight, code, associated_template) VALUES '
+                . "(NULL, '" . (int) $id_parent . "', '" . $path . "', '" . (int) $level . "', " . (int) $new_limits['iLeft'] . ', ' . ((int) $new_limits['iRight'] + 1) . ", '" . $code . "', '". $template_name . "')";
             $res = $this->db->query($query);
             $id = $this->db->insert_id();
 

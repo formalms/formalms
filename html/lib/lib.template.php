@@ -629,3 +629,9 @@ function getAccessibilityStatus()
         return true;
     }
 }
+
+function getTemplateFromIdOrg(int $id_org)
+{
+    list($template_name) = sql_fetch_row(sql_query("select associated_template from core_org_chart_tree where idOrg=$id_org"));
+    return $template_name;
+}
