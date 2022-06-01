@@ -65,7 +65,7 @@ if ($session->has('must_renew_pwd') && $session->get('must_renew_pwd') == 1) {
     // setting default action
 
     // if course is in session, enter the course
-    if (!$session->isEmpty('idCourse')) {
+    if ($session->has('idCourse')) {
         // TODO: in corso
         if ($session->has('sel_module_id') && $session->get('sel_module_id') != 0) {
             $query = ' SELECT module_name, default_op, mvc_path'
