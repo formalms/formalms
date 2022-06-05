@@ -1,6 +1,17 @@
 FORMA LMS
 RELEASE CHANGELOG
 
+
+---------------------------------------------------------------------------------------
+forma.lms 3.2.1
+---------------------------------------------------------------------------------------
+Release date: 2022 june
+
+- #20071 - Vulnerability - privilege escalation
+- #20067 - Vulnerability - SQL Injection in alms/subscription/getlist
+- #20068 - Vulnerability - SQL Injection in mycertificate/getMyCertificates
+- #20070 - Vulnerability - SQL Injection in adm/mediagallery/delete
+
 ---------------------------------------------------------------------------------------
 forma.lms 3.2.0
 ---------------------------------------------------------------------------------------
@@ -29,7 +40,6 @@ Release date: 2022 March
 - #20022 - fixed  addMenu method
 - #20007 - fixed not sanitized input param
 
-
 ---------------------------------------------------------------------------------------
 forma.lms 3.1.0
 ---------------------------------------------------------------------------------------
@@ -40,9 +50,9 @@ Release date: 2022 March
 - addes new language lithuanian - icon SPRITE + css
 - Update from lang site 2022/03/28
 - fix menu course translation
-- #20005 - Vulnerabity - remove vulnerability and check signature in RelayState
-- #20008 - Vulnerabity - Unsafe require_once() can lead to arbitrary LFI
-- #20009 - Vulnerabity - Unsafe saving of user-supplied values in SESSION
+- #20005 - Vulnerability CVE-2022-26958 - remove vulnerability and check signature in RelayState
+- #20008 - Vulnerability CVE-2022-27301 CVE-2022-27302 - Unsafe require_once() can lead to arbitrary LFI
+- #20009 - Vulnerability CVE-2022-27303 - Unsafe saving of user-supplied values in SESSION
 - #20050 - fix button translate
 - #20049 - fix API user/mycourses does not show subscription date for classroom course
 - #20048 - load plugins in order by priority
@@ -124,7 +134,7 @@ forma.lms 3.0.1
 ---------------------------------------------------------------------------------------
 Release date: 2021 december
 
-- #19995 - Vulnerabity - resolve sso vulnerability
+- #19995 - CVE-2021-43136 Vulnerabity - resolve sso vulnerability
 - #19975 - fix Certificate special characters print error
 - #19994 - Sub Admin and user selector widget Commented out some code rows;deletion to be evaluated for future
 - #19985 - #Revert0 fix user selector orgchart error
