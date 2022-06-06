@@ -14,10 +14,10 @@ class PdoHandler extends PdoSessionHandler
         try {
             if (empty($config->getUrl())) {
                 if ($config->isAuthentication()){
-                    $url = sprintf('mysql://%s:%s@%s:%f/%s',$config->getUser(),$config->getPassword(),$config->getHost(),$config->getPort(),$config->getName());
+                    $url = sprintf('mysql://%s:%s@%s:%u/%s',$config->getUser(),$config->getPassword(),$config->getHost(),$config->getPort(),$config->getName());
                 }
                 else {
-                    $url = sprintf('mysql://%s:%f/%s',$config->getHost(),$config->getPort(),$config->getName());
+                    $url = sprintf('mysql://%s:%u/%s',$config->getHost(),$config->getPort(),$config->getName());
                 }
                 $config->setUrl($url);
             }

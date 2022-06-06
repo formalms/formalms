@@ -15,10 +15,10 @@ class RedisHandler extends RedisSessionHandler
         try {
             if (empty($config->getUrl())) {
                 if ($config->isAuthentication()) {
-                    $url = sprintf('redis://%s@%s:%f?timeout=%d&prefix=%s', $config->getPassword(), $config->getHost(),$config->getPort(), $config->getTimeout(), $config->getPrefix());
+                    $url = sprintf('redis://%s@%s:%u?timeout=%d&prefix=%s', $config->getPassword(), $config->getHost(),$config->getPort(), $config->getTimeout(), $config->getPrefix());
                 }
                 else {
-                    $url = sprintf('redis://%s:%f?timeout=%d&prefix=%s', $config->getHost(),$config->getPort(), $config->getTimeout(), $config->getPrefix());
+                    $url = sprintf('redis://%s:%u?timeout=%d&prefix=%s', $config->getHost(),$config->getPort(), $config->getTimeout(), $config->getPrefix());
                 }
                 $config->setUrl($url);
             }

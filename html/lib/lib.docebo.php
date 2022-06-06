@@ -22,9 +22,7 @@ class Docebo
      */
     protected static $_cache = null;
 
-    private $_current_user = false;
-
-    private $_lang_manager = false;
+    private static $currentUser = false;
 
     private function __construct()
     {
@@ -32,8 +30,7 @@ class Docebo
 
     public static function init()
     {
-        self::$_current_user = false;
-        self::$_current_course = false;
+        self::$currentUser = false;
     }
 
     /**
@@ -43,9 +40,14 @@ class Docebo
      */
     public static function user()
     {
-        $sessionUser = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('user');
+        if (!self::$currentUser) {
 
-        return $sessionUser ? $sessionUser : DoceboUser::createDoceboUserFromSession('public_area');
+            $sessionUser = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('user');
+
+            self::$currentUser = $sessionUser ?? DoceboUser::createDoceboUserFromSession('public_area');
+        }
+
+        return self::$currentUser;
 
     }
 

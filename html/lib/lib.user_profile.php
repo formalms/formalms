@@ -2214,7 +2214,7 @@ class UserProfileViewer
     public function homeUserProfile($picture = false, $viewer = false, $intest = false)
     { //crea la parte del profilo riguardante la foto e i certificati/messaggi
         $this->loadUserData($this->getViewer());
-        $acl_man = &Docebo::user()->getAclManager();
+
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
         //$html = ' <div class="container-fluid"> <div class="row">';

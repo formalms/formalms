@@ -422,14 +422,11 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
     $man_course = new Man_Course();
 
-    $subcourse_list = sql_query(''
-        . ' SELECT u.idCourse, u.edition_id, level, u.date_inscr, u.date_first_access, '
-        . '		u.date_complete, u.status AS user_status, u.waiting, u.edition_id '
-        . ' FROM %lms_courseuser AS u'
+    $subcourse_list = sql_query(' SELECT u.idCourse, u.edition_id, u.level, u.date_inscr, u.date_first_access, u.date_complete, u.status AS user_status, u.waiting, u.edition_id  FROM %lms_courseuser AS u'
         . " WHERE idUser = '" . getLogUserId() . "'");
 
     $subscription = [];
-    while ($cinfo = sql_fetch_assoc($subcourse_list)) {
+    foreach ($subcourse_list as $cinfo){
         $subscription['course'][$cinfo['idCourse']] = $cinfo;
         if ($cinfo['edition_id'] != 0) {
             $subscription['edition'][$cinfo['idCourse']][$cinfo['edition_id']] = $cinfo;
@@ -446,7 +443,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     . ', c.use_logo_in_courselist, c.img_course, c.direct_play ';
 
     $from_course = ' FROM %lms_course AS c '
-    . '	 JOIN %lms_courseuser AS u ';
+    . '	 JOIN %lms_courseuser AS u on c.idCourse = u.idCourse';
 
     $where_course = ' c.idCourse = u.idCourse '
         . " AND u.idUser = '" . getLogUserId() . "' "
@@ -491,28 +488,34 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
     $all_lang = Docebo::langManager()->getAllLangCode();
 
-    $re_course = sql_query($select_course
+
+    $query = $select_course
         . $from_course
         . ' WHERE ' . $where_course
         . $group_by_course
-        . $order_course);
+        . $order_course;
+
+    $re_course = sql_query($query);
 
     // retrive editions ----------------------------------------------------------------
 
     $select_edition = ' SELECT e.* ';
     $from_edition = ' FROM %lms_course_editions AS e '
-        . ' JOIN %lms_courseuser AS u ';
-    $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' AND e.id_edition = u.edition_id ";
+        . ' JOIN %lms_courseuser AS cu ON e.id_edition = cu.edition_id';
+    $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' AND cu.idUser ='" . getLogUserId() . "'";
 
-    $re_edition = sql_query($select_edition
+
+    $query = $select_edition
         . $from_edition
-        . $where_edition);
+        . $where_edition;
+
+    $re_edition = sql_query($query);
 
     // --------------------------------------------------------------------------------
 
     $editions = [];
     if ($re_edition) {
-        while ($edition_elem = sql_fetch_assoc($re_edition)) {
+        foreach ($re_edition as $edition_elem){
             $edition_elem['classrooms'] = (isset($classrooms[$edition_elem['classrooms']]) ? $classrooms[$edition_elem['classrooms']] : '');
             $editions[$edition_elem['id_course']][$edition_elem['id_course']] = $edition_elem;
         }
@@ -550,17 +553,17 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
         $first_is_scorm = OrganizationManagement::objectFilter($id_course_list, 'scormorg');
 
-        $enroll_list = sql_query(''
-            . ' SELECT u.idCourse, u.edition_id, COUNT(*) as number '
+        $enroll_list = sql_query('SELECT u.idCourse, u.edition_id, COUNT(*) as number '
             . ' FROM %lms_courseuser AS u'
             . ' WHERE u.idCourse IN (' . implode(',', $id_course_list) . ') '
             . " AND u.level = '3'"
             . " AND u.status IN ('" . _CUS_CONFIRMED . "', '" . _CUS_SUBSCRIBED . "', '" . _CUS_BEGIN . "', '" . _CUS_END . "', '" . _CUS_SUSPEND . "', '" . _CUS_WAITING_LIST . "')"
             . " AND u.absent = '0'"
+            . " AND u.idUser = '" . getLogUserId() . "'"
             . ' GROUP BY u.idCourse, u.edition_id ');
 
         $enrolled = [];
-        while ($cinfo = sql_fetch_assoc($enroll_list)) {
+        foreach ($enroll_list as $cinfo){
             $enrolled[$cinfo['idCourse']][$cinfo['edition_id']] = $cinfo['number'];
         }
     }
@@ -576,7 +579,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     . '	u.level, u.date_inscr, u.date_first_access, u.date_complete, u.status AS user_status, u.waiting, c.advance, u.waiting ';
 
     $from_assess = ' FROM %lms_course AS c '
-    . '	 JOIN %lms_courseuser AS u ';
+    . '	 JOIN %lms_courseuser AS u on c.idCourse = u.idCourse';
 
     $where_assess = ' c.idCourse = u.idCourse '
         . " AND u.idUser = '" . getLogUserId() . "' "
@@ -585,10 +588,12 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         . ($filter == 'level' ? " AND level = '" . $filter_level . "'" : '');
     //." AND ( u.status <> '"._CUS_END."' OR u.level > 3 ) ";
 
-    $preass_list = sql_query($select_assess
+    $query = $select_assess
         . $from_assess
         . ' WHERE ' . $where_assess
-        . ' ORDER BY c.name ');
+        . ' ORDER BY c.name ';
+
+    $preass_list = sql_query($query);
 
     // pre assessment list ---------------------------------------------------------------------------------------
     $i = 0;
@@ -598,7 +603,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
                 '<div id="mycourse_asses">'
                 . '<h1>' . $lang_c->def('_ASSESSMENT_LIST') . '</h1>', 'content');
         }
-        while ($cinfo = sql_fetch_assoc($preass_list)) {
+        foreach ($preass_list as $cinfo){
             $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
 
             if (isset($comment_count[$cinfo['idCourse']])) {
@@ -638,7 +643,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $i = 0;
     $direct_play = false;
 
-    while ($cinfo = sql_fetch_assoc($re_course)) {
+    foreach ($re_course as $cinfo){
         $access = Man_Course::canEnterCourse($cinfo);
 
         if ($cinfo['direct_play'] == 1) {
@@ -679,7 +684,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         sql_data_seek($re_course, 0);
     }
 
-    while ($cinfo = sql_fetch_assoc($re_course)) {
+    foreach ($re_course as $cinfo){
         $cinfo['edition_list'] = (isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
         $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
         $cinfo['enrolled'] = (isset($enrolled[$cinfo['idCourse']]) ? $enrolled[$cinfo['idCourse']] : false);

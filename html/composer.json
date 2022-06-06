@@ -28,7 +28,8 @@
         "symfony/serializer": "^5.4",
         "symfony/property-access": "^5.4",
         "nyholm/dsn": "^2.0",
-        "symfony/cache": "^5.4"
+        "symfony/cache": "^5.4",
+        "monolog/monolog": "^2.6"
     },
     "require-dev": {
         "phing/phing": "^2.13",

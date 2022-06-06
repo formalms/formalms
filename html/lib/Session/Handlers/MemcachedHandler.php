@@ -14,10 +14,10 @@ class MemcachedHandler extends MemcachedSessionHandler
         try {
             if (empty($config->getUrl())) {
                 if ($config->isAuthentication()){
-                    $url = sprintf('memcached://%s:%s@%s:%f',$config->getUser(),$config->getPassword(),$config->getHost(),$config->getPort());
+                    $url = sprintf('memcached://%s:%s@%s:%u',$config->getUser(),$config->getPassword(),$config->getHost(),$config->getPort());
                 }
                 else {
-                    $url = sprintf('memcached://%s:%f',$config->getHost(),$config->getPort());
+                    $url = sprintf('memcached://%s:%u',$config->getHost(),$config->getPort());
                 }
                 $config->setUrl($url);
             }
