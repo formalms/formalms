@@ -42,13 +42,21 @@ class Docebo
     {
         if (!self::$currentUser) {
 
-            $sessionUser = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('user');
-
-            self::$currentUser = $sessionUser ?? DoceboUser::createDoceboUserFromSession('public_area');
+            self::loadUserFromSession();
         }
 
         return self::$currentUser;
+    }
 
+    public static function loadUserFromSession(){
+
+        $sessionUser = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('user');
+
+        self::$currentUser = $sessionUser ?? DoceboUser::createDoceboUserFromSession('public_area');
+    }
+
+    public static function setUser($user){
+        self::$currentUser = $user;
     }
 
     /**

@@ -128,14 +128,15 @@ class AuthenticationManager
             $id = $session->get('social')['data']['id'];
             $this->plugin_manager->run_plugin($plugin, 'setSocial', ['id' => $id]);
         }
-
+        $session->save();
+        Docebo::setUser($user);
         if (self::_checkMandatoryFields()) {
             return MANDATORY_FIELDS;
         }
         if (self::_checkPwdElapsed()) {
             return PWD_ELAPSED;
         }
-        $session->save();
+
 
         return USER_SAVED;
     }

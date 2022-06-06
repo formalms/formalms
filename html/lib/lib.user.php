@@ -157,6 +157,7 @@ class DoceboUser implements Serializable
         $session->set($this->sprefix . '_username', $this->userid);
         $session->set($this->sprefix . '_stlist', $json->encode($this->arrst));
         $session->set($this->sprefix . '_log_ip', $ip);
+        $session->set('user',$this);
         $session->save();
     }
 
@@ -431,6 +432,7 @@ class DoceboUser implements Serializable
         }
 
         \Forma\lib\Session\SessionManager::getInstance()->getSession()->migrate();
+
 
         return $du;
     }
