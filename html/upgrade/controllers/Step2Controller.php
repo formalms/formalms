@@ -67,6 +67,7 @@ class Step2Controller extends StepController
     {
         $current_version = $this->getCurrentVersion();
 
+ 
         $txt = '<select id="start_version" name="start_version">';
         foreach ($GLOBALS['cfg']['versions'] as $k => $v) {
             $txt .= '<option value="' . $k . '"' . ($k === $current_version ? ' selected="selected"' : '') . '>' . $v . '</option>';
@@ -184,7 +185,7 @@ class Step2Controller extends StepController
     {
         $res = '';
 
-        $platform_folders = $session->get('platform_arr');
+        $platform_folders = $this->session->get('platform_arr');
         $file_to_check = ['config.php'];
         $dir_to_check = [];
         $empty_dir_to_check = [];
