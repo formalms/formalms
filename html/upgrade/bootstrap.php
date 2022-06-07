@@ -22,11 +22,10 @@ const INSTALL_ENV = 'upgrade';
 
 const _deeppath_ = '../';
 require __DIR__ . '/../base.php';
+require_once _base_ . '/vendor/autoload.php';
 require _base_ . '/config.php';
 const _installer_ = _base_ . '/install';
 const _upgrader_ = _base_ . '/upgrade';
-
-require_once _base_ . '/vendor/autoload.php';
 
 $request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
 if (!$request->hasSession()) {

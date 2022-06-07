@@ -21,10 +21,10 @@ const IN_FORMA = true;
 const INSTALL_ENV = 'install';
 const _deeppath_ = '../';
 require __DIR__ . '/../base.php';
+require_once _base_ . '/vendor/autoload.php';
 if (file_exists(_base_ . '/config.php')) {
     require _base_ . '/config.php';
 } // FOR upgrade import_lang
-require_once _base_ . '/vendor/autoload.php';
 
 $request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
 if (!$request->hasSession()) {
