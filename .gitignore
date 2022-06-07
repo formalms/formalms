@@ -2,7 +2,7 @@
 html/composer.lock
 html/vendor/**
 !html/vendor/keep
-
+html/appLms/disk/*
 # Sezione html/files
 html/files/**
 !html/files/**/.htaccess
