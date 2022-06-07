@@ -512,12 +512,14 @@ class DoceboACLManager
                           $signature, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
                           $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
     {
+
         if ($idst === false) {
             $idst = $this->_createST();
         }
         if ($idst == 0) {
             return false;
         }
+
         $userid = $this->absoluteId($userid);
         if (Forma\lib\Get::sett('pass_max_time_valid') != 0) {
             $pwd_expire_at = date('Y-m-d H:i:s', time() + Forma\lib\Get::sett('pass_max_time_valid') * 24 * 3600);
@@ -566,14 +568,14 @@ class DoceboACLManager
             . '  register_date, '
             . ($force_change !== '' ? 'force_change, ' : '')
             . 'facebook_id, twitter_id, linkedin_id, google_id) '
-            . "VALUES ( '" . $idst . "', '" . $userid . "', '" . $firstname . "', '" . $lastname . "', "
-            . " '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', "
-            . " '" . $email . "', '" . $avatar . "', '" . $signature . "', '" . $pwd_expire_at . "', '" . date('Y-m-d H:i:s') . "', "
-            . ($force_change !== '' ? " '" . ((int) $force_change > 0 ? '1' : '0') . "', " : '')
-            . (!empty($facebook_id) ? "'" . $facebook_id . "'" : 'NULL') . ', '
-            . (!empty($twitter_id) ? "'" . $twitter_id . "'" : 'NULL') . ', '
-            . (!empty($linkedin_id) ? "'" . $linkedin_id . "'" : 'NULL') . ', '
-            . (!empty($google_id) ? "'" . $google_id . "'" : 'NULL') . ' '
+            . ' VALUES ( "' . $idst . '", "' . $userid . '", "' . $firstname . '", "' . $lastname . '", '
+            . ' "' . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . '", '
+            . ' "' . $email . '", "' . $avatar . '", "' . $signature . '", "' . $pwd_expire_at . '", "' . date('Y-m-d H:i:s') . '", '
+            . ($force_change !== '' ? ' "' . ((int) $force_change > 0 ? '1' : '0') . "', " : '')
+            . (!empty($facebook_id) ? ' "' . $facebook_id . ' "' : 'NULL') . ', '
+            . (!empty($twitter_id) ? ' "' . $twitter_id . ' "' : 'NULL') . ', '
+            . (!empty($linkedin_id) ? ' "' . $linkedin_id . ' "' : 'NULL') . ', '
+            . (!empty($google_id) ? ' "' . $google_id . ' "' : 'NULL') . ' '
             . ')';
 
         if ($this->_executeQuery($query)) {
@@ -591,6 +593,8 @@ class DoceboACLManager
 
             return $idst;
         } else {
+
+
             return false;
         }
     }

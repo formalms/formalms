@@ -1,0 +1,151 @@
+{{ Get_title({
+	'index.php?r=alms/communication/show' : Lang_translate('_COMMUNICATION', 'communication'),
+	'':Lang_translate('_COMMUNICATION', 'communication')
+},false) }}
+
+{% if permissions.add == true %}
+    <a id="addcategory_bottom"   href="index.php?r=alms/communication/add" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
+{% endif %}
+<table class="table table-bordered display" style="width:100%" id="communicationlist"></table>
+<br>
+
+{% include 'partials/modal_confirm.html.twig' %}
+
+
+<script>
+
+    let permissions = {{ permissions | json_encode(constant('JSON_HEX_APOS')) | raw }};
+
+
+ 
+    let t = null;
+    var delFunc = function(id, count, element) {
+
+            var selector = "#confirmModal";
+            var message = "{{ Lang_translate('_AREYOUSURE', 'standard') }}";
+
+            let $element = $(element);
+            let url = $element.attr('href');
+            var deleteFunction = function() {
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+                        data: { idCategory: id },
+                        success: function(response) {
+                            var result = JSON.parse(response);
+                            if(result.success == true) {
+                                t._datatable.row($element.parents('tr')).remove().draw();
+                            } else {
+                               alert("{{ Lang_translate('_ERROR', 'communication') }}");
+                            }
+                        }
+                    });
+            };
+            if(count > 0) {
+                message = '{{ Lang_translate('_CATEGORY_WITH_POSTS', 'communication') }}';
+                deleteFunction = null;
+            }
+            confirmDialog(selector , message, deleteFunction);
+        };
+
+          var confirmDialog = function (modalSelector, message, onConfirm) {
+            var fClose = function() {
+                modal.modal("hide");
+            };
+            var modal = $(modalSelector);
+            modal.modal("show");
+            modal.find("*[data-val=body]").empty().append(message);
+            if(onConfirm !== null) {
+                modal.find("*[data-val=yes]").show();
+                modal.find("*[data-val=yes]").unbind().one('click', onConfirm).one('click', fClose);
+            } else {
+                modal.find("*[data-val=yes]").hide();
+            }
+            
+            modal.find("*[data-val=no]").unbind().one("click", fClose);
+        }
+    $(function () {
+      
+        var body = {{ communicationList | json_encode(constant('JSON_HEX_APOS')) | raw }};
+
+        var columns = [
+            {data: 'content', title: '{{ Lang_translate('_TITLE', 'communication') }}', sortable: true},
+            {data: 'courseName', title: '{{ Lang_translate('_COURSE', 'course') }}', sortable: false},
+            {data: 'categoryTitle', title: '{{ Lang_translate('_CATEGORY', 'communication') }}', sortable: false},
+            {data: 'type_of', title: '{{ Lang_translate('_TYPE', 'communication') }}', sortable: false}
+        ];
+
+        if(permissions['mod'] == true ) {
+            columns.push({data: 'editUrl', title: '<span class="ico-sprite subs_mod"><span>{{ Lang_translate("_MOD", "admin_lang") }}</span></span>', sortable: true});
+        }
+        if(permissions['del'] == true ) {
+            columns.push({data: 'deleteUrl', title: '<span class="ico-sprite subs_del"><span>{{ Lang_translate("_DEL", "admin_lang") }}</span></span>', sortable: true});
+        }
+        var rows = [];
+
+        body.forEach(function (item, k) {
+       
+            content = '<b><a id="title' + item.id + '"  href="' + item.editUrl + '">' + item.title + '</a></b><br /><br /><p>' + item.description + '</p>';
+          
+            item.content = content;
+            link = '<a id="'+item.id+'"  href="'+item.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
+            item.editUrl = link;
+            link = '<a id="'+item.id+'" onclick="event.preventDefault();delFunc(' + item.id + ',' + item.countCommunications + ', this )" href="'+item.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
+            item.deleteUrl = link;
+
+            rows.push(Object.assign({}, item));
+        });
+
+        t = $('#communicationlist').FormaTable({
+            rowId: function (row) {
+                return row[0];
+            },  // cambia
+            scrollX: true,
+            processing: true,
+            serverSide: false,
+            paging: true,
+            searching: true,
+            columns,
+            data: rows,
+            dom: 'Bfrtip',
+            stateSave: true,
+            deferRender: true,
+        });
+    });
+
+ $('input[name=save]').on('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    let $form = $(this).parents('form');
+    var modalSelector = '#categoryModal';
+    let modal = $(modalSelector);
+    
+    $.ajax({
+        type:  $form.attr("method"),
+        url:  $form.attr("action"),
+        data: $form.serialize() ,
+        dataType : 'json', // changing data type to json
+        success: function (data) { // here I'm adding data as a parameter which stores the response
+            console.log(data); // instead of alert I'm changing this to console.log which logs all the response in console.
+            if(data.success === true)  {
+                modal.modal("hide");
+                t._datatable.row.add( {
+                "label": data.node.label,
+                "parentLabel": data.node.parentLabel,
+                "countCommunications": data.node.countObjects,
+                "filterUrl": '<a id="'+data.node.id+'" href="'+data.node.filterUrl+'" class="ico-sprite subs_download" title="{{ Lang_translate("_EXPORT_XML", "admin_lang") }}"><span></span></a>',
+                "editUrl": '<a id="'+data.node.id+'" href="'+data.node.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>',
+                "deleteUrl": '<a id="'+data.node.id+'" href="'+data.node.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
+                } ).draw();
+            }
+        }
+    });
+
+
+ 
+ })
+
+
+    
+</script>

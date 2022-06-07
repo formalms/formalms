@@ -1647,6 +1647,8 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu&amp;_BLIND_MENU_MODULES" attributes="accessibility" save_date="2015-09-30 15:32:39"><![CDATA[Salta alla lista dei moduli]]></key>
         <key id="menu&amp;_CERTIFICATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Certificati]]></key>
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Comunicazioni]]></key>
+        <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gestione Comunicazioni]]></key>
+        <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categorie]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione]]></key>
         <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2017-05-05 11:39:49"><![CDATA[Configurazione e-learning]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2017-05-05 11:41:19"><![CDATA[Configurazione sistema]]></key>
@@ -3236,6 +3238,16 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="wiki&amp;_WIKI_LEVEL_UP" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Liv. sup.]]></key>
         <key id="wiki&amp;_WIKI_OTHER_LANGUAGES" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[seleziona altre lingue per le pagine]]></key>
         <key id="wiki&amp;_WIKI_PREV" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Prec.]]></key>
+      </module>
+      <module id="communication">
+        <key id="communication&amp;_LABEL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome]]></key>
+        <key id="communication&amp;_PARENT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categoria Padre]]></key>
+        <key id="communication&amp;_FILTER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Filtra comunicazioni per categoria]]></key>
+        <key id="communication&amp;_COUNT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Conteggio]]></key>
+        <key id="communication&amp;_NO_OPTION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nessuna selezione]]></key>
+        <key id="communication&amp;_CATEGORY_WITH_POSTS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossiibile eliminare una categoria con articoli pubblicati]]></key>
+        <key id="communication&amp;_ERROR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Errore generico]]></key>
+        <key id="communication&amp;_CATEGORY_FATHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossibile eliminare una categoria padre]]></key>
       </module>
     </platform>
   </LANG>

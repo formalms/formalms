@@ -1,0 +1,43 @@
+<!-- Modal add -->
+<div class="modal" id="categoryModal" style="display: none; z-index: 9999;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body" data-val="body">
+			    {{ Form_openForm('add_category', 'ajax.adm_server.php?r=alms/communication/addCategoryAction', false, 'post', 'multipart/form-data') }}
+
+		
+				{{ Form_getDropdown(Lang_translate('_CATEGORY','communication'), 'category', 'id_category', []) }}
+		
+				<div id="translation_tab" style='margin-top:5%;'>
+					<ul class="nav nav-tabs">
+						{% for lang in langs %}
+								<li {% if langCode == lang %} class='active' {% endif %}>
+									<a data-toggle="tab" href="#langs_tab_{{ lang }}"><em>{{ lang }}</em></a>
+								</li>
+						{% endfor %}
+					</ul>
+					<div class="tab-content">
+					{% set textareaName = 'translation_' %}
+					{% set labelName = 'name_' %}
+						{% for lang in langs %}
+							{% set name = 'name[' ~ lang ~ ']' %}
+							{% set description = 'description[' ~ lang ~ ']' %}
+							<div class="tab-pane {% if langCode == lang %} active {% endif %}" id="langs_tab_{{ lang }}">
+								{{ Form_getTextfield(Lang_translate('_LABEL','communication'), labelName ~ lang, name, 255) }}
+
+								{{ Form_getTextarea(Lang_translate('_DESCRIPTION','standard'), textareaName ~ lang , description, '') }}
+							</div>
+						{% endfor %}
+					</div>
+				
+			</div>
+			<div class="modal-footer">
+				{{ Form_openButtonSpace() }}
+				{{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+				{{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+				{{ Form_closeButtonSpace() }}
+			</div>
+			{{ Form_closeForm() }}
+		</div>
+	</div>
+</div>
