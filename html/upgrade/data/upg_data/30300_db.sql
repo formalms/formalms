@@ -9,7 +9,7 @@ VALUES
 UPDATE `core_menu` SET `idParent` =  (SELECT `idMenu` FROM ( SELECT `idMenu` FROM `core_menu` WHERE NAME = '_MANAGEMENT_COMMUNICATION' ) tbl) WHERE name = '_COMMUNICATION_MAN';
 INSERT IGNORE INTO `core_menu_under` ( `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path` )
 VALUES
-	( ( SELECT `idMenu` FROM `core_menu` WHERE NAME = '_CATEGORIES' ) tbl ,
+	( ( SELECT `idMenu` FROM `core_menu` WHERE NAME = '_CATEGORIES' ) ,
 	'communication',
 	'_CATEGORIES',
 	NULL,
