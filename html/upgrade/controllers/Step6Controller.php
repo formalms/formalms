@@ -24,21 +24,24 @@ class Step6Controller extends StepController
     {
         $platform_arr = getPlatformArray();
         $this->session->set('platform_arr', $platform_arr);
-        $this->session->save();
+      
         $qtxt = 'SELECT lang_code FROM core_lang_language WHERE 1';
         // $q =sql_query($qtxt);
         require_once _base_ . '/config.php';
         require_once _base_ . '/db/lib.docebodb.php';
 
-        $q = sql_query($qtxt);
+        $queryResult = sql_query($qtxt);
 
-        if ($q) {
-            while ($row = sql_fetch_assoc($q)) {
+        if ($queryResult) {
+            $langCodes = [];
+            foreach ($queryResult as $row) {
                 $lang_code = $row['lang_code'];
-                $session->get('lang_install')[$lang_code] = 1;
+                $langCodes[$lang_code] = 1;
             }
-        }
+            $this->session->set('lang_install', $langCodes);
 
+        }
+        $this->session->save();
         parent::render();
     }
 
