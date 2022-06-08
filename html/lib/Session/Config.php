@@ -7,7 +7,7 @@ class Config
     private array $config;
 
     private string $handler = SessionManager::FILESYSTEM;
-    private ?string $url = null;
+    private ?string $url = '';
     private ?string $host = null;
     private ?int $port = null;
     private float $timeout = 2.5;
@@ -17,6 +17,12 @@ class Config
     private bool $authentication = false;
     private ?string $user = null;
     private ?string $password = null;
+
+
+    public function __construct() {
+        $this->url = session_save_path();
+  
+    }
 
     /**
      * @return array

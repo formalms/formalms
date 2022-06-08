@@ -40,9 +40,9 @@ class CourseSubscribe_Manager
 
     public function __construct()
     {
-        $this->course_table = $GLOBALS['prefix_lms'] . '_course';
-        $this->subscribe_table = $GLOBALS['prefix_lms'] . '_courseuser';
-        $this->user_table = $GLOBALS['prefix_fw'] . '_user';
+        $this->course_table = '%lms_course';
+        $this->subscribe_table = '%lms_courseuser';
+        $this->user_table = '%lms_user';
 
         $this->db = DbConn::getInstance();
         $this->acl_man = $acl_man = &Docebo::user()->getAclManager();
@@ -80,6 +80,17 @@ class CourseSubscribe_Manager
     public function getUserStatusTr($status)
     {
         return $this->array_user_status[$status];
+    }
+
+    /**
+     * Retrive the table for course users.
+     *
+     *
+     * @return string The table for course subscription
+     */
+    public function getSubscribeUserTable()
+    {
+        return $this->subscribe_table;
     }
 
     /**

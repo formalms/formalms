@@ -16,7 +16,7 @@ import Lang from '../helpers/Lang';
 import FormaDropZone from './../components/Dropzone';
 import Axios from 'axios';
 import Select2 from 'select2';
-
+import Chart from 'chart.js';
 
 var Page = (function () {
     window.frontend.modules = {};
@@ -28,6 +28,7 @@ var Page = (function () {
     window.frontend.modules.StudentLearningObject = StudentLearningObject;
     window.frontend.modules.FormaDropZone = FormaDropZone;
     window.frontend.modules.Select2 = Select2;
+    window.frontend.modules.Chart = Chart;
     window.frontend.helpers.Lang = Lang;
     window.frontend.helpers.Axios = Axios;
    

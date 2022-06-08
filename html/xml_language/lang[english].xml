@@ -1014,6 +1014,7 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboard&amp;_DASHBOARDBLOCKMESSAGELMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Messages]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKNEWSLMS" attributes="" save_date="2022-03-22 11:23:28"><![CDATA[News]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Welcome message]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph]]></key>
         <key id="dashboard&amp;_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[There are no certificates]]></key>
         <key id="dashboard&amp;_DASHBOARD_BLOCKMESSAGES_NO_RECORDS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[There are no messages]]></key>
         <key id="dashboard&amp;_DB_UPGRADES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[SQL scripts log]]></key>
@@ -1072,6 +1073,8 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKNEWSLMS_DESCRIPTION" attributes="" save_date="2022-03-22 11:23:54"><![CDATA[Shows published and news shared with the user]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Welcome message]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Description Welcome]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Courses Attendance Graph Description]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Default]]></key>

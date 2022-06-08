@@ -27,3 +27,5 @@ CREATE TABLE IF NOT EXISTS learning_communication_lang (
     title varchar(255),
     description text
 );
+
+INSERT IGNORE INTO `dashboard_blocks`(`block_class`, `created_at`) VALUES ('DashboardBlockCourseAttendanceGraphLms', CURRENT_TIMESTAMP);

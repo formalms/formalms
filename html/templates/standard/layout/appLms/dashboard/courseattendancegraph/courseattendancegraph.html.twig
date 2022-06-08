@@ -1,0 +1,50 @@
+{% extends "base/base.html.twig" %}
+
+{% block content %}
+
+    {% if (block.type == '4-col') %}
+        {% set class =  ' d-col--12--desktop' %}
+    {% elseif (block.type == '3-col') %}
+        {% set class =  ' d-col--9--desktop' %}
+    {% elseif (block.type == '2-col') %}
+        {% set class =  ' d-col--6--desktop' %}
+    {% elseif (block.type == '1-col') %}
+        {% set class =  ' d-col--3--desktop' %}
+    {% endif %}
+    <div class="d-col d-col--12 {{ class }}">
+        <div class="d-courseattendancegraph d-widget">
+                    <h3 class="d-title">
+                        {% if block.data.title is empty %}
+                            {{ Lang_translate('_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS','dashboard') }}
+                        {% else %}
+                            {{ block.data.title }}
+                        {% endif %}
+                    </h3>
+
+                      <canvas id="course-pie"></canvas>
+        </div>
+    </div>
+
+           <script>
+                    $(document).ready(function () {
+
+
+                       var chartDataSet = [
+                           {
+                               label: 'Course Attendance',
+                               data: {{ block.coursesInfo.data|json_encode|raw }},
+                               backgroundColor: {{ block.coursesInfo.colors|json_encode|raw }},
+                               hoverOffset: 4,
+                           }
+                       ]
+                       const chart = new window.frontend.modules.Chart($("#course-pie"), {
+                           type: 'doughnut',
+                           data: {
+                               labels: {{ block.coursesInfo.labels|json_encode|raw }},
+                               datasets: chartDataSet
+                           }
+                       });
+                    });
+                </script>
+ 
+{% endblock %}

@@ -1015,6 +1015,7 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="dashboard&amp;_DASHBOARDBLOCKMESSAGELMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Messaggi]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKNEWSLMS" attributes="" save_date="2022-03-22 10:31:30"><![CDATA[News]]></key>
         <key id="dashboard&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Messaggio di benvenuto]]></key>
+        <key id="dashboard&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Grafico Frequenza Corsi]]></key>
         <key id="dashboard&amp;_DASHBOARD_BLOCKCERTIFICATES_NO_RECORDS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Non ci sono certificati]]></key>
         <key id="dashboard&amp;_DASHBOARD_BLOCKMESSAGES_NO_RECORDS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Non ci sono messaggi]]></key>
         <key id="dashboard&amp;_DB_UPGRADES" attributes="" save_date="2016-09-29 16:01:42"><![CDATA[Log script SQL]]></key>
@@ -1073,6 +1074,8 @@ Per poterlo fare devi loggarti nella piattaforma se sei un utente registarto, al
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKNEWSLMS_DESCRIPTION" attributes="" save_date="2022-03-22 10:28:50"><![CDATA[Visualizza le news pubblicate e condivise con l'utente]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Messaggio di benvenuto]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKWELCOMELMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Descrizione Benvenuto]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Grafico Frequenza Corsi]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Descrizione Grafico Frequenza Corsi]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_DELETE_LAYOUT" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Dashboard]]></key>
         <key id="dashboardsetting&amp;_DASHBOARD_LAYOUT_DEFAULT" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Default]]></key>
