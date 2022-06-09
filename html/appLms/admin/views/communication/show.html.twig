@@ -4,7 +4,11 @@
 },false) }}
 
 {% if permissions.add == true %}
-    <a id="addcategory_bottom"   href="index.php?r=alms/communication/add" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
+    {% if categoryCount > 0 %}
+        <a id="addcategory_bottom"   href="index.php?r=alms/communication/add" class="ico-wt-sprite subs_add" title="{{ Lang_translate('_ADD', 'standard') }}"><span>{{ Lang_translate('_ADD', 'standard') }}</span></a>
+    {% else %}
+        {{ Lang_translate('_CATEGORY_MISSING', 'communication') }}
+    {% endif %}
 {% endif %}
 <table class="table table-bordered display" style="width:100%" id="communicationlist"></table>
 <br>
@@ -15,8 +19,6 @@
 <script>
 
     let permissions = {{ permissions | json_encode(constant('JSON_HEX_APOS')) | raw }};
-
-
  
     let t = null;
     var delFunc = function(id, count, element) {

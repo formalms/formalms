@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-
+require_once _adm_ . '/lib/lib.sessionsave.php';
 if (Docebo::user()->isAnonymous()) {
     exit("You can't access");
 }
@@ -20,7 +20,7 @@ if (Docebo::user()->isAnonymous()) {
 // XXX: save status in session
 function saveTestStatus($save_this)
 {
-    require_once _adm_ . '/lib/lib.sessionsave.php';
+
     $save = new Session_Save();
     $save_name = $save->getName('test');
 
@@ -31,7 +31,7 @@ function saveTestStatus($save_this)
 
 function &loadTestStatus($save_name)
 {
-    require_once _adm_ . '/lib/lib.sessionsave.php';
+
     $save = new Session_Save();
 
     return $save->load($save_name);

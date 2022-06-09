@@ -107,12 +107,15 @@ class CommunicationAlmsController extends AlmsController
         $langs = Docebo::langManager()->getAllLanguages(true);
         $langCode = getLanguage();
 
+        $categoryCount = $this->model->getCategoryTotal();
+
       
         $this->render('show', [
                                 'communicationList' => array_values($communicationList), 
                                 'langs' => array_keys($langs), 
                                 'langCode' => $langCode, 
-                                'permissions' => $this->permissions
+                                'permissions' => $this->permissions,
+                                'categoryCount' => $categoryCount
                             ]);
     }
 
@@ -202,6 +205,12 @@ class CommunicationAlmsController extends AlmsController
                 'message' => $this->_getMessage('no permission'),
                 'back_url' => 'index.php?r=alms/communication/show',
             ]);
+
+            return;
+        }
+
+        if ($this->model->getCategoryTotal() == 0) {
+            Util::jump_to('index.php?r=alms/communication/show');
 
             return;
         }

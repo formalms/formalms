@@ -508,14 +508,16 @@ class CommunicationAlms extends Model
 
     public function getCategoryTotal($language = false) {
         $lang_code = ($language == false ? getLanguage() : $language);
-        $query = 'SELECT count(t1.id_category)'
+        $query = 'SELECT count(t1.id_category) as cnt'
             . ' FROM %lms_communication_category AS t1 LEFT JOIN %lms_communication_category_lang AS t2 '
-            . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) ";
+            . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) limit 1 ";
 
         $res = $this->db->query($query);
-        if (!$res) {
+        if(!$res) {
             return false;
         }
+
+        return (int) $this->db->fetch_row($res)[0];
     }
 
 

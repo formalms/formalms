@@ -3255,6 +3255,7 @@ Username: [userid]]]></key>
         <key id="communication&amp;_CATEGORY_WITH_POSTS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossiible deleting categories with published posts]]></key>
         <key id="communication&amp;_ERROR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generic Error]]></key>
         <key id="communication&amp;_CATEGORY_FATHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossible deleting a father category]]></key>
+        <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You must set at least one category]]></key>
       </module>
     </platform>
   </LANG>

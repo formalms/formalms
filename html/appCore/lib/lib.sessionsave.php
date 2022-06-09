@@ -68,14 +68,11 @@ class Session_Save extends General_Save
 
     public function save($var_name, &$content, $serialize_for_me = true)
     {
-        if ($this->nameExists($var_name)) {
-            $this->session->set($var_name,$content);
-            $this->session->save();
+        $this->session->set($var_name,$content);
+        $this->session->save();
 
-            return true;
-        }
+        return true;
 
-        return false;
     }
 
     public function &load($var_name, $deserialize_for_me = true)
