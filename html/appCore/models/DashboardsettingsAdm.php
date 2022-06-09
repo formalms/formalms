@@ -37,7 +37,7 @@ class DashboardsettingsAdm extends Model
 
     public function loadLayouts()
     {
-        $query = 'SELECT `id`, `name`, `caption`, `status`, `default` FROM `dashboard_layouts` ORDER BY `default` DESC, `created_at` ASC';
+        $query = 'SELECT `id`, `name`, `caption`, `status`, `default`, `idst_list` FROM `dashboard_layouts` LEFT JOIN `dashboard_permission` ON `dashboard_layouts`.`id` =`dashboard_permission`.`id_dashboard` ORDER BY `default` DESC, `created_at` ASC';
 
         $result = sql_query($query);
         $this->layouts = [];
@@ -50,6 +50,9 @@ class DashboardsettingsAdm extends Model
             $layoutObj->setCaption($layout['caption']);
             $layoutObj->setStatus($layout['status']);
             $layoutObj->setDefault($layout['default']);
+
+            $permissionList = unserialize($layout['idst_list'],['allowed_classes'=> ['array']]) ?? [];
+            $layoutObj->setPermissionList($permissionList);
 
             $this->layouts[] = $layoutObj;
         }
@@ -91,7 +94,7 @@ class DashboardsettingsAdm extends Model
 
         $result = $this->db->query($query_blocks);
 
-        while ($block = $this->db->fetch_assoc($result)) {
+        foreach ($result as $block){
             if (file_exists(Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']($block['block_config']);

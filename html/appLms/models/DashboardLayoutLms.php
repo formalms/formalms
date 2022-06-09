@@ -31,9 +31,11 @@ class DashboardLayoutLms extends Model
 
     protected $default = false;
 
+    protected array $permissionList = [];
+
     public function __construct()
     {
- 
+
         parent::__construct();
     }
 
@@ -98,7 +100,7 @@ class DashboardLayoutLms extends Model
      */
     public function setStatus($status)
     {
-        if (in_array($status, [self::LAYOUT_STATUS_DRAFT, self::LAYOUT_STATUS_PUBLISH])) {
+        if (in_array($status, [self::LAYOUT_STATUS_DRAFT, self::LAYOUT_STATUS_PUBLISH], true)) {
             $this->status = $status;
         }
     }
@@ -111,5 +113,32 @@ class DashboardLayoutLms extends Model
     public function setDefault(bool $default)
     {
         $this->default = $default;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPermissionList(): array
+    {
+        return $this->permissionList;
+    }
+
+    public function setPermissionList(array $permissionList): DashboardLayoutLms
+    {
+        $this->permissionList = $permissionList;
+        return $this;
+    }
+
+    public function userCanAccess(DoceboUser $user)
+    {
+        $canAccess = true;
+
+        if (!empty($this->permissionList)) {
+
+            $canAccess = !empty(array_intersect($user->getArrSt(), $this->permissionList));
+        }
+
+        return $canAccess;
+
     }
 }

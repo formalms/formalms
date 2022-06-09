@@ -54,25 +54,26 @@ class DashboardLmsController extends LmsController
             ]);
         }
 
-        // manage permission template
-        $idTemplate = $defaultLayout->getId();
-        $listLayout = $this->model->getListLayout();
-        foreach ($listLayout as $key => $name) {
-            $check_perm = $this->model->currentCanAccessObj($key);
-            if ($check_perm) {
-                $idTemplate = $key;
-                break;
-            }
-        }
-
         $blocks = [];
         $blockPaths = [];
 
+        if (!$defaultLayout->userCanAccess(Docebo::user())){
+            $layouts = $this->model->getLayouts();
+            /** @var DashboardLayoutLms $layout */
+            foreach ($layouts as $layout){
+                if ($layout->userCanAccess(Docebo::user())){
+                    $defaultLayout = $layout;
+                    break;
+                }
+            }
+        }
+
         if ($defaultLayout) {
-            $blocks = $this->model->getBlocksViewData($idTemplate);
+            $blocks = $this->model->getBlocksViewData($defaultLayout->getId());
 
             /** @var DashboardBlockLms $block */
-            foreach ($this->model->getEnabledBlocks($idTemplate) as $block) {
+            $enabledBlocks = $this->model->getEnabledBlocks($defaultLayout->getId());
+            foreach ($enabledBlocks as $block) {
                 $blockPaths[] = $block->getViewPath();
             }
         }
