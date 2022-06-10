@@ -30,6 +30,12 @@ class Report_Courses extends Report
     public $status_u = [];
     public $status_c = [];
 
+    public function __construct($id_report, $report_name = false) {
+
+        $this->Report_Courses();
+        parent::__construct($id_report, $report_name);
+    }
+
     public function Report_Courses()
     {
         $this->lang = &DoceboLanguage::createInstance('report', 'framework');

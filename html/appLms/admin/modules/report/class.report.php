@@ -50,13 +50,14 @@ class Report
 
     public function __construct($id_report, $report_name = false)
     {
+
         $this->id_report = $id_report;
         if ($report_name == false) {
             $this->_load();
         } else {
-            $lang = &DoceboLanguage::createInstance('report', 'framework');
-            $this->report_name = $lang->def($report_name);
-            $this->report_descr = $lang->def($report_name);
+            $this->lang = &DoceboLanguage::createInstance('report', 'framework');
+            $this->report_name = $this->lang->def($report_name);
+            $this->report_descr = $this->lang->def($report_name);
         }
 
         $this->db = DbConn::getInstance();
@@ -186,7 +187,7 @@ class Report
      */
     public function _load()
     {
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $this->lang = &DoceboLanguage::createInstance('report', 'framework');
 
         $query_report = '
 		SELECT report_name
@@ -195,8 +196,8 @@ class Report
         $re_report = sql_query($query_report);
         list($report_name) = sql_fetch_row($re_report);
 
-        $this->report_name = $lang->def($report_name);
-        $this->report_descr = $lang->def($report_name);
+        $this->report_name = $this->lang->def($report_name);
+        $this->report_descr = $this->lang->def($report_name);
     }
 
     public function play($jump_url, $back_url, $alluser, $org_chart_subdivision, $start_rime, $end_time)

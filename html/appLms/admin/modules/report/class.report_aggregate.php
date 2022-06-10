@@ -33,7 +33,7 @@ class Report_Aggregate extends Report
 
     
 
-    public function __construct()
+    public function __construct($id_report, $report_name = false)
     {
         $this->db = DbConn::getInstance();
 
@@ -43,6 +43,8 @@ class Report_Aggregate extends Report
         $this->_set_columns_category(_RA_CATEGORY_TIME, Lang::t('_RA_CAT_TIME', 'report'), 'get_time_filter', 'show_report_time', '_get_time_query');
         $this->_set_columns_category(_RA_CATEGORY_COMMUNICATIONS, Lang::t('_RU_CAT_COMMUNICATIONS', 'report'), 'get_communications_filter', 'show_report_communications', '_get_communications_query');
         $this->_set_columns_category(_RA_CATEGORY_GAMES, Lang::t('_RU_CAT_GAMES', 'report'), 'get_games_filter', 'show_report_games', '_get_games_query');
+
+        parent::__construct($id_report, $report_name);
     }
 
     //users and orgchart selection

@@ -115,7 +115,7 @@ function openreport($idrep = false)
       
         $obj_report = new $class_name($id_report);
     } else {
-        dd("qui");
+
         $pg = new PluginManager('Report');
         $obj_report = $pg->get_plugin($class_name, [$id_report]);
     }

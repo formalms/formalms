@@ -23,9 +23,9 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
     public const COLORS = [
             -2 =>'F0F8FF',
             -1 =>'FAEBD7',
-            0 =>'00FFFF',
-            1 =>'7FFFD4',
-            2 =>'ff66ff',
+            0 =>'3CAAD1',
+            1 =>'ED6D05',
+            2 =>'60B567',
             3 =>'F5F5DC',
             4 =>'669900',
         ];
