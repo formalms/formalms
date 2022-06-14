@@ -346,7 +346,8 @@ class Boot
         $request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
             require __DIR__ . '/../config.php';
-            Forma\lib\Session\SessionManager::getInstance()->initSession($cfg['session']);
+            $config = $cfg && isset($cfg['session']) ? $cfg['session'] : [];
+            Forma\lib\Session\SessionManager::getInstance()->initSession($config);
 
             $session = Forma\lib\Session\SessionManager::getInstance()->getSession();
             self::log(" Start session '" . $session->getName() . "'");
