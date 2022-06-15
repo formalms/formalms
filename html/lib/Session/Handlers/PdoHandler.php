@@ -3,14 +3,22 @@
 namespace Forma\lib\Session\Handlers;
 
 use Forma\lib\Session\Config;
-use Symfony\Component\Cache\Adapter\PdoAdapter;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler;
+use Symfony\Component\Cache\Adapter\DoctrineDbalAdapter;
+
 
 class PdoHandler extends PdoSessionHandler
 {
     public function __construct(Config $config){
 
+        $options = [];
+        if($config->getPrefix()) {
+            $options['db_table'] = $config->getPrefix();
+        }
+        if($config->getLifetime()) {
+            $options['db_lifetime_col'] = $config->getLifetime();
+        }
+        
         try {
             if (empty($config->getUrl())) {
                 if ($config->isAuthentication()){
@@ -22,23 +30,13 @@ class PdoHandler extends PdoSessionHandler
                 $config->setUrl($url);
             }
 
-            $connection = new PdoAdapter(
-                $config->getUrl(),
-                // the string prefixed to the keys of the items stored in this cache
-                $config->getPrefix(),
-                // the default lifetime (in seconds) for cache items that do not define their
-                // own lifetime, with a value 0 causing items to be stored indefinitely (i.e.
-                // until the database table is truncated or its rows are otherwise deleted)
-                $config->getLifetime(),
-                // an array of options for configuring the database table and connection
-                []
-            );
+     
         }
         catch (\Exception $exception){
             die($exception->getMessage());
         }
 
-        parent::__construct($connection);
+        parent::__construct($config->getUrl(), $options);
 
     }
 
