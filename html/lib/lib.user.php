@@ -64,6 +64,8 @@ class DoceboUser implements Serializable
 
     public $user_level = false;
 
+    private array $userCourses;
+
     protected $db = null;
 
     /**
@@ -108,6 +110,8 @@ class DoceboUser implements Serializable
 
         $this->load_user_role();
 
+        $this->userCourses = $this->loadUserCourses();
+
         $this->initRole($this->arrst, $this->idst);
     }
 
@@ -136,6 +140,37 @@ class DoceboUser implements Serializable
         }
     }
 
+    /**
+     * @return array
+     */
+    public function getUserCourses(): array
+    {
+        return $this->userCourses;
+    }
+
+
+    public function loadUserCourses()
+    {
+        $userCoursesQuery = 'SELECT idCourse,edition_id as idEdtition,level,date_inscr as subscriptionDate,date_first_access as firstAccess,status,date_complete as completedAt, date_begin_validity as dateBeginValidity, date_expire_validity as dateExpireValidity FROM %lms_courseuser where iduser=' . $this->idst;
+
+        $result = $this->db->query($userCoursesQuery);
+
+        $userCourses = [];
+        foreach ($result as $userCourse){
+            $userCourses[$userCourse['idCourse']] = $userCourse;
+        }
+
+        return $userCourses;
+    }
+
+    public function reloadUserCourses(){
+
+        $this->userCourses = $this->loadUserCourses();
+        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session->set('user', $this);
+        $session->save();
+    }
+
     public function load_user_role()
     {
         if (!empty($this->arrst)) {
@@ -157,7 +192,7 @@ class DoceboUser implements Serializable
         $session->set($this->sprefix . '_username', $this->userid);
         $session->set($this->sprefix . '_stlist', $json->encode($this->arrst));
         $session->set($this->sprefix . '_log_ip', $ip);
-        $session->set('user',$this);
+        $session->set('user', $this);
         $session->save();
     }
 

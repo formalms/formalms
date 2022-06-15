@@ -42,7 +42,7 @@ class CourseSubscribe_Manager
     {
         $this->course_table = '%lms_course';
         $this->subscribe_table = '%lms_courseuser';
-        $this->user_table = '%lms_user';
+        $this->user_table = '%adm_user';
 
         $this->db = DbConn::getInstance();
         $this->acl_man = $acl_man = &Docebo::user()->getAclManager();
@@ -156,10 +156,6 @@ class CourseSubscribe_Manager
             if (isset($filter['show'])) {
                 //validate values
                 switch ($filter['show']) {
-                    case 0:  //all
-                        //no condition to check ...
-                     break;
-
                     case 1:  //expired
                         $query .= ' AND (s.date_expire_validity IS NOT NULL AND s.date_expire_validity < NOW())';
                      break;
@@ -172,6 +168,7 @@ class CourseSubscribe_Manager
                         $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
                      break;
 
+                    case 0:
                     default:
                         //all ...
                      break;

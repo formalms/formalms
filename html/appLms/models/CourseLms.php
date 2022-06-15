@@ -201,7 +201,7 @@ class CourseLms extends Model
         }
 
         if ($parsedData['is_enrolled']) {
-            $parsedData['canEnter'] = (new Man_Course())->canEnterCourse($parsedData)['can'];
+            $parsedData['canEnter'] = Man_Course::canEnterCourse($parsedData)['can'];
         } else {
             $parsedData['canEnter'] = false;
         }

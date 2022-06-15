@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-namespace appCore\Events;
+namespace Forma\appCore\Events;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Contracts\EventDispatcher\Event;

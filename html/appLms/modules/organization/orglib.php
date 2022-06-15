@@ -997,7 +997,7 @@ class OrgDirDb extends RepoDirDb
     public function getAllUsers()
     {
         $query = 'SELECT u.idUser, u.userid '
-            . ' FROM %lms_courseuser cu, %lms_user u '
+            . ' FROM %lms_courseuser cu, %adm_user u '
             . " WHERE idCourse = '" . (int) $this->idCourse . "'"
             . '   AND u.idUser = cu.idUser ';
         $rs = sql_query($query);

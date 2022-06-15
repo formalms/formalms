@@ -20,20 +20,20 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @version  $Id: lib.course.php 1002 2007-03-24 11:55:51Z fabio $
  */
 
-define('CST_PREPARATION', 0);
-define('CST_AVAILABLE', 1);
-define('CST_EFFECTIVE', 2);
-define('CST_CONCLUDED', 3);
-define('CST_CANCELLED', 4);
+const CST_PREPARATION = 0;
+const CST_AVAILABLE = 1;
+const CST_EFFECTIVE = 2;
+const CST_CONCLUDED = 3;
+const CST_CANCELLED = 4;
 
 // course quota
 require_once _lms_ . '/lib/lib.subscribe.php';
 require_once _lms_ . '/lib/lib.levels.php';
-define('COURSE_QUOTA_INHERIT', -1);
-define('COURSE_QUOTA_UNLIMIT', 0);
+const COURSE_QUOTA_INHERIT = -1;
+const COURSE_QUOTA_UNLIMIT = 0;
 
-define('_SHOW_COUNT', 1);
-define('_SHOW_INSTMSG', 2);
+const _SHOW_COUNT = 1;
+const _SHOW_INSTMSG = 2;
 
 class Selector_Course
 {
@@ -166,7 +166,7 @@ class Selector_Course
         if ($this->show_filter === true) {
             $output .= '<div class="quick_search_form">'
                 . '<div class="common_options">'
-                . Form::getInputCheckbox('c_flatview', 'c_flatview', '1', (Forma\lib\Get::req('c_flatview', DOTY_INT, '0') == '1' ? true : false), ' onclick="submit();" ')
+                . Form::getInputCheckbox('c_flatview', 'c_flatview', '1', ((Forma\lib\Get::req('c_flatview', DOTY_INT, '0') == '1') ? true : false), ' onclick="submit();" ')
                 . ' <label class="label_normal" for="c_flatview">' . Lang::t('_DIRECTORY_FILTER_FLATMODE', 'admin_directory') . '</label>'
                 . '&nbsp;&nbsp;&nbsp;&nbsp;'
                 . '</div>'
@@ -183,7 +183,7 @@ class Selector_Course
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
 
-        $category_selected = ($this->treeview->getSelectedFolderId() != $this->treeview->GetRootName() ? $this->treeview->getSelectedFolderId() : '0');
+        $category_selected = (($this->treeview->getSelectedFolderId() != $this->treeview->GetRootName()) ? $this->treeview->getSelectedFolderId() : '0');
         if ($this->filter['course_flat']) {
             $id_categories = $this->treeDB->getDescendantsId($this->treeDB->getFolderById($category_selected));
             $id_categories[] = $category_selected;
@@ -389,13 +389,13 @@ class Man_Course
         if ($no_status) {
             $query_course .= " AND status <> '" . CST_PREPARATION . "' ";
         }
-        if ($type_of !== 'assessment' && $type_of !== 'all' && $type_of !== 'edition') {
+        if (($type_of !== 'assessment') && ($type_of !== 'all') && ($type_of !== 'edition')) {
             $query_course .= " AND course_type <> 'assessment' ";
         }
         if ($id_category !== false) {
             $query_course .= " AND idCategory = '" . $id_category . "' ";
         }
-        if ($type_of !== false && $type_of !== 'all' && $type_of !== 'edition') {
+        if (($type_of !== false) && ($type_of !== 'all') && ($type_of !== 'edition')) {
             $query_course .= " AND course_type = '" . $type_of . "' ";
         }
         if ($type_of === 'edition') {
@@ -480,7 +480,7 @@ class Man_Course
             $query_course .= ' WHERE show_rules = 0';
         }
 
-        if (!$re_course = sql_query($query_course)) {
+        if (!($re_course = sql_query($query_course))) {
             return 0;
         }
         list($number) = sql_fetch_row($re_course);
@@ -601,8 +601,8 @@ class Man_Course
                 . ' WHERE cd.id_course = ' . (int)$idCourse . ' AND (cu.waiting = 1 OR cdu.overbooking = 1 or cu.status=4)';
 
             // BUG FIX 2469: SELECT ONLY THE USER BELONGING TO THE ADMIN
-            $query .= ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? ' AND cu.idUser IN (' . implode(',', $admin_users) . ')' : ' AND cu.idUser IN (0)')
+            $query .= (($userlevelid != ADMIN_GROUP_GODADMIN)
+                ? (!empty($admin_users) ? (' AND cu.idUser IN (' . implode(',', $admin_users) . ')') : ' AND cu.idUser IN (0)')
                 : '');
 
             $res = sql_query($query);
@@ -626,8 +626,8 @@ class Man_Course
 			SELECT idUser, level, subscribed_by, status
 			FROM %lms_courseuser
 			WHERE idCourse = '" . $idCourse . "' AND (waiting = '1' or status=4) AND  edition_id = '" . $edition_id . "'";
-            $query_courseuser .= ($userlevelid != ADMIN_GROUP_GODADMIN
-                ? (!empty($admin_users) ? ' AND idUser IN (' . implode(',', $admin_users) . ')' : ' AND idUser IN (0)')
+            $query_courseuser .= (($userlevelid != ADMIN_GROUP_GODADMIN)
+                ? (!empty($admin_users) ? (' AND idUser IN (' . implode(',', $admin_users) . ')') : ' AND idUser IN (0)')
                 : '');
 
             $re_courseuser = sql_query($query_courseuser);
@@ -870,170 +870,248 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
      *               'course_date', 'course_valid_time', 'user_status', 'course_status'
      *               on key 'expiring_in' => report the day remaining before the course expire
      */
-    public function canEnterCourse(&$course, $id_path = 0)
+    public static function canEnterCourse($course, $id_path = 0)
     {
-        $db = DbConn::getInstance();
-        $level_id = Docebo::user()->getUserLevelId();
-
-        // control if the user is in a status that cannot enter
         $now = time();
+        $userLevel = Docebo::user()->getUserLevelId();
+        $userCourses = Docebo::user()->getUserCourses();
+
         $expiring = false;
 
-        if ($level_id != ADMIN_GROUP_GODADMIN && $course['sub_start_date'] != '0000-00-00' && !is_null($course['sub_start_date'])) {
-            $date01 = new DateTime($course['sub_start_date']);
-            $exp_time = $date01->format('U') - $now;
+        $response = ['can' => true, 'reason' => '', 'expiring_in' => $expiring];
 
-            if ($exp_time > 0) {
-                return ['can' => false, 'reason' => 'course_sub_start_date', 'expiring_in' => $exp_time];
-            }
-        }
 
-        if ($level_id != ADMIN_GROUP_GODADMIN && $course['sub_end_date'] != '0000-00-00' && !is_null($course['sub_end_date'])) {
-            $date01 = new DateTime($course['sub_end_date']);
-            // BUG: ticket 19753
-            //$exp_time = $now - $date01->format('U');
-            $exp_time = $date01->format('U') - $now;
+        if (array_key_exists((int)$course['idCourse'], $userCourses)) {
 
-            if ($exp_time > 0) {
-                return ['can' => false, 'reason' => 'course_sub_end_date', 'expiring_in' => $exp_time];
-            }
-        }
+            $userCourse = $userCourses[$course['idCourse']];
 
-        if ($course['valid_time'] != '0' && $course['valid_time'] != '' && $course['date_first_access'] != '' && $course['level'] <= 3) {
-            $time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
-
-            $exp_time = ($time_first_access + ($course['valid_time'] * 24 * 3600)) - $now;
-            $expiring = round($exp_time / (24 * 60 * 60));
-            $expiring = $expiring == -0 ? 0 : $expiring;
-            if ($exp_time < 0) {
-                return ['can' => false, 'reason' => 'time_elapsed', 'expiring_in' => $expiring];
-            }
-        }
-
-        $query = 'SELECT date_begin_validity, date_expire_validity, status, level'
-            . ' FROM %lms_courseuser'
-            . " WHERE idCourse = '" . $course['idCourse'] . "'"
-            . " AND idUser = '" . getLogUserId() . "'";
-
-        list($date_begin_validity, $date_expire_validity, $status, $level) = $db->fetch_row(sql_query($query));
-
-        if (!is_null($date_begin_validity) && $date_begin_validity !== '0000-00-00 00:00:00' && strcmp(date('Y-m-d H:i:s'), $date_begin_validity) <= 0) {
-            return ['can' => false, 'reason' => 'subscription_not_started', 'expiring_in' => $expiring];
-        }
-
-        if (!is_null($date_expire_validity) && $date_expire_validity !== '0000-00-00 00:00:00' && strcmp(date('Y-m-d H:i:s'), $date_expire_validity) >= 0) {
-            return ['can' => false, 'reason' => 'subscription_expired', 'expiring_in' => $expiring];
-        }
-
-        if ($course['status'] == CST_CANCELLED) {
-            return ['can' => false, 'reason' => 'course_status', 'expiring_in' => $expiring];
-        }
-
-        if ($course['status'] == CST_PREPARATION) {
-            if ($level > 3) {
-                return ['can' => true, 'reason' => 'user_status', 'expiring_in' => $expiring];
-            } else {
-                return ['can' => false, 'reason' => 'course_status - ' . CST_PREPARATION, 'expiring_in' => $expiring];
-            }
-        }
-
-        if ($course['status'] == CST_CONCLUDED) {
-            if ($status == _CUS_END || $level > 3) {
-                return ['can' => true, 'reason' => 'user_status', 'expiring_in' => $expiring];
-            } else {
-                return ['can' => false, 'reason' => 'course_status', 'expiring_in' => $expiring];
-            }
-        }
-
-        //if($course['user_status'] == _CUS_CANCELLED) return array('can' => false, 'reason' => 'user_status');
-        if ($course['level'] > 3) {
-            return ['can' => true, 'reason' => '', 'expiring_in' => $expiring];
-        }
-        if (isset($course['prerequisites_satisfied']) && $course['prerequisites_satisfied'] == false) {
-            return ['can' => false, 'reason' => 'prerequisites', 'expiring_in' => $expiring];
-        }
-        if (isset($course['waiting']) && $course['waiting'] >= 1) {
-            return ['can' => false, 'reason' => 'waiting', 'expiring_in' => $expiring];
-        }
-        // control if the course is elapsed
-        if ($course['date_begin'] != '0000-00-00') {
-            $date01 = new DateTime($course['date_begin']);
-            $time_start = $date01->format('U');
-            if (isset($course['hour_begin']) && $course['hour_begin'] != -1) {
-                $hour_begin = $course['hour_begin'];
-                $seconds = strtotime("1970-01-01 $hour_begin UTC");
-                $time_start = (int)$time_start + (int)$seconds;
+            switch ($course['level']) {
+                case CourseLevel::COURSE_LEVEL_ADMIN:
+                case CourseLevel::COURSE_LEVEL_TEACHER:
+                case CourseLevel::COURSE_LEVEL_MENTOR:
+                case CourseLevel::COURSE_LEVEL_TUTOR:
+                    $response['can'] = true;
+                    $response['reason'] = 'user_status';
+                    return $response;
+                    break;
+                default:
+                    break;
             }
 
-            if ($now < $time_start) {
-                return ['can' => false, 'reason' => 'course_date', 'expiring_in' => $expiring];
+            switch ($userLevel) {
+                case ADMIN_GROUP_GODADMIN:
+                case ADMIN_GROUP_ADMIN:
+
+                    $response['can'] = true;
+                    $response['reason'] = 'user_status';
+                    return $response;
+                    break;
+                default:
+                    break;
             }
-        }
-        if ($course['date_end'] != '0000-00-00') {
-            $date01 = new DateTime($course['date_end']);
-            $time_end = $date01->format('U');
-            if (isset($course['hour_end']) && $course['hour_end'] != -1) {
-                $hour_end = $course['hour_end'];
-                $seconds = strtotime("1970-01-01 $hour_end UTC");
-                $time_end = (int)$time_end + (int)$seconds;
-            }
-            if ($now > $time_end) {
-                return ['can' => false, 'reason' => 'course_date', 'expiring_in' => $expiring];
-            }
-        }
 
-        if ($course['valid_time'] != '0' && $course['valid_time'] != '' && $course['date_first_access'] != '') {
-            $time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
 
-            if ($now > ($time_first_access + ($course['valid_time'] * 24 * 3600))) {
-                return ['can' => true, 'reason' => 'course_valid_time', 'expiring_in' => $expiring];
-            }
-        }
-        if ($course['user_status'] >= 0 && $course['userStatusOp'] & (1 << $course['user_status'])) {
-            return ['can' => false, 'reason' => 'user_status', 'expiring_in' => $expiring];
-        }
-
-        //Control user coursepath prerequisite
-        $query = 'SELECT cc.prerequisites '
-            . ' FROM %lms_coursepath_courses AS cc '
-            . ' JOIN %lms_coursepath_user AS cu ON cc.id_path = cu.id_path '
-            . ' WHERE cu.idUser = ' . (int)Docebo::user()->getIdSt() . ' '
-            . ' AND cc.id_item = ' . (int)$course['idCourse'] . ' '
-            . ($id_path != 0 ? ' AND cc.id_path = ' . (int)$id_path : '');
-
-        $result = sql_query($query);
-
-        $control_cicle = 0;
-
-        while (list($prerequisites) = sql_fetch_row($result)) {
-            if ($prerequisites !== '') {
-                $num_prerequisites = count(explode(',', $prerequisites));
-                ++$control_cicle;
-
-                $query = 'SELECT COUNT(*) '
-                    . ' FROM %lms_courseuser '
-                    . ' WHERE idCourse IN (' . $prerequisites . ') '
-                    . ' AND idUser = ' . (int)Docebo::user()->getIdSt() . ' '
-                    . ' AND status = ' . _CUS_END;
-
-                list($control) = sql_fetch_row(sql_query($query));
-
-                if ($control >= $num_prerequisites) {
-                    return ['can' => true, 'reason' => 'prerequisites', 'expiring_in' => $expiring];
+            if ($response['can']) {
+                switch ($course['status']) {
+                    case CST_PREPARATION:
+                    case CST_CONCLUDED:
+                    case CST_CANCELLED:
+                        $response['reason'] = 'course_status - ' . $course['status'];
+                        
+                        $response['can'] = false;
+                        break;
+                    default:
+                        break;
                 }
             }
+
+            if ($response['can']) {
+                if (($course['valid_time'] !== '0') && !empty($course['valid_time']) && !empty($course['date_first_access'])) {
+                    $time_first_access = fromDatetimeToTimestamp($course['date_first_access']);
+
+                    $exp_time = ($time_first_access + ($course['valid_time'] * 24 * 3600)) - $now;
+                    $expiring = round($exp_time / (24 * 60 * 60));
+                    $expiring = ($expiring == -0) ? 0 : $expiring;
+                    if ($exp_time < 0) {
+                        $response['can'] = false;
+                        
+                        $response['reason'] = 'time_elapsed';
+                        $response['expiring_in'] = $expiring;
+                    }
+                }
+            }
+
+            if ($response['can']) {
+                if (!empty($userCourse['dateBeginValidity']) && ($userCourse['dateBeginValidity'] !== '0000-00-00 00:00:00') && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateBeginValidity']) <= 0)) {
+                    $response['can'] = false;
+                    
+                    $response['reason'] = 'subscription_not_started';
+                }
+            }
+
+            if ($response['can']) {
+                if (!empty($userCourse['dateExpireValidity']) && ($userCourse['dateExpireValidity'] !== '0000-00-00 00:00:00') && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateExpireValidity']) >= 0)) {
+
+                    $response['can'] = false;
+                    
+                    $response['reason'] = 'subscription_expired';
+                }
+            }
+
+            if ($response['can']) {
+                if (!empty($course['prerequisites_satisfied'])) {
+                    $response['can'] = false;
+                    
+                    $response['reason'] = 'prerequisites';
+                }
+            }
+
+            if ($response['can']) {
+                if (isset($course['waiting']) && ($course['waiting'] >= 1)) {
+
+                    $response['can'] = false;
+                    
+                    $response['reason'] = 'waiting';
+                }
+            }
+
+            if ($response['can']) {
+                // control if the course is elapsed
+                if ($course['date_begin'] !== '0000-00-00') {
+                    try {
+                        $date = new DateTime($course['date_begin']);
+                        $timeStart = $date->format('U');
+                        if (isset($course['hour_begin']) && (int)$course['hour_begin'] !== -1) {
+                            $hourBegin = $course['hour_begin'];
+                            $seconds = strtotime("1970-01-01 $hourBegin UTC");
+                            $timeStart = (int)$timeStart + (int)$seconds;
+                        }
+
+                        if ($now < $timeStart) {
+                            $response['can'] = false;
+                            $response['reason'] = 'course_date';
+                        }
+                    } catch (\Exception $e) {
+
+                    }
+                }
+            }
+
+            if ($response['can']) {
+                if ($course['date_end'] !== '0000-00-00') {
+                    try {
+                        $date = new DateTime($course['date_end']);
+                        $timeEnd = $date->format('U');
+                        if (isset($course['hour_end']) && (int)$course['hour_end'] !== -1) {
+                            $hour_end = $course['hour_end'];
+                            $seconds = strtotime("1970-01-01 $hour_end UTC");
+                            $timeEnd = (int)$timeEnd + (int)$seconds;
+                        }
+                        if ($now > $timeEnd) {
+                            $response['can'] = false;
+                            $response['reason'] = 'course_date';
+                        }
+                    } catch (\Exception $e) {
+
+                    }
+                }
+            }
+
+            if ($response['can']) {
+                if (!empty($course['valid_time']) && !empty($course['date_first_access'])) {
+                    $timeFirstAccess = fromDatetimeToTimestamp($course['date_first_access']);
+
+                    if ($now > ($timeFirstAccess + ($course['valid_time'] * 24 * 3600))) {
+                        $response['can'] = false;
+                        $response['reason'] = 'course_valid_time';
+                    }
+                }
+            }
+            if ($response['can']) {
+                if (($course['user_status'] >= 0) && ($course['userStatusOp'] & (1 << $course['user_status']))) {
+                    $response['can'] = false;
+                    $response['reason'] = 'user_status';
+                }
+            }
+
+            if ($response['can']) {
+                //Control user coursepath prerequisite
+                $query = 'SELECT cc.prerequisites '
+                    . ' FROM %lms_coursepath_courses AS cc '
+                    . ' JOIN %lms_coursepath_user AS cu ON cc.id_path = cu.id_path '
+                    . ' WHERE cu.idUser = ' . (int)Docebo::user()->getIdSt() . ' '
+                    . ' AND cc.id_item = ' . (int)$course['idCourse'] . ' '
+                    . (($id_path != 0) ? (' AND cc.id_path = ' . (int)$id_path) : '');
+
+                $result = sql_query($query);
+
+                $hasPrerequisites = false;
+                $numPrerequisites = 0;
+                $prerequisiteSatisfied = 0;
+                foreach ($result as $row) {
+                    $prerequisites = $row['$prerequisites'];
+                    if ($prerequisites !== '') {
+                        $hasPrerequisites = true;
+                        $countPrerequisites = count(explode(',', $prerequisites));
+                        $numPrerequisites++;
+
+                        $query = 'SELECT COUNT(*) as count'
+                            . ' FROM %lms_courseuser '
+                            . ' WHERE idCourse IN (' . $prerequisites . ') '
+                            . ' AND idUser = ' . (int)Docebo::user()->getIdSt() . ' '
+                            . ' AND status = ' . _CUS_END;
+
+                        $countResult = sql_fetch_assoc(sql_query($query));
+
+                        if ($countResult['count'] >= $countPrerequisites) {
+                            $prerequisiteSatisfied++;
+                        }
+                    }
+                }
+
+                if ($hasPrerequisites && $prerequisiteSatisfied < $numPrerequisites) {
+                    $response['can'] = false;
+                    $response['reason'] = 'prerequisites';
+                }
+            }
+
+        } else {
+            switch ($userLevel) {
+                case ADMIN_GROUP_GODADMIN:
+                case ADMIN_GROUP_ADMIN:
+                case ADMIN_GROUP_USER:
+                default:
+
+                    if (($course['sub_start_date'] !== '0000-00-00') && !empty($course['sub_start_date'])) {
+                        try {
+                            $date = new DateTime($course['sub_start_date']);
+                            $expireTime = $date->format('U') - $now;
+
+                            if ($expireTime > 0) {
+                                $response = ['can' => false, 'reason' => 'course_sub_start_date', 'expiring_in' => $expireTime];
+                            }
+                        } catch (Exception $e) {
+
+                        }
+                    }
+
+                    if (empty($response) && ($course['sub_end_date'] !== '0000-00-00') && !empty($course['sub_end_date'])) {
+                        try {
+                            $date = new DateTime($course['sub_end_date']);
+                            $expireTime = $date->format('U') - $now;
+
+                            if ($expireTime > 0) {
+                                $response = ['can' => false, 'reason' => 'course_sub_end_date', 'expiring_in' => $expireTime];
+                            }
+                        } catch (Exception $e) {
+
+                        }
+                    }
+                    break;
+            }
         }
 
-        if ($control_cicle > 0) {
-            return ['can' => false, 'reason' => 'prerequisites', 'expiring_in' => $expiring];
-        }
-
-        // user is not a tutor or a prof and the course isn't active
-        if ($course['course_status'] != 1 && $course['level'] < 4) {
-            return ['can' => true, 'reason' => 'course_status', 'expiring_in' => $expiring];
-        }
-
-        return ['can' => true, 'reason' => '', 'expiring_in' => $expiring];
+        return $response;
     }
 
     public function getClassroomTeachers($idCourse)
@@ -1139,7 +1217,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             if ($entire_path === false) {
                 $categories[$cat['idCategory']] = $cat;
                 $categories[$cat['idCategory']]['name'] = (
-                ($pos = strrpos($cat['path'], '/')) === false
+                (($pos = strrpos($cat['path'], '/')) === false)
                     ? $cat['path']
                     : substr($cat['path'], $pos + 1)
                 );
@@ -1160,20 +1238,20 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 		SELECT idParent, lev, path
 		FROM %lms_category
 		WHERE idCategory = '" . $id_cat . "'";
-        if (!$re_category = sql_query($query_cat)) {
+        if (!($re_category = sql_query($query_cat))) {
             return '';
         }
         list($id_parent, $lev, $path) = sql_fetch_row($re_category);
 
-        $name = (($pos = strrpos($path, '/')) === false ? $path : substr($path, $pos + 1));
+        $name = ((($pos = strrpos($path, '/')) === false) ? $path : substr($path, $pos + 1));
         if ($lev <= 1) {
-            return ' &gt; ' . ($link !== false
-                    ? '<a title="' . $title_link . ' : ' . $name . '" href="' . $link . '&amp;' . $parent_name . '=' . $id_cat . '">' . $name . '</a>'
+            return ' &gt; ' . (($link !== false)
+                    ? ('<a title="' . $title_link . ' : ' . $name . '" href="' . $link . '&amp;' . $parent_name . '=' . $id_cat . '">' . $name . '</a>')
                     : $name);
         } else {
             return $this->_recurseCategory($id_parent, $title_link, $link, $parent_name)
-                . ' &gt; ' . ($link !== false
-                    ? '<a title="' . $title_link . ' : ' . $name . '" href="' . $link . '&amp;' . $parent_name . '=' . $id_cat . '">' . $name . '</a>'
+                . ' &gt; ' . (($link !== false)
+                    ? ('<a title="' . $title_link . ' : ' . $name . '" href="' . $link . '&amp;' . $parent_name . '=' . $id_cat . '">' . $name . '</a>')
                     : $name);
         }
     }
@@ -1182,8 +1260,8 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
     {
         $categories = [];
 
-        return ($link !== false
-                ? '<a title="' . $title_link . ' : ' . $lang_main . '"  href="' . $link . '">' . $lang_main . '</a>'
+        return (($link !== false)
+                ? ('<a title="' . $title_link . ' : ' . $lang_main . '"  href="' . $link . '">' . $lang_main . '</a>')
                 : $lang_main)
             . $this->_recurseCategory($id_cat, $title_link, $link, $parent_name);
     }
@@ -1204,7 +1282,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             if (isset($filter['c_category'])) {
                 $flat = false;
                 if (isset($filter['c_flatview'])) {
-                    $flat = ($filter['c_flatview']['value'] == 'true' ? true : false);
+                    $flat = (($filter['c_flatview']['value'] == 'true') ? true : false);
                 }
                 $categories = [(int)$filter['c_category']['value']];
                 if ($flat) {
@@ -1328,10 +1406,10 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             . ' FROM %lms_course as c '
             . ' LEFT JOIN %lms_courseuser as cu ON (c.idCourse=cu.idCourse) '
             . " WHERE c.course_type = 'elearning' " . $filter_conds
-            . ($is_subadmin && !$all_courses ? (!empty($admin_courses['course']) ? ' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')' : ' AND c.idCourse = 0') : '')
-            . ($is_subadmin ? ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'cu.idUser') : '')
+            . (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : ' AND c.idCourse = 0') : '')
+            . ($is_subadmin ? (' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'cu.idUser')) : '')
             . ' GROUP BY c.idCourse '
-            . ($sort ? ' ORDER BY ' . $sort . ' ' . $dir . ' ' : '')
+            . ($sort ? (' ORDER BY ' . $sort . ' ' . $dir . ' ') : '')
             . ' LIMIT ' . $startIndex . ', ' . $records;
 
         return sql_query($query);
@@ -1344,11 +1422,11 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             if (isset($filter['c_category'])) {
                 $flat = false;
                 if (isset($filter['c_flatview'])) {
-                    $flat = ($filter['c_flatview']['value'] == 'true' ? true : false);
+                    $flat = (($filter['c_flatview']['value'] == 'true') ? true : false);
                 }
 
                 $categories = [(int)$filter['c_category']['value']];
-                if ($flat && $filter['c_category']['value'] != 0) {
+                if ($flat && ($filter['c_category']['value'] != 0)) {
                     //retrieve category's sub-categories ids
                     $bounds_query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . $filter['c_category']['value'];
                     $res = sql_query($bounds_query);
@@ -1359,7 +1437,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                         $categories[] = (int)$sub_category;
                     }
                 }
-                if (!($flat && $filter['c_category']['value'] == 0)) {
+                if (!($flat && ($filter['c_category']['value'] == 0))) {
                     $filter_conds .= ' AND c.idCategory IN (' . implode(',', $categories) . ') ';
                 }
             }
@@ -1448,7 +1526,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
         $query = 'SELECT COUNT(*) FROM %lms_course AS c '
             . " WHERE course_type = 'elearning' " . $filter_conds
-            . ($is_subadmin && !$all_courses ? (!empty($admin_courses['course']) ? ' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')' : '') : '');
+            . (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : '') : '');
         $re_course = sql_query($query);
         list($number) = sql_fetch_row($re_course);
 
@@ -1542,7 +1620,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             $is_subadmin = true;
         }
 
-        $query .= ($is_subadmin && !$all_courses ? (!empty($admin_courses['course']) ? ' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')' : ' AND c.idCourse = 0') : '');
+        $query .= (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : ' AND c.idCourse = 0') : '');
 
         list($res) = sql_fetch_row(sql_query($query));
 
@@ -1646,7 +1724,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             $is_subadmin = true;
         }
 
-        $query .= ($is_subadmin && !$all_courses ? (!empty($admin_courses['course']) ? ' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')' : ' AND c.idCourse = 0') : '');
+        $query .= (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : ' AND c.idCourse = 0') : '');
 
         $query .= ' GROUP BY c.idCourse ';
 
@@ -1660,7 +1738,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 break;
         }
 
-        ($start_index === false ? '' : $query .= ' LIMIT ' . $start_index . ', ' . $results);
+        (($start_index === false) ? '' : ($query .= ' LIMIT ' . $start_index . ', ' . $results));
 
         $result = sql_query($query);
         $res = [];
@@ -1687,7 +1765,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
         $output = false;
         $query = "SELECT idCourse FROM %lms_course WHERE name LIKE '" . $name . "'";
         $res = sql_query($query);
-        if ($res && sql_num_rows($res) > 0) {
+        if ($res && (sql_num_rows($res) > 0)) {
             list($idCourse) = sql_fetch_row($res);
             $output = $idCourse;
         }
@@ -2041,7 +2119,7 @@ class Man_CourseUser
                 }
             }
         }
-        if (sql_num_rows($result_course) != 0 && $counter == 0) {
+        if ((sql_num_rows($result_course) != 0) && ($counter == 0)) {
             return -1;
         }
 
@@ -2162,7 +2240,7 @@ class DoceboCourse
 
         $query = '
 		UPDATE %lms_course
-		SET course_vote  = course_vote  ' . ($score > 0 ? '+' : '-') . abs($score) . ' '
+		SET course_vote  = course_vote  ' . (($score > 0) ? '+' : '-') . abs($score) . ' '
             . " WHERE idCourse = '" . $this->id_course . "'";
         if (!$this->_executeQuery($query)) {
             return false;
@@ -2236,7 +2314,7 @@ class DoceboCourse
         }
 
         $course_size = $this->course_info['used_space'] - $size;
-        $this->course_info['used_space'] = ($course_size < 0 ? 0 : $course_size);
+        $this->course_info['used_space'] = (($course_size < 0) ? 0 : $course_size);
 
         return $this->setValues(['used_space' => $course_size]);
     }
@@ -2367,7 +2445,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
     $query_courseuser = '
 	SELECT c.idUser, c.level, c.waiting, c.status, c.absent
 	FROM %lms_courseuser AS c';
-    if ($sort || $user_filter !== '') {
+    if ($sort || ($user_filter !== '')) {
         $query_courseuser .= ' JOIN %adm_user AS u ON u.idst = c.idUser';
     }
     $query_courseuser .= " WHERE c.idCourse = '" . $idCourse . "'";
@@ -2383,7 +2461,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
     if ($group_all_members !== false) {
         $query_courseuser .= ' AND c.idUser IN (' . implode(',', $group_all_members) . ')';
     }
-    if ($edition_id !== false && $edition_id > 0) {
+    if (($edition_id !== false) && ($edition_id > 0)) {
         require_once _lms_ . '/lib/lib.edition.php';
         $ed_man = new EditionManager();
         $ed_users = $ed_man->getEditionSubscribed($edition_id);
@@ -2391,7 +2469,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
             $query_courseuser .= ' AND c.idUser IN (' . implode(',', $ed_users) . ')';
         }
     }
-    if ($date_id !== false && $date_id > 0) {
+    if (($date_id !== false) && ($date_id > 0)) {
         require_once _lms_ . '/lib/lib.date.php';
         $date_man = new DateManager();
         $dt_users_arr = $date_man->getUserForPresence($date_id);
@@ -2596,7 +2674,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     }
 
     // Disable tracking for ghost level
-    $session->set('is_ghost',($course_info['level'] == 2 ? true : false));
+    $session->set('is_ghost', (($course_info['level'] == 2) ? true : false));
 
     // If it's the first time we need to change the course status
     if ($course_info['user_status'] == _CUS_SUBSCRIBED) {
@@ -2604,9 +2682,9 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
         saveTrackStatusChange(getLogUserId(), $idCourse, _CUS_BEGIN);
     }
     // Setup some session data
-    $session->set('timeEnter',date('Y-m-d H:i:s'));
-    $session->set('idCourse',$idCourse);
-    $session->set('levelCourse',$course_info['level']);
+    $session->set('timeEnter', date('Y-m-d H:i:s'));
+    $session->set('idCourse', $idCourse);
+    $session->set('levelCourse', $course_info['level']);
 
     //we need to redo this
 
@@ -2617,8 +2695,8 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     TrackUser::createSessionCourseTrack();
 
     $first_page = firstPage();
-    $session->set('current_main_menu',$first_page['idMain']);
-    $session->set('sel_module_id',$first_page['idModule']);
+    $session->set('current_main_menu', $first_page['idMain']);
+    $session->set('sel_module_id', $first_page['idModule']);
     $session->save();
     if ($first_page['mvc_path'] != '') {
         $jumpurl = 'index.php?r=' . $first_page['mvc_path'] . '&id_module_sel=' . $first_page['idModule'];
@@ -2627,11 +2705,11 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     }
 
     // course in direct play or assessment
-    if ($course_info['direct_play'] == 1 || $course_info['course_type'] == 'assessment') {
+    if (($course_info['direct_play'] == 1) || ($course_info['course_type'] == 'assessment')) {
         if ($session->get('levelCourse') >= 4) {
             // direct play with a teacher, basically it's not ok
             // check if we are managing the LOs from admin: if yes, jump into the test management
-            if ($course_info['course_type'] == 'assessment' && Forma\lib\Get::req('from_admin', DOTY_INT, 0) > 0) {
+            if (($course_info['course_type'] == 'assessment') && (Forma\lib\Get::req('from_admin', DOTY_INT, 0) > 0)) {
                 // enter the assessment course and go to test editing if there is a test with no question in it
                 $query = 'SELECT idOrg, idResource '
                     . ' FROM %lms_organization '
@@ -2639,7 +2717,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
                     . ' ORDER BY path ASC, title ASC '
                     . ' LIMIT 0,1';
                 $res = sql_query($query);
-                if ($res && sql_num_rows($res) > 0) {
+                if ($res && (sql_num_rows($res) > 0)) {
                     list($id_org, $id_test) = sql_fetch_row($res);
                     if ($id_test > 0) {
                         require_once _lms_ . '/lib/lib.test.php';
@@ -2659,7 +2737,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
             $jumpurl = 'index.php?modname=organization&op=' . $first_page['op'] . '&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=1';
 
             if (count($first_lo) == 1) {
-                $session->set('direct_play',1);
+                $session->set('direct_play', 1);
                 $session->save();
                 $obj = array_shift($first_lo);
                 Util::jump_to('index.php?modname=organization&op=organization&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=1&id_item=' . $obj['id_org'] . '');
@@ -2669,10 +2747,10 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
                 $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int)$obj['id_org'] . ' AND idUser = ' . (int)Docebo::user()->getId();
                 list($status) = sql_fetch_row(sql_query($query));
 
-                if (($status == 'completed' || $status == 'passed') && $gotofirst_page) {
+                if ((($status == 'completed') || ($status == 'passed')) && $gotofirst_page) {
                     Util::jump_to($jumpurl);
                 } else {
-                    $session->set('direct_play',1);
+                    $session->set('direct_play', 1);
                     $session->save();
                     Util::jump_to('index.php?modname=organization&op=organization&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=1&id_item=' . $obj['id_org'] . '');
                 }
@@ -2697,7 +2775,7 @@ function getModuleFromId($id_module)
 	WHERE idModule = ' . (int)$id_module . ' ';
 
     $re_module = sql_query($query_menu);
-    if (!$re_module || sql_num_rows($re_module) == 0) {
+    if (!$re_module || (sql_num_rows($re_module) == 0)) {
         return false;
     }
     $result = sql_fetch_row($re_module);
@@ -2724,7 +2802,7 @@ function firstPage($idMain = false)
 	WHERE main.idMain = un.idMain AND un.idModule = module.idModule
 		AND main.idCourse = '" . (int)$session->get('idCourse') . "'
 		AND un.idCourse = '" . (int)$session->get('idCourse') . "'
-		" . ($idMain !== false ? " AND main.idMain='" . $idMain . "' " : '') . '
+		" . (($idMain !== false) ? (" AND main.idMain='" . $idMain . "' ") : '') . '
 	ORDER BY main.sequence, un.sequence';
     $re_main = sql_query($query_main);
 
