@@ -15,118 +15,131 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class LoLmsController extends LmsController
 {
-    public $name = 'lo';
+	public $name = 'lo';
 
-    /** @var Services_JSON */
-    protected $json;
+	/** @var Services_JSON */
+	protected $json;
 
-    /**
+	/**
      * @var LoLms
-     */
-    protected $model;
+	 */
+	protected $model;
 
-    protected $user_status;
+	protected $user_status;
 
-    protected $idCourse;
+	protected $idCourse;
 
-    public function init()
-    {
-        checkPerm('view', false, 'organization');
+	public function init()
+	{
+		checkPerm('view', false, 'organization');
 
-        $this->model = new LoLms();
-        $this->idCourse = $_SESSION['idCourse'];
+		$this->model = new LoLms();
+		$this->idCourse = $_SESSION['idCourse'];
+		$this->model->setTdb($this->idCourse);
+		$this->json = new Services_JSON();
+	}
 
-        $this->model->setTdb($this->idCourse);
+	private function getFolders($idCourse, $idFolder = false)
+	{
+		$loData = array_values($this->model->getFolders($idCourse, $idFolder));
 
-        $this->json = new Services_JSON();
-    }
+		// Set 'directPlay' to first learning object, based on a session variable 'lo_play'
+		if (isset($loData[0]) && $_SESSION['lo_play'] && $loData[0]['status'] != 'completed') {
+			$loData[0]['directPlay'] = $_SESSION['lo_play'];
+		}
 
-    private function getFolders($idCourse, $idFolder = false)
-    {
-        $loData = array_values($this->model->getFolders($idCourse, $idFolder));
-        $results = $this->formatLoData($loData);
+		$results = $this->formatLoData($loData);
 
-        if (!empty($loData)) {
-            $eventData = Events::trigger(sprintf('lms.course_lo_%s.folder_listing', $loData[0]['typeId']), ['teacher' => false, 'idCourse' => $idCourse, 'idFolder' => $idFolder, 'learningObjects' => $results]);
-            $results = $eventData['learningObjects'];
-        }
+		if (!empty($loData)) {
+			$eventData = Events::trigger(sprintf('lms.course_lo_%s.folder_listing', $loData[0]['typeId']), ['teacher' => false, 'idCourse' => $idCourse, 'idFolder' => $idFolder, 'learningObjects' => $results]);
+			$results = $eventData['learningObjects'];
+		}
 
-        return $results;
-    }
+		// Initialize a session variable 'lo_play'
+		if ($_SESSION['direct_play'] && $_GET['op'] == 'organization') {
+			$_SESSION['lo_play'] = $_SESSION['direct_play'];
+		} else {
+			unset($_SESSION['lo_play']);
+		}
+		return $results;
+	}
 
-    private function getCurrentState($idFolder = false)
-    {
-        return $this->model->getCurrentState($idFolder);
-    }
+	private function getCurrentState($idFolder = false)
+	{
+		return $this->model->getCurrentState($idFolder);
+	}
 
-    public function show()
-    {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
-        }
+	public function show()
+	{
+		if (Forma::errorsExists()) {
+			UIFeedback::error(Forma::getFormattedErrors(true));
+		}
 
-        $this->render('show', [
-            'data' => [
-                'edit' => false,
-                'title' => Lang::t('_ORGROOTNAME', 'storage'),
-                'data' => $this->getFolders($this->idCourse, false),
-                'type' => 'organization',
-            ],
-        ]);
-    }
+		$this->render('show', [
+			'data' => [
+				'edit'  => false,
+				'title' => Lang::t('_ORGROOTNAME', 'storage'),
+				'data'  => $this->getFolders($this->idCourse, false),
+				'type'  => 'organization',
+			],
+		]);
+	}
 
-    private function formatLoData($loData)
-    {
-        $results = [];
-        foreach ($loData as $lo) {
-            $id = $lo['id'];
-            $lo['image_type'] = LomanagerLmsController::getLearningObjectIcon($lo);
-            $lo['actions'] = [];
-            $lo['visible_actions'] = [];
-            if (!$lo['is_folder']) {
-                $lo['actions'][] = [
-                    'name' => 'play',
-                    'active' => true,
-                    'type' => 'link',
-                    'content' => "index.php?modname=organization&op=custom_playitem&id_item=$id",
-                    'showIcon' => false,
-                    'icon' => 'icon-play',
-                    'label' => 'Play',
-                ];
-                if ($lo['track_detail']) {
-                    $lo['visible_actions'][] = [
-                        'name' => 'tracking',
-                        'active' => true,
-                        'type' => 'link',
-                        'content' => 'index.php?modname=organization&amp;op=track_details&amp;type=' . $lo['track_detail']['type'] . '&amp;id_user=' . $lo['track_detail']['is_user'] . '&amp;id_org=' . $lo['track_detail']['id_org'] . '"',
-                        'showIcon' => false,
-                        'icon' => 'icon-chart',
-                        'label' => 'Tracking',
-                    ];
-                }
-            }
-            $results[] = $lo;
-        }
+	private function formatLoData($loData)
+	{
+		$results = [];
+		foreach ($loData as $lo) {
+			$id = $lo['id'];
+			$lo['image_type'] = LomanagerLmsController::getLearningObjectIcon($lo);
+			$lo['actions'] = [];
+			$lo['visible_actions'] = [];
+			if (!$lo['is_folder']) {
+				$lo['actions'][] = [
+					'name'     => 'play',
+					'active'   => true,
+					'type'     => 'link',
+					'content'  => "index.php?modname=organization&op=custom_playitem&id_item=$id",
+					'showIcon' => false,
+					'icon'     => 'icon-play',
+					'label'    => 'Play',
+				];
+				if ($lo['track_detail']) {
+					$lo['visible_actions'][] = [
+						'name'     => 'tracking',
+						'active'   => true,
+						'type'     => 'link',
+						'content'  => 'index.php?modname=organization&amp;op=track_details&amp;type='
+						              . $lo['track_detail']['type'] . '&amp;id_user=' . $lo['track_detail']['is_user']
+						              . '&amp;id_org=' . $lo['track_detail']['id_org'] . '"',
+						'showIcon' => false,
+						'icon'     => 'icon-chart',
+						'label'    => 'Tracking',
 
-        return $results;
-    }
+						'directPlay' => $lo['directPlay'],
+					];
+				}
+			}
+			$results[] = $lo;
+		}
+		return $results;
+	}
 
-    public function get()
-    {
-        $id = Get::req('id', DOTY_INT, 0);
-        $responseData = [];
-        $responseData['data'] = $this->getFolders($this->idCourse, $id);
-        $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
-        echo $this->json->encode($responseData);
-        exit;
-    }
+	public function get()
+	{
+		$id = Get::req('id', DOTY_INT, 0);
+		$responseData = [];
+		$responseData['data'] = $this->getFolders($this->idCourse, $id);
+		$responseData['currentState'] = serialize([$this->getCurrentState(0)]);
+		echo $this->json->encode($responseData);
+		exit;
+	}
 
-    public function getFolderTree()
-    {
-        $responseData = [];
-        $responseData['data'] = $this->model->getFolderTree();
-        echo $this->json->encode($responseData);
-        exit;
+	public function getFolderTree()
+	{
+		$responseData = [];
+		$responseData['data'] = $this->model->getFolderTree();
+		echo $this->json->encode($responseData);
+		exit;
     }/*
 
     public function delete()
@@ -221,7 +234,7 @@ class LoLmsController extends LmsController
             echo $this->json->encode(true);
         }
         exit;
-    }
+	}
 
     public function copy()
     {

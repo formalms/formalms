@@ -9,7 +9,6 @@
                             <div class="tooltip-div">{{ el.description }}</div>
                         {% endif %}
                     </span>
-                    
                 </div>
                 <div class="actions-wrapper">
                 <div class="folderView__visibleActions" {% if isStudent %}style="right: 0;"{% endif %}>
@@ -23,7 +22,7 @@
                                        title="{{ action.label }}"
                                        value=""/>
                             {% elseif (action.type == 'link') %}
-                                <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}">
+                                <a href="{{ action.content }}" class="folderView__action {% if action.directPlay %}direct-play{% endif %} fv-is-{{ action.name }}" title="{{ action.label }}">
                                 </a>
                             {% endif %}
                         {% endfor %}

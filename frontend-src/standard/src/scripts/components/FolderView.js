@@ -206,6 +206,17 @@ class FolderView extends LearningView {
                 const folderView = _this.container.querySelector('.folderView');
                 folderView.innerHTML = childView;
 
+
+                // Direct play a course If student user and direct-play class exists in LO element
+                let isStudent = !!document.querySelector('.fv-is-student-area');
+                if (isStudent) {
+                    const elDplay = _this.container.querySelector('.direct-play');
+                    if (elDplay) {
+                        elDplay.closest('.js-folderView-file').click();
+                    }
+                }
+
+
                 if (!document.querySelector('.js-disable-sortable')) {
                     _this.initSortable();
                 }
