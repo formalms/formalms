@@ -571,12 +571,13 @@ class DoceboACLManager
             . ' VALUES ( "' . $idst . '", "' . $userid . '", "' . $firstname . '", "' . $lastname . '", '
             . ' "' . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . '", '
             . ' "' . $email . '", "' . $avatar . '", "' . $signature . '", "' . $pwd_expire_at . '", "' . date('Y-m-d H:i:s') . '", '
-            . ($force_change !== '' ? ' "' . ((int) $force_change > 0 ? '1' : '0') . "', " : '')
+            . ($force_change !== '' ? ' "' . ((int) $force_change > 0 ? '1' : '0') . '", ' : '')
             . (!empty($facebook_id) ? ' "' . $facebook_id . ' "' : 'NULL') . ', '
             . (!empty($twitter_id) ? ' "' . $twitter_id . ' "' : 'NULL') . ', '
             . (!empty($linkedin_id) ? ' "' . $linkedin_id . ' "' : 'NULL') . ', '
             . (!empty($google_id) ? ' "' . $google_id . ' "' : 'NULL') . ' '
             . ')';
+
 
         if ($this->_executeQuery($query)) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
