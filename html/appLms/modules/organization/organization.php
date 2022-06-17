@@ -97,12 +97,23 @@ $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->g
     }
 }
 
-function organization_display(&$treeView)
+function organization_display($treeView)
 {
     $url = 'index.php?r=lms/lo/show';
+
     if (checkPerm('view', true, 'storage')) {
         $url = 'index.php?r=lms/lomanager/show';
     }
+
+    if (!empty($_GET)) {
+        foreach ($_GET as $name => $value) {
+            $value = Get::gReq($name, DOTY_STRING);
+            if ($value) {
+                $url .= '&' . $name . '=' . $value;
+            }
+        }
+    }
+
     Util::jump_to($url);
 }
 
