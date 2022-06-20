@@ -21,7 +21,7 @@
     let permissions = {{ permissions | json_encode(constant('JSON_HEX_APOS')) | raw }};
  
     let t = null;
-    var delFunc = function(id, count, element) {
+    var delFunc = function(id, element) {
 
             var selector = "#confirmModal";
             var message = "{{ Lang_translate('_AREYOUSURE', 'standard') }}";
@@ -43,10 +43,7 @@
                         }
                     });
             };
-            if(count > 0) {
-                message = '{{ Lang_translate('_CATEGORY_WITH_POSTS', 'communication') }}';
-                deleteFunction = null;
-            }
+        
             confirmDialog(selector , message, deleteFunction);
         };
 
@@ -79,6 +76,7 @@
 
         if(permissions['mod'] == true ) {
             columns.push({data: 'editUrl', title: '<span class="ico-sprite subs_mod"><span>{{ Lang_translate("_MOD", "admin_lang") }}</span></span>', sortable: true});
+            columns.push({data: 'usersUrl', title: '<span class="ico-sprite subs_user"><span>{{ Lang_translate("_ASSIGN_USERS", "admin_lang") }}</span></span>', sortable: true});
         }
         if(permissions['del'] == true ) {
             columns.push({data: 'deleteUrl', title: '<span class="ico-sprite subs_del"><span>{{ Lang_translate("_DEL", "admin_lang") }}</span></span>', sortable: true});
@@ -87,12 +85,14 @@
 
         body.forEach(function (item, k) {
        
-            content = '<b><a id="title' + item.id + '"  href="' + item.editUrl + '">' + item.title + '</a></b><br /><br /><p>' + item.description + '</p>';
-          
+            content = '<b><a id="title' + item.id_comm + '"  href="' + item.editUrl + '">' + item.title + '</a></b><br /><br /><p>' + item.description + '</p>';
+            var userIcon = ((parseInt(item.access_entity)) > 0 ) ? 'subs_user' : 'fd_notice';
             item.content = content;
-            link = '<a id="'+item.id+'"  href="'+item.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
+            link = '<a id="edit'+item.id_comm+'"  href="'+item.editUrl+'" class="ico-sprite subs_mod" title="{{ Lang_translate("_MOD", "admin_lang") }}"><span></span></a>'
             item.editUrl = link;
-            link = '<a id="'+item.id+'" onclick="event.preventDefault();delFunc(' + item.id + ',' + item.countCommunications + ', this )" href="'+item.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
+            link = '<a id="assign'+item.id_comm+'"  href="'+item.usersUrl+'" class="ico-sprite ' + userIcon + '" title="{{ Lang_translate("_ASSIGN_USERS", "admin_lang") }}"><span></span></a>'
+            item.usersUrl = link;
+            link = '<a id="delete'+item.id_comm+'" onclick="event.preventDefault();delFunc(' + item.id_comm + ', this )" href="'+item.deleteUrl+'" class="ico-sprite subs_del" title="{{ Lang_translate("_DEL", "admin_lang") }}"><span></span></a>'
             item.deleteUrl = link;
 
             rows.push(Object.assign({}, item));
