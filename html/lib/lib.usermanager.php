@@ -176,14 +176,14 @@ class UserManager
      */
     public function _incAttemptNumber()
     {
-        $userAttemptNumber = $this->session->get('user_attempt_number',0);
+        $userAttemptNumber = $this->session->get('user_attempt_number', 0);
         if ($userAttemptNumber === 0) {
             $userAttemptNumber = 1;
 
         } else {
             ++$userAttemptNumber;
         }
-        $this->session->set('user_attempt_number',$userAttemptNumber);
+        $this->session->set('user_attempt_number', $userAttemptNumber);
         $this->session->save();
     }
 
@@ -951,7 +951,7 @@ class UserManagerAction
      */
     public $db_conn;
 
-    public function UserManagerAction($prefix = false, $db_conn = false)
+    public function __construct($prefix = false, $db_conn = false)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->db_conn = ($db_conn !== false ? $db_conn : null);
@@ -969,7 +969,7 @@ class UserManagerRenderer
     public $_show_accessibility_button;
     public $_show_language_selection;
 
-    public function UserManagerRenderer()
+    public function __construct()
     {
         $this->_register_type = '';
         $this->_register_info = '';
@@ -2152,11 +2152,19 @@ class UserManagerRenderer
             case 'tree_course':
             case 'code_module':
             case 'tree_man':
+                $error = (isset($errors) && $errors['reg_code']);
+                $errorMessage = $errors['reg_code']['msg'];
+                $cssClass = 'form-control';
+                if ($error) {
+                    $out .= '<div class="has-error">';
+                    $cssClass .= ' has-error';
+                }
+
                 // we must ask the user to insert a manual code
                 $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">';
                 $out .= Form::getInputTextfield(
-                    'form-control',
+                    $cssClass,
                     'reg_code',
                     'reg_code',
                     Forma\lib\Get::req('reg_code', DOTY_MIXED, ''),
@@ -2165,29 +2173,49 @@ class UserManagerRenderer
                     'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"'
                 );
 
-                $out .= '</div>
-                </div>';
 
+                if ($error) {
+                    $out .= '<small class="form-text">* ' . $errorMessage . '</small>
+                </div>';
+                }
+                $out .= '</div>';
+                $out .= '</div>';
                 break;
             case 'tree_drop':
                 // we must show to the user a selection of code
                 $uma = new UsermanagementAdm();
                 $tree_names = ['-' => $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_span : '')];
                 $tree_names = $tree_names + $uma->getAllFolderNames(true);
+                $error = (isset($errors) && $errors['reg_code']);
+                $errorMessage = $errors['reg_code']['msg'];
+                $cssClass = 'form-control';
+                if ($error) {
+                    $out .= '<div class="has-error">';
+                    $cssClass .= ' has-error';
+                }
+
+
                 $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">'
                     . Form::getInputDropdown(
-                        'form-control',
+                        $cssClass ,
                         'reg_code',
                         'reg_code',
                         $tree_names,
                         Forma\lib\Get::req('reg_code', DOTY_MIXED, ''),
                         '',
                         true
-                    ) .
-                    '</div>
-                </div>';
+                    );
 
+
+                if ($error) {
+                    $out .= '<small class="form-text">* ' . $errorMessage . '</small>
+                </div>';
+                }
+                $out .= '</div>';
+                $out .= '</div>';
+                break;
+            default:
                 break;
         }
 
@@ -2492,6 +2520,23 @@ class UserManagerRenderer
             }
         }
 
+        $codeIsMandatory = Forma\lib\Get::sett('mandatory_code', 'off') === 'on';
+        $regCode = Forma\lib\Get::req('reg_code', DOTY_MIXED, '');
+        $registrationCodeType = Forma\lib\Get::sett('registration_code_type', '0');
+
+        if ($codeIsMandatory) {
+            $codeIsValid = (new UserManager())->checkRegistrationCode($regCode, $registrationCodeType);
+
+            if (!$codeIsValid) {
+                $error = [
+                    'error' => true,
+                    'msg' => $lang->def('_ERR_INVALID_CODE'),
+                ];
+
+                $errors['reg_code'] = $error;
+            }
+        }
+
         // control mail is correct
         $acl_man = &Docebo::user()->getAclManager();
         $source['register']['email'] = strtolower($source['register']['email']);
@@ -2595,22 +2640,28 @@ class UserManagerRenderer
         }
 
         if ($control_extra_field) {
-            $arr_idst = (isset($_POST['group_sel_implode']) ? explode(',', $_POST['group_sel_implode']) : false);
+            $selectedGroups = \Forma\lib\Get::pReq('group_sel_implode',DOTY_STRING,'');
+            if (empty($selectedGroups)){
+                $selectedGroups = explode(',',$selectedGroups);
+            }
+            if (empty($selectedGroups)){
+                $selectedGroups = \Forma\lib\Get::pReq('group_sel',DOTY_MIXED,[]);
+            }
 
             if ($options['use_advanced_form'] == 'on' || Forma\lib\Get::sett('register_with_code') == 'on') {
                 $reg_code = Forma\lib\Get::req('reg_code', DOTY_MIXED, '');
                 $uma = new UsermanagementAdm();
                 $array_folder = $uma->getFolderGroups($reg_code);
 
-                if ($arr_idst) {
-                    $arr_idst = array_merge($arr_idst, $array_folder);
+                if ($selectedGroups) {
+                    $selectedGroups = array_merge($selectedGroups, $array_folder);
                 } else {
-                    $arr_idst = $array_folder;
+                    $selectedGroups = $array_folder;
                 }
             }
 
             $extra_field = new FieldList();
-            $re_filled = $extra_field->isFilledFieldsForUserInRegistration(0, $arr_idst);
+            $re_filled = $extra_field->isFilledFieldsForUserInRegistration(0, $selectedGroups);
             if ($re_filled !== true) {
                 foreach ($re_filled as $key => $value) {
                     $errors[$key] = $value;
@@ -2903,7 +2954,7 @@ class UserManagerOption
      *
      * @param string $table secified a different table from the default one
      */
-    public function UserManagerOption($table = false)
+    public function __construct($table = false)
     {
         if ($table === false) {
             $this->_table = $GLOBALS['prefix_fw'] . '_setting';
