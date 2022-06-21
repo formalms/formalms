@@ -202,12 +202,7 @@ header.header {
           .glyphicon {
             position: relative;
             width: 35px;
-            height: 35px;
-            display: none;
-
-            @include breakpoint($ipad) {
-              display: block;
-            }
+            height: 35px;   
 
             &:hover {
               &:before {
@@ -218,8 +213,11 @@ header.header {
             &:before {
               content: '';
               position: absolute;
-              top: -11px;
-              right: -48px;
+              @include breakpoint($ipad) {
+                top: -11px;
+                right: -48px;
+              }
+            
               width: 35px;
               height: 35px;
               display: inline-block;
@@ -240,11 +238,13 @@ header.header {
               &:hover {
                 &:before {
                   background-image: url('#{$assets}images/icons/top-menu/icon--help-desk-hover.svg');
+          
                 }
               }
 
               &:before {
                 background-image: url('#{$assets}images/icons/top-menu/icon--help-desk.svg');
+                top:0;
               }
             }
 
@@ -481,12 +481,21 @@ header.header {
 .top-menu__label {
   font-weight: normal;
   font-family: $font;
+  font-size: 0;
+//  @include breakpoint($ipad) {
+//    display: block;
+//    font-size: 0;
+//  }
 
   @include breakpoint($ipad) {
-    display: block;
-    font-size: 0;
+    top:-13px;
   }
 
+  &:before {
+
+      top: -22px;
+    
+    }
   #cart_element {
     font-size: 10px;
     line-height: 13px;
