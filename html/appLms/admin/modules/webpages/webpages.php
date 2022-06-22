@@ -25,6 +25,7 @@ if (Docebo::user()->isAnonymous()) {
 
 function webpages()
 {
+
     checkPerm('view');
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
@@ -42,9 +43,9 @@ function webpages()
     //search query
     $query_pages = '
 	SELECT idPages, title, publish, in_home, sequence 
-	FROM ' . $GLOBALS['prefix_lms'] . "_webpages 
+	FROM %lms_webpages 
 	ORDER BY sequence 
-	LIMIT $ini," . Forma\lib\Get::sett('visuItem');
+	LIMIT ' . $ini .',' . Forma\lib\Get::sett('visuItem');
 
     $num_query_pages = '
 	SELECT COUNT(*) 
@@ -142,6 +143,8 @@ function webpages()
 
 function editpages($load = false)
 {
+
+  
     checkPerm('mod');
     require_once _base_ . '/lib/lib.form.php';
 
@@ -155,8 +158,8 @@ function editpages($load = false)
     if ($load) {
         $query_page = '
 		SELECT title, description, language, publish, in_home
-		FROM ' . $GLOBALS['prefix_lms'] . "_webpages 
-		WHERE idPages = '" . $id_page . "'";
+		FROM %lms_webpages 
+		WHERE idPages = "' . $id_page . '"';
         list($title, $description, $language, $publish, $in_home) = sql_fetch_row(sql_query($query_page));
     } else {
         $title = $lang->def('_NOTITLE');
@@ -174,11 +177,13 @@ function editpages($load = false)
         . '<div class="std_block">'
         . getBackUi('index.php?modname=webpages&amp;op=webpages', $lang->def('_BACK'))
         . Form::openForm('nav_webpages', 'index.php?modname=webpages&amp;op=savepages')
+        . Form::getHidden('of_platform', 'of_platform', 'lms')
         . Form::openElementSpace()
     );
     if ($load) {
         $out->add(Form::getHidden('load', 'load', 1)
                 . Form::getHidden('id_page', 'id_page', $id_page));
+             
     }
     $out->add(
         Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title)
@@ -201,7 +206,7 @@ function editpages($load = false)
 function savepages()
 {
     checkPerm('mod');
-
+ 
     $lang = &DoceboLanguage::createInstance('admin_webpages', 'lms');
     $all_languages = Docebo::langManager()->getAllLangCode();
 
@@ -212,35 +217,37 @@ function savepages()
     }
     $lang_sel = $_POST['language'];
     if (isset($_POST['in_home'])) {
-        if (!sql_query('UPDATE ' . $GLOBALS['prefix_lms'] . "_webpages SET in_home = 0 
+        if (!sql_query('UPDATE %lms_webpages SET in_home = 0 
 			WHERE in_home = 1 
-				AND language = '" . $all_languages[$lang_sel] . "'")) {
+				AND language = "' . $all_languages[$lang_sel] . '"')) {
             unset($_POST['in_home']);
         }
     }
+
+
     if (isset($_POST['load'])) {
         $query_insert = '
-		UPDATE ' . $GLOBALS['prefix_lms'] . "_webpages
-		SET title = '" . $_POST['title'] . "',
-			description = '" . $_POST['description'] . "',
-			language = '" . $all_languages[$lang_sel] . "',
-			in_home = '" . (isset($_POST['in_home']) ? 1 : 0) . "',
-			publish = '" . (isset($_POST['publish']) ? 1 : 0) . "'
-		WHERE idPages = '" . $id_page . "'";
+		UPDATE %lms_webpages
+		SET title = "' . $_POST['title'] . '",
+			description = "' . $_POST['description'] . '",
+			language = "' . $all_languages[$lang_sel] . '",
+			in_home = "' . (isset($_POST['in_home']) ? 1 : 0) . '",
+			publish = "' . (isset($_POST['publish']) ? 1 : 0) . '"
+		WHERE idPages = "' . $id_page . '"';
     } else {
         list($seq) = sql_fetch_row(sql_query('
 		SELECT MAX(sequence) + 1
 		FROM %lms_webpages'));
 
         $query_insert = '
-		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_webpages
+		INSERT INTO %lms_webpages
 		( title, description, language, in_home, publish, sequence ) VALUES 
-		( 	'" . $_POST['title'] . "',
-			'" . $_POST['description'] . "',
-			'" . $all_languages[$lang_sel] . "',
-			'" . (isset($_POST['in_home']) ? 1 : 0) . "',
-			'" . (isset($_POST['publish']) ? 1 : 0) . "',
-			'" . $seq . "')";
+		( 	"' . $_POST['title'] . '",
+			"' . $_POST['description'] . '",
+			"' . $all_languages[$lang_sel] . '",
+			"' . (isset($_POST['in_home']) ? 1 : 0) . '",
+			"' . (isset($_POST['publish']) ? 1 : 0) . '",
+			"' . $seq . '")';
     }
     if (!sql_query($query_insert)) {
         Util::jump_to('index.php?modname=webpages&op=webpages&result=err');
@@ -286,6 +293,7 @@ function delpages()
             getTitleArea($page_title, 'admin_webpages')
             . '<div class="std_block">'
             . $form->openForm('del_pages', 'index.php?modname=webpages&amp;op=delpages')
+            . $form->getHidden('of_platform', 'of_platform', 'lms')
             . $form->getHidden('id_page', 'id_page', $id_page)
             . getDeleteUi($lang->def('_AREYOUSURE'),
                             '<span>' . $lang->def('_TITLE') . ' : </span>' . $title,
@@ -357,39 +365,42 @@ function movepages($direction)
 
 function webpagesDispatch($op)
 {
+
+
     if (isset($_POST['undo'])) {
         $op = 'webpages';
     }
     switch ($op) {
         case 'webpages':
             webpages();
-        ; break;
+         break;
         case 'addpages':
             editpages();
-        ; break;
+         break;
         case 'savepages':
+          
             savepages();
-        ; break;
+         break;
 
         case 'publish':
             publish($_GET['id_page'], true);
-        ; break;
+         break;
         case 'unpublish':
             publish($_GET['id_page'], false);
-        ; break;
+         break;
 
         case 'movedown':
             movepages('down');
-        ; break;
+         break;
         case 'moveup':
             movepages('up');
-        ; break;
+         break;
 
         case 'modpages':
             editpages(true);
-        ; break;
+         break;
         case 'delpages':
             delpages();
-        ; break;
+         break;
     }
 }
