@@ -27,9 +27,9 @@
 				<?php
                 // the tab are open in the content filder, now i can put my contents here easily
                 $columns = [
-                    ['key' => 'title', 'label' => Lang::t('_NAME', 'standard'), 'sortable' => true],
-                    ['key' => 'publish_date', 'label' => Lang::t('_DATE', 'standard'), 'sortable' => true],
-                    ['key' => 'description', 'label' => Lang::t('_TEXTOF')],
+                    ['key' => 'title', 'label' => Lang::t('_TITLE', 'communication'), 'sortable' => true],
+                    ['key' => 'courseName', 'label' =>  Lang::t('_COURSE', 'course'), 'sortable' => true],
+                    ['key' => 'categoryTitle', 'label' => Lang::t('_CATEGORY', 'communication'), 'sortable' => true],
                     ['key' => 'play', 'label' => Lang::t('_PLAY', 'standard')],
                 ];
 
@@ -42,7 +42,7 @@
                     'sort' => 'title',
                     'dir' => 'asc',
                     'columns' => $columns,
-                    'fields' => ['id_comm', 'title', 'publish_date', 'description', 'play'],
+                    'fields' => ['id_comm', 'title', 'courseName', 'categoryTitle', 'play'],
                     'events' => [
                         'postRenderEvent' => 'function() { lb.init(); }',
                     ],
