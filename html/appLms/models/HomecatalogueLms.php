@@ -136,10 +136,10 @@ class HomecatalogueLms extends Model
         $query = 'SELECT *'
                     . ' FROM %lms_course'
                     . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
-                    . " AND course_type <> 'assessment'"
+                    . ' AND course_type <> "assessment"'
                     . ' AND ('
-                    . " date_end = '0000-00-00'"
-                    . " OR date_end > '" . date('Y-m-d') . "'"
+                    . ' date_end = "0000-00-00"'
+                    . ' OR date_end > "' . date('Y-m-d') . '"'
                     . ' )'
                     . $filter
                     . ($id_cat > 0 ? ' AND idCategory = ' . (int) $id_cat : '')
@@ -149,7 +149,11 @@ class HomecatalogueLms extends Model
         //  die($query);
 
         $result = sql_query($query);
-
+     
+      // while ($row = sql_fetch_assoc($result)) {
+      //     $rows[] = $row;
+      // }
+      //
         //return
         return $result;
     }

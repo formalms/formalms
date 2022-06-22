@@ -135,7 +135,7 @@ if ($req) {
 $GLOBALS['page']->add(ob_get_contents(), 'debug');
 ob_clean();
 
-if (in_array($requestedRoute, $templatesToRender, true)) {
+if (array_key_exists($requestedRoute, $templatesToRender)) {
     $render = $templatesToRender[$requestedRoute];
 } else {
     $render = 'home';

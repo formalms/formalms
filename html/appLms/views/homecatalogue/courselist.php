@@ -73,8 +73,8 @@ function TruncateText($the_text, $size)
                     . $login_link
                     . '</div>';
             }
-
-            $arr_cat = $smodel->getMinorCategoryTree((int) $row['idCategory']);
+          // if((int)$row['idCategory'] > 0)
+          // $arr_cat = $smodel->getMinorCategoryTree((int) $row['idCategory']);
 
             if ($row['course_type'] == 'elearning') {
                 $img_type_ico = "<span class='elearning'><i class='fa fa-graduation-cap'></i>" . Lang::t('_LEARNING_COURSE', 'cart') . '</span>';
