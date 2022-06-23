@@ -99,7 +99,7 @@ if ($req) {
     $eventData = Events::trigger('lms.index.loading', ['allowedControllers' => $allowedControllers, 'templatesToRender' => $templatesToRender]);
 
     $allowedControllers = $eventData['allowedControllers'];
-
+    $templatesToRender = $eventData['templatesToRender'];
     if (!in_array($requestedRoute, $allowedControllers, true)) {
         // reload
         Util::jump_to(Forma\lib\Get::rel_path('base'));
