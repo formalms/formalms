@@ -338,7 +338,6 @@ class LocationAlmsController extends AlmsController
     public function insertclassroom()
     {
         $id_location = Get::req('id_location', DOTY_INT, 0);
-        $id_classroom = Get::req('id_classroom', DOTY_INT, 0);
         $name = Get::Req('name', DOTY_STRING, '');
         $description = Get::Req('description', DOTY_MIXED, '');
         $room = Get::Req('room', DOTY_STRING, '');
