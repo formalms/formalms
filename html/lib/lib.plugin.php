@@ -17,17 +17,17 @@ class Plugin
 {
     public static function img($plugin_name)
     {
-        return Forma\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/images';
+        return FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/images';
     }
 
     public static function css($plugin_name, $css_name)
     {
-        Util::get_css(Forma\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/style/' . $css_name, true, true);
+        Util::get_css(FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/style/' . $css_name, true, true);
     }
 
     public static function js($plugin_name, $js_name)
     {
-        Util::get_js(Forma\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/js/' . $js_name, true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/js/' . $js_name, true, true);
     }
 
     public function install()

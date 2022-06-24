@@ -92,14 +92,14 @@ class Learning_Item extends Learning_Object
 
         require_once _base_ . '/lib/lib.upload.php';
 
-        $path_to_file = '/appLms/' . Forma\lib\Get::sett('pathlesson');
+        $path_to_file = '/appLms/' . FormaLms\lib\Get::sett('pathlesson');
 
         list($old_file) = sql_fetch_row(sql_query('
 		SELECT path 
 		FROM ' . $GLOBALS['prefix_lms'] . "_materials_lesson 
 		WHERE idLesson = '" . $id . "'"));
 
-        $size = Forma\lib\Get::file_size(_files_ . $path_to_file . $old_file);
+        $size = FormaLms\lib\Get::file_size(_files_ . $path_to_file . $old_file);
         if ($old_file != '') {
             sl_open_fileoperations();
             if (!sl_unlink($path_to_file . $old_file)) {
@@ -109,7 +109,7 @@ class Learning_Item extends Learning_Object
                 return false;
             }
             sl_close_fileoperations();
-            $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             if (isset($idCourse) && defined('LMS')) {
                 $GLOBALS['course_descriptor']->subFileToUsedSpace(false, $size);
             }
@@ -142,7 +142,7 @@ class Learning_Item extends Learning_Object
 		WHERE idLesson = '" . (int) $id . "'"));
 
         //create the copy filename
-        $path_to_file = '/appLms/' . Forma\lib\Get::sett('pathlesson');
+        $path_to_file = '/appLms/' . FormaLms\lib\Get::sett('pathlesson');
         $savefile = $this->session->get('idCourse') . '_' . mt_rand(0, 100) . '_' . time() . '_'
             . implode('_', array_slice(explode('_', $file), 3));
 

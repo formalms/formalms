@@ -8,7 +8,7 @@ echo $result_message;
 
 echo Form::openForm('precompile_form', 'index.php?r=precompile/set', null, null, 'multipart/form-data');
 
-if (!$fields_checked && Forma\lib\Get::sett('request_mandatory_fields_compilation', 'on') === 'on') {
+if (!$fields_checked && FormaLms\lib\Get::sett('request_mandatory_fields_compilation', 'on') === 'on') {
     foreach ($fieldlist->getUserMandatoryFields(Docebo::user()->getIdSt()) as $id_field => $m_field) {
         echo $fieldlist->playFieldForUser(Docebo::user()->getIdSt(), $id_field, false, true);
     }

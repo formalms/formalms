@@ -25,7 +25,7 @@ function manmenu()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.table.php';
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
@@ -154,7 +154,7 @@ function editmenuvoice($load = false)
         $name = '';
         $image = 'blank.png';
     } else {
-        $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+        $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
         $query_custom = '
 		SELECT name, image 
 		FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main
@@ -191,7 +191,7 @@ function editmenuvoice($load = false)
 function savemenuvoice()
 {
     checkPerm('mod');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $re = true;
     if (isset($_POST['undomenuvoice'])) {
         if (isset($_POST['id_main'])) {
@@ -235,7 +235,7 @@ function delmenuvoice()
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
 
-    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
 
     $query_custom = '
 	SELECT idCustom, name, image 
@@ -246,7 +246,7 @@ function delmenuvoice()
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=manmenu&op=manmenu&id_main=' . $id_main);
     } elseif (isset($_POST['confirm']) || isset($_GET['confirm'])) {
-        $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+        $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
 
         $re = true;
         $re_modules = sql_query('
@@ -297,8 +297,8 @@ function movemenuvoice($direction)
 {
     checkPerm('mod');
 
-    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     list($seq) = sql_fetch_row(sql_query('
 	SELECT sequence 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
@@ -331,8 +331,8 @@ function fixmenuvoice()
 {
     checkPerm('mod');
 
-    $id_custom = Forma\lib\Get::req('id_custom', DOTY_INT, 0);
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $id_custom = FormaLms\lib\Get::req('id_custom', DOTY_INT, 0);
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $query = '
 	SELECT idMain 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
@@ -360,11 +360,11 @@ function manmodule()
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $mod_perm = checkPerm('mod', true);
 
     // Find main voice info
-    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
     $query_custom = '
 	SELECT name 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
@@ -504,15 +504,15 @@ function editmodule($load = false)
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
-    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
+    $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
     $acl_man = &Docebo::user()->getAclManager();
     $perm = [];
 
@@ -609,10 +609,10 @@ function upmodule()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
-    $new_id_main = Forma\lib\Get::req('new_id_main', DOTY_INT, 0);
-    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
+    $new_id_main = FormaLms\lib\Get::req('new_id_main', DOTY_INT, 0);
+    $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $acl_man = &Docebo::user()->getAclManager();
 
@@ -754,11 +754,11 @@ function delmodule()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
-    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
+    $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
 
     $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
     $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
@@ -816,8 +816,8 @@ function movemodule($direction)
 {
     checkPerm('mod');
 
-    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
-    $id_module = Forma\lib\Get::req('id_module', DOTY_INT, 0);
+    $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
 
     list($seq) = sql_fetch_row(sql_query('
 	SELECT sequence 
@@ -851,9 +851,9 @@ function fixmodule()
 {
     checkPerm('mod');
 
-    $id_main = Forma\lib\Get::req('id_main', DOTY_INT, 0);
-    $id_custom = Forma\lib\Get::req('id_custom', DOTY_INT, 0);
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
+    $id_custom = FormaLms\lib\Get::req('id_custom', DOTY_INT, 0);
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $query = '
 	SELECT idModule 
 	FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_under 

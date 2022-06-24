@@ -25,7 +25,7 @@ class PluginmanagerAdmController extends AdmController
     {
         $plugins = $this->model->getPlugins();
         $feedback = '';
-        switch ($res = Forma\lib\Get::req('result', DOTY_ALPHANUM, '')) {
+        switch ($res = FormaLms\lib\Get::req('result', DOTY_ALPHANUM, '')) {
             case 'ok': $feedback = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
             case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard') . PHP_EOL . Forma::getFormattedErrors(true); break;
             default:
@@ -53,7 +53,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function install()
     {
-        $plugin = Forma\lib\Get::req('plugin');
+        $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->installPlugin($plugin, 0);
         if ($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab=' . $plugin . '&result=ok');
@@ -64,7 +64,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function uninstall()
     {
-        $plugin = Forma\lib\Get::req('plugin');
+        $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->uninstallPlugin($plugin);
         if ($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab=' . $plugin . '&result=ok');
@@ -75,8 +75,8 @@ class PluginmanagerAdmController extends AdmController
 
     public function update()
     {
-        $plugin = Forma\lib\Get::req('plugin');
-        $online = Forma\lib\Get::req('online', DOTY_BOOL, false);
+        $plugin = FormaLms\lib\Get::req('plugin');
+        $online = FormaLms\lib\Get::req('online', DOTY_BOOL, false);
         $res = $this->model->updatePlugin($plugin, $online);
         if ($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab=' . $plugin . '&result=ok');
@@ -87,7 +87,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function activate()
     {
-        $plugin = Forma\lib\Get::req('plugin');
+        $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->setupPlugin($plugin, 1);
         if ($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab=' . $plugin . '&result=ok');
@@ -98,7 +98,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function deactivate()
     {
-        $plugin = Forma\lib\Get::req('plugin');
+        $plugin = FormaLms\lib\Get::req('plugin');
         $res = $this->model->setupPlugin($plugin, 0);
         if ($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab=' . $plugin . '&result=ok');
@@ -109,8 +109,8 @@ class PluginmanagerAdmController extends AdmController
 
     public function set_priority()
     {
-        $plugin = Forma\lib\Get::req('plugin');
-        $priority = Forma\lib\Get::req('priority', DOTY_INT, 0);
+        $plugin = FormaLms\lib\Get::req('plugin');
+        $priority = FormaLms\lib\Get::req('priority', DOTY_INT, 0);
         $res = $this->model->setPriority($plugin, $priority);
         if ($res) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab=' . $plugin . '&result=ok');
@@ -121,7 +121,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function showSettings()
     {
-        $plugin = Forma\lib\Get::req('plugin');
+        $plugin = FormaLms\lib\Get::req('plugin');
         $settingAdm = new SettingAdm();
         $pg_adm = new PluginmanagerAdm();
         $plugin_info = $pg_adm->getPluginFromDB($plugin, 'name');
@@ -145,7 +145,7 @@ class PluginmanagerAdmController extends AdmController
 
     public function purge()
     {
-        $plugin = Forma\lib\Get::req('plugin');
+        $plugin = FormaLms\lib\Get::req('plugin');
         $pg_adm = new PluginmanagerAdm();
         if ($pg_adm->delete_files($plugin)) {
             Util::jump_to('index.php?r=adm/pluginmanager/show&active_tab=' . $plugin . '&result=ok');

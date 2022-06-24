@@ -1,11 +1,11 @@
 <?php
 require_once _lms_ . '/lib/lib.middlearea.php';
 $ma = new Man_MiddleArea();
-// $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
+// $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
 
 $files_dir = str_replace('../', '', $GLOBALS['where_files_relative']);
 
-$path_course = Forma\lib\Get::site_url() . $files_dir . '/appLms/' . Forma\lib\Get::sett('pathcourse');
+$path_course = FormaLms\lib\Get::site_url() . $files_dir . '/appLms/' . FormaLms\lib\Get::sett('pathcourse');
 $smodel = new CatalogLms();
 $html = '';
 
@@ -143,8 +143,8 @@ function TruncateText($the_text, $size)
 //                                                </p>
 //                                             </div>
 //                                            <div class=""image_cat>'
-//                                . ($row['use_logo_in_courselist'] && $row['img_course'] ? '<img class="group list-group-image" src="' . Forma\lib\Get::site_url() . $path_course . $row['img_course'] . '" alt="' . Util::purge($row['name']) . '" />' : '')
-//                                . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="' . Forma\lib\Get::site_url() . '/templates/' . Forma\lib\Get::sett('defaultTemplate') . '/images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" />' : '')
+//                                . ($row['use_logo_in_courselist'] && $row['img_course'] ? '<img class="group list-group-image" src="' . FormaLms\lib\Get::site_url() . $path_course . $row['img_course'] . '" alt="' . Util::purge($row['name']) . '" />' : '')
+//                                . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<img class="group list-group-image" src="' . FormaLms\lib\Get::site_url() . '/templates/' . FormaLms\lib\Get::sett('defaultTemplate') . '/images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" />' : '')
 //                                . '</div>
 //                                        </a>
 //                                    </div>

@@ -55,7 +55,7 @@ if ($maintenance === 'on') {
 
     $maintenancePassword = $db->fetch_row($db->query($query))[0];
 
-    $password = Forma\lib\Get::req('passwd', DOTY_STRING, '');
+    $password = FormaLms\lib\Get::req('passwd', DOTY_STRING, '');
 
     if ($maintenancePassword !== $password) {
         // access maintenence denied - login will not appear
@@ -66,19 +66,19 @@ if ($maintenance === 'on') {
 }
 
 // old SSO-URL backward compatibility
-$sso = Forma\lib\Get::req('login_user', DOTY_MIXED, false) && Forma\lib\Get::req('time', DOTY_MIXED, false) && Forma\lib\Get::req('token', DOTY_MIXED, false);
+$sso = FormaLms\lib\Get::req('login_user', DOTY_MIXED, false) && FormaLms\lib\Get::req('time', DOTY_MIXED, false) && FormaLms\lib\Get::req('token', DOTY_MIXED, false);
 
 // get required action - default: homepage if not logged in, no action if logged in
-$req = Forma\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Docebo::user()->isAnonymous() ? _homepage_ : false)));
+$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Docebo::user()->isAnonymous() ? _homepage_ : false)));
 
 $req = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $req);
 
 $explodedRequest = (array) explode('/', $req);
 if (count($explodedRequest) < 3) {
     if (Docebo::user()->isLoggedIn()) {
-        Util::jump_to(Forma\lib\Get::rel_path('lms'));
+        Util::jump_to(FormaLms\lib\Get::rel_path('lms'));
     }
-    Util::jump_to(Forma\lib\Get::rel_path('base'));
+    Util::jump_to(FormaLms\lib\Get::rel_path('base'));
 }
 
 [$platform, $mvcName, $task] = $explodedRequest;
@@ -102,7 +102,7 @@ if ($req) {
     $templatesToRender = $eventData['templatesToRender'];
     if (!in_array($requestedRoute, $allowedControllers, true)) {
         // reload
-        Util::jump_to(Forma\lib\Get::rel_path('base'));
+        Util::jump_to(FormaLms\lib\Get::rel_path('base'));
     }
 
     // instance page writer

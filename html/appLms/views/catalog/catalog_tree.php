@@ -3,7 +3,7 @@
 
     /* managing setting options */
     $catalogue_todisplay = true;
-    if (Forma\lib\Get::sett('on_catalogue_empty') == 'on') { // show user's catalogue or main catalogue
+    if (FormaLms\lib\Get::sett('on_catalogue_empty') == 'on') { // show user's catalogue or main catalogue
         if (count($user_catalogue) == 0) {
             $starting_catalogue = 0;  // show main catalogue
         } else {
@@ -31,8 +31,8 @@
 
   $catalogue = $model->GetGlobalJsonTree($starting_catalogue);
   $a_node = json_encode($catalogue);
-  cout(Util::get_js(Forma\lib\Get::rel_path('lms') . '/views/catalog/bootstrap-treeview.js', true), 'page_head');
-  cout(Util::get_js(Forma\lib\Get::rel_path('lms') . '/views/catalog/catalog.js', true), 'page_head');
+  cout(Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/views/catalog/bootstrap-treeview.js', true), 'page_head');
+  cout(Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/views/catalog/catalog.js', true), 'page_head');
 
    // are there category ?
    $total_category = count($catalogue);

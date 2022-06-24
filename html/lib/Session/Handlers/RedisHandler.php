@@ -1,8 +1,8 @@
 <?php
 
-namespace Forma\lib\Session\Handlers;
+namespace FormaLms\lib\Session\Handlers;
 
-use Forma\lib\Session\Config;
+use FormaLms\lib\Session\SessionConfig;
 use Nyholm\Dsn\DsnParser;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
 
 class RedisHandler extends RedisSessionHandler
 {
-    public function __construct(Config $config)
+    public function __construct(SessionConfig $config)
     {
         try {
             if (empty($config->getUrl())) {
@@ -22,7 +22,7 @@ class RedisHandler extends RedisSessionHandler
                 }
                 $config->setUrl($url);
             }
-            $connection = RedisAdapter::createConnection($config->getUrl());
+            $connection = RedisAdapter::createConnection($config->getUrl(), $config->getOptions());
         } catch (\Exception $exception) {
             die($exception->getMessage());
         }

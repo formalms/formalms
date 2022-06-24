@@ -24,7 +24,7 @@ class RoomPermissions
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_scs']);
         $this->dbconn = $dbconn;
-        $this->platform = Forma\lib\Get::cur_plat();
+        $this->platform = FormaLms\lib\Get::cur_plat();
         $this->room_id = (int) $room_id;
         $this->module = $module;
     }

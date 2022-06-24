@@ -44,8 +44,8 @@ class ClassroomAlmsController extends AlmsController
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
         $this->acl_man = &Docebo::user()->getAclManager();
-        $this->idCourse = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $this->idDate = Forma\lib\Get::req('id_date', DOTY_INT, 0);
+        $this->idCourse = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $this->idDate = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
 
         $this->model = new ClassroomAlms($this->idCourse, $this->idDate);
 
@@ -77,7 +77,7 @@ class ClassroomAlmsController extends AlmsController
         $course_info = $cmodel->getInfo($this->idCourse);
         $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
-        $result_message = Forma\lib\Get::req('result', DOTY_MIXED, false);
+        $result_message = FormaLms\lib\Get::req('result', DOTY_MIXED, false);
         switch ($result_message) {
             case 'ok_mod':
             case 'ok_ins':
@@ -101,10 +101,10 @@ class ClassroomAlmsController extends AlmsController
     protected function getclassroomedition()
     {
         //Datatable info
-        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
-        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $total_course = $this->model->getCourseEditionNumber();
         $array_edition = $this->model->loadCourseEdition($start_index, $results, $sort, $dir);
@@ -133,7 +133,7 @@ class ClassroomAlmsController extends AlmsController
 
     protected function _getSessionTreeData($index, $default = false)
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if (!$index || !is_string($index)) {
             return false;
         }
@@ -146,7 +146,7 @@ class ClassroomAlmsController extends AlmsController
 
     protected function _setSessionTreeData($index, $value)
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->set('course_category',['filter_status'=>[$index=>$value]]);
         $session->save();
     }
@@ -158,7 +158,7 @@ class ClassroomAlmsController extends AlmsController
         $node_options[] = [
             'id' => 'mod_' . $id_category,
             'command' => 'modify',
-            //'content' => '<img src="'.Forma\lib\Get::tmpl_path().'images/standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />'
+            //'content' => '<img src="'.FormaLms\lib\Get::tmpl_path().'images/standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />'
             'icon' => 'standard/edit.png',
             'alt' => Lang::t('_MOD'),
         ];
@@ -167,7 +167,7 @@ class ClassroomAlmsController extends AlmsController
             $node_options[] = [
                 'id' => 'del_' . $id_category,
                 'command' => 'delete',
-                //'content' => '<img src="'.Forma\lib\Get::tmpl_path().'images/standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'
+                //'content' => '<img src="'.FormaLms\lib\Get::tmpl_path().'images/standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'
                 'icon' => 'standard/delete.png',
                 'alt' => Lang::t('_DEL'),
             ];
@@ -175,7 +175,7 @@ class ClassroomAlmsController extends AlmsController
             $node_options[] = [
                 'id' => 'del_' . $id_category,
                 'command' => false,
-                //'content' => '<img src="'.Forma\lib\Get::tmpl_path().'images/blank.png" />'
+                //'content' => '<img src="'.FormaLms\lib\Get::tmpl_path().'images/blank.png" />'
                 'icon' => 'blank.png',
             ];
         }
@@ -188,11 +188,11 @@ class ClassroomAlmsController extends AlmsController
         require_once _lms_ . '/lib/category/class.categorytree.php';
         $treecat = new Categorytree();
 
-        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
+        $command = FormaLms\lib\Get::req('command', DOTY_ALPHANUM, '');
         switch ($command) {
             case 'expand':
-                    $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
-                    $initial = Forma\lib\Get::req('initial', DOTY_INT, 0);
+                    $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
+                    $initial = FormaLms\lib\Get::req('initial', DOTY_INT, 0);
 
                     $db = DbConn::getInstance();
                     $result = [];
@@ -255,7 +255,7 @@ class ClassroomAlmsController extends AlmsController
                 break;
 
             case 'set_selected_node':
-                    $id_node = Forma\lib\Get::req('node_id', DOTY_INT, -1);
+                    $id_node = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
                     if ($id_node >= 0) {
                         $this->_setSessionTreeData('c_category', $id_node);
                     }
@@ -263,8 +263,8 @@ class ClassroomAlmsController extends AlmsController
                 break;
 
             case 'modify':
-                    $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
-                    $new_name = Forma\lib\Get::req('name', DOTY_STRING, false);
+                    $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
+                    $new_name = FormaLms\lib\Get::req('name', DOTY_STRING, false);
 
                     $result = ['success' => false];
                     if ($new_name !== false) {
@@ -279,8 +279,8 @@ class ClassroomAlmsController extends AlmsController
                 break;
 
             case 'create':
-                    $node_id = Forma\lib\Get::req('node_id', DOTY_INT, false);
-                    $node_name = Forma\lib\Get::req('name', DOTY_STRING, false); //no multilang required for categories
+                    $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, false);
+                    $node_name = FormaLms\lib\Get::req('name', DOTY_STRING, false); //no multilang required for categories
 
                     $result = [];
                     if ($node_id === false) {
@@ -308,15 +308,15 @@ class ClassroomAlmsController extends AlmsController
                 break;
 
             case 'delete':
-                    $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+                    $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
                     $result = ['success' => $treecat->deleteTreeById($node_id)];
                     echo $this->json->encode($result);
 
                 break;
 
             case 'move':
-                    $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
-                    $node_dest = Forma\lib\Get::req('node_dest', DOTY_INT, 0);
+                    $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
+                    $node_dest = FormaLms\lib\Get::req('node_dest', DOTY_INT, 0);
 
                     $result = ['success' => $treecat->move($node_id, $node_dest)];
                     echo $this->json->encode($result);
@@ -324,7 +324,7 @@ class ClassroomAlmsController extends AlmsController
                 break;
 
             case 'options':
-                    $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+                    $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
 
                     //get properties from DB
                     $count = $treecat->getChildrenCount($node_id);
@@ -381,18 +381,18 @@ class ClassroomAlmsController extends AlmsController
             'courseBaseLink' => $this->baseLinkCourse,
             'classroomBaseLink' => $this->baseLinkClassroom,
             'postData' => [
-                'name' => Forma\lib\Get::req('name', DOTY_STRING, $course_info['name']),
-                'code' => Forma\lib\Get::req('code', DOTY_STRING, $course_info['code']),
-                'description' => Forma\lib\Get::req('description', DOTY_STRING, $course_info['description']),
-                'mediumTime' => Forma\lib\Get::req('mediumTime', DOTY_STRING, $course_info['mediumTime']),
-                'maxNumSubscribes' => Forma\lib\Get::req('maxNumSubscribes', DOTY_STRING, ''),
-                'price' => Forma\lib\Get::req('price', DOTY_STRING, ''),
-                'status' => Forma\lib\Get::req('status', DOTY_STRING, ''),
-                'test' => Forma\lib\Get::req('test', DOTY_STRING, ''),
-                'overbooking' => Forma\lib\Get::req('overbooking', DOTY_BOOL, false),
-                'sub_start_date' => Forma\lib\Get::req('sub_start_date', DOTY_STRING, ''),
-                'sub_end_date' => Forma\lib\Get::req('sub_end_date', DOTY_STRING, ''),
-                'unsubscribe_date_limit' => Forma\lib\Get::req('unsubscribe_date_limit', DOTY_STRING, ''),
+                'name' => FormaLms\lib\Get::req('name', DOTY_STRING, $course_info['name']),
+                'code' => FormaLms\lib\Get::req('code', DOTY_STRING, $course_info['code']),
+                'description' => FormaLms\lib\Get::req('description', DOTY_STRING, $course_info['description']),
+                'mediumTime' => FormaLms\lib\Get::req('mediumTime', DOTY_STRING, $course_info['mediumTime']),
+                'maxNumSubscribes' => FormaLms\lib\Get::req('maxNumSubscribes', DOTY_STRING, ''),
+                'price' => FormaLms\lib\Get::req('price', DOTY_STRING, ''),
+                'status' => FormaLms\lib\Get::req('status', DOTY_STRING, ''),
+                'test' => FormaLms\lib\Get::req('test', DOTY_STRING, ''),
+                'overbooking' => FormaLms\lib\Get::req('overbooking', DOTY_BOOL, false),
+                'sub_start_date' => FormaLms\lib\Get::req('sub_start_date', DOTY_STRING, ''),
+                'sub_end_date' => FormaLms\lib\Get::req('sub_end_date', DOTY_STRING, ''),
+                'unsubscribe_date_limit' => FormaLms\lib\Get::req('unsubscribe_date_limit', DOTY_STRING, ''),
             ],
             'customFields' => $customFields,
             'availableStatuses' => $this->model->getStatusForDropdown(),
@@ -441,19 +441,19 @@ class ClassroomAlmsController extends AlmsController
                 'courseBaseLink' => $this->baseLinkCourse,
                 'classroomBaseLink' => $this->baseLinkClassroom,
                 'postData' => [
-                    'name' => Forma\lib\Get::req('name', DOTY_STRING, $dateInfo['name']),
-                    'code' => Forma\lib\Get::req('code', DOTY_STRING, $dateInfo['code']),
-                    'description' => Forma\lib\Get::req('description', DOTY_STRING, $dateInfo['description']),
-                    'mediumTime' => Forma\lib\Get::req('mediumTime', DOTY_STRING, $dateInfo['medium_time']),
-                    'maxNumSubscribes' => Forma\lib\Get::req('maxNumSubscribes', DOTY_STRING, $dateInfo['max_par']),
-                    'price' => Forma\lib\Get::req('price', DOTY_STRING, $dateInfo['price']),
-                    'status' => Forma\lib\Get::req('status', DOTY_STRING, $dateInfo['status']),
-                    'test' => Forma\lib\Get::req('test', DOTY_STRING, $dateInfo['test_type']),
-                    'overbooking' => Forma\lib\Get::req('overbooking', DOTY_BOOL, $dateInfo['overbooking']),
-                    'sub_start_date' => Forma\lib\Get::req('sub_start_date', DOTY_STRING, Format::date($dateInfo['sub_start_date'], 'date')),
-                    'sub_end_date' => Forma\lib\Get::req('sub_end_date', DOTY_STRING, Format::date($dateInfo['sub_end_date'], 'date')),
+                    'name' => FormaLms\lib\Get::req('name', DOTY_STRING, $dateInfo['name']),
+                    'code' => FormaLms\lib\Get::req('code', DOTY_STRING, $dateInfo['code']),
+                    'description' => FormaLms\lib\Get::req('description', DOTY_STRING, $dateInfo['description']),
+                    'mediumTime' => FormaLms\lib\Get::req('mediumTime', DOTY_STRING, $dateInfo['medium_time']),
+                    'maxNumSubscribes' => FormaLms\lib\Get::req('maxNumSubscribes', DOTY_STRING, $dateInfo['max_par']),
+                    'price' => FormaLms\lib\Get::req('price', DOTY_STRING, $dateInfo['price']),
+                    'status' => FormaLms\lib\Get::req('status', DOTY_STRING, $dateInfo['status']),
+                    'test' => FormaLms\lib\Get::req('test', DOTY_STRING, $dateInfo['test_type']),
+                    'overbooking' => FormaLms\lib\Get::req('overbooking', DOTY_BOOL, $dateInfo['overbooking']),
+                    'sub_start_date' => FormaLms\lib\Get::req('sub_start_date', DOTY_STRING, Format::date($dateInfo['sub_start_date'], 'date')),
+                    'sub_end_date' => FormaLms\lib\Get::req('sub_end_date', DOTY_STRING, Format::date($dateInfo['sub_end_date'], 'date')),
                     'dateBegin' => Format::date($dateInfo['date_begin'], 'date'),
-                    'unsubscribe_date_limit' => Forma\lib\Get::req('unsubscribe_date_limit', DOTY_STRING, Format::date($dateInfo['unsubscribe_date_limit'], 'date')),
+                    'unsubscribe_date_limit' => FormaLms\lib\Get::req('unsubscribe_date_limit', DOTY_STRING, Format::date($dateInfo['unsubscribe_date_limit'], 'date')),
                 ],
                 'customFields' => $customFields,
                 'availableStatuses' => $this->model->getStatusForDropdown(),
@@ -464,9 +464,9 @@ class ClassroomAlmsController extends AlmsController
 
     public function classroomDateDays()
     {
-        $postData = Forma\lib\Get::pReq('data', DOTY_MIXED, []);
-        $removedDays = Forma\lib\Get::pReq('removedDays', DOTY_MIXED, []);
-        $sendCalendar = (bool) Forma\lib\Get::pReq('sendCalendar', DOTY_BOOL, false);
+        $postData = FormaLms\lib\Get::pReq('data', DOTY_MIXED, []);
+        $removedDays = FormaLms\lib\Get::pReq('removedDays', DOTY_MIXED, []);
+        $sendCalendar = (bool) FormaLms\lib\Get::pReq('sendCalendar', DOTY_BOOL, false);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->removeDateDay($removedDays);
@@ -537,7 +537,7 @@ class ClassroomAlmsController extends AlmsController
         require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
         $customFields = [];
 
-        if (Forma\lib\Get::cfg('demo_mode')) {
+        if (FormaLms\lib\Get::cfg('demo_mode')) {
             exit('Cannot del course during demo mode.');
         }
         //Course info
@@ -565,7 +565,7 @@ class ClassroomAlmsController extends AlmsController
 
     protected function delcourse()
     {
-        if (Forma\lib\Get::cfg('demo_mode')) {
+        if (FormaLms\lib\Get::cfg('demo_mode')) {
             exit('Cannot del course during demo mode.');
         }
         //Course info
@@ -685,9 +685,9 @@ class ClassroomAlmsController extends AlmsController
 
         $json = new Services_JSON();
 
-        $field = Forma\lib\Get::req('col', DOTY_MIXED, false);
-        $old_value = Forma\lib\Get::req('old_value', DOTY_MIXED, false);
-        $new_value = Forma\lib\Get::req('new_value', DOTY_MIXED, false);
+        $field = FormaLms\lib\Get::req('col', DOTY_MIXED, false);
+        $old_value = FormaLms\lib\Get::req('old_value', DOTY_MIXED, false);
+        $new_value = FormaLms\lib\Get::req('new_value', DOTY_MIXED, false);
 
         switch ($field) {
             case 'name':

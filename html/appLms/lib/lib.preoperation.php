@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-$request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+$request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 
 $session = $request->getSession();
 
@@ -23,7 +23,7 @@ if (Docebo::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($
     $loginRedirect = $_SERVER[REQUEST_URI];
 
     // redirect to index
-    Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?login_redirect=' . $loginRedirect);
+    Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?login_redirect=' . $loginRedirect);
 }
 
 
@@ -37,15 +37,15 @@ $maintenance = $db->fetch_row($db->query($query))[0];
 // handling maintenece
 if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // only god admins can access maintenence - logout the user
-    Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
+    Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
 }
 
 // handling access from multiple sessions
-if (Forma\lib\Get::sett('stop_concurrent_user') == 'on' && $session->has('idCourse')) {
+if (FormaLms\lib\Get::sett('stop_concurrent_user') == 'on' && $session->has('idCourse')) {
     // two user logged at the same time
     if (!TrackUser::checkSession(getLogUserId())) {
         TrackUser::resetUserSession(getLogUserId());
-        Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?r=' . _stopconcurrency_);
+        Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _stopconcurrency_);
     }
 }
 
@@ -80,15 +80,15 @@ if ($session->has('must_renew_pwd') && $session->get('must_renew_pwd') == 1) {
         }
     } else {
         // select default home page
-        $GLOBALS['req'] = Forma\lib\Get::home_page_req();
+        $GLOBALS['req'] = FormaLms\lib\Get::home_page_req();
     }
 }
 
-$next_action = Forma\lib\Get::req('act', DOTY_STRING, false);
-if ($next_action != false && Forma\lib\Get::sett('sco_direct_play', 'off') == 'on') {
-    $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-    $id_item = Forma\lib\Get::req('id_item', DOTY_INT, '');
-    $chapter = Forma\lib\Get::req('chapter', DOTY_MIXED, false);
+$next_action = FormaLms\lib\Get::req('act', DOTY_STRING, false);
+if ($next_action != false && FormaLms\lib\Get::sett('sco_direct_play', 'off') == 'on') {
+    $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+    $id_item = FormaLms\lib\Get::req('id_item', DOTY_INT, '');
+    $chapter = FormaLms\lib\Get::req('chapter', DOTY_MIXED, false);
     if ($id_course) {
         // if we have a id_course setted we will log the user into the course,
         // if no specific action are required we will redirect the user into the first page
@@ -110,7 +110,7 @@ if ($next_action != false && Forma\lib\Get::sett('sco_direct_play', 'off') == 'o
 switch ($GLOBALS['op']) {
     case 'aula':
         require_once _lms_ . '/lib/lib.course.php';
-        $idCourse =Forma\lib\Get::req('idCourse',DOTY_ALPHANUM);
+        $idCourse =FormaLms\lib\Get::req('idCourse',DOTY_ALPHANUM);
         if (!logIntoCourse($idCourse, true)) {
             $session->set('current_main_menu','1');
             $session->set('sel_module_id','1');
@@ -147,7 +147,7 @@ switch ($GLOBALS['op']) {
 
         break;
     case 'selectMain':
-        $idMain =Forma\lib\Get::req('idMain');
+        $idMain =FormaLms\lib\Get::req('idMain');
         $session->set('current_main_menu',$idMain);
         $session->save();
         $firstPage = firstPage($idMain);
@@ -158,12 +158,12 @@ switch ($GLOBALS['op']) {
         break;
     //change language for register user
     case 'registerconfirm':
-        $language =Forma\lib\Get::pReq('language',DOTY_STRING);
+        $language =FormaLms\lib\Get::pReq('language',DOTY_STRING);
 
         Lang::set($language);
         break;
     case 'registerme':
-        $randomCode = Forma\lib\Get::req('random_code',DOTY_STRING);
+        $randomCode = FormaLms\lib\Get::req('random_code',DOTY_STRING);
         list($language_reg) = sql_fetch_row(sql_query(' SELECT language FROM ' . $GLOBALS['prefix_lms'] . "_user_temp  WHERE random_code = '" . $randomCode . "'"));
         if ($language_reg !== '') {
             Lang::set($language_reg);
@@ -182,7 +182,7 @@ if ($sop) {
     }
     switch ($sop) {
         case 'setcourse':
-            $id_c = Forma\lib\Get::req('sop_idc', DOTY_INT, 0);
+            $id_c = FormaLms\lib\Get::req('sop_idc', DOTY_INT, 0);
 
             if ($session->has('idCourse') && $session->get('idCourse') != $id_c) {
                 TrackUser::closeSessionCourseTrack();
@@ -217,7 +217,7 @@ if ($sop) {
             $session->save();
             break;
         case 'changelang':
-            Lang::set(Forma\lib\Get::req('new_lang', DOTY_MIXED));
+            Lang::set(FormaLms\lib\Get::req('new_lang', DOTY_MIXED));
             $session->set('changed_lang', true);
             $session->save();
             break;

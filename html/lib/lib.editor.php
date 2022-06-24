@@ -27,7 +27,7 @@ function loadHeaderHTMLEditor()
     $res = '';
 
     if (getAccessibilityStatus() === false) {
-        $ht = Forma\lib\Get::sett('hteditor');
+        $ht = FormaLms\lib\Get::sett('hteditor');
     } else {
         $ht = 'accesseditor';
     }
@@ -38,8 +38,8 @@ function loadHeaderHTMLEditor()
     switch ($ht) {
         //using tiny_mce
         /*case 'tinymce':
-            Util::get_js(Forma\lib\Get::rel_path('base').'/addons/tiny_mce/tinymce.min.js', true, true);
-            Util::get_js(Forma\lib\Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true);
+            Util::get_js(FormaLms\lib\Get::rel_path('base').'/addons/tiny_mce/tinymce.min.js', true, true);
+            Util::get_js(FormaLms\lib\Get::rel_path('base').'/addons/tiny_mce/forma.js', true, true);
         break;*/
 
         case 'yui':
@@ -86,7 +86,7 @@ function loadHtmlEditor($id_form, $id, $name, $value, $css_text, $extra_param_fo
     }
 
     if (getAccessibilityStatus() === false) {
-        $ht = Forma\lib\Get::sett('hteditor');
+        $ht = FormaLms\lib\Get::sett('hteditor');
     } else {
         $ht = 'accesseditor';
     }
@@ -144,8 +144,8 @@ function getEditorExtra()
 {
     $res = '';
 
-    if (Forma\lib\Get::accessibilty() === false) {
-        $ht = Forma\lib\Get::sett('hteditor');
+    if (FormaLms\lib\Get::accessibilty() === false) {
+        $ht = FormaLms\lib\Get::sett('hteditor');
     } else {
         $ht = 'accesseditor';
     }

@@ -55,7 +55,7 @@ class TemplatelayoutAdm extends Model
         //extract parameters
         $filter = $this->_getParam($params, 'filter', '');
         $startIndex = $this->_getParam($params, 'startIndex', 0);
-        $results = $this->_getParam($params, 'results', Forma\lib\Get::sett('visuItem'));
+        $results = $this->_getParam($params, 'results', FormaLms\lib\Get::sett('visuItem'));
         $sort = $this->_getParam($params, 'sort', 'name');
         $dir = $this->_getParam($params, 'dir', 'asc');
 

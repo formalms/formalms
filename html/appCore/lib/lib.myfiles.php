@@ -277,7 +277,7 @@ class MyFile
             // save file
             $file_name = $this->saveFile($area, $file_descriptor);
         }
-        $file_size = Forma\lib\Get::file_size(_files_ . $this->getFilePath() . $file_name);
+        $file_size = FormaLms\lib\Get::file_size(_files_ . $this->getFilePath() . $file_name);
         if (!$file_size) {
             $file_size = 0;
         }
@@ -644,7 +644,7 @@ class MyFileSelector
         $this->parse();
 
         /** @todo check if this solution for new session works correctly */
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $tab_man->parseInput($_POST, $session);
         
         $active_tab = $tab_man->getActiveTab();

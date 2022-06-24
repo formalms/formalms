@@ -46,10 +46,10 @@ class DynamicUserFilter
     public function init()
     {
         YuiLib::load('container,menu,button');
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/lib/user_selector/lib.common.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/lib/user_selector/lib.dynamicuserfilter.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/lib/user_selector/lib.common.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/lib/user_selector/lib.dynamicuserfilter.js', true, true);
         if ($this->_use_other_fields) {
-            Util::get_js(Forma\lib\Get::rel_path('adm') . '/lib/user_selector/lib.otherfieldtypes.js', true, true);
+            Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/lib/user_selector/lib.otherfieldtypes.js', true, true);
         }
     }
 
@@ -209,7 +209,7 @@ class DynamicUserFilter
     {
         $output = false;
         $_testvar = '';
-        $f_arr = ($param ? $param : Forma\lib\Get::req($this->id . '_input', DOTY_MIXED, false));
+        $f_arr = ($param ? $param : FormaLms\lib\Get::req($this->id . '_input', DOTY_MIXED, false));
 
         if (!$user_to_check) {
             return $output;
@@ -308,7 +308,7 @@ class DynamicUserFilter
     {
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 
-        $f_arr = ($param ? $param : urldecode(stripslashes(Forma\lib\Get::req($this->id . '_input', DOTY_STRING, false))));
+        $f_arr = ($param ? $param : urldecode(stripslashes(FormaLms\lib\Get::req($this->id . '_input', DOTY_STRING, false))));
 
         $filter = is_string($f_arr) ? $json->decode(stripslashes($f_arr)) : $f_arr;
         $conds = $filter['filters'];
@@ -325,8 +325,8 @@ class DynamicUserFilter
         $a_obj = new DoceboACLManager();
         $fman = new FieldList();
 
-        $user_to_check = Forma\lib\Get::req('user', DOTY_INT, false);
-        $f_arr = ($param ? $param : urldecode(stripslashes(Forma\lib\Get::req($this->id . '_input', DOTY_STRING, false))));
+        $user_to_check = FormaLms\lib\Get::req('user', DOTY_INT, false);
+        $f_arr = ($param ? $param : urldecode(stripslashes(FormaLms\lib\Get::req($this->id . '_input', DOTY_STRING, false))));
 
         $filter = is_string($f_arr) ? $json->decode(stripslashes($f_arr)) : $f_arr;
         $exclusive = $filter['exclusive'];

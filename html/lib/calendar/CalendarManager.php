@@ -30,17 +30,17 @@ class CalendarManager
     {
         $dateManager = new DateManager();
         $dateManager->generateCalendarIdForDate($idDate);
-        $timezoneString = Forma\lib\Get::sett('timezone', 'Europe/Rome');
+        $timezoneString = FormaLms\lib\Get::sett('timezone', 'Europe/Rome');
 
         $classroomModel = new ClassroomAlms($idCourse, $idDate);
 
         $dateInfo = $classroomModel->getDateInfo();
 
         $calendar = new \Eluceo\iCal\Domain\Entity\Calendar();
-        $calendar->setProductIdentifier(Forma\lib\Get::sett('page_title'));
+        $calendar->setProductIdentifier(FormaLms\lib\Get::sett('page_title'));
         $datetimezone = new DateTimeZone($timezoneString);
         $calendar->setCalId($dateInfo['calendarId']);
-        $calendar->setName(sprintf('%s - %s', Forma\lib\Get::sett('page_title'), $dateInfo['name']));
+        $calendar->setName(sprintf('%s - %s', FormaLms\lib\Get::sett('page_title'), $dateInfo['name']));
 
         $date = $classroomModel->getDateInfo();
 
@@ -83,18 +83,18 @@ class CalendarManager
             }
 
             $event->setOrganizer(new \Eluceo\iCal\Domain\ValueObject\Organizer(
-                new \Eluceo\iCal\Domain\ValueObject\EmailAddress(Forma\lib\Get::sett('sender_event')),
-                Forma\lib\Get::sett('use_sender_aclname', '')
+                new \Eluceo\iCal\Domain\ValueObject\EmailAddress(FormaLms\lib\Get::sett('sender_event')),
+                FormaLms\lib\Get::sett('use_sender_aclname', '')
             ));
 
             if (array_key_exists((int) $row['classroom'], $classrooms)) {
                 $classroomString = strip_tags($classrooms[(int) $row['classroom']]);
                 $event->setLocation(
-                    (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: Forma\lib\Get::site_url(), $classroomString))
+                    (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: FormaLms\lib\Get::site_url(), $classroomString))
                 );
             } else {
                 $event->setLocation(
-                    (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: Forma\lib\Get::site_url(), getCurrentDomain($idOrganization) ?: Forma\lib\Get::site_url()))
+                    (new \Eluceo\iCal\Domain\ValueObject\Location(getCurrentDomain($idOrganization) ?: FormaLms\lib\Get::site_url(), getCurrentDomain($idOrganization) ?: FormaLms\lib\Get::site_url()))
                 );
             }
 

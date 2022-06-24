@@ -34,7 +34,7 @@ if (Docebo::user()->isAnonymous()) {
     $string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
     $string = substr($string, strpos($string, '<a'));
 
-    $subst = ['[name]' => $course_name, '[link_register]' => Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_];
+    $subst = ['[name]' => $course_name, '[link_register]' => FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_];
     $value = [
         'next_op' => '',
         'id' => 'course_editions',
@@ -47,7 +47,7 @@ if (Docebo::user()->isAnonymous()) {
     $output = $json->encode($value);
     aout($output);
 } else {
-    $op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
+    $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
     switch ($op) {
         case 'getLang':
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
@@ -245,7 +245,7 @@ if (Docebo::user()->isAnonymous()) {
                 $string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
                 $string = substr($string, strpos($string, '<a'));
 
-                $subst = ['[name]' => $course_name, '[link_register]' => Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_];
+                $subst = ['[name]' => $course_name, '[link_register]' => FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_];
                 $value = [
                     'next_op' => '',
                     'id' => 'course_editions',
@@ -327,7 +327,7 @@ if (Docebo::user()->isAnonymous()) {
                 $string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
                 $string = substr($string, strpos($string, '<a'));
 
-                $subst = ['[name]' => $course_name, '[link_register]' => Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_];
+                $subst = ['[name]' => $course_name, '[link_register]' => FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_];
                 $value = [
                     'next_op' => '',
                     'id' => 'course_editions',
@@ -592,7 +592,7 @@ if (Docebo::user()->isAnonymous()) {
                 'next_op' => '',
                 'id' => 'course_materials',
                 'title' => $lang->def('_DEMO'),
-                'content' => getEmbedPlay('/appLms/' . Forma\lib\Get::sett('pathcourse'), $course_demo, $ext, '450', '450', false, false, '../../' . $GLOBALS['where_files_relative']),
+                'content' => getEmbedPlay('/appLms/' . FormaLms\lib\Get::sett('pathcourse'), $course_demo, $ext, '450', '450', false, false, '../../' . $GLOBALS['where_files_relative']),
             ];
             require_once _base_ . '/lib/lib.json.php';
 

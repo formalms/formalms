@@ -227,8 +227,8 @@ class ImportUser extends DoceboImport_Destination
         }
 
         $userid = strtolower(addslashes($this->_convert_char($row['userid'])));
-        $firstname = (Forma\lib\Get::sett('import_ucfirst', 'off') == 'on' ? ucfirst(strtolower(addslashes($this->_convert_char($row['firstname'])))) : addslashes($this->_convert_char($row['firstname'])));
-        $lastname = (Forma\lib\Get::sett('import_ucfirst', 'off') == 'on' ? ucfirst(strtolower(addslashes($this->_convert_char($row['lastname'])))) : addslashes($this->_convert_char($row['lastname'])));
+        $firstname = (FormaLms\lib\Get::sett('import_ucfirst', 'off') == 'on' ? ucfirst(strtolower(addslashes($this->_convert_char($row['firstname'])))) : addslashes($this->_convert_char($row['firstname'])));
+        $lastname = (FormaLms\lib\Get::sett('import_ucfirst', 'off') == 'on' ? ucfirst(strtolower(addslashes($this->_convert_char($row['lastname'])))) : addslashes($this->_convert_char($row['lastname'])));
         $pass = addslashes($this->_convert_char($row['pass']));
         $email = addslashes($this->_convert_char($row['email']));
 
@@ -293,7 +293,7 @@ class ImportUser extends DoceboImport_Destination
         $force_change = '';
         switch ($this->pwd_force_change_policy) {
             case 'by_setting':
-                $force_change = Forma\lib\Get::sett('pass_change_first_login', 'off') == 'on' ? 1 : 0;
+                $force_change = FormaLms\lib\Get::sett('pass_change_first_login', 'off') == 'on' ? 1 : 0;
                 break;
             case 'true':
                 $force_change = 1;
@@ -577,10 +577,10 @@ class ImportUser extends DoceboImport_Destination
             }
 
             $array_subst = [
-                '[url]' => Forma\lib\Get::site_url(),
+                '[url]' => FormaLms\lib\Get::site_url(),
                 '[userid]' => $userid,
                 '[password]' => $pass,
-                '[dynamic_link]' => getCurrentDomain($this->tree) ?: Forma\lib\Get::site_url(),
+                '[dynamic_link]' => getCurrentDomain($this->tree) ?: FormaLms\lib\Get::site_url(),
             ];
             //send email alert
             if (($this->send_alert && (!$is_an_update || $pass)) || $force_send_alert) {

@@ -43,7 +43,7 @@ function createModule($module_name, $class_name = null)
     }
 
     if (checkIfPlugin($module_name) == 'plugin') {
-        include_once Forma\lib\Get::rel_path('plugins') . '/' . $module_name . '/class/class.' . $module_name . '.php';
+        include_once FormaLms\lib\Get::rel_path('plugins') . '/' . $module_name . '/class/class.' . $module_name . '.php';
         $class_name = 'Module_' . ucfirst($module_name);
     }
 

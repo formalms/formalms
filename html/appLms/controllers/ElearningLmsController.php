@@ -59,7 +59,7 @@ class ElearningLmsController extends LmsController
             _CUS_END => '_T_USER_STATUS_END',
         ];
         $this->levels = CourseLevel::getTranslatedLevels();
-        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
+        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
 
         $upd = new UpdatesLms();
         $this->info = $upd->courseUpdates();
@@ -68,7 +68,7 @@ class ElearningLmsController extends LmsController
     public function fieldsTask()
     {
         $level = Docebo::user()->getUserLevelId();
-        if (Forma\lib\Get::sett('request_mandatory_fields_compilation', 'on') === 'on' && $level !== ADMIN_GROUP_GODADMIN) {
+        if (FormaLms\lib\Get::sett('request_mandatory_fields_compilation', 'on') === 'on' && $level !== ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.field.php';
             $fl = new FieldList();
             $idst_user = Docebo::user()->getIdSt();
@@ -82,7 +82,7 @@ class ElearningLmsController extends LmsController
         $model = new ElearningLms();
 
         // update behavior for on_usercourse_empty: applies only after login
-        if (Forma\lib\Get::sett('on_usercourse_empty') === 'on' && !$this->session->get('logged_in')) {
+        if (FormaLms\lib\Get::sett('on_usercourse_empty') === 'on' && !$this->session->get('logged_in')) {
             $conditions_t = [
                 'cu.iduser = :id_user',
             ];
@@ -104,12 +104,12 @@ class ElearningLmsController extends LmsController
         }
 
         $block_list = [];
-        $tb_label = (Forma\lib\Get::sett('use_course_label', false) == 'off' ? false : true);
+        $tb_label = (FormaLms\lib\Get::sett('use_course_label', false) == 'off' ? false : true);
         if (!$tb_label) {
             $this->session->set('id_common_label',0);
             $this->session->save();
         } else {
-            $id_common_label = Forma\lib\Get::req('id_common_label', DOTY_INT, -1);
+            $id_common_label = FormaLms\lib\Get::req('id_common_label', DOTY_INT, -1);
             $this->session->set('id_common_label',$id_common_label);
             $block_list['labels'] = true;
         }
@@ -127,9 +127,9 @@ class ElearningLmsController extends LmsController
         // - feedback_type: [err|inf] display error feedback or info feedback
         // - feedback_code: translation code of message
         // - feedback_extra: extrainfo concat at end message
-        $feedback_code = Forma\lib\Get::req('feedback_code', DOTY_STRING, '');
-        $feedback_type = Forma\lib\Get::req('feedback_type', DOTY_STRING, '');
-        $feedback_extra = Forma\lib\Get::req('feedback_extra', DOTY_STRING, '');
+        $feedback_code = FormaLms\lib\Get::req('feedback_code', DOTY_STRING, '');
+        $feedback_type = FormaLms\lib\Get::req('feedback_type', DOTY_STRING, '');
+        $feedback_extra = FormaLms\lib\Get::req('feedback_extra', DOTY_STRING, '');
         switch ($feedback_type) {
             case 'err':
                 $msg = Lang::t($feedback_code, 'login') . ' ' . $feedback_extra;
@@ -147,11 +147,11 @@ class ElearningLmsController extends LmsController
         // ELEARNING
         $model = new ElearningLms();
 
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
-        $filter_type = '' . Forma\lib\Get::req('filter_type', DOTY_STRING, '');
-        $filter_cat = Forma\lib\Get::req('filter_cat', DOTY_STRING, '');
-        $filter_year = Forma\lib\Get::req('filter_year', DOTY_STRING, 0);
-        $filter_status = Forma\lib\Get::req('filter_status', DOTY_STRING, '');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_type = '' . FormaLms\lib\Get::req('filter_type', DOTY_STRING, '');
+        $filter_cat = FormaLms\lib\Get::req('filter_cat', DOTY_STRING, '');
+        $filter_year = FormaLms\lib\Get::req('filter_year', DOTY_STRING, 0);
+        $filter_status = FormaLms\lib\Get::req('filter_status', DOTY_STRING, '');
 
         $conditions = [
             'cu.iduser = :id_user',
@@ -255,7 +255,7 @@ class ElearningLmsController extends LmsController
             $ret .= '<div class="label_container">'
                 . '<a class="no_decoration" href="' . $url . '">'
                 . '<span class="label_image_cont">'
-                . '<img class="label_image" src="' . ($label_info['image'] !== '' ? $GLOBALS['where_files_relative'] . '/appLms/label/' . $label_info['image'] : Forma\lib\Get::tmpl_path('base') . 'images/course/label_image.png') . '" />'
+                . '<img class="label_image" src="' . ($label_info['image'] !== '' ? $GLOBALS['where_files_relative'] . '/appLms/label/' . $label_info['image'] : FormaLms\lib\Get::tmpl_path('base') . 'images/course/label_image.png') . '" />'
                 . '</span>'
                 . '<span class="label_info_con">'
                 . '<span class="label_title">' . $label_info['title'] . '</span>'
@@ -297,16 +297,16 @@ class ElearningLmsController extends LmsController
      */
     public function self_unsubscribe()
     {
-        $id_user = Docebo::user()->idst; //Forma\lib\Get::req('id_user', DOTY_INT, Docebo::user()->idst);
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
-        $id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
+        $id_user = Docebo::user()->idst; //FormaLms\lib\Get::req('id_user', DOTY_INT, Docebo::user()->idst);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
+        $id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
 
         $cmodel = new CourseAlms();
         $cinfo = $cmodel->getCourseModDetails($id_course);
 
         //index.php?r=elearning/show
-        $back = Forma\lib\Get::req('back', DOTY_STRING, '');
+        $back = FormaLms\lib\Get::req('back', DOTY_STRING, '');
         if ($back !== '') {
             $parts = explode('/', $back);
             $length = count($parts);

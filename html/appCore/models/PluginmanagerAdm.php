@@ -81,10 +81,10 @@ class PluginmanagerAdm extends Model
     {
         switch ($type_id) {
             case 'plugin_id':
-                $where_id = '  plugin_id = ' . Forma\lib\Get::filter($id, DOTY_INT);
+                $where_id = '  plugin_id = ' . FormaLms\lib\Get::filter($id, DOTY_INT);
                 break;
             case 'name':
-                $where_id = "  name = '" . Forma\lib\Get::filter($id, DOTY_MIXED) . "' ";
+                $where_id = "  name = '" . FormaLms\lib\Get::filter($id, DOTY_MIXED) . "' ";
                 break;
         }
 
@@ -140,7 +140,7 @@ class PluginmanagerAdm extends Model
         if ($dependence) {
             $manifest = $this->readPluginManifest($dependence);
         }
-        $forma_version = Forma\lib\Get::sett('core_version');
+        $forma_version = FormaLms\lib\Get::sett('core_version');
         $check['dependencies'] = [];
         $check['forma_version'] = [];
         if (array_key_exists('forma_version', $manifest)) {
@@ -226,7 +226,7 @@ class PluginmanagerAdm extends Model
 
     public function getActivePlugins()
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if (!isset(self::$plugins_active)) {
             if ($session->has('notuse_plugin') && $session->get('notuse_plugin') === true) {
                 $query = 'SELECT * FROM ' . $this->table . ' WHERE core=1 ORDER BY priority ASC';

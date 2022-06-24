@@ -226,7 +226,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.upload.php';
 
         $path = '/appLms/htmlpages/';
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if ($file['name'] != '') {
             $savefile = $idCourse . '_' . rand(0, 100) . '_' . time() . '_' . $file['name'];
             if (!file_exists(_files_ . $path . $savefile)) {

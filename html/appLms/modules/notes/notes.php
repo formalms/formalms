@@ -20,8 +20,8 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.table.php';
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-        $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0);
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
 
         $ini = $nav_bar->getSelectedElement();
         $ord = importVar('ord');
@@ -52,7 +52,7 @@ if (!Docebo::user()->isAnonymous()) {
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
 	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "' 
 	ORDER BY $order 
-	LIMIT $ini," . Forma\lib\Get::sett('visuItem'));
+	LIMIT $ini," . FormaLms\lib\Get::sett('visuItem'));
 
         list($num_notes) = sql_fetch_row(sql_query('SELECT COUNT(*) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
@@ -61,7 +61,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $img_up = '<img class="valing-middle" src="' . getPathImage() . 'standard/up_arrow.png" alt="' . $lang->def('_UP') . '"/>';
         $img_down = '<img class="valing-middle" src="' . getPathImage() . 'standard/down_arrow.png" alt="' . $lang->def('_DOWN') . '"/>';
-        $tb = new Table(Forma\lib\Get::sett('visuItem'),
+        $tb = new Table(FormaLms\lib\Get::sett('visuItem'),
                         $lang->def('_NOTES'),
                         $lang->def('_NOTES'));
 
@@ -136,7 +136,7 @@ if (!Docebo::user()->isAnonymous()) {
     function displaynotes()
     {
         checkPerm('view');
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         require_once _base_ . '/lib/lib.table.php';
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
 
@@ -198,7 +198,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view');
 
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?modname=notes&op=notes');
         }
@@ -223,7 +223,7 @@ if (!Docebo::user()->isAnonymous()) {
     function modnotes()
     {
         checkPerm('view');
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         list($title, $textof) = sql_fetch_row(sql_query('
 	SELECT title, textof 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
@@ -287,7 +287,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view');
         $lang = &DoceboLanguage::createInstance('notes', 'lms');
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (isset($_GET['confirm'])) {
             $query = '
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_notes

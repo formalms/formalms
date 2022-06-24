@@ -56,7 +56,7 @@ class PrivacypolicyAdmController extends AdmController
     public function show()
     {
         Yuilib::load('tabview,selector');
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
         $this->render('show', [
             'permissions' => $this->permissions,
@@ -70,12 +70,12 @@ class PrivacypolicyAdmController extends AdmController
      */
     public function gettabledataTask()
     {
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem'));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter = FormaLms\lib\Get::req('filter', DOTY_STRING, '');
 
         //get total from database and validate the results count
         $total = $this->model->getPoliciesTotal($filter);
@@ -105,7 +105,7 @@ class PrivacypolicyAdmController extends AdmController
                     'name' => highlightText($record->name, $filter),
                     'is_assigned' => $record->is_assigned,
                     //'mod' => 'ajax.adm_server.php?r=adm/privacypolicy/mod&id='.(int)$record->id_policy,
-                    'mod' => '<a href="index.php?r=adm/privacypolicy/mod&id=' . (int) $record->id_policy . '">' . Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'standard')) . '</a>',
+                    'mod' => '<a href="index.php?r=adm/privacypolicy/mod&id=' . (int) $record->id_policy . '">' . FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'standard')) . '</a>',
                     'del' => 'ajax.adm_server.php?r=adm/privacypolicy/del&id=' . (int) $record->id_policy,
                 ];
             }
@@ -141,7 +141,7 @@ class PrivacypolicyAdmController extends AdmController
             return;
         }
 
-        $id_policy = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_policy = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         $output['success'] = ($id_policy > 0 ? $this->model->deletePolicy($id_policy) : false);
         echo $this->json->encode($output);
     }
@@ -184,8 +184,8 @@ class PrivacypolicyAdmController extends AdmController
         }
 
         $output = [];
-        $name = Forma\lib\Get::req('name', DOTY_STRING, '');
-        $translations = Forma\lib\Get::req('translation', DOTY_MIXED, false);
+        $name = FormaLms\lib\Get::req('name', DOTY_STRING, '');
+        $translations = FormaLms\lib\Get::req('translation', DOTY_MIXED, false);
 
         $res = $this->model->createPolicy($name, $translations);
         $output = ['success' => $res ? true : false];
@@ -210,7 +210,7 @@ class PrivacypolicyAdmController extends AdmController
             return;
         }
 
-        $id_policy = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_policy = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_policy <= 0) {
             $output = [
                 'success' => false,
@@ -256,13 +256,13 @@ class PrivacypolicyAdmController extends AdmController
         }
 
         $output = [];
-        $id_policy = Forma\lib\Get::req('id_policy', DOTY_INT, -1);
-        $name = Forma\lib\Get::req('name', DOTY_STRING, '');
-        $is_default = Forma\lib\Get::req('is_default', DOTY_INT, 0);
-        $reset_policy = Forma\lib\Get::req('reset_policy', DOTY_INT, 0);
-        $translations = Forma\lib\Get::req('translation', DOTY_MIXED, false);
+        $id_policy = FormaLms\lib\Get::req('id_policy', DOTY_INT, -1);
+        $name = FormaLms\lib\Get::req('name', DOTY_STRING, '');
+        $is_default = FormaLms\lib\Get::req('is_default', DOTY_INT, 0);
+        $reset_policy = FormaLms\lib\Get::req('reset_policy', DOTY_INT, 0);
+        $translations = FormaLms\lib\Get::req('translation', DOTY_MIXED, false);
 
-//        var_dump(Forma\lib\Get::req('translation', DOTY_MIXED, FALSE));
+//        var_dump(FormaLms\lib\Get::req('translation', DOTY_MIXED, FALSE));
         //  die();
 
         $res = $this->model->updatePolicy($id_policy, $name, $is_default, $reset_policy, $translations);
@@ -275,7 +275,7 @@ class PrivacypolicyAdmController extends AdmController
 
     public function assignTask()
     {
-        $id_policy = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $id_policy = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($id_policy <= 0) {
             //...
         }
@@ -304,9 +304,9 @@ class PrivacypolicyAdmController extends AdmController
 
     public function assign_actionTask()
     {
-        $id_policy = Forma\lib\Get::req('id_policy', DOTY_INT, 0);
-        $selection = Forma\lib\Get::req('selection', DOTY_STRING, '');
-        $old_selection = Forma\lib\Get::req('old_selection', DOTY_STRING, '');
+        $id_policy = FormaLms\lib\Get::req('id_policy', DOTY_INT, 0);
+        $selection = FormaLms\lib\Get::req('selection', DOTY_STRING, '');
+        $old_selection = FormaLms\lib\Get::req('old_selection', DOTY_STRING, '');
 
         $output = [];
 

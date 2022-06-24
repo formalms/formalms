@@ -1,6 +1,6 @@
 <h2><?php echo Lang::t('_UPGRADING'); ?></h2>
 
-<?php $session = \Forma\lib\Session\SessionManager::getInstance()->getSession(); ?>
+<?php $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession(); ?>
 
 <script type="text/javascript">
 	var max_upg_step =<?php echo count($session->get('to_upgrade_arr')); ?>;

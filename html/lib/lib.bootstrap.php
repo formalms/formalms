@@ -321,7 +321,7 @@ class Boot
         self::log('Connect to database.');
         DbConn::getInstance();
         if (!DbConn::$connected && file_exists(_base_ . '/install')) {
-            header('Location: ' . Forma\lib\Get::rel_path('base') . '/install/');
+            header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
         }
     }
 
@@ -333,9 +333,9 @@ class Boot
     private static function loadSetting()
     {
         self::log(' Load settings from database.');
-        Util::load_setting(Forma\lib\Get::cfg('prefix_fw') . '_setting', 'framework');
+        Util::load_setting(FormaLms\lib\Get::cfg('prefix_fw') . '_setting', 'framework');
 
-        if (Forma\lib\Get::sett('do_debug') === 'on') {
+        if (FormaLms\lib\Get::sett('do_debug') === 'on') {
             @error_reporting(E_ALL);
         }
     }
@@ -343,22 +343,22 @@ class Boot
 
     private static function request()
     {
-        $request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
             require __DIR__ . '/../config.php';
             $config = $cfg && isset($cfg['session']) ? $cfg['session'] : [];
-            Forma\lib\Session\SessionManager::getInstance()->initSession($config);
+            FormaLms\lib\Session\SessionManager::getInstance()->initSession($config);
 
-            $session = Forma\lib\Session\SessionManager::getInstance()->getSession();
+            $session = FormaLms\lib\Session\SessionManager::getInstance()->getSession();
             self::log(" Start session '" . $session->getName() . "'");
             $request->setSession($session);
         }
 
 
-        if (Forma\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
+        if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $session->invalidate();
             $session->save();
-            \Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?msg=103');
+            \Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?msg=103');
         }
     }
 
@@ -374,21 +374,21 @@ class Boot
     private static function user()
     {
         require_once _base_ . '/lib/lib.user.php';
-        $session = Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         self::log("Load user from session '" . $session->getName() . "'");
 
         // load current user from session
 
         // ip coerency check
         self::log('Ip coerency check.');
-        if (Forma\lib\Get::sett('session_ip_control', 'on') == 'on') {
+        if (FormaLms\lib\Get::sett('session_ip_control', 'on') == 'on') {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
             if (Docebo::user()->isLoggedIn() && (Docebo::user()->getLogIp() != $ip)) {
-                \Forma\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
-                Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?msg=104');
+                \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
+                Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?msg=104');
                 //Util::fatal("logip: ".Docebo::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
                 //unlog the user
                 exit();
@@ -407,9 +407,9 @@ class Boot
         self::log('Sanitize the input.');
 
         $filter_input = new FilterInput();
-        $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
+        $filter_input->tool = FormaLms\lib\Get::cfg('filter_tool', 'htmlpurifier');
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         // Whitelist some tags if we're a teacher in a course:
         if ($session->has('idCourse') && $session->get('levelCourse') >= 6) {
             $filter_input->appendToWhitelist([
@@ -430,7 +430,7 @@ class Boot
 
         // todo: check if we can do in other way the same thing
         // save login password from modification
-        $ldap_used = Forma\lib\Get::sett('ldap_used');
+        $ldap_used = FormaLms\lib\Get::sett('ldap_used');
         if (($ldap_used === 'on') && isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
             $password_login = $_POST['passIns'];
         }
@@ -444,8 +444,8 @@ class Boot
             $filter_input->sanitize();
         } else {
             $filter_input = new FilterInput();
-            $filter_input->tool = Forma\lib\Get::cfg('filter_tool', 'htmlpurifier');
-            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+            $filter_input->tool = FormaLms\lib\Get::cfg('filter_tool', 'htmlpurifier');
+            $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
             // Whitelist some tags if we're a teacher in a course:
             if ($session->has('idCourse') && $session->get('levelCourse') >= 6) {
                 $filter_input->appendToWhitelist([
@@ -480,13 +480,13 @@ class Boot
         self::log('Loading session language functions');
 
         require_once Forma::inc(_i18n_ . '/lib.lang.php');
-        $sop = Forma\lib\Get::req('sop', DOTY_ALPHANUM, false);
+        $sop = FormaLms\lib\Get::req('sop', DOTY_ALPHANUM, false);
         if (!$sop) {
-            $sop = Forma\lib\Get::req('special', DOTY_ALPHANUM, false);
+            $sop = FormaLms\lib\Get::req('special', DOTY_ALPHANUM, false);
         }
         switch ($sop) {
             case 'changelang':
-                $new_lang = Forma\lib\Get::req('new_lang', DOTY_ALPHANUM, false);
+                $new_lang = FormaLms\lib\Get::req('new_lang', DOTY_ALPHANUM, false);
 
                 self::log("Sop 'changelang' intercepted, changing lang to : $new_lang");
                 Lang::set($new_lang, isset($_GET['logout']));;

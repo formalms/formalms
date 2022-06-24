@@ -118,7 +118,7 @@ class LomanagerLmsController extends LmsController
 
     public function get()
     {
-        $id = Forma\lib\Get::req('id', DOTY_INT, false);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, false);
         $responseData = [];
         $responseData['data'] = $this->getFolders($this->idCourse, $id);
         $responseData['currentState'] = serialize([$this->getCurrentState(0)]);
@@ -136,11 +136,11 @@ class LomanagerLmsController extends LmsController
 
     public function delete()
     {
-        $idsString = Forma\lib\Get::req('ids', DOTY_MIXED, false);
+        $idsString = FormaLms\lib\Get::req('ids', DOTY_MIXED, false);
         $ids = explode(',', $idsString);
 
         $responseData = [];
-        if ($id = Forma\lib\Get::req('id', DOTY_INT, false)) {
+        if ($id = FormaLms\lib\Get::req('id', DOTY_INT, false)) {
             $ids = [$id];
         }
         foreach ($ids as $id) {
@@ -155,17 +155,17 @@ class LomanagerLmsController extends LmsController
 
     public function rename()
     {
-        $id = Forma\lib\Get::req('id', DOTY_INT, false);
-        $newName = Forma\lib\Get::req('newName', DOTY_STRING, false);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, false);
+        $newName = FormaLms\lib\Get::req('newName', DOTY_STRING, false);
         echo $this->json->encode($this->model->renameFolder($id, $newName));
         exit;
     }
 
     public function move()
     {
-        $idsString = Forma\lib\Get::req('ids', DOTY_MIXED, false);
+        $idsString = FormaLms\lib\Get::req('ids', DOTY_MIXED, false);
         $ids = explode(',', $idsString);
-        $newParent = Forma\lib\Get::req('newParent', DOTY_INT, false);
+        $newParent = FormaLms\lib\Get::req('newParent', DOTY_INT, false);
 
         $responseData = [];
 
@@ -180,14 +180,14 @@ class LomanagerLmsController extends LmsController
 
     public function reorder()
     {
-        $newParent = Forma\lib\Get::req('newParent', DOTY_INT, false);
-        $newOrderString = Forma\lib\Get::req('newOrder', DOTY_STRING, false);
+        $newParent = FormaLms\lib\Get::req('newParent', DOTY_INT, false);
+        $newOrderString = FormaLms\lib\Get::req('newOrder', DOTY_STRING, false);
         $newOrder = explode(',', $newOrderString);
         $newOrder = array_filter($newOrder);
 
         $responseData = [];
 
-        if ($id = Forma\lib\Get::req('id', DOTY_INT, false)) {
+        if ($id = FormaLms\lib\Get::req('id', DOTY_INT, false)) {
             $res = $this->model->reorder($id, $newParent, $newOrder ? $newOrder : null);
             $responseData = ['success' => $res, 'id' => $id];
         }
@@ -196,7 +196,7 @@ class LomanagerLmsController extends LmsController
 
     public function edit()
     {
-        $id = Forma\lib\Get::req('id', DOTY_INT, false);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, false);
 
         require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
         $saveObj = new Session_Save();
@@ -210,8 +210,8 @@ class LomanagerLmsController extends LmsController
 
     public function createFolder()
     {
-        $selectedNode = Forma\lib\Get::req('selectedNode', DOTY_INT, false);
-        $folderName = Forma\lib\Get::req('folderName', DOTY_STRING, false);
+        $selectedNode = FormaLms\lib\Get::req('selectedNode', DOTY_INT, false);
+        $folderName = FormaLms\lib\Get::req('folderName', DOTY_STRING, false);
 
         if (!$folderName) {
             header('HTTP/1.1 400');
@@ -225,10 +225,10 @@ class LomanagerLmsController extends LmsController
 
     public function copy()
     {
-        $fromType = Forma\lib\Get::req('type', DOTY_STRING, false);
-        $newtype = Forma\lib\Get::req('newtype', DOTY_STRING, false);
+        $fromType = FormaLms\lib\Get::req('type', DOTY_STRING, false);
+        $newtype = FormaLms\lib\Get::req('newtype', DOTY_STRING, false);
 
-        if ($ids = Forma\lib\Get::req('ids', DOTY_MIXED, false)) {
+        if ($ids = FormaLms\lib\Get::req('ids', DOTY_MIXED, false)) {
             $ids_arr = explode(',', $ids);
             $this->model->setTdb($fromType);
             foreach ($ids_arr as $id) {

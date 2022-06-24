@@ -77,7 +77,7 @@ class OrgDirDb extends RepoDirDb
     public function OrgDirDb($idCourse = false)
     {
         if ($idCourse === false) {
-            $this->idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');;
+            $this->idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');;
         } else {
             $this->idCourse = $idCourse;
         }
@@ -384,7 +384,7 @@ class OrgDirDb extends RepoDirDb
         $this->org_publish_from = null;
         $this->org_publish_to = null;
         $this->org_publish_for = '';
-        $this->org_ignoreScore = (Forma\lib\Get::sett('ignore_score', 'on') == 'on' ? 1 : 0);
+        $this->org_ignoreScore = (FormaLms\lib\Get::sett('ignore_score', 'on') == 'on' ? 1 : 0);
 
         if ($idCourse === false) {
             $this->org_idCourse = $this->idCourse;
@@ -416,7 +416,7 @@ class OrgDirDb extends RepoDirDb
 
         $this->org_prerequisites = '';
         $this->org_isTerminator = 0;
-        $this->org_ignoreScore = (Forma\lib\Get::sett('ignore_score', 'on') == 'on' ? 1 : 0);
+        $this->org_ignoreScore = (FormaLms\lib\Get::sett('ignore_score', 'on') == 'on' ? 1 : 0);
         $this->org_visible = 1;
         if ($idCourse === false) {
             $this->org_idCourse = $this->idCourse;
@@ -466,7 +466,7 @@ class OrgDirDb extends RepoDirDb
         $this->org_objectType = $objectType;
         $this->org_prerequisites = '';
         $this->org_isTerminator = 0;
-        $this->org_ignoreScore = (Forma\lib\Get::sett('ignore_score', 'on') == 'on' ? 1 : 0);
+        $this->org_ignoreScore = (FormaLms\lib\Get::sett('ignore_score', 'on') == 'on' ? 1 : 0);
         $this->org_idResource = $idResource;
         $this->org_visible = 1;
         if ($idCourse === false) {
@@ -1596,7 +1596,7 @@ class Org_TreeView extends RepoTreeView
             $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(
                 $stack[$level]['folder']->otherValues[ORGFIELDPREREQUISITES],
                 getLogUserId());
-            $levelCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
+            $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
             if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                 return false;
             } elseif ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
@@ -1912,7 +1912,7 @@ class Org_TreeView extends RepoTreeView
     /** @deprecated */
     public function getLoData($idLoList)
     {
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';
             $man_date = new DateManager();
@@ -1991,8 +1991,8 @@ class Org_TreeView extends RepoTreeView
 
             $node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
 
-            $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-            $levelCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
+            $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
             if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                 break;
             }
@@ -2094,7 +2094,7 @@ class Org_TreeView extends RepoTreeView
 
             $node['properties'] = $folder->properties;
 
-            $node['img_path'] = Forma\lib\Get::rel_path('files_lms') . '/lo/';
+            $node['img_path'] = FormaLms\lib\Get::rel_path('files_lms') . '/lo/';
 
             if (!$node['is_folder']) {
                 if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
@@ -2124,7 +2124,7 @@ class Org_TreeView extends RepoTreeView
     public function load()
     {
         $isFirst = true;
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         // check if the user attende the course
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';

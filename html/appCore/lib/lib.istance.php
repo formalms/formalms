@@ -32,7 +32,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function &createModule($module_name, $class_name = null)
 {
     $module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!$session->has('current_action_platform')) {
         $session->set('current_action_platform','framework');
         $session->save();
@@ -92,7 +92,7 @@ function &createLmsModule($module_name)
     }
 
     if (checkIfPlugin($module_name) == 'plugin') {
-        include_once Forma\lib\Get::rel_path('plugins') . '/' . $module_name . '/class/class.' . $module_name . '.php';
+        include_once FormaLms\lib\Get::rel_path('plugins') . '/' . $module_name . '/class/class.' . $module_name . '.php';
         $class_name = 'Module_' . ucfirst($module_name);
     }
 

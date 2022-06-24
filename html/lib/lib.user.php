@@ -76,7 +76,7 @@ class DoceboUser implements Serializable
     {
         $this->userid = $userid;
         $this->sprefix = $sprefix;
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         $this->db = DbConn::getInstance();
 
@@ -166,7 +166,7 @@ class DoceboUser implements Serializable
     public function reloadUserCourses(){
 
         $this->userCourses = $this->loadUserCourses();
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->set('user', $this);
         $session->save();
     }
@@ -187,7 +187,7 @@ class DoceboUser implements Serializable
         if (strpos($ip, ',') !== false) {
             $ip = substr($ip, 0, strpos($ip, ','));
         }
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->set($this->sprefix . '_idst', $this->idst);
         $session->set($this->sprefix . '_username', $this->userid);
         $session->set($this->sprefix . '_stlist', $json->encode($this->arrst));
@@ -208,7 +208,7 @@ class DoceboUser implements Serializable
 
     public function getLogIp()
     {
-        return \Forma\lib\Session\SessionManager::getInstance()->getSession()->get($this->sprefix . '_log_ip');
+        return \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get($this->sprefix . '_log_ip');
     }
 
     public function getIdSt()
@@ -265,7 +265,7 @@ class DoceboUser implements Serializable
      */
     public function getAvatar()
     {
-        return Forma\lib\Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Forma\lib\Get::sett('pathphoto') . $this->avatar;
+        return FormaLms\lib\Get::sett('url') . '/' . _folder_files_ . '/appCore/' . FormaLms\lib\Get::sett('pathphoto') . $this->avatar;
     }
 
     /**
@@ -310,7 +310,7 @@ class DoceboUser implements Serializable
      **/
     public static function &createDoceboUserFromSession($prefix = 'base')
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if ($session->has('user_enter_time')) {
             $session->set('user_enter_time', date('Y-m-d H:i:s'));
         }
@@ -332,12 +332,12 @@ class DoceboUser implements Serializable
             return $du;
         } else {
             // rest auth
-            if (Forma\lib\Get::sett('use_rest_api') != 'off') {
+            if (FormaLms\lib\Get::sett('use_rest_api') != 'off') {
                 require_once _base_ . '/api/lib/lib.rest.php';
 
-                if (Forma\lib\Get::sett('rest_auth_method') == _REST_AUTH_TOKEN) {
+                if (FormaLms\lib\Get::sett('rest_auth_method') == _REST_AUTH_TOKEN) {
                     //require_once(_base_.'/lib/lib.utils.php');
-                    $token = Forma\lib\Get::req('auth', DOTY_ALPHANUM, '');
+                    $token = FormaLms\lib\Get::req('auth', DOTY_ALPHANUM, '');
 
                     if ($token) {
                         $id_user = RestAPI::getUserIdByToken($token);
@@ -363,7 +363,7 @@ class DoceboUser implements Serializable
             }
 
             // kerberos and similar auth
-            if (Forma\lib\Get::sett('auth_kerberos') == 'on') {
+            if (FormaLms\lib\Get::sett('auth_kerberos') == 'on') {
                 if (isset($_SERVER['REMOTE_USER'])) {
                     // extract username
                     $username = addslashes(substr($_SERVER['REMOTE_USER'], 0, strpos($_SERVER['REMOTE_USER'], '@')));
@@ -418,24 +418,24 @@ class DoceboUser implements Serializable
             return false;
         }
 
-        if (Forma\lib\Get::sett('ldap_used') == 'on') {
+        if (FormaLms\lib\Get::sett('ldap_used') == 'on') {
             if ($password == '') {
                 $false_public = false;
 
                 return $false_public;
             }
             //connect to ldap server
-            if (!($ldap_conn = @ldap_connect(Forma\lib\Get::sett('ldap_server'), Forma\lib\Get::sett('ldap_port', '389')))) {
+            if (!($ldap_conn = @ldap_connect(FormaLms\lib\Get::sett('ldap_server'), FormaLms\lib\Get::sett('ldap_port', '389')))) {
                 exit('Could not connect to ldap server');
             }
 
             //bind on server
-            $ldap_user = preg_replace('/\$user/', $login, Forma\lib\Get::sett('ldap_user_string'));
+            $ldap_user = preg_replace('/\$user/', $login, FormaLms\lib\Get::sett('ldap_user_string'));
             if (!(@ldap_bind($ldap_conn, $ldap_user, $password))) {
                 ldap_close($ldap_conn);
 
                 // Edited by Claudio Redaelli
-                if (Forma\lib\Get::sett('ldap_alternate_check') == 'on') {
+                if (FormaLms\lib\Get::sett('ldap_alternate_check') == 'on') {
                     if (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
                         return false;
                     }
@@ -450,7 +450,7 @@ class DoceboUser implements Serializable
         } elseif (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
             return false;
         }
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->remove($prefix . '_idst');
         $du = new DoceboUser($login, $prefix);
 
@@ -461,12 +461,12 @@ class DoceboUser implements Serializable
         if ($new_lang != false) {
             $du->preference->setLanguage($new_lang);
         } else {
-            if (!Forma\lib\Get::cfg('demo_mode', false)) {
+            if (!FormaLms\lib\Get::cfg('demo_mode', false)) {
                 Lang::set($du->preference->getLanguage());
             }
         }
 
-        \Forma\lib\Session\SessionManager::getInstance()->getSession()->migrate();
+        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->migrate();
 
 
         return $du;
@@ -500,7 +500,7 @@ class DoceboUser implements Serializable
         resetTemplate();
 
         $GLOBALS['current_user'] = $user;
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         $session->set('last_enter', $user->getLastEnter());
         $session->set('user_enter_mark', time());
@@ -548,7 +548,7 @@ class DoceboUser implements Serializable
     public function isPasswordElapsed()
     {
         //if the password is managed by an external program jump this procedure
-        if (Forma\lib\Get::sett('ldap_used') == 'on') {
+        if (FormaLms\lib\Get::sett('ldap_used') == 'on') {
             return 0;
         }
 
@@ -563,7 +563,7 @@ class DoceboUser implements Serializable
         if (!$user_data[ACL_INFO_PWD_EXPIRE_AT]) {
             return 0;
         }
-        if (Forma\lib\Get::sett('pass_max_time_valid', '0') != '0') {
+        if (FormaLms\lib\Get::sett('pass_max_time_valid', '0') != '0') {
             $pwd_expire = fromDatetimeToTimestamp($user_data[ACL_INFO_PWD_EXPIRE_AT]);
             if (time() > $pwd_expire) {
                 return 1;
@@ -582,7 +582,7 @@ class DoceboUser implements Serializable
     public function saveUserSectionSTInSession($section)
     {
         $sprefix = $this->sprefix;
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if ($session->has($sprefix . '_stlist')) {
             $this->loadUserSectionST($section);
             $this->SaveInSession();
@@ -708,7 +708,7 @@ class DoceboUser implements Serializable
     {
         $user_quota = $this->preference->getPreference('user_rules.user_quota');
         if ($user_quota == USER_QUOTA_INHERIT) {
-            $user_quota = Forma\lib\Get::sett('user_quota');
+            $user_quota = FormaLms\lib\Get::sett('user_quota');
         }
 
         return $user_quota;

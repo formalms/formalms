@@ -21,13 +21,13 @@ if (Docebo::user()->isAnonymous()) {
 require_once _adm_ . '/lib/lib.calendar_core.php';
 require_once _adm_ . '/lib/lib.calevent_core.php';
 
-$op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
-$calClass = Forma\lib\Get::req('calClass', DOTY_MIXED, '');
+$op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
+$calClass = FormaLms\lib\Get::req('calClass', DOTY_MIXED, '');
 
 switch ($op) {
     case 'get':
-        $month = Forma\lib\Get::req('month', DOTY_INT);
-        $year = Forma\lib\Get::req('year', DOTY_INT);
+        $month = FormaLms\lib\Get::req('month', DOTY_INT);
+        $year = FormaLms\lib\Get::req('year', DOTY_INT);
 
         if (!$month and !$year) {
             $today = getdate();
@@ -54,7 +54,7 @@ switch ($op) {
         $cal = new $class();
 
         if ($calClass == 'lms_classroom') {
-            $classroom = Forma\lib\Get::req('classroom');
+            $classroom = FormaLms\lib\Get::req('classroom');
             $eventlist = $cal->getEvents(0, 0, 0, $start_date, $end_date, $classroom);
         } else {
             $eventlist = $cal->getEvents(0, 0, 0, $start_date, $end_date);
@@ -66,8 +66,8 @@ switch ($op) {
     ; break;
 
     case 'set':
-        $index = Forma\lib\Get::req('index');
-        $calEventClass = Forma\lib\Get::req('calEventClass');
+        $index = FormaLms\lib\Get::req('index');
+        $calEventClass = FormaLms\lib\Get::req('calEventClass');
 
         if ($calEventClass != 'core') {
             require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';
@@ -95,8 +95,8 @@ switch ($op) {
     ; break;
 
     case 'del':
-        $id = Forma\lib\Get::req('id', DOTY_INT);
-        $calEventClass = Forma\lib\Get::req('calEventClass');
+        $id = FormaLms\lib\Get::req('id', DOTY_INT);
+        $calEventClass = FormaLms\lib\Get::req('calEventClass');
 
         if ($calEventClass != 'core') {
             require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';
@@ -116,7 +116,7 @@ switch ($op) {
     ; break;
 
     case 'getForm':
-        $calEventClass = Forma\lib\Get::req('calEventClass');
+        $calEventClass = FormaLms\lib\Get::req('calEventClass');
 
         if ($calEventClass != 'core') {
             require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';

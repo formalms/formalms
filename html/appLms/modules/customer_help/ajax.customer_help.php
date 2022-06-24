@@ -30,7 +30,7 @@ function chelpCheckField($val)
     return $res;
 }
 
-$op = Forma\lib\Get::req('op', DOTY_STRING, '');
+$op = FormaLms\lib\Get::req('op', DOTY_STRING, '');
 switch ($op) {
     case 'getdialog':
             $idst = getLogUserId();
@@ -69,9 +69,9 @@ switch ($op) {
         break;
 
     case 'send':
-            $help_email = Forma\lib\Get::sett('customer_help_email', '');
-            $help_pfx = Forma\lib\Get::sett('customer_help_subj_pfx', '');
-            $help_name_from = Forma\lib\Get::sett('customer_help_name_from', false);
+            $help_email = FormaLms\lib\Get::sett('customer_help_email', '');
+            $help_pfx = FormaLms\lib\Get::sett('customer_help_subj_pfx', '');
+            $help_name_from = FormaLms\lib\Get::sett('customer_help_name_from', false);
 
             $subject = (!empty($help_pfx) ? '[' . $help_pfx . '] ' : '');
             $subject .= chelpCheckField($_POST['help_req_subject']);
@@ -83,7 +83,7 @@ switch ($op) {
 
             //$user_email =$user_info[ACL_INFO_EMAIL];
 
-            $email_text = Forma\lib\Get::req('help_req_email', DOTY_STRING, '');
+            $email_text = FormaLms\lib\Get::req('help_req_email', DOTY_STRING, '');
             $user_email = chelpCheckField($email_text);
             $user_name = trim($user_info[ACL_INFO_FIRSTNAME] . ' ' . $user_info[ACL_INFO_LASTNAME]);
             if (empty($user_name)) {
@@ -99,12 +99,12 @@ switch ($op) {
                 $msg .= Lang::t('_COURSE', 'standard') . ': ' . $GLOBALS['course_descriptor']->getValue('name') . $br_char . $br_char;
             }
 
-            $tel = Forma\lib\Get::req('help_req_tel', DOTY_STRING, '');
+            $tel = FormaLms\lib\Get::req('help_req_tel', DOTY_STRING, '');
             $msg .= Lang::t('_PHONE', 'classroom') . ': ' . $tel . $br_char;
 
             $msg .= $br_char . '----------------------------------' . $br_char;
-            //$msg .= chelpCheckField(Forma\lib\Get::req("help_req_txt", DOTY_STRING, ""));
-            $msg .= Forma\lib\Get::req('help_req_text', DOTY_STRING, '');
+            //$msg .= chelpCheckField(FormaLms\lib\Get::req("help_req_txt", DOTY_STRING, ""));
+            $msg .= FormaLms\lib\Get::req('help_req_text', DOTY_STRING, '');
             $msg .= $br_char . '----------------------------------' . $br_char;
 
             /** Getting client info */
@@ -115,8 +115,8 @@ switch ($op) {
             $msg .= 'USER AGENT: ' . $_SERVER['HTTP_USER_AGENT'] . $br_char;
             $msg .= 'OS: ' . $result['platform'] . $br_char;
             $msg .= 'BROWSER: ' . $result['browser'] . ' ' . $result['version'] . $br_char;
-            $msg .= 'RESOLUTION: ' . Forma\lib\Get::req('help_req_resolution', DOTY_STRING, '') . $br_char;
-            $msg .= 'FLASH: ' . Forma\lib\Get::req('help_req_flash_installed', DOTY_STRING, '') . $br_char;
+            $msg .= 'RESOLUTION: ' . FormaLms\lib\Get::req('help_req_resolution', DOTY_STRING, '') . $br_char;
+            $msg .= 'FLASH: ' . FormaLms\lib\Get::req('help_req_flash_installed', DOTY_STRING, '') . $br_char;
 
             $mailer = new FormaMailer();
             $mailer->IsHTML(true);

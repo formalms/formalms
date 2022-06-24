@@ -13,10 +13,10 @@
 
 require_once _base_ . '/lib/lib.json.php';
 
-$startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-$results = Forma\lib\Get::req('results', DOTY_INT, 15);
-$sort = Forma\lib\Get::req('sort', DOTY_STRING, 'id');
-$dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+$startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+$results = FormaLms\lib\Get::req('results', DOTY_INT, 15);
+$sort = FormaLms\lib\Get::req('sort', DOTY_STRING, 'id');
+$dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
 
 $query = 'SELECT idst as id, userid as name, firstname, lastname, email FROM core_user ORDER BY ' . $sort . ' ' . $dir . ' LIMIT ' . $startIndex . ', ' . $results;
 $res = sql_query($query);

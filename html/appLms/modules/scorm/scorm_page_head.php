@@ -14,7 +14,7 @@
 ob_end_clean();
 ob_start();
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 $idCourse = $session->get('idCourse');
 
 if (!Docebo::user()->isLoggedIn() || !$idCourse) {

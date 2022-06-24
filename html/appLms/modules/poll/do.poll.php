@@ -278,7 +278,7 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
 {
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.poll.php';
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $poll_man = new PollManagement($id_poll);
     $report_man = new ReportPollManagement();
 
@@ -291,8 +291,8 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
     $query_question = $report_man->getQuestions($id_poll);
 
     $treeview_value = str_replace('treeview_selected_' . $idCourse, '', array_search($poll_info['title'], $_POST));
-    $editions_filter = Forma\lib\Get::req('poll_editions_filter', DOTY_INT, -1);
-    if (Forma\lib\Get::req('del_filter', DOTY_STRING, '') != '') {
+    $editions_filter = FormaLms\lib\Get::req('poll_editions_filter', DOTY_INT, -1);
+    if (FormaLms\lib\Get::req('del_filter', DOTY_STRING, '') != '') {
         $editions_filter = -1;
     }
 

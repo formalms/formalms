@@ -62,7 +62,7 @@ class JQueryLib
 
         // load css
         $jquery_ui_css = '/addons/' . self::_path . '/core/ui/css/jquery-ui-' . self::_jquery_ui_version . $which_version . '.css';
-        $local_link .= Util::get_css(Forma\lib\Get::rel_path('base') . $jquery_ui_css, true);
+        $local_link .= Util::get_css(FormaLms\lib\Get::rel_path('base') . $jquery_ui_css, true);
 
         return $local_link;
     }
@@ -74,10 +74,10 @@ class JQueryLib
 
         // load css
         $bootstrap_core_css = '/addons/' . self::_path . '/bootstrap/css/bootstrap-' . self::_bootstrap_version . $which_version . '.css';
-        $local_link .= Util::get_css(Forma\lib\Get::rel_path('base') . $bootstrap_core_css, true);
+        $local_link .= Util::get_css(FormaLms\lib\Get::rel_path('base') . $bootstrap_core_css, true);
 
         $bootstrap_core_css = '/addons/' . self::_path . '/bootstrap/css/bootstrap-theme-' . self::_bootstrap_version . $which_version . '.css';
-        $local_link .= Util::get_css(Forma\lib\Get::rel_path('base') . $bootstrap_core_css, true);
+        $local_link .= Util::get_css(FormaLms\lib\Get::rel_path('base') . $bootstrap_core_css, true);
 
         return $local_link;
     }
@@ -119,7 +119,7 @@ class JQueryLib
                 if (count($addon_files) > 0) {
                     foreach ($addon_files as $css_file) {
                         $css_file = $full_path . $css_file;
-                        $local_link .= Util::get_css(Forma\lib\Get::rel_path('base') . $css_file, true);
+                        $local_link .= Util::get_css(FormaLms\lib\Get::rel_path('base') . $css_file, true);
                     }
                 }
             }
@@ -136,7 +136,7 @@ class JQueryLib
         $locale_calender_path = '/addons/' . self::_path . '/datepicker/locales/';
         if (!is_null($_lang)) {
             $local_js = $locale_calender_path . 'bootstrap-datepicker.' . $_lang . '.min.js';
-            $complete_js_path = Forma\lib\Get::rel_path('base') . $local_js;
+            $complete_js_path = FormaLms\lib\Get::rel_path('base') . $local_js;
             if (file_exists($complete_js_path)) {
                 return Util::get_js($local_js);
             }

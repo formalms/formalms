@@ -118,7 +118,7 @@
 
         $("#courses_"+id_path).css("display", "block");
         
-        a = '<a class="no_decoration" href="javascript:;" onclick="collapseCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><?php echo Lang::t('_COLLAPSE', 'coursepath'); ?></span> <?php echo Forma\lib\Get::img('course/close.png', Lang::t('_COLLAPSE', 'coursepath')); ?></a>';
+        a = '<a class="no_decoration" href="javascript:;" onclick="collapseCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><?php echo Lang::t('_COLLAPSE', 'coursepath'); ?></span> <?php echo FormaLms\lib\Get::img('course/close.png', Lang::t('_COLLAPSE', 'coursepath')); ?></a>';
         
         $("#courses_link_" + type + "_" + id_path).html(a)
 
@@ -128,7 +128,7 @@
     function collapseCourses(id_path, type){
         $("#courses_"+id_path).css("display", "none");
         
-        a = '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><?php echo Lang::t('_EXPAND', 'coursepath'); ?></span> <?php echo Forma\lib\Get::img('course/expand.png', Lang::t('_EXPAND', 'coursepath')); ?></a>';
+        a = '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><?php echo Lang::t('_EXPAND', 'coursepath'); ?></span> <?php echo FormaLms\lib\Get::img('course/expand.png', Lang::t('_EXPAND', 'coursepath')); ?></a>';
         
         $("#courses_link_" + type + "_" + id_path).html(a)
         

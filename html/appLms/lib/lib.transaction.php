@@ -156,7 +156,7 @@ class Man_Transaction
         }
 
         $query .= ' ORDER BY `date`'
-                    . ' LIMIT ' . $limit . ', ' . Forma\lib\Get::sett('visuItem');
+                    . ' LIMIT ' . $limit . ', ' . FormaLms\lib\Get::sett('visuItem');
 
         $result = sql_query($query);
         $res = [];

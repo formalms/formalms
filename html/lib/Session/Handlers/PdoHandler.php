@@ -1,15 +1,15 @@
 <?php
 
-namespace Forma\lib\Session\Handlers;
+namespace FormaLms\lib\Session\Handlers;
 
-use Forma\lib\Session\Config;
+use FormaLms\lib\Session\SessionConfig;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\Cache\Adapter\DoctrineDbalAdapter;
 
 
 class PdoHandler extends PdoSessionHandler
 {
-    public function __construct(Config $config){
+    public function __construct(SessionConfig $config){
 
         $options = [];
         if($config->getPrefix()) {
@@ -18,6 +18,8 @@ class PdoHandler extends PdoSessionHandler
         if($config->getLifetime()) {
             $options['db_lifetime_col'] = $config->getLifetime();
         }
+
+        $options = array_merge($options,$config->getOptions());
         
         try {
             if (empty($config->getUrl())) {

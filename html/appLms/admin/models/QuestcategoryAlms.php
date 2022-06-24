@@ -40,7 +40,7 @@ class QuestcategoryAlms extends Model
             $pagination = [];
         }
         $_startIndex = (isset($pagination['startIndex']) ? (int) $pagination['startIndex'] : 0);
-        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
         $_sort = 'name';
         $_dir = 'ASC';
 

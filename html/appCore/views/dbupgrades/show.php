@@ -65,9 +65,9 @@ YAHOO.util.Event.onDOMReady(function(e) {
 $params = [
     'id' => 'logtable',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/getdbupgradestabledata',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'execution_date',
     'dir' => 'desc',
     'columns' => [

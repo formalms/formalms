@@ -27,11 +27,11 @@ require _base_ . '/config.php';
 const _installer_ = _base_ . '/install';
 const _upgrader_ = _base_ . '/upgrade';
 
-$request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+$request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 if (!$request->hasSession()) {
     $config = $cfg && isset($cfg['session']) ? $cfg['session'] : [];
-    Forma\lib\Session\SessionManager::getInstance()->initSession($config);
-    $session = Forma\lib\Session\SessionManager::getInstance()->getSession();
+    FormaLms\lib\Session\SessionManager::getInstance()->initSession($config);
+    $session = FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $request->setSession($session);
 }
 

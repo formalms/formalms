@@ -25,7 +25,7 @@ class PresenceLmsController extends LmsController
 
     public function init()
     {
-        $this->id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
+        $this->id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
         $this->model = new PresenceLms($this->session->get('idCourse'), $this->id_date);
         $this->json = new Services_JSON();
         $this->permissions = [

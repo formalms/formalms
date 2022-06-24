@@ -33,7 +33,7 @@ class Auth_API extends API
     final protected function getAuthenticationMethod()
     {
         $result = '';
-        switch (Forma\lib\Get::sett('rest_auth_method')) {
+        switch (FormaLms\lib\Get::sett('rest_auth_method')) {
             case _AUTH_UCODE:  $result = _AUTH_UCODE_DESC; break;
             case _AUTH_TOKEN:  $result = _AUTH_TOKEN_DESC; break;
             case _AUTH_SECRET_KEY:  $result = _AUTH_SECRET_KEY_DESC; break;
@@ -72,7 +72,7 @@ class Auth_API extends API
                 $level = $this->aclManager->getUserLevelId($row->idst);
                 $token = md5(uniqid(rand(), true) + $username);
 
-                $lifetime = Forma\lib\Get::sett('rest_auth_lifetime', 1);
+                $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
                 $expire = date('Y-m-d H:i:s', $timenow + $lifetime);
 
                 // check if the user is already authenticate
@@ -109,7 +109,7 @@ class Auth_API extends API
 
     public function authenticate($params)
     {
-        $auth_method = Forma\lib\Get::sett('rest_auth_method', 'none');
+        $auth_method = FormaLms\lib\Get::sett('rest_auth_method', 'none');
         if ($auth_method != _REST_AUTH_TOKEN && $auth_method != _REST_AUTH_CODE) {
             return ['success' => false, 'message' => 'Error: Tokens are not used on this installation.'];
         }
@@ -120,9 +120,9 @@ class Auth_API extends API
             $password = $params['password'];
             $third_party = $params['third_party'];
         } else {
-            $username = Forma\lib\Get::req('username', DOTY_STRING, false);
-            $password = Forma\lib\Get::req('password', DOTY_STRING, false);
-            $third_party = Forma\lib\Get::req('third_party', DOTY_STRING, false);
+            $username = FormaLms\lib\Get::req('username', DOTY_STRING, false);
+            $password = FormaLms\lib\Get::req('password', DOTY_STRING, false);
+            $third_party = FormaLms\lib\Get::req('third_party', DOTY_STRING, false);
         }
 
         if ($username == false || $password === false) {

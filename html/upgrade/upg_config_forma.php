@@ -17,8 +17,8 @@ include 'bootstrap.php';
 require '../config.php';
 
 $enabled_step = 3;
-$current_step = Forma\lib\Get::gReq('cur_step', DOTY_INT);
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$current_step = FormaLms\lib\Get::gReq('cur_step', DOTY_INT);
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 // Collapse the upgrade from docebo 3.6xx into this procedure
 
@@ -85,7 +85,7 @@ if ($session->get('upgrade_ok')) {
 $config_saved = false;
 if ($session->get('upgrade_ok')) {
     if ($config_changed) {
-        $dwnl = Forma\lib\Get::req('dwnl', DOTY_ALPHANUM, '0');
+        $dwnl = FormaLms\lib\Get::req('dwnl', DOTY_ALPHANUM, '0');
         if ($dwnl == 1) {
             // download new configuration
             downloadConfig($config);

@@ -90,7 +90,7 @@ class Report extends \ReportPlugin
             //already resolved in switch block
         }
 
-        $step = Forma\lib\Get::req('step', DOTY_ALPHANUM, 'sel_type');
+        $step = FormaLms\lib\Get::req('step', DOTY_ALPHANUM, 'sel_type');
         switch ($step) {
             case 'sel_type':
                 $values = ['users' => $this->lang->def('_USERS'), 'groups' => $this->lang->def('_GROUPS')];
@@ -113,13 +113,13 @@ class Report extends \ReportPlugin
              break;
 
             case 'sel_data':
-                $type = Forma\lib\Get::req('selection_type', DOTY_ALPHANUM, 'users');
+                $type = FormaLms\lib\Get::req('selection_type', DOTY_ALPHANUM, 'users');
 
                 //$aclManager = new DoceboACLManager();
                 $user_select = new UserSelector();
 
-                if (Forma\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
-                    $ref['rows_filter']['select_all'] = (Forma\lib\Get::req('select_all', DOTY_INT, 0) > 0 ? true : false);
+                if (FormaLms\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
+                    $ref['rows_filter']['select_all'] = (FormaLms\lib\Get::req('select_all', DOTY_INT, 0) > 0 ? true : false);
                     $ref['rows_filter']['selection_type'] = $type;
                 //$ref['rows_filter']['selection'] = $user_select->getSelection($_POST);
                 } else { //maybe redoundant
@@ -216,12 +216,12 @@ class Report extends \ReportPlugin
             $selector->parseForState($_POST);
             $temp = $selector->getSelection($_POST);
             $ref->set('selected_courses', $temp);
-            $ref->set('all_courses', Forma\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
+            $ref->set('all_courses', FormaLms\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
             $ref->set('showed_columns' , [
-                'completed' => (Forma\lib\Get::req('cols_completed', DOTY_INT, 0) > 0 ? true : false),
-                'initinere' => (Forma\lib\Get::req('cols_initinere', DOTY_INT, 0) > 0 ? true : false),
-                'notstarted' => (Forma\lib\Get::req('cols_notstarted', DOTY_INT, 0) > 0 ? true : false),
-                'show_percentages' => (Forma\lib\Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false), ]);
+                'completed' => (FormaLms\lib\Get::req('cols_completed', DOTY_INT, 0) > 0 ? true : false),
+                'initinere' => (FormaLms\lib\Get::req('cols_initinere', DOTY_INT, 0) > 0 ? true : false),
+                'notstarted' => (FormaLms\lib\Get::req('cols_notstarted', DOTY_INT, 0) > 0 ? true : false),
+                'show_percentages' => (FormaLms\lib\Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false), ]);
         } else {
             $selector->resetSelection($ref['selected_courses']);
         }
@@ -397,7 +397,7 @@ class Report extends \ReportPlugin
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     //No filter
                 }
 
@@ -1059,7 +1059,7 @@ class Report extends \ReportPlugin
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $user_course = false;
                 }
 
@@ -1398,7 +1398,7 @@ class Report extends \ReportPlugin
         $ref = $reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref->set('years', Forma\lib\Get::req('years', DOTY_INT, 1));
+            $ref->set('years', FormaLms\lib\Get::req('years', DOTY_INT, 1));
             $ref->save();
         } else {
             //...
@@ -1776,10 +1776,10 @@ class Report extends \ReportPlugin
         $ref = $reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref->set('all_communications', Forma\lib\Get::req('all_communications', DOTY_INT, 0) > 0);
-            $ref->set('comm_selection', Forma\lib\Get::req('comm_selection', DOTY_MIXED, []));
-            $ref->set('comm_start_date', Format::dateDb(Forma\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date'));
-            $ref->set('comm_end_date', Format::datedb(Forma\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date'));
+            $ref->set('all_communications', FormaLms\lib\Get::req('all_communications', DOTY_INT, 0) > 0);
+            $ref->set('comm_selection', FormaLms\lib\Get::req('comm_selection', DOTY_MIXED, []));
+            $ref->set('comm_start_date', Format::dateDb(FormaLms\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date'));
+            $ref->set('comm_end_date', Format::datedb(FormaLms\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date'));
             $ref->save();
         } else {
             //...
@@ -2119,10 +2119,10 @@ class Report extends \ReportPlugin
         $ref = $reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref->set('all_games', Forma\lib\Get::req('all_games', DOTY_INT, 0) > 0);
-            $ref->set('comp_selection', Forma\lib\Get::req('comp_selection', DOTY_MIXED, []));
-            $ref->set('comp_start_date', Format::dateDb(Forma\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date'));
-            $ref->set('comp_end_date', Format::datedb(Forma\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date'));
+            $ref->set('all_games', FormaLms\lib\Get::req('all_games', DOTY_INT, 0) > 0);
+            $ref->set('comp_selection', FormaLms\lib\Get::req('comp_selection', DOTY_MIXED, []));
+            $ref->set('comp_start_date', Format::dateDb(FormaLms\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date'));
+            $ref->set('comp_end_date', Format::datedb(FormaLms\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date'));
             $ref->save();
         } else {
             //...

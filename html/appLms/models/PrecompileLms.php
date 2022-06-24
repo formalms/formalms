@@ -29,13 +29,13 @@ class PrecompileLms extends Model
 
     public function compileRequired()
     {
-        // get privacy_policy --> con questo non funziona -->setting Forma\lib\Get::sett('privacy_policy', 'off')
+        // get privacy_policy --> con questo non funziona -->setting FormaLms\lib\Get::sett('privacy_policy', 'off')
         $query = ' SELECT param_value FROM %adm_setting'
         . " WHERE param_name = 'privacy_policy'"
         . ' ORDER BY pack, sequence';
         $privacy_policy = $this->db->fetch_row($this->db->query($query))[0];
 
-        if (Forma\lib\Get::sett('request_mandatory_fields_compilation', 'off') == 'off' && $privacy_policy == 'off') {
+        if (FormaLms\lib\Get::sett('request_mandatory_fields_compilation', 'off') == 'off' && $privacy_policy == 'off') {
             return false;
         }
 
@@ -47,7 +47,7 @@ class PrecompileLms extends Model
         }
 
         $fields_checked = true;
-        if (Forma\lib\Get::sett('request_mandatory_fields_compilation', 'on') == 'on') {
+        if (FormaLms\lib\Get::sett('request_mandatory_fields_compilation', 'on') == 'on') {
             require_once _adm_ . '/lib/lib.field.php';
             $fieldlist = new FieldList();
 
@@ -208,10 +208,10 @@ class PrecompileLms extends Model
         $array_tab['tb_videoconference'] = 'videoconference/show';
         $query = ' SELECT obj_index from %lms_middlearea where is_home=1';
         list($tb_home) = sql_fetch_row(sql_query($query));
-        if (Forma\lib\Get::sett('home_page_option') == 'catalogue') {
+        if (FormaLms\lib\Get::sett('home_page_option') == 'catalogue') {
             $url = 'lms/catalog/show';
         } else {
-            if (Forma\lib\Get::sett('on_usercourse_empty') == 'off') {
+            if (FormaLms\lib\Get::sett('on_usercourse_empty') == 'off') {
                 $url = $array_tab[$tb_home];
             } else {
                 $a = Docebo::user()->getIdSt();

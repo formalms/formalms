@@ -25,7 +25,7 @@ function &cwaSetup()
 {
     $res = new LmsWikiAdmin();
     $res->urlManagerSetup('modname=wiki&op=main');
-    $res->setCourseId(\Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse'));
+    $res->setCourseId(\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse'));
 
     return $res;
 }
@@ -331,9 +331,9 @@ function wikiMap()
         return false;
     }
 
-    $pi = Forma\lib\Get::req('pi', DOTY_MIXED, '');
-    $lang = Forma\lib\Get::req('lang', DOTY_MIXED, '');
-    $page = Forma\lib\Get::req('page', DOTY_MIXED, '');
+    $pi = FormaLms\lib\Get::req('pi', DOTY_MIXED, '');
+    $lang = FormaLms\lib\Get::req('lang', DOTY_MIXED, '');
+    $page = FormaLms\lib\Get::req('page', DOTY_MIXED, '');
     $wiki_id = $_GET['wiki_id'];
 
     if (isset($_POST['del_selected'])) {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Forma\lib\Request;
+namespace FormaLms\lib\Request;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;

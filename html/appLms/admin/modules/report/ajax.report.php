@@ -26,7 +26,7 @@ function _decode(&$data)
     return unserialize($data);
 } //{ return Util::unserialize(urldecode($data)); }
 
-$rep_cat = Forma\lib\Get::req('rep_cat', DOTY_ALPHANUM, false);
+$rep_cat = FormaLms\lib\Get::req('rep_cat', DOTY_ALPHANUM, false);
 
 switch ($rep_cat) {
     case 'competences':
@@ -34,7 +34,7 @@ switch ($rep_cat) {
      break;
 
     default:
-$op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
+$op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {
     case 'save_filter_window':
         require_once _base_ . '/lib/lib.form.php';
@@ -66,7 +66,7 @@ switch ($op) {
             'body' => '',
         ];
 
-        $id_sched = Forma\lib\Get::req('idsched', DOTY_INT, false);
+        $id_sched = FormaLms\lib\Get::req('idsched', DOTY_INT, false);
 
         if ($id_sched > 0) {
             $tables = [];
@@ -149,12 +149,12 @@ switch ($op) {
 
     case 'save_filter':
         $output = [];
-        $filter_data = Forma\lib\Get::req('filter_data', DOTY_ALPHANUM, ''); //warning: check urlencode-serialize etc.
+        $filter_data = FormaLms\lib\Get::req('filter_data', DOTY_ALPHANUM, ''); //warning: check urlencode-serialize etc.
         $data = urldecode($filter_data); //put serialized data in DB
 
-        $name = Forma\lib\Get::req('filter_name', DOTY_ALPHANUM, '');
+        $name = FormaLms\lib\Get::req('filter_name', DOTY_ALPHANUM, '');
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $report = $session->get('report');
         $query = 'INSERT INTO %lms_report_filter ' .
             '(id_report, author, creation_date, filter_data, filter_name) VALUES ' .
@@ -166,7 +166,7 @@ switch ($op) {
         } else {
             //if query is ok, I got the inserted ID and I put in session, telling the system I'm using it
             $row = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
-            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+            $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
             $session->set('report_saved',$row[0]);
             $session->save();
         }
@@ -176,7 +176,7 @@ switch ($op) {
 
     case 'delete_filter':
         $output = [];
-        $filter_id = Forma\lib\Get::req('filter_id', DOTY_ALPHANUM, '');
+        $filter_id = FormaLms\lib\Get::req('filter_id', DOTY_ALPHANUM, '');
         if (sql_query("DELETE FROM %lms_report_filter WHERE id_filter=$filter_id")) {
             $output['success'] = true;
         } else {
@@ -190,8 +190,8 @@ switch ($op) {
         $output = [];
         $success = false;
         $message = '';
-        $id_sched = Forma\lib\Get::req('id', DOTY_INT, false);
-        $value = Forma\lib\Get::req('val', DOTY_INT, -1);
+        $id_sched = FormaLms\lib\Get::req('id', DOTY_INT, false);
+        $value = FormaLms\lib\Get::req('val', DOTY_INT, -1);
         if ($value >= 0 && $id_sched !== false) {
             $query = "UPDATE %lms_report_schedule SET enabled=$value " .
                 "WHERE id_report_schedule=$id_sched";
@@ -206,8 +206,8 @@ switch ($op) {
         $output = [];
         $success = false;
         $message = '';
-        $id_rep = Forma\lib\Get::req('id', DOTY_INT, false);
-        $value = Forma\lib\Get::req('val', DOTY_INT, -1);
+        $id_rep = FormaLms\lib\Get::req('id', DOTY_INT, false);
+        $value = FormaLms\lib\Get::req('val', DOTY_INT, -1);
         if ($value >= 0 && $id_rep !== false) {
             $query = "UPDATE %lms_report_filter SET is_public=$value " .
                 "WHERE id_filter=$id_rep";

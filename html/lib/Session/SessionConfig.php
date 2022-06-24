@@ -1,8 +1,8 @@
 <?php
 
-namespace Forma\lib\Session;
+namespace FormaLms\lib\Session;
 
-class Config
+class SessionConfig
 {
     private array $config;
 
@@ -17,11 +17,13 @@ class Config
     private bool $authentication = false;
     private ?string $user = null;
     private ?string $password = null;
+    private array $options = [];
 
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->url = session_save_path();
-  
+
     }
 
     /**
@@ -34,9 +36,9 @@ class Config
 
     /**
      * @param array $config
-     * @return Config
+     * @return SessionConfig
      */
-    public function setConfig(array $config): Config
+    public function setConfig(array $config): SessionConfig
     {
         $this->config = $config;
         return $this;
@@ -52,9 +54,9 @@ class Config
 
     /**
      * @param string $handler
-     * @return Config
+     * @return SessionConfig
      */
-    public function setHandler(string $handler): Config
+    public function setHandler(string $handler): SessionConfig
     {
         $this->handler = $handler;
         return $this;
@@ -70,9 +72,9 @@ class Config
 
     /**
      * @param string|null $url
-     * @return Config
+     * @return SessionConfig
      */
-    public function setUrl(?string $url): Config
+    public function setUrl(?string $url): SessionConfig
     {
         $this->url = $url;
         return $this;
@@ -88,9 +90,9 @@ class Config
 
     /**
      * @param string|null $host
-     * @return Config
+     * @return SessionConfig
      */
-    public function setHost(?string $host): Config
+    public function setHost(?string $host): SessionConfig
     {
         $this->host = $host;
         return $this;
@@ -106,9 +108,9 @@ class Config
 
     /**
      * @param int|null $port
-     * @return Config
+     * @return SessionConfig
      */
-    public function setPort(?int $port): Config
+    public function setPort(?int $port): SessionConfig
     {
         $this->port = $port;
         return $this;
@@ -124,9 +126,9 @@ class Config
 
     /**
      * @param float $timeout
-     * @return Config
+     * @return SessionConfig
      */
-    public function setTimeout(float $timeout): Config
+    public function setTimeout(float $timeout): SessionConfig
     {
         $this->timeout = $timeout;
         return $this;
@@ -142,9 +144,9 @@ class Config
 
     /**
      * @param int $lifetime
-     * @return Config
+     * @return SessionConfig
      */
-    public function setLifetime(int $lifetime): Config
+    public function setLifetime(int $lifetime): SessionConfig
     {
         $this->lifetime = $lifetime;
         return $this;
@@ -160,9 +162,9 @@ class Config
 
     /**
      * @param string $prefix
-     * @return Config
+     * @return SessionConfig
      */
-    public function setPrefix(string $prefix): Config
+    public function setPrefix(string $prefix): SessionConfig
     {
         $this->prefix = $prefix;
         return $this;
@@ -178,9 +180,9 @@ class Config
 
     /**
      * @param string $name
-     * @return Config
+     * @return SessionConfig
      */
-    public function setName(string $name): Config
+    public function setName(string $name): SessionConfig
     {
         $this->name = $name;
         return $this;
@@ -196,9 +198,9 @@ class Config
 
     /**
      * @param bool $authentication
-     * @return Config
+     * @return SessionConfig
      */
-    public function setAuthentication(bool $authentication): Config
+    public function setAuthentication(bool $authentication): SessionConfig
     {
         $this->authentication = $authentication;
         return $this;
@@ -214,9 +216,9 @@ class Config
 
     /**
      * @param string|null $user
-     * @return Config
+     * @return SessionConfig
      */
-    public function setUser(?string $user): Config
+    public function setUser(?string $user): SessionConfig
     {
         $this->user = $user;
         return $this;
@@ -232,13 +234,29 @@ class Config
 
     /**
      * @param string|null $password
-     * @return Config
+     * @return SessionConfig
      */
-    public function setPassword(?string $password): Config
+    public function setPassword(?string $password): SessionConfig
     {
         $this->password = $password;
         return $this;
     }
 
+    /**
+     * @return array
+     */
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
 
+    /**
+     * @param array $options
+     * @return SessionConfig
+     */
+    public function setOptions(array $options): SessionConfig
+    {
+        $this->options = $options;
+        return $this;
+    }
 }

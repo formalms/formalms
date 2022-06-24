@@ -238,8 +238,8 @@ class CompetencesAdmController extends AdmController
             'show_descendants' => $this->_getFromSession('show_descendants', false),
             'language' => getLanguage(),
             'startIndex' => $this->_getFromSession('startIndex', 0),
-            'results' => $this->_getFromSession('results', Forma\lib\Get::sett('visuItem', 25)),
-            'rowsPerPage' => $this->_getFromSession('rowsPerPage', Forma\lib\Get::sett('visuItem', 25)),
+            'results' => $this->_getFromSession('results', FormaLms\lib\Get::sett('visuItem', 25)),
+            'rowsPerPage' => $this->_getFromSession('rowsPerPage', FormaLms\lib\Get::sett('visuItem', 25)),
             'sort' => $this->_getFromSession('sort', 0),
             'dir' => $this->_getFromSession('dir', 'asc'),
             'typologies' => $this->json->encode($arr_typologies),
@@ -251,12 +251,12 @@ class CompetencesAdmController extends AdmController
 
     public function gettreedataTask()
     {
-        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
+        $command = FormaLms\lib\Get::req('command', DOTY_ALPHANUM, '');
 
         switch ($command) {
             case 'expand':
-                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
-                $initial = (Forma\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
+                $initial = (FormaLms\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
                 if ($initial) {
                     //get selected category from session and set the expanded tree
@@ -302,7 +302,7 @@ class CompetencesAdmController extends AdmController
              break;
 
             case 'set_selected_node':
-                $this->_setInSession('selected_node', Forma\lib\Get::Req('node_id', DOTY_INT, 0));
+                $this->_setInSession('selected_node', FormaLms\lib\Get::Req('node_id', DOTY_INT, 0));
              break;
 
             case 'delete':
@@ -315,7 +315,7 @@ class CompetencesAdmController extends AdmController
                 }
 
                 $output = ['success' => false];
-                $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
+                $id = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
                 if ($id > 0) {
                     $output['success'] = $this->model->deleteCategory($id);
                 }
@@ -342,7 +342,7 @@ class CompetencesAdmController extends AdmController
 
     public function renamecategoryTask()
     {
-        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id <= 0) {
             //...
         }
@@ -353,14 +353,14 @@ class CompetencesAdmController extends AdmController
     public function gettabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $id_category = Forma\lib\Get::req('id_category', DOTY_INT, 0);
-        $descendants = (Forma\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
+        $descendants = (FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -447,7 +447,7 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $id_parent = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_parent = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_parent < 0) {
             $output = [
                 'success' => false,
@@ -475,7 +475,7 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $id_category = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_category = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_category <= 0) {
             $output = [
                 'success' => false,
@@ -506,7 +506,7 @@ class CompetencesAdmController extends AdmController
             Util::jump_to($back_url);
         }
 
-        $id_category = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_category = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_category < 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid category'),
@@ -533,7 +533,7 @@ class CompetencesAdmController extends AdmController
             Util::jump_to($back_url);
         }
 
-        $id_competence = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_competence <= 0) { //invalid competence
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -571,7 +571,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //set up the data to insert into DB
-        $id_parent = Forma\lib\Get::req('id_parent', DOTY_INT, -1);
+        $id_parent = FormaLms\lib\Get::req('id_parent', DOTY_INT, -1);
         if ($id_parent < 0) {
             $output = [
                 'success' => false,
@@ -581,8 +581,8 @@ class CompetencesAdmController extends AdmController
 
             return;
         }
-        $names = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $names = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
         $langs = [];
 
         //validate inputs
@@ -633,7 +633,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //set up the data to insert into DB
-        $id_category = Forma\lib\Get::req('id_category', DOTY_INT, -1);
+        $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, -1);
         if ($id_category < 0) {
             $output = [
                 'success' => false,
@@ -643,8 +643,8 @@ class CompetencesAdmController extends AdmController
 
             return;
         }
-        $names = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $names = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
         $langs = [];
 
         //validate inputs
@@ -662,7 +662,7 @@ class CompetencesAdmController extends AdmController
         //insert data in the DB
         $res = $this->model->updateCategory($id_category, $langs);
         if ($res) {
-            $_language = Forma\lib\Get::req('lang', DOTY_ALPHANUM, getLanguage());
+            $_language = FormaLms\lib\Get::req('lang', DOTY_ALPHANUM, getLanguage());
             $output = [
                 'success' => true,
                 'new_name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -686,8 +686,8 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $src = Forma\lib\Get::req('src', DOTY_INT, -1);
-        $dest = Forma\lib\Get::req('dest', DOTY_INT, -1);
+        $src = FormaLms\lib\Get::req('src', DOTY_INT, -1);
+        $dest = FormaLms\lib\Get::req('dest', DOTY_INT, -1);
 
         $output = [];
 
@@ -722,7 +722,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //read inputs
-        $id_category = Forma\lib\Get::req('id_category', DOTY_INT, -1);
+        $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, -1);
         if ($id_category < 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid category'),
@@ -733,13 +733,13 @@ class CompetencesAdmController extends AdmController
         }
 
         $params = new stdClass();
-        $params->typology = Forma\lib\Get::req('typology', DOTY_STRING, 'skill');
-        $params->type = Forma\lib\Get::req('type', DOTY_STRING, 'score');
-        //$params->score = Forma\lib\Get::req('score', DOTY_ALPHANUM, '0');
-        //$params->expiration = Forma\lib\Get::req('expiration', DOTY_INT, 0);
+        $params->typology = FormaLms\lib\Get::req('typology', DOTY_STRING, 'skill');
+        $params->type = FormaLms\lib\Get::req('type', DOTY_STRING, 'score');
+        //$params->score = FormaLms\lib\Get::req('score', DOTY_ALPHANUM, '0');
+        //$params->expiration = FormaLms\lib\Get::req('expiration', DOTY_INT, 0);
 
-        $_lang_name = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $_lang_desc = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $_lang_name = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
         $arr = Docebo::langManager()->getAllLangcode();
@@ -771,7 +771,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //read inputs
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
         if ($id_competence <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -782,14 +782,14 @@ class CompetencesAdmController extends AdmController
         }
 
         $params = new stdClass();
-        $params->id_category = Forma\lib\Get::req('id_category', DOTY_INT, 0);
-        $params->typology = Forma\lib\Get::req('typology', DOTY_STRING, 'skill');
-        $params->type = Forma\lib\Get::req('type', DOTY_STRING, 'score');
-        //$params->score = Forma\lib\Get::req('score', DOTY_ALPHANUM, '0');
-        //$params->expiration = Forma\lib\Get::req('expiration', DOTY_INT, 0);
+        $params->id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
+        $params->typology = FormaLms\lib\Get::req('typology', DOTY_STRING, 'skill');
+        $params->type = FormaLms\lib\Get::req('type', DOTY_STRING, 'score');
+        //$params->score = FormaLms\lib\Get::req('score', DOTY_ALPHANUM, '0');
+        //$params->expiration = FormaLms\lib\Get::req('expiration', DOTY_INT, 0);
 
-        $_lang_name = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $_lang_desc = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $_lang_name = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
         $arr = Docebo::langManager()->getAllLangcode();
@@ -817,7 +817,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //check associations with course
-        if ($this->model->getCompetenceCoursesTotal(Forma\lib\Get::req('id', DOTY_INT, -1)) > 0) {
+        if ($this->model->getCompetenceCoursesTotal(FormaLms\lib\Get::req('id', DOTY_INT, -1)) > 0) {
             $output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_COURSE_ASSOCIATIONS', 'competences'))];
             echo $this->json->encode($output);
 
@@ -825,7 +825,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //check associations with fncrole
-        if ($this->model->getCompetenceFncRolesTotal(Forma\lib\Get::req('id', DOTY_INT, -1)) > 0) {
+        if ($this->model->getCompetenceFncRolesTotal(FormaLms\lib\Get::req('id', DOTY_INT, -1)) > 0) {
             $output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_FNCROLE_ASSOCIATIONS', 'competences'))];
             echo $this->json->encode($output);
 
@@ -833,7 +833,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //check associations with user
-        if ($this->model->getCompetenceUsersTotal(Forma\lib\Get::req('id', DOTY_INT, -1)) > 0) {
+        if ($this->model->getCompetenceUsersTotal(FormaLms\lib\Get::req('id', DOTY_INT, -1)) > 0) {
             $output = ['success' => false, 'message' => UIFeedback::perror(Lang::t('_WITH_USER_ASSOCIATIONS', 'competences'))];
             echo $this->json->encode($output);
 
@@ -841,7 +841,7 @@ class CompetencesAdmController extends AdmController
         }
 
         $output = ['success' => false];
-        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id > 0) {
             $output['success'] = $this->model->deleteCompetence($id);
         }
@@ -858,7 +858,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //read inputs
-        $id_competence = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_competence <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -869,7 +869,7 @@ class CompetencesAdmController extends AdmController
         }
 
         $result_message = '';
-        switch (Forma\lib\Get::req('res', DOTY_STRING, '')) {
+        switch (FormaLms\lib\Get::req('res', DOTY_STRING, '')) {
             case 'no_users':
                 $result_message = UIFeedback::notice(Lang::t('_OPERATION_FAILURE', 'standard'), true);
              break;
@@ -877,7 +877,7 @@ class CompetencesAdmController extends AdmController
                 $result_message = UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard'), true);
              break;
             case 'ok_assign':
-                $count = Forma\lib\Get::req('count', DOTY_INT, -1);
+                $count = FormaLms\lib\Get::req('count', DOTY_INT, -1);
                 $result_message = UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard'), true);
              break;
         }
@@ -901,14 +901,14 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -978,7 +978,7 @@ class CompetencesAdmController extends AdmController
         require_once _adm_ . '/class.module/class.directory.php';
 
         //read inputs
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
         if ($id_competence <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -1113,7 +1113,7 @@ class CompetencesAdmController extends AdmController
                 $user_selector->setUserFilter('group', $admin_tree);
             }
 
-            if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
+            if (FormaLms\lib\Get::req('is_updating', DOTY_INT, false)) {
                 //...
             } else {
                 //set initial selection
@@ -1147,7 +1147,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //read inputs
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
         if ($id_competence <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -1156,8 +1156,8 @@ class CompetencesAdmController extends AdmController
 
             return;
         }
-        $assign = Forma\lib\Get::req('assign_score', DOTY_MIXED, []);
-        $remove = Forma\lib\Get::req('del_selection', DOTY_STRING, '');
+        $assign = FormaLms\lib\Get::req('assign_score', DOTY_MIXED, []);
+        $remove = FormaLms\lib\Get::req('del_selection', DOTY_STRING, '');
         $del_selection = ($remove != '' ? explode(',', $remove) : []);
 
         $res1 = $this->model->assignCompetenceUsers($id_competence, $assign, true);
@@ -1170,7 +1170,7 @@ class CompetencesAdmController extends AdmController
 
     public function user_history()
     {
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
         if ($id_competence <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -1180,7 +1180,7 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid user'),
@@ -1203,7 +1203,7 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
         if ($id_competence <= 0) {
             $output = [
                 'success' => false,
@@ -1214,7 +1214,7 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user <= 0) {
             $output = [
                 'success' => false,
@@ -1244,7 +1244,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //read inputs
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
         if ($id_competence <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -1353,7 +1353,7 @@ class CompetencesAdmController extends AdmController
         }
 
         //read inputs
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
         if ($id_competence <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -1378,7 +1378,7 @@ class CompetencesAdmController extends AdmController
 
         $count = 0;
         $success = 0;
-        $values = Forma\lib\Get::req('assign_score', DOTY_MIXED, []);
+        $values = FormaLms\lib\Get::req('assign_score', DOTY_MIXED, []);
         foreach ($values as $id_user => $score) {
             if (isset($competence_users[$id_user])) {
                 if ($score != $competence_users[$id_user]->score_got) {
@@ -1406,10 +1406,10 @@ class CompetencesAdmController extends AdmController
             return;
         }
 
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
-        $old_score = Forma\lib\Get::req('old_score', DOTY_FLOAT, -1.0);
-        $new_score = Forma\lib\Get::req('new_score', DOTY_FLOAT, -1.0);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
+        $old_score = FormaLms\lib\Get::req('old_score', DOTY_FLOAT, -1.0);
+        $new_score = FormaLms\lib\Get::req('new_score', DOTY_FLOAT, -1.0);
 
         $output = ['success' => true];
 
@@ -1446,7 +1446,7 @@ class CompetencesAdmController extends AdmController
      */
     public function man_courseTask()
     {
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         if ($id_course <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid course'),
@@ -1465,7 +1465,7 @@ class CompetencesAdmController extends AdmController
             Lang::t('_COMPETENCES', 'competences') . ' : ' . $course_name,
         ];
 
-        $res = Forma\lib\Get::req('res', DOTY_ALPHANUM, '');
+        $res = FormaLms\lib\Get::req('res', DOTY_ALPHANUM, '');
         $result_message = '';
         switch ($res) {
             case 'ok_competences': $result_message = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
@@ -1489,7 +1489,7 @@ class CompetencesAdmController extends AdmController
     {
         $base_url = 'index.php?r=' . $this->base_link_competence . '/show';
 
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         if ($id_course <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid course'),
@@ -1504,13 +1504,13 @@ class CompetencesAdmController extends AdmController
         $jump_url = 'index.php?r=' . $this->base_link_competence . '/assign_to_course&id_course=' . (int) $id_course;
 
         //selector commands
-        $save = Forma\lib\Get::req('save', DOTY_MIXED, false);
-        $undo = Forma\lib\Get::req('undo', DOTY_MIXED, false);
+        $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
+        $undo = FormaLms\lib\Get::req('undo', DOTY_MIXED, false);
 
         if ($undo !== false) {
             Util::jump_to($back_url);
         } elseif ($save !== false) {
-            $selection = Forma\lib\Get::req('competences_selection', DOTY_MIXED, []);
+            $selection = FormaLms\lib\Get::req('competences_selection', DOTY_MIXED, []);
             $selection_str = (is_array($selection) && isset($selection['course_competences_selector']) ? $selection['course_competences_selector'] : '');
             $competences_selected = $selection_str != '' ? explode(',', $selection_str) : [];
             $competences_existent = $this->model->getCourseCompetences($id_course);
@@ -1611,7 +1611,7 @@ class CompetencesAdmController extends AdmController
 
     public function assign_to_course_actionTask()
     {
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         if ($id_course <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid course'),
@@ -1625,20 +1625,20 @@ class CompetencesAdmController extends AdmController
         $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int) $id_course;
 
         //form commands
-        $save = Forma\lib\Get::req('save', DOTY_MIXED, false);
-        $undo = Forma\lib\Get::req('undo', DOTY_MIXED, false);
+        $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
+        $undo = FormaLms\lib\Get::req('undo', DOTY_MIXED, false);
 
         if ($undo) {
             Util::jump_to($back_url);
         }
 
         //read and decode inputs
-        $scores = Forma\lib\Get::req('score_assigned', DOTY_MIXED, false);
+        $scores = FormaLms\lib\Get::req('score_assigned', DOTY_MIXED, false);
 
-        $new_selection_str = Forma\lib\Get::req('new_selection', DOTY_STRING, '');
+        $new_selection_str = FormaLms\lib\Get::req('new_selection', DOTY_STRING, '');
         $new_selection = ($new_selection_str == '' ? [] : explode(',', $new_selection_str));
 
-        $del_selection_str = Forma\lib\Get::req('del_selection', DOTY_STRING, '');
+        $del_selection_str = FormaLms\lib\Get::req('del_selection', DOTY_STRING, '');
         $del_selection = ($del_selection_str == '' ? [] : explode(',', $del_selection_str));
 
         //prepare scores for DB insertion
@@ -1658,15 +1658,15 @@ class CompetencesAdmController extends AdmController
     public function getcoursetabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, -1);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, -1);
         //TO DO: if $id_course <= 0 ...
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -1728,7 +1728,7 @@ class CompetencesAdmController extends AdmController
      */
     public function mod_course_competencesTask()
     {
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         if ($id_course <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid course'),
@@ -1801,7 +1801,7 @@ class CompetencesAdmController extends AdmController
 
     public function mod_course_competences_actionTask()
     {
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         if ($id_course <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid course'),
@@ -1815,14 +1815,14 @@ class CompetencesAdmController extends AdmController
         $back_url = 'index.php?r=' . $this->base_link_competence . '/man_course&id_course=' . (int) $id_course;
 
         //form commands
-        $save = Forma\lib\Get::req('save', DOTY_MIXED, false);
-        $undo = Forma\lib\Get::req('undo', DOTY_MIXED, false);
+        $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
+        $undo = FormaLms\lib\Get::req('undo', DOTY_MIXED, false);
 
         if ($undo) {
             Util::jump_to($back_url);
         }
 
-        $scores = Forma\lib\Get::req('score_assigned', DOTY_MIXED, []);
+        $scores = FormaLms\lib\Get::req('score_assigned', DOTY_MIXED, []);
         $res = $this->model->updateCourseCompetences($id_course, $scores);
 
         //go back to main page, with result message
@@ -1835,8 +1835,8 @@ class CompetencesAdmController extends AdmController
      */
     public function del_course_competenceTask()
     {
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, 0);
 
         $output = [];
         if ($id_course <= 0 || $id_competence <= 0) {
@@ -1856,7 +1856,7 @@ class CompetencesAdmController extends AdmController
 
     public function view_competence_reportTask()
     {
-        $id_competence = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_competence <= 0) { //invalid competence
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid competence'),
@@ -1867,10 +1867,10 @@ class CompetencesAdmController extends AdmController
         }
 
         $filter_text = '';
-        $filter_set = Forma\lib\Get::req('filter_set', DOTY_INT, -1);
-        $filter_reset = Forma\lib\Get::req('filter_reset', DOTY_INT, -1);
+        $filter_set = FormaLms\lib\Get::req('filter_set', DOTY_INT, -1);
+        $filter_reset = FormaLms\lib\Get::req('filter_reset', DOTY_INT, -1);
         if ($filter_set != -1) {
-            $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+            $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
         }
         if ($filter_reset != -1) {
             $filter_text = '';
@@ -1926,8 +1926,8 @@ class CompetencesAdmController extends AdmController
 
     public function competences_autocompleteTask()
     {
-        $query = Forma\lib\Get::req('query', DOTY_STRING, '');
-        $results = Forma\lib\Get::Req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $query = FormaLms\lib\Get::req('query', DOTY_STRING, '');
+        $results = FormaLms\lib\Get::Req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
         $output = ['competences' => []];
         if ($query != '') {
             $competences = $this->model->searchCompetencesByName($query, $results, true);
@@ -1946,7 +1946,7 @@ class CompetencesAdmController extends AdmController
 
     public function inline_editTask()
     {
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, 0);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, 0);
 
         if ($id_competence <= 0) {
             echo $this->json->encode(['success' => true]);
@@ -1955,10 +1955,10 @@ class CompetencesAdmController extends AdmController
         }
 
         //Update info
-        $new_value = Forma\lib\Get::req('new_value', DOTY_MIXED, '');
-        $old_value = Forma\lib\Get::req('old_value', DOTY_MIXED, '');
-        $column = Forma\lib\Get::req('column', DOTY_STRING, '');
-        $language = Forma\lib\Get::req('language', DOTY_STRING, getLanguage());
+        $new_value = FormaLms\lib\Get::req('new_value', DOTY_MIXED, '');
+        $old_value = FormaLms\lib\Get::req('old_value', DOTY_MIXED, '');
+        $column = FormaLms\lib\Get::req('column', DOTY_STRING, '');
+        $language = FormaLms\lib\Get::req('language', DOTY_STRING, getLanguage());
 
         if ($new_value === $old_value) {
             echo $this->json->encode(['success' => true]);

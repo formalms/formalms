@@ -69,8 +69,8 @@ class UpdatesLms extends Model
 
     public static function resetCache()
     {
-        \Forma\lib\Session\SessionManager::getInstance()->getSession()->remove('updates');
-        \Forma\lib\Session\SessionManager::getInstance()->getSession()->save();
+        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->remove('updates');
+        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->save();
     }
 
     public function courseUpdates()

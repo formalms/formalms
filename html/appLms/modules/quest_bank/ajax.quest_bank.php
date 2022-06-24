@@ -20,24 +20,24 @@ if ($GLOBALS['current_user']->isAnonymous()) {
 
 $sortable = ['type_quest', 'title_quest', 'difficult', 'sequence'];
 
-$op = Forma\lib\Get::gReq('op', DOTY_ALPHANUM, '');
+$op = FormaLms\lib\Get::gReq('op', DOTY_ALPHANUM, '');
 switch ($op) {
     case 'getselected':
         require_once _lms_ . '/lib/lib.quest_bank.php';
         $qbm = new QuestBankMan();
 
-        $quest_category = Forma\lib\Get::req('quest_category', DOTY_INT);
-        $quest_difficult = Forma\lib\Get::req('quest_difficult', DOTY_INT);
-        $quest_type = Forma\lib\Get::req('quest_type', DOTY_ALPHANUM);
+        $quest_category = FormaLms\lib\Get::req('quest_category', DOTY_INT);
+        $quest_difficult = FormaLms\lib\Get::req('quest_difficult', DOTY_INT);
+        $quest_type = FormaLms\lib\Get::req('quest_type', DOTY_ALPHANUM);
         $params_extracat = [];
         $all_categories = $qbm->getExtraCategoriesList();
         foreach ($all_categories as $key => $value) {
-            $quest_extracategory = Forma\lib\Get::req('quest_extracategory_' . $key, DOTY_INT);
+            $quest_extracategory = FormaLms\lib\Get::req('quest_extracategory_' . $key, DOTY_INT);
             $params_extracat[$key] = $quest_extracategory;
         }
 
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
         if (!in_array($sort, $sortable)) {
             $sort = 'idQuest';
         }
@@ -63,8 +63,8 @@ switch ($op) {
     case 'delquest':
         //require_once($GLOBALS['where_framework'].'/lib/lib.json.php');
 
-        $id_quest = Forma\lib\Get::pReq('id_quest', DOTY_INT);
-        $row_quest = Forma\lib\Get::pReq('row_quest', DOTY_ALPHANUM);
+        $id_quest = FormaLms\lib\Get::pReq('id_quest', DOTY_INT);
+        $row_quest = FormaLms\lib\Get::pReq('row_quest', DOTY_ALPHANUM);
 
         require_once _lms_ . '/lib/lib.quest_bank.php';
         $qman = new QuestBankMan();
@@ -80,18 +80,18 @@ switch ($op) {
         require_once _lms_ . '/lib/lib.quest_bank.php';
         $qbm = new QuestBankMan();
 
-        $quest_category = Forma\lib\Get::pReq('quest_category', DOTY_INT);
-        $quest_difficult = Forma\lib\Get::pReq('quest_difficult', DOTY_INT);
-        $quest_type = Forma\lib\Get::pReq('quest_type', DOTY_ALPHANUM);
+        $quest_category = FormaLms\lib\Get::pReq('quest_category', DOTY_INT);
+        $quest_difficult = FormaLms\lib\Get::pReq('quest_difficult', DOTY_INT);
+        $quest_type = FormaLms\lib\Get::pReq('quest_type', DOTY_ALPHANUM);
         $params_extracat = [];
         $all_categories = $qbm->getExtraCategoriesList();
         foreach ($all_categories as $key => $value) {
-            $quest_extracategory = Forma\lib\Get::pReq('quest_extracategory_' . $key, DOTY_INT);
+            $quest_extracategory = FormaLms\lib\Get::pReq('quest_extracategory_' . $key, DOTY_INT);
             $params_extracat[$key] = $quest_extracategory;
         }
 
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
         if (!in_array($sort, $sortable)) {
             $sort = 'sequence';
         }
@@ -100,8 +100,8 @@ switch ($op) {
             default:  $dir = 'asc'; ; break;
         }
 
-        $startIndex = Forma\lib\Get::pReq('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::pReq('results', DOTY_INT, 30);
+        $startIndex = FormaLms\lib\Get::pReq('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::pReq('results', DOTY_INT, 30);
 
         $totalRecords = $qbm->totalQuestList($quest_category, $quest_difficult, $quest_type, $params_extracat);
         $re_quest = $qbm->resQuestList($quest_category, $quest_difficult, $quest_type, $params_extracat, $startIndex, $results, $sort, $dir);

@@ -692,10 +692,10 @@ class KbRes
     {
         $data = [];
 
-        $data['r_name'] = Forma\lib\Get::req('name', DOTY_STRING, '');
-        $data['r_type'] = Forma\lib\Get::req('type', DOTY_STRING, '');
-        $data['r_env'] = Forma\lib\Get::req('env', DOTY_STRING, '');
-        $data['r_param'] = Forma\lib\Get::req('param', DOTY_STRING, '');
+        $data['r_name'] = FormaLms\lib\Get::req('name', DOTY_STRING, '');
+        $data['r_type'] = FormaLms\lib\Get::req('type', DOTY_STRING, '');
+        $data['r_env'] = FormaLms\lib\Get::req('env', DOTY_STRING, '');
+        $data['r_param'] = FormaLms\lib\Get::req('param', DOTY_STRING, '');
 
         return $data;
     }

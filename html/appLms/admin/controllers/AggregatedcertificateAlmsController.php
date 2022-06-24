@@ -84,16 +84,16 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         checkPerm('view');
 
-        $tb = new Table(Forma\lib\Get::sett('visuItem'), Lang::t('_META_CERTIFICATE_SUMMARY', 'certificate'), Lang::t('_META_CERTIFICATE_SUMMARY', 'certificate'));
+        $tb = new Table(FormaLms\lib\Get::sett('visuItem'), Lang::t('_META_CERTIFICATE_SUMMARY', 'certificate'), Lang::t('_META_CERTIFICATE_SUMMARY', 'certificate'));
         $tb->initNavBar('ini', 'link');
         $tb->setLink('index.php?r=alms/' . $this->controller_name . '/show');
         $ini = $tb->getSelectedElement();
 
         $ini = importVar('ini', true, 0);
 
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
-        if (Forma\lib\Get::req('toggle_filter', DOTY_STRING, '') !== '') {
+        if (FormaLms\lib\Get::req('toggle_filter', DOTY_STRING, '') !== '') {
             unset($filter_text);
         }
 
@@ -117,19 +117,19 @@ class AggregatedcertificateAlmsController extends AlmsController
             $cont_h[] = Lang::t('_TEMPLATE', 'certificate');
         }
 
-        $cont_h[] = Forma\lib\Get::img('standard/view.png', Lang::t('_PREVIEW'));
+        $cont_h[] = FormaLms\lib\Get::img('standard/view.png', Lang::t('_PREVIEW'));
 
         if ($userCanModify) {
-            $cont_h[] = Forma\lib\Get::img('standard/moduser.png', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
+            $cont_h[] = FormaLms\lib\Get::img('standard/moduser.png', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
             $type_h[] = 'image';
 
-            $cont_h[] = Forma\lib\Get::sprite('subs_print', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
+            $cont_h[] = FormaLms\lib\Get::sprite('subs_print', Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'));
             $type_h[] = 'image';
 
-            $cont_h[] = Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD'), Lang::t('_MOD'));
+            $cont_h[] = FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD'), Lang::t('_MOD'));
             $type_h[] = 'image';
 
-            $cont_h[] = Forma\lib\Get::img('standard/delete.png', Lang::t('_DEL'), Lang::t('_DEL'));
+            $cont_h[] = FormaLms\lib\Get::img('standard/delete.png', Lang::t('_DEL'), Lang::t('_DEL'));
             $type_h[] = 'image';
         }
 
@@ -156,32 +156,32 @@ class AggregatedcertificateAlmsController extends AlmsController
                     . Lang::t('_TEMPLATE', 'certificate') . '</a>';
             }
 
-            $cont[] = Forma\lib\Get::sprite_link(
+            $cont[] = FormaLms\lib\Get::sprite_link(
                 'subs_view',
                 'index.php?r=alms/' . $this->controller_name . '/release_cert&amp;id_certificate=' . $aggregate_cert['id_certificate'],
                 Lang::t('_PREVIEW') . ' : ' . $title
             );
 
             if ($userCanModify) {
-                $cont[] = Forma\lib\Get::sprite_link(
+                $cont[] = FormaLms\lib\Get::sprite_link(
                     'subs_admin',
                     'index.php?r=alms/' . $this->controller_name . '/associationsManagement&amp;id_certificate=' . $aggregate_cert['id_certificate'],
                     Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate') . ' : ' . $title
                 );
 
-                $cont[] = Forma\lib\Get::sprite_link(
+                $cont[] = FormaLms\lib\Get::sprite_link(
                     'subs_print',
                     'index.php?r=alms/' . $this->controller_name . '/assignmentManagement&amp;id_certificate=' . $aggregate_cert['id_certificate'],
                     Lang::t('_TITLE_ASSIGN_META_CERTIFICATE', 'certificate') . ' : ' . $title
                 );
 
-                $cont[] = Forma\lib\Get::sprite_link(
+                $cont[] = FormaLms\lib\Get::sprite_link(
                     'subs_mod',
                     'index.php?r=alms/' . $this->controller_name . '/metadata&amp;id_certificate=' . $aggregate_cert['id_certificate'],
                     Lang::t('_MOD') . ' : ' . $title
                 );
 
-                $cont[] = Forma\lib\Get::sprite_link(
+                $cont[] = FormaLms\lib\Get::sprite_link(
                     'subs_del',
                     'index.php?r=alms/' . $this->controller_name . '/' . $this->op['delmetacert'] . '&amp;id_certificate=' . $aggregate_cert['id_certificate'],
                     Lang::t('_DEL') . ' : ' . $title
@@ -235,7 +235,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         $params = [];
 
-        $id_cert = Forma\lib\Get::req('id_certificate', DOTY_INT, 0);
+        $id_cert = FormaLms\lib\Get::req('id_certificate', DOTY_INT, 0);
 
         $isModifyingMetaData = $id_cert !== 0;
         $page_title = [
@@ -279,7 +279,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         ];
 
         if ($isModifyingMetadata) {
-            $metaDataCertArr['id_certificate'] = Forma\lib\Get::req('id_certificate');
+            $metaDataCertArr['id_certificate'] = FormaLms\lib\Get::req('id_certificate');
         }
 
         $res = $this->aggCertLib->insertMetaDataCert($metaDataCertArr);
@@ -305,7 +305,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         checkPerm('mod', true);
 
         // If the user want to edit layout, then in the page will be loaded the datas from the db
-        $edit = Forma\lib\Get::req('edit', DOTY_INT, 0);
+        $edit = FormaLms\lib\Get::req('edit', DOTY_INT, 0);
 
         $page_title = [
             'index.php?r=alms/' . $this->controller_name . '/' . $this->op['layout'] => Lang::t('_TITLE_META_CERTIFICATE', 'certificate') . ':&nbsp;' . $this->cert_name,
@@ -387,7 +387,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         require_once _base_ . '/lib/lib.table.php';
 
         // Creating table...
-        $tb = new Table(Forma\lib\Get::sett('visuItem'), Lang::t('_META_CERTIFICATE_ASSIGN_CAPTION', 'certificate'), Lang::t('_META_CERTIFICATE_ASSIGN_CAPTION', 'certificate'));
+        $tb = new Table(FormaLms\lib\Get::sett('visuItem'), Lang::t('_META_CERTIFICATE_ASSIGN_CAPTION', 'certificate'), Lang::t('_META_CERTIFICATE_ASSIGN_CAPTION', 'certificate'));
         $tb->initNavBar('ini', 'link');
         $tb->setLink($this->back_url);
         $ini = $tb->getSelectedElement();
@@ -428,7 +428,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             if (in_array($type_association, AggregatedCertificate::ALLOWED_CERTIFICATE_TYPES, true)) {
                 $rows[] = stripslashes($association['title']);
                 $rows[] = stripslashes($association['description']);
-                $rows[] = Forma\lib\Get::sprite_link(
+                $rows[] = FormaLms\lib\Get::sprite_link(
                     'subs_view',
                     'index.php?r=alms/' . $this->controller_name . '/' . $this->op['view_details'] . '&amp;id_association=' . $association['idAssociation'] . '&amp;id_certificate='
                     . $this->id_certificate . '&amp;type_assoc=' . $type_association,
@@ -464,7 +464,7 @@ class AggregatedcertificateAlmsController extends AlmsController
                     default:
                 }
 
-                $rows[] = Forma\lib\Get::sprite_link(
+                $rows[] = FormaLms\lib\Get::sprite_link(
                     'subs_del',
                     'index.php?r=alms/' . $this->controller_name . '/' . $this->op['del_association']
                     . '&amp;id_association=' . $association['idAssociation']
@@ -517,8 +517,8 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         $association = [
             'idCertificate' => $this->id_certificate,
-            'title' => Forma\lib\Get::req('title', DOTY_STRING),
-            'description' => Forma\lib\Get::req('description', DOTY_STRING),
+            'title' => FormaLms\lib\Get::req('title', DOTY_STRING),
+            'description' => FormaLms\lib\Get::req('description', DOTY_STRING),
             'idAssociation' => $this->id_association,
         ];
 
@@ -540,7 +540,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             $associationMetadataArr = $this->aggCertLib->getAssociationsMetadata(0, $this->id_association);
             $params['associationMetadataArr'] = $associationMetadataArr[0];
             $params['html_before_select'] = 'disabled';
-            $params['type_assoc'] = Forma\lib\Get::req('type_assoc', DOTY_INT, -1);
+            $params['type_assoc'] = FormaLms\lib\Get::req('type_assoc', DOTY_INT, -1);
             $params['id_association'] = $this->id_association;
         }
 
@@ -566,8 +566,8 @@ class AggregatedcertificateAlmsController extends AlmsController
             Util::jump_to($this->back_url);
         }
 
-        $typeAssociation = (int) Forma\lib\Get::req('type_assoc', DOTY_INT);
-        $operation = Forma\lib\Get::req('nextOperation');
+        $typeAssociation = (int) FormaLms\lib\Get::req('type_assoc', DOTY_INT);
+        $operation = FormaLms\lib\Get::req('nextOperation');
         if ($operation === Lang::t('_NEXT')) {
             if ($typeAssociation === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
                 $this->associationCourses();
@@ -599,9 +599,9 @@ class AggregatedcertificateAlmsController extends AlmsController
         }
 
         $params = [
-            'id_certificate' => Forma\lib\Get::req('id_certificate', DOTY_INT),
+            'id_certificate' => FormaLms\lib\Get::req('id_certificate', DOTY_INT),
             'id_association' => $this->id_association,
-            'type_assoc' => Forma\lib\Get::req('type_assoc', DOTY_INT, -1),
+            'type_assoc' => FormaLms\lib\Get::req('type_assoc', DOTY_INT, -1),
             'title' => $_POST['title'],
             'description' => $_POST['description'],
             'cert_name' => $this->cert_name,
@@ -639,7 +639,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         $params = [
             'id_certificate' => $this->id_certificate,
             'id_association' => $this->id_association,
-            'type_assoc' => Forma\lib\Get::req('type_assoc', DOTY_INT, -1),
+            'type_assoc' => FormaLms\lib\Get::req('type_assoc', DOTY_INT, -1),
             'title' => $_POST['title'],
             'description' => $_POST['description'],
             'cert_name' => $this->cert_name,
@@ -696,10 +696,10 @@ class AggregatedcertificateAlmsController extends AlmsController
         $user_selection->addFormInfo('<input type="hidden" name="id_certificate" value=' . $this->id_certificate . ' />');
         $user_selection->addFormInfo('<input type="hidden" name="id_association" value=' . $this->id_association . ' />');
         $user_selection->addFormInfo('<input type="hidden" name="type_assoc" value=' . $type_assoc . ' />');
-        $user_selection->addFormInfo('<input type="hidden" name="selected_courses" value=' . Forma\lib\Get::req('idsCourse', DOTY_NUMLIST) . ' />');
+        $user_selection->addFormInfo('<input type="hidden" name="selected_courses" value=' . FormaLms\lib\Get::req('idsCourse', DOTY_NUMLIST) . ' />');
         $user_selection->addFormInfo('<input type="hidden" name="title" value="' . $_POST['title'] . '"/>');
         $user_selection->addFormInfo('<input type="hidden" name="description" value="' . $_POST['description'] . '"/>');
-        $user_selection->addFormInfo('<input type="hidden" name="selected_idsCoursePath" value=' . Forma\lib\Get::req('idsCoursePath', DOTY_NUMLIST) . ' />');
+        $user_selection->addFormInfo('<input type="hidden" name="selected_idsCoursePath" value=' . FormaLms\lib\Get::req('idsCoursePath', DOTY_NUMLIST) . ' />');
 
         $params = [
             'user_selection' => $user_selection,
@@ -720,8 +720,8 @@ class AggregatedcertificateAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         YuiLib::load();
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        $type_assoc = Forma\lib\Get::req('type_assoc', DOTY_INT, -1);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        $type_assoc = FormaLms\lib\Get::req('type_assoc', DOTY_INT, -1);
 
         if (isset($_POST['undo']) || isset($_POST['undo_filter']) || isset($_POST['cancelselector'])) {
             Util::jump_to($this->back_url);
@@ -747,7 +747,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         $type_h = ['', ''];
         $cont_h = [Lang::t('_FULLNAME'), Lang::t('_USERNAME')];
 
-        $selected_idsCoursePath = Forma\lib\Get::req('selected_idsCoursePath', DOTY_NUMLIST);
+        $selected_idsCoursePath = FormaLms\lib\Get::req('selected_idsCoursePath', DOTY_NUMLIST);
         $idsCP_array = explode(',', $selected_idsCoursePath);
         sort($idsCP_array);
         $coursePath_man = new CoursePath_Manager();
@@ -837,9 +837,9 @@ class AggregatedcertificateAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.course_managment.php';
 
         YuiLib::load();
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
-        $type_assoc = Forma\lib\Get::req('type_assoc', DOTY_INT, -1);
+        $type_assoc = FormaLms\lib\Get::req('type_assoc', DOTY_INT, -1);
 
         if (isset($_POST['undo']) || isset($_POST['undo_filter']) || isset($_POST['cancelselector'])) {
             Util::jump_to($this->back_url);
@@ -944,7 +944,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             Util::jump_to($this->back_url);
         }
 
-        $type_assoc = Forma\lib\Get::req('type_assoc', DOTY_INT, -1);
+        $type_assoc = FormaLms\lib\Get::req('type_assoc', DOTY_INT, -1);
         $selected_courses = explode(',', $_POST['selected_courses']);
         $selected_path = explode(',', $_POST['selected_idsCoursePath']);
         $selected_users = [];
@@ -995,10 +995,10 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         $acl_man = &Docebo::user()->getAclManager();
 
-        $id_association = Forma\lib\Get::req('id_association', DOTY_INT, 0);
+        $id_association = FormaLms\lib\Get::req('id_association', DOTY_INT, 0);
 
         // Getting type of metacert. (if it's a metacert on course, on coursepath...)
-        $type_assoc = Forma\lib\Get::req('type_assoc', DOTY_INT, -1);
+        $type_assoc = FormaLms\lib\Get::req('type_assoc', DOTY_INT, -1);
 
         $usersArr = $this->aggCertLib->getAllUsersFromIdAssoc($this->id_association, $type_assoc);
         $linksArr = $this->aggCertLib->getAllLinksFromIdAssoc($this->id_association, $type_assoc);
@@ -1101,8 +1101,8 @@ class AggregatedcertificateAlmsController extends AlmsController
     public function delAssociations()
     {
         checkPerm('mod');
-        $type_assoc = Forma\lib\Get::req('type_assoc', DOTY_INT, -1);
-        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) === 1 && ($this->id_association !== 0)) {
+        $type_assoc = FormaLms\lib\Get::req('type_assoc', DOTY_INT, -1);
+        if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) === 1 && ($this->id_association !== 0)) {
             Util::jump_to($this->back_url . '&res=' . ($this->aggCertLib->deleteAssociations($this->id_association, $type_assoc) ? 'ok' : 'err'));
         }
     }
@@ -1133,10 +1133,10 @@ class AggregatedcertificateAlmsController extends AlmsController
         $cont_h = [Lang::t('_FULLNAME'),
             Lang::t('_USERNAME'),
             Lang::t('_TITLE'),
-            Forma\lib\Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')),
+            FormaLms\lib\Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')),
             '<img src="' . getPathImage('lms') . 'standard/delete.png" alt="' . Lang::t('_DEL') . ' : ' . strip_tags($certificate['name']) . '" />', ];
         $cert_name_caption = $this->cert_name;
-        $tb = new Table(Forma\lib\Get::sett('visuItem'), $cert_name_caption, $cert_name_caption);
+        $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $cert_name_caption, $cert_name_caption);
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
         $tb->setColsStyle($type_h);
@@ -1152,14 +1152,14 @@ class AggregatedcertificateAlmsController extends AlmsController
                 . '&amp;id_association=' . $the_cert['idAssociation']
                 . '&amp;aggCert=1'
                 . '">'
-                . Forma\lib\Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')) . '</a>';
+                . FormaLms\lib\Get::img('course/certificate.png', Lang::t('_TAKE_A_COPY', 'certificate')) . '</a>';
             if ($the_cert['released'] > 0) {
                 $cell[$i][] = '<a href="index.php?r=alms/' . $this->controller_name . '/' . $this->op['del_released']
                     . '&amp;id_certificate=' . $this->id_certificate
                     . '&amp;id_user=' . $the_cert['idst']
                     . '&amp;id_association=' . $the_cert['idAssociation']
                     . '">'
-                    . Forma\lib\Get::img('standard/delete.png', Lang::t('_DEL')) . '</a>';
+                    . FormaLms\lib\Get::img('standard/delete.png', Lang::t('_DEL')) . '</a>';
             } else {
                 $cell[$i][] = '';
             }
@@ -1199,7 +1199,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $cert = new Certificate();
         $subs = $cert->getSubstitutionArray($id_user, $id_course, $this->id_association);
         $rs = $cert->send_certificate($this->id_certificate, $id_user, 0, $subs, true, false, $this->id_association);
@@ -1218,9 +1218,9 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.upload.php';
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
 
-        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) === 1) {
+        if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) === 1) {
             $cert_file = $this->aggCertLib->getAggregatedCertFileName($id_user, $this->id_certificate, $this->id_association);
 
             $path = '/appLms/certificate/';
@@ -1254,7 +1254,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         checkPerm('mod');
 
-        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
+        if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
             if ($this->aggCertLib->deleteCert($this->id_certificate)) {
                 // Get all the associations with the cert.
                 $idsAssocArr = $this->aggCertLib->getIdAssociations($this->id_certificate);

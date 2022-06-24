@@ -17,14 +17,14 @@ function coursecatalogue($id_block, $title, $option = [])
 {
     YuiLib::load(['animation' => 'my_animation', 'container' => 'container-min', 'container' => 'container_core-min']);
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!$session->has('chart')) {
         $session->set('chart',[]);
         $session->save();
     }
 
-    $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-    $action = Forma\lib\Get::req('action', DOTY_STRING, '');
+    $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+    $action = FormaLms\lib\Get::req('action', DOTY_STRING, '');
 
     if ($id_course !== 0 && $action === '') {
         $sessionChart = $session->get('chart');
@@ -43,7 +43,7 @@ function coursecatalogue($id_block, $title, $option = [])
 
     cout('<link href="./modules/catalog/catalog.css" type="text/css" rel="stylesheet"/>', 'page_head');
 
-    $css_path = Forma\lib\Get::tmpl_path('base') . 'yui-skin';
+    $css_path = FormaLms\lib\Get::tmpl_path('base') . 'yui-skin';
     cout(Util::get_css($css_path . '/tabview.css', true), 'page_head');
 
     $lang = &DoceboLanguage::CreateInstance('catalogue', 'cms');
@@ -52,7 +52,7 @@ function coursecatalogue($id_block, $title, $option = [])
 
     $array_id_block = explode('_', $id_block);
 
-    $page = Forma\lib\Get::req('page', DOTY_INT, 0);
+    $page = FormaLms\lib\Get::req('page', DOTY_INT, 0);
     if ($page == 0) {
         $page = $this->getBlockPage($array_id_block[0]);
     }
@@ -68,7 +68,7 @@ function coursecatalogue($id_block, $title, $option = [])
         $all_course = true;
     }
 
-    $id_catalogue = Forma\lib\Get::req('id_catalogue', DOTY_INT, -2);
+    $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, -2);
     if ($id_catalogue == -2) {
         if (count($catalogue)) {
             if (isset($catalogue[0])) {
@@ -81,15 +81,15 @@ function coursecatalogue($id_block, $title, $option = [])
         }
     }
 
-    $id_category = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+    $id_category = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
     $number_courses = $man_cat->getCourseNumberForBlock($array_id_block[0], $id_catalogue, $id_category, $all_course);
 
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), $number_courses);
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), $number_courses);
     $nav_bar->setLink('index.php?pag=' . $page . '&amp;id_catalogue=' . $id_catalogue . ($id_category != 0 ? '&amp;id_cat=' . $id_category : ''));
 
     $ini = $nav_bar->getSelectedPage();
-    $limit = ($ini - 1) * Forma\lib\Get::sett('visuItem');
+    $limit = ($ini - 1) * FormaLms\lib\Get::sett('visuItem');
 
     cout($nav_bar->getNavBar()
             . '<div id="demo" class="yui-navset">'
@@ -242,7 +242,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
     $acl_manger = Docebo::user()->getAclManager();
 
     $lang = &DoceboLanguage::CreateInstance('catalogue', 'cms');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($course_info['course_type'] !== 'elearning') {
         if (!isset($course_info['dates'])) {
             return '<p class="cannot_subscribe">' . $lang->def('_NO_EDITIONS') . '</p>';

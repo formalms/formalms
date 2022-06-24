@@ -38,7 +38,7 @@ class LmsModule
         //EFFECTS: if a module_name is passed use it else use global reference
         global $modname;
 
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         if ($module_name == '') {
             $this->module_name = $modname;

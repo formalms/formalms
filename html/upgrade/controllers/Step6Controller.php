@@ -18,7 +18,7 @@ class Step6Controller extends StepController
     public $step = 6;
     public $session = null;
     public function __construct() {
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
     public function render()
     {

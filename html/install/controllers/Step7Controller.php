@@ -24,17 +24,17 @@ class Step7Controller extends StepController
         $err = 0;
         $res = ['success' => false, 'err' => [], 'ok' => [], 'msg' => ''];
 
-        $op = Forma\lib\Get::pReq('op', DOTY_STRING);
+        $op = FormaLms\lib\Get::pReq('op', DOTY_STRING);
         // ---
 
-        $use_smtp_database = Forma\lib\Get::pReq('use_smtp_database', DOTY_STRING);
-        $use_smtp = Forma\lib\Get::pReq('use_smtp', DOTY_STRING);
-        $smtp_host = Forma\lib\Get::pReq('smtp_host', DOTY_STRING);
-        $smtp_port = Forma\lib\Get::pReq('smtp_port', DOTY_STRING);
-        $smtp_secure = Forma\lib\Get::pReq('smtp_secure', DOTY_STRING);
-        $smtp_auto_tls = Forma\lib\Get::pReq('smtp_auto_tls', DOTY_STRING);
-        $smtp_user = Forma\lib\Get::pReq('smtp_user', DOTY_STRING);
-        $smtp_pwd = Forma\lib\Get::pReq('smtp_pwd', DOTY_STRING);
+        $use_smtp_database = FormaLms\lib\Get::pReq('use_smtp_database', DOTY_STRING);
+        $use_smtp = FormaLms\lib\Get::pReq('use_smtp', DOTY_STRING);
+        $smtp_host = FormaLms\lib\Get::pReq('smtp_host', DOTY_STRING);
+        $smtp_port = FormaLms\lib\Get::pReq('smtp_port', DOTY_STRING);
+        $smtp_secure = FormaLms\lib\Get::pReq('smtp_secure', DOTY_STRING);
+        $smtp_auto_tls = FormaLms\lib\Get::pReq('smtp_auto_tls', DOTY_STRING);
+        $smtp_user = FormaLms\lib\Get::pReq('smtp_user', DOTY_STRING);
+        $smtp_pwd = FormaLms\lib\Get::pReq('smtp_pwd', DOTY_STRING);
 
         if ($use_smtp === 'on') {
             if (!$this->checkConnection($smtp_host, $smtp_port, $smtp_secure, $smtp_auto_tls, $smtp_user, $smtp_pwd)) {
@@ -79,7 +79,7 @@ class Step7Controller extends StepController
 
     public function validate()
     {
-        $smtp_info = Forma\lib\Get::pReq('smtp_info', DOTY_MIXED);
+        $smtp_info = FormaLms\lib\Get::pReq('smtp_info', DOTY_MIXED);
 
         if ($smtp_info['use_smtp_database'] === 'on') {
             $this->saveSettingsToDatabase($smtp_info);

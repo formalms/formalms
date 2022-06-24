@@ -37,13 +37,13 @@ require_once _lms_ . '/class.module/class.definition.php';
 // -----------------------------------------------------------------------------
 
 $module_cfg = false;
-$GLOBALS['modname'] = Forma\lib\Get::req('modname', DOTY_ALPHANUM, '');
-$GLOBALS['op'] = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
-$GLOBALS['req'] = Forma\lib\Get::req('r', DOTY_MIXED, '');
+$GLOBALS['modname'] = FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '');
+$GLOBALS['op'] = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
+$GLOBALS['req'] = FormaLms\lib\Get::req('r', DOTY_MIXED, '');
 
 YuiLib::activateConnectLoadingBox();
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 // instanciate the page-writer that we want (maybe we can rewrite it in a
 // different way with the introduction of the layout manager)
 if (isset($_GET['no_redirect']) || isset($_POST['no_redirect'])) {

@@ -27,7 +27,7 @@ class MediagalleryAdmController extends AdmController
         require_once Forma::inc(_lib_ . '/formatable/include.php');
 
         if (!$type) {
-            $type = Forma\lib\Get::req('type', DOTY_STRING, null);
+            $type = FormaLms\lib\Get::req('type', DOTY_STRING, null);
         }
         $authentic_request = Util::getSignature();
 
@@ -70,9 +70,9 @@ class MediagalleryAdmController extends AdmController
             return false;
         }
 
-        if ((Forma\lib\Get::sett('htmledit_image_godadmin') && $level_id == ADMIN_GROUP_GODADMIN) ||
-            ((Forma\lib\Get::sett('htmledit_image_admin')) && ($level_id == ADMIN_GROUP_ADMIN)) ||
-            ((Forma\lib\Get::sett('htmledit_image_user')) && ($level_id == ADMIN_GROUP_USER))
+        if ((FormaLms\lib\Get::sett('htmledit_image_godadmin') && $level_id == ADMIN_GROUP_GODADMIN) ||
+            ((FormaLms\lib\Get::sett('htmledit_image_admin')) && ($level_id == ADMIN_GROUP_ADMIN)) ||
+            ((FormaLms\lib\Get::sett('htmledit_image_user')) && ($level_id == ADMIN_GROUP_USER))
         ) {
             return true;
         } else {
@@ -90,7 +90,7 @@ class MediagalleryAdmController extends AdmController
         include_once _base_ . '/lib/lib.multimedia.php';
 
         $user_id = Docebo::user()->getIdSt();
-        $type = Forma\lib\Get::req('type', DOTY_STRING, null);
+        $type = FormaLms\lib\Get::req('type', DOTY_STRING, null);
         $msg = $error = null;
 
         if ((isset($_FILES['file']['name'])) && (!empty($_FILES['file']['name']))) {
@@ -99,7 +99,7 @@ class MediagalleryAdmController extends AdmController
             $tmp_fname = $_FILES['file']['tmp_name'];
             $real_fname = $user_id . '_' . mt_rand(0, 100) . '_' . time() . '_' . $fname;
 
-            $valid_ext = explode(',', Forma\lib\Get::sett('file_upload_whitelist', ''));
+            $valid_ext = explode(',', FormaLms\lib\Get::sett('file_upload_whitelist', ''));
             $ext = strtolower(end(explode('.', $fname)));
             if (!in_array($ext, $valid_ext)) {
                 $error = Lang::t('_INVALID_EXTENSION', 'standard');
@@ -148,7 +148,7 @@ class MediagalleryAdmController extends AdmController
     public function deleteTask()
     {
         $user_id = (int) Docebo::user()->getIdSt();
-        $id = Forma\lib\Get::req('id', DOTY_STRING, null);
+        $id = FormaLms\lib\Get::req('id', DOTY_STRING, null);
 
         define('_USER_FPATH_INTERNAL', '/common/users/');
         define('_USER_FPATH', $GLOBALS['where_files_relative'] . _USER_FPATH_INTERNAL);
@@ -186,7 +186,7 @@ class MediagalleryAdmController extends AdmController
 
     public function listTask()
     {
-        $type = Forma\lib\Get::req('type', DOTY_STRING, null);
+        $type = FormaLms\lib\Get::req('type', DOTY_STRING, null);
 
         define('_USER_FPATH_INTERNAL', '/common/users/');
         define('_USER_FPATH', $GLOBALS['where_files_relative'] . _USER_FPATH_INTERNAL);

@@ -40,7 +40,7 @@ class Module_Course extends LmsModule
     {
         switch ($GLOBALS['op']) {
             case 'showresults':
-                $id_course = Forma\lib\Get::req('id_course', DOTY_INT, false);
+                $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, false);
                 $this->session->set('idCourse',$id_course);
                 $this->session->save();
                 Util::jump_to('index.php?modname=organization&op=showresults&idcourse=' . $id_course);
@@ -51,7 +51,7 @@ class Module_Course extends LmsModule
 
                 require_once _base_ . '/lib/lib.urlmanager.php';
                 $url = &UrlManager::getInstance('course');
-                $url->setStdQuery(Forma\lib\Get::home_page_query());
+                $url->setStdQuery(FormaLms\lib\Get::home_page_query());
 
                 mycourses($url);
             ; break;

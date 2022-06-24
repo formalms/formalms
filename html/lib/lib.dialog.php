@@ -18,7 +18,7 @@ function addDialogLibraries()
     YuiLib::load('container,selector');
 
     //add js file for courses
-    Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.dialog.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.dialog.js', true, true);
 }
 
 /*
@@ -163,7 +163,7 @@ function setupSimpleFormDialogBox(
 function initDialogs()
 {
     require_once _base_ . '/lib/lib.json.php';
-    Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
     $json = new Services_JSON();
     $script = 'YAHOO.dialogConstants.setProperties({'
         . 'CONFIRM: ' . $json->encode(Lang::t('_CONFIRM', 'standard')) . ', '
@@ -172,8 +172,8 @@ function initDialogs()
         . 'LOADING: ' . $json->encode(Lang::t('_LOADING', 'standard')) . ', '
         . 'ERROR: ' . $json->encode(Lang::t('_OPERATION_FAILURE', 'standard')) . ', '
         . 'SERVER_ERROR: ' . $json->encode(Lang::t('_CONNECTION_ERROR', 'standard')) . ', '
-        . 'loadingIcon: ' . $json->encode(Forma\lib\Get::tmpl_path() . 'images/standard/loadbar.gif') . ', '
-        . 'smallLoadingIcon: ' . $json->encode(Forma\lib\Get::tmpl_path() . 'images/standard/loading_circle.gif') . ', '
+        . 'loadingIcon: ' . $json->encode(FormaLms\lib\Get::tmpl_path() . 'images/standard/loadbar.gif') . ', '
+        . 'smallLoadingIcon: ' . $json->encode(FormaLms\lib\Get::tmpl_path() . 'images/standard/loading_circle.gif') . ', '
         . 'authentication: "' . Util::getSignature() . '" '
         . '});' . "\n";
     cout('<script type="text/javascript">' . $script . '</script>', 'scripts');

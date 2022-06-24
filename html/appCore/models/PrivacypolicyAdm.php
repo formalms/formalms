@@ -42,7 +42,7 @@ class PrivacypolicyAdm extends Model
         }
 
         $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-        $results = (isset($pagination['results']) ? $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $results = (isset($pagination['results']) ? $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
 
         $sort = 'name';
         if (isset($pagination['sort'])) {
@@ -71,7 +71,7 @@ class PrivacypolicyAdm extends Model
         $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ';
 
         $startIndex = (isset($conditions['startIndex']) ? $conditions['startIndex'] : 0);
-        $results = (isset($conditions['results']) ? $conditions['results'] : Forma\lib\Get::sett('visuItem'));
+        $results = (isset($conditions['results']) ? $conditions['results'] : FormaLms\lib\Get::sett('visuItem'));
         $query .= 'LIMIT ' . (int) $startIndex . ', ' . (int) $results;
 
         $res = $this->db->query($query);

@@ -252,7 +252,7 @@ class ListView
         $this->id = $id;
         $this->itemSelected = [];
         $this->lang = &DoceboLanguage::createInstance('standard', 'framework');
-        $this->startRow = Forma\lib\Get::req('ini', DOTY_INT, 0);
+        $this->startRow = FormaLms\lib\Get::req('ini', DOTY_INT, 0);
     }
 
     public function getOp()
@@ -283,7 +283,7 @@ class ListView
             $this->cancel = false;
         }
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if (isset($arrayState[$this->_getIdInitRowId()])) {
             $this->startRow = (key($arrayState[$this->_getIdInitRowId()]) - 1) * $this->_getRowsPage();
             $session->set($this->id . '_cache_page',$this->startRow);

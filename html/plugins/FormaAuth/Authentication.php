@@ -28,7 +28,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         return [
             'name' => 'FormaAuth',
             'type' => self::AUTH_TYPE_BASE,
-            'form' => Form::openForm('login_confirm', \Forma\lib\Get::rel_path('base') . '/index.php?r=' . _login_ . '&plugin=' . Plugin::getName() . $redirect)
+            'form' => Form::openForm('login_confirm', \FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _login_ . '&plugin=' . Plugin::getName() . $redirect)
                 //  . Form::getHidden("plugin", "plugin", "FormaAuth")
                 //  . Form::getTextfield(Lang::t("_USERNAME", "login"), "login_userid", "login_userid", 255)
                 . Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t('_USERNAME', 'login') . '"')

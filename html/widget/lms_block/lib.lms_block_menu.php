@@ -201,7 +201,7 @@ class Lms_BlockWidget_menu extends Widget
     {
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
-        $idCommonLabel = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('id_common_label');
+        $idCommonLabel = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('id_common_label');
         echo '<h2 class="heading">' . Lang::t('_LABEL', 'catalogue') . '</h2>' . '<div class="content">' . Form::openForm('label_form', 'index.php?r=elearning/show') . Form::getDropdown(Lang::t('_LABELS', 'catalogue'), 'id_common_label_dd', 'id_common_label', $label_model->getDropdownLabelForUser(Docebo::user()->getId()), ($idCommonLabel == -1 ? -2 : $idCommonLabel)) . Form::closeForm() . '<script type="text/javascript">' . 'var dd = YAHOO.util.Dom.get(\'id_common_label_dd\');' . 'YAHOO.util.Event.onDOMReady(YAHOO.util.Event.addListener(dd, "change", function(e){var form = YAHOO.util.Dom.get(\'label_form\');form.submit();}));' . '</script>' . '</div>';
     }
 
@@ -209,14 +209,14 @@ class Lms_BlockWidget_menu extends Widget
     {
         //		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
         $str = '';
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/appLms/views/menu/js/lms_block_menu.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/appLms/views/menu/js/lms_block_menu.js', true, true);
         $period_start = '';
         $period_end = '';
 
         // extract checking period
         $year = date('Y');
         $p_list = [];
-        $p_selected = Forma\lib\Get::pReq('credits_period', DOTY_INT, 0);
+        $p_selected = FormaLms\lib\Get::pReq('credits_period', DOTY_INT, 0);
         $p_res = sql_query('SELECT * FROM %lms_time_period ORDER BY end_date DESC, start_date DESC');
         if (sql_num_rows($p_res) > 0) {
             while ($obj = sql_fetch_object($p_res)) {

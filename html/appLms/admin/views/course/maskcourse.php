@@ -1,5 +1,5 @@
 <?php
-Forma\lib\Get::title([
+FormaLms\lib\Get::title([
     'index.php?r=' . $base_link_course . '/show' => Lang::t('_COURSE', 'course'),
     ($id_course === false
         ? Lang::t('_NEW_COURSE', 'course')
@@ -16,7 +16,7 @@ $htmlData = '';
 
 <div class="std_block">
     <?php
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $htmlData .= (Form::openForm('maskcourse_form', 'index.php?r=' . $base_link_course . '/' . ($id_course === false ? 'newcourse' : 'modcourse'), false, 'post', 'multipart/form-data')
         . Form::getHidden('id_course', 'id_course', $id_course)

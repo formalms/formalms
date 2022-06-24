@@ -30,7 +30,7 @@ Boot::init(BOOT_PAGE_WR);
 if (!empty($_GET['op'])) {
     switch ($_GET['op']) {
         case 'ok':  // redirect to the success message
-            $link = Forma\lib\Get::rel_path('lms') . '/index.php?r=cart/show&ok=1';
+            $link = FormaLms\lib\Get::rel_path('lms') . '/index.php?r=cart/show&ok=1';
             Util::jump_to($link);
          break;
     }

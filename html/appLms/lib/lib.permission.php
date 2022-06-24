@@ -39,10 +39,10 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
         default:  $suff = $mode;
     }
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = ($session->has('idCourse') && !empty($session->get('idCourse'))) ? $session->get('idCourse') : null;
 
-    $role = '/' . Forma\lib\Get::cur_plat() . '/'
+    $role = '/' . FormaLms\lib\Get::cur_plat() . '/'
         . ($idCourse && $is_public == false ? 'course/private/' . $idCourse . '/' : 'course/public/')
         . $mod_name . '/' . $suff;
     if (!$return_value && $idCourse) {
@@ -79,7 +79,7 @@ function checkPermForCourse($mode, $id_course, $return_value = false, $use_mod_n
         default:  $suff = $mode;
     }
 
-    $role = '/' . Forma\lib\Get::cur_plat() . '/course/private/' . $id_course . '/' . $mod_name . '/' . $suff;
+    $role = '/' . FormaLms\lib\Get::cur_plat() . '/course/private/' . $id_course . '/' . $mod_name . '/' . $suff;
 
     if (!$return_value && isset($id_course)) {
         TrackUser::setActionTrack(getLogUserId(), $id_course, $mod_name, $suff);

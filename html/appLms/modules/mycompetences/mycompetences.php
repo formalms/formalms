@@ -38,7 +38,7 @@ function mycompetences(&$url)
     //*******************
 
     require_once _base_ . '/lib/lib.table.php';
-    $table = new Table(Forma\lib\Get::sett('visuItem'), Lang::t('_COMPETENCES'), Lang::t('_COMPETENCES'));
+    $table = new Table(FormaLms\lib\Get::sett('visuItem'), Lang::t('_COMPETENCES'), Lang::t('_COMPETENCES'));
 
     $style_h = ['', '', 'image', 'image', 'image', 'image', 'image'];
     $label_h = [

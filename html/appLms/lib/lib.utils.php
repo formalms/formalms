@@ -29,7 +29,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  **/
 function firstPage($idMain = false)
 {
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $query_main = '
 	SELECT module.idModule, main.idMain, module.module_name, module.default_op, module.token_associated 
 	FROM ( %lms_menucourse_main AS main JOIN

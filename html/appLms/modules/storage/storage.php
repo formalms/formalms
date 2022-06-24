@@ -23,7 +23,7 @@ $_tab_op_map = [
 
 function save_state(&$data)
 {
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $session->set('storage', $data);
     $session->save();
@@ -46,7 +46,7 @@ function &create_TabView($op)
     }
 
    
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $extra_data = $session->get('storage',[]);
 
     $tv->parseInput($_POST, $extra_data);

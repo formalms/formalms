@@ -63,7 +63,7 @@ class Mysql_DbConn extends DbConn
 
         // change charset for utf8 (or other if user config in another way)
         // connection with the server
-        $charset = Forma\lib\Get::cfg('db_charset', 'utf8');
+        $charset = FormaLms\lib\Get::cfg('db_charset', 'utf8');
         $this->query("SET NAMES '" . $charset . "'");
         $this->query("SET CHARACTER SET '" . $charset . "'");
 
@@ -74,7 +74,7 @@ class Mysql_DbConn extends DbConn
     {
         // set connection timezone according to php settings
 
-        if (Forma\lib\Get::cfg('set_mysql_tz', false)) {
+        if (FormaLms\lib\Get::cfg('set_mysql_tz', false)) {
             $dt = new DateTime();
             $offset = $dt->format('P');		// get current timezone offeset
             $this->query("SET time_zone='" . $offset . "'");
@@ -283,7 +283,7 @@ class Mysql_DbConn extends DbConn
 
     public function query_log($qtxt, $time_used = false)
     {
-        if (Forma\lib\Get::sett('do_debug', 'off') == 'off') {
+        if (FormaLms\lib\Get::sett('do_debug', 'off') == 'off') {
             return;
         }
         $time_used = number_format($time_used, 6);

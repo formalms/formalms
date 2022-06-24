@@ -13,7 +13,7 @@
         <?php } ?>
     </ul>
     <?php
-    echo Form::openForm('new_password', Forma\lib\Get::rel_path('base') . '/index.php?r=' . _newpwd_)
+    echo Form::openForm('new_password', FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _newpwd_)
               . ($msg ? "<p class='reg_err_data'>" . $msg . '</p>' : '')
               . Form::openElementSpace()
                   . Form::getPassword(Lang::t('_PASSWORD', 'register'), 'new_password', 'new_password', 255)

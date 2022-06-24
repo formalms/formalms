@@ -1,5 +1,5 @@
 <?php
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 $langInstall = $session->get('lang_install');
 $platformArr = $session->get('platform_arr');
 ?>

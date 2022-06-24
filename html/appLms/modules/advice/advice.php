@@ -22,13 +22,13 @@ function adviceList()
 
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _base_ . '/lib/lib.table.php';
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $lang = &DoceboLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
 
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0);
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
     $nav_bar->setLink('index.php?modname=advice&amp;op=advice&amp;tab=advice');
     $ini = $nav_bar->getSelectedElement();
 
@@ -59,7 +59,7 @@ function adviceList()
 			FROM %lms_advice
 			WHERE idCourse='" . $session->get('idCourse') . "' AND idAdvice IN ( " . implode(',', $advice_all) . " )
 			ORDER BY posted DESC
-			LIMIT $ini," . Forma\lib\Get::sett('visuItem');
+			LIMIT $ini," . FormaLms\lib\Get::sett('visuItem');
         $re_advice = sql_query($query_advice);
 
         list($numofadvice) = sql_fetch_row(sql_query("
@@ -136,13 +136,13 @@ function adviceList()
 function archiveList()
 {
     require_once _base_ . '/lib/lib.table.php';
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $lang = &DoceboLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
 
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0, 'button');
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0, 'button');
     $ini = $nav_bar->getSelectedElement();
 
     $query_my_arch_advice = '
@@ -159,7 +159,7 @@ function archiveList()
 			FROM ' . $GLOBALS['prefix_lms'] . "_advice
 			WHERE idCourse='" . $session->get('idCourse') . "' AND idAdvice IN ( " . implode(',', $advice_arch) . " )
 			ORDER BY posted DESC
-			LIMIT $ini," . Forma\lib\Get::sett('visuItem');
+			LIMIT $ini," . FormaLms\lib\Get::sett('visuItem');
         $re_advice = sql_query($query_advice);
 
         list($numofadvice) = sql_fetch_row(sql_query('
@@ -227,7 +227,7 @@ function advice()
     require_once _base_ . '/lib/lib.tab.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $active_tab = Forma\lib\Get::req('tab', DOTY_ALPHANUM, 'advice');
+    $active_tab = FormaLms\lib\Get::req('tab', DOTY_ALPHANUM, 'advice');
 
     $lang = &DoceboLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
@@ -271,7 +271,7 @@ function advice()
 function addadvice()
 {
     checkPerm('mod');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.form.php';
     $lang = &DoceboLanguage::createInstance('advice');
     $form = new Form();
@@ -317,7 +317,7 @@ function addadvice()
 function insadvice()
 {
     checkPerm('mod');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($_REQUEST['title'] == '') {
         $_REQUEST['title'] = Lang::t('_NOTITLE');
     }
@@ -388,14 +388,14 @@ function insadvice()
     $_REQUEST['description'] = str_replace(['\r', '\n'], '', $_REQUEST['description']);
     $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
     $msg_composer->setBodyLangText('email', '_ALERT_TEXT', [
-        '[url]' => Forma\lib\Get::site_url(),
+        '[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
         '[title]' => stripslashes($_REQUEST['title']),
         '[text]' => stripslashes($_REQUEST['description']),
     ]);
 
     $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', [
-        '[url]' => Forma\lib\Get::site_url(),
+        '[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
         '[title]' => stripslashes($_REQUEST['title']),
         '[text]' => stripslashes($_REQUEST['description']),
@@ -482,7 +482,7 @@ function upadvice()
 function modreader()
 {
     checkPerm('mod');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
     $lang = &DoceboLanguage::createInstance('advice', 'lms');
     $out = &$GLOBALS['page'];
@@ -551,7 +551,7 @@ function modreader()
 function updreader()
 {
     checkPerm('mod');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
 
     $lang = &DoceboLanguage::createInstance('advice', 'lms');
@@ -616,14 +616,14 @@ function updreader()
 
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT', false);
         $msg_composer->setBodyLangText('email', '_ALERT_TEXT', [
-            '[url]' => Forma\lib\Get::site_url(),
+            '[url]' => FormaLms\lib\Get::site_url(),
             '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
             '[title]' => stripslashes($title),
             '[text]' => stripslashes($description),
         ]);
 
         $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_SMS', [
-            '[url]' => Forma\lib\Get::site_url(),
+            '[url]' => FormaLms\lib\Get::site_url(),
             '[course]' => $GLOBALS['course_descriptor']->getValue('name'),
             '[title]' => stripslashes($title),
             '[text]' => stripslashes($description),

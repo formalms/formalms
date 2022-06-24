@@ -57,7 +57,7 @@ class DateManager
 
         foreach ($result as $row){
             if (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all) {
-                $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+                $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
                 if ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter')) && $session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
                     if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0 && strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                         ++$res;
@@ -94,7 +94,7 @@ class DateManager
         $res = 0;
 
         foreach ($result as $row){
-            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+            $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
             if ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter')) && $session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
                 if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0 && strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                     ++$res;
@@ -335,7 +335,7 @@ class DateManager
                     $row['num_day'] = $row['num_day'] / $row['user_subscribed'];
                 }
 
-                $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+                $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
                 if ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter')) && $session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
                     if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0 && strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
                         $res[$row['id_date']] = $row;
@@ -1580,10 +1580,10 @@ class DateManager
                 'presence' => '<a href="index.php?r=alms/classroom/presence&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . Lang::t('_ATTENDANCE', 'course') . '</a>',
                 'num_day' => $num_day,
                 'user_subscribed' => $user_subscribed,
-                'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
+                'mod' => '<a href="index.php?r=alms/classroom/updateClassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
                 'del' => 'ajax.adm_server.php?r=alms/classroom/delclassroom&id_course=' . $id_course . '&amp;id_date=' . $id_date,
                 'unsubscribe_date_limit' => $unsubscribe_date_limit,
-                'registro' => '<a href="index.php?r=alms/classroom/classroomDateDays&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . Forma\lib\Get::img('standard/date.png', Lang::t('_DAYS', 'course')) . '</a>',
+                'registro' => '<a href="index.php?r=alms/classroom/classroomDateDays&id_course=' . $id_course . '&amp;id_date=' . $id_date . '">' . FormaLms\lib\Get::img('standard/date.png', Lang::t('_DAYS', 'course')) . '</a>',
             ];
         }
 

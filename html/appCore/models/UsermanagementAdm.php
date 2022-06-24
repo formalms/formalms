@@ -73,7 +73,7 @@ class UsermanagementAdm extends Model
 
             return $names[$idOrg];
         } else {
-            $output .= Forma\lib\Get::sett('title_organigram_chart', '') . ' (root)';
+            $output .= FormaLms\lib\Get::sett('title_organigram_chart', '') . ' (root)';
         }
 
         return $output;
@@ -187,7 +187,7 @@ class UsermanagementAdm extends Model
 
         //read values for pagination, or use default if a value is not set
         $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-        $results = (isset($pagination['results']) ? $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $results = (isset($pagination['results']) ? $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
 
         $sort = 'u.userid';
         $dir = 'ASC';
@@ -1102,7 +1102,7 @@ class UsermanagementAdm extends Model
 
         if (property_exists($userdata, 'userid') && $userdata->userid != '') {
             $acl_man = Docebo::user()->getAclManager();
-            if (Forma\lib\Get::sett('custom_fields_mandatory_for_admin', 'off') == 'on') {
+            if (FormaLms\lib\Get::sett('custom_fields_mandatory_for_admin', 'off') == 'on') {
                 $fields = new FieldList();
                 $filledFieldsForUser = $fields->isFilledFieldsForUser(0);
                 if ($filledFieldsForUser !== true) {
@@ -1271,7 +1271,7 @@ class UsermanagementAdm extends Model
                 //set custom fields
                 $fields = new FieldList();
                 $fields->storeFieldsForUser($idst);
-                if (Forma\lib\Get::sett('custom_fields_mandatory_for_admin', 'off') == 'on') {
+                if (FormaLms\lib\Get::sett('custom_fields_mandatory_for_admin', 'off') == 'on') {
                     $result = $fields->isFilledFieldsForUser($idst);
                     if ($result !== true) {
                         $result = implode('<br/>', $result);
@@ -1966,7 +1966,7 @@ class UsermanagementAdm extends Model
     public function getFolderTranslations($idOrg, $array = false)
     {
         if ($idOrg == 0) {
-            $translation = Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', ''));
+            $translation = FormaLms\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', ''));
         }
 
         $query = 'SELECT * FROM %adm_org_chart WHERE id_dir=' . (int) $idOrg;
@@ -2442,7 +2442,7 @@ class UsermanagementAdm extends Model
     public function searchUsersByUserid($query, $limit = false, $filter = false)
     {
         if ((int) $limit <= 0) {
-            $limit = Forma\lib\Get::sett('visuItem', 25);
+            $limit = FormaLms\lib\Get::sett('visuItem', 25);
         }
         $output = [];
 
@@ -2493,9 +2493,9 @@ class UsermanagementAdm extends Model
             }
 
             $array_subst = [
-                '[url]' => Forma\lib\Get::site_url(),
+                '[url]' => FormaLms\lib\Get::site_url(),
                 '[userid]' => $this->aclManager->getUserid($userid),
-                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
+                '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
                 '[password]' => $new_password,
             ];
 
@@ -2517,8 +2517,8 @@ class UsermanagementAdm extends Model
             $uinfo = Docebo::aclm()->getUser($userid, false);
 
             $array_subst = [
-                '[url]' => Forma\lib\Get::site_url(),
-                '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
+                '[url]' => FormaLms\lib\Get::site_url(),
+                '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
                 '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                 '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                 '[username]' => $userid,
@@ -2614,7 +2614,7 @@ class UsermanagementAdm extends Model
 
         if (!empty($approved)) {
             $pl_man = &PlatformManager::createInstance();
-            $array_subst = ['[url]' => Forma\lib\Get::site_url()]; //$GLOBALS[$pl_man->getHomePlatform()]['url']);
+            $array_subst = ['[url]' => FormaLms\lib\Get::site_url()]; //$GLOBALS[$pl_man->getHomePlatform()]['url']);
             $msg_composer2 = new EventMessageComposer();
             $msg_composer2->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
             $msg_composer2->setBodyLangText('email', '_APPROVED_USER_TEXT', $array_subst);
@@ -2687,7 +2687,7 @@ class UsermanagementAdm extends Model
         }
 
         $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-        $results = (isset($pagination['results']) ? $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $results = (isset($pagination['results']) ? $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
 
         $dir = 'ASC';
         if (isset($pagination['dir'])) {
@@ -2785,7 +2785,7 @@ class UsermanagementAdm extends Model
         }
 
         $startIndex = (isset($pagination['startIndex']) ? $pagination['startIndex'] : 0);
-        $results = (isset($pagination['results']) ? $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $results = (isset($pagination['results']) ? $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
 
         $dir = 'ASC';
         if (isset($pagination['dir'])) {

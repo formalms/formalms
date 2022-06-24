@@ -857,7 +857,7 @@ class Form
         $i = 0;
         if (is_array($all_value)) {
             foreach ($all_value as $key => $value) {
-                $img = ($value['image'] !== '' ? $GLOBALS['where_files_relative'] . '/appLms/label/' . $value['image'] : Forma\lib\Get::tmpl_path('base') . 'images/course/label_image.png');
+                $img = ($value['image'] !== '' ? $GLOBALS['where_files_relative'] . '/appLms/label/' . $value['image'] : FormaLms\lib\Get::tmpl_path('base') . 'images/course/label_image.png');
                 $data_content = ' data-content="<img src=' . $img . ' height=25 width=25>&nbsp;' . $value['title'] . '"';
                 $s = ($selected == $key) ? ' selected ' : '';
                 $html_code .= '<option' . $data_content . ' value=' . $key . $s . '></option>' . "\n";

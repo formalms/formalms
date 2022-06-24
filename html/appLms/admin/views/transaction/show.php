@@ -5,9 +5,9 @@
     $this->widget('table', [
         'id' => 'transaction_table',
         'ajaxUrl' => 'ajax.adm_server.php?r=alms/transaction/getTransactionData',
-        'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+        'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
         'startIndex' => 0,
-        'results' => Forma\lib\Get::sett('visuItem', 25),
+        'results' => FormaLms\lib\Get::sett('visuItem', 25),
         'sort' => 'date_creation',
         'dir' => 'desc',
         'columns' => [
@@ -18,7 +18,7 @@
             ['key' => 'date_activated', 'label' => Lang::t('_ACTIVE', 'transaction'), 'sortable' => true],
             ['key' => 'price', 'label' => Lang::t('_PRICE', 'transaction')],
             ['key' => 'paid', 'label' => '', 'className' => 'img-cell'],
-            ['key' => 'edit', 'label' => Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'transaction')), 'className' => 'img-cell'],
+            ['key' => 'edit', 'label' => FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'transaction')), 'className' => 'img-cell'],
         ],
         'fields' => ['id_trans', 'userid', 'firstname', 'lastname', 'date_creation', 'date_activated', 'price', 'paid', 'edit'],
         'show' => 'table',

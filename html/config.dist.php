@@ -128,8 +128,8 @@ $cfg['do_debug'] 			    = false; //false || (bool)getenv('DO_DEBUG');
 $cfg['demo_mode']			    = false;
 
 
-//$cfg['session']['handler'] = \Forma\lib\Session\SessionManager::FILESYSTEM; //filesystem | memcached | redis | pdo | mongodb
-//$cfg['session']['url'] = '';
+//$cfg['session']['handler'] = \FormaLms\lib\Session\SessionManager::FILESYSTEM; //filesystem | memcached | redis | pdo | mongodb
+//$cfg['session']['url'] = ''; // dsn pattern url to session server
 //$cfg['session']['timeout'] = (float)'2.5';
 //$cfg['session']['lifetime'] = (int) 3600; //session lifetime
 //$cfg['session']['prefix'] = 'core_sessions'; //session prefix or session table name in case of pdo
@@ -139,6 +139,7 @@ $cfg['demo_mode']			    = false;
 //$cfg['session']['authentication'] = true; //true | false
 //$cfg['session']['user'] = $cfg['db_user']; // authentication user session handler
 //$cfg['session']['pass'] = $cfg['db_pass']; // authentication psw session handler
+//$cfg['session']['options'] = []; // other options key value array to pass based on selected handler
 
 
 /*

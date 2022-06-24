@@ -23,13 +23,13 @@ function GetAdminPanel()
             <a href="#"><i class="fa fa-user"></i>&nbsp;<b>' . Docebo::user()->getUserName() . '</b></a>
             <ul> ';
 
-    if (Forma\lib\Get::sett('profile_modify', 'allow') != 'disallow') {
+    if (FormaLms\lib\Get::sett('profile_modify', 'allow') != 'disallow') {
         $ret_str .= '<li>
                         <a href="index.php?r=lms/profile/show">' . Lang::t('_PROFILE', 'profile') . '</a>   
                   </li> ';
     }
     $ret_str .= '<li> 
-            <a id="logout"  href="' . Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_ . '">                
+            <a id="logout"  href="' . FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_ . '">                
                 <i class="fa fa-power-off" aria-hidden="true"></i>&nbsp;' . Lang::t('_LOGOUT', 'standard') . '</span>
             </a>
           </li>

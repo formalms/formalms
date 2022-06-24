@@ -61,9 +61,9 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
 
         $this->config = [
             MAIL_MULTIMODE => MAIL_SINGLE,
-            MAIL_SENDER_ACLNAME => Forma\lib\Get::sett('use_sender_aclname', false),
-            MAIL_RECIPIENTSCC => Forma\lib\Get::sett('send_cc_for_system_emails', ''),
-            MAIL_RECIPIENTSBCC => Forma\lib\Get::sett('send_ccn_for_system_emails', ''),
+            MAIL_SENDER_ACLNAME => FormaLms\lib\Get::sett('use_sender_aclname', false),
+            MAIL_RECIPIENTSCC => FormaLms\lib\Get::sett('send_cc_for_system_emails', ''),
+            MAIL_RECIPIENTSBCC => FormaLms\lib\Get::sett('send_ccn_for_system_emails', ''),
             MAIL_RECIPIENT_ACLNAME => false,
             MAIL_REPLYTO_ACLNAME => false,
             MAIL_HTML => true,
@@ -108,7 +108,7 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
 
         foreach ($defaultPaths as $path) {
             if (file_exists($path)) {
-                Forma\appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
+                FormaLms\appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
             }
         }
     }
@@ -165,7 +165,7 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
     public function SendMail(string $sender, array $recipients, string $subject, string $body, array $attachments = [], array $params = [])
     {
         $output = [];
-        if (Forma\lib\Get::cfg('demo_mode')) {
+        if (FormaLms\lib\Get::cfg('demo_mode')) {
             $this->ResetToDefault();
 
             return false;
@@ -267,10 +267,10 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
 
             try {
                 if (!empty($eventResponse['path'])) {
-                    Forma\appCore\Template\TwigManager::getInstance()->addPathInLoader($eventResponse['layoutPath']);
+                    FormaLms\appCore\Template\TwigManager::getInstance()->addPathInLoader($eventResponse['layoutPath']);
                 }
 
-                $html = Forma\appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'],
+                $html = FormaLms\appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'],
                     [
                         'subject' => $eventResponse['subject'],
                         'body' => $eventResponse['body'],
@@ -318,9 +318,9 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
             }
         }
 
-        // if(Forma\lib\Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(Forma\lib\Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false){
-        if (Forma\lib\Get::sett('send_cc_for_system_emails', '') !== '') {
-            $arr_cc_for_system_emails = explode(' ', Forma\lib\Get::sett('send_cc_for_system_emails'));
+        // if(FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(FormaLms\lib\Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false){
+        if (FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '') {
+            $arr_cc_for_system_emails = explode(' ', FormaLms\lib\Get::sett('send_cc_for_system_emails'));
             foreach ($arr_cc_for_system_emails as $user_cc_for_system_emails) {
                 try {
                     $this->addCC($user_cc_for_system_emails);
@@ -329,8 +329,8 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
             }
         }
 
-        if (Forma\lib\Get::sett('send_ccn_for_system_emails', '') !== '') {
-            $arr_ccn_for_system_emails = explode(' ', Forma\lib\Get::sett('send_ccn_for_system_emails'));
+        if (FormaLms\lib\Get::sett('send_ccn_for_system_emails', '') !== '') {
+            $arr_ccn_for_system_emails = explode(' ', FormaLms\lib\Get::sett('send_ccn_for_system_emails'));
             foreach ($arr_ccn_for_system_emails as $user_ccn_for_system_emails) {
                 try {
                     $this->addBCC($user_ccn_for_system_emails);

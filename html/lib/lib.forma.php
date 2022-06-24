@@ -23,12 +23,12 @@ class Forma
 {
     public static function usePlugins()
     {
-        return empty($GLOBALS['notuse_plugin']) && empty(\Forma\lib\Session\SessionManager::getInstance()->getSession()->get('notuse_plugin'));
+        return empty($GLOBALS['notuse_plugin']) && empty(\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('notuse_plugin'));
     }
 
     public static function useCustomScripts()
     {
-        return Forma\lib\Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty(\Forma\lib\Session\SessionManager::getInstance()->getSession()->get('notuse_customscript'));
+        return FormaLms\lib\Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty(\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('notuse_customscript'));
     }
 
     /**
@@ -93,31 +93,31 @@ class Forma
 
     public static function addError(string $error): string
     {
-        \Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error',$error);
+        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error',$error);
 
         return $error;
     }
 
     public static function removeErrors(): void
     {
-        \Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->set('error',[]);
+        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->set('error',[]);
     }
 
     public static function errorsExists(): bool
     {
-        return count(\Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error')) > 0;
+        return count(\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error')) > 0;
     }
 
     public static function getLastError($removeErrors = false): string
     {
-        $errors = \Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
+        $errors = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
 
         return end($errors);
     }
 
     public static function getErrors($removeErrors = false): array
     {
-        $errors = \Forma\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
+        $errors = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
         if ($removeErrors) {
             self::removeErrors();
         }

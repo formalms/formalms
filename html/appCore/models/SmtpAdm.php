@@ -168,7 +168,7 @@ final class SmtpAdm extends Model
 
     public static function isEnabledDatabase()
     {
-        $smtpConfigIsEnabled = Forma\lib\Get::cfg('use_smtp_database');
+        $smtpConfigIsEnabled = FormaLms\lib\Get::cfg('use_smtp_database');
 
         switch ($smtpConfigIsEnabled) {
             case 'off':
@@ -212,14 +212,14 @@ final class SmtpAdm extends Model
                 $this->$property = $row['param_value'];
             }
         } else {
-            $this->useSmtp = Forma\lib\Get::cfg('use_smtp');
-            $this->host = Forma\lib\Get::cfg('smtp_host');
-            $this->port = Forma\lib\Get::cfg('smtp_port');
-            $this->secure = Forma\lib\Get::cfg('smtp_secure');
-            $this->autoTls = Forma\lib\Get::cfg('smtp_auto_tls');
-            $this->user = Forma\lib\Get::cfg('smtp_user');
-            $this->pwd = Forma\lib\Get::cfg('smtp_pwd');
-            $this->debug = Forma\lib\Get::cfg('smtp_debug', 0);
+            $this->useSmtp = FormaLms\lib\Get::cfg('use_smtp');
+            $this->host = FormaLms\lib\Get::cfg('smtp_host');
+            $this->port = FormaLms\lib\Get::cfg('smtp_port');
+            $this->secure = FormaLms\lib\Get::cfg('smtp_secure');
+            $this->autoTls = FormaLms\lib\Get::cfg('smtp_auto_tls');
+            $this->user = FormaLms\lib\Get::cfg('smtp_user');
+            $this->pwd = FormaLms\lib\Get::cfg('smtp_pwd');
+            $this->debug = FormaLms\lib\Get::cfg('smtp_debug', 0);
         }
     }
 }

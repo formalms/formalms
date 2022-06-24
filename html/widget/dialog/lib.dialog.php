@@ -163,8 +163,8 @@ class DialogWidget extends Widget
         YuiLib::load('base,container');
 
         // Commodities functions
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
 
         require_once _base_ . '/lib/lib.dialog.php';
         initDialogs();

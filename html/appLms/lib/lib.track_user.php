@@ -20,7 +20,7 @@ class TrackUser
 {
     public static function createSessionCourseTrack()
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if ($session->get('is_ghost', false) === true) {
             return;
         }
@@ -55,7 +55,7 @@ class TrackUser
 
     public static function setActionTrack($id_user, $id_course, $mod_name, $mode)
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         if ($session->get('is_ghost', false) === true) {
             return;
@@ -72,7 +72,7 @@ class TrackUser
 		WHERE idEnter = '" . $session->get('id_enter_course') . "' "
             . "AND idCourse = '" . $id_course . "' AND idUser = '" . $id_user . "'");
 
-        if (Forma\lib\Get::sett('tracking') == 'on' && $session->get('levelCourse') != '2') {
+        if (FormaLms\lib\Get::sett('tracking') == 'on' && $session->get('levelCourse') != '2') {
             $query_track = "
 			INSERT INTO %lms_trackingeneral
 			( idUser, idEnter, idCourse, function, type, timeof, session_id, ip ) VALUES (
@@ -90,14 +90,14 @@ class TrackUser
 
     public static function closeSessionCourseTrack()
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         TrackUser::setActionTrack(getLogUserId(), $session->get('idCourse'), '_COURSE_LIST', 'view');
     }
 
     public static function logoutSessionCourseTrack()
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if ($session->get('idCourse')) {
             TrackUser::setActionTrack(getLogUserId(), $session->get('idCourse'), '_LOGOUT', 'view');
         }
@@ -105,7 +105,7 @@ class TrackUser
 
     public static function getUserTotalCourseTime($idst_user, $id_course)
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         if ($session->get('is_ghost', false) === true) {
             return 0;
@@ -124,7 +124,7 @@ class TrackUser
 
     public static function getUserPreviousSessionCourseTime($idst_user, $id_course)
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         if ($session->get('is_ghost', false) === true) {
             return 0;
@@ -144,7 +144,7 @@ class TrackUser
 
     public static function getUserCurrentSessionCourseTime($id_course)
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         if ($session->get('is_ghost', false) === true) {
             return 0;
@@ -200,7 +200,7 @@ class TrackUser
 
     public static function getLastAccessToCourse($id_user)
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if ($session->get('is_ghost', false) === true) {
             return 0;
         }
@@ -221,7 +221,7 @@ class TrackUser
 
     public static function checkSession($id_user)
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         if ($session->get('is_ghost', false) === true) {
             return true;

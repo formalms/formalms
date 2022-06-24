@@ -19,7 +19,7 @@ class Step3Controller extends StepController
 
     public function validate()
     {
-        $agree = Forma\lib\Get::pReq('agree', DOTY_INT, 0);
+        $agree = FormaLms\lib\Get::pReq('agree', DOTY_INT, 0);
         if ($agree != 1 && $this->session->get('license_accepted')) {
             return false;
         } else {

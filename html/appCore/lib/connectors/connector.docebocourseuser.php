@@ -599,7 +599,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
             }
             if($this->sendnotify == 1) {
 
-                $array_subst = array(	'[url]' => Forma\lib\Get::site_url(),
+                $array_subst = array(	'[url]' => FormaLms\lib\Get::site_url(),
                                 '[course]' => $arr_id['course_name'] );
                 $msg_composer = new EventMessageComposer();
 
@@ -631,7 +631,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         }
         if ($re_ins) {
             if ($this->sendnotify == 1) {
-                $array_subst = ['[url]' => Forma\lib\Get::site_url(),
+                $array_subst = ['[url]' => FormaLms\lib\Get::site_url(),
                     '[course]' => $course_name, ];
 
                 // message to user that is waiting
@@ -666,7 +666,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
         }
         if ($re_ins) {
             if ($this->sendnotify == 1) {
-                $array_subst = ['[url]' => Forma\lib\Get::site_url(),
+                $array_subst = ['[url]' => FormaLms\lib\Get::site_url(),
                     '[course]' => $arr_id['course_name'], ];
 
                 // message to user that is waiting

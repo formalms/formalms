@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-use Forma\appCore\Template\TwigManager;
+use FormaLms\appCore\Template\TwigManager;
 
 abstract class TemplateController
 {

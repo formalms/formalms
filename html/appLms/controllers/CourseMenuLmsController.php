@@ -45,10 +45,10 @@ class CourseMenuLmsController extends LmsController
 
             $query_course = 'SELECT name, img_course FROM %lms_course WHERE idCourse = ' . $this->idCourse . ' ';
             $course_data = $db->query($query_course);
-            $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
+            $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
             while ($course = $db->fetch_obj($course_data)) {
                 $course_name = $course->name;
-                $course_img = (empty($course->img_course) || is_null($course->img_course)) ? Forma\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path_course . $course->img_course;
+                $course_img = (empty($course->img_course) || is_null($course->img_course)) ? FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path_course . $course->img_course;
             }
 
             // get select menu
@@ -65,7 +65,7 @@ class CourseMenuLmsController extends LmsController
                 ];
                 $id_list[] = '"menu_lat_' . $main->id . '"';
             }
-            $main_menu_id = Forma\lib\Get::req('main_menu_id', DOTY_INT, '') ? Forma\lib\Get::req('main_menu_id', DOTY_INT, '') : $menu_module[0]['id_menu'];
+            $main_menu_id = FormaLms\lib\Get::req('main_menu_id', DOTY_INT, '') ? FormaLms\lib\Get::req('main_menu_id', DOTY_INT, '') : $menu_module[0]['id_menu'];
             // horizontal menu
 
             $menu_horizontal = [];
@@ -239,7 +239,7 @@ class CourseMenuLmsController extends LmsController
 
     public function all()
     {
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $conditions = '';
         if (!empty($filter_text)) {

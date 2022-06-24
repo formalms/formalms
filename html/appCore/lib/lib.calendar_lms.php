@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 require_once _adm_ . '/lib/lib.calevent_lms.php';
 
-use Forma\lib\Session\SessionManager;
+use FormaLms\lib\Session\SessionManager;
 
 class DoceboCal_lms extends DoceboCal_core
 {

@@ -38,7 +38,7 @@ class kbcategorizeWidget extends Widget
     {
         parent::__construct();
         $this->_widget = 'kbcategorize';
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function run()

@@ -31,12 +31,12 @@ class CompetenceselectorWidgetController extends Controller
 
     public function gettreedataTask()
     {
-        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
+        $command = FormaLms\lib\Get::req('command', DOTY_ALPHANUM, '');
 
         switch ($command) {
             case 'expand':
-                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
-                $initial = (Forma\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
+                $initial = (FormaLms\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
                 /*if ($initial) {
                     //get selected category from session and set the expanded tree
@@ -84,14 +84,14 @@ class CompetenceselectorWidgetController extends Controller
     public function gettabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $id_category = Forma\lib\Get::req('id_category', DOTY_INT, 0);
-        $descendants = (Forma\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
+        $descendants = (FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,

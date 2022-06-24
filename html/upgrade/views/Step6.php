@@ -2,7 +2,7 @@
 
 <h3><?php echo Lang::t('_LANGUAGES'); ?></h3>
 
-<?php $session = \Forma\lib\Session\SessionManager::getInstance()->getSession(); ?>
+<?php $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession(); ?>
 
 <div id="import_lang_info">
     <?php

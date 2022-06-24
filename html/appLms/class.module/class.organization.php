@@ -58,7 +58,7 @@ class Module_Organization extends LmsModule
 
         if (!$ready) {
             // contruct and initialize TreeView to manage public repository
-            $id_course = \Forma\lib\Get::req('courseid', DOTY_INT, $this->session->get('idCourse'));
+            $id_course = \FormaLms\lib\Get::req('courseid', DOTY_INT, $this->session->get('idCourse'));
             $this->repoDb = new OrgDirDb($id_course);
 
             /* TODO: ACL */
@@ -136,7 +136,7 @@ class Module_Organization extends LmsModule
                 return true;
         }
 
-        $op = Forma\lib\Get::req('op', DOTY_STRING, '');
+        $op = FormaLms\lib\Get::req('op', DOTY_STRING, '');
         switch ($op) {
             case 'org_select_sco':
             case 'org_categorize_sco':
@@ -222,8 +222,8 @@ class Module_Organization extends LmsModule
 
         if ($GLOBALS['op'] == 'scorm_track') {
             require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php');
-            $user = Forma\lib\Get::req('id_user', DOTY_INT, false);
-            $org = Forma\lib\Get::req('id_org', DOTY_INT, false);
+            $user = FormaLms\lib\Get::req('id_user', DOTY_INT, false);
+            $org = FormaLms\lib\Get::req('id_org', DOTY_INT, false);
             getTrackingTable($user, $org);
 
             return;
@@ -231,8 +231,8 @@ class Module_Organization extends LmsModule
 
         if ($GLOBALS['op'] == 'scorm_history') {
             require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php');
-            $user = Forma\lib\Get::req('id_user', DOTY_INT, false);
-            $obj = Forma\lib\Get::req('id_obj', DOTY_INT, false);
+            $user = FormaLms\lib\Get::req('id_user', DOTY_INT, false);
+            $obj = FormaLms\lib\Get::req('id_obj', DOTY_INT, false);
             getHistoryTable($user, $obj);
 
             return;
@@ -240,8 +240,8 @@ class Module_Organization extends LmsModule
 
         if ($GLOBALS['op'] == 'scorm_interactions') {
             require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php'); //__FILE__.'/appLms/modules/organization/orgresults.php');
-            $user = Forma\lib\Get::req('id_user', DOTY_INT, false);
-            $track = Forma\lib\Get::req('id_track', DOTY_INT, false);
+            $user = FormaLms\lib\Get::req('id_user', DOTY_INT, false);
+            $track = FormaLms\lib\Get::req('id_track', DOTY_INT, false);
             getInteractionsTable($user, $track);
 
             return;
@@ -249,17 +249,17 @@ class Module_Organization extends LmsModule
 
         if ($GLOBALS['op'] === 'test_track') {
             require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php');
-            $user = Forma\lib\Get::req('id_user', DOTY_INT, false);
-            $org = Forma\lib\Get::req('id_org', DOTY_INT, false);
+            $user = FormaLms\lib\Get::req('id_user', DOTY_INT, false);
+            $org = FormaLms\lib\Get::req('id_org', DOTY_INT, false);
             getCompilationTable($user, $org);
 
             return;
         }
 
         if ($GLOBALS['op'] === 'track_details') {
-            $type = Forma\lib\Get::req('type', DOTY_STRING);
-            $user = Forma\lib\Get::req('id_user', DOTY_INT, false);
-            $org = Forma\lib\Get::req('id_org', DOTY_INT, false);
+            $type = FormaLms\lib\Get::req('type', DOTY_STRING);
+            $user = FormaLms\lib\Get::req('id_user', DOTY_INT, false);
+            $org = FormaLms\lib\Get::req('id_org', DOTY_INT, false);
 
             if ($lo_class = createLO($type)) {
                 $lo_class->trackDetails($user, $org);
@@ -274,7 +274,7 @@ class Module_Organization extends LmsModule
             $saveName = $saveObj->getName('organization' . $this->session->get('idCourse'), true);
             $saveObj->save($saveName, $this->treeView->getState());
 
-            $id_item = Forma\lib\Get::req('id_item', DOTY_INT, 0);
+            $id_item = FormaLms\lib\Get::req('id_item', DOTY_INT, 0);
             $folder = $this->repoDb->getFolderById($id_item);
             $idItem = $folder->otherValues[REPOFIELDIDRESOURCE];
             $lo = createLO($folder->otherValues[REPOFIELDOBJECTTYPE], $idItem);
@@ -330,12 +330,12 @@ class Module_Organization extends LmsModule
                 }
             }
 
-            if (Forma\lib\Get::req('edit', DOTY_INT, 0) > 0) {
+            if (FormaLms\lib\Get::req('edit', DOTY_INT, 0) > 0) {
                 Util::jump_to('index.php?modname=storage&op=display');
             }
 
             if ($this->session->has('direct_play')) {
-                $from = Forma\lib\Get::req('from', DOTY_ALPHANUM, '');
+                $from = FormaLms\lib\Get::req('from', DOTY_ALPHANUM, '');
                 //reset cache for the notication
                 UpdatesLms::resetCache();
 
@@ -381,7 +381,7 @@ class Module_Organization extends LmsModule
 
         //--- direct edit item -----------------------------------------------------
         if ($GLOBALS['op'] == 'direct_edit_item') {
-            $id_item = Forma\lib\Get::req('id_item', DOTY_INT, 0);
+            $id_item = FormaLms\lib\Get::req('id_item', DOTY_INT, 0);
             $this->treeView->op = 'editLO';
         }
 

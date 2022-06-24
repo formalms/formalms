@@ -52,7 +52,7 @@ class Learning_Object
         $this->table = '';
 
         $this->plugin_manager = new PluginManager('LearningObject');
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function getIdParam($env = false)

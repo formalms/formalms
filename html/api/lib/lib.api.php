@@ -51,7 +51,7 @@ class API
     {
         $this->db = DbConn::getInstance();
         $this->aclManager = Docebo::user()->getAclManager();
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     /**
@@ -110,14 +110,14 @@ class API
 
         // ---- new auth method (alpha) 20110610 ---- [
 
-        $auth_method = Forma\lib\Get::sett('rest_auth_method', 'none');
+        $auth_method = FormaLms\lib\Get::sett('rest_auth_method', 'none');
 
         // ]----
 
         switch ($auth_method) {
             // use application's pre-set authentication code
             case _AUTH_UCODE:
-                    $auth_code = Forma\lib\Get::sett('rest_auth_code', false);
+                    $auth_code = FormaLms\lib\Get::sett('rest_auth_code', false);
 
                     $headerAuth = str_replace(['FormaLMS', ' '], '', $_SERVER['HTTP_X_AUTHORIZATION']);
 
@@ -136,8 +136,8 @@ class API
                         $now = time();
                         $result = true;
                         $query = "UPDATE %adm_rest_authentication SET last_enter_date='" . date('Y-m-d H:i:s', $now) . "' ";
-                        if (Forma\lib\Get::sett('rest_auth_update', false)) {
-                            $lifetime = Forma\lib\Get::sett('rest_auth_lifetime', 1);
+                        if (FormaLms\lib\Get::sett('rest_auth_update', false)) {
+                            $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
                             $query .= " , expiry_date='" . date('Y-m-d H:i:s', $now + $lifetime) . "' ";
                         }
                         $query .= " WHERE token='$code'";
@@ -178,10 +178,10 @@ class API
         $auth = base64_decode(str_replace('FormaLMS ', '', $_SERVER['HTTP_X_AUTHORIZATION']));
         $params_to_check = $this->getValuesFromParams($params);
 
-        $hash_sha1 = sha1(implode(',', $params_to_check) . ',' . Forma\lib\Get::sett('rest_auth_api_secret', ''));
+        $hash_sha1 = sha1(implode(',', $params_to_check) . ',' . FormaLms\lib\Get::sett('rest_auth_api_secret', ''));
 
         // check if the two hashes match each other
-        if (strtolower($auth) != strtolower(Forma\lib\Get::sett('rest_auth_api_key', '') . ':' . $hash_sha1)) {
+        if (strtolower($auth) != strtolower(FormaLms\lib\Get::sett('rest_auth_api_key', '') . ':' . $hash_sha1)) {
             $result['success'] = false;
             $result['message'] = 'Api Key or Secret not valid';
         }

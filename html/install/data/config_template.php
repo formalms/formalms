@@ -126,7 +126,7 @@ $cfg['do_debug'] 			    = false; //false || (bool)getenv('DO_DEBUG');
 $cfg['demo_mode']			    = false;
 
 
-//$cfg['session']['handler'] = \Forma\lib\Session\SessionManager::FILESYSTEM; //filesystem | memcached | redis | pdo | mongodb
+//$cfg['session']['handler'] = \FormaLms\lib\Session\SessionManager::FILESYSTEM; //filesystem | memcached | redis | pdo | mongodb
 //$cfg['session']['url'] = '';
 //$cfg['session']['timeout'] = (float)'2.5';
 //$cfg['session']['lifetime'] = (int) 3600; //session lifetime

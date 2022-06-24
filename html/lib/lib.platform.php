@@ -211,7 +211,7 @@ class PlatformManager
 
     public function getLanguageForPlatform($platform = false)
     {
-        return Forma\lib\Get::sett('default_language');
+        return FormaLms\lib\Get::sett('default_language');
     }
 
     public function getTemplateForPlatform($platform = false)
@@ -239,7 +239,7 @@ class PlatformManager
                 $menu = eval(' return new ' . $pl_info['class_name_menu'] . "( \$GLOBALS['current_user']); ");
                 $main_voice = $menu->getLevelOne();
 
-                $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+                $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
                 if (!$session->has('current_admin_id_menu')) {
                     $session->set('current_admin_id_menu',key($main_voice));
                 }

@@ -36,11 +36,11 @@ require_once _adm_ . '/class.module/class.definition.php';
 
 // -----------------------------------------------------------------------------
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 $module_cfg = false;
-$GLOBALS['modname'] = Forma\lib\Get::req('modname', DOTY_ALPHANUM, '');
-$GLOBALS['op'] = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
+$GLOBALS['modname'] = FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '');
+$GLOBALS['op'] = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 // create instance of StdPageWriter
 StdPageWriter::createInstance();
 

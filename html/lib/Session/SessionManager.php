@@ -11,15 +11,14 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-namespace Forma\lib\Session;
+namespace FormaLms\lib\Session;
 
-use Forma\lib\Get;
-use Forma\lib\Serializer\FormaSerializer;
-use Forma\lib\Session\Handlers\FilesystemHandler;
-use Forma\lib\Session\Handlers\MemcachedHandler;
-use Forma\lib\Session\Handlers\MongoDbHandler;
-use Forma\lib\Session\Handlers\PdoHandler;
-use Forma\lib\Session\Handlers\RedisHandler;
+use FormaLms\lib\Get;
+use FormaLms\lib\Serializer\FormaSerializer;
+use FormaLms\lib\Session\Handlers\FilesystemHandler;
+use FormaLms\lib\Session\Handlers\MemcachedHandler;
+use FormaLms\lib\Session\Handlers\PdoHandler;
+use FormaLms\lib\Session\Handlers\RedisHandler;
 use \Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
@@ -35,7 +34,7 @@ class SessionManager
 
     private static ?SessionManager $instance = null;
 
-    private Config $config;
+    private SessionConfig $config;
 
     private ?Session $session = null;
 
@@ -55,7 +54,7 @@ class SessionManager
     {
         if (!$this->session) {
             try {
-                $config = FormaSerializer::getInstance()->denormalize($sessionConfig, Config::class);
+                $config = FormaSerializer::getInstance()->denormalize($sessionConfig, SessionConfig::class);
             } catch (\Exception $exception) {
                 die($exception->getMessage());
             }
@@ -95,17 +94,17 @@ class SessionManager
     }
 
     /**
-     * @return Config
+     * @return SessionConfig
      */
-    public function getConfig(): Config
+    public function getConfig(): SessionConfig
     {
         return $this->config;
     }
 
     /**
-     * @param Config $config
+     * @param SessionConfig $config
      */
-    public function setConfig(Config $config): void
+    public function setConfig(SessionConfig $config): void
     {
         $this->config = $config;
     }

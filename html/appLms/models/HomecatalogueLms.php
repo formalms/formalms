@@ -69,7 +69,7 @@ class HomecatalogueLms extends Model
                 $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
             break;
             case 'catalogue':
-                $id_catalogue = Forma\lib\Get::req('id_cata', DOTY_INT, '0');
+                $id_catalogue = FormaLms\lib\Get::req('id_cata', DOTY_INT, '0');
 
                 $catalogue_course = &$cat_man->getCatalogueCourse($id_catalogue);
                 $filter = ' AND idCourse IN (' . implode(',', $catalogue_course) . ')';
@@ -80,7 +80,7 @@ class HomecatalogueLms extends Model
 
         $filter .= ' AND show_rules = 0';
 
-        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
         $query = 'SELECT COUNT(*)'
                     . ' FROM %lms_course'
@@ -130,8 +130,8 @@ class HomecatalogueLms extends Model
         $option = new UserManagerOption();
         $register_type = $option->getOption('register_type');
 
-        $limit = ($page - 1) * Forma\lib\Get::sett('visuItem');
-        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $limit = ($page - 1) * FormaLms\lib\Get::sett('visuItem');
+        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
         $query = 'SELECT *'
                     . ' FROM %lms_course'
@@ -180,7 +180,7 @@ class HomecatalogueLms extends Model
                 $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
             break;
             case 'catalogue':
-                $id_catalogue = Forma\lib\Get::req('id_cata', DOTY_INT, '0');
+                $id_catalogue = FormaLms\lib\Get::req('id_cata', DOTY_INT, '0');
 
                 $catalogue_course = &$cat_man->getCatalogueCourse($id_catalogue);
                 $filter = ' AND idCourse IN (' . implode(',', $catalogue_course) . ')';
@@ -192,14 +192,14 @@ class HomecatalogueLms extends Model
         $filter .= ' AND show_rules = 0';
 
         $login_link = '<a href="index.php">' . Lang::t('_LOG_IN', 'login') . '</a>';
-        $signin_link = '<a href="' . Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_ . '">' . Lang::t('_SIGN_IN', 'login') . '</a>';
+        $signin_link = '<a href="' . FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_ . '">' . Lang::t('_SIGN_IN', 'login') . '</a>';
 
         require_once \Forma::inc(_base_ . '/lib/lib.usermanager.php');
         $option = new UserManagerOption();
         $register_type = $option->getOption('register_type');
 
-        $limit = ($page - 1) * Forma\lib\Get::sett('visuItem');
-        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $limit = ($page - 1) * FormaLms\lib\Get::sett('visuItem');
+        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
         $query = 'SELECT *'
                     . ' FROM %lms_course'
@@ -212,12 +212,12 @@ class HomecatalogueLms extends Model
                     . $filter
                     . ($id_cat > 0 ? ' AND idCategory = ' . (int) $id_cat : '')
                     . ' ORDER BY name'
-                    . ' LIMIT ' . $limit . ', ' . Forma\lib\Get::sett('visuItem');
+                    . ' LIMIT ' . $limit . ', ' . FormaLms\lib\Get::sett('visuItem');
 
         $result = sql_query($query);
 
         $html = '';
-        $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
+        $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
 
         while ($row = sql_fetch_assoc($result)) {
             $action = '';
@@ -268,10 +268,10 @@ class HomecatalogueLms extends Model
 
             $html .= '<div class="dash-course">'
                     . ($row['use_logo_in_courselist'] && $row['img_course'] ? '<div class="logo_container"><img class="clogo" src="' . $path_course . $row['img_course'] . '" alt="' . Util::purge($row['name']) . '" /></div>' : '')
-                    . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="clogo cnologo" src="' . Forma\lib\Get::tmpl_path() . 'images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" /></div>' : '')
+                    . ($row['use_logo_in_courselist'] && !$row['img_course'] ? '<div class="logo_container"><img class="clogo cnologo" src="' . FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png' . '" alt="' . Util::purge($row['name']) . '" /></div>' : '')
                     . '<div class="info_container">'
                     . '<h2>'
-                    . ($row['lang_code'] != 'none' ? Forma\lib\Get::img('language/' . strtolower($row['lang_code']) . '.png', $row['lang_code']) : '')
+                    . ($row['lang_code'] != 'none' ? FormaLms\lib\Get::img('language/' . strtolower($row['lang_code']) . '.png', $row['lang_code']) : '')
                     . $row['name']
                     . '</h2>'
                     . $additional_info
@@ -309,7 +309,7 @@ class HomecatalogueLms extends Model
         $res['body'] = '';
 
         $login_link = '<a href="index.php">' . Lang::t('_LOG_IN', 'login') . '</a>';
-        $signin_link = '<a href="' . Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_ . '">' . Lang::t('_SIGN_IN', 'login') . '</a>';
+        $signin_link = '<a href="' . FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_ . '">' . Lang::t('_SIGN_IN', 'login') . '</a>';
 
         require_once \Forma::inc(_base_ . '/lib/lib.usermanager.php');
         $option = new UserManagerOption();
@@ -329,7 +329,7 @@ class HomecatalogueLms extends Model
                                 . ($classroom_info['code'] !== '' ? Lang::t('_CODE', 'catalogue') . ': ' . $classroom_info['code'] . '<br/>' : '')
                                 . ($classroom_info['date_begin'] !== '0000-00-00' ? Lang::t('_DATE_BEGIN', 'course') . ': ' . Format::date($classroom_info['date_begin'], 'date') . '<br/>' : '')
                                 . ($classroom_info['date_end'] !== '0000-00-00' ? Lang::t('_DATE_END', 'course') . ': ' . Format::date($classroom_info['date_end'], 'date') . '<br/>' : '')
-                                . ($selling == 1 ? Lang::t('_PRICE') . ' : ' . $classroom_info['price'] . ' ' . Forma\lib\Get::sett('currency_symbol', '&euro;') : '')
+                                . ($selling == 1 ? Lang::t('_PRICE') . ' : ' . $classroom_info['price'] . ' ' . FormaLms\lib\Get::sett('currency_symbol', '&euro;') : '')
                                 . '<div class="edition_subscribe">'
                                 . '</div>'
                                 . '</div>';
@@ -345,7 +345,7 @@ class HomecatalogueLms extends Model
                                 . ($edition_info['code'] !== '' ? Lang::t('_CODE', 'catalogue') . ': ' . $edition_info['code'] . '<br/>' : '')
                                 . ($edition_info['date_begin'] !== '0000-00-00' ? Lang::t('_DATE_BEGIN', 'course') . ': ' . Format::date($edition_info['date_begin'], 'date') . '<br/>' : '')
                                 . ($edition_info['date_end'] !== '0000-00-00' ? Lang::t('_DATE_END', 'course') . ': ' . Format::date($edition_info['date_end'], 'date') . '<br/>' : '')
-                                . ($selling == 1 ? Lang::t('_PRICE') . ' : ' . $edition_info['price'] . ' ' . Forma\lib\Get::sett('currency_symbol', '&euro;') : '')
+                                . ($selling == 1 ? Lang::t('_PRICE') . ' : ' . $edition_info['price'] . ' ' . FormaLms\lib\Get::sett('currency_symbol', '&euro;') : '')
                                 . '<div class="edition_subscribe">'
                                 . '</div>'
                                 . '</div>';

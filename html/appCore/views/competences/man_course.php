@@ -99,9 +99,9 @@ $rel_action_bottom = '<a id="sel_course_competences_bottom" class="ico-wt-sprite
 $this->widget('table', [
     'id' => 'course_competences_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->base_link_competence . '/getcoursetabledata',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'name',
     'dir' => 'asc',
     'generateRequest' => 'CourseCompetences.requestBuilder',

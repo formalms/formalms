@@ -30,7 +30,7 @@ class YuilogWidget extends Widget
 
     public function run()
     {
-        if (Forma\lib\Get::cfg('do_debug')) {
+        if (FormaLms\lib\Get::cfg('do_debug')) {
             $this->div = (!empty($this->div) ? $this->div : 'yui_log_container');
 
             $this->render('yuilog',
@@ -48,7 +48,7 @@ class YuilogWidget extends Widget
      */
     public function init()
     {
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/logger/logger-min.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/logger/logger-min.js', true, true);
         Util::get_css($GLOBALS['where_templates_relative'] . '/standard/yui-skin/logger.css', true, true);
     }
 }

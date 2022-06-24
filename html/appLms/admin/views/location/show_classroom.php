@@ -3,7 +3,7 @@
 $_back_url = 'index.php?r=alms/location/show';
 $_add_url = 'index.php?r=alms/location/addclassroom&amp;id_location=' . (int) $id_location;
 
-Forma\lib\Get::title([
+FormaLms\lib\Get::title([
     $_back_url => Lang::t('_LOCATION', 'classroom'),
     Lang::t('_CLASSROOM', 'classroom'),
 ]);

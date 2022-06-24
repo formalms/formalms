@@ -66,10 +66,10 @@ class GamesLmsController extends LmsController
 
     public function gettabledata()
     {
-        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
-        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new GamesAlms();
         $games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), [
@@ -105,10 +105,10 @@ class GamesLmsController extends LmsController
 
     public function gethistorydata()
     {
-        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
-        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new GamesAlms();
         $games = $model->findAllReaded(0, 0, 'start_date', 'DESC', Docebo::user()->getId(), [
@@ -155,7 +155,7 @@ class GamesLmsController extends LmsController
 
     public function playTask()
     {
-        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
+        $id_game = FormaLms\lib\Get::req('id_game', DOTY_INT, 0);
         $model = new GamesAlms();
         $game = $model->findByPk($id_game, Docebo::user()->getArrSt());
 
@@ -175,7 +175,7 @@ class GamesLmsController extends LmsController
 
     public function standingsTask()
     {
-        $id_game = Forma\lib\Get::req('id_game', DOTY_INT, 0);
+        $id_game = FormaLms\lib\Get::req('id_game', DOTY_INT, 0);
         $model = new GamesAlms();
         $game = $model->findByPk($id_game, Docebo::user()->getArrSt());
 

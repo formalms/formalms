@@ -68,13 +68,13 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
 
     private function getStartAndEndDatesFromRequest()
     {
-        $month = Forma\lib\Get::pReq('month', DOTY_STRING, '');
+        $month = FormaLms\lib\Get::pReq('month', DOTY_STRING, '');
         if (!empty($month)) {
             $startDate = date('Y-' . $month . '-01');
             $endDate = date('Y-' . $month . '-' . date('t', strtotime($startDate)));
         } else {
-            $startDate = Forma\lib\Get::pReq('startDate', DOTY_STRING, null);
-            $endDate = Forma\lib\Get::pReq('endDate', DOTY_STRING, null);
+            $startDate = FormaLms\lib\Get::pReq('startDate', DOTY_STRING, null);
+            $endDate = FormaLms\lib\Get::pReq('endDate', DOTY_STRING, null);
         }
 
         return [
@@ -118,7 +118,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
         $exclude_pathcourse = '';
-        if (count($learning_path_enroll) > 1 && Forma\lib\Get::sett('on_path_in_mycourses') == 'off') {
+        if (count($learning_path_enroll) > 1 && FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
             $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
             while ($d = $this->db->fetch_assoc($rs)) {
@@ -210,7 +210,7 @@ class DashboardBlockCalendarLms extends DashboardBlockLms
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
         $exclude_pathcourse = '';
-        if (count($learning_path_enroll) > 1 && Forma\lib\Get::sett('on_path_in_mycourses') == 'off') {
+        if (count($learning_path_enroll) > 1 && FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
             $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
             while ($d = $this->db->fetch_assoc($rs)) {

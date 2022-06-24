@@ -76,8 +76,8 @@ class FunctionalrolesAdmController extends AdmController
 
         //tabview widget, used in role and group editing
         Yuilib::load('tabview');
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/views/functionalroles/functionalroles.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/functionalroles/functionalroles.js', true, true);
 
         Util::get_css('base-folder-tree.css', false, true);
 
@@ -92,13 +92,13 @@ class FunctionalrolesAdmController extends AdmController
     public function gettabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
-        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
+        $id_group = FormaLms\lib\Get::req('id_group', DOTY_INT, 0);
 
         $searchFilter = [
             'text' => $filter_text,
@@ -179,12 +179,12 @@ class FunctionalrolesAdmController extends AdmController
     public function getgrouptabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = ['text' => $filter_text];
 
@@ -270,7 +270,7 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $id_fncrole = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $output = [
                 'success' => false,
@@ -320,7 +320,7 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $id_group = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_group = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_group <= 0) {
             $output = [
                 'success' => false,
@@ -353,12 +353,12 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //set up the data to insert into DB
-        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
+        $id_group = FormaLms\lib\Get::req('id_group', DOTY_INT, 0);
         if ($id_group < 0) {
             $id_group = 0;
         }
-        $names = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $names = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
         $langs = [];
 
         //validate inputs
@@ -399,8 +399,8 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //set up the data to insert into DB
-        $names = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $names = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
         $langs = [];
 
         //validate inputs
@@ -441,7 +441,7 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //read inputs
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $output = [
                 'success' => false,
@@ -452,9 +452,9 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
-        $_lang_name = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $_lang_desc = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $id_group = FormaLms\lib\Get::req('id_group', DOTY_INT, 0);
+        $_lang_name = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
         $arr = Docebo::langManager()->getAllLangcode();
@@ -494,7 +494,7 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //read inputs
-        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, -1);
+        $id_group = FormaLms\lib\Get::req('id_group', DOTY_INT, -1);
         if ($id_group <= 0) {
             $output = [
                 'success' => false,
@@ -505,8 +505,8 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $_lang_name = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $_lang_desc = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $_lang_name = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
         $arr = Docebo::langManager()->getAllLangcode();
@@ -542,7 +542,7 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $id_fncrole = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $output = [
                 'success' => false,
@@ -577,7 +577,7 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $id_group = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_group = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_group <= 0) {
             $output = [
                 'success' => false,
@@ -608,7 +608,7 @@ class FunctionalrolesAdmController extends AdmController
     {
         $back_url = 'index.php?r=adm/functionalroles/show';
 
-        $id_fncrole = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -623,7 +623,7 @@ class FunctionalrolesAdmController extends AdmController
             Lang::t('_USERS', 'fncroles') . ': <b>' . $this->model->getFunctionalRoleName($id_fncrole) . '</b>',
         ];
 
-        $result = Forma\lib\Get::req('res', DOTY_ALPHANUM, '');
+        $result = FormaLms\lib\Get::req('res', DOTY_ALPHANUM, '');
         $result_message = '';
         switch ($result) {
             case 'ok_': $result_message = UIFeedback::info(Lang::t('_RESULT_USERS_OK', 'fncroles'), true); break;
@@ -643,7 +643,7 @@ class FunctionalrolesAdmController extends AdmController
     {
         $back_url = 'index.php?r=adm/functionalroles/show';
 
-        $id_fncrole = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -658,7 +658,7 @@ class FunctionalrolesAdmController extends AdmController
             Lang::t('_COMPETENCES', 'fncroles') . ': ' . $this->model->getFunctionalRoleName($id_fncrole),
         ];
 
-        $result = Forma\lib\Get::req('res', DOTY_ALPHANUM, '');
+        $result = FormaLms\lib\Get::req('res', DOTY_ALPHANUM, '');
         $result_message = '';
         switch ($result) {
             case 'ok_competences': $result_message = UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'fncroles'), true); break;
@@ -678,10 +678,10 @@ class FunctionalrolesAdmController extends AdmController
     public function selectallusers()
     {
         //read from input and prepare filter and pagination variables
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         //TO DO: if $id_fncrole <= 0 ...
 
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
         $searchFilter = [
             'text' => $filter_text,
         ];
@@ -692,7 +692,7 @@ class FunctionalrolesAdmController extends AdmController
 
     public function getusertabledataTask()
     {
-        $op = Forma\lib\Get::req('op', DOTY_MIXED, false);
+        $op = FormaLms\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
                 $this->selectallusers();
@@ -702,15 +702,15 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //read from input and prepare filter and pagination variables
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         //TO DO: if $id_fncrole <= 0 ...
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -770,15 +770,15 @@ class FunctionalrolesAdmController extends AdmController
     public function getcompetencetabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         //TO DO: if $id_fncrole <= 0 ...
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -857,7 +857,7 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //read inputs
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -933,7 +933,7 @@ class FunctionalrolesAdmController extends AdmController
                 $user_selector->setUserFilter('group', $admin_tree);
             }
 
-            if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
+            if (FormaLms\lib\Get::req('is_updating', DOTY_INT, false)) {
                 //...
             } else {
                 //set initial selection
@@ -967,7 +967,7 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         //read inputs
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -982,13 +982,13 @@ class FunctionalrolesAdmController extends AdmController
         $jump_url = 'index.php?r=adm/functionalroles/sel_competences&id_fncrole=' . (int) $id_fncrole;
 
         //selector commands
-        $save = Forma\lib\Get::req('save', DOTY_MIXED, false);
-        $undo = Forma\lib\Get::req('undo', DOTY_MIXED, false);
+        $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
+        $undo = FormaLms\lib\Get::req('undo', DOTY_MIXED, false);
 
         if ($undo !== false) {
             Util::jump_to($back_url);
         } elseif ($save !== false) {
-            $selection = Forma\lib\Get::req('competences_selection', DOTY_MIXED, []);
+            $selection = FormaLms\lib\Get::req('competences_selection', DOTY_MIXED, []);
             $selection_str = (is_array($selection) && isset($selection['fncroles_competences_selector']) ? $selection['fncroles_competences_selector'] : '');
             $competences_selected = $selection_str != '' ? explode(',', $selection_str) : [];
             $competences_existent = $this->model->getCompetences($id_fncrole);
@@ -1031,8 +1031,8 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         $output = ['success' => false];
         if ($id_fncrole <= 0) {
             $output['message'] = $this->_getErrorMessage('invalid fncrole');
@@ -1064,7 +1064,7 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $output['message'] = $this->_getErrorMessage('invalid fncrole');
             echo $this->json->encode($output);
@@ -1072,7 +1072,7 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $users_str = Forma\lib\Get::req('users', DOTY_STRING, '');
+        $users_str = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         if (!$users_str) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
             echo $this->json->encode($output);
@@ -1113,8 +1113,8 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
-        $id_competence = Forma\lib\Get::req('id_competence', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_competence = FormaLms\lib\Get::req('id_competence', DOTY_INT, -1);
         $output = ['success' => false];
         if ($id_fncrole <= 0) {
             $output['message'] = $this->_getErrorMessage('invalid fncrole');
@@ -1141,7 +1141,7 @@ class FunctionalrolesAdmController extends AdmController
         $base_url = 'index.php?r=adm/functionalroles/show';
 
         //read inputs
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -1239,7 +1239,7 @@ class FunctionalrolesAdmController extends AdmController
         $base_url = 'index.php?r=adm/functionalroles/show';
 
         //read inputs
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -1249,8 +1249,8 @@ class FunctionalrolesAdmController extends AdmController
             return;
         }
 
-        $save = Forma\lib\Get::req('save', DOTY_MIXED, false);
-        $undo = Forma\lib\Get::req('undo', DOTY_MIXED, false);
+        $save = FormaLms\lib\Get::req('save', DOTY_MIXED, false);
+        $undo = FormaLms\lib\Get::req('undo', DOTY_MIXED, false);
 
         //navigation urls
         $back_url = 'index.php?r=adm/functionalroles/man_competences&id=' . (int) $id_fncrole;
@@ -1258,7 +1258,7 @@ class FunctionalrolesAdmController extends AdmController
             Util::jump_to($back_url);
         }
 
-        $properties = Forma\lib\Get::req('properties', DOTY_MIXED, false);
+        $properties = FormaLms\lib\Get::req('properties', DOTY_MIXED, false);
         if ($properties === false || empty($properties)) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid input'),
@@ -1285,7 +1285,7 @@ class FunctionalrolesAdmController extends AdmController
     //courses details for competences
     public function show_coursesTask()
     {
-        $id_fncrole = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => Lang::t('_INVALID_FNCROLE', 'fncroles'),
@@ -1323,7 +1323,7 @@ class FunctionalrolesAdmController extends AdmController
     {
         $back_url = 'index.php?r=adm/functionalroles/show';
 
-        $id_fncrole = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -1338,7 +1338,7 @@ class FunctionalrolesAdmController extends AdmController
             Lang::t('_GAP_ANALYSIS', 'fncroles') . ': ' . $this->model->getFunctionalRoleName($id_fncrole),
         ];
 
-        $result = Forma\lib\Get::req('res', DOTY_ALPHANUM, '');
+        $result = FormaLms\lib\Get::req('res', DOTY_ALPHANUM, '');
         $result_message = '';
         /*
                 switch ($result) {
@@ -1395,17 +1395,17 @@ class FunctionalrolesAdmController extends AdmController
     public function getgaptabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
         //TO DO: if $id_fncrole <= 0 ...
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
-        $show_gap = Forma\lib\Get::req('gap', DOTY_INT, 0);
-        $show_expired = Forma\lib\Get::req('expired', DOTY_INT, 0);
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
+        $show_gap = FormaLms\lib\Get::req('gap', DOTY_INT, 0);
+        $show_expired = FormaLms\lib\Get::req('expired', DOTY_INT, 0);
 
         $searchFilter = [
             'text' => $filter_text,
@@ -1423,12 +1423,12 @@ class FunctionalrolesAdmController extends AdmController
             }
         }
 
-        $dyn_filter = $this->_getDynamicFilter(Forma\lib\Get::req('dyn_filter', DOTY_STRING, ''));
+        $dyn_filter = $this->_getDynamicFilter(FormaLms\lib\Get::req('dyn_filter', DOTY_STRING, ''));
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
 
-        $var_fields = Forma\lib\Get::req('_dyn_field', DOTY_MIXED, []);
+        $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
             $sort = $var_fields[(int) $index];
@@ -1542,9 +1542,9 @@ class FunctionalrolesAdmController extends AdmController
 
     public function export_gap()
     {
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, 0);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, 0);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
 
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
@@ -1556,12 +1556,12 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         // manage dynamic filter
-        $dyn_filter = $this->_getDynamicFilter(Forma\lib\Get::req('dyn_filter', DOTY_STRING, ''));
+        $dyn_filter = $this->_getDynamicFilter(FormaLms\lib\Get::req('dyn_filter', DOTY_STRING, ''));
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
 
-        $var_fields = Forma\lib\Get::req('_dyn_field', DOTY_MIXED, []);
+        $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
             $sort = $var_fields[(int) $index];
@@ -1569,7 +1569,7 @@ class FunctionalrolesAdmController extends AdmController
 
         //prepare csv file
         require_once _base_ . '/lib/lib.download.php';
-        $format = Forma\lib\Get::req('format', DOTY_STRING, 'csv');
+        $format = FormaLms\lib\Get::req('format', DOTY_STRING, 'csv');
 
         $buffer = '';
         $filename = preg_replace('/[\W]/i', '_', $this->model->getFunctionalRoleName($id_fncrole)) . '_' . date('Y_m_d') . '.' . $format;
@@ -1643,10 +1643,10 @@ class FunctionalrolesAdmController extends AdmController
 
     public function export_user_gap()
     {
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, 0);
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, 0);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
 
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
@@ -1667,7 +1667,7 @@ class FunctionalrolesAdmController extends AdmController
 
         //prepare csv file
         require_once _base_ . '/lib/lib.download.php';
-        $format = Forma\lib\Get::req('format', DOTY_STRING, 'csv');
+        $format = FormaLms\lib\Get::req('format', DOTY_STRING, 'csv');
 
         $acl_man = Docebo::user()->getAclManager();
         $user_info = $acl_man->getUser($id_user, false);
@@ -1733,7 +1733,7 @@ class FunctionalrolesAdmController extends AdmController
     {
         //check inputs validity
         $base_url = 'index.php?r=adm/functionalroles/show';
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, 0);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, 0);
         if ($id_fncrole <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid fncrole'),
@@ -1744,7 +1744,7 @@ class FunctionalrolesAdmController extends AdmController
         }
 
         $back_url = 'index.php?r=adm/functionalroles/man_users&id=' . (int) $id_fncrole;
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         if ($id_user <= 0) {
             $this->render('invalid', [
                 'message' => $this->_getErrorMessage('invalid user'),
@@ -1803,22 +1803,22 @@ class FunctionalrolesAdmController extends AdmController
             'id_user' => $id_user,
             'title_arr' => $title_arr,
             'chart_data' => $chart_data,
-            'from_gap' => Forma\lib\Get::req('from_gap', DOTY_INT, 0) > 0,
+            'from_gap' => FormaLms\lib\Get::req('from_gap', DOTY_INT, 0) > 0,
         ]);
     }
 
     public function getusergaptabledata()
     {
         //read from input and prepare filter and pagination variables
-        $id_fncrole = Forma\lib\Get::req('id_fncrole', DOTY_INT, -1);
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_fncrole = FormaLms\lib\Get::req('id_fncrole', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         //TO DO: if $id_fncrole <= 0 ...
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
 
         $searchFilter = ['user' => $id_user];
 
@@ -1884,8 +1884,8 @@ class FunctionalrolesAdmController extends AdmController
 
     public function functionalroles_autocompleteTask()
     {
-        $query = Forma\lib\Get::req('query', DOTY_STRING, '');
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $query = FormaLms\lib\Get::req('query', DOTY_STRING, '');
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
         $output = ['fncroles' => []];
         if ($query != '') {
             $fncroles = $this->model->searchFunctionalRolesByName($query, $results, false, true);

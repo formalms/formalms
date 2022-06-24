@@ -31,9 +31,9 @@ if ($permissions['del']) {
 $_params = [
     'id' => 'edition_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=alms/games/getlist',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'title',
     'dir' => 'asc',
     'columns' => $_columns,

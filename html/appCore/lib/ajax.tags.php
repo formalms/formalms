@@ -27,7 +27,7 @@ if (Docebo::user()->isAnonymous()) {
 
 require_once _adm_ . '/lib/lib.tags.php';
 
-$op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
+$op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {
     case 'get_platform_cloud':
         $tags = new Tags('*');
@@ -47,18 +47,18 @@ switch ($op) {
         aout($cloud);
     ; break;
     case 'save_tag':
-        $compiled_tags = Forma\lib\Get::req('tags', DOTY_STRING, '');
-        $id_resource = Forma\lib\Get::req('id_resource', DOTY_INT, '');
-        $resource_type = Forma\lib\Get::req('resource_type', DOTY_ALPHANUM, '');
+        $compiled_tags = FormaLms\lib\Get::req('tags', DOTY_STRING, '');
+        $id_resource = FormaLms\lib\Get::req('id_resource', DOTY_INT, '');
+        $resource_type = FormaLms\lib\Get::req('resource_type', DOTY_ALPHANUM, '');
 
-        $title = Forma\lib\Get::req('title', DOTY_STRING, '');
-        $sample = Forma\lib\Get::req('sample_text', DOTY_STRING, '');
-        $permalink = Forma\lib\Get::req('permalink', DOTY_STRING, '');
+        $title = FormaLms\lib\Get::req('title', DOTY_STRING, '');
+        $sample = FormaLms\lib\Get::req('sample_text', DOTY_STRING, '');
+        $permalink = FormaLms\lib\Get::req('permalink', DOTY_STRING, '');
 
         $private = false;
-        $req_private = Forma\lib\Get::req('private', DOTY_INT, '0');
+        $req_private = FormaLms\lib\Get::req('private', DOTY_INT, '0');
         if ($req_private) {
-            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+            $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
             // requested to save as private, check if the user can do this operation
             if ($session->has('levelCourse') && $session->get('levelCourse') > 3) {
                 $private = true;
@@ -74,7 +74,7 @@ switch ($op) {
         aout($updated_tags);
     ; break;
     default:
-        $query = Forma\lib\Get::req('query', DOTY_STRING, '');
+        $query = FormaLms\lib\Get::req('query', DOTY_STRING, '');
 
         $tags = new Tags('*');
         $suggestion = $tags->getAutoComplete($query);

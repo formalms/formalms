@@ -9,7 +9,7 @@ var GapAnalisys = {
 	showGap: <?php echo $advanced_filter['gap_filter']; ?>, //0 = all, 1 = only gaps, 2 = only non-gap
 	showExpired: <?php echo $advanced_filter['expire_filter']; ?>, //0 = all, 1 = only expired, 2 = only active
 	showCompetences: [],
-    templatePath: "<?php echo Forma\lib\Get::tmpl_path(); ?>",
+    templatePath: "<?php echo FormaLms\lib\Get::tmpl_path(); ?>",
 	dynSelection: {},
 	fieldList: <?php echo $fieldlist_js; ?>,
 	numVarFields: <?php echo $num_var_fields; ?>,
@@ -281,7 +281,7 @@ for ($i = 0; $i < $num_var_fields; ++$i) {
     }
     $label .= '</select>';
     $label .= '<a id="_dyn_field_sort_' . $i . '" href="javascript:;">';
-    $label .= '<img src="' . Forma\lib\Get::tmpl_path() . 'images/standard/sort.png" title="' . Lang::t('_SORT', 'standard') . '" alt="' . Lang::t('_SORT', 'standard') . '" />';
+    $label .= '<img src="' . FormaLms\lib\Get::tmpl_path() . 'images/standard/sort.png" title="' . Lang::t('_SORT', 'standard') . '" alt="' . Lang::t('_SORT', 'standard') . '" />';
     $label .= '</a>';
     $dyn_filter[$i] = $selected[$i];
     $dyn_labels[$i] = $label;
@@ -320,9 +320,9 @@ for ($i = 0; $i < $num_var_fields; ++$i) {
 $this->widget('table', [
     'id' => 'fncroles_gap_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/functionalroles/getgaptabledata',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'competence',
     'dir' => 'asc',
     'generateRequest' => 'GapAnalisys.requestBuilder',

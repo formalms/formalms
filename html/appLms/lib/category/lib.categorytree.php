@@ -65,7 +65,7 @@ class CourseCategoryTree extends ClientTree
         ]);
         cout(Util::get_css('base-folder-tree.css'), 'page_head');
         cout(Util::get_js('appLms/lib/category/lib.categorytree.js'), 'page_head');
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
     }
 
     /**
@@ -169,7 +169,7 @@ class CourseCategoryTree extends ClientTree
 
     public function getCategories($param = false)
     {
-        $temp = ($param ? $param : Forma\lib\Get::req($this->id . '_input', DOTY_MIXED, false));
+        $temp = ($param ? $param : FormaLms\lib\Get::req($this->id . '_input', DOTY_MIXED, false));
         $nodes = explode(',', $temp);
 
         $output = [];

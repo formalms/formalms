@@ -16,18 +16,18 @@ class CalendarMailer extends FormaMailer
     public function sendCalendarToUser(CalendarDataContainer $calendar, $user)
     {
         $mail_text = Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT', 'course');
-        $mail_text = str_replace(['[url]', '[userid]'], [Forma\lib\Get::site_url(), $user['userid']], $mail_text);
+        $mail_text = str_replace(['[url]', '[userid]'], [FormaLms\lib\Get::site_url(), $user['userid']], $mail_text);
 
         $subject = Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT_TITLE', 'course');
         $this->SendMail(
-            Forma\lib\Get::sett('sender_event'),
+            FormaLms\lib\Get::sett('sender_event'),
             [$user['email']],
             $subject,
             $mail_text,
             [$calendar->getFile()],
             [
-                MAIL_REPLYTO => Forma\lib\Get::sett('sender_event'),
-                MAIL_SENDER_ACLNAME => Forma\lib\Get::sett('use_sender_aclname'),
+                MAIL_REPLYTO => FormaLms\lib\Get::sett('sender_event'),
+                MAIL_SENDER_ACLNAME => FormaLms\lib\Get::sett('use_sender_aclname'),
             ]
         );
     }

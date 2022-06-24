@@ -24,7 +24,7 @@ $ftpConn = null;    // Chache for the last connection
 
 function sl_open_fileoperations()
 {
-    $uploadType = Forma\lib\Get::cfg('uploadType');
+    $uploadType = FormaLms\lib\Get::cfg('uploadType');
     if ($uploadType == 'ftp') {
         return sl_open_fileoperations_ftp();
     } elseif ($uploadType == 'cgi') {
@@ -36,7 +36,7 @@ function sl_open_fileoperations()
 
 function sl_close_fileoperations()
 {
-    $uploadType = Forma\lib\Get::cfg('uploadType');
+    $uploadType = FormaLms\lib\Get::cfg('uploadType');
     if ($uploadType == 'ftp') {
         return sl_close_fileoperations_ftp();
     } elseif ($uploadType == 'cgi') {
@@ -48,7 +48,7 @@ function sl_close_fileoperations()
 
 function sl_mkdir($path, $mode)
 {
-    $uploadType = Forma\lib\Get::cfg('uploadType');
+    $uploadType = FormaLms\lib\Get::cfg('uploadType');
 
     if ($uploadType == 'ftp') {
         return sl_mkdir_ftp($path, $mode);
@@ -63,7 +63,7 @@ function sl_mkdir($path, $mode)
 
 function sl_fopen($filename, $mode)
 {
-    $uploadType = Forma\lib\Get::cfg('uploadType');
+    $uploadType = FormaLms\lib\Get::cfg('uploadType');
 
     $mfirst = $mode[0];
     if ($uploadType == 'ftp' && $mfirst != 'r') {
@@ -81,12 +81,12 @@ function sl_fopen($filename, $mode)
 
 function sl_upload($srcFile, $dstFile, $file_ext = '', $root = false)
 {
-    $uploadType = Forma\lib\Get::cfg('uploadType', null);
+    $uploadType = FormaLms\lib\Get::cfg('uploadType', null);
 
     // check if the mime type is allowed by the whitelist
     // if the whitelist is empty all types are accepted
     require_once _lib_ . '/lib.mimetype.php';
-    $upload_whitelist = Forma\lib\Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
+    $upload_whitelist = FormaLms\lib\Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
     $upload_whitelist_arr = explode(',', trim($upload_whitelist, ','));
     if (!empty($upload_whitelist_arr)) {
         $valid_ext = false;
@@ -139,7 +139,7 @@ function sl_upload($srcFile, $dstFile, $file_ext = '', $root = false)
 
 function sl_touch($filename, $time)
 {
-    $uploadType = Forma\lib\Get::cfg('uploadType');
+    $uploadType = FormaLms\lib\Get::cfg('uploadType');
     if ($uploadType == 'ftp') {
         return true;
     } elseif ($uploadType == 'cgi') {
@@ -191,7 +191,7 @@ function sl_chmod($filename, $mode)
 
 function sl_copy($srcFile, $dstFile)
 {
-    $uploadType = Forma\lib\Get::cfg('uploadType');
+    $uploadType = FormaLms\lib\Get::cfg('uploadType');
     if ($uploadType == 'ftp') {
         return sl_upload_ftp(_files_ . $srcFile, $dstFile);
     } elseif ($uploadType == 'cgi') {
@@ -269,14 +269,14 @@ function sl_copyr($source, $dest)
 /** Ftp implementation **/
 function sl_open_fileoperations_ftp()
 {
-    $ftpuser = Forma\lib\Get::cfg('ftpuser');
-    $ftppass = Forma\lib\Get::cfg('ftppass');
-    $ftphost = Forma\lib\Get::cfg('ftphost');
-    $ftpport = Forma\lib\Get::cfg('ftpport');
+    $ftpuser = FormaLms\lib\Get::cfg('ftpuser');
+    $ftppass = FormaLms\lib\Get::cfg('ftppass');
+    $ftphost = FormaLms\lib\Get::cfg('ftphost');
+    $ftpport = FormaLms\lib\Get::cfg('ftpport');
 
     $result = false;
 
-    $timeout = Forma\lib\Get::cfg('ftptimeout', 0);
+    $timeout = FormaLms\lib\Get::cfg('ftptimeout', 0);
     if ($timeout == 0) {
         $timeout = ini_get('max_execution_time');
         if ($timeout == 0) {
@@ -308,7 +308,7 @@ function sl_close_fileoperations_ftp()
 
 function sl_upload_ftp($srcFile, $dstFile, $root = _folder_files_)
 {
-    $ftppath = Forma\lib\Get::cfg('ftppath') . $root;
+    $ftppath = FormaLms\lib\Get::cfg('ftppath') . $root;
     $ftpConn = $GLOBALS['ftpConn'];
     if (!ftp_put($ftpConn, $ftppath . $dstFile, $srcFile, FTP_BINARY)) {
         return false;
@@ -324,7 +324,7 @@ function sl_upload_ftp($srcFile, $dstFile, $root = _folder_files_)
 
 function sl_mkdir_ftp($path, $mode = false)
 {
-    $ftppath = Forma\lib\Get::cfg('ftppath') . _folder_files_;
+    $ftppath = FormaLms\lib\Get::cfg('ftppath') . _folder_files_;
     $ftpConn = $GLOBALS['ftpConn'];
     if (!@ftp_mkdir($ftpConn, $ftppath . $path)) {
         return false;
@@ -345,7 +345,7 @@ function sl_mkdir_ftp($path, $mode = false)
 function sl_fopen_ftp($file, $mode)
 {
     // only create file then open it with fopen
-    $ftppath = Forma\lib\Get::cfg('ftppath') . _folder_files_;
+    $ftppath = FormaLms\lib\Get::cfg('ftppath') . _folder_files_;
     $ftpConn = $GLOBALS['ftpConn'];
     if (!file_exists(_files_ . $file)) {
         if (!ftp_put($ftpConn, $ftppath . $file, dirname(__FILE__) . '/nullfile', FTP_BINARY)) {
@@ -393,7 +393,7 @@ function sl_upload_cgi($srcFile, $dstFile)
  **/
 function sl_unlink($path)
 {
-    $uploadType = Forma\lib\Get::cfg('uploadType', null);
+    $uploadType = FormaLms\lib\Get::cfg('uploadType', null);
 
     if ($uploadType == 'fs' || $uploadType == 'ftp' || $uploadType == null) {
         if (!file_exists(_files_ . $path)) {

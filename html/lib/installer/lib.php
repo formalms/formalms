@@ -15,7 +15,7 @@ $GLOBALS['debug'] = '';
 
 function generateConfig($tpl_fn)
 {
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $dbInfo = $session->get('db_info');
     $ulInfo = $session->get('ul_info');
@@ -127,7 +127,7 @@ function getToUpgradeArray()
 {
     $to_upgrade_arr = [];
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     foreach ($GLOBALS['cfg']['versions'] as $ver => $label) {
         if ($ver > $session->get('start_version')) {

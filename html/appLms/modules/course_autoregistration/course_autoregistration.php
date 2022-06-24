@@ -58,7 +58,7 @@ function subscribe()
         $code = $_POST['course_autoregistration_code'];
         $code = strtoupper($code);
 
-        $registration_code_type = Forma\lib\Get::sett('registration_code_type', '0');
+        $registration_code_type = FormaLms\lib\Get::sett('registration_code_type', '0');
         if ($registration_code_type == 'tree_course') {
             $code = substr($code, 10, 10);
         }
@@ -74,7 +74,7 @@ function subscribe()
         if ($course_registration_result > 0) {
             $out->add(str_replace('[course_added]', $course_registration_result, Lang::t('_OPERATION_SUCCESSFUL', 'course_autoregistration')));
 
-            $out->add('<br/><a href="' . Forma\lib\Get::home_page_abs_path() . '">' . Lang::t('_BACK_TO_COURSE', 'course_autoregistration') . '</a>');
+            $out->add('<br/><a href="' . FormaLms\lib\Get::home_page_abs_path() . '">' . Lang::t('_BACK_TO_COURSE', 'course_autoregistration') . '</a>');
         } else {
             if ($course_registration_result == -1) {
                 $out->add(getErrorUi(Lang::t('_CODE_ALREDY_USED', 'course_autoregistration')));
@@ -146,7 +146,7 @@ function subscribe()
                             $out->add(str_replace('[course_added]', $courses, Lang::t('_REGISTRATION_SUCCESSFUL_TO', 'course_autoregistration')));
                         }
 
-                        $out->add('<br/><a href="' . Forma\lib\Get::home_page_abs_path() . '">' . Lang::t('_BACK_TO_COURSE', 'course_autoregistration') . '</a>');
+                        $out->add('<br/><a href="' . FormaLms\lib\Get::home_page_abs_path() . '">' . Lang::t('_BACK_TO_COURSE', 'course_autoregistration') . '</a>');
                     } else {
                         if (sizeof($array_course) == 0) {
                             $out->add(getErrorUi(Lang::t('_SUBSCRIPTION_NOT_ALLOWED_YET', 'course_autoregistration')));

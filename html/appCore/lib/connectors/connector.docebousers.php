@@ -586,7 +586,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         $force_change = '';
         switch ($this->pwd_force_change_policy) {
             case 'by_setting':
-                $force_change = Forma\lib\Get::sett('pass_change_first_login', 'off') == 'on' ? 1 : 0;
+                $force_change = FormaLms\lib\Get::sett('pass_change_first_login', 'off') == 'on' ? 1 : 0;
                 break;
             case 'true':
                 $force_change = 1;

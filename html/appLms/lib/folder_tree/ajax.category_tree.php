@@ -19,19 +19,19 @@ $treecat = new Categorytree();
 require_once _base_ . '/lib/lib.json.php';
 $json = new Services_JSON();
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 //checkPerm('view', true, 'course', 'lms');
 
 require_once _lms_ . '/lib/folder_tree/lib.category_tree.php';
 
 // Resolve the requested action
-$command = Forma\lib\Get::req('command', DOTY_STRING, false);
+$command = FormaLms\lib\Get::req('command', DOTY_STRING, false);
 switch ($command) {
     case 'expand':
         $lang = &DoceboLanguage::CreateInstance('course', 'lms');
-        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
-        $initial = Forma\lib\Get::req('initial', DOTY_INT, 0);
+        $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
+        $initial = FormaLms\lib\Get::req('initial', DOTY_INT, 0);
 
 //$initial = 0;
         $result = [];
@@ -96,8 +96,8 @@ switch ($command) {
     ; break;
 
     case 'modify':
-        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
-        $new_name = Forma\lib\Get::req('name', DOTY_STRING, false);
+        $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
+        $new_name = FormaLms\lib\Get::req('name', DOTY_STRING, false);
 
         $result = ['success' => false];
         if ($new_name !== false) {
@@ -110,8 +110,8 @@ switch ($command) {
     ; break;
 
     case 'create':
-        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, false);
-        $node_name = Forma\lib\Get::req('name', DOTY_STRING, false); //no multilang required for categories
+        $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, false);
+        $node_name = FormaLms\lib\Get::req('name', DOTY_STRING, false); //no multilang required for categories
 
         $result = [];
         if ($node_id === false) {
@@ -138,22 +138,22 @@ switch ($command) {
     ; break;
 
     case 'delete':
-        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+        $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
 
         $result = ['success' => $treecat->deleteTreeById($node_id)];
         aout($json->encode($result));
     ; break;
 
     case 'movefolder':
-        $src = Forma\lib\Get::req('src', DOTY_INT, 0);
-        $dest = Forma\lib\Get::req('dest', DOTY_INT, 0);
+        $src = FormaLms\lib\Get::req('src', DOTY_INT, 0);
+        $dest = FormaLms\lib\Get::req('dest', DOTY_INT, 0);
 
         $result = ['success' => $treecat->move($src, $dest)];
         aout($json->encode($result));
     ; break;
 
     case 'options':
-        $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
+        $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
         //get properties from DB
 
         $count = $treecat->getChildrenCount($node_id);

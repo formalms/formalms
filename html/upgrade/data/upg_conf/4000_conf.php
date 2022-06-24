@@ -42,7 +42,7 @@ function upgradeConfig4000($config)
 
         require_once _base_ . '/config.php';
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         $dbInfo = $session->get('db_info');
 

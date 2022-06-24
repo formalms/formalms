@@ -26,7 +26,7 @@ class Controller
     public function __construct($mvc_name = '')
     {
         $this->_mvc_name = $mvc_name;
-        $this->request = \Forma\lib\Request\RequestManager::getInstance()->getRequest();
+        $this->request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $this->session = $this->request->getSession();
         $this->init();
     }
@@ -106,7 +106,7 @@ class Controller
         }
         $paths[] = $this->viewPath();
 
-        $tplengine = Forma\lib\Get::cfg('template_engine', []);
+        $tplengine = FormaLms\lib\Get::cfg('template_engine', []);
 
         foreach ($tplengine as $tplkey => $tpleng) {
             if (isset($tplengine[$tplkey]['ext']) && !is_array($tplengine[$tplkey]['ext'])) {
@@ -155,9 +155,9 @@ class Controller
                 $view_path = dirname($path);
 
                 foreach ($paths as $path) {
-                    Forma\appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
+                    FormaLms\appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
                 }
-                echo Forma\appCore\Template\TwigManager::getInstance()->render($view_name . $extension, $data_for_view, $view_path);
+                echo FormaLms\appCore\Template\TwigManager::getInstance()->render($view_name . $extension, $data_for_view, $view_path);
                 break;
             default:
                 //die( 'FILENOTFOUND');

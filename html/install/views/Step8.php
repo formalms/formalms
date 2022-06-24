@@ -1,5 +1,5 @@
 <?php
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 $configSaved = $session->get('config_saved');
 $siteUrl = $session->get('site_url');
 $admInfo = $session->get('adm_info');

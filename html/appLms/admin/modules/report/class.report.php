@@ -61,7 +61,7 @@ class Report
         }
 
         $this->db = DbConn::getInstance();
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function get_name()
@@ -303,7 +303,7 @@ class ReportSessionManager
 
     public function __construct()
     {
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if (!$this->_is_initialized()) {
             $this->_initialize();
         }

@@ -219,8 +219,8 @@ class PageZoneLang extends PageZone
             return $out;
         }
 
-        $out .= Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, false)
-                . Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, false)
+        $out .= Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, false)
+                . Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, false)
                 . '<div id="def_lang" class="def_lang">' . "\n"
                 . implode($this->_startOut)
 

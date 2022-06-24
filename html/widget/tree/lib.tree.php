@@ -57,12 +57,12 @@ class TreeWidget extends Widget
     public function init()
     {
         YuiLib::load('base,treeview,selector');
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
         Util::get_css('base-folder-tree.css', false, true);
 
-        $js_path = Forma\lib\Get::rel_path('base') . '/widget/tree/';
+        $js_path = FormaLms\lib\Get::rel_path('base') . '/widget/tree/';
         if ($this->dragDrop) {
             Util::get_js($js_path . 'ddnode.js', true, true);
         }
@@ -100,7 +100,7 @@ class TreeWidget extends Widget
 
         //other options
         $this->setOption('initialSelectedNode', $this->initialSelectedNode);
-        $this->setOption('iconPath', Forma\lib\Get::tmpl_path() . 'images/');
+        $this->setOption('iconPath', FormaLms\lib\Get::tmpl_path() . 'images/');
         $this->setOption('dragdrop', (bool) $this->dragDrop);
 
         $this->setOption('useCheckboxes', $this->useCheckboxes);

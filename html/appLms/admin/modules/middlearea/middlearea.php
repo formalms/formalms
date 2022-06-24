@@ -241,10 +241,10 @@ function switch_active()
 
 function switch_menu_active()
 {
-    $id = Forma\lib\Get::req('id', DOTY_INT);
+    $id = FormaLms\lib\Get::req('id', DOTY_INT);
 
     $menu = CoreMenu::get($id);
-    switch (Forma\lib\Get::sett('home_page_option')) {
+    switch (FormaLms\lib\Get::sett('home_page_option')) {
         case 'my_courses':
             $is_homepage = $menu->mvc_path == 'elearning/show';
             break;
@@ -336,7 +336,7 @@ function select_menu_permission()
 
     $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
 
-    $id = Forma\lib\Get::req('id', DOTY_INT);
+    $id = FormaLms\lib\Get::req('id', DOTY_INT);
 
     // first step load selector
 
@@ -370,7 +370,7 @@ function select_menu_permission()
         foreach ($members as $member) {
             $am->removeFromRole($role_idst, $member);
         }
-        $all = Forma\lib\Get::req('all', DOTY_BOOL);
+        $all = FormaLms\lib\Get::req('all', DOTY_BOOL);
         if ($all) {
             $selected = [1];
         } else {
@@ -415,7 +415,7 @@ JAVASCRIPT
 function view()
 {
     //addJs($GLOBALS['where_lms_relative'].'/admin/modules/middlearea/', 'middlearea.js');
-    cout(Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/modules/middlearea/middlearea.js', true), 'scripts');
+    cout(Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/modules/middlearea/middlearea.js', true), 'scripts');
 
     cout('<div class="std_block">');
 

@@ -141,7 +141,7 @@ class UsermanagementAdmController extends AdmController
             $message = getInfoUi(Lang::t('_USER_CREATION_LIMIT_REACHED', 'admin_directory'));
         }
 
-        $res = Forma\lib\Get::req('res', DOTY_STRING, '');
+        $res = FormaLms\lib\Get::req('res', DOTY_STRING, '');
         switch ($res) {
             case 'ok_assignuser':
                 $message = getResultUi(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
@@ -163,8 +163,8 @@ class UsermanagementAdmController extends AdmController
                 break;
 
             case 'err_alreadyassigned':
-                $countassigned = Forma\lib\Get::req('count', DOTY_STRING, '');
-                $id_first = Forma\lib\Get::req('id_first', DOTY_STRING, '');
+                $countassigned = FormaLms\lib\Get::req('count', DOTY_STRING, '');
+                $id_first = FormaLms\lib\Get::req('id_first', DOTY_STRING, '');
                 $profile_user = $this->model->getProfileData($id_first);
 
                 if ($countassigned == 1) {
@@ -184,8 +184,8 @@ class UsermanagementAdmController extends AdmController
         $dyn_filter = new DynamicUserFilter('user_dyn_filter');
         $dyn_filter->init();
 
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/views/usermanagement/usermanagement.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/usermanagement/usermanagement.js', true, true);
 
         if (!$this->_issetSessionValue('selected_node') && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             //select the first folder of the sub admin
@@ -236,7 +236,7 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $op = Forma\lib\Get::req('op', DOTY_MIXED, false);
+        $op = FormaLms\lib\Get::req('op', DOTY_MIXED, false);
         switch ($op) {
             case 'selectall':
                 $this->selectall();
@@ -246,28 +246,28 @@ class UsermanagementAdmController extends AdmController
                 break;
         }
 
-        $idOrg = Forma\lib\Get::req('id_org', DOTY_INT, 0);
-        $descendants = (Forma\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $idOrg = FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
+        $descendants = (FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem'));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
 
-        $var_fields = Forma\lib\Get::req('_dyn_field', DOTY_MIXED, []);
+        $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
             $sort = $var_fields[(int)$index];
         }
 
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
-            'suspended' => (Forma\lib\Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
+            'suspended' => (FormaLms\lib\Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
         ];
 
-        $dyn_filter = $this->_getDynamicFilter(Forma\lib\Get::req('dyn_filter', DOTY_STRING, ''));
+        $dyn_filter = $this->_getDynamicFilter(FormaLms\lib\Get::req('dyn_filter', DOTY_STRING, ''));
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
@@ -506,9 +506,9 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $userid = Forma\lib\Get::req('username', DOTY_STRING, '');
-        $password = Forma\lib\Get::Req('password', DOTY_STRING, '');
-        $password_confirm = Forma\lib\Get::req('password_confirm', DOTY_STRING, '');
+        $userid = FormaLms\lib\Get::req('username', DOTY_STRING, '');
+        $password = FormaLms\lib\Get::Req('password', DOTY_STRING, '');
+        $password_confirm = FormaLms\lib\Get::req('password_confirm', DOTY_STRING, '');
 
         $output = [];
 
@@ -530,13 +530,13 @@ class UsermanagementAdmController extends AdmController
 
         $userdata = new stdClass();
         $userdata->userid = trim($userid);
-        $userdata->firstname = trim(Forma\lib\Get::req('firstname', DOTY_STRING, ''));
-        $userdata->lastname = trim(Forma\lib\Get::req('lastname', DOTY_STRING, ''));
-        $userdata->email = trim(Forma\lib\Get::req('email', DOTY_STRING, ''));
+        $userdata->firstname = trim(FormaLms\lib\Get::req('firstname', DOTY_STRING, ''));
+        $userdata->lastname = trim(FormaLms\lib\Get::req('lastname', DOTY_STRING, ''));
+        $userdata->email = trim(FormaLms\lib\Get::req('email', DOTY_STRING, ''));
         $userdata->password = $password;
-        $userdata->force_change = trim(Forma\lib\Get::Req('force_changepwd', DOTY_INT, 0));
+        $userdata->force_change = trim(FormaLms\lib\Get::Req('force_changepwd', DOTY_INT, 0));
         if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
-            $userdata->level = Forma\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
+            $userdata->level = FormaLms\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
         } else {
             $userdata->level = ADMIN_GROUP_USER;
         }
@@ -557,13 +557,13 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        if (Forma\lib\Get::sett('pass_change_first_login', 'off') == 'on') {
+        if (FormaLms\lib\Get::sett('pass_change_first_login', 'off') == 'on') {
             $userdata->force_change = 1;
         }
 
         $userdata->preferences = &$_POST;
 
-        $folders = Forma\lib\Get::req('sel', DOTY_MIXED, false);
+        $folders = FormaLms\lib\Get::req('sel', DOTY_MIXED, false);
 
         $idst = $this->model->createUser($userdata, $folders);
         if (is_numeric($idst) && $idst > 0) {
@@ -577,9 +577,9 @@ class UsermanagementAdmController extends AdmController
             $acl_man = Docebo::user()->getAclManager();
 
             $array_subst = [
-                '[url]' => Forma\lib\Get::site_url(),
+                '[url]' => FormaLms\lib\Get::site_url(),
                 '[userid]' => $userid,
-                '[dynamic_link]' => $folders ? getCurrentDomain(array_values($folders)[0]) : Forma\lib\Get::site_url(),
+                '[dynamic_link]' => $folders ? getCurrentDomain(array_values($folders)[0]) : FormaLms\lib\Get::site_url(),
                 '[password]' => $password,
             ];
 
@@ -638,7 +638,7 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $idst = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $idst = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($idst > 0) {
             $output = [
                 'success' => true,
@@ -664,16 +664,16 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $idst = Forma\lib\Get::req('idst', DOTY_INT, -1);
+        $idst = FormaLms\lib\Get::req('idst', DOTY_INT, -1);
         if ($idst <= 0) {
             echo $this->json->encode(['success' => false, 'message' => 'invalid user id']);
 
             return;
         }
 
-        $userid = Forma\lib\Get::req('username', DOTY_STRING, '');
-        $new_password = Forma\lib\Get::Req('new_password', DOTY_STRING, '');
-        $new_password_confirm = Forma\lib\Get::req('new_password_confirm', DOTY_STRING, '');
+        $userid = FormaLms\lib\Get::req('username', DOTY_STRING, '');
+        $new_password = FormaLms\lib\Get::Req('new_password', DOTY_STRING, '');
+        $new_password_confirm = FormaLms\lib\Get::req('new_password_confirm', DOTY_STRING, '');
 
         $output = [];
         $check_pwd = true;
@@ -693,20 +693,20 @@ class UsermanagementAdmController extends AdmController
 
         $userdata = new stdClass();
         $userdata->userid = $userid;
-        $userdata->firstname = Forma\lib\Get::req('firstname', DOTY_STRING, '');
-        $userdata->lastname = Forma\lib\Get::req('lastname', DOTY_STRING, '');
-        $userdata->email = Forma\lib\Get::req('email', DOTY_STRING, '');
-        if ($check_pwd && !Forma\lib\Get::cfg('demo_mode')) {
+        $userdata->firstname = FormaLms\lib\Get::req('firstname', DOTY_STRING, '');
+        $userdata->lastname = FormaLms\lib\Get::req('lastname', DOTY_STRING, '');
+        $userdata->email = FormaLms\lib\Get::req('email', DOTY_STRING, '');
+        if ($check_pwd && !FormaLms\lib\Get::cfg('demo_mode')) {
             $userdata->password = $new_password;
         }
         if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
-            $userdata->level = Forma\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
+            $userdata->level = FormaLms\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
         } else {
             $userdata->level = false;
         }
-        $userdata->force_change = Forma\lib\Get::req('force_changepwd', DOTY_INT, 0);
+        $userdata->force_change = FormaLms\lib\Get::req('force_changepwd', DOTY_INT, 0);
 
-        $userdata->preferences = &$_POST; //Forma\lib\Get::req('user_preferences', DOTY_MIXED, array());
+        $userdata->preferences = &$_POST; //FormaLms\lib\Get::req('user_preferences', DOTY_MIXED, array());
 
         $res = $this->model->editUser($idst, $userdata);
         if ($res === true) {
@@ -733,7 +733,7 @@ class UsermanagementAdmController extends AdmController
         $uinfo = Docebo::aclm()->getUser($idst, false);
 
         $array_subst = [
-            '[url]' => Forma\lib\Get::site_url(),
+            '[url]' => FormaLms\lib\Get::site_url(),
             '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
             '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
             '[username]' => $uinfo[ACL_INFO_USERID],
@@ -778,12 +778,12 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        if (Forma\lib\Get::cfg('demo_mode')) {
+        if (FormaLms\lib\Get::cfg('demo_mode')) {
             exit('Cannot del user during demo mode.');
         }
 
         $acl_man = Docebo::user()->getAclManager();
-        $id_user = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_user > 0) {
             if ($id_user == Docebo::user()->getIdSt()) {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('cannot self delete')];
@@ -803,7 +803,7 @@ class UsermanagementAdmController extends AdmController
 
             if ($acl_man->deleteUser($id_user)) {
                 $output = ['success' => true];
-                if (Forma\lib\Get::sett('register_deleted_user', 'off') == 'on') {
+                if (FormaLms\lib\Get::sett('register_deleted_user', 'off') == 'on') {
                     $output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
                 }
                 // Increment the counter for users created by this admin:
@@ -856,7 +856,7 @@ class UsermanagementAdmController extends AdmController
 
         $acl_man = Docebo::user()->getAclManager();
         $output = [];
-        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
+        $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         if ($users != '') {
             //eliminates current user idst from list
             $users = str_replace(Docebo::user()->getIdSt(), '', $users);
@@ -888,7 +888,7 @@ class UsermanagementAdmController extends AdmController
                 $output['success'] = true;
                 $output['deleted'] = count($res);
                 $output['list'] = $res;
-                if (Forma\lib\Get::sett('register_deleted_user', 'off') == 'on') {
+                if (FormaLms\lib\Get::sett('register_deleted_user', 'off') == 'on') {
                     $output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
                 }
 
@@ -924,9 +924,9 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $idst = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $idst = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         $output = [];
-        $action = Forma\lib\Get::req('action', DOTY_INT, -1);
+        $action = FormaLms\lib\Get::req('action', DOTY_INT, -1);
 
         if ($idst > 0 && ($action == 0 || $action == 1)) {
             $model = new UsermanagementAdm();
@@ -943,7 +943,7 @@ class UsermanagementAdmController extends AdmController
                 $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
 
                 $array_subst = [
-                    '[url]' => Forma\lib\Get::site_url(),
+                    '[url]' => FormaLms\lib\Get::site_url(),
                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                     '[username]' => $userid,
@@ -1009,9 +1009,9 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
+        $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         $output = [];
-        $action = Forma\lib\Get::req('action', DOTY_INT, -1);
+        $action = FormaLms\lib\Get::req('action', DOTY_INT, -1);
         if ($users != '' && ($action == 0 || $action == 1)) {
             $arr_users = explode(',', $users);
 
@@ -1040,7 +1040,7 @@ class UsermanagementAdmController extends AdmController
                     $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
 
                     $array_subst = [
-                        '[url]' => Forma\lib\Get::site_url(),
+                        '[url]' => FormaLms\lib\Get::site_url(),
                         '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                         '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                         '[username]' => $userid,
@@ -1097,7 +1097,7 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
+        $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         $output = [];
         if ($users != '') {
             $arr_users = explode(',', $users);
@@ -1119,14 +1119,14 @@ class UsermanagementAdmController extends AdmController
 
     public function selectall()
     {
-        $idOrg = Forma\lib\Get::req('id_org', DOTY_INT, 0);
-        $descendants = (Forma\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $idOrg = FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
+        $descendants = (FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
         $searchFilter = [
             'text' => $filter_text,
-            'suspended' => (Forma\lib\Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
+            'suspended' => (FormaLms\lib\Get::req('suspended', DOTY_INT, 1) > 0 ? true : false),
         ];
-        $dyn_filter = $this->_getDynamicFilter(Forma\lib\Get::req('dyn_filter', DOTY_STRING, ''));
+        $dyn_filter = $this->_getDynamicFilter(FormaLms\lib\Get::req('dyn_filter', DOTY_STRING, ''));
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
@@ -1149,7 +1149,7 @@ class UsermanagementAdmController extends AdmController
 
     public function gettreedata()
     {
-        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
+        $command = FormaLms\lib\Get::req('command', DOTY_ALPHANUM, '');
 
         switch ($command) {
             case 'expand':
@@ -1161,8 +1161,8 @@ class UsermanagementAdmController extends AdmController
                     return;
                 }
 
-                $idOrg = Forma\lib\Get::req('node_id', DOTY_INT, -1);
-                $initial = (Forma\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $idOrg = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
+                $initial = (FormaLms\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
                 if ($initial) {
                     //get selected node from session and set the expanded tree
@@ -1199,7 +1199,7 @@ class UsermanagementAdmController extends AdmController
                 break;
 
             case 'set_selected_node':
-                $idOrg = Forma\lib\Get::req('node_id', DOTY_INT, -1);
+                $idOrg = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
                 $this->_setSessionValue('selected_node', $idOrg); //_setSelectedNode($idOrg);
 
                 break;
@@ -1227,7 +1227,7 @@ class UsermanagementAdmController extends AdmController
                 }
 
                 $output = [];
-                $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
+                $id = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
                 if ($id < 0) {
                     $output = [
                         'success' => false,
@@ -1235,7 +1235,7 @@ class UsermanagementAdmController extends AdmController
                     ];
                 } else {
                     if ($id == 0) {
-                        $root_name = Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
+                        $root_name = FormaLms\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart'));
                         $body = Form::openForm('modfolder_form', 'ajax.adm_server.php?r=' . $this->link . '/modrootfolder')
                             . '<p id="addfolder_error_message"></p>'
                             . Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
@@ -1316,7 +1316,7 @@ class UsermanagementAdmController extends AdmController
                     return;
                 }
 
-                $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
+                $id = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
                 $output = [];
                 if ($id <= 0) {
                     $output['success'] = false;
@@ -1337,8 +1337,8 @@ class UsermanagementAdmController extends AdmController
                     return;
                 }
 
-                $src_folder = Forma\lib\Get::req('src', DOTY_INT, -1);
-                $dest_folder = Forma\lib\Get::req('dest', DOTY_INT, -1);
+                $src_folder = FormaLms\lib\Get::req('src', DOTY_INT, -1);
+                $dest_folder = FormaLms\lib\Get::req('dest', DOTY_INT, -1);
 
                 $output = [];
                 if ($this->model->moveFolder($src_folder, $dest_folder)) {
@@ -1461,7 +1461,7 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $id_parent = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $id_parent = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($id_parent < 0) {
             $id_parent = 0;
         }
@@ -1491,13 +1491,13 @@ class UsermanagementAdmController extends AdmController
         }
 
         $output = [];
-        $code = Forma\lib\Get::req('org_code', DOTY_STRING, '');
-        $langs = Forma\lib\Get::req('langs', DOTY_MIXED, false);
+        $code = FormaLms\lib\Get::req('org_code', DOTY_STRING, '');
+        $langs = FormaLms\lib\Get::req('langs', DOTY_MIXED, false);
         if ($langs == false) {
             $output['success'] = false;
             $output['message'] = Lang::t('_INVALID_INPUT');
         } else {
-            $id_parent = Forma\lib\Get::req('id_parent', DOTY_INT, -1);
+            $id_parent = FormaLms\lib\Get::req('id_parent', DOTY_INT, -1);
             if ($id_parent < 0) {
                 $id_parent = 0;
             }
@@ -1526,7 +1526,7 @@ class UsermanagementAdmController extends AdmController
                 $vett_custom_org = $this->model->getCustomOrg();
                 foreach ($vett_custom_org as $key => $value) {
                     $name_custom_field = 'custom_' . $key;
-                    $org_chart = Forma\lib\Get::req($name_custom_field, DOTY_STRING, -1);
+                    $org_chart = FormaLms\lib\Get::req($name_custom_field, DOTY_STRING, -1);
                     $id_field = $key;
                     $res = $this->model->addCustomFieldValue($id, $id_field, $org_chart);
                 }
@@ -1550,7 +1550,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         $output = ['success' => false];
-        $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
 
         if ($id > 0) {
             $node = $this->model->getFolderById($id);
@@ -1584,11 +1584,11 @@ class UsermanagementAdmController extends AdmController
         }
 
         $output = [];
-        $id = Forma\lib\Get::req('node_id', DOTY_INT, -1);
-        $code = Forma\lib\Get::req('org_code', DOTY_STRING, '');
-        $template_id = Forma\lib\Get::req('associated_template', DOTY_INT, '');
+        $id = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
+        $code = FormaLms\lib\Get::req('org_code', DOTY_STRING, '');
+        $template_id = FormaLms\lib\Get::req('associated_template', DOTY_INT, '');
         $template_arr = getTemplateList();
-        $langs = Forma\lib\Get::req('modfolder', DOTY_MIXED, false);
+        $langs = FormaLms\lib\Get::req('modfolder', DOTY_MIXED, false);
         $old_node = $this->model->getFolderById($id);
 
         $new_node = new stdClass();
@@ -1607,7 +1607,7 @@ class UsermanagementAdmController extends AdmController
         $vett_custom_org = $this->model->getCustomOrg();
         foreach ($vett_custom_org as $key => $value) {
             $name_custom_field = 'custom_' . $key;
-            $org_chart = Forma\lib\Get::req($name_custom_field, DOTY_STRING, -1);
+            $org_chart = FormaLms\lib\Get::req($name_custom_field, DOTY_STRING, -1);
             $id_field = $key;
             $res = $this->model->addCustomFieldValue($id, $id_field, $org_chart);
         }
@@ -1635,7 +1635,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         $output = [];
-        $root_name = Forma\lib\Get::req('modfolder_root', DOTY_STRING, '');
+        $root_name = FormaLms\lib\Get::req('modfolder_root', DOTY_STRING, '');
         $res = $this->model->renameRootFolder($root_name);
         if ($res) {
             $output['success'] = true;
@@ -1649,7 +1649,7 @@ class UsermanagementAdmController extends AdmController
 
     public function assignuser()
     {
-        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
 
         $base_url = 'index.php?r=' . $this->link . '/';
         $back_url = $base_url . 'show';
@@ -1669,8 +1669,8 @@ class UsermanagementAdmController extends AdmController
             $selector = new UserSelector();
             $selector->use_suspended = true;
 
-            $cancel = Forma\lib\Get::req('cancelselector', DOTY_MIXED, false);
-            $save = Forma\lib\Get::req('okselector', DOTY_MIXED, false);
+            $cancel = FormaLms\lib\Get::req('cancelselector', DOTY_MIXED, false);
+            $save = FormaLms\lib\Get::req('okselector', DOTY_MIXED, false);
 
             if ($cancel) {
                 Util::jump_to($back_url);
@@ -1681,7 +1681,7 @@ class UsermanagementAdmController extends AdmController
                 require_once _adm_ . '/modules/org_chart/tree.org_chart.php';
                 $treedborgdb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
-                if (Forma\lib\Get::sett('orgchart_singlenode', 'off') == 'on') {
+                if (FormaLms\lib\Get::sett('orgchart_singlenode', 'off') == 'on') {
                     $alreadyassigned = [];
                     foreach ($selection as $sel_user) {
                         $user_org = $this->model->getUserFolders($sel_user);
@@ -1727,8 +1727,8 @@ class UsermanagementAdmController extends AdmController
                         $uinfo = Docebo::aclm()->getUser($idst, false);
 
                         $array_subst = [
-                            '[url]' => getCurrentDomain($id) ?: Forma\lib\Get::site_url(),
-                            '[dynamic_link]' => getCurrentDomain($id) ?: Forma\lib\Get::site_url(),
+                            '[url]' => getCurrentDomain($id) ?: FormaLms\lib\Get::site_url(),
+                            '[dynamic_link]' => getCurrentDomain($id) ?: FormaLms\lib\Get::site_url(),
                             '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                             '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                             '[username]' => $uinfo[ACL_INFO_USERID],
@@ -1766,7 +1766,7 @@ class UsermanagementAdmController extends AdmController
                 $selector->show_orgchart_selector = false;
                 $selector->show_fncrole_selector = false;
 
-                if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
+                if (FormaLms\lib\Get::req('is_updating', DOTY_INT, false)) {
                 } else {
                     $members = $this->model->getFolderUsers($id);
                     $selector->requested_tab = PEOPLEVIEW_TAB;
@@ -1801,7 +1801,7 @@ class UsermanagementAdmController extends AdmController
         require_once _base_ . '/lib/lib.table.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $id_org = Forma\lib\Get::req('id_node', DOTY_INT, 0);
+        $id_org = FormaLms\lib\Get::req('id_node', DOTY_INT, 0);
         $table = new Table();
 
         $type_h = ['', 'image', 'image', 'image', 'image', 'image'];
@@ -1899,12 +1899,12 @@ class UsermanagementAdmController extends AdmController
 
         require_once _adm_ . '/lib/lib.field.php';
 
-        $id_org = Forma\lib\Get::req('idst_group', DOTY_INT, 0);
-        $fields_use = Forma\lib\Get::req('fields_use', DOTY_MIXED, []);
-        $fields_inherit = Forma\lib\Get::req('fields_inherit', DOTY_MIXED, []);
-        $fields_mandatory = Forma\lib\Get::req('fields_mandatory', DOTY_MIXED, []);
-        $fields_invisible = Forma\lib\Get::req('fields_invisible', DOTY_MIXED, []);
-        $fields_userinherit = Forma\lib\Get::req('fields_userinherit', DOTY_MIXED, []);
+        $id_org = FormaLms\lib\Get::req('idst_group', DOTY_INT, 0);
+        $fields_use = FormaLms\lib\Get::req('fields_use', DOTY_MIXED, []);
+        $fields_inherit = FormaLms\lib\Get::req('fields_inherit', DOTY_MIXED, []);
+        $fields_mandatory = FormaLms\lib\Get::req('fields_mandatory', DOTY_MIXED, []);
+        $fields_invisible = FormaLms\lib\Get::req('fields_invisible', DOTY_MIXED, []);
+        $fields_userinherit = FormaLms\lib\Get::req('fields_userinherit', DOTY_MIXED, []);
 
         $nodedata = $this->model->getFolderById($id_org);
 
@@ -1976,8 +1976,8 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
-        $id_org = Forma\lib\Get::req('id_org', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_org = FormaLms\lib\Get::req('id_org', DOTY_INT, -1);
         $success = false;
         if ($id_user > 0 && $id_org > 0) { //idst of the user must be valid and the orgbranch must not be the root
             $acl_man = Docebo::user()->getAclManager();
@@ -2018,8 +2018,8 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
-        $id_org = Forma\lib\Get::req('id_org', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_org = FormaLms\lib\Get::req('id_org', DOTY_INT, -1);
         $success = false;
         if ($id_org == 0) {
             $success = true;
@@ -2046,7 +2046,7 @@ class UsermanagementAdmController extends AdmController
             $uinfo = Docebo::aclm()->getUser($id_user, false);
 
             $array_subst = [
-                '[url]' => Forma\lib\Get::site_url(),
+                '[url]' => FormaLms\lib\Get::site_url(),
                 '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                 '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                 '[username]' => $uinfo[ACL_INFO_USERID],
@@ -2092,8 +2092,8 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
-        $id_org = Forma\lib\Get::req('id_org', DOTY_INT, -1);
+        $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
+        $id_org = FormaLms\lib\Get::req('id_org', DOTY_INT, -1);
         $output = ['success' => false];
         if ($id_org == 0) {
             $output['success'] = true;
@@ -2140,7 +2140,7 @@ class UsermanagementAdmController extends AdmController
                 $uinfo = Docebo::aclm()->getUser($idst, false);
 
                 $array_subst = [
-                    '[url]' => Forma\lib\Get::site_url(),
+                    '[url]' => FormaLms\lib\Get::site_url(),
                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                     '[username]' => $uinfo[ACL_INFO_USERID],
@@ -2178,8 +2178,8 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $src = Forma\lib\Get::req('src', DOTY_INT, -1);
-        $dest = Forma\lib\Get::req('dest', DOTY_INT, -1);
+        $src = FormaLms\lib\Get::req('src', DOTY_INT, -1);
+        $dest = FormaLms\lib\Get::req('dest', DOTY_INT, -1);
         //&$folder, &$parentFolder, $newfoldername = FALSE
 
         $success = false;
@@ -2207,7 +2207,7 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        if (Forma\lib\Get::cfg('demo_mode')) {
+        if (FormaLms\lib\Get::cfg('demo_mode')) {
             $output['success'] = false;
             $output['message'] = UIFeedback::perror('Cannot mod password during demo mode.');
             echo $this->json->encode($output);
@@ -2231,7 +2231,7 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        if (Forma\lib\Get::cfg('demo_mode')) {
+        if (FormaLms\lib\Get::cfg('demo_mode')) {
             $output['success'] = false;
             $output['message'] = UIFeedback::perror('Cannot mod password during demo mode.');
             echo $this->json->encode($output);
@@ -2239,11 +2239,11 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $userid = Forma\lib\Get::req('userid', DOTY_STRING, '');
-        $idst = Forma\lib\Get::req('idst', DOTY_INT, 0);
-        $new_password = Forma\lib\Get::req('new_password', DOTY_STRING, '');
-        $confirm_password = Forma\lib\Get::req('confirm_password', DOTY_STRING, '');
-        $force_changepwd = Forma\lib\Get::req('force_changepwd', DOTY_INT, 0);
+        $userid = FormaLms\lib\Get::req('userid', DOTY_STRING, '');
+        $idst = FormaLms\lib\Get::req('idst', DOTY_INT, 0);
+        $new_password = FormaLms\lib\Get::req('new_password', DOTY_STRING, '');
+        $confirm_password = FormaLms\lib\Get::req('confirm_password', DOTY_STRING, '');
+        $force_changepwd = FormaLms\lib\Get::req('force_changepwd', DOTY_INT, 0);
         $output = [];
         $acl_man = Docebo::user()->getAclManager();
 
@@ -2306,8 +2306,8 @@ class UsermanagementAdmController extends AdmController
 
     public function users_autocompleteTask()
     {
-        $query = Forma\lib\Get::req('query', DOTY_STRING, '');
-        $results = Forma\lib\Get::Req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $query = FormaLms\lib\Get::req('query', DOTY_STRING, '');
+        $results = FormaLms\lib\Get::Req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
         $output = ['users' => []];
         if ($query != '') {
             $users = $this->model->searchUsersByUserid($query, $results, true);
@@ -2334,14 +2334,14 @@ class UsermanagementAdmController extends AdmController
             Util::jump_to($base_url);
         }
 
-        $idOrg = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $idOrg = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($idOrg < 0) {
             return false;
         }
-        $step = Forma\lib\Get::req('step', DOTY_INT, 1);
+        $step = FormaLms\lib\Get::req('step', DOTY_INT, 1);
         $params = ['id_org' => $idOrg, 'step' => $step];
 
-        $undo = Forma\lib\Get::req('import_groupcancel', DOTY_MIXED, false);
+        $undo = FormaLms\lib\Get::req('import_groupcancel', DOTY_MIXED, false);
         if ($undo) {
             Util::jump_to($base_url);
         }
@@ -2377,7 +2377,7 @@ class UsermanagementAdmController extends AdmController
                 }
 
                 require_once _adm_ . '/modules/org_chart/import.org_chart.php';
-                $separator_info = Forma\lib\Get::req('import_separator', DOTY_STRING, ',');
+                $separator_info = FormaLms\lib\Get::req('import_separator', DOTY_STRING, ',');
                 $separator = false;
                 switch ($separator_info) {
                     case 'comma':
@@ -2387,19 +2387,19 @@ class UsermanagementAdmController extends AdmController
                         $separator = ';';
                         break;
                     case 'manual':
-                        $separator = Forma\lib\Get::req('import_separator_manual', DOTY_STRING, '');
+                        $separator = FormaLms\lib\Get::req('import_separator_manual', DOTY_STRING, '');
                         break;
                 }
-                $first_row_header = (Forma\lib\Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true');
-                $import_charset = Forma\lib\Get::req('import_charset', DOTY_STRING, 'UTF-8');
+                $first_row_header = (FormaLms\lib\Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true');
+                $import_charset = FormaLms\lib\Get::req('import_charset', DOTY_STRING, 'UTF-8');
                 if (trim($import_charset) === '') {
                     $import_charset = 'UTF-8';
                 }
 
-                $pwd_force_change_policy = Forma\lib\Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing');
-                $set_password = Forma\lib\Get::req('set_password', DOTY_STRING, 'no_action');
-                $use_manual_password = Forma\lib\Get::req('use_manual_password', DOTY_BOOL, false);
-                $manual_password = Forma\lib\Get::req('manual_password', DOTY_STRING, '');
+                $pwd_force_change_policy = FormaLms\lib\Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing');
+                $set_password = FormaLms\lib\Get::req('set_password', DOTY_STRING, 'no_action');
+                $use_manual_password = FormaLms\lib\Get::req('use_manual_password', DOTY_BOOL, false);
+                $manual_password = FormaLms\lib\Get::req('manual_password', DOTY_STRING, '');
 
                 $src = new DeceboImport_SourceCSV([
                     'filename' => _files_ . $path . $savefile,
@@ -2435,17 +2435,17 @@ class UsermanagementAdmController extends AdmController
                 break;
 
             case 3:
-                //if (!Forma\lib\Get::pReq('send_alert', DOTY_INT, 0) && Forma\lib\Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
+                //if (!FormaLms\lib\Get::pReq('send_alert', DOTY_INT, 0) && FormaLms\lib\Get::req('set_password', DOTY_STRING, 'from_file') != 'from_file') {
                 //    Util::jump_to($base_url.'&res=need_to_alert' );
                 //}
 
-                $filename = Forma\lib\Get::req('filename', DOTY_STRING, '');
+                $filename = FormaLms\lib\Get::req('filename', DOTY_STRING, '');
                 if ($filename == '') {
                     return false;
                 }
-                $separator = Forma\lib\Get::req('import_separator', DOTY_STRING, ',');
-                $first_row_header = Forma\lib\Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
-                $import_charset = Forma\lib\Get::req('import_charset', DOTY_STRING, 'UTF-8');
+                $separator = FormaLms\lib\Get::req('import_separator', DOTY_STRING, ',');
+                $first_row_header = FormaLms\lib\Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
+                $import_charset = FormaLms\lib\Get::req('import_charset', DOTY_STRING, 'UTF-8');
                 if (trim($import_charset) === '') {
                     $import_charset = 'UTF-8';
                 }
@@ -2460,11 +2460,11 @@ class UsermanagementAdmController extends AdmController
                 $dst = new ImportUser([
                     'dbconn' => $GLOBALS['dbConn'],
                     'tree' => $idOrg,
-                    'pwd_force_change_policy' => Forma\lib\Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing'),
-                    'set_password' => Forma\lib\Get::req('set_password', DOTY_STRING, 'from_file'),
-                    'manual_password' => Forma\lib\Get::req('password_to_insert', DOTY_STRING, 'automatic_password') == 'use_manual_password' ? Forma\lib\Get::req('manual_password', DOTY_STRING, null) : null,
-                    'send_alert' => Forma\lib\Get::pReq('send_alert', DOTY_INT, 0),
-                    'action_on_users' => Forma\lib\Get::pReq('action_on_users', DOTY_STRING, 'create_and_update'),
+                    'pwd_force_change_policy' => FormaLms\lib\Get::req('pwd_force_change_policy', DOTY_STRING, 'do_nothing'),
+                    'set_password' => FormaLms\lib\Get::req('set_password', DOTY_STRING, 'from_file'),
+                    'manual_password' => FormaLms\lib\Get::req('password_to_insert', DOTY_STRING, 'automatic_password') == 'use_manual_password' ? FormaLms\lib\Get::req('manual_password', DOTY_STRING, null) : null,
+                    'send_alert' => FormaLms\lib\Get::pReq('send_alert', DOTY_INT, 0),
+                    'action_on_users' => FormaLms\lib\Get::pReq('action_on_users', DOTY_STRING, 'create_and_update'),
                 ]);
                 $src->connect();
                 $dst->connect();
@@ -2516,7 +2516,7 @@ class UsermanagementAdmController extends AdmController
                     require_once _base_ . '/lib/lib.table.php';
                     $buffer .= Lang::t('_ERRORS', 'admin_directory') . ': <b>' . (count($results) - 1) . '</b><br/>';
                     $table = new Table(
-                        Forma\lib\Get::sett('visuItem', 25),
+                        FormaLms\lib\Get::sett('visuItem', 25),
                         Lang::t('_ERRORS', 'admin_directory'),
                         Lang::t('_ERRORS', 'admin_directory')
                     );
@@ -2574,7 +2574,7 @@ class UsermanagementAdmController extends AdmController
         require_once _base_ . '/lib/lib.download.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $users = Forma\lib\Get::req('users', DOTY_STRING, '');
+        $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         $separator = ',';
         $delimiter = '"';
         $line_end = "\r\n";
@@ -2648,10 +2648,10 @@ class UsermanagementAdmController extends AdmController
 
         require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
-        $id_user = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_user <= 0) {
             //no luck with idst? then try with userid
-            $userid = Forma\lib\Get::req('userid', DOTY_STRING, '');
+            $userid = FormaLms\lib\Get::req('userid', DOTY_STRING, '');
             if ($userid != '') {
                 $acl_man = Docebo::user()->getACLManager();
                 $id_user = $acl_man->getUserST($userid);
@@ -2705,7 +2705,7 @@ class UsermanagementAdmController extends AdmController
 
         require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user > 0) {
             $profile = new UserProfile($id_user);
             $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
@@ -2730,8 +2730,8 @@ class UsermanagementAdmController extends AdmController
             Util::jump_to('index.php?r=' . $this->link . '/show');
         }
 
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/views/usermanagement/waiting_users.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/usermanagement/waiting_users.js', true, true);
         $this->render('show_waiting', [
             'filter_text' => '',
         ]);
@@ -2763,7 +2763,7 @@ class UsermanagementAdmController extends AdmController
         $fman = new FieldList();
 
         $acl_man = Docebo::user()->getACLManager();
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $userid = $acl_man->relativeId($acl_man->getUserid($id_user));
 
         $this->render('waiting_user_details', [
@@ -2784,12 +2784,12 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter = FormaLms\lib\Get::req('filter', DOTY_STRING, '');
 
         $total = $this->model->getDeletedUsersTotal($filter);
         if ($startIndex >= $total) {
@@ -2850,21 +2850,21 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $op = Forma\lib\Get::req('op', DOTY_STRING, '');
+        $op = FormaLms\lib\Get::req('op', DOTY_STRING, '');
         if ($op == 'selectall') {
-            $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
+            $filter = FormaLms\lib\Get::req('filter', DOTY_STRING, '');
             $output = $this->model->getWaitingUsersIds($filter);
             echo $this->json->encode($output);
 
             return;
         }
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter = FormaLms\lib\Get::req('filter', DOTY_STRING, '');
 
         $total = $this->model->getWaitingUsersTotal($filter);
         if ($startIndex >= $total) {
@@ -2929,11 +2929,11 @@ class UsermanagementAdmController extends AdmController
         }
 
         $arr_users = [];
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user > 0) {
             $arr_users = [$id_user];
         } else {
-            $str_users = trim(Forma\lib\Get::Req('users', DOTY_STRING, ''));
+            $str_users = trim(FormaLms\lib\Get::Req('users', DOTY_STRING, ''));
             $arr_users = $str_users != '' ? explode(',', $str_users) : [];
         }
 
@@ -2967,11 +2967,11 @@ class UsermanagementAdmController extends AdmController
         }
 
         $arr_users = [];
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, -1);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user > 0) {
             $arr_users = [$id_user];
         } else {
-            $str_users = trim(Forma\lib\Get::Req('users', DOTY_STRING, ''));
+            $str_users = trim(FormaLms\lib\Get::Req('users', DOTY_STRING, ''));
             $arr_users = $str_users != '' ? explode(',', $str_users) : [];
         }
 
@@ -3004,7 +3004,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         $title = Lang::t('_MOD', 'admin_directory');
-        $users_count = Forma\lib\Get::req('users_count', DOTY_INT, 0);
+        $users_count = FormaLms\lib\Get::req('users_count', DOTY_INT, 0);
         if ($users_count <= 0) {
             $output = [
                 'success' => true,
@@ -3073,7 +3073,7 @@ class UsermanagementAdmController extends AdmController
 
         $output = false;
 
-        $users_str = Forma\lib\Get::req('users', DOTY_STRING, '');
+        $users_str = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         if (!$users_str) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
             echo $this->json->encode($output);
@@ -3089,28 +3089,28 @@ class UsermanagementAdmController extends AdmController
         }
 
         $info = new stdClass();
-        $to_update = Forma\lib\Get::req('to_change', DOTY_MIXED, []);
+        $to_update = FormaLms\lib\Get::req('to_change', DOTY_MIXED, []);
         $count_updated = 0;
 
         //read input data
-        $sel_properties = Forma\lib\Get::req('multimod_sel', DOTY_MIXED, []);
-        $pref_properties = Forma\lib\Get::req('multimod_selpref', DOTY_MIXED, []);
-        $field_properties = Forma\lib\Get::req('multimod_selfield', DOTY_MIXED, []);
+        $sel_properties = FormaLms\lib\Get::req('multimod_sel', DOTY_MIXED, []);
+        $pref_properties = FormaLms\lib\Get::req('multimod_selpref', DOTY_MIXED, []);
+        $field_properties = FormaLms\lib\Get::req('multimod_selfield', DOTY_MIXED, []);
 
         //validate input data
         $info = new stdClass();
         if (isset($sel_properties['firstname'])) {
-            $info->firstname = Forma\lib\Get::req('firstname', DOTY_STRING, '');
+            $info->firstname = FormaLms\lib\Get::req('firstname', DOTY_STRING, '');
         }
         if (isset($sel_properties['lastname'])) {
-            $info->lastname = Forma\lib\Get::req('lastname', DOTY_STRING, '');
+            $info->lastname = FormaLms\lib\Get::req('lastname', DOTY_STRING, '');
         }
         if (isset($sel_properties['email'])) {
-            $info->email = Forma\lib\Get::req('email', DOTY_STRING, '');
+            $info->email = FormaLms\lib\Get::req('email', DOTY_STRING, '');
         }
         if (isset($sel_properties['password'])) {
-            $pwd_1 = Forma\lib\Get::req('new_password', DOTY_STRING, '');
-            $pwd_2 = Forma\lib\Get::req('new_password_confirm', DOTY_STRING, '');
+            $pwd_1 = FormaLms\lib\Get::req('new_password', DOTY_STRING, '');
+            $pwd_2 = FormaLms\lib\Get::req('new_password_confirm', DOTY_STRING, '');
             if ($pwd_1 == $pwd_2) {
                 $info->password = $pwd_1;
             } else {
@@ -3129,7 +3129,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         if (isset($sel_properties['level'])) {
-            $info->level = Forma\lib\Get::req('level', DOTY_STRING, '');
+            $info->level = FormaLms\lib\Get::req('level', DOTY_STRING, '');
         }
 
         if (!empty($field_properties)) {
@@ -3141,7 +3141,7 @@ class UsermanagementAdmController extends AdmController
 
             $field_info = [];
             foreach ($finfo as $id_field => $data) {
-                $input_data = Forma\lib\Get::req('field_' . $data[FIELD_INFO_TYPE], DOTY_MIXED, []);
+                $input_data = FormaLms\lib\Get::req('field_' . $data[FIELD_INFO_TYPE], DOTY_MIXED, []);
                 if (isset($input_data[$id_field])) {
                     $value_to_set = '';
                     switch ($data[FIELD_INFO_TYPE]) {
@@ -3195,9 +3195,9 @@ class UsermanagementAdmController extends AdmController
                 }
 
                 $array_subst = [
-                    '[url]' => Forma\lib\Get::site_url(),
+                    '[url]' => FormaLms\lib\Get::site_url(),
                     '[userid]' => $acl_man->getUserid($users[$i]),
-                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
+                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
                     '[password]' => $info->password,
                 ];
 
@@ -3219,8 +3219,8 @@ class UsermanagementAdmController extends AdmController
                 $uinfo = Docebo::aclm()->getUser($users[$i], false);
 
                 $array_subst = [
-                    '[url]' => Forma\lib\Get::site_url(),
-                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
+                    '[url]' => FormaLms\lib\Get::site_url(),
+                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                     '[username]' => $users[$i],
@@ -3260,7 +3260,7 @@ class UsermanagementAdmController extends AdmController
 
     public function gettreedata_create()
     {
-        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
+        $command = FormaLms\lib\Get::req('command', DOTY_ALPHANUM, '');
 
         switch ($command) {
             case 'expand':
@@ -3272,8 +3272,8 @@ class UsermanagementAdmController extends AdmController
                     return;
                 }
 
-                $idOrg = Forma\lib\Get::req('node_id', DOTY_INT, -1);
-                $initial = (Forma\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $idOrg = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
+                $initial = (FormaLms\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
                 if ($initial) {
                     //get selected node from session and set the expanded tree

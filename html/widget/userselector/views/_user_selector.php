@@ -17,7 +17,7 @@ $_varname = 'UserSelector_' . $id;
 <script type="text/javascript">
 	<?php //echo $event->getPrependScript();?>
 	var <?php echo $_varname; ?> = new UserSelector("<?php echo $id; ?>", {
-		imgPath: '<?php echo Forma\lib\Get::tmpl_path(); ?>',
+		imgPath: '<?php echo FormaLms\lib\Get::tmpl_path(); ?>',
 		langs: {
 			_SORT: "<?php echo Lang::t('_SORT', 'standard'); ?>",
 			_ADVANCED_SEARCH: "<?php echo Lang::t('_ADVANCED_SEARCH', 'standard'); ?>",
@@ -93,7 +93,7 @@ for ($i = 0; $i < $num_var_fields; ++$i) {
     }
     $label .= '</select>';
     $label .= '<a id="user_dyn_field_sort_' . $id . '_' . $i . '" href="javascript:;">';
-    $label .= '<img src="' . Forma\lib\Get::tmpl_path() . 'images/standard/sort.png" title="' . Lang::t('_SORT', 'standard') . '" alt="' . Lang::t('_SORT', 'standard') . '" />';
+    $label .= '<img src="' . FormaLms\lib\Get::tmpl_path() . 'images/standard/sort.png" title="' . Lang::t('_SORT', 'standard') . '" alt="' . Lang::t('_SORT', 'standard') . '" />';
     $label .= '</a>';
     $dyn_filter[$i] = $selected[$i];
     $dyn_labels[$i] = $label;

@@ -36,9 +36,9 @@
                 $params = [
                     'id' => 'communication',
                     'ajaxUrl' => 'ajax.server.php?r=communication/' . $ajax_action,
-                    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+                    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
                     'startIndex' => 0,
-                    'results' => Forma\lib\Get::sett('visuItem', 25),
+                    'results' => FormaLms\lib\Get::sett('visuItem', 25),
                     'sort' => 'title',
                     'dir' => 'asc',
                     'columns' => $columns,

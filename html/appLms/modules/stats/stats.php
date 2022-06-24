@@ -260,7 +260,7 @@ function statuserfilter()
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/lib/lib.subscribe.php';
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
     $view_all_perm = checkPerm('view_all_statuser', true);
@@ -277,11 +277,11 @@ function statuserfilter()
     $out->add(getTitleArea($lang->def('_STATFORUSER'), 'stats'));
     $out->add('<div class="std_block">');
 
-    $group_filter = Forma\lib\Get::req('group_filter', DOTY_INT, STATFILTER_ALL_GROUP);
-    $status_filter = Forma\lib\Get::req('status_filter', DOTY_INT, STATFILTER_ALL_STATUS);
-    $editions_filter = Forma\lib\Get::req('editions_filter', DOTY_INT, STATFILTER_ALL_EDITION);
-    $date_filter = Forma\lib\Get::req('date_filter', DOTY_INT, STATFILTER_ALL_EDITION);
-    $user_filter = Forma\lib\Get::req('user_filter', DOTY_MIXED, '');
+    $group_filter = FormaLms\lib\Get::req('group_filter', DOTY_INT, STATFILTER_ALL_GROUP);
+    $status_filter = FormaLms\lib\Get::req('status_filter', DOTY_INT, STATFILTER_ALL_STATUS);
+    $editions_filter = FormaLms\lib\Get::req('editions_filter', DOTY_INT, STATFILTER_ALL_EDITION);
+    $date_filter = FormaLms\lib\Get::req('date_filter', DOTY_INT, STATFILTER_ALL_EDITION);
+    $user_filter = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
 
     $cs = new CourseSubscribe_Manager();
     /*
@@ -420,7 +420,7 @@ function statuserfilter()
      * For any student compute progress
      */
 
-    $tabStat = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_STATS_USERS'), $lang->def('_STATS_USERS'));
+    $tabStat = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_STATS_USERS'), $lang->def('_STATS_USERS'));
     $tabStat->initNavBar('ini', 'button');
     $limit = $tabStat->getSelectedElement();
 
@@ -559,7 +559,7 @@ function statoneuser()
     $out = &$GLOBALS['page'];
     $aclManager = &Docebo::user()->getACLManager();
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
     $out->setWorkingZone('content');
@@ -626,7 +626,7 @@ function statcourse()
     $lang = &DoceboLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
     $aclManager = &Docebo::user()->getACLManager();
@@ -709,7 +709,7 @@ function statcourse()
         if ($lo !== false) {
             $out->add($lo->loadObjectReport());
         } else {
-            if (Forma\lib\Get::sett('do_debug') == 'on') {
+            if (FormaLms\lib\Get::sett('do_debug') == 'on') {
                 $out->add('<!-- createLOTrack fallita' .
                             'oggetto type: ' . $values[REPOFIELDOBJECTTYPE] . '<br/>' .
                             ' resource id: ' . $values[REPOFIELDIDRESOURCE] . '<br/>' .
@@ -738,7 +738,7 @@ function statitem()
     $lang = &DoceboLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     $form = new Form();
     $aclManager = &Docebo::user()->getACLManager();
@@ -746,11 +746,11 @@ function statitem()
 
     $idItem = (int) $_GET['idItem'];
 
-    $group_filter = Forma\lib\Get::req('group_filter', DOTY_INT, -1);
-    $status_filter = Forma\lib\Get::req('status_filter', DOTY_INT, -1);
-    $user_filter = Forma\lib\Get::req('user_filter', DOTY_MIXED, '');
+    $group_filter = FormaLms\lib\Get::req('group_filter', DOTY_INT, -1);
+    $status_filter = FormaLms\lib\Get::req('status_filter', DOTY_INT, -1);
+    $user_filter = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
 
-    $tabStat = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_STATSITEM') . $titleLO, $lang->def('_STATSITEM') . $titleLO);
+    $tabStat = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_STATSITEM') . $titleLO, $lang->def('_STATSITEM') . $titleLO);
     $tabStat->initNavBar('ini', 'button');
     $limit = $tabStat->getSelectedElement();
 
@@ -1144,7 +1144,7 @@ function modstatus()
     funAccess('statuser', 'OP');
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/lib/lib.subscribe.php';
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
     $lang = &DoceboLanguage::createInstance('stats', 'lms');
@@ -1189,7 +1189,7 @@ function modstatus()
 function upstatus()
 {
     funAccess('statuser', 'OP');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     if (!saveTrackStatusChange($_POST['idUser'], $idCourse, $_POST['status'])) {
         UiFeedback::error(_OPERATION_FAILURE);

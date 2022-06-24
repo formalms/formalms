@@ -581,7 +581,7 @@ class UserPreferences
     public function setTemplate($new_template)
     {
         $this->setPreference('ui.template', $new_template);
-        if ($this->id_user == getLogUserId() || Forma\lib\Get::sett('templ_use_field') == 0) {
+        if ($this->id_user == getLogUserId() || FormaLms\lib\Get::sett('templ_use_field') == 0) {
             setTemplate($new_template);
         }
 

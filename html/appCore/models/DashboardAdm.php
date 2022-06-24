@@ -66,7 +66,7 @@ class DashboardAdm extends Model
                             $array_courses[$id_course] = $id_course;
                         }
                     }
-                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -162,7 +162,7 @@ class DashboardAdm extends Model
     public function getVersionExternalInfo()
     {
         $version = [
-            'db_version' => Forma\lib\Get::sett('core_version'),
+            'db_version' => FormaLms\lib\Get::sett('core_version'),
             'file_version' => _file_version_,
             'online_version' => '',
         ];
@@ -190,7 +190,7 @@ class DashboardAdm extends Model
             }
         }
 
-        if (Forma\lib\Get::sett('welcome_use_feed') == 'on') {
+        if (FormaLms\lib\Get::sett('welcome_use_feed') == 'on') {
             require_once _base_ . '/lib/lib.fsock_wrapper.php';
             $fp = new Fsock();
             $versions_raw = $fp->send_request('http://www.formalms.org/versions/list');

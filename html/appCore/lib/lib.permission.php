@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 function checkPerm($token, $return_value = false, $use_custom_name = false, $use_custom_platform = false)
 {
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($use_custom_name !== false) {
         $mod_name = $use_custom_name;
     } else {

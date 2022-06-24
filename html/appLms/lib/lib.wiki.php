@@ -89,7 +89,7 @@ class LmsWikiAdmin extends CoreWikiAdmin
                 $res .= '<span>' . $this->lang->def('_MOD') . '</span></a></li>';
                 $url = $um->getUrl('op=setperm&wiki_id=' . $id);
 
-                if ($data_arr[$i]['public'] == 1 && Forma\lib\Get::cur_plat() != 'lms') {
+                if ($data_arr[$i]['public'] == 1 && FormaLms\lib\Get::cur_plat() != 'lms') {
                     $res .= '<li><a class="ico-wt-sprite subs_users" href="' . $url . '">';
                     $res .= '<span>' . $this->lang->def('_ALT_SETPERM') . '</span></a></li>';
                 }

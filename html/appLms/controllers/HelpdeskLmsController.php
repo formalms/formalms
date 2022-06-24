@@ -19,10 +19,10 @@ class HelpdeskLmsController extends LmsController
 {
     public function show()
     {
-        $sender = Forma\lib\Get::sett('sender_event', '');
-        $sender_name = Forma\lib\Get::sett('customer_help_name_from', false);
-        $prefix_subj = Forma\lib\Get::sett('customer_help_subj_pfx');
-        $ccn = Forma\lib\Get::sett('send_ccn_for_system_emails');
+        $sender = FormaLms\lib\Get::sett('sender_event', '');
+        $sender_name = FormaLms\lib\Get::sett('customer_help_name_from', false);
+        $prefix_subj = FormaLms\lib\Get::sett('customer_help_subj_pfx');
+        $ccn = FormaLms\lib\Get::sett('send_ccn_for_system_emails');
         $sendto = $_POST['sendto'];
         $usermail = $_POST['email'];
         $content = nl2br($_POST['msg']);

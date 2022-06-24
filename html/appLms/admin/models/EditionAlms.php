@@ -70,19 +70,19 @@ class EditionAlms extends Model
 
     protected function getEditionInfoFromPost()
     {
-        $res = ['code' => Forma\lib\Get::req('code', DOTY_MIXED, ''),
-                        'name' => Forma\lib\Get::req('name', DOTY_MIXED, ''),
-                        'description' => Forma\lib\Get::req('description', DOTY_MIXED, ''),
-                        'status' => Forma\lib\Get::req('status', DOTY_INT, 0),
-                        'max_par' => Forma\lib\Get::req('max_par', DOTY_INT, 0),
-                        'min_par' => Forma\lib\Get::req('min_par', DOTY_INT, 0),
-                        'price' => Forma\lib\Get::req('price', DOTY_MIXED, ''),
-                        'date_begin' => Forma\lib\Get::req('date_begin', DOTY_MIXED, ''),
-                        'date_end' => Forma\lib\Get::req('date_end', DOTY_MIXED, ''),
-                        'overbooking' => Forma\lib\Get::req('overbooking', DOTY_INT, 0),
-                        'can_subscribe' => Forma\lib\Get::req('can_subscribe', DOTY_INT, 0),
-                        'sub_date_begin' => Forma\lib\Get::req('sub_date_begin', DOTY_MIXED, ''),
-                        'sub_date_end' => Forma\lib\Get::req('sub_date_end', DOTY_MIXED, ''), ];
+        $res = ['code' => FormaLms\lib\Get::req('code', DOTY_MIXED, ''),
+                        'name' => FormaLms\lib\Get::req('name', DOTY_MIXED, ''),
+                        'description' => FormaLms\lib\Get::req('description', DOTY_MIXED, ''),
+                        'status' => FormaLms\lib\Get::req('status', DOTY_INT, 0),
+                        'max_par' => FormaLms\lib\Get::req('max_par', DOTY_INT, 0),
+                        'min_par' => FormaLms\lib\Get::req('min_par', DOTY_INT, 0),
+                        'price' => FormaLms\lib\Get::req('price', DOTY_MIXED, ''),
+                        'date_begin' => FormaLms\lib\Get::req('date_begin', DOTY_MIXED, ''),
+                        'date_end' => FormaLms\lib\Get::req('date_end', DOTY_MIXED, ''),
+                        'overbooking' => FormaLms\lib\Get::req('overbooking', DOTY_INT, 0),
+                        'can_subscribe' => FormaLms\lib\Get::req('can_subscribe', DOTY_INT, 0),
+                        'sub_date_begin' => FormaLms\lib\Get::req('sub_date_begin', DOTY_MIXED, ''),
+                        'sub_date_end' => FormaLms\lib\Get::req('sub_date_end', DOTY_MIXED, ''), ];
 
         return $res;
     }

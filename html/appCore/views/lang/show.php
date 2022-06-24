@@ -1,4 +1,4 @@
-<?php Forma\lib\Get::title(Lang::t('_LANGUAGE', 'admin_lang')); ?>
+<?php FormaLms\lib\Get::title(Lang::t('_LANGUAGE', 'admin_lang')); ?>
 
 <table class="table table-bordered display" style="width:100%" id="langlist"></table>
 <br>

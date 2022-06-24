@@ -99,7 +99,7 @@ function addquest(&$url)
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-    $type_quest = Forma\lib\Get::pReq('add_test_quest', DOTY_STRING, 'choice');
+    $type_quest = FormaLms\lib\Get::pReq('add_test_quest', DOTY_STRING, 'choice');
 
     require_once _lms_ . '/modules/question/question.php';
 
@@ -174,10 +174,10 @@ function doimportquest(&$url)
 
     $qb_man = new QuestBankMan();
 
-    $file_format = Forma\lib\Get::pReq('file_format', DOTY_INT, 0);
-    $file_encode = Forma\lib\Get::pReq('file_encode', DOTY_ALPHANUM, 'utf-8');
+    $file_format = FormaLms\lib\Get::pReq('file_format', DOTY_INT, 0);
+    $file_encode = FormaLms\lib\Get::pReq('file_encode', DOTY_ALPHANUM, 'utf-8');
     $file_readed = file($_FILES['import_file']['tmp_name']);
-    $quest_category = Forma\lib\Get::req('quest_category', DOTY_INT, 0);
+    $quest_category = FormaLms\lib\Get::req('quest_category', DOTY_INT, 0);
 
     addCss('style_yui_docebo');
 
@@ -217,25 +217,25 @@ function exportquest(&$url)
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
     $qb_man = new QuestBankMan();
 
-    $file_format = Forma\lib\Get::pReq('export_quest_select', DOTY_INT, 0);
-    $quest_category = Forma\lib\Get::pReq('quest_category', DOTY_INT);
-    $quest_difficult = Forma\lib\Get::pReq('quest_difficult', DOTY_INT);
-    $quest_type = Forma\lib\Get::pReq('quest_type', DOTY_ALPHANUM);
+    $file_format = FormaLms\lib\Get::pReq('export_quest_select', DOTY_INT, 0);
+    $quest_category = FormaLms\lib\Get::pReq('quest_category', DOTY_INT);
+    $quest_difficult = FormaLms\lib\Get::pReq('quest_difficult', DOTY_INT);
+    $quest_type = FormaLms\lib\Get::pReq('quest_type', DOTY_ALPHANUM);
 
-    $quest_selection = Forma\lib\Get::req('selected_quest', DOTY_NUMLIST, '');
+    $quest_selection = FormaLms\lib\Get::req('selected_quest', DOTY_NUMLIST, '');
 
     $quest_selection = array_filter(preg_split('/,/', $quest_selection, -1, PREG_SPLIT_NO_EMPTY));
 
     if ($file_format == -2) {
-        $new_test_step = Forma\lib\Get::pReq('new_test_step', DOTY_INT);
-        $id_test = Forma\lib\Get::pReq('test_sel', DOTY_INT, 0);
+        $new_test_step = FormaLms\lib\Get::pReq('new_test_step', DOTY_INT);
+        $id_test = FormaLms\lib\Get::pReq('test_sel', DOTY_INT, 0);
 
-        if (Forma\lib\Get::req('button_undo', DOTY_MIXED, false) !== false) {
+        if (FormaLms\lib\Get::req('button_undo', DOTY_MIXED, false) !== false) {
             questbank($url);
 
             return;
@@ -308,9 +308,9 @@ function exportquest(&$url)
             }
         }
     } elseif ($file_format == -1) {
-        $new_test_step = Forma\lib\Get::pReq('new_test_step', DOTY_INT);
+        $new_test_step = FormaLms\lib\Get::pReq('new_test_step', DOTY_INT);
 
-        if (Forma\lib\Get::req('button_undo', DOTY_MIXED, false) !== false) {
+        if (FormaLms\lib\Get::req('button_undo', DOTY_MIXED, false) !== false) {
             questbank($url);
 
             return;
@@ -410,7 +410,7 @@ function deletequest(&$url)
 
     $lang = &DoceboLanguage::createInstance('test');
 
-    $quest_selection = Forma\lib\Get::req('selected_quest', DOTY_NUMLIST, '');
+    $quest_selection = FormaLms\lib\Get::req('selected_quest', DOTY_NUMLIST, '');
     $quest_selection = array_filter(preg_split('/,/', $quest_selection, -1, PREG_SPLIT_NO_EMPTY));
 
     if (is_array($quest_selection) && !empty($quest_selection)) {

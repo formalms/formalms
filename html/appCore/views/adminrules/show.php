@@ -64,7 +64,7 @@
 
 			addDialog.setHeader("<?php echo Lang::t('_LOADING', 'subscribe'); ?>");
 			addDialog.setBody('<div id="admin_rules_table_addDialog"></div>'
-				+'<div class="align_center"><img src="<?php echo Forma\lib\Get::tmpl_path() . 'images/standard/loadbar.gif'; ?>" /></div>');
+				+'<div class="align_center"><img src="<?php echo FormaLms\lib\Get::tmpl_path() . 'images/standard/loadbar.gif'; ?>" /></div>');
 			addDialog.render(document.body);
 			addDialog.show();
 			var postdata = "";
@@ -194,18 +194,18 @@ $rel_action = '<a class="ico-wt-sprite subs_add" href="' . $add_url . '" title="
 $this->widget('table', [
     'id' => 'admin_rules_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/adminrules/getGroups&',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'groupid',
     'dir' => 'asc',
     'columns' => [
         ['key' => 'groupid', 'label' => Lang::t('_NAME', 'adminrules'), 'sortable' => true, 'editor' => 'new YAHOO.widget.TextboxCellEditor({asyncSubmitter: saveData})'],
-        ['key' => 'special', 'label' => Forma\lib\Get::sprite('subs_conf', Lang::t('_SPECIAL_SETTING', 'adminrules')), 'className' => 'img-cell'],
-        ['key' => 'menu', 'label' => Forma\lib\Get::sprite('subs_elem', Lang::t('_EDIT_SETTINGS', 'adminrules')), 'className' => 'img-cell'],
-        ['key' => 'lang', 'label' => Forma\lib\Get::sprite('subs_lang', Lang::t('_LANG_SETTING', 'adminrules')), 'className' => 'img-cell'],
-        ['key' => 'admin_manage', 'label' => Forma\lib\Get::sprite('subs_users', Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules')), 'className' => 'img-cell'],
-        ['key' => 'del', 'label' => Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'],
+        ['key' => 'special', 'label' => FormaLms\lib\Get::sprite('subs_conf', Lang::t('_SPECIAL_SETTING', 'adminrules')), 'className' => 'img-cell'],
+        ['key' => 'menu', 'label' => FormaLms\lib\Get::sprite('subs_elem', Lang::t('_EDIT_SETTINGS', 'adminrules')), 'className' => 'img-cell'],
+        ['key' => 'lang', 'label' => FormaLms\lib\Get::sprite('subs_lang', Lang::t('_LANG_SETTING', 'adminrules')), 'className' => 'img-cell'],
+        ['key' => 'admin_manage', 'label' => FormaLms\lib\Get::sprite('subs_users', Lang::t('_MANAGE_SUBSCRIPTION', 'adminrules')), 'className' => 'img-cell'],
+        ['key' => 'del', 'label' => FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'standard')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'],
     ],
     'fields' => ['id', 'idst', 'groupid', 'special', 'menu', 'lang', 'admin_manage', 'del'],
     'stdSelection' => false,

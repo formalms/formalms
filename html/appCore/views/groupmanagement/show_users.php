@@ -1,4 +1,4 @@
-<?php Forma\lib\Get::title([
+<?php FormaLms\lib\Get::title([
     'index.php?r=adm/groupmanagement/show' => Lang::t('_GROUPS', 'admin_directory'),
     Lang::t('_ASSIGN_USERS', 'admin_directory') . ': ' . $groupid,
 ]); ?>
@@ -36,9 +36,9 @@ if ($permissions['associate_user']) {
 $params = [
     'id' => 'group_users_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/getusertabledata',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'userid',
     'dir' => 'asc',
     'generateRequest' => 'Users.requestBuilder',

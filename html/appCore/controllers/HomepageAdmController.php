@@ -31,13 +31,13 @@ class HomepageAdmController extends AdmController
 
         $params = [];
 
-        $done = Forma\lib\Get::req('done', DOTY_MIXED, null);
+        $done = FormaLms\lib\Get::req('done', DOTY_MIXED, null);
         $params['done'] = $this->_translateDone($done);
 
-        $msg = Forma\lib\Get::req('msg', DOTY_MIXED, null);
+        $msg = FormaLms\lib\Get::req('msg', DOTY_MIXED, null);
         $params['msg'] = $this->_translateMsg($msg);
 
-        if (Forma\lib\Get::req('cancel_social', DOTY_BOOL, false)) {
+        if (FormaLms\lib\Get::req('cancel_social', DOTY_BOOL, false)) {
             $this->session->remove('social');
             $this->session->save();
         }
@@ -66,14 +66,14 @@ class HomepageAdmController extends AdmController
         $params['externalPages'] = [];
         if (!empty($external_pages)) {
             foreach ($external_pages as $id_page => $title) {
-                $externalPage = ['id' => $id_page, 'link' => Forma\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page, 'title' => $title];
+                $externalPage = ['id' => $id_page, 'link' => FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page, 'title' => $title];
 
                 $params['externalPages'][] = $externalPage;
             }
         }
 
-        $params['lostPwdAction'] = Forma\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
-        $params['register'] = Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_;
+        $params['lostPwdAction'] = FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
+        $params['register'] = FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_;
 
         // translations
         $params['intro_text_body'] = Lang::t('_INTRO_STD_TEXT', 'login');
@@ -162,19 +162,19 @@ class HomepageAdmController extends AdmController
 
         $registerResultForm = $this->model->getRegisterForm();
 
-        $registerForm = Form::openForm('register', Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_, ' homepage__form ', null, 'multipart/form-data')
+        $registerForm = Form::openForm('register', FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_, ' homepage__form ', null, 'multipart/form-data')
             . $registerResultForm
             . Form::closeForm();
 
         $dataView['form'] = $registerForm;
-        $dataView['loginAction'] = Forma\lib\Get::rel_path('base') . '/index.php?r=' . _login_;
-        $dataView['lostPwdAction'] = Forma\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
+        $dataView['loginAction'] = FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _login_;
+        $dataView['lostPwdAction'] = FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_;
 
         $external_pages = $this->model->getExternalPages();
         $dataView['externalPages'] = [];
         if (!empty($external_pages)) {
             foreach ($external_pages as $id_page => $title) {
-                $externalPage = ['id' => $id_page, 'link' => Forma\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page, 'title' => $title];
+                $externalPage = ['id' => $id_page, 'link' => FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page, 'title' => $title];
 
                 $dataView['externalPages'][] = $externalPage;
             }
@@ -196,11 +196,11 @@ class HomepageAdmController extends AdmController
             self::redirect();
         }
 
-        $action = Forma\lib\Get::req('action', DOTY_MIXED, null);
+        $action = FormaLms\lib\Get::req('action', DOTY_MIXED, null);
         $params = [];
         $res = null;
 
-        $ldapEnabled = Forma\lib\Get::sett('ldap_used') == 'on';
+        $ldapEnabled = FormaLms\lib\Get::sett('ldap_used') == 'on';
 
         $mand_symbol = '*';
 
@@ -209,7 +209,7 @@ class HomepageAdmController extends AdmController
 
         switch ($action) {
             case 'lost_user':
-                $email = Forma\lib\Get::req('email', DOTY_STRING);
+                $email = FormaLms\lib\Get::req('email', DOTY_STRING);
                 if (preg_match("\r", $email) || preg_match("\n", $email)) {
                     $error = true;
                     $errorMessage = Lang::t('_INVALID_EMAIL', 'register');
@@ -218,7 +218,7 @@ class HomepageAdmController extends AdmController
                 $res = $this->model->sendLostUserId($email);
                 break;
             case 'lost_pwd':
-                $userid = Forma\lib\Get::req('userid', DOTY_STRING);
+                $userid = FormaLms\lib\Get::req('userid', DOTY_STRING);
                 $res = $this->model->sendLostPwd($userid);
                 break;
         }
@@ -233,7 +233,7 @@ class HomepageAdmController extends AdmController
                 $errorMessage = Lang::t('_OPERATION_FAILURE', 'register');
                 break;
             case SUCCESS_SEND_LOST_PWD:
-                $dataView['loginAction'] = Forma\lib\Get::rel_path('base') . '/index.php?r=' . _login_;
+                $dataView['loginAction'] = FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _login_;
 
                 switch ($action) {
                     case 'lost_user':
@@ -251,7 +251,7 @@ class HomepageAdmController extends AdmController
         }
 
         $lostUsernameForm = '<div class="homepage__row homepage__row--gray homepage__row--form row-fluid">'
-            . Form::openForm('lost_user', Forma\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_)
+            . Form::openForm('lost_user', FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_)
 
             . Form::getHidden('lost_user_action', 'action', 'lost_user')
             . '<div class="col-xs-12 col-sm-5">'
@@ -274,7 +274,7 @@ class HomepageAdmController extends AdmController
             . Form::closeForm();
 
         $lostPwdForm = '<div class="homepage__row homepage__row--gray homepage__row--form row-fluid">'
-            . Form::openForm('lost_pwd', Forma\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_)
+            . Form::openForm('lost_pwd', FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_)
             . Form::getHidden('lost_pwd_action', 'action', 'lost_pwd')
             . '<div class="col-xs-12 col-sm-5">'
             . Form::getInputTextfield(
@@ -319,7 +319,7 @@ class HomepageAdmController extends AdmController
 
     public function newpwd()
     {
-        $code = Forma\lib\Get::req('code', DOTY_STRING, '');
+        $code = FormaLms\lib\Get::req('code', DOTY_STRING, '');
 
         $params = [];
         $params['msg'] = '';
@@ -333,9 +333,9 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        if (Forma\lib\Get::req('send', DOTY_BOOL, false)) {
-            $newpwd = Forma\lib\Get::req('new_password', DOTY_STRING, null);
-            $retype_newpwd = Forma\lib\Get::req('retype_new_password', DOTY_STRING, null);
+        if (FormaLms\lib\Get::req('send', DOTY_BOOL, false)) {
+            $newpwd = FormaLms\lib\Get::req('new_password', DOTY_STRING, null);
+            $retype_newpwd = FormaLms\lib\Get::req('retype_new_password', DOTY_STRING, null);
 
             switch ($this->model->checkNewPwdValidity($newpwd, $retype_newpwd)) {
                 case PASSWORD_MISMATCHING:
@@ -385,8 +385,8 @@ class HomepageAdmController extends AdmController
         }
 
         $redirection = [];
-        $plugin = Forma\lib\Get::req('plugin', DOTY_STRING, '');
-        $loginRedirect = Forma\lib\Get::req('login_redirect', DOTY_STRING, null);
+        $plugin = FormaLms\lib\Get::req('plugin', DOTY_STRING, '');
+        $loginRedirect = FormaLms\lib\Get::req('login_redirect', DOTY_STRING, null);
 
         $res = $this->model->login($plugin);
 
@@ -421,7 +421,7 @@ class HomepageAdmController extends AdmController
 
     public function logout()
     {
-        $msg = Forma\lib\Get::req('msg', DOTY_MIXED, null);
+        $msg = FormaLms\lib\Get::req('msg', DOTY_MIXED, null);
 
         if (Docebo::user()->isAnonymous()) {
             self::redirect();
@@ -456,7 +456,7 @@ class HomepageAdmController extends AdmController
 
     public function webpage()
     {
-        $id_page = Forma\lib\Get::req('page', DOTY_INT, null);
+        $id_page = FormaLms\lib\Get::req('page', DOTY_INT, null);
 
         $params = [];
         list($params['title'], $params['description']) = $this->model->getWebPage($id_page);
@@ -466,7 +466,7 @@ class HomepageAdmController extends AdmController
 
         if (!empty($external_pages)) {
             foreach ($external_pages as $id_page => $title) {
-                $externalPage = ['id' => $id_page, 'link' => Forma\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page, 'title' => $title];
+                $externalPage = ['id' => $id_page, 'link' => FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page, 'title' => $title];
 
                 $params['externalPages'][] = $externalPage;
             }
@@ -477,12 +477,12 @@ class HomepageAdmController extends AdmController
 
     public function sso()
     {
-        $login_user = stripslashes(Forma\lib\Get::req('login_user', DOTY_MIXED, false));
-        $login_idst = Forma\lib\Get::req('use_user_idst', DOTY_MIXED, false);
-        $secret = Forma\lib\Get::sett('sso_secret', '');
+        $login_user = stripslashes(FormaLms\lib\Get::req('login_user', DOTY_MIXED, false));
+        $login_idst = FormaLms\lib\Get::req('use_user_idst', DOTY_MIXED, false);
+        $secret = FormaLms\lib\Get::sett('sso_secret', '');
         $redirection = [];
 
-        if (empty($secret) || Forma\lib\Get::sett('sso_token', 'off') != 'on' || !$login_user) {
+        if (empty($secret) || FormaLms\lib\Get::sett('sso_token', 'off') != 'on' || !$login_user) {
             $redirection['req'] = _homepage_;
             $redirection['query'] = [
                 'msg' => ACCESS_FAILURE, // XXX: o SSO_FAILURE?
@@ -496,11 +496,11 @@ class HomepageAdmController extends AdmController
             exit;
         }
 
-        $time = Forma\lib\Get::req('time', DOTY_MIXED, '');
-        $token = strtoupper(Forma\lib\Get::req('token', DOTY_MIXED, ''));
+        $time = FormaLms\lib\Get::req('time', DOTY_MIXED, '');
+        $token = strtoupper(FormaLms\lib\Get::req('token', DOTY_MIXED, ''));
         $recalc_token = strtoupper(md5($login_user . ',' . $time . ',' . $secret));
 
-        $lifetime = Forma\lib\Get::sett('rest_auth_lifetime', 1);
+        $lifetime = FormaLms\lib\Get::sett('rest_auth_lifetime', 1);
 
         if ($recalc_token != $token || $time + $lifetime < time()) {
             $redirection['req'] = _homepage_;
@@ -547,11 +547,11 @@ class HomepageAdmController extends AdmController
                 break;
         }
 
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $next_action = Forma\lib\Get::req('act', DOTY_STRING, 'none');
-        $module = Forma\lib\Get::req('module', DOTY_STRING, 'none');
-        $id_item = Forma\lib\Get::req('id_item', DOTY_INT, '');
-        $chapter = Forma\lib\Get::req('chapter', DOTY_MIXED, false);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $next_action = FormaLms\lib\Get::req('act', DOTY_STRING, 'none');
+        $module = FormaLms\lib\Get::req('module', DOTY_STRING, 'none');
+        $id_item = FormaLms\lib\Get::req('id_item', DOTY_INT, '');
+        $chapter = FormaLms\lib\Get::req('chapter', DOTY_MIXED, false);
 
         if ($id_course) {
             define('LMS', true);

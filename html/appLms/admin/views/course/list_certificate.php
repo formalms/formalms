@@ -37,12 +37,12 @@ echo getTitleArea([
 
   $print_button = '<div>'
                         . '<a id="print_selected_button_1" href="javascript:generate_all_certificate();">'
-                            . Forma\lib\Get::img('course/certificate.png', Lang::t('_GENERATE_ALL_SELECTED', 'certificate'))
+                            . FormaLms\lib\Get::img('course/certificate.png', Lang::t('_GENERATE_ALL_SELECTED', 'certificate'))
                             . Lang::t('_GENERATE_ALL_SELECTED', 'certificate')
                         . '</a>'
                         . '&nbsp;&nbsp;&nbsp;' .
                         '<a id="download_selected_button_1" href="javascript:download_all_certificate();">'
-                            . Forma\lib\Get::img('course/certificate.png', Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate'))
+                            . FormaLms\lib\Get::img('course/certificate.png', Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate'))
                             . Lang::t('_DOWNLOAD_ALL_SELECTED', 'certificate')
                         . '</a>'
                 . '</div>';
@@ -197,13 +197,13 @@ echo getTitleArea([
         }, // TBD converting to local time
         {
           data: 'cell_down_gen',
-          title: '<?php echo Forma\lib\Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')); ?>',
+          title: '<?php echo FormaLms\lib\Get::sprite('subs_pdf', Lang::t('_TITLE_VIEW_CERT', 'certificate')); ?>',
           sortable: true,
           searchable: false
         },
         {
           data: 'cell_del_cert',
-          title: '<?php echo Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>',
+          title: '<?php echo FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'certificate')); ?>',
           sortable: false,
           searchable: false
         }

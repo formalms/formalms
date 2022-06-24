@@ -85,7 +85,7 @@ function field_list()
     );
 
     //display inserted field--------------------------------------------
-    $tb_field = new Table(Forma\lib\Get::sett('visuItem'));
+    $tb_field = new Table(FormaLms\lib\Get::sett('visuItem'));
 
     $query_field_display = '
 	SELECT c.id_field, c.type_field, cl.translation, ca.area_name, c.code

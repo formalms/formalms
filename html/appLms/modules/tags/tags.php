@@ -23,16 +23,16 @@ function tagslist()
     require_once _adm_ . '/lib/lib.tags.php';
     $lang = &DoceboLanguage::createInstance('tags', 'framework');
 
-    $id_tag = Forma\lib\Get::req('id_tag', DOTY_INT, 0);
-    $tag_name = Forma\lib\Get::req('tag', DOTY_STRING, '');
-    $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
+    $id_tag = FormaLms\lib\Get::req('id_tag', DOTY_INT, 0);
+    $tag_name = FormaLms\lib\Get::req('tag', DOTY_STRING, '');
+    $filter = FormaLms\lib\Get::req('filter', DOTY_STRING, '');
 
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0);
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
     $nav_bar->setLink('index.php?modname=tags&amp;op=tags&amp;id_tag=' . $id_tag);
     $ini = $nav_bar->getSelectedElement();
 
     $tags = new Tags('*');
-    $resources = $tags->getResourceByTags($id_tag, false, false, $ini, Forma\lib\Get::sett('visuItem'));
+    $resources = $tags->getResourceByTags($id_tag, false, false, $ini, FormaLms\lib\Get::sett('visuItem'));
 
     $GLOBALS['page']->add(
         getTitleArea([$lang->def('_TAGS')], 'tags')

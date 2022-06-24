@@ -17,7 +17,7 @@ class SettingAdmController extends AdmController
 {
     public function showTask()
     {
-        switch (Forma\lib\Get::req('result', DOTY_ALPHANUM, '')) {
+        switch (FormaLms\lib\Get::req('result', DOTY_ALPHANUM, '')) {
             case 'ok': UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
             case 'err': UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'standard')); break;
         }
@@ -25,7 +25,7 @@ class SettingAdmController extends AdmController
         $model = new SettingAdm();
         $regroup = $model->getRegroupUnit();
 
-        $active_tab = Forma\lib\Get::req('active_tab', DOTY_MIXED, 1);
+        $active_tab = FormaLms\lib\Get::req('active_tab', DOTY_MIXED, 1);
         $this->render('show', [
             'model' => $model,
             'regroup' => $regroup,
@@ -38,7 +38,7 @@ class SettingAdmController extends AdmController
         $model = new SettingAdm();
 
         $active_tab = importVar('active_tab', false, 1);
-        $plugin = Forma\lib\Get::req('plugin');
+        $plugin = FormaLms\lib\Get::req('plugin');
 
         if (isset($_POST['undo'])) {
             if ($plugin) {
@@ -63,7 +63,7 @@ class SettingAdmController extends AdmController
 
     public function clearTwigCache()
     {
-        $twigCacheDir = Forma\appCore\Template\TwigManager::getCacheDir();
+        $twigCacheDir = FormaLms\appCore\Template\TwigManager::getCacheDir();
 
         $this->rrmdir($twigCacheDir);
 

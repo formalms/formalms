@@ -41,7 +41,7 @@ class PrecompileLmsController extends LmsController
         $fieldlist = new FieldList();
 
         $result_message = '';
-        $res = Forma\lib\Get::req('res', DOTY_ALPHANUM, '');
+        $res = FormaLms\lib\Get::req('res', DOTY_ALPHANUM, '');
         switch ($res) {
             case 'err': $result_message .= UIFeedback::notice(Lang::t('_SOME_MANDATORY_EMPTY', 'register'), true);
         }
@@ -75,8 +75,8 @@ class PrecompileLmsController extends LmsController
         $fl = new FieldList();
         $fl->storeFieldsForUser($id_user);
 
-        $accept_policy = Forma\lib\Get::req('accept_policy', DOTY_INT, 0) > 0;
-        $policy_id = Forma\lib\Get::req('policy_id', DOTY_INT, -1);
+        $accept_policy = FormaLms\lib\Get::req('accept_policy', DOTY_INT, 0) > 0;
+        $policy_id = FormaLms\lib\Get::req('policy_id', DOTY_INT, -1);
         $this->model->setAcceptingPolicy($id_user, $policy_id, $accept_policy);
 
         $policy_checked = $this->model->getAcceptingPolicy($id_user);

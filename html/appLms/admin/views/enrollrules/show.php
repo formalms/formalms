@@ -1,4 +1,4 @@
-<?php Forma\lib\Get::title(Lang::t('_ENROLLRULES', 'enrollrules')); ?>
+<?php FormaLms\lib\Get::title(Lang::t('_ENROLLRULES', 'enrollrules')); ?>
 <div class="std_block">
 <script type="text/javascript">
 var RulesActiveFormatter = function(elLiner, oRecord, oColumn, oData) {
@@ -47,9 +47,9 @@ function mod_rule(e) {
 $this->widget('table', [
     'id' => 'enrollrules',
     'ajaxUrl' => 'ajax.adm_server.php?r=alms/enrollrules/get',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'title',
     'dir' => 'asc',
     'columns' => [

@@ -33,9 +33,9 @@ if ($permissions['assign_profile']) {
 }
 $_columns[] = $_profile_column;
 
-$_img_users = Forma\lib\Get::sprite('subs_users', Lang::t('_ASSIGN_USERS', 'adminmanager'));
-$_img_courses = Forma\lib\Get::sprite('subs_elem', Lang::t('_COURSES', 'adminmanager'));
-$_img_classlocations = Forma\lib\Get::sprite('subs_location', Lang::t('_LOCATION', 'adminmanager'));
+$_img_users = FormaLms\lib\Get::sprite('subs_users', Lang::t('_ASSIGN_USERS', 'adminmanager'));
+$_img_courses = FormaLms\lib\Get::sprite('subs_elem', Lang::t('_COURSES', 'adminmanager'));
+$_img_classlocations = FormaLms\lib\Get::sprite('subs_location', Lang::t('_LOCATION', 'adminmanager'));
 
 if ($permissions['assign_users']) {
     $_columns[] = ['key' => 'users', 'label' => $_img_users, 'className' => 'img-cell', 'formatter' => 'AdminManagement.formatUsers'];
@@ -50,9 +50,9 @@ if ($permissions['assign_courses']) {
 $this->widget('table', [
     'id' => 'admin_manager_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/adminmanager/getAdmin&',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'userid',
     'dir' => 'asc',
     'columns' => $_columns,
@@ -167,7 +167,7 @@ var AdminManagement = {
 
 AdminManagement.init({
 	filterText: "<?php echo $filter_text; ?>",
-	noProfileIcon: '<?php echo addslashes(Forma\lib\Get::sprite('fd_notice', Lang::t('_NONE', 'adminrules'))); ?>',
+	noProfileIcon: '<?php echo addslashes(FormaLms\lib\Get::sprite('fd_notice', Lang::t('_NONE', 'adminrules'))); ?>',
 	langs: {
 		_NONE: "<?php echo Lang::t('_NONE', 'adminrules'); ?>",
 		_USERS_ASSOCIATION: "<?php echo Lang::t('_ASSIGN_USERS', 'adminmanager'); ?>",

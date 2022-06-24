@@ -12,7 +12,7 @@ echo getTitleArea($title_arr);
 <?php
 
     require_once _base_ . '/lib/lib.table.php';
-    $tb = new Table(Forma\lib\Get::sett('visu_course'));
+    $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
     $h_type = ['', '', '', '', '', 'image'];
     $h_content = [

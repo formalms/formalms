@@ -33,7 +33,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
                 $form = '<i class="fa fa-google"></i>' . ' '
                         . Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social')
                         . ' <b>' . ($social['data']['name'] != '' ? $social['data']['name'] : $social['data']['email']) . '</b>'
-                        . Form::openForm('cancel_social', Forma\lib\Get::rel_path('base'))
+                        . Form::openForm('cancel_social', FormaLms\lib\Get::rel_path('base'))
                           . Form::openButtonSpace()
                               . Form::getButton('cancel', 'cancel_social', Lang::t('_CANCEL', 'standard'))
                           . Form::closeButtonSpace()
@@ -58,8 +58,8 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     public static function getUserFromLogin()
     {
-        $error = Forma\lib\Get::req('error', DOTY_STRING, false);
-        $code = Forma\lib\Get::req('code', DOTY_STRING, false);
+        $error = FormaLms\lib\Get::req('error', DOTY_STRING, false);
+        $code = FormaLms\lib\Get::req('code', DOTY_STRING, false);
 
         if ($error || !$code) {
             return UNKNOWN_SOCIAL_ERROR;
@@ -108,9 +108,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $storage = new Session(false);
 
         $credentials = new Credentials(
-            Forma\lib\Get::sett('google.oauth_key'),
-            Forma\lib\Get::sett('google.oauth_secret'),
-            Forma\lib\Get::abs_path() . 'index.php?r=' . _login_ . '&plugin=' . Plugin::getName()
+            FormaLms\lib\Get::sett('google.oauth_key'),
+            FormaLms\lib\Get::sett('google.oauth_secret'),
+            FormaLms\lib\Get::abs_path() . 'index.php?r=' . _login_ . '&plugin=' . Plugin::getName()
         );
 
         return $serviceFactory->createService('google', $credentials, $storage, ['userinfo_email']);

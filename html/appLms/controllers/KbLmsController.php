@@ -28,10 +28,10 @@ class KbLmsController extends LmsController
     public function show()
     {
         Yuilib::load('tabview');
-        Util::get_js(Forma\lib\Get::rel_path('lms') . '/views/kb/kb.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/yui/stylesheet/stylesheet-min.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/views/kb/kb.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/yui/stylesheet/stylesheet-min.js', true, true);
 
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         require_once _lms_ . '/lib/lib.kbres.php';
         $kbres = new KbRes();
@@ -80,7 +80,7 @@ class KbLmsController extends LmsController
 
     public function selFolder()
     {
-        $folder_id = Forma\lib\Get::req('folder_id', DOTY_INT, 0);
+        $folder_id = FormaLms\lib\Get::req('folder_id', DOTY_INT, 0);
 
         require_once _lms_ . '/lib/lib.kbres.php';
         $kbres = new KbRes();
@@ -133,13 +133,13 @@ class KbLmsController extends LmsController
     public function getlist()
     {
         $kb_model = new KbAlms();
-        $folder_id = Forma\lib\Get::req('folder_id', DOTY_INT, 0);
-        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
-        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
-        $course_filter = Forma\lib\Get::req('course_filter', DOTY_INT, -1);
+        $folder_id = FormaLms\lib\Get::req('folder_id', DOTY_INT, 0);
+        $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
+        $course_filter = FormaLms\lib\Get::req('course_filter', DOTY_INT, -1);
 
         // --- Search and filters: -------------------------------------------------
 
@@ -207,10 +207,10 @@ class KbLmsController extends LmsController
         $kbres = new KbRes();
         $kb_model = new KbAlms();
 
-        $from_adm = Forma\lib\Get::req('from_adm', DOTY_INT, 0);
-        $back_url = ($from_adm ? Forma\lib\Get::rel_path('adm') . '/index.php?r=alms/kb/show' : 'index.php?r=kb/show');
+        $from_adm = FormaLms\lib\Get::req('from_adm', DOTY_INT, 0);
+        $back_url = ($from_adm ? FormaLms\lib\Get::rel_path('adm') . '/index.php?r=alms/kb/show' : 'index.php?r=kb/show');
 
-        $res_id = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $res_id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
         if ($kb_model->checkResourcePerm($res_id)) {
             $kbres->playResource($res_id, $back_url);

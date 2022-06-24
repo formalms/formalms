@@ -120,8 +120,8 @@ class UserSelector
     public function getSelection($arrayData = [], $selector_id = false)
     {
         $selector_id = (empty($selector_id) ? 'main_selector' : $selector_id);
-        $userselector_input_post = Forma\lib\Get::pReq('userselector_input', DOTY_MIXED, []);
-        $userselector_input_get = Forma\lib\Get::gReq('userselector_input', DOTY_MIXED, []);
+        $userselector_input_post = FormaLms\lib\Get::pReq('userselector_input', DOTY_MIXED, []);
+        $userselector_input_get = FormaLms\lib\Get::gReq('userselector_input', DOTY_MIXED, []);
         $userselector_input = array_merge($userselector_input_post, $userselector_input_get);
         if (is_array($userselector_input) && isset($userselector_input[$selector_id])) {
             if (!empty($userselector_input[$selector_id])) {

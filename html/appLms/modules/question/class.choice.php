@@ -727,7 +727,7 @@ class Choice_Question extends Question
                 . '</div> '
                 . '<label class="text_answer" for="quest_' . $id_quest . '_' . $id_answer . '">' . $answer . '</label><br /></div>';
         }
-        if (Forma\lib\Get::sett('no_answer_in_test') == 'on') {
+        if (FormaLms\lib\Get::sett('no_answer_in_test') == 'on') {
             $content .= '<input type="radio" id="quest_' . $id_quest . '_0" '
                     . 'name="quest[' . $id_quest . ']" value="0" '
                     . ($find_prev ? ($id_answer == $id_answer_do ? ' checked="checked"' : '') : ' checked="checked"')

@@ -377,7 +377,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
+        if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm) {
@@ -639,7 +639,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
+        if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm) {
@@ -1044,7 +1044,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
+        if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm) {

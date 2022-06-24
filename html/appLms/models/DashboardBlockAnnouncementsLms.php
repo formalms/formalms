@@ -80,7 +80,7 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
         $exclude_pathcourse = '';
-        if (count($learning_path_enroll) > 1 && Forma\lib\Get::sett('on_path_in_mycourses') == 'off') {
+        if (count($learning_path_enroll) > 1 && FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
             $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
             foreach ($rs as $data) {

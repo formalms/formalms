@@ -28,7 +28,7 @@ if (Docebo::user()->isAnonymous()) {
 
 require_once _adm_ . '/lib/lib.permission.php';
 
-$op = Forma\lib\Get::req('op', DOTY_ALPHANUM, '');
+$op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {
     case 'getuserprofile':
         $lang = &DoceboLanguage::createInstance('standard', 'framework');

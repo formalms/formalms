@@ -22,7 +22,7 @@ YAHOO.util.Event.onDOMReady(function(e) {
 <?php
 
 $_languages = [
-    '_ROOT' => Forma\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
+    '_ROOT' => FormaLms\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', 'organization_chart')),
     '_YES' => Lang::t('_CONFIRM', 'organization_chart'),
     '_NO' => Lang::t('_UNDO', 'organization_chart'),
     '_LOADING' => Lang::t('_LOADING', 'standard'),
@@ -42,7 +42,7 @@ $this->widget('tree', [
     'id' => 'orgchart_selector_tree_' . $id,
     'ajaxUrl' => 'ajax.adm_server.php?r=widget/userselector/getorgcharttreedata',
     'treeClass' => 'SelectorTree',
-    'treeFile' => Forma\lib\Get::rel_path('base') . '/widget/tree/selectortree.js',
+    'treeFile' => FormaLms\lib\Get::rel_path('base') . '/widget/tree/selectortree.js',
         'options' => ['simple' => $this->show_orgchart_simple_selector],
     'languages' => $_languages,
     'rootNodeId' => isset($root_node_id) ? $root_node_id : 0,

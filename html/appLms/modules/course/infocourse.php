@@ -13,10 +13,10 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 if (!Docebo::user()->isAnonymous()) {
-    define('_PATH_COURSE', '/appLms/' . Forma\lib\Get::sett('pathcourse'));
+    define('_PATH_COURSE', '/appLms/' . FormaLms\lib\Get::sett('pathcourse'));
 
     require_once _lms_ . '/lib/lib.levels.php';
 
@@ -103,7 +103,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view_info');
 
         require_once _lms_ . '/lib/lib.course.php';
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         //finding course information
         $mod_perm = checkPerm('mod', true);
         $lang = &DoceboLanguage::createInstance('course');
@@ -237,7 +237,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         $lang_c = &DoceboLanguage::createInstance('course');
         $lang = &DoceboLanguage::createInstance('course');
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $out = &$GLOBALS['page'];
         $id_course = $session->get('idCourse');
         $form = new Form();
@@ -405,7 +405,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
         $array_lang = Docebo::langManager()->getAllLangCode();
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $user_status = 0;
         if (isset($_POST['user_status'])) {
             foreach ($_POST['user_status'] as $status => $v) {
@@ -449,11 +449,11 @@ if (!Docebo::user()->isAnonymous()) {
         $msg_composer = new EventMessageComposer();
 
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
-        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => Forma\lib\Get::site_url(),
+        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => FormaLms\lib\Get::site_url(),
             '[course_code]' => $_POST['course_code'],
             '[course]' => $_POST['course_name'],]);
 
-        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => Forma\lib\Get::site_url(),
+        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
             '[course_code]' => $_POST['course_code'],
             '[course]' => $_POST['course_name'],]);
 
@@ -477,7 +477,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view_info');
 
         require_once _base_ . '/lib/lib.download.php';
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         //find selected file
         list($filename) = sql_fetch_row(sql_query('
 	SELECT path 
@@ -525,7 +525,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
         $lang = &DoceboLanguage::createInstance('course');
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         require_once _base_ . '/lib/lib.upload.php';
 
         if ($_POST['title'] == '') {
@@ -583,7 +583,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
 
         $lang = &DoceboLanguage::createInstance('course');
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_file = importVar('id_file', true, 0);
 
         list($title) = sql_fetch_row(sql_query("SELECT title FROM %lms_course_file 
@@ -615,7 +615,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
         $lang = &DoceboLanguage::createInstance('course');
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         require_once _base_ . '/lib/lib.upload.php';
 
         if ($_POST['title'] == '') {
@@ -677,7 +677,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
         $lang = &DoceboLanguage::createInstance('course');
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         require_once _base_ . '/lib/lib.upload.php';
 
         if (isset($_GET['confirm']) && ($_GET['confirm'] == '1')) {
@@ -686,7 +686,7 @@ if (!Docebo::user()->isAnonymous()) {
 		FROM ' . $GLOBALS['prefix_lms'] . "_course_file 
 		WHERE id_course='" . $session->get('idCourse') . "' AND id_file='" . (int)$_GET['id_file'] . "'"));
 
-            $size = Forma\lib\Get::file_size(_files_ . _PATH_COURSE . $old_file);
+            $size = FormaLms\lib\Get::file_size(_files_ . _PATH_COURSE . $old_file);
             if (!sl_unlink(_PATH_COURSE . $old_file)) {
                 $GLOBALS['page']->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
 

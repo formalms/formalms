@@ -29,7 +29,7 @@ class CommunicationLmsController extends LmsController
 
     public function track_communication()
     {
-        $id_comm = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
+        $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
         $model = new CommunicationAlms();
         $comm = $model->findByPk($id_comm, Docebo::user()->getArrSt());
 
@@ -84,10 +84,10 @@ class CommunicationLmsController extends LmsController
 
     public function gettabledata()
     {
-        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
-        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new CommunicationAlms();
         $communications = $model->findAllUnread(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
@@ -135,10 +135,10 @@ class CommunicationLmsController extends LmsController
 
     public function gethistorydata()
     {
-        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
-        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new CommunicationAlms();
         $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
@@ -208,7 +208,7 @@ class CommunicationLmsController extends LmsController
 
     public function playTask()
     {
-        $id_comm = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
+        $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
         $model = new CommunicationAlms();
         $comm = $model->findByPk($id_comm, Docebo::user()->getArrSt());
 

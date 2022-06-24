@@ -99,7 +99,7 @@ function send_newsletter($send_id)
     $path = '/appCore/newsletter/';
 
     //access control
-    $nl_sendpercycle = Forma\lib\Get::sett('nl_sendpercycle', 1);
+    $nl_sendpercycle = FormaLms\lib\Get::sett('nl_sendpercycle', 1);
     //-TP// funAdminAccess('OP');
 
     //@set_time_limit(60*15); // 15 minutes!
@@ -124,7 +124,7 @@ function send_newsletter($send_id)
     $msg = str_replace('{site_base_url}', getSiteBaseUrl(), $msg);
 
     $fromemail = $info['fromemail'];
-    $sender = Forma\lib\Get::sett('sender_event');
+    $sender = FormaLms\lib\Get::sett('sender_event');
     $file_array = $json->decode($info['file']);
 
     $attach = [];
@@ -133,7 +133,7 @@ function send_newsletter($send_id)
         $attach[] = _files_ . $path . $file;
     }
 
-    $cycle = Forma\lib\Get::gReq('cycle', DOTY_INT, 0);
+    $cycle = FormaLms\lib\Get::gReq('cycle', DOTY_INT, 0);
 
     // Items per cycle
     $ipc = $nl_sendpercycle;
@@ -184,7 +184,7 @@ function send_newsletter($send_id)
                 $field_man = new FieldList();
 
                 $arr_sms_recipients = [];
-                $send_to_field = Forma\lib\Get::sett('sms_cell_num_field');
+                $send_to_field = FormaLms\lib\Get::sett('sms_cell_num_field');
                 $users_sms = $field_man->showFieldForUserArr($arr_st, [$send_to_field]);
                 $users_info = $acl_man->getUsers($arr_st);
                 foreach ($users_info as $user_dett) {
@@ -254,7 +254,7 @@ function nl_pause()
 {
     checkPerm('view');
 
-    $delay = Forma\lib\Get::sett('nl_sendpause', 20);
+    $delay = FormaLms\lib\Get::sett('nl_sendpause', 20);
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -316,7 +316,7 @@ function init_send()
     $json = new Services_JSON();
 
     $savefile = '';
-    $max_file = Forma\lib\Get::req('file_number', DOTY_INT, 0);
+    $max_file = FormaLms\lib\Get::req('file_number', DOTY_INT, 0);
 
     $savefile = [];
     for ($i = 1; $i <= $max_file; ++$i) {
@@ -520,7 +520,7 @@ function selSendTo()
 
         $acl_manager = &Docebo::user()->getAclManager();
         if (defined('IN_LMS')) {
-            $id_course = (int) \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            $id_course = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
             $mdir->setUserFilter('group', $arr_idstGroup);
             $mdir->setGroupFilter('path', '/lms/course/' . $id_course . '/group');

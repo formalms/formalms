@@ -11,9 +11,9 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-namespace Forma\lib;
+namespace FormaLms\lib;
 
-use Forma\appCore\Template\Services\ClientService;
+use FormaLms\appCore\Template\Services\ClientService;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 

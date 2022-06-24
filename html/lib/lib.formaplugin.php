@@ -40,7 +40,7 @@ abstract class FormaPlugin
 
     public static function getURL($file = '')
     {
-        return \Forma\lib\Get::site_url() . _folder_plugins_ . '/' . static::getName() . '/' . $file;
+        return \FormaLms\lib\Get::site_url() . _folder_plugins_ . '/' . static::getName() . '/' . $file;
     }
 
     public static function getName()

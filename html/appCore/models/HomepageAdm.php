@@ -32,7 +32,7 @@ class HomepageAdm extends Model
     public function getLoginGUI()
     {
         $redirect = '';
-        $loginRedirect = Forma\lib\Get::req('login_redirect', DOTY_MIXED, null);
+        $loginRedirect = FormaLms\lib\Get::req('login_redirect', DOTY_MIXED, null);
         if (!is_null($loginRedirect)) {
             $redirect = '&login_redirect=' . $loginRedirect;
         }
@@ -93,7 +93,7 @@ class HomepageAdm extends Model
 
     public function getRegisterForm()
     {
-        return $this->user_manager->getRegister(Forma\lib\Get::rel_path('base') . '/index.php?r=' . _signup_);
+        return $this->user_manager->getRegister(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _signup_);
     }
 
     public function getConfirmRegister()
@@ -146,8 +146,8 @@ class HomepageAdm extends Model
         $subject = Lang::t('_LOST_USERID_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $body = Lang::t('_LOST_USERID_MAILTEXT', 'register', [
             '[date_request]' => date('d-m-Y'),
-            '[url]' => Forma\lib\Get::site_url(),
-            '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
+            '[url]' => FormaLms\lib\Get::site_url(),
+            '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $params = [MAIL_SENDER_ACLNAME => $sender_name];
@@ -194,14 +194,14 @@ class HomepageAdm extends Model
             }
         }
 
-        $url = getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url();
+        $url = getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url();
 
         $sender = $this->options->getOption('mail_sender');
         $sender_name = $this->options->getOption('mail_sender_name_from');
         $recipients = $user_info[ACL_INFO_EMAIL];
         $subject = Lang::t('_LOST_PWD_TITLE', 'register', [], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $body = Lang::t('_LOST_PWD_MAILTEXT', 'register', [
-            '[link]' => Forma\lib\Get::site_url() . 'index.php?r=' . _newpwd_ . '&code=' . $code,
+            '[link]' => FormaLms\lib\Get::site_url() . 'index.php?r=' . _newpwd_ . '&code=' . $code,
             '[dynamic_link]' => $url . 'index.php?r=' . _newpwd_ . '&code=' . $code,
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
@@ -269,12 +269,12 @@ class HomepageAdm extends Model
 
     public static function staticIsCatalogToShow()
     {
-        return Forma\lib\Get::sett('course_block', 'on') == 'on';
+        return FormaLms\lib\Get::sett('course_block', 'on') == 'on';
     }
 
     public function isCatalogToShow()
     {
-        return Forma\lib\Get::sett('course_block', 'on') == 'on';
+        return FormaLms\lib\Get::sett('course_block', 'on') == 'on';
     }
 
     public function getWebPage($id_page = null)

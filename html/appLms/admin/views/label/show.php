@@ -14,15 +14,15 @@ if ($permissions['mod']) {
     $_columns[] = ['key' => 'mod', 'label' => '<span class="ico-sprite subs_mod" title="' . Lang::t('_MOD', 'label') . '"><span>' . Lang::t('_MOD', 'label') . '</span></span>', 'className' => 'img-cell'];
 }
 if ($permissions['del']) {
-    $_columns[] = ['key' => 'del', 'label' => Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'label')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
+    $_columns[] = ['key' => 'del', 'label' => FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'label')), 'formatter' => 'doceboDelete', 'className' => 'img-cell'];
 }
 
 $_params = [
     'id' => 'label_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=alms/label/getLabels',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => '',
     'columns' => $_columns,
     'fields' => ['id_common_label', 'title', 'description', 'position', 'sequence', 'mod', 'del'],

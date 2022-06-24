@@ -115,7 +115,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector
         $this->directory = new UserSelector();
         //$this->tree_view = $this->directory->getTreeView_OrgView();
         $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
-        $this->tree_view = new TreeView_OrgView($orgDb, 'organization_chart', Forma\lib\Get::sett('title_organigram_chart'));
+        $this->tree_view = new TreeView_OrgView($orgDb, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
         $this->tree_view->aclManager = Docebo::aclm();
 
         list($this->tree_desc) = $this->tree_view->tdb->getDescendantsSTFromST([$this->tree]);

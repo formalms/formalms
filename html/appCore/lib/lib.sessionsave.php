@@ -41,7 +41,7 @@ class Session_Save extends General_Save
 
     public function __construct()
     {
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function getName($basename = 'basename', $unique = false)

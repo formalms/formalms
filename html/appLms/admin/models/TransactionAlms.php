@@ -79,8 +79,8 @@ class TransactionAlms extends Model
             $row['userid'] = $this->acl_man->relativeId($row['userid']);
             $row['date_creation'] = Format::date($row['date_creation'], 'datetime');
             $row['date_activated'] = Format::date($row['date_activated'], 'datetime');
-            $row['paid'] = ($row['paid'] == 1 ? Forma\lib\Get::img('standard/status_active.png', Lang::t('_ACTIVATED', 'transaction')) : Forma\lib\Get::img('standard/status_deactive.png', Lang::t('_NOT_ACTIVATED', 'transaction')));
-            $row['edit'] = '<a href="index.php?r=alms/transaction/mod&amp;id_trans=' . $row['id_trans'] . '" title="' . Lang::t('_MOD', 'transaction') . '">' . Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'transaction')) . '</a>';
+            $row['paid'] = ($row['paid'] == 1 ? FormaLms\lib\Get::img('standard/status_active.png', Lang::t('_ACTIVATED', 'transaction')) : FormaLms\lib\Get::img('standard/status_deactive.png', Lang::t('_NOT_ACTIVATED', 'transaction')));
+            $row['edit'] = '<a href="index.php?r=alms/transaction/mod&amp;id_trans=' . $row['id_trans'] . '" title="' . Lang::t('_MOD', 'transaction') . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'transaction')) . '</a>';
 
             $res[] = $row;
         }

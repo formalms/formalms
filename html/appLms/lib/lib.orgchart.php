@@ -21,7 +21,7 @@ class OrganizationManagement
     public function __construct($id_course)
     {
         $this->id_course = $id_course;
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function &getAllLoAbsoluteIdWhereType($objectType, $id_course = false)

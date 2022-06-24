@@ -49,7 +49,7 @@ class TableView
         $this->json = new Services_JSON();
 
         $this->addFormatter('delete', 'deleteFormatter');
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     /**
@@ -78,13 +78,13 @@ class TableView
         ]);
 
         // Selector class
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
 
         // Commodities functions
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
         // The tableview main file
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/table_view/tableview.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/table_view/tableview.js', true, true);
 
         // Datatable css
         Util::get_css('../yui-skin/datatable.css', false, true);
@@ -236,7 +236,7 @@ class TableView
         $options[] = 'fields:' . $this->createFieldsData();
 
         //pagination
-        $options[] = 'rowsPerPage:' . (isset($this->initialData['results']) ? $this->initialData['results'] : Forma\lib\Get::sett('visuItem'));
+        $options[] = 'rowsPerPage:' . (isset($this->initialData['results']) ? $this->initialData['results'] : FormaLms\lib\Get::sett('visuItem'));
         $options[] = 'initialPage:' . '0';
 
         if (count($this->otherOptions) > 0) {

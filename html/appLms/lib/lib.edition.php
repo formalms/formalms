@@ -136,8 +136,8 @@ class EditionManager
                 'students' => $num_student,
                 'num_subscription' => $num_subscription,
                 'subscription' => '<a class="nounder" href="index.php?r=alms/subscription/show&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '">'
-                    . $num_subscription . ' ' . Forma\lib\Get::img('course/subscribe.png', Lang::t('_SUBSCRIPTION', 'course')) . '</a>',
-                'edit' => '<a href="index.php?r=alms/edition/edit&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '">' . Forma\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
+                    . $num_subscription . ' ' . FormaLms\lib\Get::img('course/subscribe.png', Lang::t('_SUBSCRIPTION', 'course')) . '</a>',
+                'edit' => '<a href="index.php?r=alms/edition/edit&amp;id_course=' . $id_course . '&amp;id_edition=' . $id_edition . '">' . FormaLms\lib\Get::img('standard/edit.png', Lang::t('_MOD', 'course')) . '</a>',
                 'del' => 'ajax.adm_server.php?r=alms/edition/del&amp;id_course=' . $id_course . '&id_edition=' . $id_edition, ];
         }
 

@@ -31,8 +31,8 @@ function drawCalendar()
     addCss('calendar_' . $size);
 
     YuiLib::load('base,dragdrop');
-    Util::get_js(Forma\lib\Get::rel_path('lms') . '/modules/calendar/calendar.js', true, true);
-    Util::get_js(Forma\lib\Get::rel_path('lms') . '/modules/calendar/calendar_helper.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/modules/calendar/calendar.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/modules/calendar/calendar_helper.js', true, true);
 
     //permissions = permissions granted to the logged user according to his/her level and role
     //	2 => can create/delete/modify all events

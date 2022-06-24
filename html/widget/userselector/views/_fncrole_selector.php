@@ -56,9 +56,9 @@ $columns = [
 $params = [
     'id' => 'fncrole_selector_table_' . $id,
     'ajaxUrl' => 'ajax.adm_server.php?r=widget/userselector/getfncroletabledata',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'name',
     'dir' => 'asc',
     'columns' => $columns,

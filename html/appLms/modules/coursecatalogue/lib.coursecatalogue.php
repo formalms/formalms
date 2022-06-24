@@ -38,7 +38,7 @@ function displayCourseList(&$url, $order_type)
     $lang = &DoceboLanguage::createInstance('catalogue');
     $lang_c = &DoceboLanguage::createInstance('course');
 
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0);
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
     $man_course = new Man_Course();
 
     $id_parent = importVar('id_parent', false, 0);
@@ -66,7 +66,7 @@ function displayCourseList(&$url, $order_type)
     . '		ON ( c.idCourse = u.idCourse ) ';
     $where_course = " c.status <> '" . CST_PREPARATION . "' ";
 
-    if (Forma\lib\Get::sett('catalogue_hide_ended') == 'on') {
+    if (FormaLms\lib\Get::sett('catalogue_hide_ended') == 'on') {
         $where_course .= " AND ( c.date_end = '0000-00-00'"
                             . " OR c.date_end > '" . date('Y-m-d') . "' ) ";
     }
@@ -78,7 +78,7 @@ function displayCourseList(&$url, $order_type)
         case 'recent': $order_course = ' ORDER BY c.create_date DESC '; break;
         default: $order_course = ' ORDER BY c.name ';
     }
-    $limit_course = ' LIMIT ' . $ini . ', ' . Forma\lib\Get::sett('visuItem');
+    $limit_course = ' LIMIT ' . $ini . ', ' . FormaLms\lib\Get::sett('visuItem');
     $where_course .= " AND c.course_type <> 'assessment'";
 
     if (Docebo::user()->isAnonymous()) {
@@ -99,11 +99,11 @@ function displayCourseList(&$url, $order_type)
         } else {
             $where_course .= ' AND c.idCourse IN ( ' . implode(',', $cat_courses) . ' ) ';
         }
-    } elseif (Forma\lib\Get::sett('on_catalogue_empty') == 'off') {
+    } elseif (FormaLms\lib\Get::sett('on_catalogue_empty') == 'off') {
         $where_course .= ' AND 0 ';
     }
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!Docebo::user()->isAnonymous()) {
 
         if (!$session->has('cp_assessment_effect')) {
@@ -357,8 +357,8 @@ function displayCoursePathList(&$url, $selected_tab)
 
     $lang = &DoceboLanguage::createInstance('catalogue');
     $lang_c = &DoceboLanguage::createInstance('course');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0);
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
     $nav_bar->setLink($url->getUrl());
     $ini = $nav_bar->getSelectedElement();
 
@@ -379,7 +379,7 @@ function displayCoursePathList(&$url, $selected_tab)
         if (!empty($cat_path)) {
             $path_man->filterInPath($cat_path);
         }
-    } elseif (Forma\lib\Get::sett('on_catalogue_empty') == 'off') {
+    } elseif (FormaLms\lib\Get::sett('on_catalogue_empty') == 'off') {
         $path_man->filterInPath([0]);
     }
 
@@ -406,7 +406,7 @@ function displayCoursePathList(&$url, $selected_tab)
     // retrive all the classroorm
 
     // search for the coursepath ------------------------------------------------------
-    $coursepath = $path_man->getCoursepathList($ini, Forma\lib\Get::sett('visuItem'));
+    $coursepath = $path_man->getCoursepathList($ini, FormaLms\lib\Get::sett('visuItem'));
     if (empty($coursepath)) {
         // no path found for the criteria ---------------------------------------------
         $GLOBALS['page']->add('<p class="no_course_found">' . $lang->def('_NO_COURSE_FOUND') . '</p></div>', 'content');
@@ -563,7 +563,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
     }
 
     $html = '<div class="course_container'
-        . (Forma\lib\Get::sett('use_social_courselist') == 'on' ? ' double_height' : ' normal_height')
+        . (FormaLms\lib\Get::sett('use_social_courselist') == 'on' ? ' double_height' : ' normal_height')
         . ($index == 0 ? ' course_container_first' : '') . '">';
     $html .= '<div class="course_info_container">'
             . '<h' . $h_number . '>' .
@@ -706,7 +706,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
             $html .= '</p>';*/
 
             // theacher list ----------------------------------------------------------
-            if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
+            if (FormaLms\lib\Get::sett('use_social_courselist') == 'on') {
                 if (isset($ed_info['theacher_list']) && is_array($ed_info['theacher_list']) && !empty($ed_info['theacher_list'])) {
                     $html .= '<h3 class="course_teacher_list">' . $lang->def('_THEACER_LIST') . '</h3>'
                         . '<ul class="course_teacher_list">';
@@ -731,7 +731,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 			YAHOO.util.Dom.get(\'course_edition_' . $cinfo['idCourse'] . '\').style.display = \'none\';
 			YAHOO.util.Dom.get(\'course_edition_' . $cinfo['idCourse'] . '_close\').style.display = \'none\';
 		</script>';
-    } elseif (Forma\lib\Get::sett('use_social_courselist') == 'on') {
+    } elseif (FormaLms\lib\Get::sett('use_social_courselist') == 'on') {
         // theacher list ----------------------------------------------------------
         if (isset($cinfo['theacher_list']) && is_array($cinfo['theacher_list']) && !empty($cinfo['theacher_list'])) {
             $html .= '<h3 class="course_teacher_list">' . $lang->def('_THEACER_LIST') . '</h3>'
@@ -748,9 +748,9 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
         }
     }
     // course related extra option ---------------------------------------------
-    if (Forma\lib\Get::sett('use_social_courselist') == 'on' || !empty($there_material) || ($cinfo['course_demo'] != '')) {
+    if (FormaLms\lib\Get::sett('use_social_courselist') == 'on' || !empty($there_material) || ($cinfo['course_demo'] != '')) {
         $html .= '<ul class="course_related_actions">';
-        if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
+        if (FormaLms\lib\Get::sett('use_social_courselist') == 'on') {
             $html .= '<li class="course_comment">'
                     . '<a href="javascript:;" onclick="openComment(\'' . $cinfo['idCourse'] . '\'); return false;">'
                     . '<span>' . $lang->def('_COMMENTS') . ' ('
@@ -775,7 +775,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
         if ($cinfo['course_demo'] != '') {
             require_once _base_ . '/lib/lib.multimedia.php';
             $ext = end(explode('.', $cinfo['course_demo']));
-            if (isPossibleEmbedPlay('/appLms/' . Forma\lib\Get::sett('pathcourse'), $cinfo['course_demo'], $ext)) {
+            if (isPossibleEmbedPlay('/appLms/' . FormaLms\lib\Get::sett('pathcourse'), $cinfo['course_demo'], $ext)) {
                 // play demo in popup ---------------------------------------------------------
                 $html .= '<li class="course_demo">'
                     . '<a href="javascript:;" onclick="openWindowWithAction(\'' . $cinfo['idCourse'] . '\', \'play_demo\'); return false;">'
@@ -841,7 +841,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                 . ($action[1] != false ? '</a>' : '')
                 . '</li>';
     }
-    if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
+    if (FormaLms\lib\Get::sett('use_social_courselist') == 'on') {
         $html .= '<li class="current_score"><span>' . $lang->def('_SCORE') . '</span><br />'
             . '<strong id="course_score_' . $cinfo['idCourse'] . '">' . $cinfo['course_vote'] . '</strong></li>';
         if ($uc_status != false && $uc_status['waiting'] == 0) {
@@ -878,14 +878,14 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 
 function must_search_filter()
 {
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $courseCatalogue = $session->get('coursecatalogue');
     return  $courseCatalogue && isset($courseCatalogue['in_search']) && $courseCatalogue['in_search'] == true;
 }
 
 function get_searched($var, $default)
 {
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $prefix = 'coursecatalogue';
     if (isset($_POST['do_search'])) {
         $session->set($prefix,['in_search' => true]);
@@ -923,7 +923,7 @@ function searchForm(&$url, &$lang)
     $all_lang = ['all' => $lang->def('_ALL_LANGUAGE')];
     $all_lang = array_merge($all_lang, $langs);
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $sessionData = $session->get('coursecatalogue');
     $html = '';
     $html .= Form::openForm('search_coursecatalogue', $url->getUrl())

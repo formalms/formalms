@@ -137,7 +137,7 @@ class YuiLib
         if (!empty($css_load)) {
             $to_load .= '<!-- yui css -->';
             foreach ($css_load as $k => $filename) {
-                $to_load .= Util::get_css(Forma\lib\Get::tmpl_path('base') . 'yui-skin/' . $filename, true);
+                $to_load .= Util::get_css(FormaLms\lib\Get::tmpl_path('base') . 'yui-skin/' . $filename, true);
             }
         }
         // load new js
@@ -149,7 +149,7 @@ class YuiLib
                     $to_load .= "\n" . '<script type="text/javascript"> YAHOO.util.Connect.initHeader(\'X-Signature\',\'' . Util::getSignature() . '\'); YAHOO.util.Connect.startEvent.subscribe(function() { YAHOO.util.Connect.initHeader(\'X-Signature\',\'' . Util::getSignature() . '\'); });</script>';
                 }
                 if ($filename == 'charts/charts-min.js') {
-                    $to_load .= "\n" . '<script type="text/javascript"> YAHOO.widget.Chart.SWFURL = "' . Forma\lib\Get::rel_path('base') . '/addons/yui/charts/assets/charts.swf"; </script>';
+                    $to_load .= "\n" . '<script type="text/javascript"> YAHOO.widget.Chart.SWFURL = "' . FormaLms\lib\Get::rel_path('base') . '/addons/yui/charts/assets/charts.swf"; </script>';
                 }
             }
             if (Lang::direction() == 'rtl') {

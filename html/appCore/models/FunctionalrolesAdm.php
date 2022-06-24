@@ -91,7 +91,7 @@ class FunctionalrolesAdm extends Model
             $pagination = [];
         }
         $_startIndex = (isset($pagination['startIndex']) ? (int) $pagination['startIndex'] : 0);
-        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
         $_sort = 'fl.name';
         $_dir = 'ASC';
 
@@ -264,7 +264,7 @@ class FunctionalrolesAdm extends Model
             $pagination = [];
         }
         $_startIndex = (isset($pagination['startIndex']) ? (int) $pagination['startIndex'] : 0);
-        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
         $_sort = 'fgl.name';
         $_dir = 'ASC';
 
@@ -906,7 +906,7 @@ class FunctionalrolesAdm extends Model
             $pagination = [];
         }
         $_startIndex = (isset($pagination['startIndex']) ? (int) $pagination['startIndex'] : 0);
-        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
         $_sort = 'u.userid';
         $_dir = 'ASC';
 
@@ -1037,7 +1037,7 @@ class FunctionalrolesAdm extends Model
             $pagination = [];
         }
         $_startIndex = (isset($pagination['startIndex']) ? (int) $pagination['startIndex'] : 0);
-        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
         $_sort = 'cl.name';
         $_dir = 'ASC';
 
@@ -1220,7 +1220,7 @@ class FunctionalrolesAdm extends Model
             $pagination = [];
         }
         $_startIndex = (isset($pagination['startIndex']) ? (int) $pagination['startIndex'] : 0);
-        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : Forma\lib\Get::sett('visuItem', 25));
+        $_results = (isset($pagination['results']) ? (int) $pagination['results'] : FormaLms\lib\Get::sett('visuItem', 25));
         $_sort = 'competence_name';
         $_dir = 'ASC';
 
@@ -1768,7 +1768,7 @@ class FunctionalrolesAdm extends Model
     public function searchFunctionalRolesByName($query, $limit = false, $language = false, $filter = false)
     {
         if ((int) $limit <= 0) {
-            $limit = Forma\lib\Get::sett('visuItem', 25);
+            $limit = FormaLms\lib\Get::sett('visuItem', 25);
         }
         $output = [];
 

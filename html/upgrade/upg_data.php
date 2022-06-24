@@ -23,9 +23,9 @@ sql_query("SET CHARACTER SET 'utf8'");
 sql_query("SET SQL_MODE = 'NO_AUTO_CREATE_USER'");
 
 $enabled_step = 5;
-$current_step = Forma\lib\Get::gReq('cur_step', DOTY_INT);
-$upg_step = Forma\lib\Get::gReq('upg_step', DOTY_INT);
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$current_step = FormaLms\lib\Get::gReq('cur_step', DOTY_INT);
+$upg_step = FormaLms\lib\Get::gReq('upg_step', DOTY_INT);
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 $startVersion = $session->get('start_version');
 // allowed err codes
 $allowed_err_codes = [];

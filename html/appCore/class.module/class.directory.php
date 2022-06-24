@@ -59,7 +59,7 @@ class Module_Directory extends Module
 
         require_once _adm_ . '/lib/lib.selextend.php';
         $this->sel_extend = new ExtendSelector();
-        $this->multi_choice = Forma\lib\Get::sett('use_org_chart_multiple_choice');
+        $this->multi_choice = FormaLms\lib\Get::sett('use_org_chart_multiple_choice');
     }
 
     public function directory_save_state(&$data, &$selection, &$selection_alt)
@@ -645,7 +645,7 @@ class Module_Directory extends Module
                     $this->tab->setActiveTab(GROUPVIEW_TAB);
                     $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                     $this->loadGroupView();
-                } elseif ($this->show_orgchart_selector && Forma\lib\Get::sett('use_org_chart') == '1') {
+                } elseif ($this->show_orgchart_selector && FormaLms\lib\Get::sett('use_org_chart') == '1') {
                     $this->tab->setActiveTab(ORGVIEW_TAB);
                     $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                     $this->loadOrgChartView();
@@ -672,7 +672,7 @@ class Module_Directory extends Module
     {
         //checkPerm('view_user', false, 'directory', 'framework');
         $data = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-        $rend = new Table(Forma\lib\Get::sett('visuUser'));
+        $rend = new Table(FormaLms\lib\Get::sett('visuUser'));
         $lv = new PeopleListView('', $data, $rend, 'pepledirectory');
 
         if ($this->nFields !== false) {
@@ -945,7 +945,7 @@ class Module_Directory extends Module
     public function loadGroupView()
     {
         $data = new GroupDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-        $rend = new Table(Forma\lib\Get::sett('visuItem'));
+        $rend = new Table(FormaLms\lib\Get::sett('visuItem'));
         $lv = new GroupListView('', $data, $rend, 'groupdirectory');
         $lv->aclManager = &$this->aclManager;
         $lv->selector_mode = $this->selector_mode;
@@ -960,7 +960,7 @@ class Module_Directory extends Module
         if (isset($this->group_filter['platform'])) {
             $data->addPlatformFilter($this->group_filter['platform']);
         } else {
-            $data->addPlatformFilter([Forma\lib\Get::cur_plat()]);
+            $data->addPlatformFilter([FormaLms\lib\Get::cur_plat()]);
         }
         if (isset($this->group_filter['group'])) {
             $data->addGroupFilter($this->group_filter['group']);
@@ -1227,7 +1227,7 @@ class Module_Directory extends Module
             $GLOBALS['page']->add(Form::openElementSpace(), 'content');
         }
         $data = new GroupMembersDataRetriever($idst, $GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-        $rend = new Table(Forma\lib\Get::sett('visuItem'));
+        $rend = new Table(FormaLms\lib\Get::sett('visuItem'));
         $lv = new GroupMembersListView($idst, '', $data, $rend, 'groupmembersdirectory');
         $lv->aclManager = &$this->aclManager;
         $lv->parsePositionData($_POST);
@@ -1448,7 +1448,7 @@ class Module_Directory extends Module
         if (count($result) > 1) {
             require_once _base_ . '/lib/lib.table.php';
             $tree .= $this->lang->def('_ERRORS') . ': <b>' . (count($result) - 1) . '</b><br/>';
-            $table = new Table(Forma\lib\Get::sett('visuItem'), $this->lang->def('_ERRORS'), $this->lang->def('_ERRORS'));
+            $table = new Table(FormaLms\lib\Get::sett('visuItem'), $this->lang->def('_ERRORS'), $this->lang->def('_ERRORS'));
             $table->setColsStyle(['', '']);
             $table->addHead([$this->lang->def('_ROW'),
                 $this->lang->def('_DESCRIPTION'),
@@ -1477,7 +1477,7 @@ class Module_Directory extends Module
     {
         require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
         $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
-        $treeView = new TreeView_OrgView($orgDb, 'organization_chart', Forma\lib\Get::sett('title_organigram_chart'));
+        $treeView = new TreeView_OrgView($orgDb, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
         $treeView->aclManager = &$this->aclManager;
 
         return $treeView;
@@ -1486,7 +1486,7 @@ class Module_Directory extends Module
     public function &getPeopleView()
     {
         $lv_data = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-        $rend = new Table(Forma\lib\Get::sett('visuUser'));
+        $rend = new Table(FormaLms\lib\Get::sett('visuUser'));
         $lv_view = new PeopleListView('', $lv_data, $rend, 'usersmembersdirectory');
         $lv_view->aclManager = &$this->aclManager;
 
@@ -1501,7 +1501,7 @@ class Module_Directory extends Module
 
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
-        $treeView = new TreeView_OrgView($repoDb, 'organization_chart', Forma\lib\Get::sett('title_organigram_chart'));
+        $treeView = new TreeView_OrgView($repoDb, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
         $treeView->setLanguage($lang);
         $treeView->aclManager = &$this->aclManager;
 
@@ -1620,7 +1620,7 @@ class Module_Directory extends Module
                 }
 
                 $treeView->lv_data = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-                $rend = new Table(Forma\lib\Get::sett('visuUser'));
+                $rend = new Table(FormaLms\lib\Get::sett('visuUser'));
                 $treeView->lv_view = new PeopleListView('', $treeView->lv_data, $rend, 'usersmembersdirectory');
                 $treeView->lv_view->hide_suspend = false;
                 $treeView->lv_view->setLinkPagination('index.php?modname=directory&amp;op=org_chart');
@@ -1648,11 +1648,11 @@ class Module_Directory extends Module
                     }
                     $GLOBALS['page']->add(Form::openForm('directory_org_chart', 'index.php?modname=directory&amp;op=org_chart'));
                     $GLOBALS['page']->addEnd(Form::closeForm());
-                    if (Forma\lib\Get::sett('use_org_chart') == '1') {
+                    if (FormaLms\lib\Get::sett('use_org_chart') == '1') {
                         $GLOBALS['page']->add($treeView->load());
                         $GLOBALS['page']->add($treeView->loadActions());
                     }
-                    if (Forma\lib\Get::sett('use_org_chart') == '1') {
+                    if (FormaLms\lib\Get::sett('use_org_chart') == '1') {
                         $id_org = $treeView->getSelectedFolderId();
                         if ($id_org > 0 && $treeView->isFolderAccessible()) {
                             if ($treeView->lv_view->flat_mode) {
@@ -1669,7 +1669,7 @@ class Module_Directory extends Module
                     } elseif ($id_org == 0) {
                         $this->membersTree('', $treeView);
                     }
-                    if (Forma\lib\Get::sett('use_org_chart') != '1') {
+                    if (FormaLms\lib\Get::sett('use_org_chart') != '1') {
                         $GLOBALS['page']->add($treeView->loadActions());
                     }
                 }
@@ -1685,7 +1685,7 @@ class Module_Directory extends Module
     public function membersTree($groupid, &$treeView)
     {
         require_once _base_ . '/lib/lib.form.php';
-        if (Forma\lib\Get::sett('register_deleted_user') == 'on') {
+        if (FormaLms\lib\Get::sett('register_deleted_user') == 'on') {
             $lang = &DoceboLanguage::createInstance('profile', 'framework');
             $GLOBALS['page']->add('<br />' . '<a href="index.php?modname=directory&amp;op=view_deleted_user">' . $lang->def('_DELETED_USER_LIST') . '</a>');
         }
@@ -1792,7 +1792,7 @@ class Module_Directory extends Module
         $control_view = 1;
 
         $data = new GroupDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
-        $rend = new Table(Forma\lib\Get::sett('visuItem'));
+        $rend = new Table(FormaLms\lib\Get::sett('visuItem'));
         $lv = new GroupListView('', $data, $rend, 'groupdirectory');
 
         $group_count = $lv->getTotalRows();
@@ -1809,7 +1809,7 @@ class Module_Directory extends Module
         $GLOBALS['page']->add(getTitleArea($title_page, 'directory_people')
             . '<div class="std_block">');
 
-        if ($control_view && (Forma\lib\Get::sett('use_org_chart') == '1' || $GLOBALS['use_groups'] == '1')) {
+        if ($control_view && (FormaLms\lib\Get::sett('use_org_chart') == '1' || $GLOBALS['use_groups'] == '1')) {
             if (isset($_POST['okselector'])) {
                 // go to user creation with folders selected
                 require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
@@ -1846,7 +1846,7 @@ class Module_Directory extends Module
                     $this->show_group_selector = true;
                 }
 
-                if (Forma\lib\Get::sett('use_org_chart') == '1' && $number_of_folder != 0) {
+                if (FormaLms\lib\Get::sett('use_org_chart') == '1' && $number_of_folder != 0) {
                     $this->show_orgchart_selector = true;
                     $this->show_orgchart_simple_selector = true;
                 } else {
@@ -1940,7 +1940,7 @@ class Module_Directory extends Module
             /*
             if(!empty($refused)) {
 
-                $array_subst = array('[url]' => Forma\lib\Get::site_url());
+                $array_subst = array('[url]' => FormaLms\lib\Get::site_url());
 
                 $msg_composer = new EventMessageComposer('admin_directory', 'framework');
 
@@ -1968,8 +1968,8 @@ class Module_Directory extends Module
                 }
 
                 $array_subst = [
-                    '[url]' => Forma\lib\Get::site_url(),
-                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: Forma\lib\Get::site_url(),
+                    '[url]' => FormaLms\lib\Get::site_url(),
+                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
                 ];
 
                 $msg_composer2 = new EventMessageComposer('admin_directory', 'framework');

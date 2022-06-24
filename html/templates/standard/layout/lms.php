@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php use Forma\lib\Session\SessionManager;
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php use FormaLms\lib\Session\SessionManager;
 
 echo Layout::lang_code(); ?>">
 <head>
@@ -75,7 +75,7 @@ echo Layout::lang_code(); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo Layout::path(); ?>style/print.css" media="print"/>
     <?php echo Layout::accessibility(); ?>
     <!-- Page Head area -->
-    <script type="text/javascript" src="<?php echo Forma\lib\Get::rel_path('base'); ?>/lib/js_utils.js"></script>
+    <script type="text/javascript" src="<?php echo FormaLms\lib\Get::rel_path('base'); ?>/lib/js_utils.js"></script>
     <?php echo Layout::zone('page_head'); ?>
     <script type="text/javascript" src="<?php echo Layout::path(); ?>resources/jquery/jquery.min.js"></script>
     <script src="<?php echo Layout::path(); ?>resources/jquery/jquery-ui.js"></script>

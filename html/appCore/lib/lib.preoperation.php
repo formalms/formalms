@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 // access granted only if user is logged in
 if (Docebo::user()->isAnonymous()) {
     // save requested page in session to call it after login
@@ -21,7 +21,7 @@ if (Docebo::user()->isAnonymous()) {
 
     // redirect to index
 
-    Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?login_redirect=' . $loginRedirect);
+    Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?login_redirect=' . $loginRedirect);
 }
 
 // get maintenence setting
@@ -33,12 +33,12 @@ $maintenance = $db->fetch_row($db->query($query))[0];
 // handling maintenece
 if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // only god admins can access maintenence - logout the user
-    Util::jump_to(Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
+    Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
 }
 
 // setting of platform
-if (!empty(Forma\lib\Get::req('of_platform',DOTY_ALPHANUM,''))) {
-    $session->set('current_action_platform',Forma\lib\Get::req('of_platform',DOTY_ALPHANUM,''));
+if (!empty(FormaLms\lib\Get::req('of_platform',DOTY_ALPHANUM,''))) {
+    $session->set('current_action_platform',FormaLms\lib\Get::req('of_platform',DOTY_ALPHANUM,''));
     $session->save();
 }
 
@@ -46,11 +46,11 @@ if (!empty(Forma\lib\Get::req('of_platform',DOTY_ALPHANUM,''))) {
 if (!$session->has('must_renew_pwd') && $session->get('must_renew_pwd') == 1
         && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // redirect to lms where password renewal is performed
-    Util::jump_to(Forma\lib\Get::rel_path('lms'));
+    Util::jump_to(FormaLms\lib\Get::rel_path('lms'));
 }
 
 // close over
-if (!empty(Forma\lib\Get::req('close_over',DOTY_MIXED,''))) {
+if (!empty(FormaLms\lib\Get::req('close_over',DOTY_MIXED,''))) {
     $session->set('menu_over',['p_sel' => '','main_sel' => 0 ]);
     $session->save();
 }

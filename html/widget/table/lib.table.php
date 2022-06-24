@@ -106,16 +106,16 @@ class TableWidget extends Widget
         YuiLib::load($libs);
 
         // Selector class
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
 
         // Selector class
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
 
         // Commodities functions
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
         // The tableview main file
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/table/table.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/table/table.js', true, true);
 
         // Datatable css
         Util::get_css('../yui-skin/datatable.css', false, true);
@@ -129,7 +129,7 @@ class TableWidget extends Widget
         }
 
         if (!is_numeric($this->rowsPerPage) || $this->rowsPerPage <= 0) {
-            $this->rowsPerPage = Forma\lib\Get::sett('visu_item', 25);
+            $this->rowsPerPage = FormaLms\lib\Get::sett('visu_item', 25);
         }
 
         if (!is_numeric($this->startIndex)) {
@@ -154,7 +154,7 @@ class TableWidget extends Widget
                 'template' => '{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} '
                     . '{RangeRecords} ' . $lang->def('_OF') . ' <strong>{TotalRecords}</strong>'
                     . ' {RowsPerPageDropdown}',
-                'rowsPerPageOptions' => '[' . Forma\lib\Get::sett('rows_per_page_options', '10, 25, 50, 100') . ']',
+                'rowsPerPageOptions' => '[' . FormaLms\lib\Get::sett('rows_per_page_options', '10, 25, 50, 100') . ']',
                 'containers' => [$this->id . '_pag_over', $this->id . '_pag_below'],
                 'pageLinks' => 5,
                 'firstPageLinkLabel' => '&laquo; ' . $lang->def('_START'),

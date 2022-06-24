@@ -59,7 +59,7 @@ $_tree_params = [
     'id' => 'category_tree',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $base_link_course . '/gettreedata',
     'treeClass' => 'CourseFolderTree',
-    'treeFile' => Forma\lib\Get::rel_path('lms') . '/admin/views/course/coursefoldertree.js',
+    'treeFile' => FormaLms\lib\Get::rel_path('lms') . '/admin/views/course/coursefoldertree.js',
     'languages' => $languages,
     'initialSelectedNode' => $initial_selected_node,
     'dragDrop' => true,
@@ -107,39 +107,39 @@ if ($permissions['moderate']) {//if(checkPerm('moderate', true, 'course', 'lms')
 }
 
 if ($permissions['subscribe']) {//if(checkPerm('subscribe', true, 'course', 'lms'))
-    $columns_arr[] = ['key' => 'user', 'label' => Forma\lib\Get::sprite('subs_users', Lang::t('_USER_STATUS_SUBS', 'course')), 'className' => 'img-cell1'];
+    $columns_arr[] = ['key' => 'user', 'label' => FormaLms\lib\Get::sprite('subs_users', Lang::t('_USER_STATUS_SUBS', 'course')), 'className' => 'img-cell1'];
 }
 
 if ($permissions['view']) {
-    $columns_arr[] = ['key' => 'edition', 'label' => Forma\lib\Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course')), 'className' => 'img-cel1l'];
+    $columns_arr[] = ['key' => 'edition', 'label' => FormaLms\lib\Get::sprite('subs_date', Lang::t('_CLASSROOM_EDITION', 'course')), 'className' => 'img-cel1l'];
 }
 
 $perm_assign = checkPerm('assign', true, 'certificate', 'lms');
 $perm_release = checkPerm('release', true, 'certificate', 'lms');
 
 if ($perm_assign) {
-    $columns_arr[] = ['key' => 'certificate', 'label' => Forma\lib\Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1'];
+    $columns_arr[] = ['key' => 'certificate', 'label' => FormaLms\lib\Get::sprite('subs_pdf', Lang::t('_CERTIFICATE_ASSIGN_STATUS', 'course')), 'className' => 'img-cell1'];
 }
 
 if ($permissions['view_cert'] && $perm_release) {
-    $columns_arr[] = ['key' => 'certreleased', 'label' => Forma\lib\Get::sprite('subs_print', Lang::t('_CERTIFICATE_RELEASE', 'course')), 'className' => 'img-cell1'];
+    $columns_arr[] = ['key' => 'certreleased', 'label' => FormaLms\lib\Get::sprite('subs_print', Lang::t('_CERTIFICATE_RELEASE', 'course')), 'className' => 'img-cell1'];
 }
 
 if ($permissions['mod']) {
-    $columns_arr[] = ['key' => 'competences', 'label' => Forma\lib\Get::sprite('subs_competence', Lang::t('_COMPETENCES', 'course')), 'className' => 'img-cell1'];
-    $columns_arr[] = ['key' => 'menu', 'label' => Forma\lib\Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')), 'className' => 'img-cell1'];
+    $columns_arr[] = ['key' => 'competences', 'label' => FormaLms\lib\Get::sprite('subs_competence', Lang::t('_COMPETENCES', 'course')), 'className' => 'img-cell1'];
+    $columns_arr[] = ['key' => 'menu', 'label' => FormaLms\lib\Get::sprite('subs_menu', Lang::t('_ASSIGN_MENU', 'course')), 'className' => 'img-cell1'];
 }
 
 if ($permissions['add']) {
-    $columns_arr[] = ['key' => 'dup', 'label' => Forma\lib\Get::sprite('subs_dup', Lang::t('_MAKE_A_COPY', 'course')), 'className' => 'img-cell1', 'formatter' => 'dup'];
+    $columns_arr[] = ['key' => 'dup', 'label' => FormaLms\lib\Get::sprite('subs_dup', Lang::t('_MAKE_A_COPY', 'course')), 'className' => 'img-cell1', 'formatter' => 'dup'];
 }
 
 if ($permissions['mod']) {
-    $columns_arr[] = ['key' => 'mod', 'label' => Forma\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')), 'className' => 'img-cell1'];
+    $columns_arr[] = ['key' => 'mod', 'label' => FormaLms\lib\Get::sprite('subs_mod', Lang::t('_MOD', 'course')), 'className' => 'img-cell1'];
 }
 
-if ($permissions['del'] && !Forma\lib\Get::cfg('demo_mode')) {
-    $columns_arr[] = ['key' => 'del', 'label' => Forma\lib\Get::sprite('subs_del', Lang::t('_DEL', 'course')), 'formatter' => 'doceboDelete', 'className' => 'img-cell1'];
+if ($permissions['del'] && !FormaLms\lib\Get::cfg('demo_mode')) {
+    $columns_arr[] = ['key' => 'del', 'label' => FormaLms\lib\Get::sprite('subs_del', Lang::t('_DEL', 'course')), 'formatter' => 'doceboDelete', 'className' => 'img-cell1'];
 }
 
 $fields = ['id', 'code', 'name', 'type', 'type_id', 'students', 'wait', 'user', 'edition', 'certificate', 'certreleased', 'competences', 'menu', 'dup', 'mod', 'del'];
@@ -149,9 +149,9 @@ $event = Events::trigger('core.course.columns.listing', ['columns' => $columns_a
 $_table_params = [
     'id' => 'course_table',
     'ajaxUrl' => 'ajax.adm_server.php?r=' . $base_link_course . '/getcourselist',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'name',
     'dir' => 'asc',
     'columns' => $event['columns'],

@@ -24,19 +24,19 @@ class Step2Controller extends StepController
 
 
     public function __construct() {
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function validate()
     {
-        $this->session->set('start_version', Forma\lib\Get::req('start_version', DOTY_ALPHANUM, '3603'));
+        $this->session->set('start_version', FormaLms\lib\Get::req('start_version', DOTY_ALPHANUM, '3603'));
         $this->session->save();
         return true;
     }
 
     public function getNextStep($current_step)
     {
-        $version = Forma\lib\Get::req('start_version', DOTY_ALPHANUM, '3603');
+        $version = FormaLms\lib\Get::req('start_version', DOTY_ALPHANUM, '3603');
         if (version_compare($version, '3600', '>=') &&
             version_compare($version, '4000', '<')) {
             //docebo ce v 3.x.x => go to step 3 (config upgrade )

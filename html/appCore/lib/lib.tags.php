@@ -33,16 +33,16 @@ class Tags
         $this->_tag_t = $GLOBALS['prefix_fw'] . '_tag';
         $this->_tagrel_t = $GLOBALS['prefix_fw'] . '_tag_relation';
         $this->_resource_t = $GLOBALS['prefix_fw'] . '_tag_resource';
-        $this->_id_course = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $this->_id_course = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
-        $this->_use_tag = (Forma\lib\Get::sett('use_tag', 'off') == 'on');
+        $this->_use_tag = (FormaLms\lib\Get::sett('use_tag', 'off') == 'on');
 
         if ($viewer == false) {
             $viewer = getLogUserId();
         }
 
         $this->_private_tag_enabled = false;
-        $courseLevel = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
+        $courseLevel = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
         if (!empty($courseLevel) && $courseLevel > 3) {
             $this->_private_tag_enabled = true;
         }
@@ -63,7 +63,7 @@ class Tags
         $this->tags_id = $tags_id;
         YuiLib::load(['autocomplete' => 'autocomplete-min.js', 'selector' => 'selector-beta-min.js'],
             ['assets/skins/sam' => 'autocomplete.css']);
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/lib/lib.tags.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/lib/lib.tags.js', true, true);
 
         // setup some thing that we need in the tag editor
         $GLOBALS['page']->add('<script type="text/javascript">' . "\n"

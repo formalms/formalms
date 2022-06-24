@@ -32,7 +32,7 @@ if (!function_exists('aout')) {
     }
 }
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 $idCourse = $session->get('idCourse');
 
 // here all the specific code ==========================================================

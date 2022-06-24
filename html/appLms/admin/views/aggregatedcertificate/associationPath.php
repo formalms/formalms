@@ -1,7 +1,7 @@
 <?php
 
-Util::get_js(Forma\lib\Get::rel_path('lms') . '/admin/views/aggregatedcertificate/tabbedcontent.min.js', true, true);
-Util::get_css(Forma\lib\Get::rel_path('base') . '/addons/jquery/bootstrap-treeview/bootstrap-treeview.min.css', true, true);
+Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/views/aggregatedcertificate/tabbedcontent.min.js', true, true);
+Util::get_css(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/bootstrap-treeview/bootstrap-treeview.min.css', true, true);
 
 include Forma::inc(_lib_ . '/formatable/include.php');
 ?>

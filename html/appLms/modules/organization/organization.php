@@ -23,7 +23,7 @@ function organization(&$treeView)
         $treeView->tdb->setFilterVisibility( TRUE );
         $treeView->tdb->setFilterAccess( Docebo::user()-> );
     }
-$idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+$idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $treeView = new Org_TreeView($orgDb, $idCourse);
 
     $treeView->parsePositionData($_POST, $_POST, $_POST);*/
@@ -39,10 +39,10 @@ $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get(
     } elseif (isset($_POST['_orgrules_cancel']) || isset($_POST['_repoproperties_cancel'])) {
         $treeView->op = '';
     } elseif (
-        Forma\lib\Get::req('op', DOTY_STRING, '') == 'org_select_sco' ||
-        Forma\lib\Get::req('op', DOTY_STRING, '') == 'org_categorize_sco'
+        FormaLms\lib\Get::req('op', DOTY_STRING, '') == 'org_select_sco' ||
+        FormaLms\lib\Get::req('op', DOTY_STRING, '') == 'org_categorize_sco'
     ) {
-        $treeView->op = Forma\lib\Get::req('op', DOTY_STRING, '');
+        $treeView->op = FormaLms\lib\Get::req('op', DOTY_STRING, '');
         require_once dirname(__FILE__) . '/orgcategorize.php';
     }
 
@@ -192,7 +192,7 @@ function organization_play(&$treeView, $idItem)
 
 function import()
 {
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $orgDb = new OrgDirDb();
     $treeView = new Org_TreeView($orgDb, $idCourse);
     $treeView->parsePositionData($_POST, $_POST, $_POST);
@@ -201,7 +201,7 @@ function import()
 }
 
 function edit()
-{$idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+{$idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $orgDb = new OrgDirDb();
     $treeView = new Org_TreeView($orgDb, $idCourse);
     $treeView->parsePositionData($_POST, $_POST, $_POST);

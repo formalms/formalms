@@ -654,7 +654,7 @@ class AdminCourseManagment
             if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $course_array = &$this->getUserAllCourses(getLogUserId());
                 if (empty($course_array)) {
-                    if (Forma\lib\Get::sett('on_catalogue_empty') == 'on') {
+                    if (FormaLms\lib\Get::sett('on_catalogue_empty') == 'on') {
                         return $course_stats;
                     }
                 } else {

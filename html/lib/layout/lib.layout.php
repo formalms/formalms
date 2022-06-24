@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-use \Forma\lib\Session\SessionManager;
+use \FormaLms\lib\Session\SessionManager;
 
 class Layout
 {
@@ -69,7 +69,7 @@ class Layout
             return $GLOBALS['page_title'];
         }
 
-        return Forma\lib\Get::sett('page_title', 'No title');
+        return FormaLms\lib\Get::sett('page_title', 'No title');
     }
 
     public static function description()
@@ -84,14 +84,14 @@ class Layout
 
     public static function path()
     {
-        return Forma\lib\Get::tmpl_path('base');
+        return FormaLms\lib\Get::tmpl_path('base');
     }
 
     public static function meta()
     {
         return '<meta http-equiv="Content-Type" content="text/html; charset=' . self::charset() . '" />' . "\n"
-            . "\t\t" . '<meta name="Copyright" content="' . Forma\lib\Get::sett('owned_by', 'Copyright &copy; forma.lms') . '" />' . "\n"
-            . "\t\t" . '<meta name="Generator" content="www.formalms.org ' . Forma\lib\Get::sett('core_version', '') . '" />' . "\n"
+            . "\t\t" . '<meta name="Copyright" content="' . FormaLms\lib\Get::sett('owned_by', 'Copyright &copy; forma.lms') . '" />' . "\n"
+            . "\t\t" . '<meta name="Generator" content="www.formalms.org ' . FormaLms\lib\Get::sett('core_version', '') . '" />' . "\n"
             . "\t\t" . '<link rel="Copyright" href="http://www.formalms.org/copyright" title="Copyright Notice" />' . "\n"
             . "\t\t" . '<link rel="Author" href="http://www.formalms.org/about" title="About" />' . "\n";
     }
@@ -157,7 +157,7 @@ class Layout
             $html .= '<li><a ' . ($v[0] == $lang_sel ? 'class="current" ' : '')
                 . 'href="' . (isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php')
                 . '?special=changelang&amp;new_lang=' . rawurlencode($v[0]) . '" title="' . $v[1] . '">'
-                . Forma\lib\Get::img('language/' . rawurlencode($v[0]) . '.png', $v[0])
+                . FormaLms\lib\Get::img('language/' . rawurlencode($v[0]) . '.png', $v[0])
                 . '</a></li>';
         }
         $html .= '</ul>';
@@ -189,7 +189,7 @@ class Layout
      */
     public static function buildLanguages()
     {
-        $r = Forma\lib\Get::req('r', DOTY_MIXED, '');
+        $r = FormaLms\lib\Get::req('r', DOTY_MIXED, '');
         $lang_sel = Lang::get();
         $lang_model = new LangAdm();
         $lang_list = $lang_model->getLangListNoStat(false, false, 'lang_description', 'ASC');
@@ -320,14 +320,14 @@ class Layout
 
             UIFeedback::notice($msgChangeTemplate);
         }
-        $browser = Forma\lib\Get::user_agent();
+        $browser = FormaLms\lib\Get::user_agent();
         header('Content-Type: text/html; charset=' . self::charset() . '');
         if ($browser !== 'msie') {
             $intest = '<?xml version="1.0" encoding="' . self::charset() . '"?' . '>' . "\n";
         }
         if (file_exists(_templates_ . '/' . getTemplate() . '/layout/' . $layout . '.html.twig')) {
             $dataforview = self::PrepareInclude($layout);
-            echo Forma\appCore\Template\TwigManager::getInstance()->render($layout . '.html.twig', $dataforview, _templates_ . '/' . getTemplate() . '/layout/');
+            echo FormaLms\appCore\Template\TwigManager::getInstance()->render($layout . '.html.twig', $dataforview, _templates_ . '/' . getTemplate() . '/layout/');
         } else {
             include _templates_ . '/' . getTemplate() . '/layout/' . $layout . '.php';
         }
@@ -411,10 +411,10 @@ class Layout
 
             $query_course = 'SELECT name, img_course FROM %lms_course WHERE idCourse = ' . $sessionIdCourse . ' ';
             $course_data = $db->query($query_course);
-            $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
+            $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
             while ($course = $db->fetch_obj($course_data)) {
                 $course_name = $course->name;
-                $course_img = (empty($course->img_course) || is_null($course->img_course)) ? Forma\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path_course . $course->img_course;
+                $course_img = (empty($course->img_course) || is_null($course->img_course)) ? FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path_course . $course->img_course;
             }
 
             // get select menu
@@ -423,8 +423,8 @@ class Layout
             $query = 'SELECT idMain AS id, name FROM %lms_menucourse_main WHERE idCourse = ' . $sessionIdCourse . ' ORDER BY sequence';
             $re_main = $db->query($query);
 
-            $main_menu_id = Forma\lib\Get::req('id_main_sel', DOTY_INT, 0);
-            $module_menu_id = Forma\lib\Get::req('id_module_sel', DOTY_INT, 0);
+            $main_menu_id = FormaLms\lib\Get::req('id_main_sel', DOTY_INT, 0);
+            $module_menu_id = FormaLms\lib\Get::req('id_module_sel', DOTY_INT, 0);
 
             if ($main_menu_id > 0) {
                 SessionManager::getInstance()->getSession()->set('current_main_menu',$main_menu_id);
@@ -605,7 +605,7 @@ class Layout
         $html = '';
         $html .= '<p class="powered_by">';
         $html .= '<span class="ownedby">';
-        $html .= Forma\lib\Get::sett('owned_by', 'Copyright (c) forma.lms');
+        $html .= FormaLms\lib\Get::sett('owned_by', 'Copyright (c) forma.lms');
         $html .= '</span>';
         $html .= '<br />';
         $html .= '<span class="poweredby">';
@@ -637,8 +637,8 @@ class Layout
 
     public static function analytics()
     {
-        if (Forma\lib\Get::sett('google_stat_in_lms', '0') == '1' && Forma\lib\Get::sett('google_stat_code', '') != '') {
-            return Forma\lib\Get::sett('google_stat_code');
+        if (FormaLms\lib\Get::sett('google_stat_in_lms', '0') == '1' && FormaLms\lib\Get::sett('google_stat_code', '') != '') {
+            return FormaLms\lib\Get::sett('google_stat_code');
         }
     }
 }

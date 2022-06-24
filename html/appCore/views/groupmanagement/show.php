@@ -48,9 +48,9 @@ if ($permissions['del']) {
 $params = [
     'id' => 'grouptable',
     'ajaxUrl' => 'ajax.adm_server.php?r=adm/groupmanagement/getdata&',
-    'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+    'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
     'startIndex' => 0,
-    'results' => Forma\lib\Get::sett('visuItem', 25),
+    'results' => FormaLms\lib\Get::sett('visuItem', 25),
     'sort' => 'groupid',
     'dir' => 'asc',
     'checkableRows' => true,

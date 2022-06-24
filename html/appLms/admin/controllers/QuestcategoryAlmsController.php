@@ -57,12 +57,12 @@ class QuestcategoryAlmsController extends AlmsController
     public function gettabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -162,8 +162,8 @@ class QuestcategoryAlmsController extends AlmsController
             return;
         }
 
-        $name = Forma\lib\Get::req('name', DOTY_STRING, '');
-        $description = Forma\lib\Get::req('description', DOTY_STRING, '');
+        $name = FormaLms\lib\Get::req('name', DOTY_STRING, '');
+        $description = FormaLms\lib\Get::req('description', DOTY_STRING, '');
         if ($name == '') {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
             echo $this->json->encode($output);
@@ -194,7 +194,7 @@ class QuestcategoryAlmsController extends AlmsController
             return;
         }
 
-        $id_questcategory = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $id_questcategory = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($id_questcategory <= 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
             echo $this->json->encode($output);
@@ -220,9 +220,9 @@ class QuestcategoryAlmsController extends AlmsController
             return;
         }
 
-        $id_questcategory = Forma\lib\Get::req('id', DOTY_INT, 0);
-        $name = Forma\lib\Get::req('name', DOTY_STRING, '');
-        $description = Forma\lib\Get::req('description', DOTY_STRING, '');
+        $id_questcategory = FormaLms\lib\Get::req('id', DOTY_INT, 0);
+        $name = FormaLms\lib\Get::req('name', DOTY_STRING, '');
+        $description = FormaLms\lib\Get::req('description', DOTY_STRING, '');
         if ($id_questcategory <= 0 || $name == '') {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
             echo $this->json->encode($output);
@@ -251,7 +251,7 @@ class QuestcategoryAlmsController extends AlmsController
             return;
         }
 
-        $id_questcategory = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $id_questcategory = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         if ($id_questcategory <= 0) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid input')];
             echo $this->json->encode($output);

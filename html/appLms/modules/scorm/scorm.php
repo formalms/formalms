@@ -79,7 +79,7 @@ function insitem()
     require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
     require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $idCourse = $session->get('idCourse');
     $back_url = urldecode($_POST['back_url']);
@@ -89,7 +89,7 @@ function insitem()
         Forma::addError(Lang::t('_FILEUNSPECIFIED'));
         Util::jump_to('' . $back_url . '&create_result=0');
     }
-    $path = str_replace('\\', '/', '/' . _folder_lms_ . '/' . Forma\lib\Get::sett('pathscorm'));
+    $path = str_replace('\\', '/', '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathscorm'));
     $savefile = getLogUserId() . '_' . rand(0, 100) . '_' . time() . '_' . $_FILES['attach']['name'];
     if (!file_exists(_files_ . $path . $savefile)) {
         sl_open_fileoperations();
@@ -251,7 +251,7 @@ function moditem($object_item)
 
     $lang = &DoceboLanguage::createInstance('scorm', 'lms');
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     //area title
     $query = 'SELECT idOrg ' .
@@ -276,14 +276,14 @@ function moditem($object_item)
         ' ORDER BY idscorm_item ';
 
     $res = sql_query($qry);
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
     while ($row = sql_fetch_row($res)) {
         $line = [];
         $line[] = $row[2];
         $line[] = ($row[1] != 0
-            ? Forma\lib\Get::abs_path('lms') . '/index.php?id_course=' . $idCourse . '&amp;act=playsco&amp;courseid=' . $idCourse . '&amp;id_item=' . $id_reference . '&amp;chapter=' . $row[0] . ''
+            ? FormaLms\lib\Get::abs_path('lms') . '/index.php?id_course=' . $idCourse . '&amp;act=playsco&amp;courseid=' . $idCourse . '&amp;id_item=' . $id_reference . '&amp;chapter=' . $row[0] . ''
             : '');
         $tb->addBody($line);
     }
@@ -332,8 +332,8 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
         or exit(sql_error());
 
         list($path) = sql_fetch_row($rs);
-        $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Forma\lib\Get::sett('pathscorm'));
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $idCourse = $session->get('idCourse');
         /* remove all zip directory */
         if (file_exists($scopath . $path)) {
@@ -341,7 +341,7 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
             $rs = sql_query('SELECT idscorm_package FROM %lms_scorm_package'
                 . " WHERE path = '" . $path . "'");
             if (sql_num_rows($rs) == 1) {
-                $size = Forma\lib\Get::dir_size($scopath . $path);
+                $size = FormaLms\lib\Get::dir_size($scopath . $path);
 
                 require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php'); // for del tree
                 delDirTree($scopath . $path);
@@ -377,7 +377,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     }
 
     list($path) = sql_fetch_row($rs);
-    $scopath = str_replace('\\', '/', _files_ . '/appLms/' . Forma\lib\Get::sett('pathscorm'));
+    $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
 
 
     /* copy package record */

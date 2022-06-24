@@ -57,7 +57,7 @@
 
 	function frm_play(elLiner, oRecord, oColumn, oData) {
 		var msg ='<?php echo Lang::t('_PLAY', 'kb'); ?>';
-		var lms_path ='<?php echo Forma\lib\Get::rel_path('lms'); ?>/';
+		var lms_path ='<?php echo FormaLms\lib\Get::rel_path('lms'); ?>/';
 		var extra ='';
 		if (oRecord.getData("r_type") == 'scoitem' || oRecord.getData("r_type") == 'scorm') {
 			extra =' rel="lightbox"';
@@ -138,7 +138,7 @@ echo getTitleArea([Lang::t('_CONTENT_LIBRARY', 'kb')]);
          * Tree.
          */
         $languages = [
-            '_ROOT' => Forma\lib\Get::sett('title_kb_tree', Lang::t('_CATEGORY', 'kb')),
+            '_ROOT' => FormaLms\lib\Get::sett('title_kb_tree', Lang::t('_CATEGORY', 'kb')),
             '_YES' => Lang::t('_CONFIRM', 'organization_chart'),
             '_NO' => Lang::t('_UNDO', 'organization_chart'),
             '_LOADING' => Lang::t('_LOADING', 'standard'),
@@ -153,7 +153,7 @@ echo getTitleArea([Lang::t('_CONTENT_LIBRARY', 'kb')]);
             'id' => 'kbtree',
             'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/gettreedata',
             'treeClass' => 'KbFolderTree',
-            'treeFile' => Forma\lib\Get::rel_path('lms') . '/admin/views/kb/kbfoldertree.js',
+            'treeFile' => FormaLms\lib\Get::rel_path('lms') . '/admin/views/kb/kbfoldertree.js',
             'languages' => $languages,
             'initialSelectedNode' => (int) $selected_node,
             'rootActions' => '',
@@ -198,22 +198,22 @@ echo getTitleArea([Lang::t('_CONTENT_LIBRARY', 'kb')]);
         if ($permissions['mod']) {
             $_title_categorize = Lang::t('_MOD', 'kb');
             $_title_users = Lang::t('_SET_VISIBLE_TO_EVERYONE', 'kb');
-            $_sprite_categorize = Forma\lib\Get::sprite('subs_categorize', $_title_categorize, $_title_categorize);
-            $_sprite_users = Forma\lib\Get::sprite('subs_users', $_title_users, $_title_users);
+            $_sprite_categorize = FormaLms\lib\Get::sprite('subs_categorize', $_title_categorize, $_title_categorize);
+            $_sprite_users = FormaLms\lib\Get::sprite('subs_users', $_title_users, $_title_users);
             $columns[] = ['key' => 'edit', 'label' => $_sprite_categorize, 'formatter' => 'frm_edit', 'className' => 'img-cell'];
             $columns[] = ['key' => 'force_visible', 'label' => $_sprite_users, 'formatter' => 'fv_switch', 'className' => 'img-cell'];
         }
 
         $_title_play = Lang::t('_PLAY', 'kb');
-        $_sprite_play = Forma\lib\Get::sprite('subs_play', $_title_play, $_title_play);
+        $_sprite_play = FormaLms\lib\Get::sprite('subs_play', $_title_play, $_title_play);
         $columns[] = ['key' => 'play', 'label' => $_sprite_play, 'formatter' => 'frm_play', 'className' => 'img-cell'];
 
         $this->widget('table', [
             'id' => 'kb_table',
             'ajaxUrl' => 'ajax.adm_server.php?r=alms/kb/getlist',
-            'rowsPerPage' => Forma\lib\Get::sett('visuItem', 25),
+            'rowsPerPage' => FormaLms\lib\Get::sett('visuItem', 25),
             'startIndex' => 0,
-            'results' => Forma\lib\Get::sett('visuItem', 25),
+            'results' => FormaLms\lib\Get::sett('visuItem', 25),
             'sort' => 'r_name',
             'dir' => 'asc',
             'generateRequest' => 'KbManagement.requestBuilder',

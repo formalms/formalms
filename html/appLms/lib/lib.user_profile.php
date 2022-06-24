@@ -127,7 +127,7 @@ class UserProfile
 
         $this->_setReference();
 
-        $options = ['user_use_avatar' => (Forma\lib\Get::sett('user_use_avatar', 'on') == 'on' ? true : false)];
+        $options = ['user_use_avatar' => (FormaLms\lib\Get::sett('user_use_avatar', 'on') == 'on' ? true : false)];
 
         $this->_use_avatar = $options['user_use_avatar'];
 
@@ -395,7 +395,7 @@ class UserProfile
     public function getAction()
     {
         if (isset($_REQUEST[$this->_varname_action])) {
-            return Forma\lib\Get::req($this->_varname_action, DOTY_MIXED, '');
+            return FormaLms\lib\Get::req($this->_varname_action, DOTY_MIXED, '');
         } else {
             return 'profileview';
         }
@@ -413,14 +413,14 @@ class UserProfile
         if ($start_action === false) {
             $start_action = 'profileview';
         }
-        $ap = Forma\lib\Get::req($this->_varname_action, DOTY_MIXED, $start_action);
+        $ap = FormaLms\lib\Get::req($this->_varname_action, DOTY_MIXED, $start_action);
         if (isset($_POST['undo'])) {
             $ap = 'profileview';
         }
 
         switch ($ap) {
             case 'goprofile':
-                $ext_prof = new UserProfile(Forma\lib\Get::req('id_user', DOTY_INT, 0), false);
+                $ext_prof = new UserProfile(FormaLms\lib\Get::req('id_user', DOTY_INT, 0), false);
                 $ext_prof->init($this->_module_name,
                                     $this->_platform,
                                     $this->_std_query,
@@ -481,7 +481,7 @@ class UserProfile
                     }
                     if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
                         require_once _lms_ . '/lib/lib.reservation.php';
-                        $id_event = Forma\lib\Get::req('id_event', DOTY_INT, 0);
+                        $id_event = FormaLms\lib\Get::req('id_event', DOTY_INT, 0);
                         $man_res = new Man_Reservation();
                         $result = $man_res->addSubscription(getLogUserId(), $id_event);
                         Util::jump_to('index.php?modname=reservation&op=reservation');
@@ -528,10 +528,10 @@ class UserProfile
 
                     $out = getResultUi($this->_lang->def('_OPERATION_SUCCESSFULPWD'));
 
-                    if (Forma\lib\Get::sett('profile_modify') == 'limit') {
+                    if (FormaLms\lib\Get::sett('profile_modify') == 'limit') {
                         // maybe is better if we display only the confirmation message if all is ok, but if you
                         // want something else add the code here
-                    } elseif (Forma\lib\Get::sett('profile_modify') == 'allow') {
+                    } elseif (FormaLms\lib\Get::sett('profile_modify') == 'allow') {
                         $out .= $this->getProfile();
                     }
 
@@ -609,12 +609,12 @@ class UserProfile
              break;
             // display the profile ------------------------------------
             case 'view_files':
-                $this->_id_user = Forma\lib\Get::req('id_user', DOTY_INT, getLogUserId());
+                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, getLogUserId());
 
                 return $this->_up_viewer->getViewUserFiles();
              break;
             case 'file_details':
-                $this->_id_user = Forma\lib\Get::req('id_user', DOTY_INT, getLogUserId());
+                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, getLogUserId());
 
                 return $this->_up_viewer->getViewUserFileDetail();
              break;
@@ -1263,7 +1263,7 @@ class UserProfileViewer
 
         YuiLib::load();
         //addJs($GLOBALS['where_framework_relative'].'/lib/', 'ajax.user_profile.js');
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/ajax.user_profile.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/ajax.user_profile.js', true, true);
 
         $lang = &DoceboLanguage::createInstance($this->_user_profile->_module_name, $this->_user_profile->_platform);
 
@@ -1302,7 +1302,7 @@ class UserProfileViewer
     public function getUserRelatedAction($selected, $with_file = true, $reduced = false)
     {
         $this->initAjax();
-        $from = Forma\lib\Get::req('from', DOTY_INT, 0);
+        $from = FormaLms\lib\Get::req('from', DOTY_INT, 0);
         $viewer = $this->getViewer();
 
         YuiLib::load([
@@ -1326,9 +1326,9 @@ class UserProfileViewer
 
         if ($with_file) {
             $files_info = $this->_up_data_man->getFileInfo($this->_id_user, $viewer);
-            $id_thread = Forma\lib\Get::req('idThread', DOTY_INT, 0);
+            $id_thread = FormaLms\lib\Get::req('idThread', DOTY_INT, 0);
             $file_type = ['image', 'video', 'audio', 'other'];
-            $id_thread = Forma\lib\Get::req('idThread', DOTY_INT, 0);
+            $id_thread = FormaLms\lib\Get::req('idThread', DOTY_INT, 0);
             foreach ($file_type as $type) {
                 if ($files_info[$type]) {
                     $action[] = '<li>'
@@ -1552,7 +1552,7 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.navbar.php';
 
         $viewer = $this->getViewer();
-        $type = Forma\lib\Get::req('type', DOTY_MIXED, '');
+        $type = FormaLms\lib\Get::req('type', DOTY_MIXED, '');
 
         $this->loadUserData($viewer);
 
@@ -1725,8 +1725,8 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.navbar.php';
 
         $viewer = $this->getViewer();
-        $type = Forma\lib\Get::req('type', DOTY_MIXED, '');
-        $id_file = Forma\lib\Get::req('id_file', DOTY_MIXED, '');
+        $type = FormaLms\lib\Get::req('type', DOTY_MIXED, '');
+        $id_file = FormaLms\lib\Get::req('id_file', DOTY_MIXED, '');
 
         $this->loadUserData($viewer);
 
@@ -1760,7 +1760,7 @@ class UserProfileViewer
                 . $file[MYFILE_DESCRIPTION]
                 . '</div>';
         }
-        $id_thread = Forma\lib\Get::req('idThread', DOTY_INT, 0);
+        $id_thread = FormaLms\lib\Get::req('idThread', DOTY_INT, 0);
         $html .= getBackUi($this->_url_man->getUrl('id_user=' . $this->_id_user . '&' . $this->_varname_action . '=view_files&type=' . $type . '&idThread=' . $id_thread . ''),
                 $this->_lang->def('_BACK'));
 
@@ -1785,7 +1785,7 @@ class UserProfileViewer
              break;
         }
         $html .= '</div>';
-        $id_thread = Forma\lib\Get::req('idThread', DOTY_INT, 0);
+        $id_thread = FormaLms\lib\Get::req('idThread', DOTY_INT, 0);
         $html .= getBackUi($this->_url_man->getUrl('id_user=' . $this->_id_user . '&' . $this->_varname_action . '=view_files&type=' . $type . '&idThread=' . $id_thread . ''),
                 $this->_lang->def('_BACK'));
 
@@ -1966,16 +1966,16 @@ class UserProfileViewer
                 . '</div>
                    <div class="col-xs-7">';
 
-        if (Forma\lib\Get::sett('profile_modify') == 'redirect' && Forma\lib\Get::sett('profile_modify_url')) {
-            $html .= '<a href="' . Forma\lib\Get::sett('profile_modify_url') . '" target="_blank" title="' . Lang::t('_PROFILE', 'profile') . '">
+        if (FormaLms\lib\Get::sett('profile_modify') == 'redirect' && FormaLms\lib\Get::sett('profile_modify_url')) {
+            $html .= '<a href="' . FormaLms\lib\Get::sett('profile_modify_url') . '" target="_blank" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
-                      <a href="' . Forma\lib\Get::sett('profile_modify_url') . '" target="_blank">'
+                      <a href="' . FormaLms\lib\Get::sett('profile_modify_url') . '" target="_blank">'
                       . $this->acl_man->relativeId($this->user_info[ACL_INFO_LASTNAME]) . ' ' . $this->acl_man->relativeId($this->user_info[ACL_INFO_FIRSTNAME])
                       . '</a>
                       <a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>
                    ';
-        } elseif (Forma\lib\Get::sett('profile_modify') != 'disallow') {
+        } elseif (FormaLms\lib\Get::sett('profile_modify') != 'disallow') {
             $html .= '<a href="index.php?r=lms/profile/show" title="' . Lang::t('_PROFILE', 'profile') . '">
                           <span class="glyphicon glyphicon-pencil">' . Lang::t('_PROFILE', 'profile') . '</span>
                       </a>
@@ -2031,7 +2031,7 @@ class UserProfileViewer
             $url = $this->_url_man;
             $course_stats = userCourseList($url, false, false);        //TODO:  review this call . use course list to compute carreer
 
-            $base_url = 'index.php?' . Forma\lib\Get::home_page_query() . '&amp;filter=';
+            $base_url = 'index.php?' . FormaLms\lib\Get::home_page_query() . '&amp;filter=';
             $end = 0;
             if (isset($course_stats['with_ustatus'][_CUS_END]) && $course_stats['with_ustatus'][_CUS_END] != 0) {
                 $end = $course_stats['with_ustatus'][_CUS_END];
@@ -2153,7 +2153,7 @@ class UserProfileViewer
                                         'up_userid',
                                         'up_userid',
                                         '255',
-                                        Forma\lib\Get::req('up_userid', DOTY_MIXED, $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]), true));
+                                        FormaLms\lib\Get::req('up_userid', DOTY_MIXED, $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]), true));
         } else {
             $html .= Form::getLineBox($this->_lang->def('_USERNAME'),
                                         $this->acl_man->relativeId($this->user_info[ACL_INFO_USERID]));
@@ -2162,17 +2162,17 @@ class UserProfileViewer
                                         'up_lastname',
                                         'up_lastname',
                                         '255',
-                                        Forma\lib\Get::req('up_lastname', DOTY_MIXED, $this->user_info[ACL_INFO_LASTNAME], true))
+                                        FormaLms\lib\Get::req('up_lastname', DOTY_MIXED, $this->user_info[ACL_INFO_LASTNAME], true))
                 . Form::getTextfield($this->_lang->def('_FIRSTNAME'),
                                         'up_firstname',
                                         'up_firstname',
                                         '255',
-                                        Forma\lib\Get::req('up_firstname', DOTY_MIXED, $this->user_info[ACL_INFO_FIRSTNAME], true))
+                                        FormaLms\lib\Get::req('up_firstname', DOTY_MIXED, $this->user_info[ACL_INFO_FIRSTNAME], true))
                 . Form::getTextfield($this->_lang->def('_EMAIL'),
                                         'up_email',
                                         'up_email',
                                         '255',
-                                        Forma\lib\Get::req('up_email', DOTY_MIXED, $this->user_info[ACL_INFO_EMAIL], true));
+                                        FormaLms\lib\Get::req('up_email', DOTY_MIXED, $this->user_info[ACL_INFO_EMAIL], true));
         // user extra field ------------------------------------------------------------------
 
         $html .= $this->getPlayField();
@@ -2192,7 +2192,7 @@ class UserProfileViewer
                                     'up_repeat_pwd',
                                     '255');
 
-            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && Forma\lib\Get::cur_plat() === 'framework') {
+            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && FormaLms\lib\Get::cur_plat() === 'framework') {
                 $html .= Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, $this->user_info[ACL_INFO_FORCE_CHANGE]);
             }
 
@@ -2221,7 +2221,7 @@ class UserProfileViewer
         $html .= Form::getTextarea($this->_lang->def('_SIGNATURE'),
                                     'up_signature',
                                     'up_signature',
-                                    Forma\lib\Get::req('up_signature', DOTY_MIXED, $this->user_info[ACL_INFO_SIGNATURE], true));
+                                    FormaLms\lib\Get::req('up_signature', DOTY_MIXED, $this->user_info[ACL_INFO_SIGNATURE], true));
 
         if (isset($_GET['modname']) && $_GET['modname'] == 'reservation') {
             $html .= Form::openButtonSpace()
@@ -2272,21 +2272,21 @@ class UserProfileViewer
     public function getFilledData()
     {
         $std_filled = [
-            'lastname' => Forma\lib\Get::req('up_lastname', DOTY_MIXED, ''),
-            'firstname' => Forma\lib\Get::req('up_firstname', DOTY_MIXED, ''),
-            'email' => Forma\lib\Get::req('up_email', DOTY_MIXED, ''),
-            'signature' => Forma\lib\Get::req('up_signature', DOTY_MIXED, ''),
-            'facebook_id' => Forma\lib\Get::pReq('facebook_id', DOTY_MIXED, ''),
-            'twitter_id' => Forma\lib\Get::pReq('twitter_id', DOTY_MIXED, ''),
-            'linkedin_id' => Forma\lib\Get::pReq('linkedin_id', DOTY_MIXED, ''),
-            'google_id' => Forma\lib\Get::pReq('google_id', DOTY_MIXED, ''),
+            'lastname' => FormaLms\lib\Get::req('up_lastname', DOTY_MIXED, ''),
+            'firstname' => FormaLms\lib\Get::req('up_firstname', DOTY_MIXED, ''),
+            'email' => FormaLms\lib\Get::req('up_email', DOTY_MIXED, ''),
+            'signature' => FormaLms\lib\Get::req('up_signature', DOTY_MIXED, ''),
+            'facebook_id' => FormaLms\lib\Get::pReq('facebook_id', DOTY_MIXED, ''),
+            'twitter_id' => FormaLms\lib\Get::pReq('twitter_id', DOTY_MIXED, ''),
+            'linkedin_id' => FormaLms\lib\Get::pReq('linkedin_id', DOTY_MIXED, ''),
+            'google_id' => FormaLms\lib\Get::pReq('google_id', DOTY_MIXED, ''),
         ];
         if ($this->_user_profile->godMode()) {
-            $std_filled['userid'] = Forma\lib\Get::req('up_userid', DOTY_MIXED, '');
-            $std_filled['new_pwd'] = Forma\lib\Get::req('up_new_pwd', DOTY_MIXED, '');
-            $std_filled['repeat_pwd'] = Forma\lib\Get::req('up_repeat_pwd', DOTY_MIXED, '');
-            $std_filled['force_change'] = (isset($_POST['force_changepwd']) ? Forma\lib\Get::req('force_changepwd', DOTY_INT, 0) : 'no_mod');
-            $std_filled['level'] = Forma\lib\Get::req('up_level', DOTY_MIXED, '');
+            $std_filled['userid'] = FormaLms\lib\Get::req('up_userid', DOTY_MIXED, '');
+            $std_filled['new_pwd'] = FormaLms\lib\Get::req('up_new_pwd', DOTY_MIXED, '');
+            $std_filled['repeat_pwd'] = FormaLms\lib\Get::req('up_repeat_pwd', DOTY_MIXED, '');
+            $std_filled['force_change'] = (isset($_POST['force_changepwd']) ? FormaLms\lib\Get::req('force_changepwd', DOTY_INT, 0) : 'no_mod');
+            $std_filled['level'] = FormaLms\lib\Get::req('up_level', DOTY_MIXED, '');
         }
 
         return $std_filled;
@@ -2321,7 +2321,7 @@ class UserProfileViewer
 
         $html .= Form::openButtonSpace()
                 . Form::getButton('save', 'save', $this->_lang->def('_SAVE'));
-        if (Forma\lib\Get::sett('profile_modify') == 'limit') {
+        if (FormaLms\lib\Get::sett('profile_modify') == 'limit') {
             $html .= Form::getButton('undo', 'undo', $this->_lang->def('_UNDO'));
         }
         $html .= Form::closeButtonSpace();
@@ -2347,20 +2347,20 @@ class UserProfileViewer
                 return $this->_lang->def('_OLDPASSWRONG');
             }
             // control password
-            if (strlen($_POST['up_new_pwd']) < Forma\lib\Get::sett('pass_min_char')) {
+            if (strlen($_POST['up_new_pwd']) < FormaLms\lib\Get::sett('pass_min_char')) {
                 return $this->_lang->def('_PASSWORD_TOO_SHORT');
             }
-            if (Forma\lib\Get::sett('pass_alfanumeric') == 'on') {
+            if (FormaLms\lib\Get::sett('pass_alfanumeric') == 'on') {
                 if (!preg_match('/[a-z]/i', $_POST['up_new_pwd']) || !preg_match('/[0-9]/', $_POST['up_new_pwd'])) {
                     return $this->_lang->def('_ERR_PASSWORD_MUSTBE_ALPHA');
                 }
             }
             //check password history
 
-            if (Forma\lib\Get::sett('user_pwd_history_length', '0') != 0) {
+            if (FormaLms\lib\Get::sett('user_pwd_history_length', '0') != 0) {
                 $new_pwd = $acl_man->encrypt($_POST['up_new_pwd']);
                 if ($user_info[ACL_INFO_PASS] == $new_pwd) {
-                    return str_replace('[diff_pwd]', Forma\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
+                    return str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
                 }
                 $re_pwd = sql_query('SELECT passw '
                 . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
@@ -2368,9 +2368,9 @@ class UserProfileViewer
                 . ' ORDER BY pwd_date DESC');
 
                 list($pwd_history) = sql_fetch_row($re_pwd);
-                for ($i = 0; $pwd_history && $i < Forma\lib\Get::sett('user_pwd_history_length'); ++$i) {
+                for ($i = 0; $pwd_history && $i < FormaLms\lib\Get::sett('user_pwd_history_length'); ++$i) {
                     if ($pwd_history == $new_pwd) {
-                        return str_replace('[diff_pwd]', Forma\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
+                        return str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
                     }
                     list($pwd_history) = sql_fetch_row($re_pwd);
                 }
@@ -2390,7 +2390,7 @@ class UserProfileViewer
      */
     public function getFilledPwd()
     {
-        return Forma\lib\Get::req('up_new_pwd', DOTY_MIXED, '');
+        return FormaLms\lib\Get::req('up_new_pwd', DOTY_MIXED, '');
     }
 
     public function modAvatarGui()
@@ -2864,7 +2864,7 @@ class UserProfileViewer
                     . '<ul>';
             foreach ($teacher_course as $id => $data) {
                 if ($this->userCourseSubscrived($id)) {
-                    $html .= '<li><a href="' . Forma\lib\Get::rel_path('lms') . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $id . '">[' . $data['code'] . '] ' . $data['name'] . '</a></li>';
+                    $html .= '<li><a href="' . FormaLms\lib\Get::rel_path('lms') . '/index.php?modname=course&amp;op=aula&amp;idCourse=' . $id . '">[' . $data['code'] . '] ' . $data['name'] . '</a></li>';
                 } else {
                     $html .= '<li>[' . $data['code'] . '] ' . $data['name'] . '</li>';
                 }
@@ -2985,7 +2985,7 @@ class UserProfileViewer
         $html .= Form::getTextarea($this->_lang->def('_TEACHER_CURRICULUM'),
                                         'tp_curriculum',
                                         'tp_curriculum',
-                                        Forma\lib\Get::req('tp_curriculum', DOTY_MIXED, $this->_up_data_man->getTeacherCurriculum($this->_user_profile->getIdUser())));
+                                        FormaLms\lib\Get::req('tp_curriculum', DOTY_MIXED, $this->_up_data_man->getTeacherCurriculum($this->_user_profile->getIdUser())));
 
         $html .= Form::openButtonSpace()
                 . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
@@ -3016,7 +3016,7 @@ class UserProfileViewer
         $html .= Form::getTextarea($this->_lang->def('_TEACHER_PUBLICATIONS'),
                                         'tp_publications',
                                         'tp_publications',
-                                        Forma\lib\Get::req('tp_publications', DOTY_MIXED, $this->_up_data_man->getTeacherPublications($this->_user_profile->getIdUser())));
+                                        FormaLms\lib\Get::req('tp_publications', DOTY_MIXED, $this->_up_data_man->getTeacherPublications($this->_user_profile->getIdUser())));
 
         $html .= Form::openButtonSpace()
                 . Form::getButton('save', 'save', $this->_lang->def('_SAVE'))
@@ -3174,7 +3174,7 @@ class UserProfileViewer
         $tb->addHead([
             Lang::t('_NAME', 'fncroles'),
             Lang::t('_SCORE', 'fncroles'),
-            '<img src="' . Forma\lib\Get::tmpl_path('base') . 'images/blank.png" />',
+            '<img src="' . FormaLms\lib\Get::tmpl_path('base') . 'images/blank.png" />',
         ], ['', 'img-cell', 'img-cell']);
 
         $icon_flag_ok = '<span class="ico-sprite subs_actv"><span>' . Lang::t('_MEET', 'fncroles') . '</span></span>';
@@ -3384,7 +3384,7 @@ class UserProfileData
      */
     public function getPAPath()
     {
-        return '/appCore/' . Forma\lib\Get::sett('pathphoto');
+        return '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
     }
 
     public function setCacheForUsers($arr_user)
@@ -3520,7 +3520,7 @@ class UserProfileData
             $user_quota = $preference->getPreference('user_rules.user_quota');
         }
         if ($user_quota == USER_QUOTA_INHERIT) {
-            $user_quota = Forma\lib\Get::sett('user_quota');
+            $user_quota = FormaLms\lib\Get::sett('user_quota');
         }
 
         return $user_quota;

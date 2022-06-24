@@ -27,7 +27,7 @@ class Lang
 
     public static function getSelLang()
     {
-        return \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('sel_lang');
+        return \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('sel_lang');
     }
 
     public static function t($keyword)
@@ -136,8 +136,8 @@ class Lang
 
     public static function setLanguage()
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
-        $lang = Forma\lib\Get::gReq('set_lang', DOTY_STRING, '');
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $lang = FormaLms\lib\Get::gReq('set_lang', DOTY_STRING, '');
         if (!empty($lang)) {
             $session->set('sel_lang',$lang);
             $session->save();

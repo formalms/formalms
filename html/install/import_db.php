@@ -16,7 +16,7 @@ include_once _lib_ . '/loggers/lib.logger.php';
 require_once _base_ . '/db/lib.docebodb.php';
 set_time_limit(0);
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 $dbInfo = $session->get('db_info');
 
@@ -100,7 +100,7 @@ sql_close($db);
 function registerAdminUser()
 {
     // ----------- Registering admin user ---------------------------------
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $admInfo = $session->get('adm_info',[]);
 
@@ -150,7 +150,7 @@ function registerAdminUser()
 function storeSettings()
 {
     require_once _adm_ . '/versions.php';
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $url = $session->get('site_url');
     $qtxt = "UPDATE core_setting SET param_value='" . $url . "' ";

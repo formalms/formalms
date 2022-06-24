@@ -1,6 +1,6 @@
 <?php
 
-namespace Forma\lib\Serializer;
+namespace FormaLms\lib\Serializer;
 
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;

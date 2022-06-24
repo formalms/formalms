@@ -1,4 +1,4 @@
-<?php Forma\lib\Get::title([
+<?php FormaLms\lib\Get::title([
     'index.php?r=' . $base_link_course . '/show' => Lang::t('_COURSE', 'course'),
     'index.php?r=' . $base_link_classroom . '/classroom&id_course=' . $model->getIdCourse() => Lang::t('_CLASSROOM', 'course'),
     Lang::t('_MOD', 'course') . ': ' . $date_info['name'] . ' (' . Format::date($date_info['date_begin']) . ')',

@@ -247,7 +247,7 @@ class CoreWikiAdmin
         $res .= $form->getTextfield($this->lang->def('_TITLE'), 'title', 'title', 255, $title);
         $res .= $form->getSimpleTextarea($this->lang->def('_DESCRIPTION'), 'description', 'description', $description);
 
-        if (Forma\lib\Get::cur_plat() !== 'framework') {
+        if (FormaLms\lib\Get::cur_plat() !== 'framework') {
             $res .= $form->getHidden('public', 'public', 1);
         }
 
@@ -763,7 +763,7 @@ class CoreWikiPublic
 
     public function __construct($wiki_id)
     {
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $this->wiki_id = (int) $wiki_id;
         $this->session->set('editor_in_wiki', $wiki_id);
         $this->session->save();
@@ -802,7 +802,7 @@ class CoreWikiPublic
         $res = '';
 
         /*
-        if (Forma\lib\Get::cur_plat() == 'cms') {
+        if (FormaLms\lib\Get::cur_plat() == 'cms') {
             $res=getCmsTitleArea($text, $image = '', $alt_image = '');
         }
         else {
@@ -1455,7 +1455,7 @@ class CoreWikiPublic
         $rev = new WikiRevisionManager([$wiki_id, $page_info['page_id'], $wiki_lang]);
 
         if ($vis_item === false) {
-            $vis_item = Forma\lib\Get::sett('visuItem');
+            $vis_item = FormaLms\lib\Get::sett('visuItem');
         }
 
         $table_caption = $this->lang->def('_HISTORY');

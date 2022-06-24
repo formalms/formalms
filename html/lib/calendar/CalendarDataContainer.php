@@ -72,7 +72,7 @@ class CalendarDataContainer
     {
         $filePath = str_replace(_files_, _folder_files_, $this->getFile());
 
-        return Forma\lib\Get::site_url() . $filePath;
+        return FormaLms\lib\Get::site_url() . $filePath;
     }
 
     public function download()

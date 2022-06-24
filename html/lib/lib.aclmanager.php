@@ -521,8 +521,8 @@ class DoceboACLManager
         }
 
         $userid = $this->absoluteId($userid);
-        if (Forma\lib\Get::sett('pass_max_time_valid') != 0) {
-            $pwd_expire_at = date('Y-m-d H:i:s', time() + Forma\lib\Get::sett('pass_max_time_valid') * 24 * 3600);
+        if (FormaLms\lib\Get::sett('pass_max_time_valid') != 0) {
+            $pwd_expire_at = date('Y-m-d H:i:s', time() + FormaLms\lib\Get::sett('pass_max_time_valid') * 24 * 3600);
         }
 
         $userdata = [
@@ -874,8 +874,8 @@ class DoceboACLManager
         }
         if ($pass !== false) {
             $new_userdata[ACL_INFO_PASS] = $pass;
-            if (Forma\lib\Get::sett('pass_max_time_valid') != 0) {
-                $new_userdata[ACL_INFO_PWD_EXPIRE_AT] = date('Y-m-d H:i:s', time() + Forma\lib\Get::sett('pass_max_time_valid') * 24 * 3600);
+            if (FormaLms\lib\Get::sett('pass_max_time_valid') != 0) {
+                $new_userdata[ACL_INFO_PWD_EXPIRE_AT] = date('Y-m-d H:i:s', time() + FormaLms\lib\Get::sett('pass_max_time_valid') * 24 * 3600);
             }
         }
         if ($email !== false) {
@@ -927,7 +927,7 @@ class DoceboACLManager
         if (array_key_exists(ACL_INFO_LASTNAME, $new_userdata)) {
             $arrSET['lastname'] = $new_userdata[ACL_INFO_LASTNAME];
         }
-        if (array_key_exists(ACL_INFO_PASS, $new_userdata) && !Forma\lib\Get::cfg('demo_mode')) {
+        if (array_key_exists(ACL_INFO_PASS, $new_userdata) && !FormaLms\lib\Get::cfg('demo_mode')) {
             $arrSET['pass'] = $this->encrypt($new_userdata[ACL_INFO_PASS]);
             if (array_key_exists(ACL_INFO_PWD_EXPIRE_AT, $new_userdata)) {
                 $arrSET['pwd_expire_at'] = $new_userdata[ACL_INFO_PWD_EXPIRE_AT];
@@ -1078,7 +1078,7 @@ class DoceboACLManager
             'userdata' => $userdata,
         ]);
 
-        if (Forma\lib\Get::sett('register_deleted_user') == 'on') {
+        if (FormaLms\lib\Get::sett('register_deleted_user') == 'on') {
             $control = $this->insertIntoDeleteUserTable($idst);
         } else {
             $control = true;
@@ -1512,7 +1512,7 @@ class DoceboACLManager
 
     public function &getUserMappedData($user)
     {
-        $path = $GLOBALS['where_files_relative'] . '/appCore/' . Forma\lib\Get::sett('pathphoto');
+        $path = $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
         $acl_man = Docebo::user()->getAclManager();
 
@@ -2437,7 +2437,7 @@ class DoceboACLManager
             . '   AND NOT ISNULL(tu.idst)';
 
         if (!$this->include_suspended) {
-            if (Forma\lib\Get::req('modname', DOTY_ALPHANUM, '') !== 'directory') {
+            if (FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '') !== 'directory') {
                 $query .= " AND tu.valid = '1'";
             }
         }
@@ -2480,7 +2480,7 @@ class DoceboACLManager
             . '   AND NOT ISNULL(tu.idst)';
 
         if (!$this->include_suspended) {
-            if (Forma\lib\Get::req('modname', DOTY_ALPHANUM, '') !== 'directory') {
+            if (FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '') !== 'directory') {
                 $query .= " AND tu.valid = '1'";
             }
         }
@@ -3658,7 +3658,7 @@ class GroupMembersDataRetriever extends DataRetriever
 
     public function getRows($startRow, $numRows)
     {
-        $id_filter = Forma\lib\Get::req('user_id', DOTY_MIXED, '');
+        $id_filter = FormaLms\lib\Get::req('user_id', DOTY_MIXED, '');
 
         $query = 'SELECT tgm.idstMember, tu.userid, tu.firstname, tu.lastname, tu.email '
             . ' FROM ' . $this->aclManager->_getTableGroupMembers() . ' AS tgm  '
@@ -3677,7 +3677,7 @@ class GroupMembersDataRetriever extends DataRetriever
 
     public function getTotalRows()
     {
-        $id_filter = Forma\lib\Get::req('user_id', DOTY_MIXED, '');
+        $id_filter = FormaLms\lib\Get::req('user_id', DOTY_MIXED, '');
 
         $query = 'SELECT COUNT(*)'
             . ' FROM ' . $this->aclManager->_getTableGroupMembers() . ' AS tgm  '

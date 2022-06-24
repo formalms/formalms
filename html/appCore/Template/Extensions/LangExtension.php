@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-namespace Forma\appCore\Template\Extensions;
+namespace FormaLms\appCore\Template\Extensions;
 
 use Twig\TwigFunction;
 

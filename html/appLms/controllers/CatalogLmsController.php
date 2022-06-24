@@ -36,7 +36,7 @@ class CatalogLmsController extends LmsController
     {
         YuiLib::load('base,tabview');
         Lang::init('course');
-        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse') . '/';
+        $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
         $this->model = new CatalogLms();
 
         require_once _base_ . '/lib/lib.json.php';
@@ -48,9 +48,9 @@ class CatalogLmsController extends LmsController
     // displays header and catalogue tree
     public function show()
     {
-        $id_catalogue = Forma\lib\Get::req('id_catalogue', DOTY_INT, 0);
+        $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
         $user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
-        $onCatalogueEmptySetting = Forma\lib\Get::sett('on_catalogue_empty') == 'on';
+        $onCatalogueEmptySetting = FormaLms\lib\Get::sett('on_catalogue_empty') == 'on';
 
         $show_general_catalogue_tab = ($onCatalogueEmptySetting && count($user_catalogue) === 0);
         $show_empty_catalogue_tab = (!$onCatalogueEmptySetting && count($user_catalogue) === 0);
@@ -83,9 +83,9 @@ class CatalogLmsController extends LmsController
     // AJAX: display courses from selected catalogue, category, courses
     public function allCourseForma()
     {
-        $id_category = Forma\lib\Get::req('id_category', DOTY_INT, 0);
-        $typeCourse = Forma\lib\Get::req('type_course', DOTY_STRING, '');
-        $id_catalogue = Forma\lib\Get::req('id_catalogue', DOTY_INT, 0);
+        $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
+        $typeCourse = FormaLms\lib\Get::req('type_course', DOTY_STRING, '');
+        $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
 
         $courses = $this->model->getCatalogCourseList($typeCourse, 1, $id_catalogue, $id_category);
 
@@ -97,10 +97,10 @@ class CatalogLmsController extends LmsController
         require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'new';
 
-        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
-        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
+        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
-        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
+        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
         $nav_bar->setLink('index.php?r=catalog/newCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
@@ -140,10 +140,10 @@ class CatalogLmsController extends LmsController
         require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'elearning';
 
-        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
-        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
+        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
-        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
+        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
         $nav_bar->setLink('index.php?r=catalog/elearningCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
@@ -183,10 +183,10 @@ class CatalogLmsController extends LmsController
         require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'classroom';
 
-        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
-        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
+        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
-        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
+        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
         $nav_bar->setLink('index.php?r=catalog/classroomCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
@@ -224,13 +224,13 @@ class CatalogLmsController extends LmsController
     public function catalogueCourse()
     {
         require_once _base_ . '/lib/lib.navbar.php';
-        $id_catalogue = Forma\lib\Get::req('id_catalogue', DOTY_INT, 0);
+        $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
         $active_tab = 'catalogue';
 
-        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
-        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
+        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
-        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
+        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
 
         $nav_bar->setLink('index.php?r=catalog/catalogueCourse&amp;id_catalogue=' . $id_catalogue . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
@@ -270,11 +270,11 @@ class CatalogLmsController extends LmsController
         require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'coursepath';
 
-        $nav_bar = new NavBar('page', Forma\lib\Get::sett('visuItem'), count($this->model->getUserCoursepath(Docebo::user()->getIdSt())), 'link');
+        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), count($this->model->getUserCoursepath(Docebo::user()->getIdSt())), 'link');
 
         $nav_bar->setLink('index.php?r=catalog/coursepathCourse');
 
-        $page = Forma\lib\Get::req('page', DOTY_INT, 1);
+        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
 
         $html = $this->model->getCoursepathList(Docebo::user()->getIdSt(), $page);
         $user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
@@ -329,7 +329,7 @@ class CatalogLmsController extends LmsController
 
     public function subscribeCoursePathInfo()
     {
-        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
+        $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
 
         $res = $this->model->subscribeCoursePathInfo($id_path);
 
@@ -338,10 +338,10 @@ class CatalogLmsController extends LmsController
 
     public function chooseEdition()
     {
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $type_course = Forma\lib\Get::req('type_course', DOTY_STRING, 'elearning');
-        $id_catalogue = Forma\lib\Get::req('id_catalogue', DOTY_INT, 0);
-        $id_category = Forma\lib\Get::req('id_category', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $type_course = FormaLms\lib\Get::req('type_course', DOTY_STRING, 'elearning');
+        $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
+        $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
         $this->render('edition-modal', ['id_course' => $id_course, 'available_classrooms' => $res['available_classrooms'], 'teachers' => $res['teachers'],
             'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category, ]);
@@ -352,8 +352,8 @@ class CatalogLmsController extends LmsController
     {
         $level = 3;        // default subscription level = Student
         $reg_code = '';
-        $reg_code = Forma\lib\Get::cfg('registration_code_gu', '');
-        if (Forma\lib\Get::cfg('register_type_guestuser') && $reg_code != '') {
+        $reg_code = FormaLms\lib\Get::cfg('registration_code_gu', '');
+        if (FormaLms\lib\Get::cfg('register_type_guestuser') && $reg_code != '') {
             $uma = new UsermanagementAdm();
             $array_folder = $uma->getFoldersFromCode($reg_code);
             $userfolders = $uma->getUserFoldersCode($idu);
@@ -368,10 +368,10 @@ class CatalogLmsController extends LmsController
 
     public function subscribeToCourse()
     {
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
-        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
-        $overbooking = (Forma\lib\Get::req('overbooking', DOTY_INT, 0) == 1);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
+        $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
+        $overbooking = (FormaLms\lib\Get::req('overbooking', DOTY_INT, 0) == 1);
 
         $id_user = Docebo::user()->getIdSt();
 
@@ -454,7 +454,7 @@ class CatalogLmsController extends LmsController
                 }
 
                 $query = 'SELECT COUNT(*)'
-                    . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'course'"
                     . ' AND id_entry in (-1,0,' . $id_course . ')';
@@ -462,26 +462,26 @@ class CatalogLmsController extends LmsController
                 list($control_course) = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*)'
-                    . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'coursepath'"
                     . ' AND id_entry IN'
                     . ' ('
                     . ' SELECT id_path'
-                    . ' FROM ' . Forma\lib\Get::cfg('prefix_lms') . '_coursepath_courses'
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_lms') . '_coursepath_courses'
                     . " WHERE id_item = '" . $id_course . "'"
                     . ' )';
 
                 list($control_coursepath) = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*)'
-                    . ' FROM ' . Forma\lib\Get::cfg('prefix_fw') . '_admin_course'
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
                     . " WHERE idst_user = '" . $id_user . "'"
                     . " AND type_of_entry = 'catalogue'"
                     . ' AND id_entry IN'
                     . ' ('
                     . ' SELECT idCatalogue'
-                    . ' FROM ' . Forma\lib\Get::cfg('prefix_lms') . '_catalogue_entry'
+                    . ' FROM ' . FormaLms\lib\Get::cfg('prefix_lms') . '_catalogue_entry'
                     . " WHERE idEntry = '" . $id_course . "'"
                     . ' )';
 
@@ -495,7 +495,7 @@ class CatalogLmsController extends LmsController
             $recipients = array_unique($recipients);
 
             $array_subst = [
-                '[url]' => Forma\lib\Get::site_url(),
+                '[url]' => FormaLms\lib\Get::site_url(),
                 '[course]' => $course_info['name'],
                 '[firstname]' => $userinfo[ACL_INFO_FIRSTNAME],
                 '[lastname]' => $userinfo[ACL_INFO_LASTNAME],
@@ -547,7 +547,7 @@ class CatalogLmsController extends LmsController
 
     public function subscribeToCoursePath()
     {
-        $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
+        $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
 
         $id_user = Docebo::user()->getIdSt();
 
@@ -578,8 +578,8 @@ class CatalogLmsController extends LmsController
             $cpath_man = new CoursePath_Manager();
             $subs_man = new CourseSubscribe_Management();
 
-            $id_path = Forma\lib\Get::req('id_path', DOTY_INT, 0);
-            $user_selected = Util::unserialize(urldecode(Forma\lib\Get::req('users', DOTY_MIXED, [])));
+            $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
+            $user_selected = Util::unserialize(urldecode(FormaLms\lib\Get::req('users', DOTY_MIXED, [])));
 
             $courses = $cpath_man->getAllCourses([$id_path]);
 
@@ -602,9 +602,9 @@ class CatalogLmsController extends LmsController
 
     public function addToCart()
     {
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $id_date = Forma\lib\Get::req('id_date', DOTY_INT, 0);
-        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
+        $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
 
         $currentCart = $this->session->get('lms_cart');
         if ($id_edition != 0) {
@@ -643,7 +643,7 @@ class CatalogLmsController extends LmsController
     {
         require_once _base_ . '/lib/lib.download.php';
 
-        $id = Forma\lib\Get::gReq('course_id', DOTY_INT);
+        $id = FormaLms\lib\Get::gReq('course_id', DOTY_INT);
         $db = DbConn::getInstance();
 
         $qtxt = 'SELECT course_demo FROM %lms_course WHERE idCourse=' . $id;
@@ -662,7 +662,7 @@ class CatalogLmsController extends LmsController
     public function self_unsubscribe()
     {
         $id_user = Docebo::user()->idst;
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
 
         $cmodel = new CourseAlms();
         $cinfo = $cmodel->getCourseModDetails($id_course);

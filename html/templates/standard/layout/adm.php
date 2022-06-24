@@ -67,7 +67,7 @@
 					<li><a class="identity" href="index.php?r=lms/profile/show">
 						<span><?php echo Lang::t('_PROFILE', 'profile'); ?></span>
 					</a></li><li>
-					<a class="logout" href="<?php echo Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_; ?>">
+					<a class="logout" href="<?php echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_; ?>">
 						<!-- <img src="<?php echo Layout::path(); ?>images/standard/exit.png" alt="Left logo" />&nbsp; -->
 						<span><?php echo Lang::t('_LOGOUT', 'standard'); ?></span>
 					</a></li>

@@ -315,7 +315,7 @@ class Field_Upload extends Field
 			id_common_son = '0'"));
 
         if ($user_entry != '') {
-            $entry_link = '<a href="' . Forma\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
+            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
             . '<img src="' . getPathImage() . mimeDetect($user_entry) . '" alt="' . Lang::t('_MIME_TYPE') . '" />'
             . '&nbsp;' . Lang::t('_DOWNLOAD')
             . '</a>';
@@ -331,7 +331,7 @@ class Field_Upload extends Field
         require_once _base_ . '/lib/lib.mimetype.php';
 
         if ($value != '') {
-            $entry_link = '<a href="' . Forma\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
+            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
             . '<img src="' . getPathImage() . mimeDetect($value) . '" alt="' . Lang::t('_MIME_TYPE') . '" />'
             . '&nbsp;' . Lang::t('_DOWNLOAD')
             . '</a>';
@@ -369,7 +369,7 @@ class Field_Upload extends Field
         list($translation) = sql_fetch_row($re_field);
 
         if ($user_entry != '') {
-            $entry_link = '<a href="' . Forma\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
+            $entry_link = '<a href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=field&amp;op=manage&amp;fo=special&amp;type_field=' . $this->getFieldType() . '&amp;id_user=' . $id_user . '&amp;id_common=' . $this->id_common . '">'
             . '<img src="' . getPathImage() . mimeDetect($user_entry) . '" alt="' . Lang::t('_MIME_TYPE') . '" />'
             . '&nbsp;' . Lang::t('_DOWNLOAD')
             . '</a> ';

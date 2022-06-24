@@ -24,7 +24,7 @@ function showgrade()
     require_once _lms_ . '/lib/lib.test.php';
     require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _base_ . '/lib/lib.table.php';
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
     $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
     $out = &$GLOBALS['page'];
@@ -268,7 +268,7 @@ function coursereport()
     global $test_title;
 
     checkPerm('view');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     require_once _lms_ . '/lib/lib.test.php';
     require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _base_ . '/lib/lib.table.php';

@@ -26,7 +26,7 @@ class CategoryFolderTree extends ClientTree
         $this->jsClassName = 'CourseFolderTree';
         $this->serverUrl = 'ajax.adm_server.php?plf=lms&file=category_tree&sf=folder_tree';
 
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
         require_once _base_ . '/lib/lib.dialog.php';
         initDialogs();
 
@@ -64,7 +64,7 @@ class CategoryFolderTree extends ClientTree
         //$selected_node = (isset($SESSION['course_category']['filter_status']) ? $SESSION['course_category']['filter_status']['c_category'] : 0); //0 = root node
         $tree_status = $this->_getCourseTreeStatus(); //0 = root node
 
-        $this->setOption('iconPath', Forma\lib\Get::tmpl_path() . 'images/');
+        $this->setOption('iconPath', FormaLms\lib\Get::tmpl_path() . 'images/');
         $this->setOption('dragdrop', true);
         //$this->setOption('initNodes', $initialShowedNodes);
         $this->setOption('useCheckboxes', false);

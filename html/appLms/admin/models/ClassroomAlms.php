@@ -165,21 +165,21 @@ class ClassroomAlms extends Model
         $res = [];
 
         $res['customFields'] = [];
-        $res['code'] = Forma\lib\Get::req('code', DOTY_MIXED, '');
-        $res['name'] = Forma\lib\Get::req('name', DOTY_MIXED, '');
-        $res['max_par'] = Forma\lib\Get::req('max_par', DOTY_INT, 0);
-        $res['price'] = Forma\lib\Get::req('price', DOTY_MIXED, '');
-        $res['overbooking'] = Forma\lib\Get::req('overbooking', DOTY_INT, 0);
-        $res['test'] = Forma\lib\Get::req('test', DOTY_INT, 0);
-        $res['status'] = Forma\lib\Get::req('status', DOTY_INT, 0);
-        $res['date_selected'] = Forma\lib\Get::req('date_selected', DOTY_MIXED, '');
-        $res['mediumTime'] = Forma\lib\Get::req('mediumTime', DOTY_INT, 0);
-        $res['description'] = Forma\lib\Get::req('description', DOTY_MIXED, '');
-        $res['sub_start_date'] = Forma\lib\Get::req('sub_start_date', DOTY_MIXED, '');
-        $res['sub_end_date'] = Forma\lib\Get::req('sub_end_date', DOTY_MIXED, '');
-        $res['unsubscribe_date_limit'] = Forma\lib\Get::req('unsubscribe_date_limit', DOTY_MIXED, '');
-        $res['customFields'] = array_replace($res['customFields'], Forma\lib\Get::req('textfield', DOTY_MIXED, []));
-        $res['customFields'] = array_replace($res['customFields'], Forma\lib\Get::req('dropdown', DOTY_MIXED, []));
+        $res['code'] = FormaLms\lib\Get::req('code', DOTY_MIXED, '');
+        $res['name'] = FormaLms\lib\Get::req('name', DOTY_MIXED, '');
+        $res['max_par'] = FormaLms\lib\Get::req('max_par', DOTY_INT, 0);
+        $res['price'] = FormaLms\lib\Get::req('price', DOTY_MIXED, '');
+        $res['overbooking'] = FormaLms\lib\Get::req('overbooking', DOTY_INT, 0);
+        $res['test'] = FormaLms\lib\Get::req('test', DOTY_INT, 0);
+        $res['status'] = FormaLms\lib\Get::req('status', DOTY_INT, 0);
+        $res['date_selected'] = FormaLms\lib\Get::req('date_selected', DOTY_MIXED, '');
+        $res['mediumTime'] = FormaLms\lib\Get::req('mediumTime', DOTY_INT, 0);
+        $res['description'] = FormaLms\lib\Get::req('description', DOTY_MIXED, '');
+        $res['sub_start_date'] = FormaLms\lib\Get::req('sub_start_date', DOTY_MIXED, '');
+        $res['sub_end_date'] = FormaLms\lib\Get::req('sub_end_date', DOTY_MIXED, '');
+        $res['unsubscribe_date_limit'] = FormaLms\lib\Get::req('unsubscribe_date_limit', DOTY_MIXED, '');
+        $res['customFields'] = array_replace($res['customFields'], FormaLms\lib\Get::req('textfield', DOTY_MIXED, []));
+        $res['customFields'] = array_replace($res['customFields'], FormaLms\lib\Get::req('dropdown', DOTY_MIXED, []));
         $array_day = [];
 
         if ($res['date_selected'] !== '') {
@@ -461,9 +461,9 @@ class ClassroomAlms extends Model
 
         foreach ($day as $id_day => $day_info) {
             $cont_h[] = Format::date($day_info['date_begin'], 'date') . '<br />'
-                . '<a href="javascript:;" onClick="checkAllDay(' . $id_day . ')">' . Forma\lib\Get::img('standard/checkall.png', Lang::t('_CHECK_ALL_DAY', 'presence') . '</a>')
+                . '<a href="javascript:;" onClick="checkAllDay(' . $id_day . ')">' . FormaLms\lib\Get::img('standard/checkall.png', Lang::t('_CHECK_ALL_DAY', 'presence') . '</a>')
                 . ' '
-                . '<a href="javascript:;" onClick="unCheckAllDay(' . $id_day . ')">' . Forma\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_DAY', 'presence') . '</a>');
+                . '<a href="javascript:;" onClick="unCheckAllDay(' . $id_day . ')">' . FormaLms\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_DAY', 'presence') . '</a>');
             $type_h[] = 'img-cell';
         }
 
@@ -505,9 +505,9 @@ class ClassroomAlms extends Model
                 $cont[] = Form::getInputCheckbox('date_' . $id_day . '_' . $id_user, 'date_' . $id_day . '_' . $id_user, 1, $presence, false);
             }
 
-            $cont[] = '<a href="javascript:;" onClick="checkAllUser(' . $id_user . ')">' . Forma\lib\Get::img('standard/checkall.png', Lang::t('_CHECK_ALL_USER', 'presence') . '</a>')
+            $cont[] = '<a href="javascript:;" onClick="checkAllUser(' . $id_user . ')">' . FormaLms\lib\Get::img('standard/checkall.png', Lang::t('_CHECK_ALL_USER', 'presence') . '</a>')
                 . '<br />'
-                . '<a href="javascript:;" onClick="unCheckAllUser(' . $id_user . ')">' . Forma\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_USER', 'presence') . '</a>');
+                . '<a href="javascript:;" onClick="unCheckAllUser(' . $id_user . ')">' . FormaLms\lib\Get::img('standard/uncheckall.png', Lang::t('_UNCHECK_ALL_USER', 'presence') . '</a>');
 
             if ($test_type == _DATE_TEST_TYPE_PAPER) {
                 if (isset($user_presence[$id_user]['0000-00-00']) && $user_presence[$id_user]['0000-00-00']['presence'] == 1) {
@@ -530,19 +530,19 @@ class ClassroomAlms extends Model
 
     public function savePresence()
     {
-        $score_min = Forma\lib\Get::req('score_min', DOTY_INT, 0);
+        $score_min = FormaLms\lib\Get::req('score_min', DOTY_INT, 0);
 
         $user = $this->classroom_man->getUserForPresence($this->id_date);
         $day = $this->getDateDay($this->id_date);
         $test_type = $this->classroom_man->getTestType($this->id_date);
 
         foreach ($user as $id_user => $user_info) {
-            $user[$id_user]['score'] = Forma\lib\Get::req('score_' . $id_user, DOTY_INT, 0);
-            $user[$id_user]['note'] = Forma\lib\Get::req('note_' . $id_user, DOTY_MIXED, '');
+            $user[$id_user]['score'] = FormaLms\lib\Get::req('score_' . $id_user, DOTY_INT, 0);
+            $user[$id_user]['note'] = FormaLms\lib\Get::req('note_' . $id_user, DOTY_MIXED, '');
             $user[$id_user]['day_presence'] = [];
 
             for ($i = 0; $i < count($day); ++$i) {
-                $user[$id_user]['day_presence'][$day[$i]['id_day']] = Forma\lib\Get::req('date_' . $day[$i]['id_day'] . '_' . $id_user, DOTY_INT, 0);
+                $user[$id_user]['day_presence'][$day[$i]['id_day']] = FormaLms\lib\Get::req('date_' . $day[$i]['id_day'] . '_' . $id_user, DOTY_INT, 0);
             }
         }
 

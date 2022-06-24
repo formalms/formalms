@@ -59,12 +59,12 @@ class DashboardAdmController extends AdmController
         //if (!checkPerm('view', true)) return;
 
         //YuiLib::load('tabview,charts');
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/views/dashboard/dashboard.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/views/dashboard/js/show.js', true, true);
-        Util::get_css(Forma\lib\Get::rel_path('adm') . '/views/dashboard/css/show.css', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
-        Util::get_css(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/dashboard/dashboard.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/dashboard/js/show.js', true, true);
+        Util::get_css(FormaLms\lib\Get::rel_path('adm') . '/views/dashboard/css/show.css', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
+        Util::get_css(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
         $charts_num_days = 7;
 
         //check if there are any problems with technical configuration of the server
@@ -177,10 +177,10 @@ class DashboardAdmController extends AdmController
     {
         $json = new Services_JSON();
 
-        $c_course = Forma\lib\Get::req('certificate_course', DOTY_MIXED, '');
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $c_userid = Forma\lib\Get::req('certificate_userid', DOTY_MIXED, '');
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $c_course = FormaLms\lib\Get::req('certificate_course', DOTY_MIXED, '');
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $c_userid = FormaLms\lib\Get::req('certificate_userid', DOTY_MIXED, '');
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
 
         require_once _lms_ . '/lib/lib.course.php';
         $man_course = new Man_Course();
@@ -243,7 +243,7 @@ class DashboardAdmController extends AdmController
     public function exportformatTask()
     {
         $this->render('export_dialog', [
-            'id_report' => Forma\lib\Get::req('id_report', DOTY_INT, true),
+            'id_report' => FormaLms\lib\Get::req('id_report', DOTY_INT, true),
             'json' => $this->json,
         ]);
     }

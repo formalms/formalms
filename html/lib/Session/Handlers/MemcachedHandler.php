@@ -1,15 +1,15 @@
 <?php
 
-namespace Forma\lib\Session\Handlers;
+namespace FormaLms\lib\Session\Handlers;
 
-use Forma\lib\Session\Config;
+use FormaLms\lib\Session\SessionConfig;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\MemcachedSessionHandler;
 
 class MemcachedHandler extends MemcachedSessionHandler
 {
 
-    public function __construct(Config $config)
+    public function __construct(SessionConfig $config)
     {
         try {
             if (empty($config->getUrl())) {
@@ -22,10 +22,14 @@ class MemcachedHandler extends MemcachedSessionHandler
                 $config->setUrl($url);
             }
 
-            $connection = MemcachedAdapter::createConnection($config->getUrl(),[
+            $options = [
                 'prefix_key' => $config->getPrefix(),
                 'connect_timeout' => $config->getTimeout()
-            ]);
+            ];
+
+            $options = array_merge($options,$config->getOptions());
+
+            $connection = MemcachedAdapter::createConnection($config->getUrl(),$options);
         }
         catch (\Exception $exception){
             die($exception->getMessage());

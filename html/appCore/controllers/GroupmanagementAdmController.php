@@ -57,9 +57,9 @@ class GroupmanagementAdmController extends AdmController
      */
     public function show()
     {
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('adm') . '/views/groupmanagement/groupmanagement.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/groupmanagement/groupmanagement.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
 
         $this->render('show', [
             'permissions' => $this->permissions,
@@ -89,12 +89,12 @@ class GroupmanagementAdmController extends AdmController
      */
     public function getdata()
     {
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem'));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter = Forma\lib\Get::req('filter', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem'));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter = FormaLms\lib\Get::req('filter', DOTY_STRING, '');
 
         //get total from database and validate the results count
         $total = $this->model->getTotalGroups($filter);
@@ -160,7 +160,7 @@ class GroupmanagementAdmController extends AdmController
             return;
         }
 
-        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         $output['success'] = ($id > 0 ? $this->model->deleteGroup($id) : false);
         echo $this->json->encode($output);
     }
@@ -179,7 +179,7 @@ class GroupmanagementAdmController extends AdmController
         }
 
         $output = [];
-        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
 
         if ($id > 0) {
             $action = 'ajax.adm_server.php?r=adm/groupmanagement/moddata&id=' . $id;
@@ -207,15 +207,15 @@ class GroupmanagementAdmController extends AdmController
             return;
         }
 
-        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
 
         $output = [];
         if ($id > 0) {
             $types = $this->model->getGroupTypes(true);
 
-            $groupid = Forma\lib\Get::req('groupid', DOTY_STRING, '');
-            $description = Forma\lib\Get::req('description', DOTY_STRING, '');
-            $type = Forma\lib\Get::req('type', DOTY_ALPHANUM, '');
+            $groupid = FormaLms\lib\Get::req('groupid', DOTY_STRING, '');
+            $description = FormaLms\lib\Get::req('description', DOTY_STRING, '');
+            $type = FormaLms\lib\Get::req('type', DOTY_ALPHANUM, '');
             if (!in_array($type, $types)) {
                 $type = $types['free'];
             }
@@ -250,7 +250,7 @@ class GroupmanagementAdmController extends AdmController
      */
     public function assignmembers()
     {
-        $id = Forma\lib\Get::req('id_group', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('id_group', DOTY_INT, -1);
 
         $base_url = 'index.php?r=adm/groupmanagement/';
         $back_url = $base_url . 'show_users&id=' . (int) $id;
@@ -266,8 +266,8 @@ class GroupmanagementAdmController extends AdmController
             $acl = Docebo::user()->getAclManager();
             $selector = new UserSelector();
 
-            $cancel = Forma\lib\Get::req('cancelselector', DOTY_MIXED, false);
-            $save = Forma\lib\Get::req('okselector', DOTY_MIXED, false);
+            $cancel = FormaLms\lib\Get::req('cancelselector', DOTY_MIXED, false);
+            $save = FormaLms\lib\Get::req('okselector', DOTY_MIXED, false);
 
             if ($cancel) {
                 Util::jump_to($back_url);
@@ -287,7 +287,7 @@ class GroupmanagementAdmController extends AdmController
 
                 $group = $this->model->getGroupInfo($id, true);
 
-                if (Forma\lib\Get::req('is_updating', DOTY_INT, false)) {
+                if (FormaLms\lib\Get::req('is_updating', DOTY_INT, false)) {
                 } else {
                     $members = $this->model->getGroupMembers($id);
                     $selector->requested_tab = PEOPLEVIEW_TAB;
@@ -375,9 +375,9 @@ class GroupmanagementAdmController extends AdmController
         $output = [];
         $types = $this->model->getGroupTypes(true);
 
-        $groupid = Forma\lib\Get::req('groupid', DOTY_STRING, '');
-        $description = Forma\lib\Get::req('description', DOTY_STRING, '');
-        $type = Forma\lib\Get::req('type', DOTY_ALPHANUM, '');
+        $groupid = FormaLms\lib\Get::req('groupid', DOTY_STRING, '');
+        $description = FormaLms\lib\Get::req('description', DOTY_STRING, '');
+        $type = FormaLms\lib\Get::req('type', DOTY_ALPHANUM, '');
         if (!in_array($type, $types)) {
             $type = $types['free'];
         }
@@ -406,8 +406,8 @@ class GroupmanagementAdmController extends AdmController
 
     public function groups_autocompleteTask()
     {
-        $query = Forma\lib\Get::req('query', DOTY_STRING, '');
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
+        $query = FormaLms\lib\Get::req('query', DOTY_STRING, '');
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
         $output = ['groups' => []];
         if ($query != '') {
             $groups = $this->model->searchGroupsByGroupid($query, $results, true);
@@ -426,7 +426,7 @@ class GroupmanagementAdmController extends AdmController
 
     public function importusers_step1Task()
     {
-        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
+        $id_group = FormaLms\lib\Get::req('id_group', DOTY_INT, 0);
 
         $back_url = 'index.php?r=adm/groupmanagement/show';
 
@@ -444,15 +444,15 @@ class GroupmanagementAdmController extends AdmController
 
     public function importusers_step2Task()
     {
-        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
+        $id_group = FormaLms\lib\Get::req('id_group', DOTY_INT, 0);
 
         if (isset($_POST['import_groupcancel'])) {
             Util::jump_to('index.php?r=adm/groupmanagement/show_users&id=' . $id_group);
         }
 
-        $separator = Forma\lib\Get::req('import_separator', DOTY_STRING, ',');
-        $first_row_header = Forma\lib\Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
-        $import_charset = Forma\lib\Get::req('import_charset', DOTY_STRING, 'UTF-8');
+        $separator = FormaLms\lib\Get::req('import_separator', DOTY_STRING, ',');
+        $first_row_header = FormaLms\lib\Get::req('import_first_row_header', DOTY_STRING, 'false') == 'true';
+        $import_charset = FormaLms\lib\Get::req('import_charset', DOTY_STRING, 'UTF-8');
         if (trim($import_charset) === '') {
             $import_charset = 'UTF-8';
         }
@@ -481,13 +481,13 @@ class GroupmanagementAdmController extends AdmController
 
     public function show_usersTask()
     {
-        $id_group = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $id_group = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
         if ($id_group <= 0) {
             return;
         }
 
-        $res = Forma\lib\Get::req('res', DOTY_STRING, '');
+        $res = FormaLms\lib\Get::req('res', DOTY_STRING, '');
         switch ($res) {
             case 'ok_assignuser': $message = getResultUi(Lang::t('_OPERATION_SUCCESSFUL', 'admin_directory')); break;
             case 'err_assignuser': $message = getErrorUi(Lang::t('_GROUP_USERASSIGN_ERROR', 'admin_directory')); break;
@@ -507,15 +507,15 @@ class GroupmanagementAdmController extends AdmController
     public function getusertabledataTask()
     {
         //read from input and prepare filter and pagination variables
-        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
+        $id_group = FormaLms\lib\Get::req('id_group', DOTY_INT, 0);
         //TO DO: if $id_group <= 0 ...
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 25));
-        $rowsPerPage = Forma\lib\Get::req('rowsPerPage', DOTY_INT, $results);
-        $sort = Forma\lib\Get::req('sort', DOTY_STRING, '');
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
+        $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
             'text' => $filter_text,
@@ -583,8 +583,8 @@ class GroupmanagementAdmController extends AdmController
         }
 
         //read input and validate it
-        $id_group = Forma\lib\Get::req('id_group', DOTY_INT, 0);
-        $id_user = Forma\lib\Get::req('id_user', DOTY_INT, 0);
+        $id_group = FormaLms\lib\Get::req('id_group', DOTY_INT, 0);
+        $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         if (!$id_group || !$id_user) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid input')];
             echo $this->json->encode($output);

@@ -77,12 +77,12 @@ class CommunicationAlmsController extends AlmsController
             UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'communication'));
         }
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 100));
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 100));
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
 
-        $idCategory = Forma\lib\Get::req('categoryId', DOTY_INT, 0);
-        $filter = Forma\lib\Get::req('filter', DOTY_MIXED, false);
+        $idCategory = FormaLms\lib\Get::req('categoryId', DOTY_INT, 0);
+        $filter = FormaLms\lib\Get::req('filter', DOTY_MIXED, false);
 
         switch ($dir) {
             case 'desc':
@@ -122,14 +122,14 @@ class CommunicationAlmsController extends AlmsController
 
     public function getlist()
     {
-        $id_category = Forma\lib\Get::req('id_category', DOTY_INT, 0);
-        $show_descendants = Forma\lib\Get::req('descendants', DOTY_INT, 0) > 0;
+        $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
+        $show_descendants = FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0;
 
-        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
-        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'title');
-        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
-        $filter_text = Forma\lib\Get::req('filter_text', DOTY_STRING, '');
+        $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $filter = ['text' => $filter_text];
 
@@ -229,7 +229,7 @@ class CommunicationAlmsController extends AlmsController
                 'publish_date' => Format::date(date('Y-m-d'), 'date'),
                 'type_of' => 'none',
                 'id_course' => 0,
-                'id_category' => Forma\lib\Get::req('id', DOTY_INT, 0),
+                'id_category' => FormaLms\lib\Get::req('id', DOTY_INT, 0),
             ];
         }
 
@@ -260,21 +260,21 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        if (Forma\lib\Get::req('undo', DOTY_MIXED, false) !== false) {
+        if (FormaLms\lib\Get::req('undo', DOTY_MIXED, false) !== false) {
             Util::jump_to('index.php?r=alms/communication/show');
         }
 
         $data = [];
 
-        $data['publish_date'] = Forma\lib\Get::req('publish_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
+        $data['publish_date'] = FormaLms\lib\Get::req('publish_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
   
-        $data['type_of'] = Forma\lib\Get::req('type_of', DOTY_STRING, '');
+        $data['type_of'] = FormaLms\lib\Get::req('type_of', DOTY_STRING, '');
         $data['publish_date'] = Format::dateDb($data['publish_date'], 'date');
-        $data['id_category'] = Forma\lib\Get::req('id_category', DOTY_INT, 0);
-        $data['id_course'] = Forma\lib\Get::req('idCourse', DOTY_STRING, 0);
+        $data['id_category'] = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
+        $data['id_course'] = FormaLms\lib\Get::req('idCourse', DOTY_STRING, 0);
 
-        $titles = Forma\lib\Get::req('title', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $titles = FormaLms\lib\Get::req('title', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
      
     
         //validate inputs
@@ -311,7 +311,7 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $id_comm = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
+        $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
         $data = $this->model->findByPk($id_comm);
         $back_url = 'index.php?r=alms/communication/insert_obj&id_comm=' . $id_comm;
 
@@ -347,13 +347,13 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $data['id_comm'] = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
-        $data['id_resource'] = Forma\lib\Get::req('id_lo', DOTY_INT, 0);
+        $data['id_comm'] = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
+        $data['id_resource'] = FormaLms\lib\Get::req('id_lo', DOTY_INT, 0);
         if (!$data['id_resource']) {
-            $tmpReq = Forma\lib\Get::req('id_los', DOTY_MIXED, 0);
+            $tmpReq = FormaLms\lib\Get::req('id_los', DOTY_MIXED, 0);
             $data['id_resource'] = explode(',', $tmpReq)[0];
         }
-        $create_result = Forma\lib\Get::req('create_result', DOTY_INT, 0);
+        $create_result = FormaLms\lib\Get::req('create_result', DOTY_INT, 0);
         if ($create_result >= 1) {
             if ($this->model->save($data)) {
                 $data = $this->model->findByPk($data['id_comm']);
@@ -385,7 +385,7 @@ class CommunicationAlmsController extends AlmsController
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $idComm = Forma\lib\Get::req('idComm', DOTY_INT, 0);
+        $idComm = FormaLms\lib\Get::req('idComm', DOTY_INT, 0);
         $data = $this->model->findByPk($idComm);
 
         $data['publish_date'] = Format::date($data['publish_date'], 'date');
@@ -435,23 +435,23 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        if (Forma\lib\Get::req('undo', DOTY_MIXED, false) !== false) {
+        if (FormaLms\lib\Get::req('undo', DOTY_MIXED, false) !== false) {
             Util::jump_to('index.php?r=alms/communication/show');
         }
 
      
         $data = [];
-        $data['id_comm'] = Forma\lib\Get::req('id_comm', DOTY_MIXED, '');
+        $data['id_comm'] = FormaLms\lib\Get::req('id_comm', DOTY_MIXED, '');
    
-        $data['publish_date'] = Forma\lib\Get::req('publish_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
+        $data['publish_date'] = FormaLms\lib\Get::req('publish_date', DOTY_MIXED, Format::date(date('Y-m-d'), 'date'));
 
-        $data['type_of'] = Forma\lib\Get::req('type_of', DOTY_STRING, 'none');
-        $data['id_course'] = Forma\lib\Get::req('idCourse', DOTY_INT, 0);
+        $data['type_of'] = FormaLms\lib\Get::req('type_of', DOTY_STRING, 'none');
+        $data['id_course'] = FormaLms\lib\Get::req('idCourse', DOTY_INT, 0);
 
         $data['publish_date'] = Format::dateDb($data['publish_date'], 'date');
 
-        $titles = Forma\lib\Get::req('title', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $titles = FormaLms\lib\Get::req('title', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
      
         //validate inputs
         if (is_array($titles)) {
@@ -489,10 +489,10 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $id_comm = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
+        $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
         $data = $this->model->findByPk($id_comm);
-        $titles = Forma\lib\Get::req('title', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $titles = FormaLms\lib\Get::req('title', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
      
         //validate inputs
         if (is_array($titles)) {
@@ -547,13 +547,13 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $data['id_comm'] = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
-        $data['id_resource'] = Forma\lib\Get::req('id_lo', DOTY_INT, 0);
+        $data['id_comm'] = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
+        $data['id_resource'] = FormaLms\lib\Get::req('id_lo', DOTY_INT, 0);
         if (!$data['id_resource']) {
-            $tmpReq = Forma\lib\Get::req('id_los', DOTY_MIXED, 0);
+            $tmpReq = FormaLms\lib\Get::req('id_los', DOTY_MIXED, 0);
             $data['id_resource'] = explode(',', $tmpReq)[0];
         }
-        $mod_result = Forma\lib\Get::req('mod_result', DOTY_INT, 0);
+        $mod_result = FormaLms\lib\Get::req('mod_result', DOTY_INT, 0);
      
         if ($mod_result >= 1) {
             if ($this->model->save($data)) {
@@ -572,7 +572,7 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $idComm = Forma\lib\Get::req('idComm', DOTY_INT, 0);
+        $idComm = FormaLms\lib\Get::req('idComm', DOTY_INT, 0);
         $data = $this->model->findByPk($idComm);
 
         if ($data['id_resource']) {
@@ -631,7 +631,7 @@ class CommunicationAlmsController extends AlmsController
             Util::jump_to('index.php?r=alms/communication/show');
         }
 
-        $id_comm = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
+        $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
         // instance of the user selector
         require_once _adm_ . '/class.module/class.directory.php';
         $user_selector = new UserSelector();
@@ -674,7 +674,7 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $id_comm = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
+        $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
         //$r_data =
 
         require_once _lms_ . '/lib/lib.kbres.php';
@@ -686,7 +686,7 @@ class CommunicationAlmsController extends AlmsController
         }
 
         if (isset($_POST['subcategorize_switch'])) {
-            $cat_sub_items = Forma\lib\Get::pReq('subcategorize_switch', DOTY_INT);
+            $cat_sub_items = FormaLms\lib\Get::pReq('subcategorize_switch', DOTY_INT);
             $res_id = (int) $r_data['res_id'];
             $r_env_parent_id = (int) $r_data['r_env_parent_id'];
 
@@ -696,23 +696,23 @@ class CommunicationAlmsController extends AlmsController
             exit();
         } else {
             if (isset($_POST['org_categorize_save'])) {
-                $res_id = Forma\lib\Get::req('res_id', DOTY_INT, 0);
-                $name = Forma\lib\Get::req('r_name', DOTY_STRING, '');
+                $res_id = FormaLms\lib\Get::req('res_id', DOTY_INT, 0);
+                $name = FormaLms\lib\Get::req('r_name', DOTY_STRING, '');
                 $original_name = ''; // won't update this field
-                $desc = Forma\lib\Get::req('r_desc', DOTY_STRING, '');
-                $r_item_id = Forma\lib\Get::req('r_item_id', DOTY_INT, 0);
-                $type = Forma\lib\Get::req('r_type', DOTY_STRING, '');
-                $env = Forma\lib\Get::req('r_env', DOTY_STRING, '');
-                $env_parent_id = Forma\lib\Get::req('r_env_parent_id', DOTY_INT, 0);
-                $param = Forma\lib\Get::req('r_param', DOTY_STRING, '');
+                $desc = FormaLms\lib\Get::req('r_desc', DOTY_STRING, '');
+                $r_item_id = FormaLms\lib\Get::req('r_item_id', DOTY_INT, 0);
+                $type = FormaLms\lib\Get::req('r_type', DOTY_STRING, '');
+                $env = FormaLms\lib\Get::req('r_env', DOTY_STRING, '');
+                $env_parent_id = FormaLms\lib\Get::req('r_env_parent_id', DOTY_INT, 0);
+                $param = FormaLms\lib\Get::req('r_param', DOTY_STRING, '');
                 $alt_desc = '';
-                $lang_id = Forma\lib\Get::req('r_lang', DOTY_INT, '');
+                $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
                 $lang_arr = Docebo::langManager()->getAllLangCode();
                 $lang = $lang_arr[$lang_id];
-                $force_visible = Forma\lib\Get::req('force_visible', DOTY_INT, 0);
-                $is_mobile = Forma\lib\Get::req('is_mobile', DOTY_INT, 0);
-                $folders = Forma\lib\Get::req('h_selected_folders', DOTY_STRING, '');
-                $json_tags = Util::strip_slashes(Forma\lib\Get::req('tag_list', DOTY_STRING, '[]'));
+                $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
+                $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);
+                $folders = FormaLms\lib\Get::req('h_selected_folders', DOTY_STRING, '');
+                $json_tags = Util::strip_slashes(FormaLms\lib\Get::req('tag_list', DOTY_STRING, '[]'));
 
                 $res_id = $kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
                     $type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible,
@@ -757,7 +757,7 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $sco_id = Forma\lib\Get::req('sco_id', DOTY_INT, 0);
+        $sco_id = FormaLms\lib\Get::req('sco_id', DOTY_INT, 0);
 
         if ($sco_id > 0) {
             $qtxt = 'SELECT idscorm_item, title, identifierref FROM
@@ -791,7 +791,7 @@ class CommunicationAlmsController extends AlmsController
 
     public function save_sco_categorize()
     {
-        $id_comm = Forma\lib\Get::req('id_comm', DOTY_INT, 0);
+        $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
 
         if (isset($_POST['org_categorize_cancel'])) {
             Util::jump_to('index.php?r=alms/communication/categorize&id_comm=' . $id_comm);
@@ -861,12 +861,12 @@ class CommunicationAlmsController extends AlmsController
 
     public function gettreedataTask()
     {
-        $command = Forma\lib\Get::req('command', DOTY_ALPHANUM, '');
+        $command = FormaLms\lib\Get::req('command', DOTY_ALPHANUM, '');
 
         switch ($command) {
             case 'expand':
-                $node_id = Forma\lib\Get::req('node_id', DOTY_INT, 0);
-                $initial = (Forma\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
+                $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
+                $initial = (FormaLms\lib\Get::req('initial', DOTY_INT, 0) > 0 ? true : false);
 
                 if ($initial) {
                     //get selected category from session and set the expanded tree
@@ -912,7 +912,7 @@ class CommunicationAlmsController extends AlmsController
              break;
 
             case 'set_selected_node':
-                $this->_setSessionValue('selected_node', Forma\lib\Get::req('node_id', DOTY_INT, 0));
+                $this->_setSessionValue('selected_node', FormaLms\lib\Get::req('node_id', DOTY_INT, 0));
              break;
 
             case 'delete':
@@ -956,7 +956,7 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $idCategory = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $idCategory = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($idCategory <= 0) {
 
             UIFeedback::error($this->_getMessage('invalid category'));
@@ -994,9 +994,9 @@ class CommunicationAlmsController extends AlmsController
         }
 
         //set up the data to insert into DB
-        $idParent = Forma\lib\Get::req('id_category', DOTY_INT, -1);
-        $names = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $idParent = FormaLms\lib\Get::req('id_category', DOTY_INT, -1);
+        $names = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
         $langs = [];
      
         //validate inputs
@@ -1056,17 +1056,17 @@ class CommunicationAlmsController extends AlmsController
         }
 
         //set up the data to insert into DB
-        $idCategory = Forma\lib\Get::req('idCategory', DOTY_INT, -1);
+        $idCategory = FormaLms\lib\Get::req('idCategory', DOTY_INT, -1);
 
       
         if ($idCategory < 0) {
             UIFeedback::error($this->_getMessage('invalid category'));
             return;
         }
-        $names = Forma\lib\Get::req('name', DOTY_MIXED, []);
-        $descriptions = Forma\lib\Get::req('description', DOTY_MIXED, []);
+        $names = FormaLms\lib\Get::req('name', DOTY_MIXED, []);
+        $descriptions = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
-        $idParent = Forma\lib\Get::req('id_parent', DOTY_INT, 0);
+        $idParent = FormaLms\lib\Get::req('id_parent', DOTY_INT, 0);
         $langs = [];
 
         //validate inputs
@@ -1101,8 +1101,8 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $src = Forma\lib\Get::req('src', DOTY_INT, -1);
-        $dest = Forma\lib\Get::req('dest', DOTY_INT, -1);
+        $src = FormaLms\lib\Get::req('src', DOTY_INT, -1);
+        $dest = FormaLms\lib\Get::req('dest', DOTY_INT, -1);
 
         $output = [];
 
@@ -1127,9 +1127,9 @@ class CommunicationAlmsController extends AlmsController
 
         require_once Forma::inc(_lib_ . '/formatable/include.php');
 
-        $startIndex = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_INT, Forma\lib\Get::sett('visuItem', 100));
-        $dir = Forma\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 100));
+        $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
 
         switch ($dir) {
             case 'desc':
@@ -1165,7 +1165,7 @@ class CommunicationAlmsController extends AlmsController
     }
 
     public function deleteCategoryTask() {
-        $idCategory = Forma\lib\Get::req('idCategory', DOTY_INT, 0);
+        $idCategory = FormaLms\lib\Get::req('idCategory', DOTY_INT, 0);
       
         $output = $this->model->deleteCategory($idCategory);
 

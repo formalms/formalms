@@ -222,7 +222,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     {
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $exclude_pathcourse = '';
-        if (Forma\lib\Get::sett('on_path_in_mycourses') == 'off') {
+        if (FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
             $id_user = (int) Docebo::user()->getId();
             $learning_path_enroll = $this->getUserCoursePathCourses($id_user);
             if (count($learning_path_enroll) >= 1) {

@@ -26,7 +26,7 @@ function groups()
     $acl_man = &Docebo::user()->getAclManager();
     $mod_perm = checkPerm('mod', true);
     $subs_perm = checkPerm('subscribe', true);
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     // Retrive groups
     $acl_man->setContext('/lms/course/' .$idCourse . '/group');
     $id_groups = $acl_man->getGroupsIdstFromBasePath('/lms/course/' .$idCourse . '/group', ['course']);
@@ -110,7 +110,7 @@ function editgroup()
 
     $acl_man = &Docebo::user()->getAclManager();
     $lang = &DoceboLanguage::createInstance('groups', 'lms');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     if (isset($_GET['id_group'])) {
         $acl_man->setContext('/lms/course/' .$idCourse . '/group');
         $group = $acl_man->getGroup($_GET['id_group'], false);
@@ -148,7 +148,7 @@ function editgroup()
 function savegroup()
 {
     checkPerm('mod');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $acl_man = &Docebo::user()->getAclManager();
     $acl_man->setContext('/lms/course/' .$idCourse . '/group');
     if (isset($_POST['id_group'])) {
@@ -173,7 +173,7 @@ function delgroup()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &DoceboLanguage::createInstance('groups', 'lms');
     $acl_man = &Docebo::user()->getAclManager();
     $acl_man->setContext('/lms/course/' .$idCourse . '/group');
@@ -215,7 +215,7 @@ function subscribe()
 
     require_once _base_ . '/lib/lib.userselector.php';
     $lang = &DoceboLanguage::createInstance('groups', 'lms');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $id_group = importVar('id_group', true, 0);
 

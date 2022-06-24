@@ -170,10 +170,10 @@ class Config_Lms extends Config
                         'category' => $lang_c->def('_TAB_VIEW_CATEGORY'),
                         'all' => $lang_c->def('_ALL'),
                     ];
-                    if (Forma\lib\Get::sett('use_coursepath') == '1') {
+                    if (FormaLms\lib\Get::sett('use_coursepath') == '1') {
                         $tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
                     }
-                    if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
+                    if (FormaLms\lib\Get::sett('use_social_courselist') == 'on') {
                         $tab_list['mostscore'] = $lang_c->def('_TAB_VIEW_MOSTSCORE');
                         $tab_list['popular'] = $lang_c->def('_TAB_VIEW_MOSTPOPULAR');
                         $tab_list['recent'] = $lang_c->def('_TAB_VIEW_RECENT');
@@ -193,10 +193,10 @@ class Config_Lms extends Config
                         'category' => $lang_c->def('_TAB_VIEW_CATEGORY'),
                         'all' => $lang_c->def('_ALL'),
                     ];
-                    if (Forma\lib\Get::sett('use_coursepath') == '1') {
+                    if (FormaLms\lib\Get::sett('use_coursepath') == '1') {
                         $tab_list['pathcourse'] = $lang_c->def('_COURSEPATH');
                     }
-                    if (Forma\lib\Get::sett('use_social_courselist') == 'on') {
+                    if (FormaLms\lib\Get::sett('use_social_courselist') == 'on') {
                         $tab_list['mostscore'] = $lang_c->def('_TAB_VIEW_MOSTSCORE');
                         $tab_list['popular'] = $lang_c->def('_TAB_VIEW_MOSTPOPULAR');
                         $tab_list['recent'] = $lang_c->def('_TAB_VIEW_RECENT');

@@ -117,11 +117,24 @@ $cfg['twig_debug'] = false;
  * session save_path if specified will be used instead of the defaul one
  */
 $cfg['do_debug'] = false;
-$cfg['session_lenght'] = (120 * 60);
-$cfg['session_save_path'] = false;
-//$cfg['session_save_handler']  = 'memcached';
-//$cfg['session_save_path']  = 'localhost:11211';
+//$cfg['debug_level'] 			= 'all' // error,warning,notice,deprecated else all
+//$cfg['enable_log']            = true;
+//$cfg['log_level']             = Monolog\Logger::DEBUG; //
+//$cfg['log_path']              = '/app/logger.log';
 $cfg['demo_mode'] = false;
+
+//$cfg['session']['handler'] = \FormaLms\lib\Session\SessionManager::FILESYSTEM; //filesystem | memcached | redis | pdo | mongodb
+//$cfg['session']['url'] = ''; // dsn pattern url to session server
+//$cfg['session']['timeout'] = (float)'2.5';
+//$cfg['session']['lifetime'] = (int) 3600; //session lifetime
+//$cfg['session']['prefix'] = 'core_sessions'; //session prefix or session table name in case of pdo
+//$cfg['session']['name'] = $cfg['db_name']; //db name
+//$cfg['session']['port'] = 3306;  // process port session handler
+//$cfg['session']['host'] = $cfg['db_host']; //host
+//$cfg['session']['authentication'] = true; //true | false
+//$cfg['session']['user'] = $cfg['db_user']; // authentication user session handler
+//$cfg['session']['pass'] = $cfg['db_pass']; // authentication psw session handler
+//$cfg['session']['options'] = []; // other options key value array to pass based on selected handler
 
 /*
  * Technical preferences

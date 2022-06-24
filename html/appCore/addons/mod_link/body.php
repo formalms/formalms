@@ -163,7 +163,7 @@ function showWikiSelect(&$out, &$lang)
     require_once _adm_ . '/lib/lib.wiki.php';
 
     $um = &UrlManager::getInstance();
-    $um->setStdQuery('sn=' . Forma\lib\Get::cur_plat() . '&op=wiki_sel');
+    $um->setStdQuery('sn=' . FormaLms\lib\Get::cur_plat() . '&op=wiki_sel');
     //$um->setBaseUrl($_SERVER["script_name"]);
 
     $wiki_id = getEditorWikiId();
@@ -234,7 +234,7 @@ function addLinkPopupJS()
 {
     $res = '';
 
-    $sn = Forma\lib\Get::cur_plat();
+    $sn = FormaLms\lib\Get::cur_plat();
     /*	if ($sn != "framework")
             $src=$GLOBALS[$sn]["url"].$GLOBALS["where_files_relative"]."/".$src;
         else
@@ -775,13 +775,13 @@ function getEditorWikiId()
 {
     $wiki_id = 0;
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!empty($session->get('editor_in_wiki'))) {
         $wiki_id = $session->get('editor_in_wiki');
     }
 
-    if (!empty(Forma\lib\Get::req('wiki_id',DOTY_ALPHANUM,''))) {
-        $wiki_id = Forma\lib\Get::req('wiki_id',DOTY_ALPHANUM,'');
+    if (!empty(FormaLms\lib\Get::req('wiki_id',DOTY_ALPHANUM,''))) {
+        $wiki_id = FormaLms\lib\Get::req('wiki_id',DOTY_ALPHANUM,'');
     }
 
     return $wiki_id;

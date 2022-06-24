@@ -22,7 +22,7 @@ function showhtml()
     checkPerm('view');
 
     $lang = &DoceboLanguage::createInstance('htmlfront', 'lms');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $query = '
 	SELECT textof
 	FROM ' . $GLOBALS['prefix_lms'] . "_htmlfront 
@@ -54,7 +54,7 @@ function edithtml()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $query = '
 	SELECT textof
 	FROM ' . $GLOBALS['prefix_lms'] . "_htmlfront 

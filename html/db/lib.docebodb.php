@@ -55,11 +55,11 @@ class DbConn
      */
     public static function &getInstance($link = false, $connection_parameters = [])
     {
-        $db_type = Forma\lib\Get::cfg('db_type');
-        $host = Forma\lib\Get::cfg('db_host');
-        $user = Forma\lib\Get::cfg('db_user');
-        $pass = Forma\lib\Get::cfg('db_pass');
-        $name = Forma\lib\Get::cfg('db_name');
+        $db_type = FormaLms\lib\Get::cfg('db_type');
+        $host = FormaLms\lib\Get::cfg('db_host');
+        $user = FormaLms\lib\Get::cfg('db_user');
+        $pass = FormaLms\lib\Get::cfg('db_pass');
+        $name = FormaLms\lib\Get::cfg('db_name');
         if (isset($connection_parameters['db_type']) && isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass'])) {
             $db_type = $connection_parameters['db_type'];
             $host = $connection_parameters['db_host'];
@@ -78,7 +78,7 @@ class DbConn
                 case 'mysqli':
                     require_once _base_ . '/db/drivers/docebodb.mysqli.php';
                     self::$instance = new Mysqli_DbConn();
-                    self::$instance->debug = Forma\lib\Get::cfg('do_debug');
+                    self::$instance->debug = FormaLms\lib\Get::cfg('do_debug');
 
                     $conn = self::$instance->connect($host,
                                                         $user,
@@ -191,10 +191,10 @@ class DbConn
 
                 switch ($type) {
                     // manage table prefix ==================================
-                    case '%adm_':	$parsed_query .= Forma\lib\Get::cfg('prefix_fw') . '_'; break;
-                    case '%lms_':	$parsed_query .= Forma\lib\Get::cfg('prefix_lms') . '_'; break;
-                    case '%cms_':	$parsed_query .= Forma\lib\Get::cfg('prefix_cms') . '_'; break;
-                    case '%scs_':	$parsed_query .= Forma\lib\Get::cfg('prefix_scs') . '_'; break;
+                    case '%adm_':	$parsed_query .= FormaLms\lib\Get::cfg('prefix_fw') . '_'; break;
+                    case '%lms_':	$parsed_query .= FormaLms\lib\Get::cfg('prefix_lms') . '_'; break;
+                    case '%cms_':	$parsed_query .= FormaLms\lib\Get::cfg('prefix_cms') . '_'; break;
+                    case '%scs_':	$parsed_query .= FormaLms\lib\Get::cfg('prefix_scs') . '_'; break;
                     // select by type =======================================
                     /*
                     case "%%" : {

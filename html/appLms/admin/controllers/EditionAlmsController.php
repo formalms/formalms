@@ -72,7 +72,7 @@ class EditionAlmsController extends AlmsController
     protected function show()
     {
         //Course info
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
 
         $model = new EditionAlms($id_course);
         $this->render('show', [
@@ -87,13 +87,13 @@ class EditionAlmsController extends AlmsController
     protected function geteditionlist()
     {
         //Course info
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
 
         //Datatable info
-        $start_index = Forma\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = Forma\lib\Get::req('results', DOTY_MIXED, Forma\lib\Get::sett('visuItem', 25));
-        $sort = Forma\lib\Get::req('sort', DOTY_MIXED, 'userid');
-        $dir = Forma\lib\Get::req('dir', DOTY_MIXED, 'asc');
+        $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'userid');
+        $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new EditionAlms($id_course);
 
@@ -127,7 +127,7 @@ class EditionAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.course.php';
 
         //Course info
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
 
         $course_info = Man_Course::getCourseInfo($id_course);
 
@@ -162,8 +162,8 @@ class EditionAlmsController extends AlmsController
         }
 
         //Course info
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
 
         $model = new EditionAlms($id_course, $id_edition);
 
@@ -195,13 +195,13 @@ class EditionAlmsController extends AlmsController
             return;
         }
 
-        if (Forma\lib\Get::cfg('demo_mode')) {
+        if (FormaLms\lib\Get::cfg('demo_mode')) {
             exit('Cannot del course during demo mode.');
         }
 
         //Course info
-        $id_course = Forma\lib\Get::req('id_course', DOTY_INT, 0);
-        $id_edition = Forma\lib\Get::req('id_edition', DOTY_INT, 0);
+        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+        $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
 
         $model = new EditionAlms($id_course, $id_edition);
 

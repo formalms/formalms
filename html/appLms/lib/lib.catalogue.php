@@ -134,14 +134,14 @@ class Selector_Catalogue
             */
             cout('<div class="quick_search_form">'
                 . '<div>'
-                . Form::getInputTextfield('search_t', 'cat_filter_name', 'cat_filter_name', Forma\lib\Get::req('cat_filter_name', DOTY_MIXED, ''), '', 255, '')
+                . Form::getInputTextfield('search_t', 'cat_filter_name', 'cat_filter_name', FormaLms\lib\Get::req('cat_filter_name', DOTY_MIXED, ''), '', 255, '')
                 . Form::getButton('catalogue_filter', 'catalogue_filter', Lang::t('_SEARCH', 'standard'), 'search_b')
                 . '</div>'
                 . '</div>', 'content');
         }
         // End Filter
 
-        $tb = new Table(Forma\lib\Get::sett('visuItem'), Lang::t('_CATALOGUE', 'catalogue', 'lms'), Lang::t('_CATALOGUE_SUMMARY', 'catalogue', 'lms'));
+        $tb = new Table(FormaLms\lib\Get::sett('visuItem'), Lang::t('_CATALOGUE', 'catalogue', 'lms'), Lang::t('_CATALOGUE_SUMMARY', 'catalogue', 'lms'));
 
         $tb->initNavBar('ini_cat', 'button');
         $ini = $tb->getSelectedElement();
@@ -167,7 +167,7 @@ class Selector_Catalogue
 
                 $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
 
-                if (count($admin_courses['catalogue']) == 0 && Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
+                if (count($admin_courses['catalogue']) == 0 && FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             }
@@ -185,7 +185,7 @@ class Selector_Catalogue
         }
         list($tot_catalogue) = sql_fetch_row(sql_query('SELECT COUNT(*) ' . $query_catalogue));
         $query_catalogue .= ' ORDER BY c.name
-							LIMIT ' . $ini . ',' . (int) Forma\lib\Get::sett('visuItem');
+							LIMIT ' . $ini . ',' . (int) FormaLms\lib\Get::sett('visuItem');
 
         $re_catalogue = sql_query($select . $query_catalogue);
 

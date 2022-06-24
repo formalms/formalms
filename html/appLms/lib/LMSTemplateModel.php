@@ -24,7 +24,7 @@ class LMSTemplateModel
 
     public function selectLayout()
     {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if ($session->has('layoutToRender') && !empty($session->get('layoutToRender'))) {
             return $session->get('layoutToRender');
         } elseif ($session->has('idCourse') && !empty($session->get('idCourse'))) {
@@ -58,7 +58,7 @@ class LMSTemplateModel
 
     public function getLogoutUrl()
     {
-        return Forma\lib\Get::rel_path('base') . '/index.php?r=' . _logout_;
+        return FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_;
     }
 
     public function getCart()
@@ -81,7 +81,7 @@ class LMSTemplateModel
         if ($ma->currentCanAccessObj('user_details_full')) {
             require_once Forma::inc(_lib_ . '/lib.user_profile.php');
             $profile = new UserProfile(getLogUserId());
-            $profile->init('profile', 'framework', 'index.php?' . Forma\lib\Get::home_page_query(), 'ap');
+            $profile->init('profile', 'framework', 'index.php?' . FormaLms\lib\Get::home_page_query(), 'ap');
         }
 
         return $profile;
@@ -142,7 +142,7 @@ class LMSTemplateModel
 
     public function getHelpDeskEmail()
     {
-        return trim(Forma\lib\Get::sett('customer_help_email', ''));
+        return trim(FormaLms\lib\Get::sett('customer_help_email', ''));
     }
 
     public function getCurrentPage()
@@ -162,6 +162,6 @@ class LMSTemplateModel
 
     public function getHomePage()
     {
-        return Forma\lib\Get::home_page_abs_path();
+        return FormaLms\lib\Get::home_page_abs_path();
     }
 }

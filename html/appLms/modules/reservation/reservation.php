@@ -65,7 +65,7 @@ if (!Docebo::user()->isAnonymous()) {
         if ($mod_perm) {
             $tab_man->addTab($tab_subscribed_user);
         }
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         $tab_man->parseInput($_POST, $session);
         $active_tab = $tab_man->getActiveTab();
@@ -121,7 +121,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
 
         $out = $GLOBALS['page'];
@@ -242,7 +242,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
 
         $order_by = importVar('order_by', false, 'c.name, e.title, e.date, e.deadLine');
@@ -348,7 +348,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
 
         $order_by = importVar('order_by', false, 'c.name, e.title, e.date, e.deadLine');
@@ -439,7 +439,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
 
         $order_by = importVar('order_by', false, 'c.name, e.title, e.date, e.deadLine');
@@ -683,7 +683,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
         $id_event = importVar('id_event', true, 0);
         $id_user = importVar('id_user', true, 0);
@@ -707,7 +707,7 @@ if (!Docebo::user()->isAnonymous()) {
             $subject = importVar('mail_object', false, '[Nessun Oggetto]');
             $body = importVar('mail_body', false, '');
 
-            $sender = Forma\lib\Get::sett('sender_event');
+            $sender = FormaLms\lib\Get::sett('sender_event');
 
             //sendMail($recipients, $subject, $body, $sender);
 
@@ -983,7 +983,7 @@ if (!Docebo::user()->isAnonymous()) {
 
                 $acl_man = &Docebo::user()->getAclManager();
 
-                $sender = Forma\lib\Get::sett('sender_event');
+                $sender = FormaLms\lib\Get::sett('sender_event');
 
                 $mailer = FormaMailer::getInstance();
                 $mailer->SendMail($sender, $re, $subject, $body, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
@@ -1069,7 +1069,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
         $id_event = importVar('id_event', true, 0);
 
@@ -1183,7 +1183,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         if (isset($_GET['confirm'])) {
             $confirm = importVar('confirm', true, 0);
-            $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+            $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
             $id_laboratory = importVar('id_laboratory', true, 0);
             $id_category = importVar('id_category', true, 0);
@@ -1437,7 +1437,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $mod_perm = checkPerm('mod', true);
 
-        $id_course = $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $id_course = $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
 
         $out = $GLOBALS['page'];
@@ -1707,12 +1707,12 @@ if (!Docebo::user()->isAnonymous()) {
         $mod_perm = true;
         // create a language istance for module classroom
         $lang = &DoceboLanguage::createInstance('classroom', 'lms');
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
-        $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CLASSROOM_CAPTION'), $lang->def('_CLASSROOM_SUMMARY'));
+        $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CLASSROOM_CAPTION'), $lang->def('_CLASSROOM_SUMMARY'));
         $tb->initNavBar('ini', 'link');
         $tb->setLink('index.php?modname=reservation&amp;op=classroom&amp;id_course=' . $id_course);
         $ini = $tb->getSelectedElement();
@@ -1722,7 +1722,7 @@ if (!Docebo::user()->isAnonymous()) {
 		SELECT idClassroom, name, description
 		FROM ' . $GLOBALS['prefix_lms'] . "_classroom
 		ORDER BY name
-		LIMIT $ini," . Forma\lib\Get::sett('visuItem');
+		LIMIT $ini," . FormaLms\lib\Get::sett('visuItem');
 
         $query_classroom_tot = '
 		SELECT COUNT(*)
@@ -2034,7 +2034,7 @@ function setRoomViewPerm()
         $mdir->show_group_selector = true;
         $mdir->show_orgchart_selector = false;
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
 
         $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . (int) $id_course . '/subscribed/');
@@ -2056,7 +2056,7 @@ function reservationSendMail()
 
     $mod_perm = checkPerm('mod', true);
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $id_course = $session->get('idCourse');
     $id_event = importVar('id_event', true, 0);
 
@@ -2073,7 +2073,7 @@ function reservationSendMail()
         $subject = importVar('mail_object', false, '[Nessun Oggetto]');
         $body = importVar('mail_body', false, '');
 
-        $sender = Forma\lib\Get::sett('sender_event');
+        $sender = FormaLms\lib\Get::sett('sender_event');
 
         //sendMail($recipients, $subject, $body, $sender);
 
@@ -2171,7 +2171,7 @@ function checkRoomPerm($perm_arr, $user_idst)
 
 function reservationDispatch($op)
 {
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $id_course = $session->get('idCourse');
     if (isset($_POST['add_event'])) {
         Util::jump_to('index.php?modname=reservation&amp;op=add_event');

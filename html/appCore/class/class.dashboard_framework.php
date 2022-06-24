@@ -32,7 +32,7 @@ class Dashboard_Framework extends Dashboard
 
         $lang = &DoceboLanguage::createInstance('dashboard', 'framework');
 
-        if (Forma\lib\Get::sett('welcome_use_feed') == 'on') {
+        if (FormaLms\lib\Get::sett('welcome_use_feed') == 'on') {
             require_once _base_ . '/lib/lib.fsock_wrapper.php';
             $fp = new Fsock();
             $released_version = $fp->send_request('http://www.formalms.org/versions/release.txt');
@@ -43,7 +43,7 @@ class Dashboard_Framework extends Dashboard
                 if ($released_version == false) {
                     $released_version = '<strong class="ok_release">' . $lang->def('_UNKNOWN_RELEASE') . '</strong>';
                 }
-                if ($released_version == Forma\lib\Get::sett('core_version')) {
+                if ($released_version == FormaLms\lib\Get::sett('core_version')) {
                     $released_version = '<strong class="ok_release">' . $released_version . '</strong>';
                 } else {
                     $released_version = '<strong class="old_release">' . $released_version . ' (' . $lang->def('_NEW_RELEASE_AVAILABLE') . ')</strong>';
@@ -69,8 +69,8 @@ class Dashboard_Framework extends Dashboard
                 . $lang->def('_INACTIVE_USER') . ': <b>' . $user_stats['inactive_30d'] . '</b>;<br />'
                 . $lang->def('_ONLINE_USER') . ': <b>' . $user_stats['now_online'] . '</b>;'
             . '</p><p>'
-                . $lang->def('_CORE_VERSION') . ': <b>' . Forma\lib\Get::sett('core_version') . '</b>;<br />'
-                . (Forma\lib\Get::sett('welcome_use_feed') == 'on' ? $lang->def('_LAST_RELEASED') . ': ' . $released_version . ';' : '')
+                . $lang->def('_CORE_VERSION') . ': <b>' . FormaLms\lib\Get::sett('core_version') . '</b>;<br />'
+                . (FormaLms\lib\Get::sett('welcome_use_feed') == 'on' ? $lang->def('_LAST_RELEASED') . ': ' . $released_version . ';' : '')
             . '</p>';
 
         return $html;

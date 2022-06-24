@@ -222,7 +222,7 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang)
                                         $values['milestone']));
             $GLOBALS['page']->add('<br />');
 
-            $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $startFolder = $treeView->tdb->getMilestone('start', (int) $idCourse);
             $endFolder = $treeView->tdb->getMilestone('end', (int) $idCourse);
             $jsOut = '';
@@ -515,7 +515,7 @@ function organization_access(&$treeView, $idItem)
 
     $aclManager = new DoceboACLManager();
     if (isset($_POST['okselector'])) {
-        $treeView->tdb->__setAccess($idItem, $user_select->getSelection($_POST), Forma\lib\Get::req('relation'));
+        $treeView->tdb->__setAccess($idItem, $user_select->getSelection($_POST), FormaLms\lib\Get::req('relation'));
         Util::jump_to('index.php?modname=storage');
     } elseif (isset($_POST['cancelselector'])) {
         Util::jump_to('index.php?modname=storage');

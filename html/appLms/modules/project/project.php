@@ -21,7 +21,7 @@ if ((Docebo::user()->isAnonymous()) || (!checkPerm('view', true))) {
     exit("You can't access!");
 }
 
-define('_FPATH_INTERNAL', '/appLms/' . Forma\lib\Get::sett('pathprj'));
+define('_FPATH_INTERNAL', '/appLms/' . FormaLms\lib\Get::sett('pathprj'));
 define('_FPATH', $GLOBALS['where_files_relative'] . _FPATH_INTERNAL);
 
 require_once _lms_ . '/lib/lib.stats.php';
@@ -137,7 +137,7 @@ function user_projects($userid)
 {
     $user_grp = getUserGrpArray($userid);
     $grp_list = implode(',', $user_grp);
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $qtxt = 'SELECT id FROM %lms_prj ';
     $qtxt .= "WHERE cid='" . $idCourse . "' AND pgroup IN (" . $grp_list . ') ';
     $qtxt .= 'ORDER BY ptitle'; //echo("\n\n<!-- ".$qtxt." -->\n\n");
@@ -159,7 +159,7 @@ function userProjectsList($userid)
 {
     $user_grp = getUserGrpArray($userid);
     $grp_list = implode(',', $user_grp);
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $qtxt = 'SELECT t1.*, t2.flag FROM %lms_prj as t1 ';
     $qtxt .= 'LEFT JOIN %lms_prj_users as t2 ';
     $qtxt .= "ON (t1.id=t2.pid AND t2.userid='" . $userid . "') ";
@@ -180,7 +180,7 @@ function userProjectsList($userid)
 function getGroupsForProject(&$lang)
 {
     $acl_man = Docebo::user()->getAclManager();
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     //finding group
     $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $idCourse . '/group/', true);
     $groups = [];
@@ -207,7 +207,7 @@ function addprj()
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('project', 'lms');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
    
     $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
 
@@ -272,7 +272,7 @@ function addprj_now()
     $psnews = (isset($_POST['psnews']) ? $_POST['psnews'] : 0);
     $pstodo = (isset($_POST['pstodo']) ? $_POST['pstodo'] : 0);
     $psmsg = (isset($_POST['psmsg']) ? $_POST['psmsg'] : 0);
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
     if ($ptitle == '') {
         $err = $lang->def('_PRJNOTITLE');
@@ -676,7 +676,7 @@ function manprjadmin()
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('project', 'lms');
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $from = new Form();
 
     if ((!isset($_GET['id'])) || ($_GET['id'] < 1)) {
@@ -1155,7 +1155,7 @@ function edit_files($mode = 'edit')
     require_once _base_ . '/lib/lib.upload.php';
     require_once _base_ . '/lib/lib.form.php';
     $form = new Form();
-    $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('project', 'lms');

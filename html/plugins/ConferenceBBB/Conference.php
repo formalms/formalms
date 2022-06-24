@@ -15,7 +15,7 @@ namespace Plugin\ConferenceBBB;
 
 use BigBlueButton;
 use Docebo;
-use Forma\lib\Session\SessionManager;
+use FormaLms\lib\Session\SessionManager;
 use Get;
 use stdClass;
 
@@ -79,7 +79,7 @@ class Conference extends \PluginConference
         $user_email = $u_info[ACL_INFO_EMAIL];
         $confkey = self::generateConfKey();
         $audiovideosettings = 1;
-        $maxmikes = (int) Forma\lib\Get::sett('bbb_max_mikes');
+        $maxmikes = (int) FormaLms\lib\Get::sett('bbb_max_mikes');
         $extra_conf = [];
         $extra_conf['lobbyEnabled'] = false;
         $extra_conf['privateChatEnabled'] = false;
@@ -198,10 +198,10 @@ class Conference extends \PluginConference
         $name = self::getRoomName($idConference);
         $meetingID = $_SERVER['SERVER_NAME'] . '-' . $idConference;
         include_once 'lib.bbb.api.php';
-        $url = Forma\lib\Get::sett('ConferenceBBB_server', '');
-        $salt = Forma\lib\Get::sett('ConferenceBBB_salt', '');
-        $moderator_password = Forma\lib\Get::sett('ConferenceBBB_password_moderator', '');
-        $viewer_password = Forma\lib\Get::sett('ConferenceBBB_password_viewer', '');
+        $url = FormaLms\lib\Get::sett('ConferenceBBB_server', '');
+        $salt = FormaLms\lib\Get::sett('ConferenceBBB_salt', '');
+        $moderator_password = FormaLms\lib\Get::sett('ConferenceBBB_password_moderator', '');
+        $viewer_password = FormaLms\lib\Get::sett('ConferenceBBB_password_viewer', '');
         $response = BigBlueButton::createMeetingArray($name, $meetingID, null, $moderator_password, $viewer_password, $salt, $url, $returnurl);
         if (checkPerm('mod', true)) {
             $password = $moderator_password;
@@ -351,7 +351,7 @@ class Conference extends \PluginConference
     {
         require_once _base_ . '/lib/lib.json.php';
         require_once _base_ . '/lib/lib.fsock_wrapper.php';
-        $server = Forma\lib\Get::sett('ConferenceBBB_server', false);
+        $server = FormaLms\lib\Get::sett('ConferenceBBB_server', false);
         $output = false;
         $_parname = ($parname ? $parname . '=' : '');
         if ($server && $service && $method) {
@@ -379,7 +379,7 @@ class Conference extends \PluginConference
                         'Content-type' => 'application/x-www-form-urlencoded',
                     ];
                     $post = $_parname . urlencode($json->encode($params));
-                    $res_json = $fsock->post_request($url, Forma\lib\Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
+                    $res_json = $fsock->post_request($url, FormaLms\lib\Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
                     if ($res_json) {
                         $output = $json->decode($res_json);
                     }
@@ -390,7 +390,7 @@ class Conference extends \PluginConference
                 if ($method != 'login') {
                     $other_header[_BBB_AUTH_CODE] = self::get_auth_code();
                 }
-                $res_json = $fsock->post_request($url, Forma\lib\Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
+                $res_json = $fsock->post_request($url, FormaLms\lib\Get::sett('ConferenceBBB_port', '80'), $post, $other_header);
                 if ($res_json) {
                     $output = $json->decode($res_json);
                 }
@@ -415,8 +415,8 @@ class Conference extends \PluginConference
     {
         $session = SessionManager::getInstance()->getSession();
         $params = new stdClass();
-        $params->account = Forma\lib\Get::sett('ConferenceBBB_user', '');
-        $params->password = Forma\lib\Get::sett('ConferenceBBB_password', '');
+        $params->account = FormaLms\lib\Get::sett('ConferenceBBB_user', '');
+        $params->password = FormaLms\lib\Get::sett('ConferenceBBB_password', '');
         $params->group = 'all';
         $res = self::_api_request('auth', 'login', $params, 'request');
         $output = false;
@@ -435,8 +435,8 @@ class Conference extends \PluginConference
     {
         $params = new stdClass();
         $params->authToken = self::get_auth_code();
-        $params->account = Forma\lib\Get::sett('ConferenceBBB_user', '');
-        $params->password = Forma\lib\Get::sett('ConferenceBBB_password', '');
+        $params->account = FormaLms\lib\Get::sett('ConferenceBBB_user', '');
+        $params->password = FormaLms\lib\Get::sett('ConferenceBBB_password', '');
         $params->group = 'all';
         $res = self::_api_request('auth', 'verify', $params, 'data');
         if ($res && $res->result) {
@@ -450,8 +450,8 @@ class Conference extends \PluginConference
     {
         $params = new stdClass();
         $params->authToken = self::get_auth_code();
-        $params->account = Forma\lib\Get::sett('ConferenceBBB_user', '');
-        $params->password = Forma\lib\Get::sett('ConferenceBBB_password', '');
+        $params->account = FormaLms\lib\Get::sett('ConferenceBBB_user', '');
+        $params->password = FormaLms\lib\Get::sett('ConferenceBBB_password', '');
         $params->group = 'all';
 
         return self::_api_request('auth', 'logout', $params, 'data');
@@ -462,7 +462,7 @@ class Conference extends \PluginConference
         $params = new stdClass();
 
         $params->ClientId = ''; //Optional - Provides the value of client ID if specifically assigned
-        $params->account = Forma\lib\Get::sett('ConferenceBBB_user', ''); //Optional - Defines the user ID with which the registered BBB user will start a meeting groupName Optional all Defines group name, default is all
+        $params->account = FormaLms\lib\Get::sett('ConferenceBBB_user', ''); //Optional - Defines the user ID with which the registered BBB user will start a meeting groupName Optional all Defines group name, default is all
         $params->roomName = $display_name; //Optional - default - Defines Room name default is all agenda Optional Agenda of the meeting
         $params->meetingName = $display_name; //Optional - The name of the Meeting. Default is "From Third party Portal" displayName Optional This is to set the display name of host
         $params->joinEmailRequired = false; //Optional - true/false - Enables you to allow the attendees to join the meeting only on entering their email addresses; If it is set to true then joining the meeting without providing the email is disabled. Default is set to false audioVideo Optional av/audio/video/none Defines the audio and video settings av Audio Video Allowed none Audio-Video Disabled audio Audio Only video Video Only
@@ -518,7 +518,7 @@ class Conference extends \PluginConference
 
         $params = new stdClass();
 
-        $params->account = Forma\lib\Get::sett('ConferenceBBB_user', ''); //Optional Defines the user ID with which the registered BBB user will start a meeting
+        $params->account = FormaLms\lib\Get::sett('ConferenceBBB_user', ''); //Optional Defines the user ID with which the registered BBB user will start a meeting
         $params->groupName = 'all'; //Optional all Defines group name, default is all
         //$params->roomName = $name; //Optional default Defines Room name
         $params->scheduleId = $info_decoded->scheduleId; //Mandatory

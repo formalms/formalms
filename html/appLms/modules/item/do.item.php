@@ -34,7 +34,7 @@ function env_play($lobj, $options)
         $ti->status = 'completed';
         $ti->update();
     }
-    Util::download('/appLms/' . Forma\lib\Get::sett('pathlesson'), $file);
+    Util::download('/appLms/' . FormaLms\lib\Get::sett('pathlesson'), $file);
 }
 
 function play($idResource, $idParams, $back_url)
@@ -65,7 +65,7 @@ function play($idResource, $idParams, $back_url)
             $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'item');
         }
     }
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 
     if ($session->get('direct_play') == 1) {
@@ -90,5 +90,5 @@ function play($idResource, $idParams, $back_url)
     }
 
     //send file
-    sendFile('/appLms/' . Forma\lib\Get::sett('pathlesson'), $file, $expFileName[$totPart]);
+    sendFile('/appLms/' . FormaLms\lib\Get::sett('pathlesson'), $file, $expFileName[$totPart]);
 }

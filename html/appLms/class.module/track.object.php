@@ -53,7 +53,7 @@ class Track_Object
                     $this->objectType, $this->dateAttempt, $this->status) = sql_fetch_row($rs);
             }
         }
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function getEnvironmentTable($environment)

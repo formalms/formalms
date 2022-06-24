@@ -21,7 +21,7 @@ function getNodeOptions($id_category, $is_leaf)
     $node_options[] = [
         'id' => 'mod_' . $id_category,
         'command' => 'modify',
-        //'content' => '<img src="'.Forma\lib\Get::tmpl_path().'images/standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />'
+        //'content' => '<img src="'.FormaLms\lib\Get::tmpl_path().'images/standard/edit.png" alt="'.$lang->def('_MOD').'" title="'.$lang->def('_MOD').'" />'
         'icon' => 'standard/edit.png',
         'alt' => $lang->def('_MOD'),
     ];
@@ -30,7 +30,7 @@ function getNodeOptions($id_category, $is_leaf)
         $node_options[] = [
             'id' => 'del_' . $id_category,
             'command' => 'delete',
-            //'content' => '<img src="'.Forma\lib\Get::tmpl_path().'images/standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'
+            //'content' => '<img src="'.FormaLms\lib\Get::tmpl_path().'images/standard/delete.png" alt="'.$lang->def('_DEL').'" title="'.$lang->def('_DEL').'" />'
             'icon' => 'standard/delete.png',
             'alt' => $lang->def('_DEL'),
         ];
@@ -38,7 +38,7 @@ function getNodeOptions($id_category, $is_leaf)
         $node_options[] = [
             'id' => 'del_' . $id_category,
             'command' => false,
-            //'content' => '<img src="'.Forma\lib\Get::tmpl_path().'images/blank.png" />'
+            //'content' => '<img src="'.FormaLms\lib\Get::tmpl_path().'images/blank.png" />'
             'icon' => 'blank.png',
         ];
     }

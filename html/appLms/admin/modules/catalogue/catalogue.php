@@ -100,7 +100,7 @@ if (!Docebo::user()->isAnonymous()) {
             $type_h[] = 'image';
             $cont_h[] = '<img src="' . getPathImage('fw') . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" />';
 
-            if (!Forma\lib\Get::cfg('demo_mode')) {
+            if (!FormaLms\lib\Get::cfg('demo_mode')) {
                 $cont_h[] = '<img src="' . getPathImage('fw') . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />';
             }
         }
@@ -130,7 +130,7 @@ if (!Docebo::user()->isAnonymous()) {
                 $cont = [
             $name,
             $description,
-            '<a href="index.php?modname=catalogue&amp;op=entrylist&amp;id=' . $id . '">' . Forma\lib\Get::sprite('fd_notice', Lang::t('_MOD_ENTRY_CATALOGUE', 'catalogue') . ' : ' . strip_tags($name)) . '</a>', ];
+            '<a href="index.php?modname=catalogue&amp;op=entrylist&amp;id=' . $id . '">' . FormaLms\lib\Get::sprite('fd_notice', Lang::t('_MOD_ENTRY_CATALOGUE', 'catalogue') . ' : ' . strip_tags($name)) . '</a>', ];
             }
 
             if ($mod_perm) {
@@ -151,7 +151,7 @@ if (!Docebo::user()->isAnonymous()) {
                 . '<img src="' . getPathImage('fw') . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : '
                 . strip_tags($name) . '" /></a>';
 
-                if (!Forma\lib\Get::cfg('demo_mode')) {
+                if (!FormaLms\lib\Get::cfg('demo_mode')) {
                     $cont[] = '<a href="index.php?modname=catalogue&amp;op=delcatalogue&amp;id=' . $id . '" '
                             . 'title="' . $lang->def('_DEL') . ' : ' . strip_tags($name) . '">'
                     . '<img src="' . getPathImage('fw') . 'standard/delete.png" alt="' . $lang->def('_DEL') . ' : '
@@ -180,13 +180,13 @@ if (!Docebo::user()->isAnonymous()) {
             case "ok" : 	$out->add(getResultUi($lang->def('_OPERATION_SUCCESSFUL')), 'content');	break;
             case "err" :	$out->add(getErrorUi($lang->def('_OPERATION_ERROR')), 'content');	break;
         }*/
-        switch (Forma\lib\Get::req('result', DOTY_ALPHANUM, '')) {
+        switch (FormaLms\lib\Get::req('result', DOTY_ALPHANUM, '')) {
         case 'ok':  UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
         case 'err':  UIFeedback::error(Lang::t('_OPERATION_ERROR', 'standard')); break;
     }
 
         //result of catalogue subscribe operation
-        $res = Forma\lib\Get::req('res', DOTY_INT, -2);
+        $res = FormaLms\lib\Get::req('res', DOTY_INT, -2);
         if ($res != -2) {
             if ($res >= 0) {
                 UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
@@ -277,13 +277,13 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
 
-        if (Forma\lib\Get::cfg('demo_mode')) {
+        if (FormaLms\lib\Get::cfg('demo_mode')) {
             exit('Cannot delete catalogue during demo mode.');
         }
 
-        $id_cat = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $id_cat = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
-        if (Forma\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
+        if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
             $re = true;
             $re = true;
             if (!sql_query('
@@ -345,7 +345,7 @@ if (!Docebo::user()->isAnonymous()) {
         $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
         $out = &$GLOBALS['page'];
 
-        $id_cat = Forma\lib\Get::req('id', DOTY_INT, 0);
+        $id_cat = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         $cat_name = getCatalogueName($id_cat);
 
         $mod_perm = checkPerm('mod', true);
@@ -413,7 +413,7 @@ if (!Docebo::user()->isAnonymous()) {
                             $admin_courses['course'][$id_course] = $id_course;
                         }
                     }
-                } elseif (Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
+                } elseif (FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
                 }
             } else {
@@ -488,7 +488,7 @@ if (!Docebo::user()->isAnonymous()) {
         );
         }
 
-        switch (Forma\lib\Get::req('result', DOTY_ALPHANUM, '')) {
+        switch (FormaLms\lib\Get::req('result', DOTY_ALPHANUM, '')) {
         case 'ok':  UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'standard')); break;
         case 'err':  UIFeedback::error(Lang::t('_OPERATION_ERROR', 'standard')); break;
     }
@@ -609,7 +609,7 @@ if (!Docebo::user()->isAnonymous()) {
 	WHERE idCatalogue = '" . $id_cat . "' AND idEntry = '" . $id_entry . "' AND type_of_entry = '" . $type_of_entry . "'";
         list($id_cat) = sql_fetch_row(sql_query($query_catalogue));
 
-        if (Forma\lib\Get::req('confirm', DOTY_INT, 0)) {
+        if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0)) {
             $re = true;
             if (!sql_query('
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_catalogue_entry

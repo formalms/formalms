@@ -36,7 +36,7 @@ class ClassroomLms extends Model
     {
         // read order for the course from database
         if ($this->_t_order == false) {
-            $t_order = Forma\lib\Get::sett('tablist_mycourses', false);
+            $t_order = FormaLms\lib\Get::sett('tablist_mycourses', false);
             if ($t_order != false) {
                 $arr_order_course = explode(',', $t_order);
                 $arr_temp = [];

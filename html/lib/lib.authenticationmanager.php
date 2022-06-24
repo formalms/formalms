@@ -87,7 +87,7 @@ class AuthenticationManager
         require_once _lms_ . '/lib/lib.track_user.php';
         TrackUser::logoutSessionCourseTrack();
 
-        \Forma\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
+        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
 
         // recreate Anonymous user
         $GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
@@ -104,7 +104,7 @@ class AuthenticationManager
 
         resetTemplate();
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->set('logged_in', true);
         $session->set('last_enter', $user->getLastEnter());
         $session->set('user_enter_mark', time());

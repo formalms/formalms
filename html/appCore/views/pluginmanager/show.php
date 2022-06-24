@@ -141,7 +141,7 @@ $(function() {
         }},
         ],
         ajax: {
-            url: "<?php echo Forma\lib\Get::rel_path() . '/ajax.adm_server.php?r=pluginmanager/getTableData'; ?>",
+            url: "<?php echo FormaLms\lib\Get::rel_path() . '/ajax.adm_server.php?r=pluginmanager/getTableData'; ?>",
             type: "GET"
         },
         order: [[ 0, "asc" ]],

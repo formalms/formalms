@@ -54,7 +54,7 @@ class Module
         $this->descr_short = 'General module : ' . $modname;
         $this->descr_long = 'General module : ' . $modname;
 
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     public function getName()

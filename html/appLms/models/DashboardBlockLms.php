@@ -309,7 +309,7 @@ abstract class DashboardBlockLms extends Model
             'courseStatus' => $course['course_status'],
             'courseStatusString' => $status_list[(int) $course['course_status']],
             'description' => $course['course_box_description'],
-            'img' => (!empty($course['course_img_course']) ? Forma\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . Forma\lib\Get::sett('pathcourse') . $course['course_img_course'] : ''),
+            'img' => (!empty($course['course_img_course']) ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $course['course_img_course'] : ''),
             'hours' => $hourBeginString . (!empty($hourEndString) ? '-' . $hourEndString : ''),
             'dates' => [],
         ];
@@ -417,7 +417,7 @@ abstract class DashboardBlockLms extends Model
 
     public function getAllowedFileTypes()
     {
-        $upload_whitelist = Forma\lib\Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
+        $upload_whitelist = FormaLms\lib\Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
         $allowedFileTypes = explode(',', trim($upload_whitelist, ','));
 
         return $allowedFileTypes;

@@ -50,7 +50,7 @@ class Docebo
 
     public static function loadUserFromSession(){
 
-        $sessionUser = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('user');
+        $sessionUser = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('user');
 
         self::$currentUser = $sessionUser ?? DoceboUser::createDoceboUserFromSession('public_area');
     }
@@ -87,7 +87,7 @@ class Docebo
         // change the cache based on the config
         if (!self::$_cache) {
             $type = 'dummy';
-            $cfg = Forma\lib\Get::cfg('cache', false);
+            $cfg = FormaLms\lib\Get::cfg('cache', false);
             if (!empty($cfg['type'])) {
                 $type = $cfg['type'];
             }

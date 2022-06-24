@@ -14,7 +14,7 @@ $cert_columns = [
 ];
 
 // tabs
-$selected_tab = Forma\lib\Get::req('current_tab', DOTY_STRING, 'cert');
+$selected_tab = FormaLms\lib\Get::req('current_tab', DOTY_STRING, 'cert');
 $tabs_header = '<ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active" ' . ($selected_tab == 'cert' ? ' class="selected"' : '') . '>
                         <a href="#cert" aria-controls="cert" role="tab" data-toggle="tab"><em>' . Lang::t('_CERTIFICATE', 'menu') . '</em>

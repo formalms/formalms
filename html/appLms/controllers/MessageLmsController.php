@@ -22,9 +22,9 @@ if (!defined('IN_LMS')) {
     define('IN_LMS', true);
 }
 
-define('_PATH_MESSAGE', '/appLms/' . Forma\lib\Get::sett('pathmessage'));
-define('_MESSAGE_VISU_ITEM', Forma\lib\Get::sett('visuItem'));
-define('_MESSAGE_PL_URL', Forma\lib\Get::site_url());
+define('_PATH_MESSAGE', '/appLms/' . FormaLms\lib\Get::sett('pathmessage'));
+define('_MESSAGE_VISU_ITEM', FormaLms\lib\Get::sett('visuItem'));
+define('_MESSAGE_PL_URL', FormaLms\lib\Get::site_url());
 
 class MessageLmsController extends LmsController
 {
@@ -87,8 +87,8 @@ class MessageLmsController extends LmsController
 
     public function directWriteTask()
     {
-        $_POST['userselector_input']['main_selector'] = Forma\lib\Get::gReq('idst', DOTY_MIXED, '');
-        $_POST['authentic_request'] = Forma\lib\Get::gReq('signature');
+        $_POST['userselector_input']['main_selector'] = FormaLms\lib\Get::gReq('idst', DOTY_MIXED, '');
+        $_POST['authentic_request'] = FormaLms\lib\Get::gReq('signature');
         $_POST['okselector'] = 'Save changes';
 
         require_once _adm_ . '/lib/lib.message.php';
@@ -100,7 +100,7 @@ class MessageLmsController extends LmsController
     public function delete_message()
     {
         $success = false;
-        $id = Forma\lib\Get::req('id', DOTY_INT, -1);
+        $id = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id > 0) {
             $success = $this->model->deleteMessage($id);
         }

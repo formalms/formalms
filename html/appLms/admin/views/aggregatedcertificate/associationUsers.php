@@ -4,7 +4,7 @@ cout(
     getTitleArea($cert_name . ':&nbsp;' . Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
 );
 
-$op = 'aggregatedcertificate/' . (Forma\lib\Get::req('type_assoc', DOTY_INT) == 0 ? 'associationUsersCourses' : 'associationUsersPath');
+$op = 'aggregatedcertificate/' . (FormaLms\lib\Get::req('type_assoc', DOTY_INT) == 0 ? 'associationUsersCourses' : 'associationUsersPath');
 
 cout('<div class="std_block">');
 

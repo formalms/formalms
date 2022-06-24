@@ -32,9 +32,9 @@
 	<div class="footer">
 		<div id="link">
 			<?php if ($this->model->isSelfRegistrationActive() && !$under_maintenence) { ?>
-				<a class="first" href="<?php echo Forma\lib\Get::rel_path('base') . '/index.php?r=' . _register_; ?>"><?php echo Lang::t('_REGISTER', 'login'); ?></a>
+				<a class="first" href="<?php echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _register_; ?>"><?php echo Lang::t('_REGISTER', 'login'); ?></a>
 			<?php } ?>
-			<a href="<?php echo Forma\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_; ?>"><?php echo Lang::t('_LOG_LOSTPWD', 'login'); ?></a>
+			<a href="<?php echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _lostpwd_; ?>"><?php echo Lang::t('_LOG_LOSTPWD', 'login'); ?></a>
 		</div>
 	</div>
 	<div class="external_page">
@@ -45,7 +45,7 @@
 			<ul id="main_menu">
 				<?php foreach ($external_pages as $id_page => $title) { ?>
 					<li <?php if ($id_page == end(array_keys($external_pages))) { ?>class='last'<?php } ?>>
-						<a href="<?php echo Forma\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page; ?>">
+						<a href="<?php echo FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _homewebpage_ . '&page=' . $id_page; ?>">
 							<?php echo $title; ?>
 						</a>
 					</li>

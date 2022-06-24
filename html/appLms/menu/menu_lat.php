@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
     $query = 'SELECT course_type'
@@ -25,8 +25,8 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
     YuiLib::load('base');
     $db = DbConn::getInstance();
 
-    $id_main_sel = Forma\lib\Get::req('id_main_sel', DOTY_INT, 0);
-    $id_module_sel = Forma\lib\Get::req('id_module_sel', DOTY_INT, 0);
+    $id_main_sel = FormaLms\lib\Get::req('id_main_sel', DOTY_INT, 0);
+    $id_module_sel = FormaLms\lib\Get::req('id_module_sel', DOTY_INT, 0);
 
     if ($id_main_sel > 0) {
         $session->set('current_main_menu',$id_main_sel);
@@ -87,10 +87,10 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
 
     $logo_panel = '';
     if ($session->get('idCourse')) {
-        $path = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse');
+        $path = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse');
         $course_name = Docebo::course()->getValue('name');
         if (Docebo::course()->getValue('use_logo_in_courselist')) {
-            $course_img = (Docebo::course()->getValue('img_course') == '' ? Forma\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path . Docebo::course()->getValue('img_course'));
+            $course_img = (Docebo::course()->getValue('img_course') == '' ? FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png' : $path . Docebo::course()->getValue('img_course'));
         }
 
         $img_course = '';
@@ -200,7 +200,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
 
     if ($course_type === 'assessment' && Docebo::user()->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
         cout('<li class="main-v">'
-                . '<a class="main-av" href="' . Forma\lib\Get::rel_path('adm') . '/index.php?modname=preassessment&op=assesmentlist&of_platform=lms">' . Lang::t('_BACK_TO_ADMINISTRATION', 'course') . '</a></li>', 'menu');
+                . '<a class="main-av" href="' . FormaLms\lib\Get::rel_path('adm') . '/index.php?modname=preassessment&op=assesmentlist&of_platform=lms">' . Lang::t('_BACK_TO_ADMINISTRATION', 'course') . '</a></li>', 'menu');
     }
     cout('</ul>'
         . '</div>'
@@ -209,7 +209,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
     // todo: redo the following
     $info_panel = '';
     if ($session->get('idCourse')) {
-        $path = $GLOBALS['where_files_relative'] . '/appLms/' . Forma\lib\Get::sett('pathcourse');
+        $path = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse');
         $GLOBALS['page']->add('<li><a href="#your_info">' . Lang::t('_BLIND_YOUR_INFO', 'menu_over') . '</a></li>', 'blind_navigation');
 
         $userid = Docebo::user()->getUserId();
@@ -246,7 +246,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
                 }
                 $tot_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
-                Util::get_js(Forma\lib\Get::rel_path('lms') . '/lib/lib.track_user.js', true, true);
+                Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/lib/lib.track_user.js', true, true);
                 $GLOBALS['page']->add(
                     '<script type="text/javascript">'
                     . '	userCounterStart(' . (int) $partial_time_sec . ', ' . (int) $tot_time_sec . ');'
@@ -435,7 +435,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
                         </div>';
     $GLOBALS['page']->add($pop_up_modal, 'menu');
 
-    if ((Forma\lib\Get::sett('use_tag', 'off') == 'on') && checkPerm('view', true, 'forum')) {
+    if ((FormaLms\lib\Get::sett('use_tag', 'off') == 'on') && checkPerm('view', true, 'forum')) {
         YuiLib::load(['tabview' => 'tabview-min.js'], ['tabview/assets/skins/sam/' => 'tabview.css']);
 
         require_once _adm_ . '/lib/lib.tags.php';

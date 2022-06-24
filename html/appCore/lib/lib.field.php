@@ -110,7 +110,7 @@ class FieldList
             $query = 'SELECT ft.id_common, tft.type_file, tft.type_class'
                 . '  FROM ' . $this->getFieldTable() . ' AS ft'
                 . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft'
-                . ' WHERE ft.id_common = ' . Forma\lib\Get::filter($id_field, DOTY_INT) . ' AND ft.type_field = tft.type_field';
+                . ' WHERE ft.id_common = ' . FormaLms\lib\Get::filter($id_field, DOTY_INT) . ' AND ft.type_field = tft.type_field';
             if (!$rs = sql_query($query)) {
                 $false_var = null;
 
@@ -161,7 +161,7 @@ class FieldList
         $query = 'SELECT ft.id_common, tft.type_file, tft.type_class'
             . '  FROM ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft'
-            . ' WHERE ft.id_common = ' . Forma\lib\Get::filter($id_field, DOTY_INT) . ' AND ft.type_field = tft.type_field';
+            . ' WHERE ft.id_common = ' . FormaLms\lib\Get::filter($id_field, DOTY_INT) . ' AND ft.type_field = tft.type_field';
         if (!$rs = sql_query($query)) {
             $false_var = null;
 
@@ -1146,7 +1146,7 @@ class FieldList
         // #BUG - 19799
         $acl_man = Docebo::user()->getAclManager();
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $selectedNode = $session->get('usermanagement_selected_node');
 
         if (!empty($selectedNode) && $selectedNode != 0) {
@@ -1891,7 +1891,7 @@ class FieldList
     {
         $res = [];
 
-        if (Forma\lib\Get::sett('do_debug') == 'on' && count($fields) != count($search)) {
+        if (FormaLms\lib\Get::sett('do_debug') == 'on' && count($fields) != count($search)) {
             echo '<b>Warning</b>: (lib.field.php) ';
             echo 'Please make sure that the search array have the same size of the fields one.<br />';
         }

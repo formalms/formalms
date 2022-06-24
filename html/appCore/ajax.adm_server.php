@@ -34,12 +34,12 @@ if (!function_exists('aout')) {
 }
 require_once _adm_ . '/lib/lib.permission.php';
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 // load the correct module
 $aj_file = '';
-$mn = Forma\lib\Get::req('mn', DOTY_ALPHANUM, '');
-$plf = Forma\lib\Get::req('plf', DOTY_ALPHANUM, ($session->get('current_action_platform') ? $session->get('current_action_platform') : Forma\lib\Get::cur_plat()));
+$mn = FormaLms\lib\Get::req('mn', DOTY_ALPHANUM, '');
+$plf = FormaLms\lib\Get::req('plf', DOTY_ALPHANUM, ($session->get('current_action_platform') ? $session->get('current_action_platform') : FormaLms\lib\Get::cur_plat()));
 
 if (isset($_GET['r'])) {
     $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $_GET['r']);
@@ -49,8 +49,8 @@ if (!empty($GLOBALS['req'])) {
     $requesthandler->run(true);
 } else {
     if ($mn == '') {
-        $fl = Forma\lib\Get::req('file', DOTY_ALPHANUM, '');
-        $sf = Forma\lib\Get::req('sf', DOTY_ALPHANUM, '');
+        $fl = FormaLms\lib\Get::req('file', DOTY_ALPHANUM, '');
+        $sf = FormaLms\lib\Get::req('sf', DOTY_ALPHANUM, '');
         $aj_file = $GLOBALS['where_' . $plf] . '/lib/' . ($sf ? $sf . '/' : '') . 'ajax.' . $fl . '.php';
     } else {
         if ($plf == 'framework') {

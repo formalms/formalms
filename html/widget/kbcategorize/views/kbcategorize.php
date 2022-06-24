@@ -23,7 +23,7 @@ echo getTitleArea($title_arr);
 $root_node_actions = '';
 
 $languages = [
-    '_ROOT' => Forma\lib\Get::sett('title_kb_tree', Lang::t('_ALL_CATEGORIES', 'kb')),
+    '_ROOT' => FormaLms\lib\Get::sett('title_kb_tree', Lang::t('_ALL_CATEGORIES', 'kb')),
     '_YES' => Lang::t('_CONFIRM', 'kb'),
     '_NO' => Lang::t('_UNDO', 'kb'),
     '_LOADING' => Lang::t('_LOADING', 'standard'),
@@ -36,9 +36,9 @@ $languages = [
 
 $this->widget('tree', [
     'id' => 'kbcategorizetree',
-    'ajaxUrl' => Forma\lib\Get::rel_path('adm') . '/ajax.adm_server.php?r=alms/kb/gettreedata&show_actions=0&from_widget=1',
+    'ajaxUrl' => FormaLms\lib\Get::rel_path('adm') . '/ajax.adm_server.php?r=alms/kb/gettreedata&show_actions=0&from_widget=1',
     'treeClass' => 'KbFolderTree',
-    'treeFile' => Forma\lib\Get::rel_path('lms') . '/admin/views/kb/kbfoldertree.js',
+    'treeFile' => FormaLms\lib\Get::rel_path('lms') . '/admin/views/kb/kbfoldertree.js',
     'languages' => $languages,
     'initialSelectedNode' => (int) $selected_node,
     'rootActions' => [],
@@ -92,7 +92,7 @@ if ($data['r_type'] == 'scorm') {
 
 echo Form::openElementSpace()
     . Form::getLineBox(Lang::t('_RESOURCE_ORIGINAL_NAME', 'kb'), $data['original_name'])
-    . Form::getTextfield(Lang::t('_NAME', 'kb'), 'r_name', 'r_name', 255, Forma\lib\Get::req('r_name', DOTY_MIXED, $data['r_name']))
+    . Form::getTextfield(Lang::t('_NAME', 'kb'), 'r_name', 'r_name', 255, FormaLms\lib\Get::req('r_name', DOTY_MIXED, $data['r_name']))
 
     . Form::getDropDown(Lang::t('_LANGUAGE', 'kb'), 'r_lang', 'r_lang', $all_languages, $sel_lang)
 
@@ -102,7 +102,7 @@ echo Form::openElementSpace()
     . Form::getCheckbox(Lang::t('_VISIBLE_BY_EVERYONE', 'kb'), 'force_visible', 'force_visible', 1, $data['force_visible'])
     . Form::getCheckbox(Lang::t('_IS_MOBILE', 'kb'), 'is_mobile', 'is_mobile', 1, $data['is_mobile'])
 
-    . Form::getTextarea(Lang::t('_DESCRIPTION', 'kb'), 'r_desc', 'r_desc', Forma\lib\Get::req('r_desc', DOTY_MIXED, $data['r_desc']));
+    . Form::getTextarea(Lang::t('_DESCRIPTION', 'kb'), 'r_desc', 'r_desc', FormaLms\lib\Get::req('r_desc', DOTY_MIXED, $data['r_desc']));
 
 ?>
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Forma\lib\Logger;
+namespace FormaLms\lib\Logger;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -23,12 +23,9 @@ class FormaLogger
 
     public function __construct()
     {
-
         $this->log = new Logger(self::class);
         if(isset($GLOBALS['cfg']) && isset($GLOBALS['cfg']['log_path']) && isset($GLOBALS['cfg']['logger_level'])){
-            $this->log->pushHandler(new StreamHandler($GLOBALS['cfg']['logger_level'], $GLOBALS['cfg']['logger_level']));
+            $this->log->pushHandler(new StreamHandler($GLOBALS['cfg']['log_path'], $GLOBALS['cfg']['logger_level']));
         }
     }
-
-
 }

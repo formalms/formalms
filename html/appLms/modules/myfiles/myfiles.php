@@ -39,7 +39,7 @@ function fileList(&$url)
                                         getPathImage('fw') . 'myfiles/' . $id_page . '.gif');
         $tab_man->addTab($new_tab);
     }
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $tab_man->parseInput($_POST, $session);
 
     $active_tab = $tab_man->getActiveTab();

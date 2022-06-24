@@ -46,7 +46,7 @@ class CatalogLms extends Model
         ];
 
         $this->acl_man = &Docebo::user()->getAclManager();
-        $this->show_all_category = Forma\lib\Get::sett('hide_empty_category') == 'off';
+        $this->show_all_category = FormaLms\lib\Get::sett('hide_empty_category') == 'off';
 
         $this->currentCatalogue = 0;
         parent::__construct();
@@ -146,7 +146,7 @@ class CatalogLms extends Model
                 }
                 break;
             case 'catalogue':
-                $id_catalogue = Forma\lib\Get::req('id_cata', DOTY_INT, '0');
+                $id_catalogue = FormaLms\lib\Get::req('id_cata', DOTY_INT, '0');
                 $base_link = 'index.php?r=catalog/catalogueCourse&amp;id_cat=' . $id_catalogue . '&amp;page=' . $page;
 
                 $catalogue_course = &$cat_man->getCatalogueCourse($id_catalogue);
@@ -218,7 +218,7 @@ class CatalogLms extends Model
                 $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
                 break;
             case 'catalogue':
-                $idCatalogue = Forma\lib\Get::req('id_cata', DOTY_INT, '0');
+                $idCatalogue = FormaLms\lib\Get::req('id_cata', DOTY_INT, '0');
 
                 $user_catalogue[] = $idCatalogue;
                 break;
@@ -338,7 +338,7 @@ class CatalogLms extends Model
                 }
                 break;
             case 'catalogue':
-                $idCatalogue = Forma\lib\Get::req('id_cata', DOTY_INT, '0');
+                $idCatalogue = FormaLms\lib\Get::req('id_cata', DOTY_INT, '0');
 
                 $catalogue_course = &$cat_man->getCatalogueCourse($idCatalogue);
                 $filter = ' AND idCourse IN (' . implode(',', $catalogue_course) . ')';
@@ -360,11 +360,11 @@ class CatalogLms extends Model
                 break;
         }
 
-        if (count($user_catalogue) == 0 && Forma\lib\Get::sett('on_catalogue_empty', 'off') == 'off') {
+        if (count($user_catalogue) == 0 && FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'off') {
             $filter = ' AND 0 '; //query won't return any results with this setting
         }
 
-        $id_cat = Forma\lib\Get::req('id_cat', DOTY_INT, 0);
+        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
 
         $query = 'SELECT COUNT(*)'
             . ' FROM %lms_course'
@@ -480,12 +480,12 @@ class CatalogLms extends Model
         $html = '';
         $coursepath = $this->getUserCoursepath($id_user);
         $user_coursepath = $this->getUserCoursepathSubscription($id_user);
-        $limit = ($page - 1) * Forma\lib\Get::sett('visuItem');
+        $limit = ($page - 1) * FormaLms\lib\Get::sett('visuItem');
 
         $query = 'SELECT id_path, path_name, path_code, path_descr, subscribe_method'
             . ' FROM %lms_coursepath'
             . ' WHERE id_path IN (' . implode(',', $coursepath) . ')'
-            . ' LIMIT ' . $limit . ', ' . Forma\lib\Get::sett('visuItem');
+            . ' LIMIT ' . $limit . ', ' . FormaLms\lib\Get::sett('visuItem');
 
         $result = sql_query($query);
 

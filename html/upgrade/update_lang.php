@@ -16,11 +16,11 @@ include 'bootstrap.php';
 require_once _installer_ . '/lib/lib.lang_import.php';
 require_once _lib_ . '/loggers/lib.logger.php';
 require_once _base_ . '/db/lib.docebodb.php';
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 $dbInfo = $session->get('db_info');
 $langInstall = $session->get('lang_install');
 
-$session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+$session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
 $dbInfo = $session->get('db_info');
 
@@ -35,9 +35,9 @@ DbConn::getInstance(false, [
 sql_query("SET NAMES 'utf8'");
 sql_query("SET CHARACTER SET 'utf8'");
 
-$platform_code = Forma\lib\Get::pReq('platform', DOTY_STRING);
-$lang = Forma\lib\Get::pReq('lang', DOTY_STRING);
-$upgrade = Forma\lib\Get::pReq('upgrade', DOTY_INT);
+$platform_code = FormaLms\lib\Get::pReq('platform', DOTY_STRING);
+$lang = FormaLms\lib\Get::pReq('lang', DOTY_STRING);
+$upgrade = FormaLms\lib\Get::pReq('upgrade', DOTY_INT);
 
 $lang_arr = array_keys($langInstall);
 $pl_arr = ['framework'];

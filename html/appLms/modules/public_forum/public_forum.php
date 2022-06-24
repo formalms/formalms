@@ -27,7 +27,7 @@ function loadUnreaded()
 {
     $id_course = PUBLIC_FORUM_COURSE_ID;
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $unreadedForum = $session->get('unreaded_forum');
     if (!isset($unreadedForum[$id_course])) {
         $session->remove('unreaded_forum');
@@ -99,7 +99,7 @@ function forum()
     // Find and set unreaded message
     loadUnreaded();
 
-    $tb = new Table(Forma\lib\Get::sett('visuItem'), '', $lang->def('_ELEFORUM'));
+    $tb = new Table(FormaLms\lib\Get::sett('visuItem'), '', $lang->def('_ELEFORUM'));
     $tb->initNavBar('ini', 'link');
     $tb->setLink($base_link);
 
@@ -112,7 +112,7 @@ function forum()
 		FROM ' . $GLOBALS['prefix_lms'] . "_forum AS f
 		WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "'
 		ORDER BY f.sequence
-		LIMIT $ini, " . Forma\lib\Get::sett('visuItem');
+		LIMIT $ini, " . FormaLms\lib\Get::sett('visuItem');
 
         $query_num_view = '
 		SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . "_forum AS f
@@ -163,7 +163,7 @@ function forum()
         $authors_names = &$acl_man->getUsers($last_authors);
     }
     // switch to one of the 2 visualization method
-    if (Forma\lib\Get::sett('forum_as_table') == 'on') {
+    if (FormaLms\lib\Get::sett('forum_as_table') == 'on') {
         // show forum list in a table -----------------------------------------
         // table header
         $type_h = ['image', 'image', 'forumTitle', 'align_center', 'align_center', 'align_center', 'image'];
@@ -197,7 +197,7 @@ function forum()
 
         // table body
         $i = 1;
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $unreadedForum = $session->get('unreaded_forum');
 
         while (list($idF, $title, $descr, $num_thread, $num_post, $locked, $emoticons) = sql_fetch_row($re_forum)) {
@@ -481,7 +481,7 @@ function addforum()
     }
     closedir($templ->handle);*/
 
-    Util::get_js(Forma\lib\Get::rel_path('lms') . '/modules/forum/forum.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/modules/forum/forum.js', true, true);
     $emoticon_items = '';
     $emoticons_arr = getEmoticonsArr();
 
@@ -510,12 +510,12 @@ function insforum()
 {
     checkPerm('add');
 
-    $undo = Forma\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = Forma\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
-    $description = Forma\lib\Get::pReq('description', DOTY_MIXED, '');
-    $emoticons = Forma\lib\Get::pReq('emoticons', DOTY_MIXED, '');
-    $maxThreads = Forma\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
-    $allThreadsPrivate = Forma\lib\Get::pReq('all_threads_private', DOTY_INT, 0);
+    $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
+    $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
+    $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
+    $allThreadsPrivate = FormaLms\lib\Get::pReq('all_threads_private', DOTY_INT, 0);
 
     if ($undo !== false) {
         Util::jump_to('index.php?modname=public_forum&op=forum');
@@ -563,12 +563,12 @@ function insforum()
         $msg_composer = new EventMessageComposer();
 
         $msg_composer->setSubjectLangText('email', '_NEW_FORUM', false);
-        $msg_composer->setBodyLangText('email', '_NEW_FORUM_BODY', ['[url]' => Forma\lib\Get::site_url(),
+        $msg_composer->setBodyLangText('email', '_NEW_FORUM_BODY', ['[url]' => FormaLms\lib\Get::site_url(),
             '[course]' => PUBLIC_FORUM_COURSE_NAME,
             '[title]' => $_POST['title'],
             '[text]' => $_POST['description'], ]);
 
-        $msg_composer->setBodyLangText('sms', '_NEW_FORUM_BODY_SMS', ['[url]' => Forma\lib\Get::site_url(),
+        $msg_composer->setBodyLangText('sms', '_NEW_FORUM_BODY_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
             '[course]' => PUBLIC_FORUM_COURSE_NAME,
             '[title]' => $_POST['title'],
             '[text]' => $_POST['description'], ]);
@@ -652,7 +652,7 @@ function modforum()
     }
     closedir($templ->handle); */
 
-    Util::get_js(Forma\lib\Get::rel_path('lms') . '/modules/forum/forum.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/modules/forum/forum.js', true, true);
     $emoticon_items = '';
     $emoticons_arr = getEmoticonsArr();
 
@@ -681,13 +681,13 @@ function upforum()
 {
     checkPerm('mod');
 
-    $idForum = Forma\lib\Get::pReq('idForum', DOTY_INT, 0);
-    $undo = Forma\lib\Get::pReq('undo', DOTY_MIXED, false);
-    $title = Forma\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
-    $description = Forma\lib\Get::pReq('description', DOTY_MIXED, '');
-    $emoticons = Forma\lib\Get::pReq('emoticons', DOTY_MIXED, '');
-    $maxThreads = Forma\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
-    $allThreadsPrivate = Forma\lib\Get::pReq('all_threads_private', DOTY_INT, 0);
+    $idForum = FormaLms\lib\Get::pReq('idForum', DOTY_INT, 0);
+    $undo = FormaLms\lib\Get::pReq('undo', DOTY_MIXED, false);
+    $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE'));
+    $description = FormaLms\lib\Get::pReq('description', DOTY_MIXED, '');
+    $emoticons = FormaLms\lib\Get::pReq('emoticons', DOTY_MIXED, '');
+    $maxThreads = FormaLms\lib\Get::pReq('max_threads_per_user', DOTY_INT, 0);
+    $allThreadsPrivate = FormaLms\lib\Get::pReq('all_threads_private', DOTY_INT, 0);
 
     if ($undo !== false) {
         Util::jump_to('index.php?modname=public_forum&op=forum');
@@ -906,7 +906,7 @@ function modforumaccess()
         }
         $user_select->resetSelection($users);
     }
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $unreadedForum = $session->get('unreaded_forum');
     $idCourse = $session->get('idCourse');
 
@@ -1118,7 +1118,7 @@ function thread()
         exit("You can't access'");
     }
 
-    $idForum = Forma\lib\Get::gReq('idForum', DOTY_INT, 0);
+    $idForum = FormaLms\lib\Get::gReq('idForum', DOTY_INT, 0);
 
     $moderate = checkPublicForumPerm('moderate', $idForum);
     $canInsert = true;
@@ -1169,7 +1169,7 @@ function thread()
     $all_read = importVar('allread', true, 0);
 
     if ($all_read) {
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $unreadedForum = $session->get('unreaded_forum');
         unset($unreadedForum[PUBLIC_FORUM_COURSE_ID]);
         $session->set('unreaded_forum',$unreadedForum);
@@ -1181,7 +1181,7 @@ function thread()
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
 	WHERE idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND idForum = '$id_forum'"));
 
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), $tot_thread, 'link');
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), $tot_thread, 'link');
     $ini = $nav_bar->getSelectedElement();
     $ini_page = $nav_bar->getSelectedPage();
     $nav_bar->setLink($jump_url . '&amp;ord=' . $ord);
@@ -1219,7 +1219,7 @@ function thread()
             $query_thread .= ' , m.posted DESC ';
             break;
     }
-    $query_thread .= " LIMIT $ini, " . Forma\lib\Get::sett('visuItem');
+    $query_thread .= " LIMIT $ini, " . FormaLms\lib\Get::sett('visuItem');
     $re_thread = sql_query($query_thread);
 
     $re_last_post = sql_query('
@@ -1257,7 +1257,7 @@ function thread()
         . '</div>'
         . Form::closeForm(), 'content');
 
-    $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
+    $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
 
     $img_up = '<img src="' . getPathImage() . 'standard/ord_asc.png" alt="' . $lang->def('_ORD_ASC') . '" />';
     $img_down = '<img src="' . getPathImage() . 'standard/ord_desc.png" alt="' . $lang->def('_ORD_DESC') . '" />';
@@ -1317,11 +1317,11 @@ function thread()
 
         $authorIsAdmin = ($user_level === ADMIN_GROUP_GODADMIN || $user_level === ADMIN_GROUP_ADMIN);
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $unreadedForum = $session->get('unreaded_forum');
 
         if ((int) $isPrivate === 0 || ((int) $isPrivate === 1 && ($t_author === $currentUserId || $authorIsAdmin) || $moderate)) {
-            $msg_for_page = Forma\lib\Get::sett('visuItem');
+            $msg_for_page = FormaLms\lib\Get::sett('visuItem');
             if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT]) && $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT] != 'new_thread') {
                 $unread_message = $unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$idT];
                 $first_unread_message = $num_post - $unread_message + 2;
@@ -1498,7 +1498,7 @@ function thread()
 
 function addthread()
 {
-    $idForum = Forma\lib\Get::gReq('idForum', DOTY_INT, 0);
+    $idForum = FormaLms\lib\Get::gReq('idForum', DOTY_INT, 0);
 
     checkPublicForumPerm('view', (int) $idForum);
 
@@ -1587,7 +1587,7 @@ function save_file($file)
 {
     require_once _base_ . '/lib/lib.upload.php';
 
-    $path = '/appLms/' . Forma\lib\Get::sett('pathforum');
+    $path = '/appLms/' . FormaLms\lib\Get::sett('pathforum');
 
     if ($file['name'] != '') {
         $savefile = PUBLIC_FORUM_COURSE_ID . '_' . rand(0, 100) . '_' . time() . '_' . $file['name'];
@@ -1609,7 +1609,7 @@ function delete_file($name)
 {
     require_once _base_ . '/lib/lib.upload.php';
 
-    $path = '/appLms/' . Forma\lib\Get::sett('pathforum');
+    $path = '/appLms/' . FormaLms\lib\Get::sett('pathforum');
     if ($name != '') {
         return sl_unlink($path . $name);
     }
@@ -1621,7 +1621,7 @@ function insthread()
 
     $lang = &DoceboLanguage::createInstance('forum');
     $id_forum = importVar('idForum', true, 0);
-    $isPrivate = Forma\lib\Get::pReq('private', DOTY_INT, 0);
+    $isPrivate = FormaLms\lib\Get::pReq('private', DOTY_INT, 0);
 
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=public_forum&op=thread&idForum=' . $id_forum);
@@ -1742,12 +1742,12 @@ function insthread()
     $msg_composer = new EventMessageComposer();
 
     $msg_composer->setSubjectLangText('email', '_SUBJECT_NOTIFY_THREAD', false);
-    $msg_composer->setBodyLangText('email', '_NEW_THREAD_INSERT_IN_FORUM', ['[url]' => Forma\lib\Get::site_url(),
+    $msg_composer->setBodyLangText('email', '_NEW_THREAD_INSERT_IN_FORUM', ['[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => PUBLIC_FORUM_COURSE_NAME,
         '[forum_title]' => $forum_title,
         '[thread_title]' => $_POST['title'], ]);
 
-    $msg_composer->setBodyLangText('sms', '_NEW_THREAD_INSERT_IN_FORUM_SMS', ['[url]' => Forma\lib\Get::site_url(),
+    $msg_composer->setBodyLangText('sms', '_NEW_THREAD_INSERT_IN_FORUM_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => PUBLIC_FORUM_COURSE_NAME,
         '[forum_title]' => $forum_title,
         '[thread_title]' => $_POST['title'], ]);
@@ -1936,7 +1936,7 @@ function delthread()
     list($id_forum, $thread_title, $last_post) = sql_fetch_row(sql_query($thread_query));
 
     if (isset($_POST['undo'])) {
-        if (Forma\lib\Get::req('search', DOTY_INT) == 1) {
+        if (FormaLms\lib\Get::req('search', DOTY_INT) == 1) {
             Util::jump_to('index.php?modname=public_forum&op=search&amp;ini=' . $ini);
         } else {
             Util::jump_to('index.php?modname=public_forum&op=thread&idForum=' . $id_forum);
@@ -1944,7 +1944,7 @@ function delthread()
     }
     $confirm = isset($_POST['confirm']);
     if (!$confirm) {
-        $confirm = Forma\lib\Get::req('confirm', DOTY_INT, 0);
+        $confirm = FormaLms\lib\Get::req('confirm', DOTY_INT, 0);
     }
     if ($confirm) {
         $forum_query = '
@@ -1968,7 +1968,7 @@ function delthread()
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
 		WHERE idThread = '" . $id_thread . "'")
         ) {
-            if (Forma\lib\Get::req('search', DOTY_INT) == 1) {
+            if (FormaLms\lib\Get::req('search', DOTY_INT) == 1) {
                 Util::jump_to('index.php?modname=public_forum&op=search&amp;ini=' . $ini);
             } else {
                 Util::jump_to('index.php?modname=public_forum&op=thread&idForum=' . $id_forum . '&amp;result=err_del');
@@ -2115,7 +2115,7 @@ function message()
     $profile_man = new UserProfile(0);
     $profile_man->init('profile', 'framework', 'index.php?modname=public_forum&op=forum');
 
-    $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
+    $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
     $tb->initNavBar('ini', 'link');
     $tb->setLink('index.php?modname=public_forum&amp;op=message&amp;idThread=' . $id_thread);
     $ini = $tb->getSelectedElement();
@@ -2156,7 +2156,7 @@ function message()
     list($forum_title, $locked_f) = sql_fetch_row(sql_query($forum_query));
     ++$tot_message;
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $unreadedForum = $session->get('unreaded_forum');
     //set as readed if needed
     if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread])) {
@@ -2203,7 +2203,7 @@ function message()
 	FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted
-	LIMIT $ini, " . Forma\lib\Get::sett('visuItem'));
+	LIMIT $ini, " . FormaLms\lib\Get::sett('visuItem'));
     while ($record = sql_fetch_assoc($re_message)) {
         $messages[$record['idMessage']] = $record;
         $authors[$record['author']] = $record['author'];
@@ -2232,7 +2232,7 @@ function message()
     $tb->addHead($cont_h);
 
     // Compose messagges display
-    $path = $GLOBALS['where_files_relative'] . '/appCore/' . Forma\lib\Get::sett('pathphoto');
+    $path = $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
     $counter = 0;
     foreach ($messages as $id_message => $message_info) {
         ++$counter;
@@ -2561,7 +2561,7 @@ function showMessageForAdd($id_thread, $how_much)
 
     $acl_man = &Docebo::user()->getAclManager();
 
-    $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'));
+    $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'));
 
     // Find post
     $messages = [];
@@ -2599,7 +2599,7 @@ function showMessageForAdd($id_thread, $how_much)
     $tb->addHead($cont_h);
 
     // Compose messagges display
-    $path = $GLOBALS['where_files_relative'] . '/appCore/' . Forma\lib\Get::sett('pathphoto');
+    $path = $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
     foreach ($messages as $id_message => $message_info) {
         // sender info
         $m_author = $message_info['author'];
@@ -2887,12 +2887,12 @@ function insmessage()
     $msg_composer = new EventMessageComposer();
 
     $msg_composer->setSubjectLangText('email', '_SUBJECT_NOTIFY_MESSAGE', false);
-    $msg_composer->setBodyLangText('email', '_NEW_MESSAGE_INSERT_IN_THREAD', ['[url]' => Forma\lib\Get::site_url(),
+    $msg_composer->setBodyLangText('email', '_NEW_MESSAGE_INSERT_IN_THREAD', ['[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => PUBLIC_FORUM_COURSE_NAME,
         '[forum_title]' => $forum_title,
         '[thread_title]' => $_POST['title'], ]);
 
-    $msg_composer->setBodyLangText('sms', '_NEW_MESSAGE_INSERT_IN_THREAD_SMS', ['[url]' => Forma\lib\Get::site_url(),
+    $msg_composer->setBodyLangText('sms', '_NEW_MESSAGE_INSERT_IN_THREAD_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
         '[course]' => PUBLIC_FORUM_COURSE_NAME,
         '[forum_title]' => $forum_title,
         '[thread_title]' => $_POST['title'], ]);
@@ -3107,7 +3107,7 @@ function delmessage()
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=public_forum&op=message&idThread=' . $id_thread . '&amp;ini=' . $ini);
     }
-    if (isset($_POST['confirm']) || Forma\lib\Get::req('confirm', DOTY_INT)) {
+    if (isset($_POST['confirm']) || FormaLms\lib\Get::req('confirm', DOTY_INT)) {
         $new_answer_tree = substr($answer_tree, 0, -21);
         if (!sql_query('
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_forummessage
@@ -3261,7 +3261,7 @@ function forumsearch()
 {
     //checkPerm('view');
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $unreadedForum = $session->get('unreaded_forum');
     $idCourse = $session->get('idCourse');
     $forum = $session->get('forum',[]);
@@ -3331,7 +3331,7 @@ function forumsearch()
     list($tot_thread) = sql_fetch_row(sql_query($query_num_thread));
 
     $jump_url = 'index.php?modname=public_forum&amp;op=search';
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), $tot_thread, 'link');
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), $tot_thread, 'link');
     $nav_bar->setLink($jump_url . '&amp;ord=' . $ord);
     $ini = $nav_bar->getSelectedElement();
     $ini_page = $nav_bar->getSelectedPage();
@@ -3364,7 +3364,7 @@ function forumsearch()
             $query_thread .= ' ORDER BY m.posted DESC ';
             break;
     }
-    $query_thread .= " LIMIT $ini, " . Forma\lib\Get::sett('visuItem');
+    $query_thread .= " LIMIT $ini, " . FormaLms\lib\Get::sett('visuItem');
     $re_thread = sql_query($query_thread);
 
     $re_last_post = sql_query('
@@ -3403,7 +3403,7 @@ function forumsearch()
         . '</div>'
         . Form::closeForm(), 'content');
 
-    $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
+    $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_THREAD_CAPTION'), $lang->def('_THRAD_SUMMARY'));
 
     $img_up = '<img src="' . getPathImage() . 'standard/ord_asc.png" alt="' . $lang->def('_ORD_ASC') . '" />';
     $img_down = '<img src="' . getPathImage() . 'standard/ord_desc.png" alt="' . $lang->def('_ORD_DESC') . '" />';
@@ -3498,7 +3498,7 @@ function forumsearch()
 
 function forumsearchmessage()
 {
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $forum = $session->get('forum',[]);
 
     $search_arg = $forum['search_arg'];
@@ -3525,7 +3525,7 @@ function forumsearchmessage()
     $mod_perm = checkPerm('mod', true);
     $acl_man = &Docebo::user()->getAclManager();
 
-    $tb = new Table(Forma\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
+    $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
     $tb->initNavBar('ini', 'link');
     $tb->setLink('index.php?modname=public_forum&amp;op=searchmessage&amp;idThread=' . $id_thread . '&amp;ini_thread=' . $ini_thread);
     $ini = $tb->getSelectedElement();
@@ -3544,7 +3544,7 @@ function forumsearchmessage()
     list($forum_title, $locked_f) = sql_fetch_row(sql_query($forum_query));
     ++$tot_message;
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $unreadedForum = $session->get('unreaded_forum');
 
     //set as readed if needed
@@ -3592,7 +3592,7 @@ function forumsearchmessage()
 	FROM ' . $GLOBALS['prefix_lms'] . "_forummessage
 	WHERE idThread = '" . $id_thread . "'
 	ORDER BY posted
-	LIMIT $ini, " . Forma\lib\Get::sett('visuItem'));
+	LIMIT $ini, " . FormaLms\lib\Get::sett('visuItem'));
     while ($record = sql_fetch_assoc($re_message)) {
         $messages[$record['idMessage']] = $record;
         $authors[$record['author']] = $record['author'];
@@ -3618,7 +3618,7 @@ function forumsearchmessage()
     $tb->addHead($cont_h);
 
     // Compose messagges display
-    $path = $GLOBALS['where_files_relative'] . '/appCore/' . Forma\lib\Get::sett('pathphoto');
+    $path = $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
     foreach ($messages as $id_message => $message_info) {
         // sender info
         $m_author = $message_info['author'];
@@ -4097,7 +4097,7 @@ function export()
 
     $acl_man = &Docebo::user()->getAclManager();
     $tags = new Tags('lms_forum');
-    $id_forum = Forma\lib\Get::req('idForum', DOTY_INT, 0);
+    $id_forum = FormaLms\lib\Get::req('idForum', DOTY_INT, 0);
     $csv_string = '';
     $file_nme = '';
     $tag_list = [];
@@ -4492,7 +4492,7 @@ function forumDispatch($op)
             $expFileName = explode('.', $attach);
             $totPart = count($expFileName) - 1;
 
-            $path = '/appLms/' . Forma\lib\Get::sett('pathforum');
+            $path = '/appLms/' . FormaLms\lib\Get::sett('pathforum');
             //send file
             sendFile($path, $attach, $expFileName[$totPart]);
         ;

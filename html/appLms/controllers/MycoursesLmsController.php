@@ -30,13 +30,13 @@ class MycoursesLmsController extends LmsController
 
     public function show()
     {
-        if (!$tab = Forma\lib\Get::req('mycourses_tab', DOTY_STRING, null)) {
+        if (!$tab = FormaLms\lib\Get::req('mycourses_tab', DOTY_STRING, null)) {
             $tab = $this->model->getDefaultTab();
         }
 
-        if (count($filters = Forma\lib\Get::getRegexUrlMatches('filterCourse'))) {
+        if (count($filters = FormaLms\lib\Get::getRegexUrlMatches('filterCourse'))) {
             foreach ($filters as $filter) {
-                $this->filterManager->setFilterByCookie($this->filterManager->getCookieIndex($filter, Docebo::user()->idst), Forma\lib\Get::req($filter));
+                $this->filterManager->setFilterByCookie($this->filterManager->getCookieIndex($filter, Docebo::user()->idst), FormaLms\lib\Get::req($filter));
             }
         }
 

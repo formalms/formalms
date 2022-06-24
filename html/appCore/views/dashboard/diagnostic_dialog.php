@@ -66,7 +66,7 @@
             : Lang::t('_OFF')) . '</b>';
     }
 
-    if (Forma\lib\Get::sett('uploadType', '') == 'ftp') {
+    if (FormaLms\lib\Get::sett('uploadType', '') == 'ftp') {
         if (function_exists('ftp_connect')) {
             require_once _adm_ . '/lib/lib.upload.php';
             $re_con = sl_open_fileoperations();

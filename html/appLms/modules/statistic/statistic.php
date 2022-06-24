@@ -24,7 +24,7 @@ function outPageView($link)
     $lang = &DoceboLanguage::createInstance('statistic', 'lms');
     $for = importVar('for', false, 'week');
     $times = ['day', 'week', 'month', 'year'];
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     $labels = [];
     $series = [];
@@ -141,9 +141,9 @@ function outPageView($link)
 
         $chart_data[$col]['y_axis'] = $number;
     }
-    Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
-    Util::get_js(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
-    Util::get_css(Forma\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
+    Util::get_css(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
 
     cout('<div class="statistic_chart" style="height: 300px;"></div>', 'content');
   
@@ -195,7 +195,7 @@ function statistic()
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _lms_ . '/lib/lib.course.php';
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
     $view_all_perm = checkPerm('view_all', true);
@@ -227,7 +227,7 @@ function statistic()
     );
 
 
-    if (Forma\lib\Get::sett('tracking') == 'on') {
+    if (FormaLms\lib\Get::sett('tracking') == 'on') {
         $GLOBALS['page']->add('<div class="title">' . $lang->def('_PAGE_VIEW') . '</div>', 'content');
         outPageView('index.php?modname=statistic&amp;op=statistic');
     }
@@ -308,7 +308,7 @@ function getTable($tb, $title = null, $id)
 function userdetails()
 {
     checkPerm('view');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     require_once _base_ . '/lib/lib.table.php';
 
@@ -369,7 +369,7 @@ function userdetails()
             $image_sst = ($inv ? $img_down : $img_up);;
             break;
     }
-    //$query_track .= " LIMIT " . $ini . ", " . Forma\lib\Get::sett('visuItem');
+    //$query_track .= " LIMIT " . $ini . ", " . FormaLms\lib\Get::sett('visuItem');
     $re_tracks = sql_query($query_track);
 
     $GLOBALS['page']->add(
@@ -390,7 +390,7 @@ function userdetails()
         . $image_nop . ' ' . $lang->def('_NUMBER_OF_OP') . '</a>',
         $lang->def('_LAST_OP'),
     ];
-    if (Forma\lib\Get::sett('tracking') == 'on') {
+    if (FormaLms\lib\Get::sett('tracking') == 'on') {
         $cont_h[] = '<img src="' . getPathImage() . 'standard/view.png" title="' . $lang->def('_VIEW_SESSION_DETAILS') . '" '
             . 'alt="' . $lang->def('_VIEW_SESSION_DETAILS_ALT') . '" />';
         $type_h[] = 'image';
@@ -423,7 +423,7 @@ function userdetails()
             $num_op,
             '<span class="text_bold">' . (isset($mods_names[$last_module]) ? $mods_names[$last_module] : $last_module) . '</span> [' . $last_op . ']',
         ];
-        if (Forma\lib\Get::sett('tracking') == 'on') {
+        if (FormaLms\lib\Get::sett('tracking') == 'on') {
             $cont[] = '<a href="index.php?modname=statistic&amp;op=sessiondetails&amp;id=' . $idst_user . '&amp;id_enter=' . $id_enter
                 . '&amp;sid=' . $session_id . '" '
                 . 'title="' . $lang->def('_VIEW_SESSION_DETAILS') . ' : ' . $start . '">'
@@ -453,7 +453,7 @@ function userdetails()
 function sessiondetails()
 {
     checkPerm('view');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     require_once _base_ . '/lib/lib.table.php';
 
@@ -462,7 +462,7 @@ function sessiondetails()
     $p_ini = importVar('p_ini');
     $link = 'index.php?modname=statistic&amp;op=sessiondetails&amp;id=' . $idst_user . '&amp;id_enter=' . $id_enter;
 
-    $nav_bar = new NavBar('ini', Forma\lib\Get::sett('visuItem'), 0, 'link');
+    $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0, 'link');
     $nav_bar->setLink($link . '&amp;p_ini=' . $p_ini);
     $ini = $nav_bar->getSelectedElement();
 
@@ -476,7 +476,7 @@ function sessiondetails()
 	WHERE g.idCourse = "' . $idCourse . '" AND g.idUser = "' . $idst_user . '" AND ' .
         ' ( g.idEnter = "' . $id_enter . '" OR (  g.idEnter = 0 AND g.session_id = "' . importVar('sid') . '" ) ) '
         . ' ORDER BY g.timeof 
-	LIMIT ' . $ini . ', ' . Forma\lib\Get::sett('visuItem');
+	LIMIT ' . $ini . ', ' . FormaLms\lib\Get::sett('visuItem');
     $re_tracks = sql_query($query_track);
 
     $query_tot_track = '
@@ -546,7 +546,7 @@ function sessiondetails()
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
 	FROM %lms_trackingeneral AS g
 	WHERE g.idCourse = "' . (int)$idCourse . '" AND g.idUser = "' . $idst_user . '" AND g.idEnter = "' . $id_enter . '" 
-	LIMIT ' . ($ini + Forma\lib\Get::sett('visuItem')) . ', 1';
+	LIMIT ' . ($ini + FormaLms\lib\Get::sett('visuItem')) . ', 1';
     $re_track = sql_query($query_last_track);
     if (sql_num_rows($re_track) > 0) {
         $read = sql_fetch_assoc($re_track);

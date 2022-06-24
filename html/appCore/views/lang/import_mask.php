@@ -1,4 +1,4 @@
-<?php Forma\lib\Get::title([
+<?php FormaLms\lib\Get::title([
     'index.php?r=adm/lang/show' => Lang::t('_LANGUAGE', 'admin_lang'),
     Lang::t('_IMPORT', 'admin_lang'),
 ]); ?>

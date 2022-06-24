@@ -120,7 +120,7 @@ class MessageModule
 
         $um = &UrlManager::getInstance('message');
 
-        $active_tab = Forma\lib\Get::req('active_tab', DOTY_STRING, 'inbox');
+        $active_tab = FormaLms\lib\Get::req('active_tab', DOTY_STRING, 'inbox');
         if ($active_tab != 'inbox' && $active_tab != 'outbox') {
             $active_tab = 'inbox';
         }
@@ -133,10 +133,10 @@ class MessageModule
         $all_courses = $course_man->getUserCourses(getLogUserId());
         $all_value = $all_value + $all_courses;
 
-        $_filter_inbox = Forma\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
-        $_filter_outbox = Forma\lib\Get::req('msg_course_filter_outbox', DOTY_INT, 0);
+        $_filter_inbox = FormaLms\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
+        $_filter_outbox = FormaLms\lib\Get::req('msg_course_filter_outbox', DOTY_INT, 0);
 
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if ($_filter_inbox == '') {
             if (isset($idCourse)) {
                 $_filter_inbox = $idCourse;
@@ -268,12 +268,12 @@ class MessageModule
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
 
-        // $tb = new Table(Forma\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
-        $tb = new Table(Forma\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
+        // $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
+        $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
         $acl_man = &Docebo::user()->getAclManager();
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $query = "
 		SELECT m.idMessage, m.idCourse, m.sender, m.posted, m.attach, m.title, m.priority, user.read
 		FROM %adm_message AS m JOIN
@@ -282,7 +282,7 @@ class MessageModule
 			m.sender <> '" . getLogUserId() . "' AND
 			user.idUser = '" . getLogUserId() . "' AND
 			user.deleted = '" . _MESSAGE_VALID . "'";
-        $_filter = Forma\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
+        $_filter = FormaLms\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
 
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
@@ -307,7 +307,7 @@ class MessageModule
                 case 'rid': $query .= 'user.read,'; break;
             }
         }
-        $query .= "m.posted DESC LIMIT $ini," . Forma\lib\Get::sett('visuItem', 25);
+        $query .= "m.posted DESC LIMIT $ini," . FormaLms\lib\Get::sett('visuItem', 25);
         $re_message = $this->db->query($query);
 
         // -----------------------------------------------------
@@ -471,7 +471,7 @@ class MessageModule
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
         $acl_man = &Docebo::user()->getAclManager();
-        $tb = new Table(Forma\lib\Get::sett('visuItem', 25), '', '', 'messages-sent');
+        $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-sent');
         $tb->initNavBar('iniout', 'button');
         $ini = $tb->getSelectedElement('iniout');
         $acl_man = &Docebo::user()->getAclManager();
@@ -487,8 +487,8 @@ class MessageModule
         /*if(isset($_POST['msg_course_filter']) && ($_POST['msg_course_filter'] != false)) {
             $query .= " AND m.idCourse = '".$_POST['msg_course_filter']."'";
         }*/
-        $_filter = Forma\lib\Get::req('msg_course_filter_outbox', DOTY_INT, 0);
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $_filter = FormaLms\lib\Get::req('msg_course_filter_outbox', DOTY_INT, 0);
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
             $res = $acl_man->getAllUsersFromIdst($res);
@@ -510,7 +510,7 @@ class MessageModule
                 case 'ath': $query .= 'm.attach DESC,'; break;
             }
         }
-        $query .= "m.posted DESC LIMIT $ini," . Forma\lib\Get::sett('visuItem', 25);
+        $query .= "m.posted DESC LIMIT $ini," . FormaLms\lib\Get::sett('visuItem', 25);
         $re_message = $this->db->query($query);
 
         $query = "
@@ -697,7 +697,7 @@ class MessageModule
         $all_value = [0 => Lang::t('_ALL_COURSES')];
         $all_courses = $course_man->getUserCourses(getLogUserId());
         $all_value = $all_value + $all_courses;
-        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (count($all_value) > 0) {
             $drop = Form::getLineDropdown('form_line_right',
                                         'label_padded',
@@ -737,7 +737,7 @@ class MessageModule
         }
 
 
-        $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->set('message_filter',$filter);
         $session->save();
 
@@ -867,7 +867,7 @@ class MessageModule
                     if (!empty($recip_alert)) {
                         require_once _lms_ . '/lib/lib.course.php';
                         require_once _base_ . '/lib/lib.eventmanager.php';
-                        $idCourse = \Forma\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+                        $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
                         $is_course = false;
                         if ((isset($idCourse)) && (isset($GLOBALS['course_descriptor']))) {
                             $course_name = $GLOBALS['course_descriptor']->getValue('name');
@@ -1268,7 +1268,7 @@ class MessageModule
         $res = '';
 
         /*
-        if (Forma\lib\Get::cur_plat() == "cms") {
+        if (FormaLms\lib\Get::cur_plat() == "cms") {
             $res = getCmsTitleArea($text, $image = '', $alt_image = '');
         }
         else {

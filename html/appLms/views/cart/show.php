@@ -1,4 +1,4 @@
-<?php Forma\lib\Get::title([Lang::t('_CART', 'cart')]); ?>
+<?php FormaLms\lib\Get::title([Lang::t('_CART', 'cart')]); ?>
 
 <div class="std_block">
 
@@ -36,22 +36,22 @@ $this->widget('table', [
 ?>
 
 <?php
-    $paypal_return_url = Forma\lib\Get::site_url() . _folder_lms_ . '/paypal.php?op=ok';
-    $paypal_notify_url = Forma\lib\Get::site_url() . _folder_lms_ . '/paypal.php';
+    $paypal_return_url = FormaLms\lib\Get::site_url() . _folder_lms_ . '/paypal.php?op=ok';
+    $paypal_notify_url = FormaLms\lib\Get::site_url() . _folder_lms_ . '/paypal.php';
 ?>
 
 <div class="total_container">
-	<p class="total_price cart_right"><?php echo Lang::t('_TOTAL', 'cart'); ?> : <span id="price"><?php echo $total_price; ?></span> <?php echo Forma\lib\Get::sett('currency_symbol') !== '' ? Forma\lib\Get::sett('currency_symbol') : '&eur;'; ?></p>
+	<p class="total_price cart_right"><?php echo Lang::t('_TOTAL', 'cart'); ?> : <span id="price"><?php echo $total_price; ?></span> <?php echo FormaLms\lib\Get::sett('currency_symbol') !== '' ? FormaLms\lib\Get::sett('currency_symbol') : '&eur;'; ?></p>
 	<div class="nofloat"></div>
 	<a class="ico-wt-sprite subs_categorize cart_right" href="javascript:;" onclick="makeOrderPopup();"><span class="order_now"><?php echo Lang::t('_ORDER_NOW', 'cart'); ?></span></a>
 	<form action="<?php echo $paypal_url; ?>" method="post" id="paypal_form">
 		<input type="hidden" name="cmd" value="_xclick" />
-		<input type="hidden" name="business" value="<?php echo Forma\lib\Get::sett('paypal_mail', ''); ?>">
+		<input type="hidden" name="business" value="<?php echo FormaLms\lib\Get::sett('paypal_mail', ''); ?>">
 		<input type="hidden" name="lc" value="<?php echo Lang::lang_code() === 'italian' ? 'IT' : 'EN'; ?>">
 		<input type="hidden" name="item_name" value="<?php echo Lang::t('_ORDER_NUMBER', 'cart'); ?>" id="item_name">
 		<input type="hidden" name="item_number" value="0" id="id_transaction">
 		<input type="hidden" name="amount" value="0" id="total_price">
-		<input type="hidden" name="currency_code" value="<?php echo Forma\lib\Get::sett('paypal_currency', 'EUR'); ?>">
+		<input type="hidden" name="currency_code" value="<?php echo FormaLms\lib\Get::sett('paypal_currency', 'EUR'); ?>">
 		<input type="hidden" name="button_subtype" value="services">
 		<input type="hidden" name="no_note" value="0">
 		<input type="hidden" name="shipping" value="0.00">
@@ -155,10 +155,10 @@ $this->widget('table', [
 	function makeOrderPopup()
 	{
 		var title = '<?php echo Lang::t('_PAYMENT_SELECT', 'cart'); ?>';
-		var body = '<?php	$body = '<a href="index.php?r=cart/makeOrder&amp;wire=1">' . Forma\lib\Get::img('standard/wire_payment.png') . ' ' . Lang::t('_WIRE_PAYMENT', 'cart') . '</a>';
-                                if (Forma\lib\Get::sett('paypal_mail', '') !== '') {
+		var body = '<?php	$body = '<a href="index.php?r=cart/makeOrder&amp;wire=1">' . FormaLms\lib\Get::img('standard/wire_payment.png') . ' ' . Lang::t('_WIRE_PAYMENT', 'cart') . '</a>';
+                                if (FormaLms\lib\Get::sett('paypal_mail', '') !== '') {
                                     $body .= '<br/><br/>'
-                                            . '<a href="javascript:;" onclick="makeOrderPaypal();">' . Forma\lib\Get::img('standard/PayPal.gif') . ' ' . Lang::t('_PAY_WITH_PAYPAL', 'cart') . '</a>';
+                                            . '<a href="javascript:;" onclick="makeOrderPaypal();">' . FormaLms\lib\Get::img('standard/PayPal.gif') . ' ' . Lang::t('_PAY_WITH_PAYPAL', 'cart') . '</a>';
                                 }//'<a class="ico-wt-sprite subs_add" href="javascript:;" onclick="makeOrderPaypal();"><span class="order_now">'.Lang::t('_PAY_WITH_PAYPAL', 'cart').'</span></a>';
                             echo $body;
                     ?>';

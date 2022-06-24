@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
 
 class ClientTree
 {
@@ -35,7 +35,7 @@ class ClientTree
     public function __construct($id)
     {
         $this->id = $id;
-        $this->session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     //libraries
@@ -60,10 +60,10 @@ class ClientTree
             'assets/skins/sam' => 'skin.css',
                 ]
             );
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
-        Util::get_js(Forma\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
+        Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
-        $js_path = Forma\lib\Get::rel_path('base') . '/lib/folder_tree/';
+        $js_path = FormaLms\lib\Get::rel_path('base') . '/lib/folder_tree/';
 
         Util::get_js($js_path . 'ddnode.js', true, true);
         Util::get_js($js_path . 'foldernode.js', true, true);

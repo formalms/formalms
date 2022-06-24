@@ -816,8 +816,8 @@ class Field_Dropdown extends Field
         $img_up = '<img class="valing-middle" src="' . getPathImage() . 'standard/up.png" alt="' . $std_lang->def('_MOVE_UP') . '" />';
         $img_down = '<img class="valing-middle" src="' . getPathImage() . 'standard/down.png" alt="' . $std_lang->def('_MOVE_DOWN') . '" />';
 
-        $id_son = Forma\lib\Get::req('idSon', DOTY_INT, 0);
-        $iop = Forma\lib\Get::req('iop', DOTY_STRING, '');
+        $id_son = FormaLms\lib\Get::req('idSon', DOTY_INT, 0);
+        $iop = FormaLms\lib\Get::req('iop', DOTY_STRING, '');
 
         if ($iop == 'moveup') {
             $this->_move_up($id_son);

@@ -20,8 +20,8 @@ function schedule_recipients($idrep)
 
     $lang = &DoceboLanguage::createInstance('report', 'framework');
 
-    if (Forma\lib\Get::req('schedule_undo', DOTY_MIXED, false)) {
-        //$back_op = Forma\lib\Get::req()
+    if (FormaLms\lib\Get::req('schedule_undo', DOTY_MIXED, false)) {
+        //$back_op = FormaLms\lib\Get::req()
         $back_url = 'index.php?modname=report&op=schedulelist&idrep=' . $idrep;
         Util::jump_to($back_url);
     }
@@ -41,7 +41,7 @@ function schedule_recipients($idrep)
 
     $lang = &DoceboLanguage::createInstance('report', 'framework');
 
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!isset($_POST['is_updating'])) {
             //save filter, if needed
         require_once _lms_ . '/lib/lib.report.php';
@@ -153,7 +153,7 @@ function schedule_set($idrep, $checkperm = 'mod')
     }
 
     $lang = &DoceboLanguage::createInstance('report', 'framework');
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     //initialize session data for schedulation, if not updating
     $scheduleTempData = $session->get('schedule_tempdata');
     if (empty($scheduleTempData)) {
@@ -269,9 +269,9 @@ function modify_schedulation()
     checkPerm('mod');
     //preload schedulation data in session
     require_once _lms_ . '/lib/lib.report.php';
-    $session = \Forma\lib\Session\SessionManager::getInstance()->getSession();
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-    if ($id_sched = Forma\lib\Get::req('id_sched', DOTY_INT, false)) {
+    if ($id_sched = FormaLms\lib\Get::req('id_sched', DOTY_INT, false)) {
         $qry = 'SELECT * FROM ' . $GLOBALS['prefix_lms'] . "_report_schedule WHERE id_report_schedule=$id_sched";
         $row = sql_fetch_assoc(sql_query($qry));
 
@@ -305,8 +305,8 @@ function modify_schedulation()
 
 function schedule_report()
 {
-    $idrep = Forma\lib\Get::req('idrep', DOTY_INT, false);
-    $step = Forma\lib\Get::req('next_step', DOTY_STRING, '');
+    $idrep = FormaLms\lib\Get::req('idrep', DOTY_INT, false);
+    $step = FormaLms\lib\Get::req('next_step', DOTY_STRING, '');
     checkReport($idrep);
     if ($step == 'sched_setrecipients') {
         schedule_recipients($idrep);
@@ -372,7 +372,7 @@ function get_schedulations_table($idrep = false)
     $can_mod = checkPerm('mod', true);
 
     require_once _base_ . '/lib/lib.table.php';
-    Util::get_js(Forma\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
+    Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
     YuiLib::load('selector');
 
     $acl_man = &Docebo::user()->getACLManager();
@@ -401,7 +401,7 @@ function get_schedulations_table($idrep = false)
     $lang = &DoceboLanguage::createInstance('report', 'framework');
     $output = '';
 
-    $tb = new Table(Forma\lib\Get::sett('visu_course'));
+    $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
     $tb->initNavBar('ini', 'button');
     $col_type = ['align_center', 'align_center', 'align_center', 'align_center', 'align_center', 'align_center']; //,'image','image');
     $col_content = [
