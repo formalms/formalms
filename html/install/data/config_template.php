@@ -137,7 +137,7 @@ $cfg['demo_mode']			    = false;
 //$cfg['session']['authentication'] = true; //true | false
 //$cfg['session']['user'] = $cfg['db_user']; // authentication user session handler
 //$cfg['session']['pass'] = $cfg['db_pass']; // authentication psw session handler
-
+//$cfg['session']['options'] = []; // other options key value array to pass based on selected handler
 
 /*
  * Technical preferences
