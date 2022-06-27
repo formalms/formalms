@@ -879,7 +879,7 @@ class ChoiceMultiple_Question extends Question
         return $score;
     }
 
-    public function _testquestanswer($id_track, $number_time = null)
+    public function userZeroScore($id_track, $number_time = null)
     {
         $res = 0;
         $query = 'SELECT COUNT(tta.idAnswer)
