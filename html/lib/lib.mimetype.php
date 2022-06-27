@@ -562,6 +562,10 @@ function getOtherMime($ext, &$mime_array)
             $mime_array[] = 'video/3gpp';
             $mime_array[] = 'audio/mpeg';
          break;
+        case 'm4v':
+            $mime_array[] = 'video/x-m4v';
+        case 'mkv':
+            $mime_array[] = 'video/x-matroska';
         case 'wma':
             $mime_array[] = 'video/x-ms-asf';
          break;
@@ -588,6 +592,8 @@ function getOtherMime($ext, &$mime_array)
         case 'exe':
             $mime_array[] = 'application/x-dosexec';
          break;
+        default:
+            break;
     }
 
     return $mime_array;

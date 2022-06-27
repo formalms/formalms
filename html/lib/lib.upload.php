@@ -86,7 +86,7 @@ function sl_upload($srcFile, $dstFile, $file_ext = '', $root = false)
     // check if the mime type is allowed by the whitelist
     // if the whitelist is empty all types are accepted
     require_once _lib_ . '/lib.mimetype.php';
-    $upload_whitelist = FormaLms\lib\Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
+    $upload_whitelist = FormaLms\lib\Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg,m4v,mkv');
     $upload_whitelist_arr = explode(',', trim($upload_whitelist, ','));
     if (!empty($upload_whitelist_arr)) {
         $valid_ext = false;
