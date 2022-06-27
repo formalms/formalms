@@ -3605,6 +3605,8 @@ class CoursereportLmsController extends LmsController
                         $question['answers'] = $answersArray;
 
                     break;
+                default:
+                   break;
             }
 
             $question['type'] = $quest['type_quest'];

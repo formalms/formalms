@@ -675,9 +675,9 @@ class ChoiceMultiple_Question extends Question
             $this->deleteAnswer($trackTest->idTrack, ($trackTest->getNumberOfAttempt() + 1));
         }
 
-        $re_answer = sql_query('
+        $re_answer = sql_query("
 		SELECT idAnswer, is_correct, score_correct, score_incorrect 
-		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
+		FROM %lms_testquestanswer 
 		WHERE idQuest = '" . (int) $this->id . "'");
         while (list($id_answer, $is_correct, $score_corr, $score_incorr) = sql_fetch_row($re_answer)) {
             if (isset($source['quest'][$this->id][$id_answer])) {
@@ -870,14 +870,16 @@ class ChoiceMultiple_Question extends Question
         while (list($score_assigned) = sql_fetch_row($re_answer)) {
             $score = round($score + $score_assigned, 2);
         }
-        if ($res = $this->userZeroScore($id_track, $number_time)) {
+
+        // i dont understand the logic of this check
+        /*if ($res = $this->userZeroScore($id_track, $number_time)) {
             $score = 0;
-        }
+        }*/
 
         return $score;
     }
 
-    public function userZeroScore($id_track, $number_time = null)
+    public function _testquestanswer($id_track, $number_time = null)
     {
         $res = 0;
         $query = 'SELECT COUNT(tta.idAnswer)
