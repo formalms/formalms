@@ -1,6 +1,6 @@
 <?php
-$base_url = 'index.php?r=coursestats/show';
-$user_url = 'index.php?r=coursestats/show_user&id_user=' . (int) $id_user;
+$base_url = 'index.php?r=lms/coursestats/show';
+$user_url = 'index.php?r=lms/coursestats/show_user&id_user=' . (int) $id_user;
 $back_url = $from_user ? $user_url : $base_url;
 echo getTitleArea([
     $base_url => Lang::t('_COURSESTATS', 'menu_course'),

@@ -54,7 +54,7 @@ $(function() {
             { data: 'LO_name', title: '<?php echo Lang::t('_NAME', 'standard'); ?>', sortable: true, 
                 render: function(data, type, row, meta) {
                     if(type === 'display') {
-                        return '<a href="index.php?r=coursestats/show_user_object&id_user='+ <?php echo $id_user; ?> +'&id_lo=' + row.id + '&from_user=1">' + data + '</a>';
+                        return '<a href="index.php?r=lms/coursestats/show_user_object&id_user='+ <?php echo $id_user; ?> +'&id_lo=' + row.id + '&from_user=1">' + data + '</a>';
                     } else {
                         return data;
                     }

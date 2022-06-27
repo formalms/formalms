@@ -46,8 +46,8 @@ class MediagalleryAdmController extends AdmController
             exit("You can't access!");
         }
 
-        $p_size = intval(ini_get('post_max_size'));
-        $u_size = intval(ini_get('upload_max_filesize'));
+        $p_size = (int)ini_get('post_max_size');
+        $u_size = (int)ini_get('upload_max_filesize');
         $comparison = [$p_size, $u_size];
         if (!is_null($max_size)) {
             $comparison[] = (int) $max_size;

@@ -169,7 +169,7 @@ var CourseStats = {
 	},
 
 	useridFormatter: function(elLiner, oRecord, oColumn, oData) {
-		var url = 'index.php?r=coursestats/show_user&amp;id_user='+oRecord.getData("id");
+		var url = 'index.php?r=lms/coursestats/show_user&amp;id_user='+oRecord.getData("id");
 		elLiner.innerHTML = '<a href="'+url+'" title="">'+oData+'</a>';
 	},
 
@@ -183,7 +183,7 @@ var CourseStats = {
 			content = CourseStats.oLanguage.get('_LO_NOT_STARTED');
 		} else {
 			var id_lo = oColumn.getKey().replace('lo_', ''); //extract LO id by column key
-			var url = 'index.php?r=coursestats/show_user_object&amp;id_user='+oRecord.getData("id")+'&amp;id_lo='+id_lo;
+			var url = 'index.php?r=lms/coursestats/show_user_object&amp;id_user='+oRecord.getData("id")+'&amp;id_lo='+id_lo;
 			content = '<a href="'+url+'" title="">'+oData+'</a>';
 		}
 		elLiner.innerHTML = content;

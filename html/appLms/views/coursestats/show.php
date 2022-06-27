@@ -26,7 +26,7 @@ echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
         $link = '';
         switch ($lo->type) {
             case 'poll':
-                $link = '<a title="" href="index.php?r=coursestats/show_object&id_lo=' . (int)$lo->id . '">' . $lo->title . '</a>';
+                $link = '<a title="" href="index.php?r=lms/coursestats/show_object&id_lo=' . (int)$lo->id . '">' . $lo->title . '</a>';
                 break;
             default:
                 $link = $lo->title;
