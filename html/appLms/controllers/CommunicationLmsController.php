@@ -144,12 +144,13 @@ class CommunicationLmsController extends LmsController
         $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
             'viewer' => Docebo::user()->getArrSt(),
         ]);
+  
         foreach ($communications as $id => $comm) {
             //$communications[$id]['publish_date'] = Format::dateDistance($comm['publish_date']);
             switch ($comm['type_of']) {
                 case 'none':
-                        $communications[$id]['play'] = '<a class="ico-wt-sprite subs_unread" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
-                            . Lang::t('_MARK_AS_READ', 'communication')
+                        $communications[$id]['play'] = '<a class="ico-wt-sprite subs_unread" href="index.php?r=communication/play&amp;unread=1&amp;id_comm=' . $comm['id_comm'] . '"><span>'
+                            . Lang::t('_MARK_AS_UNREAD', 'communication')
                             . '</span></a>';
 
                     break;
@@ -209,13 +210,20 @@ class CommunicationLmsController extends LmsController
     public function playTask()
     {
         $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
+        $unread = FormaLms\lib\Get::req('unread', DOTY_INT, 0);
         $model = new CommunicationAlms();
         $comm = $model->findByPk($id_comm, Docebo::user()->getArrSt());
 
         if ($comm !== false) {
             switch ($comm['type_of']) {
                 case 'none' :
-                    $model->markAsRead($id_comm, Docebo::user()->getId());
+
+                    if($unread) {
+                        $model->markAsUnread($id_comm, Docebo::user()->getId());
+                    } else {
+                        $model->markAsRead($id_comm, Docebo::user()->getId());
+                    }
+                    
                     break;
                 case 'file' :
                     $lo = createLO('item', $comm['id_resource'], 'communication');

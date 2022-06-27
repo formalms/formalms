@@ -3252,6 +3252,8 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="communication&amp;_ERROR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Errore generico]]></key>
         <key id="communication&amp;_CATEGORY_FATHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossibile eliminare una categoria padre]]></key>
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Devi impostare almeno una categoria]]></key>
+        <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come letto]]></key>
+        <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Segna come non letto]]></key>
       </module>
     </platform>
   </LANG>

@@ -107,24 +107,30 @@ class CommunicationAlms extends Model
         return $records;
     }
 
-    public function findAllReaded($start_index, $results, $sort, $dir, $reader, $filter = false)
+    public function findAllReaded($start_index, $results, $sort, $dir, $reader, $filter = false, $language = false)
     {
         $sortable = ['title', 'description', 'type_of', 'publish_date'];
         $sortable = array_flip($sortable);
+        $lang_code = ($language == false ? getLanguage() : $language);
 
         $records = [];
-        $qtxt = 'SELECT c.id_comm, title, description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity '
-            . ' FROM ( %lms_communication AS c '
-            . '	JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm) ) '
-            . '	JOIN %lms_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
-            . " WHERE (  ct.status = 'passed' OR  ct.status = 'completed' ) "
-            . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
+        $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cs.name,"--") as courseName, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle  '
+            . ' FROM  %lms_communication AS c '
+            . '	JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm) '
+            . ' LEFT JOIN %lms_communication_category AS cc ON (c.id_category = cc.id_category)'
+            . ' LEFT JOIN %lms_communication_category_lang AS ccl ON (cc.id_category = ccl.id_category) AND ccl.lang_code = "' . $lang_code . '"'
+            . ' LEFT JOIN %lms_communication_lang AS cl ON (c.id_comm = cl.id_comm) AND cl.lang_code = "' . $lang_code . '"'
+            . ' LEFT JOIN %lms_course AS cs ON (c.id_course = cs.idCourse)'
+            . '	LEFT JOIN %lms_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
+            . ' WHERE (  ct.status = "passed" OR  ct.status = "completed" ) '
+            . (!empty($filter['text']) ? ' AND ( title LIKE "%' . $filter['text'] . '%" OR description LIKE "%' . $filter['text'] . '%" ) ' : '')
             . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '')
             . ' GROUP BY c.id_comm'
             . (isset($sortable[$sort])
                 ? ' ORDER BY ' . $sort . ' ' . ($dir == 'asc' ? 'ASC' : 'DESC') . ' '
                 : '')
             . ($results != 0 ? ' LIMIT ' . (int) $start_index . ', ' . (int) $results : '');
+   
         $re = $this->db->query($qtxt);
 
         if (!$re) {
@@ -370,6 +376,13 @@ class CommunicationAlms extends Model
             . ')';
 
         return $this->db->query($query_insert);
+    }
+
+    public function markAsUnread($id_comm, $id_user)
+    {
+        $query_delete = 'DELETE FROM %lms_communication_track '
+            . 'WHERE `idReference` = ' . (int) $id_comm . ' AND `idUser` = ' . (int) $id_user;
+        return $this->db->query($query_delete);
     }
 
     //--- tree functions ---------------------------------------------------------

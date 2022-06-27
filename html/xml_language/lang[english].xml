@@ -3256,6 +3256,8 @@ Username: [userid]]]></key>
         <key id="communication&amp;_ERROR" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Generic Error]]></key>
         <key id="communication&amp;_CATEGORY_FATHER" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impossible deleting a father category]]></key>
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You must set at least one category]]></key>
+        <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as read]]></key>
+        <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as unread]]></key>
       </module>
     </platform>
   </LANG>
