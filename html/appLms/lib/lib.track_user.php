@@ -37,7 +37,7 @@ class TrackUser
 
         sql_query('UPDATE %lms_tracksession SET active = 0 WHERE idUser = ' . (int)getLogUserId() . ' and active = 1');
 
-        sql_query("INSERT INTO _tracksession 
+        sql_query("INSERT INTO %lms_tracksession 
 		( idCourse, idUser, session_id, enterTime, lastTime, ip_address, active ) VALUES ( 
 			'" . $session->get('idCourse') . "', 
 			'" . getLogUserId() . "',
