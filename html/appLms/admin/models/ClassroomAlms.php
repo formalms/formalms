@@ -306,7 +306,7 @@ class ClassroomAlms extends Model
         $sub_end_date = (!empty($sub_end_date) ? Format::dateDb($sub_end_date, 'date') : '0000-00-00') . ' 00:00:00';
         $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '0000-00-00') . ' 00:00:00';
 
-        $id_date = $this->classroom_man->insDate($this->id_course, $date_info['code'], $date_info['name'], $date_info['description'], $date_info['mediumTime'], $date_info['maxNumSubscribes'], $date_info['price'], $date_info['overbooking'], $date_info['status'], $date_info['test'],
+        $id_date = $this->classroom_man->insDate($this->id_course, $date_info['code'], $date_info['name'], $date_info['description'], $date_info['mediumTime'], $date_info['max_par'], $date_info['price'], $date_info['overbooking'], $date_info['status'], $date_info['test'],
         $sub_start_date, $sub_end_date, $unsubscribe_date_limit);
 
         if (isset($date_info['customFields'])) {
