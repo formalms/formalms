@@ -987,6 +987,7 @@ CREATE TABLE IF NOT EXISTS `learning_course_date` (
   `sub_start_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `sub_end_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `unsubscribe_date_limit` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `calendarId` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id_date`),
   KEY `id_course` (`id_course`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
