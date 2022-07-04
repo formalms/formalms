@@ -889,7 +889,7 @@ class Course_API extends API
                 'course_code' => $row['code'],
                 'course_name' => $row['name'],
                 'date_generate' => $row['on_date'],
-                'cert_file' => FormaLms\lib\Get::site_url() . 'api/user/download/' . base64_e(SSLEncryption::encrpytString($row['cert_file'])),
+                'cert_file' => FormaLms\lib\Get::site_url() . 'api/user/download/' . (SSLEncryption::encrpytDownloadUrl($row['cert_file'])),
            //     'cert_file' => FormaLms\lib\Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
             ];
         }

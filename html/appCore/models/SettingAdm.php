@@ -406,8 +406,8 @@ class SettingAdm extends Model
                             $tree_names = $uma->getAllFolders(false);
                             $nodes = [];
                             foreach ($tree_names as &$node) {
-                                $node_name = addslashes($node->translation) ?: $node->code;
-                                $nodes[$node->idOrg] = $node_name;
+                                $node_name = $node->translation ?: $node->code;
+                                $nodes[$node->idOrg] = addslashes($node_name);
                             }
                             $nodes[0] = Lang::t('_SELECT_NODE', 'configuration');
                             asort($nodes);

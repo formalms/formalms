@@ -34,11 +34,20 @@ class SSLEncryption {
         return openssl_decrypt($string, self::$ciphering, self::$encryption_key, self::$options, self::$encryption_iv);
     }
 
-    function base64url_encode($data) {
-        return rtrim(strtr($data, '+/', '-_'), '=');
-      }
-      function base64_url_decode($input) {
-       return strtr($input, '._-', '+/+');
-      }
+    public static function encrpytDownloadUrl($string) {
+    
+        $computedString = self::encrpytString($string);
+
+        //return rtrim(strtr($computedString, '+/', '-_'), '=');
+        return str_replace('=', '@' ,base64_encode($computedString));
+    }
+
+    public static function decrpytDownloadUrl($string) {
+    
+        $computedString = base64_decode(str_replace('@', '=' ,$string));
+
+        //return rtrim(strtr($computedString, '+/', '-_'), '=');
+        return self::decrpytString($computedString);
+    }
 
 }

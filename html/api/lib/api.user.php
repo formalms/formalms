@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/api/lib/lib.api.php';
-
+require_once Forma::inc(_lms_ . '/lib/lib.sslencryption.php');
 class User_API extends API
 {
     protected function _getBranch($like, $parent = false, $lang_code = false)
@@ -1196,11 +1196,15 @@ class User_API extends API
 
     public function downloadFile($params)
     {
-        dd(urldecode(substr($params['q'],19)));
+        $downloadString = end(explode('/',$params['q']));
+        $fileName = SSLEncryption::decrpytDownloadUrl($downloadString);
+        $baseUrl = $_SERVER["DOCUMENT_ROOT"] . '/files/appLms/certificate/';
+        $fileUrl = $baseUrl . $fileName;
+     
         header('Content-Type: application/octet-stream');
         header("Content-Transfer-Encoding: Binary"); 
-        header("Content-disposition: attachment; filename=\"" . basename($request_url) . ".jpg\""); 
-        readfile($request_url);
+        header("Content-disposition: attachment; filename=\"" . $fileName. "\""); 
+        readfile($fileUrl);
         exit();// end process to prevent any problems.
     }
 
