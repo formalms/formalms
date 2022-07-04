@@ -15,6 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/api/lib/lib.api.php';
 require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+require_once Forma::inc(_lms_ . '/lib/lib.sslencryption.php');
 require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
 require_once Forma::inc(_lms_ . '/lib/lib.manmenu.php');
 require_once Forma::inc(_base_ . '/lib/lib.upload.php');
@@ -888,7 +889,8 @@ class Course_API extends API
                 'course_code' => $row['code'],
                 'course_name' => $row['name'],
                 'date_generate' => $row['on_date'],
-                'cert_file' => FormaLms\lib\Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
+                'cert_file' => FormaLms\lib\Get::site_url() . 'api/user/download/' . base64_e(SSLEncryption::encrpytString($row['cert_file'])),
+           //     'cert_file' => FormaLms\lib\Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
             ];
         }
 
@@ -2305,15 +2307,40 @@ class Course_API extends API
     public function getAnswerTest($params)
     {
         $response = [];
+        $courseResponse = [];
 
         $idUsers = $params['id_user'] ? $params['id_user'] : $params['id_users'];
 
         // recupera TRACK della risposta del test
         $db = DbConn::getInstance();
-        $qtxt = 'SELECT idTrack, idTest, date_end_attempt, idUser FROM learning_testtrack where idReference=' . $params['id_org'] . ' and idUser in (' . $idUsers . ')';
+        $qtxt = 'SELECT lt.idTrack, lt.idTest, lt.date_end_attempt, lt.idUser, lo.idCourse
+                FROM learning_testtrack lt
+                JOIN learning_organization lo ON lo.idOrg = lt.idReference 
+                WHERE lt.idReference=' . $params['id_org'] . ' 
+                and lt.idUser in (' . $idUsers . ')';
         $courseInfoResult = $db->query($qtxt);
-
+     
+        $course_man = new Man_Course();
+       
         foreach ($courseInfoResult as $courseInfo) {
+       
+            $courseNodeInfo = $course_man->getCourseWithMoreInfo($courseInfo['idCourse']);
+          
+            $courseNodeInfo['dates'] = [];
+
+            if ($courseNodeInfo['course_type'] === 'classroom') {
+                $classroom_man = new DateManager();
+                $course_dates = $classroom_man->getCourseDate($courseNodeInfo['idCourse']);
+
+                foreach ($course_dates as $key => $course_date) {
+                    $classroomModel = new ClassroomAlms($courseNodeInfo['idCourse'], $course_date['id_date']);
+                    unset($course_dates[$key]['id_course']);
+                    $course_dates[$key]['days'] = array_values($classroom_man->getAllDateDay($course_date['id_date'], ['id_day', 'id_date']));
+
+                    $courseNodeInfo['dates'] = array_values($course_dates);
+                }
+            }
+               
             $idUser = $courseInfo['idUser'];
             $idTrack = $courseInfo['idTrack'];
             $idTest = $courseInfo['idTest'];
@@ -2327,6 +2354,27 @@ class Course_API extends API
             $response['success'] = true;
             $response['id_users'] = $idUsers;
             $response['id_org'] = $params['id_org'];
+            $response['id_test'] = $idTest;
+            $courseResponse['course_id'] = $courseNodeInfo['idCourse'];
+            $courseResponse['code'] = str_replace('&', '&amp;', $courseNodeInfo['code']);
+            $courseResponse['course_name'] = str_replace('&', '&amp;', $courseNodeInfo['name']);
+            $courseResponse['course_description'] = str_replace('&', '&amp;', $courseNodeInfo['description']);
+            $courseResponse['course_box_description'] = str_replace('&', '&amp;', $courseNodeInfo['box_description']);
+            $courseResponse['status'] = $courseNodeInfo['status'];
+            $courseResponse['selling'] = $courseNodeInfo['selling'];
+            $courseResponse['price'] = $courseNodeInfo['prize'];
+            $courseResponse['subscribe_method'] = $courseNodeInfo['subscribe_method'];
+            $courseResponse['course_edition'] = $courseNodeInfo['course_edition'];
+            $courseResponse['course_type'] = $courseNodeInfo['course_type'];
+            $courseResponse['can_subscribe'] = $courseNodeInfo['can_subscribe'];
+            $courseResponse['sub_start_date'] = $courseNodeInfo['sub_start_date'];
+            $courseResponse['sub_end_date'] = $courseNodeInfo['sub_end_date'];
+            $courseResponse['date_begin'] = $courseNodeInfo['date_begin'];
+            $courseResponse['date_end'] = $courseNodeInfo['date_end'];
+            $courseResponse['course_link'] = FormaLms\lib\Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$courseNodeInfo['idCourse']}";
+            $courseResponse['img_course'] = $courseNodeInfo['img_course'] ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $courseNodeInfo['img_course'] : '';
+            $courseResponse['category_id'] = $courseNodeInfo['idCategory'];
+            $courseResponse['dates'] = $courseNodeInfo['dates'];
             $response[$idUser]['date_end_attempt'] = $date_end_attempt;
 
             $result = $db->query($q_test);
@@ -2348,13 +2396,11 @@ class Course_API extends API
             }
         }
 
+        $response['course_info'] = $courseResponse;
         if (count(explode(',', $idUsers)) === 1) {
-            $userAttempt = $response[$idUsers];
-            $userAttempt['success'] = $response['success'];
-            $userAttempt['id_user'] = $response['id_users'];
-            $userAttempt['id_org'] = $response['id_org'];
-
-            return $userAttempt;
+  
+            $response['id_user'] = $response['id_users'];
+            unset($response['id_users']);
         }
 
         return $response;

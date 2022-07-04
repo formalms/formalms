@@ -1194,6 +1194,16 @@ class User_API extends API
         return $output;
     }
 
+    public function downloadFile($params)
+    {
+        dd(urldecode(substr($params['q'],19)));
+        header('Content-Type: application/octet-stream');
+        header("Content-Transfer-Encoding: Binary"); 
+        header("Content-disposition: attachment; filename=\"" . basename($request_url) . ".jpg\""); 
+        readfile($request_url);
+        exit();// end process to prevent any problems.
+    }
+
     // ---------------------------------------------------------------------------
 
     public function call($name, $params)
@@ -1402,6 +1412,10 @@ class User_API extends API
             case 'removeOrg':
             case 'removeorg':
                 $output = $this->removeOrg($_POST);
+                break;
+
+            case 'download':
+                $this->downloadFile($_GET);
                 break;
 
             default:
