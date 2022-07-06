@@ -1,5 +1,4 @@
 <?php
-
 /*
  * FORMA - The E-Learning Suite
  *
@@ -12,9 +11,9 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-
+use \FormaLms\lib\Encryption\SSLEncryption;
 require_once _base_ . '/api/lib/lib.api.php';
-require_once Forma::inc(_lms_ . '/lib/lib.sslencryption.php');
+
 class User_API extends API
 {
     protected function _getBranch($like, $parent = false, $lang_code = false)
@@ -1194,10 +1193,10 @@ class User_API extends API
         return $output;
     }
 
-    public function downloadFile($params)
+    public function downloadCertificate()
     {
-        $downloadString = end(explode('/',$params['q']));
-        $fileName = SSLEncryption::decrpytDownloadUrl($downloadString);
+        $downloadString = end(explode('/',$this->request->get('q')));
+        $fileName = SSLEncryption::decryptDownloadUrl($downloadString);
         $baseUrl = $_SERVER["DOCUMENT_ROOT"] . '/files/appLms/certificate/';
         $fileUrl = $baseUrl . $fileName;
      
@@ -1213,6 +1212,8 @@ class User_API extends API
     public function call($name, $params)
     {
         $output = false;
+
+        
 
         if (!empty($params[0]) && !isset($params['idst'])) {
             $params['idst'] = $params[0]; //params[0] should contain user idst
@@ -1418,8 +1419,8 @@ class User_API extends API
                 $output = $this->removeOrg($_POST);
                 break;
 
-            case 'download':
-                $this->downloadFile($_GET);
+            case 'downloadCertificate':
+                $this->downloadCertificate();
                 break;
 
             default:

@@ -46,12 +46,14 @@ class API
     protected $needAuthentication = true;
     protected $authenticated = false;
     protected $buffer = '';
+    protected \Symfony\Component\HttpFoundation\Request $request;
 
     public function __construct()
     {
         $this->db = DbConn::getInstance();
         $this->aclManager = Docebo::user()->getAclManager();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $this->request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
     }
 
     /**

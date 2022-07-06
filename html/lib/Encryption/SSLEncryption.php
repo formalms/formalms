@@ -1,5 +1,5 @@
 <?php
-
+namespace FormaLms\lib\Encryption;
 /*
  * FORMA - The E-Learning Suite
  *
@@ -29,7 +29,7 @@ class SSLEncryption {
         return openssl_encrypt($string, self::$ciphering, self::$encryption_key, self::$options, self::$encryption_iv);
     }
 
-    public static function decrpytString($string) {
+    public static function decryptString($string) {
 
         return openssl_decrypt($string, self::$ciphering, self::$encryption_key, self::$options, self::$encryption_iv);
     }
@@ -42,12 +42,12 @@ class SSLEncryption {
         return str_replace('=', '@' ,base64_encode($computedString));
     }
 
-    public static function decrpytDownloadUrl($string) {
+    public static function decryptDownloadUrl($string) {
     
         $computedString = base64_decode(str_replace('@', '=' ,$string));
 
         //return rtrim(strtr($computedString, '+/', '-_'), '=');
-        return self::decrpytString($computedString);
+        return self::decryptString($computedString);
     }
 
 }

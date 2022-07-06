@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Encryption\SSLEncryption;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -15,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/api/lib/lib.api.php';
 require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-require_once Forma::inc(_lms_ . '/lib/lib.sslencryption.php');
+
 require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
 require_once Forma::inc(_lms_ . '/lib/lib.manmenu.php');
 require_once Forma::inc(_base_ . '/lib/lib.upload.php');
@@ -889,7 +891,7 @@ class Course_API extends API
                 'course_code' => $row['code'],
                 'course_name' => $row['name'],
                 'date_generate' => $row['on_date'],
-                'cert_file' => FormaLms\lib\Get::site_url() . 'api/user/download/' . (SSLEncryption::encrpytDownloadUrl($row['cert_file'])),
+                'cert_file' => FormaLms\lib\Get::site_url() . 'api/user/downloadCertificate/' . (SSLEncryption::encrpytDownloadUrl($row['cert_file'])),
            //     'cert_file' => FormaLms\lib\Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
             ];
         }
@@ -965,7 +967,7 @@ class Course_API extends API
                 'userid' => $row['userid'],
                 'date_generate' => $row['on_date'],
 
-                'cert_file' => FormaLms\lib\Get::site_url() . 'files/appLms/certificate/' . $row['cert_file'],
+                'cert_file' => FormaLms\lib\Get::site_url() . 'api/user/downloadCertificate/' . (SSLEncryption::encrpytDownloadUrl($row['cert_file'])),
 
                 'custom_fields' => $fields,
             ];
