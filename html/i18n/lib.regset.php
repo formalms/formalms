@@ -42,7 +42,7 @@ class RegionalSettings
      * @param resource $dbconn       the connection to the database
      *                               if not given last connection will be used
      */
-    public function RegionalSettings($region_id = false, $param_prefix = false, $dbconn = null)
+    public function __construct($region_id = false, $param_prefix = false, $dbconn = null)
     {
         $this->ddate = new DoceboDate();
 
@@ -158,15 +158,15 @@ class RegionalSettings
      */
     public function regionalToInternal($date, $type = false)
     {
+
         if ($type === false) {
             $type = 'datetime';
         }
-
+        $date = str_replace('/', '-', $date);
         switch ($type) {
             case 'datetime':
                 $this->_decodeDate($date, $this->full_token);
              break;
-
             case 'date':
                 $this->ddate->setInternalDate(false, false, false, '00', '00', '00');
                 $this->_decodeDate($date, $this->date_token);
@@ -176,6 +176,8 @@ class RegionalSettings
                 $this->ddate->setInternalDate('0000', '00', '00', false, false, false);
                 $this->_decodeDate($date, $this->time_token);
              break;
+            default:
+                break;
         }
 
         $internal = $this->ddate->getInternalDate();
