@@ -31,7 +31,7 @@ function outPageView($link)
 
     $dateend = date('Y-m-d H:i:s');
     $walk = [];
-    $chart_data = [];
+    $chartData = [];
     switch ($for) {
         case 'day':
             $dateinit = date('Y-m-d H:i:s', time() - 24 * 3600);
@@ -42,11 +42,11 @@ function outPageView($link)
 
             for ($i = 1; $i <= $colums; ++$i) {
                 $c = (($i + $start_num) % $colums);
-                $chart_data[$c] = [
+                $chartData[$c] = [
                     'x_axis' => $c,
                     'y_axis' => 0,
                 ];
-            };
+            }
             break;
         case 'week':
             $dateinit = date('Y-m-d H:i:s', time() - 7 * 24 * 3600);
@@ -57,7 +57,7 @@ function outPageView($link)
             for ($i = 1; $i <= $colums; ++$i) {
                 $c = (($start_num + $i) % $colums) + 1;
                 $walk_name[] = $lang->def('_WEEK_DAY_' . $c . '_SHORT');
-                $chart_data[$c] = [
+                $chartData[$c] = [
                     'x_axis' => $lang->def('_WEEK_DAY_' . ($c - 1) . '_SHORT'),
                     'y_axis' => 0,
                 ];
@@ -78,11 +78,11 @@ function outPageView($link)
                     $c = $limit;
                 }
                 $walk[] = $c;
-                $chart_data[$c] = [
+                $chartData[$c] = [
                     'x_axis' => $c,
                     'y_axis' => 0,
                 ];
-            };
+            }
             break;
         case 'year':
             $dateinit = date('Y-m-d H:i:s', time() - 365 * 24 * 3600);
@@ -96,11 +96,13 @@ function outPageView($link)
                     $c = $colums;
                 }
                 $walk[] = $c;
-                $chart_data[$c] = [
+                $chartData[$c] = [
                     'x_axis' => Lang::t('_MONTH_' . ($c < 10 ? '0' : '') . $c, 'standard'),
                     'y_axis' => 0,
                 ];
-            };
+            }
+            break;
+        default:
             break;
     }
 
@@ -117,9 +119,8 @@ function outPageView($link)
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
-    $page_views = [];
-    $query_stat = '
-	SELECT ' . $select . ', COUNT(*) 
+
+    $query_stat = 'SELECT ' . $select . ', COUNT(*) as count 
 	FROM %lms_trackingeneral 
 	WHERE idCourse="' . $idCourse . '"';
     if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
@@ -128,52 +129,71 @@ function outPageView($link)
     if ($_REQUEST['op'] == 'userdetails' && isset($_REQUEST['id'])) {
         $query_stat .= ' AND idUser = ' . $_REQUEST['id'];
     }
-    $query_stat .= ' AND timeof >= ' . $dateinit . ' AND timeof <= ' . $dateend . ' 
+    $query_stat .= ' AND timeof >= "' . $dateinit . '" AND timeof <= "' . $dateend . '" 
 	GROUP BY ' . $group_by . '
 	ORDER BY timeof';
     $max = 0;
     $re_stat = sql_query($query_stat);
-    while (list($col, $number) = sql_fetch_row($re_stat)) {
-        $page_views[$col] = $number;
+
+    foreach ($re_stat as $row) {
+        $number = $row['count'];
         if ($number > $max) {
             $max = $number;
         }
 
-        $chart_data[$col]['y_axis'] = $number;
+        $chartData[$row['from_time']]['y_axis'] = $number;
     }
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.js', true, true);
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist-plugin-pointlabels/chartist-plugin-pointlabels.min.js', true, true);
     Util::get_css(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/chartist/chartist.min.css', true, true);
 
-    cout('<div class="statistic_chart" style="height: 300px;"></div>', 'content');
-  
-    foreach ($chart_data as $row) {
+    cout('<canvas id="statistic_chart"></canvas>', 'content');
+
+    foreach ($chartData as $row) {
         $labels[] = $row['x_axis'];
         $series[] = $row['y_axis'];
     }
 
-    $json = new Services_JSON();
-    cout('<script type="text/javascript">
-        new Chartist.Bar(".statistic_chart", {
-                                labels: ' . $json->encode($labels) . ',
-                                series: [
-                                    ' . $json->encode($series) . '
-                                ]
-                            },
-                            {
-                                seriesBarDistance: 5,
-                                axisX: {
-                                    offset: 15
-                                },
-                                axisY: {
-                                    offset: 80,
-                                    labelInterpolationFnc: function(value) {
-                                        return value;
-                                    },
-                                    scaleMinSpace: 15
-                                }
-                            });
-        </script>', 'content');
+    $dataset = [
+        'label' => $lang->def('_PAGE_VIEW'),
+        'data' => $series,
+        'borderWidth' => 1,
+        'backgroundColor' => [],
+        'borderColor' => [],
+        'pointHoverRadius' => 5,
+        'hoverBackgroundColor' => []
+    ];
+
+    $chartString = '<script type="text/javascript">$(document).ready(function () {';
+    $chartString .= "
+    var dataset = " . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($dataset, 'json') . ";
+    var backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-2');
+    var borderColor = getComputedStyle(document.documentElement).getPropertyValue('--color-2-600');
+        
+        dataset.data.forEach(function(number) {
+           dataset.backgroundColor.push(backgroundColor);
+           dataset.borderColor.push(borderColor);
+           dataset.hoverBackgroundColor.push(borderColor);
+});
+        
+    const statsChart = new window.frontend.modules.Chart($(\"#statistic_chart\"), {
+    type: 'bar',
+    data: {
+        labels: " . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($labels, 'json') . ",
+        datasets: [ dataset ]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});";
+
+    $chartString .= '});</script>';
+    cout($chartString, 'content');
+
 
     cout('<div class="align-center">'
         . '<ul class="link_list_inline">', 'content');
@@ -219,7 +239,7 @@ function statistic()
 
     $GLOBALS['page']->add(
         '<div class="std_block">' .
-        '</br>'.
+        '</br>' .
         '<a href="index.php?r=coursestats/exportUsageStatistics" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">
 		<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span>
 	</a>'
@@ -402,7 +422,7 @@ function userdetails()
     $type_h[2] = 'align_right';
     $tb->setColsStyle($type_h);
     $total_sec = 0;
-    $chart_data = [];
+    $chartData = [];
     while (list($id_enter, $session_start_at, $last_action_at, $how, $num_op, $last_module, $last_op, $session_id) = sql_fetch_row($re_tracks)) {
         $hours = (int)($how / 3600);
         $minutes = (int)(($how % 3600) / 60);
