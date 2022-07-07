@@ -2503,7 +2503,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('defaultTemplate', 'standard', 'template', 255, '0', 1, 4, 1, 0, ''),
 ('default_language', 'italian', 'language', 255, '0', 1, 3, 1, 0, ''),
 ('do_debug', 'off', 'enum', 3, 'debug', 8, 8, 1, 0, ''),
-('file_upload_whitelist', 'exe,rar,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv', 'string', 65535, 'security', 8, 27, 1, 0, ''),
+('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg,m4v,mkv', 'string', 65535, 'security', 8, 27, 1, 0, ''),
 ('google_stat_code', '', 'textarea', 65535, 'google', 8, 28, 1, 0, ''),
 ('google_stat_in_lms', '0', 'check', 1, 'google', 8, 29, 1, 0, ''),
 ('hide_empty_category', 'on', 'enum', 3, '0', 4, 6, 1, 0, ''),

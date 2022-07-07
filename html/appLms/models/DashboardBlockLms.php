@@ -417,7 +417,7 @@ abstract class DashboardBlockLms extends Model
 
     public function getAllowedFileTypes()
     {
-        $upload_whitelist = FormaLms\lib\Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg');
+        $upload_whitelist = FormaLms\lib\Get::sett('file_upload_whitelist', 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg,m4v,mkv');
         $allowedFileTypes = explode(',', trim($upload_whitelist, ','));
 
         return $allowedFileTypes;

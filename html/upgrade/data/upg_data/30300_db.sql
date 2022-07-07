@@ -29,3 +29,5 @@ CREATE TABLE IF NOT EXISTS learning_communication_lang (
 );
 
 INSERT IGNORE INTO `dashboard_blocks`(`block_class`, `created_at`) VALUES ('DashboardBlockCourseAttendanceGraphLms', CURRENT_TIMESTAMP);
+
+UPDATE core_setting SET param_value = 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg,m4v,mkv' WHERE param_name = 'file_upload_whitelist';
