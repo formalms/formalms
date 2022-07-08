@@ -377,11 +377,15 @@ class RegionalSettings
 
         $pattern = $this->_getDateRegExp($token);
         preg_match($pattern, $date, $found_val);
-        unset($found_val[0]);
+        if (is_array($found_val) && count($found_val) > 0){
+            unset($found_val[0]);
+        }
 
         $pattern = $this->_getFormatRegExp($token);
         preg_match($pattern, $token, $found_key);
-        unset($found_key[0]);
+        if (is_array($found_key) && count($found_key) > 0){
+            unset($found_key[0]);
+        }
 
         // print_r($found_val); echo("<br />\n"); //debug
         // print_r($found_key); echo("<br />\n"); //debug
