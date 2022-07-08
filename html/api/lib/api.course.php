@@ -2330,11 +2330,25 @@ class Course_API extends API
           
             $courseNodeInfo['dates'] = [];
 
+            $idUser = $courseInfo['idUser'];
+            $idTrack = $courseInfo['idTrack'];
+            $idTest = $courseInfo['idTest'];
+            $date_end_attempt = $courseInfo['date_end_attempt'];
+
+            //user Infos
+            $userResponse['date_end_attempt'] = $date_end_attempt;
+            $userResponse['id_user'] = $idUser;
+            $userResponse['id_date'] = null;
+
             if ($courseNodeInfo['course_type'] === 'classroom') {
                 $classroom_man = new DateManager();
                 $course_dates = $classroom_man->getCourseDate($courseNodeInfo['idCourse']);
 
                 foreach ($course_dates as $key => $course_date) {
+
+                    if($course_date['usersids'] && in_array($idUser, explode(',', $course_date['usersids']))) {
+                        $userResponse['id_date'] = $course_date['id_date'];
+                    }
                     $classroomModel = new ClassroomAlms($courseNodeInfo['idCourse'], $course_date['id_date']);
                     unset($course_dates[$key]['id_course']);
                     $course_dates[$key]['days'] = array_values($classroom_man->getAllDateDay($course_date['id_date'], ['id_day', 'id_date']));
@@ -2343,18 +2357,13 @@ class Course_API extends API
                 }
             }
                
-            $idUser = $courseInfo['idUser'];
-            $idTrack = $courseInfo['idTrack'];
-            $idTest = $courseInfo['idTest'];
-            $date_end_attempt = $courseInfo['date_end_attempt'];
-
             $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
                     from learning_testtrack_answer lta, learning_testquest ltq
                     where lta.idTrack=' . $idTrack . ' 
                     and lta.idQuest=ltq.idQuest and lta.user_answer=1';
 
             $response['success'] = true;
-            $response['id_users'] = $idUsers;
+            $response['id_users'] = explode(',', $idUsers);
             $response['id_org'] = $params['id_org'];
             $response['id_test'] = $idTest;
             $courseResponse['course_id'] = $courseNodeInfo['idCourse'];
@@ -2377,7 +2386,6 @@ class Course_API extends API
             $courseResponse['img_course'] = $courseNodeInfo['img_course'] ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $courseNodeInfo['img_course'] : '';
             $courseResponse['category_id'] = $courseNodeInfo['idCategory'];
             $courseResponse['dates'] = $courseNodeInfo['dates'];
-            $response[$idUser]['date_end_attempt'] = $date_end_attempt;
 
             $result = $db->query($q_test);
 
@@ -2387,7 +2395,7 @@ class Course_API extends API
                     $resEsito = 'correct';
                 }
 
-                $response[$idUser]['quest_list'][$row['idQuest']] = [
+                $userResponse['quest_list'][] = [
                     'id_quest' => $row['idQuest'],
                     'title_quest' => $row['title_quest'],
                     'score_assigned' => $row['score_assigned'],
@@ -2396,6 +2404,8 @@ class Course_API extends API
                     'esito' => $resEsito,
                 ];
             }
+
+            $response['tests'][] = $userResponse;
         }
 
         $response['course_info'] = $courseResponse;

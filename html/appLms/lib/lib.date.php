@@ -316,7 +316,7 @@ class DateManager
             return false;
         }
 
-        $query = 'SELECT dt.*, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed'
+        $query = 'SELECT dt.*, MIN(dy.date_begin) AS date_begin, MAX(dy.date_end) AS date_end, COUNT(dy.id_day) as num_day, COUNT(DISTINCT du.id_user) as user_subscribed, GROUP_CONCAT(du.id_user) as usersids'
             . ' FROM %lms_course_date as dt'
             . ' LEFT OUTER JOIN %lms_course_date_day  as dy ON dy.id_date = dt.id_date'
             . ' LEFT OUTER JOIN %lms_course_date_user as du ON du.id_date = dt.id_date'

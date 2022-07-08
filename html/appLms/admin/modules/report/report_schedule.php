@@ -75,6 +75,7 @@ function schedule_recipients($idrep)
             }
 
         $scheduleTempData = $session->get('schedule_tempdata',[]);
+        
 
         $scheduleTempData['name'] = $_POST['sched_name'];
         $scheduleTempData['period'] = $_POST['cron_radio'];
@@ -93,7 +94,7 @@ function schedule_recipients($idrep)
         Util::jump_to('index.php?modname=report&op=schedulelist&idrep=' . $idrep);
     } elseif (isset($_POST['okselector'])) {
         $scheduleTempData = $session->get('schedule_tempdata',[]);
-
+        $scheduleUpdate = $session->get('schedule_update',0);
         $entity_selected = $user_select->getSelection($_POST);
 
         //$_temp = $ref['recipients'];
@@ -103,8 +104,8 @@ function schedule_recipients($idrep)
 
         //get current saved report ID from session (check if report is saved, otherwise -> error)
 
-        if ($session->has('schedule_tempdata')) {
-            $sched = report_update_schedulation($scheduleTempData, $_name, $_period, $_time, $entity_selected);
+        if ($scheduleUpdate) {
+            $sched = report_update_schedulation($scheduleUpdate, $_name, $_period, $_time, $entity_selected);
         } else {
             $id_report = $idrep; 
             $sched = report_save_schedulation($id_report, $_name, $_period, $_time, $entity_selected);
