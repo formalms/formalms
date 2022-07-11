@@ -2303,29 +2303,83 @@ class Course_API extends API
     public function getAnswerTest($params)
     {
         $response = [];
+        $courseResponse = [];
 
         $idUsers = $params['id_user'] ? $params['id_user'] : $params['id_users'];
 
         // recupera TRACK della risposta del test
         $db = DbConn::getInstance();
-        $qtxt = 'SELECT idTrack, idTest, date_end_attempt, idUser FROM learning_testtrack where idReference=' . $params['id_org'] . ' and idUser in (' . $idUsers . ')';
+        $qtxt = 'SELECT lt.idTrack, lt.idTest, lt.date_end_attempt, lt.idUser, lo.idCourse
+                FROM learning_testtrack lt
+                JOIN learning_organization lo ON lo.idOrg = lt.idReference 
+                WHERE lt.idReference=' . $params['id_org'] . ' 
+                and lt.idUser in (' . $idUsers . ')';
         $courseInfoResult = $db->query($qtxt);
-
+     
+        $course_man = new Man_Course();
+       
         foreach ($courseInfoResult as $courseInfo) {
+       
+            $courseNodeInfo = $course_man->getCourseWithMoreInfo($courseInfo['idCourse']);
+          
+            $courseNodeInfo['dates'] = [];
+
             $idUser = $courseInfo['idUser'];
             $idTrack = $courseInfo['idTrack'];
             $idTest = $courseInfo['idTest'];
             $date_end_attempt = $courseInfo['date_end_attempt'];
 
+            //user Infos
+            $userResponse['date_end_attempt'] = $date_end_attempt;
+            $userResponse['id_user'] = $idUser;
+            $userResponse['id_date'] = null;
+
+            if ($courseNodeInfo['course_type'] === 'classroom') {
+                $classroom_man = new DateManager();
+                $course_dates = $classroom_man->getCourseDate($courseNodeInfo['idCourse']);
+
+                foreach ($course_dates as $key => $course_date) {
+
+                    if($course_date['usersids'] && in_array($idUser, explode(',', $course_date['usersids']))) {
+                        $userResponse['id_date'] = $course_date['id_date'];
+                    }
+                    $classroomModel = new ClassroomAlms($courseNodeInfo['idCourse'], $course_date['id_date']);
+                    unset($course_dates[$key]['id_course']);
+                    $course_dates[$key]['days'] = array_values($classroom_man->getAllDateDay($course_date['id_date'], ['id_day', 'id_date']));
+
+                    $courseNodeInfo['dates'] = array_values($course_dates);
+                }
+            }
+               
             $q_test = 'select lta.idQuest, lta.idAnswer , title_quest, score_assigned  , lta.idTrack as idTrack
                     from learning_testtrack_answer lta, learning_testquest ltq
                     where lta.idTrack=' . $idTrack . ' 
                     and lta.idQuest=ltq.idQuest and lta.user_answer=1';
 
             $response['success'] = true;
-            $response['id_users'] = $idUsers;
+            $response['id_users'] = explode(',', $idUsers);
             $response['id_org'] = $params['id_org'];
-            $response[$idUser]['date_end_attempt'] = $date_end_attempt;
+            $response['id_test'] = $idTest;
+            $courseResponse['course_id'] = $courseNodeInfo['idCourse'];
+            $courseResponse['code'] = str_replace('&', '&amp;', $courseNodeInfo['code']);
+            $courseResponse['course_name'] = str_replace('&', '&amp;', $courseNodeInfo['name']);
+            $courseResponse['course_description'] = str_replace('&', '&amp;', $courseNodeInfo['description']);
+            $courseResponse['course_box_description'] = str_replace('&', '&amp;', $courseNodeInfo['box_description']);
+            $courseResponse['status'] = $courseNodeInfo['status'];
+            $courseResponse['selling'] = $courseNodeInfo['selling'];
+            $courseResponse['price'] = $courseNodeInfo['prize'];
+            $courseResponse['subscribe_method'] = $courseNodeInfo['subscribe_method'];
+            $courseResponse['course_edition'] = $courseNodeInfo['course_edition'];
+            $courseResponse['course_type'] = $courseNodeInfo['course_type'];
+            $courseResponse['can_subscribe'] = $courseNodeInfo['can_subscribe'];
+            $courseResponse['sub_start_date'] = $courseNodeInfo['sub_start_date'];
+            $courseResponse['sub_end_date'] = $courseNodeInfo['sub_end_date'];
+            $courseResponse['date_begin'] = $courseNodeInfo['date_begin'];
+            $courseResponse['date_end'] = $courseNodeInfo['date_end'];
+            $courseResponse['course_link'] = FormaLms\lib\Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$courseNodeInfo['idCourse']}";
+            $courseResponse['img_course'] = $courseNodeInfo['img_course'] ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $courseNodeInfo['img_course'] : '';
+            $courseResponse['category_id'] = $courseNodeInfo['idCategory'];
+            $courseResponse['dates'] = $courseNodeInfo['dates'];
 
             $result = $db->query($q_test);
 
@@ -2335,7 +2389,7 @@ class Course_API extends API
                     $resEsito = 'correct';
                 }
 
-                $response[$idUser]['quest_list'][$row['idQuest']] = [
+                $userResponse['quest_list'][] = [
                     'id_quest' => $row['idQuest'],
                     'title_quest' => $row['title_quest'],
                     'score_assigned' => $row['score_assigned'],
@@ -2344,15 +2398,15 @@ class Course_API extends API
                     'esito' => $resEsito,
                 ];
             }
+
+            $response['tests'][] = $userResponse;
         }
 
+        $response['course_info'] = $courseResponse;
         if (count(explode(',', $idUsers)) === 1) {
-            $userAttempt = $response[$idUsers];
-            $userAttempt['success'] = $response['success'];
-            $userAttempt['id_user'] = $response['id_users'];
-            $userAttempt['id_org'] = $response['id_org'];
-
-            return $userAttempt;
+  
+            $response['id_user'] = $response['id_users'];
+            unset($response['id_users']);
         }
 
         return $response;
