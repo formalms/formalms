@@ -515,6 +515,29 @@ class Man_Course
         return $courses;
     }
 
+    /**
+     * return the list of all the courses in the platform, or fillter by category.
+     *
+     * @param int $idCourse filter for passed course
+     *
+     * @return array 
+     */
+    public function getCourseWithMoreInfo($idCourse)
+    {
+        $courses = [];
+        $query_course = '
+		SELECT idCourse, idCategory, code, name, description, box_description, lang_code, status, course_type,
+			subscribe_method, mediumTime, show_rules, selling, prize, course_demo, create_date, course_edition,
+			can_subscribe, sub_start_date, sub_end_date, date_begin, date_end, img_course
+		FROM %lms_course ';
+    
+            $query_course .= " WHERE idCourse = '" . $idCourse . "' ";
+        
+        $re_course = sql_query($query_course);
+        return  sql_fetch_assoc($re_course);
+    }
+
+
     public function addCourse($course_info)
     {
         $field = [];
