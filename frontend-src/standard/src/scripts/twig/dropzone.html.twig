@@ -3,6 +3,9 @@
   <div id="drop-zone" class="forma-drop-zone {% if files.length %}has-files{% endif %}">
     <div class="fd-middle-wrapper">
       <span>{{ Lang_translate('_BROWSE_OR_DROP_HERE', 'dropzone') }}</span>
+     
+       <br/><span>MAX:{{ maxFileSize }}</span>
+    
     </div>
     <input type="file" multiple style="display:none;" id="fd-file-input">
   </div>

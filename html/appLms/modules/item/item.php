@@ -142,20 +142,25 @@ if (!Docebo::user()->isAnonymous()) {
     function moditem($object_item)
     {
         //checkPerm('view', false, 'storage');
-
+        $units = array( 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
         require_once _base_ . '/lib/lib.form.php';
         $lang = &DoceboLanguage::createInstance('item');
 
         $back_coded = htmlentities(urlencode($object_item->back_url));
 
-        list($filename) = sql_fetch_row(sql_query('SELECT path'
+        list($filename, $title, $description) = sql_fetch_row(sql_query('SELECT path, title, description'
         . ' FROM %lms_materials_lesson'
         . ' WHERE idLesson = ' . (int) $object_item->id . ''));
 
-        $file['name'] = $filename;
+        $file['name'] = $title;
+        $file['description'] = $description;
         $file['size'] = filesize(_base_ . '/files/appLms/' . FormaLms\lib\Get::sett('pathlesson') . $filename);
+        
+        $power = $file['size'] > 0 ? floor(log($file['size'], 1024)) : 0;
+        $file['size_label'] = number_format($file['size'] / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
         $files[] = $file;
-
+      
+     
         /*
             $GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
                 . '<div class="std_block">'
@@ -177,7 +182,7 @@ if (!Docebo::user()->isAnonymous()) {
                 . '</div>', 'content');
                 */
 
-        $GLOBALS['page']->add(FormaLms\appCore\Template\TwigManager::getInstance()->render('upload-file.html.twig', ['back_url' => $object_item->back_url, 'op' => 'upitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
+        $GLOBALS['page']->add(FormaLms\appCore\Template\TwigManager::getInstance()->render('editfile.html.twig', ['back_url' => $object_item->back_url, 'files' => $files, 'op' => 'upitem', 'id_comm' => $object_item->id], _lms_ . '/views/lo'), 'content');
     }
 
     function upitem()
@@ -190,7 +195,7 @@ if (!Docebo::user()->isAnonymous()) {
         $back_url = FormaLms\lib\Get::pReq('back_url', DOTY_MIXED, '');
         $idLesson = FormaLms\lib\Get::pReq('id_comm', DOTY_INT, null);
         $title = FormaLms\lib\Get::pReq('title', DOTY_STRING, Lang::t('_NOTITLE', 'item', 'lms'));
-
+        $description = FormaLms\lib\Get::pReq('description', DOTY_STRING, '');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
         try {
@@ -289,6 +294,14 @@ if (!Docebo::user()->isAnonymous()) {
                     }
                 }
             }
+        } else {
+            $update_query = 'UPDATE %lms_materials_lesson  SET author = "' . getLogUserId() . '", title = "' . $title . '", description = "' . $description . '"
+            WHERE idLesson = "' . (int) $idLesson . '"';
+
+            if (!sql_query($update_query)) {
+                $response['errors'][] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
+            }
+            $back_url = FormaLms\lib\Get::site_url() . _folder_lms_ .'/'.$back_url;
         }
 
         $response['back_url'] = str_replace('&amp;', '&', $back_url . '&id_los=' . (int) $idLesson . '&mod_result=1');

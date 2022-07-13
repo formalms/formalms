@@ -1,5 +1,7 @@
+
 <div id="forma-uploader"></div>
 <script>
+
     window.frontend.helpers.Axios.defaults.headers.post['X-Signature'] = window.frontend.config.signature;
     window.frontend.helpers.Axios.defaults.headers.post['Content-Type'] = 'multipart/form-data';
     document.getElementById('forma-uploader').FormaFileUploader({
@@ -27,5 +29,7 @@
             });
         }
     });
+
+
 </script>
 

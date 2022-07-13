@@ -196,6 +196,7 @@ class LomanagerLmsController extends LmsController
 
     public function edit()
     {
+      
         $id = FormaLms\lib\Get::req('id', DOTY_INT, false);
 
         require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');

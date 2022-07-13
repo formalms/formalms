@@ -60,6 +60,8 @@ class ClientService
             'translations' => $this->langAdm->langTranslation(),
         ];
 
+        $config['uploadFileSize'] = ini_get('upload_max_filesize');
+
         return $config;
     }
 

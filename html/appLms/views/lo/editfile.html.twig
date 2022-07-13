@@ -1,0 +1,57 @@
+
+
+<div class="fd-list">
+{{ Form_openForm('upitem', 'index.php?modname=item&amp;op=upitem', false, 'post') }}
+      {{ Form_getHidden('id_comm', 'id_comm', id_comm) }}
+      {{ Form_getHidden('back_url', 'back_url', back_url) }}
+  {% for file in files %}
+    <div class="columns">
+      <div class="fd-list-column fd-list-files-column">
+                 
+        <div class="fd-list-file selected">
+          <div class="file-detail" data-index="0">
+            <div class="name">{{file.name}}</div>
+            <div class="size">{{file.size_label}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="fd-list-column fd-edit-column">
+        <div>
+        <div class="form-group title-input-wrapper">
+           {{ Form_getTextfield(Lang_translate('_TITLE','communication'),  'title', 'title', 255, file.name) }}
+        </div>
+        <div class="form-group description-input-wrapper">
+          {{ Form_getSimpleTextarea(Lang_translate('_DESCRIPTION','standard'),  'desc', 'description', file.description) }}
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="form-group">
+       
+        {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+     
+    </div>
+  {% endfor %}
+  {{ Form_closeForm() }}
+</div>
+
+<script>
+    $("#save").click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        $.ajax({
+          type: $('#upitem').attr('method'),
+          url: $('#upitem').attr('action'),
+          data: $('#upitem').serialize(),
+          success: function (data) { 
+            console.log(data);
+            var result = JSON.parse(data);
+              if(result.status == true) {
+                window.location.replace(result.back_url);
+              }
+          }
+        });
+    });
+</script>
+
+    

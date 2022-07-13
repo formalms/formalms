@@ -74,8 +74,12 @@ class FormaDropZone extends FormaPlugin {
     this.Options = {
       ListWrapper: '#drop-zone-list',
       SubmitText: Lang.Translation('_UPLOAD_FILES','dropzone'),
-      OnSubmitClick: null
+      OnSubmitClick: null,
+      maxFileSize : window.frontend.config.uploadFileSize
     };
+
+
+
 
     // FilesList watcher
     this.watch('FilesList', this.OnFilesListChange);
@@ -251,6 +255,7 @@ class FormaDropZone extends FormaPlugin {
         file.indexedName = `file${index}`;
         return file; 
       }),
+      maxFileSize: this.Options.maxFileSize,
       submitText: this.Options.SubmitText,
       uploading: this._Uploading,
       success: this._SuccessMessage,
@@ -258,6 +263,7 @@ class FormaDropZone extends FormaPlugin {
     });
     this.Element.innerHTML = view;
     this.AttachEvents();
+    console.log(this);
     if(forceSelect != null) {
       this.SelectFile(forceSelect);
     } else {
