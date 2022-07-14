@@ -65,7 +65,7 @@ class ClientService
         return $config;
     }
 
-    public function getBaseUrl(): string
+    public function getBaseUrl($onlyBasePath = false): string
     {
         $baseUrl = '';
         if (isset($_SERVER['HTTP_HOST'])) {
@@ -75,38 +75,41 @@ class ClientService
 
             $requestUri = $_SERVER['REQUEST_URI'];
 
-            preg_match('/\/(.*?).php/', $requestUri, $match);
-            if (!empty($match)) {
-                $explodedMatch = explode('/', $match[0]);
-                $possiblePhpEndpoint = '';
-                foreach ($explodedMatch as $item) {
-                    if (!empty($item) && str_contains($item, '.php')) {
-                        $possiblePhpEndpoint .= str_replace(self::coreFolders, '', $item);
+            if (!$onlyBasePath) {
+                preg_match('/\/(.*?).php/', $requestUri, $match);
+                if (!empty($match)) {
+                    $explodedMatch = explode('/', $match[0]);
+                    $possiblePhpEndpoint = '';
+                    foreach ($explodedMatch as $item) {
+                        if (!empty($item) && str_contains($item, '.php')) {
+                            $possiblePhpEndpoint .= str_replace(self::coreFolders, '', $item);
+                        }
+                    }
+
+                    $possiblePhpEndpoints[] = $possiblePhpEndpoint;
+                }
+
+                $possiblePhpEndpoints[] = '/?';
+                $possiblePhpEndpoints[] = '/api';
+
+                foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
+                    if (str_contains($requestUri, $possiblePhpEndpoint)) {
+                        $requestUriArray = explode($possiblePhpEndpoint, $requestUri);
+                        $requestUriArray = explode('/', $requestUriArray[0]);
+                        break;
                     }
                 }
 
-                $possiblePhpEndpoints[] = $possiblePhpEndpoint;
-            }
-
-            $possiblePhpEndpoints[] = '/?';
-            $possiblePhpEndpoints[] = '/api';
-
-            foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
-                if (str_contains($requestUri, $possiblePhpEndpoint)) {
-                    $requestUriArray = explode($possiblePhpEndpoint, $requestUri);
-                    $requestUriArray = explode('/', $requestUriArray[0]);
-                    break;
+                if (empty($requestUriArray) && !empty($requestUri)) {
+                    $requestUriArray = explode('/', $requestUri);
                 }
-            }
 
-            if (empty($requestUriArray) && !empty($requestUri)) {
-                $requestUriArray = explode('/', $requestUri);
-            }
+                $path = '';
 
-            $path = '';
-            foreach ($requestUriArray as $requestUriItem) {
-                if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true)) {
-                    $path .= sprintf('/%s', $requestUriItem);
+                foreach ($requestUriArray as $requestUriItem) {
+                    if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true)) {
+                        $path .= sprintf('/%s', $requestUriItem);
+                    }
                 }
             }
             $baseUrl = sprintf('%s://%s%s', $http, $hostname, $path);
