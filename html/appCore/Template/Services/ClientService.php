@@ -16,12 +16,14 @@ namespace FormaLms\appCore\Template\Services;
 class ClientService
 {
     private static self $clientService;
+    protected \Symfony\Component\HttpFoundation\Request $request;
 
     private \LangAdm $langAdm;
 
     private function __construct()
     {
         $this->langAdm = new \LangAdm();
+        $this->request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
     }
 
     public static function getInstance()
@@ -67,54 +69,50 @@ class ClientService
 
     public function getBaseUrl($onlyBasePath = false): string
     {
-        $baseUrl = '';
-        if (isset($_SERVER['HTTP_HOST'])) {
-            $http = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https' ? 'https' : 'http';
-            $hostname = $_SERVER['HTTP_HOST'];
-            $possiblePhpEndpoints = [];
 
-            $requestUri = $_SERVER['REQUEST_URI'];
+        $possiblePhpEndpoints = [];
+        $path = '';
+        $basePath = $this->request->getSchemeAndHttpHost();
+        $requestUri = $this->request->getBaseUrl();
 
-            if (!$onlyBasePath) {
-                preg_match('/\/(.*?).php/', $requestUri, $match);
-                if (!empty($match)) {
-                    $explodedMatch = explode('/', $match[0]);
-                    $possiblePhpEndpoint = '';
-                    foreach ($explodedMatch as $item) {
-                        if (!empty($item) && str_contains($item, '.php')) {
-                            $possiblePhpEndpoint .= str_replace(self::coreFolders, '', $item);
-                        }
-                    }
-
-                    $possiblePhpEndpoints[] = $possiblePhpEndpoint;
-                }
-
-                $possiblePhpEndpoints[] = '/?';
-                $possiblePhpEndpoints[] = '/api';
-
-                foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
-                    if (str_contains($requestUri, $possiblePhpEndpoint)) {
-                        $requestUriArray = explode($possiblePhpEndpoint, $requestUri);
-                        $requestUriArray = explode('/', $requestUriArray[0]);
-                        break;
+        if (!$onlyBasePath) {
+            preg_match('/\/(.*?).php/', $requestUri, $match);
+            if (!empty($match)) {
+                $explodedMatch = explode('/', $match[0]);
+                $possiblePhpEndpoint = '';
+                foreach ($explodedMatch as $item) {
+                    if (!empty($item) && str_contains($item, '.php')) {
+                        $possiblePhpEndpoint .= str_replace(self::coreFolders, '', $item);
                     }
                 }
 
-                if (empty($requestUriArray) && !empty($requestUri)) {
-                    $requestUriArray = explode('/', $requestUri);
-                }
+                $possiblePhpEndpoints[] = $possiblePhpEndpoint;
+            }
 
-                $path = '';
+            $possiblePhpEndpoints[] = '/?';
+            $possiblePhpEndpoints[] = '/api';
 
-                foreach ($requestUriArray as $requestUriItem) {
-                    if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true)) {
-                        $path .= sprintf('/%s', $requestUriItem);
-                    }
+            foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
+                if (str_contains($requestUri, $possiblePhpEndpoint)) {
+                    $requestUriArray = explode($possiblePhpEndpoint, $requestUri);
+                    $requestUriArray = explode('/', $requestUriArray[0]);
+                    break;
                 }
             }
-            $baseUrl = sprintf('%s://%s%s', $http, $hostname, $path);
-        }
 
-        return $baseUrl;
+            if (empty($requestUriArray) && !empty($requestUri)) {
+                $requestUriArray = explode('/', $requestUri);
+            }
+
+            
+
+            foreach ($requestUriArray as $requestUriItem) {
+                if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true)) {
+                    $path .= sprintf('/%s', $requestUriItem);
+                }
+            }
+        }
+       
+       return $path != '' ? $path : $basePath;
     }
 }
