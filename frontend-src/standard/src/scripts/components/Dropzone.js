@@ -263,7 +263,6 @@ class FormaDropZone extends FormaPlugin {
     });
     this.Element.innerHTML = view;
     this.AttachEvents();
-    console.log(this);
     if(forceSelect != null) {
       this.SelectFile(forceSelect);
     } else {
