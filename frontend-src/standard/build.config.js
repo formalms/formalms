@@ -60,14 +60,14 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-    alias: {
-      Config: path.resolve(
-        __dirname,
-        'src/scripts/config/config.js'
-      )
-    }
-  },
+ // resolve: {
+ //   alias: {
+ //     Config: path.resolve(
+ //       __dirname,
+ //       'src/scripts/config/config.js'
+ //     )
+ //   }
+ // },
   plugins: [
     new HardSourceWebpackPlugin(),
     /*new UglifyJSPlugin({

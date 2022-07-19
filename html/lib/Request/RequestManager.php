@@ -24,6 +24,9 @@ class RequestManager
     public function __construct()
     {
         $this->request = Request::createFromGlobals();
+       
+        //se c'è un load balancer prima della chiamata potrebbe non essere riconosciuto l'https quindi iniettiamo come proxy affidabili o l'ip del balancer o lo stesso ip del chiamante
+        Request::setTrustedProxies(array($this->request->server->get('REMOTE_ADDR')), Request::HEADER_X_FORWARDED_PROTO);
     }
 
     /**

@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-
+use FormaLms\appCore\Template\Services\ClientService;
 class MediagalleryAdmController extends AdmController
 {
     public function init()
@@ -199,8 +199,8 @@ class MediagalleryAdmController extends AdmController
         }
 
         $user_id = (int) Docebo::user()->getIdSt();
-        $qtxt = 'SELECT * FROM ' . $GLOBALS['prefix_fw'] . "_user_file WHERE user_idst='" . $user_id . "' AND type = '$type'";
-        $q = sql_query($qtxt);
+        $queryString = 'SELECT * FROM %adm_user_file WHERE user_idst="' . $user_id . '" AND type = "' . $type . '"';
+        $queryResults = sql_query($queryString);
 
         $path = (strlen(dirname($_SERVER['PHP_SELF'])) != 1 ? dirname($_SERVER['PHP_SELF']) : '') . '/';
         $path .= $GLOBALS['where_files_relative'];
@@ -208,35 +208,37 @@ class MediagalleryAdmController extends AdmController
             'data' => [],
         ];
 
-        if (($q) && (sql_num_rows($q) > 0)) {
-            while ($row = sql_fetch_array($q)) {
-                $site_url = 'http://' . $_SERVER['HTTP_HOST'] . $path . '/common/users/';
+        if (($queryResults) && (sql_num_rows($queryResults) > 0)) {
+            $baseUrl = ClientService::getInstance()->getBaseUrl();
+            $site_url = $baseUrl . $path . '/common/users/';
+            foreach ($queryResults as $queryResult) {
+               
 
-                if (empty($row['media_url'])) {
-                    $file = _USER_FPATH . rawurlencode($row['real_fname']);
+                if (empty($queryResult['media_url'])) {
+                    $file = _USER_FPATH . rawurlencode($queryResult['real_fname']);
                 }
 
-                if (!empty($row['media_url'])) {
+                if (!empty($queryResult['media_url'])) {
                     // $type = getMediaType($row["media_url"]);
-                    $site_url = $row['media_url'];
+                    $site_url = $queryResult['media_url'];
                 } else {
                     // $type = getMediaType($row["fname"]);
                 }
 
                 $results['data'][] = [
-                    'id' => $row['id'],
-                    'user_idst' => $row['user_idst'],
+                    'id' => $queryResult['id'],
+                    'user_idst' => $queryResult['user_idst'],
                     'type' => $type,
-                    'fname' => $row['fname'],
-                    'real_fname' => $row['real_fname'],
-                    'size' => str_replace('.', ',', round($row['size'] / 1024, 2)) . ' Kb',
-                    'uldate' => $row['uldate'],
+                    'fname' => $queryResult['fname'],
+                    'real_fname' => $queryResult['real_fname'],
+                    'size' => str_replace('.', ',', round($queryResult['size'] / 1024, 2)) . ' Kb',
+                    'uldate' => $queryResult['uldate'],
                     'file' => $file,
-                    'url' => $site_url . $row['real_fname'],
+                    'url' => $site_url . $queryResult['real_fname'],
                 ];
             }
-            $results['recordsFiltered'] = sql_num_rows($q);
-            $results['recordsTotal'] = sql_num_rows($q);
+            $results['recordsFiltered'] = sql_num_rows($queryResults);
+            $results['recordsTotal'] = sql_num_rows($queryResults);
         }
 
         exit(json_encode($results));

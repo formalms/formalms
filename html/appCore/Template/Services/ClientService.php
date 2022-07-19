@@ -72,6 +72,7 @@ class ClientService
 
         $possiblePhpEndpoints = [];
         $path = '';
+       
         $basePath = $this->request->getSchemeAndHttpHost();
         $requestUri = $this->request->getBaseUrl();
 

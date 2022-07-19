@@ -14,13 +14,15 @@
 <script>
 
 function getApiMediaUrl(slug, params) {
-	let url = `${window.config.baseUrl()}/appCore/index.php?r=${slug}`;
+	
+	let url = window.frontend.config.url.appCore +`/index.php?r=${slug}`;
 	if (params) {
 		url += '&' + new URLSearchParams(params).toString();
 	}
 
 	return url;
 }
+
 
 (function() {
 	const tableEl = $('#mediaTable');
