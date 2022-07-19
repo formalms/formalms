@@ -12,7 +12,16 @@
         {% set class =  ' d-col--3--desktop' %}
     {% endif %}
     <div class="middlearea_container d-col d-col--12 {{ class }}">
-        <p>{{ block.msg | raw }}</p>
+        <div class="d-welcome d-widget">
+            <h3 class="d-title">
+                  {% if block.title is empty %}
+                      {{ Lang_translate('_DASHBOARDBLOCKWELCOMELMS','dashboard') }}
+                  {% else %}
+                      {{ block.title }}
+                  {% endif %}
+              </h3>
+            <p>{{ block.msg | raw }}</p>
+        </div>
     </div>
 
 {% endblock %}

@@ -54,7 +54,8 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
             $msg = str_replace("[$placeholder]", $data['data'][$placeholder], $msg);
         }
         $data['msg'] = $msg;
-
+        $data['title'] = $this->data['title'];
+    
         return $data;
     }
 
