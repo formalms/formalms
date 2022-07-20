@@ -521,6 +521,16 @@ class Get
     }
 
     /**
+     * Get the path of std images
+     *
+     * @return string
+     */
+    public static function path_image() {
+
+        return self::tmpl_path() . 'images/';
+    }
+
+    /**
      * Draw the page title of a mvc or module.
      *
      * @param array $text_array the title of the page or an array with  the breadcrmbs elements (key => value)

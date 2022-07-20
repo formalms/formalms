@@ -24,6 +24,11 @@ class CourseLmsController extends LmsController
      */
     public $userProfileDataManager;
 
+    const STUDENTNOTADMITTED = [_CUS_SUBSCRIBED => _USER_STATUS_SUBS,
+                                    _CUS_BEGIN => _USER_STATUS_BEGIN, 
+                                    _CUS_SUSPEND => _USER_STATUS_SUSPEND, 
+                                    _CUS_END => _USER_STATUS_END];
+
     public function init()
     {
         require_once _adm_ . '/lib/lib.field.php';
@@ -52,7 +57,7 @@ class CourseLmsController extends LmsController
     public function infocourse()
     {
         checkPerm('view_info', false, 'course');
-
+        $mod_perm = checkPerm('mod', true);
         try {
             $acl_man = Docebo::user()->getAclManager();
             $lang = &DoceboLanguage::createInstance('course');
@@ -61,6 +66,7 @@ class CourseLmsController extends LmsController
         } catch (\Exception $exception) {
         }
 
+   
         $status_lang = [
             0 => $lang->def('_NOACTIVE'),
             1 => $lang->def('_ACTIVE'),
@@ -134,22 +140,14 @@ class CourseLmsController extends LmsController
             $course['status'] = $status_lang[$course['status']];
             $course['completion_method'] = $course['permCloseLO'] ? $lang->def('_MANUALACTION') : $lang->def('_ENDOBJECT');
 
+        
+           
             $course['cannot_enter'] = [];
-            if ($this->statusNoEnter($course['userStatusOp'], _CUS_SUBSCRIBED)) {
-                $course['cannot_enter'][] = $lang->def('_USER_STATUS_SUBS');
+            foreach(self::STUDENTNOTADMITTED as $studentStatus => $langStatus) {
+                if ($this->statusNoEnter($course['userStatusOp'], $studentStatus)) {
+                    $course['cannot_enter'][] = $lang->def($langStatus);
+                }   
             }
-            if ($this->statusNoEnter($course['userStatusOp'], _CUS_BEGIN)) {
-                $course['cannot_enter'][] = $lang->def('_USER_STATUS_BEGIN');
-            }
-            if ($this->statusNoEnter($course['userStatusOp'], _CUS_SUSPEND)) {
-                $course['cannot_enter'][] = $lang->def('_USER_STATUS_SUSPEND');
-            }
-            if ($this->statusNoEnter($course['userStatusOp'], _CUS_END)) {
-                $course['cannot_enter'][] = $lang->def('_USER_STATUS_END');
-            }
-
-            $course['cannot_enter'][] = $lang->def('_USER_STATUS_BEGIN');
-            $course['cannot_enter'][] = $lang->def('_USER_STATUS_END');
         }
 
         //checking if  message for enabled current user
@@ -164,13 +162,130 @@ class CourseLmsController extends LmsController
             ],
             'course' => $course,
             'info_date' => $info_date,
+         
         ];
 
+        if($mod_perm) {
+            $data['route']['edit'] = ['url' => 'index.php?r=lms/course/modcourse'];
+        }
         $this->render('infocourse', $data);
     }
 
+    public function modcourse()
+    {
+        checkPerm('mod');
+
+    
+        $data['lang_c'] = &DoceboLanguage::createInstance('course');
+        $lang = &DoceboLanguage::createInstance('course');
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+       
+        $data['id_course'] = $session->get('idCourse');
+     
+        $data['levels'] = CourseLevel::getTranslatedLevels();
+        $data['array_lang'] = Docebo::langManager()->getAllLangCode();
+        $data['difficult_lang'] = [
+            'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
+            'easy' => $lang->def('_DIFFICULT_EASY'),
+            'medium' => $lang->def('_DIFFICULT_MEDIUM'),
+            'difficult' => $lang->def('_DIFFICULT_DIFFICULT'),
+            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT')
+        ];
+
+        
+        $query_course = '
+            SELECT code, name, description, lang_code, status, level_show_user, subscribe_method, 
+                linkSponsor, mediumTime, permCloseLO, userStatusOp, difficult, 
+                show_progress, show_time, show_extra_info, show_rules, date_begin, date_end, valid_time 
+            FROM %lms_course
+            WHERE idCourse = "' .  $data['id_course'] . '"';
+        $data['course'] = sql_fetch_array(sql_query($query_course));
+
+        foreach(self::STUDENTNOTADMITTED as $studentStatus => $langStatus) {
+           $data['cannot_enter_status'][] = ['value' => $this->statusNoEnter( $data['course']['userStatusOp'], $studentStatus), 'lang' => $langStatus ];
+        }
+        $this->render('modinfocourse', $data);
+
+    }
+
+
+    public function upcourse() {
+        checkPerm('mod');
+
+     
+        $array_lang = Docebo::langManager()->getAllLangCode();
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $user_status = 0;
+        if ($this->request->request->has('user_status')) {
+            foreach ($this->request->get('user_status') as $status => $v) {
+                $user_status |= (1 << $status);
+            }
+        }
+        $file_sponsor = '';
+        $file_logo = '';
+        $re = true;
+        $show_level = 0;
+        if ($this->request->request->has('course_show_level')) {
+            foreach ($this->request->get('course_show_level') as $lv => $v) {
+                $show_level |= (1 << $lv);
+            }
+        }
+        $query_course = '
+	                    UPDATE %lms_course 
+	                    SET code = "' . $this->request->get('course_code') . '", 
+                        name = "' . $this->request->get('course_name') . '", 
+                        description = "' . $this->request->get('course_descr') . '", 
+                        lang_code = "' . $array_lang[$this->request->get('course_lang')] . '", 
+                        status = "' . (int)$this->request->get('course_status') . '", 
+                        level_show_user = "' . $show_level . '", 
+                        mediumTime = "' . $this->request->get('course_medium_time') . '",
+                        permCloseLO = "' . $this->request->get('course_em') . '", 
+                        userStatusOp = "' . $user_status . '", 
+                        difficult = "' . $this->request->get('course_difficult') . '", 
+                        show_progress = "' . ($this->request->request->has('course_progress') ? 1 : 0) . '", 
+                        show_time = "' . ($this->request->request->has('course_time') ? 1 : 0) . '", 
+                        show_extra_info = "' . ($this->request->request->has('course_advanced') ? 1 : 0) . '", 
+                        show_rules = "' . (int) $this->request->get('course_show_rules') . '" 
+                    WHERE idCourse = "' . $session->get('idCourse') . '"';
+        if (!sql_query($query_course)) {
+            $re = false;
+        }
+
+        $acl_man = &Docebo::user()->getAclManager();
+        // send alert
+        require_once _base_ . '/lib/lib.eventmanager.php';
+
+        $msg_composer = new EventMessageComposer();
+
+        $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
+        $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => FormaLms\lib\Get::site_url(),
+            '[course_code]' => $this->request->get('course_code') ,
+            '[course]' => $this->request->get('course_name') ,]);
+
+        $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
+            '[course_code]' => $this->request->get('course_code') ,
+            '[course]' => $this->request->get('course_name') ,]);
+
+        require_once _lms_ . '/lib/lib.course.php';
+        $course_man = new Man_Course();
+        $recipients = $course_man->getIdUserOfLevel($session->get('idCourse'));
+
+        createNewAlert('CoursePorpModified',
+            'course',
+            'add',
+            '1',
+            'Inserted course ' . $this->request->get('course_name') ,
+            $recipients,
+            $msg_composer);
+
+        Util::jump_to('index.php?r=lms/course/infocourse&result=' . ($re ? 'ok' : 'err'));
+    }
+
+
+
     private function statusNoEnter($perm, $status)
     {
+      
         return $perm & (1 << $status);
     }
 

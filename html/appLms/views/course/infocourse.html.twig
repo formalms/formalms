@@ -173,3 +173,11 @@
     </div>
   </div>
 </div>
+{% if  route.edit and route.edit is not empty %}
+<div class="table-container-below">
+  <a class="infomod" href="{{route.edit.url}}">
+    <img src="{{ Get_pathImage() }}standard/edit.png " alt="{{  Lang_translate('_MOD') }}" />
+    {{  Lang_translate('_MOD') }}
+  </a>
+</div>
+{% endif %}

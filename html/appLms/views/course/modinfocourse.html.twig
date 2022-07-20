@@ -1,0 +1,83 @@
+ <div class="page-header">
+  <h1>{{ Lang_translate('_MOD','course') }}</h1>
+</div>
+
+<div class="page-subtitle">
+  {{course.name}} 
+</div>      
+       
+    {{ Form_openForm('course_modify', 'index.php?r=lms/course/upcourse') }}
+        {{ Form_openElementSpace() }}
+            {{ Form_getTextfield( Lang_translate('_CODE', 'course') , 'course_code', 'course_code', 50, course.code ) }}
+            {{ Form_getTextfield(Lang_translate('_COURSE_NAME', 'course') , 'course_name', 'course_name', 255, course.name ) }}
+            {{ Form_getDropdown( Lang_translate('_COURSE_LANG_METHOD', 'course'), 'course_lang', 'course_lang', array_lang|raw, lang_code) }}
+            {{ Form_getDropdown( Lang_translate('_DIFFICULTY', 'course'), 'course_difficult', 'course_difficult', difficult_lang|raw, course.difficult) }}
+            {{ Form_getDropdown( Lang_translate('_STATUS', 'course'), 'course_status', 'course_status', difficult_lang|raw, course.status) }}
+           {{ Form_getTextarea( Lang_translate('_DESCRIPTION', 'course'), 'course_descr', 'course_descr', course.description) }}
+        {{ Form_closeElementSpace() }}
+        {{ Form_openButtonSpace() }}
+            {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'course')) }}
+            {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'course')) }}
+        {{ Form_closeElementSpace() }}
+        {{ Form_openElementSpace() }}
+            {{ Form_getOpenFieldset( Lang_translate('_COURSE_DISPLAY_MODE', 'course')) }}
+                {{ Form_getOpenCombo( Lang_translate('_SHOW_USER_OF_LEVEL', 'course')) }}
+                {% for level, level_name in levels %}
+                    {{ Form_getCheckbox(level_name, 'course_show_level_' ~ level, 'course_show_level[' ~  level ~ ']', level) }}
+                {% endfor %}
+                {{ Form_getCloseCombo()}}
+                {{ Form_getOpenCombo( Lang_translate('_WHERE_SHOW_COURSE', 'course')) }}
+               
+                    {{ Form_getRadio(Lang_translate('_SC_EVERYWHERE', 'course'), 'course_show_rules_every', 'course_show_rules','0', (course.show_rules == 0)) }}
+                    {{ Form_getRadio(Lang_translate('_SC_ONLY_IN', 'course'), 'course_show_rules_only_in', 'course_show_rules','1', (course.show_rules == 1)) }}
+                    {{ Form_getRadio(Lang_translate('_SC_ONLYINSC_USER', 'course'), 'course_show_rules_onlyinsc_user', 'course_show_rules','2', (course.show_rules == 2)) }}
+                {{ Form_getCloseCombo()}}
+                {{ Form_getOpenCombo( Lang_translate('_WHAT_SHOW', 'course')) }}
+               
+                    {{ Form_getCheckbox(Lang_translate('_SHOW_PROGRESS', 'course'), 'course_progress', 'course_progress','1', course.show_progress) }}
+                    {{ Form_getCheckbox(Lang_translate('_SHOW_TIME', 'course'), 'course_time', 'course_time','1', course.show_time) }}
+                    {{ Form_getCheckbox(Lang_translate('_SHOW_ADVANCED_INFO', 'course'), 'course_advanced', 'course_advanced','1', course.show_extra_info) }}
+                {{ Form_getCloseCombo()}}
+            {{ Form_getCloseFieldset() }}
+            {{ Form_getOpenFieldset( Lang_translate('_USER_INTERACTION_OPTION', 'course')) }}
+                {#
+                {{ Form_getOpenCombo( Lang_translate('_COURSE_SUBSRIBE', 'course')) }}
+
+                    {{ Form_getRadio(Lang_translate('_COURSE_S_GODADMIN', 'course'), 'course_subs_godadmin', 'course_subs','0', (course.subscribe_method == 0)) }}
+                    {{ Form_getRadio(Lang_translate('_COURSE_S_MODERATE', 'course'), 'course_subs_moderate', 'course_subs','1', (course.subscribe_method == 1)) }}
+                    {{ Form_getRadio(Lang_translate('_COURSE_S_FREE', 'course'), 'course_subs_free', 'course_subs','2', (course.subscribe_method == 2)) }}
+            
+                {{ Form_getCloseCombo()}}
+                #}
+                {{ Form_getOpenCombo( Lang_translate('_COURSE_END_MODE', 'course')) }}
+
+                    {{ Form_getRadio(Lang_translate('_COURSE_EM_TEACHER', 'course'), 'course_em_manual', 'course_em','1', course.permCloseLO) }}
+                    {{ Form_getRadio(Lang_translate('_COURSE_EM_LO', 'course'), 'course_em_lo', 'course_em','0', course.permCloseLO) }}
+                
+                {{ Form_getCloseCombo()}}
+                {{ Form_getOpenCombo( Lang_translate('_COURSE_STATUS_CANNOT_ENTER', 'course')) }}
+                 {% for key, not_enter_status in cannot_enter_status %} 
+                    {{ Form_getCheckbox(Lang_translate(not_enter_status.lang, 'course'), 'user_status_' ~ key, 'user_status[' ~  key ~ ']',0, not_enter_status.value) }}
+                {% endfor %}
+                {{ Form_getCloseCombo()}}
+                {#
+                {{ Form_getTextfield( Lang_translate('_MAX_NUM_SUBSCRIBE', 'course') , 'max_num_subscribe', 'max_num_subscribe', 11, course.max_num_subscribe ) }}
+                {{ Form_getTextfield( Lang_translate('_MAX_SMS_BUDGET', 'course') , 'max_sms_budget', 'max_sms_budget', 11, course.max_sms_budget ) }}
+                #}
+            {{ Form_getCloseFieldset() }}
+            {{ Form_getOpenFieldset( Lang_translate('_COURSE_TIME_OPTION', 'course')) }}
+                {#
+                {{ Form_getDatefield( Lang_translate('_DATE_BEGIN', 'course') , 'course_date_begin', 'course_date_begin', 11, course.date_begin ) }}
+                {{ Form_getDatefield( Lang_translate('_DATE_END', 'course') , 'course_date_end', 'course_date_end', 11, course.course_date_end ) }}
+                {{ Form_getTextfield( Lang_translate('_DAY_OF_VALIDITY', 'course') , 'course_day_of', 'course_day_of', '10', course.valid_time ) }}
+                #}
+                {{ Form_getTextfield( Lang_translate('_MEDIUM_TIME', 'course') , 'course_medium_time', 'course_medium_time', '10', course.mediumTime ) }}
+           
+            {{ Form_getCloseFieldset() }}
+        {{ Form_closeElementSpace() }}
+        {{ Form_openButtonSpace() }}
+            {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'course')) }}
+            {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'course')) }}
+        {{ Form_closeElementSpace() }}
+    {{ Form_closeForm() }}
+
