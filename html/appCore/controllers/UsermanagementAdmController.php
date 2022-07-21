@@ -40,6 +40,7 @@ class UsermanagementAdmController extends AdmController
         $this->permissions = [
             'view' => checkPerm('view', true, 'usermanagement'),                    //view the module
             'view_user' => checkPerm('view', true, 'usermanagement'),                    //view the users list
+            'view_deleted_user' => true,                    //view the users deleted list - default true per superadmin eventualmente viene resetato sotto
             'add_user' => checkPerm('add', true, 'usermanagement'),                    //create users
             'mod_user' => checkPerm('mod', true, 'usermanagement'),                    //edit users
             'del_user' => checkPerm('del', true, 'usermanagement'),                    //remove users
@@ -53,6 +54,8 @@ class UsermanagementAdmController extends AdmController
 
         // Check if the user admin has reached the max number of users he can create
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        
+            $this->permissions['view_deleted_user'] = false;
             $admin_pref = new AdminPreference();
             $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
             if ($pref['admin_rules.limit_user_insert'] == 'on') {

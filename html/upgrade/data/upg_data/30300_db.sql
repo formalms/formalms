@@ -31,3 +31,8 @@ CREATE TABLE IF NOT EXISTS learning_communication_lang (
 INSERT IGNORE INTO `dashboard_blocks`(`block_class`, `created_at`) VALUES ('DashboardBlockCourseAttendanceGraphLms', CURRENT_TIMESTAMP);
 
 UPDATE core_setting SET param_value = 'rar,exe,zip,jpg,gif,png,txt,csv,rtf,xml,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,pdf,xps,mp4,mp3,flv,swf,mov,wav,ogg,flac,wma,wmv,jpeg,m4v,mkv' WHERE param_name = 'file_upload_whitelist';
+
+INSERT IGNORE INTO core_setting (param_name, param_value, value_type, max_size, pack, regroup, sequence, param_load, hide_in_modify, extra_info)
+											VALUES ('Clear_Twig_Cache','index.php?r=adm/setting/clearTwigCache','button',2,'Twig Cache',8,30,0,0,'');
+											
+UPDATE core_setting SET param_value = 'index.php?r=adm/setting/clearTwigCache' WHERE param_name = 'Clear_Twig_Cache';
