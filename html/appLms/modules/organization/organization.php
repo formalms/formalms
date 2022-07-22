@@ -107,7 +107,7 @@ function organization_display($treeView)
 
     if (!empty($_GET)) {
         foreach ($_GET as $name => $value) {
-            $value = Get::gReq($name, DOTY_STRING);
+            $value = FormaLms\lib\Get::gReq($name, DOTY_STRING);
             if ($value) {
                 $url .= '&' . $name . '=' . $value;
             }

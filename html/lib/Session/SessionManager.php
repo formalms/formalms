@@ -120,7 +120,7 @@ class SessionManager
     public function isSessionExpired()
     {
 
-        $session_time = Get::sett('ttlSession', 3600);
+        $session_time = \FormaLms\lib\Get::sett('ttlSession', 3600);
 
         if (!$this->session->has('session_timeout')) {
             $this->session->set('session_timeout', time());

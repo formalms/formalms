@@ -126,7 +126,7 @@ class CommunicationAlmsController extends AlmsController
         $show_descendants = FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0;
 
         $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, Get::sett('visuItem', 25));
+        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
         $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
         $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
@@ -925,7 +925,7 @@ class CommunicationAlmsController extends AlmsController
                 }
 
                 $output = ['success' => false];
-                $id = Get::req('node_id', DOTY_INT, -1);
+                $id = FormaLms\lib\Get::req('node_id', DOTY_INT, -1);
                 if ($id > 0) {
                     $output['success'] = $this->model->deleteCategory($id);
                 }
