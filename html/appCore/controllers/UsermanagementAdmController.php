@@ -2743,7 +2743,7 @@ class UsermanagementAdmController extends AdmController
     public function show_deletedTask()
     {
         //check permissions
-        if (!$this->permissions['view_user']) {
+        if (!$this->permissions['view_deleted_user']) {
             Util::jump_to('index.php?r=' . $this->link . '/show');
         }
 
