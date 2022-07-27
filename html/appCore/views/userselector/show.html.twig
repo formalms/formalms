@@ -23,7 +23,12 @@
 
 $(document).ready(function() {
 
-const DTable = new window.frontend.modules.FormaTable('#test', {});
+const DTable = new window.frontend.modules.FormaTable('#test', {
+            rowId: function (row) {
+                return row[0];
+            }, 
+            data: ['culo']
+            });
 console.log(DTable);
     
 });

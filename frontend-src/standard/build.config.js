@@ -1,6 +1,6 @@
-//const MinifyPlugin = require('babel-minify-webpack-plugin');
+
 const path = require('path');
-//const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+
 
 module.exports = {
   entry: {
@@ -11,6 +11,10 @@ module.exports = {
     publicPath: './static/',
     filename: '[name].js',
     chunkFilename: '[name].js'
+  },
+  cache: {
+    type: 'filesystem',
+    cacheLocation: path.resolve(__dirname, '/.build_cache'),
   },
   module: {
     rules: [
@@ -37,7 +41,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [['env', {"forceAllTransforms" : true}],'react', 'es2015', 'stage-0']
+            presets: ['env','react', 'es2015', 'stage-0']
           }
         }
       },
@@ -46,7 +50,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [['env', {"forceAllTransforms" : true}],'react', 'es2015', 'stage-0']
+            presets: ['env','react', 'es2015', 'stage-0']
           }
         }
       },
@@ -69,7 +73,7 @@ module.exports = {
  //   }
  // },
   plugins: [
-    //new HardSourceWebpackPlugin(),
-    new MinifyPlugin()
   ]
 };
+
+
