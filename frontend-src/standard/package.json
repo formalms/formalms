@@ -7,8 +7,10 @@
     "autoprefixer": "7.2.1",
     "babel-core": "6.26.0",
     "babel-loader": "7.1.2",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "babel-preset-env": "1.6.1",
     "babel-preset-es2015": "6.24.1",
+    "babel-preset-es2016": "^6.24.1",
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-0": "6.24.1",
     "clean-css-cli": "4.1.10",
@@ -29,7 +31,6 @@
     "style-loader": "0.20.2",
     "twig": "1.10.5",
     "twig-loader": "0.3.1",
-    "uglifyjs-webpack-plugin": "^1.3.0",
     "webpack": "3.10.0"
   },
   "dependencies": {
@@ -45,6 +46,8 @@
     "bootstrap-sass": "^3.4.3",
     "breakpoint-sass": "2.7.1",
     "chart.js": "^2.9.4",
+    "datatables.net": "^1.12.1",
+    "datatables.net-dt": "^1.12.1",
     "dotdotdot": "^1.7.0",
     "easycontext": "^1.0.2",
     "gsap": "1.20.3",
@@ -59,8 +62,7 @@
     "slick-carousel": "1.8.1",
     "sortablejs": "^1.15.0",
     "tinymce": "^5.10.5",
-    "twigjs": "0.0.4",
-    "uglify-js": "^3.16.0"
+    "twigjs": "0.0.4"
   },
   "scripts": {
     "unminified-css": "node-sass src/styles/main.scss ../../html/templates/standard/static/main.min.css",

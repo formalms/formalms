@@ -1,4 +1,4 @@
-//const UglifyJSPlugin = require('uglifyjs-webpack-plugin');		
+//const MinifyPlugin = require('babel-minify-webpack-plugin');
 const path = require('path');
 //const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
@@ -37,7 +37,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'react', 'es2015', 'stage-0']
+            presets: [['env', {"forceAllTransforms" : true}],'react', 'es2015', 'stage-0']
           }
         }
       },
@@ -46,7 +46,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env', 'react', 'es2015', 'stage-0']
+            presets: [['env', {"forceAllTransforms" : true}],'react', 'es2015', 'stage-0']
           }
         }
       },
@@ -70,11 +70,6 @@ module.exports = {
  // },
   plugins: [
     //new HardSourceWebpackPlugin(),
-    /*new UglifyJSPlugin({
-      uglifyOptions: {
-        sourceMap: false,
-        comments: false
-      }
-    })*/
+    new MinifyPlugin()
   ]
 };
