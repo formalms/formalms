@@ -1,19 +1,22 @@
- <table id='test'>
+ <table class="table table-bordered display" id='test'>
   <thead>
     <th>Company</th>
     <th>Contact</th>
     <th>Country</th>
+     <th>Country</th>
   </thead>
   <tbody>
   <tr>
     <td>Alfreds Futterkiste</td>
     <td>Maria Anders</td>
     <td>Germany</td>
+    <td>Germany</td>
   </tr>
   <tr>
     <td>Centro comercial Moctezuma</td>
     <td>Francisco Chang</td>
     <td>Mexico</td>
+    <td>Germany</td>
   </tr>
    </tbody>
 </table> 
@@ -22,12 +25,24 @@
 
 
 $(document).ready(function() {
-
+  var columns = [
+            {data: 'content', title: '{{ Lang_translate('_TITLE', 'communication') }}', sortable: true, edit: true},
+            {data: 'courseName', title: '{{ Lang_translate('_COURSE', 'course') }}', sortable: false, edit: true},
+            {data: 'categoryTitle', title: '{{ Lang_translate('_CATEGORY', 'communication') }}', sortable: false, edit: true},
+            {data: 'type_of', title: '{{ Lang_translate('_TYPE', 'communication') }}', sortable: false, edit: true}
+        ];
+  var rows = [
+            {content :'content', courseName: '{{ Lang_translate('_TITLE', 'communication') }}', categoryTitle : 'ciccio', type_of:'palla'},
+            {content: 'courseName', courseName: '{{ Lang_translate('_COURSE', 'course') }}', categoryTitle : 'ciccio', type_of:'palla'},
+            {content: 'categoryTitle', courseName: '{{ Lang_translate('_CATEGORY', 'communication') }}', categoryTitle : 'ciccio', type_of:'palla'},
+            {content: 'type_of', courseName: '{{ Lang_translate('_TYPE', 'communication') }}', categoryTitle : 'ciccio', type_of:'palla'}
+        ];
 const DTable = new window.frontend.modules.FormaTable('#test', {
             rowId: function (row) {
                 return row[0];
             }, 
-            data: ['culo']
+            data: rows,
+            columns
             });
 console.log(DTable);
     
