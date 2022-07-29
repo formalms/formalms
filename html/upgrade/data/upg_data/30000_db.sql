@@ -26,7 +26,16 @@ CREATE TABLE IF NOT EXISTS `dashboard_layouts`
     UNIQUE INDEX `name_idx`(`name`) USING BTREE,
     INDEX `status_idx`(`status`) USING BTREE
 ) ENGINE = InnoDB
- DEFAULT CHARSET = utf8;
+ DEFAULT CHARSET = utf8;    
+ 
+ 
+ CREATE TABLE IF NOT EXISTS  `dashboard_permission` 
+(
+  `id_dashboard` int(11) NOT NULL,
+  `idst_list` text NOT NULL,
+  PRIMARY KEY (`id_dashboard`)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8;    
 
 CREATE TABLE IF NOT EXISTS `dashboard_block_config`
 (

@@ -3465,6 +3465,15 @@ CREATE TABLE IF NOT EXISTS `dashboard_blocks`
     UNIQUE KEY `block_class_unique` (`block_class`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
+  
+  
+CREATE TABLE IF NOT EXISTS  `dashboard_permission` 
+(
+  `id_dashboard` int(11) NOT NULL,
+  `idst_list` text NOT NULL,
+  PRIMARY KEY (`id_dashboard`)
+) ENGINE=InnoDB 
+  DEFAULT CHARSET=utf8;    
 
 
 INSERT IGNORE INTO `dashboard_blocks` (`id`, `block_class`, `created_at`)
