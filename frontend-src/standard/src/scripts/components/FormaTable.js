@@ -1,5 +1,9 @@
-//import Lang from '../helpers/Lang';
+import Lang from '../helpers/Lang';
 import dt from 'datatables.net';
+import 'datatables.net-dt'
+import 'datatables.net-buttons'
+import 'jquery-datatables-checkboxes'
+import 'datatables.net-select'
 
 /**
  * FormaTable
@@ -45,7 +49,7 @@ import dt from 'datatables.net';
 
         this.setOptions(options, this.eventsListeners, idOrClassOrElement);
 
-        console.log(this._options);
+    
         this.DataTable = new dt(idOrClassOrElement,this._options);
     }
 
@@ -76,7 +80,9 @@ import dt from 'datatables.net';
           }
 
           if (options.ajax !== undefined) {
+           
               this._options.ajax = options.ajax;
+              this._options.ajax.headers = {'X-Signature': window.frontend.config.signature};
           }
 
           if (options.processing !== undefined) {
@@ -103,7 +109,7 @@ import dt from 'datatables.net';
                * Edit columns.
                */
 
-               console.log(this);
+            
               if (this.edit) {
                 
                   var _thisColumn = this;
@@ -274,9 +280,11 @@ import dt from 'datatables.net';
             this._options.dom = 'Bfrtip';
         }
 
-        if (options.dom !== undefined) {
+        if (options.buttons !== undefined) {
+   
             this._options.buttons = options.buttons;
         } else {
+         
             this._options.buttons = [];
         }
 
@@ -340,26 +348,29 @@ import dt from 'datatables.net';
            * Custom select/deselect all buttons for correct paginated selection/deselection handling.
            */
           if (options.select.all === true) {
+         
+            var selectionAttr = this._selection;
             this._options.buttons = $.merge(this._options.buttons, [{
-                  extend: 'selectAll',
-                  text:  'ciao',//'<?php echo Lang::t('_SELECT_ALL', 'standard'); ?>',
+                 extend : 'selectAll',
+                  text:  Lang.Translation('_SELECT_ALL', 'standard'), 
                   action: function(e, dt) {
-                      if (!this._selection.all) {
-                          this._selection.rows = [];
+              
+                      if (!selectionAttr.all) {
+                        selectionAttr.rows = [];
                       }
-                      this._selection.all = true;
+                      selectionAttr.all = true;
                       dt.rows({
                           search: 'applied'
                       }).select();
                   }
               }, {
-                  extend: 'selectNone',
-                  text: 'ciao', //'<?php echo Lang::t('_UNSELECT_ALL', 'standard'); ?>',
+                extend : 'selectNone',
+                  text: Lang.Translation('_UNSELECT_ALL', 'standard'), 
                   action: function(e, dt) {
-                      if (this._selection.all) {
-                        this._selection.rows = [];
+                      if (selectionAttr.all) {
+                        selectionAttr.rows = [];
                       }
-                      this._selection.all = false;
+                      selectionAttr.all = false;
                       dt.rows().deselect();
                   }
               }]);
@@ -393,6 +404,8 @@ import dt from 'datatables.net';
                   _selectionActions = _selectionButtons;
               }
               this._options.buttons = $.merge(this._options.buttons, _selectionActions);
+
+              
           }
 
           /**
@@ -406,142 +419,138 @@ import dt from 'datatables.net';
                   }
               });
           });
-      }
+
+         
+        }
+
+      /**
+       * Table action buttons.
+       */
+        if (options.tableActions !== undefined) {
+          var _tableButtons = [];
+          $(options.tableActions.buttons).each(function() {
+              var _tableAction_link = this.link || null;
+              var _tableAction_text = this.title || '';
+              _tableButtons.push({
+                  text: _tableAction_text,
+                  action: function() {
+                      window.location.href = _tableAction_link;
+                  }
+              });
+          });
+          var _tableActions;
+          if (options.tableActions.group) {
+              _tableActions = [{
+                  extend: 'collection',
+                  text: options.tableActions.group,
+                  buttons: _tableButtons
+              }];
+          } else {
+              _tableActions = _tableButtons;
+          }
+          this._options.buttons = $.merge(this._options.buttons, _tableActions);
+        }
+
+        
+        /**
+        * Per row action buttons.
+        */
+        if (options.rowActions !== undefined) {
+          $(options.rowActions).each(function() {
+              var _rowAction_data = this.data || null;
+              var _rowAction_ajax = this.ajax || null;
+              var _rowAction_link = this.link || null;
+              var _rowAction_title = this.title || '';
+              if (_rowAction_link && _rowAction_link.params) {
+                  if (_rowAction_link.href.indexOf('?') === -1) {
+                      _rowAction_link.href += '?';
+                  }
+              }
+              this._options.columns.push({
+                  data: _rowAction_data,
+                  title: _rowAction_title,
+                  orderable: false,
+                  searchable: false,
+                  className: 'text-center',
+                  width: 1,
+                  render: function(data, type, row) {
+                      if (type === 'display') {
+                        var _rowAction_button = null;
+                          if (_rowAction_ajax) {
+                              var _rowAction_ajaxUrl = _rowAction_ajax.url;
+                              var _rowAction_ajaxData = _rowAction_ajax.data || {};
+                              if (_rowAction_ajax.params) {
+                                  $.each(_rowAction_ajax.params, function(param, data) {
+                                      _rowAction_ajaxData[param] = row[data];
+                                  });
+                              }
+                              _rowAction_button = $('<a href="' + _rowAction_ajaxUrl + '" class="formatable-action">' + _rowAction_title + '</a>');
+                              _rowAction_button.attr('data-ajaxdata', JSON.stringify(_rowAction_ajaxData));
+                              return _rowAction_button[0].outerHTML;
+                          } else if (_rowAction_link) {
+                              var _rowAction_linkHref = _rowAction_link.href;
+                              if (_rowAction_link.params) {
+                                  $.each(_rowAction_link.params, function(param, data) {
+                                      _rowAction_linkHref += '&' + param + '=' + row[data];
+                                  });
+                              }
+                              _rowAction_button = $('<a href="' + _rowAction_linkHref + '">' + _rowAction_title + '</a>');
+                              return _rowAction_button[0].outerHTML;
+                          }
+                      } else {
+                          return data;
+                      }
+                  }
+              });
+          });
+        }
+
+        this.drawCallbacks.push(function(oSettings) {
+          if (oSettings._iDisplayLength > (oSettings.fnRecordsDisplay() + oSettings._iDisplayStart)) {
+              $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+          } else {
+              $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
+          }
+        });
+
+        this._options.drawCallback = function(settings) {
+          var dt = this;
+          $(this.drawCallbacks).each(function() {
+              this(settings, dt);
+          });
+        }
+
+        /**
+       * Addictional option for adding a specified data value in row class definition.
+       */
+        if (options.rowClassByData !== undefined) {
+            this._options.rowCallback = function(row, data) {
+                $(options.rowClassByData).each(function() {
+                    $(row).addClass(data[this]);
+                });
+            }
+        }
+
+        //  /**
+        //   * Language translation
+        //   */
+        this._options.language = {
+            'sSearch': Lang.Translation('_SEARCH', 'standard'),
+            'oPaginate': {
+                'sFirst': Lang.Translation('_START', 'standard'),
+                'sPrevious': Lang.Translation('_PREV_B', 'standard'),
+                'sNext': Lang.Translation('_NEXT', 'standard'),
+                'sLast': Lang.Translation('_END', 'standard')
+            }
+        }
+
+        if (options.language !== undefined) {
+            this._options.language = $.extend(this._options.language, options.language)
+        }
          
     }
 
-
-
-//
-//      /**
-//       * Table action buttons.
-//       */
-//      if (options.tableActions !== undefined) {
-//          var _tableButtons = [];
-//          $(options.tableActions.buttons).each(function() {
-//              var _tableAction_link = this.link || null;
-//              var _tableAction_text = this.title || '';
-//              _tableButtons.push({
-//                  text: _tableAction_text,
-//                  action: function(e, dt, node, config) {
-//                      window.location.href = _tableAction_link;
-//                  }
-//              });
-//          });
-//          var _tableActions;
-//          if (options.tableActions.group) {
-//              _tableActions = [{
-//                  extend: 'collection',
-//                  text: options.tableActions.group,
-//                  buttons: _tableButtons
-//              }];
-//          } else {
-//              _tableActions = _tableButtons;
-//          }
-//          _options.buttons = $.merge(_options.buttons, _tableActions);
-//      }
-//
-//      /**
-//       * Per row action buttons.
-//       */
-//      if (options.rowActions !== undefined) {
-//          $(options.rowActions).each(function() {
-//              var _rowAction_data = this.data || null;
-//              var _rowAction_ajax = this.ajax || null;
-//              var _rowAction_link = this.link || null;
-//              var _rowAction_title = this.title || '';
-//              if (_rowAction_link && _rowAction_link.params) {
-//                  if (_rowAction_link.href.indexOf('?') === -1) {
-//                      _rowAction_link.href += '?';
-//                  }
-//              }
-//              _options.columns.push({
-//                  data: _rowAction_data,
-//                  title: _rowAction_title,
-//                  orderable: false,
-//                  searchable: false,
-//                  className: "text-center",
-//                  width: 1,
-//                  render: function(data, type, row, meta) {
-//                      if (type === 'display') {
-//                          if (_rowAction_ajax) {
-//                              _rowAction_ajaxUrl = _rowAction_ajax.url;
-//                              _rowAction_ajaxData = _rowAction_ajax.data || {};
-//                              if (_rowAction_ajax.params) {
-//                                  $.each(_rowAction_ajax.params, function(param, data) {
-//                                      _rowAction_ajaxData[param] = row[data];
-//                                  });
-//                              }
-//                              var _rowAction_button = $('<a href="' + _rowAction_ajaxUrl + '" class="formatable-action">' + _rowAction_title + '</a>');
-//                              _rowAction_button.attr('data-ajaxdata', JSON.stringify(_rowAction_ajaxData));
-//                              return _rowAction_button[0].outerHTML;
-//                          } else if (_rowAction_link) {
-//                              var _rowAction_linkHref = _rowAction_link.href;
-//                              if (_rowAction_link.params) {
-//                                  $.each(_rowAction_link.params, function(param, data) {
-//                                      _rowAction_linkHref += '&' + param + '=' + row[data];
-//                                  });
-//                              }
-//                              var _rowAction_button = $('<a href="' + _rowAction_linkHref + '">' + _rowAction_title + '</a>');
-//                              return _rowAction_button[0].outerHTML;
-//                          }
-//                      } else {
-//                          return data;
-//                      }
-//                  }
-//              });
-//          });
-//      }
-//
-//      this.drawCallbacks.push(function(oSettings, dt) {
-//          if (oSettings._iDisplayLength > (oSettings.fnRecordsDisplay() + oSettings._iDisplayStart)) {
-//              $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
-//          } else {
-//              $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
-//          }
-//      });
-//
-//      _options.drawCallback = function(settings) {
-//          var dt = this;
-//          $(_thisObj.drawCallbacks).each(function() {
-//              this(settings, dt);
-//          });
-//      }
-//
-//      /**
-//       * Addictional option for adding a specified data value in row class definition.
-//       */
-//      if (options.rowClassByData !== undefined) {
-//          _options.rowCallback = function(row, data, index) {
-//              $(options.rowClassByData).each(function() {
-//                  $(row).addClass(data[this]);
-//              });
-//          }
-//      }
-
-
-  //  /**
-  //   * Language translation
-  //   */
-  //  _options.language = {
-  //      'sSearch': '<?php echo Lang::t('_SEARCH', 'standard'); ?>',
-  //      'oPaginate': {
-  //          'sFirst': '<?php echo Lang::t('_START', 'standard'); ?>',
-  //          'sPrevious': '<?php echo Lang::t('_PREV_B', 'standard'); ?>',
-  //          'sNext': '<?php echo Lang::t('_NEXT', 'standard'); ?>',
-  //          'sLast': '<?php echo Lang::t('_END', 'standard'); ?>'
-  //      }
-  //  }
-
- //    if (options.language !== undefined) {
- //        _options.language = $.extend(_options.language, options.language)
- //    }
-
-
-
-      }
-
- 
+}
 
  /**
  * Javascript plugin FormaFileUploader

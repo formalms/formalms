@@ -1,0 +1,128 @@
+ 
+ <div id="multiuserselector_tab" style='margin-top:5%;'>
+        <ul class="nav nav-tabs">
+            {% for tabValue,tab in tabs %}
+                    {% if tab %}
+                    <li {% if selection == tabValue %} class='active' {% endif %}>
+                        <a data-toggle="tab" href="#multiuser_tab_{{ tabValue }}"><em>{{ tabValue }}</em></a>
+                    </li>
+                    {% endif %}
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            {% for tabValue,tab in tabs %}
+                {% if tab %}
+                <div class="tab-pane {% if selection == tabValue %} active {% endif %}" id="multiuser_tab_{{ tabValue }}">
+                   <table class="table table-bordered display" style="width:100%" id="{{ tabValue }}Content">
+                      
+                    </table> 
+                </div>
+                {% endif %}
+            {% endfor %}
+  </div>
+ 
+ 
+ 
+
+<script>
+
+
+$(document).ready(function() {
+
+
+  var columns = [
+        {
+            data: 'userid',
+            title: "{{ Lang_translate('_USERNAME', 'standard') }}",
+            sortable: true,
+            searchable: true
+        },
+        {
+            data: 'lastname',
+            title: "{{ Lang_translate('_LASTNAME', 'standard') }}",
+            sortable: true,
+            searchable: true
+        },
+        {
+            data: 'firstname',
+            title: "{{ Lang_translate('_NAME', 'standard') }}",
+            sortable: true,
+            searchable: true
+        },
+        {
+            data: 'email',
+            title: "{{ Lang_translate('_EMAIL', 'standard') }}",
+            sortable: true,
+            searchable: true
+        },
+        {
+            data: 'lastenter',
+            title: "{{ Lang_translate('_DATE_LAST_ACCESS', 'standard') }}",
+            sortable: true,
+            searchable: false
+        },
+        {
+            data: 'register_date',
+            title: "{{ Lang_translate('_REGISTER_DATE', 'standard') }}",
+            sortable: true,
+            searchable: false
+        }
+    ];
+
+
+
+let DTable = new window.frontend.modules.FormaTable('#userContent', {
+            rowId: "id",
+            scrollX: true,
+            fixedColumns: false,
+            processing: true,
+            serverSide: true,
+            'ajax': {
+              
+                type: 'GET',
+                data: function (d) {
+                    d.dataType = 'user';
+                },
+                complete: function(json) {
+                
+                    return json;
+                },
+                url: 'ajax.adm_server.php?r=adm/userselector/getData',
+            },
+            paging: true,
+            pageLength: 25,
+            searching: true,
+            //data: rows,
+            columns,
+            dom: 'Blfrtip',
+            stateSave: true,
+            deferRender: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: {
+                    selectRow: true
+                    }
+                }
+            ],
+            select: {
+                all: true,
+                style: 'multi',
+                selector: 'td:first-child'
+            },
+            orderCellsTop: true,
+            fixedHeader: true
+            });
+
+DTable.DataTable.on('xhr.dt', function (e, settings, json, xhr) {
+            if (json.data.length > 0) {
+             console.log(json);
+           // setTimeout(function(){$($.fn.dataTable.tables(true)).DataTable().columns.adjust()},200);
+               
+            }
+            // Note no return - manipulate the data directly in the JSON object.
+        });
+});
+
+
+</script>

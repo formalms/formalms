@@ -1,0 +1,16 @@
+table.dataTable tbody > tr.selected,
+table.dataTable tbody > tr > .selected {
+  background-color: unset;
+}
+
+table.dataTable tbody tr.selected,
+table.dataTable tbody th.selected,
+table.dataTable tbody td.selected {
+  color: unset;
+}
+
+table.dataTable tbody tr.selected a,
+table.dataTable tbody th.selected a,
+table.dataTable tbody td.selected a {
+  color: unset;
+}
