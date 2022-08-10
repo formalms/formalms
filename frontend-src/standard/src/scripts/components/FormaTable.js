@@ -2,8 +2,9 @@ import Lang from '../helpers/Lang';
 import dt from 'datatables.net';
 import 'datatables.net-dt'
 import 'datatables.net-buttons'
-import 'jquery-datatables-checkboxes'
 import 'datatables.net-select'
+import 'jquery-datatables-checkboxes'
+
 
 /**
  * FormaTable
@@ -36,6 +37,147 @@ import 'datatables.net-select'
           * DataTable events listeners.
           */
          this.eventsListeners = [];
+
+         this.searchBar = {
+
+            init: function(dt) {
+                this.instance = $(dt).DataTable();
+                this.searchBar = '.dataTables_scrollHeadInner tr:eq(1)';
+                this.initSearchBar()
+                $(this.searchBar).hide()
+            },
+            search_string: function(ix) {
+                var html_tag = '<select id="selString_' + ix + '" name="selString_' + ix + '">' +
+                    '<option selected value="0">' + Lang.Translation('_STARTS_WITH', 'standard') + ' </option>' +
+                    '<option value="1">' + Lang.Translation('_CONTAINS', 'standard') + '</option>' +
+                    '<option value="2">Uguale a</option>' +
+                    '</select>' +
+                    '<input id="inputString_' + ix + '" name="inputString_' + ix + '" type="text"  />'
+                return html_tag
+    
+            },
+            search_num: function(ix) {
+                var html_tag = '<select id="selNumA_' + ix + '" name="selNumA_' + ix + '">' +
+                    '<option selected value="0">=</option>' +
+                    '<option value="1">></option>' +
+                    '<option value="2"><</option>' +
+                    '<option value="3">>=</option>' +
+                    '<option value="4"><=</option>' +
+                    '</select>' +
+                    '<input style="width:50px" id="search_input_NumA_' + ix + '" name="search_input_NumA_' + ix + '"  onkeypress="return event.charCode >= 48 && event.charCode <= 57" onpaste="return false"/><br>' //+
+             return html_tag
+            },
+            search_date: function(ix) {
+                var html_tag = '<select id="selDateA_' + ix + '" name="selDateA_' + ix + '">' +
+                    '<option selected value="0">=</option>' +
+                    '<option value="1">></option>' +
+                    '<option value="2"><</option>' +
+                    '<option value="3">>=</option>' +
+                    '<option value="4"><=</option>' +
+                    '</select>' +
+                    '<input style="width:80px" id="search_input_DateA_' + ix + '" name="search_input_DateA_' + ix + '" type="text"  <?php echo $date_picker_param; ?>/><br>' //+
+                return html_tag
+    
+            },
+            show: function() {
+                if ($(this.searchBar).is(':visible')) {
+                    $(this.searchBar).hide()
+                } else {
+                    $(this.searchBar).show()
+                    this.instance.table().columns.adjust().draw('page');
+                }
+            },
+            redraw: function() {
+                var is_visible = $(this.searchBar).is(':visible')
+                $(this.searchBar).remove()
+                this.initSearchBar()
+                if (!is_visible)
+                    $(this.searchBar).hide()
+                // clearing current search filter, if any        
+                this.instance.search('').columns().search('').draw('')
+            },
+            initSearchBar: function() {
+                try {
+                   
+                    var table = this.instance.table()
+                    $('.dataTables_scrollHeadInner thead tr').clone().appendTo('.dataTables_scrollHeadInner thead');
+                    var c = ((table.selectable_row()) ? 0 : 1)
+                    var i = 0
+                    var _parent = this
+                    table.columns().every(function() {
+                        var s_searchable = this.searchable();
+                        var s_type = this.type();
+                        //var s_name = this.title();
+                        var s_visible = this.visible();
+                        if (s_visible) {
+                            $('.dataTables_scrollHeadInner tr:eq(1) th:eq(' + c + ')').removeClass()
+                            if (s_searchable) {
+                                switch (s_type) {
+                                    case 'date':
+                                        $('.dataTables_scrollHeadInner tr:eq(1) th:eq(' + c + ')').html(_parent.search_date(i))
+                                        break
+                                    case 'num':
+                                        $('.dataTables_scrollHeadInner tr:eq(1) th:eq(' + c + ')').html(_parent.search_num(i))
+                                        break
+                                    default:
+                                        $('.dataTables_scrollHeadInner tr:eq(1) th:eq(' + c + ')').html(_parent.search_string(i))
+                                }
+    
+                            }
+                            c++
+                        }
+                        i++
+                    })
+                    this.addSearchListener()
+                } catch (e) {
+                    console.log(e.message)
+                }
+    
+            },
+            addSearchListener: function() {
+                var the_table = this.instance
+                $('input[id^="inputString_"]').on('keyup change', function() {
+    
+                    var id_column = $(this).attr('id').split('_')[1]
+                    var cond = $('#selString_' + id_column).val()
+                    var str_search = this.value
+                    if (str_search == '')
+                        cond = 0
+                    switch (parseInt(cond)) {
+                        case 0:
+                            str_search = '^' + str_search
+                            break
+                        case 1:
+                            str_search = '^.*' + str_search + '.*$'
+                            break
+                        case 2:
+                            str_search = '^' + str_search + '$'
+                            break
+    
+                    }
+                    the_table.column(id_column).search(str_search, true, false).draw()
+                });
+                $('select[id^="selString_"]').on('change', function() {
+                    var id_column = $(this).attr('id').split('_')[1]
+                    $('#inputString_' + id_column).trigger('keyup')
+                })
+                $('select[id^="selDate"], input[id^="search_input_Date"]').on('change', function() {
+                    the_table.draw();
+                })
+    
+                $('select[id^="selNum"]').on('change', function() {
+                    the_table.draw();
+                })
+    
+                $('input[id^="search_input_Num"]').on('keyup change', function() {
+                    the_table.draw();
+                });
+    
+    
+    
+    
+            }
+        }
         
 
          // Init
@@ -46,11 +188,15 @@ import 'datatables.net-select'
      
         }
 
+        this.registerApi();
 
         this.setOptions(options, this.eventsListeners, idOrClassOrElement);
 
     
         this.DataTable = new dt(idOrClassOrElement,this._options);
+
+
+        this.setActions();
     }
 
     callAjax(ajaxUrl, ajaxData, dt) {
@@ -349,29 +495,41 @@ import 'datatables.net-select'
            */
           if (options.select.all === true) {
          
-            var selectionAttr = this._selection;
+            var _thisobj = this;
+            //var dtable = this.DataTable
+            //var rowId = this._options.rowId;
             this._options.buttons = $.merge(this._options.buttons, [{
                  extend : 'selectAll',
                   text:  Lang.Translation('_SELECT_ALL', 'standard'), 
+                  className: 'btn btn-default',
                   action: function(e, dt) {
               
-                      if (!selectionAttr.all) {
-                        selectionAttr.rows = [];
+               
+                      if (!_thisobj._selection.all) {
+                        _thisobj._selection.rows = [];
                       }
-                      selectionAttr.all = true;
+                      _thisobj._selection.all = true;
+                      
                       dt.rows({
                           search: 'applied'
                       }).select();
+
+                     //_thisobj._selection.rows = dt.rows( { selected: true } );
+                     //console.log(_thisobj._selection.rows);
+                      //selectionAttr.rows = dt.rows( { selected: true } ).data().map(record => record[rowId]);
                   }
               }, {
                 extend : 'selectNone',
                   text: Lang.Translation('_UNSELECT_ALL', 'standard'), 
+                  className: 'btn btn-default',
                   action: function(e, dt) {
-                      if (selectionAttr.all) {
-                        selectionAttr.rows = [];
+                      if (_thisobj._selection.all) {
+                        _thisobj._selection.rows = [];
                       }
-                      selectionAttr.all = false;
+                      _thisobj._selection.all = false;
                       dt.rows().deselect();
+
+                      _thisobj._selection.rows = [];
                   }
               }]);
           }
@@ -550,10 +708,216 @@ import 'datatables.net-select'
          
     }
 
+
+    setActions() {
+
+        
+        var dtable = this.DataTable;
+        var _thisobj = this;
+        this.DataTable.on('click', '.formatable-action', function(e) {
+            e.preventDefault();
+            this.callAjax($(this).attr('href'), $(this).data('ajaxdata'));
+        });
+        /**
+         * Handle paginated selection.
+         */
+         this.DataTable.on('select', function(e, dt, type, indexes) {
+            if (type === 'row') {
+                if (_thisobj._selection.all) {
+                 
+                    _thisobj._selection.rows = $(dtable.rows(indexes).ids()).get();
+                } else {
+                    var _ids = $(dtable.rows(indexes).ids()).not(_thisobj._selection.rows).get();
+                    _thisobj._selection.rows = $.merge(_thisobj._selection.rows, _ids);
+                    console.log(_thisobj._selection.rows);
+                }
+            }
+            
+        });
+
+        /**
+         * Handle paginated deselection.
+         */
+         this.DataTable.on('deselect', function(e, dt, type, indexes) {
+            if (type === 'row') {
+                if (_thisobj._selection.all) {
+                   
+                    _thisobj._selection.rows = []
+                } else {
+                    _thisobj._selection.rows = $(_thisobj._selection.rows).not(dtable.rows(indexes).ids()).get();
+                }
+            }
+        
+        });
+
+        this.DataTable.on('reset', 'tbody td.ft-edit form.ft-edit-popup', function() {
+            $('input.hasDatepicker').each(function() {
+                $(this).val(dtable.cell($(this).closest('td')).data());
+            });
+            $(this).closest('td').removeClass('ft-edit-open');
+            $(this).hide();
+        });
+
+        this.DataTable.on('submit', 'tbody td.ft-edit form.ft-edit-popup', function(event) {
+            event.preventDefault();
+            $.ajax({
+                url: $(this).attr('action'),
+                method: $(this).attr('method'),
+                data: $(this).serialize()
+            }).done(function() {
+                _thisobj.reload();
+            });
+            $(this).closest('td').removeClass('ft-edit-open');
+            $(this).hide();
+        });
+
+        $(document).on('click', function() {
+            if (!$(event.target).closest('td.ft-edit.ft-edit-open').length && !$(event.target).closest('.ui-datepicker').length) {
+                dtable.$('td.ft-edit.ft-edit-open form.ft-edit-popup').trigger('reset');
+            }
+        });
+
+        $(this.eventsListeners).each(function() {
+            dtable.on(this.event, this.selector, this.callback);
+        });
+    }
+
+    getSelection() {
+        return this._selection;
+    }
+
+    getFlatSelection() {
+        if (this._selection.all) {
+            return $(this.DataTable.rows({
+                search: 'applied'
+            }).ids()).not(this._selection.rows).get();
+        } else {
+            return this._selection.rows;
+        }
+    }
+
+    reload() {
+        return this.DataTable.ajax.reload();
+    }
+
+
+    registerApi() {
+        $.fn.dataTable.ext.errMode = 'none';
+        //$.fn.datepicker.noConflict();
+    
+        $.fn.dataTable.Api.register('column().title()', function() {
+            var colheader = this.header();
+            return $(colheader).text().trim();
+        });
+    
+    
+        $.fn.dataTable.Api.register('column().type()', function() {
+            var colnumber = this.index()
+            return this.settings()[0].aoColumns[colnumber].sType
+        });
+    
+    
+        $.fn.dataTable.Api.register('column().searchable()', function() {
+            var colnumber = this.index()
+            return this.settings()[0].aoColumns[colnumber].bSearchable
+        });
+    
+    
+        $.fn.dataTable.Api.register('selectable_row()', function() {
+            return this.column('.select-checkbox')[0].length == 1
+        });
+    
+    
+        // date comparison
+        $.fn.dataTable.ext.search.push(
+            function(settings, data) {
+                var ret_val = true
+                var date_sep = '<?php echo $date_sep; ?>'
+                var date_format_array = '<?php echo $date_format; ?>'.split(date_sep)
+                var day_position = date_format_array.indexOf('dd')
+                var month_position = date_format_array.indexOf('mm')
+                var year_position = date_format_array.indexOf('yyyy')
+                $('select[id^="selDate"]').each(function() {
+                    var id_column = $(this).attr('id').split('_')[1]
+                    var cell_date_str = data[id_column]
+                    var selected_date_str = $('#search_input_DateA_' + id_column).val()
+                    var operator = parseInt($('#selDateA_' + id_column).val())
+                    if (selected_date_str != '') {
+                        var cell_date_array = cell_date_str.split(date_sep)
+                        var cell_date_d = new Date(cell_date_array[year_position],
+                            cell_date_array[month_position],
+                            cell_date_array[day_position]).getTime()
+                        var selected_date_array = selected_date_str.split(date_sep)
+                        var selected_date_d = new Date(selected_date_array[year_position],
+                            selected_date_array[month_position],
+                            selected_date_array[day_position]).getTime()
+                        switch (operator) {
+                            case 0: // equal
+                                ret_val = (selected_date_d == cell_date_d)
+                                break;
+                            case 1: // greater
+                                ret_val = (cell_date_d > selected_date_d)
+                                break;
+                            case 2: //  minor
+                                ret_val = (cell_date_d < selected_date_d)
+                                break;
+                            case 3: // greater equal
+                                ret_val = (cell_date_d >= selected_date_d)
+                                break;
+                            case 4: //  minor equal
+                                ret_val = (cell_date_d <= selected_date_d)
+                                break;
+                        }
+                    }
+    
+                })
+                return ret_val;
+            }
+        );
+    
+        // number comparison
+    
+        $.fn.dataTable.ext.search.push(
+            function(settings, data, ) {
+                var ret_val = true
+                $('select[id^="selNum"]').each(function() {
+                    var id_column = $(this).attr('id').split('_')[1]
+                    var cell_num = parseInt(data[id_column])
+                    var selected_num = parseInt($('#search_input_NumA_' + id_column).val())
+                    var operator = parseInt($('#selNumA_' + id_column).val())
+                    if (!isNaN(selected_num)) {
+                        switch (operator) {
+                            case 0: // equal
+                                ret_val = (cell_num == selected_num)
+                                break;
+                            case 1: // greater
+                                ret_val = (cell_num > selected_num)
+                                break;
+                            case 2: //  minor
+                                ret_val = (cell_num < selected_num)
+                                break;
+                            case 3: // greater equal
+                                ret_val = (cell_num >= selected_num)
+                                break;
+                            case 4: //  minor equal
+                                ret_val = (cell_num <= selected_num)
+                                break;
+                        }
+                    }
+    
+                })
+                return ret_val;
+            }
+        );
+    
+    }
+
+   
+
 }
 
  /**
- * Javascript plugin FormaFileUploader
+ * Javascript plugin FormaTable
  */
 Element.prototype.FormaTable = function(options) {
     new FormaTable(this, options);

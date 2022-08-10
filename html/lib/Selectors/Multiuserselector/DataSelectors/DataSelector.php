@@ -6,6 +6,7 @@ use FormaLms\lib\Selectors\DataSelectorInterface;
 require_once _base_ . '/lib/lib.json.php';
 require_once _base_ . '/lib/lib.docebo.php';
 require_once _base_ . '/i18n/lib.format.php';
+require_once _base_ . '/i18n/lib.lang.php';
 require_once _base_ . '/lib/layout/lib.layout.php';
 abstract class DataSelector implements DataSelectorInterface { 
 
@@ -26,9 +27,12 @@ abstract class DataSelector implements DataSelectorInterface {
     public function getData($params = []){
     }
 
+    public function getColumns(){
+    }
+
     abstract protected function _selectAll($params = []);
 
     abstract protected function _getDynamicFilter($input);
 
-    abstract protected function mapData($records);
+    abstract protected function mapData($records, $filter = '');
 }

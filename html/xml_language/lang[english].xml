@@ -2795,8 +2795,12 @@ Username: [userid]]]></key>
         <key id="standard&amp;_WIDTH" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Width]]></key>
         <key id="standard&amp;_YEAR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Year]]></key>
         <key id="standard&amp;_YES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Yes]]></key>
-            <key id="standard&amp;_ACTIONS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Azioni]]></key>
+        <key id="standard&amp;_ACTIONS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Azioni]]></key>
         <key id="standard&amp;_DEFAULT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Default]]></key>
+        <key id="standard&amp;_USER_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Users]]></key>
+        <key id="standard&amp;_ROLE_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Roles]]></key>
+        <key id="standard&amp;_ORG_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Organization Chart]]></key>
+        <key id="standard&amp;_GROUP_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Groups]]></key>
       </module>
       <module id="statistic">
         <key id="statistic&amp;_AT_HOUR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[At hour]]></key>

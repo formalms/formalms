@@ -9,5 +9,5 @@ interface DataSelectorInterface
 
     public function getData($params = []);
 
-
+    public function getColumns();
 }

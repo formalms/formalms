@@ -26,13 +26,22 @@ class UserDataSelector extends DataSelector{
              break;
         }
 
+        $columns = array_key_exists('columns', $params) ? (int) $params['columns'] : [];
         $idOrg = array_key_exists('id_org', $params) ? (int) $params['id_org'] : 0;
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
-        $startIndex = array_key_exists('startIndex', $params) ? (int) $params['startIndex'] : 0;
-        $results = array_key_exists('results', $params) ? (int) $params['results'] : \FormaLms\lib\Get::sett('visuItem', 25);
+        $startIndex = array_key_exists('start', $params) ? (int) $params['start'] : 0;
+        $results = array_key_exists('length', $params) ? (int) $params['length'] : \FormaLms\lib\Get::sett('visuItem', 25);
         $rowsPerPage = array_key_exists('rowsPerPage', $params) ? (int) $params['rowsPerPage'] : $results;
-        $sort = array_key_exists('sort', $params) ? (string) $params['sort'] : '';
-        $dir = array_key_exists('dir', $params) ? (string) $params['dir'] : 'asc'; 
+        if(array_key_exists('order', $params)) {
+
+            $order = $params['order'][0];
+            $sort = array_key_exists('column', $order) ? (string) $columns[$params['column']]['data'] != ''? (string) $columns[$params['column']]['data'] : '0' : '0';
+            $dir = array_key_exists('dir', $order) ? (string) $order['dir'] : 'asc'; 
+        } else {
+            $sort = '0';
+            $dir = 'asc';
+        }
+        $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
         $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
 
         $var_fields = array_key_exists('_dyn_field', $params) ? (array) $params['_dyn_field'] : [];
@@ -41,10 +50,8 @@ class UserDataSelector extends DataSelector{
             $sort = $var_fields[(int) $index];
         }
 
-        $filter_text = array_key_exists('filter_text', $params) ? (string) $params['filter_text'] : '';
-
         $searchFilter = [
-            'text' => $filter_text,
+            'text' => $searchValue,
             'suspended' => (array_key_exists('suspended', $params) && (int) $params['suspended'] > 0) ? true : false,
         ];
 
@@ -72,9 +79,9 @@ class UserDataSelector extends DataSelector{
             'rowsPerPage' => $rowsPerPage,
         ];
 
-        $list = $this->builder->getUsersList(0, $descendants, $pagination, $searchFilter, true, $learning_filter);
+        $list = $this->builder->getUsersList($idOrg, $descendants, $pagination, $searchFilter, true, $learning_filter);
 
-        $records = $this->mapData($list);
+        $records = $this->mapData($list, $searchValue);
 
         $pagination['data'] = $records;
      
@@ -106,7 +113,7 @@ class UserDataSelector extends DataSelector{
         return $output;
     }
 
-    protected function mapData($records){
+    protected function mapData($records, $filter = ''){
 
         $date_fields = $this->fieldList->getFieldsByType('date');
 
@@ -120,12 +127,12 @@ class UserDataSelector extends DataSelector{
                 $relation = sql_fetch_row(sql_query($query));
 
                 $record_row = [
-                    'id' => (int) $record['idst'],
+                    'id' =>  $record['idst'],
                     'userid' => \Layout::highlight($acl_man->relativeId($record['userid']), $filter_text),
-                    'firstname' => \Layout::highlight($record['firstname'], $filter_text),
-                    'lastname' => \Layout::highlight($record['lastname'], $filter_text),
+                    'firstname' => \Layout::highlight($record['firstname'], $filter),
+                    'lastname' => \Layout::highlight($record['lastname'], $filter),
                     'relation' => isset($relation[0]) ? $relation[0] : '',
-                    'email' => \Layout::highlight($record['email'], $filter_text),
+                    'email' => \Layout::highlight($record['email'], $filter),
                     'register_date' => \Format::date($record['register_date'], 'datetime'),
                     'lastenter' => \Format::date($record['lastenter'], 'datetime'),
                     'unassoc' => $idOrg > 0 ? ($record['is_descendant'] ? 0 : 1) : -1,
@@ -187,6 +194,48 @@ class UserDataSelector extends DataSelector{
         $users = $this->builder->getAllUsers($idOrg, $descendants, $searchFilter, true, $learning_filter);
         $output = $this->builder->getUsersDetails($users);
         return $output;
+    }
+
+    public function getColumns(){
+
+        return [
+            [
+                'data' => 'userid',
+                'title' => \Lang::t('_USERNAME', 'standard'),
+                'sortable' => true,
+                'searchable' => true
+            ],
+            [
+                'data' => 'lastname',
+                'title' => \Lang::t('_LASTNAME', 'standard'),
+                'sortable' => true,
+                'searchable' => true
+            ],
+            [
+                'data' => 'firstname',
+                'title' => \Lang::t('_NAME', 'standard'),
+                'sortable' => true,
+                'searchable' => true
+            ],
+            [
+                'data' => 'email',
+                'title' => \Lang::t('_EMAIL', 'standard'),
+                'sortable' => true,
+                'searchable' => true
+            ],
+            [
+                'data' => 'lastenter',
+                'title' => \Lang::t('_DATE_LAST_ACCESS', 'standard'),
+                'sortable' => true,
+                'searchable' => false
+            ],
+            [
+                'data' => 'register_date',
+                'title' => \Lang::t('_REGISTER_DATE', 'standard'),
+                'sortable' => true,
+                'searchable' => false
+            ]
+        ];
     }
 
 }

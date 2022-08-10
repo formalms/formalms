@@ -1,10 +1,14 @@
  
- <div id="multiuserselector_tab" style='margin-top:5%;'>
+
+ <form id="form_tabs">
+    <div id="multiuserselector_tab" style='margin-top:5%;'>
         <ul class="nav nav-tabs">
             {% for tabValue,tab in tabs %}
                     {% if tab %}
+                    {% set tabname = '_' ~ tabValue|upper ~ '_TAB' %}
+                    {% set tabtrans =  Lang_translate(tabname, 'standard') %}
                     <li {% if selection == tabValue %} class='active' {% endif %}>
-                        <a data-toggle="tab" href="#multiuser_tab_{{ tabValue }}"><em>{{ tabValue }}</em></a>
+                        <a data-toggle="tab" href="#multiuser_tab_{{ tabValue }}" rel="{{tabValue}}"><em>{{ tabtrans }}</em></a>
                     </li>
                     {% endif %}
             {% endfor %}
@@ -13,75 +17,52 @@
             {% for tabValue,tab in tabs %}
                 {% if tab %}
                 <div class="tab-pane {% if selection == tabValue %} active {% endif %}" id="multiuser_tab_{{ tabValue }}">
-                   <table class="table table-bordered display" style="width:100%" id="{{ tabValue }}Content">
+                    {% if tabValue != 'org' %}
+                   <table class="table table-bordered display" rel="{{ tabValue }}" style="width:100%" id="{{ tabValue }}Content">
                       
                     </table> 
+                    {% else %}
+                    <div class='orgchart'>
+                        {{ orgChart.run() }}
+                    </div>
+                    {% endif %}
                 </div>
                 {% endif %}
             {% endfor %}
-  </div>
- 
- 
+    </div>
+    {% if debug %}
+    <button id="test-btn" style='margin-top:3%;' class="button btn btn-primary dahsboard__button--save js-save-block" type="submit" >
+        TEST
+    </button>
+    {% endif %}
+ </form>
  
 
 <script>
+
+let DTable = [];
+let orgChartSelection = null;
+var columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
 
 
 $(document).ready(function() {
 
 
-  var columns = [
-        {
-            data: 'userid',
-            title: "{{ Lang_translate('_USERNAME', 'standard') }}",
-            sortable: true,
-            searchable: true
-        },
-        {
-            data: 'lastname',
-            title: "{{ Lang_translate('_LASTNAME', 'standard') }}",
-            sortable: true,
-            searchable: true
-        },
-        {
-            data: 'firstname',
-            title: "{{ Lang_translate('_NAME', 'standard') }}",
-            sortable: true,
-            searchable: true
-        },
-        {
-            data: 'email',
-            title: "{{ Lang_translate('_EMAIL', 'standard') }}",
-            sortable: true,
-            searchable: true
-        },
-        {
-            data: 'lastenter',
-            title: "{{ Lang_translate('_DATE_LAST_ACCESS', 'standard') }}",
-            sortable: true,
-            searchable: false
-        },
-        {
-            data: 'register_date',
-            title: "{{ Lang_translate('_REGISTER_DATE', 'standard') }}",
-            sortable: true,
-            searchable: false
-        }
-    ];
+    $('table').each(function(e) {
 
+    var rel = $(this).attr('rel');
+    var domId = '#' + $(this).attr('id');
 
-
-let DTable = new window.frontend.modules.FormaTable('#userContent', {
-            rowId: "id",
+    DTable[rel] = new window.frontend.modules.FormaTable(domId, {
+            rowId: 'id',
             scrollX: true,
-            fixedColumns: false,
             processing: true,
             serverSide: true,
             'ajax': {
               
                 type: 'GET',
                 data: function (d) {
-                    d.dataType = 'user';
+                    d.dataType = rel;
                 },
                 complete: function(json) {
                 
@@ -93,36 +74,90 @@ let DTable = new window.frontend.modules.FormaTable('#userContent', {
             pageLength: 25,
             searching: true,
             //data: rows,
-            columns,
+            columns : columns[rel],
             dom: 'Blfrtip',
             stateSave: true,
             deferRender: true,
-            columnDefs: [
+            'columnDefs': [
                 {
-                    targets: 0,
-                    checkboxes: {
-                    selectRow: true
+                    'targets': 0,
+                    'checkboxes': {
+                    'selectRow': true,
                     }
                 }
             ],
-            select: {
-                all: true,
-                style: 'multi',
-                selector: 'td:first-child'
+            'select': {
+                'all': true,
+                'style': 'multi',
             },
             orderCellsTop: true,
             fixedHeader: true
             });
-
-DTable.DataTable.on('xhr.dt', function (e, settings, json, xhr) {
+        
+        
+        DTable[rel].DataTable.on('xhr.dt', function (e, settings, json, xhr) {
             if (json.data.length > 0) {
-             console.log(json);
-           // setTimeout(function(){$($.fn.dataTable.tables(true)).DataTable().columns.adjust()},200);
-               
+         
             }
             // Note no return - manipulate the data directly in the JSON object.
         });
+    });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+        var rel = $(this).attr('rel');
+        if(rel!='org') {
+            DTable[rel].DataTable.columns.adjust();
+        }
+        
+    });
+       
+
+
+})
+
+$('body').on('click', '.ygtvhtml', function() {
+  orgChartSelection = $(this).attr('id');
 });
 
 
+$('#form_tabs').on('submit', function(e) {
+    e.preventDefault();
+
+    if (!$("table tr.selected").length) {
+        return;
+    }
+    var selectedIds = [];
+    var alertMsg = 'Hai selezionato \n';
+   
+    $('table[id$="Content"]').each(function(e) {
+        alertMsg = alertMsg + 'del tab ' + $(this).attr('rel') + ' i seguenti id: ' + DTable[$(this).attr('rel')]._selection.rows.join(',') + '\n';
+    });
+    
+    if(orgChartSelection) {
+       alertMsg = alertMsg + 'del tab org ' + orgChartSelection;
+    }
+
+    alert(alertMsg);
+
+});
+
+
+
+YAHOO.util.Event.onDOMReady(function(e) {
+	
+	var input = YAHOO.util.Dom.get("userselector_input_main");
+	if (input) {
+		YAHOO.util.Event.addListener(input.form, "submit", function(e) {
+			var str = TreeView_orgchart_selector_tree_main.oSelector.toString();
+			if (str) input.value += (input.value != "" ? "," : "")+str;
+		});
+	}
+
+	var E = YAHOO.util.Event;
+	E.addListener("orgchart_unselect_all_main", "click", function(e) {
+		E.preventDefault(e);
+		var t = TreeView_orgchart_selector_tree_main;
+		t.unselectAll();
+	});
+});
 </script>

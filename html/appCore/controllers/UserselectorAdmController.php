@@ -58,20 +58,34 @@ class UserselectorAdmController extends AdmController
 
   
 
-    public function list() {
+    public function show() {
 
+        $orgChart = null;
         if($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
             $this->selection = $this->requestObj->get('selected_tab');
         }
 
        // $this->multiUserSelector->setDataSelectors('DataSelector', 'user');
-        $requestParams = ($this->requestObj->has('params')) ? $this->requestObj->get('params') : [];
-        $requestParams['op'] = 'selectall';
+       // $requestParams = ($this->requestObj->has('params')) ? $this->requestObj->get('params') : [];
+        //$requestParams['op'] = 'selectall';
         $selectedData = []; //$this->multiUserSelector->retrieveDataSelector($this->selection)->getData($requestParams);
         //dd($selectedData);
+
+        foreach($this->tabs as $tabKey => $tab) {
+            $columns[$tabKey] = $this->multiUserSelector->retrieveDataSelector($tabKey)->getColumns();
+        }
+
+        if($this->tabs['org']) {
+            $orgChart = $this->multiUserSelector->retrieveDataSelector('org')->getChart();
+        }
+
+
         $this->render('show',['tabs' => $this->tabs,
                             'selection'=> $this->selection,
-                            'data' => $selectedData]);
+                            'columns' => $columns,
+                            'orgChart' => $orgChart,
+                            'debug' => $this->requestObj->has('debug') ? $this->requestObj->get('debug') : false
+                        ]);
     }
 
 
@@ -83,11 +97,26 @@ class UserselectorAdmController extends AdmController
 
         switch($dataType) {
             case "user":
+            case "group":
+            case "role":
                 $response = $this->multiUserSelector->retrieveDataselector($dataType)->getData($params);
+               
+               break;
+            default:
+                $params = $this->request->query->all();
+                $response = $this->multiUserSelector->retrieveDataselector('org')->getData($params);
                 break;
         }
 
         echo $response;
+
+    }
+
+
+    public function testPostTask()
+    {
+        
+        dd($this->requestObj);
 
     }
 
