@@ -68,25 +68,29 @@ class RoleDataSelector extends DataSelector{
                 'data' => 'name',
                 'title' => \Lang::t('_NAME', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
             ],
             [
                 'data' => 'group',
                 'title' => \Lang::t('_GROUPS', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
             ],
             [
                 'data' => 'description',
                 'title' => \Lang::t('_DESCRIPTION', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
             ],
             [
                 'data' => 'users',
                 'title' => \Lang::t('_USERS', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => false,
+                'search_field' => 'text'
             ],
         ];
     }

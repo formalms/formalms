@@ -203,37 +203,44 @@ class UserDataSelector extends DataSelector{
                 'data' => 'userid',
                 'title' => \Lang::t('_USERNAME', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
+
             ],
             [
                 'data' => 'lastname',
                 'title' => \Lang::t('_LASTNAME', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
             ],
             [
                 'data' => 'firstname',
                 'title' => \Lang::t('_NAME', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
             ],
             [
                 'data' => 'email',
                 'title' => \Lang::t('_EMAIL', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
             ],
             [
                 'data' => 'lastenter',
                 'title' => \Lang::t('_DATE_LAST_ACCESS', 'standard'),
                 'sortable' => true,
-                'searchable' => false
+                'searchable' => false,
+                'search_field' => 'date'
             ],
             [
                 'data' => 'register_date',
                 'title' => \Lang::t('_REGISTER_DATE', 'standard'),
                 'sortable' => true,
-                'searchable' => false
+                'searchable' => false,
+                'search_field' => 'date'
             ]
         ];
     }

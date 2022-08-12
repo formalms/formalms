@@ -93,6 +93,32 @@ $(document).ready(function() {
             orderCellsTop: true,
             fixedHeader: true
             });
+
+               // Setup - add a text input to each header cell
+        columns[rel].forEach(function(item, i) {
+            if ( item.searchable === true) {
+
+                console.log(item, i);
+                var title = item.data;
+              
+                var table = DTable[rel].DataTable;
+                var cell = $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 2) +')')
+
+                cell.append(getInputSearchField(item.search_field, table.column(i+1).search()));
+                
+                
+                table.columns.adjust();
+        
+                cell.find('input').on('keyup change clear', function () {
+                    if (table.column(i+1).search() !== this.value ) {
+                        table
+                            .column(i+1)
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            }
+        });
         
         
         DTable[rel].DataTable.on('xhr.dt', function (e, settings, json, xhr) {
@@ -160,4 +186,21 @@ YAHOO.util.Event.onDOMReady(function(e) {
 		t.unselectAll();
 	});
 });
+
+
+function getInputSearchField(type, value) {
+    var returnString = '<br />';
+    var searchPlaceholder = "{{ Lang_translate('_SEARCH', 'standard') }}";
+
+    switch(type) {
+        case 'date':
+
+        break;
+
+        default:
+            returnString = returnString +  '<input type="text" class="form-control input-sm" placeholder="' + searchPlaceholder + '" value="' + value + '" />';
+        break;
+    }
+    return returnString;
+}
 </script>

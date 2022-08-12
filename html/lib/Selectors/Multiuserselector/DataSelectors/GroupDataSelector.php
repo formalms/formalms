@@ -72,19 +72,21 @@ class GroupDataSelector extends DataSelector{
                 'data' => 'groupid',
                 'title' => \Lang::t('_TITLE', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
             ],
             [
                 'data' => 'description',
                 'title' => \Lang::t('_DESCRIPTION', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => true,
+                'search_field' => 'text'
             ],
             [
                 'data' => 'usercount',
                 'title' => \Lang::t('_USERS', 'standard'),
                 'sortable' => true,
-                'searchable' => true
+                'searchable' => false
             ],
         ];
     }
