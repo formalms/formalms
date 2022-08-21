@@ -5,7 +5,9 @@ require_once _adm_ . '/models/UsermanagementAdm.php';
 require_once _adm_ . '/lib/lib.field.php';
 class UserDataSelector extends DataSelector{ 
 
-    protected $filedList;
+    protected $fieldList;
+
+    const ADDITIONAL_COLS = ['valid'];
 
     public function __construct() {
      
@@ -18,15 +20,23 @@ class UserDataSelector extends DataSelector{
 
     public function getData($params = []){
 
+        $columnsFilter = [];
         $op = array_key_exists('op', $params) ? (string) $params['op'] : false;
+        $columns = array_key_exists('columns', $params) ? $params['columns'] : [];
+        foreach($columns as $column) {
+            if($column['search']['value']!='') {
+                $columnsFilter[$column['name']] = $column['search']['value'];
+            }
+        }
         switch ($op) {
             case 'selectall':
-                return $this->_selectAll($params);
+                return $this->_selectAll($params, $columnsFilter);
 
              break;
         }
 
-        $columns = array_key_exists('columns', $params) ? (int) $params['columns'] : [];
+       
+        
         $idOrg = array_key_exists('id_org', $params) ? (int) $params['id_org'] : 0;
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
         $startIndex = array_key_exists('start', $params) ? (int) $params['start'] : 0;
@@ -44,6 +54,9 @@ class UserDataSelector extends DataSelector{
         $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
         $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
 
+      
+       
+        
         $var_fields = array_key_exists('_dyn_field', $params) ? (array) $params['_dyn_field'] : [];
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
@@ -60,7 +73,7 @@ class UserDataSelector extends DataSelector{
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
 
-        $total = (int) $this->builder->getTotalUsers(0, $descendants, $searchFilter, true, $learning_filter);
+        $total = (int) $this->builder->getTotalUsers(0, $descendants, $searchFilter, true, $learning_filter, $columnsFilter);
         if ($startIndex >= $total) {
             if ($total < $results) {
                 $startIndex = 0;
@@ -79,7 +92,9 @@ class UserDataSelector extends DataSelector{
             'rowsPerPage' => $rowsPerPage,
         ];
 
-        $list = $this->builder->getUsersList($idOrg, $descendants, $pagination, $searchFilter, true, $learning_filter);
+    
+
+        $list = $this->builder->getUsersList($idOrg, $descendants, $pagination, $searchFilter, true, $learning_filter, $columnsFilter);
 
         $records = $this->mapData($list, $searchValue);
 
@@ -177,7 +192,7 @@ class UserDataSelector extends DataSelector{
      /*
      * list of all selected users by their idst
      */
-    protected function _selectAll($params = [])
+    protected function _selectAll($params = [], $columnsFilter = [])
     {
         $idOrg = 0; //FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
@@ -191,8 +206,9 @@ class UserDataSelector extends DataSelector{
         if ($dyn_filter !== false) {
             $searchFilter['dyn_filter'] = $dyn_filter;
         }
-        $users = $this->builder->getAllUsers($idOrg, $descendants, $searchFilter, true, $learning_filter);
+        $users = $this->builder->getAllUsers($idOrg, $descendants, $searchFilter, true, $learning_filter, $columnsFilter);
         $output = $this->builder->getUsersDetails($users);
+        
         return $output;
     }
 
@@ -243,6 +259,26 @@ class UserDataSelector extends DataSelector{
                 'search_field' => 'date'
             ]
         ];
+
+
+    }
+
+    public function getHiddenColumns(){
+
+        $hiddenColumns = [];
+        foreach(self::ADDITIONAL_COLS as $additonalCol) {
+            
+            $hiddenColumns[] = [
+                'data' => $additonalCol,
+                'title' => \Lang::t('_'.strtoupper($additonalCol), 'standard'),
+                'sortable' => false,
+                'searchable' => false,
+                'search_field' => 'text',
+                'visible' => false
+            ];
+        }
+        
+        return $hiddenColumns;
     }
 
 }

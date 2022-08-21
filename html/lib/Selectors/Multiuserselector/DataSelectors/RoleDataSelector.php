@@ -4,6 +4,7 @@ namespace FormaLms\lib\Selectors\Multiuserselector\DataSelectors;
 require_once _adm_ . '/models/FunctionalrolesAdm.php';
 class RoleDataSelector extends DataSelector{ 
 
+    const ADDITIONAL_COLS = [];
 
     public function __construct() {
      
@@ -13,16 +14,24 @@ class RoleDataSelector extends DataSelector{
         parent::__construct();
     }
 
-    public function getData($params = []) : string  {
+    public function getData($params = []) {
+        $columnsFilter = [];
+        $columns = array_key_exists('columns', $params) ? $params['columns'] : [];
+
+        foreach($columns as $column) {
+            if($column['search']['value']!='') {
+                $columnsFilter[$column['name']] = $column['search']['value'];
+            }
+        }
         $op = array_key_exists('op', $params) ? (string) $params['op'] : false;
         switch ($op) {
             case 'selectall':
-                return $this->_selectAll($params);
+                return $this->_selectAll($params, $columnsFilter);
 
              break;
         }
 
-        $columns = array_key_exists('columns', $params) ? (int) $params['columns'] : [];
+        
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
         $startIndex = array_key_exists('start', $params) ? (int) $params['start'] : 0;
         $results = array_key_exists('length', $params) ? (int) $params['length'] : \FormaLms\lib\Get::sett('visuItem', 25);
@@ -36,8 +45,10 @@ class RoleDataSelector extends DataSelector{
             $sort = '0';
             $dir = 'asc';
         }
+
+        
         $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
-        $total = $this->builder->getFunctionalRolesTotal($searchValue);
+        $total = $this->builder->getFunctionalRolesTotal($searchValue,  $columnsFilter);
 
         $pagination = [
             'startIndex' => $startIndex,
@@ -49,7 +60,7 @@ class RoleDataSelector extends DataSelector{
             'rowsPerPage' => $rowsPerPage,
         ];
 
-        $list = $this->builder->getFunctionalRolesList($pagination, ['text' => $searchValue]);
+        $list = $this->builder->getFunctionalRolesList($pagination, ['text' => $searchValue],  $columnsFilter);
         $records = $this->mapData($list, $searchValue);
         $pagination['data'] = $records;
      
@@ -96,9 +107,11 @@ class RoleDataSelector extends DataSelector{
     }
 
     
-    protected function _selectAll($params = []){
+    protected function _selectAll($params = [], $columnsFilter = []){
         $filter = array_key_exists('filter', $params) ? (string) $params['filter'] : '';
-        $output = $this->builder->getAllFunctionalRoles($filter, true);
+        $output = $this->builder->getAllFunctionalRoles($filter, true,$columnsFilter);
+        $output = $this->builder->getRoleInfoById($output);
+     
         return $output;
     }
 
@@ -127,6 +140,24 @@ class RoleDataSelector extends DataSelector{
 
     
         return $list;
+    }
+
+    public function getHiddenColumns(){
+
+        $hiddenColumns = [];
+        foreach(self::ADDITIONAL_COLS as $additonalCol) {
+            
+            $hiddenColumns[] = [
+                'data' => $additonalCol,
+                'title' => \Lang::t('_'.strtoupper($additonalCol), 'standard'),
+                'sortable' => false,
+                'searchable' => false,
+                'search_field' => 'text',
+                'visible' => false
+            ];
+        }
+        
+        return $hiddenColumns;
     }
 
 }

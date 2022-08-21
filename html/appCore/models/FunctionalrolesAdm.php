@@ -84,7 +84,7 @@ class FunctionalrolesAdm extends Model
 
     //--- operative methods ------------------------------------------------------
 
-    public function getFunctionalRolesList($pagination, $filter = false)
+    public function getFunctionalRolesList($pagination, $filter = false, $columnsFilter = [])
     {
         //validate pagination data
         if (!is_array($pagination)) {
@@ -132,12 +132,27 @@ class FunctionalrolesAdm extends Model
         $query = 'SELECT g.idst as id_fncrole, f.id_group, fl.name, fl.description, fgl.name as group_name '
             . ' FROM (%adm_group as g LEFT JOIN ' . $this->_getRolesTable() . ' as f ON (g.idst = f.id_fncrole)) '
             . ' LEFT JOIN ' . $this->_getRolesLangTable() . ' as fl '
-            . " ON (g.idst = fl.id_fncrole AND fl.lang_code = '" . $_language . "') "
+            . ' ON (g.idst = fl.id_fncrole AND fl.lang_code = "' . $_language . '") '
             . ' LEFT JOIN ' . $this->_getGroupsLangTable() . ' as fgl '
-            . " ON (f.id_group = fgl.id_group AND fgl.lang_code = '" . $_language . "')"
-            . " WHERE g.groupid LIKE '/fncroles/%' " . ($_filter != '' ? $_filter . ' ' : '')
-            . ' ORDER BY ' . $_sort . ' ' . $_dir . ' '
+            . ' ON (f.id_group = fgl.id_group AND fgl.lang_code = "' . $_language . '")'
+            . ' WHERE g.groupid LIKE "/fncroles/%" ';
+
+        if($_filter != '') {
+            $query .= $_filter;
+        }
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    fl.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
+        }
+        $query .= ' ORDER BY ' . $_sort . ' ' . $_dir . ' '
             . ' LIMIT ' . (int) $_startIndex . ', ' . (int) $_results;
+
+    
         $res = $this->db->query($query);
 
         //extract records from database
@@ -180,7 +195,7 @@ class FunctionalrolesAdm extends Model
         return array_values($output);
     }
 
-    public function getFunctionalRolesTotal($filter = false)
+    public function getFunctionalRolesTotal($filter = false, $columnsFilter = [])
     {
         //validate filter data and adjust query
         $_filter = '';
@@ -206,6 +221,15 @@ class FunctionalrolesAdm extends Model
             . ' LEFT JOIN ' . $this->_getGroupsLangTable() . ' as fgl '
             . " ON (f.id_group = fgl.id_group AND fgl.lang_code = '" . $_language . "')"
             . " WHERE g.groupid LIKE '/fncroles/%' " . ($_filter != '' ? $_filter . ' ' : '');
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    fl.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
+        }
         $res = $this->db->query($query);
 
         //extract total value database
@@ -218,7 +242,7 @@ class FunctionalrolesAdm extends Model
         return $output;
     }
 
-    public function selectAllFunctionalRoles($filter)
+    public function selectAllFunctionalRoles($filter, $columnsFilter = [])
     {
         //validate filter data and adjust query
         $_filter = '';
@@ -244,6 +268,15 @@ class FunctionalrolesAdm extends Model
             . ' LEFT JOIN ' . $this->_getGroupsLangTable() . ' as fgl '
             . " ON (f.id_group = fgl.id_group AND fgl.lang_code = '" . $_language . "')"
             . ($_filter != '' ? " WHERE  g.groupid LIKE '/fncroles/%' " . $_filter . ' ' : '');
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    fl.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
+        }
         $res = $this->db->query($query);
 
         //extract records from database
@@ -255,6 +288,62 @@ class FunctionalrolesAdm extends Model
         }
 
         return $output;
+    }
+
+    public function getRoleInfoById($ids = []) {
+           //validate language for name and description
+           $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+
+         //mount query
+         $query = 'SELECT g.idst as id_fncrole, f.id_group, fl.name, fl.description, fgl.name as group_name '
+            . ' FROM (%adm_group as g LEFT JOIN ' . $this->_getRolesTable() . ' as f ON (g.idst = f.id_fncrole)) '
+            . ' LEFT JOIN ' . $this->_getRolesLangTable() . ' as fl '
+            . ' ON (g.idst = fl.id_fncrole AND fl.lang_code = "' . $_language . '") '
+            . ' LEFT JOIN ' . $this->_getGroupsLangTable() . ' as fgl '
+            . ' ON (f.id_group = fgl.id_group AND fgl.lang_code = "' . $_language . '")'
+            . ' WHERE  f.id_fncrole in (' . implode(',', $ids) . ')';
+
+       
+         $res = $this->db->query($query);
+               //extract records from database
+        $output = [];
+        if ($res && $this->db->num_rows($res) > 0) {
+            while ($obj = $this->db->fetch_obj($res)) {
+                $output[$obj->id_fncrole] = $obj;
+            }
+
+            $_arr_fncroles = array_keys($output);
+
+            //insert values in output records
+            reset($output);
+            foreach ($output as $key => $value) {
+                //WARNING: extremely expansive; TO DO: optimize the users count
+                $count = count($this->getAllUsers($key));
+                $value->users = $count > 0 ? $count : 0;
+            }
+            unset($_arr_users);
+
+            //get competences count for every retrieved role
+            $_arr_competences = [];
+            $query = 'SELECT id_fncrole, COUNT(*) FROM ' . $this->_getRolesCompetencesTable() . ' '
+                . ' WHERE id_fncrole IN (' . implode(',', $_arr_fncroles) . ') '
+                . ' GROUP BY id_fncrole';
+            $res = $this->db->query($query);
+            if ($res) {
+                while (list($id_fncrole, $count) = $this->db->fetch_row($res)) {
+                    $_arr_competences[$id_fncrole] = $count;
+                }
+            }
+            //insert values in output records
+            reset($output);
+            foreach ($output as $key => $value) {
+                $value->competences = (isset($_arr_competences[$key]) ? (int) $_arr_competences[$key] : 0);
+            }
+            unset($_arr_competences);
+        }
+
+        return array_values($output);
+
     }
 
     public function getGroupsList($pagination, $filter = false)

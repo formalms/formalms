@@ -60,6 +60,9 @@ class UserselectorAdmController extends AdmController
 
     public function show() {
 
+        $disableAjax = $this->requestObj->has('disable_ajax') ? true : false;
+        $instanceValue = $this->requestObj->get('instance');
+        $instanceId = $this->requestObj->get('id');
         $orgChart = null;
         if($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
             $this->selection = $this->requestObj->get('selected_tab');
@@ -72,18 +75,32 @@ class UserselectorAdmController extends AdmController
         //dd($selectedData);
 
         foreach($this->tabs as $tabKey => $tab) {
-            $columns[$tabKey] = $this->multiUserSelector->retrieveDataSelector($tabKey)->getColumns();
+            $multiUserSelectorTab = $this->multiUserSelector->retrieveDataSelector($tabKey);
+           
+            $columns[$tabKey] = $multiUserSelectorTab->getColumns();
+            if(count($multiUserSelectorTab::ADDITIONAL_COLS)) {
+                $hiddenColumns = $multiUserSelectorTab->getHiddenColumns();
+                $columns[$tabKey] = array_merge($columns[$tabKey], $hiddenColumns);
+            }
+
+            if($disableAjax) {
+                $requestParams['op'] = 'selectall';
+                $selectedData[$tabKey] = $multiUserSelectorTab->getData($requestParams);
+            }
         }
 
         if($this->tabs['org']) {
             $orgChart = $this->multiUserSelector->retrieveDataSelector('org')->getChart();
         }
 
-
         $this->render('show',['tabs' => $this->tabs,
                             'selection'=> $this->selection,
                             'columns' => $columns,
                             'orgChart' => $orgChart,
+                            'ajax' => $disableAjax,
+                            'selectedData' => $selectedData,
+                            'instanceValue' => $instanceValue,
+                            'instanceId' => $instanceId,
                             'debug' => $this->requestObj->has('debug') ? $this->requestObj->get('debug') : false
                         ]);
     }

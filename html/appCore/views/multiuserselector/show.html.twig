@@ -1,6 +1,8 @@
  
 
  <form id="form_tabs">
+    <input type="hidden" name="instance" value="{{ instanceValue }}" />
+    <input type="hidden" name="id" value="{{ instanceId }}" />
     <div id="multiuserselector_tab" style='margin-top:5%;'>
         <ul class="nav nav-tabs">
             {% for tabValue,tab in tabs %}
@@ -43,38 +45,30 @@
 let DTable = [];
 let orgChartSelection = null;
 var columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
-
-
-$(document).ready(function() {
-
-
-    $('table').each(function(e) {
-
-    var rel = $(this).attr('rel');
-    var domId = '#' + $(this).attr('id');
-
-    DTable[rel] = new window.frontend.modules.FormaTable(domId, {
+var data = {{ selectedData | json_encode(constant('JSON_HEX_APOS')) | raw }};
+var ajax = {{ ajax | json_encode }};
+var options = {
             rowId: 'id',
             scrollX: true,
-            processing: true,
-            serverSide: true,
-            'ajax': {
-              
-                type: 'GET',
-                data: function (d) {
-                    d.dataType = rel;
-                },
-                complete: function(json) {
-                
-                    return json;
-                },
-                url: 'ajax.adm_server.php?r=adm/userselector/getData',
-            },
+            //processing: true,
+            //serverSide: true,
+            //'ajax': {
+            //  
+            //    type: 'GET',
+            //    data: function (d) {
+            //        d.dataType = rel;
+            //    },
+            //    complete: function(json) {
+            //    
+            //        return json;
+            //    },
+            //    url: 'ajax.adm_server.php?r=adm/userselector/getData',
+            //},
             paging: true,
             pageLength: 25,
             searching: true,
             //data: rows,
-            columns : columns[rel],
+            //columns : columns[rel],
             dom: 'Blfrtip',
             stateSave: true,
             deferRender: true,
@@ -91,21 +85,82 @@ $(document).ready(function() {
                 'style': 'multi',
             },
             orderCellsTop: true,
-            fixedHeader: true
-            });
+            fixedHeader: true,
+            //buttons: buttons
+            };
+
+$(document).ready(function() {
+
+
+    $('table').each(function(e) {
+
+    var rel = $(this).attr('rel');
+    var domId = '#' + $(this).attr('id');
+
+    var buttons = [
+                {
+                    text: '{{ Lang_translate("_ADVANCED_SEARCH", "standard") }}',
+                    className: 'btn btn-default',
+                    action: function(e, dt, node, config) {
+                        //DTable[rel].searchBar.init().show()
+
+                        if($('.searchbar').length > 0) {
+                            $('.searchbar').each(function(e){
+                                if($(this).hasClass('hidden')) {
+                                    $(this).removeClass('hidden');
+                                } else {
+                                    $(this).addClass('hidden');
+                                }
+                            });
+                        }
+                        
+                    }
+                },
+                {
+                    extend: 'colvis',
+                    text: '{{ Lang_translate("_CHANGEPOLICY", "profile") }}',
+                    className: 'btn btn-default',
+                    collectionLayout: 'dropdown-menu',
+                    columns: ':not(":first")'
+                }
+            ];
+        
+    options.buttons = buttons;
+    options.columns = columns[rel];
+
+    if(!ajax) {
+        options.processing = true;
+        options.serverSide = true;
+        options.ajax = {
+              
+                type: 'GET',
+                data: function (d) {
+                    d.dataType = rel;
+                },
+                complete: function(json) {
+                
+                    return json;
+                },
+                url: 'ajax.adm_server.php?r=adm/userselector/getData',
+            };
+    } else {
+        options.data = data[rel];
+    }
+    
+
+    DTable[rel] = new window.frontend.modules.FormaTable(domId, options);
 
                // Setup - add a text input to each header cell
         columns[rel].forEach(function(item, i) {
             if ( item.searchable === true) {
-
-                console.log(item, i);
+                
                 var title = item.data;
               
                 var table = DTable[rel].DataTable;
+
                 var cell = $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 2) +')')
 
                 cell.append(getInputSearchField(item.search_field, table.column(i+1).search()));
-                
                 
                 table.columns.adjust();
         
@@ -198,7 +253,7 @@ function getInputSearchField(type, value) {
         break;
 
         default:
-            returnString = returnString +  '<input type="text" class="form-control input-sm" placeholder="' + searchPlaceholder + '" value="' + value + '" />';
+            returnString = returnString +  '<input type="text" class="form-control input-sm searchbar hidden" placeholder="' + searchPlaceholder + '" value="' + value + '" />';
         break;
     }
     return returnString;

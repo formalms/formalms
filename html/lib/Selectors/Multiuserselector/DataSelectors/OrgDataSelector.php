@@ -5,6 +5,7 @@ require_once _adm_ . '/models/UsermanagementAdm.php';
 require_once _base_ . '/widget/lib.widget.php';
 class OrgDataSelector extends DataSelector{ 
 
+    const ADDITIONAL_COLS = [];
 
     public function __construct() {
      
@@ -15,7 +16,7 @@ class OrgDataSelector extends DataSelector{
         parent::__construct();
     }
 
-    public function getData($params = []) : string  {
+    public function getData($params = []) {
 
         $command = array_key_exists('command', $params) ? (string) $params['command'] : '';
         
@@ -74,6 +75,10 @@ class OrgDataSelector extends DataSelector{
     }
 
     public function getColumns(){
+        return [];
+    }
+
+    public function getHiddenColumns(){
         return [];
     }
 
@@ -159,7 +164,7 @@ class OrgDataSelector extends DataSelector{
 
 
     
-    protected function _selectAll($params = []){}
+    protected function _selectAll($params = [], $columnsFilter = []){}
 
     protected function _getDynamicFilter($input){}
 

@@ -4,6 +4,7 @@ namespace FormaLms\lib\Selectors\Multiuserselector\DataSelectors;
 require_once _adm_ . '/models/GroupmanagementAdm.php';
 class GroupDataSelector extends DataSelector{ 
 
+    const ADDITIONAL_COLS = [];
 
     public function __construct() {
      
@@ -13,17 +14,24 @@ class GroupDataSelector extends DataSelector{
         parent::__construct();
     }
 
-    public function getData($params = []) : string  {
+    public function getData($params = []) {
       
+        $columnsFilter = [];
         $op = array_key_exists('op', $params) ? (string) $params['op'] : false;
+        $columns = array_key_exists('columns', $params) ? $params['columns'] : [];
+        foreach($columns as $column) {
+            if($column['search']['value']!='') {
+                $columnsFilter[$column['name']] = $column['search']['value'];
+            }
+        }
         switch ($op) {
             case 'selectall':
-                return $this->_selectAll($params);
+                return $this->_selectAll($params, $columnsFilter);
 
              break;
         }
 
-        $columns = array_key_exists('columns', $params) ? (int) $params['columns'] : [];
+        
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
         $startIndex = array_key_exists('start', $params) ? (int) $params['start'] : 0;
         $results = array_key_exists('length', $params) ? (int) $params['length'] : \FormaLms\lib\Get::sett('visuItem', 25);
@@ -40,7 +48,7 @@ class GroupDataSelector extends DataSelector{
         $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
 
         $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
-        $total = $this->builder->getTotalGroups($searchValue, $learning_filter);
+        $total = $this->builder->getTotalGroups($searchValue, $learning_filter, $columnsFilter);
 
         $pagination = [
             'startIndex' => $startIndex,
@@ -52,7 +60,7 @@ class GroupDataSelector extends DataSelector{
             'rowsPerPage' => $rowsPerPage,
         ];
 
-        $list = $this->builder->getGroupsList($pagination, $searchValue, $learning_filter);
+        $list = $this->builder->getGroupsList($pagination, $searchValue, $learning_filter, $columnsFilter);
 
         $records = $this->mapData($list, $searchValue);
 
@@ -91,10 +99,30 @@ class GroupDataSelector extends DataSelector{
         ];
     }
 
-    protected function _selectAll($params = []){
+    public function getHiddenColumns(){
+
+        $hiddenColumns = [];
+        foreach(self::ADDITIONAL_COLS as $additonalCol) {
+            
+            $hiddenColumns[] = [
+                'data' => $additonalCol,
+                'title' => \Lang::t('_'.strtoupper($additonalCol), 'standard'),
+                'sortable' => false,
+                'searchable' => false,
+                'search_field' => 'text',
+                'visible' => false
+            ];
+        }
+        
+        return $hiddenColumns;
+    }
+
+    protected function _selectAll($params = [], $columnsFilter = []){
 
         $filter_text = array_key_exists('filter_text', $params) ? (string) $params['filter_text'] : '';
-        $output = $this->builder->getAllGroups($filter_text, true);
+        $output = $this->builder->getAllGroups($filter_text, true, $columnsFilter);
+        $output = $this->builder->getAllGroupDetails($output);
+       
         return $output;
     }
 

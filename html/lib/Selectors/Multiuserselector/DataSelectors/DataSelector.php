@@ -30,7 +30,10 @@ abstract class DataSelector implements DataSelectorInterface {
     public function getColumns(){
     }
 
-    abstract protected function _selectAll($params = []);
+    public function getHiddenColumns(){
+    }
+
+    abstract protected function _selectAll($params = [], $columnsFilter = []);
 
     abstract protected function _getDynamicFilter($input);
 
