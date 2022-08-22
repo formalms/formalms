@@ -22,8 +22,14 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class MultiUserSelector { 
 
     protected $dataSelectors =  array();
+    protected $accessModel =  null;
 
     const NAMESPACE = 'FormaLms\lib\Selectors\Multiuserselector\DataSelectors\\';
+
+    const ACCESS_MODELS = [
+        'communication' => ['includes' => _lms_ . '/admin/models/CommunicationAlms.php',
+                            'className' => 'CommunicationAlms'] ,
+    ];
 
     public function setDataSelectors(string $dataSelector, string $key) : self{
 
@@ -43,9 +49,26 @@ class MultiUserSelector {
         return $this->dataSelectors;
     }
 
+    public function injectAccessModel(string $type) : self {
+
+        require_once (self::ACCESS_MODELS[$type]['includes']);
+        $className = self::ACCESS_MODELS[$type]['className'];
+        
+        $this->accessModel = new $className();
+        
+        return $this;
+   }
+
+
+   public function getAccessModel() : object {
+       return $this->accessModel;
+   }
+
     public function retrieveDataSelector($key) : ?DataSelector{
 
         return $this->dataSelectors[$key];
     }
+
+   
     
 }

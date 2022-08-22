@@ -97,7 +97,7 @@ class CommunicationAlmsController extends AlmsController
 
         foreach ($communicationList as $i => $communication) {
             $communicationList[$i]['editUrl'] = 'index.php?r=alms/communication/edit&idComm=' . $communication['id_comm'];
-            $communicationList[$i]['usersUrl'] = 'index.php?r=alms/communication/mod_user&id_comm=' . $communication['id_comm'] . '&load=1';
+            $communicationList[$i]['usersUrl'] = 'index.php?r=adm/userselector/show&id=' . $communication['id_comm'] . '&instance=communication&load=1';
             $communicationList[$i]['deleteUrl'] = 'ajax.adm_server.php?r=alms/communication/delete&idComm=' . $communication['id_comm'];
             $communicationList[$i]['description'] = (strlen(strip_tags($communication['description'])) > 150) ? substr(strip_tags($communication['description']), 0, 150) . '...' : strip_tags($communication['description']);
         }

@@ -1,8 +1,8 @@
- 
 
- <form id="form_tabs">
-    <input type="hidden" name="instance" value="{{ instanceValue }}" />
-    <input type="hidden" name="id" value="{{ instanceId }}" />
+ {{ Form_openForm('form_tabs', 'index.php?r=adm/userselector/associate', false, 'post', 'multipart/form-data') }}
+
+    {{ Form_getHidden('instance','instance',  instanceValue ) }}
+    {{ Form_getHidden('id','id',  instanceId ) }}
     <div id="multiuserselector_tab" style='margin-top:5%;'>
         <ul class="nav nav-tabs">
             {% for tabValue,tab in tabs %}
@@ -32,12 +32,18 @@
                 {% endif %}
             {% endfor %}
     </div>
+    <div class="modal-footer">
+		{{ Form_openButtonSpace() }}
+		{{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+		{{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+		{{ Form_closeButtonSpace() }}
+	</div>
     {% if debug %}
     <button id="test-btn" style='margin-top:3%;' class="button btn btn-primary dahsboard__button--save js-save-block" type="submit" >
         TEST
     </button>
     {% endif %}
- </form>
+{{ Form_closeForm() }}
  
 
 <script>
@@ -50,20 +56,6 @@ var ajax = {{ ajax | json_encode }};
 var options = {
             rowId: 'id',
             scrollX: true,
-            //processing: true,
-            //serverSide: true,
-            //'ajax': {
-            //  
-            //    type: 'GET',
-            //    data: function (d) {
-            //        d.dataType = rel;
-            //    },
-            //    complete: function(json) {
-            //    
-            //        return json;
-            //    },
-            //    url: 'ajax.adm_server.php?r=adm/userselector/getData',
-            //},
             paging: true,
             pageLength: 25,
             searching: true,
@@ -201,7 +193,7 @@ $('body').on('click', '.ygtvhtml', function() {
 });
 
 
-$('#form_tabs').on('submit', function(e) {
+$('#test-btn').on('click', function(e) {
     e.preventDefault();
 
     if (!$("table tr.selected").length) {
@@ -219,6 +211,31 @@ $('#form_tabs').on('submit', function(e) {
     }
 
     alert(alertMsg);
+
+});
+
+$('#form_tabs').on('submit', function(e) {
+    e.preventDefault();
+
+    var data = $(this).serializeArray();
+    if (!$("table tr.selected").length) {
+        return;
+    }
+
+    var selectedIds = [];
+    $('table[id$="Content"]').each(function(e) {
+
+        selectedIds = selectedIds.concat(DTable[$(this).attr('rel')]._selection.rows);
+    });
+    
+    //data.push({name: 'selected', value: selectedIds});
+    $(this).append( $('<input>', {
+                type: 'hidden',
+                name: 'selected',
+                value: selectedIds
+        }));
+
+    this.submit();
 
 });
 

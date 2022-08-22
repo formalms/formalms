@@ -137,5 +137,33 @@ class UserselectorAdmController extends AdmController
 
     }
 
+    public function associate()
+    {
+        
+        $instanceType = $this->requestObj->get('instance');
+        $instanceId = (int) $this->requestObj->get('id');
+
+        $selection =  explode(',', $this->requestObj->get('selected'));
+        
+        $this->multiUserSelector->injectAccessModel($instanceType);
+
+        $accessModel = $this->multiUserSelector->getAccessModel();
+        switch($instanceType) {
+
+            case 'communication':
+               
+                $oldSelection = $accessModel->accessList($instanceId);
+                
+                if ($accessModel->updateAccessList($instanceId, $oldSelection, $selection)) {
+                    Util::jump_to('index.php?r=alms/communication/show&success=1');
+                } else {
+                    Util::jump_to('index.php?r=alms/communication/show&error=1');
+                }
+               
+                break;
+        }
+
+    }
+
 
 }
