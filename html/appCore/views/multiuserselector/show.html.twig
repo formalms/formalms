@@ -52,6 +52,7 @@ let DTable = [];
 let orgChartSelection = null;
 var columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
 var data = {{ selectedData | json_encode(constant('JSON_HEX_APOS')) | raw }};
+var selection = {{ accessSelection | json_encode(constant('JSON_HEX_APOS')) | raw }};
 var ajax = {{ ajax | json_encode }};
 var options = {
             rowId: 'id',
@@ -59,10 +60,8 @@ var options = {
             paging: true,
             pageLength: 25,
             searching: true,
-            //data: rows,
-            //columns : columns[rel],
             dom: 'Blfrtip',
-            stateSave: true,
+           // stateSave: true,
             deferRender: true,
             'columnDefs': [
                 {
@@ -119,6 +118,19 @@ $(document).ready(function() {
         
     options.buttons = buttons;
     options.columns = columns[rel];
+    options.preselection = selection;
+  // options.rowCallback = function( row, data ) {
+  //   
+  //  
+  //         if ( $.inArray(data.id, selection) !== -1 ) {
+  //              console.log('passo');
+  //             this.api().row($(row)).select();
+  //             //this.api().row($(row)).data(data).draw();
+  //             
+  //         }
+
+  //         //
+  //     };
 
     if(!ajax) {
         options.processing = true;
@@ -170,7 +182,7 @@ $(document).ready(function() {
         
         DTable[rel].DataTable.on('xhr.dt', function (e, settings, json, xhr) {
             if (json.data.length > 0) {
-         
+                //console.log($(domId).DataTable().rows);
             }
             // Note no return - manipulate the data directly in the JSON object.
         });
@@ -217,24 +229,53 @@ $('#test-btn').on('click', function(e) {
 $('#form_tabs').on('submit', function(e) {
     e.preventDefault();
 
-    var data = $(this).serializeArray();
-    if (!$("table tr.selected").length) {
-        return;
-    }
 
+    var data = $(this).serializeArray();
+  //  if (!$("table tr.selected").length ) {
+  //      return;
+  //  }
+
+    var allSelection = [];
     var selectedIds = [];
+    var excludedIds = [];
     $('table[id$="Content"]').each(function(e) {
 
-        selectedIds = selectedIds.concat(DTable[$(this).attr('rel')]._selection.rows);
-    });
-    
-    //data.push({name: 'selected', value: selectedIds});
-    $(this).append( $('<input>', {
-                type: 'hidden',
-                name: 'selected',
-                value: selectedIds
-        }));
+        if(DTable[$(this).attr('rel')]._selection.rows.length > 0) {
+            selectedIds = selectedIds.concat(DTable[$(this).attr('rel')]._selection.rows);
+        }
 
+        if(DTable[$(this).attr('rel')]._selection.all === true) {
+            allSelection = allSelection.concat($(this).attr('rel'));
+            excludedIds = excludedIds.concat(DTable[$(this).attr('rel')]._selection.exclusions);
+        }
+        
+    });
+
+    $('.radiosel:checked').each(function(e) {
+        if(parseInt($(this).val()) > 0) {
+            var parts = $(this).attr('id').split('_');
+            selectedIds = selectedIds.concat(parts[2]);
+        }
+    });
+  
+    $(this).append( $('<input>', {
+            type: 'hidden',
+            name: 'selected',
+            value: selectedIds
+    }));
+
+    $(this).append( $('<input>', {
+            type: 'hidden',
+            name: 'allselection',
+            value: allSelection
+    }));
+
+     $(this).append( $('<input>', {
+            type: 'hidden',
+            name: 'excluded',
+            value: excludedIds
+    }));
+    
     this.submit();
 
 });

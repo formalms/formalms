@@ -126,6 +126,11 @@ class GroupDataSelector extends DataSelector{
         return $output;
     }
 
+    public function getAllSelection($exclusions = []) {
+        $allSelection = $this->builder->getAllGroups($filter_text, true);
+        return array_diff($allSelection, $exclusions);
+    }
+
     protected function _getDynamicFilter($input){}
 
     protected function mapData($records, $filter = ''){

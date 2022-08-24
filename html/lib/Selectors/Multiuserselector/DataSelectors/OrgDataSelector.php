@@ -28,6 +28,7 @@ class OrgDataSelector extends DataSelector{
 
                 $_conversion_table = $this->builder->getOrgchartIdstConversionTable();
 
+           
                 if ($initial) {
                     //get selected node from session and set the expanded tree
                     $idOrg = $this->_getSelectedNode();
@@ -125,7 +126,21 @@ class OrgDataSelector extends DataSelector{
         return (int) str_replace('/oc_', '', $groupid);
     }
 
-    public function getChart($id = 'main') {
+
+    protected function _getRootNodeId()
+    {
+        $acl_man = \Docebo::user()->getACLManager();
+        $arr_idst = $acl_man->getArrGroupST(['/oc_0', '/ocd_0']);
+
+        return $arr_idst['/oc_0'] . '_' . $arr_idst['/ocd_0'];
+
+    }
+
+    public function getAllSelection($exclusions = []) {
+        return [];
+    }
+
+    public function getChart($selection = [], $id = 'main') {
         $_languages = [
             '_ROOT' => \FormaLms\lib\Get::sett('title_organigram_chart', \Lang::t('_ORG_CHART', 'organization_chart')),
             '_YES' => \Lang::t('_CONFIRM', 'organization_chart'),
@@ -150,10 +165,10 @@ class OrgDataSelector extends DataSelector{
             'treeFile' => \FormaLms\lib\Get::rel_path('base') . '/widget/tree/selectortree.js',
                 'options' => ['simple' => $this->show_orgchart_simple_selector],
             'languages' => $_languages,
-            'rootNodeId' => isset($root_node_id) ? $root_node_id : 0,
-            'initialSelectedNode' => (int) $selected_node,
-            'initialSelectorData' => $initial_selection,
-            'canSelectRoot' => isset($can_select_root) ? (bool) $can_select_root : true,
+            'rootNodeId' => $this->_getRootNodeId() ?? 0,
+            'initialSelectedNode' => 0,
+            'initialSelectorData' => $selection,
+            'canSelectRoot' => true,
             'show' => 'tree',
             'dragDrop' => false,
             'rel_action' => $orgchart_rel_action,

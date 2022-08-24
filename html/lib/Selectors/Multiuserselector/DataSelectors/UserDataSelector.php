@@ -189,6 +189,27 @@ class UserDataSelector extends DataSelector{
         return $output_results;
     }
 
+
+    public function getAllSelection($exclusions = []) {
+
+        $idOrg = 0; //FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
+        $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
+        $filter_text = array_key_exists('filter_text', $params) ? (string) $params['filter_text'] : '';
+        $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
+        $searchFilter = [
+            'text' => $filter_text,
+            'suspended' => (array_key_exists('suspended', $params) && (int) $params['suspended'] > 0) ? true : false,
+        ];
+        $dyn_filter = $this->_getDynamicFilter(array_key_exists('dyn_filter', $params) ? (string) $params['dyn_filter'] : '');
+        if ($dyn_filter !== false) {
+            $searchFilter['dyn_filter'] = $dyn_filter;
+        }
+      
+        $allSelection = $this->builder->getAllUsers($idOrg, $descendants, $searchFilter, true, $learning_filter, $columnsFilter);
+       
+        return array_diff($allSelection, $exclusions);
+    }
+
      /*
      * list of all selected users by their idst
      */

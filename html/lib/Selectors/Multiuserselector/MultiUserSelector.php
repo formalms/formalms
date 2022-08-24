@@ -60,6 +60,40 @@ class MultiUserSelector {
    }
 
 
+   public function associate($instanceType, $instanceId, $selection) {
+        switch($instanceType) {
+
+            case 'communication':
+            
+                $oldSelection = $this->accessModel->accessList($instanceId);
+                
+                if ($this->accessModel->updateAccessList($instanceId, $oldSelection, $selection)) {
+                    $redirect = 'index.php?r=alms/communication/show&success=1';
+                } else {
+                    $redirect = 'index.php?r=alms/communication/show&error=1';
+                }
+            
+                break;
+        }
+
+        return $redirect;
+   }
+
+
+   public function getaccessList($instanceType, $instanceId) {
+        switch($instanceType) {
+
+            case 'communication':
+            
+                $selection = $this->accessModel->accessList($instanceId);
+            
+                break;
+        }
+
+        return $selection;
+    }
+
+
    public function getAccessModel() : object {
        return $this->accessModel;
    }

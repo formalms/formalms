@@ -26,6 +26,7 @@ class UserselectorAdmController extends AdmController
 
     protected $selection = 'user';
 
+
     protected $tabs = ['user' => false,
                         'group' => false,
                         'org' => false,
@@ -52,7 +53,16 @@ class UserselectorAdmController extends AdmController
             $this->multiUserSelector->setDataSelectors($dataSelectorName, $tabFilter);
         }
 
-       
+        if($this->requestObj->has('instance') && $this->requestObj->has('id')) {
+            $instanceType = $this->requestObj->get('instance');
+            $instanceId = (int) $this->requestObj->get('id');
+    
+           
+            $this->multiUserSelector->injectAccessModel($instanceType);
+    
+            $this->multiUserSelector->getAccessModel();
+        }
+        
         return $this;
     }
 
@@ -60,19 +70,19 @@ class UserselectorAdmController extends AdmController
 
     public function show() {
 
+        $selectedData = [];
+        $accessSelection = [];
         $disableAjax = $this->requestObj->has('disable_ajax') ? true : false;
         $instanceValue = $this->requestObj->get('instance');
         $instanceId = $this->requestObj->get('id');
+
+        if($instanceValue && $instanceId) {
+            $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId);
+        }
         $orgChart = null;
         if($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
             $this->selection = $this->requestObj->get('selected_tab');
         }
-
-       // $this->multiUserSelector->setDataSelectors('DataSelector', 'user');
-       // $requestParams = ($this->requestObj->has('params')) ? $this->requestObj->get('params') : [];
-        //$requestParams['op'] = 'selectall';
-        $selectedData = []; //$this->multiUserSelector->retrieveDataSelector($this->selection)->getData($requestParams);
-        //dd($selectedData);
 
         foreach($this->tabs as $tabKey => $tab) {
             $multiUserSelectorTab = $this->multiUserSelector->retrieveDataSelector($tabKey);
@@ -90,7 +100,7 @@ class UserselectorAdmController extends AdmController
         }
 
         if($this->tabs['org']) {
-            $orgChart = $this->multiUserSelector->retrieveDataSelector('org')->getChart();
+            $orgChart = $this->multiUserSelector->retrieveDataSelector('org')->getChart($accessSelection);
         }
 
         $this->render('show',['tabs' => $this->tabs,
@@ -101,6 +111,7 @@ class UserselectorAdmController extends AdmController
                             'selectedData' => $selectedData,
                             'instanceValue' => $instanceValue,
                             'instanceId' => $instanceId,
+                            'accessSelection' => $accessSelection,
                             'debug' => $this->requestObj->has('debug') ? $this->requestObj->get('debug') : false
                         ]);
     }
@@ -139,29 +150,28 @@ class UserselectorAdmController extends AdmController
 
     public function associate()
     {
-        
         $instanceType = $this->requestObj->get('instance');
         $instanceId = (int) $this->requestObj->get('id');
 
         $selection =  explode(',', $this->requestObj->get('selected'));
+        $exclusion =  explode(',', $this->requestObj->get('excluded'));
+        $allSelections =  explode(',', $this->requestObj->get('allselection'));
+
         
-        $this->multiUserSelector->injectAccessModel($instanceType);
-
-        $accessModel = $this->multiUserSelector->getAccessModel();
-        switch($instanceType) {
-
-            case 'communication':
-               
-                $oldSelection = $accessModel->accessList($instanceId);
-                
-                if ($accessModel->updateAccessList($instanceId, $oldSelection, $selection)) {
-                    Util::jump_to('index.php?r=alms/communication/show&success=1');
-                } else {
-                    Util::jump_to('index.php?r=alms/communication/show&error=1');
-                }
-               
-                break;
+        if(count($allSelections)) {
+            foreach($allSelections as $allSelection) {
+                $boundSelection = $this->multiUserSelector->retrieveDataselector($allSelection)->getAllSelection($exclusion);
+            
+                $cleanArray = array_diff(array_unique($selection), $exclusion); //remove exclude delements
+             
+                $selection = array_unique(array_merge($cleanArray, $boundSelection));
+            
+            }
+            
         }
+       
+        return Util::jump_to($this->multiUserSelector->associate($instanceType, $instanceId, $selection));
+       
 
     }
 

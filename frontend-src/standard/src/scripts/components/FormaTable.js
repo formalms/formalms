@@ -28,7 +28,8 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
           */
          this._selection = {
              all: false,
-             rows: []
+             rows: [],
+             exclusions: []
          };
  
          /**
@@ -56,9 +57,8 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
 
         this.setOptions(options, this.eventsListeners, idOrClassOrElement);
 
-    
+        this.setCallbacks();
         this.DataTable = new dt(idOrClassOrElement,this._options);
-
 
         this.setActions();
 
@@ -101,6 +101,13 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
 
           if (options.processing !== undefined) {
             this._options.processing = options.processing;
+        }
+
+
+        if (options.preselection !== undefined) {
+            
+           this._selection.rows = $.merge(this._selection.rows, options.preselection);
+           
         }
 
         if (options.columns !== undefined) {
@@ -334,6 +341,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
          * Select option extension.
          */
         if (options.select !== undefined) {
+
           /**
            * Use a checkbox for selection.
            */
@@ -377,7 +385,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
                         _thisobj._selection.rows = [];
                       }
                       _thisobj._selection.all = true;
-                      
+                      _thisobj._selection.exclusions = [];
                       dt.rows({
                           search: 'applied'
                       }).select();
@@ -394,6 +402,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
                       if (_thisobj._selection.all) {
                         _thisobj._selection.rows = [];
                       }
+                      _thisobj._selection.exclusions = [];
                       _thisobj._selection.all = false;
                       dt.rows().deselect();
 
@@ -433,18 +442,6 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
 
               
           }
-
-          /**
-           * Automatic selection for paginated table.
-           */
-          this.drawCallbacks.push(function(settings, dt) {
-              dt.api().rows().every(function() {
-                  var _inrows = $.inArray(this.id(), this._selection.rows) > -1;
-                  if ((!this._selection.all && _inrows) || (this._selection.all && !_inrows)) {
-                      this.select();
-                  }
-              });
-          });
 
          
         }
@@ -531,21 +528,8 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
           });
         }
 
-        this.drawCallbacks.push(function(oSettings) {
-          if (oSettings._iDisplayLength > (oSettings.fnRecordsDisplay() + oSettings._iDisplayStart)) {
-              $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
-          } else {
-              $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
-          }
-        });
-
-        this._options.drawCallback = function(settings) {
-          var dt = this;
-          $(this.drawCallbacks).each(function() {
-              this(settings, dt);
-          });
-        }
-
+        
+      
         /**
        * Addictional option for adding a specified data value in row class definition.
        */
@@ -577,11 +561,54 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
     }
 
 
+    setCallbacks() {
+        this.drawCallbacks.push(function(oSettings) {
+          if (oSettings._iDisplayLength > (oSettings.fnRecordsDisplay() + oSettings._iDisplayStart)) {
+              $(oSettings.nTableWrapper).find('.dataTables_paginate').hide();
+          } else {
+              $(oSettings.nTableWrapper).find('.dataTables_paginate').show();
+          }
+        });
+
+      // this.drawCallbacks.push(function(settings, dt) {
+
+      //     //var dtable = this.DataTable;
+      //
+      //     console.log(dt,this);
+      //     this.api().rows().every(function() {
+      //             var _inrows = $.inArray(this.id(), this._selection.rows) > -1;
+      //             if ((!this._selection.all && _inrows) || (this._selection.all && !_inrows)) {
+      //                 this.select();
+      //             }
+      //         });
+      // });
+
+
+        var callbacks = this.drawCallbacks;
+        this._options.drawCallback = function(settings) {
+           
+          var dt = this;
+
+          $(callbacks).each(function() {
+          
+              this(settings, dt);
+          });
+         
+        }
+    }
+
+
     setActions() {
 
         
         var dtable = this.DataTable;
         var _thisobj = this;
+        /**
+         * Automatic selection for paginated table.
+         */
+       
+
+
         this.DataTable.on('click', '.formatable-action', function(e) {
             e.preventDefault();
             this.callAjax($(this).attr('href'), $(this).data('ajaxdata'));
@@ -590,18 +617,24 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
          * Handle paginated selection.
          */
          this.DataTable.on('select', function(e, dt, type, indexes) {
+           
             if (type === 'row') {
                 if (_thisobj._selection.all) {
                  
                     _thisobj._selection.rows = $(dtable.rows(indexes).ids()).get();
+                    _thisobj._selection.exclusions = $(_thisobj._selection.exclusions).not(dtable.rows(indexes).ids()).get();
+                    //console.log('select',_thisobj._selection.exclusions);
                 } else {
                     var _ids = $(dtable.rows(indexes).ids()).not(_thisobj._selection.rows).get();
                     _thisobj._selection.rows = $.merge(_thisobj._selection.rows, _ids);
-                    console.log(_thisobj._selection.rows);
+                    
+                    
                 }
             }
             
         });
+
+        
 
         /**
          * Handle paginated deselection.
@@ -611,12 +644,28 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
                 if (_thisobj._selection.all) {
                    
                     _thisobj._selection.rows = []
+                    var _exids = $(dtable.rows(indexes).ids()).not(_thisobj._selection.exclusions).get();
+                    _thisobj._selection.exclusions = $.merge(_thisobj._selection.exclusions, _exids);
+                    //console.log('deselect',_thisobj._selection.exclusions);
                 } else {
                     _thisobj._selection.rows = $(_thisobj._selection.rows).not(dtable.rows(indexes).ids()).get();
                 }
             }
         
         });
+
+        this.DataTable.on('draw', function () {
+            
+            dtable.rows().every(function() {
+              
+                var _inrows = $.inArray(this.id(), _thisobj._selection.rows) > -1;
+                if ((!_thisobj._selection.all && _inrows) || (_thisobj._selection.all && !_inrows)) {
+                    this.select();
+                }
+            });
+          
+          // Note no return - manipulate the data directly in the JSON object.
+      });
 
         this.DataTable.on('reset', 'tbody td.ft-edit form.ft-edit-popup', function() {
             $('input.hasDatepicker').each(function() {
