@@ -28,7 +28,10 @@ class MultiUserSelector {
 
     const ACCESS_MODELS = [
         'communication' => ['includes' => _lms_ . '/admin/models/CommunicationAlms.php',
-                            'className' => 'CommunicationAlms'] ,
+                            'className' => 'CommunicationAlms'],
+        'adminmanager' => ['includes' => _adm_.'/models/AdminmanagerAdm.php',
+                            'className' => 'AdminmanagerAdm'
+                            ]
     ];
 
     public function setDataSelectors(string $dataSelector, string $key) : self{
@@ -51,9 +54,10 @@ class MultiUserSelector {
 
     public function injectAccessModel(string $type) : self {
 
+      
         require_once (self::ACCESS_MODELS[$type]['includes']);
         $className = self::ACCESS_MODELS[$type]['className'];
-        
+       
         $this->accessModel = new $className();
         
         return $this;
@@ -74,6 +78,16 @@ class MultiUserSelector {
                 }
             
                 break;
+
+            case 'adminmanager':
+        
+                if ($this->accessModel->saveUsersAssociation($instanceId, $selection)) {
+                    $redirect = 'index.php?r=adm/adminmanager/show&res=ok_ins';
+                } else {
+                    $redirect = 'index.php?r=adm/adminmanager/show&res=err_ins';
+                }
+            
+                break;
         }
 
         return $redirect;
@@ -86,6 +100,12 @@ class MultiUserSelector {
             case 'communication':
             
                 $selection = $this->accessModel->accessList($instanceId);
+            
+                break;
+            
+            case 'adminmanager':
+        
+                $selection = $this->accessModel->loadUserSelectorSelection($instanceId);
             
                 break;
         }

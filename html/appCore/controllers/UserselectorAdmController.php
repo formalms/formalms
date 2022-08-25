@@ -160,11 +160,14 @@ class UserselectorAdmController extends AdmController
         
         if(count($allSelections)) {
             foreach($allSelections as $allSelection) {
-                $boundSelection = $this->multiUserSelector->retrieveDataselector($allSelection)->getAllSelection($exclusion);
+                if(in_array($allSelection, array_keys($this->tabs))) {
+                    $boundSelection = $this->multiUserSelector->retrieveDataselector($allSelection)->getAllSelection($exclusion);
             
-                $cleanArray = array_diff(array_unique($selection), $exclusion); //remove exclude delements
-             
-                $selection = array_unique(array_merge($cleanArray, $boundSelection));
+                    $cleanArray = array_diff(array_unique($selection), $exclusion); //remove exclude delements
+                
+                    $selection = array_unique(array_merge($cleanArray, $boundSelection));
+                }
+                
             
             }
             
