@@ -44,6 +44,8 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
 
          this.searchBar = {};
         
+         this.pageLength = 25;
+         this.activeSearch = false;
 
          // Init
          if(!idOrClassOrElement) {
@@ -654,8 +656,31 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         
         });
 
-        this.DataTable.on('draw', function () {
+        
+        /**
+         * Handle page length basing upon data length.
+         */
+         this.DataTable.on('xhr.dt', function (e, settings, json) {
             
+            if (json!== null) {
+                if(json.data.length > 0) {
+                    if(_thisobj.activeSearch) {
+                        dtable.page.len(json.data.length);
+                        
+                    } else {
+                       
+                        dtable.page.len(_thisobj.pageLength);
+                    }
+                    
+                } 
+            } 
+        
+        });
+
+
+        this.DataTable.on('draw', function () {
+           
+        
             dtable.rows().every(function() {
               
                 var _inrows = $.inArray(this.id(), _thisobj._selection.rows) > -1;
@@ -807,6 +832,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
     
             },
             addSearchListener: function() {
+               
                 var the_table = this.instance
                 $('input[id^="inputString_"]').on('keyup change', function() {
     
@@ -868,6 +894,9 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
 
 
     registerApi() {
+
+    
+
         $.fn.dataTable.ext.errMode = 'none';
         //$.fn.datepicker.noConflict();
     
@@ -898,8 +927,8 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         $.fn.dataTable.ext.search.push(
             function(settings, data) {
                 var ret_val = true
-                var date_sep = '<?php echo $date_sep; ?>'
-                var date_format_array = '<?php echo $date_format; ?>'.split(date_sep)
+                var date_sep = ''
+                var date_format_array = ''.split(date_sep)
                 var day_position = date_format_array.indexOf('dd')
                 var month_position = date_format_array.indexOf('mm')
                 var year_position = date_format_array.indexOf('yyyy')

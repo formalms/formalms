@@ -17,7 +17,9 @@ class RoleDataSelector extends DataSelector{
     public function getData($params = []) {
         $columnsFilter = [];
         $columns = array_key_exists('columns', $params) ? $params['columns'] : [];
-
+        
+        $activeSearch = array_key_exists('active_search', $params) ? (int) $params['active_search'] : false;
+        
         foreach($columns as $column) {
             if($column['search']['value']!='') {
                 $columnsFilter[$column['name']] = $column['search']['value'];
@@ -49,7 +51,10 @@ class RoleDataSelector extends DataSelector{
         
         $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
         $total = $this->builder->getFunctionalRolesTotal($searchValue,  $columnsFilter);
-
+        if($activeSearch) {
+            $results = $total;
+            $rowsPerPage = $total;
+        }
         $pagination = [
             'startIndex' => $startIndex,
             'results' => $results,

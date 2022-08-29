@@ -23,6 +23,7 @@ class UserDataSelector extends DataSelector{
         $columnsFilter = [];
         $op = array_key_exists('op', $params) ? (string) $params['op'] : false;
         $columns = array_key_exists('columns', $params) ? $params['columns'] : [];
+        $activeSearch = array_key_exists('active_search', $params) ? (int) $params['active_search'] : false;
         foreach($columns as $column) {
             if($column['search']['value']!='') {
                 $columnsFilter[$column['name']] = $column['search']['value'];
@@ -40,7 +41,7 @@ class UserDataSelector extends DataSelector{
         $idOrg = array_key_exists('id_org', $params) ? (int) $params['id_org'] : 0;
         $descendants = false; //(FormaLms\lib\Get::req('descendants', DOTY_INT, 0) > 0 ? true : false);
         $startIndex = array_key_exists('start', $params) ? (int) $params['start'] : 0;
-        $results = array_key_exists('length', $params) ? (int) $params['length'] : \FormaLms\lib\Get::sett('visuItem', 25);
+        $results = \FormaLms\lib\Get::sett('visuItem', 25);
         $rowsPerPage = array_key_exists('rowsPerPage', $params) ? (int) $params['rowsPerPage'] : $results;
         if(array_key_exists('order', $params)) {
 
@@ -80,6 +81,11 @@ class UserDataSelector extends DataSelector{
             } else {
                 $startIndex = $total - $results;
             }
+        }
+
+        if($activeSearch) {
+            $results = $total;
+            $rowsPerPage = $total;
         }
 
         $pagination = [

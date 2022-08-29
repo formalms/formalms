@@ -3,6 +3,7 @@
 
     {{ Form_getHidden('instance','instance',  instanceValue ) }}
     {{ Form_getHidden('id','id',  instanceId ) }}
+  
     <div id="multiuserselector_tab" style='margin-top:5%;'>
         <ul class="nav nav-tabs">
             {% for tabValue,tab in tabs %}
@@ -20,7 +21,7 @@
                 {% if tab %}
                 <div class="tab-pane {% if selection == tabValue %} active {% endif %}" id="multiuser_tab_{{ tabValue }}">
                     {% if tabValue != 'org' %}
-                   <table class="table table-bordered display" rel="{{ tabValue }}" style="width:100%" id="{{ tabValue }}Content">
+                   <table class="table table-bordered display" rel="{{ tabValue }}" active_search ="0" style="width:100%" id="{{ tabValue }}Content">
                       
                     </table> 
                     {% else %}
@@ -59,6 +60,7 @@ var options = {
             scrollX: true,
             paging: true,
             pageLength: 25,
+            searchDelay: 800,
             searching: true,
             dom: 'Blfrtip',
            // stateSave: true,
@@ -86,6 +88,7 @@ $(document).ready(function() {
     $('table').each(function(e) {
 
     var rel = $(this).attr('rel');
+  
     var domId = '#' + $(this).attr('id');
 
     var buttons = [
@@ -119,18 +122,7 @@ $(document).ready(function() {
     options.buttons = buttons;
     options.columns = columns[rel];
     options.preselection = selection;
-  // options.rowCallback = function( row, data ) {
-  //   
-  //  
-  //         if ( $.inArray(data.id, selection) !== -1 ) {
-  //              console.log('passo');
-  //             this.api().row($(row)).select();
-  //             //this.api().row($(row)).data(data).draw();
-  //             
-  //         }
 
-  //         //
-  //     };
 
     if(!ajax) {
         options.processing = true;
@@ -140,6 +132,13 @@ $(document).ready(function() {
                 type: 'GET',
                 data: function (d) {
                     d.dataType = rel;
+                    
+                    d.active_search =   $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search');
+                   
+                    if(parseInt(d.active_search) === 0 && DTable[rel] !== undefined) {
+                      
+                        d.length = DTable[rel].pageLength;
+                    }
                 },
                 complete: function(json) {
                 
@@ -150,42 +149,77 @@ $(document).ready(function() {
     } else {
         options.data = data[rel];
     }
+
+    
     
 
     DTable[rel] = new window.frontend.modules.FormaTable(domId, options);
 
                // Setup - add a text input to each header cell
-        columns[rel].forEach(function(item, i) {
-            if ( item.searchable === true) {
-                
-                var title = item.data;
-              
-                var table = DTable[rel].DataTable;
+    columns[rel].forEach(function(item, i) {
+        if ( item.searchable === true) {
+            
+            var title = item.data;
+            
+            var table = DTable[rel].DataTable;
 
-                var cell = $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 2) +')')
+            var formatable = DTable[rel];
 
-                cell.append(getInputSearchField(item.search_field, table.column(i+1).search()));
+            var cell = $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 2) +')')
+
+            var searchInput = $('#' + rel + 'Content_filter');
+
+            var search = $.fn.dataTable.util.throttle(
+                function ( val ) {
+                    table.column(i+1).search( val ).draw();
+                },
+                1000
+            );
+
+            cell.append(getInputSearchField(item.search_field));
+            
+            cell.find('input').add(searchInput.find('input')).on('keyup clear', function (e) {
+
+               if (table.column(i+1).search() !== this.value) {
                 
+                   if(this.value == '') {
+                       $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search', 0);
+                       formatable.activeSearch = false;
+                       $('#' + rel + 'Content_length select').val(formatable.pageLength);
+                       $('#' + rel + 'Content_length').show();
+                     
+                   } else {
+                       formatable.activeSearch = true;
+                        $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search', 1);
+                      
+                      $('#' + rel + 'Content_length').hide();
+                       if(formatable._selection.all) {
+                           $('.buttons-select-none').trigger('click');
+                       }
+                   }
+                    table.settings()[0].jqXHR.abort();
+                    search(this.value);
+                  //table
+                  //    .column(i+1)
+                  //    .search(this.value)
+                  //    .draw();
+               }
+
                 table.columns.adjust();
+            });
+        }
+    });
         
-                cell.find('input').on('keyup change clear', function () {
-                    if (table.column(i+1).search() !== this.value ) {
-                        table
-                            .column(i+1)
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-            }
-        });
+    $('#' + rel + 'Content_length select').on('change', function(e) {
+
+        DTable[rel].pageLength = $(this).val();
+    });   
         
-        
-        DTable[rel].DataTable.on('xhr.dt', function (e, settings, json, xhr) {
-            if (json.data.length > 0) {
-                //console.log($(domId).DataTable().rows);
-            }
-            // Note no return - manipulate the data directly in the JSON object.
-        });
+    });
+
+    $('.sorting .searchbar').on('click focus', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
     });
 
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
@@ -195,8 +229,6 @@ $(document).ready(function() {
         }
         
     });
-       
-
 
 })
 
@@ -244,7 +276,7 @@ $('#form_tabs').on('submit', function(e) {
             selectedIds = selectedIds.concat(DTable[$(this).attr('rel')]._selection.rows);
         }
 
-        if(DTable[$(this).attr('rel')]._selection.all === true) {
+        if(DTable[$(this).attr('rel')]._selection.all === true && DTable[$(this).attr('rel')].activeSearch === true) {
             allSelection = allSelection.concat($(this).attr('rel'));
             excludedIds = excludedIds.concat(DTable[$(this).attr('rel')]._selection.exclusions);
         }
@@ -301,7 +333,7 @@ YAHOO.util.Event.onDOMReady(function(e) {
 });
 
 
-function getInputSearchField(type, value) {
+function getInputSearchField(type, value = '') {
     var returnString = '<br />';
     var searchPlaceholder = "{{ Lang_translate('_SEARCH', 'standard') }}";
 

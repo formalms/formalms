@@ -36,6 +36,8 @@ class GroupDataSelector extends DataSelector{
         $startIndex = array_key_exists('start', $params) ? (int) $params['start'] : 0;
         $results = array_key_exists('length', $params) ? (int) $params['length'] : \FormaLms\lib\Get::sett('visuItem', 25);
         $rowsPerPage = array_key_exists('rowsPerPage', $params) ? (int) $params['rowsPerPage'] : $results;
+        $activeSearch = array_key_exists('active_search', $params) ? (int) $params['active_search'] : false;
+        
         if(array_key_exists('order', $params)) {
 
             $order = $params['order'][0];
@@ -50,6 +52,10 @@ class GroupDataSelector extends DataSelector{
         $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
         $total = $this->builder->getTotalGroups($searchValue, $learning_filter, $columnsFilter);
 
+        if($activeSearch) {
+            $results = $total;
+            $rowsPerPage = $total;
+        }
         $pagination = [
             'startIndex' => $startIndex,
             'results' => $results,
