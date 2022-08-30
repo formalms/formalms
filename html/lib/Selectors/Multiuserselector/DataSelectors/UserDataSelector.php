@@ -45,13 +45,16 @@ class UserDataSelector extends DataSelector{
         $rowsPerPage = array_key_exists('rowsPerPage', $params) ? (int) $params['rowsPerPage'] : $results;
         if(array_key_exists('order', $params)) {
 
+          
             $order = $params['order'][0];
-            $sort = array_key_exists('column', $order) ? (string) $columns[$params['column']]['data'] != ''? (string) $columns[$params['column']]['data'] : '0' : '0';
+            $sort = array_key_exists('column', $order) ? (string) $columns[(int) $order['column']]['data'] != ''? (string) $columns[$order['column']]['data'] : '0' : '0';
             $dir = array_key_exists('dir', $order) ? (string) $order['dir'] : 'asc'; 
         } else {
             $sort = '0';
             $dir = 'asc';
         }
+
+ 
         $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
         $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
 

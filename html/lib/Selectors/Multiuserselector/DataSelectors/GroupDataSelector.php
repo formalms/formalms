@@ -41,7 +41,7 @@ class GroupDataSelector extends DataSelector{
         if(array_key_exists('order', $params)) {
 
             $order = $params['order'][0];
-            $sort = array_key_exists('column', $order) ? (string) $columns[$params['column']]['data'] != ''? (string) $columns[$params['column']]['data'] : '0' : '0';
+            $sort = array_key_exists('column', $order) ? (string) $columns[$order['column']]['data'] != ''? (string) $columns[$order['column']]['data'] : '0' : '0';
             $dir = array_key_exists('dir', $order) ? (string) $order['dir'] : 'asc'; 
         } else {
             $sort = '0';
