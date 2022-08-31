@@ -152,7 +152,7 @@ function duplicateCourse()
     {
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &$GLOBALS['current_user']->getAclManager();
+        $acl_man = &Docebo::user()->getAclManager();
 
         // find all the group created for this menu custom for permission management
         foreach ($levels as $lv => $name_level) {
@@ -181,7 +181,7 @@ function duplicateCourse()
     foreach ($levels as $lv => $name_level) {
         foreach ($perm_form[$lv] as $idrole => $v) {
             if ($group_idst[$lv] != 0 && $idrole != 0) {
-                $acl_man = &$GLOBALS['current_user']->getAclManager();
+                $acl_man = &Docebo::user()->getAclManager();
                 $acl_man->addToRole($idrole, $group_idst[$lv]);
             }
         }

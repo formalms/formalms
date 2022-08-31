@@ -510,7 +510,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user_manager = &$GLOBALS['current_user']->getAclManager();
+        $user_manager = &Docebo::user()->getAclManager();
 
         if (!$login_idst) {
             $username = '/' . $login_user;

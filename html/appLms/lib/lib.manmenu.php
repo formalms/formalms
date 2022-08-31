@@ -380,7 +380,7 @@ function &fromStToToken(&$map_idst_roles, &$token)
      $base_perm = '/lms/course/private/' . $id_principale . '/';
      $map = [];
      $levels = CourseLevel::getTranslatedLevels();
-     $acl_man = &$GLOBALS['current_user']->getAclManager();
+     $acl_man = &Docebo::user()->getAclManager();
      $cut_at = strlen($base_perm);
      // find the idst of all the role of the selected module
      foreach ($levels as $lv => $name_level) {

@@ -2085,7 +2085,7 @@ class Course_API extends API
             $this->session->set('user_enter_mark',time());
             $du->loadUserSectionST();
             $du->SaveInSession();
-            $GLOBALS['current_user'] = &$du;
+            $this->session->set('user', $du);
             $this->session->save();
             return $user_info;
         } else {
