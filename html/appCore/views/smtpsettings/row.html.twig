@@ -1,0 +1,13 @@
+<tr>
+    <td>
+        {{setting.id}}
+    </td>
+    <td>{{setting.title}}</td>
+    <td><input type='checkbox' value={{ setting.system}} checked={{ setting.system}} /></td>
+    <td> 
+        
+        <a class="btn btn-info btn-edit-confirm btn-xl" href="index.php?template={{ template.name }}&r=adm/smtpsettings/edit">{{ Lang_translate('_MOD', 'standard') }}</a>
+        <a class="btn btn-danger btn-delete-confirm btn-xl" href="index.php?template={{ template.name }}&r=adm/smtpsettings/delete">{{ Lang_translate('_DELETE', 'templedit') }}</a>
+
+    </td>
+</tr>
