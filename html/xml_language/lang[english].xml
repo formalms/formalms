@@ -1656,6 +1656,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Communications]]></key>
         <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manage Communications]]></key>
         <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categories]]></key>
+                <key id="menu&amp;_SMTP_SETTINGS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[SMTP Settings]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Settings]]></key>
         <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-learning configuration]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[System configuration]]></key>
