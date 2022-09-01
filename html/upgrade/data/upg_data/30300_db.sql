@@ -36,3 +36,5 @@ INSERT IGNORE INTO core_setting (param_name, param_value, value_type, max_size, 
 											VALUES ('Clear_Twig_Cache','index.php?r=adm/setting/clearTwigCache','button',2,'Twig Cache',8,30,0,0,'');
 											
 UPDATE core_setting SET param_value = 'index.php?r=adm/setting/clearTwigCache' WHERE param_name = 'Clear_Twig_Cache';
+
+ALTER TABLE `core_setting` ADD INDEX `regroup_idx` (`regroup`) USING BTREE, ADD INDEX `pack_regroup_hide_idx` (`pack`,`regroup`,`hide_in_modify`) USING BTREE;

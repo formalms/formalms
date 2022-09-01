@@ -90,7 +90,7 @@ final class SmtpAdm extends Model
         //     }
         // });
 
-        $this->table = $GLOBALS['prefix_fw'] . '_setting';
+        $this->table = '%adm_setting';
         $this->fetchData();
     }
 

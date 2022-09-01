@@ -12,7 +12,7 @@ class SettingAdm extends Model
     public function __construct()
     {
         $this->db = DbConn::getInstance();
-        $this->table = $GLOBALS['prefix_fw'] . '_setting';
+        $this->table = '%adm_setting';
         parent::__construct();
     }
 
@@ -26,8 +26,6 @@ class SettingAdm extends Model
      */
     public function getRegroupUnit()
     {
-        $lang = &DoceboLanguage::createInstance('configuration', 'framework');
-
         $re_regroup = sql_query('SELECT DISTINCT regroup
 		FROM ' . $this->table . "
 		WHERE hide_in_modify = '0'
@@ -62,9 +60,9 @@ class SettingAdm extends Model
         $names = $eventNames['names'];
 
         $group = [];
-        while (list($id_regroup) = sql_fetch_row($re_regroup)) {
-            if (key_exists($id_regroup, $names)) {
-                $group[$id_regroup] = $names[$id_regroup];
+        foreach ($re_regroup as $row){
+            if (array_key_exists($row['regroup'], $names)) {
+                $group[$row['regroup']] = $names[$row['regroup']];
             }
         }
 
@@ -256,7 +254,13 @@ class SettingAdm extends Model
 			WHERE pack = '$groupPack' AND regroup = '$regroup' AND hide_in_modify = '0'
 			ORDER BY sequence");
 
-            while (list($pack, $var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
+            foreach ($reSetting as $row){
+                $pack = $row['pack'];
+                $var_name = $row['param_name'];
+                $var_value = $row['param_value'];
+                $value_type = $row['value_type'];
+                $max_size = $row['max_size'];
+            //while (list($pack, $var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
                 switch ($value_type) {
                     case 'register_type':
                             $layout = [
@@ -272,7 +276,6 @@ class SettingAdm extends Model
                                 $layout,
                                 $var_value
                             );
-                        ;
                         break;
                     case 'registration_code_type':
                             $layout = [
@@ -289,7 +292,6 @@ class SettingAdm extends Model
                                 $layout,
                                 $var_value
                             );
-                        ;
                         break;
                     case 'save_log_attempt':
                             //on off
@@ -323,7 +325,6 @@ class SettingAdm extends Model
                                     ($var_value == 'no')
                                 )
                                 . Form::getCloseCombo($i_after);
-                        ;
                         break;
                     case 'profile_modify':
                             echo Form::getOpenCombo(Lang::t('_' . strtoupper($var_name), 'configuration'))
@@ -364,7 +365,6 @@ class SettingAdm extends Model
                                     ($var_value == 'redirect')
                                 )
                                 . Form::getCloseCombo($i_after);
-                        ;
                         break;
                     case 'language':
                             //drop down language
@@ -377,7 +377,6 @@ class SettingAdm extends Model
                                 array_search($var_value, $langs),
                                 $i_after
                             );
-                        ;
                         break;
                     case 'template':
                             //drop down template
@@ -390,7 +389,6 @@ class SettingAdm extends Model
                                 array_search($var_value, $templ),
                                 $i_after
                             );
-                        ;
                         break;
                     case 'template_domain_node':
                             //drop down template + domain + node with repeater
@@ -409,8 +407,9 @@ class SettingAdm extends Model
                                 $node_name = $node->translation ?: $node->code;
                                 $nodes[$node->idOrg] = addslashes($node_name);
                             }
-                            $nodes[0] = Lang::t('_SELECT_NODE', 'configuration');
+
                             asort($nodes);
+                            $nodes[0] = Lang::t('_SELECT_NODE', 'configuration');
 
                             echo '<div id="' . $var_name . '_body" style="margin-top: 2rem;">
 								<h3>' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</h3>
@@ -461,8 +460,7 @@ class SettingAdm extends Model
                                 . '</div>'
                                 . '</div>';
 
-                            $row_item = str_replace(["\r", "\n"], '', $row_item);
-                        ; ?>
+                            $row_item = str_replace(["\r", "\n"], '', $row_item); ?>
 						</div>
 
 						<script>
@@ -509,7 +507,6 @@ class SettingAdm extends Model
                                 $var_value,
                                 $i_after
                             );
-                        ;
                         break;
                     case 'layout_chooser':
                             //drop down hteditor
@@ -526,7 +523,6 @@ class SettingAdm extends Model
                                 $var_value,
                                 $i_after
                             );
-                        ;
                         break;
                     case 'pubflow_method_chooser':
                             //drop down hteditor
@@ -543,7 +539,6 @@ class SettingAdm extends Model
                                 $var_value,
                                 $i_after
                             );
-                        ;
                         break;
                     case 'field_select':
                             require_once _adm_ . '/lib/lib.field.php';
@@ -598,7 +593,6 @@ class SettingAdm extends Model
                                 $var_value,
                                 $i_after
                             );
-                        ;
                         break;
                     case 'grpsel_chooser':
                             $layout = [
@@ -613,7 +607,6 @@ class SettingAdm extends Model
                                 $var_value,
                                 $i_after
                             );
-                        ;
                         break;
                     case 'tablist_mycourses':
                             $arr_value = explode(',', $var_value);
@@ -635,7 +628,6 @@ class SettingAdm extends Model
                                 );
                             }
                             echo $i_after . '</div>';
-                        ;
                         break;
                     case 'point_field':
                             require_once _adm_ . '/lib/lib.field.php';
@@ -719,15 +711,12 @@ class SettingAdm extends Model
                     case 'menuvoice_course_public':
                     case 'check':
                             echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name, 'option[' . $var_name . ']', 1, ($var_value == 1), '', ' ' . $i_after);
-                        ;
-                        break;
+                    break;
                     case 'enum':
                             echo Form::getCheckbox(Lang::t('_' . strtoupper($var_name), 'configuration'), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
-                        ;
                         break;
                     case 'button':
                             echo '<br/><a class="btn btn-default" role="button" href="' . $var_value . '">' . Lang::t('_' . strtoupper($var_name), 'configuration') . '</a>'; //($var_name,Lang::t('_' . strtoupper($var_name)),Lang::t('_' . strtoupper($var_name)));//Lang::t('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', ' ' . $i_after);
-                        ;
                         break;
                     case 'password_algorithms':
                             //drop down hteditor
@@ -742,7 +731,6 @@ class SettingAdm extends Model
                                 $layout,
                                 $var_value
                             );
-                        ;
                         break;
                     case 'on_off':
                             $layout = [
@@ -808,7 +796,6 @@ class SettingAdm extends Model
                             $menu_man->removePerm(ADMIN_GROUP_GODADMIN, '/lms/admin' . $extra_info);
                             $new_value = 0;
                         }
-                    ;
                     break;
                 case 'menuvoice_course_public':
                         $after_reload_perm = true;
@@ -827,7 +814,6 @@ class SettingAdm extends Model
                             }
                             $new_value = 0;
                         }
-                    ;
                     break;
                 case 'tablist_coursecatalogue':
                         $tab_selected = [];
@@ -835,7 +821,6 @@ class SettingAdm extends Model
                             $tab_selected[$tab_code] = 1;
                         }
                         $new_value = urlencode(Util::serialize($tab_selected));
-                    ;
                     break;
 
                 case 'tablist_mycourses':
@@ -847,7 +832,6 @@ class SettingAdm extends Model
                             }
                         }
                         $new_value = implode(',', $temp_arr);
-                    ;
                     break;
                 case 'home_page_option':
                         // setting enabled in middle_area options
@@ -860,19 +844,16 @@ class SettingAdm extends Model
                                 CoreMenu::set(CoreMenu::getByMVC('lms/catalog/show')->idMenu, ['is_active' => true]);
                                 break;
                         }
-                    ;
                     break;
 
                     //if is int cast it
                 case 'language':
                         $lang = Docebo::langManager()->getAllLangCode();
                         $new_value = $lang[$_POST['option'][$var_name]];
-                    ;
                     break;
                 case 'template':
                         $templ = getTemplateList();
                         $new_value = $templ[$_POST['option'][$var_name]];
-                    ;
                     break;
                 case 'template_domain_node':
                         $values = [];
@@ -886,11 +867,9 @@ class SettingAdm extends Model
                         }
 
                         $new_value = json_encode($values, true);
-                    ;
                     break;
                 case 'int':
                         $new_value = (int) $_POST['option'][$var_name];
-                    ;
                     break;
                     //if is enum switch value to on or off
                 case 'on_usercourse_empty':
@@ -900,15 +879,13 @@ class SettingAdm extends Model
                         } else {
                             $new_value = 'off';
                         }
-                    ;
-                    break;
+                break;
                 case 'check':
                         if (isset($_POST['option'][$var_name]) && $_POST['option'][$var_name] == 1) {
                             $new_value = 1;
                         } else {
                             $new_value = 0;
                         }
-                    ;
                     break;
                 case 'menuvoice':
                         require_once _adm_ . '/lib/lib.menu.php';
@@ -920,14 +897,12 @@ class SettingAdm extends Model
                             $menu_man->removePerm(ADMIN_GROUP_GODADMIN, '/framework/admin' . $extra_info);
                             $new_value = 0;
                         }
-                    ;
                     break;
                     //else simple assignament
                 case 'html':
                         $new_value = $_POST['option'][$var_name];
                         $new_value = strip_tags($_POST['option'][$var_name], '<a><b><i><sup>');
                         $new_value = str_replace('"', "'", $new_value);
-                    ;
                     break;
                 default:
                         $new_value = $_POST['option'][$var_name];
