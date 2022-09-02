@@ -15,11 +15,18 @@ VALUES
 	1,
 	NULL,
 	NULL,
-	'adm/smtpsettings/show' 
+	'adm/mailconfig/show' 
 	);
 
-CREATE TABLE IF NOT EXISTS core_smtp_settings (
-    id int,
+CREATE TABLE IF NOT EXISTS core_mail_configs (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title varchar(255),
     system boolean not null default 0
+);
+
+CREATE TABLE IF NOT EXISTS core_mail_configs_fields (
+    id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    mailConfigId int,
+    key varchar(255),
+	value varchar(255)
 );
