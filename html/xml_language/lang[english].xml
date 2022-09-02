@@ -1656,7 +1656,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Communications]]></key>
         <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manage Communications]]></key>
         <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categories]]></key>
-                <key id="menu&amp;_SMTP_SETTINGS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[SMTP Settings]]></key>
+        <key id="menu&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Settings]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Settings]]></key>
         <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-learning configuration]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[System configuration]]></key>
@@ -3259,6 +3259,20 @@ Username: [userid]]]></key>
         <key id="communication&amp;_CATEGORY_MISSING" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You must set at least one category]]></key>
         <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as read]]></key>
         <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as unread]]></key>
+      </module>
+      <module id="mailconfig">
+        <key id="mailconfig&amp;_AUTO_TLS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Auto Tls]]></key>
+        <key id="mailconfig&amp;_HOST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Host]]></key>
+        <key id="mailconfig&amp;_PORT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Port]]></key>
+        <key id="mailconfig&amp;_DEBUG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Debug]]></key>
+        <key id="mailconfig&amp;_SECURE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[SSL]]></key>
+        <key id="mailconfig&amp;_SENDER_MAIL_NOTIFICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender mail notifications]]></key>
+        <key id="mailconfig&amp;_SENDER_NAME_NOTIFICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender name notifications]]></key>
+        <key id="mailconfig&amp;_SENDER_MAIL_SYSTEM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender mail system]]></key>
+        <key id="mailconfig&amp;_SENDER_NAME_SYSTEM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender name system]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Help Desk]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Name Help Desk]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Subject Help Desk]]></key>
       </module>
     </platform>
   </LANG>
