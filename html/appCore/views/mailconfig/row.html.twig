@@ -3,11 +3,12 @@
         {{setting.id}}
     </td>
     <td>{{setting.title}}</td>
-    <td><input type='checkbox' value={{ setting.system}} {{setting.system == '1' ? 'checked':''}} /></td>
+    <td><input type='checkbox' class='defaultChoice' value={{ setting.id}} {{setting.system == '1' ? 'checked':''}} /></td>
+    <td><input type='checkbox' class='activeChoice' value={{ setting.id}} {{setting.active == '1' ? 'checked':''}} /></td>
     <td> 
         
         <a class="btn btn-info btn-edit-confirm btn-xl" href="index.php?r=adm/mailconfig/edit&id={{setting.id}}">{{ Lang_translate('_MOD', 'standard') }}</a>
-        <a class="btn btn-danger btn-delete-confirm btn-xl" href="index.php?r=adm/mailconfig/delete">{{ Lang_translate('_DELETE', 'templedit') }}</a>
+        <a class="btn btn-danger btn-delete-confirm btn-xl" href="index.php?r=adm/mailconfig/delete&id={{setting.id}}">{{ Lang_translate('_DEL', 'standard') }}</a>
 
     </td>
 </tr>
