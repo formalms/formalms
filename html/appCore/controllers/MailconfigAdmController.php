@@ -90,6 +90,14 @@ class MailconfigAdmController extends AdmController
         
     }
 
+    public function delete() {
+
+        $validatedParams = $this->model->delete($this->queryString['id']);
+        
+        return Util::jump_to('index.php?r=adm/mailconfig/show');
+        
+    }
+
     
 
 }

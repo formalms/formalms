@@ -47,7 +47,8 @@ class MailconfigAdm extends Model {
 
     public function get($params = []) {
         $output = [];
-        $query = 'SELECT id, title, system FROM %adm_mail_configs';
+        $query = 'SELECT mc.id, mc.system, mcf.value as active, mc.title FROM %adm_mail_configs_fields mcf 
+                JOIN %adm_mail_configs mc ON mc.id = mcf.mailConfigId AND mcf.type = "active"';
         $queryResult = $this->db->query($query);
         
         foreach($queryResult as $result) {
@@ -66,8 +67,10 @@ class MailconfigAdm extends Model {
         if(!$result['error']) {
             if($params['id']) {
                 //sto modificando deov prima cancellare tutto
-                $this->deleteFieldsByMailConfigId((int) $params['id']);
-                $this->update($params['title']);
+                if($this->deleteFieldsByMailConfigId((int) $params['id'])) {
+                    $this->update($params['title'], (int) $params['id']);
+                }
+                
                 $id = $params['id'];
             } else {
                 $id = $this->insert($params['title']);
@@ -154,7 +157,41 @@ class MailconfigAdm extends Model {
         $query = 'INSERT INTO %adm_mail_configs (title) VALUES ("'.$title.'")';
         $queryResult = $this->db->query($query);
 
-        return $this->db->insert_id();
+        $insertId = $this->db->insert_id();
+
+        $query = 'SELECT id FROM %adm_mail_configs';
+
+        $queryResult = $this->db->query($query);
+
+        foreach($queryResult as $result) {
+            $inserted[] = $result;
+        }
+
+        if(count($inserted) <= 1) {
+            $this->toggleSystem($insertId);
+        }
+
+        return $insertId;
+    }
+
+    public function update($title, $id) {
+
+      
+        $query = 'UPDATE %adm_mail_configs SET title = "'.$title.'" WHERE id="'.$id.'"';
+        $queryResult = $this->db->query($query);
+
+        return $queryResult;
+    }
+
+    public function delete($id) {
+
+        
+        $queryResult = $this->deleteFieldsByMailConfigId($id);
+        if($queryResult) {
+            $query = 'DELETE FROM %adm_mail_configs WHERE id = "' . $mailConfigId . '"';
+            $queryResult = $this->db->query($query);
+        }
+        return $queryResult;
     }
 
     public function getConfigItem($id) {
@@ -171,5 +208,30 @@ class MailconfigAdm extends Model {
         }
         return $output;
     }
+
+    public function deleteFieldsByMailConfigId($mailConfigId) {
+        $query = 'DELETE FROM %adm_mail_configs_fields WHERE mailConfigId = "' . $mailConfigId . '"';
+        $queryResult = $this->db->query($query);
+
+        return $queryResult;
+    }
+
+    public function toggleSystem($id) {
+
+        $query = 'UPDATE %adm_mail_configs SET system = "0"';
+        $queryResult = $this->db->query($query);
+        if($queryResult) {
+            $query = 'UPDATE %adm_mail_configs SET system = "1" WHERE id = "' . $id . '"';
+            $queryResult = $this->db->query($query);
+        }
+
+        return $queryResult;
+        
+    }
+
+    public function toggleActive($id, $value) {
+
+    }
+
 
 }
