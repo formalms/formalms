@@ -48,7 +48,7 @@ class MailconfigAdm extends Model {
     public function get($params = []) {
         $output = [];
         $query = 'SELECT mc.id, mc.system, mcf.value as active, mc.title FROM %adm_mail_configs_fields mcf 
-                JOIN %adm_mail_configs mc ON mc.id = mcf.mailConfigId AND mcf.type = "active"';
+                RIGHT JOIN %adm_mail_configs mc ON mc.id = mcf.mailConfigId AND mcf.type = "active"';
         $queryResult = $this->db->query($query);
         
         foreach($queryResult as $result) {
@@ -229,8 +229,11 @@ class MailconfigAdm extends Model {
         
     }
 
-    public function toggleActive($id, $value) {
+    public function toggleActive($id) {
+        $query = 'UPDATE %adm_mail_configs_fields SET value = !value WHERE type="active" AND mailConfigId='.$id;
+        $queryResult = $this->db->query($query);
 
+        return $queryResult;
     }
 
 
