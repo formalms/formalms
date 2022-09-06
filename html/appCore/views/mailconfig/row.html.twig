@@ -8,7 +8,8 @@
     <td> 
         
         <a class="btn btn-info btn-edit-confirm btn-xl" href="index.php?r=adm/mailconfig/edit&id={{setting.id}}">{{ Lang_translate('_MOD', 'standard') }}</a>
-        <a class="btn btn-default btn-test btn-xl" href="ajax.adm_server.php?r=adm/mailconfig/testMail&mailConfigId={{setting.id}}">{{ Lang_translate('_TEST', 'mailconfig') }}</a>
+
+        <a {{setting.system == '1' ? 'style="display:none;"':''}} class="btn btn-default btn-test btn-xl" href="ajax.adm_server.php?r=adm/mailconfig/testMail&mailConfigId={{setting.id}}">{{ Lang_translate('_TEST', 'mailconfig') }}</a>
         <a {{setting.system == '1' ? 'style="display:none;"':''}} class="btn btn-danger btn-delete-confirm btn-xl" href="index.php?r=adm/mailconfig/delete&id={{setting.id}}">{{ Lang_translate('_DEL', 'standard') }}</a>
 
     </td>

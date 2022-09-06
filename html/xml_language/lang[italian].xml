@@ -2796,7 +2796,7 @@ Password: [password]]]></key>
         <key id="standard&amp;_ROLE_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ruoli]]></key>
         <key id="standard&amp;_ORG_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Organigramma]]></key>
         <key id="standard&amp;_GROUP_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Gruppi]]></key>
-    </module>
+      </module>
       <module id="statistic">
         <key id="statistic&amp;_AT_HOUR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Alle ore]]></key>
         <key id="statistic&amp;_FOR_day" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[giorno]]></key>

@@ -106,29 +106,29 @@ class MailconfigAdmController extends AdmController
     public function setSystem() {
 
         $this->model->toggleSystem($this->queryString['id']);
-        
+
         echo json_encode(["result" => "ok"]);
-        
+
     }
 
     public function setActive() {
 
         $this->model->toggleActive($this->queryString['id']);
-        
+
         echo json_encode(["result" => "ok"]);
-        
+
     }
 
     public function testMail() {
 
-       
+
         $recipients = explode(";", $this->queryString['recipient']);
         $result = $this->mailer->testMail($recipients);
-        
+
         echo json_encode(["result" => $result[$recipients[0]]]);
-        
+
     }
 
-    
+
 
 }
