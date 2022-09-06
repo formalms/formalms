@@ -28,10 +28,10 @@
     <thead>
         <tr>
         <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Default</th>
-        <th scope="col">Active</th>
-        <th scope="col">Actions</th>
+        <th scope="col">{{ Lang_translate('_NAME', 'standard') }}</th>
+        <th scope="col">{{ Lang_translate('_DEFAULT', 'standard') }}</th>
+        <th scope="col">{{ Lang_translate('_ACTIVE', 'standard') }}</th>
+        <th scope="col">{{ Lang_translate('_ACTIONS', 'standard') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -40,4 +40,58 @@
     {% endfor %}
     </tbody>
     </table>
+
+    <script>
+
+    $(document).ready(function() {
+
+        $('.defaultChoice').on('click', function(e) {
+
+            e.preventDefault();
+            var thisobj = $(this);
+            
+             $.ajax({
+
+                    'url' : 'ajax.adm_server.php?r=adm/mailconfig/setSystem',
+                    'type' : 'GET',
+                    'data' : {
+                        'id' : thisobj.val()
+                    },
+                    'success' : function(data) {              
+                        $('.defaultChoice').prop('checked', false);
+                        $('.btn-delete-confirm').show();
+                        thisobj.prop('checked', true);
+                        thisobj.parents('tr').find('a.btn-delete-confirm').hide();
+                    
+                    },
+                    'error' : function(request,error)
+                    {
+                        alert("Request: "+JSON.stringify(request));
+                    }
+                });
+        });
+
+        $('.activeChoice').on('click', function(e) {
+           
+            var thisobj = $(this);
+            
+             $.ajax({
+
+                    'url' : 'ajax.adm_server.php?r=adm/mailconfig/setActive',
+                    'type' : 'GET',
+                    'data' : {
+                        'id' : thisobj.val()
+                    },
+                    'success' : function(data) {              
+                      
+                      
+                    },
+                    'error' : function(request,error)
+                    {
+                        alert("Request: "+JSON.stringify(request));
+                    }
+                });
+        });
+    });
+    </script>
 
