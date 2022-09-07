@@ -1,5 +1,5 @@
 <?php
-
+namespace FormaLms\lib;
 /*
  * FORMA - The E-Learning Suite
  *
@@ -10,6 +10,8 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+use appCore\models\SmtpAdm;
+use \PHPMailer\PHPMailer\PHPMailer;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -42,7 +44,7 @@ define('MAIL_HEADERS', 'headers');
 //specify if class properties should be reset after sending
 define('MAIL_RESET', 'reset');
 
-class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
+class FormaMailer extends PHPMailer
 {
     /** @var FormaMailer */
     private static $instance = null;
@@ -54,10 +56,15 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
 
     private string $mailTemplate = 'mail.html.twig';
 
+    private $mailConfigId = null;
+
+    private $smtpModel = null;
+
     //the constructor
-    public function __construct()
+    public function __construct($mailConfigId = null)
     {
         $this->aclManager = new DoceboACLManager();
+        $this->mailConfigId = $mailConfigId;
 
         $this->config = [
             MAIL_MULTIMODE => MAIL_SINGLE,
@@ -73,6 +80,7 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
         //set initial default value
         $this->ResetToDefault();
         $this->addDefaultMailPaths();
+        $this->handleStmpModel($mailConfigId);
         parent::__construct();
     }
 
@@ -91,6 +99,12 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
     public function setMailTemplate(string $mailTemplate): void
     {
         $this->mailTemplate = $mailTemplate;
+    }
+
+    public function handleStmpModel(?int $mailConfigId) : self{
+        $this->smtpModel = new SmtpAdm($mailConfigId);
+
+        return $this;
     }
 
     private function addDefaultMailPaths()
@@ -175,24 +189,24 @@ class FormaMailer extends PHPMailer\PHPMailer\PHPMailer
 
         //check each time because global configuration may have changed since last call
 
-        if (SmtpAdm::getInstance()->isUseSmtp()) {
+        if ($this->smtpModel->isUseSmtp()) {
             $this->IsSMTP();
-            $this->Hostname = SmtpAdm::getInstance()->getHost();
-            $this->Host = SmtpAdm::getInstance()->getHost();
-            if (!empty(SmtpAdm::getInstance()->getPort())) {
-                $this->Port = SmtpAdm::getInstance()->getPort();
+            $this->Hostname = $this->smtpModel->getHost();
+            $this->Host = $this->smtpModel->getHost();
+            if (!empty($this->smtpModel->getPort())) {
+                $this->Port = $this->smtpModel->getPort();
             }
-            $smtp_user = SmtpAdm::getInstance()->getUser();
+            $smtp_user = $this->smtpModel->getUser();
             if (!empty($smtp_user)) {
                 $this->Username = $smtp_user;
-                $this->Password = SmtpAdm::getInstance()->getPwd();
+                $this->Password = $this->smtpModel->getPwd();
                 $this->SMTPAuth = true;
             } else {
                 $this->SMTPAuth = false;
             }
-            $this->SMTPSecure = SmtpAdm::getInstance()->getSecure();    // secure: '' , 'ssl', 'tsl'
-            $this->SMTPAutoTLS = SmtpAdm::getInstance()->isAutoTls();
-            $this->SMTPDebug = SmtpAdm::getInstance()->getDebug();    // debug level 0,1,2,3,...
+            $this->SMTPSecure = $this->smtpModel->getSecure();    // secure: '' , 'ssl', 'tsl'
+            $this->SMTPAutoTLS = $this->smtpModel->isAutoTls();
+            $this->SMTPDebug = $this->smtpModel->getDebug();    // debug level 0,1,2,3,...
             // Add To in mail header SMTP
         } else {
             $this->IsMail();
