@@ -12,8 +12,10 @@ import LearningObject from '../modules/Base/LearningObject';
 import TeacherLearningObject from '../modules/TeacherLearningObject';
 import StudentLearningObject from '../modules/StudentLearningObject';
 import Lang from '../helpers/Lang';
+
 // eslint-disable-next-line no-unused-vars
 import FormaDropZone from './../components/Dropzone';
+import ModalElement from './../components/Modal';
 import Axios from 'axios';
 import Select2 from 'select2';
 import Chart from 'chart.js';
@@ -29,6 +31,7 @@ var Page = (function () {
     window.frontend.modules.FormaDropZone = FormaDropZone;
     window.frontend.modules.Select2 = Select2;
     window.frontend.modules.Chart = Chart;
+    window.frontend.modules.Modal = ModalElement;
     window.frontend.helpers.Lang = Lang;
     window.frontend.helpers.Axios = Axios;
    

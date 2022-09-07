@@ -18,6 +18,8 @@ class MailconfigAdmController extends AdmController
 
     protected $model;
 
+    protected $mailer;
+
     protected $requestObj;
 
     protected $title = ' _MAIL_CONFIG';
@@ -28,9 +30,13 @@ class MailconfigAdmController extends AdmController
         
         $this->model = new MailconfigAdm();
 
+        
+
         $this->requestObj = $this->request->request->all();
 
         $this->queryString = $this->request->query->all();
+
+        $this->mailer = new FormaMailer($this->queryString['mailConfigId']);
 
     }
 
@@ -109,6 +115,14 @@ class MailconfigAdmController extends AdmController
     public function setActive() {
 
         $this->model->toggleActive($this->queryString['id']);
+        
+        echo json_encode(["result" => "ok"]);
+        
+    }
+
+    public function testMail() {
+
+        $this->mailer->SendMail($this->queryString['id']);
         
         echo json_encode(["result" => "ok"]);
         

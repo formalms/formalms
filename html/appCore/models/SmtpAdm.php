@@ -1,5 +1,5 @@
 <?php
-
+namespace appCore\models;
 /*
  * FORMA - The E-Learning Suite
  *
@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-final class SmtpAdm extends Model
+class SmtpAdm extends Model
 {
     /**
      * @var string
@@ -60,27 +60,18 @@ final class SmtpAdm extends Model
      */
     protected $debug = 0;
 
-    public const SMTP_GROUP = 14;
+    /**
+     * @var int
+     */
+    protected $mailConfigId = 0;
 
     /**
      * @var SmtpAdm
      */
     private static $instance = null;
 
-    /**
-     * @return SmtpAdm
-     */
-    public static function getInstance()
-    {
-        if (self::$instance == null) {
-            $c = __CLASS__;
-            self::$instance = new $c();
-        }
 
-        return self::$instance;
-    }
-
-    public function __construct()
+    public function __construct($mailConfigId = null)
     {
         parent::__construct();
 
@@ -90,8 +81,8 @@ final class SmtpAdm extends Model
         //     }
         // });
 
-        $this->table = $GLOBALS['prefix_fw'] . '_setting';
-        $this->fetchData();
+        $this->table = '%adm_mail_config_fields';
+        $this->fetchData($mailConfigId);
     }
 
     /**
@@ -185,17 +176,23 @@ final class SmtpAdm extends Model
         }
     }
 
-    private function fetchData()
+    private function fetchData(?int $mailConfigId)
     {
         if (self::isEnabledDatabase()) {
-            $query_res = sql_query('SELECT * FROM ' . $this->table . ' WHERE regroup =' . self::SMTP_GROUP);
 
+            if($mailConfigId) {
+                $query_res = sql_query('SELECT * FROM ' . $this->table . ' WHERE mailConfigId =' . $mailConfigId);
+            } else {
+                $query_res = sql_query('SELECT * FROM ' . $this->table . ' WHERE mailConfigId = (SELECT id FROM %adm_mail_config WHERE system = 1))';
+            }
+            
             $rows = sql_num_rows($query_res);
 
             for ($i = 0; $i < $rows; ++$i) {
                 $row = sql_fetch_assoc($query_res);
 
-                $property = str_replace('smtp_', '', $row['param_name']);
+                dd($row);
+                $property = $row['key'];
 
                 $propertyArr = explode('_', $property);
 

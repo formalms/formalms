@@ -66,6 +66,7 @@ class ModalElement {
         </div>\
       </div>\
     </div>';
+    console.log(dest.parentNode);
     dest.parentNode.insertBefore( modalDiv, dest.nextSibling );
     var exits = modalDiv.querySelectorAll('.modal-exit');
     exits.forEach(exit => {

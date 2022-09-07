@@ -1,6 +1,6 @@
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');		
+//const UglifyJSPlugin = require('uglifyjs-webpack-plugin');		
 const path = require('path');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+//const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -69,7 +69,7 @@ module.exports = {
  //   }
  // },
   plugins: [
-    new HardSourceWebpackPlugin(),
+    //new HardSourceWebpackPlugin(),
     /*new UglifyJSPlugin({
       uglifyOptions: {
         sourceMap: false,
