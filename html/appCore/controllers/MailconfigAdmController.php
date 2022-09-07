@@ -31,6 +31,8 @@ class MailconfigAdmController extends AdmController
         
         $this->model = new MailconfigAdm();
 
+        
+
         $this->requestObj = $this->request->request->all();
 
         $this->queryString = $this->request->query->all();
