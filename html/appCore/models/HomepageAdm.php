@@ -151,7 +151,7 @@ class HomepageAdm extends Model
             '[userid]' => $acl_man->relativeId($user_info[ACL_INFO_USERID]),
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $params = [MAIL_SENDER_ACLNAME => $sender_name];
-        $mailer = FormaMailer::getInstance();
+        $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
         if ($mailer->SendMail($sender, [$recipients], $subject, $body, [], $params)) {
             return SUCCESS_SEND_LOST_PWD;
         } else {
@@ -207,7 +207,7 @@ class HomepageAdm extends Model
         ], $acl_man->getSettingValueOfUsers('ui.language', [$user_info[ACL_INFO_IDST]])[$user_info[ACL_INFO_IDST]]);
         $params = [MAIL_SENDER_ACLNAME => $sender_name];
 
-        $mailer = FormaMailer::getInstance();
+        $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
         if ($mailer->SendMail($sender, [$recipients], $subject, $body, [], $params)) {
             return SUCCESS_SEND_LOST_PWD;

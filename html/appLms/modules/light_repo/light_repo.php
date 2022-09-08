@@ -302,7 +302,7 @@ function modFile(&$url)
 
         $repo = $file_man->getRepoDetails($id_repo);
         if ((int) $repo[LR_TEACHER_ALERT]) {
-            $mailer = FormaMailer::getInstance();
+            $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
             $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
             $courseInfo = Man_Course::getCourseInfo($idCourse);
             $userId = Docebo::user()->getIdst();

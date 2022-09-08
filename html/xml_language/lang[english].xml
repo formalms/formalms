@@ -3275,6 +3275,15 @@ Username: [userid]]]></key>
         <key id="mailconfig&amp;_HELPER_DESK_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Help Desk]]></key>
         <key id="mailconfig&amp;_HELPER_DESK_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Name Help Desk]]></key>
         <key id="mailconfig&amp;_HELPER_DESK_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Subject Help Desk]]></key>
+        <key id="mailconfig&amp;_NOREPLY_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[No-reply sender name]]></key>
+        <key id="mailconfig&amp;_NOREPLY_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[No-Reply sender mail]]></key>
+        <key id="mailconfig&amp;_BLANK_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The fields: [fields] cannot be blank]]></key>
+        <key id="mailconfig&amp;_MISSING_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The fields: [fields] are required]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_OK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[TEST mail sent successfully]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_KO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[TEST mail failed with errors]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[TEST Mail]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_BODY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You sent a Test mail to this address]]></key>
+        <key id="mailconfig&amp;_TEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Send a Test Mail]]></key>
       </module>
     </platform>
   </LANG>

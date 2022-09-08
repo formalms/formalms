@@ -273,9 +273,6 @@ class Boot
 
         require_once _lib_ . '/lib.acl.php';
 
-        self::log('Load mailer library.');
-        require_once Forma::inc(_base_ . '/lib/lib.mailer.php');
-
         self::log('Load Calendar library.');
         require_once Forma::inc(_lib_ . '/calendar/CalendarManager.php');
         require_once Forma::inc(_lib_ . '/calendar/CalendarDataContainer.php');

@@ -1022,7 +1022,7 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event'));
                 $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
@@ -2265,7 +2265,7 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
                 $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
@@ -2769,7 +2769,7 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
                 $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
@@ -3464,7 +3464,7 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
                 $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 
@@ -4728,7 +4728,7 @@ class Report_User extends Report
                     //mail($rec_data[ACL_INFO_EMAIL] , $subject, $body, $from.$header."\r\n");
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
-                $mailer = FormaMailer::getInstance();
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
                 $mailer->SendMail($sender, $arr_recipients, $subject, $body);
 

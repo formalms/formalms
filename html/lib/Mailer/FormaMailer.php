@@ -1,5 +1,5 @@
 <?php
-namespace FormaLms\lib;
+namespace FormaLms\lib\Mailer;
 /*
  * FORMA - The E-Learning Suite
  *
@@ -10,9 +10,9 @@ namespace FormaLms\lib;
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
-use appCore\models\SmtpAdm;
-use \PHPMailer\PHPMailer\PHPMailer;
 
+use \PHPMailer\PHPMailer\PHPMailer;
+use FormaLms\lib\Mailer\Handlers\SmtpHandler;
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 //require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php'); // not need for phpmailer 5.2.
@@ -49,7 +49,7 @@ class FormaMailer extends PHPMailer
     /** @var FormaMailer */
     private static $instance = null;
 
-    private DoceboACLManager $aclManager;
+    private \DoceboACLManager $aclManager;
 
     //default config for phpmailer, to set any time we send a mail, except for user-defined params
     private array $config;
@@ -58,19 +58,19 @@ class FormaMailer extends PHPMailer
 
     private $mailConfigId = null;
 
-    private $smtpModel = null;
+    protected ?SmtpHandler $handler = null;
 
     //the constructor
     public function __construct($mailConfigId = null)
     {
-        $this->aclManager = new DoceboACLManager();
+        $this->aclManager = new \DoceboACLManager();
         $this->mailConfigId = $mailConfigId;
 
         $this->config = [
             MAIL_MULTIMODE => MAIL_SINGLE,
-            MAIL_SENDER_ACLNAME => FormaLms\lib\Get::sett('use_sender_aclname', false),
-            MAIL_RECIPIENTSCC => FormaLms\lib\Get::sett('send_cc_for_system_emails', ''),
-            MAIL_RECIPIENTSBCC => FormaLms\lib\Get::sett('send_ccn_for_system_emails', ''),
+            MAIL_SENDER_ACLNAME => \FormaLms\lib\Get::sett('use_sender_aclname', false),
+            MAIL_RECIPIENTSCC => \FormaLms\lib\Get::sett('send_cc_for_system_emails', ''),
+            MAIL_RECIPIENTSBCC => \FormaLms\lib\Get::sett('send_ccn_for_system_emails', ''),
             MAIL_RECIPIENT_ACLNAME => false,
             MAIL_REPLYTO_ACLNAME => false,
             MAIL_HTML => true,
@@ -80,7 +80,7 @@ class FormaMailer extends PHPMailer
         //set initial default value
         $this->ResetToDefault();
         $this->addDefaultMailPaths();
-        $this->handleStmpModel($mailConfigId);
+        $this->handleSmtp($mailConfigId);
         parent::__construct();
     }
 
@@ -101,10 +101,15 @@ class FormaMailer extends PHPMailer
         $this->mailTemplate = $mailTemplate;
     }
 
-    public function handleStmpModel(?int $mailConfigId) : self{
-        $this->smtpModel = new SmtpAdm($mailConfigId);
+    public function handleSmtp(?int $mailConfigId) : self{
+        $this->handler = new SmtpHandler($mailConfigId);
 
         return $this;
+    }
+
+    public function getHandler() {
+        return $this->handler;
+
     }
 
     private function addDefaultMailPaths()
@@ -122,7 +127,7 @@ class FormaMailer extends PHPMailer
 
         foreach ($defaultPaths as $path) {
             if (file_exists($path)) {
-                FormaLms\appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
+                \FormaLms\appCore\Template\TwigManager::getInstance()->addPathInLoader($path);
             }
         }
     }
@@ -176,10 +181,10 @@ class FormaMailer extends PHPMailer
      *
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function SendMail(string $sender, array $recipients, string $subject, string $body, array $attachments = [], array $params = [])
+    public function SendMail(?string $sender = null, array $recipients, string $subject, string $body, array $attachments = [], array $params = [])
     {
         $output = [];
-        if (FormaLms\lib\Get::cfg('demo_mode')) {
+        if (\FormaLms\lib\Get::cfg('demo_mode')) {
             $this->ResetToDefault();
 
             return false;
@@ -187,26 +192,27 @@ class FormaMailer extends PHPMailer
 
         $params = array_merge($this->config, $params);
 
+        
         //check each time because global configuration may have changed since last call
 
-        if ($this->smtpModel->isUseSmtp()) {
+        if ($this->handler->isActive()) {
             $this->IsSMTP();
-            $this->Hostname = $this->smtpModel->getHost();
-            $this->Host = $this->smtpModel->getHost();
-            if (!empty($this->smtpModel->getPort())) {
-                $this->Port = $this->smtpModel->getPort();
+            $this->Hostname = $this->handler->getHost();
+            $this->Host = $this->handler->getHost();
+            if (!empty($this->handler->getPort())) {
+                $this->Port = $this->handler->getPort();
             }
-            $smtp_user = $this->smtpModel->getUser();
+            $smtp_user = $this->handler->getUser();
             if (!empty($smtp_user)) {
                 $this->Username = $smtp_user;
-                $this->Password = $this->smtpModel->getPwd();
+                $this->Password = $this->handler->getPassword();
                 $this->SMTPAuth = true;
             } else {
                 $this->SMTPAuth = false;
             }
-            $this->SMTPSecure = $this->smtpModel->getSecure();    // secure: '' , 'ssl', 'tsl'
-            $this->SMTPAutoTLS = $this->smtpModel->isAutoTls();
-            $this->SMTPDebug = $this->smtpModel->getDebug();    // debug level 0,1,2,3,...
+            $this->SMTPSecure = $this->handler->getSecure();    // secure: '' , 'ssl', 'tsl'
+            $this->SMTPAutoTLS = $this->handler->isAutoTls();
+            $this->SMTPDebug = $this->handler->getDebug();    // debug level 0,1,2,3,...
             // Add To in mail header SMTP
         } else {
             $this->IsMail();
@@ -214,7 +220,7 @@ class FormaMailer extends PHPMailer
 
         //configure sending address
         //----------------------------------------------------------------------------
-        $this->From = $sender;
+        $this->From = $sender ?: $this->handler->getSenderMailSystem();
         if ($params[MAIL_SENDER_ACLNAME]) {
             $temp = $this->aclManager->getUserByEmail($sender);
             $this->FromName = $params[MAIL_SENDER_ACLNAME] !== true ? $params[MAIL_SENDER_ACLNAME] : $temp[ACL_INFO_FIRSTNAME] . ' ' . $temp[ACL_INFO_LASTNAME];
@@ -269,7 +275,7 @@ class FormaMailer extends PHPMailer
 
         $this->Subject = $subject;
         if (isset($params[MAIL_HTML])) {
-            $eventResponse = Events::trigger('core.mail.template.rendering',
+            $eventResponse = \Events::trigger('core.mail.template.rendering',
                 [
                     'layout' => $this->mailTemplate,
                     'layoutPath' => '',
@@ -281,10 +287,10 @@ class FormaMailer extends PHPMailer
 
             try {
                 if (!empty($eventResponse['path'])) {
-                    FormaLms\appCore\Template\TwigManager::getInstance()->addPathInLoader($eventResponse['layoutPath']);
+                    \FormaLms\appCore\Template\TwigManager::getInstance()->addPathInLoader($eventResponse['layoutPath']);
                 }
 
-                $html = FormaLms\appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'],
+                $html = \FormaLms\appCore\Template\TwigManager::getInstance()->render($eventResponse['layout'],
                     [
                         'subject' => $eventResponse['subject'],
                         'body' => $eventResponse['body'],
@@ -295,7 +301,7 @@ class FormaMailer extends PHPMailer
                 $html = $body;
             }
 
-            $eventResponse = Events::trigger('core.mail.template.rendered',
+            $eventResponse = \Events::trigger('core.mail.template.rendered',
                 [
                     'html' => $html,
                     'subject' => $subject,
@@ -333,7 +339,7 @@ class FormaMailer extends PHPMailer
         }
 
         // if(FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(FormaLms\lib\Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false){
-        if (FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '') {
+        if (\FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '') {
             $arr_cc_for_system_emails = explode(' ', FormaLms\lib\Get::sett('send_cc_for_system_emails'));
             foreach ($arr_cc_for_system_emails as $user_cc_for_system_emails) {
                 try {
@@ -343,7 +349,7 @@ class FormaMailer extends PHPMailer
             }
         }
 
-        if (FormaLms\lib\Get::sett('send_ccn_for_system_emails', '') !== '') {
+        if (\FormaLms\lib\Get::sett('send_ccn_for_system_emails', '') !== '') {
             $arr_ccn_for_system_emails = explode(' ', FormaLms\lib\Get::sett('send_ccn_for_system_emails'));
             foreach ($arr_ccn_for_system_emails as $user_ccn_for_system_emails) {
                 try {
@@ -380,7 +386,7 @@ class FormaMailer extends PHPMailer
 
             $sent = $this->send();
 
-            Events::trigger('core.mail.sent',
+            \Events::trigger('core.mail.sent',
                 [
                     'sender' => $sender,
                     'recipient' => $recipient,
@@ -395,5 +401,19 @@ class FormaMailer extends PHPMailer
         $this->ResetToDefault();
 
         return $output;
+    }
+
+    /**
+     * @return array|false
+     *
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
+    public function testMail(array $recipients)
+    {
+
+        $subject = \Lang::t('_TESTMAIL_SUBJECT', 'mailconfig');
+        $body = \Lang::t('_TESTMAIL_BODY', 'mailconfig');;
+        return $this->SendMail($sender, $recipients, $subject, $body);
+
     }
 }

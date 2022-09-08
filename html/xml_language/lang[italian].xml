@@ -3275,6 +3275,11 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="mailconfig&amp;_NOREPLY_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail mittente No-reply]]></key>
         <key id="mailconfig&amp;_BLANK_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I campi: [fields] non possono essere lasciati vuoti]]></key>
         <key id="mailconfig&amp;_MISSING_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I campi: [fields] sono richiesti]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_OK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invio TEST avvenuto con successo]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_KO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invio TEST fallito]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail di TEST]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_BODY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Hai inviato una mail di test a questo indirizzo mail]]></key>
+        <key id="mailconfig&amp;_TEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invia una mail di test]]></key>
       </module>
     </platform>
   </LANG>
