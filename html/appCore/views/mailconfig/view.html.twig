@@ -32,3 +32,13 @@
         {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
     {{ Form_closeButtonSpace() }}
 {{ Form_closeForm() }}
+
+
+<script>
+$(document).ready(function() {
+    $("#undo").click(function(e) {
+        e.preventDefault();
+        history.back();
+    });
+});
+</script>

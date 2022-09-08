@@ -259,7 +259,7 @@ $base_url = preg_replace('/\/cron\//', '', $base_url);
 
 require_once _base_ . '/lib/lib.upload.php';
 
-$mailer = FormaMailer::getInstance();
+$mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
 require_once _base_ . '/lib/lib.json.php';
 $json = new Services_JSON();

@@ -98,16 +98,45 @@
             e.preventDefault();
             var href = $(this).attr('href');
             const modal = new window.frontend.modules.Modal('mail-test','#admcontainer');
-            var btnLabel = "{{Lang_translate('_TEST', 'standard')}}";
+            var btnLabel = "{{Lang_translate('_TEST', 'mailconfig')}}";
             modal.Content = `<form style="width:60%;height:50%;margin: 20% auto;">
                                 <input type="email" class="form-control textfield" name="test_mail" value="" />
                                 <a style ="margin:2% auto; display:block; width:50%" class="btn btn-info" id="testMail" href="`+href+`">` + btnLabel + `</a>
+                                <div class="alert" role="alert">
+ 
+                                </div>
                             </form>`;
             modal.Title = "{{Lang_translate('_TEST', 'standard')}}";
             modal.Open();
             
            
         });
+
+        $('body').on("click","#testMail", function(e){
+            e.preventDefault();
+            var href = $(this).attr('href');
+            var recipient = $(this).prev('input').val();
+            var message = $(this).next();
+            message.removeClass('alert-success').removeClass('alert-danger').empty();
+             $.ajax({
+
+                    'url' : href + '&recipient=' + recipient,
+                    'type' : 'GET',
+                    'success' : function(data) {              
+                      var response = JSON.parse(data);
+                      if(response.result === true) {
+                            message.addClass('alert-success').html("{{Lang_translate('_TESTMAIL_OK', 'mailconfig')}}");
+                      } else {
+                            message.addClass('alert-danger').html("{{Lang_translate('_TESTMAIL_KO', 'mailconfig')}}");
+                      }
+                      
+                    },
+                    'error' : function(request,error)
+                    {
+                        //alert("Request: "+JSON.stringify(request));
+                    }
+                });
+        })
     });
     </script>
 

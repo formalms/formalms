@@ -13,6 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+
 class MailconfigAdmController extends AdmController
 {
 
@@ -30,13 +31,11 @@ class MailconfigAdmController extends AdmController
         
         $this->model = new MailconfigAdm();
 
-        
-
         $this->requestObj = $this->request->request->all();
 
         $this->queryString = $this->request->query->all();
 
-        $this->mailer = new FormaMailer($this->queryString['mailConfigId']);
+        $this->mailer = new FormaLms\lib\Mailer\FormaMailer((int) $this->queryString['mailConfigId']);
 
     }
 
@@ -122,9 +121,11 @@ class MailconfigAdmController extends AdmController
 
     public function testMail() {
 
-        $this->mailer->SendMail($this->queryString['id']);
+       
+        $recipients = explode(";", $this->queryString['recipient']);
+        $result = $this->mailer->testMail($recipients);
         
-        echo json_encode(["result" => "ok"]);
+        echo json_encode(["result" => $result[$recipients[0]]]);
         
     }
 
