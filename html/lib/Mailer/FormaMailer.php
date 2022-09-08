@@ -10,8 +10,6 @@ namespace FormaLms\lib\Mailer;
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
-use appCore\models\SmtpAdm;
-use \PHPMailer\PHPMailer\PHPMailer;
 
 use \PHPMailer\PHPMailer\PHPMailer;
 use FormaLms\lib\Mailer\Handlers\SmtpHandler;
