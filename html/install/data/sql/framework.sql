@@ -1253,6 +1253,37 @@ CREATE TABLE IF NOT EXISTS `core_lang_translation` (
 -- Dump dei dati per la tabella `core_lang_translation`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_mail_configs`
+--
+CREATE TABLE IF NOT EXISTS `core_mail_configs` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `title` varchar(255),
+    `system` boolean NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_mail_configs`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_mail_configs_fields`
+--
+
+CREATE TABLE IF NOT EXISTS `core_mail_configs_fields` (
+    `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `mailConfigId` int(11) NOT NULL,
+    `type` varchar(255) NOT NULL,
+	  `value` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_mail_configs_fields`
+--
 
 -- --------------------------------------------------------
 
@@ -1297,7 +1328,7 @@ INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `co
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(28, '_TRANSACTION', '', 8, 'true', 'true', 2, NULL, 'framework');
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(31, '_WEBPAGES', '', 1, 'true', 'true', 3, NULL, 'framework');
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(33, '_NEWS_INTERNAL', '', 3, 'true', 'true', 3, NULL, 'framework');
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(34, '_COMMUNICATION_MAN', '', 4, 'true', 'true', 3, NULL, 'framework');
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(34, '_COMMUNICATION_MAN', '', 4, 'true', 'true', 601, NULL, 'framework');
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(35, '_NEWSLETTER', '', 5, 'true', 'true', 3, NULL, 'framework');
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(40, '_REPORT', '', 1, 'true', 'true', 4, NULL, 'framework');
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(50, '_FIELD_MANAGER', '', 4, 'true', 'true', 5, NULL, 'framework');
@@ -1334,6 +1365,9 @@ INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `co
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(598, '_PUBLIC_FORUM', '', 3, 'true', 'true', NULL, NULL, 'lms');
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(599, '_HELPDESK', '<span class="glyphicon glyphicon-question-sign top-menu__label"></span>', 1000, 'false', 'true', NULL, NULL, 'lms');
 
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(600 '_MAIL_CONFIG', '', 1, 'true', 'true', 52, NULL, 'framework' );
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(601 '_MANAGEMENT_COMMUNICATION', '', 4, 'true', 'true', 3, NULL, 'framework' );
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(602 '_CATEGORIES', '', 1, 'true', 'true', 601, NULL, 'framework' );
 -- --------------------------------------------------------
 
 --
@@ -1404,6 +1438,8 @@ INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(597, 597, 'coursecatalogue', '_CATALOGUE', NULL, 'view', 'lms', 2, NULL, NULL, 'lms/catalog/show');
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(598, 598, 'public_forum', '_PUBLIC_FORUM', 'forum', 'view', 'lms', 3, NULL, NULL, NULL);
 INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(599, 599, 'helpdesk', '_HELPDESK', 'popup', 'view', 'lms', 1000, NULL, NULL, NULL);
+INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(600, 600, 'mailconfig', '_MAIL_CONFIG', NULL, 'view','framework', 1, NULL, NULL,'adm/mailconfig/show');
+INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(601, 601, 'communication', '_CATEGORIES', NULL, 'view','framework', 1, NULL, NULL,'alms/communication/showCategories');
 
 -- --------------------------------------------------------
 
@@ -2567,15 +2603,7 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('rest_auth_update', 'off', 'enum', 3, 'api', 9, 10, 1, 0, ''),
 ('save_log_attempt', 'no', 'save_log_attempt', 255, '0', 3, 5, 0, 0, ''),
 ('sco_direct_play', 'on', 'enum', 3, '0', 8, 3, 1, 0, ''),
-('sender_event', 'sample@localhost.localdomain', 'string', 255, 'email_settings', 1, 1, 1, 0, ''),
 ('use_sender_aclname', '', 'string', 255, 'email_settings', 1, 2, 1, 0, ''),
-('mail_sender', 'sample@localhost.localdomain', 'string', 255, 'email_settings', 1, 3, 0, 0, ''),
-('mail_sender_name_from', '', 'string', 255, 'email_settings', 1, 4, 0, 0, ''),
-('customer_help_email', '', 'string', 255, 'helpdesk', 1, 1, 1, 0, ''),
-('customer_help_name_from', '', 'string', 255, 'helpdesk', 1, 2, 1, 0, ''),
-('customer_help_subj_pfx', '', 'string', 255, 'helpdesk', 1, 3, 1, 0, ''),
-('send_cc_for_system_emails', '', 'string', 255, 'email_settings_cc', 1, 1, 1, 0, ''),
-('send_ccn_for_system_emails', '', 'string', 255, 'email_settings_cc', 1, 2, 1, 0, ''),
 ('session_ip_control', 'off', 'enum', 3, 'security', 8, 22, 1, 0, ''),
 ('sms_cell_num_field', '1', 'field_select', 5, '0', 11, 6, 1, 0, ''),
 ('sms_credit', '0', 'string', 20, '0', 1, 0, 1, 1, ''),
