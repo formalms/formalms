@@ -553,6 +553,7 @@ CREATE TABLE IF NOT EXISTS `learning_communication_category_lang` (
   `id_category` int(10) unsigned NOT NULL DEFAULT '0',
   `lang_code` varchar(255) NOT NULL DEFAULT '',
   `translation` varchar(255) NOT NULL DEFAULT '',
+  `descriotion` text NOT NULL DEFAULT '',
   PRIMARY KEY (`id_category`,`lang_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -560,7 +561,23 @@ CREATE TABLE IF NOT EXISTS `learning_communication_category_lang` (
 -- Dump dei dati per la tabella `learning_communication_category_lang`
 --
 
+-- --------------------------------------------------------
 
+--
+-- Struttura della tabella `learning_communication_lang`
+--
+
+CREATE TABLE IF NOT EXISTS `learning_communication_lang` (
+    `id_comm` int(11) unsigend NOT NULL,
+    `lang_code` varchar(255) NOT NULL DEFAULT '',
+    `title` varchar(255) NOT NULL DEFAULT '',
+    `description` text NOT NULL DEFAULT '',
+    PRIMARY KEY (`id_comm`,`lang_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `learning_communication_lang`
+--
 -- --------------------------------------------------------
 
 --
@@ -3486,6 +3503,7 @@ VALUES (1, 'DashboardBlockCalendarLms', CURRENT_TIMESTAMP),
        (7, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP),
        (8, 'DashboardBlockCommunicationLms',CURRENT_TIMESTAMP),
        (9, 'DashboardBlockNewsLms',CURRENT_TIMESTAMP);
+       (9, 'DashboardBlockCourseAttendanceGraphLms',CURRENT_TIMESTAMP);
 
 INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
 VALUES ('tb_dashboard', '1', 'a:0:{}', '0');

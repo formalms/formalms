@@ -48,9 +48,7 @@ class SettingAdm extends Model
             13 => 'Twig',
         ];
 
-        if (SmtpAdm::isEnabledDatabase()) {
-            $names[SmtpAdm::SMTP_GROUP] = 'Smtp Settings';
-        }
+       
 
         // $event->setGroupUnits($names);
         // \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, $event);
