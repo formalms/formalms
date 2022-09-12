@@ -383,7 +383,7 @@ class CatalogLmsController extends LmsController
         $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
         $this->render('edition-modal', ['id_course' => $id_course, 'available_classrooms' => $res['available_classrooms'], 'teachers' => $res['teachers'],
-            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category, ]);
+            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category,]);
     }
 
     //UG  select a user subscription level
