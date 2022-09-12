@@ -10,7 +10,7 @@
             {% else %}
                 {% if course.canEnter %}
                     <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                       href="index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
+                       href="{{ config.url.appLms }}/index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
                        rel="{{ course.rel }}">
                         <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
                     </a>
@@ -21,7 +21,7 @@
                         </span>
                     </a>
                 {% endif %}
-            {% endif %}    
+            {% endif %}
         {% else %}
             {% if course.selling == 0 %}
                 {% if course.subscribe_method == 2 or course.subscribe_method == 1 %}
@@ -50,33 +50,33 @@
                         <span class="forma-button__label">{{ Lang_translate('_COURSE_S_GODADMIN', 'catalogue') }}</span>
                     </a>
                 {% endif %}
-            {% else %}    
+            {% else %}
                 {% if course.in_cart %}
                     <a href="javascript:void(0);" class="forma-button forma-button--orange-hover">
                         <p class="forma-button__label">{{ Lang_translate('_COURSE_IN_CART', 'catalogue') }}</p>
                     </a>
-                {% else %}    
-                    <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;" 
-                        onclick ="chooseEdition({{ course.idCourse }})">    
+                {% else %}
+                    <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;"
+                       onclick ="chooseEdition({{ course.idCourse }})">
                         <span class="forma-button__label">{{ Lang_translate('_ADD_TO_CART', 'catalogue') }}</span>
-                    </a>                                
-                {% endif %}    
-                
+                    </a>
+                {% endif %}
+
             {% endif %}
         {% endif %}
     {% else %}
-                {% if course.canEnter %}
-                    <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                       href="index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
-                       rel="{{ course.rel }}">
-                        <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
-                    </a>
-                {% else %}
-                    <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+        {% if course.canEnter %}
+            <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+               href="{{ config.url.appLms }}/index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
+               rel="{{ course.rel }}">
+                <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
+            </a>
+        {% else %}
+            <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
                         <span class="forma-button__label">
                             {{ Lang_translate('_NO_AVAILABLE_EDITIONS', 'catalogue') }}
                         </span>
-                    </a>
-                {% endif %}
+            </a>
+        {% endif %}
     {% endif %}
 {% endblock %}

@@ -108,14 +108,7 @@ class Forma
         return count(\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error')) > 0;
     }
 
-    public static function getLastError($removeErrors = false): string
-    {
-        $errors = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
-
-        return end($errors);
-    }
-
-    public static function getErrors($removeErrors = false): array
+    public static function getErrors(): array
     {
         $errors = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
         if ($removeErrors) {
@@ -125,7 +118,7 @@ class Forma
         return $errors;
     }
 
-    public static function getFormattedErrors($removeErrors = false): string
+    public static function getFormattedErrors(): string
     {
         $errors = self::getErrors();
         $errorString = '';
@@ -135,9 +128,6 @@ class Forma
             } else {
                 $errorString .= sprintf('\n%s', $error);
             }
-        }
-        if ($removeErrors) {
-            self::removeErrors();
         }
 
         return $errorString;

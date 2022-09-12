@@ -4,7 +4,7 @@
     });
 
     var lb = new LightBox();
-    lb.back_url = 'index.php?r=lms/catalog/show&sop=unregistercourse';
+    lb.back_url = 'index.php?r=lms/{{ data.endpoint }}/show&sop=unregistercourse';
 
     var Config = {};
     Config.langs = {_CLOSE: "{{ Lang_translate('_UNDO', 'standard') }}"};
@@ -12,28 +12,27 @@
 
     function chooseEdition(id_course) {
 
-         var posting = $.get('ajax.server.php',
+        var posting = $.get(
+            window.frontend.config.url.appLms + '/ajax.server.php',
             {
-                r: 'catalog/chooseEdition',
+                r: '{{ data.endpoint }}/chooseEdition',
                 id_course: id_course,
                 type_course: $("#typeCourse").val(),
                 id_catalogue: {{ data.id_catalogue }},
                 id_category: window.catalog.selectedCategory
             }
         )
-        posting.done(function (r) 
-            {
-                $('body').prepend(r)
-                $('#formaModal').css("margin-top", $('body').height() / 2 - $('.modal-content').height() / 2 - 300) ;
-                $('#formaModal').modal('show')
-            });
-        posting.fail(function () 
-            {
-                alert('call failed')
-            })       
+        posting.done(function (r) {
+            $('body').prepend(r)
+            $('#formaModal').css("margin-top", $('body').height() / 2 - $('.modal-content').height() / 2 - 300);
+            $('#formaModal').modal('show')
+        });
+        posting.fail(function () {
+            alert('call failed')
+        })
     }
 
-    function confirmDialog(dialog_title, dialog_body, op, id_course, overbooking){
+    function confirmDialog(dialog_title, dialog_body, op, id_course, overbooking) {
 
         $('<div></div>').appendTo('body')
             .html("<div style='text-align:center'><h6>" + dialog_body + "</h6></div>")
@@ -43,9 +42,11 @@
                 autoOpen: true,
                 resizable: false,
                 buttons: {
-        {{ Lang_translate('_CONFIRM','standard') }} : function () {
+        {{ Lang_translate('_CONFIRM','standard') }} :
+
+        function () {
             var posting = $.get(
-                'ajax.server.php',
+                window.frontend.config.url.appLms + '/ajax.server.php',
                 {
                     r: op,
                     id_course: id_course,
@@ -56,7 +57,7 @@
                 }
             )
                 .done(function (responseText) {
-                    if (op == 'catalog/addToCart') {
+                    if (op == '{{ data.endpoint }}/addToCart') {
                         $('#menu_over').load(document.URL + '  #menu_over');
                     }
 
@@ -66,8 +67,12 @@
                     alert('unsubscribe failed')
                 })
             $(this).dialog("close");
-        },
-        {{ Lang_translate('_UNDO','standard') }} : function () {
+        }
+
+    ,
+        {{ Lang_translate('_UNDO','standard') }} :
+
+        function () {
             $(this).dialog("close");
         }
     },
@@ -86,7 +91,7 @@
 <div id="cbp-vm" class="" style="margin-top: 15px;">
     {% for course in data.courses %}
         <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-4">
-            {% include 'partials/catalog-course-box.html.twig' with { 'course': course } %}
+            {% include 'partials/catalog-course-box.html.twig' with { 'course': course, 'catalogueType': data.catalogueType, 'endpoint' : data.endpoint, 'logged_in': data.logged_in } %}
         </div>
     {% endfor %}
 </div>

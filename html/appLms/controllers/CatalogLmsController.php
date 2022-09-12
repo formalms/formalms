@@ -45,6 +45,15 @@ class CatalogLmsController extends LmsController
         $this->acl_man = &Docebo::user()->getAclManager();
     }
 
+    protected function getBaseData()
+    {
+        return [
+            'catalogueType' => 'catalog',
+            'endpoint' => 'lms/catalog',
+            'logged_in' => $this->session->get('logged_in'),
+        ];
+    }
+
     // displays header and catalogue tree
     public function show()
     {
@@ -55,7 +64,6 @@ class CatalogLmsController extends LmsController
         $show_general_catalogue_tab = ($onCatalogueEmptySetting && count($user_catalogue) === 0);
         $show_empty_catalogue_tab = (!$onCatalogueEmptySetting && count($user_catalogue) === 0);
         $show_user_catalogue_tab = count($user_catalogue) > 0;
-        $tab_actived = false;
 
         $catalogue = '';
         $total_category = 0;
@@ -77,7 +85,24 @@ class CatalogLmsController extends LmsController
             $catalogue = $this->model->GetGlobalJsonTree($starting_catalogue);
             $total_category = count($catalogue);
         }
-        $this->render('catalog', ['data' => compact('id_catalogue', 'user_catalogue', 'show_general_catalogue_tab', 'show_empty_catalogue_tab', 'show_user_catalogue_tab', 'tab_actived', 'total_category', 'show_empty_catalogue_tab', 'starting_catalogue', 'total_category', 'catalogue')]);
+
+        $data = $this->getBaseData();
+
+        $data = array_merge($data, [
+            'id_catalogue' => $id_catalogue,
+            'user_catalogue' => $user_catalogue,
+            'show_general_catalogue_tab' => $show_general_catalogue_tab,
+            'show_empty_catalogue_tab' => $show_empty_catalogue_tab,
+            'show_user_catalogue_tab' => $show_user_catalogue_tab,
+            'tab_actived' => false,
+            'total_category' => $total_category,
+            'starting_catalogue' => $starting_catalogue,
+            'catalogue' => $catalogue
+        ]);
+
+        $this->render('catalog', [
+            'data' => $data
+        ]);
     }
 
     // AJAX: display courses from selected catalogue, category, courses
@@ -89,7 +114,11 @@ class CatalogLmsController extends LmsController
 
         $courses = $this->model->getCatalogCourseList($typeCourse, 1, $id_catalogue, $id_category);
 
-        $this->render('courselist', ['data' => compact('courses', 'id_catalogue')]);
+        $data = $this->getBaseData();
+
+        $data = array_merge($data, compact('courses', 'id_catalogue'));
+
+        $this->render('courselist', ['data' => $data]);
     }
 
     public function newCourse()
@@ -344,7 +373,7 @@ class CatalogLmsController extends LmsController
         $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
         $this->render('edition-modal', ['id_course' => $id_course, 'available_classrooms' => $res['available_classrooms'], 'teachers' => $res['teachers'],
-            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category, ]);
+            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category,]);
     }
 
     //UG  select a user subscription level
@@ -614,7 +643,7 @@ class CatalogLmsController extends LmsController
         } else {
             $currentCart[$id_course] = $id_course;
         }
-        $this->session->set('lms_cart',$currentCart);
+        $this->session->set('lms_cart', $currentCart);
         $this->session->save();
 
         $res['success'] = true;

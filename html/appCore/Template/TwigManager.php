@@ -51,7 +51,7 @@ class TwigManager
         $this->twig->addExtension(new TemplateExtension());
         $this->twig->addExtension(new UtilExtension());
         $this->twig->addExtension(new YuiExtension());
-
+        $this->twig->addGlobal('config', ClientService::getInstance()->getConfig());
         $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
         if ($debug) {

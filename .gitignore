@@ -1,5 +1,6 @@
 #Exclude composer
 html/composer.lock
+html/vendor/*
 html/vendor/**
 !html/vendor/keep
 

@@ -569,7 +569,7 @@ class StdPageWriter extends PageWriter
      *
      * @return an istance of StdPageWriter
      */
-    public function &createInstance()
+    public static function createInstance()
     {
         if ($GLOBALS['page'] === null) {
             $GLOBALS['page'] = new StdPageWriter();
@@ -669,7 +669,7 @@ class onecolPageWriter extends PageWriter
      *
      * @return an istance of StdPageWriter
      */
-    public function &createInstance()
+    public static function createInstance()
     {
         if ($GLOBALS['page'] === null) {
             $GLOBALS['page'] = new onecolPageWriter();

@@ -1,0 +1,15 @@
+{% block classRoomButton %}
+    {% if course.courseBoxEnabled %}
+        <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+           href="{{ config.url.base }}"
+           rel="{{ course.rel }}">
+            <span class="forma-button__label">{{ Lang_translate('_LOGIN', 'login') }}</span>
+        </a>
+    {% else %}
+        <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+                <span class="forma-button__label">
+                    {{ Lang_translate('_LOGIN', 'login') }}
+                </span>
+        </a>
+    {% endif %}
+{% endblock %}

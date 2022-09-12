@@ -479,7 +479,7 @@ class RegionalSettingsManager
      * @param resource $dbconn       the connection to the database
      *                               if not given last connection will be used
      */
-    public function RegionalSettingsManager($param_prefix = false, $dbconn = null)
+    public function __construct($param_prefix = false, $dbconn = null)
     {
         if ($param_prefix === false) {
             $this->prefix = $GLOBALS['prefix_fw'];

@@ -182,6 +182,9 @@ class Boot
         // debugging ?
         self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
+            if (!in_array('debug_level', $cfg, true)){
+                $cfg['debug_level'] = 'all';
+            }
             switch($cfg['debug_level']) {
                 case 'error':
                     @error_reporting(E_ERROR);

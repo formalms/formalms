@@ -13,22 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class HomecatalogueLmsController extends LmsController
+class HomecatalogueLmsController extends CatalogLmsController
 {
-    public $name = 'catalog';
-
-    private $path_course = '';
-
-    protected $_default_action = 'show';
-
-    public $model;
-    public $json;
-    public $acl_man;
-
-    public function isTabActive($tab_name)
-    {
-        return true;
-    }
 
     public function init()
     {
@@ -40,193 +26,62 @@ class HomecatalogueLmsController extends LmsController
         Lang::init('course');
         $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
         $this->model = new HomecatalogueLms();
-        $this->model_catalog = new CatalogLms();
-
-        require_once _base_ . '/lib/lib.json.php';
-        $this->json = new Services_JSON();
-
+        $this->_mvc_name = 'catalog';
         $this->acl_man = &Docebo::user()->getAclManager();
+    }
+
+    public function isTabActive($tab_name)
+    {
+        return true;
+    }
+
+    protected function getBaseData()
+    {
+        $data = parent::getBaseData();
+        $data['catalogueType'] = 'homecatalogue';
+        $data['endpoint'] = 'lms/homecatalogue';
+
+        return $data;
     }
 
     public function show()
     {
-        $this->allCourse();
+        $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
+
+        $catalogue = $this->model->GetGlobalJsonTree($id_catalogue);
+        $total_category = count($catalogue);
+
+        $data = $this->getBaseData();
+
+        $data = array_merge($data, [
+            'id_catalogue' => $id_catalogue,
+            'user_catalogue' => [],
+            'show_general_catalogue_tab' => true,
+            'show_empty_catalogue_tab' => false,
+            'show_user_catalogue_tab' => false,
+            'tab_actived' => false,
+            'total_category' => $total_category,
+            'starting_catalogue' => $id_catalogue,
+            'catalogue' => $catalogue
+        ]);
+
+        $this->render('catalog', [
+            'data' => $data
+        ]);
     }
 
-    public function allCourse()
-    {
-        require_once _base_ . '/lib/lib.navbar.php';
-        require_once _lms_ . '/lib/lib.middlearea.php';
-
-        $active_tab = 'all';
-        $action = FormaLms\lib\Get::req('action', DOTY_STRING, '');
-        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
-        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
-
-        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
-
-        $nav_bar->setLink('index.php?r=homecatalogue/allCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
-
-        //$html = $this->model->getCourseList($active_tab, $page);
-        $user_catalogue = []; //$this->model->getUserCatalogue(Docebo::user()->getIdSt());
-        $user_coursepath = []; //$this->model->getUserCoursepath(Docebo::user()->getIdSt());
-
-        /*
-        echo '<div style="margin:1em;">';
-
-        $this->render('tab_start', array(	'user_catalogue' => $user_catalogue,
-                                            'active_tab' => $active_tab,
-                                            'user_coursepath' => $user_coursepath,
-                                            'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-                                            'model' => $this->model_catalog));
-        $this->render('courselist', array(	'html' => $html,
-                                            'nav_bar' => $nav_bar));
-        $this->render('tab_end', array(	'std_link' => 'index.php?r=homecatalogue/allCourse'.($page > 1 ? '&amp;page='.$page : ''),
-                                        'model' => $this->model_catalog));
-        echo '</div>';
-        */
-
-        echo '<div class="middlearea_container">';
-
-        $this->render('catalog_header');
-        $this->render('catalog_tree', ['model' => $this->model, 'id_cat=' => $id_cat]);
-
-        echo '</div>';
-    }
-
-    // AJAX
     public function allCourseForma()
     {
-        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
+        $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
         $typeCourse = FormaLms\lib\Get::req('type_course', DOTY_STRING, '');
+        $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
 
-        $result = $this->model->getCourseList($typeCourse, 1);
+        $courses = $this->model->getCatalogCourseList($typeCourse, 1, $id_catalogue, $id_category);
 
-        $this->render('courselist', ['result' => $result]);
-    }
+        $data = $this->getBaseData();
 
-    public function newCourse()
-    {
-        require_once _base_ . '/lib/lib.navbar.php';
-        require_once _lms_ . '/lib/lib.middlearea.php';
+        $data = array_merge($data, compact('courses', 'id_catalogue'));
 
-        $active_tab = 'new';
-        $action = FormaLms\lib\Get::req('action', DOTY_STRING, '');
-        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
-        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
-
-        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
-
-        $nav_bar->setLink('index.php?r=homecatalogue/allCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
-
-        $html = $this->model->getCourseList($active_tab, $page);
-        $user_catalogue = []; //$this->model->getUserCatalogue(Docebo::user()->getIdSt());
-        $user_coursepath = []; //$this->model->getUserCoursepath(Docebo::user()->getIdSt());
-
-        echo '<div style="margin:1em;">';
-
-        $this->render('tab_start', ['user_catalogue' => $user_catalogue,
-                                            'active_tab' => $active_tab,
-                                            'user_coursepath' => $user_coursepath,
-                                            'std_link' => 'index.php?r=homecatalogue/allCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-                                            'model' => $this->model_catalog, ]);
-        $this->render('courselist', ['html' => $html,
-                                            'nav_bar' => $nav_bar, ]);
-        $this->render('tab_end', ['std_link' => 'index.php?r=homecatalogue/allCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-                                        'model' => $this->model_catalog, ]);
-        echo '</div>';
-    }
-
-    public function elearningCourse()
-    {
-        require_once _base_ . '/lib/lib.navbar.php';
-        require_once _lms_ . '/lib/lib.middlearea.php';
-
-        $active_tab = 'elearning';
-        $action = FormaLms\lib\Get::req('action', DOTY_STRING, '');
-        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
-        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
-
-        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
-
-        $nav_bar->setLink('index.php?r=homecatalogue/allCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
-
-        $html = $this->model->getCourseList($active_tab, $page);
-        $user_catalogue = []; //$this->model->getUserCatalogue(Docebo::user()->getIdSt());
-        $user_coursepath = []; //$this->model->getUserCoursepath(Docebo::user()->getIdSt());
-
-        echo '<div style="margin:1em;">';
-
-        $this->render('tab_start', ['user_catalogue' => $user_catalogue,
-                                            'active_tab' => $active_tab,
-                                            'user_coursepath' => $user_coursepath,
-                                            'std_link' => 'index.php?r=homecatalogue/allCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-                                            'model' => $this->model_catalog, ]);
-        $this->render('courselist', ['html' => $html,
-                                            'nav_bar' => $nav_bar, ]);
-        $this->render('tab_end', ['std_link' => 'index.php?r=homecatalogue/allCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-                                        'model' => $this->model_catalog, ]);
-        echo '</div>';
-    }
-
-    public function classroomCourse()
-    {
-        require_once _base_ . '/lib/lib.navbar.php';
-        require_once _lms_ . '/lib/lib.middlearea.php';
-
-        $active_tab = 'classroom';
-        $action = FormaLms\lib\Get::req('action', DOTY_STRING, '');
-        $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
-        $id_cat = FormaLms\lib\Get::req('id_cat', DOTY_INT, 0);
-
-        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), $this->model->getTotalCourseNumber($active_tab), 'link');
-
-        $nav_bar->setLink('index.php?r=homecatalogue/allCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
-
-        $html = $this->model->getCourseList($active_tab, $page);
-        $user_catalogue = []; //$this->model->getUserCatalogue(Docebo::user()->getIdSt());
-        $user_coursepath = []; //$this->model->getUserCoursepath(Docebo::user()->getIdSt());
-
-        echo '<div style="margin:1em;">';
-
-        $this->render('tab_start', ['user_catalogue' => $user_catalogue,
-                                            'active_tab' => $active_tab,
-                                            'user_coursepath' => $user_coursepath,
-                                            'std_link' => 'index.php?r=homecatalogue/allCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-                                            'model' => $this->model_catalog, ]);
-        $this->render('courselist', ['html' => $html,
-                                            'nav_bar' => $nav_bar, ]);
-        $this->render('tab_end', ['std_link' => 'index.php?r=homecatalogue/allCourse' . ($page > 1 ? '&amp;page=' . $page : ''),
-                                        'model' => $this->model_catalog, ]);
-        echo '</div>';
-    }
-
-    public function courseSelection()
-    {
-        $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
-
-        $res = $this->model->courseSelectionInfo($id_course);
-
-        echo $this->json->encode($res);
-    }
-
-    public function downloadDemoMaterialTask()
-    {
-        require_once _base_ . '/lib/lib.download.php';
-
-        $id = FormaLms\lib\Get::gReq('course_id', DOTY_INT);
-        $db = DbConn::getInstance();
-
-        $qtxt = 'SELECT course_demo FROM %lms_course WHERE idCourse=' . $id;
-
-        $q = $db->query($qtxt);
-        list($fname) = $db->fetch_row($q);
-
-        if (!empty($fname)) {
-            sendFile('/appLms/course/', $fname);
-        } else {
-            echo 'nothing found';
-        }
-        exit();
+        $this->render('courselist', ['data' => $data]);
     }
 }

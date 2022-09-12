@@ -1050,7 +1050,7 @@ class UserManagerRenderer
      *               'password'=>    the password inserted,
      *               'lang=>'        the language selected )
      */
-    public function getLoginInfo()
+    public static function getLoginInfo()
     {
         $info = [
             'userid' => FormaLms\lib\Get::req('login_userid', DOTY_STRING),

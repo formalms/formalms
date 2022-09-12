@@ -1,49 +1,15 @@
-{% extends "base.html.twig" %}   
+{% extends 'home.html.twig' %}
 
-
-
-{% block stylesheet %}
-{% endblock %}
-
-                                
-{% block content %}
-
-  {{ Layout_getZone('meta') }}
-  {{ Layout_getMeta() }}
-  {{ Layout_getRtl() }}
-
-  <!-- specific stylesheet -->
-
-
-
-  <!-- blind nav -->
-  {{ Layout_getZone('blind_navigation') }}
-
-  {#<div class="webcontent-catalogue">#}
-  <div id="container">
-    <div class="container-fluid external-catalogue">
-
-      {{ Layout_getZone('content') }}
-
-    </div>
-
-    <!-- footer -->
-    <div class="layout_footer">
-      {{ Layout_getZone('footer') }}
-      {{ Layout_getCopyright() }}
-    </div>
-  </div>
-
-  <!-- def lang -->
-  {{ Layout_getZone('def_lang') }}
-
-  <!-- scripts -->
-  {{ Layout_getZone('scripts') }}
-
-  <!-- end scripts -->
-  {{ Layout_getZone('debug') }}
-
-  {{ Layout_getAnalytics() }}
-
-
+{% block homeContent %}
+    <!-- content -->
+    <main class="homecatalogue__content content-margin">
+        <div class="homecatalogue__row homecatalogue__row--header">
+            <a href="index.php">
+                <img class="homecatalogue_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="Center logo"/>
+            </a>
+        </div>
+        <div class="homecatalogue__row homecatalogue__row--content">
+            {{ Layout_getZone('content') }}
+        </div>
+    </main>
 {% endblock %}

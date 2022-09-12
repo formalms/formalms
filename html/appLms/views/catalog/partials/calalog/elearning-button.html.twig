@@ -10,7 +10,7 @@
         {% else %}
             {% if course.canEnter %}
                 <a class="forma-button course-box__cta__button" title="{{ course.name }}"
-                   href="index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
+                   href="{{ config.url.appLms }}/index.php?modname=course&op=aula&idCourse={{ course.idCourse }}"
                    rel="{{ course.rel }}">
                     <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
                 </a>

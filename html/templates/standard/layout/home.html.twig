@@ -1,99 +1,104 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ Layout_getLangCode() }}">
 <head>
-	<!--Fix funzionamento scorm su IE9-->
-	<meta http-equiv="x-ua-compatible" content="IE=11" />
-	<!--END -->
+    <!--Fix funzionamento scorm su IE9-->
+    <meta http-equiv="x-ua-compatible" content="IE=11"/>
+    <!--END -->
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<title>{{ Layout_getTitle() }}</title>
-	{{ Layout_getZone('meta') }}
-	<link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.png" type="image/png" />
-	<link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.ico" />
-	<!-- reset and font stylesheet -->
-	{{ Layout_getResetter() }}
-	<!-- common stylesheet -->
-	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/base.css?v={{ Template_getVersion() }}" />
-	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/lms-home.css?v={{ Template_getVersion() }}" />
+    <title>{{ Layout_getTitle() }}</title>
+    {{ Layout_getZone('meta') }}
+    <link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.png" type="image/png"/>
+    <link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.ico"/>
+    <!-- reset and font stylesheet -->
+    {{ Layout_getResetter() }}
+    <!-- common stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/base.css?v={{ Template_getVersion() }}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{{ Layout_getPath() }}style/lms-home.css?v={{ Template_getVersion() }}"/>
 
     {% if custom_css_path is defined %}
-		<link rel="stylesheet" type="text/css" href="{{ custom_css_path }}?v={{ Template_getVersion() }}" />
+        <link rel="stylesheet" type="text/css" href="{{ custom_css_path }}?v={{ Template_getVersion() }}"/>
     {% endif %}
-	{{ Layout_getRtl() }}
-	<!-- specific stylesheet -->
-	{{ Yui_load('base') }}
-	<!-- printer stylesheet-->
-	{{ Layout_getAccessibility() }}
-	<!-- Page Head area -->
-	{{ Layout_getZone('page_head') }}
+    {{ Layout_getRtl() }}
+    <!-- specific stylesheet -->
+    {{ Yui_load('base') }}
+    <!-- printer stylesheet-->
+    {{ Layout_getAccessibility() }}
+    <!-- Page Head area -->
+    {{ Layout_getZone('page_head') }}
 
-	<!-- JQuery, Bootstrap  -->
-	{% block jquery_core %}
-		{{ jqueryLib|raw }}
-	{% endblock %}
-
-	<script type="text/javascript">
-
-		window.frontend = {};
-		window.frontend.config = JSON.parse('{{ clientConfig|raw }}');
-
-	</script>
-
-	{% block bootstrap %}
-		{{ boostrap|raw }}
-	{% endblock %}
-
-	{% block jquery_addons %}
-		<!-- addons: js -->
-		{{ jsAddons|raw }}
-	{% endblock %}
-
-	{% block css_addons %}
-		<!-- addons: css -->
-		{{ cssAddons|raw }}
-	{% endblock %}
-    
-    {% block locale_calendar %}
-    <!-- locale data format -->        
-    {{ locale_calendar|raw }}
+    <!-- JQuery, Bootstrap  -->
+    {% block jquery_core %}
+        {{ jqueryLib|raw }}
     {% endblock %}
 
-	<!-- Restyling -->
-	<link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.min.css?v={{ Template_getVersion() }}">
-	<!--
+    <script type="text/javascript">
+
+        window.frontend = {};
+        window.frontend.config = JSON.parse('{{ clientConfig|raw }}');
+
+    </script>
+
+    {% block bootstrap %}
+        {{ boostrap|raw }}
+    {% endblock %}
+
+    {% block jquery_addons %}
+        <!-- addons: js -->
+        {{ jsAddons|raw }}
+    {% endblock %}
+
+    {% block css_addons %}
+        <!-- addons: css -->
+        {{ cssAddons|raw }}
+    {% endblock %}
+
+    {% block locale_calendar %}
+        <!-- locale data format -->
+        {{ locale_calendar|raw }}
+    {% endblock %}
+
+    <!-- Restyling -->
+    <link rel="stylesheet" type="text/css"
+          href="{{ Layout_getPath() }}static/main.min.css?v={{ Template_getVersion() }}">
+    <!--
     To use or edit the not minified css uncomment this portion of code
     <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}static/main.css">
     -->
-	<script type="text/javascript" src="{{ Layout_getPath() }}static/main.js?v={{ Template_getVersion() }}"></script>
+    <script type="text/javascript" src="{{ Layout_getPath() }}static/main.js?v={{ Template_getVersion() }}"></script>
 </head>
+
 <body class="homepage js-router--homepage">
-{% if under_maintenence == false %}
-<!-- content -->
-<main class="homepage__content content-margin">
-	<div class="homepage__row homepage__row--header">
-		<a href="index.php">
-			<img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="Left logo" />
-		</a>
-		<div class="pull-right">
-            {% if lang_number > 1 %}        
-			<div class="select-language">
-				<span class="hidden-xs">{{ Lang_translate('_CHANGELANG', 'register') }}: </span>{{ Layout_getChangeLang() }}
-			</div>
-            {% endif %}
-			<div class="hidden-xs">
-				{{ Layout_getCatalogue()  }}
-			</div>
-		</div>
-	</div>
-	{{ Layout_getZone('content') }}
-</main>
-<!-- footer -->
-<footer class="homepage__footer">
-	{{ Layout_getZone('footer') }}
-	{{ Layout_getCopyright() }}
-</footer>
-{% endif %}
+{% block homeContent %}
+    <!-- content -->
+    <main class="homepage__content content-margin">
+        <div class="homepage__row homepage__row--header">
+            <a href="index.php">
+                <img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="Left logo"/>
+            </a>
+            <div class="pull-right">
+                {% if lang_number > 1 %}
+                    <div class="select-language">
+                        <span class="hidden-xs">{{ Lang_translate('_CHANGELANG', 'register') }}: </span>{{ Layout_getChangeLang() }}
+                    </div>
+                {% endif %}
+                <div class="hidden-xs">
+                    {{ Layout_getCatalogue() }}
+                </div>
+            </div>
+        </div>
+        {{ Layout_getZone('content') }}
+    </main>
+{% endblock %}
+{% block homeFooter %}
+    <!-- footer -->
+    <footer class="homepage__footer">
+        {{ Layout_getZone('footer') }}
+        {{ Layout_getCopyright() }}
+    </footer>
+{% endblock %}
 <!-- def lang -->
 {{ Layout_getZone('def_lang') }}
 <!-- scripts -->

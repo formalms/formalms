@@ -21,7 +21,7 @@ class Format
     {
     }
 
-    private function init()
+    private static function init()
     {
         require_once _i18n_ . '/lib.regset.php';
         self::$_regset = new RegionalSettings();

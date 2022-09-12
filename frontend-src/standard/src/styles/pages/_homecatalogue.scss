@@ -1,0 +1,168 @@
+// Homecatalogue
+//
+// Style guide: 12
+
+.homecatalogue {
+  height: auto; /* Importante per posizione corretta bootstrap datepicker */
+  max-height: initial; /* Importante per posizione corretta bootstrap datepicker */
+  position: relative;
+  background: {
+    image: url('#{$assets}images/login/bg.jpg');
+    size: cover;
+    position: 50% 50%;
+    repeat: no-repeat;
+    color: var(--color-0-000);
+  }
+
+  @include breakpoint($tablet) {
+    padding-top: 30px;
+  }
+}
+
+.homecatalogue__content {
+  position: relative;
+  margin: 0 auto;
+  // background-color: var(--color-0-000);
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  @include breakpoint($tablet) {
+    margin: 0 auto;
+    border-radius: $border-radius;
+  }
+}
+
+.homecatalogue__row {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 14px;
+  overflow: hidden;
+  line-height: 1.5;
+  text-align: center;
+  background: white;
+
+  @include breakpoint($tablet) {
+    padding: 0 30px;
+  }
+
+  &.row-fluid {
+    @include breakpoint($tablet) {
+      padding: 10px 15px;
+    }
+  }
+
+  &.clearfix {
+    overflow: visible;
+  }
+}
+
+.homecatalogue__row--text-left {
+  text-align: left;
+}
+
+p {
+  .homecatalogue__row & {
+    font-size: 12px;
+    color: #666;
+    width: 100%;
+  }
+}
+
+.homecatalogue__row--header {
+  height: auto;
+  padding-top: 15px;
+  overflow: visible;
+  background-color: var(--color-0-000);
+  border-bottom: solid 3px var(--color-3);
+  position: relative;
+  text-align: left;
+
+  @include breakpoint($tablet) {
+    padding-top: 38px;
+    padding-bottom: 34px;
+    // margin-bottom: 12px;
+    border: none;
+  }
+}
+
+.homecatalogue__row--content {
+  height: auto;
+  padding-bottom: 15px;
+  overflow: visible;
+  background-color: var(--color-0-000);
+  border-bottom: solid 3px var(--color-3);
+  position: relative;
+  text-align: left;
+
+  @include breakpoint($tablet) {
+    padding-top: 38px;
+    padding-bottom: 34px;
+    // margin-bottom: 12px;
+    border: none;
+  }
+}
+
+
+.homecatalogue__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: {
+    image: url('#{$assets}images/login/bg.jpg');
+    size: cover;
+    position: 50% 50%;
+    repeat: no-repeat;
+    color: var(--color-0-000);
+  }
+}
+
+.homecatalogue_logo {
+  .homepage & {
+    height: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include breakpoint($tablet) {
+      height: 75px;
+    }
+  }
+}
+
+.homecatalogue__text {
+  color: var(--color-0-750);
+  font-size: 16px;
+}
+
+.homecatalogue__text--title {
+  .homecatalogue__row & {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+}
+
+.homecatalogue__text--description {
+  .homecatalogue__row & {
+    margin-top: 10px;
+    margin-bottom: 70px;
+  }
+}
+
+.homecatalogue__text--justified {
+  text-align: justify;
+}
+
+.homecatalogue__text--centered {
+  text-align: center;
+}
+
+.homecatalogue__text--left {
+  text-align: left;
+}
+
