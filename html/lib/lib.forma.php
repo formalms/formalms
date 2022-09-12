@@ -112,7 +112,6 @@ class Forma
     public static function getErrors(): array
     {
         $errors = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
-
         return $errors;
     }
 
