@@ -30,16 +30,16 @@
     {% if logged_in %}
         {% if catalogueType == 'catalog' or catalogueType == 'homecatalogue' %}
             {% if course.course_type == 'classroom' %}
-                {% include 'partials/'~ catalogueType ~'/classroom-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
+                {% include 'catalog/partials/classroom-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
             {% elseif course.course_type == 'elearning' %}
-                {% include 'partials/'~ catalogueType ~'/classroom-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
+                {% include 'catalog/partials/classroom-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
             {% endif %}
         {% endif %}
     {% else %}
         {% if course.course_type == 'classroom' %}
-            {% include 'partials/classroom-login-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
+            {% include 'catalog/partials/classroom-login-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
         {% elseif course.course_type == 'elearning' %}
-            {% include 'partials/elearning-login-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
+            {% include 'catalog/partials/elearning-login-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
         {% endif %}
     {% endif %}
 {% endblock %}

@@ -21,11 +21,20 @@ class CatalogLmsController extends LmsController
 
     protected $_default_action = 'show';
 
+    protected $showAllCategory = false;
+
     /** @var CatalogLms */
     public $model;
     public $json;
     /** @var DoceboACLManager */
     public $acl_man;
+
+    public function __construct($mvc_name = '')
+    {
+        $this->_mvc_name = 'catalog';
+        parent::__construct($this->_mvc_name);
+        $this->showAllCategory = FormaLms\lib\Get::sett('hide_empty_category') === 'off';
+    }
 
     public function isTabActive($tab_name)
     {
@@ -41,7 +50,7 @@ class CatalogLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-
+        $this->_mvc_name = 'catalog';
         $this->acl_man = &Docebo::user()->getAclManager();
     }
 
@@ -51,6 +60,7 @@ class CatalogLmsController extends LmsController
             'catalogueType' => 'catalog',
             'endpoint' => 'lms/catalog',
             'logged_in' => $this->session->get('logged_in'),
+            'showAllCategory' => $this->showAllCategory
         ];
     }
 
@@ -59,10 +69,9 @@ class CatalogLmsController extends LmsController
     {
         $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
         $user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
-        $onCatalogueEmptySetting = FormaLms\lib\Get::sett('on_catalogue_empty') == 'on';
 
-        $show_general_catalogue_tab = ($onCatalogueEmptySetting && count($user_catalogue) === 0);
-        $show_empty_catalogue_tab = (!$onCatalogueEmptySetting && count($user_catalogue) === 0);
+        $show_general_catalogue_tab = ($this->showAllCategory && count($user_catalogue) === 0);
+        $show_empty_catalogue_tab = (!$this->showAllCategory && count($user_catalogue) === 0);
         $show_user_catalogue_tab = count($user_catalogue) > 0;
 
         $catalogue = '';

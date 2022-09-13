@@ -46,7 +46,7 @@ class CatalogLms extends Model
         ];
 
         $this->acl_man = &Docebo::user()->getAclManager();
-        $this->show_all_category = FormaLms\lib\Get::sett('hide_empty_category') == 'off';
+        $this->show_all_category = FormaLms\lib\Get::sett('hide_empty_category') === 'off';
 
         $this->currentCatalogue = 0;
         parent::__construct();
@@ -131,7 +131,7 @@ class CatalogLms extends Model
                 }
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 $base_link = 'index.php?r=catalog/newCourse&amp;page=' . $page;
                 if (count($user_catalogue) > 0) {
                     $courses = [];
@@ -215,7 +215,7 @@ class CatalogLms extends Model
                 $filter = " AND course_type = '" . $type . "'";
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 break;
             case 'catalogue':
                 $idCatalogue = FormaLms\lib\Get::req('id_cata', DOTY_INT, '0');
@@ -324,7 +324,7 @@ class CatalogLms extends Model
                 }
                 break;
             case 'new':
-                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int) date('d') - 7), date('Y'))) . "'";
+                $filter = " AND create_date >= '" . date('Y-m-d', mktime(0, 0, 0, date('m'), ((int)date('d') - 7), date('Y'))) . "'";
                 if (count($user_catalogue) > 0) {
                     $courses = [];
 
@@ -375,7 +375,7 @@ class CatalogLms extends Model
             . " OR date_begin > '" . date('Y-m-d') . "'"
             . ' )'
             . $filter
-            . ($id_cat > 0 ? ' AND idCategory = ' . (int) $id_cat : '')
+            . ($id_cat > 0 ? ' AND idCategory = ' . (int)$id_cat : '')
             . ' ORDER BY name';
 
         list($res) = sql_fetch_row(sql_query($query));
@@ -534,7 +534,7 @@ class CatalogLms extends Model
     {
         $query = 'SELECT name, selling, prize'
             . ' FROM %lms_course'
-            . ' WHERE idCourse = ' . (int) $id_course;
+            . ' WHERE idCourse = ' . (int)$id_course;
 
         list($course_name, $selling, $price) = sql_fetch_row(sql_query($query));
         $classrooms = $this->classroom_man->getCourseDate($id_course, false);
@@ -560,7 +560,7 @@ class CatalogLms extends Model
     {
         $query = 'SELECT *'
             . ' FROM %lms_course'
-            . ' WHERE idCourse = ' . (int) $id_course;
+            . ' WHERE idCourse = ' . (int)$id_course;
 
         $result = sql_query($query);
 
@@ -656,15 +656,17 @@ class CatalogLms extends Model
 
     private function getMajorCategory()
     {
-        $q = 'SELECT idCategory, path, iLeft, iRight'
+        $query = 'SELECT idCategory, path, iLeft, iRight'
             . ' FROM %lms_category'
             . ' WHERE lev = 1'
             . ' ORDER BY path';
 
         $res = [];
-        $records = sql_query($q);
-        while ($row = sql_fetch_assoc($records)) {
-            $res[$row['idCategory']] = ['text' => end(explode('/', $row['path'])), 'iLeft' => $row['iLeft'], 'iRight' => $row['iRight']];
+        $records = sql_query($query);
+        foreach ($records as $row) {
+
+            $array = explode('/', $row['path']);
+            $res[$row['idCategory']] = ['text' => end($array), 'iLeft' => $row['iLeft'], 'iRight' => $row['iRight']];
         }
 
         return $res;
@@ -674,7 +676,7 @@ class CatalogLms extends Model
     {
         if (($iright - $ileft > 1) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright)) {
             $q = 'SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
-                        WHERE iLeft > ' . (int) $ileft . ' AND iRight < ' . $iright . ' AND lev=' . $lev;
+                        WHERE iLeft > ' . (int)$ileft . ' AND iRight < ' . $iright . ' AND lev=' . $lev;
             $res = [];
             $records = sql_query($q);
             while ($row = sql_fetch_assoc($records)) {
@@ -728,7 +730,7 @@ class CatalogLms extends Model
                               (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )
-                       AND idCatalogue = " . (int) $this->currentCatalogue .
+                       AND idCatalogue = " . (int)$this->currentCatalogue .
                     ' AND %lms_catalogue_entry.idEntry=%lms_course.idCourse';
             }
             list($c) = sql_fetch_row(sql_query($query));
