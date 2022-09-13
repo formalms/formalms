@@ -27,6 +27,10 @@ class CatalogLms extends Model
     public $show_all_category;
     public $currentCatalogue;
 
+    const SHOW_RULES_EVERYONE = 0;
+    const SHOW_RULES_LOGGED_USERS = 1;
+    const SHOW_RULES_SUBSCRIBED_USERS = 2;
+
     public function __construct()
     {
         require_once _lms_ . '/lib/lib.course.php';
@@ -639,14 +643,14 @@ class CatalogLms extends Model
         }
     }
 
-    public function GetGlobalJsonTree($idCatalogue)
+    public function GetGlobalJsonTree($idCatalogue, $showRulesValues = [self::SHOW_RULES_EVERYONE, self::SHOW_RULES_LOGGED_USERS, self::SHOW_RULES_SUBSCRIBED_USERS])
     {
         $this->currentCatalogue = $idCatalogue;
         $global_tree = [];
         $top_category = $this->getMajorCategory();
         foreach ($top_category as $id_key => $val) {
-            if ($this->CategoryHasChildrenCourses($id_key, $val['iLeft'], $val['iRight'])) {
-                $this->children = $this->getMinorCategoryTree($id_key, $val['iLeft'], $val['iRight'], 2);
+            if ($this->CategoryHasChildrenCourses($id_key, $val['iLeft'], $val['iRight'], $showRulesValues)) {
+                $this->children = $this->getMinorCategoryTree($id_key, $val['iLeft'], $val['iRight'], 2, $showRulesValues);
                 $global_tree[] = ['text' => $val['text'], 'id_cat' => $id_key, 'nodes' => $this->children];
             }
         }
@@ -672,22 +676,22 @@ class CatalogLms extends Model
         return $res;
     }
 
-    public function getMinorCategoryTree($idCat, $ileft, $iright, $lev)
+    public function getMinorCategoryTree($idCat, $ileft, $iright, $lev, $showRulesValues = [self::SHOW_RULES_EVERYONE, self::SHOW_RULES_LOGGED_USERS, self::SHOW_RULES_SUBSCRIBED_USERS])
     {
-        if (($iright - $ileft > 1) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright)) {
+        if (($iright - $ileft > 1) && $this->CategoryHasChildrenCourses($idCat, $ileft, $iright, $showRulesValues)) {
             $q = 'SELECT idCategory, path, idParent, lev, iLeft, iRight  FROM %lms_category  
                         WHERE iLeft > ' . (int)$ileft . ' AND iRight < ' . $iright . ' AND lev=' . $lev;
             $res = [];
             $records = sql_query($q);
-            while ($row = sql_fetch_assoc($records)) {
+            foreach ($records as $row) {
                 // including only if there are courses starting from here
-                if ($this->CategoryHasChildrenCourses($row['idCategory'], $row['iLeft'], $row['iRight'])) {
+                if ($this->CategoryHasChildrenCourses($row['idCategory'], $row['iLeft'], $row['iRight'], $showRulesValues)) {
                     $res[$row['idCategory']] = [
                         'text' => end(explode('/', $row['path'])),
                         'id_cat' => $row['idCategory'],
                     ];
                     // getting all children of next level, if any
-                    $children = $this->getMinorCategoryTree($row['idCategory'], $row['iLeft'], $row['iRight'], $row['lev'] + 1);
+                    $children = $this->getMinorCategoryTree($row['idCategory'], $row['iLeft'], $row['iRight'], $row['lev'] + 1, $showRulesValues);
                     if ($children) {
                         $res[$row['idCategory']]['nodes'] = $children;
                     }
@@ -703,7 +707,7 @@ class CatalogLms extends Model
     /**
      * checking if there are courses starting from id_cat and searching through all children nodes.
      */
-    private function CategoryHasChildrenCourses($id_cat, $ileft, $iright)
+    private function CategoryHasChildrenCourses($id_cat, $ileft, $iright, $showRulesValues = [self::SHOW_RULES_EVERYONE, self::SHOW_RULES_LOGGED_USERS, self::SHOW_RULES_SUBSCRIBED_USERS])
     {
         if ($this->show_all_category) {
             return true;
@@ -733,6 +737,11 @@ class CatalogLms extends Model
                        AND idCatalogue = " . (int)$this->currentCatalogue .
                     ' AND %lms_catalogue_entry.idEntry=%lms_course.idCourse';
             }
+
+            if (!empty($showRulesValues)) {
+                $query .= ' AND %lms_course.show_rules IN (' . implode($showRulesValues) . ')';
+            }
+
             list($c) = sql_fetch_row(sql_query($query));
 
             return $c > 0;

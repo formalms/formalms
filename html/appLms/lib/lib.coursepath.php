@@ -305,7 +305,7 @@ class CoursePath_Manager
         reset($this->_cp_slot_field);
 
         $this->acl = new DoceboACL();
-        $this->aclManager = &$this->acl->getAclManager();
+        $this->aclManager = $this->acl->getACLManager();
     }
 
     public function _query($query)

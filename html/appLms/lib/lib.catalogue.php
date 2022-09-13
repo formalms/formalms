@@ -240,7 +240,7 @@ class Catalogue_Manager
     public function Catalogue_Manager()
     {
         $this->acl = new DoceboACL();
-        $this->aclManager = &$this->acl->getAclManager();
+        $this->aclManager = $this->acl->getACLManager();
     }
 
     /**

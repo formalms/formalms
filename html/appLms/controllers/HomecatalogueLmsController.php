@@ -48,7 +48,7 @@ class HomecatalogueLmsController extends CatalogLmsController
     {
         $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
 
-        $catalogue = $this->model->GetGlobalJsonTree($id_catalogue);
+        $catalogue = $this->model->GetGlobalJsonTree($id_catalogue,[CatalogLms::SHOW_RULES_EVERYONE]);
         $total_category = count($catalogue);
 
         $data = $this->getBaseData();

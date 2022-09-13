@@ -81,7 +81,7 @@ class DoceboUser implements Serializable
         $this->db = DbConn::getInstance();
 
         $this->acl = new DoceboACL();
-        $this->aclManager = &$this->acl->getACLManager();
+        $this->aclManager = $this->acl->getACLManager();
 
         if ($session->has($sprefix . '_idst')) {
             $this->idst = $session->get($sprefix . '_idst');
@@ -117,7 +117,7 @@ class DoceboUser implements Serializable
 
     public function initRole($preset, $idst)
     {
-        $aclManager = &$this->acl->getACLManager();
+        $aclManager = $this->acl->getACLManager();
         $arr_levels_id = array_flip($aclManager->getAdminLevels());
         $arr_levels_idst = array_keys($arr_levels_id);
         $level_st = array_intersect($arr_levels_idst, $preset);

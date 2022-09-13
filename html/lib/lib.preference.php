@@ -14,15 +14,15 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * @author 		Fabio Pirovano <fabio@docebo.com>
+ * @author        Fabio Pirovano <fabio@docebo.com>
  *
- * @version 	$Id:$
+ * @version    $Id:$
  */
 
 /**
  * this class is minded as an abstract level for manage users preferences.
  *
- * @author	Fabio Pirovano <fabio (@) docebo (.) com>
+ * @author    Fabio Pirovano <fabio (@) docebo (.) com>
  */
 class UserPreferencesDb
 {
@@ -69,7 +69,7 @@ class UserPreferencesDb
      * @param string $base_path if is passed only the preferences that is based on this path will be returned
      *
      * @return mixed an array with the info of the preferences founded
-     *               [path_name] => (	[path_name]
+     *               [path_name] => (    [path_name]
      *               [label]
      *               [default_value]
      *               [type]
@@ -96,7 +96,7 @@ class UserPreferencesDb
                 'default_value' => $default_value,
                 'type' => $type,
                 'visible' => $visible,
-                'load_at_startup' => $load_at_startup, ];
+                'load_at_startup' => $load_at_startup,];
         }
 
         return $all_preferences;
@@ -108,7 +108,7 @@ class UserPreferencesDb
      * @param string $path the preference
      *
      * @return mixed an array with the info of the preferencs if founded or FALSE
-     *               array(	[path_name]
+     *               array(    [path_name]
      *               [label]
      *               [default_value]
      *               [type]
@@ -133,7 +133,7 @@ class UserPreferencesDb
                 'default_value' => $default_value,
                 'type' => $type,
                 'visible' => $visible,
-                'load_at_startup' => $load_at_startup, ];
+                'load_at_startup' => $load_at_startup,];
         } else {
             return false;
         }
@@ -170,12 +170,12 @@ class UserPreferencesDb
     /**
      * create a new preference.
      *
-     * @param string $path            the path of the preference
-     * @param string $label           the label for the name
-     * @param string $default_value   the default value
-     * @param string $type            an identifier for the type of the preference
-     * @param bool   $visible         if the field is visible
-     * @param bool   $load_at_startup if it must loaded at class instanciation or only at request
+     * @param string $path the path of the preference
+     * @param string $label the label for the name
+     * @param string $default_value the default value
+     * @param string $type an identifier for the type of the preference
+     * @param bool $visible if the field is visible
+     * @param bool $load_at_startup if it must loaded at class instanciation or only at request
      *
      * @return true if success false otherwise
      */
@@ -198,12 +198,12 @@ class UserPreferencesDb
     /**
      * update an existing preference.
      *
-     * @param string $path            the path of the preference
-     * @param string $label           the label for the name
-     * @param string $default_value   the default value
-     * @param string $type            an identifier for the type of the preference
-     * @param bool   $visible         if the field is visible
-     * @param bool   $load_at_startup if it must loaded at class instanciation or only at request
+     * @param string $path the path of the preference
+     * @param string $label the label for the name
+     * @param string $default_value the default value
+     * @param string $type an identifier for the type of the preference
+     * @param bool $visible if the field is visible
+     * @param bool $load_at_startup if it must loaded at class instanciation or only at request
      *
      * @return true if success false otherwise
      */
@@ -245,8 +245,8 @@ class UserPreferencesDb
     }
 
     /**
-     * @param int    $id_user the id of the user
-     * @param string $path    the path of the preference
+     * @param int $id_user the id of the user
+     * @param string $path the path of the preference
      *
      * @return string the value of the user for this preference or the default value of the preference
      */
@@ -270,7 +270,7 @@ class UserPreferencesDb
     /**
      * get all user preferences.
      *
-     * @param int    $id_user   the id of the user
+     * @param int $id_user the id of the user
      * @param string $base_path the base_path of the preference
      *
      * @return array the value of the user for the various preferences
@@ -302,10 +302,10 @@ class UserPreferencesDb
     /**
      * get all user preferences.
      *
-     * @param int    $id_user         the id of the user
-     * @param string $visible         if true only the visible is returned
+     * @param int $id_user the id of the user
+     * @param string $visible if true only the visible is returned
      * @param string $load_at_startup if true only the load at startup is returned
-     * @param string $base_path       the base_path of the preference
+     * @param string $base_path the base_path of the preference
      *
      * @return array the value of the user for the various preferences [path] => value(user or default)
      */
@@ -342,10 +342,10 @@ class UserPreferencesDb
     /**
      * get all user preferences and the value of a specific user for it, and in respect with passed filter.
      *
-     * @param int    $id_user         the id of the user
-     * @param int    $visible         filter preferences that is visible
-     * @param int    $load_at_startup filter preferences that is loaded at startup
-     * @param string $base_path       if you need to load the user preferences limited to a specific group of path
+     * @param int $id_user the id of the user
+     * @param int $visible filter preferences that is visible
+     * @param int $load_at_startup filter preferences that is loaded at startup
+     * @param string $base_path if you need to load the user preferences limited to a specific group of path
      *
      * @return string the value of the user for the various preferences
      */
@@ -384,7 +384,7 @@ class UserPreferencesDb
                 'type' => $type,
                 'visible' => $visible,
                 'load_at_startup' => $load_at_startup,
-                'user_value' => ($user_value === null ? $default_value : $user_value), ];
+                'user_value' => ($user_value === null ? $default_value : $user_value),];
         }
 
         return $all_preferences;
@@ -393,8 +393,8 @@ class UserPreferencesDb
     /**
      * assign to a user a value for a preferences.
      *
-     * @param int    $id_user   the id of the user
-     * @param int    $path      the path of the preference
+     * @param int $id_user the id of the user
+     * @param int $path the path of the preference
      * @param string $new_value the new value
      *
      * @return bool true if success false otherwise
@@ -427,7 +427,7 @@ class UserPreferencesDb
      * delete all the preference value stored for a user or a specific one.
      *
      * @param int $id_user the id of the user
-     * @param int $path    (optional) the path of the preference
+     * @param int $path (optional) the path of the preference
      *
      * @return bool true if success false otherwise
      */
@@ -447,7 +447,7 @@ class UserPreferencesDb
     /**
      * delete all the preference value stored for a user from a base path.
      *
-     * @param int $id_user   the id of the user
+     * @param int $id_user the id of the user
      * @param int $base_path the path of the preference
      *
      * @return bool true if success false otherwise
@@ -467,9 +467,9 @@ class UserPreferencesDb
 /**
  * this class is minded for manage the preferences of a specific user.
  *
- * @uses 	class UserPreferencesDb
+ * @uses    class UserPreferencesDb
  *
- * @author	Fabio Pirovano <fabio (@) docebo (.) com>
+ * @author    Fabio Pirovano <fabio (@) docebo (.) com>
  */
 class UserPreferences
 {
@@ -536,14 +536,14 @@ class UserPreferences
             $this->admin_preference = $this->_admin_preference->getAdminRules($this->id_user);
         }
 
-        return  isset($this->admin_preference[$preference]) ? $this->admin_preference[$preference] : false;
+        return isset($this->admin_preference[$preference]) ? $this->admin_preference[$preference] : false;
     }
 
     /**
      * save a specific value for the preference.
      *
      * @param string $preference the preference that must by find
-     * @param mixed  $new_value  the new value to assign
+     * @param mixed $new_value the new value to assign
      *
      * @return mixed true if success false otherwise
      */
@@ -576,7 +576,7 @@ class UserPreferences
     }
 
     /**
-     * @param string	the value to assign at 'ui.template'
+     * @param string    the value to assign at 'ui.template'
      */
     public function setTemplate($new_template)
     {
@@ -602,7 +602,7 @@ class UserPreferences
     }
 
     /**
-     * @param string	the value to assign at 'ui.language'
+     * @param string    the value to assign at 'ui.language'
      */
     public function setLanguage($new_language)
     {
@@ -614,36 +614,39 @@ class UserPreferences
     public function getLanguageCode()
     {
         $locale_language_array = [
-                    'arabic' => 'ar',
-                    'croatian' => 'hr',
-                    'czech' => 'cs',
-                    'dutch' => 'nl',
-                    'english' => 'en',
-                    'finnish' => 'fi',
-                    'french' => 'fr',
-                    'german' => 'de',
-                    'greek' => 'el',
-                    'italian' => 'it',
-                    'spanish' => 'es',
-                    'swedish' => 'sv',
-                    'norwegian' => 'nb',
-                    ];
+            'arabic' => 'ar',
+            'croatian' => 'hr',
+            'czech' => 'cs',
+            'dutch' => 'nl',
+            'english' => 'en',
+            'finnish' => 'fi',
+            'french' => 'fr',
+            'german' => 'de',
+            'greek' => 'el',
+            'italian' => 'it',
+            'spanish' => 'es',
+            'swedish' => 'sv',
+            'norwegian' => 'nb',
+        ];
         if (array_key_exists($this->_preferences['ui.language'], $locale_language_array)) {
             return $locale_language_array[$this->_preferences['ui.language']];
         } else {
             if ($this->is_anonymous) {
-                $browser_locale = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+                if (array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER)) {
+                    $browserLocale = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+                    if (is_array($browserLocale)) {
+                        return $browserLocale[0];
+                    }
+                }
             }
-
-            return $browser_locale[0];
 
             return 'en';
         }
     }
 
     /**
-     * @param string $base_path    if specified load only preference form this base_path
-     * @param bool   $only_visible if true only the visible
+     * @param string $base_path if specified load only preference form this base_path
+     * @param bool $only_visible if true only the visible
      *
      * @return string the code for show the actual preference of the user
      */
@@ -663,46 +666,45 @@ class UserPreferences
                     //drop down language
                     $lang_sel = $this->getLanguage();
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                                                $lang_sel);
-
-                ; break;
+                        $lang_sel);;
+                    break;
                 case 'template':
                     //drop down template
                     $templ_sel = getTemplate();
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                                                $templ_sel);
-                ; break;
+                        $templ_sel);;
+                    break;
                 case 'hteditor':
                     //drop down hteditor
                     $ht_edit = getHTMLEditorList();
                     $value = ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']);
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                                                $ht_edit[$value]);
-                ; break;
+                        $ht_edit[$value]);;
+                    break;
                 case 'layout_chooser':
                     //drop down hteditor
                     $layout = [
                         'left' => Lang::t('_LAYOUT_LEFT'),
                         'over' => Lang::t('_LAYOUT_OVER'),
-                        'right' => Lang::t('_LAYOUT_RIGHT'), ];
+                        'right' => Lang::t('_LAYOUT_RIGHT'),];
                     $value = ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']);
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                                                $layout[$value]);
-                ; break;
+                        $layout[$value]);;
+                    break;
                 case 'enum':
                     //on off
                     $value = ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']);
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                                                ($value == 'on' ?
-                                                    $lang->def('_ACTIVE') :
-                                                    $lang->def('_OFF')));
-                ; break;
+                        ($value == 'on' ?
+                            $lang->def('_ACTIVE') :
+                            $lang->def('_OFF')));;
+                    break;
                 //string or int
                 default:
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                                                ($pref['user_value'] ?
-                                                        $pref['user_value'] :
-                                                        $pref['default_value']));
+                        ($pref['user_value'] ?
+                            $pref['user_value'] :
+                            $pref['default_value']));
             }
         }
 
@@ -710,8 +712,8 @@ class UserPreferences
     }
 
     /**
-     * @param string $base_path    if specified load only preference form this base_path
-     * @param bool   $only_visible if true only the visible
+     * @param string $base_path if specified load only preference form this base_path
+     * @param bool $only_visible if true only the visible
      *
      * @return string the code for the mod mask
      */
@@ -738,64 +740,62 @@ class UserPreferences
                     }
                     /* XXX: remove when alll lang ready*/
                     $html[$pref['path_name']] = Form::getDropdown($lang->def($pref['label']),
-                                                $this->base_name . '_' . $pref['path_name'],
-                                                $this->base_name . '[' . $pref['path_name'] . ']',
-                                                $langs,
-                                                array_search($lang_sel, $langs));
-
-                ; break;
+                        $this->base_name . '_' . $pref['path_name'],
+                        $this->base_name . '[' . $pref['path_name'] . ']',
+                        $langs,
+                        array_search($lang_sel, $langs));;
+                    break;
                 case 'template':
                     //drop down template
                     $templ_sel = $this->getTemplate();
                     $templ = getTemplateList();
 
                     $html[$pref['path_name']] = Form::getDropdown($lang->def($pref['label']),
-                                                $this->base_name . '_' . $pref['path_name'],
-                                                $this->base_name . '[' . $pref['path_name'] . ']',
-                                                $templ,
-                                                array_search($templ_sel, $templ));
-                ; break;
+                        $this->base_name . '_' . $pref['path_name'],
+                        $this->base_name . '[' . $pref['path_name'] . ']',
+                        $templ,
+                        array_search($templ_sel, $templ));;
+                    break;
                 case 'hteditor':
                     //drop down hteditor
                     $ht_edit = getHTMLEditorList();
                     $html[$pref['path_name']] = Form::getDropdown($lang->def($pref['label']),
-                                                $this->base_name . '_' . $pref['path_name'],
-                                                $this->base_name . '[' . $pref['path_name'] . ']',
-                                                $ht_edit,
-                                                ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));
-                ; break;
+                        $this->base_name . '_' . $pref['path_name'],
+                        $this->base_name . '[' . $pref['path_name'] . ']',
+                        $ht_edit,
+                        ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));;
+                    break;
                 case 'layout_chooser':
                     //drop down hteditor
                     $layout = [
                         'left' => Lang::t('_LAYOUT_LEFT'),
                         'over' => Lang::t('_LAYOUT_OVER'),
-                        'right' => Lang::t('_LAYOUT_RIGHT'), ];
+                        'right' => Lang::t('_LAYOUT_RIGHT'),];
                     $html[$pref['path_name']] = Form::getDropdown($lang->def($pref['label']),
-                                                $this->base_name . '_' . $pref['path_name'],
-                                                $this->base_name . '[' . $pref['path_name'] . ']',
-                                                $layout,
-                                                ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));
-                ; break;
+                        $this->base_name . '_' . $pref['path_name'],
+                        $this->base_name . '[' . $pref['path_name'] . ']',
+                        $layout,
+                        ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));;
+                    break;
                 case 'enum':
                     //on off
                     $value = ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']);
                     $html[$pref['path_name']] = Form::openFormLine()
-                            . Form::getInputCheckbox($this->base_name . '_' . $pref['path_name'] . '_on',
-                                            $this->base_name . '[' . $pref['path_name'] . ']',
-                                            'on',
-                                            ($value == 'on'), '')
-                            . ' '
-                            . Form::getLabel($this->base_name . '_' . $pref['path_name'] . '_on', $lang->def($pref['label']))
-                            . Form::closeFormLine();
-
-                ; break;
+                        . Form::getInputCheckbox($this->base_name . '_' . $pref['path_name'] . '_on',
+                            $this->base_name . '[' . $pref['path_name'] . ']',
+                            'on',
+                            ($value == 'on'), '')
+                        . ' '
+                        . Form::getLabel($this->base_name . '_' . $pref['path_name'] . '_on', $lang->def($pref['label']))
+                        . Form::closeFormLine();;
+                    break;
                 //string or int
                 default:
                     $html[$pref['path_name']] = Form::getTextfield($lang->def($pref['label']),
-                                                $this->base_name . '_' . $pref['path_name'],
-                                                $this->base_name . '[' . $pref['path_name'] . ']',
-                                                '65535',
-                                                ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));
+                        $this->base_name . '_' . $pref['path_name'],
+                        $this->base_name . '[' . $pref['path_name'] . ']',
+                        '65535',
+                        ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));
             }
         }
 
@@ -803,8 +803,8 @@ class UserPreferences
     }
 
     /**
-     * @param array  $array_source save the preferences of a user
-     * @param string $base_path    if specified load only preference form this base_path
+     * @param array $array_source save the preferences of a user
+     * @param string $base_path if specified load only preference form this base_path
      *
      * @return nothing
      */
@@ -829,19 +829,19 @@ class UserPreferences
             switch ($pref['type']) {
                 case 'language':
                     $langs = Docebo::langManager()->getAllLangCode();
-                    $re &= $this->setLanguage($langs[$new_value]);
-                ; break;
+                    $re &= $this->setLanguage($langs[$new_value]);;
+                    break;
                 case 'template':
                     $templ = getTemplateList();
-                    $re &= $this->setTemplate($templ[$new_value]);
-                ; break;
+                    $re &= $this->setTemplate($templ[$new_value]);;
+                    break;
                 case 'enum':
                     if ($new_value == null) {
                         $re &= $this->setPreference($pref['path_name'], 'off');
                     } else {
                         $re &= $this->setPreference($pref['path_name'], 'on');
-                    }
-                ; break;
+                    };
+                    break;
 
                 default:
                     $re &= $this->setPreference($pref['path_name'], $new_value);
@@ -874,10 +874,10 @@ class AdminPreference
     public function getSpecialModifyMask($idst, $lang_module = 'adminrules')
     {
         $query = 'SELECT path_name, label, default_value, type'
-                    . ' FROM %adm_setting_list'
-                    . " WHERE path_name LIKE 'admin_rules.%'"
-                    . ' AND visible = 1'
-                    . ' ORDER BY sequence';
+            . ' FROM %adm_setting_list'
+            . " WHERE path_name LIKE 'admin_rules.%'"
+            . ' AND visible = 1'
+            . ' ORDER BY sequence';
 
         $result = sql_query($query);
         $old_admin_value = $this->getProfileRules($idst);
@@ -887,11 +887,11 @@ class AdminPreference
             switch ($type) {
                 case 'enum':
                     $res .= Form::getCheckbox(Lang::t($label, $lang_module), str_replace('.', '_', $path), str_replace('.', '_', $path), 'on', (isset($old_admin_value[$path]) && $old_admin_value[$path] === 'on' ? true : ($default === 'off' ? false : true)));
-                break;
+                    break;
 
                 case 'integer':
                     $res .= Form::getTextfield(Lang::t($label, $lang_module), str_replace('.', '_', $path), str_replace('.', '_', $path), '255', (isset($old_admin_value[$path]) ? $old_admin_value[$path] : $default));
-                break;
+                    break;
             }
         }
 
@@ -901,8 +901,8 @@ class AdminPreference
     public function idstGroup()
     {
         $query = 'SELECT idst'
-                    . ' FROM %adm_group'
-                    . " WHERE groupid LIKE '/framework/adminrules/%'";
+            . ' FROM %adm_group'
+            . " WHERE groupid LIKE '/framework/adminrules/%'";
 
         $result = sql_query($query);
         $res = [0 => 0];
@@ -917,9 +917,9 @@ class AdminPreference
     public function getProfileAssociatedToAdmin($idst)
     {
         $query = 'SELECT idst'
-                    . ' FROM %adm_group_members'
-                    . " WHERE idstMember = '" . $idst . "'"
-                    . ' AND idst IN (' . implode(',', $this->idstGroup()) . ')';
+            . ' FROM %adm_group_members'
+            . " WHERE idstMember = '" . $idst . "'"
+            . ' AND idst IN (' . implode(',', $this->idstGroup()) . ')';
 
         list($res) = sql_fetch_row(sql_query($query));
 
@@ -935,9 +935,9 @@ class AdminPreference
         $idst_group = $this->getProfileAssociatedToAdmin($idst);
 
         $query = 'SELECT path_name, value'
-                    . ' FROM %adm_setting_group'
-                    . " WHERE path_name LIKE 'admin_rules.%'"
-                    . " AND idst = '" . $idst_group . "'";
+            . ' FROM %adm_setting_group'
+            . " WHERE path_name LIKE 'admin_rules.%'"
+            . " AND idst = '" . $idst_group . "'";
 
         $result = sql_query($query);
         $res = [];
@@ -956,9 +956,9 @@ class AdminPreference
     public function getProfileRules($idst)
     {
         $query = 'SELECT path_name, value'
-                    . ' FROM %adm_setting_group'
-                    . " WHERE path_name LIKE 'admin_rules.%'"
-                    . " AND idst = '" . $idst . "'";
+            . ' FROM %adm_setting_group'
+            . " WHERE path_name LIKE 'admin_rules.%'"
+            . " AND idst = '" . $idst . "'";
 
         $result = sql_query($query);
         $res = [];
@@ -977,10 +977,10 @@ class AdminPreference
     public function getRules()
     {
         $query = 'SELECT path_name, default_value, type'
-                    . ' FROM %adm_setting_list'
-                    . " WHERE path_name LIKE 'admin_rules.%'"
-                    . ' AND visible = 1'
-                    . ' ORDER BY sequence';
+            . ' FROM %adm_setting_list'
+            . " WHERE path_name LIKE 'admin_rules.%'"
+            . ' AND visible = 1'
+            . ' ORDER BY sequence';
 
         $result = sql_query($query);
         $res = [];
@@ -1000,17 +1000,17 @@ class AdminPreference
         foreach ($rules as $path => $value) {
             if (isset($old_rules[$path]) && $old_rules[$path] !== $value) {
                 $query = 'UPDATE %adm_setting_group'
-                            . " SET value = '" . $value . "'"
-                            . " WHERE path_name = '" . $path . "'"
-                            . " AND idst = '" . $idst . "'";
+                    . " SET value = '" . $value . "'"
+                    . " WHERE path_name = '" . $path . "'"
+                    . " AND idst = '" . $idst . "'";
 
                 if (!sql_query($query)) {
                     $res = false;
                 }
             } elseif (!isset($old_rules[$path])) {
                 $query = 'INSERT INTO %adm_setting_group'
-                            . ' (path_name, idst, value)'
-                            . " VALUES ('" . $path . "', '" . $idst . "', '" . $value . "')";
+                    . ' (path_name, idst, value)'
+                    . " VALUES ('" . $path . "', '" . $idst . "', '" . $value . "')";
 
                 if (!sql_query($query)) {
                     $res = false;
@@ -1033,10 +1033,10 @@ class AdminPreference
 
         foreach ($all_languages as $lang_code) {
             $res .= Form::getCheckbox('<img src="' . getPathImage('cms') . 'language/' . $lang_code . '.png" alt="' . $lang_code . '" /> ' . $lang_code,
-                    'admin_lang_' . $lang_code,
-                    'admin_lang[' . $lang_code . ']',
-                    '1',
-                    isset($old_rules[_RULES_LANG][$lang_code]));
+                'admin_lang_' . $lang_code,
+                'admin_lang[' . $lang_code . ']',
+                '1',
+                isset($old_rules[_RULES_LANG][$lang_code]));
         }
 
         return $res;
@@ -1048,13 +1048,13 @@ class AdminPreference
 
         if (isset($old_rules[_RULES_LANG])) {
             $query = 'UPDATE %adm_setting_group'
-                        . " SET value = '" . $lang . "'"
-                        . " WHERE path_name = '" . _RULES_LANG . "'"
-                        . " AND idst = '" . $idst . "'";
+                . " SET value = '" . $lang . "'"
+                . " WHERE path_name = '" . _RULES_LANG . "'"
+                . " AND idst = '" . $idst . "'";
         } else {
             $query = 'INSERT INTO %adm_setting_group'
-                        . ' (path_name, idst, value)'
-                        . " VALUES ('" . _RULES_LANG . "', '" . $idst . "', '" . $lang . "')";
+                . ' (path_name, idst, value)'
+                . " VALUES ('" . _RULES_LANG . "', '" . $idst . "', '" . $lang . "')";
         }
 
         return sql_query($query);
@@ -1063,7 +1063,7 @@ class AdminPreference
     public function clearAdmRules($idst)
     {
         $query = 'DELETE FROM %adm_setting_group'
-                    . " WHERE idst = '" . $idst . "'";
+            . " WHERE idst = '" . $idst . "'";
 
         return sql_query($query);
     }
@@ -1071,7 +1071,7 @@ class AdminPreference
     public function clearAdmPerm($idst)
     {
         $query = 'DELETE FROM %adm_role_members'
-                    . " WHERE idstMember = '" . $idst . "'";
+            . " WHERE idstMember = '" . $idst . "'";
 
         return sql_query($query);
     }
@@ -1081,8 +1081,8 @@ class AdminPreference
         if ($this->clearAdmPerm($idst)) {
             if (!empty($adm_perm)) {
                 $query = 'INSERT INTO %adm_role_members'
-                            . ' (idst, idstMember)'
-                            . ' VALUES ';
+                    . ' (idst, idstMember)'
+                    . ' VALUES ';
 
                 $first = true;
 
@@ -1108,8 +1108,8 @@ class AdminPreference
     public function getAdminPerm($idst)
     {
         $query = 'SELECT idst'
-                    . ' FROM %adm_role_members'
-                    . " WHERE idstMember = '" . $idst . "'";
+            . ' FROM %adm_role_members'
+            . " WHERE idstMember = '" . $idst . "'";
 
         $result = sql_query($query);
 
@@ -1125,7 +1125,7 @@ class AdminPreference
     public function getAdminTree($idst)
     {
         $query = 'SELECT idst FROM %adm_admin_tree'
-                . " WHERE idstAdmin = '" . $idst . "'";
+            . " WHERE idstAdmin = '" . $idst . "'";
 
         $result = sql_query($query);
         $res = [];
@@ -1169,8 +1169,8 @@ class AdminPreference
         if ($this->clearAdminTree($idst)) {
             if (!empty($user_selected)) {
                 $query = 'INSERT INTO %adm_admin_tree'
-                            . ' (idst, idstAdmin)'
-                            . ' VALUES ';
+                    . ' (idst, idstAdmin)'
+                    . ' VALUES ';
 
                 $first = true;
 
@@ -1196,7 +1196,7 @@ class AdminPreference
     public function clearAdminTree($idst)
     {
         $query = 'DELETE FROM %adm_admin_tree'
-                    . " WHERE idstAdmin = '" . $idst . "'";
+            . " WHERE idstAdmin = '" . $idst . "'";
 
         return sql_query($query);
     }
@@ -1291,7 +1291,7 @@ class AdminPreference
     public function getAdminCourse($idst)
     {
         $query = 'SELECT id_entry, type_of_entry FROM %adm_admin_course'
-                . " WHERE idst_user = '" . $idst . "'";
+            . " WHERE idst_user = '" . $idst . "'";
 
         $result = sql_query($query);
         $res = [
@@ -1367,8 +1367,11 @@ class AdminPreference
                 case 'course':
                 case 'coursepath':
                 case 'catalogue':
-                case 'category': $output[$idst_admin][$type][] = $id_entry; break;
-                default: break;
+                case 'category':
+                    $output[$idst_admin][$type][] = $id_entry;
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -1378,7 +1381,7 @@ class AdminPreference
     public function getAdminClasslocation($idst)
     {
         $query = 'SELECT id_entry, type_of_entry FROM %adm_admin_course '
-                . " WHERE idst_user = '" . $idst . "' AND type_of_entry = 'classlocation'";
+            . " WHERE idst_user = '" . $idst . "' AND type_of_entry = 'classlocation'";
 
         $result = sql_query($query);
         $output = [];
@@ -1420,8 +1423,11 @@ class AdminPreference
         //with the idsts of the admins as key values
         while (list($idst_admin, $id_entry, $type) = sql_fetch_row($res)) {
             switch ($type) {
-                case 'classlocation': $output[$idst_admin][$type][] = $id_entry; break;
-                default: break;
+                case 'classlocation':
+                    $output[$idst_admin][$type][] = $id_entry;
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -1433,8 +1439,8 @@ class AdminPreference
         if ($this->clearAdminCourse($idst)) {
             if (!empty($course_selected)) {
                 $query = 'INSERT INTO %adm_admin_course'
-                            . ' (id_entry, idst_user, type_of_entry)'
-                            . ' VALUES ';
+                    . ' (id_entry, idst_user, type_of_entry)'
+                    . ' VALUES ';
 
                 $first = true;
 
@@ -1455,8 +1461,8 @@ class AdminPreference
 
             if (!empty($coursepath_selected)) {
                 $query = 'INSERT INTO %adm_admin_course'
-                            . ' (id_entry, idst_user, type_of_entry)'
-                            . ' VALUES ';
+                    . ' (id_entry, idst_user, type_of_entry)'
+                    . ' VALUES ';
 
                 $first = true;
 
@@ -1477,8 +1483,8 @@ class AdminPreference
 
             if (!empty($catalogue_selected)) {
                 $query = 'INSERT INTO %adm_admin_course'
-                            . ' (id_entry, idst_user, type_of_entry)'
-                            . ' VALUES ';
+                    . ' (id_entry, idst_user, type_of_entry)'
+                    . ' VALUES ';
 
                 $first = true;
 
@@ -1506,7 +1512,7 @@ class AdminPreference
     public function saveAdminClasslocation($idst, $selection)
     {
         if (is_numeric($selection)) {
-            $selection = [(int) $selection];
+            $selection = [(int)$selection];
         }
         if (!is_array($selection)) {
             return false;
@@ -1544,8 +1550,8 @@ class AdminPreference
     public function clearAdminClasslocation($idst)
     {
         $query = 'DELETE FROM %adm_admin_course'
-                    . " WHERE idst_user = '" . $idst . "'"
-                    . " AND type_of_entry = 'classlocation'";
+            . " WHERE idst_user = '" . $idst . "'"
+            . " AND type_of_entry = 'classlocation'";
 
         return sql_query($query);
     }
@@ -1553,8 +1559,8 @@ class AdminPreference
     public function clearAdminCourse($idst)
     {
         $query = 'DELETE FROM %adm_admin_course'
-                    . " WHERE idst_user = '" . $idst . "' "
-                    . " AND type_of_entry IN ('course', 'coursepath', 'catalogue')";
+            . " WHERE idst_user = '" . $idst . "' "
+            . " AND type_of_entry IN ('course', 'coursepath', 'catalogue')";
 
         return sql_query($query);
     }
@@ -1562,8 +1568,8 @@ class AdminPreference
     public function addAdminTree($entries, $idst_admin)
     {
         $query = 'INSERT INTO %adm_admin_tree'
-                . ' (idst, idstAdmin) VALUES '
-                . " ('" . $entries . "','" . $idst_admin . "')";
+            . ' (idst, idstAdmin) VALUES '
+            . " ('" . $entries . "','" . $idst_admin . "')";
 
         return sql_query($query);
     }
@@ -1571,7 +1577,7 @@ class AdminPreference
     public function removeAdminTree($idst, $idst_admin)
     {
         if (is_numeric($entries)) {
-            $entries = [(int) $entries];
+            $entries = [(int)$entries];
         }
         if (!is_array($entries)) {
             return false;
@@ -1590,7 +1596,7 @@ class AdminPreference
     protected function _addAdminEntries($entries, $idst_admin, $type)
     {
         if (is_numeric($entries)) {
-            $entries = [(int) $entries];
+            $entries = [(int)$entries];
         }
         if (!is_array($entries)) {
             return false;
@@ -1605,7 +1611,7 @@ class AdminPreference
 
         $list = [];
         foreach ($entries as $entry) {
-            $list[] = "('" . (int) $entry . "', '" . $idst_admin . "', '" . $type . "')";
+            $list[] = "('" . (int)$entry . "', '" . $idst_admin . "', '" . $type . "')";
         }
         $query .= implode(',', $list);
 
