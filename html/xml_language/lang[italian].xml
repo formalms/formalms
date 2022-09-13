@@ -3271,8 +3271,10 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="mailconfig&amp;_HELPER_DESK_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Help Desk]]></key>
         <key id="mailconfig&amp;_HELPER_DESK_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome Help Desk]]></key>
         <key id="mailconfig&amp;_HELPER_DESK_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Oggetto di default Help Desk]]></key>
-        <key id="mailconfig&amp;_NOREPLY_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome mittente no-reply]]></key>
-        <key id="mailconfig&amp;_NOREPLY_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail mittente No-reply]]></key>
+        <key id="mailconfig&amp;_REPLYTO_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nome mittente Reply to]]></key>
+        <key id="mailconfig&amp;_REPLYTO_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail mittente Reply to]]></key>
+        <key id="mailconfig&amp;_SENDER_CC_MAILS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail CC]]></key>
+        <key id="mailconfig&amp;_SENDER_CCN_MAILS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail CCN]]></key>
         <key id="mailconfig&amp;_BLANK_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I campi: [fields] non possono essere lasciati vuoti]]></key>
         <key id="mailconfig&amp;_MISSING_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[I campi: [fields] sono richiesti]]></key>
         <key id="mailconfig&amp;_TESTMAIL_OK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invio TEST avvenuto con successo]]></key>

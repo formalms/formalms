@@ -568,7 +568,7 @@ CREATE TABLE IF NOT EXISTS `learning_communication_category_lang` (
 --
 
 CREATE TABLE IF NOT EXISTS `learning_communication_lang` (
-    `id_comm` int(11) unsigend NOT NULL,
+    `id_comm` int(11) unsigned NOT NULL ,
     `lang_code` varchar(255) NOT NULL DEFAULT '',
     `title` varchar(255) NOT NULL DEFAULT '',
     `description` text NOT NULL DEFAULT '',
@@ -3502,8 +3502,8 @@ VALUES (1, 'DashboardBlockCalendarLms', CURRENT_TIMESTAMP),
        (6, 'DashboardBlockWelcomeLms',CURRENT_TIMESTAMP),
        (7, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP),
        (8, 'DashboardBlockCommunicationLms',CURRENT_TIMESTAMP),
-       (9, 'DashboardBlockNewsLms',CURRENT_TIMESTAMP);
-       (9, 'DashboardBlockCourseAttendanceGraphLms',CURRENT_TIMESTAMP);
+       (9, 'DashboardBlockNewsLms',CURRENT_TIMESTAMP),
+       (10, 'DashboardBlockCourseAttendanceGraphLms',CURRENT_TIMESTAMP);
 
 INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
 VALUES ('tb_dashboard', '1', 'a:0:{}', '0');

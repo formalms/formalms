@@ -48,7 +48,6 @@ class SettingAdm extends Model
             13 => 'Twig',
         ];
 
-       
 
         // $event->setGroupUnits($names);
         // \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, $event);

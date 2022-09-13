@@ -259,12 +259,24 @@ define('_LEARNING_NEWS_REMOVED', 'La funzione news di login e relativa tabella √
 
 define('_SMTP_INFO', "Sar√† possibile impostare la configurazione dell'SMTP da backoffice o da config.");
 define('_USE_SMTP_DATABASE', 'Impostazioni SMTP su Database');
-define('_USE_SMTP', 'Usa SMTP');
-define('_SMTP_HOST', 'Host SMTP');
-define('_SMTP_PORT', 'Porta SMTP');
-define('_SMTP_SECURE', 'Tipo di sicurezza');
-define('_SMTP_AUTO_TLS', 'Impostazione Auto TLS SMTP');
-define('_SMTP_USER', 'User SMTP');
-define('_SMTP_PWD', 'Password SMTP');
-define('_SMTP_DEBUG', 'Debug SMTP');
+define('_ACTIVE', 'Usa SMTP');
+define('_HOST', 'Host SMTP');
+define('_PORT', 'Porta SMTP');
+define('_SECURE', 'Tipo di sicurezza');
+define('_AUTO_TLS', 'Impostazione Auto TLS SMTP');
+define('_USER', 'User SMTP');
+define('_PASSWORD', 'Password SMTP');
+define('_DEBUG', 'Debug SMTP');
+define('_SENDER_MAIL_NOTIFICATION', 'Mail mittente notifica');
+define('_SENDER_NAME_NOTIFICATION', 'Nome mittente notifica');
+define('_SENDER_MAIL_SYSTEM', 'Mail mittente di sistema');
+define('_SENDER_NAME_SYSTEM', 'Nome mittente di sistema');
+define('_HELPER_DESK_MAIL', 'Mail Help Desk');
+define('_HELPER_DESK_SUBJECT', 'Nome Help Desk');
+define('_HELPER_DESK_NAME', 'Oggetto di default Help Desk');
+define('_REPLYTO_NAME', 'Nome mittente Reply to');
+define('_REPLYTO_MAIL', 'Mail mittente Reply to');
+define('_SENDER_CC_MAILS', 'Mail CC');
+define('_SENDER_CCN_MAILS', 'Mail CCN');
+
 define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');

@@ -3275,8 +3275,10 @@ Username: [userid]]]></key>
         <key id="mailconfig&amp;_HELPER_DESK_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Help Desk]]></key>
         <key id="mailconfig&amp;_HELPER_DESK_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Name Help Desk]]></key>
         <key id="mailconfig&amp;_HELPER_DESK_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Subject Help Desk]]></key>
-        <key id="mailconfig&amp;_NOREPLY_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[No-reply sender name]]></key>
-        <key id="mailconfig&amp;_NOREPLY_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[No-Reply sender mail]]></key>
+        <key id="mailconfig&amp;_REPLYTO_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Reply to sender name]]></key>
+        <key id="mailconfig&amp;_REPLYTO_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Reply to sender mail]]></key>
+        <key id="mailconfig&amp;_SENDER_CC_MAILS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail CC]]></key>
+        <key id="mailconfig&amp;_SENDER_CCN_MAILS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail CCN]]></key>
         <key id="mailconfig&amp;_BLANK_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The fields: [fields] cannot be blank]]></key>
         <key id="mailconfig&amp;_MISSING_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The fields: [fields] are required]]></key>
         <key id="mailconfig&amp;_TESTMAIL_OK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[TEST mail sent successfully]]></key>

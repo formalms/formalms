@@ -48,7 +48,7 @@ preg_match('/^\\d+\\.\\d+/', $version, $match);
 $sql_ver = $match[0] * 100;
 // --------------------------------------------
 
-$platform_arr = $session->get('platform_arr', []);
+$platform_arr = $session->get('platform_arr',[]);
 foreach ($platform_arr as $platform_code => $platform_folder) {
     $fn = _installer_ . '/data/sql/' . $platform_code . '.sql';
 

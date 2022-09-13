@@ -1365,9 +1365,9 @@ INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `co
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(598, '_PUBLIC_FORUM', '', 3, 'true', 'true', NULL, NULL, 'lms');
 INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(599, '_HELPDESK', '<span class="glyphicon glyphicon-question-sign top-menu__label"></span>', 1000, 'false', 'true', NULL, NULL, 'lms');
 
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(600 '_MAIL_CONFIG', '', 1, 'true', 'true', 52, NULL, 'framework' );
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(601 '_MANAGEMENT_COMMUNICATION', '', 4, 'true', 'true', 3, NULL, 'framework' );
-INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(602 '_CATEGORIES', '', 1, 'true', 'true', 601, NULL, 'framework' );
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(600, '_MAIL_CONFIG', '', 1, 'true', 'true', 52, NULL, 'framework' );
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(601, '_MANAGEMENT_COMMUNICATION', '', 4, 'true', 'true', 3, NULL, 'framework' );
+INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(602, '_CATEGORIES', '', 1, 'true', 'true', 601, NULL, 'framework' );
 -- --------------------------------------------------------
 
 --
@@ -2603,7 +2603,6 @@ INSERT INTO `core_setting` (`param_name`, `param_value`, `value_type`, `max_size
 ('rest_auth_update', 'off', 'enum', 3, 'api', 9, 10, 1, 0, ''),
 ('save_log_attempt', 'no', 'save_log_attempt', 255, '0', 3, 5, 0, 0, ''),
 ('sco_direct_play', 'on', 'enum', 3, '0', 8, 3, 1, 0, ''),
-('use_sender_aclname', '', 'string', 255, 'email_settings', 1, 2, 1, 0, ''),
 ('session_ip_control', 'off', 'enum', 3, 'security', 8, 22, 1, 0, ''),
 ('sms_cell_num_field', '1', 'field_select', 5, '0', 11, 6, 1, 0, ''),
 ('sms_credit', '0', 'string', 20, '0', 1, 0, 1, 1, ''),
@@ -3136,30 +3135,15 @@ UPDATE `core_setting` SET `pack` = 'ecommerce' WHERE `core_setting`.`param_name`
 
 DELETE FROM `core_lang_text` WHERE `core_lang_text`.`id_text` = (SELECT clt.`id_text` FROM (SELECT * FROM `core_lang_text`) AS clt WHERE clt.`text_key` = "_ASK_FOR_TREE_COURSE_CODE");
 
-/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'mail_sender'; */
-/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
-/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
-/* UPDATE `core_setting` SET `regroup` = '1' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
-
-/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'mail_sender'; */
-/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
-/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
-/* UPDATE `core_setting` SET `pack` = 'email_settings' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
 
 UPDATE `core_setting` SET `sequence` = '1' WHERE `core_setting`.`param_name` = 'page_title';
 UPDATE `core_setting` SET `sequence` = '2' WHERE `core_setting`.`param_name` = 'url';
 UPDATE `core_setting` SET `sequence` = '3' WHERE `core_setting`.`param_name` = 'default_language';
 UPDATE `core_setting` SET `sequence` = '4' WHERE `core_setting`.`param_name` = 'defaultTemplate';
 
-UPDATE `core_setting` SET `sequence` = '1' WHERE `core_setting`.`param_name` = 'sender_event';
-UPDATE `core_setting` SET `sequence` = '2' WHERE `core_setting`.`param_name` = 'use_sender_aclname';
 
 UPDATE `core_setting` SET `sequence` = '6' WHERE `core_setting`.`param_name` = 'hteditor';
 UPDATE `core_setting` SET `sequence` = '7' WHERE `core_setting`.`param_name` = 'owned_by';
-/* UPDATE `core_setting` SET `sequence` = '8' WHERE `core_setting`.`param_name` = 'mail_sender'; */
-/* UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'customer_help_email'; */
-/* UPDATE `core_setting` SET `sequence` = '10' WHERE `core_setting`.`param_name` = 'customer_help_subj_pfx'; */
-/* UPDATE `core_setting` SET `sequence` = '11' WHERE `core_setting`.`param_name` = 'send_cc_for_system_emails'; */
 
 UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'ttlSession';
 
