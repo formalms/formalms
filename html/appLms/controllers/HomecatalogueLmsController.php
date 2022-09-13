@@ -78,6 +78,12 @@ class HomecatalogueLmsController extends CatalogLmsController
 
         $courses = $this->model->getCatalogCourseList($typeCourse, 1, $id_catalogue, $id_category);
 
+        foreach ($courses as $index => $course) {
+            if ((int)$course['show_rules'] !== 0) {
+                unset($courses[$index]);
+            }
+        }
+
         $data = $this->getBaseData();
 
         $data = array_merge($data, compact('courses', 'id_catalogue'));
