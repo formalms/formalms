@@ -90,9 +90,9 @@ p {
 }
 
 .homecatalogue__row--content {
-  height: auto;
+  height: 950px;
   padding-bottom: 15px;
-  overflow: visible;
+  overflow: scroll;
   background-color: var(--color-0-000);
   border-bottom: solid 3px var(--color-3);
   position: relative;
@@ -104,6 +104,11 @@ p {
     // margin-bottom: 12px;
     border: none;
   }
+}
+
+
+.treeview {
+  top: 160px !important;
 }
 
 

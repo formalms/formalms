@@ -6,10 +6,10 @@
             <span class="forma-button__label">{{ Lang_translate('_LOGIN', 'login') }}</span>
         </a>
     {% else %}
-        <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
-                <span class="forma-button__label">
-                    {{ Lang_translate('_LOGIN', 'login') }}
-                </span>
+        <a class="forma-button forma-button--disabled" rel="{{ course.rel }}" href="javascript:void(0);">
+                    <span class="forma-button__label">
+                        {{ Lang_translate('_DISABLED', 'course') }}
+                    </span>
         </a>
     {% endif %}
 {% endblock %}
