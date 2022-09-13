@@ -1,0 +1,20 @@
+{
+    "version": {
+      "name": "4.0.0",
+      "number": "40000",
+      "description": "questa è la 4.0.0",
+      "pretty_desc": "4 0 0",
+      "pre": "40000_pre.php",
+      "post": "40000_post.php",
+      "config": "40000_conf.php",
+      "file_sytem": "40000_fs.php",
+      "role": "40000_role.php",
+      "mysql": "40000_db.sql",
+      "date": "2022-06-07 00:00",
+      "status": "stable",
+      "php": {
+        "min": "7.4",
+        "max": "7.4"
+      }
+    }
+  }

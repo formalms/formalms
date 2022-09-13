@@ -32,11 +32,13 @@ class MailconfigAdm extends Model {
         'sender_name_notification' => 'string',
         'sender_mail_system' => 'string',
         'sender_name_system' => 'string',
+        'sender_cc_emails' => 'string',
+        'sender_ccn_emails' => 'string',
         'helper_desk_mail' => 'string',
         'helper_desk_subject' => 'string',
         'helper_desk_name' => 'string',
-        'noreply_name' => 'string',
-        'noreply_mail' => 'string',
+        'replyto_name' => 'string',
+        'replyto_mail' => 'string',
         'active' => 'boolean'
     ];
 
