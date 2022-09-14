@@ -81,12 +81,12 @@ class EnrollrulesAlmsController extends AlmsController
         }
 
         $result = ['totalRecords' => $total_rules,
-                        'startIndex' => $start_index,
-                        'sort' => $sort,
-                        'dir' => $dir,
-                        'rowsPerPage' => $results,
-                        'results' => count($rules),
-                        'records' => $rules, ];
+            'startIndex' => $start_index,
+            'sort' => $sort,
+            'dir' => $dir,
+            'rowsPerPage' => $results,
+            'results' => count($rules),
+            'records' => $rules,];
 
         echo $this->json->encode($result);
     }
@@ -309,7 +309,7 @@ class EnrollrulesAlmsController extends AlmsController
 
         $id_rule = FormaLms\lib\Get::req('id_rule', DOTY_INT, 0);
         $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $results = (int)FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
         $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
@@ -329,26 +329,29 @@ class EnrollrulesAlmsController extends AlmsController
         $id_entities = array_keys($entities);
         $entities_name = $this->model->convertEntity($id_entities, $rule->rule_type);
         foreach ($entities as $entity) {
-            $rules[$i] = [
-                'id_entity' => $entity->id_entity,
-                'entity' => (isset($entities_name[$entity->id_entity]) ? $entities_name[$entity->id_entity] : ''),
-                ] + $courselist;
+            if ($i >= $start_index && $i < $start_index + $results) {
+                $rules[$i] = [
+                        'id_entity' => $entity->id_entity,
+                        'entity' => (isset($entities_name[$entity->id_entity]) ? $entities_name[$entity->id_entity] : ''),
+                    ] + $courselist;
 
-            if (is_array($entity->course_list)) {
-                foreach ($entity->course_list as $j => $idc) {
-                    $rules[$i]['course_' . $idc] = 1;
+                if (is_array($entity->course_list)) {
+                    foreach ($entity->course_list as $j => $idc) {
+                        $rules[$i]['course_' . $idc] = 1;
+                    }
                 }
             }
             ++$i;
-        }
+        }   
 
-        $result = ['totalRecords' => count($rules),
-                        'startIndex' => $start_index,
-                        'sort' => $sort,
-                        'dir' => $dir,
-                        'rowsPerPage' => $results,
-                        'results' => count($rules),
-                        'records' => $rules, ];
+        $result = ['totalRecords' => $i,
+            'startIndex' => $start_index,
+            'sort' => $sort,
+            'dir' => $dir,
+            'rowsPerPage' => (int)$results,
+            'results' => $i,
+            'records' => array_values($rules)
+        ];
 
         echo $this->json->encode($result);
     }
@@ -368,7 +371,7 @@ class EnrollrulesAlmsController extends AlmsController
         foreach ($_POST['entity_course'] as $id_entity => $courses) {
             $course_list = [];
             foreach ($courses as $id_c => $v) {
-                $course_list[] = (int) str_replace('course_', '', $id_c);
+                $course_list[] = (int)str_replace('course_', '', $id_c);
             }
 
             if (isset($prev_entities[$id_entity])) {
@@ -534,8 +537,8 @@ class EnrollrulesAlmsController extends AlmsController
 
         foreach ($entities as $entity) {
             $rules[$i] = [
-                'id_entity' => (isset($entity->id_entity) ? $entity->id_entity : 0),
-                'entity' => (isset($entity->id_entity) ? $entities_name[$entity->id_entity] : ''),
+                    'id_entity' => (isset($entity->id_entity) ? $entity->id_entity : 0),
+                    'entity' => (isset($entity->id_entity) ? $entities_name[$entity->id_entity] : ''),
                 ] + $courselist;
 
             foreach ($entity->course_list as $j => $idc) {
@@ -545,12 +548,12 @@ class EnrollrulesAlmsController extends AlmsController
         }
 
         $result = ['totalRecords' => count($rules),
-                        'startIndex' => $start_index,
-                        'sort' => $sort,
-                        'dir' => $dir,
-                        'rowsPerPage' => $results,
-                        'results' => count($rules),
-                        'records' => $rules, ];
+            'startIndex' => $start_index,
+            'sort' => $sort,
+            'dir' => $dir,
+            'rowsPerPage' => $results,
+            'results' => count($rules),
+            'records' => $rules,];
 
         echo $this->json->encode($result);
     }
@@ -579,7 +582,7 @@ class EnrollrulesAlmsController extends AlmsController
                 $courses = $_POST['entity_course'][$id_entity];
             }
             foreach ($courses as $id_c => $v) {
-                $course_list[] = (int) str_replace('course_', '', $id_c);
+                $course_list[] = (int)str_replace('course_', '', $id_c);
             }
 
             if (isset($prev_entities[$id_entity])) {
@@ -622,8 +625,8 @@ class EnrollrulesAlmsController extends AlmsController
                 $listUsersGroup = [];
                 // Get users in group
                 $listUsersGroup = $groupmanagement->getGroupUsersList($entity->id_entity,
-                            ['startIndex' => 0, 'results' => 99999999999999999, 'sort' => 'userid', 'dir' => 'ASC'],
-                            false);
+                    ['startIndex' => 0, 'results' => 99999999999999999, 'sort' => 'userid', 'dir' => 'ASC'],
+                    false);
                 foreach ($listUsersGroup as $userGroup) {
                     $listUsers[] = $userGroup->idst;
                 }
@@ -657,8 +660,8 @@ class EnrollrulesAlmsController extends AlmsController
 
                 // Get users in orgchart
                 $listUsersOrgchart = $usermanagement->getUsersList($idOrg,
-                            $descendants,
-                            ['startIndex' => 0, 'results' => 9999999, 'sort' => 'u.userid', 'dir' => 'ASC']);
+                    $descendants,
+                    ['startIndex' => 0, 'results' => 9999999, 'sort' => 'u.userid', 'dir' => 'ASC']);
                 $listUsers = array_keys($listUsersOrgchart);
                 // Apply enroll rule
                 $this->model->applyRulesMultiLang('_LOG_USERS_TO_ORGCHART', $listUsers, false, $entity->id_entity, false, $id_rule);
@@ -676,8 +679,8 @@ class EnrollrulesAlmsController extends AlmsController
                 $listUsersFncrole = [];
                 // Get users in fncrole
                 $listUsersFncrole = $functionalroles->getManageUsersList($entity->id_entity,
-                            ['startIndex' => 0, 'results' => 99999999, 'sort' => 'userid', 'dir' => 'ASC'],
-                            false);
+                    ['startIndex' => 0, 'results' => 99999999, 'sort' => 'userid', 'dir' => 'ASC'],
+                    false);
                 foreach ($listUsersFncrole as $userFncrole) {
                     $listUsers[] = $userFncrole->idst;
                 }
@@ -686,7 +689,7 @@ class EnrollrulesAlmsController extends AlmsController
             }
         }
         $result = [
-                'success' => true,
+            'success' => true,
         ];
         echo $this->json->encode($result);
     }
