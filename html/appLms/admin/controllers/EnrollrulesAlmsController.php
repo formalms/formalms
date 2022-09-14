@@ -64,29 +64,35 @@ class EnrollrulesAlmsController extends AlmsController
         $total_rules = $this->model->getTotalRulesCount();
         $types = $this->model->ruleTypes();
 
+        $i = 0;
         foreach ($rules as $id => $rule) {
-            $rules[$id]->rule_type_text = $types[$rules[$id]->rule_type];
-            if ($rule->id_rule != 0) {
-                $rules[$id]->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
-                    . '<span>' . Lang::t('_MANAGE', 'enrollrules') . '</span></a>';
-                $rules[$id]->mod = '<a id="mod_rules_' . $rule->id_rule . '" class="ico-sprite subs_mod" href="ajax.adm_server.php?r=alms/enrollrules/mod&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MOD', 'enrollrules') . '">'
-                    . '<span>' . Lang::t('_MOD', 'enrollrules') . '</span></a>';
-                $rules[$id]->del = 'ajax.adm_server.php?r=alms/enrollrules/del&amp;id_rule=' . $rule->id_rule . '';
-            } else {
-                $rules[$id]->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modbaseelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
-                    . '<span>' . Lang::t('_MANAGE', 'enrollrules') . '</span></a>';
-                $rules[$id]->mod = '';
-                $rules[$id]->del = '';
+            if ($i >= $start_index && $i < $start_index + $results) {
+                $rules[$id]->rule_type_text = $types[$rules[$id]->rule_type];
+                if ($rule->id_rule != 0) {
+                    $rules[$id]->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
+                        . '<span>' . Lang::t('_MANAGE', 'enrollrules') . '</span></a>';
+                    $rules[$id]->mod = '<a id="mod_rules_' . $rule->id_rule . '" class="ico-sprite subs_mod" href="ajax.adm_server.php?r=alms/enrollrules/mod&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MOD', 'enrollrules') . '">'
+                        . '<span>' . Lang::t('_MOD', 'enrollrules') . '</span></a>';
+                    $rules[$id]->del = 'ajax.adm_server.php?r=alms/enrollrules/del&amp;id_rule=' . $rule->id_rule . '';
+                } else {
+                    $rules[$id]->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modbaseelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
+                        . '<span>' . Lang::t('_MANAGE', 'enrollrules') . '</span></a>';
+                    $rules[$id]->mod = '';
+                    $rules[$id]->del = '';
+                }
             }
+            $i++;
         }
 
-        $result = ['totalRecords' => $total_rules,
+        $result = [
+            'totalRecords' => $i,
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
             'rowsPerPage' => $results,
-            'results' => count($rules),
-            'records' => $rules,];
+            'results' => $i,
+            'records' => array_values($rules)
+        ];
 
         echo $this->json->encode($result);
     }
@@ -135,22 +141,26 @@ class EnrollrulesAlmsController extends AlmsController
         $logs = $this->model->getLogs($start_index, $results, $sort, $dir);
         $total_logs = $this->model->getTotalLogs();
 
-        foreach ($logs as $i => $log) {
-            $log->log_action = Lang::t($log->log_action, 'enrollrules');
-            $log->log_detail = 'index.php?r=alms/enrollrules/logdetails&amp;id_log=' . $log->id_log;
-            $log->rollback = 'ajax.adm_server.php?r=alms/enrollrules/logrollback&amp;id_log=' . $log->id_log;
-            $logs[$i] = $log;
+        $i = 0;
+        foreach ($logs as $key => $log) {
+            if ($i >= $start_index && $i < $start_index + $results) {
+                $log->log_action = Lang::t($log->log_action, 'enrollrules');
+                $log->log_detail = 'index.php?r=alms/enrollrules/logdetails&amp;id_log=' . $log->id_log;
+                $log->rollback = 'ajax.adm_server.php?r=alms/enrollrules/logrollback&amp;id_log=' . $log->id_log;
+                $logs[$key] = $log;
+            }
+            $i++;
         }
 
         //produce output for datatable
         $output = [
-            'totalRecords' => $total_logs,
+            'totalRecords' => $i,
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
-            'rowsPerPage' => $results,
-            'results' => count($logs),
-            'records' => $logs,
+            'rowsPerPage' => (int)$results,
+            'results' => $i,
+            'records' => array_values($logs),
         ];
 
         echo $this->json->encode($output);
@@ -342,9 +352,10 @@ class EnrollrulesAlmsController extends AlmsController
                 }
             }
             ++$i;
-        }   
+        }
 
-        $result = ['totalRecords' => $i,
+        $result = [
+            'totalRecords' => $i,
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
@@ -536,24 +547,27 @@ class EnrollrulesAlmsController extends AlmsController
         $entities_name = $this->model->convertEntity($entities, $rule->rule_type);
 
         foreach ($entities as $entity) {
-            $rules[$i] = [
-                    'id_entity' => (isset($entity->id_entity) ? $entity->id_entity : 0),
-                    'entity' => (isset($entity->id_entity) ? $entities_name[$entity->id_entity] : ''),
-                ] + $courselist;
+            if ($i >= $start_index && $i < $start_index + $results) {
+                $rules[$i] = [
+                        'id_entity' => (isset($entity->id_entity) ? $entity->id_entity : 0),
+                        'entity' => (isset($entity->id_entity) ? $entities_name[$entity->id_entity] : ''),
+                    ] + $courselist;
 
-            foreach ($entity->course_list as $j => $idc) {
-                $rules[$i]['course_' . $idc] = 1;
+                foreach ($entity->course_list as $j => $idc) {
+                    $rules[$i]['course_' . $idc] = 1;
+                }
             }
             ++$i;
         }
 
-        $result = ['totalRecords' => count($rules),
+        $result = [
+            'totalRecords' => $i,
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
-            'rowsPerPage' => $results,
-            'results' => count($rules),
-            'records' => $rules,];
+            'rowsPerPage' => (int)$results,
+            'results' => $i,
+            'records' => array_values($rules)];
 
         echo $this->json->encode($result);
     }
