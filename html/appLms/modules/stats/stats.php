@@ -585,7 +585,6 @@ function statoneuser()
     . '<input type="hidden" id="authentic_request_org" name="authentic_request" value="' . Util::getSignature() . '" />');
 
     $out->add($treeView->load());
-    //if( funAccess('orgedit','MOD', TRUE, 'organization' ) ) $treeView->loadActions();
 
     $out->add('</form>');
     // print form for import action
@@ -683,7 +682,6 @@ function statcourse()
     $out->add($form->getButton('gofilter', 'gofilter', $lang->def('_SEARCH')));
 
     $out->add($treeView->load());
-    //if( funAccess('orgedit','MOD', TRUE, 'organization' ) ) $treeView->loadActions();
 
     $out->add($form->closeForm());
     // print form for import action
@@ -1141,7 +1139,6 @@ function statoneuseroneitemhistory()
 
 function modstatus()
 {
-    funAccess('statuser', 'OP');
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/lib/lib.subscribe.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -1188,7 +1185,6 @@ function modstatus()
 
 function upstatus()
 {
-    funAccess('statuser', 'OP');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     if (!saveTrackStatusChange($_POST['idUser'], $idCourse, $_POST['status'])) {

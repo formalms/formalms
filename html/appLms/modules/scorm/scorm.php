@@ -362,7 +362,6 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
 
 function _scorm_copyitem($idscorm_package, $idscorm_organization)
 {
-    funAccess('additem', 'NEW', false, 'scorm');
 
     require_once Forma::inc(_lib_ . '/lib.upload.php');
     require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');

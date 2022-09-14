@@ -2571,17 +2571,12 @@ class Course_API extends API
             return $map;
         }
 
-        function funAccess($functionname, $mode, $returnValue = false, $custom_mod_name = false)
-        {
-            return true;
-        }
-
         $docebo_course = new DoceboCourse($id_dupcourse);
         $subscribe_man = new CourseSubscribe_Manager();
 
-        $group_idst = &$docebo_course->createCourseLevel($new_course_dup);
-        $group_of_from = &$docebo_course->getCourseLevel($id_dupcourse);
-        $perm_form = &createPermForCoursebis($group_of_from, $new_course_dup, $id_dupcourse);
+        $group_idst = $docebo_course->createCourseLevel($new_course_dup);
+        $group_of_from = $docebo_course->getCourseLevel($id_dupcourse);
+        $perm_form = createPermForDuplicatedCourse($group_of_from, $new_course_dup, $id_dupcourse);
         $levels = $subscribe_man->getUserLevel();
 
         foreach ($levels as $lv => $name_level) {

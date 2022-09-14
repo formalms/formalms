@@ -13,11 +13,6 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-function funAccess($functionname, $mode, $returnValue = false, $custom_mod_name = false)
-{
-    return true;
-    checkPerm($mode, $returnValue, $custom_mod_name);
-}
 
 function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_public = false)
 {

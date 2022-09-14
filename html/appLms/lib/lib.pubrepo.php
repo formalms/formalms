@@ -290,8 +290,6 @@ function &manPubrepo_CreateTreeView($withContents = true, $multiSelect = false, 
 
 function manPubrepo($withForm = false, $withContents = true, $treeView = null, $multiSelect = false, $withActions = false)
 {
-    //if(funAccess("pubrepo","OP")) {
-
     if ($treeView === null) {
         $treeView = manPubrepo_CreateTreeView($withContents, $multiSelect, $withActions);
     }

@@ -162,10 +162,7 @@ function duplicateCourse()
 
         return $map;
     }
-    function funAccess($functionname, $mode, $returnValue = false, $custom_mod_name = false)
-    {
-        return true;
-    }
+
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/lib/lib.manmenu.php';
     require_once _lms_ . '/lib/lib.subscribe.php';
@@ -173,9 +170,9 @@ function duplicateCourse()
     $docebo_course = new DoceboCourse($id_dupcourse);
     $subscribe_man = new CourseSubscribe_Manager();
 
-    $group_idst = &$docebo_course->createCourseLevel($new_course_dup);
-    $group_of_from = &$docebo_course->getCourseLevel($id_dupcourse);
-    $perm_form = &createPermForCoursebis($group_of_from, $new_course_dup, $id_dupcourse);
+    $group_idst = $docebo_course->createCourseLevel($new_course_dup);
+    $group_of_from = $docebo_course->getCourseLevel($id_dupcourse);
+    $perm_form = createPermForDuplicatedCourse($group_of_from, $new_course_dup, $id_dupcourse);
     $levels = $subscribe_man->getUserLevel();
 
     foreach ($levels as $lv => $name_level) {

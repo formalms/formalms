@@ -108,35 +108,35 @@ class RepoDirDb extends TreeDb
     public function _getOtherValues()
     {
         return ", '" . addslashes($this->org_title) . "', '"
-                . addslashes($this->org_objectType) . "', '"
-                . (int) $this->org_idResource . "', '"
-                . (int) $this->org_idCategory . "', '"
-                . (int) $this->org_idUser . "', '"
-                . (int) $this->org_idAuthor . "', '"
-                . addslashes($this->org_version) . "', '"
-                . addslashes($this->org_difficult) . "', '"
-                . addslashes($this->org_description) . "', '"
-                . addslashes($this->org_language) . "', '"
-                . addslashes($this->org_resource) . "', '"
-                . addslashes($this->org_objective) . "', '"
-                . addslashes($this->org_dateInsert) . "' ";
+            . addslashes($this->org_objectType) . "', '"
+            . (int)$this->org_idResource . "', '"
+            . (int)$this->org_idCategory . "', '"
+            . (int)$this->org_idUser . "', '"
+            . (int)$this->org_idAuthor . "', '"
+            . addslashes($this->org_version) . "', '"
+            . addslashes($this->org_difficult) . "', '"
+            . addslashes($this->org_description) . "', '"
+            . addslashes($this->org_language) . "', '"
+            . addslashes($this->org_resource) . "', '"
+            . addslashes($this->org_objective) . "', '"
+            . addslashes($this->org_dateInsert) . "' ";
     }
 
     public function _getOtherUpdates()
     {
         return " title='" . addslashes($this->org_title) . "',"
-                . " objectType='" . addslashes($this->org_objectType) . "',"
-                . " idResource='" . (int) $this->org_idResource . "',"
-                . " idCategory='" . (int) $this->org_idCategory . "',"
-                . " idUser='" . (int) $this->org_idUser . "',"
-                . " idAuthor='" . (int) $this->org_idAuthor . "',"
-                . " version='" . addslashes($this->org_version) . "',"
-                . " difficult='" . addslashes($this->org_difficult) . "',"
-                . " description='" . addslashes($this->org_description) . "',"
-                . " language='" . addslashes($this->org_language) . "',"
-                . " resource='" . addslashes($this->org_resource) . "',"
-                . " objective='" . addslashes($this->org_objective) . "',"
-                . " dateInsert='" . addslashes($this->org_dateInsert) . "' ";
+            . " objectType='" . addslashes($this->org_objectType) . "',"
+            . " idResource='" . (int)$this->org_idResource . "',"
+            . " idCategory='" . (int)$this->org_idCategory . "',"
+            . " idUser='" . (int)$this->org_idUser . "',"
+            . " idAuthor='" . (int)$this->org_idAuthor . "',"
+            . " version='" . addslashes($this->org_version) . "',"
+            . " difficult='" . addslashes($this->org_difficult) . "',"
+            . " description='" . addslashes($this->org_description) . "',"
+            . " language='" . addslashes($this->org_language) . "',"
+            . " resource='" . addslashes($this->org_resource) . "',"
+            . " objective='" . addslashes($this->org_objective) . "',"
+            . " dateInsert='" . addslashes($this->org_dateInsert) . "' ";
     }
     /* TODO: ACL
     function _getOtherTables($tname = FALSE) {
@@ -200,11 +200,11 @@ class RepoDirDb extends TreeDb
     public function getMaxChildPos($idFolder)
     {
         $query = "SELECT MAX(SUBSTRING_INDEX(path, '/', -1))"
-                . ' FROM ' . $this->table
-                . ' WHERE (' . $this->fields['idParent'] . " = '" . (int) $idFolder . "')"
-                . $this->_getFilter();
+            . ' FROM ' . $this->table
+            . ' WHERE (' . $this->fields['idParent'] . " = '" . (int)$idFolder . "')"
+            . $this->_getFilter();
         $rs = sql_query($query)
-                or exit("Error [$query] " . sql_error());
+        or exit("Error [$query] " . sql_error());
         if (sql_num_rows($rs) == 1) {
             list($result) = sql_fetch_row($rs);
 
@@ -289,26 +289,26 @@ class RepoDirDb extends TreeDb
     }
 
     /** Add a new item to tree db.
-     *	@param int $idParent the id of the container folder
-     *	@param string $title title of the item
-     *	@param string $objectType type of the lo item
-     *	@param int $idResource id of the resource
-     *	@param int $idCategory id of the category
-     *	@param int $idUser owner's id of the item
-     *	@param int $idAuthor author's id of the content
-     *	@param string $version version of the item
-     *	@param string $difficult the level of difficult of the item
-     *	@param string $description description of the item
-     *	@param string $language language of the item
-     *	@param string $resource web address from ....
-     *	@param string $objective the item's objective
-     *	@param string $dateInsert the insert date
-     *  @param array $otherData other parameters for repo extensions
+     * @param int $idParent the id of the container folder
+     * @param string $title title of the item
+     * @param string $objectType type of the lo item
+     * @param int $idResource id of the resource
+     * @param int $idCategory id of the category
+     * @param int $idUser owner's id of the item
+     * @param int $idAuthor author's id of the content
+     * @param string $version version of the item
+     * @param string $difficult the level of difficult of the item
+     * @param string $description description of the item
+     * @param string $language language of the item
+     * @param string $resource web address from ....
+     * @param string $objective the item's objective
+     * @param string $dateInsert the insert date
+     * @param array $otherData other parameters for repo extensions
      **/
     public function addItem($idParent, $title, $objectType, $idResource, $idCategory,
-                        $idUser, $idAuthor, $version, $difficult, $description,
-                        $language, $resource, $objective, $dateInsert,
-                        $otherData = null)
+                            $idUser, $idAuthor, $version, $difficult, $description,
+                            $language, $resource, $objective, $dateInsert,
+                            $otherData = null)
     {
         $this->org_title = $title;
         $this->org_objectType = $objectType;
@@ -408,7 +408,7 @@ class RepoDirDb extends TreeDb
 
     /**
      * function deleteAllTree()
-     *	Delete all items in tree, all folders, all records!
+     *    Delete all items in tree, all folders, all records!
      **/
     public function deleteAllTree()
     {
@@ -876,7 +876,7 @@ class RepoTreeView extends TreeView
             if (isset($_GET['create_result'])) {
                 switch ($_GET['create_result']) {
                     case '1':
-                        $idResource = (int) $_GET['id_lo'];
+                        $idResource = (int)$_GET['id_lo'];
                         $lo = createLO($this->creatingObjectType, $idResource);
                         $this->tdb->addItem($this->getSelectedFolderId(),
                             $lo->getTitle(), $lo->getObjectType(),
@@ -894,7 +894,7 @@ class RepoTreeView extends TreeView
                         $this->refresh = true;
                         break;
                     case '2':
-                        $idMultiResource = (int) $_GET['id_lo'];
+                        $idMultiResource = (int)$_GET['id_lo'];
                         $multiLo = createLO($this->creatingObjectType);
                         $arrIdResources = $multiLo->getMultipleResource($idMultiResource);
                         foreach ($arrIdResources as $idResource) {
@@ -936,7 +936,7 @@ class RepoTreeView extends TreeView
                                 date('Y-m-d H:i:s'));
                         }
                         $this->refresh = true;
-                        // no break
+                    // no break
                     default:
                 }
             }
@@ -961,22 +961,22 @@ class RepoTreeView extends TreeView
                 $saveData = &$saveObj->load($saveName);
 
                 $lo = createLO($saveData['objectType']);
-                $idResource = $lo->copy((int) $saveData['idResource']);
+                $idResource = $lo->copy((int)$saveData['idResource']);
                 if ($idResource != 0) {
                     $lo = createLO($saveData['objectType']);
                     $this->tdb->addItem($this->getSelectedFolderId(),
-                                        $saveData['name'], $saveData['objectType'],
-                                            $idResource,
-                                            0, /* idCategory */
-                                            0, /* idUser */
-                                            getLogUserId(), /* idAuthor */
-                                            '1.0' /* version */,
-                                            '_DIFFICULT_MEDIUM', /* difficult */
-                                            '', /* description */
-                                            '', /* language */
-                                            '', /* resource */
-                                            '', /* objective */
-                                            date('Y-m-d H:i:s'));
+                        $saveData['name'], $saveData['objectType'],
+                        $idResource,
+                        0, /* idCategory */
+                        0, /* idUser */
+                        getLogUserId(), /* idAuthor */
+                        '1.0' /* version */,
+                        '_DIFFICULT_MEDIUM', /* difficult */
+                        '', /* description */
+                        '', /* language */
+                        '', /* resource */
+                        '', /* objective */
+                        date('Y-m-d H:i:s'));
                     $this->refresh = true;
                 }
             }
@@ -1056,42 +1056,41 @@ class RepoTreeView extends TreeView
             $arrData = $stack[$level]['folder']->otherValues;
             $isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
             if (is_array($arrData)) {
-                if (funAccess('moditem', 'MOD', true, $this->mod_name)) {
-                    /*$elem .= '<input type="image" class="tree_view_image" '
-                        .' src="'.$this->_getOpPropertiesImg().'"'
-                        .' id="'.$this->id.'_'.$this->_getOpPropertiesId().'_'.$stack[$level]['folder']->id.'" '
-                        .' name="'.$this->id.'['.$this->_getOpPropertiesId().']['.$stack[$level]['folder']->id.']" '
-                        .' title="'.$this->_getOpPropertiesTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
-                        .' alt="'.$this->_getOpPropertiesTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';*/
-                    if (!$isFolder) {
+
+                /*$elem .= '<input type="image" class="tree_view_image" '
+                    .' src="'.$this->_getOpPropertiesImg().'"'
+                    .' id="'.$this->id.'_'.$this->_getOpPropertiesId().'_'.$stack[$level]['folder']->id.'" '
+                    .' name="'.$this->id.'['.$this->_getOpPropertiesId().']['.$stack[$level]['folder']->id.']" '
+                    .' title="'.$this->_getOpPropertiesTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" '
+                    .' alt="'.$this->_getOpPropertiesTitle().': '.$this->getFolderPrintName( $stack[$level]['folder']).'" />';*/
+                if (!$isFolder) {
+                    $elem .= '<input type="image" class="tree_view_image" '
+                        . ' src="' . $this->_getCopyImage() . '"'
+                        . ' id="' . $this->id . '_' . $this->_getOpCopyLOId() . '_' . $stack[$level]['folder']->id . '" '
+                        . ' name="' . $this->id . '[' . $this->_getOpCopyLOId() . '][' . $stack[$level]['folder']->id . ']" '
+                        . ' title="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+                        . ' alt="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
+                    if ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') ||
+                        Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                         $elem .= '<input type="image" class="tree_view_image" '
-                            . ' src="' . $this->_getCopyImage() . '"'
-                            . ' id="' . $this->id . '_' . $this->_getOpCopyLOId() . '_' . $stack[$level]['folder']->id . '" '
-                            . ' name="' . $this->id . '[' . $this->_getOpCopyLOId() . '][' . $stack[$level]['folder']->id . ']" '
-                            . ' title="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
-                            . ' alt="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
-                        if ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') ||
-                             Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
-                            $elem .= '<input type="image" class="tree_view_image" '
                             . ' src="' . $this->_getEditImage() . '"'
                             . ' id="' . $this->id . '_' . $this->_getOpEditLOId() . '_' . $stack[$level]['folder']->id . '" '
                             . ' name="' . $this->id . '[' . $this->_getOpEditLOId() . '][' . $stack[$level]['folder']->id . ']" '
                             . ' title="' . $this->_getOpEditTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
                             . ' alt="' . $this->_getOpEditTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
-                        } else {
-                            $elem .= '<div class="TVActionEmpty"></div>';
-                        }
-                        $elem .= '<input type="image" class="tree_view_image" '
-                            . ' src="' . $this->_getOpPlayItemImg() . '"'
-                            . ' id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" '
-                            . ' name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']" '
-                            . ' title="' . $this->_getOpPlayTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
-                            . ' alt="' . $this->_getOpPlayTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
                     } else {
                         $elem .= '<div class="TVActionEmpty"></div>';
-                        $elem .= '<div class="TVActionEmpty"></div>';
-                        $elem .= '<div class="TVActionEmpty"></div>';
                     }
+                    $elem .= '<input type="image" class="tree_view_image" '
+                        . ' src="' . $this->_getOpPlayItemImg() . '"'
+                        . ' id="' . $this->id . '_' . $this->_getOpPlayItemId() . '_' . $stack[$level]['folder']->id . '" '
+                        . ' name="' . $this->id . '[' . $this->_getOpPlayItemId() . '][' . $stack[$level]['folder']->id . ']" '
+                        . ' title="' . $this->_getOpPlayTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
+                        . ' alt="' . $this->_getOpPlayTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
+                } else {
+                    $elem .= '<div class="TVActionEmpty"></div>';
+                    $elem .= '<div class="TVActionEmpty"></div>';
+                    $elem .= '<div class="TVActionEmpty"></div>';
                 }
             }
         }
@@ -1115,7 +1114,7 @@ class RepoTreeView extends TreeView
     {
         $query = 'SELECT objectType FROM %lms_lo_types';
         $rs = sql_query($query)
-            or exit('Table _lo_types not present');
+        or exit('Table _lo_types not present');
 
         $out = '<div class="std_block">';
         $out .= '<div class="title">'
@@ -1139,7 +1138,7 @@ class RepoTreeView extends TreeView
         }
         $out .= $this->printState();
         $out .= '<br /><input type="submit" class="button" value="' . Lang::t('_NEW')
-        . '" name="' . $this->_getOpCreateLOSel() . '"/>';
+            . '" name="' . $this->_getOpCreateLOSel() . '"/>';
         $out .= '</form>';
         $out .= '</div>';
 
