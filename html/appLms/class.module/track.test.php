@@ -191,7 +191,7 @@ class Track_Test extends Track_Object
         if (!sql_num_rows($re_track)) {
             return [];
         } else {
-            return sql_fetch_array($re_track);
+            return sql_fetch_assoc($re_track);
         }
     }
 
@@ -206,7 +206,7 @@ class Track_Test extends Track_Object
         if (!sql_num_rows($re_track)) {
             return [];
         } else {
-            return sql_fetch_array($re_track);
+            return sql_fetch_assoc($re_track);
         }
     }
 

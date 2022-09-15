@@ -81,7 +81,7 @@ class CourseAlmsController extends AlmsController
     public function getlolist($p = 0, $sk = '')
     {
         if (isset($_GET['idCourse'])) {
-            $query_list = "SELECT * FROM %lms_organization WHERE idCourse = '" . (int) $_GET['idCourse'] . "' AND idParent = " . $p . ' ORDER BY path ASC';
+            $query_list = "SELECT * FROM %lms_organization WHERE idCourse = '" . (int)$_GET['idCourse'] . "' AND idParent = " . $p . ' ORDER BY path ASC';
             $result_list = sql_query($query_list);
             if (sql_num_rows($result_list) > 0) {
                 if ($p == 0) {
@@ -119,14 +119,14 @@ class CourseAlmsController extends AlmsController
             $courseFilter['classroom'] = false;
             $courseFilter['descendants'] = false;
             $courseFilter['waiting'] = false;
-            $this->session->set('course_filter',$courseFilter);
+            $this->session->set('course_filter', $courseFilter);
             $this->session->save();
         }
 
         if (isset($_POST['c_filter_set'])) {
-            $classroom = (bool) FormaLms\lib\Get::req('classroom', DOTY_INT, false);
-            $descendants = (bool) FormaLms\lib\Get::req('descendants', DOTY_INT, false);
-            $waiting = (bool) FormaLms\lib\Get::req('waiting', DOTY_INT, false);
+            $classroom = (bool)FormaLms\lib\Get::req('classroom', DOTY_INT, false);
+            $descendants = (bool)FormaLms\lib\Get::req('descendants', DOTY_INT, false);
+            $waiting = (bool)FormaLms\lib\Get::req('waiting', DOTY_INT, false);
             $filter_text = FormaLms\lib\Get::req('text', DOTY_STRING, '');
         } else {
             $classroom = $this->session->get('course_filter')['classroom'];
@@ -147,14 +147,14 @@ class CourseAlmsController extends AlmsController
             'waiting' => $waiting,
             'text' => $filter_text,
             'open' => $filter_open,
-            'id_category' => $this->_getSessionTreeData('id_category', 0), ];
+            'id_category' => $this->_getSessionTreeData('id_category', 0),];
 
         $courseFilter = $this->session->get('course_filter');
         $courseFilter['text'] = $filter_text;
         $courseFilter['classroom'] = $classroom;
         $courseFilter['descendants'] = $descendants;
         $courseFilter['waiting'] = $waiting;
-        $this->session->set('course_filter',$courseFilter);
+        $this->session->set('course_filter', $courseFilter);
         $this->session->save();
 
         $params['initial_selected_node'] = $this->_getSessionTreeData('id_category', 0);
@@ -183,7 +183,7 @@ class CourseAlmsController extends AlmsController
         if (!isset($courseCategory['filter_status'][$index])) {
             $courseCategory = [];
             $courseCategory['filter_status'][$index] = $default;
-            $this->session->set('course_category',$courseCategory);
+            $this->session->set('course_category', $courseCategory);
             $this->session->save();
         }
 
@@ -194,7 +194,7 @@ class CourseAlmsController extends AlmsController
     {
         $courseCategory = $this->session->get('course_category') ?: [];
         $courseCategory['filter_status'][$index] = $value;
-        $this->session->set('course_category',$courseCategory);
+        $this->session->set('course_category', $courseCategory);
         $this->session->save();
     }
 
@@ -226,7 +226,7 @@ class CourseAlmsController extends AlmsController
         }
 
 
-        $this->session->set('course_filter',$courseFilter);
+        $this->session->set('course_filter', $courseFilter);
         $this->session->save();
 
         echo $this->json->encode(['success' => true]);
@@ -259,12 +259,12 @@ class CourseAlmsController extends AlmsController
                     'id' => 'del_' . $id_category,
                     'command' => 'delete',
                     'icon' => 'standard/delete.png',
-                    'alt' => Lang::t('_DEL'), ];
+                    'alt' => Lang::t('_DEL'),];
             } else {
                 $node_options[] = [
                     'id' => 'del_' . $id_category,
                     'command' => false,
-                    'icon' => 'blank.png', ];
+                    'icon' => 'blank.png',];
             }
         }
 
@@ -312,8 +312,8 @@ class CourseAlmsController extends AlmsController
                                     'id' => $id_category,
                                     'label' => end($labelArray),
                                     'is_leaf' => $is_leaf,
-                                    'count_content' => (int) (($right - $left - 1) / 2),
-                                    'options' => $node_options, ], ];
+                                    'count_content' => (int)(($right - $left - 1) / 2),
+                                    'options' => $node_options,],];
                         }
                     }
                 } else { //not initial selection, just an opened folder
@@ -327,8 +327,8 @@ class CourseAlmsController extends AlmsController
                             'id' => $id_category,
                             'label' => end($pathArray),
                             'is_leaf' => $is_leaf,
-                            'count_content' => (int) (($right - $left - 1) / 2),
-                            'options' => $node_options, ]; //change this
+                            'count_content' => (int)(($right - $left - 1) / 2),
+                            'options' => $node_options,]; //change this
                     }
                 }
 
@@ -393,7 +393,7 @@ class CourseAlmsController extends AlmsController
                             'label' => stripslashes($node_name),
                             'is_leaf' => true,
                             'count_content' => 0,
-                            'options' => $this->_getNodeActions($new_node_id, true), ];
+                            'options' => $this->_getNodeActions($new_node_id, true),];
                     }
                 }
                 echo $this->json->encode($result);
@@ -456,7 +456,7 @@ class CourseAlmsController extends AlmsController
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
         $idCourse = FormaLms\lib\Get::req('idCourse', DOTY_MIXED, null);
 
-        $id_category = FormaLms\lib\Get::req('node_id', DOTY_INT, (int) $this->_getSessionTreeData('id_category', 0));
+        $id_category = FormaLms\lib\Get::req('node_id', DOTY_INT, (int)$this->_getSessionTreeData('id_category', 0));
         $filter_text = $this->session->get('course_filter')['text'];
         $classroom = $this->session->get('course_filter')['classroom'];
         $descendants = $this->session->get('course_filter')['descendants'];
@@ -505,9 +505,9 @@ class CourseAlmsController extends AlmsController
                     }
             }
 
-            $num_overbooking = (int) $this->model->getUserInOverbooking($row['idCourse']);
+            $num_overbooking = (int)$this->model->getUserInOverbooking($row['idCourse']);
 
-            $num_subscribed = (int) $row['subscriptions'] - ((int) $row['pending'] + $num_overbooking);
+            $num_subscribed = (int)$row['subscriptions'] - ((int)$row['pending'] + $num_overbooking);
 
             $list[$row['idCourse']] = [
                 'id' => $row['idCourse'],
@@ -616,68 +616,79 @@ class CourseAlmsController extends AlmsController
         //TO DO: make it a sqltransaction if possible
 
         if (isset($_POST['confirm'])) {
-            $id_dupcourse = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
-            $id_orgs = [];
+            $idCourseToDulicate = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
+            $learningObjectsIdOrgs = [];
             $array_new_testobject = [];
 
             // read the old course info
-            $query_sel = "SELECT * FROM %lms_course WHERE idCourse = '" . $id_dupcourse . "' ";
-            $result_sel = sql_query($query_sel);
-            $list_sel = sql_fetch_array($result_sel);
+            $query = "SELECT * FROM %lms_course WHERE idCourse = '" . $idCourseToDulicate . "' ";
+            $result = sql_query($query);
+            $courseData = sql_fetch_assoc($result);
 
-            foreach ($list_sel as $k => $v) {
-                $list_sel[$k] = sql_escape_string($v);
+            foreach ($courseData as $k => $v) {
+                $courseData[$k] = sql_escape_string($v);
             }
 
-            $new_file_array = [];
+            $newCourseFileData = [];
 
-            if ($list_sel['imgSponsor'] != '') {
-                $new_name_array = explode('_', str_replace('course_sponsor_logo_', '', $list_sel['imgSponsor']));
-                $filename = 'course_sponsor_logo_' . mt_rand(0, 100) . '_' . time() . '_' . str_replace('course_sponsor_logo_' . $new_name_array[0] . '_' . $new_name_array[1] . '_', '', $list_sel['imgSponsor']);
+            if (!empty($courseData['imgSponsor'])) {
+                $newFileNameArray = explode('_', str_replace('course_sponsor_logo_', '', $courseData['imgSponsor']));
+                if (is_array($newFileNameArray) && count($newFileNameArray) >= 2) {
+                    $filename = 'course_sponsor_logo_' . random_int(0, 100) . '_' . time() . '_' . str_replace('course_sponsor_logo_' . $newFileNameArray[0] . '_' . $newFileNameArray[1] . '_', '', $courseData['imgSponsor']);
 
-                $new_file_array[0]['old'] = $list_sel['imgSponsor'];
-                $new_file_array[0]['new'] = $filename;
-                $list_sel['imgSponsor'] = $filename;
+                    $newCourseFileData[0]['old'] = $courseData['imgSponsor'];
+                    $newCourseFileData[0]['new'] = $filename;
+                    $courseData['imgSponsor'] = $filename;
+                }
             }
 
-            if ($list_sel['img_course'] != '') {
-                $new_name_array = explode('_', str_replace('course_logo_', '', $list_sel['img_course']));
-                $filename = 'course_logo_' . mt_rand(0, 100) . '_' . time() . '_' . str_replace('course_logo_' . $new_name_array[0] . '_' . $new_name_array[1] . '_', '', $list_sel['img_course']);
+            if (!empty($courseData['img_course'])) {
+                $newFileNameArray = explode('_', str_replace('course_logo_', '', $courseData['img_course']));
 
-                $new_file_array[1]['old'] = $list_sel['img_course'];
-                $new_file_array[1]['new'] = $filename;
-                $list_sel['img_course'] = $filename;
+                if (is_array($newFileNameArray) && count($newFileNameArray) >= 2) {
+                    $filename = 'course_logo_' . random_int(0, 100) . '_' . time() . '_' . str_replace('course_logo_' . $newFileNameArray[0] . '_' . $newFileNameArray[1] . '_', '', $courseData['img_course']);
+
+                    $newCourseFileData[1]['old'] = $courseData['img_course'];
+                    $newCourseFileData[1]['new'] = $filename;
+                    $courseData['img_course'] = $filename;
+                }
             }
 
-            if ($list_sel['img_material'] != '') {
-                $new_name_array = explode('_', str_replace('course_user_material_', '', $list_sel['img_material']));
-                $filename = 'course_user_material_' . mt_rand(0, 100) . '_' . time() . '_' . str_replace('course_user_material_' . $new_name_array[0] . '_' . $new_name_array[1] . '_', '', $list_sel['img_material']);
+            if (!empty($courseData['img_material'])) {
+                $newFileNameArray = explode('_', str_replace('course_user_material_', '', $courseData['img_material']));
+                if (is_array($newFileNameArray) && count($newFileNameArray) >= 2) {
+                    $filename = 'course_user_material_' . random_int(0, 100) . '_' . time() . '_' . str_replace('course_user_material_' . $newFileNameArray[0] . '_' . $newFileNameArray[1] . '_', '', $courseData['img_material']);
 
-                $new_file_array[2]['old'] = $list_sel['img_material'];
-                $new_file_array[2]['new'] = $filename;
-                $list_sel['img_material'] = $filename;
+                    $newCourseFileData[2]['old'] = $courseData['img_material'];
+                    $newCourseFileData[2]['new'] = $filename;
+                    $courseData['img_material'] = $filename;
+                }
             }
 
-            if ($list_sel['img_othermaterial'] != '') {
-                $new_name_array = explode('_', str_replace('course_otheruser_material_', '', $list_sel['img_othermaterial']));
-                $filename = 'course_otheruser_material_' . mt_rand(0, 100) . '_' . time() . '_' . str_replace('course_otheruser_material_' . $new_name_array[0] . '_' . $new_name_array[1] . '_', '', $list_sel['img_othermaterial']);
+            if (!empty($courseData['img_othermaterial'])) {
+                $newFileNameArray = explode('_', str_replace('course_otheruser_material_', '', $courseData['img_othermaterial']));
+                if (is_array($newFileNameArray) && count($newFileNameArray) >= 2) {
+                    $filename = 'course_otheruser_material_' . random_int(0, 100) . '_' . time() . '_' . str_replace('course_otheruser_material_' . $newFileNameArray[0] . '_' . $newFileNameArray[1] . '_', '', $courseData['img_othermaterial']);
 
-                $new_file_array[3]['old'] = $list_sel['img_othermaterial'];
-                $new_file_array[3]['new'] = $filename;
-                $list_sel['img_othermaterial'] = $filename;
+                    $newCourseFileData[3]['old'] = $courseData['img_othermaterial'];
+                    $newCourseFileData[3]['new'] = $filename;
+                    $courseData['img_othermaterial'] = $filename;
+                }
             }
 
-            if ($list_sel['course_demo'] != '') {
-                $new_name_array = explode('_', str_replace('course_demo_', '', $list_sel['course_demo']));
-                $filename = 'course_demo_' . mt_rand(0, 100) . '_' . time() . '_' . str_replace('course_demo_' . $new_name_array[0] . '_' . $new_name_array[1] . '_', '', $list_sel['course_demo']);
+            if (!empty($courseData['course_demo'])) {
+                $newFileNameArray = explode('_', str_replace('course_demo_', '', $courseData['course_demo']));
+                if (is_array($newFileNameArray) && count($newFileNameArray) >= 2) {
+                    $filename = 'course_demo_' . random_int(0, 100) . '_' . time() . '_' . str_replace('course_demo_' . $newFileNameArray[0] . '_' . $newFileNameArray[1] . '_', '', $courseData['course_demo']);
 
-                $new_file_array[4]['old'] = $list_sel['course_demo'];
-                $new_file_array[4]['new'] = $filename;
-                $list_sel['course_demo'] = $filename;
+                    $newCourseFileData[4]['old'] = $courseData['course_demo'];
+                    $newCourseFileData[4]['new'] = $filename;
+                    $courseData['course_demo'] = $filename;
+                }
             }
 
             // duplicate the entry of learning_course
-            $query_ins = "INSERT INTO %lms_course
+            $insertQuery = "INSERT INTO %lms_course
 				( idCategory, code, name, description, lang_code, status, level_show_user,
 				subscribe_method, linkSponsor, imgSponsor, img_course, img_material, img_othermaterial,
 				course_demo, mediumTime, permCloseLO, userStatusOp, difficult, show_progress, show_time, show_extra_info,
@@ -686,16 +697,16 @@ class CourseAlmsController extends AlmsController
 				create_date, security_code, imported_from_connection, course_quota, used_space, course_vote, allow_overbooking, can_subscribe,
 				sub_start_date, sub_end_date, advance, show_who_online, direct_play, autoregistration_code, use_logo_in_courselist )
 				VALUES
-				( '" . $list_sel['idCategory'] . "', '" . $list_sel['code'] . "', '" . 'Copia di ' . $list_sel['name'] . "', '" . $list_sel['description'] . "', '" . $list_sel['lang_code'] . "', '" . $list_sel['status'] . "', '" . $list_sel['level_show_user'] . "',
-				'" . $list_sel['subscribe_method'] . "', '" . $list_sel['linkSponsor'] . "', '" . $list_sel['imgSponsor'] . "', '" . $list_sel['img_course'] . "', '" . $list_sel['img_material'] . "', '" . $list_sel['img_othermaterial'] . "',
-				'" . $list_sel['course_demo'] . "', '" . $list_sel['mediumTime'] . "', '" . $list_sel['permCloseLO'] . "', '" . $list_sel['userStatusOp'] . "', '" . $list_sel['difficult'] . "', '" . $list_sel['show_progress'] . "', '" . $list_sel['show_time'] . "', '" . $list_sel['show_extra_info'] . "',
-				'" . $list_sel['show_rules'] . "', '" . $list_sel['valid_time'] . "', '" . $list_sel['max_num_subscribe'] . "', '" . $list_sel['min_num_subscribe'] . "',
-				'" . $list_sel['max_sms_budget'] . "', '" . $list_sel['selling'] . "', '" . $list_sel['prize'] . "', '" . $list_sel['course_type'] . "', '" . $list_sel['policy_point'] . "', '" . $list_sel['point_to_all'] . "', '" . $list_sel['course_edition'] . "', '" . $list_sel['classrooms'] . "', '" . $list_sel['certificates'] . "',
-				'" . date('Y-m-d H:i:s') . "', '" . $list_sel['security_code'] . "', '" . $list_sel['imported_from_connection'] . "', '" . $list_sel['course_quota'] . "', '" . $list_sel['used_space'] . "', '" . $list_sel['course_vote'] . "', '" . $list_sel['allow_overbooking'] . "', '" . $list_sel['can_subscribe'] . "',
-				'" . $list_sel['sub_start_date'] . "', '" . $list_sel['sub_end_date'] . "', '" . $list_sel['advance'] . "', '" . $list_sel['show_who_online'] . "', '" . $list_sel['direct_play'] . "', '" . $list_sel['autoregistration_code'] . "', '" . $list_sel['use_logo_in_courselist'] . "' )";
-            $result_ins = sql_query($query_ins);
+				( '" . $courseData['idCategory'] . "', '" . $courseData['code'] . "', '" . 'Copia di ' . $courseData['name'] . "', '" . $courseData['description'] . "', '" . $courseData['lang_code'] . "', '" . $courseData['status'] . "', '" . $courseData['level_show_user'] . "',
+				'" . $courseData['subscribe_method'] . "', '" . $courseData['linkSponsor'] . "', '" . $courseData['imgSponsor'] . "', '" . $courseData['img_course'] . "', '" . $courseData['img_material'] . "', '" . $courseData['img_othermaterial'] . "',
+				'" . $courseData['course_demo'] . "', '" . $courseData['mediumTime'] . "', '" . $courseData['permCloseLO'] . "', '" . $courseData['userStatusOp'] . "', '" . $courseData['difficult'] . "', '" . $courseData['show_progress'] . "', '" . $courseData['show_time'] . "', '" . $courseData['show_extra_info'] . "',
+				'" . $courseData['show_rules'] . "', '" . $courseData['valid_time'] . "', '" . $courseData['max_num_subscribe'] . "', '" . $courseData['min_num_subscribe'] . "',
+				'" . $courseData['max_sms_budget'] . "', '" . $courseData['selling'] . "', '" . $courseData['prize'] . "', '" . $courseData['course_type'] . "', '" . $courseData['policy_point'] . "', '" . $courseData['point_to_all'] . "', '" . $courseData['course_edition'] . "', '" . $courseData['classrooms'] . "', '" . $courseData['certificates'] . "',
+				'" . date('Y-m-d H:i:s') . "', '" . $courseData['security_code'] . "', '" . $courseData['imported_from_connection'] . "', '" . $courseData['course_quota'] . "', '" . $courseData['used_space'] . "', '" . $courseData['course_vote'] . "', '" . $courseData['allow_overbooking'] . "', '" . $courseData['can_subscribe'] . "',
+				'" . $courseData['sub_start_date'] . "', '" . $courseData['sub_end_date'] . "', '" . $courseData['advance'] . "', '" . $courseData['show_who_online'] . "', '" . $courseData['direct_play'] . "', '" . $courseData['autoregistration_code'] . "', '" . $courseData['use_logo_in_courselist'] . "' )";
+            $insertResult = sql_query($insertQuery);
 
-            if (!$result_ins) {
+            if (!$insertResult) {
                 ob_clean();
                 ob_start();
                 echo $this->json->encode(['success' => false]);
@@ -703,10 +714,11 @@ class CourseAlmsController extends AlmsController
             }
 
             // the id of the new course created
-            $new_id_course = $new_course_dup = sql_insert_id();
+            $newCourseId = sql_insert_id();
 
+            $duplicateImages = $this->request->get('image', null);
             //Create the new course file
-            if (isset($_POST['image'])) {
+            if (!empty($duplicateImages)) {
                 $path = FormaLms\lib\Get::sett('pathcourse');
                 $path = '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');
 
@@ -714,8 +726,8 @@ class CourseAlmsController extends AlmsController
 
                 sl_open_fileoperations();
 
-                foreach ($new_file_array as $file_info) {
-                    sl_copy($path . $file_info['old'], $path . $file_info['new']);
+                foreach ($newCourseFileData as $fileInfo) {
+                    sl_copy($path . $fileInfo['old'], $path . $fileInfo['new']);
                 }
 
                 sl_close_fileoperations();
@@ -724,122 +736,109 @@ class CourseAlmsController extends AlmsController
             //--- copy menu data -----------------------------------------------------
 
             // copy the old course menu into the new one
-            $query_selmen = "SELECT * FROM %lms_menucourse_main WHERE idCourse = '" . $id_dupcourse . "' ";
-            $result_selmen = sql_query($query_selmen);
-            while ($list_selmen = sql_fetch_array($result_selmen)) {
-                $query_dupmen = 'INSERT INTO %lms_menucourse_main ' .
+            $menuSequence = [];
+            $query = "SELECT * FROM %lms_menucourse_main WHERE idCourse = '" . $idCourseToDulicate . "' ";
+            $menuResult = sql_query($query);
+            foreach ($menuResult as $courseDatamen) {
+
+                $query = 'INSERT INTO %lms_menucourse_main ' .
                     ' (idCourse, sequence, name, image) ' .
                     ' VALUES ' .
-                    " ( '" . $new_course_dup . "', '" . $list_selmen['sequence'] . "', '" . $list_selmen['name'] . "', '" . $list_selmen['image'] . "' )";
-                $result_dupmen = sql_query($query_dupmen);
-                $array_seq[$list_selmen['idMain']] = sql_insert_id();
+                    " ( '" . $newCourseId . "', '" . $courseDatamen['sequence'] . "', '" . $courseDatamen['name'] . "', '" . $courseDatamen['image'] . "' )";
+                $result = sql_query($query);
+                $menuSequence[$courseDatamen['idMain']] = sql_insert_id();
             }
 
-            $query_insert_list = [];
-            $query_selmenun = "SELECT * FROM %lms_menucourse_under WHERE idCourse = '" . $id_dupcourse . "' ";
-            $result_selmenun = sql_query($query_selmenun);
-            while ($new_org = sql_fetch_array($result_selmenun)) {
-                $valore_idn = $new_org['idMain'];
-                $_idMain = $array_seq[$valore_idn];
+            $insertQueryList = [];
+            $query = "SELECT * FROM %lms_menucourse_under WHERE idCourse = '" . $idCourseToDulicate . "' ";
+            $menuUnderResult = sql_query($query);
+            foreach ($menuUnderResult as $menuUnderRow) {
 
-                $query_insert_list[] = "('" . $_idMain . "', '" . $new_course_dup . "', '" . $new_org['sequence'] . "', '" . $new_org['idModule'] . "', '" . $new_org['my_name'] . "')";
+                $idMain = $menuSequence[$menuUnderRow['idMain']];
+                $insertQueryList[] = "('" . $idMain . "', '" . $newCourseId . "', '" . $menuUnderRow['sequence'] . "', '" . $menuUnderRow['idModule'] . "', '" . $menuUnderRow['my_name'] . "')";
             }
-            $result_dupmen = true;
-            if (!empty($query_insert_list)) {
-                $query_dupmen = 'INSERT INTO %lms_menucourse_under
+            $menuDuplicated = true;
+            if (!empty($insertQueryList)) {
+                $query = 'INSERT INTO %lms_menucourse_under
 					(idMain, idCourse, sequence, idModule, my_name)
-					VALUES ' . implode(',', $query_insert_list);
-                $result_dupmen = sql_query($query_dupmen);
+					VALUES ' . implode(',', $insertQueryList);
+                $menuDuplicated = sql_query($query);
             }
 
             //--- end menu -----------------------------------------------------------
-
-            function &getCourseLevelSt($id_course)
-            {
-                $map = [];
-                $levels = CourseLevel::getTranslatedLevels();
-
-                // find all the group created for this menu custom for permission management
-                foreach ($levels as $lv => $name_level) {
-                    $group_info = Docebo::aclm()->getGroup(false, '/lms/course/' . $id_course . '/subscribed/' . $lv);
-                    $map[$lv] = $group_info[ACL_INFO_IDST];
-                }
-
-                return $map;
-            }
-
-            function funAccess($functionname, $mode, $returnValue = false, $custom_mod_name = false)
-            {
-                return true;
-            }
 
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/lib/lib.manmenu.php';
             require_once _lms_ . '/lib/lib.subscribe.php';
 
-            $docebo_course = new DoceboCourse($id_dupcourse);
-            $subscribe_man = new CourseSubscribe_Manager();
+            $doceboCourse = new DoceboCourse($idCourseToDulicate);
+            $subscribeManager = new CourseSubscribe_Manager();
 
-            $group_idst = &$docebo_course->createCourseLevel($new_course_dup);
-            $group_of_from = &$docebo_course->getCourseLevel($id_dupcourse);
-            $perm_form = &createPermForCoursebis($group_of_from, $new_course_dup, $id_dupcourse);
-            $levels = $subscribe_man->getUserLevel();
+            $newCourseGroupLevels = $doceboCourse->createCourseLevel($newCourseId);
+            $oldCourseGroupLevels = $doceboCourse->getCourseLevel($idCourseToDulicate);
+            $newCoursePermissions = createPermForDuplicatedCourse($oldCourseGroupLevels, $newCourseId, $idCourseToDulicate);
+            $levels = $subscribeManager->getUserLevel();
 
-            foreach ($levels as $lv => $name_level) {
-                foreach ($perm_form[$lv] as $idrole => $v) {
-                    if ($group_idst[$lv] != 0 && $idrole != 0) {
-                        Docebo::aclm()->addToRole($idrole, $group_idst[$lv]);
+            foreach ($levels as $level => $levelName) {
+                foreach ($newCoursePermissions[$level] as $idrole => $value) {
+                    if ($newCourseGroupLevels[$level] !== 0 && $idrole !== 0) {
+                        Docebo::aclm()->addToRole($idrole, $newCourseGroupLevels[$level]);
                     }
                 }
             }
 
-            if (isset($_POST['certificate'])) {
+            $duplicateCertificates = $this->request->get('certificate', null);
+            //Create the new course file
+            if (!empty($duplicateCertificates)) {
                 // duplicate the certificate assigned
-                $query_insert_list = [];
-                $query_selmenun = "SELECT * FROM %lms_certificate_course WHERE id_course = '" . $id_dupcourse . "' ";
-                $result_selmenun = sql_query($query_selmenun);
-                while ($new_org = sql_fetch_assoc($result_selmenun)) {
-                    $query_insert_list[] = "('" . $new_org['id_certificate'] . "', '" . $new_course_dup . "', 
-						'" . $new_org['available_for_status'] . "', '" . $new_org['point_required'] . "' )";
+                $insertQueryList = [];
+                $query = "SELECT * FROM %lms_certificate_course WHERE id_course = '" . $idCourseToDulicate . "' ";
+                $certificatesResult = sql_query($query);
+
+                foreach ($certificatesResult as $certificateData) {
+                    $insertQueryList[] = "('" . $certificateData['id_certificate'] . "', '" . $newCourseId . "', 
+						'" . $certificateData['available_for_status'] . "', '" . $certificateData['point_required'] . "' )";
                 }
-                $result_dupmen = true;
-                if (!empty($query_insert_list)) {
-                    $query_dupmen = 'INSERT INTO %lms_certificate_course
+                $menuDuplicated = true;
+
+                if (!empty($insertQueryList)) {
+                    $query = 'INSERT INTO %lms_certificate_course
 						(id_certificate, id_course, available_for_status, point_required)
-						VALUES ' . implode(',', $query_insert_list);
-                    $result_dupmen = sql_query($query_dupmen);
+						VALUES ' . implode(',', $insertQueryList);
+                    $menuDuplicated = sql_query($query);
                 }
             }
 
             require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
-            require_once _lms_ . '/lib/lib.param.php';
-            require_once _lms_ . '/class.module/track.object.php';
-            require_once _lms_ . '/class.module/learning.object.php';
+            require_once Forma::inc(_lms_ . '/lib/lib.param.php');
+            require_once Forma::inc(_lms_ . '/class.module/track.object.php');
+            require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
 
-            $nullVal = null;
-            $id_orgs = [];
-            $map_org = [];
+            $duplicateLearningObjects = $this->request->get('lo', null);
+            if (!empty($duplicateLearningObjects)) {
 
-            if (isset($_POST['lo'])) {
-                $org_map = [];
-                $id_orgs = [];
-                $prereq_map = [];
+                $learningObjectList = $this->request->get('lo_list', []);
+
+                $learningObjects = [];
+                $learningObjectsIdOrgs = [];
+                $learningObjectPrerequisites = [];
 
                 // retrive all the folders and object, the order by grant that folder are created before the elements contained in them
-                $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int) $id_dupcourse . ' ORDER BY path ASC';
-                $source_res = sql_query($query);
+                $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$idCourseToDulicate . ' ORDER BY path ASC';
+                $learningObjectResult = sql_query($query);
 
                 // Go trough all the entry of learning_organization
-                while ($source = sql_fetch_object($source_res)) {
+                foreach ($learningObjectResult as $source) {
+
+                    $source = (object)$source;
                     // check if LO id is checked
-                    if (in_array($source->idOrg, $_POST['lo_list'])) {
+                    if (in_array($source->idOrg, $learningObjectList, true)) {
                         // if it's an object we must make a copy, if it's a folder we can create a row
                         // inside learning_orgation and save the id for later use
-
-                        if ($source->objectType == '') {
+                        if (empty($source->objectType)) {
                             // is a folder
                             // create a new row in learning_organization
-                            $query_new_org = "INSERT INTO %lms_organization (
+                            $query = "INSERT INTO %lms_organization (
 								idParent,
 								path, lev, title,
 								objectType, idResource, idCategory, idUser,
@@ -848,26 +847,28 @@ class CourseAlmsController extends AlmsController
 								idCourse, prerequisites, isTerminator, idParam,
 								visible, milestone)
 								VALUES
-								('" . (isset($id_orgs[$source->idParent]) ? $id_orgs[$source->idParent] : 0) . "',
+								('" . (isset($learningObjectsIdOrgs[$source->idParent]) ? $learningObjectsIdOrgs[$source->idParent] : 0) . "',
 								'" . $source->path . "', '" . $source->lev . "', '" . sql_escape_string($source->title) . "',
 								'" . $source->objectType . "', '" . $source->idResource . "', '" . $source->idCategory . "', '" . $source->idUser . "',
 								'" . $source->idAuthor . "', '" . $source->version . "', '" . $source->difficult . "', '" . sql_escape_string($source->description) . "',
 								'" . $source->language . "', '" . $source->resource . "', '" . $source->objective . "', '" . $source->dateInsert . "',
-								'" . $new_id_course . "', '" . $source->prerequisites . "', '" . $source->isTerminator . "', '" . $source->idParam . "',
+								'" . $newCourseId . "', '" . $source->prerequisites . "', '" . $source->isTerminator . "', '" . $source->idParam . "',
 								'" . $source->visible . "', '" . $source->milestone . "')";
-                            $re_new_org = sql_query($query_new_org);
-                            $new_id_reference = sql_insert_id();
+                            $result = sql_query($query);
+                            if ($result) {
+                                $newIdReference = sql_insert_id();
 
-                            // map for later use
-                            $org_map['folder'][$source->idOrg] = $new_id_reference;
+                                // map for later use
+                                $learningObjects['folder'][$source->idOrg] = $newIdReference;
+                            }
                         } else {
                             // is an object
                             // make a copy
-                            $lo = $this->_createLO($source->objectType);
-                            $new_id_resource = $lo->copy($source->idResource);
+                            $newlearningObject = $this->_createLO($source->objectType);
+                            $newIdResource = $newlearningObject->copy($source->idResource);
 
                             // create a new row in learning_organization
-                            $query_new_org = "INSERT INTO %lms_organization (
+                            $query = "INSERT INTO %lms_organization (
 								idParent, path, lev, title,
 								objectType, idResource, idCategory, idUser,
 								idAuthor, version, difficult, description,
@@ -875,73 +876,81 @@ class CourseAlmsController extends AlmsController
 								idCourse, prerequisites, isTerminator, idParam,
 								visible, milestone)
 								VALUES
-								('" . (isset($id_orgs[$source->idParent]) ? $id_orgs[$source->idParent] : 0) . "',
+								('" . (isset($learningObjectsIdOrgs[$source->idParent]) ? $learningObjectsIdOrgs[$source->idParent] : 0) . "',
 								'" . $source->path . "', '" . $source->lev . "', '" . sql_escape_string($source->title) . "',
 								'" . $source->objectType . "', '" . $new_id_resource . "', '" . $source->idCategory . "', '" . $source->idUser . "',
 								'" . $source->idAuthor . "', '" . $source->version . "', '" . $source->difficult . "', '" . sql_escape_string($source->description) . "',
 								'" . $source->language . "', '" . $source->resource . "', '" . $source->objective . "', '" . $source->dateInsert . "',
-								'" . $new_id_course . "', '" . $source->prerequisites . "', '" . $source->isTerminator . "', '0',
+								'" . $newCourseId . "', '" . $source->prerequisites . "', '" . $source->isTerminator . "', '0',
 								'" . $source->visible . "', '" . $source->milestone . "')";
-                            $re_new_org = sql_query($query_new_org);
-                            $new_id_reference = sql_insert_id();
+                            $result = sql_query($query);
+                            if ($result) {
+                                $newIdReference = sql_insert_id();
 
-                            // for a learning_object we have to create a row in lo_param as well
-                            // with 4.1 or 4.2 we plan to remove this table, but until then we need this
-                            $query_lo_par = "INSERT INTO %lms_lo_param (param_name, param_value) VALUES ('idReference', '" . $new_id_reference . "') ";
-                            $result_lo_par = sql_query($query_lo_par);
-                            $id_lo_par = sql_insert_id();
+                                // for a learning_object we have to create a row in lo_param as well
+                                // with 4.1 or 4.2 we plan to remove this table, but until then we need this
+                                $query = "INSERT INTO %lms_lo_param (param_name, param_value) VALUES ('idReference', '" . $newIdReference . "') ";
+                                $result = sql_query($query);
+                                if ($result) {
+                                    $idLoParam = sql_insert_id();
 
-                            $query_up_lo = "UPDATE %lms_lo_param SET idParam = '" . $id_lo_par . "' WHERE id = '" . $id_lo_par . "' ";
-                            $result_up_lo = sql_query($query_up_lo);
+                                    $query = "UPDATE %lms_lo_param SET idParam = '" . $idLoParam . "' WHERE id = '" . $idLoParam . "' ";
+                                    $result = sql_query($query);
 
-                            $query_up_or = "UPDATE %lms_organization SET idParam = '" . $id_lo_par . "' WHERE idOrg = '" . $new_id_reference . "' ";
-                            $result_up_or = sql_query($query_up_or);
+                                    $query = "UPDATE %lms_organization SET idParam = '" . $idLoParam . "' WHERE idOrg = '" . $newIdReference . "' ";
+                                    $result = sql_query($query);
 
-                            // map for later use
-                            $org_map[$source->objectType][$source->idResource] = $new_id_resource;
+                                    // map for later use
+                                    $learningObjects[$source->objectType][$source->idResource] = $newIdResource;
+                                }
+                            }
                         }
                         // create a map for the olds and new idReferences
-                        $id_orgs[$source->idOrg] = $new_id_reference;
+                        $learningObjectsIdOrgs[$source->idOrg] = $newIdReference;
                         if ($source->prerequisites != '') {
-                            $prereq_map[$new_id_reference] = $source->prerequisites;
+                            $learningObjectPrerequisites[$newIdReference] = $source->prerequisites;
                         }
                     }
                 }
 
                 // updates prerequisites
-                foreach ($prereq_map as $new_id_reference => $old_prerequisites) {
-                    $new_prerequisites = [];
-                    $old_prerequisites = explode(',', $old_prerequisites);
-                    foreach ($old_prerequisites as $old_p) {
+                foreach ($learningObjectPrerequisites as $newIdReference => $oldPrerequisites) {
+                    $newPrerequisites = [];
+                    $oldPrerequisites = explode(',', $oldPrerequisites);
+                    foreach ($oldPrerequisites as $oldPrerequisite) {
                         //a prerequisite can be a pure number or something like 7=NULL, or 7=incomplete
-                        $old_id = intval($old_p);
-                        if (isset($id_orgs[$old_id])) {
-                            $new_prerequisites[] = str_replace($old_id, $id_orgs[$old_id], $old_p);
+
+                        if (array_key_exists((int)$oldPrerequisite, $learningObjectsIdOrgs)) {
+                            $newLearningObjectId = $learningObjectsIdOrgs[(int)$oldPrerequisite];
+
+                            $newPrerequisites[] = $newLearningObjectId;
                         }
                     }
-                    if (!empty($new_prerequisites)) {
-                        $query_updcor = 'UPDATE %lms_organization '
-                            . "SET prerequisites = '" . implode(',', $new_prerequisites) . "' "
-                            . 'WHERE idOrg = ' . $new_id_reference . ' ';
-                        $result_upcor = sql_query($query_updcor);
+                    if (!empty($newPrerequisites)) {
+                        $query = 'UPDATE %lms_organization '
+                            . "SET prerequisites = '" . implode(',', $newPrerequisites) . "' "
+                            . 'WHERE idOrg = ' . $newIdReference . ' ';
+                        $result = sql_query($query);
                     }
                 }
 
                 //--- copy forum data --------------------------------------------------
 
-                $query_insert_list = [];
-                $query_selmenun = "SELECT * FROM %lms_forum WHERE idCourse = '" . $id_dupcourse . "' ";
-                $result_selmenun = sql_query($query_selmenun);
-                while ($new_org = sql_fetch_assoc($result_selmenun)) {
-                    $query_insert_list[] = "('" . $new_course_dup . "', '" . sql_escape_string($new_org['title']) . "', '" . sql_escape_string($new_org['description']) . "',
-						'" . $new_org['locked'] . "', '" . $new_org['sequence'] . "', '" . $new_org['emoticons'] . "')";
+                $insertQueryList = [];
+                $query = "SELECT * FROM %lms_forum WHERE idCourse = '" . $idCourseToDulicate . "' ";
+                $result = sql_query($query);
+
+                foreach ($result as $forum) {
+
+                    $insertQueryList[] = "('" . $newCourseId . "', '" . sql_escape_string($forum['title']) . "', '" . sql_escape_string($forum['description']) . "',
+						'" . $forum['locked'] . "', '" . $forum['sequence'] . "', '" . $forum['emoticons'] . "')";
                 }
-                $result_dupmen = true;
-                if (!empty($query_insert_list)) {
-                    $query_dupmen = 'INSERT INTO %lms_forum
+                $menuDuplicated = true;
+                if (!empty($insertQueryList)) {
+                    $query = 'INSERT INTO %lms_forum
 						(idCourse, title, description, locked, sequence, emoticons)
-						VALUES ' . implode(',', $query_insert_list);
-                    $result_dupmen = sql_query($query_dupmen);
+						VALUES ' . implode(',', $insertQueryList);
+                    $menuDuplicated = sql_query($query);
                 }
 
                 //--- end forum --------------------------------------------------------
@@ -949,146 +958,160 @@ class CourseAlmsController extends AlmsController
                 //--- copy coursereports data ------------------------------------------
 
                 //create a conversion table for tests and scoitems coursereports
-                $array_organization = [
+                $organizationArray = [
                     'test' => [],
                     'scoitem' => [],
                 ];
-                $arr_items_flat = [
+                $itemsArray = [
                     'test' => [],
                     'scoitem' => [],
                 ];
-                $query_org = "SELECT source_of, id_source
-					FROM %lms_coursereport WHERE id_course = '" . $id_dupcourse . "'
+
+                $query = "SELECT source_of, id_source
+					FROM %lms_coursereport WHERE id_course = '" . $idCourseToDulicate . "'
 					AND source_of IN ('test', 'scoitem')";
-                $res_org = sql_query($query_org);
-                while (list($source_of, $id_source) = sql_fetch_row($res_org)) {
-                    switch ($source_of) {
+                $result = sql_query($query);
+
+
+                foreach ($result as $row) {
+                    switch ($row['source_of']) {
                         case 'scoitem':
-                            $arr_items_flat['scoitem'][] = $id_source;
+                            $itemsArray['scoitem'][] = $row['id_source'];
                             break;
+                        default:
                     }
                 }
 
-                if (!empty($arr_items_flat['scoitem'])) {
+                if (!empty($itemsArray['scoitem'])) {
                     //retrieve idOrgs of scoitems' scormorgs
-                    $arr_old_idorg = [];
-                    $arr_old_ident = [];
+                    $oldIdOrganizationsArray = [];
+                    $oldIdentifiersArray = [];
                     $query = 'SELECT o.idOrg, o.idResource, s.idscorm_item, s.item_identifier
 						FROM %lms_organization AS o
 						JOIN %lms_scorm_items AS s
 						ON (o.idResource = s.idscorm_organization)
-						WHERE s.idscorm_item IN (' . implode(',', $arr_items_flat['scoitem']) . ")
+						WHERE s.idscorm_item IN (' . implode(',', $itemsArray['scoitem']) . ")
 						AND o.objectType = 'scormorg'";
                     $res = sql_query($query);
-                    while (list($idOrg, $idResource, $idscorm_item, $item_identifier) = sql_fetch_row($res)) {
-                        $arr_old_idorg[] = $idOrg;
-                        $arr_old_ident[$idOrg . '/' . $item_identifier] = $idscorm_item;
+
+
+                    foreach ($res as $row) {
+                        list($idOrg, $idResource, $idscorm_item, $item_identifier) = $row;
+
+                        $oldIdOrganizationsArray[] = $idOrg;
+                        $oldIdentifiersArray[$idOrg . '/' . $item_identifier] = $idscorm_item;
                     }
-                    if (!empty($arr_old_idorg)) {
-                        $arr_new_idorg = [];
-                        foreach ($arr_old_idorg as $idOrg) {
-                            $arr_new_idorg[] = $id_orgs[$idOrg];
+                    if (!empty($oldIdOrganizationsArray)) {
+                        $newIdOrganizationsArray = [];
+                        foreach ($oldIdOrganizationsArray as $idOrg) {
+                            $newIdOrganizationsArray[] = $learningObjectsIdOrgs[$idOrg];
                         }
                         $query = 'SELECT o.idOrg, o.idResource, s.idscorm_item, s.item_identifier
 							FROM %lms_organization AS o
 							JOIN %lms_scorm_items AS s
 							ON (o.idResource = s.idscorm_organization)
-							WHERE o.idOrg IN (' . implode(',', $arr_new_idorg) . ")
+							WHERE o.idOrg IN (' . implode(',', $newIdOrganizationsArray) . ")
 							AND o.objectType = 'scormorg'";
                         $res = sql_query($query);
-                        $new_to_old = array_flip($id_orgs);
-                        while (list($idOrg, $idResource, $idscorm_item, $item_identifier) = sql_fetch_row($res)) {
-                            $_key = $new_to_old[$idOrg] . '/' . $item_identifier;
-                            if (array_key_exists($_key, $arr_old_ident)) {
-                                $_index = $arr_old_ident[$_key];
-                                $array_organization['scoitem'][$_index] = $idscorm_item;
+                        $newToOld = array_flip($learningObjectsIdOrgs);
+                        foreach ($res as $row) {
+                            list($idOrg, $idResource, $idscorm_item, $item_identifier) = $row;
+
+                            $_key = $newToOld[$idOrg] . '/' . $item_identifier;
+                            if (array_key_exists($_key, $oldIdentifiersArray)) {
+                                $_index = $oldIdentifiersArray[$_key];
+                                $organizationArray['scoitem'][$_index] = $idscorm_item;
                             }
                         }
                     }
                 }
 
-                $query_insert_list = [];
-                $query_selmenun = "SELECT * FROM %lms_coursereport WHERE id_course = '" . $id_dupcourse . "' ";
-                $result_selmenun = sql_query($query_selmenun);
-                while ($new_org = sql_fetch_array($result_selmenun)) {
-                    $id_source_val = 0;
-                    switch ($new_org['source_of']) {
+                $insertQueryList = [];
+                $query = "SELECT * FROM %lms_coursereport WHERE id_course = '" . $idCourseToDulicate . "' ";
+                $result = sql_query($query);
+                foreach ($result as $newOrg) {
+                    $idSourceValue = 0;
+                    switch ($newOrg['source_of']) {
                         case 'test':
-                                $id_source_val = !isset($org_map['test'][$new_org['id_source']])
-                                    ? 0
-                                    : $org_map['test'][$new_org['id_source']];
+                            $idSourceValue = !isset($learningObjects['test'][$newOrg['id_source']])
+                                ? 0
+                                : $learningObjects['test'][$newOrg['id_source']];
 
                             break;
                         case 'scoitem':
-                                $id_source_val = !isset($array_organization['scoitem'][$new_org['id_source']]) || $array_organization['scoitem'][$new_org['id_source']] == ''
-                                    ? 0
-                                    : $array_organization['scoitem'][$new_org['id_source']];
+                            $idSourceValue = !isset($organizationArray['scoitem'][$newOrg['id_source']]) || $organizationArray['scoitem'][$newOrg['id_source']] == ''
+                                ? 0
+                                : $organizationArray['scoitem'][$newOrg['id_source']];
 
                             break;
+                        default:
                     }
 
-                    $query_insert_list[] = "('" . $new_course_dup . "', '" . sql_escape_string($new_org['title']) . "', '" . $new_org['max_score'] . "',
-						'" . $new_org['required_score'] . "', '" . $new_org['weight'] . "', '" . $new_org['show_to_user'] . "',
-						'" . $new_org['use_for_final'] . "', '" . $new_org['sequence'] . "', '" . $new_org['source_of'] . "',
-						'" . $id_source_val . "')";
+                    $insertQueryList[] = "('" . $newCourseId . "', '" . sql_escape_string($newOrg['title']) . "', '" . $newOrg['max_score'] . "',
+						'" . $newOrg['required_score'] . "', '" . $newOrg['weight'] . "', '" . $newOrg['show_to_user'] . "',
+						'" . $newOrg['use_for_final'] . "', '" . $newOrg['sequence'] . "', '" . $newOrg['source_of'] . "',
+						'" . $idSourceValue . "')";
                 }
 
                 $result_dupman = true;
-                if (!empty($query_insert_list)) {
-                    $query_dupmen = 'INSERT INTO %lms_coursereport
+                if (!empty($insertQueryList)) {
+                    $query = 'INSERT INTO %lms_coursereport
 						(id_course,title,max_score,required_score,weight,show_to_user,use_for_final,sequence,source_of,id_source)
-						VALUES ' . implode(',', $query_insert_list);
-                    $result_dupmen = sql_query($query_dupmen);
+						VALUES ' . implode(',', $insertQueryList);
+                    $menuDuplicated = sql_query($query);
                 }
                 //--- end coursereports ------------------------------------------------
 
                 //--- copy htmlfront data ----------------------------------------------
 
-                $query_insert_list = [];
-                $query_selmenun = "SELECT * FROM %lms_htmlfront WHERE id_course = '" . $id_dupcourse . "' ";
-                $result_selmenun = sql_query($query_selmenun);
-                while ($new_org = sql_fetch_array($result_selmenun)) {
-                    $query_insert_list[] = "('" . $new_course_dup . "', '" . sql_escape_string($new_org['textof']) . "')";
+                $insertQueryList = [];
+                $query = "SELECT * FROM %lms_htmlfront WHERE id_course = '" . $idCourseToDulicate . "' ";
+                $result = sql_query($query);
+                foreach ($result as $newOrg) {
+                    $insertQueryList[] = "('" . $newCourseId . "', '" . sql_escape_string($newOrg['textof']) . "')";
                 }
 
-                $result_dupmen = true;
-                if (!empty($query_insert_list)) {
-                    $query_dupmen = 'INSERT INTO %lms_htmlfront
+                $menuDuplicated = true;
+                if (!empty($insertQueryList)) {
+                    $query = 'INSERT INTO %lms_htmlfront
 						(id_course, textof)
-						VALUES ' . implode(',', $query_insert_list);
-                    $result_dupmen = sql_query($query_dupmen);
+						VALUES ' . implode(',', $insertQueryList);
+                    $menuDuplicated = sql_query($query);
                 }
 
                 //--- end htmlfront ----------------------------------------------------
             }
 
-            if (isset($_POST['advice'])) {
-                $query = 'SELECT * FROM %lms_advice WHERE idCourse = ' . (int) $id_dupcourse;
+            $duplicateAdvice = $this->request->get('advice', null);
+            //Create the new course file
+            if (!empty($duplicateAdvice)) {
+
+                $query = 'SELECT * FROM %lms_advice WHERE idCourse = ' . (int)$idCourseToDulicate;
                 $result = sql_query($query);
 
                 if (sql_num_rows($result) > 0) {
-                    $query_insert_list = [];
+                    $insertQueryList = [];
 
-                    $array_sub = [];
-                    $array_replace = [];
+                    $arraySub = [];
+                    $arrayReplace = [];
 
-                    foreach ($id_orgs as $id_old_obj => $id_new_obj) {
-                        $array_sub[] = 'id_org=' . $id_old_obj;
-                        $array_replace[] = 'id_org=' . $id_new_obj;
+                    foreach ($learningObjectsIdOrgs as $oldObjId => $newObjId) {
+                        $arraySub[] = 'id_org=' . $oldObjId;
+                        $arrayReplace[] = 'id_org=' . $newObjId;
                         //convert direct links to LOs. TO DO: make sure you are changing only the correct link urls
-                        $array_sub[] = 'id_item=' . $id_old_obj;
-                        $array_replace[] = 'id_item=' . $id_new_obj;
+                        $arraySub[] = 'id_item=' . $oldObjId;
+                        $arrayReplace[] = 'id_item=' . $newObjId;
                     }
 
-                    while ($row = sql_fetch_assoc($result)) {
-                        $new_description = (!empty($id_orgs)) ? str_replace($array_sub, $array_replace, $row['description']) : $row['description'];
-                        $query_insert_list[] = '(NULL, ' . (int) $new_course_dup . ", '" . $row['posted'] . "', " . (int) $row['author'] . ", '" . $row['title'] . "', '" . $new_description . "', " . (int) $row['important'] . ')';
+                    foreach ($result as $row) {
+                        $newDescription = (!empty($learningObjectsIdOrgs)) ? str_replace($arraySub, $arrayReplace, $row['description']) : $row['description'];
+                        $insertQueryList[] = '(NULL, ' . (int)$newCourseId . ", '" . $row['posted'] . "', " . (int)$row['author'] . ", '" . $row['title'] . "', '" . $newDescription . "', " . (int)$row['important'] . ')';
                     }
 
-                    if (!empty($query_insert_list)) {
+                    if (!empty($insertQueryList)) {
                         $query = 'INSERT INTO %lms_advice
 							(idAdvice, idCourse, posted, author, title, description, important)
-							VALUES ' . implode(',', $query_insert_list);
+							VALUES ' . implode(',', $insertQueryList);
                         sql_query($query);
                     }
                 }
@@ -1265,15 +1288,15 @@ class CourseAlmsController extends AlmsController
 							%lms_menucourse_under AS un ) JOIN
 							' . $GLOBALS['prefix_lms'] . "_module AS module
 							WHERE main.idMain = un.idMain AND un.idModule = module.idModule
-							AND main.idCourse = '" . (int) $id_course . "'
-							AND un.idCourse = '" . (int) $id_course . "'
+							AND main.idCourse = '" . (int)$id_course . "'
+							AND un.idCourse = '" . (int)$id_course . "'
 							ORDER BY main.sequence, un.sequence
 							LIMIT 0,1";
 
                 list($id_module, $id_main) = sql_fetch_row(sql_query($query));
 
-                $this->session->set('current_main_menu',$id_main);
-                $this->session->set('sel_module_id',$id_module);
+                $this->session->set('current_main_menu', $id_main);
+                $this->session->set('sel_module_id', $id_module);
                 $this->session->save();
 
                 //loading related ST
@@ -1431,14 +1454,14 @@ class CourseAlmsController extends AlmsController
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'), ];
+            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),];
         //difficult ------------------------------------------------------------
         $difficult_lang = [
             'veryeasy' => Lang::t('_DIFFICULT_VERYEASY', 'course'),
             'easy' => Lang::t('_DIFFICULT_EASY', 'course'),
             'medium' => Lang::t('_DIFFICULT_MEDIUM', 'course'),
             'difficult' => Lang::t('_DIFFICULT_DIFFICULT', 'course'),
-            'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'course'), ];
+            'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'course'),];
         //type of course -------------------------------------------------------
         $course_type = [
             'classroom' => Lang::t('_CLASSROOM', 'course'),
@@ -1449,11 +1472,11 @@ class CourseAlmsController extends AlmsController
         $show_who_online = [
             0 => Lang::t('_DONT_SHOW', 'course'),
             _SHOW_COUNT => Lang::t('_SHOW_COUNT', 'course'),
-            _SHOW_INSTMSG => Lang::t('_SHOW_INSTMSG', 'course'), ];
+            _SHOW_INSTMSG => Lang::t('_SHOW_INSTMSG', 'course'),];
 
         $hours = ['-1' => '- -', '0' => '00', '01', '02', '03', '04', '05', '06', '07', '08', '09',
             '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
-            '20', '21', '22', '23', ];
+            '20', '21', '22', '23',];
         $quarter = ['-1' => '- -', '00' => '00', '15' => '15', '30' => '30', '45' => '45'];
 
         $params = [
@@ -1495,13 +1518,13 @@ class CourseAlmsController extends AlmsController
         }
 
         if ($params['course']['hour_begin'] != '-1') {
-            $hb_sel = (int) substr($params['course']['hour_begin'], 0, 2);
+            $hb_sel = (int)substr($params['course']['hour_begin'], 0, 2);
             $qb_sel = substr($params['course']['hour_begin'], 3, 2);
         } else {
             $hb_sel = $qb_sel = '-1';
         }
         if ($params['course']['hour_end'] != '-1') {
-            $he_sel = (int) substr($params['course']['hour_end'], 0, 2);
+            $he_sel = (int)substr($params['course']['hour_end'], 0, 2);
             $qe_sel = substr($params['course']['hour_end'], 3, 2);
         } else {
             $he_sel = $qe_sel = '-1';
@@ -1512,7 +1535,7 @@ class CourseAlmsController extends AlmsController
         $params['qe_sel'] = $qe_sel;
         $params['base_link_course'] = $this->base_link_course;
 
-        $params['use_unsubscribe_date_limit'] = (bool) ($params['course']['unsubscribe_date_limit'] != '');
+        $params['use_unsubscribe_date_limit'] = (bool)($params['course']['unsubscribe_date_limit'] != '');
         $params['unsubscribe_date_limit'] = $params['course']['unsubscribe_date_limit'] != '' && $params['course']['unsubscribe_date_limit'] != '0000-00-00 00:00:00'
             ? Format::date($params['course']['unsubscribe_date_limit'], 'date')
             : '';
