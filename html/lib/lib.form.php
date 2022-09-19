@@ -267,9 +267,10 @@ class Form
      */
     public static function getLineTextfield($css_line, $css_label, $label_name, $css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param, $other_after, $other_before)
     {
+        
         return '<div class="' . $css_line . '">'
         . $other_before
-        . '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>'
+        . ($label_name ? '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>' : '')
         . Form::getInputTextfield($css_text, $id, $name, $value, $alt_name, $maxlenght, $other_param)
         . $other_after
         . '</div>';
@@ -291,7 +292,7 @@ class Form
      */
     public static function getTextfield($label_name, $id, $name, $maxlenght, $value = '', $alt_name = '', $other_after = '', $other_before = '')
     {
-        if ($alt_name == '') {
+        if ($alt_name == '' && !$label_name) {
             $alt_name = strip_tags($label_name);
         }
 
@@ -889,7 +890,7 @@ class Form
     {
         return '<div class="' . $css_line . '">'
             . $other_before
-            . '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>'
+            . ($label_name ? '<p><label class="' . $css_label . '" for="' . $id . '">' . $label_name . '</label></p>' : '')
             // .'<label class="'.$css_label.'" for="'.$id.'">'.$label_name.'</label>'
             . Form::getInputDropdown($css_dropdown, $id, $name, $all_value, $selected, $other_param)
             . $other_after

@@ -1653,6 +1653,7 @@ Nella conservazione dei dati verranno osservate accuratezza e precisione per gar
         <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gestione Comunicazioni]]></key>
         <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categorie]]></key>
         <key id="menu&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impostazioni Mail]]></key>
+        <key id="menu&amp;_DOMAIN_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Impostazioni Domini]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione]]></key>
         <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2017-05-05 11:39:49"><![CDATA[Configurazione e-learning]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2017-05-05 11:41:19"><![CDATA[Configurazione sistema]]></key>
@@ -3282,6 +3283,9 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="mailconfig&amp;_TESTMAIL_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail di TEST]]></key>
         <key id="mailconfig&amp;_TESTMAIL_BODY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Hai inviato una mail di test a questo indirizzo mail]]></key>
         <key id="mailconfig&amp;_TEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invia una mail di test]]></key>
+      </module>
+      <module id="domainconfig">
+        <key id="domainconfig&amp;_DOMAIN_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione Domini]]></key>
       </module>
     </platform>
   </LANG>
