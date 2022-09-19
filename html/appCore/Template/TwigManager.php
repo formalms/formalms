@@ -23,7 +23,10 @@ use FormaLms\appCore\Template\Extensions\UtilExtension;
 use FormaLms\appCore\Template\Extensions\YuiExtension;
 use FormaLms\appCore\Template\Services\ClientService;
 use Twig\Extension\ExtensionInterface;
+use Twig\Extensions\ArrayExtension;
+use Twig\Extensions\DateExtension;
 use Twig\Extensions\IntlExtension;
+use Twig\Extensions\TextExtension;
 
 class TwigManager
 {
@@ -51,6 +54,10 @@ class TwigManager
         $this->twig->addExtension(new TemplateExtension());
         $this->twig->addExtension(new UtilExtension());
         $this->twig->addExtension(new YuiExtension());
+        $this->twig->addExtension(new TextExtension());
+        $this->twig->addExtension(new ArrayExtension());
+        $this->twig->addExtension(new DateExtension());
+
         $this->twig->addGlobal('config', ClientService::getInstance()->getConfig());
         $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
