@@ -1,0 +1,21 @@
+  <tr>
+    <td>
+        {{domain.id}}
+    </td>
+    <td>{{  domain.title }}</td>
+    <td>{{   domain.domain }}</td>
+    <td>{{  domain.template }}</td>
+     <td>{{  domain.orgName }}</td>
+    <td>{{  domain.mailConfigName }}</td>
+    <td> 
+        
+        <a class="btn btn-info btn-edit-confirm btn-xl" href="index.php?r=adm/domainconfig/edit&id={{domain.id}}">{{ Lang_translate('_MOD', 'standard') }}</a>
+        {% if domain.parentId == null %}
+            <a class="btn btn-default btn-test btn-xl" href="index.php?r=adm/domainconfig/show&domainConfigId={{domain.id}}">{{ Lang_translate('_SUBS', 'domainconfig') }}</a>
+        {% endif %}
+        {% if domain.childrenNumber == 0 %}
+            <a class="btn btn-danger btn-delete-confirm btn-xl" href="index.php?r=adm/domainconfig/delete&id={{domain.id}}">{{ Lang_translate('_DEL', 'standard') }}</a>
+        {% endif %}
+    </td>
+     
+</tr>

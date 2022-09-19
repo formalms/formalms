@@ -60,6 +60,18 @@ class MailconfigAdm extends Model {
         return $output;
     }
 
+    public function getList($params = []) {
+        $output = [];
+        $query = 'SELECT id, title FROM %adm_mail_configs';
+        $queryResult = $this->db->query($query);
+        
+        foreach($queryResult as $result) {
+            $output[$result['id']] = $result['title'];
+        }
+
+        return $output;
+    }
+
 
     public function upsert($params = []) {
       

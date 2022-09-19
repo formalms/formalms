@@ -1657,6 +1657,7 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manage Communications]]></key>
         <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categories]]></key>
         <key id="menu&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Settings]]></key>
+        <key id="menu&amp;_DOMAIN_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Domains settings]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Settings]]></key>
         <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-learning configuration]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[System configuration]]></key>
@@ -3286,6 +3287,9 @@ Username: [userid]]]></key>
         <key id="mailconfig&amp;_TESTMAIL_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[TEST Mail]]></key>
         <key id="mailconfig&amp;_TESTMAIL_BODY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You sent a Test mail to this address]]></key>
         <key id="mailconfig&amp;_TEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Send a Test Mail]]></key>
+      </module>
+      <module id="domainconfig">
+        <key id="domainconfig&amp;_DOMAIN_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Domains settings]]></key>
       </module>
     </platform>
   </LANG>
