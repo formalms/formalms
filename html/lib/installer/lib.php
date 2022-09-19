@@ -33,7 +33,7 @@ function generateConfig($tpl_fn)
     $config = str_replace('[%-DB_PASS-%]', addslashes($dbInfo['db_pass']), $config);
     $config = str_replace('[%-DB_NAME-%]', addslashes($dbInfo['db_name']), $config);
 
-    switch ($session->get('upload_method')){
+    switch ($session->get('upload_method')) {
         case 'http':
             $upload_method = 'fs';
 

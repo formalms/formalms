@@ -18,15 +18,15 @@ function categoryDispatch($op, &$treeView)
     switch ($op) {
         case 'newfolder':
              $GLOBALS['page']->add($treeView->loadNewFolder(), 'content');
-        ; break;
+         break;
         case 'renamefolder':
             $GLOBALS['page']->add($treeView->loadRenameFolder(), 'content');
-        ; break;
+         break;
         case 'movefolder':
             $GLOBALS['page']->add($treeView->loadMoveFolder(), 'content');
-        ; break;
+         break;
         case 'deletefolder':
             $GLOBALS['page']->add($treeView->loadDeleteFolder(), 'content');
-        ; break;
+         break;
     }
 }

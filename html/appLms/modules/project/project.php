@@ -151,8 +151,6 @@ function user_projects($userid)
     }
 
     return $res;
-
-    
 }
 
 function userProjectsList($userid)
@@ -208,7 +206,7 @@ function addprj()
     $out->setWorkingZone('content');
     $lang = &DoceboLanguage::createInstance('project', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-   
+
     $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
 
     $out->add('<div class="std_block">' . "\n");
@@ -241,7 +239,6 @@ function addprj()
     $out->add($form->closeButtonSpace());
     $out->add($form->closeForm());
 
-  
     $out->add('</div>');
 }
 
@@ -1321,7 +1318,6 @@ function send_msg()
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $myprj = user_projects(Docebo::user()->getIdSt());
-
 }
 
 function read_msg()
@@ -1812,11 +1808,11 @@ function projectDispatch($op)
     switch ($op) {
         case 'project':
             project();
-        ; break;
+         break;
 
         case 'addprj':
             addprj();
-        ; break;
+         break;
 
         case 'addprj_now':
             if (!isset($_POST['undo'])) {
@@ -1824,19 +1820,19 @@ function projectDispatch($op)
             } else {
                 project();
             }
-        ; break;
+         break;
 
         case 'showprj':
             show_prj();
-        ; break;
+         break;
 
         case 'manprjadmin':
             manprjadmin();
-        ; break;
+         break;
 
         case 'update_admins':
             update_admins();
-        ; break;
+         break;
 
         case 'prjadditem':
             if (isset($_POST['undo'])) {
@@ -1855,7 +1851,7 @@ function projectDispatch($op)
                     edit_files('new');
                 }
             }
-        ; break;
+         break;
 
         case 'prjedititem':
             if (isset($_POST['undo'])) {
@@ -1874,19 +1870,19 @@ function projectDispatch($op)
                     edit_files();
                 }
             }
-        ; break;
+         break;
 
         case 'prjdelitem':
             del_item();
-        ; break;
+         break;
 
         case 'prjsendmsg':
             send_msg();
-        ; break;
+         break;
 
         case 'prjreadmsg':
             read_msg();
-        ; break;
+         break;
 
         case 'modprj':
             if ($_GET['id'] == 0) {
@@ -1896,7 +1892,7 @@ function projectDispatch($op)
             } else {
                 project();
             }
-        ; break;
+         break;
 
         case 'delprj':
             if ($_GET['id'] == 0) {
@@ -1904,15 +1900,15 @@ function projectDispatch($op)
             } else {
                 del_prj();
             }
-        ; break;
+         break;
 
         case 'prjreaditem':
             read_item();
-        ; break;
+         break;
 
         case 'editprogtot':
             edit_progtot();
-        ; break;
+         break;
 
         case 'download':
             require_once _base_ . '/lib/lib.download.php';
@@ -1939,6 +1935,6 @@ function projectDispatch($op)
                     }
                  break;
             }
-        ; break;
+         break;
     }
 }

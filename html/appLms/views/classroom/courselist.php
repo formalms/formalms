@@ -37,7 +37,7 @@
 		<h2>
 			<?php if ($course['can_enter']['can']) { ?>
 			<a href="index.php?modname=course&amp;op=aula&amp;idCourse=<?php echo $course['idCourse']; ?>">
-				<?php echo  $course['lang_code'] != 'none' ? FormaLms\lib\Get::img('language/' . strtolower($course['lang_code']) . '.png', $course['lang_code']) : ''; ?>
+				<?php echo $course['lang_code'] != 'none' ? FormaLms\lib\Get::img('language/' . strtolower($course['lang_code']) . '.png', $course['lang_code']) : ''; ?>
 				<?php echo $keyword != '' ? Layout::highlight($course['name'], $keyword) : $course['name']; ?>
 			</a>
 			<?php } else {

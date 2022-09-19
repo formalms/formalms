@@ -15,7 +15,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class DummyLms extends Model
 {
-
     public function __construct()
     {
         parent::__construct();

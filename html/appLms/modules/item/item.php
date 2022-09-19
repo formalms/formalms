@@ -142,7 +142,7 @@ if (!Docebo::user()->isAnonymous()) {
     function moditem($object_item)
     {
         //checkPerm('view', false, 'storage');
-        $units = array( 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+        $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         require_once _base_ . '/lib/lib.form.php';
         $lang = &DoceboLanguage::createInstance('item');
 
@@ -155,12 +155,11 @@ if (!Docebo::user()->isAnonymous()) {
         $file['name'] = $title;
         $file['description'] = $description;
         $file['size'] = filesize(_base_ . '/files/appLms/' . FormaLms\lib\Get::sett('pathlesson') . $filename);
-        
+
         $power = $file['size'] > 0 ? floor(log($file['size'], 1024)) : 0;
         $file['size_label'] = number_format($file['size'] / pow(1024, $power), 2, '.', ',') . ' ' . $units[$power];
         $files[] = $file;
-      
-     
+
         /*
             $GLOBALS['page']->add(getTitleArea($lang->def('_SECTIONNAME_ITEM'), 'item')
                 . '<div class="std_block">'
@@ -301,7 +300,7 @@ if (!Docebo::user()->isAnonymous()) {
             if (!sql_query($update_query)) {
                 $response['errors'][] = Lang::t('_FILE_OPERATION_FAILURE', 'item');
             }
-            $back_url = FormaLms\lib\Get::site_url() . _folder_lms_ .'/'.$back_url;
+            $back_url = FormaLms\lib\Get::site_url() . _folder_lms_ . '/' . $back_url;
         }
 
         $response['back_url'] = str_replace('&amp;', '&', $back_url . '&id_los=' . (int) $idLesson . '&mod_result=1');

@@ -239,12 +239,12 @@ class EnrollrulesAlms extends Model
                         $entities_name[$ename->id_entity] = $ename->title;
                     }
                 }
-            ; break;
+             break;
             case 'orgchart':
                 $us_man = new UsermanagementAdm();
                 $folders = $us_man->getInfoFolders($id_entities);
                 $entities_name = $folders['idst'];
-            ; break;
+             break;
             case 'group':
                 $aclman = Docebo::aclm();
                 $names = $aclman->getGroups($id_entities);
@@ -253,11 +253,11 @@ class EnrollrulesAlms extends Model
                         $entities_name[$group[ACL_INFO_IDST]] = $aclman->relativeId($group[ACL_INFO_GROUPID]);
                     }
                 }
-            ; break;
+             break;
             case 'fncrole':
                 $fmodel = new FunctionalrolesAdm();
                 $entities_name = $fmodel->getFunctionalRolesNames($id_entities);
-            ; break;
+             break;
         }
 
         return $entities_name;

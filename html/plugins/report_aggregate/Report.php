@@ -139,7 +139,7 @@ class Report extends \ReportPlugin
                 if (isset($_POST['cancelselector'])) {
                     Util::jump_to($back_url);
                 } elseif (isset($_POST['okselector'])) {
-                    $ref->set('rows_filter', ['selection' =>  $user_select->getSelection($_POST)]);
+                    $ref->set('rows_filter', ['selection' => $user_select->getSelection($_POST)]);
                     Util::jump_to($next_url);
                 }
 
@@ -174,7 +174,7 @@ class Report extends \ReportPlugin
                     false,
                     $this->lang->def('_CHOOSE_USER_FOR_REPORT'),
                     true);
-            
+
             $ref->save();
              break;
         }
@@ -198,7 +198,6 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-       
         $selector = new Selector_Course();
 
         if (!isset($reportTempData['columns_filter'])) {
@@ -217,7 +216,7 @@ class Report extends \ReportPlugin
             $temp = $selector->getSelection($_POST);
             $ref->set('selected_courses', $temp);
             $ref->set('all_courses', FormaLms\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
-            $ref->set('showed_columns' , [
+            $ref->set('showed_columns', [
                 'completed' => (FormaLms\lib\Get::req('cols_completed', DOTY_INT, 0) > 0 ? true : false),
                 'initinere' => (FormaLms\lib\Get::req('cols_initinere', DOTY_INT, 0) > 0 ? true : false),
                 'notstarted' => (FormaLms\lib\Get::req('cols_notstarted', DOTY_INT, 0) > 0 ? true : false),
@@ -354,7 +353,7 @@ class Report extends \ReportPlugin
         if ($cols['show_percentages']) {
             $increment = $increment * 2;
         }
-     
+
         $userlevelid = Docebo::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
             //filter users

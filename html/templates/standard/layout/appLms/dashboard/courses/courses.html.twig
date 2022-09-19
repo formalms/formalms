@@ -19,7 +19,7 @@
                 {% if block.data.title is empty %}
                     {{ Lang_translate('_DASHBOARDBLOCKCOURSESLMS','dashboard') }}
                 {% else %}
-                    {{ block.data.title }}
+                    {{ block.data.title|raw }}
                 {% endif %}
             </h3>
             {% for course in block.courses %}
@@ -39,18 +39,18 @@
                         <div class="d-course__title">
                             {{ course.title }}
                         </div>
-                        <div class="d-courses__date-wrapper status--{{ status_class }}">
-                            {% if course.startDateString != '' %}
+                        {% if course.startDateString != '' %}
+                            <div class="d-courses__date-wrapper status--{{ status_class }}">
                                 <div class="d-courses__date d-courses__date--arrow d-courses__date--start">
-                                    {{ course.startDateString }} {% if course.endDateString != '' and not course.startDateString == course.endDateString %} - {{ course.endDateString }} {% endif %}
+                                    {{ course.startDateString }} {% if course.endDateString != '' and course.startDateString != course.endDateString %} - {{ course.endDateString }} {% endif %}
                                 </div>
                                 {% if course.hours != '' %}
                                     <div class="d-courses__date d-courses__date--arrow d-courses__date--hours">
                                         {{ course.hours }}
                                     </div>
                                 {% endif %}
-                            {% endif %}
-                        </div>
+                            </div>
+                        {% endif %}
                         {% if course.dates is not empty %}
                             <div class="d-courses__next-course">
 

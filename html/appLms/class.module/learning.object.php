@@ -63,14 +63,14 @@ class Learning_Object
         switch ($env) {
             case 'communication' :
                 return 0;
-            ; break;
+             break;
             case 'games' :
                 return 0;
-            ; break;
+             break;
             case 'course_lo' :
             default:
                 $qtxt = 'SELECT idParam FROM %lms_organization WHERE idResource = ' . (int) $this->id . " AND objectType = '" . $this->getObjectType() . "' ";
-            ; break;
+             break;
         }
 
         if (!empty($qtxt)) {

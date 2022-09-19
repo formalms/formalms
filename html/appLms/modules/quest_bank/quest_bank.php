@@ -391,7 +391,7 @@ function exportquest(&$url)
 
                 cout('</div>', 'content');
             } else {
-                 Forma::addError($lang->def('_EMPTY_SELECTION'));
+                Forma::addError($lang->def('_EMPTY_SELECTION'));
                 questbank($url);
             }
         }
@@ -452,25 +452,25 @@ function questbankDispatch($op)
     switch ($op) {
         case 'addquest' :
             addquest($url);
-        ; break;
+         break;
         case 'modquest' :
             modquest($url);
-        ; break;
+         break;
 
         case 'importquest' :
             importquest($url);
-        ; break;
+         break;
         case 'doimportquest' :
             doimportquest($url);
-        ; break;
+         break;
 
         case 'exportquest' :
             exportquest($url);
-        ; break;
+         break;
 
         case 'deletequest' :
             deletequest($url);
-        ; break;
+         break;
         case 'main' :
         default:
             questbank($url);

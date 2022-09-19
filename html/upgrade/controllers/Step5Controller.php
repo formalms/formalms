@@ -17,9 +17,12 @@ class Step5Controller extends StepController
 {
     public $step = 5; // Upgrade from version > 4040
     public $session = null;
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
+
     public function render()
     {
         $this->session->set('upgrade_ok', true);

@@ -655,24 +655,24 @@ class AssessmentRule
                             $effects_to_apply['course'] = array_unique(array_merge($effects_to_apply['course'], $effects['course']));
                             $effects_to_apply['coursepath'] = array_unique(array_merge($effects_to_apply['coursepath'], $effects['coursepath']));
                         }
-                    ; break;
+                     break;
                     case RULE_LESSER:
                         if ($score < $descr[0]) {
                             $rule_match[$rule[RULE_ID_ASSESS]] = true;
                             $effects_to_apply['course'] = array_unique(array_merge($effects_to_apply['course'], $effects['course']));
                             $effects_to_apply['coursepath'] = array_unique(array_merge($effects_to_apply['coursepath'], $effects['coursepath']));
                         }
-                    ; break;
+                     break;
                     case RULE_BETWEEN:
                         if ($descr[0] <= $score && $score < $descr[1]) {
                             $rule_match[$rule[RULE_ID_ASSESS]] = true;
                             $effects_to_apply['course'] = array_unique(array_merge($effects_to_apply['course'], $effects['course']));
                             $effects_to_apply['coursepath'] = array_unique(array_merge($effects_to_apply['coursepath'], $effects['coursepath']));
                         }
-                    ; break;
+                     break;
                     case RULE_DEFAULT:
                         $default_effects[$rule[RULE_ID_ASSESS]] = $effects;
-                    ; break;
+                     break;
                 } // end switch
             } else {
                 $effects_not['course'] = array_unique(array_merge($effects_not['course'], $effects['course']));
@@ -712,24 +712,24 @@ class AssessmentRule
                         $effects_to_apply['course'] = array_unique(array_merge($effects_to_apply['course'], $effects['course']));
                         $effects_to_apply['coursepath'] = array_unique(array_merge($effects_to_apply['coursepath'], $effects['coursepath']));
                     }
-                ; break;
+                 break;
                 case RULE_LESSER:
                     if ($score < $descr[0]) {
                         $rule_match = true;
                         $effects_to_apply['course'] = array_unique(array_merge($effects_to_apply['course'], $effects['course']));
                         $effects_to_apply['coursepath'] = array_unique(array_merge($effects_to_apply['coursepath'], $effects['coursepath']));
                     }
-                ; break;
+                 break;
                 case RULE_BETWEEN:
                     if ($descr[0] <= $score && $score < $descr[1]) {
                         $rule_match = true;
                         $effects_to_apply['course'] = array_unique(array_merge($effects_to_apply['course'], $effects['course']));
                         $effects_to_apply['coursepath'] = array_unique(array_merge($effects_to_apply['coursepath'], $effects['coursepath']));
                     }
-                ; break;
+                 break;
                 case RULE_DEFAULT:
                     $default_effects = $effects;
-                ; break;
+                 break;
             }
         }
         // no rule matched

@@ -411,7 +411,7 @@ class Lang
                 $browser_lang = FormaLms\lib\Get::user_acceptlang(false);
                 foreach ($browser_lang as $code) {
                     foreach ($all_language as $lang) {
-                        if (strpos($lang->lang_browsercode, (string)$code) !== false) {
+                        if (strpos($lang->lang_browsercode, (string) $code) !== false) {
                             $currentLang = $lang->lang_code;
                             break 2;
                         }
@@ -420,8 +420,9 @@ class Lang
             }
         }
 
-        $session->set('current_lang',$currentLang);
+        $session->set('current_lang', $currentLang);
         $session->save();
+
         return $currentLang;
     }
 
@@ -447,12 +448,12 @@ class Lang
             // if the user is anonymous we will remember it's forced selection and set up the selected language as
             // it's user preference when he login
             if ($force) {
-                $session->set('forced_lang',true);
+                $session->set('forced_lang', true);
             }
         } else {
             Docebo::user()->preference->setLanguage($lang_code);
         }
-        $session->set('current_lang',$lang_code);
+        $session->set('current_lang', $lang_code);
         $session->save();
 
         return $lang_code;

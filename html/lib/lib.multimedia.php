@@ -59,20 +59,20 @@ function createPreview($src_path, $dst_path, $fn, $width, $height, $forcesize = 
                 case 'jpeg':
                 case 'jpg':
                     $image = imagecreatefromjpeg($src_path . $filename);
-                ; break;
+                 break;
                 case 'png':
                     $image = imagecreatefrompng($src_path . $filename);
-                ; break;
+                 break;
                 case 'gif':
                     if (!function_exists('imagecreatefromgif')) {
                         return -2;
                     }
                     $image = imagecreatefromgif($src_path . $filename);
-                ; break;
+                 break;
                 default:
                     // unknow format
                     return -3;
-                ; break;
+                 break;
             }
             if ($image == null) {
                 return -2;
@@ -441,7 +441,7 @@ function isPossibleEmbedPlay($path, $file_name, $ext = false)
         case 'mp4':
         case 'mov':
         case 'flv':
-        case 'swf':  return true; ; break;
+        case 'swf':  return true; break;
     }
 
     return false;
@@ -483,13 +483,13 @@ function getEmbedPlay($path, $file_name, $ext = false, $width = false, $height =
                     ? ' height="' . $height . 'px"'
                     : $img_size[1] > $height ? ' height="' . $height . 'px"' : '')
                 . ' />';
-        ; break;
+         break;
         case 'wma' :
             return '<object width="' . $width . '" height="' . $height . '">'
                 . '<param name="movie" value="' . $rel_path . $file_name . '"></param>'
                 . '<embed src="' . $rel_path . $file_name . '" type="video/mpeg" width="' . $width . '" height="' . $height . '"></embed>'
                 . '</object>';
-        ; break;
+         break;
         case 'wmv':
             $res = '';
             $res .= '<object width="' . $width . '" height="' . $height . '" classid="CLSID:22D6f312-B0F6-11D0-94AB-0080C74C7E95" type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112">';
@@ -507,19 +507,19 @@ function getEmbedPlay($path, $file_name, $ext = false, $width = false, $height =
                 . '<param name="movie" value="' . $rel_path . $file_name . '"></param>'
                 . '<embed src="' . $rel_path . $file_name . '" type="video/mpeg" width="' . $width . '" height="' . $height . '"></embed>'
                 . '</object>';
-        ; break;
+         break;
         case 'mov' :
             return '<object width="' . $width . '" height="' . $height . '">'
                 . '<param name="movie" value="' . $rel_path . $file_name . '"></param>'
                 . '<embed src="' . $rel_path . $file_name . '" type="video/quicktime" width="' . $width . '" height="' . $height . '"></embed>'
                 . '</object>';
-        ; break;
+         break;
         case 'flv' :
             return getDoceboFlashPlayer($path_from_player . $path . $file_name, $width, $height);
          break;
         case 'swf' :
             return getFlashPluginCode($path . $file_name);
-        ; break;
+         break;
 
         case 'mp3' :
             $converted_filename = implode('_', array_slice(explode('_', $file_name), 3));
@@ -531,7 +531,7 @@ function getEmbedPlay($path, $file_name, $ext = false, $width = false, $height =
                 .'	<param name="movie" value="'.$GLOBALS['where_framework_relative'].'/addons/players/playerDoceboMp3.swf" />'
                 .'	<param name="quality" value="high" />'
                 .'</object>'; */
-        ; break;
+         break;
 
         default:
             if (!$if_unknow_send) {
@@ -541,7 +541,7 @@ function getEmbedPlay($path, $file_name, $ext = false, $width = false, $height =
 
             sendFile($path, $file_name, false);
             exit();
-        ; break;
+         break;
     }
 
     return false;

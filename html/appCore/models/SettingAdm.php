@@ -60,7 +60,7 @@ class SettingAdm extends Model
         $names = $eventNames['names'];
 
         $group = [];
-        foreach ($re_regroup as $row){
+        foreach ($re_regroup as $row) {
             if (array_key_exists($row['regroup'], $names)) {
                 $group[$row['regroup']] = $names[$row['regroup']];
             }
@@ -254,13 +254,13 @@ class SettingAdm extends Model
 			WHERE pack = '$groupPack' AND regroup = '$regroup' AND hide_in_modify = '0'
 			ORDER BY sequence");
 
-            foreach ($reSetting as $row){
+            foreach ($reSetting as $row) {
                 $pack = $row['pack'];
                 $var_name = $row['param_name'];
                 $var_value = $row['param_value'];
                 $value_type = $row['value_type'];
                 $max_size = $row['max_size'];
-            //while (list($pack, $var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
+                //while (list($pack, $var_name, $var_value, $value_type, $max_size) = sql_fetch_row($reSetting)) {
                 switch ($value_type) {
                     case 'register_type':
                             $layout = [

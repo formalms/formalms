@@ -736,9 +736,8 @@ class MessageModule
             $filter = 0;
         }
 
-
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        $session->set('message_filter',$filter);
+        $session->set('message_filter', $filter);
         $session->save();
 
         $user_select->learning_filter = 'message';
@@ -1344,22 +1343,22 @@ function messageDispatch($op, $mvc = false)
     switch ($op) {
         case 'message':
             $module->message();
-        ; break;
+         break;
         case 'addmessage':
             $module->addmessage();
-        ; break;
+         break;
         case 'writemessage':
             $module->writemessage();
-        ; break;
+         break;
         case 'delmessage':
             $module->delmessage();
-        ; break;
+         break;
         case 'readmessage':
             $module->readmessage();
-        ; break;
+         break;
         case 'download':
             $module->download();
-        ; break;
+         break;
     }
 }
 

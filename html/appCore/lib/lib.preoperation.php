@@ -37,8 +37,8 @@ if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODA
 }
 
 // setting of platform
-if (!empty(FormaLms\lib\Get::req('of_platform',DOTY_ALPHANUM,''))) {
-    $session->set('current_action_platform',FormaLms\lib\Get::req('of_platform',DOTY_ALPHANUM,''));
+if (!empty(FormaLms\lib\Get::req('of_platform', DOTY_ALPHANUM, ''))) {
+    $session->set('current_action_platform', FormaLms\lib\Get::req('of_platform', DOTY_ALPHANUM, ''));
     $session->save();
 }
 
@@ -50,7 +50,7 @@ if (!$session->has('must_renew_pwd') && $session->get('must_renew_pwd') == 1
 }
 
 // close over
-if (!empty(FormaLms\lib\Get::req('close_over',DOTY_MIXED,''))) {
-    $session->set('menu_over',['p_sel' => '','main_sel' => 0 ]);
+if (!empty(FormaLms\lib\Get::req('close_over', DOTY_MIXED, ''))) {
+    $session->set('menu_over', ['p_sel' => '', 'main_sel' => 0]);
     $session->save();
 }

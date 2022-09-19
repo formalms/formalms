@@ -229,16 +229,16 @@ function saveTrackStatusChange($idUser, $idCourse, $status)
             case _CUS_SUBSCRIBED:
                 //approved subscriptin for example
                 $extra = ', date_inscr = NOW()';
-            ; break;
+             break;
             case _CUS_BEGIN:
                 //first access
                 UpdatesLms::resetCache();
                 $extra = ', date_first_access = NOW()';
-            ; break;
+             break;
             case _CUS_END:
                 //end course
                 $extra = ', date_complete = NOW()';
-            ; break;
+             break;
         }
     }
 

@@ -18,6 +18,6 @@ function loginDispatch($op)
     switch ($op) {
         case 'login':
             Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?modname=login&amp;op=login');
-        ; break;
+         break;
     }
 }

@@ -54,7 +54,6 @@ class UsermanagementAdmController extends AdmController
 
         // Check if the user admin has reached the max number of users he can create
         if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-        
             $this->permissions['view_deleted_user'] = false;
             $admin_pref = new AdminPreference();
             $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
@@ -71,7 +70,6 @@ class UsermanagementAdmController extends AdmController
     protected function _setSessionValue($index, $value)
     {
         $this->session->set($this->sessionPrefix . '_' . $index, $value);
-       
     }
 
     protected function _getSessionValue($index, $default = false)
@@ -260,7 +258,7 @@ class UsermanagementAdmController extends AdmController
         $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
-            $sort = $var_fields[(int)$index];
+            $sort = $var_fields[(int) $index];
         }
 
         $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
@@ -306,7 +304,7 @@ class UsermanagementAdmController extends AdmController
             $user_entry_data = $fman->getUsersFieldEntryData(array_keys($list));
             foreach ($list as $idst => $record) {
                 $record_row = [
-                    'id' => (int)$record['idst'],
+                    'id' => (int) $record['idst'],
                     'userid' => Layout::highlight($acl_man->relativeId($record['userid']), $filter_text),
                     'firstname' => Layout::highlight($record['firstname'], $filter_text),
                     'lastname' => Layout::highlight($record['lastname'], $filter_text),
@@ -314,9 +312,9 @@ class UsermanagementAdmController extends AdmController
                     'register_date' => Format::date($record['register_date'], 'datetime'),
                     'lastenter' => Format::date($record['lastenter'], 'datetime'),
                     'unassoc' => $idOrg > 0 ? (!empty($record['is_descendant']) ? 0 : 1) : -1,
-                    'valid' => (int)$record['valid'] > 0 ? 1 : 0,
-                    'mod' => 'ajax.adm_server.php?r=' . $this->link . '/moduser&id=' . (int)$idst,
-                    'del' => ($idst != $current_user) ? 'ajax.adm_server.php?r=' . $this->link . '/deluser&id=' . (int)$idst : false,
+                    'valid' => (int) $record['valid'] > 0 ? 1 : 0,
+                    'mod' => 'ajax.adm_server.php?r=' . $this->link . '/moduser&id=' . (int) $idst,
+                    'del' => ($idst != $current_user) ? 'ajax.adm_server.php?r=' . $this->link . '/deluser&id=' . (int) $idst : false,
                 ];
 
                 foreach ($var_fields as $i => $value) {
@@ -341,7 +339,7 @@ class UsermanagementAdmController extends AdmController
                         $content = Format::date(substr($content, 0, 10), 'date');
                     }
                     if ($name == '_custom_' . $value) {
-                        $content = $user_entry_data[(int)$record['idst']][$value];
+                        $content = $user_entry_data[(int) $record['idst']][$value];
                     }
                     $record_row['_dyn_field_' . $i] = $content;
                 }
@@ -614,7 +612,7 @@ class UsermanagementAdmController extends AdmController
                 $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
                 if ($pref['admin_rules.limit_user_insert'] == 'on') {
                     $user_pref = new UserPreferences(Docebo::user()->getIdSt());
-                    $user_created_count = (int)$user_pref->getPreference('user_created_count');
+                    $user_created_count = (int) $user_pref->getPreference('user_created_count');
                     ++$user_created_count;
                     $user_pref->setPreference('user_created_count', $user_created_count);
                     if ($user_created_count >= $pref['admin_rules.max_user_insert']) {
@@ -815,7 +813,7 @@ class UsermanagementAdmController extends AdmController
                     $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
                     if ($pref['admin_rules.limit_user_insert'] == 'on') {
                         $user_pref = new UserPreferences(Docebo::user()->getIdSt());
-                        $user_created_count = (int)$user_pref->getPreference('user_created_count');
+                        $user_created_count = (int) $user_pref->getPreference('user_created_count');
                         $user_created_count = $user_created_count - 1;
                         $user_pref->setPreference('user_created_count', $user_created_count);
                     }
@@ -901,7 +899,7 @@ class UsermanagementAdmController extends AdmController
                     $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
                     if ($pref['admin_rules.limit_user_insert'] == 'on') {
                         $user_pref = new UserPreferences(Docebo::user()->getIdSt());
-                        $user_created_count = (int)$user_pref->getPreference('user_created_count');
+                        $user_created_count = (int) $user_pref->getPreference('user_created_count');
                         $user_created_count = $user_created_count - $count_users;
                         $user_pref->setPreference('user_created_count', $user_created_count);
                     }
@@ -978,7 +976,7 @@ class UsermanagementAdmController extends AdmController
                     $msg_composer
                 );
 
-                // SET SUSPAND USER EVENT
+            // SET SUSPAND USER EVENT
                 //TODO: EVT_OBJECT (§)
                 //$event = new \appCore\Events\Core\User\UsersManagementSuspendEvent();
                 //$event->setUser($user);
@@ -1370,7 +1368,7 @@ class UsermanagementAdmController extends AdmController
                 'id' => $nodedata->idOrg,
                 'label' => $model->getFolderTranslation($nodedata->idOrg, getLanguage()),
                 'is_leaf' => (($nodedata->iRight - $nodedata->iLeft) == 1),
-                'count_content' => (int)(($nodedata->iRight - $nodedata->iLeft - 1) / 2),
+                'count_content' => (int) (($nodedata->iRight - $nodedata->iLeft - 1) / 2),
             ];
         }
         if (!is_array($node)) {
@@ -1573,7 +1571,7 @@ class UsermanagementAdmController extends AdmController
             return '';
         }
 
-        return '<span id="orgchart_code_' . (int)$id . '">[' . $code . ']&nbsp;</span>';
+        return '<span id="orgchart_code_' . (int) $id . '">[' . $code . ']&nbsp;</span>';
     }
 
     public function modfolder()
@@ -2360,7 +2358,6 @@ class UsermanagementAdmController extends AdmController
 
                 // ----------- file upload -----------------------------------------
                 if ($_FILES['file_import']['name'] == '') {
-           
                     Util::jump_to($base_url . '&res=no_file');
                 } else {
                     $path = '/appCore/';
@@ -2369,12 +2366,12 @@ class UsermanagementAdmController extends AdmController
                         sl_open_fileoperations();
                         if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                             sl_close_fileoperations();
-                
+
                             Util::jump_to($base_url . '&err=no_upload');
                         }
                         sl_close_fileoperations();
                     } else {
-                        $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD'));
+                        $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD'));
                         Util::jump_to($base_url . '&err=no_upload');
                     }
                 }
@@ -2604,7 +2601,7 @@ class UsermanagementAdmController extends AdmController
             $arr_users = explode(',', $users);
             $arr_users = array_map(
                 function ($value) {
-                    return (int)$value;
+                    return (int) $value;
                 },
                 $arr_users
             );
@@ -2672,7 +2669,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         $profile = new UserProfile($id_user);
-        $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
+        $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
         $admin_can_mod = ($this->permissions['mod_user'] && Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN);
         if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN || $admin_can_mod) {
             $profile->enableGodMode();
@@ -2711,7 +2708,7 @@ class UsermanagementAdmController extends AdmController
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user > 0) {
             $profile = new UserProfile($id_user);
-            $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int)$id_user, 'ap');
+            $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
             if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $profile->enableGodMode();
             }
@@ -2819,7 +2816,7 @@ class UsermanagementAdmController extends AdmController
             foreach ($list as $record) {
                 $_userid = $acl_man->relativeId($record->userid);
                 $records[] = [
-                    'id' => (int)$record->idst,
+                    'id' => (int) $record->idst,
                     'userid' => Layout::highlight($_userid, $filter),
                     'firstname' => Layout::highlight($record->firstname, $filter),
                     'lastname' => Layout::highlight($record->lastname, $filter),
@@ -2895,7 +2892,7 @@ class UsermanagementAdmController extends AdmController
                 $_userid = $acl_man->relativeId($record->userid);
                 $_inserted_by = $record->inserted_by != '' ? $acl_man->relativeId($record->inserted_by) : '';
                 $records[] = [
-                    'id' => (int)$record->idst,
+                    'id' => (int) $record->idst,
                     'userid' => Layout::highlight($_userid, $filter),
                     'firstname' => Layout::highlight($record->firstname, $filter),
                     'lastname' => Layout::highlight($record->lastname, $filter),
@@ -2903,7 +2900,7 @@ class UsermanagementAdmController extends AdmController
                     'confirmed' => Layout::highlight($record->confirmed, $filter),
                     'insert_date' => Format::date($record->insert_date, 'datetime'),
                     'inserted_by' => $_inserted_by,
-                    'del' => 'ajax.adm_server.php?r=' . $this->link . '/delete_waiting&id_user=' . (int)$record->idst,
+                    'del' => 'ajax.adm_server.php?r=' . $this->link . '/delete_waiting&id_user=' . (int) $record->idst,
                 ];
             }
         }

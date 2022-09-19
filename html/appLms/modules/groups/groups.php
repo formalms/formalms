@@ -28,8 +28,8 @@ function groups()
     $subs_perm = checkPerm('subscribe', true);
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     // Retrive groups
-    $acl_man->setContext('/lms/course/' .$idCourse . '/group');
-    $id_groups = $acl_man->getGroupsIdstFromBasePath('/lms/course/' .$idCourse . '/group', ['course']);
+    $acl_man->setContext('/lms/course/' . $idCourse . '/group');
+    $id_groups = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $idCourse . '/group', ['course']);
     if (!empty($id_groups)) {
         $groups = $acl_man->getGroups($id_groups);
     } else {
@@ -112,7 +112,7 @@ function editgroup()
     $lang = &DoceboLanguage::createInstance('groups', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     if (isset($_GET['id_group'])) {
-        $acl_man->setContext('/lms/course/' .$idCourse . '/group');
+        $acl_man->setContext('/lms/course/' . $idCourse . '/group');
         $group = $acl_man->getGroup($_GET['id_group'], false);
         $group_name = $acl_man->relativeId($group[ACL_INFO_GROUPID]);
         $group_descr = $group[ACL_INFO_GROUPDESCRIPTION];
@@ -150,7 +150,7 @@ function savegroup()
     checkPerm('mod');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $acl_man = &Docebo::user()->getAclManager();
-    $acl_man->setContext('/lms/course/' .$idCourse . '/group');
+    $acl_man->setContext('/lms/course/' . $idCourse . '/group');
     if (isset($_POST['id_group'])) {
         $groupoid = $_POST['group']['groupid'];
         if ($acl_man->updateGroup($_POST['id_group'], $groupoid, $_POST['group_description'], false, 'course', 'lms,')) {
@@ -176,7 +176,7 @@ function delgroup()
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &DoceboLanguage::createInstance('groups', 'lms');
     $acl_man = &Docebo::user()->getAclManager();
-    $acl_man->setContext('/lms/course/' .$idCourse . '/group');
+    $acl_man->setContext('/lms/course/' . $idCourse . '/group');
     $id_group = importVar('id_group', true, 0);
 
     if (isset($_POST['confirm']) || isset($_GET['confirm'])) {
@@ -186,7 +186,7 @@ function delgroup()
             Util::jump_to('index.php?modname=groups&op=groups&result=err');
         }
     } else {
-        $acl_man->setContext('/lms/course/' .$idCourse . '/group');
+        $acl_man->setContext('/lms/course/' . $idCourse . '/group');
         $group = $acl_man->getGroup($_GET['id_group'], false);
 
         $form = new Form();
@@ -234,7 +234,7 @@ function subscribe()
         $users = $acl_man->getGroupUMembers($id_group);
         $user_select->resetSelection($users);
     }
-    $arr_idstGroup = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . (int)$idCourse . '/subscribed/');
+    $arr_idstGroup = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . (int) $idCourse . '/subscribed/');
     $user_select->setUserFilter('group', $arr_idstGroup);
 
     $user_select->setPageTitle(getTitleArea(
@@ -302,24 +302,24 @@ function groupDispatch($op)
     switch ($op) {
         case 'groups':
             groups();
-        ; break;
+         break;
 
         case 'subscribe':
             subscribe();
-        ; break;
+         break;
         case 'savemembers':
             savemembers();
-        ; break;
+         break;
 
         case 'editgroup':
             editgroup();
-        ; break;
+         break;
         case 'savegroup':
             savegroup();
-        ; break;
+         break;
 
         case 'delgroup':
             delgroup();
-        ; break;
+         break;
     }
 }

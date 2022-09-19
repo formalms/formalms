@@ -85,7 +85,6 @@ class CourseSubscribe_Manager
     /**
      * Retrive the table for course users.
      *
-     *
      * @return string The table for course subscription
      */
     public function getSubscribeUserTable()
@@ -781,18 +780,18 @@ class CourseSubscribe_Manager
                     //approved subscriptin for example
                     $extra = ', date_inscr = NOW()';
                     $current_status = ['status' => $status, 'date_inscr' => date('Y-m-d H:i:s')];
-                ; break;
+                 break;
                 case _CUS_BEGIN:
                     //first access
                     UpdatesLms::resetCache();
                     $extra = ', date_first_access = NOW()';
                     $current_status = ['status' => $status, 'date_first_access' => date('Y-m-d H:i:s')];
-                ; break;
+                 break;
                 case _CUS_END:
                     //end course
                     $extra = ', date_complete = NOW()';
                     $current_status = ['status' => $status, 'date_complete' => date('Y-m-d H:i:s')];
-                ; break;
+                 break;
             }
         }
 

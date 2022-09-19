@@ -207,6 +207,7 @@ class Module_Organization extends LmsModule
         if ($this->session->has('direct_play')) {
             return true;
         }
+
         return false;
     }
 
@@ -322,7 +323,7 @@ class Module_Organization extends LmsModule
                 $idTrack = Track_Object::getIdTrackFromCommon($id_item, getLogUserId());
                 $track = createLOTrack($idTrack, $objectType, $idResource, $idParams, '');
                 if ($track->getStatus() == 'completed' || $track->getStatus() == 'passed') {
-                    if (!saveTrackStatusChange((int)getLogUserId(), (int)$idCourse, _CUS_END)) {
+                    if (!saveTrackStatusChange((int) getLogUserId(), (int) $idCourse, _CUS_END)) {
                         errorCommunication($lang->def('_OPERATION_FAILURE'));
 
                         return;
@@ -348,7 +349,7 @@ class Module_Organization extends LmsModule
                 if (count($first_lo) >= 2) {
                     // if we have more than an object we need to play the first one until it's completed
                     $obj = array_shift($first_lo);
-                    $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int)$obj['id_org'] . ' AND idUser = ' . (int)Docebo::user()->getId();
+                    $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) Docebo::user()->getId();
                     list($status) = sql_fetch_row(sql_query($query));
                     if ($status == 'completed' || $status == 'passed') {
                         // we have more then one object and the first one is complete, we can go to the course first page
@@ -413,7 +414,7 @@ class Module_Organization extends LmsModule
                 $saveName = $saveObj->getName('organization' . $this->session->get('idCourse'), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
-                $parentId = (int)$_REQUEST['treeview_selected_organization'];
+                $parentId = (int) $_REQUEST['treeview_selected_organization'];
                 // start learning object creation
                 $lo = createLO($_REQUEST['radiolo']);
 
@@ -426,7 +427,6 @@ class Module_Organization extends LmsModule
                         . '<div class="std_block">', 'content');
                     $GLOBALS['page']->addEnd('</div>', 'content');
                     if (Forma::errorsExists()) {
-  
                         UIFeedback::error(Forma::getFormattedErrors(true));
                     }
                     organization($this->treeView);
@@ -503,7 +503,6 @@ class Module_Organization extends LmsModule
             case 'organization' :
             default:
                 if (Forma::errorsExists()) {
-               
                     UIFeedback::error(Forma::getFormattedErrors(true));
                 }
                 organization($this->treeView);

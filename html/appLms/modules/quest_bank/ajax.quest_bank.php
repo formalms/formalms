@@ -42,8 +42,8 @@ switch ($op) {
             $sort = 'idQuest';
         }
         switch ($dir) {
-            case 'desc':  $dir = 'desc'; ; break;
-            default:  $dir = 'asc'; ; break;
+            case 'desc':  $dir = 'desc'; break;
+            default:  $dir = 'asc'; break;
         }
 
         $startIndex = 0;
@@ -59,7 +59,7 @@ switch ($op) {
         $json = new Services_JSON();
         $output = $json->encode($value);
         aout($output);
-    ; break;
+     break;
     case 'delquest':
         //require_once($GLOBALS['where_framework'].'/lib/lib.json.php');
 
@@ -75,7 +75,7 @@ switch ($op) {
         $json = new Services_JSON();
         $output = $json->encode($value);
         aout($output);
-    ; break;
+     break;
     default:
         require_once _lms_ . '/lib/lib.quest_bank.php';
         $qbm = new QuestBankMan();
@@ -96,8 +96,8 @@ switch ($op) {
             $sort = 'sequence';
         }
         switch ($dir) {
-            case 'desc':  $dir = 'desc'; ; break;
-            default:  $dir = 'asc'; ; break;
+            case 'desc':  $dir = 'desc'; break;
+            default:  $dir = 'asc'; break;
         }
 
         $startIndex = FormaLms\lib\Get::pReq('startIndex', DOTY_INT, 0);
@@ -147,5 +147,5 @@ switch ($op) {
         $json = new Services_JSON();
         $output = $json->encode($value);
         aout($output);
-    ; break;
+     break;
 }

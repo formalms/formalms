@@ -127,7 +127,7 @@ class DoceboUser implements Serializable
             $lvl = current($level_st);
         }
 
-        $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int)$idst . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
+        $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int) $idst . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
             list($lvl) = $this->db->fetch_row($res);
@@ -140,14 +140,10 @@ class DoceboUser implements Serializable
         }
     }
 
-    /**
-     * @return array
-     */
     public function getUserCourses(): array
     {
         return $this->userCourses;
     }
-
 
     public function loadUserCourses()
     {
@@ -156,15 +152,15 @@ class DoceboUser implements Serializable
         $result = $this->db->query($userCoursesQuery);
 
         $userCourses = [];
-        foreach ($result as $userCourse){
+        foreach ($result as $userCourse) {
             $userCourses[$userCourse['idCourse']] = $userCourse;
         }
 
         return $userCourses;
     }
 
-    public function reloadUserCourses(){
-
+    public function reloadUserCourses()
+    {
         $this->userCourses = $this->loadUserCourses();
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->set('user', $this);
@@ -355,6 +351,7 @@ class DoceboUser implements Serializable
                                 $du->loadUserSectionST();
                                 $du->SaveInSession();
                                 $session->save();
+
                                 return $du;
                             }
                         }
@@ -391,9 +388,9 @@ class DoceboUser implements Serializable
     /**
      * static public function for load user from login e password.
      *
-     * @param string $login login of the user
+     * @param string $login    login of the user
      * @param string $password password of the user in clear text
-     * @param string $prefix optional prefix for session publiciables
+     * @param string $prefix   optional prefix for session publiciables
      *
      * @return mixed DoceboUser instance of logged in user if success in login
      *               FALSE otherwise
@@ -467,7 +464,6 @@ class DoceboUser implements Serializable
         }
 
         \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->migrate();
-
 
         return $du;
     }

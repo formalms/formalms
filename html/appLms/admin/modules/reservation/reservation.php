@@ -1121,7 +1121,6 @@ function setRoomViewPerm()
         $me = [getLogUserId()];
         $mdir->setUserFilter('exclude', $me);
         $mdir->setUserFilter('group', $arr_idstGroup);
-     
 
         $mdir->loadSelector($url,
             $lang->def('_VIEW_PERMISSION'), '', true);

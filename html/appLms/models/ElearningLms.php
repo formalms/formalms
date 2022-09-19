@@ -19,9 +19,9 @@ class ElearningLms extends Model
 
     public function __construct()
     {
- 
         parent::__construct();
     }
+
     /**
      * This function return the correct order to use when you wish to diplay the a
      * course list for the user.

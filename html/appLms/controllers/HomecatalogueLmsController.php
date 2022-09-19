@@ -15,7 +15,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class HomecatalogueLmsController extends CatalogLmsController
 {
-
     public function init()
     {
         if (!HomepageAdm::staticIsCatalogToShow()) {
@@ -48,7 +47,7 @@ class HomecatalogueLmsController extends CatalogLmsController
     {
         $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
 
-        $catalogue = $this->model->GetGlobalJsonTree($id_catalogue,[CatalogLms::SHOW_RULES_EVERYONE]);
+        $catalogue = $this->model->GetGlobalJsonTree($id_catalogue, [CatalogLms::SHOW_RULES_EVERYONE]);
         $total_category = count($catalogue);
 
         $data = $this->getBaseData();
@@ -62,11 +61,11 @@ class HomecatalogueLmsController extends CatalogLmsController
             'tab_actived' => false,
             'total_category' => $total_category,
             'starting_catalogue' => $id_catalogue,
-            'catalogue' => $catalogue
+            'catalogue' => $catalogue,
         ]);
 
         $this->render('catalog', [
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -79,7 +78,7 @@ class HomecatalogueLmsController extends CatalogLmsController
         $courses = $this->model->getCatalogCourseList($typeCourse, 1, $id_catalogue, $id_category);
 
         foreach ($courses as $index => $course) {
-            if ((int)$course['show_rules'] !== 0) {
+            if ((int) $course['show_rules'] !== 0) {
                 unset($courses[$index]);
             }
         }

@@ -620,14 +620,14 @@ function delquest()
 switch ($GLOBALS['op']) {
     case 'inspoll':
         inspoll();
-    ; break;
+     break;
 
     case 'modpoll':
         modpoll();
-    ; break;
+     break;
     case 'uppoll':
         uppoll();
-    ; break;
+     break;
 
     case 'modpollgui':
         if (isset($_GET['poll_saved']) || isset($_POST['poll_saved'])) {
@@ -644,30 +644,30 @@ switch ($GLOBALS['op']) {
         }
         $object_poll = createLO('poll', $id_poll);
         $object_poll->edit($id_poll, urldecode($back_url));
-    ; break;
+     break;
 
     case 'fixsequence':
         fixPollSequence();
-    ; break;
+     break;
 
     case 'movequest':
         movequest();
-    ; break;
+     break;
 
     case 'movedown':
         movequestion('down');
-    ; break;
+     break;
     case 'moveup':
         movequestion('up');
-    ; break;
+     break;
 
     case 'addquest':
         addquest();
-    ; break;
+     break;
     case 'modquest':
         modquest();
-    ; break;
+     break;
     case 'delquest':
         delquest();
-    ; break;
+     break;
 }

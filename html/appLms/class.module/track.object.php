@@ -44,7 +44,7 @@ class Track_Object
             $this->idTrack = $idTrack;
             $query = 'SELECT `idReference`, `idUser`, `idTrack`, `objectType`, `dateAttempt`, `status`, `firstAttempt`, `first_complete`, `last_complete` '
                 . ' FROM `' . $this->_table . '`'
-                . " WHERE idTrack='" . (int)$idTrack . "'"
+                . " WHERE idTrack='" . (int) $idTrack . "'"
                 . "   AND objectType='" . $this->objectType . "'";
             $rs = sql_query($query) or
             errorCommunication('Track_Object.Track_Object');
@@ -78,8 +78,8 @@ class Track_Object
         $query = 'SELECT max_score, current_score, num_attempts '
             . 'FROM ' . self::getEnvironmentTable('games') . ' '
             . "WHERE objectType = '" . $objectType . "' "
-            . '	AND idReference = ' . (int)$id_reference . ' '
-            . '	AND idUser = ' . (int)$id_user . ' ';
+            . '	AND idReference = ' . (int) $id_reference . ' '
+            . '	AND idUser = ' . (int) $id_user . ' ';
         list($max_score, $current_score, $num_attempts) = sql_fetch_row(sql_query($query));
 
         $data = Events::trigger('lms.lo_user.updating', [
@@ -104,8 +104,8 @@ class Track_Object
             . ' num_attempts = ' . $data['num_attempts'] . ' '
             . ", max_score = '" . $data['max_score'] . "' "
             . "WHERE objectType = '" . $objectType . "' "
-            . '	AND idReference = ' . (int)$id_reference . ' '
-            . '	AND idUser = ' . (int)$id_user . '';
+            . '	AND idReference = ' . (int) $id_reference . ' '
+            . '	AND idUser = ' . (int) $id_user . '';
         sql_query($query);
 
         Events::trigger('lms.lo_user.updated', [
@@ -166,9 +166,9 @@ class Track_Object
         $query = 'INSERT INTO ' . $table . ' '
             . '( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )'
             . ' VALUES ('
-            . " '" . (int)$idReference . "',"
-            . " '" . (int)$idUser . "',"
-            . " '" . (int)$idTrack . "',"
+            . " '" . (int) $idReference . "',"
+            . " '" . (int) $idUser . "',"
+            . " '" . (int) $idTrack . "',"
             . " '" . $objectType . "',"
             . " '" . $data['firstAttempt'] . "', "
             . " '" . $data['dateAttempt'] . "', "
@@ -264,14 +264,14 @@ class Track_Object
         $query = 'UPDATE ' . $this->_table . ' SET '
             . " dateAttempt ='" . $data['dateAttempt'] . "',"
             . " status ='" . $data['status'] . "'"
-            . " WHERE idTrack = '" . (int)$this->idTrack . "' AND objectType = '" . $this->objectType . "'";
+            . " WHERE idTrack = '" . (int) $this->idTrack . "' AND objectType = '" . $this->objectType . "'";
         if (!sql_query($query) || sql_affected_rows() === 0) {
             $query = 'INSERT INTO ' . $this->_table . ' '
                 . '( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )'
                 . ' VALUES ('
-                . " '" . (int)$this->idReference . "',"
-                . " '" . (int)$this->idUser . "',"
-                . " '" . (int)$this->idTrack . "',"
+                . " '" . (int) $this->idReference . "',"
+                . " '" . (int) $this->idUser . "',"
+                . " '" . (int) $this->idTrack . "',"
                 . " '" . $this->objectType . "',"
                 . " '" . $data['dateAttempt'] . "', "
                 . " '" . $data['dateAttempt'] . "', "
@@ -322,7 +322,7 @@ class Track_Object
         }
         if ($this->status == 'completed' || $this->status == 'passed') {
             //update complete dates in DB
-            $query = 'SELECT first_complete, last_complete FROM %lms_commontrack WHERE idTrack=' . (int)$this->idTrack;
+            $query = 'SELECT first_complete, last_complete FROM %lms_commontrack WHERE idTrack=' . (int) $this->idTrack;
             $res = sql_query($query);
             if ($res && sql_num_rows($res) > 0) {
                 $now = date('Y-m-d H:i:s');
@@ -350,7 +350,7 @@ class Track_Object
                 if (array_key_exists('first_complete', $data)) {
                     $query .= ", first_complete='" . $data['first_complete'] . "'";
                 }
-                $query .= ' WHERE idTrack=' . (int)$this->idTrack;
+                $query .= ' WHERE idTrack=' . (int) $this->idTrack;
                 $res = sql_query($query);
 
                 Events::trigger('lms.lo_user.updated', [
@@ -371,7 +371,7 @@ class Track_Object
             // the only way is a direct query :(, or else if more than one course is open only the last one will complete
             $query = 'SELECT idCourse '
                 . 'FROM %lms_organization '
-                . "WHERE idOrg = '" . (int)$this->idReference . "' ";
+                . "WHERE idOrg = '" . (int) $this->idReference . "' ";
             list($idCourse) = sql_fetch_row(sql_query($query));
             //}
             $useridst = $this->idUser;
@@ -384,7 +384,7 @@ class Track_Object
             if ($isTerminator) {
                 require_once _lms_ . '/lib/lib.course.php';
                 require_once _lms_ . '/lib/lib.stats.php';
-                saveTrackStatusChange((int)$useridst, (int)$idCourse, _CUS_END);
+                saveTrackStatusChange((int) $useridst, (int) $idCourse, _CUS_END);
             }
         }
     }
@@ -424,7 +424,6 @@ class Track_Object
             $arrId = ltrim($arrId, ',');
         }
         if (!empty($arrId)) {
-
             // in this brach we extract two array
             // 1) $idList array of id for use in query
             // 2) $arrPre array composed by $id => $status
@@ -447,7 +446,7 @@ class Track_Object
                 $query = 'SELECT idReference, status '
                     . ' FROM ' . self::getEnvironmentTable($environment) . ''
                     . ' WHERE ((idReference IN ( ' . rtrim(implode(',', $idList), ',') . ' ))'
-                    . "   AND (idUser = '" . (int)$idUser . "'))";
+                    . "   AND (idUser = '" . (int) $idUser . "'))";
 
                 $query .= "   AND ((status = 'completed') OR (status = 'passed'))";
                 $result = sql_query($query)
@@ -470,7 +469,6 @@ class Track_Object
                             break;
                         case 'completed':
                         case 'passed':
-
                             $prerequisitesSatisfied = !(!isset($arrStatus[$id])
                                 || $arrStatus[$id] !== 'completed' && $arrStatus[$id] !== 'passed');
 
@@ -507,8 +505,8 @@ class Track_Object
     {
         $query = 'SELECT status '
             . ' FROM ' . self::getEnvironmentTable($environment) . ''
-            . ' WHERE (idReference = ' . (int)$idReference . ')'
-            . "   AND (idUser = '" . (int)$idUser . "')"
+            . ' WHERE (idReference = ' . (int) $idReference . ')'
+            . "   AND (idUser = '" . (int) $idUser . "')"
             . ' ORDER BY `dateAttempt` DESC';
         $rs = sql_query($query)
         or exit("Error in query=[ $query ] " . sql_error());
@@ -534,8 +532,8 @@ class Track_Object
     {
         $query = 'SELECT idTrack '
             . ' FROM ' . self::getEnvironmentTable($environment) . ''
-            . ' WHERE (idReference = ' . (int)$idReference . ')'
-            . "   AND (idUser = '" . (int)$idUser . "')";
+            . ' WHERE (idReference = ' . (int) $idReference . ')'
+            . "   AND (idUser = '" . (int) $idUser . "')";
         $rs = sql_query($query)
         or exit("Error in query=[ $query ] " . sql_error());
 
@@ -551,13 +549,13 @@ class Track_Object
     public function delIdTrackFromCommon($idReference)
     {
         Events::trigger('lms.lo_user.deleting', [
-            'ids_reference' => (array)$idReference,
+            'ids_reference' => (array) $idReference,
             'environment' => $this->environment,
         ]);
 
         if (is_numeric($idReference)) {
             $query = 'DELETE FROM ' . $this->_table . ''
-                . ' WHERE (idReference = ' . (int)$idReference . ')';
+                . ' WHERE (idReference = ' . (int) $idReference . ')';
         } elseif (is_array($idReference)) {
             $query = 'DELETE FROM ' . $this->_table . ''
                 . ' WHERE (idReference IN (' . implode(',', $idReference) . '))';
@@ -566,7 +564,7 @@ class Track_Object
         or exit("Error in query=[ $query ] " . sql_error());
 
         Events::trigger('lms.lo_user.deleted', [
-            'ids_reference' => (array)$idReference,
+            'ids_reference' => (array) $idReference,
             'environment' => $this->environment,
         ]);
 
@@ -606,7 +604,7 @@ class Track_Object
         $query_search = '
 		SELECT path
 		FROM ' . $GLOBALS['prefix_lms'] . "_homerepo 
-		WHERE idResource = '" . (int)$idResource . "'  
+		WHERE idResource = '" . (int) $idResource . "'  
 			AND objectType = '" . $objectType . "'
 		LIMIT 1";
         $re_search = sql_query($query_search);
@@ -618,7 +616,7 @@ class Track_Object
             $query_lo = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_homerepo
 			SET path = '" . $new_path . "', title = '" . $new_title . "' 
-			WHERE idResource = '" . (int)$idResource . "'  
+			WHERE idResource = '" . (int) $idResource . "'  
 				AND objectType = '" . $objectType . "'";
             $re &= sql_query($query_lo);
         }
@@ -626,14 +624,14 @@ class Track_Object
         $query_lo = '
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_organization
 		SET title = '" . $new_title . "' 
-		WHERE idResource = '" . (int)$idResource . "'  
+		WHERE idResource = '" . (int) $idResource . "'  
 			AND objectType = '" . $objectType . "'";
         $re &= sql_query($query_lo);
 
         $query_search = '
 		SELECT path
 		FROM ' . $GLOBALS['prefix_lms'] . "_repo 
-		WHERE idResource = '" . (int)$idResource . "'  
+		WHERE idResource = '" . (int) $idResource . "'  
 			AND objectType = '" . $objectType . "'
 		LIMIT 1";
         $re_search = sql_query($query_search);
@@ -645,7 +643,7 @@ class Track_Object
             $query_lo = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_repo
 			SET path = '" . $new_path . "', title = '" . $new_title . "' 
-			WHERE idResource = '" . (int)$idResource . "'  
+			WHERE idResource = '" . (int) $idResource . "'  
 				AND objectType = '" . $objectType . "'";
             $re &= sql_query($query_lo);
         }
@@ -669,7 +667,7 @@ class Track_Object
             'environment' => $this->environment,
         ]);
 
-        $query = 'DELETE FROM ' . $this->_table . ' WHERE idUser=' . (int)$id_user . ' AND idReference=' . (int)$id_lo;
+        $query = 'DELETE FROM ' . $this->_table . ' WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo;
         $res = sql_query($query);
 
         Events::trigger('lms.lo_user.deleted', [
@@ -678,7 +676,7 @@ class Track_Object
             'environment' => $this->environment,
         ]);
 
-        $query = 'DELETE FROM %lms_materials_track WHERE idUser=' . (int)$id_user . ' AND idReference=' . (int)$id_lo;
+        $query = 'DELETE FROM %lms_materials_track WHERE idUser=' . (int) $id_user . ' AND idReference=' . (int) $id_lo;
         $res = sql_query($query);
 
         return $res;

@@ -90,7 +90,7 @@ if (Docebo::user()->isAnonymous()) {
             $json = new Services_JSON();
             $output = $json->encode($value);
             aout($output);
-        ; break;
+         break;
         case 'getCourseEditionsTable':
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
             aout(getCourseEditionTable((int) $_POST['course_id']));
@@ -199,7 +199,7 @@ if (Docebo::user()->isAnonymous()) {
                             $score = 2;
                         }
                     }
-                ; break;
+                 break;
                 case 'bad':
                     $userscore_to_save = -1;
                     $score = -1;
@@ -210,7 +210,7 @@ if (Docebo::user()->isAnonymous()) {
                             $score = 0;
                         }
                     }
-                ; break;
+                 break;
             }
 
             $new_score = $man_course->voteCourse(getLogUserId(), $score, $userscore_to_save);
@@ -225,7 +225,7 @@ if (Docebo::user()->isAnonymous()) {
             $json = new Services_JSON();
             $output = $json->encode($value);
             aout($output);
-        ; break;
+         break;
 
         // -----------------------------------------------------------------------------------
 
@@ -292,7 +292,7 @@ if (Docebo::user()->isAnonymous()) {
                     case 'can_reserve':
                         $search[] = '[price]';
                         $replace[] = $cinfo['prize'] . ' ' . _ECOM_CURRENCY;
-                    ; break;
+                     break;
                 }
                 $html = str_replace($search, $replace, $html);
 
@@ -507,7 +507,7 @@ if (Docebo::user()->isAnonymous()) {
             $json = new Services_JSON();
             $output = $json->encode($value);
             aout($output);
-        ; break;
+         break;
         case 'course_materials':
             require_once _lms_ . '/lib/lib.course.php';
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
@@ -573,7 +573,7 @@ if (Docebo::user()->isAnonymous()) {
             $json = new Services_JSON();
             $output = $json->encode($value);
             aout($output);
-        ; break;
+         break;
         case 'play_demo':
             require_once _lms_ . '/lib/lib.course.php';
             require_once _base_ . '/lib/lib.multimedia.php';
@@ -599,7 +599,7 @@ if (Docebo::user()->isAnonymous()) {
             $json = new Services_JSON();
             $output = $json->encode($value);
             aout($output);
-        ; break;
+         break;
         default:
             $lang = &DoceboLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
@@ -617,6 +617,6 @@ if (Docebo::user()->isAnonymous()) {
             $json = new Services_JSON();
             $output = $json->encode($value);
             aout($output);
-        ; break;
+         break;
     }
 }

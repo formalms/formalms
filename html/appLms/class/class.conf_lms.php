@@ -99,7 +99,7 @@ class Config_Lms extends Config
                                                 $langs,
                                                 array_search($var_value, $langs));
 
-                ; break;
+                 break;
                 case 'template':
                     //drop down template
                     $templ = getTemplateList();
@@ -108,7 +108,7 @@ class Config_Lms extends Config
                                                 'option[' . $var_name . ']',
                                                 $templ,
                                                 array_search($var_value, $templ));
-                ; break;
+                 break;
                 case 'hteditor':
                     //drop down hteditor
                     $ht_edit = getHTMLEditorList();
@@ -117,7 +117,7 @@ class Config_Lms extends Config
                                                 'option[' . $var_name . ']',
                                                 $ht_edit,
                                                 $var_value);
-                ; break;
+                 break;
                 case 'layout_chooser':
                     //drop down hteditor
                     $layout = [
@@ -129,7 +129,7 @@ class Config_Lms extends Config
                                                 'option[' . $var_name . ']',
                                                 $layout,
                                                 $var_value);
-                ; break;
+                 break;
                 case 'sel_news':
                     $mode = [
                         'off' => Lang::t('_DONT_SHOW'),
@@ -140,7 +140,7 @@ class Config_Lms extends Config
                                                 'option[' . $var_name . ']',
                                                 $mode,
                                                 $var_value);
-                ; break;
+                 break;
                 case 'enum':
                     //on off
                     $html .= Form::openFormLine()
@@ -151,14 +151,14 @@ class Config_Lms extends Config
                             . ' '
                             . Form::getLabel($var_name . '_on', $lang->def('_' . strtoupper($var_name)))
                             . Form::closeFormLine();
-                ; break;
+                 break;
                 case 'menuvoice':
                 case 'menuvoice_course_public':
                 case 'check':
                     //on off
 
                     $html .= Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name, 'option[' . $var_name . ']', 1, ($var_value == 1));
-                ; break;
+                 break;
 
                 case 'tablist_coursecatalogue':
                     $lang_c = &DoceboLanguage::createInstance('catalogue', 'lms');
@@ -183,7 +183,7 @@ class Config_Lms extends Config
                         $html .= Form::getCheckbox($name, 'tablist_' . $tab_code, 'tablist[' . $tab_code . ']', 1, isset($tab_selected[$tab_code]));
                     }
 
-                ; break;
+                 break;
 
                 case 'first_coursecatalogue_tab':
                     $lang_c = &DoceboLanguage::createInstance('catalogue', 'lms');
@@ -208,7 +208,7 @@ class Config_Lms extends Config
                                                 $tab_list,
                                                 $var_value);
 
-                ; break;
+                 break;
 
                 case 'tablist_mycourses':
                   //$var_value=deformat($var_value);
@@ -229,7 +229,7 @@ class Config_Lms extends Config
                                             (isset($arr_value[$i]) ? $arr_value[$i] : ''), '');
                     }
                     $html .= '</div>';
-        ; break;
+         break;
 
                 //string or int
                 default:
@@ -263,14 +263,14 @@ class Config_Lms extends Config
                 case 'language':
                     $lang = Docebo::langManager()->getAllLangCode();
                     $new_value = $lang[$_POST['option'][$var_name]];
-                ; break;
+                 break;
                 case 'template':
                     $templ = getTemplateList();
                     $new_value = $templ[$_POST['option'][$var_name]];
-                ; break;
+                 break;
                 case 'int':
                     $new_value = (int) $_POST['option'][$var_name];
-                ; break;
+                 break;
                 //if is enum switch value to on or off
                 case 'enum':
                     if (isset($_POST['option'][$var_name])) {
@@ -278,14 +278,14 @@ class Config_Lms extends Config
                     } else {
                         $new_value = 'off';
                     }
-                ; break;
+                 break;
                 case 'check':
                     if (isset($_POST['option'][$var_name]) && $_POST['option'][$var_name] == 1) {
                         $new_value = 1;
                     } else {
                         $new_value = 0;
                     }
-                ; break;
+                 break;
                 case 'menuvoice':
                     require_once _adm_ . '/lib/lib.menu.php';
                     $menu_man = new MenuManager();
@@ -296,7 +296,7 @@ class Config_Lms extends Config
                         $menu_man->removePerm(ADMIN_GROUP_GODADMIN, '/lms/admin' . $extra_info);
                         $new_value = 0;
                     }
-                ; break;
+                 break;
                 case 'menuvoice_course_public':
                     $after_reload_perm = true;
                     require_once _adm_ . '/lib/lib.menu.php';
@@ -314,14 +314,14 @@ class Config_Lms extends Config
                         }
                         $new_value = 0;
                     }
-                ; break;
+                 break;
                 case 'tablist_coursecatalogue':
                     $tab_selected = [];
                     foreach ($_POST['tablist'] as $tab_code => $v) {
                         $tab_selected[$tab_code] = 1;
                     }
                     $new_value = urlencode(Util::serialize($tab_selected));
-                ; break;
+                 break;
 
                 case 'tablist_mycourses':
                   $temp_arr = [];
@@ -332,7 +332,7 @@ class Config_Lms extends Config
                       }
                   }
           $new_value = implode(',', $temp_arr);
-        ; break;
+         break;
 
                 //else simple assignament
                 default:

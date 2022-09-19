@@ -50,7 +50,7 @@ switch ($op) {
         $json = new Services_JSON();
         $output = $json->encode($value);
         aout($output);
-    ; break;
+     break;
     case 'send_ask_friend':
         require_once _adm_ . '/lib/lib.myfriends.php';
 
@@ -75,7 +75,7 @@ switch ($op) {
         $json = new Services_JSON();
         $output = $json->encode($value);
         aout($output);
-    ; break;
+     break;
     case 'send_message':
         require_once _adm_ . '/lib/lib.message.php';
 
@@ -99,5 +99,5 @@ switch ($op) {
         $json = new Services_JSON();
         $output = $json->encode($value);
         aout($output);
-    ; break;
+     break;
 }

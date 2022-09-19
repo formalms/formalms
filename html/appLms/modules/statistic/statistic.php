@@ -61,7 +61,7 @@ function outPageView($link)
                     'x_axis' => $lang->def('_WEEK_DAY_' . ($c - 1) . '_SHORT'),
                     'y_axis' => 0,
                 ];
-            };
+            }
             break;
         case 'month':
             echo $dateinit = date('Y-m-d H:i:s', time() - 30 * 24 * 3600);
@@ -119,7 +119,6 @@ function outPageView($link)
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
-
     $query_stat = 'SELECT ' . $select . ', COUNT(*) as count 
 	FROM %lms_trackingeneral 
 	WHERE idCourse="' . $idCourse . '"';
@@ -161,12 +160,12 @@ function outPageView($link)
         'backgroundColor' => [],
         'borderColor' => [],
         'pointHoverRadius' => 5,
-        'hoverBackgroundColor' => []
+        'hoverBackgroundColor' => [],
     ];
 
     $chartString = '<script type="text/javascript">$(document).ready(function () {';
-    $chartString .= "
-    var dataset = " . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($dataset, 'json') . ";
+    $chartString .= '
+    var dataset = ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($dataset, 'json') . ";
     var backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-2');
     var borderColor = getComputedStyle(document.documentElement).getPropertyValue('--color-2-600');
         
@@ -179,7 +178,7 @@ function outPageView($link)
     const statsChart = new window.frontend.modules.Chart($(\"#statistic_chart\"), {
     type: 'bar',
     data: {
-        labels: " . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($labels, 'json') . ",
+        labels: " . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($labels, 'json') . ',
         datasets: [ dataset ]
     },
     options: {
@@ -189,11 +188,10 @@ function outPageView($link)
             }
         }
     }
-});";
+});';
 
     $chartString .= '});</script>';
     cout($chartString, 'content');
-
 
     cout('<div class="align-center">'
         . '<ul class="link_list_inline">', 'content');
@@ -246,7 +244,6 @@ function statistic()
         . '</div>', 'content'
     );
 
-
     if (FormaLms\lib\Get::sett('tracking') == 'on') {
         $GLOBALS['page']->add('<div class="title">' . $lang->def('_PAGE_VIEW') . '</div>', 'content');
         outPageView('index.php?modname=statistic&amp;op=statistic');
@@ -278,7 +275,6 @@ function statistic()
 
 function getTable($tb, $title = null, $id)
 {
-
     $table_head = '';
     foreach ($tb->table_head as $row) {
         $table_head .= '<tr>';
@@ -357,14 +353,14 @@ function userdetails()
     $query_time = '
 	SELECT SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)))
 	FROM %lms_tracksession 
-	WHERE idCourse = "' . (int)$idCourse . '" AND idUser = "' . $idst_user . '"';
+	WHERE idCourse = "' . (int) $idCourse . '" AND idUser = "' . $idst_user . '"';
     list($tot_time) = sql_fetch_row(sql_query($query_time));
 
     $query_track = '
 	SELECT idEnter, enterTime, lastTime, (UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) AS howm, 
 		numOp, lastFunction, lastOp, session_id 
 	FROM %lms_tracksession 
-	WHERE idCourse = "' . (int)$idCourse . '" AND idUser = "' . $idst_user . '"
+	WHERE idCourse = "' . (int) $idCourse . '" AND idUser = "' . $idst_user . '"
 	ORDER BY ';
 
     $img_down = '<img src="' . getPathImage() . 'standard/ord_asc.png" alt="' . $lang->def('_ORD_ASC_TITLE') . '" '
@@ -376,17 +372,17 @@ function userdetails()
         case 'hm':
             $query_track .= ' howm ' . ($inv ? '  ' : ' DESC ');
             $order_for = $lang->def('_HOW_MUCH_TIME');
-            $image_hm = ($inv ? $img_down : $img_up);;
+            $image_hm = ($inv ? $img_down : $img_up);
             break;
         case 'nop':
             $query_track .= ' numOp ' . ($inv ? '  ' : 'DESC');
             $order_for = $lang->def('_NUMBER_OF_OP');
-            $image_nop = ($inv ? $img_down : $img_up);;
+            $image_nop = ($inv ? $img_down : $img_up);
             break;
         default:
             $query_track .= ' enterTime ' . ($inv ? ' DESC ' : '');
             $order_for = $lang->def('_SESSION_STARTED');
-            $image_sst = ($inv ? $img_down : $img_up);;
+            $image_sst = ($inv ? $img_down : $img_up);
             break;
     }
     //$query_track .= " LIMIT " . $ini . ", " . FormaLms\lib\Get::sett('visuItem');
@@ -424,9 +420,9 @@ function userdetails()
     $total_sec = 0;
     $chartData = [];
     while (list($id_enter, $session_start_at, $last_action_at, $how, $num_op, $last_module, $last_op, $session_id) = sql_fetch_row($re_tracks)) {
-        $hours = (int)($how / 3600);
-        $minutes = (int)(($how % 3600) / 60);
-        $seconds = (int)($how % 60);
+        $hours = (int) ($how / 3600);
+        $minutes = (int) (($how % 3600) / 60);
+        $seconds = (int) ($how % 60);
         if ($minutes < 10) {
             $minutes = '0' . $minutes;
         }
@@ -452,9 +448,9 @@ function userdetails()
         $tb->addBody($cont);
     }
 
-    $hours = (int)($tot_time / 3600);
-    $minutes = (int)(($tot_time % 3600) / 60);
-    $seconds = (int)($tot_time % 60);
+    $hours = (int) ($tot_time / 3600);
+    $minutes = (int) (($tot_time % 3600) / 60);
+    $seconds = (int) ($tot_time % 60);
     if ($minutes < 10) {
         $minutes = '0' . $minutes;
     }
@@ -502,7 +498,7 @@ function sessiondetails()
     $query_tot_track = '
 	SELECT COUNT(*) 
 	FROM %lms_trackingeneral 
-	WHERE idCourse = "' . (int)$idCourse . '" AND idUser = "' . $idst_user . '" AND idEnter = "' . $id_enter . '"';
+	WHERE idCourse = "' . (int) $idCourse . '" AND idUser = "' . $idst_user . '" AND idEnter = "' . $id_enter . '"';
     list($tot_elem) = sql_fetch_row(sql_query($query_tot_track));
     $nav_bar->setElementTotal($tot_elem);
 
@@ -541,9 +537,9 @@ function sessiondetails()
     while ($read = sql_fetch_assoc($re_tracks)) {
         if ($read_previous !== false) {
             $time_in = $read['unix_time'] - $read_previous['unix_time'];
-            $hours = (int)($time_in / 3600);
-            $minutes = (int)(($time_in % 3600) / 60);
-            $seconds = (int)($time_in % 60);
+            $hours = (int) ($time_in / 3600);
+            $minutes = (int) (($time_in % 3600) / 60);
+            $seconds = (int) ($time_in % 60);
             if ($minutes < 10) {
                 $minutes = '0' . $minutes;
             }
@@ -565,15 +561,15 @@ function sessiondetails()
     $query_last_track = '
 	SELECT g.function, g.type, g.timeof, UNIX_TIMESTAMP(g.timeof) AS unix_time 
 	FROM %lms_trackingeneral AS g
-	WHERE g.idCourse = "' . (int)$idCourse . '" AND g.idUser = "' . $idst_user . '" AND g.idEnter = "' . $id_enter . '" 
+	WHERE g.idCourse = "' . (int) $idCourse . '" AND g.idUser = "' . $idst_user . '" AND g.idEnter = "' . $id_enter . '" 
 	LIMIT ' . ($ini + FormaLms\lib\Get::sett('visuItem')) . ', 1';
     $re_track = sql_query($query_last_track);
     if (sql_num_rows($re_track) > 0) {
         $read = sql_fetch_assoc($re_track);
         $time_in = $read['unix_time'] - $read_previous['unix_time'];
-        $hours = (int)($time_in / 3600);
-        $minutes = (int)(($time_in % 3600) / 60);
-        $seconds = (int)($time_in % 60);
+        $hours = (int) ($time_in / 3600);
+        $minutes = (int) (($time_in % 3600) / 60);
+        $seconds = (int) ($time_in % 60);
         if ($minutes < 10) {
             $minutes = '0' . $minutes;
         }
@@ -603,13 +599,13 @@ function statisticDispatch($op)
 {
     switch ($op) {
         case 'statistic':
-            statistic();;
+            statistic();
             break;
         case 'userdetails':
-            userdetails();;
+            userdetails();
             break;
         case 'sessiondetails':
-            sessiondetails();;
+            sessiondetails();
             break;
     }
 }

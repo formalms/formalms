@@ -51,7 +51,7 @@ function upgradeConfig4000($config)
         $dbInfo['db_pass'] = $GLOBALS['dbpass'];
         $dbInfo['db_name'] = $GLOBALS['dbname'];
 
-        $session->set('db_info',$dbInfo);
+        $session->set('db_info', $dbInfo);
 
         $uploadMethod = 'http';
         if ($GLOBALS['uploadType'] == 'fs') {
@@ -59,7 +59,7 @@ function upgradeConfig4000($config)
         } else {
             $uploadMethod = 'ftp';
         }
-        $session->set('upload_method',$uploadMethod);
+        $session->set('upload_method', $uploadMethod);
 
         $ulInfo['ftp_host'] = $GLOBALS['ftphost'];
         $ulInfo['ftp_port'] = $GLOBALS['ftpport'];
@@ -67,7 +67,7 @@ function upgradeConfig4000($config)
         $ulInfo['ftp_pass'] = $GLOBALS['ftppass'];
         $ulInfo['ftp_path'] = $GLOBALS['ftppath'];
 
-        $session->set('ul_info',$ulInfo);
+        $session->set('ul_info', $ulInfo);
 
         $session->save();
 

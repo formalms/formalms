@@ -453,15 +453,15 @@ class Course_Manager
                 $this->_loadCourseStatus($active_tab, $old_tab);
                 $output .= $this->loadCourseSelector($noprint);
 
-            ; break;
+             break;
             case 'tab_coursepath':
                 $this->_loadCoursePathStatus($active_tab, $old_tab);
                 $output .= $this->loadCoursePathSelector($noprint);
-            ; break;
+             break;
             case 'tab_catalogue':
                 $this->_loadCatalogueStatus($active_tab, $old_tab);
                 $output .= $this->loadCatalogueSelector($noprint);
-            ; break;
+             break;
         }
 
         $output .= $this->_saveCourseStatus($active_tab, $old_tab)

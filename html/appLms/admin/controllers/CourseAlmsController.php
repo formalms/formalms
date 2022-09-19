@@ -81,7 +81,7 @@ class CourseAlmsController extends AlmsController
     public function getlolist($p = 0, $sk = '')
     {
         if (isset($_GET['idCourse'])) {
-            $query_list = "SELECT * FROM %lms_organization WHERE idCourse = '" . (int)$_GET['idCourse'] . "' AND idParent = " . $p . ' ORDER BY path ASC';
+            $query_list = "SELECT * FROM %lms_organization WHERE idCourse = '" . (int) $_GET['idCourse'] . "' AND idParent = " . $p . ' ORDER BY path ASC';
             $result_list = sql_query($query_list);
             if (sql_num_rows($result_list) > 0) {
                 if ($p == 0) {
@@ -124,9 +124,9 @@ class CourseAlmsController extends AlmsController
         }
 
         if (isset($_POST['c_filter_set'])) {
-            $classroom = (bool)FormaLms\lib\Get::req('classroom', DOTY_INT, false);
-            $descendants = (bool)FormaLms\lib\Get::req('descendants', DOTY_INT, false);
-            $waiting = (bool)FormaLms\lib\Get::req('waiting', DOTY_INT, false);
+            $classroom = (bool) FormaLms\lib\Get::req('classroom', DOTY_INT, false);
+            $descendants = (bool) FormaLms\lib\Get::req('descendants', DOTY_INT, false);
+            $waiting = (bool) FormaLms\lib\Get::req('waiting', DOTY_INT, false);
             $filter_text = FormaLms\lib\Get::req('text', DOTY_STRING, '');
         } else {
             $classroom = $this->session->get('course_filter')['classroom'];
@@ -147,7 +147,7 @@ class CourseAlmsController extends AlmsController
             'waiting' => $waiting,
             'text' => $filter_text,
             'open' => $filter_open,
-            'id_category' => $this->_getSessionTreeData('id_category', 0),];
+            'id_category' => $this->_getSessionTreeData('id_category', 0), ];
 
         $courseFilter = $this->session->get('course_filter');
         $courseFilter['text'] = $filter_text;
@@ -225,7 +225,6 @@ class CourseAlmsController extends AlmsController
             $courseFilter['waiting'] = true;
         }
 
-
         $this->session->set('course_filter', $courseFilter);
         $this->session->save();
 
@@ -259,12 +258,12 @@ class CourseAlmsController extends AlmsController
                     'id' => 'del_' . $id_category,
                     'command' => 'delete',
                     'icon' => 'standard/delete.png',
-                    'alt' => Lang::t('_DEL'),];
+                    'alt' => Lang::t('_DEL'), ];
             } else {
                 $node_options[] = [
                     'id' => 'del_' . $id_category,
                     'command' => false,
-                    'icon' => 'blank.png',];
+                    'icon' => 'blank.png', ];
             }
         }
 
@@ -312,8 +311,8 @@ class CourseAlmsController extends AlmsController
                                     'id' => $id_category,
                                     'label' => end($labelArray),
                                     'is_leaf' => $is_leaf,
-                                    'count_content' => (int)(($right - $left - 1) / 2),
-                                    'options' => $node_options,],];
+                                    'count_content' => (int) (($right - $left - 1) / 2),
+                                    'options' => $node_options, ], ];
                         }
                     }
                 } else { //not initial selection, just an opened folder
@@ -327,8 +326,8 @@ class CourseAlmsController extends AlmsController
                             'id' => $id_category,
                             'label' => end($pathArray),
                             'is_leaf' => $is_leaf,
-                            'count_content' => (int)(($right - $left - 1) / 2),
-                            'options' => $node_options,]; //change this
+                            'count_content' => (int) (($right - $left - 1) / 2),
+                            'options' => $node_options, ]; //change this
                     }
                 }
 
@@ -393,7 +392,7 @@ class CourseAlmsController extends AlmsController
                             'label' => stripslashes($node_name),
                             'is_leaf' => true,
                             'count_content' => 0,
-                            'options' => $this->_getNodeActions($new_node_id, true),];
+                            'options' => $this->_getNodeActions($new_node_id, true), ];
                     }
                 }
                 echo $this->json->encode($result);
@@ -456,7 +455,7 @@ class CourseAlmsController extends AlmsController
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
         $idCourse = FormaLms\lib\Get::req('idCourse', DOTY_MIXED, null);
 
-        $id_category = FormaLms\lib\Get::req('node_id', DOTY_INT, (int)$this->_getSessionTreeData('id_category', 0));
+        $id_category = FormaLms\lib\Get::req('node_id', DOTY_INT, (int) $this->_getSessionTreeData('id_category', 0));
         $filter_text = $this->session->get('course_filter')['text'];
         $classroom = $this->session->get('course_filter')['classroom'];
         $descendants = $this->session->get('course_filter')['descendants'];
@@ -505,9 +504,9 @@ class CourseAlmsController extends AlmsController
                     }
             }
 
-            $num_overbooking = (int)$this->model->getUserInOverbooking($row['idCourse']);
+            $num_overbooking = (int) $this->model->getUserInOverbooking($row['idCourse']);
 
-            $num_subscribed = (int)$row['subscriptions'] - ((int)$row['pending'] + $num_overbooking);
+            $num_subscribed = (int) $row['subscriptions'] - ((int) $row['pending'] + $num_overbooking);
 
             $list[$row['idCourse']] = [
                 'id' => $row['idCourse'],
@@ -740,7 +739,6 @@ class CourseAlmsController extends AlmsController
             $query = "SELECT * FROM %lms_menucourse_main WHERE idCourse = '" . $idCourseToDulicate . "' ";
             $menuResult = sql_query($query);
             foreach ($menuResult as $courseDatamen) {
-
                 $query = 'INSERT INTO %lms_menucourse_main ' .
                     ' (idCourse, sequence, name, image) ' .
                     ' VALUES ' .
@@ -753,7 +751,6 @@ class CourseAlmsController extends AlmsController
             $query = "SELECT * FROM %lms_menucourse_under WHERE idCourse = '" . $idCourseToDulicate . "' ";
             $menuUnderResult = sql_query($query);
             foreach ($menuUnderResult as $menuUnderRow) {
-
                 $idMain = $menuSequence[$menuUnderRow['idMain']];
                 $insertQueryList[] = "('" . $idMain . "', '" . $newCourseId . "', '" . $menuUnderRow['sequence'] . "', '" . $menuUnderRow['idModule'] . "', '" . $menuUnderRow['my_name'] . "')";
             }
@@ -816,7 +813,6 @@ class CourseAlmsController extends AlmsController
 
             $duplicateLearningObjects = $this->request->get('lo', null);
             if (!empty($duplicateLearningObjects)) {
-
                 $learningObjectList = $this->request->get('lo_list', []);
 
                 $learningObjects = [];
@@ -824,13 +820,12 @@ class CourseAlmsController extends AlmsController
                 $learningObjectPrerequisites = [];
 
                 // retrive all the folders and object, the order by grant that folder are created before the elements contained in them
-                $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int)$idCourseToDulicate . ' ORDER BY path ASC';
+                $query = 'SELECT * FROM %lms_organization WHERE idCourse = ' . (int) $idCourseToDulicate . ' ORDER BY path ASC';
                 $learningObjectResult = sql_query($query);
 
                 // Go trough all the entry of learning_organization
                 foreach ($learningObjectResult as $source) {
-
-                    $source = (object)$source;
+                    $source = (object) $source;
                     // check if LO id is checked
                     if (in_array($source->idOrg, $learningObjectList, true)) {
                         // if it's an object we must make a copy, if it's a folder we can create a row
@@ -920,8 +915,8 @@ class CourseAlmsController extends AlmsController
                     foreach ($oldPrerequisites as $oldPrerequisite) {
                         //a prerequisite can be a pure number or something like 7=NULL, or 7=incomplete
 
-                        if (array_key_exists((int)$oldPrerequisite, $learningObjectsIdOrgs)) {
-                            $newLearningObjectId = $learningObjectsIdOrgs[(int)$oldPrerequisite];
+                        if (array_key_exists((int) $oldPrerequisite, $learningObjectsIdOrgs)) {
+                            $newLearningObjectId = $learningObjectsIdOrgs[(int) $oldPrerequisite];
 
                             $newPrerequisites[] = $newLearningObjectId;
                         }
@@ -941,7 +936,6 @@ class CourseAlmsController extends AlmsController
                 $result = sql_query($query);
 
                 foreach ($result as $forum) {
-
                     $insertQueryList[] = "('" . $newCourseId . "', '" . sql_escape_string($forum['title']) . "', '" . sql_escape_string($forum['description']) . "',
 						'" . $forum['locked'] . "', '" . $forum['sequence'] . "', '" . $forum['emoticons'] . "')";
                 }
@@ -972,7 +966,6 @@ class CourseAlmsController extends AlmsController
 					AND source_of IN ('test', 'scoitem')";
                 $result = sql_query($query);
 
-
                 foreach ($result as $row) {
                     switch ($row['source_of']) {
                         case 'scoitem':
@@ -993,7 +986,6 @@ class CourseAlmsController extends AlmsController
 						WHERE s.idscorm_item IN (' . implode(',', $itemsArray['scoitem']) . ")
 						AND o.objectType = 'scormorg'";
                     $res = sql_query($query);
-
 
                     foreach ($res as $row) {
                         list($idOrg, $idResource, $idscorm_item, $item_identifier) = $row;
@@ -1085,8 +1077,7 @@ class CourseAlmsController extends AlmsController
             $duplicateAdvice = $this->request->get('advice', null);
             //Create the new course file
             if (!empty($duplicateAdvice)) {
-
-                $query = 'SELECT * FROM %lms_advice WHERE idCourse = ' . (int)$idCourseToDulicate;
+                $query = 'SELECT * FROM %lms_advice WHERE idCourse = ' . (int) $idCourseToDulicate;
                 $result = sql_query($query);
 
                 if (sql_num_rows($result) > 0) {
@@ -1105,7 +1096,7 @@ class CourseAlmsController extends AlmsController
 
                     foreach ($result as $row) {
                         $newDescription = (!empty($learningObjectsIdOrgs)) ? str_replace($arraySub, $arrayReplace, $row['description']) : $row['description'];
-                        $insertQueryList[] = '(NULL, ' . (int)$newCourseId . ", '" . $row['posted'] . "', " . (int)$row['author'] . ", '" . $row['title'] . "', '" . $newDescription . "', " . (int)$row['important'] . ')';
+                        $insertQueryList[] = '(NULL, ' . (int) $newCourseId . ", '" . $row['posted'] . "', " . (int) $row['author'] . ", '" . $row['title'] . "', '" . $newDescription . "', " . (int) $row['important'] . ')';
                     }
 
                     if (!empty($insertQueryList)) {
@@ -1288,8 +1279,8 @@ class CourseAlmsController extends AlmsController
 							%lms_menucourse_under AS un ) JOIN
 							' . $GLOBALS['prefix_lms'] . "_module AS module
 							WHERE main.idMain = un.idMain AND un.idModule = module.idModule
-							AND main.idCourse = '" . (int)$id_course . "'
-							AND un.idCourse = '" . (int)$id_course . "'
+							AND main.idCourse = '" . (int) $id_course . "'
+							AND un.idCourse = '" . (int) $id_course . "'
 							ORDER BY main.sequence, un.sequence
 							LIMIT 0,1";
 
@@ -1454,14 +1445,14 @@ class CourseAlmsController extends AlmsController
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),];
+            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'), ];
         //difficult ------------------------------------------------------------
         $difficult_lang = [
             'veryeasy' => Lang::t('_DIFFICULT_VERYEASY', 'course'),
             'easy' => Lang::t('_DIFFICULT_EASY', 'course'),
             'medium' => Lang::t('_DIFFICULT_MEDIUM', 'course'),
             'difficult' => Lang::t('_DIFFICULT_DIFFICULT', 'course'),
-            'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'course'),];
+            'verydifficult' => Lang::t('_DIFFICULT_VERYDIFFICULT', 'course'), ];
         //type of course -------------------------------------------------------
         $course_type = [
             'classroom' => Lang::t('_CLASSROOM', 'course'),
@@ -1472,11 +1463,11 @@ class CourseAlmsController extends AlmsController
         $show_who_online = [
             0 => Lang::t('_DONT_SHOW', 'course'),
             _SHOW_COUNT => Lang::t('_SHOW_COUNT', 'course'),
-            _SHOW_INSTMSG => Lang::t('_SHOW_INSTMSG', 'course'),];
+            _SHOW_INSTMSG => Lang::t('_SHOW_INSTMSG', 'course'), ];
 
         $hours = ['-1' => '- -', '0' => '00', '01', '02', '03', '04', '05', '06', '07', '08', '09',
             '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',
-            '20', '21', '22', '23',];
+            '20', '21', '22', '23', ];
         $quarter = ['-1' => '- -', '00' => '00', '15' => '15', '30' => '30', '45' => '45'];
 
         $params = [
@@ -1518,13 +1509,13 @@ class CourseAlmsController extends AlmsController
         }
 
         if ($params['course']['hour_begin'] != '-1') {
-            $hb_sel = (int)substr($params['course']['hour_begin'], 0, 2);
+            $hb_sel = (int) substr($params['course']['hour_begin'], 0, 2);
             $qb_sel = substr($params['course']['hour_begin'], 3, 2);
         } else {
             $hb_sel = $qb_sel = '-1';
         }
         if ($params['course']['hour_end'] != '-1') {
-            $he_sel = (int)substr($params['course']['hour_end'], 0, 2);
+            $he_sel = (int) substr($params['course']['hour_end'], 0, 2);
             $qe_sel = substr($params['course']['hour_end'], 3, 2);
         } else {
             $he_sel = $qe_sel = '-1';
@@ -1535,7 +1526,7 @@ class CourseAlmsController extends AlmsController
         $params['qe_sel'] = $qe_sel;
         $params['base_link_course'] = $this->base_link_course;
 
-        $params['use_unsubscribe_date_limit'] = (bool)($params['course']['unsubscribe_date_limit'] != '');
+        $params['use_unsubscribe_date_limit'] = (bool) ($params['course']['unsubscribe_date_limit'] != '');
         $params['unsubscribe_date_limit'] = $params['course']['unsubscribe_date_limit'] != '' && $params['course']['unsubscribe_date_limit'] != '0000-00-00 00:00:00'
             ? Format::date($params['course']['unsubscribe_date_limit'], 'date')
             : '';

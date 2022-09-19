@@ -364,7 +364,7 @@ function statuserfilter()
     //--- filter on class ------------------------------------------------------
 
     //retrieve class (date)
-   $query = 'SELECT dt.id_date, dt.code, dt.name, MIN( dy.date_begin ) AS sub_start_date, MAX( dy.date_end ) AS sub_end_date
+    $query = 'SELECT dt.id_date, dt.code, dt.name, MIN( dy.date_begin ) AS sub_start_date, MAX( dy.date_end ) AS sub_end_date
 		FROM %lms_course_date AS dt
 		JOIN %lms_course_date_day AS dy ON dy.id_date = dt.id_date
 		WHERE dt.id_course = ' . (int) $idCourse . '  AND dy.deleted = 0

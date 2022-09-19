@@ -570,7 +570,7 @@ class Field_YesNo extends Field
             case 'true':
             case '1':
                 $value = 1;
-            ; break;
+             break;
 
             case '':
             case '0':
@@ -578,7 +578,7 @@ class Field_YesNo extends Field
             case 'null':
             case 'false':
                 $value = 2;
-            ; break;
+             break;
 
             default: $value = 0; break;
         }
@@ -637,7 +637,7 @@ class Field_YesNo extends Field
             case 'true':
             case '1':
                 $value = 1;
-            ; break;
+             break;
 
             case '':
             case '0':
@@ -645,7 +645,7 @@ class Field_YesNo extends Field
             case 'null':
             case 'false':
                 $value = 2;
-            ; break;
+             break;
 
             default: $value = 0; break;
         }

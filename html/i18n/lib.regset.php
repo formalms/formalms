@@ -158,7 +158,6 @@ class RegionalSettings
      */
     public function regionalToInternal($date, $type = false)
     {
-
         if ($type === false) {
             $type = 'datetime';
         }
@@ -377,13 +376,13 @@ class RegionalSettings
 
         $pattern = $this->_getDateRegExp($token);
         preg_match($pattern, $date, $found_val);
-        if (is_array($found_val) && count($found_val) > 0){
+        if (is_array($found_val) && count($found_val) > 0) {
             unset($found_val[0]);
         }
 
         $pattern = $this->_getFormatRegExp($token);
         preg_match($pattern, $token, $found_key);
-        if (is_array($found_key) && count($found_key) > 0){
+        if (is_array($found_key) && count($found_key) > 0) {
             unset($found_key[0]);
         }
 

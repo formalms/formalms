@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _base_ . '/lib/lib.json.php';
-use \FormaLms\lib\Session\SessionManager;
+use FormaLms\lib\Session\SessionManager;
 
 class CoursestatsLmsController extends LmsController
 {
@@ -32,8 +32,8 @@ class CoursestatsLmsController extends LmsController
             'view' => true,
             'mod' => true,
         ];
-        $this->idCourse =  false;
-        if (SessionManager::getInstance()->getSession()->has('idCourse') && SessionManager::getInstance()->getSession()->get('idCourse') > 0){
+        $this->idCourse = false;
+        if (SessionManager::getInstance()->getSession()->has('idCourse') && SessionManager::getInstance()->getSession()->get('idCourse') > 0) {
             $this->idCourse = SessionManager::getInstance()->getSession()->get('idCourse');
         }
     }
@@ -136,7 +136,7 @@ class CoursestatsLmsController extends LmsController
     {
         $view_all_perm = checkPerm('view_all', true, 'coursestats');
 
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -192,7 +192,7 @@ class CoursestatsLmsController extends LmsController
             'is_active_advanced_filter' => false,
             'orgchart_list' => $umodel->getOrgChartDropdownList(),
             'groups_list' => $gmodel->getGroupsDropdownList(),
-            'total_users' => (int)$total_users,
+            'total_users' => (int) $total_users,
             'lo_totals_js' => $lo_totals_js,
             'status_list' => $this->_getJsArrayStatus(),
             'permissions' => $this->permissions,
@@ -210,7 +210,6 @@ class CoursestatsLmsController extends LmsController
         $rowsPerPage = FormaLms\lib\Get::req('length', DOTY_INT, $results);
 
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
-
 
         $pagination = [
             'startIndex' => $startIndex,
@@ -277,7 +276,7 @@ class CoursestatsLmsController extends LmsController
                 $_userid = $acl_man->relativeId($record->userid);
                 $row = [
                     // 'id' => (int)$record->idst,
-                    'userid' => '<a href="./index.php?r=lms/coursestats/show_user&id_user=' . (int)$record->idst . '">' . Layout::highlight($_userid, $filter_text) . '</a>',
+                    'userid' => '<a href="./index.php?r=lms/coursestats/show_user&id_user=' . (int) $record->idst . '">' . Layout::highlight($_userid, $filter_text) . '</a>',
                     'firstname' => Layout::highlight($record->lastname, $filter_text) . ' ' . Layout::highlight($record->firstname, $filter_text),
                     'level' => isset($arr_level[$record->level]) ? $arr_level[$record->level] : '',
                     'status' => isset($arr_status[$record->status]) ? $arr_status[$record->status] : '',
@@ -321,8 +320,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_userTask()
     {
-
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -489,8 +487,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_user_objectTask()
     {
-
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -572,8 +569,7 @@ class CoursestatsLmsController extends LmsController
 
     public function show_objectTask()
     {
-
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -615,8 +611,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -634,7 +629,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         $res = $this->model->resetTrack($id_lo, $id_user);
-        Util::jump_to('index.php?r=lms/coursestats/show_user_object&id_user=' . (int)$id_user . '&id_lo=' . (int)$id_lo . '&res=' . ($res ? 'ok_reset' : 'err_reset'));
+        Util::jump_to('index.php?r=lms/coursestats/show_user_object&id_user=' . (int) $id_user . '&id_lo=' . (int) $id_lo . '&res=' . ($res ? 'ok_reset' : 'err_reset'));
     }
 
     public function inline_editorTask()
@@ -645,7 +640,7 @@ class CoursestatsLmsController extends LmsController
 
             return;
         }
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -697,8 +692,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('invalid course')];
             echo $this->json->encode($output);
 
@@ -864,7 +858,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -954,7 +948,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -1100,7 +1094,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -1179,7 +1173,7 @@ class CoursestatsLmsController extends LmsController
 
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, $this->idCourse);
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -1257,7 +1251,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -1403,7 +1397,7 @@ class CoursestatsLmsController extends LmsController
 
         require_once _base_ . '/lib/lib.download.php';
 
-        if ((int)$this->idCourse <= 0) {
+        if ((int) $this->idCourse <= 0) {
             //...
             return;
         }
@@ -1520,16 +1514,15 @@ class CoursestatsLmsController extends LmsController
 
         $usersList = &$acl_man->getUsers($course_user);
 
-        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int)$this->idCourse . ' GROUP BY idUser';
+        $queryTime = 'SELECT idUser, SUM((UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))) as time FROM %lms_tracksession WHERE idCourse = ' . (int) $this->idCourse . ' GROUP BY idUser';
         $totalTimesResult = sql_query($queryTime);
 
         $totalTimes = [];
-        foreach ($totalTimesResult as $totalTime){
-
+        foreach ($totalTimesResult as $totalTime) {
             $totTime = $totalTime['time'];
-            $hours = (int)($totTime / 3600);
-            $minutes = (int)(($totTime % 3600) / 60);
-            $seconds = (int)($totTime % 60);
+            $hours = (int) ($totTime / 3600);
+            $minutes = (int) (($totTime % 3600) / 60);
+            $seconds = (int) ($totTime % 60);
             if ($minutes < 10) {
                 $minutes = '0' . $minutes;
             }
@@ -1537,7 +1530,7 @@ class CoursestatsLmsController extends LmsController
                 $seconds = '0' . $seconds;
             }
 
-            $totalTimes[$totalTime['idUser']] = ['time' => $totalTime['time'], 'timeString' =>  $hours . 'h ' . $minutes . 'm ' . $seconds . 's '];
+            $totalTimes[$totalTime['idUser']] = ['time' => $totalTime['time'], 'timeString' => $hours . 'h ' . $minutes . 'm ' . $seconds . 's '];
         }
 
         $separator = ',';
@@ -1551,15 +1544,15 @@ class CoursestatsLmsController extends LmsController
 
         $output = implode($separator, $head) . $lineEnd;
 
-        foreach ($usersList as $userInfo){
+        foreach ($usersList as $userInfo) {
             $rowData = [
                 $acl_man->relativeId($userInfo[ACL_INFO_USERID]),
                 $userInfo[ACL_INFO_LASTNAME],
                 $userInfo[ACL_INFO_FIRSTNAME],
-                $totalTimes[$userInfo[ACL_INFO_IDST]]['timeString']
+                $totalTimes[$userInfo[ACL_INFO_IDST]]['timeString'],
             ];
             $csvRow = [];
-            foreach ($rowData as $rowDatum){
+            foreach ($rowData as $rowDatum) {
                 $csvRow[] = $this->_formatCsvValue($rowDatum, $delimiter);
             }
             $output .= implode($separator, $csvRow) . $lineEnd;

@@ -152,10 +152,10 @@ class TableView
                     };break;*/
                     case 'formatter':
                         $col_config[] = 'formatter:' . $value;
-                    ; break;
+                     break;
                     case 'editor':
                         $col_config[] = 'editor:' . $value;
-                    ; break;
+                     break;
                     default:
                         $col_config[] = $key . ':' . $this->json->encode($value); //$key.':"'.$value.'"';
                 } // end switch

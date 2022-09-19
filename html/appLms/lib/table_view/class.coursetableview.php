@@ -96,7 +96,6 @@ class CourseTableView extends TableView
                 'c_flatview' => true,
                 'c_waiting' => false,
             ];
-
         } else {
             $filter = $courseCategory['filter_status'];
             if (!isset($filter['c_category'])) {
@@ -112,7 +111,7 @@ class CourseTableView extends TableView
                 $courseCategory['filter_status']['c_waiting'] = '';
             }
         }
-        $this->session->set('course_category',$courseCategory);
+        $this->session->set('course_category', $courseCategory);
         $this->session->save();
 
         $filter = $courseCategory['filter_status'];

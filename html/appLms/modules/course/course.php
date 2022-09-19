@@ -426,7 +426,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         . " WHERE idUser = '" . getLogUserId() . "'");
 
     $subscription = [];
-    foreach ($subcourse_list as $cinfo){
+    foreach ($subcourse_list as $cinfo) {
         $subscription['course'][$cinfo['idCourse']] = $cinfo;
         if ($cinfo['edition_id'] != 0) {
             $subscription['edition'][$cinfo['idCourse']][$cinfo['edition_id']] = $cinfo;
@@ -488,7 +488,6 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
     $all_lang = Docebo::langManager()->getAllLangCode();
 
-
     $query = $select_course
         . $from_course
         . ' WHERE ' . $where_course
@@ -504,7 +503,6 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         . ' JOIN %lms_courseuser AS cu ON e.id_edition = cu.edition_id';
     $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' AND cu.idUser ='" . getLogUserId() . "'";
 
-
     $query = $select_edition
         . $from_edition
         . $where_edition;
@@ -515,7 +513,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
     $editions = [];
     if ($re_edition) {
-        foreach ($re_edition as $edition_elem){
+        foreach ($re_edition as $edition_elem) {
             $edition_elem['classrooms'] = (isset($classrooms[$edition_elem['classrooms']]) ? $classrooms[$edition_elem['classrooms']] : '');
             $editions[$edition_elem['id_course']][$edition_elem['id_course']] = $edition_elem;
         }
@@ -563,7 +561,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
             . ' GROUP BY u.idCourse, u.edition_id ');
 
         $enrolled = [];
-        foreach ($enroll_list as $cinfo){
+        foreach ($enroll_list as $cinfo) {
             $enrolled[$cinfo['idCourse']][$cinfo['edition_id']] = $cinfo['number'];
         }
     }
@@ -603,7 +601,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
                 '<div id="mycourse_asses">'
                 . '<h1>' . $lang_c->def('_ASSESSMENT_LIST') . '</h1>', 'content');
         }
-        foreach ($preass_list as $cinfo){
+        foreach ($preass_list as $cinfo) {
             $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
 
             if (isset($comment_count[$cinfo['idCourse']])) {
@@ -627,12 +625,12 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
     $title = $lang->def('_COURSE_LIST');
     switch ($filter) {
-        case 'access': 	 $title = $lang->def('_COURSE_YOU_CAN_ACCESS'); ; break;
-        case 'expiring': 	 $title = $lang->def('_COURSE_EXPIRING'); ; break;
-        case 'subscribed':  $title = $lang->def('_COURSE_SUBSCRIBED'); ; break;
-        case 'begin': 		 $title = $lang->def('_COURSE_BEGIN'); ; break;
-        case 'end': 		 $title = $lang->def('_COURSE_END'); ; break;
-        case 'level': 		 $title = str_replace('[level]', $lvl[$_GET['filter_on']], $lang->def('_COURSE_AS')); ; break;
+        case 'access': 	 $title = $lang->def('_COURSE_YOU_CAN_ACCESS'); break;
+        case 'expiring': 	 $title = $lang->def('_COURSE_EXPIRING'); break;
+        case 'subscribed':  $title = $lang->def('_COURSE_SUBSCRIBED'); break;
+        case 'begin': 		 $title = $lang->def('_COURSE_BEGIN'); break;
+        case 'end': 		 $title = $lang->def('_COURSE_END'); break;
+        case 'level': 		 $title = str_replace('[level]', $lvl[$_GET['filter_on']], $lang->def('_COURSE_AS')); break;
     }
     if ($page_add) {
         $GLOBALS['page']->add(
@@ -643,7 +641,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $i = 0;
     $direct_play = false;
 
-    foreach ($re_course as $cinfo){
+    foreach ($re_course as $cinfo) {
         $access = Man_Course::canEnterCourse($cinfo);
 
         if ($cinfo['direct_play'] == 1) {
@@ -684,7 +682,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         sql_data_seek($re_course, 0);
     }
 
-    foreach ($re_course as $cinfo){
+    foreach ($re_course as $cinfo) {
         $cinfo['edition_list'] = (isset($editions[$cinfo['idCourse']]) ? $editions[$cinfo['idCourse']] : []);
         $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
         $cinfo['enrolled'] = (isset($enrolled[$cinfo['idCourse']]) ? $enrolled[$cinfo['idCourse']] : false);
@@ -767,32 +765,32 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
                         if ($access['can'] && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                    ; break;
+                     break;
                     case 'expiring' :
                         if ($expiring && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                    ; break;
+                     break;
                     case 'subscribed' :
                         if ($cinfo['user_status'] == _CUS_SUBSCRIBED && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                    ; break;
+                     break;
                     case 'begin' :
                         if ($cinfo['user_status'] == _CUS_BEGIN && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                    ; break;
+                     break;
                     case 'end' :
                         if ($cinfo['user_status'] == _CUS_END && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                    ; break;
+                     break;
                     case 'level' :
                         if ($_GET['filter_on'] == $cinfo['level'] && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                    ; break;
+                     break;
                     default: if ($page_add) {
                         $GLOBALS['page']->add($dash, 'content');
                     }

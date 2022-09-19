@@ -227,17 +227,17 @@ function myfilesDispatch($op)
     switch ($op) {
         case 'myfiles':
             fileList($url);
-        ; break;
+         break;
 
         case 'modfiles':
             modfiles($url);
-        ; break;
+         break;
         case 'savefiles':
             savefiles($url);
-        ; break;
+         break;
 
         case 'delfiles':
             delfiles($url);
-        ; break;
+         break;
     }
 }

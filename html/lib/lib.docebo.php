@@ -41,21 +41,21 @@ class Docebo
     public static function user()
     {
         if (!self::$currentUser) {
-
             self::loadUserFromSession();
         }
 
         return self::$currentUser;
     }
 
-    public static function loadUserFromSession(){
-
+    public static function loadUserFromSession()
+    {
         $sessionUser = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('user');
 
         self::$currentUser = $sessionUser ?? DoceboUser::createDoceboUserFromSession('public_area');
     }
 
-    public static function setUser($user){
+    public static function setUser($user)
+    {
         self::$currentUser = $user;
     }
 
@@ -101,12 +101,12 @@ class Docebo
                         self::$_cache = new DDummyCache();
                         self::$_cache->init();
                     }
-                ; break;
+                 break;
                 case 'file' :
                     Log::add('File functionality was not available on the server.');
                     self::$_cache = new DFileCache();
                     self::$_cache->init();
-                ; break;
+                 break;
                 case 'memcache' :
                     if (class_exists('Memcache')) {
                         self::$_cache = new DMemcache();
@@ -116,7 +116,7 @@ class Docebo
                         self::$_cache = new DDummyCache();
                         self::$_cache->init();
                     }
-                ; break;
+                 break;
                 case 'dummy' :
                 default:
                     self::$_cache = new DDummyCache();
@@ -140,7 +140,7 @@ class Docebo
      */
     public static function course()
     {
-        return  isset($GLOBALS['course_descriptor']) ? $GLOBALS['course_descriptor'] : false;
+        return isset($GLOBALS['course_descriptor']) ? $GLOBALS['course_descriptor'] : false;
     }
 
     /**

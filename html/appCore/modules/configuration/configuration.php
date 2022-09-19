@@ -65,7 +65,7 @@ function config()
         switch ($id) {
             case SMS_GROUP :
                 cout(show_sms_panel($lang) . '<br />');
-            ; break;
+             break;
             default:
                 cout('<br />');
         }
@@ -204,6 +204,6 @@ function configurationDispatch($op)
     switch ($op) {
     case 'config':
         config();
-    ; break;
+     break;
 }
 }

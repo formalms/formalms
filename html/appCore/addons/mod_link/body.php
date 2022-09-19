@@ -780,8 +780,8 @@ function getEditorWikiId()
         $wiki_id = $session->get('editor_in_wiki');
     }
 
-    if (!empty(FormaLms\lib\Get::req('wiki_id',DOTY_ALPHANUM,''))) {
-        $wiki_id = FormaLms\lib\Get::req('wiki_id',DOTY_ALPHANUM,'');
+    if (!empty(FormaLms\lib\Get::req('wiki_id', DOTY_ALPHANUM, ''))) {
+        $wiki_id = FormaLms\lib\Get::req('wiki_id', DOTY_ALPHANUM, '');
     }
 
     return $wiki_id;

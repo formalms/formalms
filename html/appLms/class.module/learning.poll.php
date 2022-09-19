@@ -224,13 +224,13 @@ class Learning_Poll extends Learning_Object
         switch ($step) {
             case 'poll_review':
                 review($this, $id_param);
-            ; break;
+             break;
             case 'play':
                 playPollDispatch($this, $id_param);
-            ; break;
+             break;
             default:
                 intro($this, $id_param);
-            ; break;
+             break;
         }
     }
 

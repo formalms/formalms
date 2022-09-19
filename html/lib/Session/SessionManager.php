@@ -13,13 +13,12 @@
 
 namespace FormaLms\lib\Session;
 
-use FormaLms\lib\Get;
 use FormaLms\lib\Serializer\FormaSerializer;
 use FormaLms\lib\Session\Handlers\FilesystemHandler;
 use FormaLms\lib\Session\Handlers\MemcachedHandler;
 use FormaLms\lib\Session\Handlers\PdoHandler;
 use FormaLms\lib\Session\Handlers\RedisHandler;
-use \Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 \defined('IN_FORMA') or exit('Direct access is forbidden.');
@@ -46,9 +45,9 @@ class SessionManager
             $c = __CLASS__;
             self::$instance = new $c();
         }
+
         return self::$instance;
     }
-
 
     public function initSession(array $sessionConfig)
     {
@@ -56,7 +55,7 @@ class SessionManager
             try {
                 $config = FormaSerializer::getInstance()->denormalize($sessionConfig, SessionConfig::class);
             } catch (\Exception $exception) {
-                die($exception->getMessage());
+                exit($exception->getMessage());
             }
 
             $this->setConfig($config);
@@ -93,17 +92,11 @@ class SessionManager
         }
     }
 
-    /**
-     * @return SessionConfig
-     */
     public function getConfig(): SessionConfig
     {
         return $this->config;
     }
 
-    /**
-     * @param SessionConfig $config
-     */
     public function setConfig(SessionConfig $config): void
     {
         $this->config = $config;
@@ -119,7 +112,6 @@ class SessionManager
 
     public function isSessionExpired()
     {
-
         $session_time = \FormaLms\lib\Get::sett('ttlSession', 3600);
 
         if (!$this->session->has('session_timeout')) {
@@ -133,8 +125,7 @@ class SessionManager
         if ($session_time_passed > $session_time && $this->session->has('logged_in') && $this->session->get('logged_in')) {
             return true;
         }
+
         return false;
     }
-
-
 }

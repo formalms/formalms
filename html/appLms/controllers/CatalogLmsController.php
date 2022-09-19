@@ -60,7 +60,7 @@ class CatalogLmsController extends LmsController
             'catalogueType' => 'catalog',
             'endpoint' => 'lms/catalog',
             'logged_in' => $this->session->get('logged_in'),
-            'showAllCategory' => $this->showAllCategory
+            'showAllCategory' => $this->showAllCategory,
         ];
     }
 
@@ -106,11 +106,11 @@ class CatalogLmsController extends LmsController
             'tab_actived' => false,
             'total_category' => $total_category,
             'starting_catalogue' => $starting_catalogue,
-            'catalogue' => $catalogue
+            'catalogue' => $catalogue,
         ]);
 
         $this->render('catalog', [
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -382,7 +382,7 @@ class CatalogLmsController extends LmsController
         $id_category = FormaLms\lib\Get::req('id_category', DOTY_INT, 0);
         $res = $this->model->courseSelectionInfo($id_course);
         $this->render('edition-modal', ['id_course' => $id_course, 'available_classrooms' => $res['available_classrooms'], 'teachers' => $res['teachers'],
-            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category,]);
+            'course_name' => $res['course_name'], 'type_course' => $type_course, 'id_catalogue' => $id_catalogue, 'id_category' => $id_category, ]);
     }
 
     //UG  select a user subscription level

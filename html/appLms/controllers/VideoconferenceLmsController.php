@@ -29,17 +29,17 @@ class VideoconferenceLmsController extends LmsController
                 if (!$this->info['live']) {
                     return false;
                 }
-            ; break;
+             break;
             case 'planned':
                 if (!$this->info['planned']) {
                     return false;
                 }
-            ; break;
+             break;
             case 'history':
                 if (!$this->info['history']) {
                     return false;
                 }
-            ; break;
+             break;
         }
 
         return true;

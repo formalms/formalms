@@ -373,27 +373,27 @@ function internal_newsDispatch($op)
     switch ($op) {
         case 'news':
                 news();
-            ;
+
             break;
         case 'addnews':
                 editnews();
-            ;
+
             break;
         case 'editviewer':
                 editviewer();
-            ;
+
             break;
         case 'modnews':
                 editnews(true);
-            ;
+
             break;
         case 'savenews':
                 savenews();
-            ;
+
             break;
         case 'delnews':
                 delnews();
-            ;
+
             break;
     }
 }

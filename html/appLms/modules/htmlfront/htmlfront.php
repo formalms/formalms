@@ -26,7 +26,7 @@ function showhtml()
     $query = '
 	SELECT textof
 	FROM ' . $GLOBALS['prefix_lms'] . "_htmlfront 
-	WHERE id_course = '" .$idCourse . "'";
+	WHERE id_course = '" . $idCourse . "'";
     $re_htmlfront = sql_query($query);
     list($textof) = sql_fetch_row($re_htmlfront);
 
@@ -58,7 +58,7 @@ function edithtml()
     $query = '
 	SELECT textof
 	FROM ' . $GLOBALS['prefix_lms'] . "_htmlfront 
-	WHERE id_course = '" .$idCourse . "'";
+	WHERE id_course = '" . $idCourse . "'";
     $re_htmlfront = sql_query($query);
 
     $error = false;
@@ -67,13 +67,13 @@ function edithtml()
             $upd_query = '
 			UPDATE ' . $GLOBALS['prefix_lms'] . "_htmlfront 
 			SET textof = '" . addslashes($_REQUEST['description']) . "'
-			WHERE id_course = '" .$idCourse . "'";
+			WHERE id_course = '" . $idCourse . "'";
             $re = sql_query($upd_query);
         } else {
             $ins_query = '
 			INSERT INTO ' . $GLOBALS['prefix_lms'] . "_htmlfront 
 			( id_course, textof) VALUES 
-			( 	'" .$idCourse . "',
+			( 	'" . $idCourse . "',
 				'" . addslashes($_REQUEST['description']) . "' )";
             $re = sql_query($ins_query);
         }

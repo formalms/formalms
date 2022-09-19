@@ -434,16 +434,16 @@ class KbAlmsController extends AlmsController
     protected function _getSelectedNode()
     {
         if (!$this->session->has('kb_selector_selected_node')) {
-            $this->session->set('kb_selector_selected_node',0);
+            $this->session->set('kb_selector_selected_node', 0);
             $this->session->save();
         }
 
-        return $this->session->get('kb_selector_selected_node',0);
+        return $this->session->get('kb_selector_selected_node', 0);
     }
 
     protected function _setSelectedNode($node_id)
     {
-        $this->session->set('kb_selector_selected_node',$node_id);
+        $this->session->set('kb_selector_selected_node', $node_id);
         $this->session->save();
     }
 

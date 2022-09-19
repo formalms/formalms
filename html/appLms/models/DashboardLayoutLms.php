@@ -35,7 +35,6 @@ class DashboardLayoutLms extends Model
 
     public function __construct()
     {
-
         parent::__construct();
     }
 
@@ -115,9 +114,6 @@ class DashboardLayoutLms extends Model
         $this->default = $default;
     }
 
-    /**
-     * @return array
-     */
     public function getPermissionList(): array
     {
         return $this->permissionList;
@@ -126,6 +122,7 @@ class DashboardLayoutLms extends Model
     public function setPermissionList(array $permissionList): DashboardLayoutLms
     {
         $this->permissionList = $permissionList;
+
         return $this;
     }
 
@@ -134,11 +131,9 @@ class DashboardLayoutLms extends Model
         $canAccess = true;
 
         if (!empty($this->permissionList)) {
-
             $canAccess = !empty(array_intersect($user->getArrSt(), $this->permissionList));
         }
 
         return $canAccess;
-
     }
 }

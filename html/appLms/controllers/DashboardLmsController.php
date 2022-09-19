@@ -57,11 +57,11 @@ class DashboardLmsController extends LmsController
         $blocks = [];
         $blockPaths = [];
 
-        if (!$defaultLayout->userCanAccess(Docebo::user())){
+        if (!$defaultLayout->userCanAccess(Docebo::user())) {
             $layouts = $this->model->getLayouts();
             /** @var DashboardLayoutLms $layout */
-            foreach ($layouts as $layout){
-                if ($layout->userCanAccess(Docebo::user())){
+            foreach ($layouts as $layout) {
+                if ($layout->userCanAccess(Docebo::user())) {
                     $defaultLayout = $layout;
                     break;
                 }

@@ -1,4 +1,4 @@
-<?php echo  $caption ? ' <p class="table-caption">' . $caption . '</p>' : ''; ?>
+<?php echo $caption ? ' <p class="table-caption">' . $caption . '</p>' : ''; ?>
 <?php if (!empty($rel_actions)) { ?>
 <div class="table-container-over">
 	<div class="table-actions">
@@ -10,7 +10,7 @@
 <?php } ?>
 <!-- Table -->
 <div id="<?php echo $id; ?>" class="yui-dt">
-	<table class="table-view" <?php echo  $summary ? ' summary="' . $summary . '"' : ''; ?> cellspacing="0">
+	<table class="table-view" <?php echo $summary ? ' summary="' . $summary . '"' : ''; ?> cellspacing="0">
 		<?php //echo ( $caption ? ' <caption>'.$caption.'</caption>' : '' );?>
 		<thead>
 			<tr class="yui-dt-first yui-dt-last">

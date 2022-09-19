@@ -65,13 +65,13 @@ class PluginsLmsController extends LmsController
         }
         $tb_label = (FormaLms\lib\Get::sett('use_course_label', false) == 'off' ? false : true);
         if (!$tb_label) {
-            $this->session->set('id_common_label',0);
+            $this->session->set('id_common_label', 0);
         } else {
             $id_common_label = FormaLms\lib\Get::req('id_common_label', DOTY_INT, -1);
             if ($id_common_label >= 0) {
-                $this->session->set('id_common_label',$id_common_label);
+                $this->session->set('id_common_label', $id_common_label);
             } elseif ($id_common_label <= -1) {
-                $this->session->set('id_common_label',-1);
+                $this->session->set('id_common_label', -1);
             }
             $block_list['labels'] = true;
         }

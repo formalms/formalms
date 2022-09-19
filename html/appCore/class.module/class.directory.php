@@ -78,7 +78,7 @@ class Module_Directory extends Module
             $result = [
                 $this->session->get('directory'),
                 $this->session->get('directory_selection'),
-                $this->session->get('directory_selection_alt')
+                $this->session->get('directory_selection_alt'),
             ];
         }
 
@@ -137,8 +137,8 @@ class Module_Directory extends Module
                 $this->selection = $array_selection;
                 $this->selection_alt = $array_selection_alt;
 
-                $this->session->set('directory_selection',$array_selection);
-                $this->session->set('directory_selection_alt',$array_selection_alt);
+                $this->session->set('directory_selection', $array_selection);
+                $this->session->set('directory_selection_alt', $array_selection_alt);
                 $this->session->save();
             }
         }
@@ -216,10 +216,10 @@ class Module_Directory extends Module
         $this->selection = $array_selection;
         $this->selection_alt = $array_selection_alt;
 
-        $this->session->set('directory_selection',$array_selection);
-        $this->session->set('directory_start_selection',$array_selection);
-        $this->session->set('directory_selection_alt',$array_selection_alt);
-        $this->session->set('directory_start_selection_alt',$array_selection_alt);
+        $this->session->set('directory_selection', $array_selection);
+        $this->session->set('directory_start_selection', $array_selection);
+        $this->session->set('directory_selection_alt', $array_selection_alt);
+        $this->session->set('directory_start_selection_alt', $array_selection_alt);
         $this->session->save();
     }
 
@@ -290,80 +290,80 @@ class Module_Directory extends Module
             // group related actions ==========================================
             case 'listgroup':
                 checkPerm('view_group', false, 'directory', 'framework');
-                $this->loadGroupView();;
+                $this->loadGroupView();
                 break;
             case 'editgroup':
                 checkPerm('editgroup', false, 'directory', 'framework');
-                $this->editGroup(importVar('groupid', false, ''));;
+                $this->editGroup(importVar('groupid', false, ''));
                 break;
             case 'deletegroup':
                 checkPerm('delgroup', false, 'directory', 'framework');
-                $this->deleteGroup(importVar('groupid', false, ''));;
+                $this->deleteGroup(importVar('groupid', false, ''));
                 break;
 
             // group members related actions ===================================
             case 'import_groupuser' :
                 checkPerm('associate_group', false, 'directory', 'framework');
-                $this->importToGroup();;
+                $this->importToGroup();
                 break;
             case 'import_groupuser_2' :
                 checkPerm('associate_group', false, 'directory', 'framework');
-                $this->importToGroup_step2();;
+                $this->importToGroup_step2();
                 break;
             case 'import_groupuser_3' :
                 checkPerm('associate_group', false, 'directory', 'framework');
-                $this->importToGroup_step3();;
+                $this->importToGroup_step3();
                 break;
 
             case 'addtogroup':
                 checkPerm('associate_group', false, 'directory', 'framework');
-                $this->addToGroup(importVar('groupid', false, ''));;
+                $this->addToGroup(importVar('groupid', false, ''));
                 break;
             case 'membersGroupDelFilter':
             case 'membersgroup':
                 checkPerm('view_group', false, 'directory', 'framework');
-                $this->membersGroup(importVar('groupid', false, ''));;
+                $this->membersGroup(importVar('groupid', false, ''));
                 break;
             case 'waitinggroup' :
                 checkPerm('view_group', false, 'directory', 'framework');
-                $this->waitingUserGroup(importVar('groupid', false, ''));;
+                $this->waitingUserGroup(importVar('groupid', false, ''));
                 break;
 
             // org chart related actions ======================================
             case 'org_chart':
                 checkPerm('view_org_chart', false, 'directory', 'framework');
-                $this->loadOrgChartView();;
+                $this->loadOrgChartView();
                 break;
             case 'addtotree':
                 checkPerm('edituser_org_chart', false, 'directory', 'framework');
-                $this->addToTree(importVar('treeid', false, ''));;
+                $this->addToTree(importVar('treeid', false, ''));
                 break;
             case 'assignfield':
                 checkPerm('edituser_org_chart', false, 'directory', 'framework');
-                $this->loadAssignField(importVar('groupid', false, ''));;
+                $this->loadAssignField(importVar('groupid', false, ''));
                 break;
             case 'assignfieldmandatory':
                 checkPerm('edituser_org_chart', false, 'directory', 'framework');
-                $this->loadAssignField2(importVar('groupid', false, ''));;
+                $this->loadAssignField2(importVar('groupid', false, ''));
                 break;
 
             // users related actions =========================================
             case 'listuser':
                 checkPerm('view_org_chart', false, 'directory', 'framework');
-                $this->loadPeopleView();;
+                $this->loadPeopleView();
                 break;
             case 'org_createuser':
                 checkPerm('view_org_chart', false, 'directory', 'framework');
-                $this->org_createUser();;
+                $this->org_createUser();
                 break;
             case 'org_waitinguser':
                 checkPerm('view_org_chart', false, 'directory', 'framework');
-                $this->org_waitingUser();;
+                $this->org_waitingUser();
                 break;
 
             case 'org_manageuser':
                 checkPerm('view_org_chart', false, 'directory', 'framework');
-                $this->org_manageuser();;
+                $this->org_manageuser();
                 break;
 
             case 'view_deleted_user':
@@ -373,7 +373,7 @@ class Module_Directory extends Module
 
             case 'quick_change_password' :
                 checkPerm('view_org_chart', false, 'directory', 'framework');
-                $this->quickChangePassword();;
+                $this->quickChangePassword();
                 break;
 
             default:
@@ -531,7 +531,7 @@ class Module_Directory extends Module
      *                            groups given in $filter_arg array
      *                            - "exclude": exclude users with idst passed in
      *                            $filter_arg array
-     * @param array $filter_arg an array of platforms or an array of groups or
+     * @param array  $filter_arg  an array of platforms or an array of groups or
      *                            an array of idst (see $filter_type)
      *
      * @return null
@@ -626,15 +626,15 @@ class Module_Directory extends Module
         switch ($this->tab->getActiveTab()) {
             case PEOPLEVIEW_TAB:
                 $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
-                $this->loadPeopleView($url);;
+                $this->loadPeopleView($url);
                 break;
             case GROUPVIEW_TAB:
                 $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
-                $this->loadGroupView();;
+                $this->loadGroupView();
                 break;
             case ORGVIEW_TAB:
                 $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
-                $this->loadOrgChartView();;
+                $this->loadOrgChartView();
                 break;
             default:
                 if ($this->show_user_selector) {
@@ -649,7 +649,7 @@ class Module_Directory extends Module
                     $this->tab->setActiveTab(ORGVIEW_TAB);
                     $GLOBALS['page']->add($this->tab->printTabView_Begin('', false), 'content');
                     $this->loadOrgChartView();
-                };
+                }
                 break;
         }
         $GLOBALS['page']->add($this->tab->printTabView_End(), 'content');
@@ -1337,8 +1337,7 @@ class Module_Directory extends Module
 
         // ----------- file upload -----------------------------------------
         if ($_FILES['file_import']['name'] == '') {
-
-            $this->session->getFlashBag()->add('error',Lang::t('_FILEUNSPECIFIED'));
+            $this->session->getFlashBag()->add('error', Lang::t('_FILEUNSPECIFIED'));
             Util::jump_to('index.php?modname=directory&amp;op=listgroup&import_result=-1');
         } else {
             $path = '/appCore/';
@@ -1347,12 +1346,12 @@ class Module_Directory extends Module
                 sl_open_fileoperations();
                 if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                     sl_close_fileoperations();
-                    $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD'));
+                    $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD'));
                     Util::jump_to('index.php?modname=directory&amp;op=listgroup&import_result=-1');
                 }
                 sl_close_fileoperations();
             } else {
-                $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD'));
+                $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD'));
                 Util::jump_to('index.php?modname=directory&amp;op=listgroup&import_result=-1');
             }
         }
@@ -1382,7 +1381,7 @@ class Module_Directory extends Module
         $src = new DeceboImport_SourceCSV(['filename' => _files_ . $path . $savefile,
                 'separator' => $separator,
                 'first_row_header' => $first_row_header,
-                'import_charset' => $import_charset,]
+                'import_charset' => $import_charset, ]
         );
         $dst = new ImportGroupUser(['dbconn' => $GLOBALS['dbConn']]);
         $src->connect();
@@ -1827,7 +1826,7 @@ class Module_Directory extends Module
             } else {
                 if (!isset($_GET['stayon'])) {
                     if ($treeid === false && isset($_GET['treeid'])) {
-                        $treeid = (int)$_GET['treeid'];
+                        $treeid = (int) $_GET['treeid'];
                     }
                     if ($treeid != 0) {
                         require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
@@ -2073,39 +2072,39 @@ class Module_Directory extends Module
                 return [
                     'view' => ['code' => 'view_org_chart',
                         'name' => '_VIEW_ORG_CHART',
-                        'image' => 'standard/view.png',],
+                        'image' => 'standard/view.png', ],
                     'add' => ['code' => 'createuser_org_chart',
                         'name' => '_NEW_USER',
-                        'image' => 'standard/add.png',],
+                        'image' => 'standard/add.png', ],
                     'mod' => ['code' => 'edituser_org_chart',
                         'name' => '_MOD',
-                        'image' => 'standard/edit.png',],
+                        'image' => 'standard/edit.png', ],
                     'del' => ['code' => 'deluser_org_chart',
                         'name' => '_DELUSER_ORG_CHART',
-                        'image' => 'standard/delete.png',],
+                        'image' => 'standard/delete.png', ],
                     'moderate' => ['code' => 'approve_waiting_user',
                         'name' => '_MODERATE',
-                        'image' => 'org_chart/waiting_identity.png',],
-                ];;
+                        'image' => 'org_chart/waiting_identity.png', ],
+                ];
                 break;
             case 'listgroup':
                 return [
                     'view' => ['code' => 'view_group',
                         'name' => '_VIEW',
-                        'image' => 'standard/view.png',],
+                        'image' => 'standard/view.png', ],
                     'add' => ['code' => 'creategroup',
                         'name' => '_ADD',
-                        'image' => 'standard/add.png',],
+                        'image' => 'standard/add.png', ],
                     'mod' => ['code' => 'editgroup',
                         'name' => '_MOD',
-                        'image' => 'standard/edit.png',],
+                        'image' => 'standard/edit.png', ],
                     'del' => ['code' => 'delgroup',
                         'name' => '_DEL',
-                        'image' => 'standard/delete.png',],
+                        'image' => 'standard/delete.png', ],
                     'associate' => ['code' => 'associate_group',
                         'name' => '_ASSOCIATEUSERTOGROUP',
-                        'image' => 'directory/addto.gif',],
-                ];;
+                        'image' => 'directory/addto.gif', ],
+                ];
                 break;
         }
     }
@@ -2320,7 +2319,7 @@ class Module_Directory extends Module
         $users = [];
         if ($stats_required == false || empty($stats_required) || !is_array($stats_required)) {
             $stats_required = ['all', 'suspended', 'register_today', 'register_yesterday', 'register_7d',
-                'now_online', 'inactive_30d', 'waiting', 'superadmin', 'admin', 'public_admin',];
+                'now_online', 'inactive_30d', 'waiting', 'superadmin', 'admin', 'public_admin', ];
         }
         $stats_required = array_flip($stats_required);
 

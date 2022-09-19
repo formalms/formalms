@@ -23,6 +23,7 @@ class Module_Item extends LmsModule
         if ($this->session->has('direct_play')) {
             return true;
         }
+
         return false;
     }
 
@@ -37,10 +38,10 @@ class Module_Item extends LmsModule
             case 'moditem':
             case 'upitem':
                 loadHeaderHTMLEditor();
-            ; break;
+             break;
             case 'category':
                 echo '<link href="' . getPathTemplate() . 'style/base-old-treeview.css" rel="stylesheet" type="text/css" />' . "\n";
-            ; break;
+             break;
         }
 
         return;

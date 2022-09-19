@@ -42,7 +42,6 @@ const _MILESTONE_NONE = 'ml_none';
 const _MILESTONE_START = 'ml_start';
 const _MILESTONE_END = 'ml_end';
 
-
 class Report_User extends Report
 {
     //var $rows_filter = array();
@@ -275,7 +274,6 @@ class Report_User extends Report
             }
 
             if (FormaLms\lib\Get::req('is_updating', DOTY_INT, false)) {
-
                 $reportTempData['rows_filter']['all_users'] = (FormaLms\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
                 $this->session->set(self::_REPORT_SESSION, $reportTempData);
                 $this->session->save();
@@ -379,7 +377,6 @@ class Report_User extends Report
                 'show_classrooms_editions' => false,
             ];
         }
-
 
         $selector = new Selector_Course();
         $selection = $reportTempData['columns_filter']['selected_courses'];
@@ -713,7 +710,6 @@ class Report_User extends Report
             . '</div>';
         cout($box->get());
 
-
         //box for columns selection
         $box = new ReportBox('columns_selection');
         $box->title = $lang->def('_SELECT_THE_DATA_COL_NEEDED');
@@ -843,12 +839,12 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get());
     }
 
-    function is_showed($which)
+    public function is_showed($which)
     {
         $reportTempData = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get(self::_REPORT_SESSION);
         if (isset($reportTempData['columns_filter'])) {
@@ -858,7 +854,7 @@ class Report_User extends Report
         }
     }
 
-    function is_showed_data($which, $data)
+    public function is_showed_data($which, $data)
     {
         if (isset($data['columns_filter'])) {
             return in_array($which, $data['columns_filter']['showed_columns']);
@@ -994,7 +990,6 @@ class Report_User extends Report
     {
         $jump_url = ''; //show_report
 
-
         checkPerm('view');
 
         $lang = &DoceboLanguage::createInstance('report', 'framework');
@@ -1058,8 +1053,8 @@ class Report_User extends Report
     /**
      * Return the output in the selected format for the report with the filters given.
      *
-     * @param string $type output type
-     * @param array $report_data a properly formatted list of rule to follow
+     * @param string $type        output type
+     * @param array  $report_data a properly formatted list of rule to follow
      * @param string $other
      *
      * @return string the properly formated report
@@ -1081,7 +1076,6 @@ class Report_User extends Report
         $acl_man->include_suspended = true;
         $course_man = new Man_Course();
 
-
         $reportTempData = $this->session->get(self::_REPORT_SESSION, null);
 
         $filter_userselection = [];
@@ -1089,22 +1083,17 @@ class Report_User extends Report
         if (!empty($report_data)) {
             $filter_userselection = $report_data['rows_filter']['users'];
 
-            $filter_columns =  $report_data['columns_filter'];
-
+            $filter_columns = $report_data['columns_filter'];
 
             $alluser = ($report_data['rows_filter']['all_users'] ? 1 : 0);
-
         } else {
+            $filter_userselection = $reportTempData['rows_filter']['users'];
 
-            $filter_userselection = $reportTempData['rows_filter']['users'];;
-
-            $filter_columns =  $reportTempData['columns_filter'];
-
+            $filter_columns = $reportTempData['columns_filter'];
 
             $alluser = $reportTempData['rows_filter']['all_users'] ? 1 : 0;
         }
         // read form _SESSION (XXX: change this) the report setting
-
 
         // break filters into a more usable format
         $filter_allcourses = $filter_columns['all_courses'];
@@ -1233,8 +1222,7 @@ class Report_User extends Report
             }
         }
 
-
-        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool)$filter_columns['show_classrooms_editions'] : false;
+        $show_classrooms_editions = isset($filter_columns['show_classrooms_editions']) ? (bool) $filter_columns['show_classrooms_editions'] : false;
 
         $classrooms_editions_info = [];
         if ($show_classrooms_editions) {
@@ -1278,7 +1266,6 @@ class Report_User extends Report
                 }
             }
         }
-
 
         if (empty($user_selected)) {
             cout($lang->def('_NULL_SELECTION'), 'content');
@@ -1420,7 +1407,6 @@ class Report_User extends Report
                     ($filter_allcourses ? '' : 'AND c.idCourse IN (' . implode(',', $filter_courseselection) . ') ')
                     . ' ORDER BY ' . $query_order_by;
             }
-
 
             $output .= $this->_printTable_courses(
                 $type,
@@ -2049,9 +2035,9 @@ class Report_User extends Report
 
                 if (in_array('_TH_USER_ELAPSED_TIME', $cols)) {
                     $row[] = (isset($time_list[$id_user . '_' . $id_course]) ?
-                        substr('0' . ((int)($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
-                        . substr('0' . ((int)(($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
-                        . substr('0' . ((int)($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
+                        substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] / 3600)), -2) . 'h '
+                        . substr('0' . ((int) (($time_list[$id_user . '_' . $id_course] % 3600) / 60)), -2) . 'm '
+                        . substr('0' . ((int) ($time_list[$id_user . '_' . $id_course] % 60)), -2) . 's ' : '&nbsp;');
                 }
 
                 if (in_array('_TH_ESTIMATED_TIME', $cols)) {
@@ -2304,7 +2290,6 @@ class Report_User extends Report
     public function _get_competences_query($type = 'html', $report_data = null, $other = '')
     {
         $cmodel = new CompetencesAdm();
-
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);
@@ -2722,7 +2707,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get());
     }
@@ -2833,7 +2818,7 @@ class Report_User extends Report
 
         $order_by = (isset($cdata['order_by']) ? $cdata['order_by'] : 'userid');
         $order_dir = (isset($cdata['order_dir']) ? $cdata['order_dir'] : 'asc');
-        $show_suspended = (isset($cdata['show_suspended']) ? (bool)$cdata['show_suspended'] : false);
+        $show_suspended = (isset($cdata['show_suspended']) ? (bool) $cdata['show_suspended'] : false);
 
         if (!$alluser) {
             $user_selected = &$acl_man->getAllUsersFromIdst($rdata['users']);
@@ -3329,7 +3314,6 @@ class Report_User extends Report
 
         cout($box->get(), 'content');
 
-
         //box for columns selection
         $arr_fieldset = [
             'user' => '',
@@ -3419,7 +3403,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -3515,7 +3499,6 @@ class Report_User extends Report
 
         require_once 'report_tableprinter.php';
 
-
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
@@ -3536,7 +3519,7 @@ class Report_User extends Report
         $customcols = $_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
         if ($all_users) {
             $users = $acl_man->getAllUsersIdst();
         } else {
@@ -3612,7 +3595,7 @@ class Report_User extends Report
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
             }
         }
 
@@ -3959,7 +3942,6 @@ class Report_User extends Report
             ];
         }
 
-
         if (isset($_POST['update_tempdata'])) {
             $reportTempData['columns_filter']['all_communications'] = FormaLms\lib\Get::req('all_communications', DOTY_INT, 0) > 0;
             $reportTempData['columns_filter']['comm_selection'] = FormaLms\lib\Get::req('comm_selection', DOTY_MIXED, []);
@@ -4226,7 +4208,6 @@ class Report_User extends Report
                 'comp_end_date' => '',
             ];
         }
-
 
         if (isset($_POST['update_tempdata'])) {
             $reportTempData['columns_filter']['all_games'] = FormaLms\lib\Get::req('all_games', DOTY_INT, 0) > 0;
@@ -4593,7 +4574,6 @@ class Report_User extends Report
             'courses_all="' . Lang::t('_ALL', 'standard') . '";' . "\n" .
             'YAHOO.util.Event.addListener(window, "load", courses_selector_init);</script>', 'page_head');
 
-
         //box for columns selection
         $arr_fieldset = [
             'user' => '',
@@ -4683,7 +4663,7 @@ class Report_User extends Report
         $sort_dir_dropdown = Form::getInputDropdown('', 'order_dir', 'order_dir', $dir_list, $dir_selected, '');
         $box->body .= Form::getDropdown(Lang::t('_ORDER_BY', 'standard'), 'order_by', 'order_by', $sort_list, $sort_selected, $sort_dir_dropdown);
 
-        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool)$reportTempData['columns_filter']['show_suspended']);
+        $box->body .= Form::getCheckbox(Lang::t('_SHOW_SUSPENDED', 'organization_chart'), 'show_suspended', 'show_suspended', 1, (bool) $reportTempData['columns_filter']['show_suspended']);
 
         cout($box->get(), 'content');
     }
@@ -4766,7 +4746,6 @@ class Report_User extends Report
     {
         require_once _lms_ . '/admin/modules/report/report_tableprinter.php';
 
-
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);
         } else {
@@ -4787,7 +4766,7 @@ class Report_User extends Report
         $customcols = &$_cols['custom_fields'];
         $order_by = isset($_cols['order_by']) ? $_cols['order_by'] : 'userid';
         $order_dir = isset($_cols['order_dir']) ? $_cols['order_dir'] : 'asc';
-        $suspended = isset($_cols['show_suspended']) ? (bool)$_cols['show_suspended'] : false;
+        $suspended = isset($_cols['show_suspended']) ? (bool) $_cols['show_suspended'] : false;
         if ($all_users) {
             $users = $acl_man->getAllUsersIdst();
         } else {
@@ -4848,7 +4827,7 @@ class Report_User extends Report
             if ($val['selected']) {
                 ++$colspans['user'];
                 $temp_head2[] = $val['label'];
-                $field_values[$val['id']] = $fman->fieldValue((int)$val['id'], $users);
+                $field_values[$val['id']] = $fman->fieldValue((int) $val['id'], $users);
             }
         }
 
@@ -5116,4 +5095,3 @@ class Report_User extends Report
         return $output;
     }
 }
-

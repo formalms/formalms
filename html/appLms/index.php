@@ -26,8 +26,6 @@ Boot::init(BOOT_PAGE_WR);
 // connect to the database
 $db = &DbConn::getInstance();
 
-
-
 // some specific lib to load
 require_once _lms_ . '/lib/lib.istance.php';
 require_once _lms_ . '/lib/lib.permission.php';

@@ -322,18 +322,18 @@ function fixsequence($jump = true)
 switch ($GLOBALS['op']) {
     case 'field_list':
         field_list();
-    ; break;
+     break;
     case 'field_del':
         field_del();
-    ; break;
+     break;
 
     case 'moveup':
         movefield('up');
-    ; break;
+     break;
     case 'movedown':
         movefield('down');
-    ; break;
+     break;
     case 'fixsequence':
         fixsequence();
-    ; break;
+     break;
 }

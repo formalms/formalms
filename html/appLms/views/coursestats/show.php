@@ -26,7 +26,7 @@ echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
         $link = '';
         switch ($lo->type) {
             case 'poll':
-                $link = '<a title="" href="index.php?r=lms/coursestats/show_object&id_lo=' . (int)$lo->id . '">' . $lo->title . '</a>';
+                $link = '<a title="" href="index.php?r=lms/coursestats/show_object&id_lo=' . (int) $lo->id . '">' . $lo->title . '</a>';
                 break;
             default:
                 $link = $lo->title;
@@ -86,7 +86,9 @@ echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
             serverSide: true,
             /*columns: [
 <?php foreach ($columns as $column) { ?>
-        { data: "<?php echo $column['key']; ?>", title: "<?php echo $column['label']; ?>", orderable: "<?php echo $column['sortable']; ?>" <?php if(array_key_exists('edit',$column)) { echo ', edit' . $column['edit']; }?> },
+        { data: "<?php echo $column['key']; ?>", title: "<?php echo $column['label']; ?>", orderable: "<?php echo $column['sortable']; ?>" <?php if (array_key_exists('edit', $column)) {
+        echo ', edit' . $column['edit'];
+    }?> },
       <?php } ?>
     ],*/
             scrollX: true,

@@ -11,8 +11,6 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-use function GuzzleHttp\default_ca_bundle;
-
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
@@ -37,7 +35,6 @@ const BOOT_INPUT_ALT = 99;
  */
 class Boot
 {
-
     private static $_boot_seq = [
         BOOT_COMPOSER => 'composer',
         BOOT_CONFIG => 'config',
@@ -57,7 +54,6 @@ class Boot
     ];
 
     public static $log_array = [];
-
 
     public static function composer()
     {
@@ -182,10 +178,10 @@ class Boot
         // debugging ?
         self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
-            if (!in_array('debug_level', $cfg, true)){
+            if (!in_array('debug_level', $cfg, true)) {
                 $cfg['debug_level'] = 'all';
             }
-            switch($cfg['debug_level']) {
+            switch ($cfg['debug_level']) {
                 case 'error':
                     @error_reporting(E_ERROR);
                     break;
@@ -201,9 +197,8 @@ class Boot
                 default:
                     @error_reporting(E_ALL);
                     break;
-                
             }
-            
+
             @ini_set('display_errors', 1);
         } else {
             @error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);
@@ -243,7 +238,6 @@ class Boot
      */
     private static function utility()
     {
-
         self::log('Include autoload file.');
         require_once _base_ . '/lib/lib.autoload.php';
 
@@ -343,7 +337,6 @@ class Boot
         }
     }
 
-
     private static function request()
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
@@ -356,7 +349,6 @@ class Boot
             self::log(" Start session '" . $session->getName() . "'");
             $request->setSession($session);
         }
-
 
         if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $session->invalidate();
@@ -492,7 +484,7 @@ class Boot
                 $new_lang = FormaLms\lib\Get::req('new_lang', DOTY_ALPHANUM, false);
 
                 self::log("Sop 'changelang' intercepted, changing lang to : $new_lang");
-                Lang::set($new_lang, isset($_GET['logout']));;
+                Lang::set($new_lang, isset($_GET['logout']));
                 break;
         }
 
@@ -542,7 +534,7 @@ class Boot
     {
         list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float)$usec + (float)$sec),
+            'time' => ((float) $usec + (float) $sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
@@ -550,7 +542,7 @@ class Boot
     public static function current_time()
     {
         list($usec, $sec) = explode(' ', microtime());
-        $now = ((float)$usec + (float)$sec);
+        $now = ((float) $usec + (float) $sec);
 
         return $now - $GLOBALS['start']['time'];
     }

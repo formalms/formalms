@@ -88,7 +88,7 @@ class CategoryFolderTree extends ClientTree
 
         if (!isset($courseCategory['filter_status']['c_category'])) {
             $courseCategory['filter_status']['c_category'] = 0;
-            $this->session->set('course_category',$courseCategory);
+            $this->session->set('course_category', $courseCategory);
             $this->session->save();
         }
         $treestatus = $courseCategory['filter_status']['c_category'];
@@ -127,6 +127,4 @@ class CategoryFolderTree extends ClientTree
 
         return $result;
     }
-
-   
 }

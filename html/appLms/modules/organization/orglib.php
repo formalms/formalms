@@ -77,7 +77,7 @@ class OrgDirDb extends RepoDirDb
     public function OrgDirDb($idCourse = false)
     {
         if ($idCourse === false) {
-            $this->idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');;
+            $this->idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         } else {
             $this->idCourse = $idCourse;
         }
@@ -1740,7 +1740,6 @@ class Org_TreeView extends RepoTreeView
                                 $status = Track_Object::getStatusFromId(
                                     $stack[$level]['folder']->id,
                                     getLogUserId());
-
 
                                 if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                                     return false;

@@ -274,7 +274,7 @@ function externalCourselist()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (isset($_GET['tab']) || isset($_POST['tab'])) {
         $selected_tab = FormaLms\lib\Get::req('tab', DOTY_MIXED, $first_coursecatalogue_tab);
-        $session->set('cc_tab',$selected_tab);
+        $session->set('cc_tab', $selected_tab);
         $session->save();
     } elseif ($session->has('cc_tab')) {
         $selected_tab = $session->get('cc_tab');
@@ -295,7 +295,7 @@ function externalCourselist()
     switch ($selected_tab) {
         case 'pathcourse' :
             displayCoursePathList($url, $selected_tab);
-        ; break; /*
+         break; /*
         case "time" : {
             displayTimeCourseList($url, $selected_tab);
         };break;*/
@@ -407,41 +407,41 @@ function showprofile()
 switch ($GLOBALS['op']) {
     case 'register' :
         register();
-    ; break;
+     break;
     case 'register_opt' :
         register_confirm();
-    ; break;
+     break;
 
     case 'courselist' :
         externalCourselist();
-    ; break;
+     break;
 
     case 'showdemo' :
         showdemo();
-    ; break;
+     break;
     case 'donwloadmaterials' :
         donwloadmaterials();
-    ; break;
+     break;
     case 'showprofile' :
         showprofile();
-    ; break;
+     break;
     case 'buycourse' :
         buycourse();
-    ; break;
+     break;
 
     case 'readwebpages' :
         loadWebPage();
-    ; break;
+     break;
     case 'news' :
         news();
-    ; break;
+     break;
     case 'readnews' :
         readnews();
-    ; break;
+     break;
     //lost user or password
     case 'lostpwd' :
         lostpwd();
-    ; break;
+     break;
 
     default:
         if (FormaLms\lib\Get::sett('home_course_catalogue') == 'on') {

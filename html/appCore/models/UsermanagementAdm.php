@@ -1133,7 +1133,7 @@ class UsermanagementAdm extends Model
 
                 $acl_man->addToGroup($oc, $user_idst);
                 $acl_man->addToGroup($ocd, $user_idst);
-           
+
                 //apply enroll rules
                 $langs = Docebo::langManager()->getAllLangCode();
                 $lang_code = (isset($langs[(isset($_POST['user_preference']['ui.language']) ? $_POST['user_preference']['ui.language'] : 'eng')]) ? $langs[$_POST['user_preference']['ui.language']] : false);
@@ -2043,7 +2043,7 @@ class UsermanagementAdm extends Model
             $template_name = $templates_name_array[$id_template];
             //insert node in the table, with newly calculated iLeft and iRight
             $query = 'INSERT into %adm_org_chart_tree (idOrg, idParent, path, lev, iLeft, iRight, code, associated_template) VALUES '
-                . "(NULL, '" . (int) $id_parent . "', '" . $path . "', '" . (int) $level . "', " . (int) $new_limits['iLeft'] . ', ' . ((int) $new_limits['iRight'] + 1) . ", '" . $code . "', '". $template_name . "')";
+                . "(NULL, '" . (int) $id_parent . "', '" . $path . "', '" . (int) $level . "', " . (int) $new_limits['iLeft'] . ', ' . ((int) $new_limits['iRight'] + 1) . ", '" . $code . "', '" . $template_name . "')";
             $res = $this->db->query($query);
             $id = $this->db->insert_id();
 

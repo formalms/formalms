@@ -58,7 +58,7 @@ switch ($command) {
         }
 
         $courseCategory['filter_status'] = $filter_status;
-        $session->set('course_category',$courseCategory);
+        $session->set('course_category', $courseCategory);
         $session->save();
 
         require_once _lms_ . '/lib/lib.course.php';
@@ -87,7 +87,7 @@ switch ($command) {
             $moderate = true;
         }
 
-        foreach ($course_list as $row){
+        foreach ($course_list as $row) {
             $row['status'] = $course_status[$row['status']];
 
             $highlight = false;
@@ -130,7 +130,7 @@ switch ($command) {
         $json = new Services_JSON();
         aout($json->encode($output));
 
-    ; break;
+     break;
 
     case 'del_row':
         require_once _lms_ . '/lib/lib.course.php';
@@ -145,7 +145,7 @@ switch ($command) {
 
         $json = new Services_JSON();
         aout($json->encode($output));
-    ; break;
+     break;
 
     case 'set_name':
         $output = ['success' => false];
@@ -159,7 +159,7 @@ switch ($command) {
         }
 
         aout($json->encode($output));
-    ; break;
+     break;
 
     case 'updateField':
         require_once _base_ . '/lib/lib.json.php';

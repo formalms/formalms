@@ -39,7 +39,6 @@ class CommunicationAlms extends Model
         $sortable = ['title', 'description', 'type_of', 'publish_date'];
         $sortable = array_flip($sortable);
         $lang_code = ($language == false ? getLanguage() : $language);
-       
 
         $records = [];
         $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cs.name,"--") as courseName, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle '
@@ -52,15 +51,14 @@ class CommunicationAlms extends Model
             . ' WHERE 1 '
             . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
             . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '');
-            $qtxt .= ($id_category > 0) ? ' AND c.id_category = ' . $id_category : '';
-            
-            $qtxt .= ' GROUP BY c.id_comm'
+        $qtxt .= ($id_category > 0) ? ' AND c.id_category = ' . $id_category : '';
+
+        $qtxt .= ' GROUP BY c.id_comm'
             . (isset($sortable[$sort])
                 ? ' ORDER BY ' . $sort . ' ' . ($dir == 'asc' ? 'ASC' : 'DESC') . ' '
                 : '')
             . ($results != 0 ? ' LIMIT ' . (int) $start_index . ', ' . (int) $results : '');
 
-            
         $re = $this->db->query($qtxt);
 
         if (!$re) {
@@ -130,7 +128,7 @@ class CommunicationAlms extends Model
                 ? ' ORDER BY ' . $sort . ' ' . ($dir == 'asc' ? 'ASC' : 'DESC') . ' '
                 : '')
             . ($results != 0 ? ' LIMIT ' . (int) $start_index . ', ' . (int) $results : '');
-   
+
         $re = $this->db->query($qtxt);
 
         if (!$re) {
@@ -158,20 +156,20 @@ class CommunicationAlms extends Model
                 . ' WHERE id_comm = ' . (int) $id_comm . ' ';
         }
         $re = $this->db->query($qtxt);
-  
+
         if (!$re) {
             return false;
         }
         $qtxt = 'SELECT * '
         . ' FROM %lms_communication_lang'
-        . ' WHERE id_comm = ' . (int) $id_comm; 
+        . ' WHERE id_comm = ' . (int) $id_comm;
 
         $langs = $this->db->query($qtxt);
         $comm = $this->db->fetch_assoc($re);
-        foreach($langs as $lang) {
+        foreach ($langs as $lang) {
             $comm['langs'][] = $lang;
         }
-        
+
         return $comm;
     }
 
@@ -219,7 +217,7 @@ class CommunicationAlms extends Model
             // insert new
             $qtxt = 'INSERT INTO %lms_communication (publish_date, type_of, id_resource, id_category, id_course) '
                 . ' VALUES ('
-                . '"'. $data['publish_date'] . '", '
+                . '"' . $data['publish_date'] . '", '
                 . '"' . $data['type_of'] . '", '
                 . ' ' . (int) (isset($data['id_resource']) ? $data['id_resource'] : 0) . ', '
                 . ' ' . (int) (isset($data['id_category']) ? $data['id_category'] : 0) . ', '
@@ -231,17 +229,17 @@ class CommunicationAlms extends Model
             }
 
             $insertedId = $this->db->insert_id();
-        
-            foreach($data['langs'] as $langCode => $lang) {
+
+            foreach ($data['langs'] as $langCode => $lang) {
                 $qtxt = 'INSERT INTO %lms_communication_lang (title, description, lang_code, id_comm) '
                 . ' VALUES ('
                 . '"' . $lang['title'] . '", '
                 . '"' . $lang['description'] . '", '
                 . '"' . $langCode . '", '
-                .  $insertedId .' )';
+                . $insertedId . ' )';
                 $re = $this->db->query($qtxt);
             }
-         
+
             return $insertedId;
         } else {
             //update one// insert new
@@ -275,14 +273,13 @@ class CommunicationAlms extends Model
                 return false;
             }
 
-            foreach($data['langs'] as $langCode => $lang) {
+            foreach ($data['langs'] as $langCode => $lang) {
                 $qtxt = 'UPDATE %lms_communication_lang'
                 . ' SET '
                 . ' title = "' . $lang['title'] . '", '
                 . ' description = "' . $lang['description'] . '" '
                 . ' WHERE lang_code = "' . $langCode . '" AND id_comm = ' . (int) $data['id_comm'];
                 $re = $this->db->query($qtxt);
-
             }
 
             return $data['id_comm'];
@@ -382,6 +379,7 @@ class CommunicationAlms extends Model
     {
         $query_delete = 'DELETE FROM %lms_communication_track '
             . 'WHERE `idReference` = ' . (int) $id_comm . ' AND `idUser` = ' . (int) $id_user;
+
         return $this->db->query($query_delete);
     }
 
@@ -401,7 +399,6 @@ class CommunicationAlms extends Model
 
         return $this->db->fetch_row($res);
     }
-
 
     public function getCategories($id_parent, $language = false)
     {
@@ -447,7 +444,6 @@ class CommunicationAlms extends Model
             . ' FROM %lms_communication_category AS t1 
             LEFT JOIN %lms_communication_category_lang AS t2  ON (t1.id_category = t2.id_category AND t2.lang_code = "' . $lang_code . '" )
             LEFT JOIN %lms_communication_category_lang AS t3  ON (t1.id_parent = t3.id_category AND t3.lang_code = "' . $lang_code . '" ) ';
-       
 
         if ($sort && $dir) {
             $query .= " ORDER BY $sort $dir ";
@@ -465,7 +461,6 @@ class CommunicationAlms extends Model
 
         $output = [];
         while (list($id, $label, $parentLabel) = $this->db->fetch_row($res)) {
-
             //set node for output
             $output[$id] = [
                 'id' => $id,
@@ -484,7 +479,7 @@ class CommunicationAlms extends Model
         $output = [];
         $lang_code = ($language == false ? getLanguage() : $language);
 
-        if($addRoot) {
+        if ($addRoot) {
             $objOut = new stdClass();
             $objOut->id = '';
             $objOut->level = 0;
@@ -496,47 +491,42 @@ class CommunicationAlms extends Model
             . ' FROM %lms_communication_category AS t1 
             LEFT JOIN %lms_communication_category_lang AS t2  ON (t1.id_category = t2.id_category AND t2.lang_code = "' . $lang_code . '" )
             ORDER BY id_parent ASC';
-       
 
         $categories = $this->db->query($query);
         if (!$categories) {
             return false;
         }
 
-        foreach($categories as $category) {
-    
-      
+        foreach ($categories as $category) {
             $tree[$category['id']]['level'] = (int) $category['id_parent'] ? $output[$category['id']] + 1 : 0;
             $tree[$category['id']]['label'] = $category['label'];
         }
 
-        foreach($tree as $id => $node) {
+        foreach ($tree as $id => $node) {
             $objOut = new stdClass();
             $objOut->id = $id;
             $objOut->level = $node['level'];
             $objOut->text = $node['label'];
             $output[] = $objOut;
-
         }
-
 
         return $output;
     }
 
-    public function getCategoryTotal($language = false) {
+    public function getCategoryTotal($language = false)
+    {
         $lang_code = ($language == false ? getLanguage() : $language);
         $query = 'SELECT count(t1.id_category) as cnt'
             . ' FROM %lms_communication_category AS t1 LEFT JOIN %lms_communication_category_lang AS t2 '
             . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) limit 1 ";
 
         $res = $this->db->query($query);
-        if(!$res) {
+        if (!$res) {
             return false;
         }
 
         return (int) $this->db->fetch_row($res)[0];
     }
-
 
     /*
      * returns an ordered list of ids (like a path)
@@ -664,7 +654,6 @@ class CommunicationAlms extends Model
         $res = $this->db->query($query);
         $output = $this->db->fetch_obj($res);
 
-
         //initialize languages array
         $lang_codes = Docebo::langManager()->getAllLangCode();
         $langs = [];
@@ -687,7 +676,7 @@ class CommunicationAlms extends Model
         }
 
         $output->langs = $langs;
-    
+
         return $output;
     }
 
@@ -714,7 +703,7 @@ class CommunicationAlms extends Model
 
             //insert node in the table, with newly calculated iLeft and iRight
             $query = 'INSERT INTO %lms_communication_category (id_category, id_parent, level, iLeft, iRight) VALUES (NULL, "' . (int) $id_parent . '", "' . ((int) $level + 1) . '", "' . ((int) $left + 1) . '", "' . ((int) $right + 1) . '")';
-     
+
             $res = $this->db->query($query);
 
             //if node has been correctly inserted then ...
@@ -731,7 +720,7 @@ class CommunicationAlms extends Model
                 }
                 $query = 'INSERT INTO %lms_communication_category_lang (id_category, lang_code, translation, description) '
                     . ' VALUES ' . implode(',', $conditions);
-                   
+
                 $res = $this->db->query($query);
                 if ($res) {
                     $output = $id;
@@ -749,11 +738,8 @@ class CommunicationAlms extends Model
         $output = false;
 
         if ($idCategory > 0) {
-
-
             $query = 'UPDATE %lms_communication_category'
                 . ' SET id_parent = "' . $idParent . '" WHERE id_category = ' . (int) $idCategory;
-
 
             $res = $this->db->query($query);
 
@@ -769,7 +755,7 @@ class CommunicationAlms extends Model
 
                 if (isset($prev_lang[$lang_code])) {
                     $query = 'UPDATE %lms_communication_category_lang '
-                        . ' SET translation = "' . $name . '" , description = "' .$description. '" '
+                        . ' SET translation = "' . $name . '" , description = "' . $description . '" '
                         . ' WHERE id_category = ' . (int) $idCategory . " AND lang_code = '" . $lang_code . "'";
                     $res = $this->db->query($query);
                 } else {
@@ -778,8 +764,6 @@ class CommunicationAlms extends Model
                         . ' (' . (int) $idCategory . ", '" . $lang_code . "', '" . $name . "', , '" . $description . "') ";
                     $res = $this->db->query($query);
                 }
-
-             
             }
             $output = true; //TO DO: improve error detection in queries ...
         }
@@ -789,46 +773,43 @@ class CommunicationAlms extends Model
 
     public function deleteCategory($idCategory)
     {
-
         $result = [];
         $result['message'] = Lang::t('_ERROR', 'communication');
         if ($idCategory <= 0) {
-            
             $result['success'] = false;
+
             return $result;
         }
 
         if ($this->getCountCommunications($idCategory) > 0) {
             $result['message'] = Lang::t('_CATEGORY_WITH_POSTS', 'communication');
             $result['success'] = false;
+
             return $result;
         }
-   
+
         //check if category is parent of another one
-         //delete languages from DB
-         $query = 'SELECT * FROM %lms_communication_category WHERE id_parent = ' . (int) $idCategory . ' LIMIT 1';
-         $res = $this->db->query($query);
-         $objCategory = $this->db->fetch_obj($res);
+        //delete languages from DB
+        $query = 'SELECT * FROM %lms_communication_category WHERE id_parent = ' . (int) $idCategory . ' LIMIT 1';
+        $res = $this->db->query($query);
+        $objCategory = $this->db->fetch_obj($res);
 
-         if(((int) $objCategory->id_category)) {
-
+        if (((int) $objCategory->id_category)) {
             $result['message'] = Lang::t('_CATEGORY_FATHER', 'communication');
             $result['success'] = false;
+
             return $result;
-         } 
+        }
 
         //delete node and then update tree iLefts and iRights
         $query = 'DELETE FROM %lms_communication_category WHERE id_category=' . (int) $idCategory;
         $res = $this->db->query($query);
         if ($res) {
-
             //delete languages from DB
             $query = 'DELETE FROM %lms_communication_category_lang WHERE id_category=' . (int) $idCategory;
             $res = $this->db->query($query);
 
-   
             $result['success'] = true;
-            
         } else {
             $result['success'] = false;
         }

@@ -633,6 +633,6 @@ class Tags
             return false;
         }
 
-        return  $re ? true : false;
+        return $re ? true : false;
     }
 }

@@ -588,7 +588,7 @@ function play($object_test, $id_param)
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     if (!$session->has('test_date_begin')) {
-        $session->set('test_date_begin',date('Y-m-d H:i:s'));
+        $session->set('test_date_begin', date('Y-m-d H:i:s'));
         $session->save();
     }
 
@@ -1361,7 +1361,6 @@ function showResult($object_test, $id_param)
 
         $re_update = Track_Test::updateTrack($id_track, $new_info);
         if (!isset($_POST['show_review'])) {
-
             $testDateBegin = $session->get('test_date_begin');
             $time = fromDatetimeToTimestamp(date('Y-m-d H:i:s')) - fromDatetimeToTimestamp($testDateBegin);
 

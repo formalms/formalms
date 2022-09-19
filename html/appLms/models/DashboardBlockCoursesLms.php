@@ -300,7 +300,18 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     protected function getDataFromCourse($course)
     {
         $courseData = parent::getDataFromCourse($course);
-        $courseData['hours'] = (new DateTime($courseData['hourBegin']))->format('H:i') . (!empty($courseData['hourEnd']) ? '-' . (new DateTime($courseData['hourEnd']))->format('H:i') : '');
+
+        $hours = '';
+        if (!empty($courseData['hourBegin'])) {
+            $hours .= (new DateTime($courseData['hourBegin']))->format('H:i');
+        }
+        if (!empty($courseData['hourEnd'])) {
+            if (!empty($hours)) {
+                $hours .= ' - ';
+            }
+            $hours .= (new DateTime($courseData['hourEnd']))->format('H:i');
+        }
+        $courseData['hours'] = $hours;
 
         return $courseData;
     }

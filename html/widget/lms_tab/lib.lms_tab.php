@@ -61,7 +61,7 @@ class Lms_TabWidget extends Widget
             $class .= ' ' . $other_classes;
         }
 
-        return  $class ? ' class="' . $class . '" ' : '';
+        return $class ? ' class="' . $class . '" ' : '';
     }
 
     public function run()

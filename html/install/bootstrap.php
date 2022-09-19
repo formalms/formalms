@@ -11,7 +11,6 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-
 @error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);
 
 //session_name('docebo_session');
@@ -43,7 +42,6 @@ include _lib_ . '/installer/lib.lang.php';
 include _lib_ . '/installer/lib.step.php';
 include _lib_ . '/installer/lib.pagewriter.php';
 include _lib_ . '/installer/lib.template.php';
-
 
 PageWriter::init();
 

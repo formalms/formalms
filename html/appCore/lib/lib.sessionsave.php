@@ -38,7 +38,6 @@ class Session_Save extends General_Save
      **/
     public $session;
 
-
     public function __construct()
     {
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -54,8 +53,8 @@ class Session_Save extends General_Save
         }
         $value = $basename . '_' . \Symfony\Component\Uid\Uuid::v4()->toRfc4122();
 
-        if ($this->session->has($value)){
-            return $this->getName($basename,$unique);
+        if ($this->session->has($value)) {
+            return $this->getName($basename, $unique);
         }
 
         return $value;
@@ -68,17 +67,16 @@ class Session_Save extends General_Save
 
     public function save($var_name, &$content, $serialize_for_me = true)
     {
-        $this->session->set($var_name,$content);
+        $this->session->set($var_name, $content);
         $this->session->save();
 
         return true;
-
     }
 
     public function &load($var_name, $deserialize_for_me = true)
     {
         if ($this->nameExists($var_name)) {
-           return $this->session->get($var_name);
+            return $this->session->get($var_name);
         }
 
         return false;

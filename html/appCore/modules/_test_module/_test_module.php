@@ -80,7 +80,7 @@ function dispatch($op)
 
             cout('</div>');
 
-        ; break;
+         break;
 
         case 'final' :
             require_once _base_ . '/lib/lib.form.php';
@@ -226,7 +226,7 @@ function dispatch($op)
                 . '<script type="text/javascript">' . "\n"
             //	."	var myTabs = new YAHOO.widget.TabView('course_cat'); "."\n"
                 . '</script>' . "\n", 'scripts');
-        ; break;
+         break;
 
         default:
             YuiLib::load();

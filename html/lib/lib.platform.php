@@ -241,7 +241,7 @@ class PlatformManager
 
                 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
                 if (!$session->has('current_admin_id_menu')) {
-                    $session->set('current_admin_id_menu',key($main_voice));
+                    $session->set('current_admin_id_menu', key($main_voice));
                 }
                 foreach ($main_voice as $id_m => $voice) {
                     $html .= '<li ' .

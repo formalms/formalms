@@ -39,7 +39,7 @@ function createLO($objectType, $id_resource = false, $environment = false)
     if (trim($file_name) == '') {
         return false;
     }
-   
+
     require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
     require_once Forma::inc(_lms_ . '/class.module/' . $file_name);
 

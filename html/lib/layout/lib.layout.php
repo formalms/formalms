@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-use \FormaLms\lib\Session\SessionManager;
+use FormaLms\lib\Session\SessionManager;
 
 class Layout
 {
@@ -326,7 +326,7 @@ class Layout
             $intest = '<?xml version="1.0" encoding="' . self::charset() . '"?' . '>' . "\n";
         }
         if (file_exists(_templates_ . '/' . getTemplate() . '/layout/' . $layout . '.html.twig')) {
-            $dataforview = array_merge($dataForView,self::PrepareInclude($layout));
+            $dataforview = array_merge($dataForView, self::PrepareInclude($layout));
             echo FormaLms\appCore\Template\TwigManager::getInstance()->render($layout . '.html.twig', $dataforview, _templates_ . '/' . getTemplate() . '/layout/');
         } else {
             include _templates_ . '/' . getTemplate() . '/layout/' . $layout . '.php';
@@ -427,12 +427,12 @@ class Layout
             $module_menu_id = FormaLms\lib\Get::req('id_module_sel', DOTY_INT, 0);
 
             if ($main_menu_id > 0) {
-                SessionManager::getInstance()->getSession()->set('current_main_menu',$main_menu_id);
+                SessionManager::getInstance()->getSession()->set('current_main_menu', $main_menu_id);
                 SessionManager::getInstance()->getSession()->save();
             }
 
             if ($module_menu_id > 0) {
-                SessionManager::getInstance()->getSession()->set('sel_module_id',$module_menu_id);
+                SessionManager::getInstance()->getSession()->set('sel_module_id', $module_menu_id);
                 SessionManager::getInstance()->getSession()->save();
             }
 

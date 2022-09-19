@@ -40,7 +40,7 @@ switch ($command) {
 
             if (!isset($courseCategory['filter_status']['c_category'])) {
                 $courseCategory['filter_status']['c_category'] = 0;
-                $session->set('course_category',$courseCategory);
+                $session->set('course_category', $courseCategory);
             }
             $treestatus = $courseCategory['filter_status']['c_category'];
 
@@ -93,7 +93,7 @@ switch ($command) {
 
         $output = ['success' => true, 'nodes' => $result, 'initial' => ($initial == 1)];
         aout($json->encode($output));
-    ; break;
+     break;
 
     case 'modify':
         $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
@@ -107,7 +107,7 @@ switch ($command) {
             $result['new_name'] = stripslashes($new_name);
         }
         aout($json->encode($result));
-    ; break;
+     break;
 
     case 'create':
         $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, false);
@@ -135,14 +135,14 @@ switch ($command) {
             }
         }
         aout($json->encode($result));
-    ; break;
+     break;
 
     case 'delete':
         $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
 
         $result = ['success' => $treecat->deleteTreeById($node_id)];
         aout($json->encode($result));
-    ; break;
+     break;
 
     case 'movefolder':
         $src = FormaLms\lib\Get::req('src', DOTY_INT, 0);
@@ -150,7 +150,7 @@ switch ($command) {
 
         $result = ['success' => $treecat->move($src, $dest)];
         aout($json->encode($result));
-    ; break;
+     break;
 
     case 'options':
         $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
@@ -165,7 +165,7 @@ switch ($command) {
 
         $result = ['success' => true, 'options' => $node_options, '_debug' => $count];
         aout($json->encode($result));
-    ; break;
+     break;
 
     //invalid command
     default:

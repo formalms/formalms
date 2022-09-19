@@ -18,7 +18,7 @@ if (!Docebo::user()->isAnonymous()) {
 
     function pubrepo(&$treeView)
     {
-    // manage items addition
+        // manage items addition
         if (isset($_POST['_repoproperties_save'])) {
             $treeView->tdb->modifyItem($_POST);
             $treeView->op = '';

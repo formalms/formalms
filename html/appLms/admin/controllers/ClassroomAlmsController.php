@@ -138,7 +138,7 @@ class ClassroomAlmsController extends AlmsController
             return false;
         }
         if (!$session->has('course_category') || !isset($session->get('course_category')['filter_status'][$index])) {
-            $session->set('course_category',['filter_status'=>[$index=>$default]]);
+            $session->set('course_category', ['filter_status' => [$index => $default]]);
         }
 
         return $session->get('course_category')['filter_status'][$index];
@@ -147,7 +147,7 @@ class ClassroomAlmsController extends AlmsController
     protected function _setSessionTreeData($index, $value)
     {
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        $session->set('course_category',['filter_status'=>[$index=>$value]]);
+        $session->set('course_category', ['filter_status' => [$index => $value]]);
         $session->save();
     }
 

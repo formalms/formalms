@@ -145,12 +145,11 @@ class ProfileLmsController extends LmsController
                     case USER_SAVED:
                     default:
                         break;
-
                 }
                 Util::jump_to('index.php');
             }
         } else {
-            $this->session->set('must_renew_pwd',1);
+            $this->session->set('must_renew_pwd', 1);
             $this->session->save();
             $res = Docebo::user()->isPasswordElapsed();
             if ($res == 2) {
@@ -203,7 +202,7 @@ class ProfileLmsController extends LmsController
 
         // extract courses which have been completed in the considered period and the credits associated
         $course_type_trans = getCourseTypes();
-        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM %lms_course as c ' . ' JOIN %lms_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int)getLogUserId() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
+        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM %lms_course as c ' . ' JOIN %lms_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int) getLogUserId() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
         $res = sql_query($query);
 
         $course_data = [];

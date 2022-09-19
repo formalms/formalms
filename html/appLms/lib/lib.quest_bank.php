@@ -283,7 +283,7 @@ class QuestBankMan
                         }
                     }
                 }
-            ; break;
+             break;
             case 1: 	// xml moodle format -------------
             ; break;
         }
@@ -309,7 +309,7 @@ class QuestBankMan
                 exit($type_quest);
             }
         }
-            ; break;
+             break;
             case 1: 	// xml moodle format -------------
             ; break;
         }

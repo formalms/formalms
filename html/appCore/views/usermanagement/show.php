@@ -81,7 +81,7 @@ if ($permissions['view_org']) {
 }
 
 if ($permissions['view_user']) {
-// Search form?>
+    // Search form?>
 <div class="quick_search_form">
 	<div class="common_options">
 		<?php

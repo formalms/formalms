@@ -33,7 +33,6 @@ class Module_Course extends LmsModule
             default:
                 break;
         }
-
     }
 
     public function loadBody()
@@ -41,10 +40,10 @@ class Module_Course extends LmsModule
         switch ($GLOBALS['op']) {
             case 'showresults':
                 $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, false);
-                $this->session->set('idCourse',$id_course);
+                $this->session->set('idCourse', $id_course);
                 $this->session->save();
                 Util::jump_to('index.php?modname=organization&op=showresults&idcourse=' . $id_course);
-            ; break;
+             break;
             case 'mycourses' :
             case 'unregistercourse' :
                 require_once _lms_ . '/modules/' . $this->module_name . '/course.php';
@@ -54,14 +53,14 @@ class Module_Course extends LmsModule
                 $url->setStdQuery(FormaLms\lib\Get::home_page_query());
 
                 mycourses($url);
-            ; break;
+             break;
             case 'donwloadmaterials':
                 downloadMaterials();
             break;
             default:
                 require_once _lms_ . '/modules/' . $this->module_name . '/infocourse.php';
                 infocourseDispatch($GLOBALS['op']);
-            ; break;
+             break;
         }
     }
 
@@ -77,7 +76,7 @@ class Module_Course extends LmsModule
                                         'name' => '_MOD',
                                         'image' => 'standard/edit.png', ],
                 ];
-            ; break;
+             break;
             default:
                 return [
                     'view' => ['code' => 'view',

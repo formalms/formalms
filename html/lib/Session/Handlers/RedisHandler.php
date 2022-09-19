@@ -1,12 +1,21 @@
 <?php
 
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
 namespace FormaLms\lib\Session\Handlers;
 
 use FormaLms\lib\Session\SessionConfig;
-use Nyholm\Dsn\DsnParser;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler;
-
 
 class RedisHandler extends RedisSessionHandler
 {
@@ -15,16 +24,15 @@ class RedisHandler extends RedisSessionHandler
         try {
             if (empty($config->getUrl())) {
                 if ($config->isAuthentication()) {
-                    $url = sprintf('redis://%s@%s:%u?timeout=%d&prefix=%s', $config->getPassword(), $config->getHost(),$config->getPort(), $config->getTimeout(), $config->getPrefix());
-                }
-                else {
-                    $url = sprintf('redis://%s:%u?timeout=%d&prefix=%s', $config->getHost(),$config->getPort(), $config->getTimeout(), $config->getPrefix());
+                    $url = sprintf('redis://%s@%s:%u?timeout=%d&prefix=%s', $config->getPassword(), $config->getHost(), $config->getPort(), $config->getTimeout(), $config->getPrefix());
+                } else {
+                    $url = sprintf('redis://%s:%u?timeout=%d&prefix=%s', $config->getHost(), $config->getPort(), $config->getTimeout(), $config->getPrefix());
                 }
                 $config->setUrl($url);
             }
             $connection = RedisAdapter::createConnection($config->getUrl(), $config->getOptions());
         } catch (\Exception $exception) {
-            die($exception->getMessage());
+            exit($exception->getMessage());
         }
 
         parent::__construct($connection);

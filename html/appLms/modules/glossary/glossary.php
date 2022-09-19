@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 if (!Docebo::user()->isAnonymous()) {
-// XXX: mod glossary interface
+    // XXX: mod glossary interface
     function modglossarygui($object_glos = null)
     {
         checkPerm('view', false, 'storage');
@@ -198,7 +198,7 @@ if (!Docebo::user()->isAnonymous()) {
 	SET title='" . $_POST['title'] . "',
 	description='" . $_POST['description'] . "'
 	WHERE idGlossary='" . (int) $_POST['idGlossary'] . "'")) {
-        //error while inserting
+            //error while inserting
             $GLOBALS['page']->add(getErrorUi(
                      Lang::t('_OPERATION_FAILURE', 'glossary')
                         . getBackUi('index.php?modname=glossary&amp;op=modglossarygui&amp;idGlossary='
@@ -405,40 +405,40 @@ if (!Docebo::user()->isAnonymous()) {
 
         $object_glos = createLO('glossary', $idGlossary);
         $object_glos->edit($idGlossary, urldecode($back_url));
-    ; break;
+     break;
     //add a glossary
     case 'addglossary':
         addglossary();
-    ; break;
+     break;
     case 'insglossary':
         insglossary();
-    ; break;
+     break;
     // modify a glossary
     case 'modglossary':
         modglossary();
-    ; break;
+     break;
     case 'upglossary':
         upglossary();
-    ; break;
+     break;
 
     // add a term
     case 'addterm':
         addterm();
-    ; break;
+     break;
     case 'insterm':
         insterm();
-    ; break;
+     break;
     // modify a term
     case 'modterm':
         modterm();
-    ; break;
+     break;
     case 'upterm':
         upterm();
-    ; break;
+     break;
     // delete a term
     case 'delterm':
         delterm();
-    ; break;
+     break;
 
     case 'play':
         require_once dirname(__FILE__) . '/do.glossary.php';
@@ -449,7 +449,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $object_glos = createLO('glossary', $idGlossary);
         $object_glos->play($idGlossary, $idParams, urldecode($back_url));
-    ; break;
+     break;
 }
     }
 }

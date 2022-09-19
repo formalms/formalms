@@ -400,7 +400,7 @@ class EditionManager
         }
     }
 
-    public function getCourseEditionSubscription($id_course, $id_edition, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false,$adminFilter = true)
+    public function getCourseEditionSubscription($id_course, $id_edition, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false, $adminFilter = true)
     {
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity'
             . ' FROM ' . $this->courseuser_table . ' AS s'

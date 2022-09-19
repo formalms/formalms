@@ -23,6 +23,7 @@ class Module_Poll extends LmsModule
         if ($this->session->has('direct_play')) {
             return true;
         }
+
         return false;
     }
 
@@ -38,7 +39,7 @@ class Module_Poll extends LmsModule
 
                 $object_poll = createLO('poll', $id_poll);
                 $object_poll->play($id_poll, $id_param, Util::unserialize(urldecode($back_url)));
-            ; break;
+             break;
             default:
                 parent::loadBody();
         }

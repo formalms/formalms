@@ -41,7 +41,7 @@ $aj_file = '';
 $mn = FormaLms\lib\Get::req('mn', DOTY_ALPHANUM, '');
 $plf = FormaLms\lib\Get::req('plf', DOTY_ALPHANUM, ($session->has('current_action_platform') ? $session->get('current_action_platform') : FormaLms\lib\Get::cur_plat()));
 
-$request = \FormaLms\lib\Get::req('r',DOTY_MIXED);
+$request = \FormaLms\lib\Get::req('r', DOTY_MIXED);
 if (!empty($request)) {
     $GLOBALS['req'] = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $request);
 }

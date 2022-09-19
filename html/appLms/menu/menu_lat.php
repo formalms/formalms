@@ -29,11 +29,10 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
     $id_module_sel = FormaLms\lib\Get::req('id_module_sel', DOTY_INT, 0);
 
     if ($id_main_sel > 0) {
-        $session->set('current_main_menu',$id_main_sel);
-
+        $session->set('current_main_menu', $id_main_sel);
     }
     if ($id_module_sel > 0) {
-        $session->set('sel_module_id',$id_module_sel);
+        $session->set('sel_module_id', $id_module_sel);
     }
     $session->save();
 
@@ -143,7 +142,6 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
         }
 
         if (!empty($menu['submenu'])) {
-
             $active = "class='collapse'";
             $style = 'style="height: 0px;"';
             $li_class = 'class="active"';
@@ -218,7 +216,7 @@ if (!Docebo::user()->isAnonymous() && $session->get('idCourse')) {
         $info_panel .= '<div class="lmsmenu_block">' . "\n";
 
         $user_stats = ['head' => [], 'body' => []];
-        if (!$session->get('is_ghost',false) !== true) {
+        if (!$session->get('is_ghost', false) !== true) {
             if (Docebo::course()->getValue('show_time') == 1) {
                 $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $session->get('idCourse'));
                 $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($session->get('idCourse'));

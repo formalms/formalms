@@ -77,7 +77,7 @@ class CalendarDataContainer
 
     public function download()
     {
-// 4. Set HTTP headers.
+        // 4. Set HTTP headers.
         header('Content-Type: text/calendar; charset=utf-8');
         header('Content-Disposition: attachment; filename="' . $this->fileName . '"');
         echo $this->getData();

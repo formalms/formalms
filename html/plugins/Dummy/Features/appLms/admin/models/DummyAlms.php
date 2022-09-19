@@ -15,13 +15,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class DummyAlms extends Model
 {
-
     public function __construct()
     {
         parent::__construct();
     }
 
-    
     public function getPerm()
     {
         return ['view' => 'standard/view.png'];

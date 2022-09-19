@@ -13,7 +13,6 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-
 /**
  * @category driver with external
  *
@@ -862,16 +861,16 @@ function dispatchConference($op)
     switch ($op) {
         case 'list':
             conference_list($url);
-        ; break;
+         break;
         case 'startnewconf':
             conference_startnewconf($url);
-        ; break;
+         break;
         case 'modconf':
             conference_modconf($url);
         break;
         case 'delconf':
             conference_delconf();
-        ; break;
+         break;
 
         case 'booking':
             booking();

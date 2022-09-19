@@ -48,7 +48,7 @@ require_once Forma::inc(_adm_ . '/lib/lib.preoperation.php');
 
 if (empty($GLOBALS['modname']) && empty($GLOBALS['r'])) {
     $GLOBALS['req'] = (checkPerm('view', true, 'dashboard', 'framework') ? 'adm/dashboard/show' : '');
-    $session->set('current_action_platform','framework');
+    $session->set('current_action_platform', 'framework');
     $session->save();
 }
 

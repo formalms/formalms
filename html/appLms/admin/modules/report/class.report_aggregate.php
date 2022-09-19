@@ -25,13 +25,10 @@ define('_RA_CATEGORY_GAMES', 'games');
 define('_DECIMAL_SEPARATOR', '.');
 define('_PERCENT_SIMBOL', '%');
 
-
 class Report_Aggregate extends Report
 {
     public $page_title = false;
     public $db = null;
-
-    
 
     public function __construct($id_report, $report_name = false)
     {
@@ -65,7 +62,7 @@ class Report_Aggregate extends Report
         //update session
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $reportTempData = $session->get(self::_REPORT_SESSION);
-        if (!array_key_exists('rows_filter',$reportTempData) || empty($reportTempData['rows_filter'])) {
+        if (!array_key_exists('rows_filter', $reportTempData) || empty($reportTempData['rows_filter'])) {
             $reportTempData['rows_filter'] = [ //default values
                 'select_all' => false,
                 'selection_type' => 'users',
@@ -104,7 +101,7 @@ class Report_Aggregate extends Report
                 if (FormaLms\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
                     $reportTempData['rows_filter']['select_all'] = (FormaLms\lib\Get::req('select_all', DOTY_INT, 0) > 0 ? true : false);
                     $reportTempData['rows_filter']['selection_type'] = $type;
-                    //$reportTempData['rows_filter']['selection'] = $user_select->getSelection($_POST);
+                //$reportTempData['rows_filter']['selection'] = $user_select->getSelection($_POST);
                 } else { //maybe redoundant
                     if (!isset($reportTempData['rows_filter']['select_all'])) {
                         $reportTempData['rows_filter']['select_all'] = false;
@@ -118,14 +115,14 @@ class Report_Aggregate extends Report
                     $user_select->resetSelection($reportTempData['rows_filter']['selection']);
                     //$ref['users'] = array(); it should already have been set to void array, if non existent
                 }
-                $session->set(self::_REPORT_SESSION,$reportTempData);
+                $session->set(self::_REPORT_SESSION, $reportTempData);
                 $session->save();
 
                 if (isset($_POST['cancelselector'])) {
                     Util::jump_to($back_url);
                 } elseif (isset($_POST['okselector'])) {
                     $reportTempData['rows_filter']['selection'] = $user_select->getSelection($_POST);
-                    $session->set(self::_REPORT_SESSION,$reportTempData);
+                    $session->set(self::_REPORT_SESSION, $reportTempData);
                     $session->save();
                     Util::jump_to($next_url);
                 }
@@ -197,7 +194,6 @@ class Report_Aggregate extends Report
             ];
         }
 
-
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
             $temp = $selector->getSelection($_POST);
@@ -207,8 +203,8 @@ class Report_Aggregate extends Report
                 'completed' => (FormaLms\lib\Get::req('cols_completed', DOTY_INT, 0) > 0 ? true : false),
                 'initinere' => (FormaLms\lib\Get::req('cols_initinere', DOTY_INT, 0) > 0 ? true : false),
                 'notstarted' => (FormaLms\lib\Get::req('cols_notstarted', DOTY_INT, 0) > 0 ? true : false),
-                'show_percentages' => (FormaLms\lib\Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false)];
-            $this->session->set(self::_REPORT_SESSION,$reportTempData);
+                'show_percentages' => (FormaLms\lib\Get::req('cols_show_percentages', DOTY_INT, 0) > 0 ? true : false), ];
+            $this->session->set(self::_REPORT_SESSION, $reportTempData);
             $this->session->save();
         } else {
             $selector->resetSelection($reportTempData['columns_filter']['selected_courses']);
@@ -288,7 +284,6 @@ class Report_Aggregate extends Report
 
     public function show_report_courses($data = null, $other = '')
     {
-        
         if ($data === null) {
             cout($this->_get_courses_query());
         } else {
@@ -306,7 +301,7 @@ class Report_Aggregate extends Report
         } else {
             $reportTempData = $report_data;
         }
-   
+
         $fw = $GLOBALS['prefix_fw'];
         $lms = $GLOBALS['prefix_lms'];
 
@@ -549,7 +544,7 @@ class Report_Aggregate extends Report
                                     'total' => 0,
                                 ];
                             }
-                            switch ((int)$row['status']) {
+                            switch ((int) $row['status']) {
                                 case 2:
                                     $course_stats[$row['idCourse']][$group_id]['completed']++;
                                     break;
@@ -691,7 +686,7 @@ class Report_Aggregate extends Report
                     $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
                     $users = array_intersect($users, $admin_users);
                     unset($admin_users);
-                    //***
+                //***
                 } else {
                     $temp = [];
                     // resolve the user selection
@@ -815,7 +810,7 @@ class Report_Aggregate extends Report
                                 $line[] = ($table_row['courses'][$course] == 0 ? '100' . _DECIMAL_SEPARATOR . '00' . _PERCENT_SIMBOL : '0' . _PERCENT_SIMBOL);
                             }
 
-                            switch ((int)$table_row['courses'][$course]) {
+                            switch ((int) $table_row['courses'][$course]) {
                                 case 2:
                                     if (isset($completed_total[$course])) {
                                         ++$completed_total[$course];
@@ -941,7 +936,7 @@ class Report_Aggregate extends Report
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $reportTempData = $session->get(self::_REPORT_SESSION);
-        if (!array_key_exists('columns_filter',$reportTempData) || empty($reportTempData['columns_filter'])) {
+        if (!array_key_exists('columns_filter', $reportTempData) || empty($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [
                 'all_categories' => true,
                 'selected_categories' => [],
@@ -961,7 +956,7 @@ class Report_Aggregate extends Report
             }
         }
 
-        $session->set(self::_REPORT_SESSION,$reportTempData);
+        $session->set(self::_REPORT_SESSION, $reportTempData);
         $session->save();
 
         //back to columns category selection
@@ -1006,7 +1001,6 @@ class Report_Aggregate extends Report
     {
         require_once _lms_ . '/lib/lib.course.php';
         require_once dirname(__FILE__) . '/report_tableprinter.php';
-
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);
@@ -1121,7 +1115,7 @@ class Report_Aggregate extends Report
                 $totals = [];
 
                 foreach ($categories as $idcat) {
-                    $index = (int)str_replace('d', '', $idcat);
+                    $index = (int) str_replace('d', '', $idcat);
                     $head1[] = ['colspan' => 2, 'value' => $categories_paths[$index]];
                     $head2[] = $this->lang->def('_COMPLETED');
                     $head2[] = $this->lang->def('incomplete');
@@ -1205,7 +1199,7 @@ class Report_Aggregate extends Report
                     $line[] = (isset($usernames[$user]) ? $usernames[$user] : '');
                     foreach ($categories as $idcat) {
                         if ($idcat != '') {
-                            $index = (int)str_replace('d', '', $idcat);
+                            $index = (int) str_replace('d', '', $idcat);
                             if (isset($data[$index][$user])) {
                                 $line[] = $data[$index][$user]['completed'];
                                 $line[] = $data[$index][$user]['not_completed'];
@@ -1281,7 +1275,7 @@ class Report_Aggregate extends Report
                 $head2 = [$this->lang->def('_NAME'), $this->lang->def('_TOTAL')];
 
                 foreach ($categories as $idcat) {
-                    $index = (int)str_replace('d', '', $idcat);
+                    $index = (int) str_replace('d', '', $idcat);
                     $head1[] = ['colspan' => 2, 'value' => $categories_paths[$index]];
                     $head2[] = $this->lang->def('_COMPLETED');
                     $head2[] = $this->lang->def('incomplete');
@@ -1361,7 +1355,7 @@ class Report_Aggregate extends Report
 
                     foreach ($categories as $idcat) {
                         if ($idcat != '') {
-                            $index = (int)str_replace('d', '', $idcat);
+                            $index = (int) str_replace('d', '', $idcat);
                             if (isset($data[$index][$group_id])) {
                                 $line[] = $data[$index][$group_id]['completed'];
                                 $line[] = $data[$index][$group_id]['not_completed'];
@@ -1429,11 +1423,10 @@ class Report_Aggregate extends Report
             ];
         }
 
-
         if (isset($_POST['update_tempdata'])) {
             $reportTempData['columns_filter']['years'] = FormaLms\lib\Get::req('years', DOTY_INT, 1);
         }
-        $this->session->save(self::_REPORT_SESSION,$reportTempData);
+        $this->session->save(self::_REPORT_SESSION, $reportTempData);
         $this->session->save();
 
         //back to columns category selection
@@ -1805,13 +1798,12 @@ class Report_Aggregate extends Report
             ];
         }
 
-
         if (isset($_POST['update_tempdata'])) {
             $reportTempData['columns_filter']['all_communications'] = FormaLms\lib\Get::req('all_communications', DOTY_INT, 0) > 0;
             $reportTempData['columns_filter']['comm_selection'] = FormaLms\lib\Get::req('comm_selection', DOTY_MIXED, []);
             $reportTempData['columns_filter']['comm_start_date'] = Format::dateDb(FormaLms\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date');
             $reportTempData['columns_filter']['comm_end_date'] = Format::datedb(FormaLms\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date');
-            $this->session->set(self::_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION, $reportTempData);
             $this->session->save();
         }
 
@@ -2147,13 +2139,12 @@ class Report_Aggregate extends Report
             ];
         }
 
-
         if (isset($_POST['update_tempdata'])) {
             $reportTempData['columns_filter']['all_games'] = FormaLms\lib\Get::req('all_games', DOTY_INT, 0) > 0;
             $reportTempData['columns_filter']['comp_selection'] = FormaLms\lib\Get::req('comp_selection', DOTY_MIXED, []);
             $reportTempData['columns_filter']['comp_start_date'] = Format::dateDb(FormaLms\lib\Get::req('comp_start_date', DOTY_STRING, ''), 'date');
             $reportTempData['columns_filter']['comp_end_date'] = Format::datedb(FormaLms\lib\Get::req('comp_end_date', DOTY_STRING, ''), 'date');
-            $this->session->set(self::_REPORT_SESSION,$reportTempData);
+            $this->session->set(self::_REPORT_SESSION, $reportTempData);
             $this->session->save();
         }
 

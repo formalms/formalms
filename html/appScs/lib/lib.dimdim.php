@@ -440,8 +440,8 @@ class DimDim_Manager
         $output = false;
         if ($res->result) {
             $auth_code = $res->response->authToken;
-            $this->session->set(_DIMDIM_AUTH_CODE,$auth_code);
-            $this->session->set(_DIMDIM_AUTH_DATA,$res->response);
+            $this->session->set(_DIMDIM_AUTH_CODE, $auth_code);
+            $this->session->set(_DIMDIM_AUTH_DATA, $res->response);
             $this->session->save();
             $output = $auth_code;
         }

@@ -22,7 +22,8 @@ class Step3Controller extends StepController
 
     public $session = null;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 

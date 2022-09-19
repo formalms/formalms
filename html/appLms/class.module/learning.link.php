@@ -195,7 +195,7 @@ class Learning_Link extends Learning_Object
         switch ($step) {
             default:
                 play($this, $id_param);
-            ; break;
+             break;
         }
     }
 

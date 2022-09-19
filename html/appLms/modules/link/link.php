@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 if (!Docebo::user()->isAnonymous()) {
-// XXX: modlinkgui
+    // XXX: modlinkgui
     function modlinkgui($object_link)
     {
         checkPerm('view', false, 'storage');
@@ -464,49 +464,49 @@ if (!Docebo::user()->isAnonymous()) {
 
         $object_link = createLO('link', $idCategory);
         $object_link->edit($idCategory, urldecode($back_url));
-    ; break;
+     break;
     //add category
     case 'addlinkcat':
         addlinkcat();
-    ; break;
+     break;
     case 'inslinkcat':
         inslinkcat();
-    ; break;
+     break;
     //mod category
     case 'modlinkcat':
         modlinkcat();
-    ; break;
+     break;
     case 'uplinkcat':
         uplinkcat();
-    ; break;
+     break;
     //mod
     case 'movedown':
         movelink('down');
-    ; break;
+     break;
     case 'moveup':
         movelink('up');
-    ; break;
+     break;
     case 'fixsequence':
         fixsequence();
-    ; break;
+     break;
     //add link
     case 'newlink':
         newlink();
-    ; break;
+     break;
     case 'inslink':
         inslink();
-    ; break;
+     break;
     //mod link
     case 'modlink':
         modlink();
-    ; break;
+     break;
     case 'uplink':
         uplink();
-    ; break;
+     break;
     //del link
     case 'dellink':
         dellink();
-    ; break;
+     break;
 }
     }
 }

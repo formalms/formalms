@@ -23,7 +23,7 @@ class Module_Stats extends LmsModule
             case 'statuser':
                 $GLOBALS['page']->add('<link href="' . getPathTemplate() . 'style/base-old-treeview.css" rel="stylesheet" type="text/css" />' . "\n");
                 //$GLOBALS['page']->add( '<link href="'.getPathTemplate().'style/style_scormplayer.css" rel="stylesheet" type="text/css" />'."\n" );
-            ; break;
+             break;
             case 'statitem':
             case 'statcourse':
             case 'statoneuser':

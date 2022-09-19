@@ -30,8 +30,8 @@ class Report_Courses extends Report
     public $status_u = [];
     public $status_c = [];
 
-    public function __construct($id_report, $report_name = false) {
-
+    public function __construct($id_report, $report_name = false)
+    {
         $this->Report_Courses();
         parent::__construct($id_report, $report_name);
     }
@@ -109,7 +109,7 @@ class Report_Courses extends Report
         if (isset($_POST['update_tempdata'])) {
             $selector->parseForState($_POST);
             $reportTempData['rows_filter']['all_courses'] = (FormaLms\lib\Get::req('all_courses', DOTY_INT, 1) == 1 ? true : false);
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(_REPORT_SESSION, $reportTempData);
             $this->session->save();
         } else {
             $selector->resetSelection($reportTempData['rows_filter']['selected_courses']);
@@ -118,11 +118,10 @@ class Report_Courses extends Report
         //filter setting done, go to next step
         if (isset($_POST['import_filter'])) {
             $reportTempData['rows_filter']['selected_courses'] = $selector->getSelection($_POST);
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(_REPORT_SESSION, $reportTempData);
             $this->session->save();
             Util::jump_to($next_url);
         }
-
 
         $temp = count($reportTempData['rows_filter']['selected_courses']);
 
@@ -215,7 +214,6 @@ class Report_Courses extends Report
             ];
         }
 
-
         switch ($substep) {
             case _SUBSTEP_COLUMNS:
                 //set session data
@@ -232,7 +230,7 @@ class Report_Courses extends Report
                     $reportTempData['columns_filter']['show_suspended'] = FormaLms\lib\Get::req('show_suspended', DOTY_INT, 0) > 0;
                     $reportTempData['columns_filter']['only_students'] = FormaLms\lib\Get::req('only_students', DOTY_INT, 0) > 0;
                     $reportTempData['columns_filter']['show_assessment'] = FormaLms\lib\Get::req('show_assessment', DOTY_INT, 0) > 0;
-                    $this->session->set(_REPORT_SESSION,$reportTempData);
+                    $this->session->set(_REPORT_SESSION, $reportTempData);
                     $this->session->save();
                 }
 
@@ -415,7 +413,7 @@ class Report_Courses extends Report
 
                 if (FormaLms\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
                     $reportTempData['columns_filter']['all_users'] = (FormaLms\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
-                    $this->session->set(_REPORT_SESSION,$reportTempData);
+                    $this->session->set(_REPORT_SESSION, $reportTempData);
                     $this->session->save();
                 } else { //maybe redoundant
                     if (!isset($reportTempData['columns_filter']['all_users'])) {
@@ -424,7 +422,7 @@ class Report_Courses extends Report
                     if (!isset($reportTempData['columns_filter']['users'])) {
                         $reportTempData['columns_filter']['users'] = [];
                     }
-                    $this->session->set(_REPORT_SESSION,$reportTempData);
+                    $this->session->set(_REPORT_SESSION, $reportTempData);
                     $this->session->save();
                     $user_select->requested_tab = PEOPLEVIEW_TAB;
                     $user_select->resetSelection($reportTempData['columns_filter']['users']);
@@ -437,7 +435,7 @@ class Report_Courses extends Report
                     $elem_selected = $user_select->getSelection($_POST);
                     $reportTempData['columns_filter']['all_users'] = (FormaLms\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
                     $reportTempData['columns_filter']['users'] = $elem_selected;
-                    $this->session->set(_REPORT_SESSION,$reportTempData);
+                    $this->session->set(_REPORT_SESSION, $reportTempData);
                     $this->session->save();
                     Util::jump_to($jump_url . '&substep=columns_selection');
                 }
@@ -501,7 +499,7 @@ class Report_Courses extends Report
         if (FormaLms\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
             $reportTempData['columns_filter']['showed_cols'] = FormaLms\lib\Get::req('cols', DOTY_MIXED, []);
         }
-        $this->session->set(_REPORT_SESSION,$reportTempData);
+        $this->session->set(_REPORT_SESSION, $reportTempData);
         $this->session->save();
 
         function is_showed($which, &$arr)
@@ -569,18 +567,16 @@ class Report_Courses extends Report
         $lang = &DoceboLanguage::createInstance('report', 'framework');
         $glang = &DoceboLanguage::createInstance('admin_course_managment', 'lms');
 
-        $reportTempData =$this->session->get(_REPORT_SESSION);
+        $reportTempData = $this->session->get(_REPORT_SESSION);
 
         if (!isset($reportTempData['columns_filter'])) {
             $reportTempData['columns_filter'] = [];
         }
 
-
-
         if (FormaLms\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
             $reportTempData['columns_filter']['showed_cols'] = FormaLms\lib\Get::req('cols', DOTY_MIXED, []);
         }
-        $this->session->set(_REPORT_SESSION,$reportTempData);
+        $this->session->set(_REPORT_SESSION, $reportTempData);
         $this->session->save();
 
         function is_showed($which, &$arr)
@@ -685,7 +681,7 @@ class Report_Courses extends Report
                 // get all course
                 $result = sql_query('SELECT idCourse FROM %lms_course');
                 $course_selected = [];
-                foreach ($result as $row){
+                foreach ($result as $row) {
                     $course_selected[] = $row['idCourse'];
                 }
             }
@@ -698,7 +694,7 @@ class Report_Courses extends Report
             $course_selected = array_intersect($admin_courses['course'], $course_selected);
 
             $reportTempData['rows_filter']['selected_courses'] = $course_selected;
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(_REPORT_SESSION, $reportTempData);
             $this->session->save();
         }
 
@@ -720,7 +716,7 @@ class Report_Courses extends Report
         $question_id = [];
         $question_answer = [];
 
-        foreach ($result as $row){
+        foreach ($result as $row) {
             $course_doc[$row['idCourse'] . '_' . $row['id_quest']] = $row;
             $question_id[$row['id_quest']] = $row['id_quest'];
         }
@@ -750,7 +746,7 @@ class Report_Courses extends Report
 
             $result = sql_query($query);
 
-            foreach ($result as $row){
+            foreach ($result as $row) {
                 $question_answer[$row['id_quest']]['min_value'] = (float) $row['min_answer'];
                 $question_answer[$row['id_quest']]['max_value'] = (float) $row['max_answer'];
                 $question_answer[$row['id_quest']]['everage_value'] = number_format(($row['sum_answer'] / $row['num_answer']), 2);
@@ -782,7 +778,7 @@ class Report_Courses extends Report
                 // get all course
                 $result = sql_query('SELECT idCourse FROM %lms_course');
                 $course_selected = [];
-                foreach ($result as $row){
+                foreach ($result as $row) {
                     $course_selected[] = $row['idCourse'];
                 }
             }
@@ -794,7 +790,7 @@ class Report_Courses extends Report
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
             $course_selected = array_intersect($admin_courses['course'], $course_selected);
             $reportTempData['rows_filter']['selected_courses'] = $course_selected;
-            $this->session->set(_REPORT_SESSION,$reportTempData);
+            $this->session->set(_REPORT_SESSION, $reportTempData);
             $this->session->save();
         }
 
@@ -812,7 +808,7 @@ class Report_Courses extends Report
         $question_id = [];
         $question_answer = [];
 
-        foreach ($result as $row){
+        foreach ($result as $row) {
             // TICKET: #19866 - overwrite sam index for quest in course_doc
             $course_doc[$row['id_quest']] = $row;
             $question_id[$row['id_quest']] = $row['id_quest'];
@@ -843,7 +839,7 @@ class Report_Courses extends Report
 
             $result = sql_query($query);
 
-            foreach ($result as $row){
+            foreach ($result as $row) {
                 $question_answer[$row['id_quest']]['min_value'] = (float) $row['min_answer'];
                 $question_answer[$row['id_quest']]['max_value'] = (float) $row['max_answer'];
                 $question_answer[$row['id_quest']]['everage_value'] = number_format(($row['sum_answer'] / $row['num_answer']), 2);

@@ -468,27 +468,27 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                 switch ($field_id) {
                     case 'userid':
                             $export[] = substr($row[1], 1);
-                        ;
+
                         break;
                     case 'firstname':
                             $export[] = $row[2];
-                        ;
+
                         break;
                     case 'lastname':
                             $export[] = $row[3];
-                        ;
+
                         break;
                     case 'pass':
                             $export[] = '*****';
-                        ;
+
                         break;
                     case 'email':
                             $export[] = $row[4];
-                        ;
+
                         break;
                     case 'signature':
                             $export[] = $row[6];
-                        ;
+
                         break;
                 }
             }

@@ -63,7 +63,7 @@ switch ($op) {
         $json = new Services_JSON();
         $calEvents = $json->encode($eventlist);
         aout($calEvents);
-    ; break;
+     break;
 
     case 'set':
         $index = FormaLms\lib\Get::req('index');
@@ -92,7 +92,7 @@ switch ($op) {
             aout($result_coded);
         }
 
-    ; break;
+     break;
 
     case 'del':
         $id = FormaLms\lib\Get::req('id', DOTY_INT);
@@ -113,7 +113,7 @@ switch ($op) {
         $event->del();
 
         aout('{"result":"1"}');
-    ; break;
+     break;
 
     case 'getForm':
         $calEventClass = FormaLms\lib\Get::req('calEventClass');
@@ -128,7 +128,7 @@ switch ($op) {
         $form = $event->getForm();
 
         aout($form);
-    ; break;
+     break;
 
     case 'getLang':
         $lang = &DoceboLanguage::createInstance('calendar', 'lms');
@@ -181,5 +181,5 @@ switch ($op) {
 		}';
 
         aout($lang_obj);
-    ; break;
+     break;
 }

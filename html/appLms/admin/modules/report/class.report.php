@@ -15,8 +15,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 //report session managemente class
 
-
-
 //report superclass
 
 class Report
@@ -42,15 +40,14 @@ class Report
 
     protected $session;
 
-    const _REPORT_SESSION = 'report_tempdata';
-    const _RS_ID = 'id_report';
-    const _RS_ROWS_FILTER = 'rows_filter';
-    const _RS_COLS_FILTER = 'columns_filter';
-    const _RS_COLS_CATEGORY = 'columns_filter_category';
+    public const _REPORT_SESSION = 'report_tempdata';
+    public const _RS_ID = 'id_report';
+    public const _RS_ROWS_FILTER = 'rows_filter';
+    public const _RS_COLS_FILTER = 'columns_filter';
+    public const _RS_COLS_CATEGORY = 'columns_filter_category';
 
     public function __construct($id_report, $report_name = false)
     {
-
         $this->id_report = $id_report;
         if ($report_name == false) {
             $this->_load();
@@ -143,14 +140,12 @@ class Report
 
     public function show_results($cat = false, $report_data = null)
     {
-     
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
-       
+
         if (!$cat) {
             $cat = $reportTempData['columns_filter_category'];
         }
 
-        
         $name_func = $this->columns_categories[$cat]['show']; //['get_data'];
 
         return $this->$name_func($report_data);
@@ -295,11 +290,11 @@ class ReportSessionManager
 
     protected $session;
 
-    const _REPORT_SESSION = 'report_tempdata';
-    const _RS_ID = 'id_report';
-    const _RS_ROWS_FILTER = 'rows_filter';
-    const _RS_COLS_FILTER = 'columns_filter';
-    const _RS_COLS_CATEGORY = 'columns_filter_category';
+    public const _REPORT_SESSION = 'report_tempdata';
+    public const _RS_ID = 'id_report';
+    public const _RS_ROWS_FILTER = 'rows_filter';
+    public const _RS_COLS_FILTER = 'columns_filter';
+    public const _RS_COLS_CATEGORY = 'columns_filter_category';
 
     public function __construct()
     {
@@ -370,7 +365,7 @@ class ReportSessionManager
         $this->initialize();
     }
 
-    private function initialize() {
-
+    private function initialize()
+    {
     }
 }

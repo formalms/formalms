@@ -13,7 +13,6 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-
 function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_public = false)
 {
     if ($use_mod_name != false) {
@@ -47,7 +46,7 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
 
     if (Docebo::user()->matchUserRole($role)) {
         return true;
-    } else if ($return_value) {
+    } elseif ($return_value) {
         return false;
     } else {
         exit("You can't access" . $role);

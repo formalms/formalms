@@ -422,8 +422,8 @@ class Conference extends \PluginConference
         $output = false;
         if ($res->result) {
             $auth_code = $res->response->authToken;
-            $session->set(_BBB_AUTH_CODE,$auth_code);
-            $session->set(_BBB_AUTH_DATA,$res->response);
+            $session->set(_BBB_AUTH_CODE, $auth_code);
+            $session->set(_BBB_AUTH_DATA, $res->response);
             $session->save();
             $output = $auth_code;
         }

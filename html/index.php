@@ -34,7 +34,6 @@ if (isset($_REQUEST['notuse_template'])) {
 
 Boot::init(BOOT_PAGE_WR);
 
-
 // connect to the database
 $db = &DbConn::getInstance();
 

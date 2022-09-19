@@ -23,7 +23,7 @@ class Step3Controller extends StepController
         if ($agree != 1 && $this->session->get('license_accepted')) {
             return false;
         } else {
-            $this->session->set('license_accepted',1);
+            $this->session->set('license_accepted', 1);
             $this->session->save();
 
             return true;

@@ -27,7 +27,7 @@ class Module_Link extends LmsModule
 
                 $object_link = createLO('link', $idCategory);
                 $object_link->play($idCategory, $id_param, urldecode($back_url));
-            ; break;
+             break;
             default:
                 parent::loadBody();
         }

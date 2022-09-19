@@ -139,7 +139,7 @@ class Lang
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $lang = FormaLms\lib\Get::gReq('set_lang', DOTY_STRING, '');
         if (!empty($lang)) {
-            $session->set('sel_lang',$lang);
+            $session->set('sel_lang', $lang);
             $session->save();
             self::init();
             StepManager::loadCurrentStep();
@@ -155,7 +155,7 @@ class Lang
             exit();
         }
         if (!$session->has('sel_lang')) {
-            $session->set('sel_lang','english');
+            $session->set('sel_lang', 'english');
             $session->save();
         }
     }

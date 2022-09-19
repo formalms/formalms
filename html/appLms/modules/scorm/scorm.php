@@ -142,10 +142,9 @@ function insitem()
     $finder = new Symfony\Component\Finder\Finder();
     $finder->files()->in(_files_ . $filepath);
 
-    $notAllowedExtentions = ['php','exe'];
+    $notAllowedExtentions = ['php', 'exe'];
     /** @var SplFileInfo $file */
     foreach ($finder->sortByName() as $file) {
-
         $fileParts = pathinfo($file->getPathname());
         if (in_array($fileParts['extension'], $notAllowedExtentions, true)) {
             unlink($file->getPathname());
@@ -362,7 +361,6 @@ function _scorm_deleteitem($idscorm_package, $idscorm_organization, $erasetrackc
 
 function _scorm_copyitem($idscorm_package, $idscorm_organization)
 {
-
     require_once Forma::inc(_lib_ . '/lib.upload.php');
     require_once Forma::inc(_lms_ . '/modules/scorm/RendererDb.php');
     require_once Forma::inc(_lms_ . '/modules/scorm/CPManager.php');
@@ -370,14 +368,13 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     if (($rs = sql_query('SELECT path FROM %lms_scorm_package '
             . "WHERE idscorm_package='"
             . (int) $idscorm_package . "'")) === false) {
-        Forma::addError(Lang::t('_OPERATION_FAILURE', 'standard'). ': ' . sql_error());
+        Forma::addError(Lang::t('_OPERATION_FAILURE', 'standard') . ': ' . sql_error());
 
         return false;
     }
 
     list($path) = sql_fetch_row($rs);
     $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
-
 
     /* copy package record */
     $rs_package = sql_query("SELECT idpackage,idProg,'" . $path . "',defaultOrg,idUser,scormVersion "

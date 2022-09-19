@@ -69,10 +69,9 @@ class ClientService
 
     public function getBaseUrl($onlyBasePath = false): string
     {
-
         $possiblePhpEndpoints = [];
         $path = '';
-       
+
         $basePath = $this->request->getSchemeAndHttpHost();
         $requestUri = $this->request->getBaseUrl();
 
@@ -105,15 +104,13 @@ class ClientService
                 $requestUriArray = explode('/', $requestUri);
             }
 
-            
-
             foreach ($requestUriArray as $requestUriItem) {
                 if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true)) {
                     $path .= sprintf('/%s', $requestUriItem);
                 }
             }
         }
-       
-       return $path != '' ? $path : $basePath;
+
+        return $path != '' ? $path : $basePath;
     }
 }

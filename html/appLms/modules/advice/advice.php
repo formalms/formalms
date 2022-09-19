@@ -19,7 +19,6 @@ if (Docebo::user()->isAnonymous()) {
 
 function adviceList()
 {
-
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -39,14 +38,14 @@ function adviceList()
     $re_my_advice = sql_query($query_my_advice);
 
     $advice_all = [];
-    foreach ($re_my_advice as $row){
+    foreach ($re_my_advice as $row) {
         $advice_all[$row['idAdvice']] = $row['idAdvice'];
     }
     $query_my_arch_advice = "SELECT DISTINCT idAdvice FROM %lms_adviceuser
 		WHERE idUser = '" . getLogUserId() . "' AND archivied = '1'";
     $re_my_arch_advice = sql_query($query_my_arch_advice);
 
-    foreach ($re_my_arch_advice as $row){
+    foreach ($re_my_arch_advice as $row) {
         $advice_arch[] = $row['idAdvice'];
     }
     if (isset($advice_arch) && is_array($advice_arch)) {
@@ -255,11 +254,11 @@ function advice()
     switch ($active_tab) {
         case 'advice':
                 adviceList();
-            ;
+
             break;
         case 'archive':
                 archiveList();
-            ;
+
             break;
     }
 
@@ -347,7 +346,7 @@ function insadvice()
     switch ($_REQUEST['idGroup']) {
         case 'sel_user':
                 Util::jump_to('index.php?modname=advice&op=modreader&id_advice=' . $id_advice . '&load=1');
-            ;
+
             break;
         case 'me':
                 $members = [getLogUserId()];
@@ -358,7 +357,7 @@ function insadvice()
                 if (!sql_query($query_insert)) {
                     Util::jump_to('index.php?modname=advice&op=advice&result=err_user');
                 }
-            ;
+
             break;
         default:
                 $query_insert = '
@@ -378,7 +377,7 @@ function insadvice()
                 }
 
                 $members = $acl_man->getGroupAllUser($_REQUEST['idGroup']);
-            ;
+
             break;
     }
     $members[] = getLogUserId();
@@ -519,7 +518,7 @@ function modreader()
 				WHERE idCourse = '" . $session->get('idCourse') . "'";
             $re_reader = sql_query($query_reader);
             $users = [];
-            foreach ($re_reader as $row){
+            foreach ($re_reader as $row) {
                 $users[] = $row['idUser'];
             }
         }
@@ -755,47 +754,47 @@ function adviceDispatch($op)
     switch ($op) {
         case 'advice':
                 advice();
-            ;
+
             break;
         case 'readadvice':
                 readadvice();
-            ;
+
             break;
 
         case 'addadvice':
                 addadvice();
-            ;
+
             break;
         case 'insadvice':
                 insadvice();
-            ;
+
             break;
 
         case 'modadvice':
                 modadvice();
-            ;
+
             break;
         case 'upadvice':
                 upadvice();
-            ;
+
             break;
         case 'modreader':
                 modreader();
-            ;
+
             break;
         case 'updreader':
                 updreader();
-            ;
+
             break;
 
         case 'deladvice':
                 deladvice();
-            ;
+
             break;
 
         case 'archiveadvice':
                 archiveadvice();
-            ;
+
             break;
     }
 }

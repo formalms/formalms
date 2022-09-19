@@ -6,7 +6,7 @@ echo //Layout::bc(array(
 ?>
 <script type="text/javascript">
 	var TemplateLayout = {
-		filterText: "<?php $filter_text; ?>",
+		filterText: "<?php ?>",
 		requestBuilder: function(oState, oSelf) {
 		var sort, dir, startIndex, results;
 		oState = oState || {pagination: null, sortedBy: null};

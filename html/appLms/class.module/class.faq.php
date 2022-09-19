@@ -68,7 +68,7 @@ class Module_Faq extends LmsModule
                 $back_url = importVar('back_url');
 
                 $object_faq = createLO('faq', $idCategory);
-                $object_faq->play($idCategory, $id_param, urldecode($back_url));;
+                $object_faq->play($idCategory, $id_param, urldecode($back_url));
                 break;
             default:
                 parent::loadBody();

@@ -77,11 +77,11 @@ class LocationAlmsController extends AlmsController
         switch ($dir) {
             case 'desc':
                     $dir = 'desc';
-                ;
+
                 break;
             default:
                     $dir = 'asc';
-                ;
+
                 break;
         }
 
@@ -274,10 +274,10 @@ class LocationAlmsController extends AlmsController
             switch ($dir) {
                 case 'desc':
                     $dir = 'desc';
-                ; break;
+                 break;
                 default:
                     $dir = 'asc';
-                ; break;
+                 break;
             }
         }
         $classroom_list = $this->model->getClassroomList($id_location, $startIndex, $results, $sort, $dir, $filter);

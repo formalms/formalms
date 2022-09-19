@@ -20,7 +20,7 @@ class Step1Controller extends StepController
     public function validate()
     {
         $platform_arr = getPlatformArray();
-        $this->session->set('platform_arr',$platform_arr);
+        $this->session->set('platform_arr', $platform_arr);
         $this->session->save();
 
         return true;

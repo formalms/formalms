@@ -39,7 +39,7 @@ class Question
     protected $db;
 
     /**
-     * @var int $id 	contains the question identifier
+     * @var int contains the question identifier
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      **/
@@ -483,7 +483,7 @@ class Question
 				WHERE idTrack = '" . $id_track . "' AND idQuest = '" . $id_quest . "'";
 
                     return sql_query($query_update);
-                ;
+
                 break;
             case 'auto':
                     $sel_answer = '
@@ -505,7 +505,7 @@ class Question
                     $re &= sql_query($query_update);
 
                     return $re;
-                ;
+
                 break;
         }
     }

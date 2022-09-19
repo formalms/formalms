@@ -288,7 +288,7 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector
 
                     $idst_profile = $this->admin_profiles[$row['profile']];
                     $this->m_ar->saveSingleAdminAssociation($idst_profile, $user[ACL_INFO_IDST]);
-                ; break;
+                 break;
             }
 
             // associated org_chart ?

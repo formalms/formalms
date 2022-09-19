@@ -19,7 +19,7 @@ function coursecatalogue($id_block, $title, $option = [])
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!$session->has('chart')) {
-        $session->set('chart',[]);
+        $session->set('chart', []);
         $session->save();
     }
 
@@ -29,7 +29,7 @@ function coursecatalogue($id_block, $title, $option = [])
     if ($id_course !== 0 && $action === '') {
         $sessionChart = $session->get('chart');
         $sessionChart[$id_course]['idCourse'] = $id_course;
-        $session->set('chart',$sessionChart);
+        $session->set('chart', $sessionChart);
         $session->save();
     } else {
         require_once _lms_ . '/lib/lib.subscribe.php';
@@ -277,7 +277,6 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
                 return '<a href="javascript:;" onClick="datePrenotationPopUp(\'' . $course_info['idCourse'] . '\', \'' . $lang->def('_CHART_EDITION_FOR') . ' : ' . addslashes($course_info['name']) . '\')"><p class="can_subscribe">' . $lang->def('_CAN_SUBSCRIBE') . '</p></a>';
             }
         } else {
-
             $date_in_chart = [];
 
             $sessionChart = $session->get('chart');
@@ -306,7 +305,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
             if (sql_num_rows($res)) {
                 $waiting_payment = [];
 
-                foreach ($res as $row){
+                foreach ($res as $row) {
                     $waiting_payment[$row['id_date']] = $row['id_date'];
                 }
 

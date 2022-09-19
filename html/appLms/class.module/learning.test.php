@@ -339,13 +339,13 @@ class Learning_Test extends Learning_Object
         switch ($step) {
             case 'test_review':
                 review($this, $id_param);
-            ; break;
+             break;
             case 'play':
                 playTestDispatch($this, $id_param);
-            ; break;
+             break;
             default:
                 intro($this, $id_param);
-            ; break;
+             break;
         }
     }
 

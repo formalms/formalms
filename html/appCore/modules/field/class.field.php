@@ -28,7 +28,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class Field
 {
     /**
-     * @var int $id 	contains the question identifier
+     * @var int contains the question identifier
      */
     public $id_common;
 

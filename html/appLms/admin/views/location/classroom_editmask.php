@@ -36,7 +36,7 @@
 
     echo Form::openButtonSpace();
     echo $_is_editing ? Form::getButton('save', 'save', Lang::t('_SAVE', 'classroom')) : Form::getButton('save', 'save', Lang::t('_SAVE', 'classroom'));
-    echo Form::getButton('undo', 'undo', Lang::t('_UNDO', 'classroom'),false,'onCLick="history.back()"',false,false);
+    echo Form::getButton('undo', 'undo', Lang::t('_UNDO', 'classroom'), false, 'onCLick="history.back()"', false, false);
     echo Form::closeButtonSpace();
 
     echo Form::closeForm();

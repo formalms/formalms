@@ -743,7 +743,7 @@ function removeModule($id_module, $id_main, $id_course)
     if ($re) {
         $re = sql_query('
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_under 
-		WHERE idMain = '" . (int) $id_main . "' AND idModule = '" . (int) $id_module . "' AND idCourse = '" .$id_course. "'");
+		WHERE idMain = '" . (int) $id_main . "' AND idModule = '" . (int) $id_module . "' AND idCourse = '" . $id_course . "'");
     }
 
     return $re;
@@ -877,52 +877,52 @@ function manmenuDispatch($op)
         //main menu
         case 'manmenu':
             manmenu();
-        ; break;
+         break;
         case 'addmenuvoice':
             editmenuvoice();
-        ; break;
+         break;
         case 'modmenuvoice':
             editmenuvoice(true);
-        ; break;
+         break;
         case 'savemenuvoice':
             savemenuvoice();
-        ; break;
+         break;
         case 'delmenuvoice':
             delmenuvoice();
-        ; break;
+         break;
         case 'mdmenuvoice':
             movemenuvoice('down');
-        ; break;
+         break;
         case 'mumenuvoice':
             movemenuvoice('up');
-        ; break;
+         break;
         case 'fixmenuvoice':
             fixmenuvoice();
-        ; break;
+         break;
 
         case 'manmodule':
             manmodule();
-        ; break;
+         break;
         case 'addmodule':
             editmodule();
-        ; break;
+         break;
         case 'modmodule':
             editmodule(true);
-        ; break;
+         break;
         case 'upmodule':
             upmodule();
-        ; break;
+         break;
         case 'delmodule':
             delmodule();
-        ; break;
+         break;
         case 'mdmodule':
             movemodule('down');
-        ; break;
+         break;
         case 'mumodule':
             movemodule('up');
-        ; break;
+         break;
         case 'fixmodule':
             fixmodule();
-        ; break;
+         break;
     }
 }

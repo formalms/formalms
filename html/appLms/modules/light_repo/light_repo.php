@@ -44,8 +44,8 @@ function repoList(&$url)
     if ($repositories !== false && sql_num_rows($repositories) > 0) {
         if (isset($_GET['result'])) {
             switch ($_GET['result']) {
-                case 'ok_mod':  UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'light_repo')); ; break;
-                case 'ok_del':  UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'light_repo')); ; break;
+                case 'ok_mod':  UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'light_repo')); break;
+                case 'ok_del':  UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'light_repo')); break;
             }
         }
     } else {
@@ -213,8 +213,8 @@ function repoMyDetails(&$url, $passed_repo = 0)
 
     if (isset($_GET['result'])) {
         switch ($_GET['result']) {
-                case 'file_ok':  UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'light_repo')); ; break;
-                case 'file_err':  UIFeedback::error(Lang::t('_FILE_ERR', 'light_repo')); ; break;
+                case 'file_ok':  UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'light_repo')); break;
+                case 'file_err':  UIFeedback::error(Lang::t('_FILE_ERR', 'light_repo')); break;
             }
     }
 
@@ -566,32 +566,32 @@ function lightrepoDispatch($op)
     switch ($op) {
         case 'repolist':
             repoList($url);
-        ; break;
+         break;
         case 'mod_repo':
             modRepo($url);
-        ; break;
+         break;
         case 'del_repo':
             delRepo($url);
-        ; break;
+         break;
 
         case 'repo_my_details':
             repoMyDetails($url);
-        ; break;
+         break;
         case 'mod_file':
             modFile($url);
-        ; break;
+         break;
         case 'del_file':
             delFile($url);
-        ; break;
+         break;
 
         case 'repo_manager_details':
             repoManagerDetails($url);
-        ; break;
+         break;
         case 'repo_user_details':
             repoUserDetails($url);
-        ; break;
+         break;
         case 'download_file':
             downloadFile($url);
-        ; break;
+         break;
     }
 }

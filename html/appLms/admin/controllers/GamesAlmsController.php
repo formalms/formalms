@@ -212,7 +212,7 @@ class GamesAlmsController extends AlmsController
                 require_once _lms_ . '/class.module/learning.scorm.php';
                 $l_obj = new Learning_ScormOrg();
                 $l_obj->create($back_url);
-            ; break;
+             break;
         }
     }
 
@@ -325,15 +325,15 @@ class GamesAlmsController extends AlmsController
                 require_once _lms_ . '/class.module/learning.item.php';
                 $l_obj = new Learning_Item();
                 $l_obj->edit($data['id_resource'], $back_url);
-            ; break;
+             break;
             case 'scorm' :
                 //cannot be modified
                 Util::jump_to('index.php?r=alms/games/show');
-            ; break;
+             break;
             case 'none' :
             default:
                 Util::jump_to('index.php?r=alms/games/show');
-            ; break;
+             break;
         }
     }
 
@@ -377,16 +377,16 @@ class GamesAlmsController extends AlmsController
                     require_once _lms_ . '/class.module/learning.item.php';
                     $l_obj = new Learning_Item();
                     $re = $l_obj->del($data['id_resource']);
-                ; break;
+                 break;
                 case 'scorm' :
                     require_once _lms_ . '/class.module/learning.scorm.php';
                     $l_obj = new Learning_ScormOrg();
                     $re = $l_obj->del($data['id_resource']);
-                ; break;
+                 break;
                 case 'none' :
                 default:
                     $re = true;
-                ; break;
+                 break;
             }
         } else {
             $re = true;

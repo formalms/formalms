@@ -17,14 +17,17 @@ class Step6Controller extends StepController
 {
     public $step = 6;
     public $session = null;
-    public function __construct() {
+
+    public function __construct()
+    {
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
+
     public function render()
     {
         $platform_arr = getPlatformArray();
         $this->session->set('platform_arr', $platform_arr);
-      
+
         $qtxt = 'SELECT lang_code FROM core_lang_language WHERE 1';
         // $q =sql_query($qtxt);
         require_once _base_ . '/config.php';
@@ -39,7 +42,6 @@ class Step6Controller extends StepController
                 $langCodes[$lang_code] = 1;
             }
             $this->session->set('lang_install', $langCodes);
-
         }
         $this->session->save();
         parent::render();

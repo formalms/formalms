@@ -43,11 +43,11 @@ function schedule_recipients($idrep)
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!isset($_POST['is_updating'])) {
-            //save filter, if needed
+        //save filter, if needed
         require_once _lms_ . '/lib/lib.report.php';
         //save schedulation data in session
         if (!$session->has('schedule_tempdata')) {
-            $session->set('schedule_tempdata',[]);
+            $session->set('schedule_tempdata', []);
             $session->save();
         }
 
@@ -74,14 +74,13 @@ function schedule_recipients($idrep)
                     break;
             }
 
-        $scheduleTempData = $session->get('schedule_tempdata',[]);
-        
+        $scheduleTempData = $session->get('schedule_tempdata', []);
 
         $scheduleTempData['name'] = $_POST['sched_name'];
         $scheduleTempData['period'] = $_POST['cron_radio'];
         $scheduleTempData['period_info'] = $sched_info;
         $scheduleTempData['time'] = $sched_time;
-        $session->set('schedule_tempdata',$scheduleTempData);
+        $session->set('schedule_tempdata', $scheduleTempData);
         $session->save();
 
         $user_select->resetSelection($scheduleTempData['recipients']);
@@ -90,11 +89,11 @@ function schedule_recipients($idrep)
     $save_schedule_failed = false;
 
     if (isset($_POST['cancelselector'])) {
-            //Util::jump_to($back_url);
+        //Util::jump_to($back_url);
         Util::jump_to('index.php?modname=report&op=schedulelist&idrep=' . $idrep);
     } elseif (isset($_POST['okselector'])) {
-        $scheduleTempData = $session->get('schedule_tempdata',[]);
-        $scheduleUpdate = $session->get('schedule_update',0);
+        $scheduleTempData = $session->get('schedule_tempdata', []);
+        $scheduleUpdate = $session->get('schedule_update', 0);
         $entity_selected = $user_select->getSelection($_POST);
 
         //$_temp = $ref['recipients'];
@@ -107,7 +106,7 @@ function schedule_recipients($idrep)
         if ($scheduleUpdate) {
             $sched = report_update_schedulation($scheduleUpdate, $_name, $_period, $_time, $entity_selected);
         } else {
-            $id_report = $idrep; 
+            $id_report = $idrep;
             $sched = report_save_schedulation($id_report, $_name, $_period, $_time, $entity_selected);
         }
 
@@ -165,7 +164,7 @@ function schedule_set($idrep, $checkperm = 'mod')
                 'time' => '',
                 'recipients' => [],
             ];
-        $session->set('schedule_tempdata',$scheduleTempData);
+        $session->set('schedule_tempdata', $scheduleTempData);
         $session->save();
     }
 
@@ -284,8 +283,8 @@ function modify_schedulation()
         }
 
         $period = explode(',', $row['period']);
-        $session->set('schedule_update',$id_sched);
-        $session->set('schedule_tempdata',[
+        $session->set('schedule_update', $id_sched);
+        $session->set('schedule_tempdata', [
             'name' => $row['name'],
             'period' => $period[0],
             'period_info' => $period[1],
@@ -294,8 +293,8 @@ function modify_schedulation()
         ]);
 
         $rid = $row['id_report_filter'];
-        $session->set('report_saved',true);
-        $session->set('report_saved_data',['id' => $rid, 'name' => getReportNameById($rid)]);
+        $session->set('report_saved', true);
+        $session->set('report_saved_data', ['id' => $rid, 'name' => getReportNameById($rid)]);
         $session->save();
 
         schedule_report();

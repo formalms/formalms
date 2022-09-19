@@ -77,7 +77,6 @@ function sl_sal_getUserId()
 
 function sl_sal_getUserName()
 {
-
     $aclManager = Docebo::user()->getACLManager();
     $arr_result = $aclManager->getUser(Docebo::user()->getIdSt(), false);
 

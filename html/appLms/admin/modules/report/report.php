@@ -27,7 +27,6 @@ define('_RS_ROWS_FILTER', 'rows_filter');
 define('_RS_COLS_FILTER', 'columns_filter');
 define('_RS_COLS_CATEGORY', 'columns_filter_category');
 
-
 function _encode(&$data)
 {
     return serialize($data);
@@ -66,12 +65,12 @@ function load_filter($id, $tempdata = false, $update = false)
     $row = sql_fetch_assoc(sql_query("SELECT * FROM %lms_report_filter WHERE id_filter=$id"));
     $temp = unserialize($row['filter_data']);
     if ($tempdata) {
-        $session->set(_REPORT_SESSION,$temp);
+        $session->set(_REPORT_SESSION, $temp);
     }
-    $session->set('report',$temp);
+    $session->set('report', $temp);
 
     $session->set('report_saved', true);
-    $session->set('report_saved_data',['id' => $id, 'name' => getReportNameById($id)]);
+    $session->set('report_saved_data', ['id' => $id, 'name' => getReportNameById($id)]);
 
     if ($update) {
         $session->set('report_update', $id);
@@ -88,7 +87,6 @@ function openreport($idrep = false)
     if ($idrep != false && $idrep > 0) {
         $id_report = $idrep;
     } else {
-      
         $id_report = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get(_REPORT_SESSION)['id_report'];
 
         if ($id_report != false && $idrep > 0) {
@@ -110,12 +108,10 @@ function openreport($idrep = false)
     list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
     //when file name set use old style
     if ($file_name) {
-
         require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
-      
+
         $obj_report = new $class_name($id_report);
     } else {
-
         $pg = new PluginManager('Report');
         $obj_report = $pg->get_plugin($class_name, [$id_report]);
     }
@@ -126,7 +122,7 @@ function openreport($idrep = false)
 function get_update_info()
 {
     $output = '';
-  
+
     return $output;
 }
 
@@ -227,13 +223,12 @@ function get_report_table($url = '')
             'name' => '',
             'type' => 0,
         ];
-
     }
 
     if (FormaLms\lib\Get::req('search', DOTY_MIXED, false) !== false) {
-        $reportAdminFilter['author'] = FormaLms\lib\Get::req('filter_author', DOTY_INT, (int)$reportAdminFilter['author']);
+        $reportAdminFilter['author'] = FormaLms\lib\Get::req('filter_author', DOTY_INT, (int) $reportAdminFilter['author']);
         $reportAdminFilter['name'] = FormaLms\lib\Get::req('filter_name', DOTY_STRING, $reportAdminFilter['name']);
-        $reportAdminFilter['type'] = FormaLms\lib\Get::req('filter_type', DOTY_INT, (int)$reportAdminFilter['type']);
+        $reportAdminFilter['type'] = FormaLms\lib\Get::req('filter_type', DOTY_INT, (int) $reportAdminFilter['type']);
     }
 
     if (FormaLms\lib\Get::req('reset', DOTY_MIXED, false) !== false) {
@@ -241,7 +236,7 @@ function get_report_table($url = '')
         $reportAdminFilter['name'] = '';
         $reportAdminFilter['type'] = 0;
     }
-    $session->set('report_admin_filter',$reportAdminFilter);
+    $session->set('report_admin_filter', $reportAdminFilter);
     $session->save();
 
     $dropdown_onclick = 'onchange="javascript:setReportFilter();"';
@@ -274,7 +269,7 @@ function get_report_table($url = '')
         case ADMIN_GROUP_GODADMIN:
             if ($reportAdminFilter['author'] > 0) {
                 $qconds[] = ' t1.author = ' . $reportAdminFilter['author'] . ' ';
-            };
+            }
             break;
         case ADMIN_GROUP_ADMIN:
         case ADMIN_GROUP_USER:
@@ -344,7 +339,7 @@ function get_report_table($url = '')
     $tb->addHead($col_content);
 
     if ($res = sql_query($query)) {
-        foreach ($res as $row){
+        foreach ($res as $row) {
             $id = $row['id_filter'];
             $opn_link =
                 '<a href="index.php?modname=report&amp;op=show_results&amp;idrep=' . $id . '" ' . //'.$url.'&amp;action=open&amp;idrep='.$id.'" '.
@@ -373,7 +368,7 @@ function get_report_table($url = '')
                 '<input type="hidden" id="enable_value_' . $row['id_filter'] . '" ' .
                 'value="' . ($row['is_public'] == 1 ? '0' : '1') . '" />';
 
-            $export_url = 'index.php?modname=report&op=show_results&idrep=' . (int)$id;
+            $export_url = 'index.php?modname=report&op=show_results&idrep=' . (int) $id;
             $export_link_csv = '<a class="ico-sprite subs_csv" href="' . $export_url . '&dl=csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '"><span></span>' . Lang::t('_EXPORT_CSV', 'report') . '</a>';
             $export_link_xls = '<a class="ico-sprite subs_xls" href="' . $export_url . '&dl=xls" title="' . Lang::t('_EXPORT_XLS', 'report') . '"><span></span>' . Lang::t('_EXPORT_XLS', 'report') . '</a>';
 
@@ -391,7 +386,7 @@ function get_report_table($url = '')
                 if ($background_task_search->num_rows > 0) {
                     $background_execution_link = '<img src="' . getPathImage() . 'standard/move.png" alt="' . $lang->def('_EXECUTING') . '" title="' . $lang->def('_EXECUTING') . '" />';
                 } else {
-                    $background_execution_link = '<a href="index.php?modname=report&op=reportlist&action=send_email&idrep=' . (int)$id . '"><img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_SEND_EMAIL') . '" title="' . $lang->def('_SEND_EMAIL') . '" /></a>';
+                    $background_execution_link = '<a href="index.php?modname=report&op=reportlist&action=send_email&idrep=' . (int) $id . '"><img src="' . getPathImage() . 'standard/msg_unread.png" alt="' . $lang->def('_SEND_EMAIL') . '" title="' . $lang->def('_SEND_EMAIL') . '" /></a>';
                 }
             }
 
@@ -576,7 +571,6 @@ function report_rows_filter()
         Util::jump_to('index.php?modname=report&op=reportlist');
     }
 
- 
     $lang = &DoceboLanguage::createInstance('report');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
@@ -587,7 +581,7 @@ function report_rows_filter()
         }
         $reportTempData['id_report'] = FormaLms\lib\Get::req('id_report', DOTY_ALPHANUM, false);
         $reportTempData['report_name'] = FormaLms\lib\Get::req('report_name', DOTY_STRING, false);
-        $session->set(_REPORT_SESSION,$reportTempData);
+        $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
     }
 
@@ -596,7 +590,6 @@ function report_rows_filter()
     $obj_report->jump_url = 'index.php?modname=report&op=report_rows_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_sel_columns';
 
-  
     $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
             'index.php?modname=report&amp;op=report_category' => $lang->def('_NEW'),
@@ -655,11 +648,9 @@ function report_columns_filter()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
     if (isset($_POST['columns_filter'])) {
-   
         $reportTempData['columns_filter_category'] = $_POST['columns_filter'];
-        $session->set(_REPORT_SESSION,$reportTempData);
+        $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
-       
     }
 
     $lang = &DoceboLanguage::createInstance('report');
@@ -768,7 +759,6 @@ function report_show_results($idrep = false)
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($idrep == false) {
-     
         if (empty($session->get(_REPORT_SESSION))) {
             $reportTempData = $session->get('report');
         } else {
@@ -833,13 +823,13 @@ function report_show_results($idrep = false)
         $export_filename = 'report_' . $filter_name . '_' . date('d_m_Y');
         switch ($download) {
             case 'htm':
-                sendStrAsFile($obj_report->getHTML($data['columns_filter_category'], $data), $export_filename . '.html');;
+                sendStrAsFile($obj_report->getHTML($data['columns_filter_category'], $data), $export_filename . '.html');
                 break;
             case 'csv':
-                sendStrAsFile($obj_report->getCSV($data['columns_filter_category'], $data), $export_filename . '.csv');;
+                sendStrAsFile($obj_report->getCSV($data['columns_filter_category'], $data), $export_filename . '.csv');
                 break;
             case 'xls':
-                sendStrAsFile($obj_report->getXLS($data['columns_filter_category'], $data), $export_filename . '.xls');;
+                sendStrAsFile($obj_report->getXLS($data['columns_filter_category'], $data), $export_filename . '.xls');
                 break;
         }
     }
@@ -957,7 +947,7 @@ function schedulelist()
     $idrep = FormaLms\lib\Get::req('idrep', DOTY_INT, false);
     cout(getTitleArea([
         'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
-        $lang->def('_SCHEDULE') . '"<b>' . getReportNameById($idrep) . '</b>"',]));
+        $lang->def('_SCHEDULE') . '"<b>' . getReportNameById($idrep) . '</b>"', ]));
 
     cout('<div class="std_block">');
     cout('<p><span class="glyphicon glyphicon-warning-sign"></span> ' . $lang->def('_WARNING_REPORT') . '<p><hr>');
@@ -1031,7 +1021,7 @@ function report_modify_rows()
 
     if (FormaLms\lib\Get::req('mod_name', DOTY_INT, 0) == 1) {
         $reportTempData['report_name'] = FormaLms\lib\Get::req('report_name', DOTY_STRING, false);
-        $session->set(_REPORT_SESSION,$reportTempData);
+        $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
     }
 
@@ -1078,10 +1068,8 @@ function report_modify_columns()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
     if (isset($_POST['columns_filter'])) {
-       
-     
         $reportTempData['columns_filter_category'] = $_POST['columns_filter'];
-        $session->set(_REPORT_SESSION,$reportTempData);
+        $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
     }
 
@@ -1166,23 +1154,23 @@ function reportDispatch($op)
             if (isset($_GET['action']) && isset($_GET['idrep']) && $_GET['action'] == 'send_email') {
                 send_email($_GET['idrep']);
             }
-            reportlist();;
+            reportlist();
             break;
 
         case 'report_category':
-            report_category();;
+            report_category();
             break;
 
         case 'report_rows_filter':
-            report_rows_filter();;
+            report_rows_filter();
             break;
 
         case 'report_sel_columns':
-            report_sel_columns();;
+            report_sel_columns();
             break;
 
         case 'report_columns_filter':
-            report_columns_filter();;
+            report_columns_filter();
             break;
 
         case 'report_save':

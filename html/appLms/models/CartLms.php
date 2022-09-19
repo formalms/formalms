@@ -41,7 +41,7 @@ class CartLms extends Model
         $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'name');
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
-        $cart = $this->session->get('lms_cart',[]);
+        $cart = $this->session->get('lms_cart', []);
         $order = [];
         $cont = [];
 
@@ -172,7 +172,7 @@ class CartLms extends Model
 
     public function getTotalPrice()
     {
-        $cart = $this->session->get('lms_cart',[]);;
+        $cart = $this->session->get('lms_cart', []);
         $total_price = 0;
 
         foreach ($cart as $id_course => $extra) {

@@ -22,8 +22,8 @@ class Step2Controller extends StepController
     public $step = 2;
     public $session = null;
 
-
-    public function __construct() {
+    public function __construct()
+    {
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
@@ -31,6 +31,7 @@ class Step2Controller extends StepController
     {
         $this->session->set('start_version', FormaLms\lib\Get::req('start_version', DOTY_ALPHANUM, '3603'));
         $this->session->save();
+
         return true;
     }
 
@@ -67,7 +68,6 @@ class Step2Controller extends StepController
     {
         $current_version = $this->getCurrentVersion();
 
- 
         $txt = '<select id="start_version" name="start_version">';
         foreach ($GLOBALS['cfg']['versions'] as $k => $v) {
             $txt .= '<option value="' . $k . '"' . ($k === $current_version ? ' selected="selected"' : '') . '>' . $v . '</option>';

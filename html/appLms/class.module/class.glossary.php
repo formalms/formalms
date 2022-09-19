@@ -23,6 +23,7 @@ class Module_Glossary extends LmsModule
         if ($this->session->has('direct_play')) {
             return true;
         }
+
         return false;
     }
 }

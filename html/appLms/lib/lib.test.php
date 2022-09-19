@@ -1010,21 +1010,21 @@ class PlayTestManagement
                     return $query_question
                         . " AND q.page = '" . $page_number . "' "
                         . ' ORDER BY q.sequence';
-                ; break;
+                 break;
                 case '1':
                     // shuffle
                     return $query_question
                         . " AND q.page = '" . $page_number . "' "
                         . " AND q.type_quest <> 'title' "
                         . ' ORDER BY RAND() ';
-                ; break;
+                 break;
                 case '2':
                     // Random X quest on a total of N quest
                     return $query_question
                         . " AND q.type_quest <> 'title'  AND q.type_quest <> 'break_page' "
                         . ' ORDER BY RAND() '
                         . ' LIMIT 0, ' . $question_random_number;
-                ; break;
+                 break;
                 case '3':
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
                     require_once _base_ . '/lib/lib.json.php';
@@ -1048,7 +1048,7 @@ class PlayTestManagement
                     } else {
                         return '';
                     }
-                ; break;
+                 break;
                 case '4':
                     // Random X quest on a set of selected categories, each of N(idCategory) quests
                     require_once _base_ . '/lib/lib.json.php';
@@ -1074,7 +1074,7 @@ class PlayTestManagement
                     } else {
                         return '';
                     }
-                ; break;
+                 break;
             }
         } else {
             // One question per page
@@ -1099,21 +1099,21 @@ class PlayTestManagement
                     return $query_question
                         . ' ORDER BY q.sequence '
                         . ' LIMIT 0,1';
-                ; break;
+                 break;
                 case '1':
                     // Shuffle
                     return $query_question
                         . " AND q.type_quest <> 'title' "
                         . ' ORDER BY RAND() '
                         . ' LIMIT 0,1';
-                ; break;
+                 break;
                 case '2':
                     // Random X quest on a total of N quest
                     return $query_question
                         . " AND q.type_quest <> 'title' "
                         . ' ORDER BY RAND()'
                         . ' LIMIT 0, 1';
-                ; break;
+                 break;
                 case '3':
           $cat_seen = [];
           $query_cat_seen = '
@@ -1152,7 +1152,7 @@ class PlayTestManagement
                     } else {
                         return '';
                     }
-                ; break;
+                 break;
             }
         }
     }

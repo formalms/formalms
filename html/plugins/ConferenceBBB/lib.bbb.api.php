@@ -141,7 +141,7 @@ class BigBlueButton
             $params .= '&welcome=' . urlencode($welcome);
         }
 
-        return  $url_create . $params . '&checksum=' . sha1('create' . $params . $SALT);
+        return $url_create . $params . '&checksum=' . sha1('create' . $params . $SALT);
     }
 
     /**
@@ -176,7 +176,7 @@ class BigBlueButton
         $base_url = $URL . 'api/getMeetingInfo?';
         $params = 'meetingID=' . urlencode($meetingID) . '&password=' . urlencode($modPW);
 
-        return  $base_url . $params . '&checksum=' . sha1('getMeetingInfo' . $params . $SALT);
+        return $base_url . $params . '&checksum=' . sha1('getMeetingInfo' . $params . $SALT);
     }
 
     /**
@@ -192,7 +192,7 @@ class BigBlueButton
         $base_url = $URL . 'api/getMeetings?';
         $params = 'random=' . (rand() * 1000);
 
-        return  $base_url . $params . '&checksum=' . sha1('getMeetings' . $params . $SALT);
+        return $base_url . $params . '&checksum=' . sha1('getMeetings' . $params . $SALT);
     }
 
     /**
@@ -210,7 +210,7 @@ class BigBlueButton
         $base_url = $URL . 'api/end?';
         $params = 'meetingID=' . urlencode($meetingID) . '&password=' . urlencode($modPW);
 
-        return  $base_url . $params . '&checksum=' . sha1('end' . $params . $SALT);
+        return $base_url . $params . '&checksum=' . sha1('end' . $params . $SALT);
     }
 
     //-----------------------------------------------CREATE----------------------------------------------------
@@ -233,9 +233,9 @@ class BigBlueButton
         $xml = bbb_wrap_simplexml_load_file(BigBlueButton::createMeetingURL($username, $meetingID, $aPW, $mPW, $welcomeString, $logoutURL, $SALT, $URL));
 
         if ($xml && $xml->returncode == 'SUCCESS') {
-            return  BigBlueButton::joinURL($meetingID, $username, $mPW, $SALT, $URL);
+            return BigBlueButton::joinURL($meetingID, $username, $mPW, $SALT, $URL);
         } elseif ($xml) {
-            return  $xml->messageKey . ' : ' . $xml->message;
+            return $xml->messageKey . ' : ' . $xml->message;
         } else {
             return 'Unable to fetch URL ' . $url_create . $params . '&checksum=' . sha1('create' . $params . $SALT);
         }
@@ -290,7 +290,7 @@ class BigBlueButton
     {
         $xml = bbb_wrap_simplexml_load_file(BigBlueButton::getMeetingInfoURL($meetingID, $modPW, $URL, $SALT));
         if ($xml) {
-            return  str_replace('</response>', '', str_replace("<?xml version=\"1.0\"?>\n<response>", '', $xml->asXML()));
+            return str_replace('</response>', '', str_replace("<?xml version=\"1.0\"?>\n<response>", '', $xml->asXML()));
         }
 
         return false;
@@ -341,7 +341,7 @@ class BigBlueButton
         $xml = bbb_wrap_simplexml_load_file(BigBlueButton::getMeetingsURL($URL, $SALT));
         if ($xml && $xml->returncode == 'SUCCESS') {
             if ($xml->messageKey) {
-                return  $xml->message->asXML();
+                return $xml->message->asXML();
             }
             ob_start();
             echo '<meetings>';
@@ -494,9 +494,9 @@ class BigBlueButton
     {
         $xml = bbb_wrap_simplexml_load_file(BigBlueButton::isMeetingRunningURL($meetingID, $URL, $SALT));
         if ($xml && $xml->returncode == 'SUCCESS') {
-            return  ($xml->running == 'true') ? true : false;
+            return ($xml->running == 'true') ? true : false;
         } else {
-            return  false;
+            return false;
         }
     }
 
@@ -515,7 +515,7 @@ class BigBlueButton
     {
         $xml = bbb_wrap_simplexml_load_file(BigBlueButton::isMeetingRunningURL($meetingID, $URL, $SALT));
         if ($xml && $xml->returncode == 'SUCCESS') {
-            return  str_replace('</response>', '', str_replace("<?xml version=\"1.0\"?>\n<response>", '', $xml->asXML()));
+            return str_replace('</response>', '', str_replace("<?xml version=\"1.0\"?>\n<response>", '', $xml->asXML()));
         } else {
             return 'false';
         }

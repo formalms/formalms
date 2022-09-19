@@ -521,12 +521,12 @@ class Get
     }
 
     /**
-     * Get the path of std images
+     * Get the path of std images.
      *
      * @return string
      */
-    public static function path_image() {
-
+    public static function path_image()
+    {
         return self::tmpl_path() . 'images/';
     }
 

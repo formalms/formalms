@@ -207,7 +207,7 @@ class TreeView_CatView extends TreeView
     {
         $id = $stack[$level]['folder']->id;
 
-        return  ($stack[$level]['isLeaf'] == 1) && ($level != 0) && $this->can_del && !isset($this->cat_not_empty[$id]);
+        return ($stack[$level]['isLeaf'] == 1) && ($level != 0) && $this->can_del && !isset($this->cat_not_empty[$id]);
     }
 
     public function _getMoveTargetLabel()

@@ -212,7 +212,8 @@ function import()
 }
 
 function edit()
-{$idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+{
+    $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $orgDb = new OrgDirDb();
     $treeView = new Org_TreeView($orgDb, $idCourse);
     $treeView->parsePositionData($_POST, $_POST, $_POST);

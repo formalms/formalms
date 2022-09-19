@@ -377,7 +377,7 @@ class qformat_gift
             case 'extended_text' :
             case 'title' :
                 return $question;
-            ; break;
+             break;
             case 'choice' :
             case 'choice_multiple' :
                 $answertext = str_replace('=', '~=', $answertext);
@@ -431,7 +431,7 @@ class qformat_gift
                 }
 
                 return $question;
-            ; break;
+             break;
             case 'associate' :
                 $answers = explode('=', $answertext);
                 if (isset($answers[0])) {
@@ -463,7 +463,7 @@ class qformat_gift
                 }  // end foreach answer
 
                 return $question;
-            ; break;
+             break;
             case 'truefalse' :
                 $answer = $answertext;
                 $comment = $this->commentparser($answer); // commentparser also removes comment from $answer
@@ -492,7 +492,7 @@ class qformat_gift
                 $question->qtype = 'choice';
 
                 return $question;
-            ; break;
+             break;
             case 'shortanswer' :
                 $answers = explode('~', $answertext);
                 if (isset($answers[0])) {
@@ -534,7 +534,7 @@ class qformat_gift
                 $question->qtype = 'choice';
 
                 return $question;
-            ; break;
+             break;
             case 'numerical' :
                 // Note similarities to ShortAnswer
                 $answertext = substr($answertext, 1); // remove leading "#"
@@ -615,12 +615,12 @@ class qformat_gift
                 }*/
 
                 return $question;
-            ; break;
+             break;
             default:
                 //$giftnovalidquestion = get_string('giftnovalidquestion','quiz');
                 //$this->error( $giftnovalidquestion, $text );
                 return false;
-            ; break;
+             break;
         } // end switch ($question->qtype)
     }    // end function readquestion($lines)
 
@@ -675,20 +675,20 @@ class qformat_gift
             case 'category' :
                 // not a real question, used to insert category switch
                 $expout .= "\$CATEGORY: $question->category\n";
-            ; break;
+             break;
             case 'title' :
                 if ($question->prompt != '') {
                     $expout .= '::' . $this->repchar($question->prompt) . '::';
                 }
                 $expout .= $qtext_format;
                 $expout .= $this->repchar($question->quest_text);
-            ; break;
+             break;
             case 'extended_text' :
                 $expout .= '::' . $this->repchar($question->prompt) . '::';
                 $expout .= $qtext_format;
                 $expout .= $this->repchar($question->quest_text);
                 $expout .= "{}\n";
-            ; break;
+             break;
             case 'truefalse' : /*
                 $trueanswer = $question->options->answers[$question->options->trueanswer];
                 $falseanswer = $question->options->answers[$question->options->falseanswer];
@@ -746,7 +746,7 @@ class qformat_gift
                     $expout .= "\n";
                 }
                 $expout .= "}\n";
-            ; break;
+             break;
             case 'choice_multiple' :
                 $expout .= '::' . $this->repchar($question->prompt) . '::' . $qtext_format . $this->repchar($question->quest_text) . "{\n";
 
@@ -766,14 +766,14 @@ class qformat_gift
                     $expout .= "\n";
                 }
                 $expout .= "}\n";
-            ; break;
+             break;
             case 'associate' :
                 $expout .= '::' . $this->repchar($question->prompt) . '::' . $qtext_format . $this->repchar($question->quest_text) . "{\n";
                 foreach ($question->answers as $i => $subquestion) {
                     $expout .= "\t=" . $this->repchar($subquestion->text) . ' -> ' . $this->repchar($question->extra_info[$i]->text) . "\n";
                 }
                 $expout .= "}\n";
-            ; break;
+             break;
             case NUMERICAL:
                 $expout .= '::' . $this->repchar($question->prompt) . '::' . $qtext_format . $this->repchar($question->quest_text) . "{#\n";
                 foreach ($question->options->answers as $answer) {

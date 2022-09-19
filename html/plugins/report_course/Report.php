@@ -107,7 +107,6 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
 
-
         if (!isset($reportTempData['rows_filter'])) {
             $reportTempData->set('rows_filter', [
                 'all_courses' => true,

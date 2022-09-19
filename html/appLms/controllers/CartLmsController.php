@@ -228,7 +228,7 @@ class CartLmsController extends LmsController
 
     public function emptyCart()
     {
-        $this->session->set('lms_cart',[]);
+        $this->session->set('lms_cart', []);
         $this->session->save();
 
         $result['success'] = true;
@@ -241,7 +241,7 @@ class CartLmsController extends LmsController
         $del_list = FormaLms\lib\Get::req('elements', DOTY_MIXED, '');
         $del_list = explode(',', $del_list);
 
-        $cart = $this->session->get('lms_cart',[]);
+        $cart = $this->session->get('lms_cart', []);
 
         foreach ($del_list as $id) {
             $id_details = explode('_', $id);
@@ -318,10 +318,9 @@ class CartLmsController extends LmsController
                         if (!$model->subscribeUser(Docebo::user()->getIdSt(), 3, $waiting)) {
                             $this->acl_man->removeFromGroup($level_idst[3], Docebo::user()->getIdSt());
                         } elseif ($this->model->addTransactionCourse($id_trans, $id_course, $id_date, 0, $course_info[$id_course . '_' . $id_date . '_0'])) {
-
                             $currentCart = $this->session->get('lms_cart');
                             unset($currentCart[$id_course]['classroom'][$id_date]);
-                            $this->session->set('lms_cart',$currentCart);
+                            $this->session->set('lms_cart', $currentCart);
                             $this->session->save();
 
                             $query = 'UPDATE %lms_courseuser'
@@ -340,10 +339,9 @@ class CartLmsController extends LmsController
                         if (!$model->subscribeUser(Docebo::user()->getIdSt(), 3, $waiting)) {
                             $this->acl_man->removeFromGroup($level_idst[3], Docebo::user()->getIdSt());
                         } elseif ($this->model->addTransactionCourse($id_trans, $id_course, 0, $id_edition, $course_info[$id_course . '_0_' . $id_edition])) {
-
                             $currentCart = $this->session->get('lms_cart');
                             unset($currentCart[$id_course]['edition'][$id_edition]);
-                            $this->session->set('lms_cart',$currentCart);
+                            $this->session->set('lms_cart', $currentCart);
                             $this->session->save();
 
                             $query = 'UPDATE %lms_courseuser'
@@ -361,10 +359,9 @@ class CartLmsController extends LmsController
                     if (!$model->subscribeUser(Docebo::user()->getIdSt(), 3, $waiting)) {
                         $this->acl_man->removeFromGroup($level_idst[3], Docebo::user()->getIdSt());
                     } elseif ($this->model->addTransactionCourse($id_trans, $id_course, 0, 0, $course_info[$id_course . '_0_0'])) {
-
                         $currentCart = $this->session->get('lms_cart');
                         unset($currentCart[$id_course]);
-                        $this->session->set('lms_cart',$currentCart);
+                        $this->session->set('lms_cart', $currentCart);
                         $this->session->save();
 
                         $query = 'UPDATE %lms_courseuser'
@@ -381,10 +378,10 @@ class CartLmsController extends LmsController
 
             require_once _lms_ . '/lib/lib.cart.php';
             if (Learning_Cart::cartItemCount() == 0) {
-                $this->session->set('lms_cart',[]);
+                $this->session->set('lms_cart', []);
             }
 
-            $this->session->set('cart_transaction',$id_trans);
+            $this->session->set('cart_transaction', $id_trans);
             $this->session->save();
             $result = [
                 'success' => true,

@@ -167,7 +167,7 @@ switch ($op) {
             //if query is ok, I got the inserted ID and I put in session, telling the system I'm using it
             $row = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
             $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-            $session->set('report_saved',$row[0]);
+            $session->set('report_saved', $row[0]);
             $session->save();
         }
         $json = new Services_JSON();

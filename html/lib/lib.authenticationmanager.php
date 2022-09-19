@@ -108,7 +108,7 @@ class AuthenticationManager
         $session->set('logged_in', true);
         $session->set('last_enter', $user->getLastEnter());
         $session->set('user_enter_mark', time());
-        $session->set('user',$user);
+        $session->set('user', $user);
         $user->setLastEnter(date('Y-m-d H:i:s'));
         //////////////////////////////////
 
@@ -136,7 +136,6 @@ class AuthenticationManager
         if (self::_checkPwdElapsed()) {
             return PWD_ELAPSED;
         }
-
 
         return USER_SAVED;
     }

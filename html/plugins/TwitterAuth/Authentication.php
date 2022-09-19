@@ -19,7 +19,6 @@ use Docebo;
 use DoceboUser;
 use Exception;
 use Form;
-use Get;
 use Lang;
 use OAuth\Common\Consumer\Credentials;
 use OAuth\Common\Storage\Session;
@@ -89,7 +88,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $user = DoceboUser::createDoceboUserFromField('twitter_id', $user_info->id, 'public_area');
 
         if (!$user) {
-            (self::$session)->set('social',['plugin' => Plugin::getName(),
+            (self::$session)->set('social', ['plugin' => Plugin::getName(),
                                 'data' => $user_info,
                     ]);
             (self::$session)->save();

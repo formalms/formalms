@@ -211,12 +211,12 @@ function getHistoryTable($id_user, $id_org, $idscorm_item, $idReference)
 
 function scorm_userstat_detailhist($idscorm_organization, $idUser, $idItem, $idReference)
 {
-    return  getHistoryTable($idUser, $idscorm_organization, $idItem, $idReference);
+    return getHistoryTable($idUser, $idscorm_organization, $idItem, $idReference);
 }
 
 function scorm_userstat_detail($idscorm_organization, $idUser, $idItem, $idReference)
 {
-    return  getTrackingTable($idUser, $idscorm_organization, $idItem, $idReference);
+    return getTrackingTable($idUser, $idscorm_organization, $idItem, $idReference);
 
     /*** disabled ****  // XML SCORM results
 

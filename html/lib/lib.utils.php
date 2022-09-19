@@ -195,7 +195,7 @@ class Util
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if (!$session->has('mdsign')) {
             $session->set('mdsign', md5(uniqid(mt_rand(), true) . '|' . mt_rand() . '|' . $addendum));
-            $session->set('mdsign_timestamp',time());
+            $session->set('mdsign_timestamp', time());
             $session->save();
         }
     }
@@ -288,7 +288,7 @@ class Util
                 //if is int cast it
                 case 'int':
                     $GLOBALS[$into_globals][$var_name] = (int) $var_value;
-                ; break;
+                 break;
                 //if is enum switch value to on or off
                 case 'enum':
                     if ($var_value == 'on') {
@@ -296,7 +296,7 @@ class Util
                     } else {
                         $GLOBALS[$into_globals][$var_name] = 'off';
                     }
-                ; break;
+                 break;
                 //else simple assignament
                 default:
                     $GLOBALS[$into_globals][$var_name] = $var_value;

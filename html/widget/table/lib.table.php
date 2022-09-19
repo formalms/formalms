@@ -354,13 +354,13 @@ class TableWidget extends Widget
                             default: $formatter = $value; break;
                         }
                         $col_config[] = 'formatter:' . $formatter;
-                    ; break;
+                     break;
                     case 'editor':
                         $col_config[] = 'editor:' . $value;
-                    ; break;
+                     break;
                     case 'hidden':
                         $col_config[] = 'hidden:' . ((bool) $value ? 'true' : 'false');
-                    ; break;
+                     break;
                     default:
                         $col_config[] = $key . ':' . $this->json->encode($value); //$key.':"'.$value.'"';
                 } // end switch

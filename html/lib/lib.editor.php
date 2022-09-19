@@ -136,7 +136,7 @@ function loadHtmlEditor($id_form, $id, $name, $value, $css_text, $extra_param_fo
             return '<textarea class="' . $css_text . '" id="' . $id . '" name="' . $name . '" cols="52" rows="7">'
                 . htmlspecialchars($value, ENT_NOQUOTES)
                 . '</textarea>';
-        ; break;
+         break;
     }
 }
 

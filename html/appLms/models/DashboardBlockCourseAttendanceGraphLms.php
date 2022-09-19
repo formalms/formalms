@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-require_once Forma::include(_lms_. '/lib/', 'lib.subscribe.php');
+require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 /**
  * Class DashboardBlockAnnouncementsLms.
  */
@@ -21,23 +21,21 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
     protected CourseSubscribe_Manager $subscribeManager;
 
     public const COLORS = [
-            -2 =>'F0F8FF',
-            -1 =>'FAEBD7',
-            0 =>'3CAAD1',
-            1 =>'ED6D05',
-            2 =>'60B567',
-            3 =>'F5F5DC',
-            4 =>'669900',
+            -2 => 'F0F8FF',
+            -1 => 'FAEBD7',
+            0 => '3CAAD1',
+            1 => 'ED6D05',
+            2 => '60B567',
+            3 => 'F5F5DC',
+            4 => '669900',
         ];
 
-
-    public function __construct($jsonConfig) {
-
+    public function __construct($jsonConfig)
+    {
         $this->subscribeManager = new CourseSubscribe_Manager();
-  
+
         parent::__construct($jsonConfig);
     }
-
 
     public function parseConfig($jsonConfig)
     {
@@ -86,8 +84,8 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
     private function getCourseInfo()
     {
         $result = [];
-        $defaultLabels= $this->subscribeManager->getUserStatus();
-      
+        $defaultLabels = $this->subscribeManager->getUserStatus();
+
         $query = 'SELECT cu.status, count(cu.idUser) as cnt'
             . ' FROM ' . $this->subscribeManager->getSubscribeUserTable() . ' cu'
             . ' WHERE cu.iduser = ' . Docebo::user()->getId() . ' '
@@ -106,8 +104,6 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
 
     private function findEnrolledCourses()
     {
-    
-   
     }
 
     private function getUserCoursePathCourses($id_user)
@@ -123,6 +119,4 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
 
         return $output;
     }
-
-
 }

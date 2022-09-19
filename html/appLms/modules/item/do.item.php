@@ -67,7 +67,6 @@ function play($idResource, $idParams, $back_url)
     }
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-
     if ($session->get('direct_play') == 1) {
         if ($session->has('idCourse')) {
             TrackUser::closeSessionCourseTrack();
@@ -83,9 +82,9 @@ function play($idResource, $idParams, $back_url)
             $session->remove('cp_assessment_effect');
         }
 
-        $session->set('current_main_menu','1');
-        $session->set('sel_module_id','1');
-        $session->set('is_ghost',false);
+        $session->set('current_main_menu', '1');
+        $session->set('sel_module_id', '1');
+        $session->set('is_ghost', false);
         $session->save();
     }
 

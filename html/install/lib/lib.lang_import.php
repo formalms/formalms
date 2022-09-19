@@ -55,7 +55,7 @@ class LangAdm
                 . " WHERE lang_code = '" . $lang_code . "'";
         $rs = sql_query($query);
 
-        return  sql_num_rows($rs) > 0;
+        return sql_num_rows($rs) > 0;
     }
 
     /**

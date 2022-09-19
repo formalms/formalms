@@ -255,7 +255,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $re = true;
         if (isset($_POST['id_path'])) {
-        // Update existing
+            // Update existing
             $query_update = '
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_coursepath
 		SET path_code = '" . $_POST['path_code'] . "',
@@ -744,7 +744,7 @@ if (!Docebo::user()->isAnonymous()) {
         foreach ($course_info as $id_c => $course) {
             if ($id_c != $id_course) {
                 if (isset($courses_prer[$id_c]) && strpos($courses_prer[$id_c], strval($id_course))) {
-                // this course contain the current working course as a  prerequisites
+                    // this course contain the current working course as a  prerequisites
                     $cont = [
                     '<img src="' . getPathImage('lms') . 'course/locked.gif" alt="' . $lang->def('_LOCKED') . '" />',
                     $course['code'],
@@ -1385,62 +1385,62 @@ if (!Docebo::user()->isAnonymous()) {
         switch ($op) {
         case 'pathlist':
             pathlist();
-        ; break;
+         break;
 
         case 'newcoursepath':
             mancoursepath(false);
-        ; break;
+         break;
         case 'modcoursepath':
             mancoursepath(importVar('id_path', true, 0));
-        ; break;
+         break;
         case 'savecoursepath':
             savecoursepath();
-        ; break;
+         break;
 
         case 'deletepath':
             deletepath();
-        ; break;
+         break;
         //----------------------
         case 'pathelem':
             pathelem();
-        ; break;
+         break;
         case 'upelem':
             upelem();
-        ; break;
+         break;
         case 'downelem':
             downelem();
-        ; break;
+         break;
         case 'importcourse':
             importcourse();
-        ; break;
+         break;
 
         case 'modprerequisites':
             modprerequisites();
-        ; break;
+         break;
         case 'writeprerequisites':
             writeprerequisites();
-        ; break;
+         break;
 
         case 'delcoursepath':
             delcoursepathelem();
-        ; break;
+         break;
 
         //---------------------
         case 'waitingsubscription':
             waitingsubscription();
-        ; break;
+         break;
         case 'addsubscription':
             addsubscription();
-        ; break;
+         break;
         case 'addsubscriptionedition':
             addsubscriptionedition();
-        ; break;
+         break;
         case 'modslot':
             modslot();
-        ; break;
+         break;
         case 'delslot':
             delslot();
-        ; break;
+         break;
     }
     }
 }

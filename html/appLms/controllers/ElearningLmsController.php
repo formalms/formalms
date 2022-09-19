@@ -33,7 +33,7 @@ class ElearningLmsController extends LmsController
         YuiLib::load('base,tabview');
 
         if (!$this->session->has('id_common_label')) {
-            $this->session->set('id_common_label',-1);
+            $this->session->set('id_common_label', -1);
             $this->session->save();
         }
 
@@ -106,11 +106,11 @@ class ElearningLmsController extends LmsController
         $block_list = [];
         $tb_label = (FormaLms\lib\Get::sett('use_course_label', false) == 'off' ? false : true);
         if (!$tb_label) {
-            $this->session->set('id_common_label',0);
+            $this->session->set('id_common_label', 0);
             $this->session->save();
         } else {
             $id_common_label = FormaLms\lib\Get::req('id_common_label', DOTY_INT, -1);
-            $this->session->set('id_common_label',$id_common_label);
+            $this->session->set('id_common_label', $id_common_label);
             $block_list['labels'] = true;
         }
 

@@ -288,7 +288,6 @@ class Module_Homerepo extends LmsModule
             case 'display' :
             case 'homerepo' :
             default:
-         
                 homerepo($this->treeView);
             break;
         }

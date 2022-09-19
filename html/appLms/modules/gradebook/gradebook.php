@@ -98,11 +98,11 @@ function showgrade()
         switch ($info_report['source_of']) {
             case 'test':
                 $id_test[] = $info_report['id_source'];
-            ; break;
+             break;
             case 'activity':
             case 'final_vote':
                 $id_report[] = $info_report['id_report'];
-            ; break;
+             break;
         }
     }
 
@@ -174,26 +174,26 @@ function showgrade()
                         $score = $query['score_raw'];
                         $date = Format::date($query['last_completed'], 'datetime');
                         $comment = '';
-            ; break;
+             break;
             case 'test':
                 $title = $tests_info[$id_source]['title'];
                 if (isset($tests_score[$id_source][$id_user])) {
                     switch ($tests_score[$id_source][$id_user]['score_status']) {
                         case 'not_checked':
                             $score = '<span class="cr_not_check">' . $lang->def('_NOT_CHECKED') . '</span>';
-                        ; break;
+                         break;
                         case 'passed':
                             //$score = '<span class="cr_passed">'.$lang->def('_PASSED').'</span>';
                             $score = '<img src="' . getPathImage('fw') . 'emoticons/thumbs_up.gif" alt="' . $lang->def('_PASSED') . '" />&nbsp;' . $tests_score[$id_source][$id_user]['score'];
                             $date = Format::date($tests_score[$id_source][$id_user]['date_attempt']);
                             $comment = $tests_score[$id_source][$id_user]['comment'];
-                        ; break;
+                         break;
                         case 'not_passed':
                             //$score = '<span class="cr_not_passed">'.$lang->def('_NOT_PASSED').'</span>';
                             $score = '<img src="' . getPathImage('fw') . 'emoticons/thumbs_down.gif" alt="' . $lang->def('_NOT_PASSED') . '" />&nbsp;' . $tests_score[$id_source][$id_user]['score'];
                             $date = Format::date($tests_score[$id_source][$id_user]['date_attempt']);
                             $comment = $tests_score[$id_source][$id_user]['comment'];
-                        ; break;
+                         break;
                         case 'valid':
                             $score = $tests_score[$id_source][$id_user]['score'];
                             if ($score == $report_info['max_score']) {
@@ -203,11 +203,11 @@ function showgrade()
                             }
                             $date = Format::date($tests_score[$id_source][$id_user]['date_attempt']);
                             $comment = $tests_score[$id_source][$id_user]['comment'];
-                        ; break;
+                         break;
                     }
                 }
                 $link_result = '<a href="index.php?modname=organization&op=test_track&id_user=' . $id_user . '&id_org=' . $id_source . '&back=gradebook">' . '<img src="' . getPathImage() . 'standard/report.png" /></a>';
-            ; break;
+             break;
             case 'activity':
                 if (isset($report_score[$id_report][$id_user]) && $report_score[$id_report][$id_user]['score_status'] == 'valid') {
                     $score = $report_score[$id_report][$id_user]['score'];
@@ -220,7 +220,7 @@ function showgrade()
                     $date = Format::date($report_score[$id_report][$id_user]['date_attempt']);
                     $comment = $report_score[$id_report][$id_user]['comment'];
                 }
-            ; break;
+             break;
             case 'final_vote':
                 $title = strip_tags($lang->def('_FINAL_SCORE'));
                 if (isset($report_score[$id_report][$id_user]) && $report_score[$id_report][$id_user]['score_status'] == 'valid') {
@@ -234,7 +234,7 @@ function showgrade()
                     $date = Format::date($report_score[$id_report][$id_user]['date_attempt']);
                     $comment = $report_score[$id_report][$id_user]['comment'];
                 }
-            ; break;
+             break;
         }
 
             if ($date == '') {
@@ -340,7 +340,7 @@ function coursereport()
 	ORDER BY sequence ";
     $re_report = sql_query($query_report);
 
-    foreach ($re_report as $info_report){
+    foreach ($re_report as $info_report) {
         switch ($info_report['source_of']) {
             case 'test':
                 $id_test[] = $info_report['id_source'];
@@ -546,10 +546,10 @@ function gradebookDispatch($op)
     switch ($op) {
         case 'showgrade':
             showgrade();
-        ; break;
+         break;
 
         case 'coursereport':
             coursereport();
-        ; break;
+         break;
     }
 }

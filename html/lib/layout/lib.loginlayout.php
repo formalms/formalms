@@ -44,7 +44,7 @@ class LoginLayout
             ++$i;
         }
 
-        return  $li != '' ? $ul . $li . '</ul>' : '';
+        return $li != '' ? $ul . $li . '</ul>' : '';
     }
 
     /**

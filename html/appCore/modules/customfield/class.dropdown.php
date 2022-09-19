@@ -388,7 +388,7 @@ class Field_Dropdown extends Field
         require_once _base_ . '/lib/lib.form.php';
 
         if ($id_obj != -1) {
-                    // restituisce il valore
+            // restituisce il valore
             list($obj_entry) = sql_fetch_row(sql_query('
                     SELECT obj_entry
                     FROM ' . $this->_getObjEntryTable() . "
@@ -411,7 +411,7 @@ class Field_Dropdown extends Field
                 return $translation;
             }
         } else {
-                    // restituisce tutti i valori
+            // restituisce tutti i valori
             $re_field_element = sql_query('
                     SELECT cs.id_field_son, csl.translation, cs.code
                     FROM ' . $this->_getElementTable() . ' AS cs, ' . $this->_getElementLangTable() . " AS csl

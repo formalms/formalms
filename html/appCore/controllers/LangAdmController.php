@@ -38,7 +38,6 @@ class LangAdmController extends AdmController
 
     public function showTask()
     {
-        
         require_once Forma::inc(_lib_ . '/formatable/include.php');
 
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
@@ -49,11 +48,11 @@ class LangAdmController extends AdmController
         switch ($dir) {
             case 'desc':
                     $dir = 'desc';
-                ;
+
                 break;
             default:
                     $dir = 'asc';
-                ;
+
                 break;
         }
 
@@ -86,11 +85,11 @@ class LangAdmController extends AdmController
         switch ($dir) {
             case 'desc':
                     $dir = 'desc';
-                ;
+
                 break;
             default:
                     $dir = 'asc';
-                ;
+
                 break;
         }
 

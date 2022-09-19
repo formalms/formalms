@@ -198,7 +198,7 @@ if (!Docebo::user()->isAnonymous()) {
             . '<div class="nofloat"></div>'
             . '</div>', 'content');
         } else {
-        // Display as faq
+            // Display as faq
             $textQuery = '
 		SELECT question, answer 
 		FROM ' . $GLOBALS['prefix_lms'] . "_faq 

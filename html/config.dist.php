@@ -120,13 +120,12 @@ $cfg['twig_debug'] = false;
  * session must survive at least X seconds
  * session save_path if specified will be used instead of the defaul one
  */
-$cfg['do_debug'] 			    = false; //false || (bool)getenv('DO_DEBUG');
+$cfg['do_debug'] = false; //false || (bool)getenv('DO_DEBUG');
 //$cfg['debug_level'] 			= 'all' || (bool)getenv('DEBUG_LEVEL'); //error,warning,notice,deprecated else all
 //$cfg['enable_log']            = true;
 //$cfg['log_level']             = Monolog\Logger::DEBUG; //
 //$cfg['log_path']              = '/app/logger.log';
-$cfg['demo_mode']			    = false;
-
+$cfg['demo_mode'] = false;
 
 //$cfg['session']['handler'] = \FormaLms\lib\Session\SessionManager::FILESYSTEM; //filesystem | memcached | redis | pdo | mongodb
 //$cfg['session']['url'] = ''; // dsn pattern url to session server
@@ -140,7 +139,6 @@ $cfg['demo_mode']			    = false;
 //$cfg['session']['user'] = $cfg['db_user']; // authentication user session handler
 //$cfg['session']['pass'] = $cfg['db_pass']; // authentication psw session handler
 //$cfg['session']['options'] = []; // other options key value array to pass based on selected handler
-
 
 /*
  * Technical preferences

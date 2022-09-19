@@ -109,10 +109,10 @@ class RepoDirDb extends TreeDb
     {
         return ", '" . addslashes($this->org_title) . "', '"
             . addslashes($this->org_objectType) . "', '"
-            . (int)$this->org_idResource . "', '"
-            . (int)$this->org_idCategory . "', '"
-            . (int)$this->org_idUser . "', '"
-            . (int)$this->org_idAuthor . "', '"
+            . (int) $this->org_idResource . "', '"
+            . (int) $this->org_idCategory . "', '"
+            . (int) $this->org_idUser . "', '"
+            . (int) $this->org_idAuthor . "', '"
             . addslashes($this->org_version) . "', '"
             . addslashes($this->org_difficult) . "', '"
             . addslashes($this->org_description) . "', '"
@@ -126,10 +126,10 @@ class RepoDirDb extends TreeDb
     {
         return " title='" . addslashes($this->org_title) . "',"
             . " objectType='" . addslashes($this->org_objectType) . "',"
-            . " idResource='" . (int)$this->org_idResource . "',"
-            . " idCategory='" . (int)$this->org_idCategory . "',"
-            . " idUser='" . (int)$this->org_idUser . "',"
-            . " idAuthor='" . (int)$this->org_idAuthor . "',"
+            . " idResource='" . (int) $this->org_idResource . "',"
+            . " idCategory='" . (int) $this->org_idCategory . "',"
+            . " idUser='" . (int) $this->org_idUser . "',"
+            . " idAuthor='" . (int) $this->org_idAuthor . "',"
             . " version='" . addslashes($this->org_version) . "',"
             . " difficult='" . addslashes($this->org_difficult) . "',"
             . " description='" . addslashes($this->org_description) . "',"
@@ -201,7 +201,7 @@ class RepoDirDb extends TreeDb
     {
         $query = "SELECT MAX(SUBSTRING_INDEX(path, '/', -1))"
             . ' FROM ' . $this->table
-            . ' WHERE (' . $this->fields['idParent'] . " = '" . (int)$idFolder . "')"
+            . ' WHERE (' . $this->fields['idParent'] . " = '" . (int) $idFolder . "')"
             . $this->_getFilter();
         $rs = sql_query($query)
         or exit("Error [$query] " . sql_error());
@@ -289,21 +289,21 @@ class RepoDirDb extends TreeDb
     }
 
     /** Add a new item to tree db.
-     * @param int $idParent the id of the container folder
-     * @param string $title title of the item
-     * @param string $objectType type of the lo item
-     * @param int $idResource id of the resource
-     * @param int $idCategory id of the category
-     * @param int $idUser owner's id of the item
-     * @param int $idAuthor author's id of the content
-     * @param string $version version of the item
-     * @param string $difficult the level of difficult of the item
+     * @param int    $idParent    the id of the container folder
+     * @param string $title       title of the item
+     * @param string $objectType  type of the lo item
+     * @param int    $idResource  id of the resource
+     * @param int    $idCategory  id of the category
+     * @param int    $idUser      owner's id of the item
+     * @param int    $idAuthor    author's id of the content
+     * @param string $version     version of the item
+     * @param string $difficult   the level of difficult of the item
      * @param string $description description of the item
-     * @param string $language language of the item
-     * @param string $resource web address from ....
-     * @param string $objective the item's objective
-     * @param string $dateInsert the insert date
-     * @param array $otherData other parameters for repo extensions
+     * @param string $language    language of the item
+     * @param string $resource    web address from ....
+     * @param string $objective   the item's objective
+     * @param string $dateInsert  the insert date
+     * @param array  $otherData   other parameters for repo extensions
      **/
     public function addItem($idParent, $title, $objectType, $idResource, $idCategory,
                             $idUser, $idAuthor, $version, $difficult, $description,
@@ -876,7 +876,7 @@ class RepoTreeView extends TreeView
             if (isset($_GET['create_result'])) {
                 switch ($_GET['create_result']) {
                     case '1':
-                        $idResource = (int)$_GET['id_lo'];
+                        $idResource = (int) $_GET['id_lo'];
                         $lo = createLO($this->creatingObjectType, $idResource);
                         $this->tdb->addItem($this->getSelectedFolderId(),
                             $lo->getTitle(), $lo->getObjectType(),
@@ -894,7 +894,7 @@ class RepoTreeView extends TreeView
                         $this->refresh = true;
                         break;
                     case '2':
-                        $idMultiResource = (int)$_GET['id_lo'];
+                        $idMultiResource = (int) $_GET['id_lo'];
                         $multiLo = createLO($this->creatingObjectType);
                         $arrIdResources = $multiLo->getMultipleResource($idMultiResource);
                         foreach ($arrIdResources as $idResource) {
@@ -961,7 +961,7 @@ class RepoTreeView extends TreeView
                 $saveData = &$saveObj->load($saveName);
 
                 $lo = createLO($saveData['objectType']);
-                $idResource = $lo->copy((int)$saveData['idResource']);
+                $idResource = $lo->copy((int) $saveData['idResource']);
                 if ($idResource != 0) {
                     $lo = createLO($saveData['objectType']);
                     $this->tdb->addItem($this->getSelectedFolderId(),
@@ -1056,7 +1056,6 @@ class RepoTreeView extends TreeView
             $arrData = $stack[$level]['folder']->otherValues;
             $isFolder = ($arrData[REPOFIELDOBJECTTYPE] === '');
             if (is_array($arrData)) {
-
                 /*$elem .= '<input type="image" class="tree_view_image" '
                     .' src="'.$this->_getOpPropertiesImg().'"'
                     .' id="'.$this->id.'_'.$this->_getOpPropertiesId().'_'.$stack[$level]['folder']->id.'" '

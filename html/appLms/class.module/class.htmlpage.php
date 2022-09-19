@@ -23,6 +23,7 @@ class Module_Htmlpage extends LmsModule
         if ($this->session->has('direct_play')) {
             return true;
         }
+
         return false;
     }
 
@@ -37,7 +38,7 @@ class Module_Htmlpage extends LmsModule
             case 'modpage':
             case 'uppage':
                 loadHeaderHTMLEditor();
-            ; break;
+             break;
         }
 
         return;

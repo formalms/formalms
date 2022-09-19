@@ -244,7 +244,7 @@ class Step4Controller extends StepController
     {
         $this->session->set('site_url', FormaLms\lib\Get::pReq('site_url', DOTY_STRING));
         $dbInfo = FormaLms\lib\Get::pReq('db_info');
-        $this->session->set('db_info',$dbInfo);
+        $this->session->set('db_info', $dbInfo);
 
         if ($dbInfo['db_pass'] === '_fromconfig') {
             if (file_exists(_base_ . '/config.php')) {
@@ -253,9 +253,10 @@ class Step4Controller extends StepController
                 $dbInfo['db_pass'] = $cfg['db_pass'];
             }
         }
-        $this->session->set('upload_method',FormaLms\lib\Get::pReq('upload_method'));
+        $this->session->set('upload_method', FormaLms\lib\Get::pReq('upload_method'));
         $this->session->set('ul_info', FormaLms\lib\Get::pReq('ul_info'));
         $this->session->save();
+
         return true;
     }
 }

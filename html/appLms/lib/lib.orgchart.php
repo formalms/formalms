@@ -158,7 +158,7 @@ class OrganizationManagement
               $idc = $course_obj_assoc['scormorg'][$id_test];
               $score[$idc] = $scorm_info;
           }
-                ; break;
+                 break;
                 // ------------------------------------------------------------
                 case 'test':
                     require_once _lms_ . '/lib/lib.test.php';
@@ -169,7 +169,7 @@ class OrganizationManagement
               $score[$idc] = $test_info;
           }
 
-                ; break;
+                 break;
             }
         }
 
@@ -224,7 +224,7 @@ class OrganizationManagement
                         $idc = $course_org_assoc['scormorg'][$id_test];
                         $score[$idc] = $scorm_info;
                     }
-                ; break;
+                 break;
                 // ------------------------------------------------------------
                 case 'test':
                     require_once _lms_ . '/lib/lib.test.php';
@@ -236,7 +236,7 @@ class OrganizationManagement
               $score[$idc] = $test_info;
           }
 
-                ; break;
+                 break;
             }
         }
 

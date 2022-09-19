@@ -35,8 +35,8 @@ function getTemplate()
     }
 
     // force_standard mode
-    if ((array_key_exists('notuse_template',$_REQUEST) && isset($_REQUEST['notuse_template'])) || (array_key_exists('notuse_template',$GLOBALS) && $GLOBALS['notuse_template'] == true)) {
-        $session->set('template','standard');
+    if ((array_key_exists('notuse_template', $_REQUEST) && isset($_REQUEST['notuse_template'])) || (array_key_exists('notuse_template', $GLOBALS) && $GLOBALS['notuse_template'] == true)) {
+        $session->set('template', 'standard');
 
         return $session->get('template');
     }
@@ -44,7 +44,7 @@ function getTemplate()
     //search for a template associated to the current host
     $plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
     if ($plat_templ != false) {
-        $session->set('template',$plat_templ);
+        $session->set('template', $plat_templ);
         if (!checkTemplateVersion($session->get('template'))) {
             return 'standard';
         }
@@ -141,10 +141,9 @@ function setTemplate($new_template)
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (is_dir(_templates_ . '/' . $new_template)) {
-
-        $session->set('template',$new_template);
+        $session->set('template', $new_template);
     } else {
-        $session->set('template',getDefaultTemplate());
+        $session->set('template', getDefaultTemplate());
     }
     $session->save();
 }
@@ -245,6 +244,7 @@ function getDefaultTemplate($platform = false)
         return $plat_templ;
     } else {
         $array = getTemplateList();
+
         return array_pop($array);
     }
 }
@@ -610,9 +610,9 @@ function setAccessibilityStatus($new_status)
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (FormaLms\lib\Get::sett('accessibility', 'off') !== 'off') {
-        $session->set('high_accessibility',$new_status);
+        $session->set('high_accessibility', $new_status);
     } else {
-        $session->set('high_accessibility',false);
+        $session->set('high_accessibility', false);
     }
     $session->save();
 }
@@ -633,5 +633,6 @@ function getAccessibilityStatus()
 function getTemplateFromIdOrg(int $id_org)
 {
     list($template_name) = sql_fetch_row(sql_query("select associated_template from core_org_chart_tree where idOrg=$id_org"));
+
     return $template_name;
 }

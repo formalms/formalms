@@ -1661,22 +1661,22 @@ class GroupListView extends ListView
                 $arrResult['type'] = '<img src="' . getPathImage('fw') . 'directory/group_free.gif" '
                                         . 'title="' . $this->lang->def('_DIRECTORY_GROUPTYPE_FREE') . '" '
                                         . 'alt="' . $this->lang->def('_DIRECTORY_GROUPTYPE_FREE_ALT') . '" />';
-            ; break;
+             break;
             case 'moderate':
                 $arrResult['type'] = '<img src="' . getPathImage('fw') . 'directory/group_moderate.gif" '
                                         . 'title="' . $this->lang->def('_DIRECTORY_GROUPTYPE_MODERATE') . '" '
                                         . 'alt="' . $this->lang->def('_DIRECTORY_GROUPTYPE_MODERATE_ALT') . '" />';
-            ; break;
+             break;
             case 'private':
                 $arrResult['type'] = '<img src="' . getPathImage('fw') . 'directory/group_private.gif" '
                                         . 'title="' . $this->lang->def('_DIRECTORY_GROUPTYPE_PRIVATE') . '" '
                                         . 'alt="' . $this->lang->def('_DIRECTORY_GROUPTYPE_PRIVATE_ALT') . '" />';
-            ; break;
+             break;
             case 'invisible':
                 $arrResult['type'] = '<img src="' . getPathImage('fw') . 'directory/group_invisible.gif" '
                                         . 'title="' . $this->lang->def('_DIRECTORY_GROUPTYPE_INVISIBLE') . '" '
                                         . 'alt="' . $this->lang->def('_DIRECTORY_GROUPTYPE_INVISIBLE_ALT') . '" />';
-            ; break;
+             break;
         }
 
         if (!$this->selector_mode) { // Normal mode

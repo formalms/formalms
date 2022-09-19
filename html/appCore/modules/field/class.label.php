@@ -47,7 +47,7 @@ class Field_Textlabel extends Field
             Util::jump_to($back . '&result=undo');
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
-                    //insert mandatory translation
+            //insert mandatory translation
             $mand_lang = getLanguage();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
@@ -164,7 +164,7 @@ class Field_Textlabel extends Field
             Util::jump_to($back . '&result=undo');
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
-                    //insert mandatory translation
+            //insert mandatory translation
             $mand_lang = getLanguage();
 
             //control if all is ok

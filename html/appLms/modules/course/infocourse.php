@@ -74,7 +74,7 @@ if (!Docebo::user()->isAnonymous()) {
             while (list($idFile, $title, $file) = sql_fetch_row($re_file)) {
                 $cont = ['<a href="index.php?modname=course&amp;op=downloadcourse&amp;id=' . $idFile . '">'
                     . '<img src="' . getPathImage('fw') . mimeDetect($file) . '" alt="mime-type" />&nbsp;'
-                    . $title . '</a>',];
+                    . $title . '</a>', ];
                 if ($mod_perm) {
                     $cont[] = '<a href="index.php?modname=course&amp;op=modfiles&amp;id_file=' . $idFile . '" title="' . $lang->def('_MOD') . ' : ' . $title . '">'
                         . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : ' . $title . '" /></a>';
@@ -117,20 +117,20 @@ if (!Docebo::user()->isAnonymous()) {
             1 => $lang->def('_ACTIVE'),
             2 => $lang->def('_CST_CONFIRMED'),
             3 => $lang->def('_CST_CONCLUDED'),
-            4 => $lang->def('_CST_CANCELLED'),];
+            4 => $lang->def('_CST_CANCELLED'), ];
 
         $difficult_lang = [
             'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
             'easy' => $lang->def('_DIFFICULT_EASY'),
             'medium' => $lang->def('_DIFFICULT_MEDIUM'),
             'difficult' => $lang->def('_DIFFICULT_DIFFICULT'),
-            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'),];
+            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'), ];
 
         $subs_lang = [
             0 => $lang->def('_COURSE_S_GODADMIN'),
             1 => $lang->def('_COURSE_S_MODERATE'),
             2 => $lang->def('_COURSE_S_FREE'),
-            3 => $lang->def('_COURSE_S_SECURITY_CODE'),];
+            3 => $lang->def('_COURSE_S_SECURITY_CODE'), ];
 
         $GLOBALS['page']->add(
             getTitleArea($lang->def('_INFO'), 'course')
@@ -248,7 +248,7 @@ if (!Docebo::user()->isAnonymous()) {
             'easy' => $lang->def('_DIFFICULT_EASY'),
             'medium' => $lang->def('_DIFFICULT_MEDIUM'),
             'difficult' => $lang->def('_DIFFICULT_DIFFICULT'),
-            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT')
+            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'),
         ];
 
         $query_course = '
@@ -427,7 +427,7 @@ if (!Docebo::user()->isAnonymous()) {
 		name = '" . $_POST['course_name'] . "', 
 		description = '" . $_POST['course_descr'] . "', 
 		lang_code = '" . $array_lang[$_POST['course_lang']] . "', 
-		status = '" . (int)$_POST['course_status'] . "', 
+		status = '" . (int) $_POST['course_status'] . "', 
 		level_show_user = '" . $show_level . "', 
 		mediumTime = '" . $_POST['course_medium_time'] . "',
 		permCloseLO = '" . $_POST['course_em'] . "', 
@@ -436,7 +436,7 @@ if (!Docebo::user()->isAnonymous()) {
 		show_progress = '" . (isset($_POST['course_progress']) ? 1 : 0) . "', 
 		show_time = '" . (isset($_POST['course_time']) ? 1 : 0) . "', 
 		show_extra_info = '" . (isset($_POST['course_advanced']) ? 1 : 0) . "', 
-		show_rules = '" . (int)$_POST['course_show_rules'] . "' 
+		show_rules = '" . (int) $_POST['course_show_rules'] . "' 
 	WHERE idCourse = '" . $session->get('idCourse') . "'";
         if (!sql_query($query_course)) {
             $re = false;
@@ -451,11 +451,11 @@ if (!Docebo::user()->isAnonymous()) {
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
         $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => FormaLms\lib\Get::site_url(),
             '[course_code]' => $_POST['course_code'],
-            '[course]' => $_POST['course_name'],]);
+            '[course]' => $_POST['course_name'], ]);
 
         $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
             '[course_code]' => $_POST['course_code'],
-            '[course]' => $_POST['course_name'],]);
+            '[course]' => $_POST['course_name'], ]);
 
         require_once _lms_ . '/lib/lib.course.php';
         $course_man = new Man_Course();
@@ -482,7 +482,7 @@ if (!Docebo::user()->isAnonymous()) {
         list($filename) = sql_fetch_row(sql_query('
 	SELECT path 
 	FROM ' . $GLOBALS['prefix_lms'] . "_course_file 
-	WHERE id_course='" . $session->get('idCourse') . "' AND id_file = '" . (int)$_GET['id'] . "'"));
+	WHERE id_course='" . $session->get('idCourse') . "' AND id_file = '" . (int) $_GET['id'] . "'"));
         if (!$filename) {
             $GLOBALS['page']->add(getErrorUi('Sorry, such file does not exist!'), 'content');
 
@@ -562,7 +562,7 @@ if (!Docebo::user()->isAnonymous()) {
         }
         $insert_query = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_course_file 
-	SET id_course = '" . (int)$session->get('idCourse') . "', 
+	SET id_course = '" . (int) $session->get('idCourse') . "', 
 		title = '" . $_POST['title'] . "', 
 		path = '$savefile'";
 
@@ -627,7 +627,7 @@ if (!Docebo::user()->isAnonymous()) {
             list($old_file) = sql_fetch_row(sql_query('
 		SELECT path 
 		FROM ' . $GLOBALS['prefix_lms'] . "_course_file 
-		WHERE id_course='" . $session->get('idCourse') . "' AND id_file='" . (int)$_POST['id_file'] . "'"));
+		WHERE id_course='" . $session->get('idCourse') . "' AND id_file='" . (int) $_POST['id_file'] . "'"));
 
             $GLOBALS['course_descriptor']->subFileToUsedSpace(_files_ . _PATH_COURSE . $old_file);
 
@@ -656,12 +656,12 @@ if (!Docebo::user()->isAnonymous()) {
             }
         }
 
-        $insertQuery = "UPDATE %lms_course_file SET id_course = '" . (int)$session->get('idCourse') . "', 
+        $insertQuery = "UPDATE %lms_course_file SET id_course = '" . (int) $session->get('idCourse') . "', 
 		title = '" . $_POST['title'] . "'";
         if ($savefile != '') {
             $insertQuery .= ", path = '" . $savefile . "'";
         }
-        $insertQuery .= " WHERE id_file = '" . (int)$_POST['id_file'] . "'";
+        $insertQuery .= " WHERE id_file = '" . (int) $_POST['id_file'] . "'";
 
         if (!sql_query($insertQuery)) {
             $GLOBALS['page']->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
@@ -684,7 +684,7 @@ if (!Docebo::user()->isAnonymous()) {
             list($old_file) = sql_fetch_row(sql_query('
 		SELECT path 
 		FROM ' . $GLOBALS['prefix_lms'] . "_course_file 
-		WHERE id_course='" . $session->get('idCourse') . "' AND id_file='" . (int)$_GET['id_file'] . "'"));
+		WHERE id_course='" . $session->get('idCourse') . "' AND id_file='" . (int) $_GET['id_file'] . "'"));
 
             $size = FormaLms\lib\Get::file_size(_files_ . _PATH_COURSE . $old_file);
             if (!sl_unlink(_PATH_COURSE . $old_file)) {
@@ -696,7 +696,7 @@ if (!Docebo::user()->isAnonymous()) {
 
             if (!sql_query('
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_course_file 
-		WHERE id_course = '" . (int)$session->get('idCourse') . "' AND id_file = '" . (int)$_GET['id_file'] . "'")) {
+		WHERE id_course = '" . (int) $session->get('idCourse') . "' AND id_file = '" . (int) $_GET['id_file'] . "'")) {
                 $GLOBALS['page']->add(getErrorUi($lang->def('_OPERATION_FAILURE')));
 
                 return;
@@ -707,7 +707,7 @@ if (!Docebo::user()->isAnonymous()) {
             list($title, $file) = sql_fetch_row(sql_query('
 		SELECT title, path 
 		FROM ' . $GLOBALS['prefix_lms'] . "_course_file 
-		WHERE id_course = '" . (int)$session->get('idCourse') . "' AND id_file = '" . (int)$_GET['id_file'] . "'"));
+		WHERE id_course = '" . (int) $session->get('idCourse') . "' AND id_file = '" . (int) $_GET['id_file'] . "'"));
 
             //request erase confirm
             $GLOBALS['page']->add(
@@ -717,7 +717,7 @@ if (!Docebo::user()->isAnonymous()) {
                 . getDeleteUi($lang->def('_AREYOUSURE'),
                     '<img src="' . getPathImage('fw') . mimeDetect($file) . '" alt="mime-type" /> ' . $title,
                     true,
-                    'index.php?modname=course&amp;op=remfiles&amp;id_file=' . (int)$_GET['id_file'] . '&amp;confirm=1',
+                    'index.php?modname=course&amp;op=remfiles&amp;id_file=' . (int) $_GET['id_file'] . '&amp;confirm=1',
                     'index.php?r=lms/course/infocourse'
                 )
                 . '</div>', 'content');
@@ -736,7 +736,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $GLOBALS['page']->add(
             getTitleArea(['index.php?r=lms/course/infocourse' => $lang->def('_INFO') . ': ' . $GLOBALS['course_descriptor']->getValue('name'),
-                $profile->resolveUsername(),], 'infocourse')
+                $profile->resolveUsername(), ], 'infocourse')
             . '<div class="std_block">'
             . $profile->performAction()
             . getBackUi('index.php?r=lms/course/infocourse', $lang->def('_BACK'))
@@ -756,41 +756,41 @@ if (!Docebo::user()->isAnonymous()) {
             case 'modinfocourse':
             case 'reminfocourse':
             case 'infocourse':
-                infocourse();;
+                infocourse();
                 break;
 
             case 'viewprofile':
-                viewprofile();;
+                viewprofile();
                 break;
 
             case 'downloadcourse':
-                downloadcourse();;
+                downloadcourse();
                 break;
 
             case 'modcourseinfo':
-                modcourseinfo();;
+                modcourseinfo();
                 break;
 
             case 'upcourseinfo':
-                upcourseinfo();;
+                upcourseinfo();
                 break;
 
             case 'addfiles':
-                addfiles();;
+                addfiles();
                 break;
             case 'insfiles':
-                insfiles();;
+                insfiles();
                 break;
 
             case 'modfiles':
-                modfiles();;
+                modfiles();
                 break;
             case 'upfiles':
-                upfiles();;
+                upfiles();
                 break;
 
             case 'remfiles':
-                remfiles();;
+                remfiles();
                 break;
         }
     }

@@ -288,7 +288,6 @@ class Module_Pubrepo extends LmsModule
             case 'display' :
             case 'pubrepo' :
             default:
-         
                 pubrepo($this->treeView);
             break;
         }

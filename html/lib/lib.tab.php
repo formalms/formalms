@@ -246,8 +246,7 @@ class TabView
      **/
     public function parseInput(&$data, $extra_data)
     {
-
-        if($extra_data instanceof \Symfony\Component\HttpFoundation\Session\Session) {
+        if ($extra_data instanceof \Symfony\Component\HttpFoundation\Session\Session) {
             $extra_data = iterator_to_array($extra_data->getIterator());
         }
         // $extra_data are ingored in this context

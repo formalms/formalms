@@ -87,7 +87,7 @@ class DbConn
                     if ($conn) {
                         self::$connected = true;
                     }
-                ; break;
+                 break;
             }
         }
 

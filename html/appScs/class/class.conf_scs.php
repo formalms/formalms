@@ -97,28 +97,28 @@ class Config_Scs extends Config
                                             'server',
                                             ($values[$var_name] == 'server'))
                             . Form::getCloseCombo();
-                ; break;
+                 break;
                 case 'varchar(255)':
                     $html .= Form::getTextfield($lang->def('_' . strtoupper($var_name)),
                                             'option_' . $var_name . '',
                                             'option[' . $var_name . ']',
                                             255,
                                             $values[$var_name]);
-                ; break;
+                 break;
                 case 'int(5) unsigned':
                     $html .= Form::getTextfield($lang->def('_' . strtoupper($var_name)),
                                             'option_' . $var_name . '',
                                             'option[' . $var_name . ']',
                                             5,
                                             $values[$var_name]);
-                ; break;
+                 break;
                 case 'int(11) unsigned':
                     $html .= Form::getTextfield($lang->def('_' . strtoupper($var_name)),
                                             'option_' . $var_name . '',
                                             'option[' . $var_name . ']',
                                             11,
                                             $values[$var_name]);
-                ; break;
+                 break;
                 case "enum('yes','no')":
                     $html .= Form::getOpenCombo($lang->def('_' . strtoupper($var_name)))
                             . Form::getRadio($lang->def('_YES'), $var_name . '_yes', 'option[' . $var_name . ']', 'yes',
@@ -126,7 +126,7 @@ class Config_Scs extends Config
                             . Form::getRadio($lang->def('_NO'), $var_name . '_no', 'option[' . $var_name . ']', 'no',
                                 ($values[$var_name] == 'no'))
                             . Form::getCloseCombo();
-                ; break;
+                 break;
             }
         }
 
@@ -164,7 +164,7 @@ class Config_Scs extends Config
                                                 'option[' . $var_name . ']',
                                                 $templ,
                                                 array_search($var_value, $templ));
-                ; break;
+                 break;
                 case 'enum':
                     //on off
                     $html .= Form::openFormLine()
@@ -174,12 +174,12 @@ class Config_Scs extends Config
                                             'on',
                                             ($var_value == 'on'), '')
                             . Form::closeFormLine();
-                ; break;
+                 break;
                 case 'check':
                     //on off
 
                     $html .= Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name, 'option[' . $var_name . ']', 1, ($var_value == 1));
-                ; break;
+                 break;
                 //string or int
                 default:
                     $html .= Form::getTextfield($lang->def('_' . strtoupper($var_name)),
@@ -230,10 +230,10 @@ class Config_Scs extends Config
                 case 'template':
                     $templ = getTemplateList();
                     $new_value = $templ[$_POST['option'][$var_name]];
-                ; break;
+                 break;
                 case 'int':
                     $new_value = (int) $_POST['option'][$var_name];
-                ; break;
+                 break;
                 //if is enum switch value to on or off
                 case 'enum':
                     if (isset($_POST['option'][$var_name])) {
@@ -241,14 +241,14 @@ class Config_Scs extends Config
                     } else {
                         $new_value = 'off';
                     }
-                ; break;
+                 break;
                 case 'check':
                     if (isset($_POST['option'][$var_name]) && $_POST['option'][$var_name] == 1) {
                         $new_value = 1;
                     } else {
                         $new_value = 0;
                     }
-                ; break;
+                 break;
                 //else simple assignament
                 default:
                     $new_value = $_POST['option'][$var_name];

@@ -55,7 +55,7 @@ class DateManager
 
         $res = 0;
 
-        foreach ($result as $row){
+        foreach ($result as $row) {
             if (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all) {
                 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
                 if ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter')) && $session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
@@ -93,7 +93,7 @@ class DateManager
 
         $res = 0;
 
-        foreach ($result as $row){
+        foreach ($result as $row) {
             $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
             if ($session->has('date_begin_filter') && !empty($session->get('date_begin_filter')) && $session->has('date_end_filter') && !empty($session->get('date_end_filter'))) {
                 if (strcmp(Format::dateDb($session->get('date_begin_filter')), $row['date_begin']) <= 0 && strcmp(Format::dateDb($session->get('date_end_filter')), $row['date_end']) >= 0) {
@@ -327,7 +327,7 @@ class DateManager
 
         $result = sql_query($query);
 
-        foreach ($result as $row){
+        foreach ($result as $row) {
             if (strcmp($row['date_begin'], date('Y-m-d H:i:s')) > 0 || $all) {
                 $row['classroom'] = $this->getDateClassrooms($row['id_date']);
 
@@ -1610,7 +1610,7 @@ class DateManager
         return $courseEditionData;
     }
 
-    public function getCourseEditionSubscription($id_course, $id_date, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false,$adminFilter = true)
+    public function getCourseEditionSubscription($id_course, $id_date, $start_index = false, $results = false, $sort = false, $dir = false, $filter = false, $adminFilter = true)
     {
         $query = 'SELECT u.idst, u.userid, u.firstname, u.lastname, s.level, s.status, s.date_complete, s.date_begin_validity, s.date_expire_validity '
             . ' FROM %lms_courseuser  AS s'

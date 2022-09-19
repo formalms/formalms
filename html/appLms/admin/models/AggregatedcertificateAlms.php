@@ -62,7 +62,7 @@ class AggregatedcertificateAlms extends Model
 
     public function getCoursesFromIdMeta($id_meta)
     {
-       //Take courses for the meta certificate
+        //Take courses for the meta certificate
         $query = 'SELECT DISTINCT idCourse'
                 . ' FROM %lms_certificate_meta_course'
                 . " WHERE idMetaCertificate = '" . $id_meta . "'";

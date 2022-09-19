@@ -55,7 +55,6 @@ class CommunicationLmsController extends LmsController
 
     public function showTask()
     {
-      
         if (!$this->info['history'] && !$this->info['unread']) {
             $this->render('emptycommunication', []);
 
@@ -144,7 +143,7 @@ class CommunicationLmsController extends LmsController
         $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
             'viewer' => Docebo::user()->getArrSt(),
         ]);
-  
+
         foreach ($communications as $id => $comm) {
             //$communications[$id]['publish_date'] = Format::dateDistance($comm['publish_date']);
             switch ($comm['type_of']) {
@@ -217,13 +216,12 @@ class CommunicationLmsController extends LmsController
         if ($comm !== false) {
             switch ($comm['type_of']) {
                 case 'none' :
-
-                    if($unread) {
+                    if ($unread) {
                         $model->markAsUnread($id_comm, Docebo::user()->getId());
                     } else {
                         $model->markAsRead($id_comm, Docebo::user()->getId());
                     }
-                    
+
                     break;
                 case 'file' :
                     $lo = createLO('item', $comm['id_resource'], 'communication');

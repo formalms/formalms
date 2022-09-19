@@ -28,7 +28,7 @@
                 // the tab are open in the content filder, now i can put my contents here easily
                 $columns = [
                     ['key' => 'title', 'label' => Lang::t('_TITLE', 'communication'), 'sortable' => true],
-                    ['key' => 'courseName', 'label' =>  Lang::t('_COURSE', 'course'), 'sortable' => true],
+                    ['key' => 'courseName', 'label' => Lang::t('_COURSE', 'course'), 'sortable' => true],
                     ['key' => 'categoryTitle', 'label' => Lang::t('_CATEGORY', 'communication'), 'sortable' => true],
                     ['key' => 'play', 'label' => Lang::t('_PLAY', 'standard')],
                 ];

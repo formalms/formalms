@@ -34,18 +34,18 @@ switch ($op) {
 
         $cloud = $tags->getPlatformTagCloud();
         aout($cloud);
-    ; break;
+     break;
     case 'get_course_cloud':
         $tags = new Tags('*');
         $cloud = $tags->getCourseTagCloud();
         aout($cloud);
-    ; break;
+     break;
     case 'get_user_cloud':
         $tags = new Tags('*');
 
         $cloud = $tags->getUserTagCloud(getLogUserId());
         aout($cloud);
-    ; break;
+     break;
     case 'save_tag':
         $compiled_tags = FormaLms\lib\Get::req('tags', DOTY_STRING, '');
         $id_resource = FormaLms\lib\Get::req('id_resource', DOTY_INT, '');
@@ -72,7 +72,7 @@ switch ($op) {
         $updated_tags = $tags->updateTagResource($id_resource, getLogUserId(), $compiled_tags, $title, $sample, $permalink, $private);
 
         aout($updated_tags);
-    ; break;
+     break;
     default:
         $query = FormaLms\lib\Get::req('query', DOTY_STRING, '');
 
@@ -82,5 +82,5 @@ switch ($op) {
         $output = implode("\n", $suggestion);
 
         aout($output);
-    ; break;
+     break;
 }

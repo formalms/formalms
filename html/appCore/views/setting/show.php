@@ -13,7 +13,7 @@
 		</ul>
 		<div class="tab-content"><?php
       foreach ($regroup as $id => $canonical_name) {
-                // print the tab content
+          // print the tab content
           echo '<div class="tab-pane' . ($id == $active_tab ? ' active' : '') . '" id="tab_g_' . $id . '">'
                     . '<h2>' . Lang::t('_' . strtoupper($canonical_name), 'configuration') . '</h2>'
 
@@ -23,7 +23,7 @@
           switch ($id) {
                     case SMS_GROUP :
                         $this->render('sms_group', []);
-                    ;
+
                     // no break
                     default: echo '<br />';
                 }

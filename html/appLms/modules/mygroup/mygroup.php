@@ -231,10 +231,10 @@ if (!Docebo::user()->isAnonymous()) {
         switch ($op) {
         case 'group':
             group();
-        ; break;
+         break;
         case 'savesel':
             savesel();
-        ; break;
+         break;
     }
     }
 }

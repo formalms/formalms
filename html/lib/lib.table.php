@@ -198,7 +198,7 @@ class TableRow
         switch ($this->row_type) {
             case 'header':
                 $cell_type = 'header';
-            ; break;
+             break;
             case 'expanded':
             default:
                 $cell_type = 'normal';

@@ -1,4 +1,5 @@
 <?php
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -11,7 +12,8 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-use \FormaLms\lib\Encryption\SSLEncryption;
+use FormaLms\lib\Encryption\SSLEncryption;
+
 require_once _base_ . '/api/lib/lib.api.php';
 
 class User_API extends API
@@ -1195,16 +1197,16 @@ class User_API extends API
 
     public function downloadCertificate()
     {
-        $downloadString = end(explode('/',$this->request->get('q')));
+        $downloadString = end(explode('/', $this->request->get('q')));
         $fileName = SSLEncryption::decryptDownloadUrl($downloadString);
-        $baseUrl = $_SERVER["DOCUMENT_ROOT"] . '/files/appLms/certificate/';
+        $baseUrl = $_SERVER['DOCUMENT_ROOT'] . '/files/appLms/certificate/';
         $fileUrl = $baseUrl . $fileName;
-     
+
         header('Content-Type: application/octet-stream');
-        header("Content-Transfer-Encoding: Binary"); 
-        header("Content-disposition: attachment; filename=\"" . $fileName. "\""); 
+        header('Content-Transfer-Encoding: Binary');
+        header('Content-disposition: attachment; filename="' . $fileName . '"');
         readfile($fileUrl);
-        exit();// end process to prevent any problems.
+        exit(); // end process to prevent any problems.
     }
 
     // ---------------------------------------------------------------------------
@@ -1212,8 +1214,6 @@ class User_API extends API
     public function call($name, $params)
     {
         $output = false;
-
-        
 
         if (!empty($params[0]) && !isset($params['idst'])) {
             $params['idst'] = $params[0]; //params[0] should contain user idst

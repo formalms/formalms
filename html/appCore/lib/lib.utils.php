@@ -200,12 +200,12 @@ class Util
 
         if (!$session->has('mdsign')) {
             $uuid = \Symfony\Component\Uid\Uuid::v4()->toRfc4122();
-            $session->set('mdsign',$uuid);
-            $session->set('mdsign_timestamp',time());
+            $session->set('mdsign', $uuid);
+            $session->set('mdsign_timestamp', time());
             $session->save();
+
             return $uuid;
-        }
-        else {
+        } else {
             $session->get('mdsign');
         }
     }
@@ -293,7 +293,7 @@ class Util
                 //if is int cast it
                 case 'int':
                     $GLOBALS[$into_globals][$var_name] = (int) $var_value;
-                ; break;
+                 break;
                 //if is enum switch value to on or off
                 case 'enum':
                     if ($var_value == 'on') {
@@ -301,7 +301,7 @@ class Util
                     } else {
                         $GLOBALS[$into_globals][$var_name] = 'off';
                     }
-                ; break;
+                 break;
                 //else simple assignament
                 default:
                     $GLOBALS[$into_globals][$var_name] = $var_value;

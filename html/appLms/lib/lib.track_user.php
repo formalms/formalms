@@ -35,7 +35,7 @@ class TrackUser
         $session->set('lastCourseAccess', $last_course_access);
         $session->save();
 
-        sql_query('UPDATE %lms_tracksession SET active = 0 WHERE idUser = ' . (int)getLogUserId() . ' and active = 1');
+        sql_query('UPDATE %lms_tracksession SET active = 0 WHERE idUser = ' . (int) getLogUserId() . ' and active = 1');
 
         sql_query("INSERT INTO %lms_tracksession 
 		( idCourse, idUser, session_id, enterTime, lastTime, ip_address, active ) VALUES ( 
@@ -164,7 +164,7 @@ class TrackUser
 
     /**
      * @param int $id_course id of thecourse
-     * @param int $gep_time minute of last action
+     * @param int $gep_time  minute of last action
      *
      * @return int the number of user in the course in the gap of time (logged included)
      */

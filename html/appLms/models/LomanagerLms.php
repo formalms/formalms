@@ -114,7 +114,7 @@ class LomanagerLms extends Model
     public function setCurrentTab($tab)
     {
         $storage = ['tabview_storage_status' => $tab];
-        $this->session->set('storage',$storage);
+        $this->session->set('storage', $storage);
         $this->session->save();
 
         return serialize($storage);

@@ -51,7 +51,7 @@ class DashboardsettingsAdm extends Model
             $layoutObj->setStatus($layout['status']);
             $layoutObj->setDefault($layout['default']);
 
-            $permissionList = unserialize($layout['idst_list'],['allowed_classes'=> ['array']]);
+            $permissionList = unserialize($layout['idst_list'], ['allowed_classes' => ['array']]);
             if (is_array($permissionList)) {
                 $layoutObj->setPermissionList($permissionList);
             }
@@ -96,7 +96,7 @@ class DashboardsettingsAdm extends Model
 
         $result = $this->db->query($query_blocks);
 
-        foreach ($result as $block){
+        foreach ($result as $block) {
             if (file_exists(Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']($block['block_config']);

@@ -1163,69 +1163,69 @@ function manmenuDispatch($op)
         //main custom voice
         case 'mancustom':
             mancustom();
-        ; break;
+         break;
         case 'addcustom':
             editcustom();
-        ; break;
+         break;
         case 'modcustom':
             editcustom(true);
-        ; break;
+         break;
         case 'savecustom':
             savecustom();
-        ; break;
+         break;
         case 'delcustom':
             delcustom();
-        ; break;
+         break;
 
         //main menu
         case 'manmenu':
             manmenu();
-        ; break;
+         break;
         case 'addmenuvoice':
             editmenuvoice();
-        ; break;
+         break;
         case 'modmenuvoice':
             editmenuvoice(true);
-        ; break;
+         break;
         case 'savemenuvoice':
             savemenuvoice();
-        ; break;
+         break;
         case 'delmenuvoice':
             delmenuvoice();
-        ; break;
+         break;
         case 'mdmenuvoice':
             movemenuvoice('down');
-        ; break;
+         break;
         case 'mumenuvoice':
             movemenuvoice('up');
-        ; break;
+         break;
         case 'fixmenuvoice':
             fixmenuvoice();
-        ; break;
+         break;
 
         case 'manmodule':
             manmodule();
-        ; break;
+         break;
         case 'addmodule':
             editmodule();
-        ; break;
+         break;
         case 'modmodule':
             editmodule(true);
-        ; break;
+         break;
         case 'upmodule':
             upmodule();
-        ; break;
+         break;
         case 'delmodule':
             delmodule();
-        ; break;
+         break;
         case 'mdmodule':
             movemodule('down');
-        ; break;
+         break;
         case 'mumodule':
             movemodule('up');
-        ; break;
+         break;
         case 'fixmodule':
             fixmodule();
-        ; break;
+         break;
     }
 }

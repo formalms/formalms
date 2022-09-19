@@ -207,24 +207,24 @@ if (!Docebo::user()->isAnonymous()) {
         switch ($op) {
         case 'room':
             listroom();
-        ; break;
+         break;
         case 'newroom':
             newroom();
-        ; break;
+         break;
         case 'insroom':
             insroom();
-        ; break;
+         break;
 
         case 'modroom':
             modroom();
-        ; break;
+         break;
         case 'updroom':
             updroom();
-        ; break;
+         break;
 
         case 'delroom':
             delroom();
-        ; break;
+         break;
     }
     }
 }

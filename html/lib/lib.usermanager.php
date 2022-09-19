@@ -69,8 +69,8 @@ class UserManager
      * the class that it use.
      *
      * @param string $platform specified a different platform for localization
-     * @param string $prefix specified a prefix
-     * @param string $db_conn specified a db connection with the database
+     * @param string $prefix   specified a prefix
+     * @param string $db_conn  specified a db connection with the database
      */
     public function __construct($platform = false, $prefix = false, $db_conn = false)
     {
@@ -99,7 +99,7 @@ class UserManager
     /**
      * simply execute a query.
      *
-     * @param string $query the query
+     * @param string $query  the query
      * @param string $prefix specified a prefix
      * @param mixed     the result of sql_query
      */
@@ -179,7 +179,6 @@ class UserManager
         $userAttemptNumber = $this->session->get('user_attempt_number', 0);
         if ($userAttemptNumber === 0) {
             $userAttemptNumber = 1;
-
         } else {
             ++$userAttemptNumber;
         }
@@ -232,7 +231,7 @@ class UserManager
     }
 
     /**
-     * @param string $what enum('link', 'button')
+     * @param string $what       enum('link', 'button')
      * @param string $info_about set the link ref for the link typre or the button name
      */
     public function setRegisterTo($what, $info_about)
@@ -249,7 +248,7 @@ class UserManager
     }
 
     /**
-     * @param string $what enum('link', 'button')
+     * @param string $what       enum('link', 'button')
      * @param string $info_about set the link ref for the link typre or the button name
      */
     public function setLostpwdTo($what, $info_about)
@@ -282,7 +281,7 @@ class UserManager
      * return information about the login attempt for the user.
      *
      * @param string $jump_url an url for jump
-     * @param string $extra extra information to display in the field
+     * @param string $extra    extra information to display in the field
      *
      * @return bool return TRUE if the user as try to loggin
      *              return FALSE if the user dont'try to login
@@ -306,7 +305,7 @@ class UserManager
                 $actual_attempt = $this->getAttemptNumber();
                 if ($actual_attempt > $max_log_attempt) {
                     if (($last_attempt + $this->_time_before_reactive) > time()) {
-                        $wait_for = (int)((($last_attempt + $this->_time_before_reactive) - time()) / 60);
+                        $wait_for = (int) ((($last_attempt + $this->_time_before_reactive) - time()) / 60);
                         if ($wait_for < 1) {
                             $wait_for = ' < 1';
                         }
@@ -424,8 +423,8 @@ class UserManager
 
     /**
      * @param string $platform specified a different platform for localization
-     * @param string $prefix specified a prefix
-     * @param string $db_conn specified a db connection with the database
+     * @param string $prefix   specified a prefix
+     * @param string $db_conn  specified a db connection with the database
      *
      * @return array array(group_id => group_name) with the regroup unit
      */
@@ -913,7 +912,7 @@ class UserManager
                     $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
-                        . ' WHERE id_common_son = ' . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
                         . " AND lang_code = '" . getLanguage() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
@@ -1136,7 +1135,7 @@ class UserManagerRenderer
     }
 
     /**
-     * @param string $what enum('link', 'button')
+     * @param string $what       enum('link', 'button')
      * @param string $info_about set the link ref for the link type or the button name
      */
     public function setRegisterTo($what, $info_about)
@@ -1165,7 +1164,7 @@ class UserManagerRenderer
     }
 
     /**
-     * @param string $what enum('link', 'button')
+     * @param string $what       enum('link', 'button')
      * @param string $info_about set the link ref for the link type or the button name
      */
     public function setLostpwdTo($what, $info_about)
@@ -1212,10 +1211,10 @@ class UserManagerRenderer
      *    |-----------------------------------------------|
      *
      * @param string $platform the platoform of which you want the login
-     * @param string $advice the text of an advice to dispaly
-     * @param string $extra wathever you want to display
-     * @param bool $disable disable the field
-     * @param bool $jump_url the url for the link
+     * @param string $advice   the text of an advice to dispaly
+     * @param string $extra    wathever you want to display
+     * @param bool   $disable  disable the field
+     * @param bool   $jump_url the url for the link
      *
      * @return string the html code for the login mask
      */
@@ -1385,7 +1384,7 @@ class UserManagerRenderer
      * This function must be called into a open form and it will execute the entire registration process for a user.
      *
      * @param string $platform the platform
-     * @param array $options (register_type, use_advanced_form, pass_alfanumeric,
+     * @param array  $options  (register_type, use_advanced_form, pass_alfanumeric,
      *                         pass_min_char, hour_request_limit, privacy_policy, mail_sender)
      * @param string $opt_link the link used as the base of the confirmation link in the confirm mail
      *
@@ -1477,7 +1476,7 @@ class UserManagerRenderer
     /**
      * getCodeCourses.
      *
-     * @param int $reg_code
+     * @param int  $reg_code
      * @param bool $byName
      *
      * @return array
@@ -1513,11 +1512,11 @@ class UserManagerRenderer
     /**
      * processRegistrationCode.
      *
-     * @param AclManager $acl_man
+     * @param AclManager       $acl_man
      * @param UserManagerAdmin $uma
-     * @param int $iduser
-     * @param string $reg_code
-     * @param string $registration_code_type
+     * @param int              $iduser
+     * @param string           $reg_code
+     * @param string           $registration_code_type
      *
      * @return array 'success'=>boolean, 'msg'=>string
      */
@@ -1620,7 +1619,7 @@ class UserManagerRenderer
                     $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
-                        . ' WHERE id_common_son = ' . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
                         . " AND lang_code = '" . getLanguage() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
@@ -1717,7 +1716,7 @@ class UserManagerRenderer
                 $acl_man->addToGroup($idst, $iduser);
                 // FORMA: added the inscription policy
                 $enrollrules = new EnrollrulesAlms();
-                $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', [(string)$iduser], false, (int)$idst, true);
+                $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', [(string) $iduser], false, (int) $idst, true);
                 // END FORMA
             }
         }
@@ -1877,7 +1876,7 @@ class UserManagerRenderer
                     $id_common_filed_2 = $field_man->getFieldIdCommonFromTranslation('Codice Concessionario');
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
-                        . ' WHERE id_common_son = ' . (int)$_POST['field_dropdown'][$id_common_filed_1]
+                        . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
                         . " AND lang_code = '" . getLanguage() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
@@ -2173,7 +2172,6 @@ class UserManagerRenderer
                     'placeholder="' . $lang->def('_CODE') . ($code_is_mandatory ? ' ' . $mand_symbol : '') . '"'
                 );
 
-
                 if ($error) {
                     $out .= '<small class="form-text">* ' . $errorMessage . '</small>
                 </div>';
@@ -2194,11 +2192,10 @@ class UserManagerRenderer
                     $cssClass .= ' has-error';
                 }
 
-
                 $out .= '<div class="homepage__row homepage__row--form homepage__row--gray row-fluid">
                             <div class="col-xs-12 col-sm-6">'
                     . Form::getInputDropdown(
-                        $cssClass ,
+                        $cssClass,
                         'reg_code',
                         'reg_code',
                         $tree_names,
@@ -2206,7 +2203,6 @@ class UserManagerRenderer
                         '',
                         true
                     );
-
 
                 if ($error) {
                     $out .= '<small class="form-text">* ' . $errorMessage . '</small>
@@ -2314,9 +2310,9 @@ class UserManagerRenderer
 
         $request = $acl_man->getTempUserInfo(false, $random_code);
 
-        if (time() > (fromDatetimeToTimestamp($request['request_on']) + (3600 * (int)$options['hour_request_limit']))) {
+        if (time() > (fromDatetimeToTimestamp($request['request_on']) + (3600 * (int) $options['hour_request_limit']))) {
             $out = '<div class="reg_err_data">' . $lang->def('_REG_ELAPSEDREQUEST', 'register') . '</div>';
-            $time_limit = time() - 3600 * ((int)$options['hour_request_limit']);
+            $time_limit = time() - 3600 * ((int) $options['hour_request_limit']);
 
             if (FormaLms\lib\Get::sett('registration_code_type', '0') == 'code_module') {
                 // free the code from the old association
@@ -2490,7 +2486,7 @@ class UserManagerRenderer
     /**
      * Control the contents of the field.
      *
-     * @param array $source the values to check
+     * @param array $source  the values to check
      * @param array $options the values needed for control
      *
      * @return array ( [error]  => true o false , [msg] => error message)
@@ -2640,12 +2636,12 @@ class UserManagerRenderer
         }
 
         if ($control_extra_field) {
-            $selectedGroups = \FormaLms\lib\Get::pReq('group_sel_implode',DOTY_STRING,'');
-            if (empty($selectedGroups)){
-                $selectedGroups = explode(',',$selectedGroups);
+            $selectedGroups = \FormaLms\lib\Get::pReq('group_sel_implode', DOTY_STRING, '');
+            if (empty($selectedGroups)) {
+                $selectedGroups = explode(',', $selectedGroups);
             }
-            if (empty($selectedGroups)){
-                $selectedGroups = \FormaLms\lib\Get::pReq('group_sel',DOTY_MIXED,[]);
+            if (empty($selectedGroups)) {
+                $selectedGroups = \FormaLms\lib\Get::pReq('group_sel', DOTY_MIXED, []);
             }
 
             if ($options['use_advanced_form'] == 'on' || FormaLms\lib\Get::sett('register_with_code') == 'on') {
@@ -2900,7 +2896,7 @@ class UserManagerRenderer
             }
             $re_pwd = sql_query('SELECT passw '
                 . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
-                . ' WHERE idst_user = ' . (int)$idst . ''
+                . ' WHERE idst_user = ' . (int) $idst . ''
                 . ' ORDER BY pwd_date DESC');
 
             list($pwd_history) = sql_fetch_row($re_pwd);
@@ -2980,7 +2976,7 @@ class UserManagerOption
             switch ($value_type) {
                 //if is int cast it
                 case 'int':
-                    $this->_options[$var_name] = (int)$var_value;
+                    $this->_options[$var_name] = (int) $var_value;
 
                     break;
                 //if is enum switch value to on or off
@@ -3031,8 +3027,8 @@ class UserManagerOption
 
     /**
      * @param string $platform specified a different platform for localization
-     * @param string $prefix specified a prefix
-     * @param string $db_conn specified a db connection with the database
+     * @param string $prefix   specified a prefix
+     * @param string $db_conn  specified a db connection with the database
      *
      * @return array array(group_id => group_name) with the regroup unit
      */
@@ -3242,7 +3238,7 @@ class UserManagerOption
         while (list($var_name, $value_type) = sql_fetch_row($reSetting)) {
             switch ($value_type) {
                 case 'int':
-                    $new_value = (int)$_POST['option'][$var_name];
+                    $new_value = (int) $_POST['option'][$var_name];
 
                     break;
                 //if is enum switch value to on or off

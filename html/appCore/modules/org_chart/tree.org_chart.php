@@ -705,7 +705,7 @@ class TreeView_OrgView extends TreeView
 
     public function saveState()
     {
-        $this->session->set('org_chart_state',$this->getState());
+        $this->session->set('org_chart_state', $this->getState());
         $this->session->save();
     }
 
@@ -1992,8 +1992,7 @@ class TreeView_OrgView extends TreeView
 
         // ----------- file upload -----------------------------------------
         if ($_FILES['file_import']['name'] == '') {
-
-            $this->session->getFlashBag()->add('error',Lang::t('_FILEUNSPECIFIED'));
+            $this->session->getFlashBag()->add('error', Lang::t('_FILEUNSPECIFIED'));
             Util::jump_to($back_url . '&import_result=-1');
         } else {
             $path = '/appCore/';
@@ -2003,12 +2002,12 @@ class TreeView_OrgView extends TreeView
                 if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                     sl_close_fileoperations();
 
-                    $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD'));
+                    $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD'));
                     Util::jump_to($back_url . '&import_result=-1');
                 }
                 sl_close_fileoperations();
             } else {
-                $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD'));
+                $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD'));
 
                 Util::jump_to($back_url . '&create_result=-1');
             }

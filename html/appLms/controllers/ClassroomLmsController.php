@@ -35,17 +35,17 @@ class ClassroomLmsController extends LmsController
                 if (!isset($this->info['classroom'][0])) {
                     return false;
                 }
-            ; break;
+             break;
             case 'inprogress':
                 if (!isset($this->info['classroom'][1])) {
                     return false;
                 }
-            ; break;
+             break;
             case 'completed':
                 if (!isset($this->info['classroom'][2])) {
                     return false;
                 }
-            ; break;
+             break;
         }
 
         return true;
@@ -125,14 +125,14 @@ class ClassroomLmsController extends LmsController
         }
         $tb_label = $ma->currentCanAccessObj('tb_label');
         if (!$tb_label) {
-            $this->session->set('id_common_label',0);
+            $this->session->set('id_common_label', 0);
         } else {
             $id_common_label = FormaLms\lib\Get::req('id_common_label', DOTY_INT, -1);
 
             if ($id_common_label >= 0) {
-                $this->session->set('id_common_label',$id_common_label);
+                $this->session->set('id_common_label', $id_common_label);
             } elseif ($id_common_label == -2) {
-                $this->session->set('id_common_label',-1);
+                $this->session->set('id_common_label', -1);
             }
 
             $block_list['labels'] = true;

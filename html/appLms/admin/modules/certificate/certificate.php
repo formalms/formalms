@@ -28,7 +28,7 @@ function certificate()
 
     $mod_perm = checkPerm('mod', true);
 
-    $currentPlatform = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('current_action_platform','framework');
+    $currentPlatform = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('current_action_platform', 'framework');
     // create a language istance for module admin_certificate
     $lang = &DoceboLanguage::createInstance('certificate', 'lms');
     $out = &$GLOBALS['page'];
@@ -738,7 +738,7 @@ function print_certificate()
     $cert = new Certificate();
 
     $subs = $cert->getSubstitutionArray($id_user, $id_course);
-    $cert->send_certificate($id_certificate, $id_user, $id_course, $subs, false,true);
+    $cert->send_certificate($id_certificate, $id_user, $id_course, $subs, false, true);
 }
 
 function preview()

@@ -93,14 +93,14 @@ class Forma
 
     public static function addError(string $error): string
     {
-        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error',$error);
+        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error', $error);
 
         return $error;
     }
 
     public static function removeErrors(): void
     {
-        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->set('error',[]);
+        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->set('error', []);
     }
 
     public static function errorsExists(): bool

@@ -34,7 +34,7 @@ function &createModule($module_name, $class_name = null)
     $module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!$session->has('current_action_platform')) {
-        $session->set('current_action_platform','framework');
+        $session->set('current_action_platform', 'framework');
         $session->save();
     }
 
@@ -42,15 +42,15 @@ function &createModule($module_name, $class_name = null)
         case 'framework':
             $where = _adm_;
             $def_class_name = 'Module';
-        ; break;
+         break;
         case 'lms':
             $where = _lms_ . '/admin';
             $def_class_name = 'Module';
-        ; break;
+         break;
         case 'scs':
             $where = _scs_ . '/admin';
             $def_class_name = 'Module';
-        ; break;
+         break;
     }
 
     if ($module_name == 'item' || $module_name == 'scorm') {

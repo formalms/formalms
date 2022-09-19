@@ -24,10 +24,10 @@ class CourseLmsController extends LmsController
      */
     public $userProfileDataManager;
 
-    const STUDENTNOTADMITTED = [_CUS_SUBSCRIBED => _USER_STATUS_SUBS,
-                                    _CUS_BEGIN => _USER_STATUS_BEGIN, 
-                                    _CUS_SUSPEND => _USER_STATUS_SUSPEND, 
-                                    _CUS_END => _USER_STATUS_END];
+    public const STUDENTNOTADMITTED = [_CUS_SUBSCRIBED => _USER_STATUS_SUBS,
+                                    _CUS_BEGIN => _USER_STATUS_BEGIN,
+                                    _CUS_SUSPEND => _USER_STATUS_SUSPEND,
+                                    _CUS_END => _USER_STATUS_END, ];
 
     public function init()
     {
@@ -66,7 +66,6 @@ class CourseLmsController extends LmsController
         } catch (\Exception $exception) {
         }
 
-   
         $status_lang = [
             0 => $lang->def('_NOACTIVE'),
             1 => $lang->def('_ACTIVE'),
@@ -140,13 +139,11 @@ class CourseLmsController extends LmsController
             $course['status'] = $status_lang[$course['status']];
             $course['completion_method'] = $course['permCloseLO'] ? $lang->def('_MANUALACTION') : $lang->def('_ENDOBJECT');
 
-        
-           
             $course['cannot_enter'] = [];
-            foreach(self::STUDENTNOTADMITTED as $studentStatus => $langStatus) {
+            foreach (self::STUDENTNOTADMITTED as $studentStatus => $langStatus) {
                 if ($this->statusNoEnter($course['userStatusOp'], $studentStatus)) {
                     $course['cannot_enter'][] = $lang->def($langStatus);
-                }   
+                }
             }
         }
 
@@ -162,10 +159,9 @@ class CourseLmsController extends LmsController
             ],
             'course' => $course,
             'info_date' => $info_date,
-         
         ];
 
-        if($mod_perm) {
+        if ($mod_perm) {
             $data['route']['edit'] = ['url' => 'index.php?r=lms/course/modcourse'];
         }
         $this->render('infocourse', $data);
@@ -175,13 +171,12 @@ class CourseLmsController extends LmsController
     {
         checkPerm('mod');
 
-    
         $data['lang_c'] = &DoceboLanguage::createInstance('course');
         $lang = &DoceboLanguage::createInstance('course');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-       
+
         $data['id_course'] = $session->get('idCourse');
-     
+
         $data['levels'] = CourseLevel::getTranslatedLevels();
         $data['array_lang'] = Docebo::langManager()->getAllLangCode();
         $data['difficult_lang'] = [
@@ -189,30 +184,27 @@ class CourseLmsController extends LmsController
             'easy' => $lang->def('_DIFFICULT_EASY'),
             'medium' => $lang->def('_DIFFICULT_MEDIUM'),
             'difficult' => $lang->def('_DIFFICULT_DIFFICULT'),
-            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT')
+            'verydifficult' => $lang->def('_DIFFICULT_VERYDIFFICULT'),
         ];
 
-        
         $query_course = '
             SELECT code, name, description, lang_code, status, level_show_user, subscribe_method, 
                 linkSponsor, mediumTime, permCloseLO, userStatusOp, difficult, 
                 show_progress, show_time, show_extra_info, show_rules, date_begin, date_end, valid_time 
             FROM %lms_course
-            WHERE idCourse = "' .  $data['id_course'] . '"';
+            WHERE idCourse = "' . $data['id_course'] . '"';
         $data['course'] = sql_fetch_array(sql_query($query_course));
 
-        foreach(self::STUDENTNOTADMITTED as $studentStatus => $langStatus) {
-           $data['cannot_enter_status'][] = ['value' => $this->statusNoEnter( $data['course']['userStatusOp'], $studentStatus), 'lang' => $langStatus ];
+        foreach (self::STUDENTNOTADMITTED as $studentStatus => $langStatus) {
+            $data['cannot_enter_status'][] = ['value' => $this->statusNoEnter($data['course']['userStatusOp'], $studentStatus), 'lang' => $langStatus];
         }
         $this->render('modinfocourse', $data);
-
     }
 
-
-    public function upcourse() {
+    public function upcourse()
+    {
         checkPerm('mod');
 
-     
         $array_lang = Docebo::langManager()->getAllLangCode();
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $user_status = 0;
@@ -236,7 +228,7 @@ class CourseLmsController extends LmsController
                         name = "' . $this->request->get('course_name') . '", 
                         description = "' . $this->request->get('course_descr') . '", 
                         lang_code = "' . $array_lang[$this->request->get('course_lang')] . '", 
-                        status = "' . (int)$this->request->get('course_status') . '", 
+                        status = "' . (int) $this->request->get('course_status') . '", 
                         level_show_user = "' . $show_level . '", 
                         mediumTime = "' . $this->request->get('course_medium_time') . '",
                         permCloseLO = "' . $this->request->get('course_em') . '", 
@@ -259,12 +251,12 @@ class CourseLmsController extends LmsController
 
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
         $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => FormaLms\lib\Get::site_url(),
-            '[course_code]' => $this->request->get('course_code') ,
-            '[course]' => $this->request->get('course_name') ,]);
+            '[course_code]' => $this->request->get('course_code'),
+            '[course]' => $this->request->get('course_name'), ]);
 
         $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
-            '[course_code]' => $this->request->get('course_code') ,
-            '[course]' => $this->request->get('course_name') ,]);
+            '[course_code]' => $this->request->get('course_code'),
+            '[course]' => $this->request->get('course_name'), ]);
 
         require_once _lms_ . '/lib/lib.course.php';
         $course_man = new Man_Course();
@@ -281,11 +273,8 @@ class CourseLmsController extends LmsController
         Util::jump_to('index.php?r=lms/course/infocourse&result=' . ($re ? 'ok' : 'err'));
     }
 
-
-
     private function statusNoEnter($perm, $status)
     {
-      
         return $perm & (1 << $status);
     }
 

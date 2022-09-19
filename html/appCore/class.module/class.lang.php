@@ -44,14 +44,14 @@ class Module_Lang extends Module
                                         'name' => '_VIEW',
                                         'image' => 'standard/view.png', ],
                 ];
-            ; break;
+             break;
             case 'importexport':
                 return [
                     'view' => ['code' => 'view',
                                         'name' => '_VIEW',
                                         'image' => 'standard/view.png', ],
                 ];
-            ; break;
+             break;
         }
     }
 }

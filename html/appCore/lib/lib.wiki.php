@@ -444,14 +444,14 @@ class CoreWikiAdmin
 
         $tot = count($data_arr);
         for ($i = 0; $i < $tot; ++$i) {
-/*			$id=$data_arr[$i]["faq_id"];
+            /*			$id=$data_arr[$i]["faq_id"];
 
-            $elem=$doc->createElement("faq_id");
-            $elemText=$doc->createTextNode($id);
-            $elem->appendChild($elemText);
-            $elem->setAttribute("id", $id);
-            $items->appendChild($elem);
-*/
+                        $elem=$doc->createElement("faq_id");
+                        $elemText=$doc->createTextNode($id);
+                        $elem->appendChild($elemText);
+                        $elem->setAttribute("id", $id);
+                        $items->appendChild($elem);
+            */
 
             $id = $data_arr[$i]['faq_id'];
 
@@ -1089,9 +1089,8 @@ class CoreWikiPublic
 
         $key = $page_code . '-' . $lang;
 
-
         if ((!$this->session->has($history_name)) || (!is_array($this->session->get($history_name)))) {
-            $this->session->set($history_name,[]);
+            $this->session->set($history_name, []);
             $this->session->save();
         }
 
@@ -1104,14 +1103,14 @@ class CoreWikiPublic
 
             $history = $this->session->get($history_name);
             $history[$key] = $arr;
-            $this->session->set($history_name,$history);
+            $this->session->set($history_name, $history);
             $this->session->save();
         }
 
         $history = $this->session->get($history_name);
         if (count($history) > 10) {
             $history = array_shift($history);
-            $this->session->set($history_name,$history);
+            $this->session->set($history_name, $history);
         }
 
         $i = 1;
@@ -1262,7 +1261,7 @@ class CoreWikiPublic
             $data = $this->session->get('wiki_temp_info') ?: [];
             $data[$wiki_id][$page_code]['parent_code'] = $_GET['parent'];
             $data[$wiki_id][$page_code]['parent_info'] = $parent_info;
-            $this->session->set('wiki_temp_info',$data);
+            $this->session->set('wiki_temp_info', $data);
             $this->session->save();
         }
 
@@ -1270,7 +1269,7 @@ class CoreWikiPublic
             $title = rawurldecode($_GET['title']);
             $data = $this->session->get('wiki_temp_info') ?: [];
             $data[$wiki_id][$page_code]['title'] = $title;
-            $this->session->set('wiki_temp_info',$data);
+            $this->session->set('wiki_temp_info', $data);
             $this->session->save();
         }
     }
@@ -1278,7 +1277,7 @@ class CoreWikiPublic
     public function getPageTempInfo($wiki_id, $page_code)
     {
         $res = false;
- 
+
         $data = $this->session->get('wiki_temp_info');
         if (isset($data[$wiki_id][$page_code])) {
             $res = $data[$wiki_id][$page_code];
@@ -1292,7 +1291,7 @@ class CoreWikiPublic
         $data = $this->session->get('wiki_temp_info');
         if (isset($data[$wiki_id][$page_code])) {
             unset($data[$wiki_id][$page_code]);
-            $this->session->set('wiki_temp_info',$data);
+            $this->session->set('wiki_temp_info', $data);
             $this->session->save();
         }
     }
@@ -2805,7 +2804,7 @@ class TreeView_WikiView extends TreeView
 
     public function canInlineDeleteItem(&$stack, $level)
     {
-        return  ($stack[$level]['isLeaf'] == 1) && ($level != 0) && $this->can_del;
+        return ($stack[$level]['isLeaf'] == 1) && ($level != 0) && $this->can_del;
     }
 
     public function _getMoveTargetLabel()

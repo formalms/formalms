@@ -16,7 +16,6 @@ namespace Plugin\FormaAuth;
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 use Form;
-use Get;
 use Lang;
 use UserManager;
 use UserManagerOption;
@@ -103,8 +102,8 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         if ($session->get('user_attempt_number') > $options->getOption('max_log_attempt')) {
             $save = true;
         } else {
-                    $save = false;
-                }
+            $save = false;
+        }
                 break;
             case 'all':
                 $save = true;

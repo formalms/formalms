@@ -26,8 +26,6 @@ if (Docebo::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($
     Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?login_redirect=' . $loginRedirect);
 }
 
-
-
 // get maintenence setting
 $query = ' SELECT param_value FROM %adm_setting'
         . " WHERE param_name = 'maintenance'"
@@ -110,10 +108,10 @@ if ($next_action != false && FormaLms\lib\Get::sett('sco_direct_play', 'off') ==
 switch ($GLOBALS['op']) {
     case 'aula':
         require_once _lms_ . '/lib/lib.course.php';
-        $idCourse =FormaLms\lib\Get::req('idCourse',DOTY_ALPHANUM);
+        $idCourse = FormaLms\lib\Get::req('idCourse', DOTY_ALPHANUM);
         if (!logIntoCourse($idCourse, true)) {
-            $session->set('current_main_menu','1');
-            $session->set('sel_module_id','1');
+            $session->set('current_main_menu', '1');
+            $session->set('sel_module_id', '1');
             $GLOBALS['modname'] = 'middlearea';
             $GLOBALS['op'] = 'show';
         }
@@ -137,9 +135,9 @@ switch ($GLOBALS['op']) {
             $session->remove('cp_assessment_effect');
         }
 
-        $session->set('current_main_menu','1');
-        $session->set('sel_module_id','1');
-        $session->set('is_ghost',true);
+        $session->set('current_main_menu', '1');
+        $session->set('sel_module_id', '1');
+        $session->set('is_ghost', true);
 
         $session->save();
         $GLOBALS['modname'] = 'middlearea';
@@ -147,8 +145,8 @@ switch ($GLOBALS['op']) {
 
         break;
     case 'selectMain':
-        $idMain =FormaLms\lib\Get::req('idMain');
-        $session->set('current_main_menu',$idMain);
+        $idMain = FormaLms\lib\Get::req('idMain');
+        $session->set('current_main_menu', $idMain);
         $session->save();
         $firstPage = firstPage($idMain);
 
@@ -158,19 +156,18 @@ switch ($GLOBALS['op']) {
         break;
     //change language for register user
     case 'registerconfirm':
-        $language =FormaLms\lib\Get::pReq('language',DOTY_STRING);
+        $language = FormaLms\lib\Get::pReq('language', DOTY_STRING);
 
         Lang::set($language);
         break;
     case 'registerme':
-        $randomCode = FormaLms\lib\Get::req('random_code',DOTY_STRING);
+        $randomCode = FormaLms\lib\Get::req('random_code', DOTY_STRING);
         list($language_reg) = sql_fetch_row(sql_query(' SELECT language FROM ' . $GLOBALS['prefix_lms'] . "_user_temp  WHERE random_code = '" . $randomCode . "'"));
         if ($language_reg !== '') {
             Lang::set($language_reg);
         }
         break;
     default:
-
         break;
 }
 
@@ -209,7 +206,6 @@ if ($sop) {
                 TrackUser::closeSessionCourseTrack();
                 $session->remove('idCourse');
                 $session->remove('idEdition');
-
             }
             if ($session->has('cp_assessment_effect')) {
                 $session->remove('cp_assessment_effect');

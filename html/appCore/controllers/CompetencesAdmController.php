@@ -178,17 +178,17 @@ class CompetencesAdmController extends AdmController
 
     protected function _getFromSession($index, $default = null)
     {
-        if (!$this->session->has('competences_status_'.$index)) {
-            $this->session->set('competences_status_'.$index,$default);
+        if (!$this->session->has('competences_status_' . $index)) {
+            $this->session->set('competences_status_' . $index, $default);
             $this->session->save();
         }
 
-        return $this->session->get('competences_status_'.$index);
+        return $this->session->get('competences_status_' . $index);
     }
 
     protected function _setInSession($index, $value)
     {
-        $this->session->set('competences_status_'.$index,$value);
+        $this->session->set('competences_status_' . $index, $value);
         $this->session->save();
     }
 

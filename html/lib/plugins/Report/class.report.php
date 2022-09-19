@@ -308,7 +308,7 @@ class ReportSessionManager
             _RS_COLS_CATEGORY => false,
             _RS_COLS_FILTER => false,
         ];
-        $this->session->set(_REPORT_SESSION,$reportSessionData);
+        $this->session->set(_REPORT_SESSION, $reportSessionData);
         $this->session->save();
     }
 

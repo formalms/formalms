@@ -317,7 +317,7 @@ class Config_Framework
                                 'admin', ($var_value == 'admin'))
 
                             . Form::getCloseCombo($i_after);
-                ; break;
+                 break;
 
                 case 'register_tree':
                     $register_possible_option = [
@@ -332,7 +332,7 @@ class Config_Framework
                                                 $register_possible_option,
                                                 $var_value,
                                                 $i_after);
-                ; break;
+                 break;
                 case 'field_tree':
                     require_once _adm_ . '/lib/lib.field.php';
 
@@ -360,7 +360,7 @@ class Config_Framework
                             . Form::getLineRadio('', 'label_bold', $lang->def('_NO'), $var_name . '_no', 'option[' . $var_name . ']',
                                 'no', ($var_value == 'no'))
                             . Form::getCloseCombo($i_after);
-                ; break;
+                 break;
                 case 'profile_modify':
                     echo Form::getOpenCombo(Lang::t('_' . strtoupper($var_name), 'configuration'))
                         . Form::getLineRadio('', 'label_bold', Lang::t('_ALLOW_FULL_EDIT_PROFILE', 'configuration'), $var_name . '_allow', 'option[' . $var_name . ']',
@@ -372,7 +372,7 @@ class Config_Framework
                         . Form::getLineRadio('', 'label_bold', Lang::t('_REDIRECT_URL_PROFILE', 'configuration'), $var_name . '_redirect', 'option[' . $var_name . ']',
                                 'redirect', ($var_value == 'redirect'))
                         . Form::getCloseCombo($i_after);
-                ;
+
                     break;
                 case 'language':
                     //drop down language
@@ -384,7 +384,7 @@ class Config_Framework
                                                 array_search($var_value, $langs),
                                                 $i_after);
 
-                ; break;
+                 break;
                 case 'template':
                     //drop down template
                     $templ = getTemplateList();
@@ -394,7 +394,7 @@ class Config_Framework
                                                 $templ,
                                                 array_search($var_value, $templ),
                                                 $i_after);
-                ; break;
+                 break;
                 case 'hteditor':
                     //drop down hteditor
                     $ht_edit = getHTMLEditorList();
@@ -404,7 +404,7 @@ class Config_Framework
                                                 $ht_edit,
                                                 $var_value,
                                                 $i_after);
-                ; break;
+                 break;
                 case 'layout_chooser':
                     //drop down hteditor
                     $layout = [
@@ -417,7 +417,7 @@ class Config_Framework
                                                 $layout,
                                                 $var_value,
                                                 $i_after);
-                ; break;
+                 break;
                 case 'pubflow_method_chooser':
                     //drop down hteditor
                     $options = [
@@ -430,7 +430,7 @@ class Config_Framework
                                                 $options,
                                                 $var_value,
                                                 $i_after);
-                ; break;
+                 break;
                 case 'field_select':
                     require_once _adm_ . '/lib/lib.field.php';
 
@@ -475,7 +475,7 @@ class Config_Framework
                                                 $layout,
                                                 $var_value,
                                                 $i_after);
-                ; break;
+                 break;
                 case 'grpsel_chooser':
                     $layout = [
                         'group' => $lang->def('_GROUPS'),
@@ -486,7 +486,7 @@ class Config_Framework
                                                 $layout,
                                                 $var_value,
                                                 $i_after);
-                ; break;
+                 break;
 
                 case 'tablist_coursecatalogue':
                     $lang_c = &DoceboLanguage::createInstance('catalogue', 'lms');
@@ -511,7 +511,7 @@ class Config_Framework
                         $html .= Form::getCheckbox($name, 'tablist_' . $tab_code, 'tablist[' . $tab_code . ']', 1, isset($tab_selected[$tab_code]), '', $i_after);
                     }
 
-                ; break;
+                 break;
 
                 case 'first_coursecatalogue_tab':
                     $lang_c = &DoceboLanguage::createInstance('catalogue', 'lms');
@@ -537,7 +537,7 @@ class Config_Framework
                                                 $var_value,
                                                 $i_after);
 
-                ; break;
+                 break;
 
                 case 'tablist_mycourses':
                   //$var_value=deformat($var_value);
@@ -559,7 +559,7 @@ class Config_Framework
                             }
                             $html .= $i_after
                                 . '</div>';
-                ; break;
+                 break;
                 case 'point_field':
                     require_once _adm_ . '/lib/lib.field.php';
                     $fl = new FieldList();
@@ -601,10 +601,10 @@ class Config_Framework
                  break;
                 case 'check':
                     $html .= Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name, 'option[' . $var_name . ']', 1, ($var_value == 1), '', '', $i_after . ' ');
-                ; break;
+                 break;
                 case 'enum':
                     $html .= Form::getCheckbox($lang->def('_' . strtoupper($var_name)), $var_name . '_on', 'option[' . $var_name . ']', 'on', ($var_value == 'on'), '', '', $i_after . ' ');
-                ; break;
+                 break;
                 default:
                     //string or int
                     $html .= Form::getTextfield($lang->def('_' . strtoupper($var_name)),
@@ -650,7 +650,7 @@ class Config_Framework
                         $menu_man->removePerm(ADMIN_GROUP_GODADMIN, '/lms/admin' . $extra_info);
                         $new_value = 0;
                     }
-                ; break;
+                 break;
                 case 'menuvoice_course_public':
                     $after_reload_perm = true;
                     require_once _adm_ . '/lib/lib.menu.php';
@@ -668,14 +668,14 @@ class Config_Framework
                         }
                         $new_value = 0;
                     }
-                ; break;
+                 break;
                 case 'tablist_coursecatalogue':
                     $tab_selected = [];
                     foreach ($_POST['tablist'] as $tab_code => $v) {
                         $tab_selected[$tab_code] = 1;
                     }
                     $new_value = urlencode(Util::serialize($tab_selected));
-                ; break;
+                 break;
 
                 case 'tablist_mycourses':
                     $temp_arr = [];
@@ -686,20 +686,20 @@ class Config_Framework
                         }
                     }
                     $new_value = implode(',', $temp_arr);
-                ; break;
+                 break;
 
                 //if is int cast it
                 case 'language':
                     $lang = Docebo::langManager()->getAllLangCode();
                     $new_value = $lang[$_POST['option'][$var_name]];
-                ; break;
+                 break;
                 case 'template':
                     $templ = getTemplateList();
                     $new_value = $templ[$_POST['option'][$var_name]];
-                ; break;
+                 break;
                 case 'int':
                     $new_value = (int) $_POST['option'][$var_name];
-                ; break;
+                 break;
                 //if is enum switch value to on or off
                 case 'enum':
                     if (isset($_POST['option'][$var_name])) {
@@ -707,14 +707,14 @@ class Config_Framework
                     } else {
                         $new_value = 'off';
                     }
-                ; break;
+                 break;
                 case 'check':
                     if (isset($_POST['option'][$var_name]) && $_POST['option'][$var_name] == 1) {
                         $new_value = 1;
                     } else {
                         $new_value = 0;
                     }
-                ; break;
+                 break;
                 case 'menuvoice':
                     require_once _adm_ . '/lib/lib.menu.php';
                     $menu_man = new MenuManager();
@@ -725,7 +725,7 @@ class Config_Framework
                         $menu_man->removePerm(ADMIN_GROUP_GODADMIN, '/framework/admin' . $extra_info);
                         $new_value = 0;
                     }
-                ; break;
+                 break;
                 //else simple assignament
 
                 default:

@@ -25,7 +25,6 @@ if (Docebo::user()->isAnonymous()) {
 
 function webpages()
 {
-
     checkPerm('view');
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
@@ -45,7 +44,7 @@ function webpages()
 	SELECT idPages, title, publish, in_home, sequence 
 	FROM %lms_webpages 
 	ORDER BY sequence 
-	LIMIT ' . $ini .',' . FormaLms\lib\Get::sett('visuItem');
+	LIMIT ' . $ini . ',' . FormaLms\lib\Get::sett('visuItem');
 
     $num_query_pages = '
 	SELECT COUNT(*) 
@@ -143,8 +142,6 @@ function webpages()
 
 function editpages($load = false)
 {
-
-  
     checkPerm('mod');
     require_once _base_ . '/lib/lib.form.php';
 
@@ -183,7 +180,6 @@ function editpages($load = false)
     if ($load) {
         $out->add(Form::getHidden('load', 'load', 1)
                 . Form::getHidden('id_page', 'id_page', $id_page));
-             
     }
     $out->add(
         Form::getTextfield($lang->def('_TITLE'), 'title', 'title', 255, $title)
@@ -206,7 +202,7 @@ function editpages($load = false)
 function savepages()
 {
     checkPerm('mod');
- 
+
     $lang = &DoceboLanguage::createInstance('admin_webpages', 'lms');
     $all_languages = Docebo::langManager()->getAllLangCode();
 
@@ -223,7 +219,6 @@ function savepages()
             unset($_POST['in_home']);
         }
     }
-
 
     if (isset($_POST['load'])) {
         $query_insert = '
@@ -365,8 +360,6 @@ function movepages($direction)
 
 function webpagesDispatch($op)
 {
-
-
     if (isset($_POST['undo'])) {
         $op = 'webpages';
     }
@@ -378,7 +371,6 @@ function webpagesDispatch($op)
             editpages();
          break;
         case 'savepages':
-          
             savepages();
          break;
 

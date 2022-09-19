@@ -280,7 +280,7 @@ abstract class DashboardBlockLms extends Model
         $hourBegin = $course['course_hour_begin'];
         $hourBeginString = '';
         if ($hourBegin === '-1' || $hourBegin === null) {
-            $hourBegin = '00:00:00';
+            $hourBegin = '';
         } else {
             $hourBegin .= ':00';
             $hourBeginString = $hourBegin;
@@ -289,7 +289,7 @@ abstract class DashboardBlockLms extends Model
         $hourEnd = $course['course_hour_end'];
         $hourEndString = '';
         if ($hourEnd === '-1' || $hourEnd === null) {
-            $hourEnd = '23:59:59';
+            $hourEnd = '';
         } else {
             $hourEnd .= ':00';
             $hourEndString = $hourEnd;
@@ -300,17 +300,19 @@ abstract class DashboardBlockLms extends Model
             'title' => $course['course_name'],
             'startDate' => !empty($dateBegin) ? $dateBegin : '',
             'endDate' => !empty($dateEnd) ? $dateEnd : '',
-            'startDateString' => !empty($dateBegin) ? $startDate->format('d/m/Y') : '',
-            'endDateString' => !empty($dateEnd) ? $endDate->format('d/m/Y') : '',
-            'hourBegin' => !empty($dateBegin) ? $hourBegin : '',
-            'hourEnd' => !empty($dateEnd) ? $hourEnd : '',
+            'startDateString' => $startDate !== null ? $startDate->format('d/m/Y') : '',
+            'endDateString' => $endDate !== null ? $endDate->format('d/m/Y') : '',
+            'hourBeginString' => $course['course_hour_begin'],
+            'hourEndString' => $course['course_hour_end'],
+            'hourBegin' => $hourBegin,
+            'hourEnd' => $hourEnd,
             'type' => $course['course_type'],
             'nameCategory' => $this->getCategory($course['course_category_id']),
             'courseStatus' => $course['course_status'],
             'courseStatusString' => $status_list[(int) $course['course_status']],
             'description' => $course['course_box_description'],
             'img' => (!empty($course['course_img_course']) ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $course['course_img_course'] : ''),
-            'hours' => $hourBeginString . (!empty($hourEndString) ? '-' . $hourEndString : ''),
+            'hours' => $hourBeginString . (!empty($hourEndString) ? ' - ' . $hourEndString : ''),
             'dates' => [],
         ];
 

@@ -81,7 +81,7 @@ class EnrollrulesAlmsController extends AlmsController
                     $rules[$id]->del = '';
                 }
             }
-            $i++;
+            ++$i;
         }
 
         $result = [
@@ -91,7 +91,7 @@ class EnrollrulesAlmsController extends AlmsController
             'dir' => $dir,
             'rowsPerPage' => $results,
             'results' => $i,
-            'records' => array_values($rules)
+            'records' => array_values($rules),
         ];
 
         echo $this->json->encode($result);
@@ -149,7 +149,7 @@ class EnrollrulesAlmsController extends AlmsController
                 $log->rollback = 'ajax.adm_server.php?r=alms/enrollrules/logrollback&amp;id_log=' . $log->id_log;
                 $logs[$key] = $log;
             }
-            $i++;
+            ++$i;
         }
 
         //produce output for datatable
@@ -158,7 +158,7 @@ class EnrollrulesAlmsController extends AlmsController
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
-            'rowsPerPage' => (int)$results,
+            'rowsPerPage' => (int) $results,
             'results' => $i,
             'records' => array_values($logs),
         ];
@@ -319,7 +319,7 @@ class EnrollrulesAlmsController extends AlmsController
 
         $id_rule = FormaLms\lib\Get::req('id_rule', DOTY_INT, 0);
         $start_index = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
-        $results = (int)FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
+        $results = (int) FormaLms\lib\Get::req('results', DOTY_MIXED, FormaLms\lib\Get::sett('visuItem', 25));
         $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'title');
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
@@ -359,9 +359,9 @@ class EnrollrulesAlmsController extends AlmsController
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
-            'rowsPerPage' => (int)$results,
+            'rowsPerPage' => (int) $results,
             'results' => $i,
-            'records' => array_values($rules)
+            'records' => array_values($rules),
         ];
 
         echo $this->json->encode($result);
@@ -382,7 +382,7 @@ class EnrollrulesAlmsController extends AlmsController
         foreach ($_POST['entity_course'] as $id_entity => $courses) {
             $course_list = [];
             foreach ($courses as $id_c => $v) {
-                $course_list[] = (int)str_replace('course_', '', $id_c);
+                $course_list[] = (int) str_replace('course_', '', $id_c);
             }
 
             if (isset($prev_entities[$id_entity])) {
@@ -565,9 +565,9 @@ class EnrollrulesAlmsController extends AlmsController
             'startIndex' => $start_index,
             'sort' => $sort,
             'dir' => $dir,
-            'rowsPerPage' => (int)$results,
+            'rowsPerPage' => (int) $results,
             'results' => $i,
-            'records' => array_values($rules)];
+            'records' => array_values($rules), ];
 
         echo $this->json->encode($result);
     }
@@ -596,7 +596,7 @@ class EnrollrulesAlmsController extends AlmsController
                 $courses = $_POST['entity_course'][$id_entity];
             }
             foreach ($courses as $id_c => $v) {
-                $course_list[] = (int)str_replace('course_', '', $id_c);
+                $course_list[] = (int) str_replace('course_', '', $id_c);
             }
 
             if (isset($prev_entities[$id_entity])) {

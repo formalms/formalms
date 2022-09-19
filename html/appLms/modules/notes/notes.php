@@ -36,7 +36,7 @@ if (!Docebo::user()->isAnonymous()) {
                 $order .= ' DESC';
                 $a_down = '';
             }
-        ; break;
+         break;
         default:
             $ord = $order = 'data';
             if ($inv == 'y') {
@@ -323,28 +323,28 @@ if (!Docebo::user()->isAnonymous()) {
         switch ($op) {
     case 'notes':
         notes();
-    ; break;
+     break;
     case 'displaynotes':
         displaynotes();
-    ; break;
+     break;
 
     case 'addnotes':
         addnotes();
-    ; break;
+     break;
     case 'insnotes':
         insnotes();
-    ; break;
+     break;
 
     case 'modnotes':
         modnotes();
-    ; break;
+     break;
     case 'upnotes':
         upnotes();
-    ; break;
+     break;
 
     case 'delnotes':
         delnotes();
-    ; break;
+     break;
 }
     }
 }

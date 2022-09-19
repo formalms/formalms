@@ -29,7 +29,6 @@ function save_state(&$data)
     $session->save();
 }
 
-
 function &create_TabView($op)
 {
     global $_tab_op_map;
@@ -45,9 +44,8 @@ function &create_TabView($op)
         $tv->addTab(new TabElemDefault('storage_pubrepo', Lang::t('_PUBREPOROOTNAME', 'storage'), getPathImage() . 'area_title/pubrepo.gif'));
     }
 
-   
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $extra_data = $session->get('storage',[]);
+    $extra_data = $session->get('storage', []);
 
     $tv->parseInput($_POST, $extra_data);
     if (isset($_tab_op_map[$op])) {

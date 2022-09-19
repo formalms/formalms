@@ -60,7 +60,7 @@ class UpdatesLms extends Model
             }
             $updates['assessment'] = $assessment;
 
-            $this->session->set('updates',$updates);
+            $this->session->set('updates', $updates);
             $this->session->save();
         }
 

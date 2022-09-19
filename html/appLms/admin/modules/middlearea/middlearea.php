@@ -447,19 +447,19 @@ function MiddleAreaDispatch($op)
     switch ($op) {
         case 'select_permission':
                 select_permission();
-            ;
+
             break;
         case 'switch_active':
                 switch_active();
-            ;
+
             break;
         case 'select_menu_permission':
                 select_menu_permission();
-            ;
+
             break;
         case 'switch_menu_active':
                 switch_menu_active();
-            ;
+
             break;
         case 'set_home':
             set_home_page();
@@ -469,7 +469,7 @@ function MiddleAreaDispatch($op)
         default:
                 //view_area();
                 view_area();
-            ;
+
             break;
     }
 }

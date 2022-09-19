@@ -85,10 +85,9 @@ class Step7Controller extends StepController
             $this->saveSettingsToDatabase($smtp_info);
 
             $smtp_info['use_smtp_database'] = 'on';
-            $this->session->set('smtp_info',$smtp_info);
-
+            $this->session->set('smtp_info', $smtp_info);
         } else {
-            $this->session->set('smtp_info',$smtp_info);
+            $this->session->set('smtp_info', $smtp_info);
         }
         $this->session->save();
 
@@ -117,13 +116,12 @@ class Step7Controller extends StepController
             @chmod($save_fn, 0644);
         }
 
-        $this->session->set('config_saved',$saved);
+        $this->session->set('config_saved', $saved);
         $this->session->save();
     }
 
     private function saveSettingsToDatabase($smtpInfo)
     {
-
         $dbInfo = $this->session->get('db_info');
         DbConn::getInstance(false,
             [

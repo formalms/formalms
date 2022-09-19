@@ -58,14 +58,14 @@ switch ($GLOBALS['op']) {
         $back_test = urldecode(importVar('back_test'));
 
         quest_create($type_quest, $idTest, $back_test);
-    ; break;
+     break;
     case 'edit':
         $type_quest = importVar('type_quest');
         $idQuest = importVar('idQuest', true, 0);
         $back_test = urldecode(importVar('back_test'));
 
         quest_edit($type_quest, $idQuest, $back_test);
-    ; break;
+     break;
     case 'quest_download':
         $type_quest = importVar('type_quest');
         $id_quest = importVar('id_quest', true, 0);
@@ -85,5 +85,5 @@ switch ($GLOBALS['op']) {
         $quest_obj = eval("return new $type_class( $id_quest );");
 
         $quest_obj->download($id_track);
-    ; break;
+     break;
 }

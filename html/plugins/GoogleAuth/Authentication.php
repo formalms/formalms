@@ -16,7 +16,6 @@ namespace Plugin\GoogleAuth;
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 use Form;
-use Get;
 use Lang;
 use OAuth\Common\Consumer\Credentials;
 use OAuth\Common\Storage\Session;
@@ -81,7 +80,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $user = \DoceboUser::createDoceboUserFromField('google_id', $user_info['id'], 'public_area');
 
         if (!$user) {
-            (self::$session)->set('social',['plugin' => Plugin::getName(),
+            (self::$session)->set('social', ['plugin' => Plugin::getName(),
                         'data' => $user_info,
             ]);
             (self::$session)->save();

@@ -38,7 +38,7 @@ class DoceboOrgchartNotifier extends DoceboEventConsumer
                 // remove user from associated
                 $acl_man = &Docebo::user()->getAclmanager();
                 $acl_man->removeFromAllGroup($id_user);
-            ; break;
+             break;
         }
 
         return true;

@@ -249,7 +249,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('mod');
 
         if (isset($_POST['id_cat'])) {
-        // Update entry
+            // Update entry
             $query_catalogue = '
 		UPDATE ' . $GLOBALS['prefix_lms'] . "_catalogue
 		SET name = '" . $_POST['name'] . "',
@@ -257,7 +257,7 @@ if (!Docebo::user()->isAnonymous()) {
 		WHERE idCatalogue = '" . (int) $_POST['id_cat'] . "'";
             $re = sql_query($query_catalogue);
         } else {
-        // Create a new entry
+            // Create a new entry
             $query_catalogue = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_catalogue
 		( name, description ) VALUES
@@ -752,37 +752,37 @@ if (!Docebo::user()->isAnonymous()) {
         switch ($op) {
         case 'catlist':
             catlist();
-        ; break;
+         break;
 
         case 'newcatalogue':
             mancatalogue(false);
-        ; break;
+         break;
         case 'modcatalogue':
             mancatalogue(importVar('id', false, 0));
-        ; break;
+         break;
         case 'savecatalogue':
             savecatalogue();
-        ; break;
+         break;
 
         case 'delcatalogue':
             delcatalogue();
-        ; break;
+         break;
 
         case 'entrylist':
             entrylist();
-        ; break;
+         break;
 
         case 'import':
             import();
-        ; break;
+         break;
 
         case 'delentry':
             delentry();
-        ; break;
+         break;
 
         case 'modcatalogueassoc':
             modcatalogueassoc();
-        ; break;
+         break;
     }
     }
 }

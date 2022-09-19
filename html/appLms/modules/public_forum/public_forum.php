@@ -66,7 +66,7 @@ function loadUnreaded()
             }
         }
         $unreadedForum[$id_course] = $unreaded;
-        $session->set('unreaded_forum',$unreadedForum);
+        $session->set('unreaded_forum', $unreadedForum);
         $session->save();
         //-set as now the last forum access------------------------------------------------
         if ($no_entry) {
@@ -1172,7 +1172,7 @@ function thread()
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $unreadedForum = $session->get('unreaded_forum');
         unset($unreadedForum[PUBLIC_FORUM_COURSE_ID]);
-        $session->set('unreaded_forum',$unreadedForum);
+        $session->set('unreaded_forum', $unreadedForum);
         $session->save();
     }
 
@@ -2161,7 +2161,7 @@ function message()
     //set as readed if needed
     if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread])) {
         unset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread]);
-        $session->set('unreaded_forum',$unreadedForum);
+        $session->set('unreaded_forum', $unreadedForum);
         $session->save();
     }
 
@@ -3264,11 +3264,11 @@ function forumsearch()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $unreadedForum = $session->get('unreaded_forum');
     $idCourse = $session->get('idCourse');
-    $forum = $session->get('forum',[]);
+    $forum = $session->get('forum', []);
 
     if (isset($_POST['search_arg'])) {
         $forum['search_arg'] = $_POST['search_arg'];
-        $session->set('forum',$forum);
+        $session->set('forum', $forum);
         $session->save();
         $search_arg = importVar('search_arg');
     } else {
@@ -3499,7 +3499,7 @@ function forumsearch()
 function forumsearchmessage()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $forum = $session->get('forum',[]);
+    $forum = $session->get('forum', []);
 
     $search_arg = $forum['search_arg'];
 
@@ -3550,7 +3550,7 @@ function forumsearchmessage()
     //set as readed if needed
     if (isset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread])) {
         unset($unreadedForum[PUBLIC_FORUM_COURSE_ID][$id_forum][$id_thread]);
-        $session->set('unreaded_forum',$unreadedForum);
+        $session->set('unreaded_forum', $unreadedForum);
         $session->save();
     }
 
@@ -4328,37 +4328,37 @@ function forumDispatch($op)
         case 'public_forum':
         case 'forum':
             forum();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'addforum':
             addforum();
-        ;
+
             break;
         case 'insforum':
             insforum();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'modforum':
             modforum();
-        ;
+
             break;
         case 'upforum':
             upforum();
-        ;
+
             break;
         case 'downforum':
             moveforum($_GET['idForum'], 'down');
-        ;
+
             break;
         case 'moveupforum':
             moveforum($_GET['idForum'], 'up');
-        ;
+
             break;
         case 'modstatus':
             changestatus();
-        ;
+
             break;
         case 'export':
             export();
@@ -4366,31 +4366,31 @@ function forumDispatch($op)
         //-----------------------------------------------//
         case 'delforum':
             delforum();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'modforumaccess':
             modforumaccess();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'thread':
             thread();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'addthread':
             addthread();
-        ;
+
             break;
         case 'insthread':
             insthread();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'modthread':
             modthread();
-        ;
+
             break;
         case 'movethread':
             $id_thread = importVar('id_thread', true, 0);
@@ -4400,66 +4400,66 @@ function forumDispatch($op)
             break;
         case 'upthread':
             upthread();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'delthread':
             delthread();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'message':
             message();
-        ;
+
             break;
         case 'moderatemessage':
             moderatemessage();
-        ;
+
             break;
         case 'modstatusthread':
             modstatusthread();
-        ;
+
             break;
         case 'changeerased':
             changeerase();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'addmessage':
             addmessage();
-        ;
+
             break;
         case 'insmessage':
             insmessage();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'modmessage':
             modmessage();
-        ;
+
             break;
         case 'upmessage':
             upmessage();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'delmessage':
             delmessage();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'viewprofile':
             viewprofile();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'editsema':
             editsema();
-        ;
+
             break;
         case 'savesema':
             savesema();
-        ;
+
             break;
         //-----------------------------------------------//
         case 'download':
@@ -4495,16 +4495,16 @@ function forumDispatch($op)
             $path = '/appLms/' . FormaLms\lib\Get::sett('pathforum');
             //send file
             sendFile($path, $attach, $expFileName[$totPart]);
-        ;
+
             break;
         //-----------------------------------------------//
         case 'search':
             forumsearch();
-        ;
+
             break;
         case 'searchmessage':
             forumsearchmessage();
-        ;
+
             break;
         //-----------------------------------------------//
     }

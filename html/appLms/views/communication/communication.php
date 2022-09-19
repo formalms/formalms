@@ -13,7 +13,7 @@
             ?></span>
 		</p>
 		<p class="content">
-			<?php echo  $comm['description'] != '' ? $comm['description'] : ''; ?>
+			<?php echo $comm['description'] != '' ? $comm['description'] : ''; ?>
 		</p>
 		<p class="action"><?php
             switch ($comm['type_of']) {
@@ -21,17 +21,17 @@
                     echo '<a class="ico-wt-sprite subs_unread" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                     . Lang::t('_MARK_AS_READ', 'communication')
                     . '</span></a>';
-                ; break;
+                 break;
                 case 'file':
                     echo '<a class="ico-wt-sprite subs_download" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '"><span>'
                     . Lang::t('_DOWNLOAD', 'communication')
                     . '</span></a>';
-                ; break;
+                 break;
                 case 'scorm':
                     echo '<a class="ico-wt-sprite subs_play js-scorm_lightbox" href="index.php?r=communication/play&amp;id_comm=' . $comm['id_comm'] . '" title="' . $comm['title'] . '"><span>'
                     . Lang::t('_PLAY', 'communication')
                     . '</span></a>';
-                ; break;
+                 break;
             }
             ?>
 		</p>

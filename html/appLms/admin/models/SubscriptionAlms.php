@@ -59,23 +59,23 @@ class SubscriptionAlms extends Model
         $this->id_date = (int) $id_date;
     }
 
-    public function loadUser($start_index = false, $results = false, $sort = false, $dir = false, $filter = false,$adminFilter = true)
+    public function loadUser($start_index = false, $results = false, $sort = false, $dir = false, $filter = false, $adminFilter = true)
     {
         if ($this->id_edition != 0) {
             require_once Forma::include(_lms_ . '/lib/', 'lib.edition.php');
             $edition_man = new EditionManager();
 
-            return $edition_man->getCourseEditionSubscription($this->id_course, $this->id_edition, $start_index, $results, $sort, $dir, $filter,$adminFilter);
+            return $edition_man->getCourseEditionSubscription($this->id_course, $this->id_edition, $start_index, $results, $sort, $dir, $filter, $adminFilter);
         } elseif ($this->id_date != 0) {
             require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $date_man = new DateManager();
 
-            return $date_man->getCourseEditionSubscription($this->id_course, $this->id_date, $start_index, $results, $sort, $dir, $filter,$adminFilter);
+            return $date_man->getCourseEditionSubscription($this->id_course, $this->id_date, $start_index, $results, $sort, $dir, $filter, $adminFilter);
         } else {
             require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $subscribe_man = new CourseSubscribe_Manager();
 
-            return $subscribe_man->getCourseSubscription($this->id_course, $start_index, $results, $sort, $dir, $filter,$adminFilter);
+            return $subscribe_man->getCourseSubscription($this->id_course, $start_index, $results, $sort, $dir, $filter, $adminFilter);
         }
     }
 

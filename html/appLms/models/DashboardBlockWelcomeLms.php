@@ -55,7 +55,7 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
         }
         $data['msg'] = $msg;
         $data['title'] = $this->data['title'];
-    
+
         return $data;
     }
 

@@ -52,7 +52,7 @@
                         ];
 
                         $this->widget('table', $params);
-                    ; break;
+                     break;
                     case 'unread' :
                     default:
                         // the tab are open in the content filder, now i can put my contents here easily
@@ -84,7 +84,7 @@
                         ];
 
                         $this->widget('table', $params);
-                    ; break;
+                     break;
                 }
                 ?>
 				<div class="nofloat"></div>

@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 if (!Docebo::user()->isAnonymous()) {
-// XXX: modfaqgui
+    // XXX: modfaqgui
     function modfaqgui($object_faq)
     {
         checkPerm('view', false, 'storage');
@@ -474,49 +474,49 @@ if (!Docebo::user()->isAnonymous()) {
 
         $object_faq = createLO('faq', $idCategory);
         $object_faq->edit($idCategory, urldecode($back_url));
-    ; break;
+     break;
     //add category
     case 'addfaqcat':
         addfaqcat();
-    ; break;
+     break;
     case 'insfaqcat':
         insfaqcat();
-    ; break;
+     break;
     //mod category
     case 'modfaqcat':
         modfaqcat();
-    ; break;
+     break;
     case 'upfaqcat':
         upfaqcat();
-    ; break;
+     break;
     //mod
     case 'movedown':
         movefaq('down');
-    ; break;
+     break;
     case 'moveup':
         movefaq('up');
-    ; break;
+     break;
     case 'fixsequence':
         fixsequence();
-    ; break;
+     break;
     //add faq
     case 'newfaq':
         newfaq();
-    ; break;
+     break;
     case 'insfaq':
         insfaq();
-    ; break;
+     break;
     //mod faq
     case 'modfaq':
         modfaq();
-    ; break;
+     break;
     case 'upfaq':
         upfaq();
-    ; break;
+     break;
     //del faq
     case 'delfaq':
         delfaq();
-    ; break;
+     break;
 }
     }
 }

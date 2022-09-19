@@ -57,5 +57,5 @@ switch ($op) {
         $json = new Services_JSON();
         $output = $json->encode($value);
         aout($output);
-    ; break;
+     break;
 }

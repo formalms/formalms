@@ -590,7 +590,7 @@ switch ($op) {
     case 'view':
     case 'newsletter':
             newsletter();
-        ;
+
         break;
 
     case 'initsend':
@@ -606,18 +606,18 @@ switch ($op) {
     case 'summary':
             $id_send = (int) $_GET['id_send'];
             newsletterSummary($id_send);
-        ;
+
         break;
 
     case 'send':
             $id_send = (int) $_GET['id_send'];
             send_newsletter($id_send);
-        ;
+
         break;
 
     case 'pause':
             nl_pause();
-        ;
+
         break;
 
     case 'complete':

@@ -29,6 +29,7 @@ class kbcategorizeWidget extends Widget
     public $form_url = '';
     public $form_extra_hidden = [];
     public $session = null;
+
     /**
      * Constructor.
      *

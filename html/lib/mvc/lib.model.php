@@ -52,13 +52,13 @@ class Model
             case 'DESC' :
             case 'yui-dt-desc' :
                 $dir = 'desc';
-            ; break;
+             break;
             case 'asc' :
             case 'ASC' :
             case 'yui-dt-asc' :
             default:
                 $dir = 'asc';
-            ; break;
+             break;
         }
 
         return $dir;

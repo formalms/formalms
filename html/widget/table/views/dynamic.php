@@ -3,7 +3,7 @@
 <div class="table-container-over">
 	<div class="table-actions">
 		<?php
-            echo  !is_array($rel_actions) ? $rel_actions : $rel_actions[0];
+            echo !is_array($rel_actions) ? $rel_actions : $rel_actions[0];
             if ($useStdSelectFormatter && $use_paginator) {
                 echo '<p class="table_selection">'
                     . Lang::t('_SELECT', 'directory') . ': '
@@ -24,7 +24,7 @@
 <div class="table-container-below">
 	<div class="table-actions">
 		<?php
-            echo  !is_array($rel_actions) ? $rel_actions : $rel_actions[1];
+            echo !is_array($rel_actions) ? $rel_actions : $rel_actions[1];
             if ($useStdSelectFormatter && $use_paginator) {
                 echo '<p>'
                     . Lang::t('_SELECT', 'directory') . ': '

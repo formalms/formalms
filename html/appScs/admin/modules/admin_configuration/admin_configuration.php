@@ -113,7 +113,7 @@ if (!Docebo::user()->isAnonymous()) {
         switch ($op) {
         case 'conf':
             adminConf();
-        ; break;
+         break;
     }
     }
 }

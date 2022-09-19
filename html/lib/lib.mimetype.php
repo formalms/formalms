@@ -564,8 +564,10 @@ function getOtherMime($ext, &$mime_array)
          break;
         case 'm4v':
             $mime_array[] = 'video/x-m4v';
+            // no break
         case 'mkv':
             $mime_array[] = 'video/x-matroska';
+            // no break
         case 'wma':
             $mime_array[] = 'video/x-ms-asf';
          break;

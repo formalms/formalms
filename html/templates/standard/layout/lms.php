@@ -105,7 +105,7 @@ echo Layout::lang_code(); ?>">
     </script>
     <?php echo Layout::rtl(); ?>
 
-    <?php die('peppe'); ?>
+    <?php exit('peppe'); ?>
     <!-- HELP DESK -->
     <link rel="stylesheet" type="text/css" media="all" href="<?php echo Layout::path(); ?>style/helpdesk.css">
     <link rel="stylesheet" type="text/css" media="all" href="<?php echo Layout::path(); ?>style/jquery.fancybox.css">

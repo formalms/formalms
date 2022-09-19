@@ -58,12 +58,12 @@ switch ($GLOBALS['op']) {
         $back_poll = urldecode(importVar('back_poll'));
 
         quest_create($type_quest, $id_poll, $back_poll);
-    ; break;
+     break;
     case 'edit':
         $type_quest = importVar('type_quest');
         $id_quest = importVar('id_quest', true, 0);
         $back_poll = urldecode(importVar('back_poll'));
 
         quest_edit($type_quest, $id_quest, $back_poll);
-    ; break;
+     break;
 }

@@ -93,12 +93,12 @@ class FilterInput
                     $config->set('HTML.TidyLevel', 'none');
                     $config->set('Cache.SerializerPath', _files_ . '/cache/twig');
                     $this->htmlpurifier = new HTMLPurifier($config);
-                ;
+
                 break;
             case 'htmlawed' :
                     //another class aganist xss
                     require_once _base_ . '/addons/htmlawed/htmlawed.php';
-                ;
+
                 break;
             case 'kses' :
             default:
@@ -118,7 +118,7 @@ class FilterInput
                             $GLOBALS['allowed_html'][$tag][$attrib] = [];
                         }
                     }
-                ;
+
                 break;
         }
     }
@@ -266,12 +266,12 @@ class FilterInput
             case 'htmlpurifier':
                     // Run HTMLPurifier
                     $string = $this->htmlpurifier->purify($string);
-                ;
+
                 break;
             case 'htmlawed':
                     // Run htmLawed
                     $string = htmlawed($string, ['safe' => 1]);
-                ;
+
                 break;
             case 'kses':
             default:

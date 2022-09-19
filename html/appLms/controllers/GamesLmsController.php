@@ -166,7 +166,7 @@ class GamesLmsController extends LmsController
                         if ($game['id_resource'] != 0 && $lo) {
                             $lo->env_play($id_game, 'index.php?r=games/show');
                         }
-                    ;
+
                     break;
             }
         } //endif

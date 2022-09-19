@@ -130,10 +130,10 @@ class DynamicUserFilter
         switch (gettype($data)) {
             case 'string':
                 $_data = $this->json->decode(urldecode($data));
-            ; break;
+             break;
             case 'array':
                 $_data = $data;
-            ; break;
+             break;
             default:
                 $output = false;
         }
@@ -280,7 +280,7 @@ class DynamicUserFilter
                     } else {
                         $res = false;
                     }
-                ; break;
+                 break;
                 // other fields -------------------------------------
                 case _OTHER_FIELDS_PREFIX:
                     $ofobj = new OtherFieldTypes();

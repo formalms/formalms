@@ -1184,7 +1184,7 @@ if (!Docebo::user()->isAnonymous()) {
         if (isset($_GET['confirm'])) {
             $confirm = importVar('confirm', true, 0);
             $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        $id_course = $session->get('idCourse');
+            $id_course = $session->get('idCourse');
             $id_laboratory = importVar('id_laboratory', true, 0);
             $id_category = importVar('id_category', true, 0);
             $title = importVar('title', false, '');
@@ -2057,7 +2057,7 @@ function reservationSendMail()
     $mod_perm = checkPerm('mod', true);
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        $id_course = $session->get('idCourse');
+    $id_course = $session->get('idCourse');
     $id_event = importVar('id_event', true, 0);
 
     $out = $GLOBALS['page'];

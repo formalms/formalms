@@ -25,7 +25,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class QuestionPoll
 {
     /**
-     * @var int $id 	contains the question identifier
+     * @var int contains the question identifier
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      **/

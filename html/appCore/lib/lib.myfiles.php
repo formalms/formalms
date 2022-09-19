@@ -486,7 +486,7 @@ class MyFilesPolicy extends MyFile
     {
         // return cahced data if availables
         if ($this->_extra_filter_cahced == $extra_filter && !empty($this->_file_number)) {
-            return  $area !== false
+            return $area !== false
                 ? (isset($this->_file_number[$area]) ? $this->_file_number[$area] : 0)
                 : $this->_file_number['total']
             ;
@@ -532,7 +532,7 @@ class MyFilesPolicy extends MyFile
 
         $this->_extra_filter_cahced = $extra_filter;
 
-        return  $area !== false
+        return $area !== false
             ? (isset($this->_file_number[$area]) ? $this->_file_number[$area] : 0)
             : $this->_file_number['total']
         ;
@@ -646,7 +646,7 @@ class MyFileSelector
         /** @todo check if this solution for new session works correctly */
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $tab_man->parseInput($_POST, $session);
-        
+
         $active_tab = $tab_man->getActiveTab();
         if (!$active_tab) {
             $active_tab = importVar('working_area', true, $file_man->getDefaultArea());

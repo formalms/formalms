@@ -107,13 +107,13 @@ function orgDispatch($op, $id_folder = false, &$tree)
     switch ($op) {
         case 'org_chart':
             orgChart();
-        ; break;
+         break;
         case 'newfolder':
         case 'deletefolder':
         case 'renamefolder':
         case 'movefolder':
         case 'assign_field':
             loadFormAction($tree, $op);
-        ; break;
+         break;
     }
 }

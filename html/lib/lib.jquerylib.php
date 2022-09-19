@@ -35,7 +35,7 @@ class JQueryLib
         'moment',
         'table-edits',
         'malihu-custom-scrollbar-plugin',
-        'cookie'
+        'cookie',
     ]; // malihu custom scrollbar
 
     public static $array_css_addons = ['table',    //  media query for table formatting
@@ -45,7 +45,7 @@ class JQueryLib
         'select',
         'datepicker',
         'datatables',
-        'malihu-custom-scrollbar-plugin',]; // malihu custom scrollbar
+        'malihu-custom-scrollbar-plugin', ]; // malihu custom scrollbar
 
     public static function loadJQuery($which_version = '')
     {
@@ -90,7 +90,7 @@ class JQueryLib
 
         $local_link = "\n\t\t";
         foreach (self::$array_js_addons as $a_addon_path) {
-            if (!$exclude_addons  || (is_array($exclude_addons) && !in_array($a_addon_path, $exclude_addons, true))) {
+            if (!$exclude_addons || (is_array($exclude_addons) && !in_array($a_addon_path, $exclude_addons, true))) {
                 $full_path = '/addons/' . self::_path . '/' . $a_addon_path . '/';
                 $addon_files = self::select_file($full_path, $which_version . '.js');
                 if (count($addon_files) > 0) {
@@ -113,7 +113,7 @@ class JQueryLib
 
         $local_link = "\n\t\t";
         foreach (self::$array_css_addons as $a_addon_path) {
-            if (!$exclude_addons  || (is_array($exclude_addons) && !in_array($a_addon_path, $exclude_addons, true))) {
+            if (!$exclude_addons || (is_array($exclude_addons) && !in_array($a_addon_path, $exclude_addons, true))) {
                 $full_path = '/addons/' . self::_path . '/' . $a_addon_path . '/';
                 $addon_files = self::select_file($full_path, $which_version . '.css');
                 if (count($addon_files) > 0) {

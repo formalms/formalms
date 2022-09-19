@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 if (!Docebo::user()->isAnonymous()) {
-// XXX: addpage
+    // XXX: addpage
     function addpage($object_page)
     {
         checkPerm('view', false, 'storage');
@@ -247,9 +247,9 @@ if (!Docebo::user()->isAnonymous()) {
     switch ($GLOBALS['op']) {
     case 'inspage':
         inspage();
-    ; break;
+     break;
     case 'uppage':
         uppage();
-    ; break;
+     break;
 }
 }

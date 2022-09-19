@@ -10,7 +10,8 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
-use \FormaLms\lib\Session\SessionManager;
+
+use FormaLms\lib\Session\SessionManager;
 
 class Learning_Cart
 {
@@ -22,7 +23,7 @@ class Learning_Cart
     public function init()
     {
         if (!SessionManager::getInstance()->getSession()->has('lms_cart')) {
-            SessionManager::getInstance()->getSession()->set('lms_cart',[]);
+            SessionManager::getInstance()->getSession()->set('lms_cart', []);
             SessionManager::getInstance()->getSession()->save();
         }
     }
@@ -54,7 +55,7 @@ class Learning_Cart
 
     public function emptyCart()
     {
-        SessionManager::getInstance()->getSession()->set('lms_cart',[]);
+        SessionManager::getInstance()->getSession()->set('lms_cart', []);
         SessionManager::getInstance()->getSession()->save();
     }
 }

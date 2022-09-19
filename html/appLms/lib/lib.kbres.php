@@ -905,7 +905,7 @@ class KbRes
 
     private function _fillFolders(&$db_q, $prev_lev, $current = false)
     {
-    // If we have already a current item processed then we
+        // If we have already a current item processed then we
         // create an empty array to sum it later with the folders
         // array we've already created for the first child
         $arr = ($current != false ? [] : ['folders' => []]);

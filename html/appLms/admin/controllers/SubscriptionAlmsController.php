@@ -1911,7 +1911,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 // ----------- file upload -----------------------------------------
                 if ($_FILES['file_import']['name'] == '') {
-                    $this->session->getFlashBag()->add('error',Lang::t('_FILEUNSPECIFIED'));
+                    $this->session->getFlashBag()->add('error', Lang::t('_FILEUNSPECIFIED'));
                     jumpTo($back_url . '&err=_file_unspecified');
                 } else {
                     $path = '/appCore/';
@@ -1922,13 +1922,13 @@ class SubscriptionAlmsController extends AlmsController
 
                         if (!sl_upload($_FILES['file_import']['tmp_name'], $path . $savefile)) {
                             sl_close_fileoperations();
-                            $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD', 'subscribe'));
+                            $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD', 'subscribe'));
                             jumpTo($back_url . '&err=_err_upload');
                         }
 
                         sl_close_fileoperations();
                     } else {
-                        $this->session->getFlashBag()->add('error',Lang::t('_ERROR_UPLOAD', 'subscribe'));
+                        $this->session->getFlashBag()->add('error', Lang::t('_ERROR_UPLOAD', 'subscribe'));
                         jumpTo($back_url . '&err=_err_upload');
                     }
                 }

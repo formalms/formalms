@@ -17,7 +17,6 @@ class ProfileLms extends Model
 {
     public function __construct()
     {
-   
         parent::__construct();
     }
 }

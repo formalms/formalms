@@ -89,7 +89,7 @@ class Selector_Course
             'filter' => serialize($this->filter),
             'show_filter' => $this->show_filter,
             'current_selection' => $this->current_selection,
-            'treeview_status' => serialize($this->treeview),];
+            'treeview_status' => serialize($this->treeview), ];
 
         return serialize($status);
     }
@@ -263,7 +263,7 @@ class Selector_Course
         }
         list($tot_course) = sql_fetch_row(sql_query('SELECT COUNT(*) ' . $query_course));
         $query_course .= ' ORDER BY c.name
-							LIMIT ' . $ini . ',' . (int)FormaLms\lib\Get::sett('visuItem', 25);
+							LIMIT ' . $ini . ',' . (int) FormaLms\lib\Get::sett('visuItem', 25);
 
         $re_course = sql_query($select . $query_course);
 
@@ -281,7 +281,7 @@ class Selector_Course
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),];
+            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'), ];
 
         while (list($idCourse, $code, $name, $desc, $status, $difficult, $auto_sub, $end_mode, $show_rules, $max_user_sub) = sql_fetch_row($re_course)) {
             $tb_content = [
@@ -354,7 +354,7 @@ class Man_Course
 
     /**
      * @param int $edition_id the id of the edition
-     * @param int $course_id the id of the course
+     * @param int $course_id  the id of the course
      *
      * @return array return som info about the course [code, name, description, status, difficult, subscribe_method, max_num_subscribe]
      */
@@ -515,12 +515,12 @@ class Man_Course
         return $courses;
     }
 
-     /**
+    /**
      * return the list of all the courses in the platform, or fillter by category.
      *
      * @param int $idCourse filter for passed course
      *
-     * @return array 
+     * @return array
      */
     public function getCourseWithMoreInfo($idCourse)
     {
@@ -530,11 +530,12 @@ class Man_Course
 			subscribe_method, mediumTime, show_rules, selling, prize, course_demo, create_date, course_edition,
 			can_subscribe, sub_start_date, sub_end_date, date_begin, date_end, img_course
 		FROM %lms_course ';
-    
-            $query_course .= " WHERE idCourse = '" . $idCourse . "' ";
-        
+
+        $query_course .= " WHERE idCourse = '" . $idCourse . "' ";
+
         $re_course = sql_query($query_course);
-        return  sql_fetch_assoc($re_course);
+
+        return sql_fetch_assoc($re_course);
     }
 
     public function addCourse($course_info)
@@ -620,7 +621,7 @@ class Man_Course
                 . ' FROM %lms_courseuser AS cu  JOIN %lms_course_date AS cd '
                 . ' JOIN %lms_course_date_user AS cdu ON (cd.id_course = cu.idCourse AND '
                 . ' cd.id_date = cdu.id_date AND cu.idUser=cdu.id_user) '
-                . ' WHERE cd.id_course = ' . (int)$idCourse . ' AND (cu.waiting = 1 OR cdu.overbooking = 1 or cu.status=4)';
+                . ' WHERE cd.id_course = ' . (int) $idCourse . ' AND (cu.waiting = 1 OR cdu.overbooking = 1 or cu.status=4)';
 
             // BUG FIX 2469: SELECT ONLY THE USER BELONGING TO THE ADMIN
             $query .= (($userlevelid != ADMIN_GROUP_GODADMIN)
@@ -717,7 +718,7 @@ class Man_Course
     }
 
     /**
-     * @param int $idCourse the id of the course
+     * @param int   $idCourse  the id of the course
      * @param array $arr_users if specified filter the user
      *
      * @return array contains the id_user as key and level number as value
@@ -803,12 +804,12 @@ class Man_Course
      * default_op and add the module to the specified course, alsoassign
      * the specified permission to the level_idst.
      *
-     * @param int $idCourse the id of the course
-     * @param array $level_idst the list of the idst assigned to each level
-     * @param int $id_amin the id of the main menu
-     * @param string $m_name the module name
-     * @param string $d_op the default module op
-     * @param array $level_token_to_assign for each level the token to assign array(level => array(token, token))
+     * @param int    $idCourse              the id of the course
+     * @param array  $level_idst            the list of the idst assigned to each level
+     * @param int    $id_amin               the id of the main menu
+     * @param string $m_name                the module name
+     * @param string $d_op                  the default module op
+     * @param array  $level_token_to_assign for each level the token to assign array(level => array(token, token))
      *
      * @return bool true if success, false otherwise
      */
@@ -902,9 +903,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
         $response = ['can' => true, 'reason' => '', 'expiring_in' => $expiring];
 
-
-        if (array_key_exists((int)$course['idCourse'], $userCourses)) {
-
+        if (array_key_exists((int) $course['idCourse'], $userCourses)) {
             $userCourse = $userCourses[$course['idCourse']];
 
             switch ($course['level']) {
@@ -914,6 +913,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 case CourseLevel::COURSE_LEVEL_TUTOR:
                     $response['can'] = true;
                     $response['reason'] = 'user_status';
+
                     return $response;
                     break;
                 default:
@@ -923,15 +923,14 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             switch ($userLevel) {
                 case ADMIN_GROUP_GODADMIN:
                 case ADMIN_GROUP_ADMIN:
-
                     $response['can'] = true;
                     $response['reason'] = 'user_status';
+
                     return $response;
                     break;
                 default:
                     break;
             }
-
 
             if ($response['can']) {
                 switch ($course['status']) {
@@ -939,7 +938,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     case CST_CONCLUDED:
                     case CST_CANCELLED:
                         $response['reason'] = 'course_status - ' . $course['status'];
-                        
+
                         $response['can'] = false;
                         break;
                     default:
@@ -956,7 +955,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     $expiring = ($expiring == -0) ? 0 : $expiring;
                     if ($exp_time < 0) {
                         $response['can'] = false;
-                        
+
                         $response['reason'] = 'time_elapsed';
                         $response['expiring_in'] = $expiring;
                     }
@@ -966,16 +965,15 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             if ($response['can']) {
                 if (!empty($userCourse['dateBeginValidity']) && ($userCourse['dateBeginValidity'] !== '0000-00-00 00:00:00') && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateBeginValidity']) <= 0)) {
                     $response['can'] = false;
-                    
+
                     $response['reason'] = 'subscription_not_started';
                 }
             }
 
             if ($response['can']) {
                 if (!empty($userCourse['dateExpireValidity']) && ($userCourse['dateExpireValidity'] !== '0000-00-00 00:00:00') && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateExpireValidity']) >= 0)) {
-
                     $response['can'] = false;
-                    
+
                     $response['reason'] = 'subscription_expired';
                 }
             }
@@ -983,16 +981,15 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             if ($response['can']) {
                 if (!empty($course['prerequisites_satisfied'])) {
                     $response['can'] = false;
-                    
+
                     $response['reason'] = 'prerequisites';
                 }
             }
 
             if ($response['can']) {
                 if (isset($course['waiting']) && ($course['waiting'] >= 1)) {
-
                     $response['can'] = false;
-                    
+
                     $response['reason'] = 'waiting';
                 }
             }
@@ -1003,10 +1000,10 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     try {
                         $date = new DateTime($course['date_begin']);
                         $timeStart = $date->format('U');
-                        if (isset($course['hour_begin']) && (int)$course['hour_begin'] !== -1) {
+                        if (isset($course['hour_begin']) && (int) $course['hour_begin'] !== -1) {
                             $hourBegin = $course['hour_begin'];
                             $seconds = strtotime("1970-01-01 $hourBegin UTC");
-                            $timeStart = (int)$timeStart + (int)$seconds;
+                            $timeStart = (int) $timeStart + (int) $seconds;
                         }
 
                         if ($now < $timeStart) {
@@ -1014,7 +1011,6 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                             $response['reason'] = 'course_date';
                         }
                     } catch (\Exception $e) {
-
                     }
                 }
             }
@@ -1024,17 +1020,16 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     try {
                         $date = new DateTime($course['date_end']);
                         $timeEnd = $date->format('U');
-                        if (isset($course['hour_end']) && (int)$course['hour_end'] !== -1) {
+                        if (isset($course['hour_end']) && (int) $course['hour_end'] !== -1) {
                             $hour_end = $course['hour_end'];
                             $seconds = strtotime("1970-01-01 $hour_end UTC");
-                            $timeEnd = (int)$timeEnd + (int)$seconds;
+                            $timeEnd = (int) $timeEnd + (int) $seconds;
                         }
                         if ($now > $timeEnd) {
                             $response['can'] = false;
                             $response['reason'] = 'course_date';
                         }
                     } catch (\Exception $e) {
-
                     }
                 }
             }
@@ -1061,9 +1056,9 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 $query = 'SELECT cc.prerequisites '
                     . ' FROM %lms_coursepath_courses AS cc '
                     . ' JOIN %lms_coursepath_user AS cu ON cc.id_path = cu.id_path '
-                    . ' WHERE cu.idUser = ' . (int)Docebo::user()->getIdSt() . ' '
-                    . ' AND cc.id_item = ' . (int)$course['idCourse'] . ' '
-                    . (($id_path != 0) ? (' AND cc.id_path = ' . (int)$id_path) : '');
+                    . ' WHERE cu.idUser = ' . (int) Docebo::user()->getIdSt() . ' '
+                    . ' AND cc.id_item = ' . (int) $course['idCourse'] . ' '
+                    . (($id_path != 0) ? (' AND cc.id_path = ' . (int) $id_path) : '');
 
                 $result = sql_query($query);
 
@@ -1075,18 +1070,18 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     if ($prerequisites !== '') {
                         $hasPrerequisites = true;
                         $countPrerequisites = count(explode(',', $prerequisites));
-                        $numPrerequisites++;
+                        ++$numPrerequisites;
 
                         $query = 'SELECT COUNT(*) as count'
                             . ' FROM %lms_courseuser '
                             . ' WHERE idCourse IN (' . $prerequisites . ') '
-                            . ' AND idUser = ' . (int)Docebo::user()->getIdSt() . ' '
+                            . ' AND idUser = ' . (int) Docebo::user()->getIdSt() . ' '
                             . ' AND status = ' . _CUS_END;
 
                         $countResult = sql_fetch_assoc(sql_query($query));
 
                         if ($countResult['count'] >= $countPrerequisites) {
-                            $prerequisiteSatisfied++;
+                            ++$prerequisiteSatisfied;
                         }
                     }
                 }
@@ -1096,14 +1091,12 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     $response['reason'] = 'prerequisites';
                 }
             }
-
         } else {
             switch ($userLevel) {
                 case ADMIN_GROUP_GODADMIN:
                 case ADMIN_GROUP_ADMIN:
                 case ADMIN_GROUP_USER:
                 default:
-
                     if (($course['sub_start_date'] !== '0000-00-00') && !empty($course['sub_start_date'])) {
                         try {
                             $date = new DateTime($course['sub_start_date']);
@@ -1113,7 +1106,6 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                                 $response = ['can' => false, 'reason' => 'course_sub_start_date', 'expiring_in' => $expireTime];
                             }
                         } catch (Exception $e) {
-
                         }
                     }
 
@@ -1126,7 +1118,6 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                                 $response = ['can' => false, 'reason' => 'course_sub_end_date', 'expiring_in' => $expireTime];
                             }
                         } catch (Exception $e) {
-
                         }
                     }
                     break;
@@ -1144,7 +1135,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
               u.idst = lcdu.id_user  AND
               lcu.idUser = lcdu.id_user
               and lcu.idCourse = lcd.id_course AND
-              lcd.id_course = ' . (int)$idCourse . ' AND lcu.level = 6';
+              lcd.id_course = ' . (int) $idCourse . ' AND lcu.level = 6';
         $rs = sql_query($q);
         while ($r = sql_fetch_assoc($rs)) {
             $teachers[$r['id_date']][] = $r['firstname'] . ' ' . $r['lastname'];
@@ -1306,7 +1297,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 if (isset($filter['c_flatview'])) {
                     $flat = (($filter['c_flatview']['value'] == 'true') ? true : false);
                 }
-                $categories = [(int)$filter['c_category']['value']];
+                $categories = [(int) $filter['c_category']['value']];
                 if ($flat) {
                     //retrieve category's sub-categories ids
                     if ($filter['c_category']['value'] != 0) {
@@ -1316,13 +1307,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                         $categories_query = 'SELECT idCategory FROM %lms_category WHERE iLeft>' . $c_left . ' AND iRight<' . $c_right;
                         $res = sql_query($categories_query);
                         while (list($sub_category) = sql_fetch_row($res)) {
-                            $categories[] = (int)$sub_category;
+                            $categories[] = (int) $sub_category;
                         }
                     } else {
                         $categories_query = 'SELECT idCategory FROM %lms_category WHERE 1';
                         $res = sql_query($categories_query);
                         while (list($sub_category) = sql_fetch_row($res)) {
-                            $categories[] = (int)$sub_category;
+                            $categories[] = (int) $sub_category;
                         }
                     }
                 }
@@ -1447,7 +1438,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     $flat = (($filter['c_flatview']['value'] == 'true') ? true : false);
                 }
 
-                $categories = [(int)$filter['c_category']['value']];
+                $categories = [(int) $filter['c_category']['value']];
                 if ($flat && ($filter['c_category']['value'] != 0)) {
                     //retrieve category's sub-categories ids
                     $bounds_query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . $filter['c_category']['value'];
@@ -1456,7 +1447,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     $categories_query = 'SELECT idCategory FROM %lms_category WHERE iLeft>' . $c_left . ' AND iRight<' . $c_right;
                     $res = sql_query($categories_query);
                     while (list($sub_category) = sql_fetch_row($res)) {
-                        $categories[] = (int)$sub_category;
+                        $categories[] = (int) $sub_category;
                     }
                 }
                 if (!($flat && ($filter['c_category']['value'] == 0))) {
@@ -1563,7 +1554,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
         if ($categories) {
             if (!is_array($categories)) {
-                $query .= ' AND idCategory = ' . (int)$categories . ' ';
+                $query .= ' AND idCategory = ' . (int) $categories . ' ';
             } else {
                 $query .= ' AND idCategory IN (' . implode(',', $categories) . ') ';
             }
@@ -1659,7 +1650,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             CST_AVAILABLE => Lang::t('_CST_AVAILABLE', 'course'),
             CST_EFFECTIVE => Lang::t('_CST_CONFIRMED', 'course'),
             CST_CONCLUDED => Lang::t('_CST_CONCLUDED', 'course'),
-            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'),];
+            CST_CANCELLED => Lang::t('_CST_CANCELLED', 'course'), ];
 
         $query = 'SELECT c.idCourse, c.code, c.name, c.status, COUNT(cd.id_date) as classroom_number '
             . ' FROM %lms_course as c LEFT JOIN %lms_course_date as cd ON c.idCourse=cd.id_course '
@@ -1667,7 +1658,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
         //if ($categories) {
         if (!is_array($categories)) {
-            $query .= ' AND c.idCategory = ' . (int)$categories . ' ';
+            $query .= ' AND c.idCategory = ' . (int) $categories . ' ';
         } else {
             $query .= ' AND c.idCategory IN (' . implode(',', $categories) . ') ';
         }
@@ -1890,10 +1881,10 @@ class Man_CourseUser
      * Return the complete course list in which a user is subscribe, you can filter the result with
      * course status or user status in the course.
      *
-     * @param int $id_user the idst of the user
-     * @param int $id_category filter for course category
+     * @param int $id_user       the idst of the user
+     * @param int $id_category   filter for course category
      * @param int $course_status filter for course statsus the result
-     * @param int $user_status filter for the user status in the course
+     * @param int $user_status   filter for the user status in the course
      *
      * @return array the list of the course with the carachteristic of it array( id_course => array(
      *               idCourse, code, name, description, date_begin, date_end, valid_time, course_status,
@@ -1942,17 +1933,17 @@ class Man_CourseUser
         $query = "SELECT COUNT(*) FROM %lms_courseuser WHERE idUser = $id_user";
         list($count) = sql_fetch_row(sql_query($query));
 
-        return (int)$count;
+        return (int) $count;
     }
 
     /**
      * Return the complete id list in which a user is subscribe, you can filter the result with
      * course status or user status in the course.
      *
-     * @param int $id_user the idst of the user
-     * @param int $id_category filter for course category
+     * @param int $id_user       the idst of the user
+     * @param int $id_category   filter for course category
      * @param int $course_status filter for course statsus the result
-     * @param int $user_status filter for the user status in the course
+     * @param int $user_status   filter for the user status in the course
      *
      * @return array the list of the course with the carachteristic of it array( id_course => array(
      *               idCourse, code, name, description, date_begin, date_end, valid_time, course_status,
@@ -1990,7 +1981,7 @@ class Man_CourseUser
     /**
      * Return the complete course list in which a user is subscribe with the level requested.
      *
-     * @param int $id_user the idst of the user
+     * @param int $id_user     the idst of the user
      * @param int $id_category filter for course category
      *
      * @return array the list of the course with the carachteristic of it array( id_course => array(
@@ -2023,7 +2014,7 @@ class Man_CourseUser
      * Return the complete user list that have the requested level.
      *
      * @param int $id_user the idst of the user
-     * @param int $level the level number
+     * @param int $level   the level number
      *
      * @return array the list of the course with the carachteristic of it array( id_course => array(
      *               idCourse, code, name, description
@@ -2069,7 +2060,7 @@ class Man_CourseUser
             $courses[$idCourse] = ['idUser' => $id_user,
                 'level' => $lv,
                 'waiting' => $is_waiting,
-                'status' => $status,];
+                'status' => $status, ];
         }
 
         return $courses;
@@ -2289,7 +2280,7 @@ class DoceboCourse
 
         $members = $acl_man->getGroupAllUser($idst_group);*/
         $members = [];
-        $re_course = sql_query("SELECT idUser FROM %lms_courseuser WHERE idCourse = '" . (int)$this->id_course . "'");
+        $re_course = sql_query("SELECT idUser FROM %lms_courseuser WHERE idCourse = '" . (int) $this->id_course . "'");
         while (list($idu) = sql_fetch_row($re_course)) {
             $members[$idu] = $idu;
         }
@@ -2370,7 +2361,7 @@ class DoceboCourse
         $flip = array_flip($arr_groupid);
         foreach ($arr_idst as $groupid => $idst) {
             $lv = $flip[$groupid];
-            $map[$lv] = (int)$idst;
+            $map[$lv] = (int) $idst;
         }
 
         return $map;
@@ -2411,11 +2402,11 @@ class DoceboCourse
 }
 
 /**
- * @param int $idCourse the id of the course
+ * @param int  $idCourse           the id of the course
  * @param bool $subdived_for_level if is true the array is in the form
  *                                 [id_lv] => ([] => id_user, [] => id_user, ...), [id_lv] => ([] => id_user, ...)
- * @param int $id_level if is not false the array contains only a list of id_user of the level passed
- * @param bool $exclude_waiting if true exclude the user in wait status
+ * @param int  $id_level           if is not false the array contains only a list of id_user of the level passed
+ * @param bool $exclude_waiting    if true exclude the user in wait status
  *
  * @return array contains the id_user of the user subscribed, the structure is dependent of the other param
  */
@@ -2427,7 +2418,7 @@ function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false
     $query_courseuser = "
 	SELECT idUser, level, waiting
 	FROM %lms_courseuser
-	WHERE idCourse = '" . $idCourse . "' AND edition_id='" . (int)$edition_id . "'";
+	WHERE idCourse = '" . $idCourse . "' AND edition_id='" . (int) $edition_id . "'";
     if ($exclude_waiting) {
         $query_courseuser .= ' AND waiting = 0';
     }
@@ -2451,11 +2442,11 @@ function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false
 }
 
 /**
- * @param int $idCourse the id of the course
+ * @param int  $idCourse           the id of the course
  * @param bool $subdived_for_level if is true the array is in the form
  *                                 [id_lv] => ([] => id_user, [] => id_user, ...), [id_lv] => ([] => id_user, ...)
- * @param int $id_level if is not false the array contains only a list of id_user of the level passed
- * @param bool $exclude_waiting if true exclude the user in wait status
+ * @param int  $id_level           if is not false the array contains only a list of id_user of the level passed
+ * @param bool $exclude_waiting    if true exclude the user in wait status
  *
  * @return array contains the id_user of the user subscribed, the structure is dependent of the other param
  */
@@ -2510,7 +2501,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
         $query_courseuser .= ' ORDER BY u.lastname, u.firstname, u.userid';
     }
     if ($limit !== false) {
-        $query_courseuser .= ' LIMIT ' . (int)$limit . ', ' . (int)FormaLms\lib\Get::sett('visuItem');
+        $query_courseuser .= ' LIMIT ' . (int) $limit . ', ' . (int) FormaLms\lib\Get::sett('visuItem');
     }
     $re_courseuser = sql_query($query_courseuser);
     while (list($id_user, $lv, $is_waiting, $status, $absent) = sql_fetch_row($re_courseuser)) {
@@ -2519,20 +2510,20 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
                 'level' => $lv,
                 'waiting' => $is_waiting,
                 'status' => $status,
-                'absent' => $absent,];
+                'absent' => $absent, ];
         } else {
             if ($is_waiting) {
                 $id_users['waiting'][$id_user] = ['idUser' => $id_user,
                     'level' => $lv,
                     'waiting' => $is_waiting,
                     'status' => $status,
-                    'absent' => $absent,];
+                    'absent' => $absent, ];
             } else {
                 $id_users[$lv][$id_user] = ['idUser' => $id_user,
                     'level' => $lv,
                     'waiting' => $is_waiting,
                     'status' => $status,
-                    'absent' => $absent,];
+                    'absent' => $absent, ];
             }
         }
     }
@@ -2541,10 +2532,10 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
 }
 
 /**
- * @param int $idCourse the id of the course
+ * @param int  $idCourse           the id of the course
  * @param bool $subdived_for_level if is true the array is in the form
  *                                 [id_lv] => ([] => id_user, [] => id_user, ...), [id_lv] => ([] => id_user, ...)
- * @param int $id_level if is not false the array contains only a list of id_user of the level passed
+ * @param int  $id_level           if is not false the array contains only a list of id_user of the level passed
  *
  * @return array contains the id_user of the user subscribed and the relative level
  */
@@ -2556,7 +2547,7 @@ function getSubscribedLevel($idCourse, $subdived_for_level = false, $id_level = 
     $query_courseuser = "
 	SELECT idUser, level, waiting
 	FROM %lms_courseuser
-	WHERE idCourse = '" . $idCourse . "' AND edition_id='" . (int)$edition_id . "'";
+	WHERE idCourse = '" . $idCourse . "' AND edition_id='" . (int) $edition_id . "'";
     if ($id_level !== false) {
         $query_courseuser .= " AND level = '" . $id_level . "'";
     }
@@ -2680,7 +2671,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     $re_course = sql_query('
 	SELECT level, status, waiting
 	FROM %lms_courseuser
-	WHERE idCourse = ' . (int)$idCourse . ' AND idUser = ' . (int)Docebo::user()->getId() . '');
+	WHERE idCourse = ' . (int) $idCourse . ' AND idUser = ' . (int) Docebo::user()->getId() . '');
     list($level_c, $status_user, $waiting_user) = sql_fetch_row($re_course);
 
     Docebo::setCourse($idCourse);
@@ -2735,7 +2726,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
                 // enter the assessment course and go to test editing if there is a test with no question in it
                 $query = 'SELECT idOrg, idResource '
                     . ' FROM %lms_organization '
-                    . ' WHERE idCourse = ' . (int)$session->get('idCourse') . " AND objectType = 'test' "
+                    . ' WHERE idCourse = ' . (int) $session->get('idCourse') . " AND objectType = 'test' "
                     . ' ORDER BY path ASC, title ASC '
                     . ' LIMIT 0,1';
                 $res = sql_query($query);
@@ -2766,7 +2757,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
             } elseif (count($first_lo) >= 2) {
                 $obj = array_shift($first_lo);
                 // if we have more than an object we need to play the first one until it's completed
-                $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int)$obj['id_org'] . ' AND idUser = ' . (int)Docebo::user()->getId();
+                $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) Docebo::user()->getId();
                 list($status) = sql_fetch_row(sql_query($query));
 
                 if ((($status == 'completed') || ($status == 'passed')) && $gotofirst_page) {
@@ -2786,7 +2777,6 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     } else {
         return true;
     }
-
 }
 
 function getModuleFromId($id_module)
@@ -2794,7 +2784,7 @@ function getModuleFromId($id_module)
     $query_menu = '
 	SELECT module_name, default_op
 	FROM %lms_module
-	WHERE idModule = ' . (int)$id_module . ' ';
+	WHERE idModule = ' . (int) $id_module . ' ';
 
     $re_module = sql_query($query_menu);
     if (!$re_module || (sql_num_rows($re_module) == 0)) {
@@ -2822,8 +2812,8 @@ function firstPage($idMain = false)
     %lms_menucourse_under AS un ) JOIN
     %lms_module AS module
 	WHERE main.idMain = un.idMain AND un.idModule = module.idModule
-		AND main.idCourse = '" . (int)$session->get('idCourse') . "'
-		AND un.idCourse = '" . (int)$session->get('idCourse') . "'
+		AND main.idCourse = '" . (int) $session->get('idCourse') . "'
+		AND un.idCourse = '" . (int) $session->get('idCourse') . "'
 		" . (($idMain !== false) ? (" AND main.idMain='" . $idMain . "' ") : '') . '
 	ORDER BY main.sequence, un.sequence';
     $re_main = sql_query($query_main);

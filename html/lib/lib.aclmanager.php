@@ -512,7 +512,6 @@ class DoceboACLManager
                           $signature, $alredy_encripted = false, $idst = false, $pwd_expire_at = '', $force_change = '',
                           $facebook_id = false, $twitter_id = false, $linkedin_id = false, $google_id = false)
     {
-
         if ($idst === false) {
             $idst = $this->_createST();
         }
@@ -578,7 +577,6 @@ class DoceboACLManager
             . (!empty($google_id) ? ' "' . $google_id . ' "' : 'NULL') . ' '
             . ')';
 
-
         if ($this->_executeQuery($query)) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
                 . 'VALUES ( ' . (int) $idst . ", '" . date('Y-m-d H:i:s') . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int) getLogUserId() . '  )';
@@ -594,8 +592,6 @@ class DoceboACLManager
 
             return $idst;
         } else {
-
-
             return false;
         }
     }
@@ -2661,7 +2657,7 @@ class DoceboACLManager
      **/
     public function getGroupAllUser($idst, $filter = '')
     {
-//		return array_merge( $this->getGroupUMembers($idst,$filter),  $this->getGroupUDescendants($idst,$filter) );
+        //		return array_merge( $this->getGroupUMembers($idst,$filter),  $this->getGroupUDescendants($idst,$filter) );
 
         $arr_umembers = $this->getGroupUMembers($idst, $filter);
         $arr_udescend = $this->getGroupUDescendants($idst, $filter);

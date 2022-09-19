@@ -103,7 +103,7 @@ function approveuser(&$url)
             case '2':
                 $my_fr->addFriend($_GET['id_friend'], MF_APPROVED, '');
                 $my_fr->approveFriend($_GET['id_friend']);
-            ; break;
+             break;
             case '1': $my_fr->approveFriend($_GET['id_friend']); break;
             case '0': $my_fr->refuseFriend($_GET['id_friend']); break;
         }
@@ -278,15 +278,15 @@ function myfriendsDispatch($op)
     switch ($op) {
         case 'myfriends':
             myfriends($url);
-        ; break;
+         break;
         case 'searchuser':
             searchUser($url);
-        ; break;
+         break;
         case 'approveuser':
             approveuser($url);
-        ; break;
+         break;
         case 'delfriend':
             delfriend($url);
-        ; break;
+         break;
     }
 }

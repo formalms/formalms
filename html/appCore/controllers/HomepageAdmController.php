@@ -397,11 +397,11 @@ class HomepageAdmController extends AdmController
 
         switch ($res) {
             case PWD_ELAPSED:
-                $this->session->set('must_renew_pwd',1);
+                $this->session->set('must_renew_pwd', 1);
                 $redirection['req'] = 'lms/profile/renewalpwd';
                 break;
             case MANDATORY_FIELDS:
-                $this->session->set('request_mandatory_fields_compilation',1);
+                $this->session->set('request_mandatory_fields_compilation', 1);
                 $redirection['req'] = 'lms/precompile/show';
                 break;
             case USER_SAVED:
@@ -536,11 +536,11 @@ class HomepageAdmController extends AdmController
         $redirection = [];
         switch ($this->model->saveUser($user)) {
             case PWD_ELAPSED:
-                $this->session->set('must_renew_pwd',1);
+                $this->session->set('must_renew_pwd', 1);
                 $redirection['req'] = 'lms/profile/renewalpwd';
                 break;
             case MANDATORY_FIELDS:
-                $this->session->set('request_mandatory_fields_compilation',1);
+                $this->session->set('request_mandatory_fields_compilation', 1);
                 $redirection['req'] = 'lms/precompile/show';
                 break;
             case USER_SAVED:
@@ -569,11 +569,11 @@ class HomepageAdmController extends AdmController
             $redirection['modname'] = $module;
 
             $loginRedirect = trim(dirname($_SERVER['SCRIPT_NAME']), DIRECTORY_SEPARATOR) . '/' . _folder_lms_ . '/index.php?' . http_build_query($params, '', '&');
-            $this->session->set('login_redirect',$loginRedirect);
+            $this->session->set('login_redirect', $loginRedirect);
             switch ($next_action) {
                 case 'custom_playitem':
                     $loginRedirect += '&collapse_menu=1';
-                    $this->session->set('login_redirect',$loginRedirect);
+                    $this->session->set('login_redirect', $loginRedirect);
                     break;
             }
         }

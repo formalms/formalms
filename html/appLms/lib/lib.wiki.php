@@ -354,5 +354,4 @@ class LmsWikiManager extends CoreWikiManager
 
 class LmsWikiPublic extends CoreWikiPublic
 {
-  
 }
