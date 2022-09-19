@@ -38,7 +38,7 @@ function getTemplate()
 
     //search for a template associated to the current host
     $plat_templ = parseTemplateDomain($request->server->get('HTTP_HOST'));
-    
+
     if ($plat_templ != false) {
         $session->set('template', $plat_templ);
         $session->save();
@@ -182,13 +182,13 @@ function readTemplateManifest($template_name, $key = false)
             if (key_exists($key, $man_array)) {
                 return $man_array[$key];
             }
-    
+
             return $man_array;
         } else {
             return false;
         }
     }
-    
+
 }
 /**
  * Check the template version.
