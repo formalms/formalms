@@ -96,7 +96,7 @@ class UserPreferencesDb
                 'default_value' => $default_value,
                 'type' => $type,
                 'visible' => $visible,
-                'load_at_startup' => $load_at_startup,];
+                'load_at_startup' => $load_at_startup, ];
         }
 
         return $all_preferences;
@@ -133,7 +133,7 @@ class UserPreferencesDb
                 'default_value' => $default_value,
                 'type' => $type,
                 'visible' => $visible,
-                'load_at_startup' => $load_at_startup,];
+                'load_at_startup' => $load_at_startup, ];
         } else {
             return false;
         }
@@ -170,12 +170,12 @@ class UserPreferencesDb
     /**
      * create a new preference.
      *
-     * @param string $path the path of the preference
-     * @param string $label the label for the name
-     * @param string $default_value the default value
-     * @param string $type an identifier for the type of the preference
-     * @param bool $visible if the field is visible
-     * @param bool $load_at_startup if it must loaded at class instanciation or only at request
+     * @param string $path            the path of the preference
+     * @param string $label           the label for the name
+     * @param string $default_value   the default value
+     * @param string $type            an identifier for the type of the preference
+     * @param bool   $visible         if the field is visible
+     * @param bool   $load_at_startup if it must loaded at class instanciation or only at request
      *
      * @return true if success false otherwise
      */
@@ -198,12 +198,12 @@ class UserPreferencesDb
     /**
      * update an existing preference.
      *
-     * @param string $path the path of the preference
-     * @param string $label the label for the name
-     * @param string $default_value the default value
-     * @param string $type an identifier for the type of the preference
-     * @param bool $visible if the field is visible
-     * @param bool $load_at_startup if it must loaded at class instanciation or only at request
+     * @param string $path            the path of the preference
+     * @param string $label           the label for the name
+     * @param string $default_value   the default value
+     * @param string $type            an identifier for the type of the preference
+     * @param bool   $visible         if the field is visible
+     * @param bool   $load_at_startup if it must loaded at class instanciation or only at request
      *
      * @return true if success false otherwise
      */
@@ -245,8 +245,8 @@ class UserPreferencesDb
     }
 
     /**
-     * @param int $id_user the id of the user
-     * @param string $path the path of the preference
+     * @param int    $id_user the id of the user
+     * @param string $path    the path of the preference
      *
      * @return string the value of the user for this preference or the default value of the preference
      */
@@ -270,7 +270,7 @@ class UserPreferencesDb
     /**
      * get all user preferences.
      *
-     * @param int $id_user the id of the user
+     * @param int    $id_user   the id of the user
      * @param string $base_path the base_path of the preference
      *
      * @return array the value of the user for the various preferences
@@ -302,10 +302,10 @@ class UserPreferencesDb
     /**
      * get all user preferences.
      *
-     * @param int $id_user the id of the user
-     * @param string $visible if true only the visible is returned
+     * @param int    $id_user         the id of the user
+     * @param string $visible         if true only the visible is returned
      * @param string $load_at_startup if true only the load at startup is returned
-     * @param string $base_path the base_path of the preference
+     * @param string $base_path       the base_path of the preference
      *
      * @return array the value of the user for the various preferences [path] => value(user or default)
      */
@@ -342,10 +342,10 @@ class UserPreferencesDb
     /**
      * get all user preferences and the value of a specific user for it, and in respect with passed filter.
      *
-     * @param int $id_user the id of the user
-     * @param int $visible filter preferences that is visible
-     * @param int $load_at_startup filter preferences that is loaded at startup
-     * @param string $base_path if you need to load the user preferences limited to a specific group of path
+     * @param int    $id_user         the id of the user
+     * @param int    $visible         filter preferences that is visible
+     * @param int    $load_at_startup filter preferences that is loaded at startup
+     * @param string $base_path       if you need to load the user preferences limited to a specific group of path
      *
      * @return string the value of the user for the various preferences
      */
@@ -384,7 +384,7 @@ class UserPreferencesDb
                 'type' => $type,
                 'visible' => $visible,
                 'load_at_startup' => $load_at_startup,
-                'user_value' => ($user_value === null ? $default_value : $user_value),];
+                'user_value' => ($user_value === null ? $default_value : $user_value), ];
         }
 
         return $all_preferences;
@@ -393,8 +393,8 @@ class UserPreferencesDb
     /**
      * assign to a user a value for a preferences.
      *
-     * @param int $id_user the id of the user
-     * @param int $path the path of the preference
+     * @param int    $id_user   the id of the user
+     * @param int    $path      the path of the preference
      * @param string $new_value the new value
      *
      * @return bool true if success false otherwise
@@ -427,7 +427,7 @@ class UserPreferencesDb
      * delete all the preference value stored for a user or a specific one.
      *
      * @param int $id_user the id of the user
-     * @param int $path (optional) the path of the preference
+     * @param int $path    (optional) the path of the preference
      *
      * @return bool true if success false otherwise
      */
@@ -447,7 +447,7 @@ class UserPreferencesDb
     /**
      * delete all the preference value stored for a user from a base path.
      *
-     * @param int $id_user the id of the user
+     * @param int $id_user   the id of the user
      * @param int $base_path the path of the preference
      *
      * @return bool true if success false otherwise
@@ -543,7 +543,7 @@ class UserPreferences
      * save a specific value for the preference.
      *
      * @param string $preference the preference that must by find
-     * @param mixed $new_value the new value to assign
+     * @param mixed  $new_value  the new value to assign
      *
      * @return mixed true if success false otherwise
      */
@@ -645,8 +645,8 @@ class UserPreferences
     }
 
     /**
-     * @param string $base_path if specified load only preference form this base_path
-     * @param bool $only_visible if true only the visible
+     * @param string $base_path    if specified load only preference form this base_path
+     * @param bool   $only_visible if true only the visible
      *
      * @return string the code for show the actual preference of the user
      */
@@ -666,30 +666,30 @@ class UserPreferences
                     //drop down language
                     $lang_sel = $this->getLanguage();
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                        $lang_sel);;
+                        $lang_sel);
                     break;
                 case 'template':
                     //drop down template
                     $templ_sel = getTemplate();
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                        $templ_sel);;
+                        $templ_sel);
                     break;
                 case 'hteditor':
                     //drop down hteditor
                     $ht_edit = getHTMLEditorList();
                     $value = ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']);
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                        $ht_edit[$value]);;
+                        $ht_edit[$value]);
                     break;
                 case 'layout_chooser':
                     //drop down hteditor
                     $layout = [
                         'left' => Lang::t('_LAYOUT_LEFT'),
                         'over' => Lang::t('_LAYOUT_OVER'),
-                        'right' => Lang::t('_LAYOUT_RIGHT'),];
+                        'right' => Lang::t('_LAYOUT_RIGHT'), ];
                     $value = ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']);
                     $html .= Form::getLineBox($lang->def($pref['label']),
-                        $layout[$value]);;
+                        $layout[$value]);
                     break;
                 case 'enum':
                     //on off
@@ -697,7 +697,7 @@ class UserPreferences
                     $html .= Form::getLineBox($lang->def($pref['label']),
                         ($value == 'on' ?
                             $lang->def('_ACTIVE') :
-                            $lang->def('_OFF')));;
+                            $lang->def('_OFF')));
                     break;
                 //string or int
                 default:
@@ -712,8 +712,8 @@ class UserPreferences
     }
 
     /**
-     * @param string $base_path if specified load only preference form this base_path
-     * @param bool $only_visible if true only the visible
+     * @param string $base_path    if specified load only preference form this base_path
+     * @param bool   $only_visible if true only the visible
      *
      * @return string the code for the mod mask
      */
@@ -743,7 +743,7 @@ class UserPreferences
                         $this->base_name . '_' . $pref['path_name'],
                         $this->base_name . '[' . $pref['path_name'] . ']',
                         $langs,
-                        array_search($lang_sel, $langs));;
+                        array_search($lang_sel, $langs));
                     break;
                 case 'template':
                     //drop down template
@@ -754,7 +754,7 @@ class UserPreferences
                         $this->base_name . '_' . $pref['path_name'],
                         $this->base_name . '[' . $pref['path_name'] . ']',
                         $templ,
-                        array_search($templ_sel, $templ));;
+                        array_search($templ_sel, $templ));
                     break;
                 case 'hteditor':
                     //drop down hteditor
@@ -763,19 +763,19 @@ class UserPreferences
                         $this->base_name . '_' . $pref['path_name'],
                         $this->base_name . '[' . $pref['path_name'] . ']',
                         $ht_edit,
-                        ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));;
+                        ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));
                     break;
                 case 'layout_chooser':
                     //drop down hteditor
                     $layout = [
                         'left' => Lang::t('_LAYOUT_LEFT'),
                         'over' => Lang::t('_LAYOUT_OVER'),
-                        'right' => Lang::t('_LAYOUT_RIGHT'),];
+                        'right' => Lang::t('_LAYOUT_RIGHT'), ];
                     $html[$pref['path_name']] = Form::getDropdown($lang->def($pref['label']),
                         $this->base_name . '_' . $pref['path_name'],
                         $this->base_name . '[' . $pref['path_name'] . ']',
                         $layout,
-                        ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));;
+                        ($pref['user_value'] ? $pref['user_value'] : $pref['default_value']));
                     break;
                 case 'enum':
                     //on off
@@ -787,7 +787,7 @@ class UserPreferences
                             ($value == 'on'), '')
                         . ' '
                         . Form::getLabel($this->base_name . '_' . $pref['path_name'] . '_on', $lang->def($pref['label']))
-                        . Form::closeFormLine();;
+                        . Form::closeFormLine();
                     break;
                 //string or int
                 default:
@@ -803,8 +803,8 @@ class UserPreferences
     }
 
     /**
-     * @param array $array_source save the preferences of a user
-     * @param string $base_path if specified load only preference form this base_path
+     * @param array  $array_source save the preferences of a user
+     * @param string $base_path    if specified load only preference form this base_path
      *
      * @return nothing
      */
@@ -829,18 +829,18 @@ class UserPreferences
             switch ($pref['type']) {
                 case 'language':
                     $langs = Docebo::langManager()->getAllLangCode();
-                    $re &= $this->setLanguage($langs[$new_value]);;
+                    $re &= $this->setLanguage($langs[$new_value]);
                     break;
                 case 'template':
                     $templ = getTemplateList();
-                    $re &= $this->setTemplate($templ[$new_value]);;
+                    $re &= $this->setTemplate($templ[$new_value]);
                     break;
                 case 'enum':
                     if ($new_value == null) {
                         $re &= $this->setPreference($pref['path_name'], 'off');
                     } else {
                         $re &= $this->setPreference($pref['path_name'], 'on');
-                    };
+                    }
                     break;
 
                 default:
@@ -1512,7 +1512,7 @@ class AdminPreference
     public function saveAdminClasslocation($idst, $selection)
     {
         if (is_numeric($selection)) {
-            $selection = [(int)$selection];
+            $selection = [(int) $selection];
         }
         if (!is_array($selection)) {
             return false;
@@ -1577,7 +1577,7 @@ class AdminPreference
     public function removeAdminTree($idst, $idst_admin)
     {
         if (is_numeric($entries)) {
-            $entries = [(int)$entries];
+            $entries = [(int) $entries];
         }
         if (!is_array($entries)) {
             return false;
@@ -1596,7 +1596,7 @@ class AdminPreference
     protected function _addAdminEntries($entries, $idst_admin, $type)
     {
         if (is_numeric($entries)) {
-            $entries = [(int)$entries];
+            $entries = [(int) $entries];
         }
         if (!is_array($entries)) {
             return false;
@@ -1611,7 +1611,7 @@ class AdminPreference
 
         $list = [];
         foreach ($entries as $entry) {
-            $list[] = "('" . (int)$entry . "', '" . $idst_admin . "', '" . $type . "')";
+            $list[] = "('" . (int) $entry . "', '" . $idst_admin . "', '" . $type . "')";
         }
         $query .= implode(',', $list);
 

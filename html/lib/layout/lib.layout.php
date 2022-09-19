@@ -326,7 +326,7 @@ class Layout
             $intest = '<?xml version="1.0" encoding="' . self::charset() . '"?' . '>' . "\n";
         }
         if (file_exists(_templates_ . '/' . getTemplate() . '/layout/' . $layout . '.html.twig')) {
-            $dataforview = array_merge($dataForView,self::PrepareInclude($layout));
+            $dataforview = array_merge($dataForView, self::PrepareInclude($layout));
             echo FormaLms\appCore\Template\TwigManager::getInstance()->render($layout . '.html.twig', $dataforview, _templates_ . '/' . getTemplate() . '/layout/');
         } else {
             include _templates_ . '/' . getTemplate() . '/layout/' . $layout . '.php';
