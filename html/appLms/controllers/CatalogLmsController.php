@@ -69,9 +69,10 @@ class CatalogLmsController extends LmsController
     {
         $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
         $user_catalogue = $this->model->getUserCatalogue(Docebo::user()->getIdSt());
+        $onCatalogueEmptySetting = FormaLms\lib\Get::sett('on_catalogue_empty') == 'on';
 
-        $show_general_catalogue_tab = ($this->showAllCategory && count($user_catalogue) === 0);
-        $show_empty_catalogue_tab = (!$this->showAllCategory && count($user_catalogue) === 0);
+        $show_general_catalogue_tab = ($onCatalogueEmptySetting && count($user_catalogue) === 0);
+        $show_empty_catalogue_tab = (!$onCatalogueEmptySetting && count($user_catalogue) === 0);
         $show_user_catalogue_tab = count($user_catalogue) > 0;
 
         $catalogue = '';
