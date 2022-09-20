@@ -310,6 +310,7 @@ abstract class DashboardBlockLms extends Model
             'nameCategory' => $this->getCategory($course['course_category_id']),
             'courseStatus' => $course['course_status'],
             'courseStatusString' => $status_list[(int) $course['course_status']],
+            'userStatus' => (int) $course['user_status'],
             'description' => $course['course_box_description'],
             'img' => (!empty($course['course_img_course']) ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $course['course_img_course'] : ''),
             'hours' => $hourBeginString . (!empty($hourEndString) ? ' - ' . $hourEndString : ''),

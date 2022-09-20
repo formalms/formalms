@@ -666,7 +666,7 @@ if (!Docebo::user()->isAnonymous()) {
             //TODO: EVT_LAUNCH (&)
             //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\UserListEvent::EVENT_NAME, $event);
 
-            $out->add('index.php?modname=reservation&amp;op=excel&id_event=' . $id_event, 'content');
+            $out->add('<a href="index.php?modname=reservation&amp;op=excel&amp;id_event=' . $id_event . '" target="_blank">' . $lang->def('_EXPORT_XLS') . '</a>', 'content');
         } else {
             $out->add($lang->def('_NO_USERS_FOUND'), 'content');
         }

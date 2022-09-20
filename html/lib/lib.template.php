@@ -37,6 +37,7 @@ function getTemplate()
     // force_standard mode
     if ((array_key_exists('notuse_template', $_REQUEST) && isset($_REQUEST['notuse_template'])) || (array_key_exists('notuse_template', $GLOBALS) && $GLOBALS['notuse_template'] == true)) {
         $session->set('template', 'standard');
+        $session->save();
 
         return $session->get('template');
     }
@@ -45,6 +46,7 @@ function getTemplate()
     $plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
     if ($plat_templ != false) {
         $session->set('template', $plat_templ);
+        $session->save();
         if (!checkTemplateVersion($session->get('template'))) {
             return 'standard';
         }

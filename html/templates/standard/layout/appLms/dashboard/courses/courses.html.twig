@@ -23,7 +23,7 @@
                 {% endif %}
             </h3>
             {% for course in block.courses %}
-                {% if status > 0 %}
+                {% if course.courseStatus > 0 %}
                     {% set status_class = 'green' %}
                 {% else %}
                     {% set status_class = 'red' %}
@@ -39,10 +39,16 @@
                         <div class="d-course__title">
                             {{ course.title }}
                         </div>
-                        {% if course.startDateString != '' %}
+                        {% if course.showStartDate or course.showEndDate %}
                             <div class="d-courses__date-wrapper status--{{ status_class }}">
                                 <div class="d-courses__date d-courses__date--arrow d-courses__date--start">
-                                    {{ course.startDateString }} {% if course.endDateString != '' and course.startDateString != course.endDateString %} - {{ course.endDateString }} {% endif %}
+                                    {% if course.showStartDate and course.showEndDate %}
+                                        {{ course.startDateString }} - {{ course.endDateString }}
+                                    {% elseif course.showStartDate and not course.showEndDate %}
+                                        {{ course.startDateString }}
+                                    {% else %}
+                                        {{ course.endDateString }}
+                                    {% endif %}
                                 </div>
                                 {% if course.hours != '' %}
                                     <div class="d-courses__date d-courses__date--arrow d-courses__date--hours">

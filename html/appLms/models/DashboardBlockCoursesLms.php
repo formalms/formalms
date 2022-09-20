@@ -267,6 +267,18 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
 
         $dates = [];
         foreach ($rs as $date) {
+            $courseDateData = [
+                'id' => $date['date_id'],
+                'code' => $date['date_code'],
+                'name' => $date['date_name'],
+                'description' => $date['date_description'],
+                'status' => $date['date_status'],
+                'startDate' => $date['date_start_date'],
+                'endDate' => $date['date_end_date'],
+                'showStartDate' => false,
+                'showEndDate' => false,
+            ];
+
             if ($date['date_start_date'] !== '0000-00-00 00:00:00') {
                 $startDate = new DateTime($date['date_start_date']);
                 $startDateString = $startDate->format('d/m/Y');
@@ -281,17 +293,21 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
                 $endDateString = '';
             }
 
-            $dates[] = [
-                'id' => $date['date_id'],
-                'code' => $date['date_code'],
-                'name' => $date['date_name'],
-                'description' => $date['date_description'],
-                'status' => $date['date_status'],
-                'startDate' => $date['date_start_date'],
-                'endDate' => $date['date_end_date'],
-                'startDateString' => $startDateString,
-                'endDateString' => $endDateString,
-            ];
+            $now = new DateTime();
+            $startDate = new DateTime($course['date_start_date']);
+            $endDate = new DateTime($course['date_end_date']);
+
+            if ($startDate >= $now) {
+                $courseDateData['showStartDate'] = true;
+            }
+            if ($endDate >= $now) {
+                $courseDateData['showEndDate'] = true;
+            }
+
+            $courseDateData['startDateString'] = $startDateString;
+            $courseDateData['endDateString'] = $endDateString;
+
+            $dates[] = $courseDateData;
         }
 
         return $dates;
@@ -300,6 +316,20 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     protected function getDataFromCourse($course)
     {
         $courseData = parent::getDataFromCourse($course);
+
+        $courseData['showStartDate'] = false;
+        $courseData['showEndDate'] = false;
+
+        $now = new DateTime();
+        $startDate = new DateTime($course['course_date_begin']);
+        $endDate = new DateTime($course['course_date_end']);
+
+        if ($startDate >= $now) {
+            $courseData['showStartDate'] = true;
+        }
+        if ($endDate >= $now) {
+            $courseData['showEndDate'] = true;
+        }
 
         $hours = '';
         if (!empty($courseData['hourBegin'])) {
