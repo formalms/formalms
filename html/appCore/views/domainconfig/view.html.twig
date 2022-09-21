@@ -18,7 +18,7 @@
     {{ Form_getTextfield( Lang_translate('_DOMAIN', 'domainconfig') , 'domain', 'domain', 255, item.domain) }}  
     {{ Form_getDropdown(Lang_translate('_TEMPLATE', 'domainconfig'), 'template', 'template', templates, item.template) }}</td>
     {{ Form_getDropdown(Lang_translate('_ORG', 'domainconfig'), 'orgId', 'orgId', orgs, item.orgId) }}</td>
-    {{ Form_getDropdown(Lang_translate('_MAIL_CONFIG', 'mailconfig'), 'mailConfigId', 'mailConfigId', mailConfigs, item.mailConfigId) }}</td>
+    {{ Form_getDropdown(Lang_translate('_MAIL_CONFIG', 'domainconfig'), 'mailConfigId', 'mailConfigId', mailConfigs, item.mailConfigId) }}</td>
 
 {% if parentId %}
         {{ Form_getHidden('parentId', 'parentId', parentId) }}

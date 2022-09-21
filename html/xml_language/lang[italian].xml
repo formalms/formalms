@@ -3285,7 +3285,11 @@ La descrizione verrà mostrata agli studenti prima della somministrazione del te
         <key id="mailconfig&amp;_TEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Invia una mail di test]]></key>
       </module>
       <module id="domainconfig">
-        <key id="domainconfig&amp;_DOMAIN_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Configurazione Domini]]></key>
+        <key id="domainconfig&amp;_DOMAIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dominio]]></key>
+        <key id="domainconfig&amp;_TEMPLATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Template]]></key>
+        <key id="domainconfig&amp;_ORG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Nodo organigramma]]></key>
+        <key id="domainconfig&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Profilo Mail]]></key>
+        <key id="domainconfig&amp;_SUBS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sottolivelli]]></key>
       </module>
     </platform>
   </LANG>

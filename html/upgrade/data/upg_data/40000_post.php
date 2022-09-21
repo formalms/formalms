@@ -20,6 +20,7 @@ function postUpgrade40000()
 {
     Boot::init(BOOT_CONFIG);
     remapSmtpParams();
+    remapDomainParams();
 
     return true;
 }
@@ -56,29 +57,70 @@ function remapSmtpParams()
 
     $result = sql_query($query);
     $res = [];
-
-    while (list($param_name, $param_value) = sql_fetch_row($result)) {
-        if($param_value == 'on' || $param_value == 'off') {
-            $param_value = $param_value == 'on' ? '1' : '0';
+    if (sql_num_rows($result)) {
+        while (list($param_name, $param_value) = sql_fetch_row($result)) {
+            if($param_value == 'on' || $param_value == 'off') {
+                $param_value = $param_value == 'on' ? '1' : '0';
+            }
+            $res[$arrayConfig[$param_name]] = $param_value;
         }
-        $res[$arrayConfig[$param_name]] = $param_value;
-    }
 
-    $queryInsert = 'INSERT INTO'
-    . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
-
-    $result = sql_query($queryInsert);
-
-    $mailConfigId = sql_insert_id();
-
-    foreach($res as $type => $value) {
         $queryInsert = 'INSERT INTO'
-        . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("'. $mailConfigId .'", "'. $type .'", "'. $value .'")';
+        . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
+
         $result = sql_query($queryInsert);
+
+        $mailConfigId = sql_insert_id();
+
+        foreach($res as $type => $value) {
+            $queryInsert = 'INSERT INTO'
+            . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("'. $mailConfigId .'", "'. $type .'", "'. $value .'")';
+            $result = sql_query($queryInsert);
+        }
+
+        $queryDelete = 'DELETE FROM %adm_setting where param_name IN ("' . implode('","', array_keys($arrayConfig)) . '")';
+        $result = sql_query($queryDelete);
+        return $result;
+    } else  {
+        return true;
     }
 
-    $queryDelete = 'DELETE FROM %adm_setting where param_name IN ("' . implode('","', array_keys($arrayConfig)) . '")';
-    $result = sql_query($queryDelete);
-    return $result;
+}
+
+function remapDomainParams()
+{
+
+    $query = 'SELECT param_value'
+            . ' FROM %adm_setting WHERE param_name = "template_domain"';
+    
+
+    $resultQuery = sql_query($query);
+
+    if (sql_num_rows($resultQuery)) {
+        while (list($param_value) = sql_fetch_row($resultQuery)) {
+            
+            $results = json_decode($param_value);
+        }
+
+        
+        foreach($results as $key => $result) {
+            $queryInsert = 'INSERT INTO'
+            . ' %adm_domain_configs (title, domain, template, orgId) VALUES'
+            . '("PROFILE-'.($key+1).'", "'.$result->domain.'","'.$result->template.'","'.$result->node.'")';
+
+            $result = sql_query($queryInsert);
+        }
+
+       
+        if($result) {
+            $queryDelete = 'DELETE FROM %adm_setting WHERE param_name = "template_domain"';
+            $result = sql_query($queryDelete);
+            return $result;
+        }
+    } else {
+
+        //no settings found - nothing to do
+         return true;
+    }
 
 }
