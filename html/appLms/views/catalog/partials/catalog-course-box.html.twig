@@ -32,7 +32,7 @@
             {% if course.course_type == 'classroom' %}
                 {% include 'catalog/partials/classroom-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
             {% elseif course.course_type == 'elearning' %}
-                {% include 'catalog/partials/classroom-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
+                {% include 'catalog/partials/elearning-button.html.twig' with { 'course': course, 'endpoint' : endpoint } %}
             {% endif %}
         {% endif %}
     {% else %}
