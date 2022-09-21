@@ -1261,7 +1261,9 @@ CREATE TABLE IF NOT EXISTS `core_lang_translation` (
 CREATE TABLE IF NOT EXISTS `core_mail_configs` (
     `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `title` varchar(255),
-    `system` boolean NOT NULL DEFAULT 0
+    `system` boolean NOT NULL DEFAULT 0,
+	  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -1283,6 +1285,28 @@ CREATE TABLE IF NOT EXISTS `core_mail_configs_fields` (
 
 --
 -- Dump dei dati per la tabella `core_mail_configs_fields`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `core_domain_configs`
+--
+
+CREATE TABLE IF NOT EXISTS `core_domain_configs` (
+    `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `title` varchar(255),
+	  `domain` varchar(255),
+	  `parentId` int NULL DEFAULT NULL,
+	  `template` varchar(255),
+    `orgId` int NULL DEFAULT NULL,
+	  `mailConfigId` int NULL DEFAULT NULL,
+	  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dump dei dati per la tabella `core_domain_configs`
 --
 
 -- --------------------------------------------------------

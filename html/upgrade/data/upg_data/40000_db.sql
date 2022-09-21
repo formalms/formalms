@@ -38,7 +38,9 @@ VALUES
 CREATE TABLE IF NOT EXISTS core_mail_configs (
     id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title varchar(255),
-    system boolean not null default 0
+    system boolean not null default 0,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS core_mail_configs_fields (
@@ -54,6 +56,8 @@ CREATE TABLE IF NOT EXISTS core_domain_configs (
 	domain varchar(255),
 	parentId int NULL DEFAULT NULL,
 	template varchar(255),
-    orgId int NOT NULL,
-	mailConfigId int NOT NULL,
+    orgId int NULL DEFAULT NULL,
+	mailConfigId int NULL DEFAULT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
