@@ -738,7 +738,7 @@ class CatalogLms extends Model
             }
 
             if (!empty($showRulesValues)) {
-                $query .= ' AND %lms_course.show_rules IN (' . implode($showRulesValues) . ')';
+                $query .= ' AND %lms_course.show_rules IN (' . implode(',',$showRulesValues) . ')';
             }
 
             list($c) = sql_fetch_row(sql_query($query));
