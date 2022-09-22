@@ -13,6 +13,8 @@ namespace FormaLms\lib\Mailer;
 
 use \PHPMailer\PHPMailer\PHPMailer;
 use FormaLms\lib\Mailer\Handlers\SmtpHandler;
+
+require_once _base_ .'/lib/lib.aclmanager.php';
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 //require_once(_base_.'/addons/phpmailer/language/phpmailer.lang-en.php'); // not need for phpmailer 5.2.
@@ -61,7 +63,7 @@ class FormaMailer extends PHPMailer
     protected ?SmtpHandler $handler = null;
 
     //the constructor
-    public function __construct($mailConfigId = null)
+    public function __construct($mailConfigId = null, $templateName = null)
     {
         $this->aclManager = new \DoceboACLManager();
         $this->mailConfigId = $mailConfigId;
@@ -79,7 +81,7 @@ class FormaMailer extends PHPMailer
         ];
         //set initial default value
         $this->ResetToDefault();
-        $this->addDefaultMailPaths();
+        $this->addDefaultMailPaths($templateName);
         $this->handleSmtp($mailConfigId);
         parent::__construct();
     }
@@ -112,18 +114,21 @@ class FormaMailer extends PHPMailer
 
     }
 
-    private function addDefaultMailPaths()
+    private function addDefaultMailPaths($templateName)
     {
+        $templatePath = $templateName ?? getTemplate();
         $defaultPaths = [
             _adm_ . '/views/mail',
             _lms_ . '/views/mail',
             _lms_ . '/admin/views/mail',
-            _templates_ . '/' . getTemplate() . '/layout/mail',
+            _templates_ . '/' . $templatePath . '/layout/mail',
         ];
 
-        if (getTemplate() !== 'standard') {
+
+        if ($templatePath !== 'standard') {
             $defaultPaths[] = _templates_ . '/standard/layout/mail';
         }
+
 
         foreach ($defaultPaths as $path) {
             if (file_exists($path)) {
