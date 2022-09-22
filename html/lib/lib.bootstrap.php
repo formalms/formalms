@@ -11,6 +11,8 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use function GuzzleHttp\default_ca_bundle;
+use FormaLms\lib\Domain\DomainHandler;
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
@@ -260,9 +262,15 @@ class Boot
         self::log('Load yui library.');
         require_once _base_ . '/lib/lib.yuilib.php';
 
+        //create the handeler who will fix values ins ession
+        $domainHandler = DomainHandler::getInstance();
         // template
         self::log('Load template library.');
         require_once _base_ . '/lib/lib.template.php';
+
+        // i set mail later because it has a dependancy on li.template
+        $domainHandler->attachDefaultMailer();
+
 
         // mimetype
         self::log('Load mimetype library.');

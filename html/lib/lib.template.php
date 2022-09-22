@@ -44,6 +44,7 @@ function getTemplate()
 
     //search for a template associated to the current host
     $plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
+    
     if ($plat_templ != false) {
         $session->set('template', $plat_templ);
         $session->save();
@@ -53,7 +54,8 @@ function getTemplate()
 
         return $plat_templ;
     }
-
+    require_once('lib.user.php');
+    require_once('lib.docebo.php');
     // search template according to the org_chart_tree option
     if (!Docebo::user()->isAnonymous()) {
         $qtxt = 'SELECT associated_template FROM
@@ -66,7 +68,6 @@ function getTemplate()
         $re = sql_query($qtxt);
         if (sql_num_rows($re) > 0) {
             list($template_code) = sql_fetch_row($re);
-
             setTemplate($template_code);
             if (!checkTemplateVersion($session->get('template'))) {
                 return 'standard';
@@ -163,21 +164,28 @@ function resetTemplate()
 
 function readTemplateManifest($template_name, $key = false)
 {
-    $template_file = _templates_ . '/' . $template_name . '/manifest.xml';
-    if (!file_exists($template_file)) {
-        return false;
-    }
-    if ($xml = simplexml_load_file($template_file)) {
-        $man_json = json_encode($xml);
-        $man_array = json_decode($man_json, true);
-        if (key_exists($key, $man_array)) {
-            return $man_array[$key];
-        }
 
-        return $man_array;
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    if ($session->has('template_info') && $session->get('template_info') != false) {
+        return $session->get('template_info')->getVersion();
     } else {
-        return false;
+        $template_file = _templates_ . '/' . $template_name . '/manifest.xml';
+        if (!file_exists($template_file)) {
+            return false;
+        }
+        if ($xml = simplexml_load_file($template_file)) {
+            $man_json = json_encode($xml);
+            $man_array = json_decode($man_json, true);
+            if (key_exists($key, $man_array)) {
+                return $man_array[$key];
+            }
+    
+            return $man_array;
+        } else {
+            return false;
+        }
     }
+    
 }
 /**
  * Check the template version.
@@ -186,16 +194,21 @@ function readTemplateManifest($template_name, $key = false)
  */
 function checkTemplateVersion($template_name)
 {
-    require_once Forma::inc(_adm_ . '/versions.php');
-    $template_forma_version = readTemplateManifest($template_name, 'forma_version');
-    $check = [];
-    if ($template_forma_version) {
-        if (version_compare(_template_min_version_, $template_forma_version) <= 0) {
-            return true;
+    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    if ($session->has('template_info') && $session->get('template_info') != false) {
+        return $session->get('template_info')->getCheckVersion();
+    } else {
+        require_once Forma::inc(_adm_ . '/versions.php');
+        $template_forma_version = readTemplateManifest($template_name, 'forma_version');
+        $check = [];
+        if ($template_forma_version) {
+            if (version_compare(_template_min_version_, $template_forma_version) <= 0) {
+                return true;
+            }
         }
-    }
 
-    return false;
+        return false;
+    }
 }
 
 function getTemplateVersion($template_name)
