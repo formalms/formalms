@@ -98,8 +98,8 @@ function parseTemplateDomain($curr_domain = false)
                 return $item['template'];
             }
         }
-    }
-
+    } 
+    
     return false;
 }
 
