@@ -38,9 +38,13 @@ class DomainHandler
     {
         $this->request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $httpHost = $this->request->server->get('HTTP_HOST');
+        $notUseTemplate = $this->request->query->get('notuse_template');
         $this->entity = new DomainConfigEntity($httpHost);
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
+        if($notUseTemplate) {
+            $this->entity->setTemplate('standard');
+        }
         $this->setAttributes($this->entity);
 
         //salvare tutto in sessione
@@ -61,6 +65,8 @@ class DomainHandler
     public function setTemplateInfo($templateName) {
         $this->templateInfo = new TemplateInfo($templateName);
         $this->session->set('template_info', $this->templateInfo);
+        //retrocompatibilità
+        $this->session->set('template', $templateName);
         return $this;
     }
 
@@ -83,6 +89,7 @@ class DomainHandler
         $templateName = $this->templateInfo ? $this->templateInfo->getName() : null;
         $this->mailHandler = new FormaMailer($this->entity->getMailConfigId(), $templateName);
         $this->session->set('mailer_info', $this->mailHandler);
+        $this->session->save();
         return $this;
     }
 
@@ -94,7 +101,7 @@ class DomainHandler
     private function setAttributes($entity) {
         $this->setDomainInfo($entity->getTitle(), $entity->getDomain());
         $this->setTemplateInfo($entity->getTemplate());
-        
+        $this->session->save();
 
         return $this;
     }

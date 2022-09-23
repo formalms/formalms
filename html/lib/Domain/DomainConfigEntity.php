@@ -79,6 +79,12 @@ class DomainConfigEntity
         return $this->template;
     }
 
+    public function setTemplate($templateName) {
+        $this->template = $templateName;
+
+        return $this;
+    }
+
     public function getMailConfigId() {
         return $this->mailConfigId;
     }

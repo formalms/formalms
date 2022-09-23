@@ -1,5 +1,5 @@
 <?php
-
+use \FormaLms\lib\Template\TemplateInfo;
 /*
  * FORMA - The E-Learning Suite
  *
@@ -25,6 +25,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function getTemplate()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+
     // If saved in session use this one
     if ($session->has('template') && $session->get('template') != false) {
         if (!checkTemplateVersion($session->get('template'))) {
@@ -34,16 +36,8 @@ function getTemplate()
         return $session->get('template');
     }
 
-    // force_standard mode
-    if ((array_key_exists('notuse_template', $_REQUEST) && isset($_REQUEST['notuse_template'])) || (array_key_exists('notuse_template', $GLOBALS) && $GLOBALS['notuse_template'] == true)) {
-        $session->set('template', 'standard');
-        $session->save();
-
-        return $session->get('template');
-    }
-
     //search for a template associated to the current host
-    $plat_templ = parseTemplateDomain($_SERVER['HTTP_HOST']);
+    $plat_templ = parseTemplateDomain($request->server->get('HTTP_HOST'));
     
     if ($plat_templ != false) {
         $session->set('template', $plat_templ);
@@ -92,15 +86,17 @@ function getTemplate()
  */
 function parseTemplateDomain($curr_domain = false)
 {
-    if (!$domains = FormaLms\lib\Get::sett('template_domain', false)) {
-        return false;
-    }
+    $queryTxt = 'SELECT domain, template FROM
+                %adm_domain_configs';
 
-    $domains = json_decode($domains, true) ?: [];
+    $result = sql_query($queryTxt);
+    if (sql_num_rows($result) > 0) {
 
-    foreach ($domains as $item) {
-        if ($item['domain'] == $curr_domain) {
-            return $item['template'];
+        while ($item = sql_fetch_assoc($result)) {
+
+            if ($item['domain'] == $curr_domain) {
+                return $item['template'];
+            }
         }
     }
 
@@ -110,15 +106,17 @@ function parseTemplateDomain($curr_domain = false)
 function getCurrentDomain($idOrg = null, $baseUrl = false)
 {
     $domain = FormaLms\lib\Get::site_url();
-    if (!($domains = FormaLms\lib\Get::sett('template_domain', false)) || $baseUrl) {
-        return $domain;
-    }
-
-    $domains_tmp = json_decode($domains, true) ?: [];
+    $queryTxt = 'SELECT * FROM
+    %adm_domain_configs';
     $domains = [];
+    $result = sql_query($queryTxt);
+    if (sql_num_rows($result) > 0) {
 
-    foreach ($domains_tmp as $item) {
-        $domains[$item['node']] = $item;
+        while ($item = sql_fetch_assoc($result)) {
+
+            $domains[$item['orgId']] = $item;
+
+        }
     }
 
     if ($idOrg && isset($domains[$idOrg]) && $domains[$idOrg]['domain']) {
@@ -132,6 +130,7 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
         }
     }
 
+
     return $domain;
 }
 
@@ -142,11 +141,14 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
  */
 function setTemplate($new_template)
 {
+
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (is_dir(_templates_ . '/' . $new_template)) {
         $session->set('template', $new_template);
+        $session->set('template_info', new TemplateInfo($new_template));
     } else {
         $session->set('template', getDefaultTemplate());
+        $session->set('template_info', new TemplateInfo(getDefaultTemplate()));
     }
     $session->save();
 }
@@ -158,6 +160,7 @@ function resetTemplate()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $session->remove('template');
+    $session->remove('template_info');
     $session->save();
     setTemplate(getTemplate());
 }
