@@ -54,13 +54,13 @@ class UsermanagementAdm extends Model
     public function getOrgPath($idOrg)
     {
         $output = '';
-        $query = 'SELECT idOrg, idParent, path FROM %adm_org_chart_tree WHERE idOrg=' . (int) $idOrg;
+        $query = 'SELECT idOrg, idParent, path FROM %adm_org_chart_tree WHERE idOrg=' . (int)$idOrg;
         $res = $this->db->query($query);
         list($idOrg, $idParent, $path) = $this->db->fetch_row($res);
         if ($path != '') {
             $list = explode('/', str_replace('/root/', '', $path));
             for ($i = 0; $i < count($list); ++$i) {
-                $list[$i] = (int) $list[$i];
+                $list[$i] = (int)$list[$i];
             }
 
             //languages
@@ -113,7 +113,7 @@ class UsermanagementAdm extends Model
                 $output[] = $idg;
             }
         } else {
-            $query = "SELECT idst FROM %adm_group WHERE groupid='/oc_" . (int) $idOrg . "' OR groupid='/ocd_" . (int) $idOrg . "'";
+            $query = "SELECT idst FROM %adm_group WHERE groupid='/oc_" . (int)$idOrg . "' OR groupid='/ocd_" . (int)$idOrg . "'";
             $res = $this->db->query($query);
             while (list($idst) = $this->db->fetch_row($res)) {
                 $output[] = $idst;
@@ -146,7 +146,7 @@ class UsermanagementAdm extends Model
                 $output[] = $idg;
             }
         } else {
-            $query = "SELECT idst FROM %adm_group WHERE groupid='/oc_" . (int) $idOrg . "' OR groupid='/ocd_" . (int) $idOrg . "'";
+            $query = "SELECT idst FROM %adm_group WHERE groupid='/oc_" . (int)$idOrg . "' OR groupid='/ocd_" . (int)$idOrg . "'";
             $res = $db->query($query);
             while (list($idst) = $db->fetch_row($res)) {
                 $output[] = $idst;
@@ -204,7 +204,7 @@ class UsermanagementAdm extends Model
                 }
             } else {
                 switch ($pagination['sort']) {
-                        //%adm_user fields
+                    //%adm_user fields
                     case 'firstname':
                         $sort = 'u.firstname';
                         break;
@@ -224,7 +224,7 @@ class UsermanagementAdm extends Model
                         $sort = 'u.register_date';
                         break;
 
-                        //dynamic other fields
+                    //dynamic other fields
                     case 'level':
                         $query_type = 'level';
                         break;
@@ -243,7 +243,7 @@ class UsermanagementAdm extends Model
 
         $useAnonymous = false;
         $searchFilter = isset($filter['text']) ? $filter['text'] : false;
-        $useSuspended = isset($filter['suspended']) ? (bool) $filter['suspended'] : true;
+        $useSuspended = isset($filter['suspended']) ? (bool)$filter['suspended'] : true;
         $dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
 
         //list of users idst to apply in main query as a filter
@@ -371,143 +371,143 @@ class UsermanagementAdm extends Model
 
         $query = '';
         switch ($query_type) {
-                //query with sorting on standard %adm_user field
+            //query with sorting on standard %adm_user field
             case 'standard':
-                    $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
-                        . ' FROM %adm_user as u ';
-                    if ($idOrg || $is_subadmin) {
-                        $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
-                            . ' AS uit ON uit.idstMember = u.idst';
-                    }
-                    $query .= ' WHERE (1 = 1'
-                        //." WHERE u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN ( ".implode(",", $id_groups)." )  "// )
-                        . $queryUserFilter_1
-                        . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
-                        . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
+                $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
+                    . ' FROM %adm_user as u ';
+                if ($idOrg || $is_subadmin) {
+                    $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
+                        . ' AS uit ON uit.idstMember = u.idst';
+                }
+                $query .= ' WHERE (1 = 1'
+                    //." WHERE u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN ( ".implode(",", $id_groups)." )  "// )
+                    . $queryUserFilter_1
+                    . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
+                    . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
 
-                    if ($searchFilter) {
-                        $query .= " AND (
+                if ($searchFilter) {
+                    $query .= " AND (
 						u.userid LIKE '%" . $searchFilter . "%' OR
 						u.firstname LIKE '%" . $searchFilter . "%' OR
 						u.lastname LIKE '%" . $searchFilter . "%' OR
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
-                    }
-                    $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ' .
-                        ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+                }
+                $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ' .
+                    ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
                 break;
 
-                //query with sorting on a custom field (like texts)
+            //query with sorting on a custom field (like texts)
             case 'custom':
-                    $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
-                        . ' FROM %adm_user as u LEFT JOIN %adm_field_userentry as f ON (u.idst=f.id_user AND f.id_common=' . (int) $sort . ') ';
-                    if ($idOrg || $is_subadmin) {
-                        $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
-                            . ' AS uit ON uit.idstMember = u.idst';
-                    }
-                    $query .= ' WHERE (1 = 1'
-                        . $queryUserFilter_2
-                        . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
-                        . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
+                $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
+                    . ' FROM %adm_user as u LEFT JOIN %adm_field_userentry as f ON (u.idst=f.id_user AND f.id_common=' . (int)$sort . ') ';
+                if ($idOrg || $is_subadmin) {
+                    $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
+                        . ' AS uit ON uit.idstMember = u.idst';
+                }
+                $query .= ' WHERE (1 = 1'
+                    . $queryUserFilter_2
+                    . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
+                    . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
 
-                    if ($searchFilter) {
-                        $query .= " AND (
+                if ($searchFilter) {
+                    $query .= " AND (
 						u.userid LIKE '%" . $searchFilter . "%' OR
 						u.firstname LIKE '%" . $searchFilter . "%' OR
 						u.lastname LIKE '%" . $searchFilter . "%' OR
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
-                    }
+                }
 
-                    $query .= ' ORDER BY f.user_entry ' . $dir . ' ' .
-                        ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+                $query .= ' ORDER BY f.user_entry ' . $dir . ' ' .
+                    ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
                 break;
 
-                //query with sorting on a custom field with sons (like dropdowns)
+            //query with sorting on a custom field with sons (like dropdowns)
             case 'custom_sons':
-                    $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid ';
+                $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid ';
 
-                    $query .= ' FROM (%adm_user as u JOIN %adm_group_members as gm ON ( u.idst = gm.idstMember )) '
-                        . ' LEFT JOIN (%adm_field_userentry as f LEFT JOIN %adm_field_son as fs '
-                        . " ON (f.user_entry = fs.id_common_son AND f.id_common = fs.idField AND fs.lang_code='" . getLanguage() . "')) "
-                        . ' ON (u.idst=f.id_user AND f.id_common=' . (int) $sort . ') ';
-                    if ($idOrg || $is_subadmin) {
-                        $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
-                            . ' AS uit ON uit.idstMember = u.idst';
-                    }
-                    $query .= ' WHERE (1 = 1'
-                        . $queryUserFilter_3
-                        . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
-                        . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
+                $query .= ' FROM (%adm_user as u JOIN %adm_group_members as gm ON ( u.idst = gm.idstMember )) '
+                    . ' LEFT JOIN (%adm_field_userentry as f LEFT JOIN %adm_field_son as fs '
+                    . " ON (f.user_entry = fs.id_common_son AND f.id_common = fs.idField AND fs.lang_code='" . getLanguage() . "')) "
+                    . ' ON (u.idst=f.id_user AND f.id_common=' . (int)$sort . ') ';
+                if ($idOrg || $is_subadmin) {
+                    $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
+                        . ' AS uit ON uit.idstMember = u.idst';
+                }
+                $query .= ' WHERE (1 = 1'
+                    . $queryUserFilter_3
+                    . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
+                    . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
 
-                    if ($searchFilter) {
-                        $query .= " AND (
+                if ($searchFilter) {
+                    $query .= " AND (
 						u.userid LIKE '%" . $searchFilter . "%' OR
 						u.firstname LIKE '%" . $searchFilter . "%' OR
 						u.lastname LIKE '%" . $searchFilter . "%' OR
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
-                    }
+                }
 
-                    $query .= ' ORDER BY fs.translation ' . $dir . ' ' .
-                        ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+                $query .= ' ORDER BY fs.translation ' . $dir . ' ' .
+                    ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
                 break;
 
-                //query with sorting on user level
+            //query with sorting on user level
             case 'level':
-                    $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
-                        . ' FROM %adm_user as u JOIN %adm_group_members AS gm '
-                        . ' ON (u.idst = gm.idstMember AND gm.idst IN (' . implode(',', array_values($levels_idst)) . ')) ';
-                    if ($idOrg || $is_subadmin) {
-                        $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
-                            . ' AS uit ON uit.idstMember = u.idst';
-                    }
-                    $query .= ' WHERE (1 = 1'
-                        . $queryUserFilter_1
-                        . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
-                        . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
+                $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
+                    . ' FROM %adm_user as u JOIN %adm_group_members AS gm '
+                    . ' ON (u.idst = gm.idstMember AND gm.idst IN (' . implode(',', array_values($levels_idst)) . ')) ';
+                if ($idOrg || $is_subadmin) {
+                    $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
+                        . ' AS uit ON uit.idstMember = u.idst';
+                }
+                $query .= ' WHERE (1 = 1'
+                    . $queryUserFilter_1
+                    . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
+                    . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
 
-                    if ($searchFilter) {
-                        $query .= " AND (
+                if ($searchFilter) {
+                    $query .= " AND (
 						u.userid LIKE '%" . $searchFilter . "%' OR
 						u.firstname LIKE '%" . $searchFilter . "%' OR
 						u.lastname LIKE '%" . $searchFilter . "%' OR
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
-                    }
-                    $query .= ' ORDER BY gm.idst ' . (strtolower($dir) == 'asc' ? 'DESC' : 'ASC') . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
-                        ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+                }
+                $query .= ' ORDER BY gm.idst ' . (strtolower($dir) == 'asc' ? 'DESC' : 'ASC') . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
+                    ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
                 break;
 
-                //query with sorting on user language
+            //query with sorting on user language
             case 'language':
-                    $levels_idst = array_values($this->aclManager->getAdminLevels());
-                    $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
-                        . ' FROM %adm_user as u LEFT JOIN %adm_setting_user AS su '
-                        . " ON (u.idst = su.id_user AND su.path_name = 'ui.language') ";
-                    if ($idOrg || $is_subadmin) {
-                        $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
-                            . ' AS uit ON uit.idstMember = u.idst';
-                    }
-                    $query .= ' WHERE (1 = 1'
-                        . $queryUserFilter_1
-                        . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
-                        . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
+                $levels_idst = array_values($this->aclManager->getAdminLevels());
+                $query = 'SELECT DISTINCT u.idst, u.userid, u.lastname, u.firstname, u.email, u.register_date, u.lastenter, u.valid '
+                    . ' FROM %adm_user as u LEFT JOIN %adm_setting_user AS su '
+                    . " ON (u.idst = su.id_user AND su.path_name = 'ui.language') ";
+                if ($idOrg || $is_subadmin) {
+                    $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
+                        . ' AS uit ON uit.idstMember = u.idst';
+                }
+                $query .= ' WHERE (1 = 1'
+                    . $queryUserFilter_1
+                    . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
+                    . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
 
-                    if ($searchFilter) {
-                        $query .= " AND (
+                if ($searchFilter) {
+                    $query .= " AND (
 						u.userid LIKE '%" . $searchFilter . "%' OR
 						u.firstname LIKE '%" . $searchFilter . "%' OR
 						u.lastname LIKE '%" . $searchFilter . "%' OR
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
-                    }
-                    $query .= ' ORDER BY su.value ' . $dir . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
-                        ' LIMIT ' . (int) $startIndex . ', ' . (int) $results;
+                }
+                $query .= ' ORDER BY su.value ' . $dir . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
+                    ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
                 break;
         }
@@ -552,70 +552,70 @@ class UsermanagementAdm extends Model
                     $field_value = '';
                     switch ($frow->type_field) {
                         case 'yesno':
-                                switch ($frow->user_entry) {
-                                    case 1:
-                                        $field_value = Lang::t('_YES', 'field');
-                                        break;
-                                    case 2:
-                                        $field_value = Lang::t('_NO', 'field');
-                                        break;
-                                    default:
-                                        $field_value = '';
-                                        break;
-                                }
+                            switch ($frow->user_entry) {
+                                case 1:
+                                    $field_value = Lang::t('_YES', 'field');
+                                    break;
+                                case 2:
+                                    $field_value = Lang::t('_NO', 'field');
+                                    break;
+                                default:
+                                    $field_value = '';
+                                    break;
+                            }
 
                             break;
                         case 'dropdown':
-                                if ($field_sons === false) {
-                                    //retrieve translations for dropdowns fields
-                                    $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
-                                    $res_fields_sons = $this->db->query($query_fields_sons);
-                                    $field_sons = [];
-                                    while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
-                                        $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
-                                    }
+                            if ($field_sons === false) {
+                                //retrieve translations for dropdowns fields
+                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                                $res_fields_sons = $this->db->query($query_fields_sons);
+                                $field_sons = [];
+                                while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+                                    $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
                                 }
-                                if (isset($field_sons[$frow->id_common][$frow->user_entry])) {
-                                    $field_value = $field_sons[$frow->id_common][$frow->user_entry];
-                                } else {
-                                    $field_value = '';
-                                }
+                            }
+                            if (isset($field_sons[$frow->id_common][$frow->user_entry])) {
+                                $field_value = $field_sons[$frow->id_common][$frow->user_entry];
+                            } else {
+                                $field_value = '';
+                            }
 
                             break;
-                            //PURPLE fix class copy per visualizzazione corretta dei record nelle tabelle
+                        //PURPLE fix class copy per visualizzazione corretta dei record nelle tabelle
                         case 'copy':
-                                if ($field_sons === false) {
-                                    //retrieve translations for dropdowns fields
-                                    $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
-                                    $res_fields_sons = $this->db->query($query_fields_sons);
-                                    $field_sons = [];
-                                    while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
-                                        $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
-                                    }
+                            if ($field_sons === false) {
+                                //retrieve translations for dropdowns fields
+                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                                $res_fields_sons = $this->db->query($query_fields_sons);
+                                $field_sons = [];
+                                while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+                                    $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
                                 }
-                                if (isset($field_sons[$frow->copy_of][$frow->user_entry])) {
-                                    $field_value = $field_sons[$frow->copy_of][$frow->user_entry];
-                                } else {
-                                    $field_value = '';
-                                }
+                            }
+                            if (isset($field_sons[$frow->copy_of][$frow->user_entry])) {
+                                $field_value = $field_sons[$frow->copy_of][$frow->user_entry];
+                            } else {
+                                $field_value = '';
+                            }
 
                             break;
-                            //END PURPLE
+                        //END PURPLE
                         case 'country':
-                                if ($countries === false) {
-                                    //retrieve countries names
-                                    $query_countries = 'SELECT id_country, name_country FROM %adm_country ORDER BY name_country';
-                                    $res_countries = $this->db->query($query_countries);
-                                    $countries = [];
-                                    while ($crow = $this->db->fetch_obj($res_countries)) {
-                                        $countries[$crow->id_country] = $crow->name_country;
-                                    }
+                            if ($countries === false) {
+                                //retrieve countries names
+                                $query_countries = 'SELECT id_country, name_country FROM %adm_country ORDER BY name_country';
+                                $res_countries = $this->db->query($query_countries);
+                                $countries = [];
+                                while ($crow = $this->db->fetch_obj($res_countries)) {
+                                    $countries[$crow->id_country] = $crow->name_country;
                                 }
-                                if (isset($countries[$frow->user_entry])) {
-                                    $field_value = $countries[$frow->user_entry];
-                                } else {
-                                    $field_value = '';
-                                }
+                            }
+                            if (isset($countries[$frow->user_entry])) {
+                                $field_value = $countries[$frow->user_entry];
+                            } else {
+                                $field_value = '';
+                            }
 
                             break;
                         default:
@@ -680,7 +680,7 @@ class UsermanagementAdm extends Model
     {
         $useAnonymous = false;
         $searchFilter = isset($filter['text']) ? $filter['text'] : false;
-        $useSuspended = isset($filter['suspended']) ? (bool) $filter['suspended'] : true;
+        $useSuspended = isset($filter['suspended']) ? (bool)$filter['suspended'] : true;
         $dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
 
         $acl_man = Docebo::user()->getAclManager();
@@ -809,7 +809,7 @@ class UsermanagementAdm extends Model
     {
         $useAnonymous = false;
         $searchFilter = isset($filter['text']) ? $filter['text'] : false;
-        $useSuspended = isset($filter['suspended']) ? (bool) $filter['suspended'] : true;
+        $useSuspended = isset($filter['suspended']) ? (bool)$filter['suspended'] : true;
         $dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
 
         //list of users idst to apply in main query as a filter
@@ -939,7 +939,7 @@ class UsermanagementAdm extends Model
         require_once _adm_ . '/lib/lib.field.php';
 
         if (is_numeric($users)) {
-            $users = [(int) $users];
+            $users = [(int)$users];
         }
         if (!is_array($users)) {
             return false;
@@ -1007,7 +1007,7 @@ class UsermanagementAdm extends Model
             $arr_levels_id = array_flip($this->aclManager->getAdminLevels());
             $arr_levels_idst = array_keys($arr_levels_id);
 
-            $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int) $idst . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
+            $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int)$idst . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
             $res = $this->db->query($query);
             if ($res) {
                 if ($this->db->num_rows($res) > 0) {
@@ -1040,7 +1040,7 @@ class UsermanagementAdm extends Model
 
     public function getProfileData($idst)
     {
-        $query = 'SELECT * FROM %adm_user as u WHERE u.idst=' . (int) $idst;
+        $query = 'SELECT * FROM %adm_user as u WHERE u.idst=' . (int)$idst;
         $res = $this->db->query($query);
         $output = $this->db->fetch_obj($res);
 
@@ -1057,7 +1057,7 @@ class UsermanagementAdm extends Model
                 return true;
             }
         } else {
-            $query .= ' idst = ' . (int) $users;
+            $query .= ' idst = ' . (int)$users;
         }
 
         return $this->db->query($query) ? true : false;
@@ -1073,7 +1073,7 @@ class UsermanagementAdm extends Model
                 return true;
             }
         } else {
-            $query .= ' idst = ' . (int) $users;
+            $query .= ' idst = ' . (int)$users;
         }
 
         return $this->db->query($query) ? true : false;
@@ -1082,7 +1082,7 @@ class UsermanagementAdm extends Model
     public function checkUserPassword($idst, $password)
     {
         $output = false;
-        $query = 'SELECT pass FROM %adm_user WHERE idst=' . (int) $idst;
+        $query = 'SELECT pass FROM %adm_user WHERE idst=' . (int)$idst;
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
             list($user_pass) = $this->db->fetch_row($res);
@@ -1142,7 +1142,7 @@ class UsermanagementAdm extends Model
 
                 $folder_count = 0;
                 foreach ($folders as $folder) {
-                    if ((int) $folder > 0) {
+                    if ((int)$folder > 0) {
                         ++$folder_count;
                     }
                 }
@@ -1162,9 +1162,9 @@ class UsermanagementAdm extends Model
 
                 if (is_array($folders) && !empty($folders)) {
                     foreach ($folders as $folder) {
-                        if ((int) $folder > 0) {
-                            $oc_sn = $acl_man->getGroupST('oc_' . (int) $folder);
-                            $ocd_sn = $acl_man->getGroupST('ocd_' . (int) $folder);
+                        if ((int)$folder > 0) {
+                            $oc_sn = $acl_man->getGroupST('oc_' . (int)$folder);
+                            $ocd_sn = $acl_man->getGroupST('ocd_' . (int)$folder);
 
                             $acl_man->addToGroup($oc_sn, $user_idst);
                             $acl_man->addToGroup($ocd_sn, $user_idst);
@@ -1362,7 +1362,7 @@ class UsermanagementAdm extends Model
                     while (list($idst, $groupid) = $this->db->fetch_row($res)) {
                         $str_id = str_replace('/oc_', '', $groupid);
                         $str_id = str_replace('/ocd_', '', $str_id);
-                        $orgtree[] = (int) $str_id;
+                        $orgtree[] = (int)$str_id;
                     }
                     $orgtree = array_unique($orgtree);
                 }
@@ -1399,7 +1399,7 @@ class UsermanagementAdm extends Model
             return '';
         }
 
-        return '<span id="orgchart_code_' . (int) $id . '">[' . $code . ']&nbsp;</span>';
+        return '<span id="orgchart_code_' . (int)$id . '">[' . $code . ']&nbsp;</span>';
     }
 
     public function getOrgChartNodes($id_node, $recursive = false, $language = false, $userFilter = false)
@@ -1417,7 +1417,7 @@ class UsermanagementAdm extends Model
         $search_query = "SELECT	t1.idOrg, t1.path, t2.translation, t1.iLeft, t1.iRight, t1.code
 			FROM %adm_org_chart_tree AS t1 LEFT JOIN %adm_org_chart AS t2
 				ON (t1.idOrg = t2.id_dir AND t2.lang_code = '" . $lang_code . "' )
-			WHERE t1.idParent = '" . (int) $id_node . "' ORDER BY t2.translation";
+			WHERE t1.idParent = '" . (int)$id_node . "' ORDER BY t2.translation";
         $re = $this->db->query($search_query);
 
         $output = [];
@@ -1451,7 +1451,7 @@ class UsermanagementAdm extends Model
             } else {
                 $label = $code_label . $translation; //end(explode('/', $path));
                 $is_leaf = ($right - $left) == 1;
-                $count = (int) (($right - $left - 1) / 2);
+                $count = (int)(($right - $left - 1) / 2);
                 $style = false;
             }
 
@@ -1531,7 +1531,7 @@ class UsermanagementAdm extends Model
                     $is_leaf = ($right - $left) == 1;
                     $label = $code_label . $translation;
                     $node_options = []; //getNodeOptions($id_org, $is_leaf);
-                    $count_subnodes = (int) (($right - $left - 1) / 2);
+                    $count_subnodes = (int)(($right - $left - 1) / 2);
                     $style = false;
                 }
 
@@ -1597,7 +1597,7 @@ class UsermanagementAdm extends Model
                 ++$row[1];
             }
         } else {
-            $query = 'SELECT iLeft, iRight, lev FROM %adm_org_chart_tree WHERE idOrg=' . (int) $idOrg;
+            $query = 'SELECT iLeft, iRight, lev FROM %adm_org_chart_tree WHERE idOrg=' . (int)$idOrg;
             $res = $this->db->query($query);
             $row = $this->db->fetch_row($res);
         }
@@ -1617,7 +1617,7 @@ class UsermanagementAdm extends Model
                 ++$row[1];
             }
         } else {
-            $query = 'SELECT iLeft, iRight, lev FROM %adm_org_chart_tree WHERE idOrg=' . (int) $idOrg;
+            $query = 'SELECT iLeft, iRight, lev FROM %adm_org_chart_tree WHERE idOrg=' . (int)$idOrg;
             $res = $db->query($query);
             $row = $db->fetch_row($res);
         }
@@ -1635,11 +1635,11 @@ class UsermanagementAdm extends Model
             return $folders;
         }
         list($ileft, $iright) = $this->getFolderLimits($idOrg);
-        $query = 'SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft<=' . (int) $ileft . ' AND iRight>=' . (int) $iright . ' AND idOrg>0 ORDER BY iLeft';
+        $query = 'SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft<=' . (int)$ileft . ' AND iRight>=' . (int)$iright . ' AND idOrg>0 ORDER BY iLeft';
         $res = $this->db->query($query);
         if ($res) {
             while (list($id_org) = $this->db->fetch_row($res)) {
-                $folders[] = (int) $id_org;
+                $folders[] = (int)$id_org;
             }
 
             return $folders;
@@ -1666,13 +1666,13 @@ class UsermanagementAdm extends Model
             return $folders;
         }
         list($ileft, $iright) = $this->getFolderLimits($idOrg);
-        $query = 'SELECT idOrg, idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE iLeft<=' . (int) $ileft . ' AND iRight>=' . (int) $iright . ' AND idOrg>0 ORDER BY iLeft';
+        $query = 'SELECT idOrg, idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE iLeft<=' . (int)$ileft . ' AND iRight>=' . (int)$iright . ' AND idOrg>0 ORDER BY iLeft';
         $res = $this->db->query($query);
         if ($res) {
             while (list($id_org, $id_oc, $id_ocd) = $this->db->fetch_row($res)) {
-                $folders['id_org'][] = (int) $id_org;
-                $folders['idst_oc'][] = (int) $id_oc;
-                $folders['idst_ocd'][] = (int) $id_ocd;
+                $folders['id_org'][] = (int)$id_org;
+                $folders['idst_oc'][] = (int)$id_oc;
+                $folders['idst_ocd'][] = (int)$id_ocd;
             }
 
             return $folders;
@@ -1692,7 +1692,7 @@ class UsermanagementAdm extends Model
     {
         $res = [];
         $query = "SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree
-			WHERE idOrg = '" . (int) $idOrg . "'";
+			WHERE idOrg = '" . (int)$idOrg . "'";
 
         $q = $this->db->query($query);
 
@@ -1730,7 +1730,7 @@ class UsermanagementAdm extends Model
         if ($descendantof) {
             $result = $this->db->query('SELECT iLeft, iRight '
                 . 'FROM %adm_org_chart_tree '
-                . 'WHERE idOrg = ' . (int) $descendantof);
+                . 'WHERE idOrg = ' . (int)$descendantof);
             list($iLeft, $iRight) = $this->db->fetch_row($result);
         }
 
@@ -1814,7 +1814,7 @@ class UsermanagementAdm extends Model
         $search_query = "SELECT	t1.idOrg, t1.idParent, t1.path, t1.lev, t1.iLeft, t1.iRight, t2.translation, t1.code
 			FROM %adm_org_chart_tree AS t1 LEFT JOIN	%adm_org_chart AS t2
 			ON (t1.idOrg = t2.id_dir AND t2.lang_code = '" . $lang_code . "' )
-			WHERE t1.idParent = '" . (int) $idOrg . "' " . $query_filter . ' ORDER BY t2.translation';
+			WHERE t1.idParent = '" . (int)$idOrg . "' " . $query_filter . ' ORDER BY t2.translation';
         $re = $this->db->query($search_query);
 
         $output = [];
@@ -1879,7 +1879,7 @@ class UsermanagementAdm extends Model
 
             return false;
         }
-        $query = 'SELECT * FROM %adm_org_chart_tree WHERE idOrg=' . (int) $idOrg . ' LIMIT 1';
+        $query = 'SELECT * FROM %adm_org_chart_tree WHERE idOrg=' . (int)$idOrg . ' LIMIT 1';
         $res = $this->db->query($query);
         if ($res) {
             if ($array) {
@@ -1897,7 +1897,7 @@ class UsermanagementAdm extends Model
      */
     public function getFolderCode($idOrg)
     {
-        $query = 'SELECT code FROM %adm_org_chart_tree WHERE idOrg=' . (int) $idOrg;
+        $query = 'SELECT code FROM %adm_org_chart_tree WHERE idOrg=' . (int)$idOrg;
         $res = $this->db->query($query);
         $output = false;
         if ($res && $this->db->num_rows($res) > 0) {
@@ -1969,7 +1969,7 @@ class UsermanagementAdm extends Model
             $translation = FormaLms\lib\Get::sett('title_organigram_chart', Lang::t('_ORG_CHART', ''));
         }
 
-        $query = 'SELECT * FROM %adm_org_chart WHERE id_dir=' . (int) $idOrg;
+        $query = 'SELECT * FROM %adm_org_chart WHERE id_dir=' . (int)$idOrg;
         $res = $this->db->query($query);
         $output = ($array ? [] : new stdClass());
         while ($row = $this->db->fetch_obj($res)) {
@@ -1992,7 +1992,7 @@ class UsermanagementAdm extends Model
         if (!$lang_code) {
             $lang_code = getLanguage();
         }
-        $query = 'SELECT translation FROM %adm_org_chart WHERE id_dir=' . (int) $idOrg . " AND lang_code='" . $lang_code . "'";
+        $query = 'SELECT translation FROM %adm_org_chart WHERE id_dir=' . (int)$idOrg . " AND lang_code='" . $lang_code . "'";
         $res = $this->db->query($query);
         $output = false;
         if ($res && ($this->db->num_rows($res) > 0)) {
@@ -2011,11 +2011,11 @@ class UsermanagementAdm extends Model
 
         if (is_array($langs)) {
             //get directory's number and attach new folder at the end of the list
-            $query = 'SELECT MAX(path) FROM %adm_org_chart_tree WHERE idParent=' . (int) $id_parent;
+            $query = 'SELECT MAX(path) FROM %adm_org_chart_tree WHERE idParent=' . (int)$id_parent;
             $res = $this->db->query($query);
             if ($this->db->num_rows($res) > 0) { //check if there are any subfolder
                 list($path) = $this->db->fetch_row($res);
-                $folder_index = ((int) end(explode('/', $path)) + 1); //get next index
+                $folder_index = ((int)end(explode('/', $path)) + 1); //get next index
             } else {
                 $folder_index = 1; //start with first folder index
             }
@@ -2043,7 +2043,7 @@ class UsermanagementAdm extends Model
             $template_name = $templates_name_array[$id_template];
             //insert node in the table, with newly calculated iLeft and iRight
             $query = 'INSERT into %adm_org_chart_tree (idOrg, idParent, path, lev, iLeft, iRight, code, associated_template) VALUES '
-                . "(NULL, '" . (int) $id_parent . "', '" . $path . "', '" . (int) $level . "', " . (int) $new_limits['iLeft'] . ', ' . ((int) $new_limits['iRight'] + 1) . ", '" . $code . "', '" . $template_name . "')";
+                . "(NULL, '" . (int)$id_parent . "', '" . $path . "', '" . (int)$level . "', " . (int)$new_limits['iLeft'] . ', ' . ((int)$new_limits['iRight'] + 1) . ", '" . $code . "', '" . $template_name . "')";
             $res = $this->db->query($query);
             $id = $this->db->insert_id();
 
@@ -2051,9 +2051,9 @@ class UsermanagementAdm extends Model
             if ($id) {
                 //create group and descendants
                 $acl = &Docebo::user()->getACLManager();
-                $idst_oc = $acl->registerGroup('/oc_' . (int) $id, '', true);
-                $idst_ocd = $acl->registerGroup('/ocd_' . (int) $id, '', true);
-                $acl->addToGroup($acl->getGroupST('ocd_' . (int) $id_parent), $idst_ocd); //register the idst of the new branch's descendants into the parent node /ocd_
+                $idst_oc = $acl->registerGroup('/oc_' . (int)$id, '', true);
+                $idst_ocd = $acl->registerGroup('/ocd_' . (int)$id, '', true);
+                $acl->addToGroup($acl->getGroupST('ocd_' . (int)$id_parent), $idst_ocd); //register the idst of the new branch's descendants into the parent node /ocd_
                 $acl->addToGroup($idst_ocd, $idst_oc);
 
                 //if the creator is a sub admin, make the folder visible for himself
@@ -2066,15 +2066,15 @@ class UsermanagementAdm extends Model
 
                 // update the node inserted with the oc and ocd founded
                 $query = 'UPDATE %adm_org_chart_tree '
-                    . 'SET idst_oc = ' . (int) $idst_oc . ', '
-                    . '	idst_ocd = ' . (int) $idst_ocd . ' '
-                    . 'WHERE idOrg = ' . (int) $id . ' ';
+                    . 'SET idst_oc = ' . (int)$idst_oc . ', '
+                    . '	idst_ocd = ' . (int)$idst_ocd . ' '
+                    . 'WHERE idOrg = ' . (int)$id . ' ';
                 $res = $this->db->query($query);
 
                 //insert translations in database
                 $conditions = [];
                 foreach ($langs as $lang_code => $translation) { //TO DO: check if lang_code exists ...
-                    $conditions[] = '(' . (int) $id . ", '" . $lang_code . "', '" . $translation . "')";
+                    $conditions[] = '(' . (int)$id . ", '" . $lang_code . "', '" . $translation . "')";
                 }
                 $query = 'INSERT INTO %adm_org_chart (id_dir, lang_code, translation) VALUES ' . implode(',', $conditions);
                 $res = $this->db->query($query);
@@ -2107,7 +2107,7 @@ class UsermanagementAdm extends Model
         list($left, $right) = $this->getFolderLimits($idOrg);
         $limits = ['iLeft' => $left, 'iRight' => $right];
         if ($onlyLeaf) {
-            if (((int) $limits['iRight'] - (int) $limits['iLeft']) > 1) {
+            if (((int)$limits['iRight'] - (int)$limits['iLeft']) > 1) {
                 return false;
             }
         }
@@ -2137,8 +2137,8 @@ class UsermanagementAdm extends Model
         $res = $this->db->query($query);
         if ($res) {
             foreach ($nodes as $node) {
-                $res = $acl->deleteGroup($acl->getGroupST('/oc_' . (int) $node));
-                $res = $acl->deleteGroup($acl->getGroupST('/ocd_' . (int) $node));
+                $res = $acl->deleteGroup($acl->getGroupST('/oc_' . (int)$node));
+                $res = $acl->deleteGroup($acl->getGroupST('/ocd_' . (int)$node));
             }
             //if ($res) return true; else return false;
             return true;
@@ -2200,7 +2200,7 @@ class UsermanagementAdm extends Model
 
         $query = 'SELECT path'
             . ' FROM %adm_org_chart_tree'
-            . ' WHERE idParent = ' . (int) $dest_folder
+            . ' WHERE idParent = ' . (int)$dest_folder
             . ' ORDER BY path DESC'
             . ' LIMIT 0, 1';
 
@@ -2218,7 +2218,7 @@ class UsermanagementAdm extends Model
 
         // update parent of source and level for descendants
         $lvl_gap = $lvl_dest - $lvl_src + 1;
-        $query1 = 'UPDATE %adm_org_chart_tree SET idParent = ' . (int) $dest_folder . ' WHERE idOrg = ' . (int) $src_folder;
+        $query1 = 'UPDATE %adm_org_chart_tree SET idParent = ' . (int)$dest_folder . ' WHERE idOrg = ' . (int)$src_folder;
         $query2 = 'UPDATE %adm_org_chart_tree SET lev = lev + ' . $lvl_gap . ' WHERE iLeft > ' . $src_left . ' AND iRight < ' . $src_right;
         $res1 = $this->db->query($query1);
         $res2 = $this->db->query($query2);
@@ -2226,17 +2226,17 @@ class UsermanagementAdm extends Model
         //Update path
         $query = 'SELECT path'
             . ' FROM %adm_org_chart_tree'
-            . ' WHERE idOrg = ' . (int) $src_folder;
+            . ' WHERE idOrg = ' . (int)$src_folder;
 
         list($src_path) = sql_fetch_row(sql_query($query));
 
         $query = 'SELECT path'
             . ' FROM %adm_org_chart_tree'
-            . ' WHERE idOrg = ' . (int) $dest_folder;
+            . ' WHERE idOrg = ' . (int)$dest_folder;
 
         list($dest_path) = sql_fetch_row(sql_query($query));
 
-        $path_max = (int) str_replace($dest_path . '/', '', $path_max_new_folder);
+        $path_max = (int)str_replace($dest_path . '/', '', $path_max_new_folder);
         ++$path_max;
 
         $new_path = $dest_path . '/' . sprintf('%08s', $path_max);
@@ -2327,7 +2327,7 @@ class UsermanagementAdm extends Model
         if (is_array($langs)) {
             // retrive previous saved languages
             $prev_lang = [];
-            $re = $this->db->query('SELECT lang_code FROM %adm_org_chart WHERE id_dir = ' . (int) $idOrg);
+            $re = $this->db->query('SELECT lang_code FROM %adm_org_chart WHERE id_dir = ' . (int)$idOrg);
             while (list($lang_code) = $this->db->fetch_row($re)) {
                 $prev_lang[$lang_code] = $lang_code;
             }
@@ -2335,11 +2335,11 @@ class UsermanagementAdm extends Model
             foreach ($langs as $lang_code => $translation) {
                 if (isset($prev_lang[$lang_code])) {
                     $query = "UPDATE %adm_org_chart SET translation = '" . $translation . "' "
-                        . "WHERE lang_code='" . $lang_code . "' AND id_dir=" . (int) $idOrg;
+                        . "WHERE lang_code='" . $lang_code . "' AND id_dir=" . (int)$idOrg;
                     $res = $this->db->query($query);
                 } else {
                     $query = 'INSERT INTO %adm_org_chart (id_dir, lang_code, translation) VALUES '
-                        . '(' . (int) $idOrg . ", '" . $lang_code . "', '" . $translation . "')";
+                        . '(' . (int)$idOrg . ", '" . $lang_code . "', '" . $translation . "')";
                     $res = $this->db->query($query);
                 }
             }
@@ -2354,7 +2354,7 @@ class UsermanagementAdm extends Model
         if ($idOrg <= 0) {
             return false;
         }
-        $query = "UPDATE %adm_org_chart_tree SET code = '" . trim($code) . "' WHERE idOrg=" . (int) $idOrg;
+        $query = "UPDATE %adm_org_chart_tree SET code = '" . trim($code) . "' WHERE idOrg=" . (int)$idOrg;
 
         return $this->db->query($query) ? true : false;
     }
@@ -2372,7 +2372,7 @@ class UsermanagementAdm extends Model
         $query = "UPDATE %adm_org_chart_tree SET
 			code = '" . trim($code) . "',
 			associated_template = " . (!empty($template) ? "'" . $template . "'" : 'NULL') . '
-			WHERE idOrg=' . (int) $idOrg;
+			WHERE idOrg=' . (int)$idOrg;
 
         return $this->db->query($query) ? true : false;
     }
@@ -2396,12 +2396,12 @@ class UsermanagementAdm extends Model
     {
         $output = false;
         $acl = &Docebo::user()->getACLManager();
-        $groupidst = $acl->getGroupSt('/oc_' . (int) $idOrg);
+        $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg);
         $query = 'SELECT idstMember FROM %adm_group_members as gm JOIN %adm_user as u '
-            . ' ON (gm.idstMember=u.idst) WHERE gm.idst=' . (int) $groupidst . ' ';
+            . ' ON (gm.idstMember=u.idst) WHERE gm.idst=' . (int)$groupidst . ' ';
         if ($descendants) {
-            $groupidst_d = $acl->getGroupSt('/ocd_' . (int) $idOrg);
-            $query .= ' OR gm.idst=' . (int) $groupidst_d . ' ';
+            $groupidst_d = $acl->getGroupSt('/ocd_' . (int)$idOrg);
+            $query .= ' OR gm.idst=' . (int)$groupidst_d . ' ';
         }
         $res = $this->db->query($query);
 
@@ -2422,8 +2422,8 @@ class UsermanagementAdm extends Model
     {
         $acl = &Docebo::user()->getACLManager();
         $acl->include_suspended = true;
-        $groupidst = $acl->getGroupSt('/oc_' . (int) $idOrg); //get group idst from group table
-        $groupdesc = $acl->getGroupSt('/ocd_' . (int) $idOrg); //get descendants' group idst from group table
+        $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg); //get group idst from group table
+        $groupdesc = $acl->getGroupSt('/ocd_' . (int)$idOrg); //get descendants' group idst from group table
         $old_users = $acl->getGroupUMembers($groupidst); //users already assigned to the group
         $users = $acl->getUsersFromMixedIdst($users);
         $common = array_intersect($users, $old_users); //search common users by intersection
@@ -2443,7 +2443,7 @@ class UsermanagementAdm extends Model
 
     public function searchUsersByUserid($query, $limit = false, $filter = false)
     {
-        if ((int) $limit <= 0) {
+        if ((int)$limit <= 0) {
             $limit = FormaLms\lib\Get::sett('visuItem', 25);
         }
         $output = [];
@@ -2462,7 +2462,7 @@ class UsermanagementAdm extends Model
 
         $query = 'SELECT idst, userid, firstname, lastname, email FROM %adm_user '
             . " WHERE userid LIKE '%" . $query . "%' " . $_qfilter . ' ORDER BY userid '
-            . ((int) $limit > 0 ? ' LIMIT 0, ' . (int) $limit : '');
+            . ((int)$limit > 0 ? ' LIMIT 0, ' . (int)$limit : '');
         $res = $this->db->query($query);
         if ($res) {
             while ($obj = $this->db->fetch_obj($res)) {
@@ -2548,7 +2548,7 @@ class UsermanagementAdm extends Model
         if ($idst <= 0 || $new_password == '') {
             return false;
         }
-        $query = "UPDATE %adm_user SET pass='" . $this->aclManager->encrypt($new_password) . "', force_change = '" . (int) $force_changepwd . "' WHERE idst=" . (int) $idst;
+        $query = "UPDATE %adm_user SET pass='" . $this->aclManager->encrypt($new_password) . "', force_change = '" . (int)$force_changepwd . "' WHERE idst=" . (int)$idst;
         $res = $this->db->query($query);
 
         return $res ? true : false; //TO DO: check affected rows
@@ -2559,7 +2559,7 @@ class UsermanagementAdm extends Model
         require_once _adm_ . '/lib/lib.field.php';
         $fl = new FieldList();
 
-        return $fl->checkUserMandatoryFields((int) $user_idst > 0 ? (int) $user_idst : Docebo::user()->getIdSt());
+        return $fl->checkUserMandatoryFields((int)$user_idst > 0 ? (int)$user_idst : Docebo::user()->getIdSt());
     }
 
     public function confirmWaitingUsers($arr_idst)
@@ -2651,7 +2651,7 @@ class UsermanagementAdm extends Model
         $output = [];
         if ($res) {
             while (list($idst) = $this->db->fetch_row($res)) {
-                $output[] = (int) $idst;
+                $output[] = (int)$idst;
             }
         }
 
@@ -2676,7 +2676,7 @@ class UsermanagementAdm extends Model
         $output = false;
         if ($res) {
             list($total) = $this->db->fetch_row($res);
-            $output = (int) $total;
+            $output = (int)$total;
         }
 
         return $output;
@@ -3013,7 +3013,7 @@ class UsermanagementAdm extends Model
         $groups = [];
         $query = 'SELECT g.idst, g.groupid FROM %adm_group_members AS gm JOIN %adm_group AS g '
             . " ON (gm.idst = g.idst AND g.hidden = 'true' AND g.groupid LIKE '/oc\_%') "
-            . ' WHERE gm.idstMember = ' . (int) $id_user . ' ';
+            . ' WHERE gm.idstMember = ' . (int)$id_user . ' ';
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
             while (list($idst, $groupid) = $this->db->fetch_row($res)) {
@@ -3058,7 +3058,7 @@ class UsermanagementAdm extends Model
         $groups = [];
         $query = 'SELECT g.idst, g.groupid FROM %adm_group_members AS gm JOIN %adm_group AS g '
             . " ON (gm.idst = g.idst AND g.hidden = 'false' AND g.type <> 'course') "
-            . ' WHERE idstMember = ' . (int) $id_user . ' ';
+            . ' WHERE idstMember = ' . (int)$id_user . ' ';
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
             while (list($id_group, $group_name) = $this->db->fetch_row($res)) {
@@ -3078,16 +3078,7 @@ class UsermanagementAdm extends Model
      */
     public function getAdminFolder($id_admin, $return_org = false)
     {
-        $acl_man = Docebo::user()->getACLManager();
-        require_once _base_ . '/lib/lib.preference.php';
-        $adminManager = new AdminPreference();
-        $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-        $admin_tree = $acl_man->getGroupsFromMixedIdst($admin_tree);
-        $tmp_admin_tree = [];
-        foreach ($admin_tree as $id_group) {
-            $tmp_admin_tree = array_merge($tmp_admin_tree, $acl_man->getGroupGDescendants($id_group));
-        }
-        $admin_tree = $tmp_admin_tree;
+        $admin_tree = $this->getAdminTree($id_admin);
 
         $output = 0;
         if (!empty($admin_tree)) {
@@ -3098,14 +3089,50 @@ class UsermanagementAdm extends Model
             if ($res && $this->db->num_rows($res) > 0) {
                 list($id_org, $idst_oc) = $this->db->fetch_row($res);
                 if ($return_org) {
-                    $output = (int) $id_org;
+                    $output = (int)$id_org;
                 } else {
-                    $output = (int) $idst_oc;
+                    $output = (int)$idst_oc;
                 }
             }
         }
 
         return $output;
+    }
+
+    public function getAdminFolders($id_admin, $return_org = false)
+    {
+        $admin_tree = $this->getAdminTree($id_admin);
+
+        $output = [];
+        if (!empty($admin_tree)) {
+            $query = 'SELECT oct.idOrg, oct.idst_oc FROM %adm_org_chart_tree AS oct '
+                . ' WHERE oct.idst_oc IN (' . implode(',', $admin_tree) . ') OR oct.idst_ocd IN (' . implode(',', $admin_tree) . ') '
+                . ' ORDER BY oct.iLeft ASC';
+            $res = $this->db->query($query);
+            foreach ($res as $row){
+                if ($return_org) {
+                    $output[] = (int)$row['idOrg'];
+                } else {
+                    $output[] = (int)$row['idst_oc'];
+                }
+            }
+        }
+
+        return $output;
+    }
+
+    public function getAdminTree($id_admin)
+    {
+        $acl_man = Docebo::user()->getACLManager();
+        require_once _base_ . '/lib/lib.preference.php';
+        $adminManager = new AdminPreference();
+        $admin_tree = $adminManager->getAdminTree($id_admin);
+        $admin_tree = $acl_man->getGroupsFromMixedIdst($admin_tree);
+        $tmp_admin_tree = [];
+        foreach ($admin_tree as $id_group) {
+            $tmp_admin_tree = array_merge($tmp_admin_tree, $acl_man->getGroupGDescendants($id_group));
+        }
+        return $tmp_admin_tree;
     }
 
     /**
@@ -3124,7 +3151,7 @@ class UsermanagementAdm extends Model
             return $output;
         }
         if (is_numeric($users)) {
-            $users = [(int) $users];
+            $users = [(int)$users];
         }
         if (!is_array($users)) {
             return false;
@@ -3160,10 +3187,10 @@ class UsermanagementAdm extends Model
         while (list($idst, $value, $type) = $this->db->fetch_row($res_others)) {
             switch ($type) {
                 case 'language':
-                    $output[(int) $idst]['language'] = $value;
+                    $output[(int)$idst]['language'] = $value;
                     break;
                 case 'level':
-                    $output[(int) $idst]['level'] = $levels_flip[$value];
+                    $output[(int)$idst]['level'] = $levels_flip[$value];
                     break;
             }
         }
@@ -3188,76 +3215,76 @@ class UsermanagementAdm extends Model
             $field_value = '';
             switch ($frow->type_field) {
                 case 'yesno':
-                        switch ($frow->user_entry) {
-                            case 1:
-                                $field_value = Lang::t('_YES', 'field');
-                                break;
-                            case 2:
-                                $field_value = Lang::t('_NO', 'field');
-                                break;
-                            default:
-                                $field_value = '';
-                                break;
-                        }
+                    switch ($frow->user_entry) {
+                        case 1:
+                            $field_value = Lang::t('_YES', 'field');
+                            break;
+                        case 2:
+                            $field_value = Lang::t('_NO', 'field');
+                            break;
+                        default:
+                            $field_value = '';
+                            break;
+                    }
 
                     break;
                 case 'dropdown':
-                        if ($field_sons === false) {
-                            //retrieve translations for dropdowns fields
-                            $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
-                            $res_fields_sons = $this->db->query($query_fields_sons);
-                            while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
-                                $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
-                            }
+                    if ($field_sons === false) {
+                        //retrieve translations for dropdowns fields
+                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                        $res_fields_sons = $this->db->query($query_fields_sons);
+                        while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+                            $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
                         }
-                        if (isset($field_sons[$frow->id_common][$frow->user_entry])) {
-                            $field_value = $field_sons[$frow->id_common][$frow->user_entry];
-                        }
+                    }
+                    if (isset($field_sons[$frow->id_common][$frow->user_entry])) {
+                        $field_value = $field_sons[$frow->id_common][$frow->user_entry];
+                    }
 
                     break;
                 case 'date':
-                        $field_value = Format::date(substr($frow->user_entry, 0, 10), 'date');
+                    $field_value = Format::date(substr($frow->user_entry, 0, 10), 'date');
 
                     break;
                 case 'copy':
-                        if ($field_sons === false) {
-                            //retrieve translations for dropdowns fields
-                            $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
-                            $res_fields_sons = $this->db->query($query_fields_sons);
-                            $field_sons = [];
-                            while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
-                                $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
-                            }
+                    if ($field_sons === false) {
+                        //retrieve translations for dropdowns fields
+                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                        $res_fields_sons = $this->db->query($query_fields_sons);
+                        $field_sons = [];
+                        while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
+                            $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
                         }
-                        if (isset($field_sons[$frow->copy_of][$frow->user_entry])) {
-                            $field_value = $field_sons[$frow->copy_of][$frow->user_entry];
-                        } else {
-                            $field_value = '';
-                        }
+                    }
+                    if (isset($field_sons[$frow->copy_of][$frow->user_entry])) {
+                        $field_value = $field_sons[$frow->copy_of][$frow->user_entry];
+                    } else {
+                        $field_value = '';
+                    }
 
                     break;
                 case 'country':
-                        if ($countries === false) {
-                            //retrieve countries names
-                            $query_countries = 'SELECT id_country, name_country FROM %adm_country ORDER BY name_country';
-                            $res_countries = $this->db->query($query_countries);
-                            $countries = [];
-                            while ($crow = $this->db->fetch_obj($res_countries)) {
-                                $countries[$crow->id_country] = $crow->name_country;
-                            }
+                    if ($countries === false) {
+                        //retrieve countries names
+                        $query_countries = 'SELECT id_country, name_country FROM %adm_country ORDER BY name_country';
+                        $res_countries = $this->db->query($query_countries);
+                        $countries = [];
+                        while ($crow = $this->db->fetch_obj($res_countries)) {
+                            $countries[$crow->id_country] = $crow->name_country;
                         }
-                        if (isset($countries[$frow->user_entry])) {
-                            $field_value = $countries[$frow->user_entry];
-                        } else {
-                            $field_value = '';
-                        }
+                    }
+                    if (isset($countries[$frow->user_entry])) {
+                        $field_value = $countries[$frow->user_entry];
+                    } else {
+                        $field_value = '';
+                    }
 
                     break;
                 default:
                     $field_value = $frow->user_entry;
                     break;
             }
-            $output[(int) $frow->id_user][(int) $frow->id_common] = $field_value; //$frow->user_entry;
+            $output[(int)$frow->id_user][(int)$frow->id_common] = $field_value; //$frow->user_entry;
         }
 
         return $output;
@@ -3285,7 +3312,7 @@ class UsermanagementAdm extends Model
                 where %adm_customfield_lang.id_field = %adm_customfield.id_field  and
                  %adm_customfield_lang.lang_code = \'' . getLanguage() . '\' and area_code="ORG_CHART"';
         $rs = sql_query($query) or
-            errorCommunication('getCustomFieldOrg');
+        errorCommunication('getCustomFieldOrg');
         $result = [];
         while (list($id_field, $translation, $type_field) = sql_fetch_row($rs)) {
             $arr = [
@@ -3305,7 +3332,7 @@ class UsermanagementAdm extends Model
             %adm_customfield_son_lang  , %adm_customfield_son
             where %adm_customfield_son_lang.id_field_son=%adm_customfield_son.id_field_son and id_field=' . $id_field . ' order by sequence ';
         $rs = sql_query($query) or
-            errorCommunication('getLO_Custom_Value_Array');
+        errorCommunication('getLO_Custom_Value_Array');
         $result = [];
         while (list($id_field_son, $translation) = sql_fetch_row($rs)) {
             $result[$id_field_son] = $translation;
@@ -3318,7 +3345,7 @@ class UsermanagementAdm extends Model
     {
         $query = 'select * from %adm_customfield_entry where id_obj=' . $idOrg . ' and id_field=' . $id_field;
         $rs = sql_query($query) or
-            errorCommunication('countCustomForItem');
+        errorCommunication('countCustomForItem');
         if (sql_num_rows($rs) > 0) {
             return true;
         } else {
@@ -3352,7 +3379,7 @@ class UsermanagementAdm extends Model
     {
         $query = "select id_field from %adm_customfield where area_code = 'ORG_CHART'";
         $rs = sql_query($query) or
-            errorCommunication('getCustomOrg');
+        errorCommunication('getCustomOrg');
         $result = [];
         while (list($id_field, $translation) = sql_fetch_row($rs)) {
             $result[$id_field] = $id_field;
@@ -3367,7 +3394,7 @@ class UsermanagementAdm extends Model
             . "WHERE id_field = '" . $idField . "'"
             . '  AND id_obj = ' . $idOrg;
         $rs = sql_query($query) or
-            errorCommunication('getValueCustom');
+        errorCommunication('getValueCustom');
         if (sql_num_rows($rs) == 1) {
             list($obj_entry) = sql_fetch_row($rs);
 
@@ -3380,9 +3407,9 @@ class UsermanagementAdm extends Model
     /**
      *   Returns only custom fields values, given single user.
      *
-     *   @param int|array a list of users idsts
+     * @param int|array a list of users idsts
      *
-     *   @return array extracted values, the idst of the user as key
+     * @return array extracted values, the idst of the user as key
      */
     public function getCustomFieldUserValues($user)
     {
