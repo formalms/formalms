@@ -1,9 +1,8 @@
 <?php
 
-use Doctrine\ORM\Tools\Console\ConsoleRunner;
-
 define('IN_FORMA',true);
 
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
 
 // replace with file to your own project bootstrap
 require __DIR__ . '/../html/vendor/autoload.php';
@@ -15,7 +14,6 @@ use Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Helper\HelperSet;
-
 
 $paths = [__DIR__ . "/../html/src/Entity"];
 $isDevMode = true;
@@ -29,13 +27,22 @@ $dbParams = [
     'host' => $cfg['db_host']
 ];
 
-$config = \Doctrine\ORM\ORMSetup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-$entityManager = \Doctrine\ORM\EntityManager::create($dbParams, $config);
+$cache = new \Doctrine\Common\Cache\ArrayCache();
+
+$reader = new \Doctrine\Common\Annotations\AnnotationReader();
+$driver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($reader, $paths);
+
+$config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+$config->setMetadataCacheImpl( $cache );
+$config->setQueryCacheImpl( $cache );
+$config->setMetadataDriverImpl( $driver );
+
+$entityManager = EntityManager::create($dbParams, $config);
+
+$platform = $entityManager->getConnection()->getDatabasePlatform();
+$platform->registerDoctrineTypeMapping('enum', 'string');
 
 return new HelperSet([
     'em' => new EntityManagerHelper($entityManager),
-    'db' => new Symfony\Component\Console\Helper\($entityManager->getConnection()),
-
+    'db' => new ConnectionHelper($entityManager->getConnection()),
 ]);
-
-new Doctrine\DBAL\Tools\Console\ConnectionProvider\SingleConnectionProvider()
