@@ -32,7 +32,12 @@
         "twig/extensions": "^1.5",
         "twig/string-extra": "^3.3",
         "twig/twig": "^v2.14",
-        "vanilla/htmlawed": "^2.2"
+        "vanilla/htmlawed": "^2.2",
+        "doctrine/migrations": "^3.5",
+        "symfony/console": "^5.4",
+        "doctrine/orm": "^2.13",
+        "symfony/yaml": "^5.4",
+        "doctrine/annotations": "^1.13"
     },
     "require-dev": {
         "phing/phing": "^2.13",

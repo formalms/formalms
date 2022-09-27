@@ -4,8 +4,65 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc719ae596e843e6aeaa297c4044ac69c
+class ComposerStaticInitc690ee65a8af8b94f8d7f64be4136875
 {
+    public static $files = array (
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+        '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
+    );
+
+    public static $prefixLengthsPsr4 = array (
+        'T' => 
+        array (
+            'Twig\\Extensions\\' => 16,
+            'Twig\\' => 5,
+        ),
+        'S' => 
+        array (
+            'Symfony\\Polyfill\\Php72\\' => 23,
+            'Symfony\\Polyfill\\Mbstring\\' => 26,
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Twig\\Extensions\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twig/extensions/src',
+        ),
+        'Twig\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twig/twig/src',
+        ),
+        'Symfony\\Polyfill\\Php72\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php72',
+        ),
+        'Symfony\\Polyfill\\Mbstring\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+        ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'T' => 
+        array (
+            'Twig_Extensions_' => 
+            array (
+                0 => __DIR__ . '/..' . '/twig/extensions/lib',
+            ),
+            'Twig_' => 
+            array (
+                0 => __DIR__ . '/..' . '/twig/twig/lib',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
@@ -13,7 +70,10 @@ class ComposerStaticInitc719ae596e843e6aeaa297c4044ac69c
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitc719ae596e843e6aeaa297c4044ac69c::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc690ee65a8af8b94f8d7f64be4136875::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc690ee65a8af8b94f8d7f64be4136875::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitc690ee65a8af8b94f8d7f64be4136875::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitc690ee65a8af8b94f8d7f64be4136875::$classMap;
 
         }, null, ClassLoader::class);
     }
