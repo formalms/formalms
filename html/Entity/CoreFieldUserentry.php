@@ -1,0 +1,50 @@
+<?php
+
+
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CoreFieldUserentry
+ *
+ * @ORM\Table(name="core_field_userentry")
+ * @ORM\Entity
+ */
+class CoreFieldUserentry
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_common", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $idCommon = '0';
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_common_son", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $idCommonSon = '0';
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_user", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $idUser = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="user_entry", type="text", length=65535, nullable=false)
+     */
+    private $userEntry;
+
+
+}
