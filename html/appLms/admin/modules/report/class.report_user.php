@@ -4477,8 +4477,9 @@ class Report_User extends Report
         }
 
         $selector = new Selector_Course();
+        $selector->parseForState($_POST);
         if (isset($_POST['update_tempdata'])) {
-            $selector->parseForState($_POST);
+
             $temp = [
                 //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                 'all_courses' => ($_POST['all_courses'] == 1 ? true : false),
@@ -4490,7 +4491,7 @@ class Report_User extends Report
                 'show_suspended' => FormaLms\lib\Get::req('show_suspended', DOTY_INT, 0) > 0,
             ];
 
-            foreach ($reportTempData['columns_filter']['custom_fields'] as $val) {
+            foreach ($reportTempData['custom_fields'] as $val) {
                 $temp['custom_fields'][] = [
                     'id' => $val['id'],
                     'label' => $val['label'],
@@ -4498,7 +4499,7 @@ class Report_User extends Report
                 ];
             }
 
-            $reportTempData['columns_filter']['columns_filter'] = $temp;
+            $reportTempData['columns_filter'] = $temp;
             $this->session->set(self::_REPORT_SESSION, $reportTempData);
             $this->session->save();
         } else {
@@ -4512,8 +4513,8 @@ class Report_User extends Report
                 $custom[] = ['id' => $key, 'label' => $val, 'selected' => false];
             }
 
-            if (!isset($reportTempData['columns_filter']['columns_filter'])) {
-                $reportTempData['columns_filter']['columns_filter'] = [
+            if (!isset($reportTempData['columns_filter'])) {
+                $reportTempData['columns_filter'] = [
                     //'org_chart_subdivision' 	=> (isset($_POST['org_chart_subdivision']) ? 1 : 0),
                     'all_courses' => false,
                     'selected_courses' => $selector->getSelection(),
