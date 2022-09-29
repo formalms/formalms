@@ -1,6 +1,40 @@
 FORMA LMS
 RELEASE CHANGELOG
 
+---------------------------------------------------------------------------------------
+forma.lms 3.3.0
+---------------------------------------------------------------------------------------
+Release date: 2022 september
+
+- #      - implement new session management with more session handlers
+- #      - refactoring of project autoloading with the activation of namespaces
+- #      - fix report user course selector
+- #      - fix count student and list certificate for admin users
+- #20085 - complete catalog refactor fix
+- #20085 - fix and refactor home catalogue
+- #      - fix show user catalogue
+- #      - fix export link in reservation page
+- #      - fix date show in courses block
+- #      - fix courses dashboard block dates
+- #      - fix twig extensions
+- #      - fix and refactor course copy
+- #      - fix and refactor check learning object prerequisites
+- #      - fix pagination in enrollRules
+- #      - homecatalogue fix categories show when there isn't visible to all courses
+- #      - hide courses with show_rules not equal to 0
+- #20085 - fix and refactor home catalogue
+- #      - add index in core_setting table
+- #      - fix user handling on duplicate course
+- #20084 - missing installation of dashboard_permission table.
+- #      - create folder missing object creation fix
+- #      - fix twig cache and deleted user list only for superadmin
+- #      - fix dashboard welcome block
+- #20083 - fixed using the right param
+- #20082 - added calendarID parameter on learning_course_date table
+- #20081 - Undo button: from submit to button and added a history.back command
+- #20079 - Fixed: "Directly play the first Learning Object in the player" in course setting does not work
+- #20077 - fix error err_http2_protocol_error download certificate
+- #20076 - UserManagementAdm: in  addFolder method added saving of template name; UsermanagementAdmController in createfolder method added managing of default template in case of admin without "org modify" permission.
 
 ---------------------------------------------------------------------------------------
 forma.lms 3.2.1
