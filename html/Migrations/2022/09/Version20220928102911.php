@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220928084337 extends AbstractMigration
+final class Version20220928102911 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -21,6 +21,7 @@ final class Version20220928084337 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE conference_booking CHANGE room_id room_id INT NOT NULL, CHANGE platform platform VARCHAR(255) NOT NULL, CHANGE module module VARCHAR(100) NOT NULL, CHANGE user_idst user_idst INT NOT NULL, CHANGE approved approved TINYINT(1) NOT NULL');
+        $this->addSql('CREATE INDEX testindex ON conference_booking (room_id)');
         $this->addSql('ALTER TABLE conference_chat_msg CHANGE id_user id_user INT NOT NULL, CHANGE id_room id_room INT NOT NULL, CHANGE userid userid VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE conference_chatperm CHANGE room_id room_id INT NOT NULL, CHANGE module module VARCHAR(50) NOT NULL, CHANGE user_idst user_idst INT NOT NULL, CHANGE perm perm VARCHAR(50) NOT NULL');
         $this->addSql('ALTER TABLE conference_dimdim CHANGE idConference idConference BIGINT NOT NULL');
@@ -459,6 +460,7 @@ final class Version20220928084337 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_assessment_rule CHANGE test_id test_id INT DEFAULT 0 NOT NULL, CHANGE category_id category_id INT DEFAULT 0 NOT NULL, CHANGE from_score from_score DOUBLE PRECISION DEFAULT \'0\' NOT NULL, CHANGE to_score to_score DOUBLE PRECISION DEFAULT \'0\' NOT NULL');
         $this->addSql('ALTER TABLE learning_scorm_organizations CHANGE org_identifier org_identifier VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE idscorm_package idscorm_package INT DEFAULT 0 NOT NULL, CHANGE nChild nChild INT DEFAULT 0 NOT NULL, CHANGE nDescendant nDescendant INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE core_platform CHANGE platform platform VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE class_file class_file VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE class_name class_name VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE class_file_menu class_file_menu VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE class_name_menu class_name_menu VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE class_name_menu_managment class_name_menu_managment VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE file_class_config file_class_config VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE class_name_config class_name_config VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE var_default_template var_default_template VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE class_default_admin class_default_admin VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE sequence sequence INT DEFAULT 0 NOT NULL');
+        $this->addSql('DROP INDEX testindex ON conference_booking');
         $this->addSql('ALTER TABLE conference_booking CHANGE room_id room_id INT DEFAULT 0 NOT NULL, CHANGE platform platform VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE module module VARCHAR(100) DEFAULT \'\' NOT NULL, CHANGE user_idst user_idst INT DEFAULT 0 NOT NULL, CHANGE approved approved TINYINT(1) DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE learning_polltrack_answer CHANGE id_track id_track INT DEFAULT 0 NOT NULL, CHANGE id_quest id_quest INT DEFAULT 0 NOT NULL, CHANGE id_answer id_answer INT DEFAULT 0 NOT NULL');
         $this->addSql('ALTER TABLE learning_menucustom_main CHANGE idCustom idCustom INT DEFAULT 0 NOT NULL, CHANGE sequence sequence INT DEFAULT 0 NOT NULL, CHANGE name name VARCHAR(255) DEFAULT \'\' NOT NULL, CHANGE image image VARCHAR(255) DEFAULT \'\' NOT NULL');
