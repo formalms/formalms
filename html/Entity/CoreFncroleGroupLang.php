@@ -17,9 +17,16 @@ class CoreFncroleGroupLang
     /**
      * @var int
      *
-     * @ORM\Column(name="id_group", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_group", type="integer", nullable=false, options={"unsigned"=true})
      */
     private $idGroup = '0';
 
@@ -27,8 +34,6 @@ class CoreFncroleGroupLang
      * @var string
      *
      * @ORM\Column(name="lang_code", type="string", length=255, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $langCode = '';
 

@@ -15,6 +15,15 @@ use Doctrine\ORM\Mapping as ORM;
 class LearningTesttrackAnswer
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="number_time", type="boolean", nullable=false, options={"default"="1"})

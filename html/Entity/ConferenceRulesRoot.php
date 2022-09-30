@@ -9,17 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ConferenceRulesRoot
  *
- * @ORM\Table(name="conference_rules_root")
+ * @ORM\Table(name="conference_rules_root", indexes={
+ *     @ORM\Index(name="system_type_idx", columns={"system_type"})
+ * })
  * @ORM\Entity
  */
 class ConferenceRulesRoot
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="system_type", type="string", length=0, nullable=false, options={"default"="p2p"})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $systemType = 'p2p';
 

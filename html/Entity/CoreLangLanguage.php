@@ -9,17 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreLangLanguage
  *
- * @ORM\Table(name="core_lang_language")
+ * @ORM\Table(name="core_lang_language", indexes={
+ *     @ORM\Index(name="lang_code_idx", columns={"lang_code"})
+ * })
  * @ORM\Entity
  */
 class CoreLangLanguage
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="lang_code", type="string", length=50, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $langCode = '';
 

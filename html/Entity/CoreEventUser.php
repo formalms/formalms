@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreEventUser
  *
- * @ORM\Table(name="core_event_user")
+ * @ORM\Table(name="core_event_user", indexes={
+ *     @ORM\Index(name="idst_idx", columns={"idst"}),
+ *     @ORM\Index(name="id_event_mgr_idx", columns={"idEventMgr"})
+ * })
  * @ORM\Entity
  */
 class CoreEventUser
@@ -17,8 +20,16 @@ class CoreEventUser
     /**
      * @var int
      *
-     * @ORM\Column(name="idst", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idst", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idst = '0';
@@ -27,7 +38,6 @@ class CoreEventUser
      * @var int
      *
      * @ORM\Column(name="idEventMgr", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $ideventmgr = '0';

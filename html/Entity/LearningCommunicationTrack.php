@@ -17,9 +17,16 @@ class LearningCommunicationTrack
     /**
      * @var int
      *
-     * @ORM\Column(name="idReference", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idReference", type="integer", nullable=false)
      */
     private $idreference = '0';
 
@@ -27,8 +34,6 @@ class LearningCommunicationTrack
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';
 

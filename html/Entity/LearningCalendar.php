@@ -21,7 +21,7 @@ class LearningCalendar
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id = '0';
+    private $id;
 
     /**
      * @var int|null

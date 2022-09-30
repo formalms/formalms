@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningOrganizationAccess
  *
- * @ORM\Table(name="learning_organization_access", indexes={@ORM\Index(name="kind", columns={"kind"}), @ORM\Index(name="idObject", columns={"idOrgAccess"})})
+ * @ORM\Table(name="learning_organization_access", indexes={@ORM\Index(name="idObject", columns={"idOrgAccess"}), @ORM\Index(name="kind", columns={"kind"})})
  * @ORM\Entity
  */
 class LearningOrganizationAccess
@@ -39,7 +39,7 @@ class LearningOrganizationAccess
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $idorgaccess = '0';
+    private $idorgaccess;
 
     /**
      * @var string|null

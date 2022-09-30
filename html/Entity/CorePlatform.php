@@ -9,17 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CorePlatform
  *
- * @ORM\Table(name="core_platform")
+ * @ORM\Table(name="core_platform", indexes={
+ *     @ORM\Index(name="platform_idx", columns={"platform"})
+ * })
  * @ORM\Entity
  */
 class CorePlatform
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="platform", type="string", length=255, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $platform = '';
 

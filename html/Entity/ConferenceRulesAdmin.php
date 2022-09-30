@@ -9,17 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ConferenceRulesAdmin
  *
- * @ORM\Table(name="conference_rules_admin")
+ * @ORM\Table(name="conference_rules_admin", indexes={
+ *     @ORM\Index(name="server_status_idx", columns={"server_status"})
+ * })
  * @ORM\Entity
  */
 class ConferenceRulesAdmin
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="server_status", type="string", length=0, nullable=false, options={"default"="yes"})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $serverStatus = 'yes';
 

@@ -9,7 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ConferenceChatperm
  *
- * @ORM\Table(name="conference_chatperm")
+ * @ORM\Table(name="conference_chatperm", indexes={
+ *     @ORM\Index(name="room_idx", columns={"room_id"}),
+ *     @ORM\Index(name="module_idx", columns={"module"}),
+ *     @ORM\Index(name="user_idst_idx", columns={"user_idst"}),
+ *     @ORM\Index(name="perm_idx", columns={"perm"})
+ * })
  * @ORM\Entity
  */
 class ConferenceChatperm
@@ -17,8 +22,16 @@ class ConferenceChatperm
     /**
      * @var int
      *
-     * @ORM\Column(name="room_id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="room_id", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $roomId = '0';
@@ -27,7 +40,6 @@ class ConferenceChatperm
      * @var string
      *
      * @ORM\Column(name="module", type="string", length=50, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $module = '';
@@ -36,7 +48,6 @@ class ConferenceChatperm
      * @var int
      *
      * @ORM\Column(name="user_idst", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $userIdst = '0';
@@ -45,7 +56,6 @@ class ConferenceChatperm
      * @var string
      *
      * @ORM\Column(name="perm", type="string", length=50, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $perm = '';

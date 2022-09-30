@@ -12,7 +12,7 @@ migrations_paths:
 all_or_nothing: true
 transactional: true
 check_database_platform: true
-organize_migrations: year_and_month
+# organize_migrations: year_and_month
 
 connection: null
 em: null

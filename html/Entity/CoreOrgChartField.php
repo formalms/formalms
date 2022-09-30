@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreOrgChartField
  *
- * @ORM\Table(name="core_org_chart_field")
+ * @ORM\Table(name="core_org_chart_field", indexes={
+ *     @ORM\Index(name="idst_idx", columns={"idst"}),
+ *     @ORM\Index(name="id_field_idx", columns={"id_field"}),
+ * })
  * @ORM\Entity
  */
 class CoreOrgChartField
@@ -17,8 +20,16 @@ class CoreOrgChartField
     /**
      * @var int
      *
-     * @ORM\Column(name="idst", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idst", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idst = '0';
@@ -27,7 +38,6 @@ class CoreOrgChartField
      * @var string
      *
      * @ORM\Column(name="id_field", type="string", length=11, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idField = '0';

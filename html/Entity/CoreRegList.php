@@ -9,17 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreRegList
  *
- * @ORM\Table(name="core_reg_list")
+ * @ORM\Table(name="core_reg_list", indexes={
+ *     @ORM\Index(name="region_id_idx", columns={"region_id"})
+ * })
  * @ORM\Entity
  */
 class CoreRegList
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="region_id", type="string", length=100, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $regionId = '';
 
