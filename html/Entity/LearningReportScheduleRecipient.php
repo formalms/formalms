@@ -17,6 +17,15 @@ class LearningReportScheduleRecipient
     /**
      * @var int
      *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="id_report_schedule", type="integer", nullable=false, options={"unsigned"=true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")

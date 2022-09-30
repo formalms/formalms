@@ -17,9 +17,16 @@ class CoreCodeCourse
     /**
      * @var int
      *
-     * @ORM\Column(name="idCodeGroup", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idCodeGroup", type="integer", nullable=false)
      */
     private $idcodegroup = '0';
 
@@ -27,8 +34,6 @@ class CoreCodeCourse
      * @var int
      *
      * @ORM\Column(name="idCourse", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcourse = '0';
 

@@ -17,6 +17,15 @@ class LearningCourseEditionsUser
     /**
      * @var int
      *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="id_edition", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")

@@ -15,6 +15,15 @@ use Doctrine\ORM\Mapping as ORM;
 class CoreSettingUser
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="path_name", type="string", length=255, nullable=false)

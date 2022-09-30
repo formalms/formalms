@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CorePwdRecover
  *
- * @ORM\Table(name="core_pwd_recover")
+ * @ORM\Table(name="core_pwd_recover", indexes={
+ *     @ORM\Index(name="idst_user_idx", columns={"idst_user"})
+ * })
  * @ORM\Entity
  */
 class CorePwdRecover
@@ -17,9 +19,17 @@ class CorePwdRecover
     /**
      * @var int
      *
-     * @ORM\Column(name="idst_user", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idst_user", type="integer", nullable=false)
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idstUser = '0';
 

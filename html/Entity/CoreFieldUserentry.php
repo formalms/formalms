@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreFieldUserentry
  *
- * @ORM\Table(name="core_field_userentry")
+ * @ORM\Table(name="core_field_userentry", indexes={
+ *     @ORM\Index(name="id_common_idx", columns={"id_common"}),
+ *     @ORM\Index(name="id_common_son_idx", columns={"id_common_son"}),
+ *     @ORM\Index(name="id_user_idx", columns={"id_user"})
+ * })
  * @ORM\Entity
  */
 class CoreFieldUserentry
@@ -17,8 +21,16 @@ class CoreFieldUserentry
     /**
      * @var int
      *
-     * @ORM\Column(name="id_common", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id_common", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idCommon = '0';
@@ -27,7 +39,6 @@ class CoreFieldUserentry
      * @var int
      *
      * @ORM\Column(name="id_common_son", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idCommonSon = '0';
@@ -36,7 +47,6 @@ class CoreFieldUserentry
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idUser = '0';

@@ -15,6 +15,15 @@ use Doctrine\ORM\Mapping as ORM;
 class LearningCourseDatePresence
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="day", type="date", nullable=false, options={"default"="0000-00-00"})

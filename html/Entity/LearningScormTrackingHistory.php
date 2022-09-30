@@ -17,6 +17,15 @@ class LearningScormTrackingHistory
     /**
      * @var int
      *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="idscorm_tracking", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")

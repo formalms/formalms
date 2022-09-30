@@ -9,11 +9,20 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCommontrack
  *
- * @ORM\Table(name="learning_commontrack", indexes={@ORM\Index(name="idReference", columns={"idReference"}), @ORM\Index(name="idUser", columns={"idUser"})})
+ * @ORM\Table(name="learning_commontrack", indexes={@ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="idReference", columns={"idReference"})})
  * @ORM\Entity
  */
 class LearningCommontrack
 {
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
     /**
      * @var int
      *

@@ -17,9 +17,16 @@ class CoreGroup
     /**
      * @var int
      *
-     * @ORM\Column(name="idst", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idst", type="integer", nullable=false)
      */
     private $idst = '0';
 

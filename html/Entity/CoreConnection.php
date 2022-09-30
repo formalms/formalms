@@ -9,17 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreConnection
  *
- * @ORM\Table(name="core_connection")
+ * @ORM\Table(name="core_connection", indexes={
+ *     @ORM\Index(name="name_idx", columns={"name"})
+ * })
  * @ORM\Entity
  */
 class CoreConnection
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $name = '';
 

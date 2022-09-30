@@ -15,11 +15,20 @@ use Doctrine\ORM\Mapping as ORM;
 class CoreRestAuthentication
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="token", type="string", length=255, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $token = '';
 

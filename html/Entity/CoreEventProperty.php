@@ -9,16 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreEventProperty
  *
- * @ORM\Table(name="core_event_property")
+ * @ORM\Table(name="core_event_property", indexes={
+ *     @ORM\Index(name="property_name_idx", columns={"property_name"}),
+ *     @ORM\Index(name="id_event_idx", columns={"idEvent"})
+ * })
  * @ORM\Entity
  */
 class CoreEventProperty
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="property_name", type="string", length=50, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $propertyName = '';
@@ -27,7 +38,6 @@ class CoreEventProperty
      * @var int
      *
      * @ORM\Column(name="idEvent", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idevent = '0';

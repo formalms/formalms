@@ -15,11 +15,20 @@ use Doctrine\ORM\Mapping as ORM;
 class LearningLoTypes
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="objectType", type="string", length=20, nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $objecttype = '';
 

@@ -21,7 +21,7 @@ class LearningCommunicationAccess
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $idComm = '0';
+    private $idComm;
 
     /**
      * @var int

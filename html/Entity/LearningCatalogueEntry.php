@@ -15,6 +15,15 @@ use Doctrine\ORM\Mapping as ORM;
 class LearningCatalogueEntry
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="type_of_entry", type="string", length=0, nullable=false, options={"default"="course"})

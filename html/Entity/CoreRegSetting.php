@@ -15,6 +15,15 @@ use Doctrine\ORM\Mapping as ORM;
 class CoreRegSetting
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="region_id", type="string", length=100, nullable=false)

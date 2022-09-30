@@ -9,17 +9,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreFieldType
  *
- * @ORM\Table(name="core_field_type")
+ * @ORM\Table(name="core_field_type", indexes={
+ *     @ORM\Index(name="type_field_idx", columns={"type_field"})
+ * })
  * @ORM\Entity
  */
 class CoreFieldType
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="type_field", type="string", length=255, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $typeField = '';
 
