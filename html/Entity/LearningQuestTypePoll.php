@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningQuestTypePoll
  *
- * @ORM\Table(name="learning_quest_type_poll")
+ * @ORM\Table(name="learning_quest_type_poll", indexes={
+ *      @ORM\Index(name="type_quest_idx", columns={"type_quest"})
+ * })
  * @ORM\Entity
  */
 class LearningQuestTypePoll
@@ -27,7 +29,6 @@ class LearningQuestTypePoll
      * @var string
      *
      * @ORM\Column(name="type_quest", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $typeQuest = '';

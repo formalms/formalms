@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningStatuschangelog
  *
- * @ORM\Table(name="learning_statuschangelog")
+ * @ORM\Table(name="learning_statuschangelog", indexes={
+ *      @ORM\Index(name="when_do_idx", columns={"when_do"}),
+ *      @ORM\Index(name="id_user_idx", columns={"idUser"}),
+ *      @ORM\Index(name="id_course_idx", columns={"idCourse"})
+ * })
  * @ORM\Entity
  */
 class LearningStatuschangelog
@@ -27,7 +31,6 @@ class LearningStatuschangelog
      * @var \DateTime
      *
      * @ORM\Column(name="when_do", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $whenDo = '0000-00-00 00:00:00';
@@ -36,7 +39,6 @@ class LearningStatuschangelog
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';
@@ -45,7 +47,6 @@ class LearningStatuschangelog
      * @var int
      *
      * @ORM\Column(name="idCourse", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcourse = '0';

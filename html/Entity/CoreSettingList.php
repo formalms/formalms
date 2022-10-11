@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreSettingList
  *
- * @ORM\Table(name="core_setting_list")
+ * @ORM\Table(name="core_setting_list", indexes={
+ *     @ORM\Index(name="path_name_idx", columns={"path_name"})
+ * })
  * @ORM\Entity
  */
 class CoreSettingList
@@ -27,7 +29,6 @@ class CoreSettingList
      * @var string
      *
      * @ORM\Column(name="path_name", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $pathName = '';

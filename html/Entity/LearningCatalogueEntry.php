@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCatalogueEntry
  *
- * @ORM\Table(name="learning_catalogue_entry")
+ * @ORM\Table(name="learning_catalogue_entry", indexes={
+ *     @ORM\Index(name="type_of_entry_idx", columns={"type_of_entry"}),
+ *     @ORM\Index(name="id_catalogue_idx", columns={"idCatalogue"}),
+ *     @ORM\Index(name="id_entry_idx", columns={"idEntry"})
+ * })
  * @ORM\Entity
  */
 class LearningCatalogueEntry
@@ -27,7 +31,6 @@ class LearningCatalogueEntry
      * @var string
      *
      * @ORM\Column(name="type_of_entry", type="string", length=0, nullable=false, options={"default"="course"})
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $typeOfEntry = 'course';
@@ -36,7 +39,6 @@ class LearningCatalogueEntry
      * @var int
      *
      * @ORM\Column(name="idCatalogue", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcatalogue = '0';
@@ -45,7 +47,6 @@ class LearningCatalogueEntry
      * @var int
      *
      * @ORM\Column(name="idEntry", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $identry = '0';

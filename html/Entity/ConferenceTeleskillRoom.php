@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ConferenceTeleskillRoom
  *
  * @ORM\Table(name="conference_teleskill_room", indexes={
- *     @ORM\Index(name="room_idx", columns={"room_id"})
+ *     @ORM\Index(name="room_id_idx", columns={"roomId"})
  * })
  * @ORM\Entity
  */

@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * CoreEventConsumerClass
  *
  * @ORM\Table(name="core_event_consumer_class", indexes={
- *     @ORM\Index(name="id_consumer_idx", columns={"idConsumer"})
- *     @ORM\Index(name="id_class_idx", columns={"idClass "})
+ *     @ORM\Index(name="id_consumer_idx", columns={"idConsumer"}),
+ *     @ORM\Index(name="id_class_idx", columns={"idClass"})
  * })
  * @ORM\Entity
  */

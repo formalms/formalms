@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningScormTrackingHistory
  *
- * @ORM\Table(name="learning_scorm_tracking_history")
+ * @ORM\Table(name="learning_scorm_tracking_history", indexes={
+ *      @ORM\Index(name="idscorm_tracking_idx", columns={"idscorm_tracking"}),
+ *      @ORM\Index(name="date_action_idx", columns={"date_action"})
+ * })
  * @ORM\Entity
  */
 class LearningScormTrackingHistory
@@ -27,7 +30,6 @@ class LearningScormTrackingHistory
      * @var int
      *
      * @ORM\Column(name="idscorm_tracking", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idscormTracking = '0';
@@ -36,7 +38,6 @@ class LearningScormTrackingHistory
      * @var \DateTime
      *
      * @ORM\Column(name="date_action", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $dateAction = '0000-00-00 00:00:00';

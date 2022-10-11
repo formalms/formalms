@@ -9,7 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningTesttrackAnswer
  *
- * @ORM\Table(name="learning_testtrack_answer")
+ * @ORM\Table(name="learning_testtrack_answer", indexes={
+ *      @ORM\Index(name="number_time_idx", columns={"number_time"}),
+ *      @ORM\Index(name="id_track_idx", columns={"idTrack"}),
+ *      @ORM\Index(name="id_quest_idx", columns={"idQuest"}),
+ *      @ORM\Index(name="id_answer_idx", columns={"idanswer"})
+ * })
  * @ORM\Entity
  */
 class LearningTesttrackAnswer
@@ -27,7 +32,6 @@ class LearningTesttrackAnswer
      * @var bool
      *
      * @ORM\Column(name="number_time", type="boolean", nullable=false, options={"default"="1"})
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $numberTime = true;
@@ -36,7 +40,6 @@ class LearningTesttrackAnswer
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtrack = '0';
@@ -45,7 +48,6 @@ class LearningTesttrackAnswer
      * @var int
      *
      * @ORM\Column(name="idQuest", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idquest = '0';
@@ -54,7 +56,6 @@ class LearningTesttrackAnswer
      * @var int
      *
      * @ORM\Column(name="idAnswer", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idanswer = '0';

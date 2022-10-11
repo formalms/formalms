@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningPolltrackAnswer
  *
- * @ORM\Table(name="learning_polltrack_answer")
+ * @ORM\Table(name="learning_polltrack_answer", indexes={
+ *      @ORM\Index(name="id_track_idx", columns={"id_track"}),
+ *      @ORM\Index(name="id_quest_idx", columns={"id_quest"}),
+ *      @ORM\Index(name="id_answer_idx", columns={"id_answer"})
+ * })
  * @ORM\Entity
  */
 class LearningPolltrackAnswer
@@ -27,7 +31,6 @@ class LearningPolltrackAnswer
      * @var int
      *
      * @ORM\Column(name="id_track", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idTrack = '0';
@@ -36,7 +39,6 @@ class LearningPolltrackAnswer
      * @var int
      *
      * @ORM\Column(name="id_quest", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idQuest = '0';
@@ -45,7 +47,6 @@ class LearningPolltrackAnswer
      * @var int
      *
      * @ORM\Column(name="id_answer", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idAnswer = '0';

@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningHtmlfront
  *
- * @ORM\Table(name="learning_htmlfront")
+ * @ORM\Table(name="learning_htmlfront", indexes={
+ *      @ORM\Index(name="id_course_idx", columns={"id_course"})
+ * })
  * @ORM\Entity
  */
 class LearningHtmlfront
@@ -27,7 +29,6 @@ class LearningHtmlfront
      * @var int
      *
      * @ORM\Column(name="id_course", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idCourse = '0';

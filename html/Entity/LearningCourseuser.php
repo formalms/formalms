@@ -9,7 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCourseuser
  *
- * @ORM\Table(name="learning_courseuser", indexes={@ORM\Index(name="courseuser_course_idx", columns={"idCourse"})})
+ * @ORM\Table(name="learning_courseuser", indexes={
+ *      @ORM\Index(name="courseuser_course_idx", columns={"idCourse"}),
+ *      @ORM\Index(name="edition_id_idx", columns={"edition_id"}),
+ *      @ORM\Index(name="id_user_idx", columns={"idUser"}),
+ *      @ORM\Index(name="id_course_idx", columns={"idCourse"})
+ * })
  * @ORM\Entity
  */
 class LearningCourseuser
@@ -27,7 +32,6 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="edition_id", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $editionId = '0';
@@ -36,7 +40,6 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';
@@ -45,7 +48,6 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="idCourse", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcourse = '0';

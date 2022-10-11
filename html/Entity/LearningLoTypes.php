@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningLoTypes
  *
- * @ORM\Table(name="learning_lo_types")
+ * @ORM\Table(name="learning_lo_types", indexes={
+ *      @ORM\Index(name="object_type_idx", columns={"objectType"})
+ * })
  * @ORM\Entity
  */
 class LearningLoTypes
@@ -27,7 +29,6 @@ class LearningLoTypes
      * @var string
      *
      * @ORM\Column(name="objectType", type="string", length=20, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $objecttype = '';

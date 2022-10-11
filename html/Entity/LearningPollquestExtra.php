@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningPollquestExtra
  *
- * @ORM\Table(name="learning_pollquest_extra")
+ * @ORM\Table(name="learning_pollquest_extra", indexes={
+ *      @ORM\Index(name="id_quest_idx", columns={"id_quest"}),
+ *      @ORM\Index(name="id_answer_idx", columns={"id_answer"})
+ * })
  * @ORM\Entity
  */
 class LearningPollquestExtra
@@ -27,7 +30,6 @@ class LearningPollquestExtra
      * @var int
      *
      * @ORM\Column(name="id_quest", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idQuest = '0';
@@ -36,7 +38,6 @@ class LearningPollquestExtra
      * @var int
      *
      * @ORM\Column(name="id_answer", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idAnswer = '0';
