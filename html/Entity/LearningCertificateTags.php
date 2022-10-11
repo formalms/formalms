@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCertificateTags
  *
- * @ORM\Table(name="learning_certificate_tags")
+ * @ORM\Table(name="learning_certificate_tags", indexes={
+ *     @ORM\Index(name="file_name_idx", columns={"file_name"})
+ * })
  * @ORM\Entity
  */
 class LearningCertificateTags
@@ -27,7 +29,6 @@ class LearningCertificateTags
      * @var string
      *
      * @ORM\Column(name="file_name", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $fileName = '';

@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCertificateMetaAssign
  *
- * @ORM\Table(name="learning_certificate_meta_assign")
+ * @ORM\Table(name="learning_certificate_meta_assign", indexes={
+ *     @ORM\Index(name="id_user_idx", columns={"idUser"}),
+ *     @ORM\Index(name="id_meta_certificate_idx", columns={"idMetaCertificate"})
+ * })
  * @ORM\Entity
  */
 class LearningCertificateMetaAssign
@@ -27,7 +30,6 @@ class LearningCertificateMetaAssign
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';
@@ -36,7 +38,6 @@ class LearningCertificateMetaAssign
      * @var int
      *
      * @ORM\Column(name="idMetaCertificate", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idmetacertificate = '0';

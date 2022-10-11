@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningTesttrackQuest
  *
- * @ORM\Table(name="learning_testtrack_quest")
+ * @ORM\Table(name="learning_testtrack_quest", indexes={
+ *      @ORM\Index(name="id_track_idx", columns={"idTrack"}),
+ *      @ORM\Index(name="id_quest_idx", columns={"idQuest"})
+ * })
  * @ORM\Entity
  */
 class LearningTesttrackQuest
@@ -27,7 +30,6 @@ class LearningTesttrackQuest
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtrack = '0';

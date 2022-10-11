@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreSetting
  *
- * @ORM\Table(name="core_setting")
+ * @ORM\Table(name="core_setting", indexes={
+ *     @ORM\Index(name="param_name_idx", columns={"param_name"})
+ * })
  * @ORM\Entity
  */
 class CoreSetting
@@ -27,7 +29,6 @@ class CoreSetting
      * @var string
      *
      * @ORM\Column(name="param_name", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $paramName = '';

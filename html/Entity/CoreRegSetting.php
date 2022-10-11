@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreRegSetting
  *
- * @ORM\Table(name="core_reg_setting")
+ * @ORM\Table(name="core_reg_setting", indexes={
+ *     @ORM\Index(name="region_id_idx", columns={"region_id"}),
+ *     @ORM\Index(name="val_name_idx", columns={"val_name"})
+ * })
  * @ORM\Entity
  */
 class CoreRegSetting
@@ -27,7 +30,6 @@ class CoreRegSetting
      * @var string
      *
      * @ORM\Column(name="region_id", type="string", length=100, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $regionId = '';
@@ -36,7 +38,6 @@ class CoreRegSetting
      * @var string
      *
      * @ORM\Column(name="val_name", type="string", length=100, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $valName = '';

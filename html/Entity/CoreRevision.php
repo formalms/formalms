@@ -9,7 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreRevision
  *
- * @ORM\Table(name="core_revision")
+ * @ORM\Table(name="core_revision", indexes={
+ *     @ORM\Index(name="type_idx", columns={"type"}),
+ *     @ORM\Index(name="parent_id_idx", columns={"parent_id"}),
+ *     @ORM\Index(name="version_idx", columns={"version"}),
+ *     @ORM\Index(name="sub_key_idx", columns={"sub_key"})
+ * })
  * @ORM\Entity
  */
 class CoreRevision
@@ -27,7 +32,6 @@ class CoreRevision
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=0, nullable=false, options={"default"="faq"})
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $type = 'faq';
@@ -36,7 +40,6 @@ class CoreRevision
      * @var int
      *
      * @ORM\Column(name="parent_id", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $parentId = '0';
@@ -45,7 +48,6 @@ class CoreRevision
      * @var int
      *
      * @ORM\Column(name="version", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $version = '0';
@@ -54,7 +56,6 @@ class CoreRevision
      * @var string
      *
      * @ORM\Column(name="sub_key", type="string", length=80, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $subKey = '0';

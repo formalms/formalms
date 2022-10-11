@@ -9,7 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreWikiRevision
  *
- * @ORM\Table(name="core_wiki_revision")
+ * @ORM\Table(name="core_wiki_revision", indexes={
+ *     @ORM\Index(name="wiki_id_idx", columns={"wiki_id"}),
+ *     @ORM\Index(name="page_id_idx", columns={"page_id"}),
+ *     @ORM\Index(name="version_idx", columns={"version"}),
+ *     @ORM\Index(name="language_idx", columns={"language"})
+ * })
  * @ORM\Entity
  */
 class CoreWikiRevision
@@ -27,7 +32,6 @@ class CoreWikiRevision
      * @var int
      *
      * @ORM\Column(name="wiki_id", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $wikiId = '0';
@@ -36,7 +40,6 @@ class CoreWikiRevision
      * @var int
      *
      * @ORM\Column(name="page_id", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $pageId = '0';
@@ -45,7 +48,6 @@ class CoreWikiRevision
      * @var int
      *
      * @ORM\Column(name="version", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $version = '0';
@@ -54,7 +56,6 @@ class CoreWikiRevision
      * @var string
      *
      * @ORM\Column(name="language", type="string", length=50, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $language = '0';

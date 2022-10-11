@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningTeacherProfile
  *
- * @ORM\Table(name="learning_teacher_profile")
+ * @ORM\Table(name="learning_teacher_profile", indexes={
+ *      @ORM\Index(name="id_user_idx", columns={"id_user"})
+ * })
  * @ORM\Entity
  */
 class LearningTeacherProfile
@@ -27,7 +29,6 @@ class LearningTeacherProfile
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idUser = '0';

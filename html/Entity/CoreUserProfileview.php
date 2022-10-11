@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreUserProfileview
  *
- * @ORM\Table(name="core_user_profileview")
+ * @ORM\Table(name="core_user_profileview", indexes={
+ *     @ORM\Index(name="id_owner_idx", columns={"id_owner"}),
+ *     @ORM\Index(name="id_viewer_idx", columns={"id_viewer"})
+ * })
  * @ORM\Entity
  */
 class CoreUserProfileview
@@ -27,7 +30,6 @@ class CoreUserProfileview
      * @var int
      *
      * @ORM\Column(name="id_owner", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idOwner = '0';
@@ -36,7 +38,6 @@ class CoreUserProfileview
      * @var int
      *
      * @ORM\Column(name="id_viewer", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idViewer = '0';

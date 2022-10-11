@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCoursepathCourses
  *
- * @ORM\Table(name="learning_coursepath_courses")
+ * @ORM\Table(name="learning_coursepath_courses", indexes={
+ *     @ORM\Index(name="id_path_idx", columns={"id_path"}),
+ *     @ORM\Index(name="id_item_idx", columns={"id_item"}),
+ *     @ORM\Index(name="in_slot_idx", columns={"in_slot"})
+ * })
  * @ORM\Entity
  */
 class LearningCoursepathCourses
@@ -27,7 +31,6 @@ class LearningCoursepathCourses
      * @var int
      *
      * @ORM\Column(name="id_path", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idPath = '0';
@@ -36,7 +39,6 @@ class LearningCoursepathCourses
      * @var int
      *
      * @ORM\Column(name="id_item", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idItem = '0';
@@ -45,7 +47,6 @@ class LearningCoursepathCourses
      * @var int
      *
      * @ORM\Column(name="in_slot", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $inSlot = '0';

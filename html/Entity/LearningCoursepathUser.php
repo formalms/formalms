@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCoursepathUser
  *
- * @ORM\Table(name="learning_coursepath_user")
+ * @ORM\Table(name="learning_coursepath_user", indexes={
+ *     @ORM\Index(name="id_path_idx", columns={"id_path"}),
+ *     @ORM\Index(name="id_user_idx", columns={"idUser"})
+ * })
  * @ORM\Entity
  */
 class LearningCoursepathUser
@@ -27,7 +30,6 @@ class LearningCoursepathUser
      * @var int
      *
      * @ORM\Column(name="id_path", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idPath = '0';
@@ -36,7 +38,6 @@ class LearningCoursepathUser
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';

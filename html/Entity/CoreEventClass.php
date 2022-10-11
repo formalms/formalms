@@ -10,7 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * CoreEventClass
  *
  * @ORM\Table(name="core_event_class", 
- *      uniqueConstraints={@ORM\UniqueConstraint(name="class_2", columns={"class"})}
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="class_2", columns={"class"})
+ * })
  * @ORM\Entity
  */
 class CoreEventClass

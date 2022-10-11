@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningReservationPerm
  *
- * @ORM\Table(name="learning_reservation_perm")
+ * @ORM\Table(name="learning_reservation_perm", indexes={
+ *      @ORM\Index(name="event_id_idx", columns={"event_id"}),
+ *      @ORM\Index(name="user_idst_idx", columns={"user_idst"}),
+ *      @ORM\Index(name="perm_idx", columns={"perm"})
+ * })
  * @ORM\Entity
  */
 class LearningReservationPerm
@@ -27,7 +31,6 @@ class LearningReservationPerm
      * @var int
      *
      * @ORM\Column(name="event_id", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $eventId = '0';
@@ -36,7 +39,6 @@ class LearningReservationPerm
      * @var int
      *
      * @ORM\Column(name="user_idst", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $userIdst = '0';
@@ -45,7 +47,6 @@ class LearningReservationPerm
      * @var string
      *
      * @ORM\Column(name="perm", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $perm = '';

@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningLightRepoUser
  *
- * @ORM\Table(name="learning_light_repo_user")
+ * @ORM\Table(name="learning_light_repo_user", indexes={
+ *      @ORM\Index(name="id_repo_idx", columns={"id_repo"}),
+ *      @ORM\Index(name="id_user_idx", columns={"id_user"})
+ * })
  * @ORM\Entity
  */
 class LearningLightRepoUser
@@ -27,7 +30,6 @@ class LearningLightRepoUser
      * @var int
      *
      * @ORM\Column(name="id_repo", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idRepo = '0';
@@ -36,7 +38,6 @@ class LearningLightRepoUser
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idUser = '0';

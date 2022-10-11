@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreWikiPageInfo
  *
- * @ORM\Table(name="core_wiki_page_info")
+ * @ORM\Table(name="core_wiki_page_info", indexes={
+ *     @ORM\Index(name="page_id_idx", columns={"page_id"}),
+ *     @ORM\Index(name="language_idx", columns={"language"})
+ * })
  * @ORM\Entity
  */
 class CoreWikiPageInfo
@@ -27,7 +30,6 @@ class CoreWikiPageInfo
      * @var int
      *
      * @ORM\Column(name="page_id", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $pageId = '0';
@@ -36,7 +38,6 @@ class CoreWikiPageInfo
      * @var string
      *
      * @ORM\Column(name="language", type="string", length=50, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $language = '';

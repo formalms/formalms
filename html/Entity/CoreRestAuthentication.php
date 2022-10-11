@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreRestAuthentication
  *
- * @ORM\Table(name="core_rest_authentication")
+ * @ORM\Table(name="core_rest_authentication", indexes={
+ *     @ORM\Index(name="token_idx", columns={"token"})
+ * })
  * @ORM\Entity
  */
 class CoreRestAuthentication
@@ -27,7 +29,6 @@ class CoreRestAuthentication
      * @var string
      *
      * @ORM\Column(name="token", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $token = '';

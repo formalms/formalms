@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningWikiCourse
  *
- * @ORM\Table(name="learning_wiki_course")
+ * @ORM\Table(name="learning_wiki_course", indexes={
+ *      @ORM\Index(name="course_id_idx", columns={"course_id"}),
+ *      @ORM\Index(name="wiki_id_idx", columns={"wiki_id"})
+ * })
  * @ORM\Entity
  */
 class LearningWikiCourse
@@ -27,7 +30,6 @@ class LearningWikiCourse
      * @var int
      *
      * @ORM\Column(name="course_id", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $courseId = '0';
@@ -36,7 +38,6 @@ class LearningWikiCourse
      * @var int
      *
      * @ORM\Column(name="wiki_id", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $wikiId = '0';
