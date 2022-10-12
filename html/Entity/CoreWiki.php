@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreWiki
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

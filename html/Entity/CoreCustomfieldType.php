@@ -9,17 +9,21 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreCustomfieldType
  *
- * @ORM\Table(name="core_customfield_type")
+ * @ORM\Table(name="core_customfield_type", indexes={
+ *     @ORM\Index(name="type_field_idx", columns={"type_field"})
+ * })
  * @ORM\Entity
  */
 class CoreCustomfieldType
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,7 +31,6 @@ class CoreCustomfieldType
      * @var string
      *
      * @ORM\Column(name="type_field", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $typeField = '';

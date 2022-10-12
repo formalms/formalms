@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreTagResource
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

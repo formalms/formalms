@@ -17,6 +17,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreLangTranslation
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

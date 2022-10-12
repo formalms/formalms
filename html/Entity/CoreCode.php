@@ -9,17 +9,21 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreCode
  *
- * @ORM\Table(name="core_code")
+ * @ORM\Table(name="core_code", indexes={
+ *     @ORM\Index(name="code_idx", columns={"code"})
+ * })
  * @ORM\Entity
  */
 class CoreCode
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,7 +31,6 @@ class CoreCode
      * @var string
      *
      * @ORM\Column(name="code", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $code = '';

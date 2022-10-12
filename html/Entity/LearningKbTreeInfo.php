@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningKbTreeInfo
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

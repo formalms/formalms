@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -17,12 +15,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningMenucourseUnder
 {
+    use Timestamps;
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 

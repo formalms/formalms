@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningClassroom
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

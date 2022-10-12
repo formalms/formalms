@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningScormTracking
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

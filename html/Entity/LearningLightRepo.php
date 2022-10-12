@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningLightRepo
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

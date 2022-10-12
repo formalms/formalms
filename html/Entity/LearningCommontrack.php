@@ -11,18 +11,22 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="learning_commontrack", indexes={
  *      @ORM\Index(name="idUser", columns={"idUser"}), 
- *      @ORM\Index(name="idReference", columns={"idReference"})
+ *      @ORM\Index(name="idReference", columns={"idReference"}),
+ *      @ORM\Index(name="id_track_idx", columns={"idTrack"}),
+ *      @ORM\Index(name="object_type_idx", columns={"objectType"})
  * })
  * @ORM\Entity
  */
 class LearningCommontrack
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -44,7 +48,6 @@ class LearningCommontrack
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtrack = '0';
@@ -53,7 +56,6 @@ class LearningCommontrack
      * @var string
      *
      * @ORM\Column(name="objectType", type="string", length=20, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $objecttype = '';

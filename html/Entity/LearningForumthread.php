@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningForumthread
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

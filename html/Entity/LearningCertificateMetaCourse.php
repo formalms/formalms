@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCertificateMetaCourse
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

@@ -9,17 +9,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreFncrole
  *
- * @ORM\Table(name="core_fncrole")
+ * @ORM\Table(name="core_fncrole", indexes={
+ *     @ORM\Index(name="id_fncrole_idx", columns={"id_fncrole"}),
+ *     @ORM\Index(name="id_group_idx", columns={"id_group"})
+ * })
  * @ORM\Entity
  */
 class CoreFncrole
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,7 +32,6 @@ class CoreFncrole
      * @var int
      *
      * @ORM\Column(name="id_fncrole", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idFncrole = '0';

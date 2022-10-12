@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningInstmsg
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

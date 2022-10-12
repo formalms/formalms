@@ -9,17 +9,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCourseEditionsUser
  *
- * @ORM\Table(name="learning_course_editions_user")
+ * @ORM\Table(name="learning_course_editions_user", indexes={
+ *      @ORM\Index(name="id_edition_idx", columns={"id_edition"}), 
+ *      @ORM\Index(name="id_user_idx", columns={"id_user"})
+ * })
  * @ORM\Entity
  */
 class LearningCourseEditionsUser
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,7 +32,6 @@ class LearningCourseEditionsUser
      * @var int
      *
      * @ORM\Column(name="id_edition", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idEdition = '0';
@@ -36,7 +40,6 @@ class LearningCourseEditionsUser
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idUser = '0';

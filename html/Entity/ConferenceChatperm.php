@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ConferenceChatperm
  *
  * @ORM\Table(name="conference_chatperm", indexes={
- *     @ORM\Index(name="room_idx", columns={"room_id"}),
+ *     @ORM\Index(name="room_id_idx", columns={"room_id"}),
  *     @ORM\Index(name="module_idx", columns={"module"}),
  *     @ORM\Index(name="user_idst_idx", columns={"user_idst"}),
  *     @ORM\Index(name="perm_idx", columns={"perm"})
@@ -19,12 +19,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ConferenceChatperm
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 

@@ -17,6 +17,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningOrganizationAccess
 {
+      use Timestamps;     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
     /**
      * @var array
      *

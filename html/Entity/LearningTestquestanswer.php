@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningTestquestanswer
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

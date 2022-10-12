@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DoctrineMigrationVersions
 {
+    use Timestamps;    
+      
     /**
      * @var string
      *

@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreUserFile
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

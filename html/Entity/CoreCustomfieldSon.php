@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreCustomfieldSon
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

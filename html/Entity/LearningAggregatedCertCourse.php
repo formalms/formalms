@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningAggregatedCertCourse
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

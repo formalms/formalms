@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreFncroleGroupLang
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

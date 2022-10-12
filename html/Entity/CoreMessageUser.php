@@ -9,17 +9,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreMessageUser
  *
- * @ORM\Table(name="core_message_user")
+ * @ORM\Table(name="core_message_user", indexes={
+ *     @ORM\Index(name="id_message_idx", columns={"idMessage"}),
+ *     @ORM\Index(name="id_user_idx", columns={"idUser"})
+ * })
  * @ORM\Entity
  */
 class CoreMessageUser
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,7 +32,6 @@ class CoreMessageUser
      * @var int
      *
      * @ORM\Column(name="idMessage", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idmessage = '0';
@@ -36,7 +40,6 @@ class CoreMessageUser
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';

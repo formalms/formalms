@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreCustomfieldSonLang
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

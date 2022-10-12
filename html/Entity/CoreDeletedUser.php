@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreDeletedUser
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DashboardBlocks
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *

@@ -9,17 +9,22 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CoreSettingGroup
  *
- * @ORM\Table(name="core_setting_group")
+ * @ORM\Table(name="core_setting_group", indexes={
+ *      @ORM\Index(name="path_name_idx", columns={"path_name"}),
+ *      @ORM\Index(name="idst_idx", columns={"idst"})
+ * })
  * @ORM\Entity
  */
 class CoreSettingGroup
 {
+    use Timestamps;    
+      
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
+     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -27,7 +32,6 @@ class CoreSettingGroup
      * @var string
      *
      * @ORM\Column(name="path_name", type="string", length=255, nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $pathName = '';
@@ -36,7 +40,6 @@ class CoreSettingGroup
      * @var int
      *
      * @ORM\Column(name="idst", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idst = '0';
