@@ -1215,6 +1215,15 @@ Password: [password]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message in the e-learning system at <a href="[url]">[url]</a> in the course [course] from the user [from]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You received a new message from the e-learning system at <a href="[url]">[url]</a> in the course<b> [course] </b>from the user [from]]]></key>
+        <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
+        <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the classroom course ([classroom_code]) - [classroom_date]]]></key>
+        <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
+        <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the course ([course_code]) - [course]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Apply rule]]></key>
@@ -2351,6 +2360,12 @@ Username: [userid]]]></key>
         <key id="sms&amp;_WAITING_USER_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[There is a new user waiting for the approval]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message in the e-learning system in the course [course] from the user [from]]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You received a new message on the  e-learning platform in course [course] from the user [from]]]></key>
+        <key id="sms&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the classroom course ([classroom_code]) - [classroom_date]]]></key>
+        <key id="sms&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the course ([course_code]) - [course]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Accounts connected:]]></key>
