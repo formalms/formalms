@@ -1837,7 +1837,7 @@ class DateManager
 
             $subscribe_man = new CourseSubscribe_Manager();
             $level = $this->subscribe_man->getUserLeveInCourse($id_user, $id_course);
-            $subscribe_man->delUserFromCourse($id_user, $id_course);
+            $subscribe_man->delUserFromCourse($id_user, $id_course, null,$id_date);
 
             $docebo_course = new DoceboCourse($id_course);
             $level_idst = &$docebo_course->getCourseLevel($id_course);

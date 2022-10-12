@@ -1214,6 +1214,15 @@ Titolo: [thread_title]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Hai ricevuto un nuovo messaggio]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2015-09-30 15:32:39"><![CDATA[Hai ricevuto un nuovo messaggio sul sistema di e-learning all'indirizzo <a href="[url]">[url]</a> dall'utente [from]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Hai ricevuto un nuovo messaggio sul sistema di e-learning all'indirizzo <a href="[url]">[url]</a> nel corso<b> [course] </b>dall'utente [from]]]></key>
+        <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sei stato disiscritto dal corso]]></key>
+        <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gentile [firstname] [lastname],
+sei stato disiscritto dal corso d'aula ([classroom_code]) - [classroom_date]]]></key>
+        <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sei stato disiscritto dal corso]]></key>
+        <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gentile [firstname] [lastname],
+sei stato disiscritto dall'edizione ([edition_code]) - [edition]]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sei stato disiscritto dal corso]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gentile [firstname] [lastname],
+sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2018-04-23 12:26:20"><![CDATA[Applica politica di iscrizione]]></key>
@@ -2344,6 +2353,12 @@ Password: [password]]]></key>
         <key id="sms&amp;_WAITING_USER_TEXT_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[C'é un nuovo utente in attesa di approvazione]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS" attributes="sms" save_date="2015-09-30 15:32:40"><![CDATA[Hai ricevuto un nuovo messaggio sulla piattaforma di e-learning dall'utente [from]]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS_COURSE" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Hai ricevuto un nuovo messaggio sulla piattaforma di e-learning nel corso [course] dall'utente [from]]]></key>
+        <key id="sms&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gentile [firstname] [lastname],
+sei stato disiscritto dal corso d'aula ([classroom_code]) - [classroom_date]]]></key>
+        <key id="sms&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gentile [firstname] [lastname],
+sei stato disiscritto dall'edizione ([edition_code]) - [edition]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gentile [firstname] [lastname],
+sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Account collegati:]]></key>
