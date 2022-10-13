@@ -118,7 +118,7 @@ function displayCourseList(&$url, $order_type)
             $session->set('cp_assessment_effect',urlencode(Util::serialize($ass_elem)));
             $session->save();
         } else {
-            $ass_elem = Util::unserialize(urldecode($session->get('cp_assessment_effect'));
+            $ass_elem = Util::unserialize(urldecode($session->get('cp_assessment_effect')));
         }
         if (!empty($ass_elem['parsed']['course'])) {
             $where_course = ' ( ( ' . $where_course . ' ) OR c.idCourse IN (' . implode(',', $ass_elem['parsed']['course']) . ') ) ';
