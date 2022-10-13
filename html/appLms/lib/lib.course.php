@@ -1066,8 +1066,8 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 $numPrerequisites = 0;
                 $prerequisiteSatisfied = 0;
                 foreach ($result as $row) {
-                    $prerequisites = $row['$prerequisites'];
-                    if ($prerequisites !== '') {
+                    $prerequisites = $row['prerequisites'];
+                    if (!empty($prerequisites)) {
                         $hasPrerequisites = true;
                         $countPrerequisites = count(explode(',', $prerequisites));
                         ++$numPrerequisites;
