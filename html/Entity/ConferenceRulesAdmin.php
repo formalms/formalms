@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,7 +29,7 @@ class ConferenceRulesAdmin
      * @var string
      *
      * @ORM\Column(name="server_status", type="string", length=0, nullable=false, options={"default"="yes"})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $serverStatus = 'yes';
 

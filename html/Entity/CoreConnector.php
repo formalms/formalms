@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,7 +29,7 @@ class CoreConnector
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=25, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $type = '';
 

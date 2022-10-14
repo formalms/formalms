@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,7 +31,7 @@ class CoreAdminCourse
      * @var int
      *
      * @ORM\Column(name="idst_user", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idstUser = '0';
 
@@ -39,7 +39,7 @@ class CoreAdminCourse
      * @var string
      *
      * @ORM\Column(name="type_of_entry", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $typeOfEntry = '';
 
@@ -47,7 +47,7 @@ class CoreAdminCourse
      * @var int
      *
      * @ORM\Column(name="id_entry", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idEntry = '0';
 

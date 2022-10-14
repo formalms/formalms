@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,7 +29,7 @@ class CoreSetting
      * @var string
      *
      * @ORM\Column(name="param_name", type="string", length=255, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $paramName = '';
 

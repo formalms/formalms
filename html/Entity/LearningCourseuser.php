@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="edition_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $editionId = '0';
 
@@ -40,7 +40,7 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $iduser = '0';
 
@@ -48,7 +48,7 @@ class LearningCourseuser
      * @var int
      *
      * @ORM\Column(name="idCourse", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idcourse = '0';
 

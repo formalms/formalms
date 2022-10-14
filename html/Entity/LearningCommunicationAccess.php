@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,7 +19,7 @@ class LearningCommunicationAccess
      *
      * @ORM\Column(name="id_comm", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idComm;
 
@@ -28,7 +28,7 @@ class LearningCommunicationAccess
      *
      * @ORM\Column(name="idst", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idst = '0';
 

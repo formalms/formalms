@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,7 +30,7 @@ class CoreOrgChart
      * @var int
      *
      * @ORM\Column(name="id_dir", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idDir = '0';
 
@@ -38,7 +38,7 @@ class CoreOrgChart
      * @var string
      *
      * @ORM\Column(name="lang_code", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $langCode = '';
 

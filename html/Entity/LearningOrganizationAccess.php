@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,8 +21,7 @@ class LearningOrganizationAccess
      * @var array
      *
      * @ORM\Column(name="kind", type="simple_array", length=0, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $kind = '';
 
@@ -30,7 +29,7 @@ class LearningOrganizationAccess
      * @var int
      *
      * @ORM\Column(name="value", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $value = '0';
 
@@ -38,7 +37,7 @@ class LearningOrganizationAccess
      * @var int
      *
      * @ORM\Column(name="idOrgAccess", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idorgaccess;
 

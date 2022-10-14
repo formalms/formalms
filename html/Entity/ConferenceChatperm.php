@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class ConferenceChatperm
      * @var int
      *
      * @ORM\Column(name="room_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $roomId = '0';
 
@@ -40,7 +40,7 @@ class ConferenceChatperm
      * @var string
      *
      * @ORM\Column(name="module", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $module = '';
 
@@ -48,7 +48,7 @@ class ConferenceChatperm
      * @var int
      *
      * @ORM\Column(name="user_idst", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $userIdst = '0';
 
@@ -56,7 +56,7 @@ class ConferenceChatperm
      * @var string
      *
      * @ORM\Column(name="perm", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $perm = '';
 

@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,7 +30,7 @@ class LearningCertificateMetaAssign
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $iduser = '0';
 
@@ -38,7 +38,7 @@ class LearningCertificateMetaAssign
      * @var int
      *
      * @ORM\Column(name="idMetaCertificate", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idmetacertificate = '0';
 

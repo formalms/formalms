@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,7 +31,7 @@ class LearningReservationPerm
      * @var int
      *
      * @ORM\Column(name="event_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $eventId = '0';
 
@@ -39,7 +39,7 @@ class LearningReservationPerm
      * @var int
      *
      * @ORM\Column(name="user_idst", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $userIdst = '0';
 
@@ -47,7 +47,7 @@ class LearningReservationPerm
      * @var string
      *
      * @ORM\Column(name="perm", type="string", length=255, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $perm = '';
 

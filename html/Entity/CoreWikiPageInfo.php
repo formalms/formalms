@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,7 +30,7 @@ class CoreWikiPageInfo
      * @var int
      *
      * @ORM\Column(name="page_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $pageId = '0';
 
@@ -38,7 +38,7 @@ class CoreWikiPageInfo
      * @var string
      *
      * @ORM\Column(name="language", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $language = '';
 

@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,7 +30,7 @@ class CoreUserProfileview
      * @var int
      *
      * @ORM\Column(name="id_owner", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idOwner = '0';
 
@@ -38,7 +38,7 @@ class CoreUserProfileview
      * @var int
      *
      * @ORM\Column(name="id_viewer", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idViewer = '0';
 

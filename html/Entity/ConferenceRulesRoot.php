@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,7 +29,7 @@ class ConferenceRulesRoot
      * @var string
      *
      * @ORM\Column(name="system_type", type="string", length=0, nullable=false, options={"default"="p2p"})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $systemType = 'p2p';
 

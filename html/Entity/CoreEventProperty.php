@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,7 +30,7 @@ class CoreEventProperty
      * @var string
      *
      * @ORM\Column(name="property_name", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $propertyName = '';
 
@@ -38,7 +38,7 @@ class CoreEventProperty
      * @var int
      *
      * @ORM\Column(name="idEvent", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idevent = '0';
 
