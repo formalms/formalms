@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,9 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="learning_games_track", indexes={
  *      @ORM\Index(name="idReference", columns={"idReference"}), 
- *      @ORM\Index(name="idUser", columns={"idUser"})}),
+ *      @ORM\Index(name="idUser", columns={"idUser"}),
  *      @ORM\Index(name="id_track_idx", columns={"idTrack"}), 
- *      @ORM\Index(name="object_type_idx", columns={"objectType"})})
+ *      @ORM\Index(name="object_type_idx", columns={"objectType"})
+ * })
  * @ORM\Entity
  */
 class LearningGamesTrack
@@ -47,7 +48,7 @@ class LearningGamesTrack
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idtrack = '0';
 
@@ -55,7 +56,7 @@ class LearningGamesTrack
      * @var string
      *
      * @ORM\Column(name="objectType", type="string", length=20, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $objecttype = '';
 

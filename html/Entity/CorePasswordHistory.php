@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CorePasswordHistory
      * @var int
      *
      * @ORM\Column(name="idst_user", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idstUser = '0';
 
@@ -40,7 +40,7 @@ class CorePasswordHistory
      * @var \DateTime
      *
      * @ORM\Column(name="pwd_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $pwdDate = '0000-00-00 00:00:00';
 

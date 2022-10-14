@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CoreAdminTree
      * @var string
      *
      * @ORM\Column(name="idst", type="string", length=11, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idst = '';
 
@@ -40,7 +40,7 @@ class CoreAdminTree
      * @var string
      *
      * @ORM\Column(name="idstAdmin", type="string", length=11, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idstadmin = '';
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,7 +30,7 @@ class LearningMenucourseUnder
      * @var int
      *
      * @ORM\Column(name="idCourse", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idcourse = '0';
 
@@ -38,7 +38,7 @@ class LearningMenucourseUnder
      * @var int
      *
      * @ORM\Column(name="idModule", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idmodule = '0';
 

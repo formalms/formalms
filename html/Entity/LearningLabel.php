@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class LearningLabel
      * @var int
      *
      * @ORM\Column(name="id_common_label", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idCommonLabel = '0';
 
@@ -40,7 +40,7 @@ class LearningLabel
      * @var string
      *
      * @ORM\Column(name="lang_code", type="string", length=255, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $langCode = '';
 

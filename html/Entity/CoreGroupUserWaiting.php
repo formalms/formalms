@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CoreGroupUserWaiting
      * @var int
      *
      * @ORM\Column(name="idst_group", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idstGroup = '0';
 
@@ -40,7 +40,7 @@ class CoreGroupUserWaiting
      * @var int
      *
      * @ORM\Column(name="idst_user", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idstUser = '0';
 

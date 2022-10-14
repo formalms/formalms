@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CoreRegSetting
      * @var string
      *
      * @ORM\Column(name="region_id", type="string", length=100, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $regionId = '';
 
@@ -40,7 +40,7 @@ class CoreRegSetting
      * @var string
      *
      * @ORM\Column(name="val_name", type="string", length=100, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $valName = '';
 

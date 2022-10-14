@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,7 +34,7 @@ class LearningTesttrackAnswer
      * @var bool
      *
      * @ORM\Column(name="number_time", type="boolean", nullable=false, options={"default"="1"})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $numberTime = true;
 
@@ -42,7 +42,7 @@ class LearningTesttrackAnswer
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idtrack = '0';
 
@@ -50,7 +50,7 @@ class LearningTesttrackAnswer
      * @var int
      *
      * @ORM\Column(name="idQuest", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idquest = '0';
 
@@ -58,7 +58,7 @@ class LearningTesttrackAnswer
      * @var int
      *
      * @ORM\Column(name="idAnswer", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idanswer = '0';
 

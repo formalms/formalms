@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class LearningScormTrackingHistory
      * @var int
      *
      * @ORM\Column(name="idscorm_tracking", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idscormTracking = '0';
 
@@ -40,7 +40,7 @@ class LearningScormTrackingHistory
      * @var \DateTime
      *
      * @ORM\Column(name="date_action", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $dateAction = '0000-00-00 00:00:00';
 

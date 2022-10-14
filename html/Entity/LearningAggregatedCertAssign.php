@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,7 +33,7 @@ class LearningAggregatedCertAssign
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $iduser = '0';
 
@@ -41,7 +41,7 @@ class LearningAggregatedCertAssign
      * @var int
      *
      * @ORM\Column(name="idCertificate", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idcertificate = '0';
 
@@ -49,7 +49,7 @@ class LearningAggregatedCertAssign
      * @var int
      *
      * @ORM\Column(name="idAssociation", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idassociation;
 

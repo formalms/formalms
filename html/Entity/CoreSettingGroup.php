@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CoreSettingGroup
      * @var string
      *
      * @ORM\Column(name="path_name", type="string", length=255, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $pathName = '';
 
@@ -40,7 +40,7 @@ class CoreSettingGroup
      * @var int
      *
      * @ORM\Column(name="idst", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idst = '0';
 

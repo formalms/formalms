@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,7 +33,7 @@ class LearningKbRel
      * @var int
      *
      * @ORM\Column(name="res_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $resId = '0';
 
@@ -41,7 +41,7 @@ class LearningKbRel
      * @var string
      *
      * @ORM\Column(name="parent_id", type="string", length=45, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $parentId = '';
 
@@ -49,7 +49,7 @@ class LearningKbRel
      * @var string
      *
      * @ORM\Column(name="rel_type", type="string", length=0, nullable=false, options={"default"="tag"})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $relType = 'tag';
 

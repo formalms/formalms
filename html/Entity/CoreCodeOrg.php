@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CoreCodeOrg
      * @var int
      *
      * @ORM\Column(name="idCodeGroup", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idcodegroup = '0';
 
@@ -40,7 +40,7 @@ class CoreCodeOrg
      * @var int
      *
      * @ORM\Column(name="idOrg", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idorg = '0';
 

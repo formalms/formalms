@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,7 +34,7 @@ class CoreTagRelation
      * @var int
      *
      * @ORM\Column(name="id_tag", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idTag = '0';
 
@@ -42,7 +42,7 @@ class CoreTagRelation
      * @var int
      *
      * @ORM\Column(name="id_resource", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idResource = '0';
 
@@ -50,7 +50,7 @@ class CoreTagRelation
      * @var string
      *
      * @ORM\Column(name="resource_type", type="string", length=255, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $resourceType = '';
 
@@ -58,7 +58,7 @@ class CoreTagRelation
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idUser = '0';
 

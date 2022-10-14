@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CoreNewsletterSendto
      * @var int
      *
      * @ORM\Column(name="id_send", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idSend = '0';
 
@@ -40,7 +40,7 @@ class CoreNewsletterSendto
      * @var int
      *
      * @ORM\Column(name="idst", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idst = '0';
 

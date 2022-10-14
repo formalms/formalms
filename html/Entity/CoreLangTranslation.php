@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,9 +22,9 @@ class CoreLangTranslation
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+    * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -32,7 +32,7 @@ class CoreLangTranslation
      * @var int
      *
      * @ORM\Column(name="id_text", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idText = '0';
 
@@ -40,7 +40,7 @@ class CoreLangTranslation
      * @var string
      *
      * @ORM\Column(name="lang_code", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $langCode = '';
 

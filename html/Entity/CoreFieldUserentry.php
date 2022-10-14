@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,7 +33,7 @@ class CoreFieldUserentry
      * @var int
      *
      * @ORM\Column(name="id_common", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idCommon = '0';
 
@@ -41,7 +41,7 @@ class CoreFieldUserentry
      * @var int
      *
      * @ORM\Column(name="id_common_son", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idCommonSon = '0';
 
@@ -49,7 +49,7 @@ class CoreFieldUserentry
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idUser = '0';
 

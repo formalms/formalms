@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class LearningWikiCourse
      * @var int
      *
      * @ORM\Column(name="course_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $courseId = '0';
 
@@ -40,7 +40,7 @@ class LearningWikiCourse
      * @var int
      *
      * @ORM\Column(name="wiki_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $wikiId = '0';
 

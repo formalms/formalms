@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class LearningCompetenceUser
      * @var int
      *
      * @ORM\Column(name="id_competence", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idCompetence = '0';
 
@@ -40,7 +40,7 @@ class LearningCompetenceUser
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idUser = '0';
 

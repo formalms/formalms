@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -33,7 +33,7 @@ class LearningCourseDatePresence
      * @var \DateTime
      *
      * @ORM\Column(name="day", type="date", nullable=false, options={"default"="0000-00-00"})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $day = '0000-00-00';
 
@@ -41,7 +41,7 @@ class LearningCourseDatePresence
      * @var int
      *
      * @ORM\Column(name="id_date", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idDate = '0';
 
@@ -49,7 +49,7 @@ class LearningCourseDatePresence
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idUser = '0';
 

@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CoreFncrole
      * @var int
      *
      * @ORM\Column(name="id_fncrole", type="integer", nullable=false, options={"unsigned"=true})
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idFncrole = '0';
 

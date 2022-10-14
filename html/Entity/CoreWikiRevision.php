@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,7 +34,7 @@ class CoreWikiRevision
      * @var int
      *
      * @ORM\Column(name="wiki_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $wikiId = '0';
 
@@ -42,7 +42,7 @@ class CoreWikiRevision
      * @var int
      *
      * @ORM\Column(name="page_id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $pageId = '0';
 
@@ -50,7 +50,7 @@ class CoreWikiRevision
      * @var int
      *
      * @ORM\Column(name="version", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $version = '0';
 
@@ -58,7 +58,7 @@ class CoreWikiRevision
      * @var string
      *
      * @ORM\Column(name="language", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $language = '0';
 

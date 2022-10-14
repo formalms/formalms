@@ -1,6 +1,6 @@
 <?php 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -17,35 +17,35 @@ trait Timestamps {
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
     */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
     */
-    private $updated_at;
+    private $updatedAt;
 
     public function setUpdatedAt($date)
     {
-        $this->updated_at = $date;
+        $this->updatedAt = $date;
         return $this;
     }
 
     public function getUpdatedAt()
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     public function setCreatedAt($date)
     {
-        $this->created_at = $date;
+        $this->createdAt = $date;
         return $this;
     }
 
     public function getCreatedAt()
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     /**

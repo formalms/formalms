@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,7 +32,7 @@ class CoreRulesEntity
      * @var int
      *
      * @ORM\Column(name="id_rule", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idRule = '0';
 
@@ -40,7 +40,7 @@ class CoreRulesEntity
      * @var string
      *
      * @ORM\Column(name="id_entity", type="string", length=50, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idEntity = '';
 

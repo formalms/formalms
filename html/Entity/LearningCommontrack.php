@@ -2,7 +2,7 @@
 
 
 
-namespace Formalms\Entity;
+namespace FormaLms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -48,7 +48,7 @@ class LearningCommontrack
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $idtrack = '0';
 
@@ -56,7 +56,7 @@ class LearningCommontrack
      * @var string
      *
      * @ORM\Column(name="objectType", type="string", length=20, nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
+     
      */
     private $objecttype = '';
 
