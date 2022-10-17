@@ -2380,7 +2380,7 @@ class Course_API extends API
             $courseResponse['date_begin'] = $courseNodeInfo['date_begin'];
             $courseResponse['date_end'] = $courseNodeInfo['date_end'];
             $courseResponse['course_link'] = FormaLms\lib\Get::site_url() . _folder_lms_ . "/index.php?modname=course&amp;op=aula&amp;idCourse={$courseNodeInfo['idCourse']}";
-            $courseResponse['img_course'] = $courseNodeInfo['img_course'] ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . cdGet::sett('pathcourse') . $courseNodeInfo['img_course'] : '';
+            $courseResponse['img_course'] = $courseNodeInfo['img_course'] ? FormaLms\lib\Get::site_url() . _folder_files_ . '/' . _folder_lms_ . '/' . FormaLms\lib\Get::sett('pathcourse') . $courseNodeInfo['img_course'] : '';
             $courseResponse['category_id'] = $courseNodeInfo['idCategory'];
             $courseResponse['dates'] = $courseNodeInfo['dates'];
 
