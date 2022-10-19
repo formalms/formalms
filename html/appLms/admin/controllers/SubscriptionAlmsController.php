@@ -3655,7 +3655,8 @@ class SubscriptionAlmsController extends AlmsController
             . '<div class="std_block">'
             . Form::openForm('approve users', 'index.php?r=' . $this->link . '/approveusers')
             . Form::getHidden('id_course', 'id_course', $id_course)
-            . Form::getHidden('edition_id', 'edition_id', $edition_id),
+            . Form::getHidden('edition_id', 'edition_id', $edition_id)
+            . Form::getHidden('is_classroom', 'is_classroom', $is_classroom),
             'content'
         );
 
@@ -3808,23 +3809,8 @@ class SubscriptionAlmsController extends AlmsController
         $GLOBALS['page']->add('</div>', 'content');
     }
 
-    public function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0, $start_date = false, $end_date = false)
+    public function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0)
     {
-        require_once _adm_ . '/lib/resources/lib.timetable.php';
-        $tt = new TimeTable();
-        // ----------------------------------------
-        $resource = 'user';
-        $resource_id = $id_user;
-        if ($edition_id > 0) {
-            $consumer = 'course_edition';
-            $consumer_id = $edition_id;
-        } else {
-            $consumer = 'course';
-            $consumer_id = $id_course;
-        }
-        // ----------------------------------------
-        $tt->deleteEvent(false, $resource, $resource_id, $consumer, $consumer_id, $start_date, $end_date);
-
         $acl_man = &Docebo::user()->getAclManager();
         $acl_man->removeFromGroup($lv_group, $id_user);
 
@@ -3832,6 +3818,16 @@ class SubscriptionAlmsController extends AlmsController
             $group = '/lms/course_edition/' . $edition_id . '/subscribed';
             $group_idst = $acl_man->getGroupST($group);
             $acl_man->removeFromGroup($group_idst, $id_user);
+        }
+
+        $classroom_type = \FormaLms\lib\Get::req('is_classroom',DOTY_INT);
+        if ($classroom_type) {
+            require_once _lms_ . '/lib/lib.date.php';
+            $date_man = new DateManager();
+            $date_array = $date_man->getAvailableDate($id_course);
+            foreach ($date_array as $k => $v) {
+                sql_query('DELETE FROM %lms_course_date_user WHERE id_user ='.$id_user.' AND id_date='.$k);
+            }
         }
 
         return sql_query('

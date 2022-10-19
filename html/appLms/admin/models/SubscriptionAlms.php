@@ -292,7 +292,6 @@ class SubscriptionAlms extends Model
             $date_man = new DateManager();
             // managing overbooked user on course_date_user here
             $ret = $date_man->delUserFromDate($id_user, $this->id_course, $this->id_date);
-        // Rimossa funzione inserita precedentemente perchè già presente nella delUserFromDate -> removeUserFromDate
         } else {
             require_once _lms_ . '/lib/lib.subscribe.php';
             $subscribe_man = new CourseSubscribe_Manager();
@@ -300,7 +299,7 @@ class SubscriptionAlms extends Model
         }
         /* enrolling first overbooked user, if any */
         if ($ret) {
-            // For classroom courses, be sure that is enabled overbooking in the course, not in the edition, or this method will return null
+            // For classroom courses, be sure that is enabled overbooking in the course, not in the edition, or this method  return null
             $user_to_enroll = $cmodel->getFirstOverbooked();
             if ($user_to_enroll) {
                 $course_info = $this->getCourseInfoForSubscription();
