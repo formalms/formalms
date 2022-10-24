@@ -1,6 +1,19 @@
 FORMA LMS
 RELEASE CHANGELOG
 
+
+---------------------------------------------------------------------------------------
+forma.lms 3.3.2
+---------------------------------------------------------------------------------------
+Release date: 2022 october
+
+- #      - add index to learning_testquestanswer, learning_coursereport, core_field_userentry tables to speedup pages loading
+- #      - fix course report test recalculation
+- #20091 - fix update item
+- #20090 - fix poll course completion when is setted as end course marker.
+- #      - fix api course
+- #      - fix prerequisites typo
+
 ---------------------------------------------------------------------------------------
 forma.lms 3.3.1
 ---------------------------------------------------------------------------------------
