@@ -49,11 +49,8 @@ class TemplateInfo
     }
 
     public function checkVersion() {
-        if (version_compare(_template_min_version_, $this->version) <= 0) {
-            return true;
-        } else {
-            return false;
-        }
+        require_once _base_ . '/lib/lib.template.php';
+        return (version_compare(getTemplateVersion(getDefaultTemplate()), $this->version) <= 0);
     }
 
     public function getVersion() {

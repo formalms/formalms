@@ -55,6 +55,15 @@ class FieldList
      */
     public $use_multi_lang = false;
 
+    public function __construct()
+    {
+        $prefix = '%adm';
+        $this->field_table = $prefix . FIELDTABLE;
+        $this->type_field_table = $prefix . TYPEFIELDTABLE;
+        $this->group_field_table = $prefix . GROUPFIELDSTABLE;
+        $this->field_entry_table = $prefix . FIELDUSERENTRYTABLE;
+    }
+
     public function getFieldTable()
     {
         return $this->field_table;
@@ -93,15 +102,6 @@ class FieldList
     public function setFieldEntryTable($field_entry_table)
     {
         $this->field_entry_table = $field_entry_table;
-    }
-
-    public function FieldList()
-    {
-        $prefix = '%adm';
-        $this->field_table = $prefix . FIELDTABLE;
-        $this->type_field_table = $prefix . TYPEFIELDTABLE;
-        $this->group_field_table = $prefix . GROUPFIELDSTABLE;
-        $this->field_entry_table = $prefix . FIELDUSERENTRYTABLE;
     }
 
     public function &getFieldInstance($id_field, $type_file = false, $type_class = false)

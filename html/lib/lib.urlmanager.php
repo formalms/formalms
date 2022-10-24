@@ -48,7 +48,7 @@ class UrlManager
         }
     }
 
-    public function &getInstance($param = false)
+    public static function getInstance($param = false)
     {
         if ($param == false) {
             Log::add('used default urlamanager');

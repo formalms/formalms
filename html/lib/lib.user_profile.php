@@ -1025,7 +1025,7 @@ class UserProfileViewer
     /**
      * class constructor.
      */
-    public function UserProfileViewer(&$user_profile, $varname_action = 'ap')
+    public function __construct(&$user_profile, $varname_action = 'ap')
     {
         $this->_user_profile = &$user_profile;
         $this->acl_man = Docebo::user()->getAclManager();

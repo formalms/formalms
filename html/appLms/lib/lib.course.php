@@ -2019,7 +2019,7 @@ class Man_CourseUser
      * @return array the list of the course with the carachteristic of it array( id_course => array(
      *               idCourse, code, name, description
      */
-    public function getUserWithLevelFilter($level, $arr_user = false)
+    public static function getUserWithLevelFilter($level, $arr_user = false)
     {
         $users = [];
         $query_courses = '

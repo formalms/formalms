@@ -256,7 +256,7 @@ class CourseLms extends Model
         return $parsedData;
     }
 
-    private function getDateFirstAccess($id_course, $id_user)
+    private static function getDateFirstAccess($id_course, $id_user)
     {
         $query = 'select date_first_access from learning_courseuser where idCourse=' . $id_course . ' and idUser=' . $id_user;
 

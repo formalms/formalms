@@ -16,7 +16,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 // user course subscription
 
 //define("_CUS_CANCELLED",	-4);
-//define("_CUS_RESERVED",		-3); //booked, not confirmed by BUYER
 define('_CUS_WAITING_LIST', -2); //_CUS_WAITING_PAYMENT
 define('_CUS_CONFIRMED', -1);
 define('_CUS_SUBSCRIBED', 0);

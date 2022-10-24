@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Man_Advice
 {
-    public function getCountUnreaded($id_user, $courses, &$last_access)
+    public static function getCountUnreaded($id_user, $courses, &$last_access)
     {
         if (empty($courses)) {
             return [];
