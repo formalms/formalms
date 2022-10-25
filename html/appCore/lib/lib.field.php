@@ -549,7 +549,7 @@ class FieldList
             }
         }
 
-        $query = 'SELECT id_user, id_common, user_entry AS uentry '
+        $query = 'SELECT id_user, id_common, user_entry '
             . ' FROM %adm_field_userentry'
             . ' WHERE id_user IN (' . implode(',', $users) . ') ';
         if (!empty($fields)) {
@@ -559,10 +559,13 @@ class FieldList
         $rs = sql_query($query);
 
         $result = [];
-        while (list($id_user, $id_field, $value) = sql_fetch_row($rs)) {
+        foreach ($rs as $row){
+            $id_user = $row['id_user'];
+            $id_field = $row['id_common'];
+            $value = $row['user_entry'];
             if ($translate) {
-                if (array_key_exists($id_field, $sons_arr)) {
-                    $result[$id_user][$id_field] = isset($sons_arr[$id_field][$value]) ? $sons_arr[$id_field][$value] : '';
+                if (array_key_exists((int)$id_field, $sons_arr)) {
+                    $result[$id_user][$id_field] = $sons_arr[(int)$id_field][(int)$value] ?? '';
                 } elseif (in_array($id_field, $yesno_fields)) {
                     $yntrans = Lang::t('_NOT_ASSIGNED', 'field');
                     switch ($value) {
@@ -571,6 +574,8 @@ class FieldList
                             break;
                         case 2:
                             $yntrans = Lang::t('_NO', 'standard');
+                            break;
+                        default:
                             break;
                     }
                     $result[$id_user][$id_field] = $yntrans;

@@ -3505,8 +3505,7 @@ VALUES ((SELECT id_text FROM core_lang_text where text_key = '_DASHBOARD' and te
 INSERT IGNORE INTO `learning_module`
 VALUES (47, 'dashboard', 'show', '_DASHBOARD', 'view', '', '', 'all', 'lms/dashboard/show');
 
-SET @max = (SELECT MAX(idMenu) + 1
-            FROM `core_menu`);
+SET @max = (SELECT MAX(idMenu) + 1 FROM `core_menu`);
 
 INSERT IGNORE INTO `core_menu`(`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`)
 VALUES (@max, '_DASHBOARD', '', 4, 'true', 'true', NULL, NULL, 'lms');
@@ -3515,8 +3514,7 @@ INSERT IGNORE INTO `core_menu_under`(`idUnder`, `idMenu`, `module_name`, `defaul
                                      `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`)
 VALUES (@max, @max, 'course', '_DASHBOARD', NULL, 'view', 'lms', 4, NULL, NULL, 'lms/dashboard/show');
 
-SET @max = (SELECT MAX(idMenu) + 1
-            FROM `core_menu`);
+SET @max = (SELECT MAX(idMenu) + 1 FROM `core_menu`);
 
 INSERT IGNORE INTO `core_menu`(`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`)
 VALUES (@max, '_DASHBOARD_CONFIGURATION', '', 4, 'true', 'true', '5', NULL, 'framework');
@@ -3529,6 +3527,10 @@ VALUES (@max, @max, 'dashboardsettings', '_DASHBOARD_CONFIGURATION', '', 'view',
 
 ALTER TABLE `learning_course` CHANGE `credits` `credits` double NOT NULL DEFAULT 0;
 
+ALTER TABLE `learning_testquestanswer` ADD INDEX `idQuest_idx` (`idQuest`) USING BTREE;
+ALTER TABLE `learning_coursereport` ADD INDEX `idCourse_idReport_idx` (`id_course`,`id_report`) USING BTREE;
+ALTER TABLE `core_field_userentry` ADD INDEX `idUser_idCommon_idx` (`id_user`,`id_common`) USING BTREE;
+ALTER TABLE `core_field_son` ADD INDEX `idCommonSon_idFiled_langCode_idx` (`id_common_son`,`idField`,`lang_code`) USING BTREE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
