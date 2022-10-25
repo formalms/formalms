@@ -774,7 +774,7 @@ class SubscriptionAlmsController extends AlmsController
             }
         }
 
-        $eventResults = Events::trigger('core.users.list', ['list' => $list, 'link' => $this->link, 'idCourse' => $this->id_course, 'idEdition' => $this->id_edition, 'idDate' => $this->id_date]);
+        $eventResults = Events::trigger('core.users.data.listing', ['list' => $list, 'link' => $this->link, 'idCourse' => $this->id_course, 'idEdition' => $this->id_edition, 'idDate' => $this->id_date]);
 
         $list = $eventResults['list'];
 
