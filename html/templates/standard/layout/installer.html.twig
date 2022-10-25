@@ -1,0 +1,18 @@
+{% extends "base.html.twig" %}
+{% block stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/jquery.steps.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/install.css"/>
+{% endblock %}
+{% block content %}
+
+       {{ Layout_getZone('content') }}
+
+
+       <!-- scripts -->
+    {{ Layout_getZone('scripts') }}
+    <!-- debug -->
+    {{ Layout_getZone('debug') }}
+    <!-- def_lang -->
+    {{ Layout_getZone('def_lang') }}
+{% endblock %}
+

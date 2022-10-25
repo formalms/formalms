@@ -66,6 +66,7 @@ define('_plugins_', _base_ . '/' . _folder_plugins_);
 
 /* other nice setting */
 define('_homepage_base_', 'adm/homepage');
+define('_install_base_', 'adm/install');
 define('_homecatalog_base_', 'lms/homecatalogue');
 
 define('_homepage_', _homepage_base_ . '/show');

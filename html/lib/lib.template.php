@@ -241,7 +241,7 @@ function getTemplateList($set_keys = false, $platform = false)
  */
 function getDefaultTemplate($platform = false)
 {
-    $plat_templ = FormaLms\lib\Get::sett('defaultTemplate');
+    $plat_templ = FormaLms\lib\Get::sett('defaultTemplate') ?: 'standard';
     if (is_dir(_templates_ . '/' . $plat_templ)) {
         return $plat_templ;
     } else {

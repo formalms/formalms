@@ -1,0 +1,28 @@
+<h1>{{databaseInfoLabel}}</h1>
+<div class="form_line_l">
+
+
+{{ Form_getTextfield(dbHostLabel, 'db_host', 'db_host', 255, dbHost) }}
+{{ Form_getTextfield(dbNameLabel, 'db_name', 'db_name', 255, dbName) }}
+{{ Form_getTextfield(dbUsernameLabel, 'db_user', 'db_user', 255, dbUser) }}
+{{ Form_getTextfield(dbPassLabel, 'db_pass', 'db_pass', 255, dbPass) }}
+
+<h6>{{ uploadMethodLabel }}</h6>
+
+{{ Form_getRadio(httpUploadLabel, 'http_upload', 'upload_method', 'http', uploadMetodFlag) }}
+
+{{ Form_getRadio(ftpUploadLabel, 'ftp_upload', 'upload_method', 'ftp', uploadMetodFlag) }}
+<div id="ftp_data" style=" margin-top: 1.6em;">
+{{ Form_getTextfield(ftpHostLabel, 'ftp_host', 'ftp_host', 255, 'localhost') }}
+{{ Form_getTextfield(ftpPortLabel, 'ftp_port', 'ftp_port', 255, '21') }}
+{{ Form_getTextfield(ftpUsernameLabel, 'ftp_user', 'ftp_user', 255, ftpUser) }}
+{{ Form_getPassword(ftpPasswordLabel, 'ftp_pass', 'ftp_pass', 255, ftpPass) }}
+{{ Form_getTextfield(ftpPathLabel, 'ftp_path', 'ftp_path', 255, '/', ftpPath) }}
+
+{{ Form_getHidden('upload_method', 'upload_method', 'http') }}
+</div>
+</div>
+
+
+
+

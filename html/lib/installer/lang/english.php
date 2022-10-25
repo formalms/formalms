@@ -18,7 +18,7 @@ define('_LOADING', 'Loading');
 define('_TRY_AGAIN', 'Try again');
 //--------------------------------------
 define('_INTRODUCTION', 'Introduction');
-define('_TITLE_STEP1', 'Step 1: Select language');
+define('_TITLE_STEP1', 'Step 1: Getting Started');
 define('_LANGUAGE', 'Language');
 define('_INSTALLER_INTRO_TEXT', '
 forma.lms is a free open source Learning Management System mantained by an italian group of companies, already used by hundreds of companies and universities all over the world.
@@ -41,7 +41,7 @@ forma.lms is a free open source Learning Management System mantained by an itali
 define('_WARNINGS', 'Warnings');
 define('WARNING_PUB_ADMIN_DELETED', 'All public admins willl be deleted');
 // ---------------------------------------
-define('_TITLE_STEP2', 'Step 2: System Check');
+define('_TITLE_STEP2', 'Step 2: Database and FTP Settings');
 define('_SERVERINFO', 'Server information');
 define('_SERVER_SOFTWARE', 'Server software : ');
 define('_PHPVERSION', 'PHP Version : ');
@@ -67,12 +67,14 @@ define('_POST_MAX_SIZE', 'post_max_size : ');
 define('_MAX_EXECUTION_TIME', 'max_execution_time : ');
 define('_ON', 'ON ');
 define('_OFF', 'OFF ');
+define('_YES', 'YES');
+define('_NO', 'NO');
 
 // -----------------------------------------
-define('_TITLE_STEP3', 'Step 3: License');
+define('_TITLE_STEP3', 'Step 3: Admin and Language Settings');
 define('_AGREE_LICENSE', 'I agree with the term of the license');
 // -----------------------------------------
-define('_TITLE_STEP4', 'Step 4: Configuration');
+define('_TITLE_STEP4', 'Step 4: SMTP Configuration');
 define('_SITE_BASE_URL', 'Base url of the website');
 define('_DATABASE_INFO', 'Database information');
 define('_DB_TYPE', 'Type');
@@ -100,7 +102,7 @@ define('_SQL_STRICT_MODE_WARN', "You have MySQL <a href=\"http://dev.mysql.com/d
 define('_SQL_STRICT_MODE', 'MySQL <a href="http://dev.mysql.com/doc/en/server-sql-mode.html" target="_blank">strict mode</a>');
 define('_DB_WILL_BE_CREATED', 'Db will be created');
 // -----------------------------------------
-define('_TITLE_STEP5', 'Step 5: Configuration');
+define('_TITLE_STEP5', 'Step 5: Finalization');
 define('_ADMIN_USER_INFO', 'Information regarding the administrator user (first login)');
 define('_ADMIN_USERNAME', 'Username');
 define('_ADMIN_FIRSTNAME', 'Firstname');
@@ -133,7 +135,8 @@ define('_SMTP_PWD', 'Password SMTP');
 define('_SMTP_DEBUG', 'Debug SMTP');
 define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');
 // -----------------------------------------
-define('_TITLE_STEP8', 'Step 8: Installation completed');
+define('_TITLE_STEP8', 'Installation completed');
+define('_FINALIZE_INSTALL', 'Confirm installation data');
 define('REMOVE_INSTALL_FOLDER', 'It is suggested to remove the install folder, forma is vulnerable until it is reachable.');
 define('_INSTALLATION_COMPLETED', 'Installation has been completed');
 define('_INSTALLATION_DETAILS', 'Details');

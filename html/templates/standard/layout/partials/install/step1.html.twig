@@ -1,0 +1,52 @@
+<div class="lang_sel_box">
+ {{ Form_getDropdown(languageLabel, 'language', 'language', languages, setLang) }}
+   
+
+</div><div class="no_float"></div>
+
+<div id="intro_txt">
+{{ introText | raw }} 
+</div>
+<div>
+<div style="width:50%; float:left;">
+<h1>{{ serverInfo }}</h1>
+<ul class="info">
+	<li>{{serverSw}} <span>{{serverSwInfo}}</span></li>
+	<li class="{{php}}">{{phpVersion}} <span>{{phpVersionInfo}}</span></li>
+    <li class="{{mysqlClient}}">{{mysqlClientVersion}} <span>{{sqlClientVersion}}</span></li>
+    <li class="{{mysql}}">{{mysqlServerVersion}} <span>{{sqlServerVersion}}</span></li>
+	<li class="{{mbstring}}">{{mbstringLabel}} <span>{{mbstringData}}</span></li>
+	<li class="{{mimeCt}}">{{mimeCtLabel}} <span>{{mimeCtData}}</span></li>
+	<li class="{{fileInfo}}">{{fileInfoLabel}} <span>{{fileInfoData}}</span></li>
+	<li class="{{ldap}}">{{ldapLabel}} <span>{{ldapData}}</span></li>
+	<li class="{{openssl}}">{{openSslLabel}} <span>{{openSslData}}</span></li>
+	<li class="ok">{{phpTimezone}}: <span>{{phpTimezoneData}}</span></li>
+</ul>
+</div>
+<div style="width:50%; float:left;">
+<h1>{{phpInfo}}</h1>
+<ul class="info">
+	<li>{{magicQuotesGpc}} {{magicQuotesGpcData}}</li>
+	<li>{{safeMode}} {{safeModeData }}</li>
+	<li>{{registerGlobals}} {{registerGlobalsData}}</li>
+	<li class="{{allowUrlFopen}}">{{allowUrlFopenLabel}} {{allowUrlFopenData}}</li>
+	<li>{{allowUrlIncludeLabel}} {{allowUrlIncludeData}}</li>
+	<li>{{uploadMaxFilesize}} {{uploadMaxFilesizeData}}</li>
+	<li>{{postMaxSize}} {{postMaxSizeData}}</li>
+	<li>{{maxExecutionTime}} {{maxExecutionTimeData}}</li>
+</ul>
+</div>
+</div>
+
+
+{{checkFolderPerms}}
+
+
+<label for="license" style="visibility: hidden;"> {{ licenseLabel }} </label><br />
+<div style="width:100%;overflow:auto;height:400px;border:1px solid #cccccc;"><pre>
+    {{ licenseContent }}
+        </pre>
+    </div>
+</textarea>;
+
+{{ Form_getCheckbox(licenseAcceptance, 'agree', 'agree', 1, false)}}

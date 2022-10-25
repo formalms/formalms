@@ -609,26 +609,16 @@ class LangAdmController extends AdmController
 
     private function getFileSystemCoreLanguages()
     {
-        $langs = [];
-        $langs[''] = Lang::t('_SELECT_LANG', 'standard');
-        $files = scandir(_langs_);
-
-        foreach ($files as $file) {
-            if (strpos($file, '.xml') !== false) {
-                $langs[$file] = $this->getLangNameFromFile($file);
-            }
-        }
-
-        return $langs;
+        return Lang::getFileSystemCoreLanguages();
     }
 
     private function getLangNameFromFile($file)
     {
-        return ucwords(str_replace('_', ' ', str_replace('lang[', '', str_replace('].xml', '', $file))));
+        return Lang::getLangNameFromFile($file);
     }
 
     private function getLangFileNameFromName($name)
     {
-        return sprintf('lang[%s].xml', str_replace(' ', '_', strtolower($name)));
+        return Lang::getLangFileNameFromName($name);
     }
 }
