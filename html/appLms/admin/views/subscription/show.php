@@ -168,11 +168,14 @@ if (!$id_date && !$id_edition) {
         $tfields[] = '_dyn_field_' . $i;
     }
 
-    Events::trigger('core.users.show.columns', [
-        'fields' => '',
-        'columns' => '',
+    $eventResults = Events::trigger('core.users.columns.listing', [
+        'fields' => $tfields,
+        'columns' => $columns,
         'hiddenValidity' => $hidden_validity,
     ]);
+
+    $tfields = $eventResults['fields'];
+    $columns = $eventResults['columns'];
 
     $this->widget('table', [
         'id' => 'subscribed_table',
