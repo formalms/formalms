@@ -74,14 +74,14 @@ class OrgDirDb extends RepoDirDb
     // Constructor of OrgDirDb class
     // set idCourse to current idCourse or to
     // parameter $idCourse
-    public function OrgDirDb($idCourse = false)
+    public function __construct($idCourse = false)
     {
         if ($idCourse === false) {
             $this->idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         } else {
             $this->idCourse = $idCourse;
         }
-        parent::RepoDirDb($GLOBALS['prefix_lms'] . '_organization');
+        parent::__construct($GLOBALS['prefix_lms'] . '_organization');
         $this->fields = ['id' => 'idOrg', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];
     }
 

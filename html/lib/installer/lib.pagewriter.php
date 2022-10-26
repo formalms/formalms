@@ -19,7 +19,7 @@ class PageWriter
 
     public function __construct()
     {
-        $this->_id = uniqid();
+        $this->_id = uniqid('', true);
     }
 
     public static function init()

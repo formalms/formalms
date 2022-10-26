@@ -400,7 +400,7 @@ class Field_Textfield extends Field
                                 $translation);
     }
 
-    public function multiLangPlay($id_user, $freeze, $mandatory = false, $registrationLayout = false)
+    public function multiLangPlay($id_user, $freeze, $mandatory = false, $value = null, $registrationLayout = false)
     {
         $res = '';
         require_once _base_ . '/lib/lib.form.php';

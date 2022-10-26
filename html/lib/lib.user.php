@@ -45,6 +45,7 @@ class DoceboUser implements Serializable
     public $arrst = [];
     public $preference;
 
+
     /* @var string */
     private $firstName;
     /* @var string */
@@ -785,12 +786,12 @@ class DoceboUser implements Serializable
 
     public function serialize()
     {
-        // TODO: Implement serialize() method.
+        //
     }
 
     public function unserialize($data)
     {
-        // TODO: Implement unserialize() method.
+        //
     }
 }
 

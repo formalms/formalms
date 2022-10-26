@@ -130,7 +130,7 @@ class Folder
 class TreeDb
 {
     // table name
-    public $table;
+    public $table = false;
     // associative array of field's names
     // id -> id of the record
     // idParent -> id of the parent

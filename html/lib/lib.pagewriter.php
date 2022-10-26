@@ -303,7 +303,7 @@ class PageWriter
     /**
      * PageWriter constructor.
      */
-    public function _constructor()
+    public function __construct()
     {
     }
 

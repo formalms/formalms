@@ -1129,6 +1129,8 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
     public function getClassroomTeachers($idCourse)
     {
+
+        $teachers = [];
         $q = 'select  id_user, lcdu.id_date, u.firstname, u.lastname, lcd.code, lcd.name 
              from %lms_course_date_user lcdu, %lms_course_date lcd, %adm_user u, %lms_courseuser lcu
              where lcd.id_date = lcdu.id_date and 

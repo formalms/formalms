@@ -168,7 +168,7 @@ class TrackUser
      *
      * @return int the number of user in the course in the gap of time (logged included)
      */
-    public function getWhoIsOnline($id_course, $gap_minute = 5)
+    public static function getWhoIsOnline($id_course, $gap_minute = 5)
     {
         $gap_time = date('Y-m-d H:i:s', time() - (60 * $gap_minute));
         $query_time = '
@@ -181,7 +181,7 @@ class TrackUser
     }
 
     /* the same as above, returning also the array of the idSt's of the users online */
-    public function getListWhoIsOnline($id_course, $gap_minute = 5)
+    public static function getListWhoIsOnline($id_course, $gap_minute = 5)
     {
         $gap_time = date('Y-m-d H:i:s', time() - (60 * $gap_minute));
         $query_time = '

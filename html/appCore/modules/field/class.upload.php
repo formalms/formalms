@@ -495,7 +495,7 @@ class Field_Upload extends Field
      *
      * @return bool true if operation success false otherwise
      */
-    public function store($id_user, $no_overwrite)
+    public function store($id_user, $no_overwrite, $int_userid = true)
     {
         require_once _base_ . '/lib/lib.upload.php';
 
