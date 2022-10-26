@@ -546,7 +546,7 @@ class Track_Object
         }
     }
 
-    public function delIdTrackFromCommon($idReference)
+    public static function delIdTrackFromCommon($idReference)
     {
         Events::trigger('lms.lo_user.deleting', [
             'ids_reference' => (array) $idReference,

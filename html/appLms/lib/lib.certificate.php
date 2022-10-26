@@ -13,29 +13,30 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-const CERT_ID = 0;
-const CERT_NAME = 1;
-const CERT_DESCR = 2;
-const CERT_LANG = 3;
-const CERT_STRUCTURE = 4;
-const CERT_CODE = 5;
+define('CERT_ID', 0);
+define('CERT_NAME', 1);
+define('CERT_DESCR', 2);
+define('CERT_LANG', 3);
+define('CERT_STRUCTURE', 4);
+define('CERT_CODE', 5);
 
-const CERT_ID_COURSE = 4;
-const CERT_AV_STATUS = 5;
+define('CERT_ID_COURSE', 4);
+define('CERT_AV_STATUS', 5);
+define('CERT_AV_POINT_REQUIRED', 6);
 
-const CERTIFICATE_PATH = '/appLms/certificate/';
+define('CERTIFICATE_PATH', '/appLms/certificate/');
 
-const AVS_NOT_ASSIGNED = 0;
-const AVS_ASSIGN_FOR_ALL_STATUS = 1;
-const AVS_ASSIGN_FOR_STATUS_INCOURSE = 2;
-const AVS_ASSIGN_FOR_STATUS_COMPLETED = 3;
+define('AVS_NOT_ASSIGNED', 0);
+define('AVS_ASSIGN_FOR_ALL_STATUS', 1);
+define('AVS_ASSIGN_FOR_STATUS_INCOURSE', 2);
+define('AVS_ASSIGN_FOR_STATUS_COMPLETED', 3);
 
-const ASSIGN_CERT_ID = 0;
-const ASSIGN_COURSE_ID = 1;
-const ASSIGN_USER_ID = 2;
-const ASSIGN_OD_DATE = 3;
-const ASSIGN_CERT_FILE = 4;
-const ASSIGN_CERT_SENDNAME = 5;
+define('ASSIGN_CERT_ID', 0);
+define('ASSIGN_COURSE_ID', 1);
+define('ASSIGN_USER_ID', 2);
+define('ASSIGN_OD_DATE', 3);
+define('ASSIGN_CERT_FILE', 4);
+define('ASSIGN_CERT_SENDNAME', 5);
 
 class Certificate
 {
@@ -253,10 +254,10 @@ class Certificate
 
     public function getAssignable($filter)
     {
-        $query = '	SELECT ce.id_certificate, co.idCourse AS id_course, co.permCloseLO as perm_close_lo'
+        $query = '	SELECT ce.id_certificate, co.idCourse AS id_course,'
             . '	u.idst AS id_user, SUBSTRING(u.userid, 2) AS username,'
             . '	u.lastname, u.firstname, co.code, cc.available_for_status,'
-            . '  co.name AS course_name, cc.point_required, ce.name AS cert_name,'
+            . '  co.name AS course_name, ce.name AS cert_name,'
             . '	cu.status, co.date_begin, co.date_end, cu.date_inscr,'
             . '	cu.date_complete, NULL AS on_date, NULL AS cert_file'
             . '	FROM %lms_certificate_course AS cc'
@@ -328,7 +329,7 @@ class Certificate
         foreach ($res as $row) {
             if (
                 $this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])
-                && $this->canRelExceptional($row['perm_close_lo'], $row['id_user'], $row['id_course'], $row['point_required'])
+                && $this->canRelExceptional($row['id_user'], $row['id_course'])
             ) {
                 $assignable[] = $row;
             }
@@ -338,7 +339,7 @@ class Certificate
     }
 
     //fix: Php7.1+ compatibility
-    public function canRelExceptional($perm_close_lo, $idUser, $idCourse, $pointsRequired)
+    public function canRelExceptional($perm_close_lo, $id_user, $id_course = '')
     {
         require_once _lms_ . '/lib/lib.coursereport.php';
         require_once _lms_ . '/lib/lib.orgchart.php';
@@ -348,20 +349,20 @@ class Certificate
         $rep_man = new CourseReportManager();
 
         if ($perm_close_lo == 0) {
-            $score_final = $org_man->getFinalObjectScore([$idUser], [$idCourse]);
+            $score_final = $org_man->getFinalObjectScore([$id_user], [$id_course]);
 
-            if (isset($score_final[$idCourse][$idUser]) && $score_final[$idCourse][$idUser]['max_score']) {
-                $course_score_final = $score_final[$idCourse][$idUser()]['score'];
+            if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
+                $course_score_final = $score_final[$id_course][$id_user()]['score'];
             }
         } else {
-            $score_course = $rep_man->getUserFinalScore([$idUser], [$idCourse]);
+            $score_course = $rep_man->getUserFinalScore([$id_user], [$id_course]);
 
             if (!empty($score_course)) {
-                $course_score_final = (isset($score_course[$idUser][$idCourse]) ? $score_course[$idUser][$idCourse]['score'] : false);
+                $course_score_final = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['score'] : false);
             }
         }
 
-        if ((float)$course_score_final >= (float)$pointsRequired) {
+        if ($course_score_final >= $certificate[CERT_AV_POINT_REQUIRED]) {
             return true;
         } else {
             return false;
@@ -435,7 +436,7 @@ class Certificate
             require_once _lms_ . '/lib/lib.track_user.php';
 
             $time_in = TrackUser::getUserTotalCourseTime($id_user, $id_course);
-            $minutes_in = (float)($time_in / 60);
+            $minutes_in = (float) ($time_in / 60);
             if ($minutes_in < $minutes_required) {
                 return false;
             }
@@ -583,7 +584,7 @@ class Certificate
 		FROM %lms_certificate AS c
 			JOIN %lms_certificate_assign AS ca
 			ON (c.id_certificate = ca.id_certificate)
-		WHERE ca.id_user = ' . (int)$id_user . ' AND ca.id_course = ' . (int)$id_course . ' ';
+		WHERE ca.id_user = ' . (int) $id_user . ' AND ca.id_course = ' . (int) $id_course . ' ';
 
         $re = sql_query($query_certificate);
         if (!$re) {
@@ -718,11 +719,11 @@ class Certificate
 
         if (is_array($list_of_assign) && !empty($list_of_assign)) {
             foreach ($list_of_assign as $id_cert => $status) {
-                if ((int)$status !== 0) {
+                if ((int) $status !== 0) {
                     $minutes = $minutes_required[$id_cert];
                     $query = 'INSERT INTO %lms_certificate_course'
                         . ' (id_certificate, id_course, available_for_status, minutes_required)'
-                        . ' VALUES (' . (int)$id_cert . ', ' . (int)$id_course . ', ' . (int)$status . ', ' . (int)$minutes . ')';
+                        . ' VALUES (' . (int) $id_cert . ', ' . (int) $id_course . ', ' . (int) $status . ', ' . (int) $minutes . ')';
 
                     $certificate_info = $this->getCertificateInfo($id_cert);
                     Events::trigger('lms.course_certificate.assigned', ['id_course' => $id_course, 'course' => $course, 'id_cert' => $id_cert, 'certificate_info' => $certificate_info, 'status' => $status, 'minutes' => $minutes, 'point_required' => $point_required]);
@@ -1023,7 +1024,7 @@ class Certificate
         if (is_array($id_certificate) && count($id_certificate) > 0) {
             $query .= " WHERE id_certificate IN ('" . implode("','", $id_certificate) . "')";
         } else {
-            $query .= " WHERE id_certificate = '" . (int)$id_certificate . "'";
+            $query .= " WHERE id_certificate = '" . (int) $id_certificate . "'";
         }
         $result = sql_query($query);
 
@@ -1059,11 +1060,11 @@ class Certificate
 
     public function deleteCourseCertificateAssignments($id_course)
     {
-        if ((int)$id_course <= 0) {
+        if ((int) $id_course <= 0) {
             return false;
         }
 
-        $query = 'DELETE FROM %lms_certificate_course WHERE id_course = ' . (int)$id_course;
+        $query = 'DELETE FROM %lms_certificate_course WHERE id_course = ' . (int) $id_course;
         $res = sql_query($query);
 
         return $res ? true : false;
@@ -1084,13 +1085,13 @@ class Certificate
 
         if ($id_cert) {
             if (is_numeric($id_cert)) {
-                $conditions[] = " t1.id_certificate = '" . (int)$id_cert . "' ";
+                $conditions[] = " t1.id_certificate = '" . (int) $id_cert . "' ";
             }
         }
 
         if ($year) {
             if (is_numeric($year)) {
-                $conditions[] = " YEAR(t2.ondate) = '" . (int)$year . "' ";
+                $conditions[] = " YEAR(t2.ondate) = '" . (int) $year . "' ";
             }
         }
 
@@ -1118,13 +1119,13 @@ class Certificate
 
         if ($id_cert) {
             if (is_numeric($id_cert)) {
-                $conditions[] = " t1.id_certificate = '" . (int)$id_cert . "' ";
+                $conditions[] = " t1.id_certificate = '" . (int) $id_cert . "' ";
             }
         }
 
         if ($year) {
             if (is_numeric($year)) {
-                $conditions[] = " YEAR(t2.ondate) = '" . (int)$year . "' ";
+                $conditions[] = " YEAR(t2.ondate) = '" . (int) $year . "' ";
             }
         }
 
@@ -1155,13 +1156,13 @@ function getCertificateQuery($users = false, $id_cert = false, $year = false)
 
     if ($id_cert) {
         if (is_numeric($id_cert)) {
-            $conditions[] = " t1.id_certificate = '" . (int)$id_cert . "' ";
+            $conditions[] = " t1.id_certificate = '" . (int) $id_cert . "' ";
         }
     }
 
     if ($year) {
         if (is_numeric($year)) {
-            $conditions[] = " YEAR(t2.ondate) = '" . (int)$year . "' ";
+            $conditions[] = " YEAR(t2.ondate) = '" . (int) $year . "' ";
         }
     }
 
@@ -1189,13 +1190,13 @@ function getCertificateQueryTotal($users = false, $id_cert = false, $year = fals
 
     if ($id_cert) {
         if (is_numeric($id_cert)) {
-            $conditions[] = " t1.id_certificate = '" . (int)$id_cert . "' ";
+            $conditions[] = " t1.id_certificate = '" . (int) $id_cert . "' ";
         }
     }
 
     if ($year) {
         if (is_numeric($year)) {
-            $conditions[] = " YEAR(t2.ondate) = '" . (int)$year . "' ";
+            $conditions[] = " YEAR(t2.ondate) = '" . (int) $year . "' ";
         }
     }
 
