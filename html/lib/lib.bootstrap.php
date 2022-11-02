@@ -120,7 +120,7 @@ class Boot
         $step_report = [];
         //controllare request
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = $request->query->get('r') != 'adm/install/show' ? true : false;
+        $checkRoute = preg_match("/[adm\/install\/]+[^\/]+$/", $request->query->get('r')) ? true : false;
         //unset all the globals that aren't php setted
         if (ini_get('register_globals')) {
             self::log("Unset all the globals that aren't php setted. (Emulate register global = off)");
@@ -322,8 +322,9 @@ class Boot
 
         //controllare request
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = $request->query->get('r') != 'adm/install/show' ? true : false;
-        if (!DbConn::$connected && file_exists(_base_ . '/install') && $checkRoute) {
+        $checkRoute = preg_match("/[adm\/install\/]+[^\/]+$/", $request->query->get('r')) ? true : false;
+       
+        if (!DbConn::$connected && file_exists(_base_ . '/install') && !$checkRoute) {
             header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
         }
     }

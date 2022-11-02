@@ -20,22 +20,46 @@ class InstallAdmController extends AdmController
   
     public function init()
     {
-        $this->model = new InstallAdm();
+        $debug =  $this->request->query->has('debug') ? (int) $this->request->query->get('debug') : 0;
+        
+        $this->model = new InstallAdm($debug);
     }
 
     public function show()
     {
-
-        
       
         $params = $this->model->getData($this->request);
         $params['steps'] = $this->model->getSteps();
         $params['languages'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
-       
+        
 
         $this->render('show', $params);
 
+    }
+
+    public function set() {
+
+        $result = json_encode(array('success' => $this->model->setValue($this->request)));
+        echo $result;
+      
+        exit;
+    }
+
+    public function checkDbData() {
+
+        $result = json_encode(array('success' => $this->model->checkDbData($this->request)));
+        echo $result;
+      
+        exit;
+    }
+
+    public function testMigrations() {
+
+    
+        $result = shell_exec("php /app/bin/doctrine-migrations migrate --configuration=/app/migrations.yaml --db-configuration=/app/migrations-db.php 2>&1");
+      
+        dd($result);
     }
 
  

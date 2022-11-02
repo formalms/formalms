@@ -1,27 +1,20 @@
 
+{% for smtpKey, smtpValue in smtp %}
+   
+        {% if (smtpKey == 'useSmtpDatabase') or (smtpKey == 'useSmtp') or (smtpKey == 'smtpAutoTls') %}
+            {{ Form_getDropdown(smtpLabels[smtpKey], smtpKey, smtpKey, selectEnabling, smtpValue) }}
+        {% elseif (smtpKey == 'smtpSecure') %}
+            {{ Form_getDropdown(smtpLabels[smtpKey], smtpKey, smtpKey, secureSelect, smtpValue) }}
+        {% elseif (smtpKey == 'smtpPwd') %}
+            {{ Form_getPassword(smtpLabels[smtpKey], smtpKey, smtpKey, smtpValue) }}
+        {% else %}
+            {{ Form_getTextfield(smtpLabels[smtpKey], smtpKey, smtpKey, smtpValue) }}
+    
+        {% endif %}
+  
+{% endfor %}
+{#
 
-<h3><?php echo Lang::t('_SMTP_INFO'); ?></h3>
-<div class="form_line_l">
-
-    $smtptoDB = $cfg['use_smtp_database'];
-
-    $select = [
-        'on' => 'Si',
-        'off' => 'No',
-    ];
-
-    $secureSelect = ['ssl' => 'SSL', 'tls' => 'TLS'];
-
-    ?>
-</div>
-<?php
-foreach ($localCfg as $key => $value) {
-        switch ($key) {
-        case 'use_smtp_database':
-        case 'use_smtp':
-        case 'smtp_auto_tls':
-            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $select, $localCfg[$key]) . '</div>';
-            break;
         case 'smtp_secure':
             echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $secureSelect, $localCfg[$key]) . '</div>';
             break;
@@ -31,6 +24,5 @@ foreach ($localCfg as $key => $value) {
         default:
             echo Form::getTextfield(Lang::t('_' . strtoupper($key)), $key, "smtp_info[$key]", 255, $value);
             break;
-    }
-    }
-?>
+
+#}

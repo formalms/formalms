@@ -133,6 +133,18 @@ define('_SMTP_AUTO_TLS', 'Impostazione Auto TLS SMTP');
 define('_SMTP_USER', 'User SMTP');
 define('_SMTP_PWD', 'Password SMTP');
 define('_SMTP_DEBUG', 'Debug SMTP');
+define('_SMTP_SENDERMAIL', 'Mail notification Sender');
+define('_SMTP_SENDERNAME', 'Mail notification Name');
+define('_SMTP_SENDERMAILSYS', 'System mail Sender');
+define('_SMTP_SENDERNAMESYS', 'System mail Name');
+define('_SMTP_SENDERCCMAIL', 'CC mails');
+define('_SMTP_SENDERCCNMAILS', 'CCn mails');
+define('_SMTP_HDESKMAIL', 'Helper Desk mail');
+define('_SMTP_HDESKSUBJECT', 'Helper Desk subject');
+define('_SMTP_HDESKNAME', 'Helper Desk Name');
+define('_SMTP_REPLYTONAME', 'Reply to Name');
+define('_SMTP_REPLYTOMAIL', 'Reply to Mail');
+define('_SMTP_ACTIVE', 'Active');
 define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');
 // -----------------------------------------
 define('_TITLE_STEP8', 'Installation completed');

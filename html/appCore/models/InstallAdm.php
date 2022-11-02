@@ -28,14 +28,18 @@ class InstallAdm extends Model
     protected $steps;
     protected $labels;
 
+    protected $debug;
    
-    public function __construct()
+    public function __construct($debug = null)
     {
+       
           //soluzione provvisoria 
         require_once(_lib_.'/installer/lang/'.Lang::getSelLang().'.php');
+
         $this->fillSteps();
         $this->fillLabels();
         parent::__construct();
+    
     }
 
     public function fillSteps() {
@@ -120,12 +124,14 @@ class InstallAdm extends Model
     public function getData($request) {
 
         $params = $this->getLabels();
+      
         $params = array_merge($params, 
                                 $this->checkRequirements(), 
                                 ini_get_all(), 
                                 $this->getLicense(),
                                 $this->getDbConfig(),
-                                $this->getSmtpConfig());
+                                $this->getSmtpConfig(),
+                                ['setValues' => $this->getSetValues()]);
 
         $params['setLang'] = Lang::getSelLang();
 
@@ -151,6 +157,7 @@ class InstallAdm extends Model
         $params['maxExecutionTimeData'] = $params['max_execution_time']['local_value'].'s';
         $params['checkFolderPerms'] = $this->checkFolderPerm();
         $params['uploadMetodFlag'] = $params['safe_mode']['local_value'] == '';
+       
         return $params;
     }
 
@@ -158,14 +165,15 @@ class InstallAdm extends Model
     {
         $res = [];
 
+        $checkRequirements = 1;
         //TODO PHP7x: set const for Minimum PHP required version: 7.4
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
         if (version_compare(PHP_VERSION, '7.4', '<')) {
-            $res['php'] = 'err';
+            $res['mandatory']['php'] = 'err';
         } elseif (version_compare(PHP_VERSION, '8.0', '>=')) {
-            $res['php'] = 'warn';
+            $res['mandatory']['php'] = 'warn';
         } else {
-            $res['php'] = 'ok';
+            $res['mandatory']['php'] = 'ok';
         }
 
         $driver = [
@@ -176,9 +184,9 @@ class InstallAdm extends Model
             preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version);
 
             if (empty($version[1])) {
-                $res['mysqlClient'] = 'ok';
+                $res['requirements']['mysqlClient'] = 'ok';
             } else {
-                $res['mysqlClient'] = (version_compare($version[1], PHP_VERSION) >= 0 ? 'ok' : 'err');
+                $res['requirements']['mysqlClient'] = (version_compare($version[1], PHP_VERSION) >= 0 ? 'ok' : 'err');
             }
         } else {
             $res['mysqlClient'] = 'err';
@@ -188,38 +196,43 @@ class InstallAdm extends Model
             preg_match('/([\.0-9][\.0-9]+\.[\.0-9]+)/', sql_get_server_version(), $mysqlVersion);
 
             if (empty($mysqlVersion[1])) {
-                $res['mysql'] = 'ok';
+                $res['mandatory']['mysql'] = 'ok';
             } else {
                 $checkMysql = version_compare($mysqlVersion[1], '5.6') >= 0 && version_compare($mysqlVersion[1], '8.1') < 0;
                 $checkMariaDB = version_compare($mysqlVersion[1], '10.0') >= 0 && version_compare($mysqlVersion[1], '11.0') < 0;
 
                 if ($checkMysql || $checkMariaDB) {
-                    $res['mysql'] = 'ok';
+                    $res['mandatory']['mysql'] = 'ok';
                 } else {
-                    $res['mysql'] = 'err';
+                    $res['mandatory']['mysql'] = 'err';
                 }
             }
         } else {
-            $res['mysql'] = 'err';
+            $res['requirements']['mysql'] = 'err';
         }
-        $res['xml'] = (extension_loaded('domxml') ? 'ok' : 'err');
-        $res['mbstring'] = (extension_loaded('mbstring') ? 'ok' : 'err');
-        $res['ldap'] = (extension_loaded('ldap') ? 'ok' : 'err');
-        $res['openssl'] = (extension_loaded('openssl') ? 'ok' : 'err');
-        $res['allowUrlFopen'] = ($php_conf['allow_url_fopen']['local_value'] ? 'ok' : 'err');
-        $res['allowUrlInclude'] = ($php_conf['allow_url_include']['local_value'] ? 'err' : 'ok');
-        $res['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
+        $res['requirements']['xml'] = (extension_loaded('domxml') ? 'ok' : 'err');
+        $res['mandatory']['mbstring'] = (extension_loaded('mbstring') ? 'ok' : 'err');
+        $res['requirements']['ldap'] = (extension_loaded('ldap') ? 'ok' : 'err');
+        $res['requirements']['openssl'] = (extension_loaded('openssl') ? 'ok' : 'err');
+        $res['requirements']['allowUrlFopen'] = ($php_conf['allow_url_fopen']['local_value'] ? 'ok' : 'err');
+        $res['requirements']['allowUrlInclude'] = ($php_conf['allow_url_include']['local_value'] ? 'err' : 'ok');
+        $res['mandatory']['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
 
-        return $res;
+      
+        if(in_array('err', $res['mandatory'])) {
+            $checkRequirements = 0;
+        }
+
+        $resultArray = array_merge($res['mandatory'], $res['requirements']);
+        $resultArray['checkRequirements'] = $checkRequirements;
+        return $resultArray;
     }
 
     public function checkFolderPerm()
     {
     $res = '';
 
-    $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-
-    $platform_folders = $session->get('platform_arr');
+    $platform_folders = $this->session->get('platform_arr');
     $file_to_check = ['config.php'];
     $dir_to_check = [];
     $empty_dir_to_check = [];
@@ -336,7 +349,7 @@ class InstallAdm extends Model
     }
 
     public function getDbConfig() {
-        $cfg = [
+        $cfg['setValues'] = [
             'dbType' => '',
             'dbHost' => 'localhost',
             'dbName' => '',
@@ -344,22 +357,61 @@ class InstallAdm extends Model
             'dbPass' => '',
         ];
         if (file_exists(_base_ . '/config.php')) {
-            $cfg['dbPass'] = '_fromconfig';
+            $cfg['setValues']['dbPass'] = '_fromconfig';
         }
 
         return $cfg;
     }
 
     public function getSmtpConfig() {
-        $localCfg = [
+        $localCfg['smtp'] = 
+        [
             'useSmtpDatabase' => '',
             'useSmtp' => '',
-            'smtpHost' => '',
+            'smtpHost' => 'localhost',
             'smtpPort' => '',
             'smtpSecure' => '',
             'smtpAutoTls' => '',
             'smtpUser' => '',
             'smtpPwd' => '',
+            'active' => '',
+            'smtpDebug' => '',
+            'senderMailNotification' => '',
+            'senderNameNotification' => '',
+            'senderMailSystem' => '',
+            'senderNameSystem' => '',
+            'senderCcMails' => '',
+            'senderCcnMails' => '',
+            'helperDeskMail' => '',
+            'helperDeskSubject' => '',
+            'helperDeskName' => '',
+            'replytoName' => '',
+            'replytoMail' => ''
+        ];
+
+        $localCfg['smtpLabels'] = 
+        [
+            'useSmtpDatabase' => _USE_SMTP_DATABASE,
+            'useSmtp' => _USE_SMTP,
+            'smtpHost' => _SMTP_HOST,
+            'smtpPort' => _SMTP_PORT,
+            'smtpSecure' => _SMTP_SECURE,
+            'smtpAutoTls' => _SMTP_AUTO_TLS,
+            'smtpUser' => _SMTP_USER,
+            'smtpPwd' => _SMTP_PWD,
+            'active' => _SMTP_ACTIVE,
+            'smtpDebug' => _SMTP_DEBUG,
+            'senderMailNotification' => _SMTP_SENDERMAIL,
+            'senderNameNotification' => _SMTP_SENDERNAME,
+            'senderMailSystem' => _SMTP_SENDERMAILSYS,
+            'senderNameSystem' => _SMTP_SENDERNAMESYS,
+            'senderCcMails' => _SMTP_SENDERCCMAIL,
+            'senderCcnMails' => _SMTP_SENDERCCNMAILS,
+            'helperDeskMail' => _SMTP_HDESKMAIL,
+            'helperDeskSubject' => _SMTP_HDESKSUBJECT,
+            'helperDeskName' => _SMTP_HDESKNAME,
+            'replytoName' => _SMTP_REPLYTONAME,
+            'replytoMail' => _SMTP_REPLYTOMAIL,
         ];
 
         if (file_exists(_base_ . '/config.php')) {
@@ -367,11 +419,11 @@ class InstallAdm extends Model
             include _base_ . '/config.php';
     
             foreach ($localCfg as $key => $value) {
-                $localCfg[$key] = $cfg[$key];
+                $localCfg['smtp'][$key] = $cfg[$key];
             }
         }
 
-        $localCfg['useSmtpDatabase'] = $cfg['useSmtpDatabase'];
+        $localCfg['smtp']['useSmtpDatabase'] = $cfg['useSmtpDatabase'];
 
         $localCfg['selectEnabling'] = [
             'on' => _YES,
@@ -383,6 +435,135 @@ class InstallAdm extends Model
         return $localCfg;
     }
 
+
+    public function setValue($request) {
+        $params = $request->request->all();
+        $result = false;
+        foreach($params as $keyParam => $paramValue) {
+            if($paramValue === 'true') {
+                $paramValue = true;
+            }
+
+            if($paramValue === 'false') {
+                $paramValue = false;
+            }
+            $result =  $this->saveValue($keyParam, $paramValue);
+        }
+
+        return $result;
+
+    }
+
+    public function saveValue($key, $value) {
+
+        $values = $this->session->get('setValues');
+        $values[$key] = $value;
+        $this->session->set('setValues', $values);
+        $this->session->save();
+
+        return true;
+     }
+
+
+    public function getSetValues()
+    {
+
+        $values = $this->session->get('setValues');
+        if(!in_array('uploadMethod', array_keys($values))) {
+            $values['uploadMethod'] = 'http';
+        }
+
+        if(!in_array('step', array_keys($values))) {
+            $values['step'] = 0;
+        }
+        return  $values;
+    }
+
+
+    public function checkDbData($request) {
+        $params = $request->request->all();
+        extract($params);
+        return $this->checkConnection($dbHost, $dbName, $dbUser, $dbPass);
+    }
+
+    private function checkConnection( $db_host, $db_name, $db_user, $db_pass)
+    {
+        $result['success'] = false;
+        $result['message'] = 'err_connect';
+
+        $GLOBALS['db_link'] = DbConn::getInstance(false, [
+            'db_type' => 'mysql',
+            'db_host' => $db_host,
+            'db_user' => $db_user,
+            'db_pass' => $db_pass,
+        ]);
+        if ($GLOBALS['db_link']::$connected) {
+            if ($db_name == '') {
+                return 'err_db_sel';
+            }
+            $res = sql_select_db($db_name, $GLOBALS['db_link']);
+            if (!$res) {
+                return 'create_db';
+            } else {
+                return 'ok';
+            }
+        }
+
+        return $result;
+    }
+
+    public function checkDBEmpty($db_name)
+    {
+        $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $db_name . "'", $GLOBALS['db_link']);
+        list($count) = sql_fetch_row($row);
+
+        return $count == 0 ? true : false;
+    }
+
+    public function checkDBCharset()
+    {
+        $row = sql_query("show variables like 'character_set_database'", $GLOBALS['db_link']);
+        list(, $charset) = sql_fetch_row($row);
+
+        return $charset === 'utf8' || $charset === 'utf8mb4' ? true : false;
+    }
+
+    //TODO NO_Strict_MODE: to be confirmed
+    public function checkStrictMode()
+    {
+        //TODO NO_Strict_MODE: to be done
+        return true;
+        //TODO NO_Strict_MODE: to be done [remove below]
+        $qtxt = 'SELECT @@GLOBAL.sql_mode AS res';
+        $q = sql_query($qtxt, $GLOBALS['db_link']);
+        list($r1) = sql_fetch_row($q);
+        $qtxt = 'SELECT @@SESSION.sql_mode AS res';
+        $q = sql_query($qtxt, $GLOBALS['db_link']);
+        list($r2) = sql_fetch_row($q);
+        $res = ((strpos($r1 . $r2, 'STRICT_') === false) ? true : false);
+
+        return $res;
+    }
+
+    private function checkFtp($ftp_host, $ftp_port, $ftp_user, $ftp_pass)
+    {
+        if (empty($ftp_host) || empty($ftp_port) || empty($ftp_user) || empty($ftp_pass)) {
+            return 'err_param';
+        }
+
+        if (!function_exists('ftp_connect')) {
+            return 'err_not_supp';
+        }
+
+        $timeout = 10;
+
+        $ftp = ftp_connect($ftp_host, $ftp_port, $timeout);
+        if ($ftp === false) {
+            return 'err_connect';
+        }
+
+        return ftp_login($ftp, $ftp_user, $ftp_pass) ? 'ok' : 'err_login';
+    }
   
 
 
