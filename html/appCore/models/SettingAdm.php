@@ -387,7 +387,6 @@ class SettingAdm extends Model
                                 $i_after
                             );
                         break;
-
                     case 'hteditor':
                             //drop down hteditor
                             $ht_edit = getHTMLEditorList();

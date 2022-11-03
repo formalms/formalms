@@ -12,7 +12,6 @@ import LearningObject from '../modules/Base/LearningObject';
 import TeacherLearningObject from '../modules/TeacherLearningObject';
 import StudentLearningObject from '../modules/StudentLearningObject';
 import Lang from '../helpers/Lang';
-
 // eslint-disable-next-line no-unused-vars
 import FormaDropZone from './../components/Dropzone';
 import FormaTable from './../components/FormaTable';
