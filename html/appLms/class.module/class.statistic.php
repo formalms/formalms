@@ -21,7 +21,7 @@ class Module_Statistic extends LmsModule
         statisticDispatch($GLOBALS['op']);
     }
 
-    public static function getAllToken()
+    public function getAllToken()
     {
         return ['view' => ['code' => 'view',
                                 'name' => '_VIEW',
