@@ -643,10 +643,10 @@ class UserManager
 
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $success = $mailer->SendMail(
-                    $mail_sender,
                     [$user_info[ACL_INFO_EMAIL]],
                     $lang->def('_LOST_USERID_TITLE'),
                     $mail_text,
+                    $mail_sender,
                     [],
                     [
                         MAIL_SENDER_ACLNAME => $mail_sender_name_from,
@@ -716,10 +716,10 @@ class UserManager
 
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $success = $mailer->SendMail(
-                    $mail_sender,
                     [$user_info[ACL_INFO_EMAIL]],
                     $lang->def('_LOST_PWD_TITLE'),
                     $mail_text,
+                    $mail_sender,
                     [],
                     [
                         MAIL_SENDER_ACLNAME => $mail_sender_name_from,
@@ -1775,7 +1775,7 @@ class UserManagerRenderer
         if (strcmp($options['register_type'], 'self') != 0) {
             $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
-            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT', 'register'), $text, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
+            if (!$mailer->SendMail([$_POST['register']['email']], Lang::t('_MAIL_OBJECT', 'register'), $text, $admin_mail, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
                 if ($registration_code_type == 'code_module') {
                     // ok, the registration has failed, let's remove the user association form the code
                     require_once _base_ . '/appCore/lib/lib.code.php';
@@ -1801,7 +1801,7 @@ class UserManagerRenderer
             $text_self = str_replace(['[userid]', '[firstname]', '[lastname]', '[password]', '[link]', '[dynamic_link]'], [$_POST['register']['userid'], $_POST['register']['firstname'], $_POST['register']['lastname'], $_POST['register']['pwd'], '' . $link . '', '' . $dynamicLink . ''], $text_self);
 
             $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-            if (!$mailer->SendMail($admin_mail, [$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
+            if (!$mailer->SendMail([$_POST['register']['email']], Lang::t('_MAIL_OBJECT_SELF', 'register'), $text_self, $admin_mail, [], [MAIL_REPLYTO => $admin_mail, MAIL_SENDER_ACLNAME => $sender_name])) {
                 $this->error = true;
                 $errors = ['registration' => false, 'error' => $this->error, 'msg' => $lang->def('_OPERATION_FAILURE')];
             } else {

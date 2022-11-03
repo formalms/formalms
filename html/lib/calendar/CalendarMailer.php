@@ -22,10 +22,10 @@ class CalendarMailer extends FormaMailer
 
         $subject = Lang::t('_COURSE_DATE_CALENDAR_MAILTEXT_TITLE', 'course');
         $this->SendMail(
-            FormaLms\lib\Get::sett('sender_event'),
             [$user['email']],
             $subject,
             $mail_text,
+            FormaLms\lib\Get::sett('sender_event'),
             [$calendar->getFile()],
             [
                 MAIL_REPLYTO => FormaLms\lib\Get::sett('sender_event'),

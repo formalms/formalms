@@ -13,14 +13,14 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-define('UP_FILE_LIMIT', 8); 	// when display shared file limit the number showed in the first page of the profile
-define('UP_FRIEND_LIMIT', 6); //*DEPRECATED*
+const UP_FILE_LIMIT = 8;    // when display shared file limit the number showed in the first page of the profile
+const UP_FRIEND_LIMIT = 6; //*DEPRECATED*
 
-define('PFL_POLICY_FREE', 0);
-define('PFL_POLICY_TEACHER', 1);
-define('PFL_POLICY_FRIENDS', 2); //*DEPRECATED*
-define('PFL_POLICY_NOONE', 3);
-define('PFL_POLICY_TEACHER_AND_FRIENDS', 4); //*DEPRECATED*
+const PFL_POLICY_FREE = 0;
+const PFL_POLICY_TEACHER = 1;
+const PFL_POLICY_FRIENDS = 2; //*DEPRECATED*
+const PFL_POLICY_NOONE = 3;
+const PFL_POLICY_TEACHER_AND_FRIENDS = 4; //*DEPRECATED*
 
 /**
  * @author Fabio Pirovano
@@ -161,7 +161,7 @@ class UserProfile
     {
         require_once _base_ . '/lib/lib.urlmanager.php';
 
-        $this->_url_man = &UrlManager::getInstance();
+        $this->_url_man = UrlManager::getInstance();
         $this->_url_man->setStdQuery($std_query);
     }
 
@@ -172,7 +172,7 @@ class UserProfile
      */
     public function initLang($module_name, $platform)
     {
-        $this->_lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $this->_lang = DoceboLanguage::createInstance('profile', 'framework');
     }
 
     /**

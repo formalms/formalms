@@ -786,7 +786,6 @@ class SubscriptionAlms extends Model
 
         // -- Count for normal courses:
         $query = 'SELECT COUNT(*) FROM %lms_courseuser WHERE requesting_unsubscribe = 1';
-        $query .= " AND course_edition=0 AND course_type='elearning'";
         if ($filter !== false) {
             if (empty($filter)) {
                 return 0;
@@ -807,8 +806,8 @@ class SubscriptionAlms extends Model
 
         // -- Count for editions:
         $query = 'SELECT COUNT(*) FROM %lms_course_editions_user as t1,
-			%lms_course_edition as t2 WHERE t1.requesting_unsubscribe = 1 AND
-			t1.id_edition=t2.idCourseEdition ';
+			%lms_course_editions as t2 WHERE t1.requesting_unsubscribe = 1 AND
+			t1.id_edition=t2.id_edition ';
         if ($filter !== false) {
             if (empty($filter)) {
                 return 0;
@@ -824,7 +823,7 @@ class SubscriptionAlms extends Model
         $res = $this->db->query($query);
         if ($res) {
             list($tot) = $this->db->fetch_row($res);
-            $output = (int) $tot;
+            $output += (int) $tot;
         }
 
         // -- Count for classrooms:
@@ -846,7 +845,7 @@ class SubscriptionAlms extends Model
         $res = $this->db->query($query);
         if ($res) {
             list($tot) = $this->db->fetch_row($res);
-            $output = (int) $tot;
+            $output += (int) $tot;
         }
 
         return $output > 0 ? $output : false;

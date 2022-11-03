@@ -172,15 +172,15 @@ class Form
      * @param string $name         name of the element
      * @param string $value        value to be displayed in the input element (format hh:mm)
      * @param string $alt_name     alt name for the field
-     * @param string $min_time     minimum value that can be selected (default 00:00)
-     * @param string $max_time     maximum value that can be selected (default 23:59)
      * @param string $other_param  other attributes for the tag
      * @param string $other_after  html code to show after the input element
      * @param string $other_before html code to show before the input element
+     * @param string $min_time     minimum value that can be selected (default 00:00)
+     * @param string $max_time     maximum value that can be selected (default 23:59)
      *
      * @return string with the html code produced
      */
-    public static function getLineTimeSelectorField($line_class, $label_class, $label_text, $input_class, $id, $name, $value, $alt_name, $min_time = '00:00', $max_time = '23:59', $other_param, $other_after, $other_before)
+    public static function getLineTimeSelectorField($line_class, $label_class, $label_text, $input_class, $id, $name, $value, $alt_name, $other_param, $other_after, $other_before, $min_time = '00:00', $max_time = '23:59')
     {
         return "<div class='$line_class'>"
             . $other_before

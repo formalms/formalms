@@ -32,8 +32,8 @@ class DateManager
     {
         require_once _lms_ . '/lib/lib.subscribe.php';
 
-        $this->lang = &DoceboLanguage::CreateInstance('admin_date', 'lms');
-        $this->acl_man = $acl_man = &Docebo::user()->getAclManager();
+        $this->lang = DoceboLanguage::CreateInstance('admin_date', 'lms');
+        $this->acl_man =  Docebo::user()->getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
     }
 

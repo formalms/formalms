@@ -215,7 +215,7 @@ class CourseLms extends Model
                     $parsedData['level'] = $infoEnroll['level'];
                     if (!$infoEnroll['waiting'] && $parsedData['canEnter']) {
                         $learningObject = self::getInfoLastLearningObject($parsedData['idCourse']);
-                        if ($learningObject['obj_type'] === 'scormorg' && $parsedData['level'] <= 3 && $parsedData['direct_play'] === 1) {
+                        if ($learningObject['objectType'] === 'scormorg' && $parsedData['level'] <= 3 && $parsedData['direct_play'] === 1) {
                             $parsedData['useLightBox'] = true;
                         } else {
                             $parsedData['useLightBox'] = false;

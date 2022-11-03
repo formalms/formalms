@@ -41,7 +41,7 @@ class EditionManager
         $this->courseuser_table = $GLOBALS['prefix_lms'] . '_courseuser';
         $this->user_table = $GLOBALS['prefix_fw'] . '_user';
 
-        $this->acl_man = $acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = $acl_man = Docebo::user()->getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
 
         $this->status_list = [CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),

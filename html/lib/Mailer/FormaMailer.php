@@ -186,7 +186,7 @@ class FormaMailer extends PHPMailer
      *
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function SendMail(?string $sender = null, array $recipients, string $subject, string $body, array $attachments = [], array $params = [])
+    public function SendMail(array $recipients, string $subject, string $body, ?string $sender = null, array $attachments = [], array $params = [])
     {
         $output = [];
         if (\FormaLms\lib\Get::cfg('demo_mode')) {
@@ -418,7 +418,7 @@ class FormaMailer extends PHPMailer
 
         $subject = \Lang::t('_TESTMAIL_SUBJECT', 'mailconfig');
         $body = \Lang::t('_TESTMAIL_BODY', 'mailconfig');;
-        return $this->SendMail($sender, $recipients, $subject, $body);
+        return $this->SendMail($recipients, $subject, $body, $sender);
 
     }
 }

@@ -712,7 +712,7 @@ if (!Docebo::user()->isAnonymous()) {
             //sendMail($recipients, $subject, $body, $sender);
 
             $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-            $mailer->SendMail($sender, $re, $subject, $body, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
+            $mailer->SendMail($re, $subject, $body, $sender, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 
             //Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
             Util::jump_to('index.php?modname=reservation&op=view_user_event&id_event=' . $id_event);
@@ -986,7 +986,7 @@ if (!Docebo::user()->isAnonymous()) {
                 $sender = FormaLms\lib\Get::sett('sender_event');
 
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                $mailer->SendMail($sender, $re, $subject, $body, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
+                $mailer->SendMail($re, $subject, $body, $sender, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 
                 // end invio mail
             }
@@ -2078,7 +2078,7 @@ function reservationSendMail()
         //sendMail($recipients, $subject, $body, $sender);
 
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-        $mailer->SendMail($sender, [$recipients], Lang::t('_MAIL_OBJECT', 'register'), $body, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
+        $mailer->SendMail([$recipients], Lang::t('_MAIL_OBJECT', 'register'), $body, $sender, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 
         Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
     } else {

@@ -49,7 +49,7 @@ class CatalogLms extends Model
             CST_CANCELLED => '_CST_CANCELLED',
         ];
 
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = Docebo::user()->getAclManager();
         $this->show_all_category = FormaLms\lib\Get::sett('hide_empty_category') === 'off';
 
         $this->currentCatalogue = 0;
@@ -86,22 +86,12 @@ class CatalogLms extends Model
         return Docebo::db()->query($query);
     }
 
-    public function getCourseList($type = '', $page = 1, $id_catalog, $id_category)
+    public function getCourseList($type = '', $page = 1)
     {
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
         $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
-        $category_filter = ($id_category == 0 || $id_category == null ? '' : ' and idCategory=' . $id_category);
-        $cat_list_filter = '';
-        if ($id_catalog > 0) {
-            $q = 'select idEntry from learning_catalogue_entry where idCatalogue=' . $id_catalog . " and type_of_entry='course'";
-            $r = sql_query($q);
-            while (list($idcat) = sql_fetch_row($r)) {
-                $cat_array[] = $idcat;
-            }
-            $cat_list_filter = ' and idCourse in (' . implode(',', $cat_array) . ')';
-        }
 
         switch ($type) {
             case 'elearning':
@@ -186,8 +176,6 @@ class CatalogLms extends Model
                         (can_subscribe=1)
 					) "
             . $filter
-            . $category_filter
-            . $cat_list_filter
             . ' ORDER BY name';
 
         $result = sql_query($query);

@@ -793,6 +793,7 @@ class DoceboUser implements Serializable
     {
         //
     }
+
 }
 
 function getLogUserId()

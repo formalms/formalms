@@ -179,7 +179,7 @@ class ClassroomLms extends Model
 
         $dates_minmax = [];
         $query_minmax = 'SELECT id_date, MIN(date_begin) AS date_min, MAX(date_end) AS date_max '
-            . ' FROM %lms_course_date_day WHERE id_date IN (' . implode(',', $id_date_arr) . ') AND delete=0 GROUP BY id_date';
+            . ' FROM %lms_course_date_day WHERE id_date IN (' . implode(',', $id_date_arr) . ') AND deleted=0 GROUP BY id_date';
         $res_minmax = sql_query($query_minmax);
         while (list($id_date, $date_min, $date_max) = sql_fetch_row($res_minmax)) {
             $dates_minmax[$id_date] = [$date_min, $date_max];

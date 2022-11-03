@@ -321,10 +321,10 @@ function modFile(&$url)
                 $userInfo = $userManager->getUser($teacher, false);
                 $teacherRecipient = $userInfo[ACL_INFO_EMAIL];
                 $mailer->SendMail(
-                    FormaLms\lib\Get::sett('sender_event'),
                     [$teacherRecipient],
                     $subject,
                     $baseBody,
+                    FormaLms\lib\Get::sett('sender_event'),
                     $attachments,
                     [
                         MAIL_REPLYTO => FormaLms\lib\Get::sett('sender_event'),

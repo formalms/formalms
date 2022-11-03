@@ -84,7 +84,7 @@ class HelpdeskLmsController extends LmsController
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
         $mailer->addReplyTo(strip_tags($usermail));
 
-        if ($mailer->SendMail($sender, [$sendto], $subject, $msg, [], [MAIL_HEADERS => $headers])) {
+        if ($mailer->SendMail([$sendto], $subject, $msg, $sender, [], [MAIL_HEADERS => $headers])) {
             echo 'true';
         } else {
             echo Lang::t('_NO_EMAIL_CONFIG', 'standard');

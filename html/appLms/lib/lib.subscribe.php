@@ -44,9 +44,9 @@ class CourseSubscribe_Manager
         $this->user_table = '%adm_user';
 
         $this->db = DbConn::getInstance();
-        $this->acl_man = $acl_man = &Docebo::user()->getAclManager();
-        $this->lang = &DoceboLanguage::CreateInstance('levels', 'lms');
-        $this->lang = &DoceboLanguage::CreateInstance('subscribe', 'lms');
+        $this->acl_man = $acl_man = Docebo::user()->getAclManager();
+        $this->lang = DoceboLanguage::CreateInstance('levels', 'lms');
+        $this->lang = DoceboLanguage::CreateInstance('subscribe', 'lms');
 
         $this->array_user_status = [
             //-4 => $this->lang->def('_USER_STATUS_CANCELLED'),

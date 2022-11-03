@@ -1019,7 +1019,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event'));
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -2253,7 +2253,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -2756,7 +2756,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -3450,7 +3450,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
@@ -4711,7 +4711,7 @@ class Report_User extends Report
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
-                $mailer->SendMail($sender, $arr_recipients, $subject, $body);
+                $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
 
