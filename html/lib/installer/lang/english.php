@@ -195,3 +195,14 @@ define('_SMTP_SECURE', 'Tipo di sicurezza');
 define('_SMTP_USER', 'User SMTP');
 define('_SMTP_PWD', 'Password SMTP');
 define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');
+
+/************************VALIDATION*************/
+define('_MISSING_LICENSE_CHECK', 'License terms must be checked');
+define('_UNSUITABLE_REQUIREMENTS', 'Minimal requirements are not satisfied');
+define('_MISSING_FIELD', 'Missing Field');
+define('_FTP_NOT_SUPPORTED', 'FTP Methods are not supported');
+define('_FTP_CONNECT_FAIL', 'FTP connection failed');
+define('_FTP_LOGIN_FAIL', 'FTP login failed');
+define('_NOT_VALID_EMAIL', 'Email not valid');
+define('_NOT_MATCHING_PASSWORD', 'Not matching password');
+define('_SMTP_FAILED', 'Smtp connection failed!');

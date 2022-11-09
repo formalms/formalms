@@ -210,6 +210,37 @@ final class Version20220815000002 extends AbstractMigration
             ('certificate.user.php', 'CertificateSubs_User'),
             ('certificate.userstat.php', 'CertificateSubs_UserStat')");
 
+        $this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta` (
+            `idMetaCertificate` int(11) NOT NULL AUTO_INCREMENT,
+            `idCertificate` int(11) NOT NULL DEFAULT '0',
+            `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+            `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+            PRIMARY KEY (`idMetaCertificate`)
+            ) ENGINE = InnoDB
+            DEFAULT CHARACTER SET = utf8
+            COLLATE = utf8_general_ci");
+  
+        $this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta_assign` (
+            `idUser` int(11) NOT NULL DEFAULT '0',
+            `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
+            `idCertificate` int(11) NOT NULL DEFAULT '0',
+            `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+            `cert_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+            PRIMARY KEY (`idUser`,`idMetaCertificate`)
+            ) ENGINE = InnoDB
+            DEFAULT CHARACTER SET = utf8
+            COLLATE = utf8_general_ci");
+  
+        $this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta_course` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
+            `idUser` int(11) NOT NULL DEFAULT '0',
+            `idCourse` int(11) NOT NULL DEFAULT '0',
+            `idCourseEdition` int(11) NOT NULL DEFAULT '0',
+            PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+            DEFAULT CHARACTER SET = utf8
+            COLLATE = utf8_general_ci");
 
 
         $this->addSql("CREATE TABLE IF NOT EXISTS `learning_classroom` (
@@ -326,6 +357,13 @@ final class Version20220815000002 extends AbstractMigration
             PRIMARY KEY (`id_category`,`lang_code`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
+        $this->addSql("CREATE TABLE IF NOT EXISTS learning_communication_lang (
+            id_comm int,
+            lang_code varchar(255),
+            title varchar(255),
+            description text not null,
+            PRIMARY KEY (`id_comm`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
 
         $this->addSql("CREATE TABLE IF NOT EXISTS `learning_communication_track` (
@@ -2171,7 +2209,9 @@ final class Version20220815000002 extends AbstractMigration
                 (6, 'DashboardBlockWelcomeLms',CURRENT_TIMESTAMP),
                 (7, 'DashboardBlockBannerLms',CURRENT_TIMESTAMP),
                 (8, 'DashboardBlockCommunicationLms',CURRENT_TIMESTAMP),
-                (9, 'DashboardBlockNewsLms',CURRENT_TIMESTAMP)");
+                (9, 'DashboardBlockNewsLms',CURRENT_TIMESTAMP),
+                (10, 'DashboardBlockCourseAttendanceGraphLms',CURRENT_TIMESTAMP)");
+
 
         $this->addSql("INSERT IGNORE INTO learning_middlearea (`obj_index`, `disabled`, `idst_list`, `sequence`)
             VALUES ('tb_dashboard', '1', 'a:0:{}', '0')");

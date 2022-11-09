@@ -27,8 +27,11 @@ class InstallAdm extends Model
 
     protected $steps;
     protected $labels;
+    protected $errorLabels;
 
     protected $debug;
+
+    protected $response;
    
     public function __construct($debug = null)
     {
@@ -38,6 +41,9 @@ class InstallAdm extends Model
 
         $this->fillSteps();
         $this->fillLabels();
+        $this->fillErrorLabels();
+
+        $this->setResponse(false, []);
         parent::__construct();
     
     }
@@ -98,20 +104,63 @@ class InstallAdm extends Model
         $labels['ftpUploadLabel'] = _FTP_UPLOAD;
         $labels['ftpHostLabel'] = _FTP_HOST;
         $labels['ftpPortLabel'] = _FTP_PORT;
-        $labels['ftpUsernameLabel'] = _FTP_USERNAME;
-        $labels['ftpPasswordLabel'] = _FTP_PASS;
+        $labels['ftpUserLabel'] = _FTP_USERNAME;
+        $labels['ftpPassLabel'] = _FTP_PASS;
         $labels['ftpPathLabel'] = _FTP_PATH;
         /*************************************** */
         $labels['adminInfoLabel'] = _ADMIN_USER_INFO;
         $labels['adminUserLabel'] = _ADMIN_USERNAME;
         $labels['adminNameLabel'] = _ADMIN_FIRSTNAME;
-        $labels['adminSurnameLabel'] = _ADMIN_LASTNAME;
+        $labels['adminLastnameLabel'] = _ADMIN_LASTNAME;
         $labels['adminPasswordLabel'] = _ADMIN_PASS;
-        $labels['adminConfirmationPasswordLabel'] = _ADMIN_CONFPASS;
+        $labels['adminConfpassLabel'] = _ADMIN_CONFPASS;
         $labels['adminEmailLabel'] = _ADMIN_EMAIL;
         $labels['langInstallLabel'] = _LANG_TO_INSTALL;
 
+        $labels['smtpLabels'] = 
+        [
+            'useSmtpDatabase' => _USE_SMTP_DATABASE,
+            'useSmtp' => _USE_SMTP,
+            'smtpHost' => _SMTP_HOST,
+            'smtpPort' => _SMTP_PORT,
+            'smtpSecure' => _SMTP_SECURE,
+            'smtpAutoTls' => _SMTP_AUTO_TLS,
+            'smtpUser' => _SMTP_USER,
+            'smtpPwd' => _SMTP_PWD,
+            'active' => _SMTP_ACTIVE,
+            'smtpDebug' => _SMTP_DEBUG,
+            'senderMailNotification' => _SMTP_SENDERMAIL,
+            'senderNameNotification' => _SMTP_SENDERNAME,
+            'senderMailSystem' => _SMTP_SENDERMAILSYS,
+            'senderNameSystem' => _SMTP_SENDERNAMESYS,
+            'senderCcMails' => _SMTP_SENDERCCMAIL,
+            'senderCcnMails' => _SMTP_SENDERCCNMAILS,
+            'helperDeskMail' => _SMTP_HDESKMAIL,
+            'helperDeskSubject' => _SMTP_HDESKSUBJECT,
+            'helperDeskName' => _SMTP_HDESKNAME,
+            'replytoName' => _SMTP_REPLYTONAME,
+            'replytoMail' => _SMTP_REPLYTOMAIL,
+        ];
+
         $this->labels = $labels;
+
+        return $this;
+    }
+
+    public function fillErrorLabels() {
+        $this->errorLabels['unsuitable_requirements'] = _UNSUITABLE_REQUIREMENTS;
+        $this->errorLabels['missing_check'] = _MISSING_LICENSE_CHECK;
+        $this->errorLabels['missing_field'] = _MISSING_FIELD;
+        $this->errorLabels['ftp_not_supported'] = _FTP_NOT_SUPPORTED;
+        $this->errorLabels['ftp_connection_fail'] = _FTP_CONNECT_FAIL;
+        $this->errorLabels['ftp_login_fail'] = _FTP_LOGIN_FAIL;
+        $this->errorLabels['db_not_utf8'] = _DB_NOT_UTF8;
+        $this->errorLabels['db_not_empty'] = _DB_NOT_EMPTY;             
+        $this->errorLabels['cant_connect_db'] = _CANT_CONNECT_WITH_DB; 
+        $this->errorLabels['cant_select_db'] = _CANT_SELECT_DB;
+        $this->errorLabels['not_matching_password'] = _NOT_MATCHING_PASSWORD;
+        $this->errorLabels['email_not_valid'] = _NOT_VALID_EMAIL;
+        $this->errorLabels['smtp_failed'] = _SMTP_FAILED;
 
         return $this;
     }
@@ -119,6 +168,13 @@ class InstallAdm extends Model
     public function getLabels() {
 
         return $this->labels;
+    }
+
+    public function getSmtpFieldsRequired() {
+        $fields = [
+            'smtpHost', 'smtpPort', 'smtpUser', 'smtpPwd', 'smtpSecure', 'smtpAutoTls'
+        ];
+        return $fields;
     }
 
     public function getData($request) {
@@ -131,7 +187,9 @@ class InstallAdm extends Model
                                 $this->getLicense(),
                                 $this->getDbConfig(),
                                 $this->getSmtpConfig(),
-                                ['setValues' => $this->getSetValues()]);
+                                ['setValues' => $this->getSetValues()],
+                                ['setLangs' => $this->getSetLangs()],
+                                ['smtpFieldsRequired' => $this->getSmtpFieldsRequired()]);
 
         $params['setLang'] = Lang::getSelLang();
 
@@ -326,9 +384,9 @@ class InstallAdm extends Model
     public function getLicense() {
 
         $content = '';
-        $fn = _base_ . '/install/data/license/license_' . Lang::getSelLang() . '.txt';
+        $fn = _lib_.'/installer/license/license_'.Lang::getSelLang().'.txt';
     
-        $english_fn = _base_ . '/install/data/license/license_english.txt';
+        $english_fn = _lib_.'/installer/license/license_english.txt';
 
         $handle = false;
         if ((!file_exists($fn)) && (file_exists($english_fn))) {
@@ -374,7 +432,6 @@ class InstallAdm extends Model
             'smtpAutoTls' => '',
             'smtpUser' => '',
             'smtpPwd' => '',
-            'active' => '',
             'smtpDebug' => '',
             'senderMailNotification' => '',
             'senderNameNotification' => '',
@@ -389,30 +446,7 @@ class InstallAdm extends Model
             'replytoMail' => ''
         ];
 
-        $localCfg['smtpLabels'] = 
-        [
-            'useSmtpDatabase' => _USE_SMTP_DATABASE,
-            'useSmtp' => _USE_SMTP,
-            'smtpHost' => _SMTP_HOST,
-            'smtpPort' => _SMTP_PORT,
-            'smtpSecure' => _SMTP_SECURE,
-            'smtpAutoTls' => _SMTP_AUTO_TLS,
-            'smtpUser' => _SMTP_USER,
-            'smtpPwd' => _SMTP_PWD,
-            'active' => _SMTP_ACTIVE,
-            'smtpDebug' => _SMTP_DEBUG,
-            'senderMailNotification' => _SMTP_SENDERMAIL,
-            'senderNameNotification' => _SMTP_SENDERNAME,
-            'senderMailSystem' => _SMTP_SENDERMAILSYS,
-            'senderNameSystem' => _SMTP_SENDERNAMESYS,
-            'senderCcMails' => _SMTP_SENDERCCMAIL,
-            'senderCcnMails' => _SMTP_SENDERCCNMAILS,
-            'helperDeskMail' => _SMTP_HDESKMAIL,
-            'helperDeskSubject' => _SMTP_HDESKSUBJECT,
-            'helperDeskName' => _SMTP_HDESKNAME,
-            'replytoName' => _SMTP_REPLYTONAME,
-            'replytoMail' => _SMTP_REPLYTOMAIL,
-        ];
+     
 
         if (file_exists(_base_ . '/config.php')) {
             define('IN_FORMA', true);
@@ -447,7 +481,13 @@ class InstallAdm extends Model
             if($paramValue === 'false') {
                 $paramValue = false;
             }
-            $result =  $this->saveValue($keyParam, $paramValue);
+
+            if($keyParam === 'selectLangs' || $keyParam === 'deselectLangs') {
+                $result =  $this->setLangs($paramValue , $keyParam === 'selectLangs' ? 1 : 0);
+            } else {
+                $result =  $this->saveValue($keyParam, $paramValue);
+            }
+            
         }
 
         return $result;
@@ -459,6 +499,21 @@ class InstallAdm extends Model
         $values = $this->session->get('setValues');
         $values[$key] = $value;
         $this->session->set('setValues', $values);
+        $this->session->save();
+
+        return true;
+     }
+
+     public function setLangs($value, $add = 1) {
+
+        $values = $this->session->get('setLangs');
+        if($add) {
+            $values[$value] = $value;
+        } else {
+            unset($values[$value]);
+        }
+        
+        $this->session->set('setLangs', $values);
         $this->session->save();
 
         return true;
@@ -479,17 +534,73 @@ class InstallAdm extends Model
         return  $values;
     }
 
+    public function getSetLangs()
+    {
+
+        return $this->session->get('setLangs');
+
+    }
+
+    public function checkAdminData($request) {
+        $messages = [];
+        $params = $request->request->all();
+
+        foreach($params as $key => $param) {
+            if('' == $param) {
+                $messages[] = $this->errorLabels['missing_field'] .":".$this->labels[$key.'Label'];
+            }
+        }
+
+        if(count($messages)) {
+            return $this->setResponse(false, $messages)->wrapResponse();
+        }
+
+        //controllo che le password siano coincidenti e che il campo mail sia una mail
+        return $this->validateAdminData($params['adminPassword'], $params['adminConfpass'], $params['adminEmail']);
+      
+    }
+
+    public function checkSmtpData($request) {
+        $messages = [];
+        $params = $request->request->all();
+
+        foreach($params as $key => $param) {
+            if('' == $param) {
+                $messages[] = $this->errorLabels['missing_field'] .":".$this->labels['smtpLabels'][$key];
+            }
+        }
+
+        if(count($messages)) {
+            return $this->setResponse(false, $messages)->wrapResponse();
+        }
+
+        //controllo la connessione
+        return $this->validateSmtpData($params);
+      
+    }
+
 
     public function checkDbData($request) {
+        $messages = [];
         $params = $request->request->all();
-        extract($params);
-        return $this->checkConnection($dbHost, $dbName, $dbUser, $dbPass);
+
+        foreach($params as $key => $param) {
+            if('' == $param) {
+                $messages[] = $this->errorLabels['missing_field'] .":".$this->labels[$key.'Label'];
+            }
+        }
+
+        if(count($messages)) {
+            return $this->setResponse(false, $messages)->wrapResponse();
+        }
+        $checkConnection = $this->checkConnection($params['dbHost'], $params['dbName'], $params['dbUser'], $params['dbPass']);
+
+        return $this->validateConnection($checkConnection, $params['dbName']);
     }
 
     private function checkConnection( $db_host, $db_name, $db_user, $db_pass)
     {
-        $result['success'] = false;
-        $result['message'] = 'err_connect';
+        $result = 'err_connect';
 
         $GLOBALS['db_link'] = DbConn::getInstance(false, [
             'db_type' => 'mysql',
@@ -512,6 +623,119 @@ class InstallAdm extends Model
         return $result;
     }
 
+    private function validateAdminData($password, $confirmPassword, $email)
+    {
+        $success = true;
+        $messages = [];
+
+        if($password != $confirmPassword) {
+            $success = false;
+            $messages[] = $this->errorLabels['not_matching_password'];
+        }
+
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $success = false;
+            $messages[] = $this->errorLabels['email_not_valid'];
+        }
+    
+        return $this->setResponse($success, $messages)->wrapResponse();
+
+    }
+
+    private function validateSmtpData($params)
+    {
+        $success = true;
+        $messages = [];
+
+        $success = $this->checkSmtpConnection($params['smtpHost'], $params['smtpPort'], $params['smtpSecure'], $params['smtpAutoTls'], $params['smtpUser'], $params['smtpPwd']);
+
+        if(!$success) {
+            $messages[] = $this->errorLabels['smtp_failed'];
+        }
+        return $this->setResponse($success, $messages)->wrapResponse();
+
+    }
+
+    public function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd)
+    {
+        $mail = new PHPMailer\PHPMailer\PHPMailer();
+
+        $mail->Host = $smtpHost;
+        $mail->Port = $smtpPort;
+
+        if (!empty($smtpUser)) {
+            $mail->SMTPAuth = true;     // turn on SMTP authentication
+            $mail->Username = $smtpUser;  // SMTP username
+            $mail->Password = $smtpPwd; // SMTP password
+        } else {
+            $mail->SMTPAuth = false;     // turn on SMTP authentication
+        }
+
+        $mail->SMTPSecure = $smtpSecure;
+        $mail->SMTPAutoTLS = $smtpAutoTls === 'on';
+
+        if ($mail->smtpConnect()) {
+            $mail->smtpClose();
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private function validateConnection($connection, $dbName)
+    {
+        $success = false;
+        $messages = [];
+        $removeCreateDb = false;
+        switch ($connection) {
+            case 'create_db':
+                    //mi salvo in sessione che devo creare il db
+                    $this->session->set('creationDb', $dbName);
+                    $this->session->save();
+                    $success = true;
+
+                break;
+            case 'ok':
+                $removeCreateDb = true;
+                    if ($this->checkDBEmpty($dbName)) {
+                        if ($this->checkDBCharset()) {
+                            $success = true;
+                        } else {
+                            $success = false;
+                            $messages[] = $this->errorLabels['db_not_utf8'];
+                     
+                        }
+                    } else {
+                        $success = false;
+                        $messages[] = $this->errorLabels['db_not_empty'];
+                    }
+
+                break;
+            case 'err_connect':
+                $removeCreateDb = true;
+                    $success = false;
+                    $messages[] =  $this->errorLabels['cant_connect_db'];
+
+                break;
+            case 'err_db_sel':
+                $removeCreateDb = true;
+                    $success = false;
+                    $messages[] = $this->errorLabels['cant_select_db'];
+          
+                break;
+        }
+
+        if($removeCreateDb && $this->session->has('creationDb')) {
+            //rimuovo dalla sessione il valore di creazione db
+            $this->session->remove('creationDb');
+            $this->session->save();
+        }
+
+        return $this->setResponse($success, $messages)->wrapResponse();
+
+    }
+
     public function checkDBEmpty($db_name)
     {
         $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $db_name . "'", $GLOBALS['db_link']);
@@ -528,41 +752,360 @@ class InstallAdm extends Model
         return $charset === 'utf8' || $charset === 'utf8mb4' ? true : false;
     }
 
-    //TODO NO_Strict_MODE: to be confirmed
-    public function checkStrictMode()
-    {
-        //TODO NO_Strict_MODE: to be done
-        return true;
-        //TODO NO_Strict_MODE: to be done [remove below]
-        $qtxt = 'SELECT @@GLOBAL.sql_mode AS res';
-        $q = sql_query($qtxt, $GLOBALS['db_link']);
-        list($r1) = sql_fetch_row($q);
-        $qtxt = 'SELECT @@SESSION.sql_mode AS res';
-        $q = sql_query($qtxt, $GLOBALS['db_link']);
-        list($r2) = sql_fetch_row($q);
-        $res = ((strpos($r1 . $r2, 'STRICT_') === false) ? true : false);
 
-        return $res;
-    }
 
-    private function checkFtp($ftp_host, $ftp_port, $ftp_user, $ftp_pass)
+    public function checkFtp($request)
     {
-        if (empty($ftp_host) || empty($ftp_port) || empty($ftp_user) || empty($ftp_pass)) {
-            return 'err_param';
+        $messages = [];
+        $timeout = 10;
+        $params = $request->request->all();
+
+        foreach($params as $key => $param) {
+            if('' == $param) {
+                $messages[] = $this->errorLabels['missing_field'] .":".$this->labels[$key.'Label'];
+            }
         }
 
         if (!function_exists('ftp_connect')) {
-            return 'err_not_supp';
+            $messages[] = $this->errorLabels['ftp_not_supported'];
         }
 
-        $timeout = 10;
-
-        $ftp = ftp_connect($ftp_host, $ftp_port, $timeout);
-        if ($ftp === false) {
-            return 'err_connect';
+        if(count($messages)) {
+            return $this->setResponse(false, $messages)->wrapResponse();
         }
 
-        return ftp_login($ftp, $ftp_user, $ftp_pass) ? 'ok' : 'err_login';
+       
+        $ftpConnection = ftp_connect($params['ftpHost'], $params['ftpPort'], $timeout);
+        if ($ftpConnection === false) {
+            return $this->setResponse(false, [$this->errorLabels['ftp_connection_fail']])->wrapResponse();
+        }
+
+        $ftpLogin = ftp_login($ftpConnection, $params['ftpUser'], $params['ftpPass']);
+
+        if(!$ftpLogin) {
+            $messages[] = $this->errorLabels['ftp_login_fail'];
+        }
+
+        return $this->setResponse($ftpLogin, $messages)->wrapResponse();
+    }
+
+    public function finalize($request) {
+
+        $params = $request->request->all();
+
+        switch($params['check']) {
+            case 1:
+                 //genero il file config
+                 $this->saveConfig();
+
+                 //controllo esistenza file config
+                $success = file_exists(_base_ . '/config.php');
+                if($success) {
+                    $messages[] = 'OK Config';
+                } else {
+                    $messages[] = 'Error Config';
+                }
+                
+                break;
+
+            case 2:
+               
+                $messages[] = $this->installDatabase();
+
+                //controllo che le tabelle siano effettivamente presenti
+                $success = $this->checkDbInstallation();
+          
+            
+                break;
+            case 3:
+
+                //controllo che le tabelle siano effettivamente presenti
+                $success = $this->registerAdminUser() && $this->storeSettings() && $this->addInstallerRoles();
+                if($success) {
+                    $messages[] = 'OK Admin';
+                } else {
+                    $messages[] = 'Error Admin';
+                }
+            
+                break;
+
+            case 4:
+                  
+               //inserisco file di lingua
+               $success = $this->importLangs();
+                if($success) {
+                    $messages[] = 'OK Lang';
+                } else {
+                    $messages[] = 'Error Lang';
+                }
+                break;
+
+            case 5:
+            
+            //verifico smtp e intallo
+
+                break;
+
+            default:
+                $success = false;
+                $messages[] = 'Not Supported';
+               
+                break;
+        }
+     
+        return $this->setResponse($success, $messages)->wrapResponse();
+    }
+
+
+    private function installDatabase() {
+        return shell_exec("php /app/bin/doctrine-migrations migrate --configuration=/app/migrations.yaml --db-configuration=/app/migrations-db.php 2>&1");
+      
+    }
+
+
+    private function checkDbInstallation() {
+
+        $values = $this->session->get('setValues');
+        DbConn::getInstance(false,
+            [
+                'db_type' => 'mysqli',
+                'db_host' => $values['dbHost'],
+                'db_user' => $values['dbUser'],
+                'db_pass' => $values['dbPass'],
+                'db_name' => $values['dbName'],
+            ]
+        );
+
+        return (bool) sql_query("SELECT * FROM `core_setting`");
+    }
+
+    public function setResponse($success = false, $messages = []) {
+        
+        $this->response['success'] = $success;
+        $this->response['messages'] = $messages;
+
+        return $this;
+    }
+
+    public function getErrorMessages($request) :array {
+        $params = $request->request->all();
+        $messages = [];
+        foreach($params as $key=>$value) {
+            if($value) {
+                $messages[] = $this->errorLabels[$key];
+            }
+        }
+
+        return $messages;
+    }
+
+    public function wrapResponse($success = false, $messages = []) {
+        
+        return json_encode($this->response);
+    }
+
+    private function saveConfig()
+    {
+        // ----------- Generating config file -----------------------------
+        $config = '';
+        $fn = _base_ .'/config_template.php';
+
+        $config = $this->generateConfig($fn);
+
+        $save_fn = _base_ . '/config.php';
+        $saved = false;
+        if (is_writeable($save_fn)) {
+            $handle = fopen($save_fn, 'w');
+            if (fwrite($handle, $config)) {
+                $saved = true;
+            }
+            fclose($handle);
+
+            @chmod($save_fn, 0644);
+        }
+
+        $this->session->set('config_saved', $saved);
+        $this->session->save();
+    }
+
+        private function generateConfig($tpl_fn)
+        {
+
+        $values = $this->session->get('setValues');
+        $config = '';
+
+        if (file_exists($tpl_fn)) {
+            $handle = fopen($tpl_fn, 'r');
+            $config = fread($handle, filesize($tpl_fn));
+            fclose($handle);
+        }
+        $config = str_replace('[%-DB_TYPE-%]', addslashes('mysqli'), $config);
+        $config = str_replace('[%-DB_HOST-%]', addslashes($values['dbHost']), $config);
+        $config = str_replace('[%-DB_USER-%]', addslashes($values['dbUser']), $config);
+        $config = str_replace('[%-DB_PASS-%]', addslashes($values['dbPass']), $config);
+        $config = str_replace('[%-DB_NAME-%]', addslashes($values['dbName']), $config);
+
+        switch ($values['uploadMethod']) {
+            case 'http':
+                $upload_method = 'fs';
+
+                $config = str_replace('[%-FTP_HOST-%]', 'localhost', $config);
+                $config = str_replace('[%-FTP_PORT-%]', '21', $config);
+                $config = str_replace('[%-FTP_USER-%]', '', $config);
+                $config = str_replace('[%-FTP_PASS-%]', '', $config);
+                $config = str_replace('[%-FTP_PATH-%]', '/', $config);
+                break;
+            case 'ftp':
+                $upload_method = 'ftp';
+
+                $config = str_replace('[%-FTP_HOST-%]', addslashes($values['ftpHost']), $config);
+                $config = str_replace('[%-FTP_PORT-%]', addslashes($values['ftpPort']), $config);
+                $config = str_replace('[%-FTP_USER-%]', addslashes($values['ftpUser']), $config);
+                $config = str_replace('[%-FTP_PASS-%]', addslashes($values['ftpPass']), $config);
+                $config = str_replace('[%-FTP_PATH-%]', addslashes($values['ftpPath']), $config);
+                break;
+            default:
+                break;
+        }
+
+        if ($values['useSmtpDatabase'] == 'on') {
+            $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes($values['useSmtpDatabase']), $config);
+            $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes($values['useSmtp']), $config);
+            $config = str_replace('[%-SMTP_HOST-%]', addslashes($values['smtpHost']), $config);
+            $config = str_replace('[%-SMTP_PORT-%]', addslashes($values['smtpPort']), $config);
+            $config = str_replace('[%-SMTP_SECURE-%]', addslashes($values['smtpSecure']), $config);
+            $config = str_replace('[%-SMTP_AUTO_TLS-%]', addslashes($values['smtpAutoTls']), $config);
+            $config = str_replace('[%-SMTP_USER-%]', addslashes($values['smtpUser']), $config);
+            $config = str_replace('[%-SMTP_PWD-%]', addslashes($values['smtpPwd']), $config);
+            $config = str_replace('[%-SMTP_DEBUG-%]', addslashes('0'), $config);
+        } else {
+            $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes('off'), $config);
+            $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes('off'), $config);
+            $config = str_replace('[%-SMTP_HOST-%]', addslashes(''), $config);
+            $config = str_replace('[%-SMTP_PORT-%]', addslashes(''), $config);
+            $config = str_replace('[%-SMTP_SECURE-%]', addslashes(''), $config);
+            $config = str_replace('[%-SMTP_AUTO_TLS-%]', addslashes(''), $config);
+            $config = str_replace('[%-SMTP_USER-%]', addslashes(''), $config);
+            $config = str_replace('[%-SMTP_PWD-%]', addslashes(''), $config);
+            $config = str_replace('[%-SMTP_DEBUG-%]', addslashes('0'), $config);
+        }
+
+        $config = str_replace('[%-UPLOAD_METHOD-%]', $upload_method, $config);
+
+        return $config;
+    }
+
+    private function registerAdminUser()
+    {
+        // ----------- Registering admin user ---------------------------------
+    
+
+        $values = $this->session->get('setValues');
+
+        $qtxt = "SELECT * FROM core_user WHERE userid='/" . $values['adminUser'] . "'";
+        $q = sql_query($qtxt);
+
+        if (($q) && (sql_num_rows($q) > 0)) { // Did the user refreshed the page?
+            // You never know..
+            $qtxt = "UPDATE core_user SET firstname='" . $values['adminName'] . "',
+                lastname='" . $values['adminLastname'] . "',
+                pass='" . md5($admInfo['adminPassword']) . "' ";
+            $qtxt .= "WHERE userid='/" . $admInfo['adminUser'] . "'";
+            $q = sql_query($qtxt);
+        } else { // Let's create the admin user..
+            $qtxt = 'INSERT INTO core_st (idst) VALUES(NULL)';
+            $q = sql_query($qtxt);
+            $user_idst = sql_insert_id();
+
+            $qtxt = "SELECT groupid, idst FROM core_group WHERE groupid='/framework/level/godadmin' ";
+            $qtxt .= "OR groupid='/oc_0'";
+            $q = sql_query($qtxt);
+
+            $godadmin = 0;
+            $oc_0 = 0;
+            $res = [];
+            if (($q) && (sql_num_rows($q) > 0)) {
+                while ($row = sql_fetch_array($q)) {
+                    $res[$row['groupid']] = $row['idst'];
+                }
+                $godadmin = $res['/framework/level/godadmin'];
+                $oc_0 = $res['/oc_0'];
+            }
+
+            $qtxt = "INSERT INTO core_group_members (idst, idstMember) VALUES('" . $oc_0 . "', '" . $user_idst . "')";
+            $q = sql_query($qtxt);
+            $qtxt = "INSERT INTO core_group_members (idst, idstMember) VALUES('" . $godadmin . "', '" . $user_idst . "')";
+            $q = sql_query($qtxt);
+
+            $qtxt = 'INSERT INTO core_user (idst, userid, firstname, lastname, pass, email) ';
+            $qtxt .= "VALUES ('" . $user_idst . "', '/" . $values['adminUser'] . "',
+                '" . $values['adminName'] . "', '" . $values['adminLastname'] . "',
+                '" . md5($values['adminPassword']) . "', '" . $values['adminEmail'] . "')";
+            $q = sql_query($qtxt);
+        }
+
+        return $q;
+    }
+
+    private function storeSettings()
+    {
+        require_once _adm_ . '/versions.php';
+        $values = $this->session->get('setValues');
+        DbConn::getInstance(false,
+            [
+                'db_type' => 'mysqli',
+                'db_host' => $values['dbHost'],
+                'db_user' => $values['dbUser'],
+                'db_pass' => $values['dbPass'],
+                'db_name' => $values['dbName'],
+            ]
+        );
+
+        $qtxt = "UPDATE core_setting SET param_value='" . Lang::getSelLang() . "' ";
+        $qtxt .= "WHERE param_name='default_language'";
+        $q = sql_query($qtxt);
+
+        $qtxt = 'INSERT INTO `core_setting` ';
+        $qtxt .= ' (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) ';
+        $qtxt .= ' VALUES ';
+        $qtxt .= " ('core_version', '" . _file_version_ . "', 'string', 255, '0', 1, 0, 1, 1, '') ";
+        $q = sql_query($qtxt);
+
+        return $q;
+    }
+
+    private function addInstallerRoles()
+    {
+        require_once _lib_ . '/installer/lib.role.php';
+
+        $godadmin = getGroupIdst('/framework/level/godadmin');
+        $oc0 = getGroupIdst('/oc_0');
+
+        $fn = _lib_ . '/installer/role/rolelist_godadmin.txt';
+        $roles = explode("\n", file_get_contents($fn));
+        addRoles($roles, $godadmin);
+
+        $fn = _lib_ . '/installer/role/rolelist_oc0.txt';
+        $roles = explode("\n", file_get_contents($fn));
+        addRoles($roles, $oc0);
+
+        return true;
+    }
+
+    private function importLangs()
+    {
+        $LangAdm = new LangAdm();
+        $langsToInstall = $this->session->get('setLangs');
+        foreach($langsToInstall as $lang) {
+            $fn = _base_ . '/xml_language/lang[' . $lang . '].xml';
+
+            if (file_exists($fn)) {
+              
+                $LangAdm->importTranslation($fn, true, false);
+            }
+        }
+        
+        return true;
     }
   
 

@@ -41,7 +41,7 @@
             loading: {{ loading|json_encode|raw }}
         },
           onFinished: function (event, currentIndex) {
-         //Do Function
+            finalize();
         },
          onStepChanging: function (event, currentIndex, newIndex) {
           if(newIndex > currentIndex) {
@@ -75,17 +75,66 @@
           case 2:
             return checkDbSettingsAndUploadSettings();
           break;
+          case 3:
+            return checkAdminSettings();
+          break;
+          case 4:
+            return checkSmtpSettings();
+          break;
           default:
             return true;
             break;
         }
       }
 
+      function finalize() {
+        let result = true;
+        let index = 1;
+        $('section.body').each(function() {
+
+          if(result) {
+            let postData = {'check': index};
+            $.ajax({
+              type: "POST",
+              data: postData,
+              async: false,
+              url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/finalize",
+              success: function (data) {
+                console.log(data);
+                var response = JSON.parse(data);
+                
+                var $debug = $('.debug').val();
+                $('.debug').val($debug + "\n" + response.messages.join("\n"));
+                result = response.success;
+            
+              },
+              error: function (e) {
+              alert("Error: \n" + e.status + " - " + e.statusText);
+              return false;
+              },
+              });
+
+              index++;
+          }
+            });
+        }     
+
+
 
       function checkPrerequisites() {
           if($("#checkRequirements").val() && $('#agree').is(":checked")) {
             return true;
           } else {
+          
+            var postData = {};
+            if(!$("#checkRequirements").val()) {
+              postData.unsuitable_requirements = true;
+            }
+             if(!$('#agree').is(":checked")) {
+              postData.missing_check = true;
+            }
+            console.log(postData);
+            getErrorMessages(postData);
             return false;
           }
       }
@@ -100,16 +149,35 @@
           if(uploadsettings) {
 
             //check db connection
-              
+              console.log(checkDbData());
               return checkDbData();
           } else {
             return false;
           }
       }
 
+      function getErrorMessages(postData) {
+        $.ajax({
+            type: "POST",
+            data: postData,
+            url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/getErrorMessages",
+            success: function (data) {
+              
+                 var response = JSON.parse(data);
+              console.log(response);
+              let text = response.messages.join("\n");
+              alert(text);
+            },
+            error: function (e) {
+            alert("Error: \n" + e.status + " - " + e.statusText);
+            return false;
+            },
+        });
+      }
+
       function checkDbData() {
         var postData = {};
-
+        var result = false;
         $("#database_data input").each(function(e) {
     
             postData[$(this).attr('name')] = $(this).val();
@@ -118,29 +186,63 @@
         $.ajax({
             type: "POST",
             data: postData,
+             async: false,
             url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/checkDbData",
             success: function (data) {
               
-              console.log(data);
+              var response = JSON.parse(data);
+              if(!response.success) {
+                 let text = response.messages.join("\n");
+                alert(text);
+              }
+            
+              result = response.success;
+             
+
             },
             error: function (e) {
             alert("Si è verificato un errore: \n" + e.status + " - " + e.statusText);
             return false;
             },
         });
+
+        return result;
       }
 
       function checkFtpConnection() {
-          let checkFields = true;
-              
+          
+          let postData = {};
+          var result = false;
           $("#ftp_data input").each(function(e) {
         
-              if($(this).val() == '') {
-                checkFields = false;
-              }
+              postData[$(this).attr('name')] = $(this).val();
           });
 
-          return checkFields;
+           $.ajax({
+            type: "POST",
+            data: postData,
+               async: false,
+            url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/checkFtp",
+            success: function (data) {
+              
+              var response = JSON.parse(data);
+              if(!response.success) {
+                 let text = response.messages.join("\n");
+                alert(text);
+              }
+             
+             result = response.success;
+
+
+            },
+            error: function (e) {
+            alert("Error: \n" + e.status + " - " + e.statusText);
+            return false;
+            },
+        });
+
+        return result;
+         
       }
 
 
@@ -168,6 +270,81 @@
         });
       }
 
+       function checkAdminSettings() {
+          let postData = {};
+          var result = false;
+          $("#adminPanel input").each(function(e) {
+        
+              postData[$(this).attr('name')] = $(this).val();
+          });
+
+           $.ajax({
+            type: "POST",
+            data: postData,
+               async: false,
+            url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/checkAdminData",
+            success: function (data) {
+              
+              var response = JSON.parse(data);
+              if(!response.success) {
+                 let text = response.messages.join("\n");
+                alert(text);
+              }
+             
+             result = response.success;
+
+
+            },
+            error: function (e) {
+            alert("Error: \n" + e.status + " - " + e.statusText);
+            return false;
+            },
+        });
+
+        return result;
+         
+       }
+
+          function checkSmtpSettings() {
+          let postData = {};
+          var result = false;
+
+          if($("#useSmtp").val() == 'off') {
+             return true;
+          } else {
+            $("#smtpPanel .required").each(function(e) {
+        
+              postData[$(this).attr('name')] = $(this).val();
+          });
+
+           $.ajax({
+            type: "POST",
+            data: postData,
+               async: false,
+            url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/checkSmtpData",
+            success: function (data) {
+              
+              var response = JSON.parse(data);
+              if(!response.success) {
+                 let text = response.messages.join("\n");
+                alert(text);
+              }
+             
+             result = response.success;
+
+
+            },
+            error: function (e) {
+            alert("Error: \n" + e.status + " - " + e.statusText);
+            return false;
+            },
+        });
+
+          return result;
+          }
+          
+       }
+
 
 
         $("#language").on("change", function(e) {
@@ -189,6 +366,23 @@
         $("input[type=radio]").on("click", function(e) {
             setData($(this).attr('name'), $(this).val());
        
+        });
+
+        $(".lang_to_install_list input[type=checkbox]").on("click", function(e) {
+          var key = null;
+            if($(this).is(":checked")) {
+               key = 'selectLangs';
+            } else {
+              key = 'deselectLangs';
+            }
+
+            setData(key, $(this).val());
+       
+        });
+
+        $("#smtpPanel select").on("change", function(e) {
+     
+            setData($(this).attr('name'), $(this).val());
         });
       </script>
 

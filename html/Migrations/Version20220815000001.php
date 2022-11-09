@@ -454,6 +454,20 @@ final class Version20220815000001 extends AbstractMigration
             `deleted_by` int(11) NOT NULL DEFAULT '0',
             PRIMARY KEY (`id_deletion`)
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+          
+
+        $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
+            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255),
+            domain varchar(255),
+            parentId int NULL DEFAULT NULL,
+            template varchar(255),
+            orgId int NULL DEFAULT NULL,
+            mailConfigId int NULL DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
 
         $this->addSql("CREATE TABLE IF NOT EXISTS `core_event` (
             `idEvent` int(11) NOT NULL AUTO_INCREMENT,
@@ -840,6 +854,20 @@ final class Version20220815000001 extends AbstractMigration
 
 
 
+        $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs (
+            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255),
+            system boolean not null default 0
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+        $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs_fields (
+            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            mailConfigId int,
+            type varchar(255),
+            value varchar(255)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+
         $this->addSql("CREATE TABLE IF NOT EXISTS `core_menu` (
             `idMenu` int(11) NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL DEFAULT '',
@@ -875,7 +903,7 @@ final class Version20220815000001 extends AbstractMigration
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(28, '_TRANSACTION', '', 8, 'true', 'true', 2, NULL, 'framework')");
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(31, '_WEBPAGES', '', 1, 'true', 'true', 3, NULL, 'framework')");
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(33, '_NEWS_INTERNAL', '', 3, 'true', 'true', 3, NULL, 'framework')");
-        $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(34, '_COMMUNICATION_MAN', '', 4, 'true', 'true', 3, NULL, 'framework')");
+        $this->addSql("INSERT INTO `core_menu` (`idMenu`,`name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform` ) VALUES(34, '_MANAGEMENT_COMMUNICATION', '', 4, TRUE, TRUE, 3, NULL, 'framework')");
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(35, '_NEWSLETTER', '', 5, 'true', 'true', 3, NULL, 'framework')");
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(40, '_REPORT', '', 1, 'true', 'true', 4, NULL, 'framework')");
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(50, '_FIELD_MANAGER', '', 4, 'true', 'true', 5, NULL, 'framework')");
@@ -910,6 +938,12 @@ final class Version20220815000001 extends AbstractMigration
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(597, '_CATALOGUE', '', 2, 'false', 'true', NULL, NULL, 'lms')");
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(598, '_PUBLIC_FORUM', '', 3, 'true', 'true', NULL, NULL, 'lms')");
         $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(599, '_HELPDESK', '<span class=\"glyphicon glyphicon-question-sign top-menu__label\"></span>', 1000, 'false', 'true', NULL, NULL, 'lms')");
+        $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(600, '_MAIL_CONFIG', '', '1', TRUE, TRUE, 52, NULL, 'framework')");
+        $this->addSql("INSERT INTO `core_menu` (`idMenu`,`name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform` ) VALUES(601,'_DOMAIN_CONFIG', '', '1', TRUE, TRUE, 52, NULL, 'framework')");
+        $this->addSql("INSERT INTO `core_menu` (`idMenu`,`name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform` ) VALUES(602, '_CATEGORIES', '', '1', TRUE, TRUE, 34, NULL, 'framework')");
+        $this->addSql("INSERT INTO `core_menu` (`idMenu`, `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES(603, '_COMMUNICATION_MAN', '', 4, 'true', 'true', 34, NULL, 'framework')");
+
+        
 
 
 
@@ -942,7 +976,7 @@ final class Version20220815000001 extends AbstractMigration
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(31, 31, 'webpages', '_WEBPAGES', 'webpages', 'view', 'alms', 1, 'class.webpages.php', 'Module_Webpages', '')");
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(32, 32, 'news', '_NEWS', 'news', 'view', 'alms', 2, 'class.news.php', 'Module_News', '')");
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(33, 33, 'internal_news', '_NEWS_INTERNAL', 'news', 'view', 'alms', 3, 'class.internal_news.php', 'Module_Internal_News', '')");
-        $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(34, 34, 'communication', '_COMMUNICATION_MAN', '', 'view', 'alms', 1, '', '', 'alms/communication/show')");
+        $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(34, 603, 'communication', '_COMMUNICATION_MAN', '', 'view', 'alms', 1, '', '', 'alms/communication/show')");
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(35, 35, 'newsletter', '_NEWSLETTER', 'newsletter', 'view', 'framework', 1, 'class.newsletter.php', 'Module_Newsletter', '')");
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(40, 40, 'report', '_REPORT', 'reportlist', 'view', 'alms', 1, 'class.report.php', 'Module_Report', '')");
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(51, 51, 'dashboard', '_DASHBOARD', '', 'view', 'framework', 1, '', '', 'adm/dashboard/show')");
@@ -974,8 +1008,9 @@ final class Version20220815000001 extends AbstractMigration
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(597, 597, 'coursecatalogue', '_CATALOGUE', NULL, 'view', 'lms', 2, NULL, NULL, 'lms/catalog/show')");
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(598, 598, 'public_forum', '_PUBLIC_FORUM', 'forum', 'view', 'lms', 3, NULL, NULL, NULL)");
         $this->addSql("INSERT INTO `core_menu_under` (`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`) VALUES(599, 599, 'helpdesk', '_HELPDESK', 'popup', 'view', 'lms', 1000, NULL, NULL, NULL)");
-
-
+        $this->addSql("INSERT INTO `core_menu_under` (`idUnder`,`idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path` ) VALUES(600, 600 ,'mailconfig','_MAIL_CONFIG',NULL,'view','framework',1,NULL,NULL,'adm/mailconfig/show')");
+        $this->addSql("INSERT INTO `core_menu_under` (`idUnder`,`idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path` ) VALUES(601,601, 'domainconfig','_DOMAIN_CONFIG',NULL,'view','framework',1,NULL,NULL,'adm/domainconfig/show')");
+        $this->addSql("INSERT INTO `core_menu_under` (`idUnder`,`idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path` ) VALUES(602, 602 ,'communication','_CATEGORIES',NULL,'view','framework',1,NULL,NULL,'alms/communication/showCategories')");
 
         $this->addSql("CREATE TABLE IF NOT EXISTS `core_message` (
             `idMessage` int(11) NOT NULL AUTO_INCREMENT,

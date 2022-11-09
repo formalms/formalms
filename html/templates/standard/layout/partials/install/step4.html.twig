@@ -1,28 +1,19 @@
+<div id="smtpPanel">
 
 {% for smtpKey, smtpValue in smtp %}
-   
-        {% if (smtpKey == 'useSmtpDatabase') or (smtpKey == 'useSmtp') or (smtpKey == 'smtpAutoTls') %}
-            {{ Form_getDropdown(smtpLabels[smtpKey], smtpKey, smtpKey, selectEnabling, smtpValue) }}
+      
+        {% if (smtpKey == 'useSmtpDatabase') or (smtpKey == 'useSmtp') or (smtpKey == 'smtpAutoTls') or (smtpKey == 'smtpDebug') or (smtpKey == 'active')%}
+            {{ Form_getLineDropdown('form_line_l', 'floating', smtpLabels[smtpKey], 'dropdown '  ~ ((smtpKey in smtpFieldsRequired) ? 'required':''), smtpKey, smtpKey, selectEnabling, setValues[smtpKey], '','','') }}
         {% elseif (smtpKey == 'smtpSecure') %}
-            {{ Form_getDropdown(smtpLabels[smtpKey], smtpKey, smtpKey, secureSelect, smtpValue) }}
+             {{ Form_getLineDropdown('form_line_l', 'floating', smtpLabels[smtpKey], 'dropdown '  ~ ((smtpKey in smtpFieldsRequired) ? 'required':''), smtpKey, smtpKey, secureSelect, setValues[smtpKey], '','','') }}
         {% elseif (smtpKey == 'smtpPwd') %}
-            {{ Form_getPassword(smtpLabels[smtpKey], smtpKey, smtpKey, smtpValue) }}
+            {{ Form_getLinePassword('form_line_l', 'floating', smtpLabels[smtpKey], 'textfield '  ~ ((smtpKey in smtpFieldsRequired) ? 'required':''),smtpKey, smtpKey, smtpKey, 255, '',  '', '', '') }}
         {% else %}
-            {{ Form_getTextfield(smtpLabels[smtpKey], smtpKey, smtpKey, smtpValue) }}
+
+            {{ Form_getLineTextfield('form_line_l', '', smtpLabels[smtpKey], 'textfield '  ~ ((smtpKey in smtpFieldsRequired) ? 'required':''), smtpKey, smtpKey,setValues[smtpKey],smtpKey, 255, '', '', '') }}
     
         {% endif %}
   
 {% endfor %}
-{#
+</div>
 
-        case 'smtp_secure':
-            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $secureSelect, $localCfg[$key]) . '</div>';
-            break;
-        case 'smtp_pwd':
-            echo Form::getPassword(Lang::t('_' . strtoupper($key)), $key, "smtp_info[$key]", 255, '', '', '', $value);
-            break;
-        default:
-            echo Form::getTextfield(Lang::t('_' . strtoupper($key)), $key, "smtp_info[$key]", 255, $value);
-            break;
-
-#}

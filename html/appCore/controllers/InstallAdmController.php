@@ -32,8 +32,7 @@ class InstallAdmController extends AdmController
         $params['steps'] = $this->model->getSteps();
         $params['languages'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
-        
-
+ 
         $this->render('show', $params);
 
     }
@@ -48,9 +47,7 @@ class InstallAdmController extends AdmController
 
     public function checkDbData() {
 
-        $result = json_encode(array('success' => $this->model->checkDbData($this->request)));
-        echo $result;
-      
+        echo $this->model->checkDbData($this->request);
         exit;
     }
 
@@ -60,6 +57,41 @@ class InstallAdmController extends AdmController
         $result = shell_exec("php /app/bin/doctrine-migrations migrate --configuration=/app/migrations.yaml --db-configuration=/app/migrations-db.php 2>&1");
       
         dd($result);
+    }
+
+    public function getErrorMessages() {
+
+        $result = json_encode(array('messages' =>  $this->model->getErrorMessages($this->request)));
+        echo $result;
+        exit;
+       
+    }
+
+    public function checkFtp() {
+
+        echo $this->model->checkFtp($this->request);
+       
+        exit;
+       
+    }
+
+
+    public function checkAdminData() {
+        echo $this->model->checkAdminData($this->request);
+       
+        exit;
+    }
+
+    public function checkSmtpData() {
+        echo $this->model->checkSmtpData($this->request);
+       
+        exit;
+    }
+
+    public function finalize() {
+        echo $this->model->finalize($this->request);
+       
+        exit;
     }
 
  
