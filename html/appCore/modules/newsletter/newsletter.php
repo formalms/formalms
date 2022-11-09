@@ -168,9 +168,9 @@ function send_newsletter($send_id)
                     // ----------------------------------------------
                 }
 
-                $mailer = FormaMailer::getInstance();
+                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
-                $mailer->SendMail($sender, $tempemail, $sub, $msg, $attach,
+                $mailer->SendMail($tempemail, $sub, $msg, $sender, $attach,
                     [MAIL_REPLYTO => $fromemail, MAIL_SENDER_ACLNAME => false]);
 
             break;

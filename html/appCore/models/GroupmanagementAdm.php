@@ -38,7 +38,7 @@ class GroupmanagementAdm extends Model
         ];
     }
 
-    public function getGroupsList($pagination = [], $filter = false, $learning_filter = 'none')
+    public function getGroupsList($pagination = [], $filter = false, $learning_filter = 'none', $columnsFilter = [])
     {
         if (!is_array($pagination)) {
             $pagination = [];
@@ -94,6 +94,15 @@ class GroupmanagementAdm extends Model
         if ($filter) {
             $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
         }
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
+        }
         $session = SessionManager::getInstance()->getSession();
 
         switch ($learning_filter) {
@@ -128,6 +137,7 @@ class GroupmanagementAdm extends Model
         $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ';
         $query .= 'LIMIT ' . $startIndex . ', ' . $results;
 
+      
         $res = $this->db->query($query);
 
         if ($res) {
@@ -160,7 +170,7 @@ class GroupmanagementAdm extends Model
         return array_values($output);
     }
 
-    public function getTotalGroups($filter = false, $learning_filter = 'none')
+    public function getTotalGroups($filter = false, $learning_filter = 'none', $columnsFilter = [])
     {
         $query = 'SELECT COUNT(*) '
             . " FROM %adm_group as g WHERE g.hidden = 'false' " . ($learning_filter === 'none' ? "AND g.type <> 'course' " : '');
@@ -199,17 +209,35 @@ class GroupmanagementAdm extends Model
             $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
         }
 
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
+        }
+
         $res = $this->db->query($query);
         list($count) = $this->db->fetch_row($res);
 
         return $count;
     }
 
-    public function getAllGroups($filter, $admin_filter = false)
+    public function getAllGroups($filter, $admin_filter = false, $columnsFilter = [])
     {
         $query = "SELECT idst FROM %adm_group as g WHERE g.hidden = 'false' AND g.type <> 'course' ";
         if ($filter) {
             $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
+        }
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+            
         }
         $res = $this->db->query($query);
         $output = false;
@@ -221,6 +249,42 @@ class GroupmanagementAdm extends Model
         }
 
         return $output;
+    }
+
+    public function getAllGroupDetails($ids = [])
+    {
+        $query = 'SELECT g.idst, g.groupid, g.description, COUNT(*) as usercount FROM %adm_group as g WHERE g.idst in (' . implode(',', $ids) . ')
+        GROUP BY g.idst';
+       
+        $res = $this->db->query($query);
+        if ($res) {
+            $output = [];
+            $glist = [];
+            while ($obj = $this->db->fetch_obj($res)) {
+                $obj->membercount = 0;
+                $obj->usercount = 0;
+                $obj->groupid = end(explode('/', $obj->groupid));
+                $output[$obj->idst] = $obj;
+            }
+
+            $list_idst = array_keys($output);
+            $count_members = $this->countMembers($list_idst);
+            $count_users = $this->countUsers($list_idst);
+            if (!empty($count_members)) {
+                foreach ($count_members as $idst => $count) {
+                    $output[$idst]->membercount = $count;
+                }
+            }
+            if (!empty($count_users)) {
+                foreach ($count_users as $idst => $count) {
+                    $output[$idst]->usercount = $count;
+                }
+            }
+        } else {
+            return false;
+        }
+
+        return array_values($output);
     }
 
     public function deleteGroup($idst)

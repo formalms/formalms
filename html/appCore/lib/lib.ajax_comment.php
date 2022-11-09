@@ -53,7 +53,7 @@ class AjaxComment
 
     public $_order_post = true;
 
-    public function AjaxComment($resource_type, $resource_platform)
+    public function __construct($resource_type, $resource_platform)
     {
         ksort($this->colums);
         reset($this->colums);

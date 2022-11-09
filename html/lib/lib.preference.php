@@ -1168,7 +1168,7 @@ class AdminPreference
     {
         if ($this->clearAdminTree($idst)) {
             if (!empty($user_selected)) {
-                $query = 'INSERT INTO %adm_admin_tree'
+                $query = 'INSERT IGNORE INTO %adm_admin_tree'
                     . ' (idst, idstAdmin)'
                     . ' VALUES ';
 

@@ -59,6 +59,17 @@ class CustomFieldList
     /** @var string the main definition field area */
     public $field_area = '';
 
+    public function __construct()
+    {
+        $prefix = '%adm';
+        $this->field_table = $prefix . CUSTOMFIELDTABLE;
+        $this->field_lang_table = $prefix . CUSTOMFIELDLANGTABLE;
+        $this->type_field_table = $prefix . CUSTOMFIELDTYPETABLE;
+        $this->field_entry_table = $prefix . CUSTOMFIELDENTRYTABLE;
+        $this->field_area_table = $prefix . CUSTOMFIELDAREATABLE;
+    }
+
+
     public function getFieldTable()
     {
         return $this->field_table;
@@ -129,15 +140,6 @@ class CustomFieldList
         $this->field_area = $field_area;
     }
 
-    public function CustomFieldList()
-    {
-        $prefix = '%adm';
-        $this->field_table = $prefix . CUSTOMFIELDTABLE;
-        $this->field_lang_table = $prefix . CUSTOMFIELDLANGTABLE;
-        $this->type_field_table = $prefix . CUSTOMFIELDTYPETABLE;
-        $this->field_entry_table = $prefix . CUSTOMFIELDENTRYTABLE;
-        $this->field_area_table = $prefix . CUSTOMFIELDAREATABLE;
-    }
 
     public function &getFieldInstance($id_field, $type_file = false, $type_class = false)
     {

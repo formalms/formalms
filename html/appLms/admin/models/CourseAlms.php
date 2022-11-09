@@ -880,7 +880,7 @@ class CourseAlms extends Model
             $quota = FormaLms\lib\Get::sett('course_quota');
             $data_params['course_quota'] = COURSE_QUOTA_INHERIT;
         }
-        $quota = $quota * 1024 * 1024;
+        $quota = (int)$quota * 1024 * 1024;
 
         $course_man = new DoceboCourse($id_course);
         $used = $course_man->getUsedSpace();

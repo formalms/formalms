@@ -81,10 +81,10 @@ class HelpdeskLmsController extends LmsController
         $msg .= 'RESOLUTION: ' . $help_req_resolution . $br_char;
         $msg .= 'FLASH: ' . $help_req_flash_installed . $br_char;
 
-        $mailer = FormaMailer::getInstance();
+        $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
         $mailer->addReplyTo(strip_tags($usermail));
 
-        if ($mailer->SendMail($sender, [$sendto], $subject, $msg, [], [MAIL_HEADERS => $headers])) {
+        if ($mailer->SendMail([$sendto], $subject, $msg, $sender, [], [MAIL_HEADERS => $headers])) {
             echo 'true';
         } else {
             echo Lang::t('_NO_EMAIL_CONFIG', 'standard');

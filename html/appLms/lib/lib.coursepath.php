@@ -395,18 +395,18 @@ class CoursePath_Manager
     public function getCoursepathAllInfo($arr_id)
     {
         $coursepath = [];
-        $select = '
-		SELECT ' . implode(',', $this->_path_field) . '
-		FROM ' . $this->_getPathTable() . '
-		WHERE ' . $this->_path_field[COURSEPATH_ID] . ' IN ( ' . implode(',', $arr_id) . ' )';
-        $re_select = $this->_query($select);
-        if (!$re_select) {
-            return $coursepath;
+        if (count($arr_id) != 0) {
+            $select = '
+            SELECT ' . implode(',', $this->_path_field) . '
+            FROM ' . $this->_getPathTable() . '
+            WHERE ' . $this->_path_field[COURSEPATH_ID] . ' IN ( ' . implode(',', $arr_id) . ' )';
+            $re_select = $this->_query($select);
+            if ($re_select) {
+                while ($row = sql_fetch_row($re_select)) {
+                    $coursepath[$row[COURSEPATH_ID]] = $row;
+                }
+            }
         }
-        while ($row = sql_fetch_row($re_select)) {
-            $coursepath[$row[COURSEPATH_ID]] = $row;
-        }
-
         return $coursepath;
     }
 

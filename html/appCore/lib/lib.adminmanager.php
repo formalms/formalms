@@ -25,6 +25,20 @@ class AdminManager
     /** the tables prefix */
     public $prefix = false;
 
+    /**
+     * constructor.
+     *
+     * @param mixed $dbconn the connection to database or FALSE to use default connection
+     * @param mixed $prefix the prefix of the database or FLASE to use default prefix
+     */
+    public function __construct($dbconn = false, $prefix = false)
+    {
+        $this->db = DbConn::getInstance();
+        $this->dbconn = ($dbconn === false) ? $GLOBALS['dbConn'] : $dbconn;
+        $this->prefix = ($prefix === false) ? $GLOBALS['prefix_fw'] : $prefix;
+    }
+
+
     public function getAdminTreeTable()
     {
         return '%adm_admin_tree';
@@ -59,18 +73,6 @@ class AdminManager
         }
     }
 
-    /**
-     * constructor.
-     *
-     * @param mixed $dbconn the connection to database or FALSE to use default connection
-     * @param mixed $prefix the prefix of the database or FLASE to use default prefix
-     */
-    public function AdminManager($dbconn = false, $prefix = false)
-    {
-        $this->db = DbConn::getInstance();
-        $this->dbconn = ($dbconn === false) ? $GLOBALS['dbConn'] : $dbconn;
-        $this->prefix = ($prefix === false) ? $GLOBALS['prefix_fw'] : $prefix;
-    }
 
     public function getAdminTree($adminidst)
     {

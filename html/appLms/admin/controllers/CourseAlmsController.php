@@ -842,7 +842,7 @@ class CourseAlmsController extends AlmsController
 								idCourse, prerequisites, isTerminator, idParam,
 								visible, milestone)
 								VALUES
-								('" . (isset($learningObjectsIdOrgs[$source->idParent]) ? $learningObjectsIdOrgs[$source->idParent] : 0) . "',
+								('" . ($learningObjectsIdOrgs[$source->idParent] ?? 0) . "',
 								'" . $source->path . "', '" . $source->lev . "', '" . sql_escape_string($source->title) . "',
 								'" . $source->objectType . "', '" . $source->idResource . "', '" . $source->idCategory . "', '" . $source->idUser . "',
 								'" . $source->idAuthor . "', '" . $source->version . "', '" . $source->difficult . "', '" . sql_escape_string($source->description) . "',
@@ -871,9 +871,9 @@ class CourseAlmsController extends AlmsController
 								idCourse, prerequisites, isTerminator, idParam,
 								visible, milestone)
 								VALUES
-								('" . (isset($learningObjectsIdOrgs[$source->idParent]) ? $learningObjectsIdOrgs[$source->idParent] : 0) . "',
+								('" . ($learningObjectsIdOrgs[$source->idParent] ?? 0) . "',
 								'" . $source->path . "', '" . $source->lev . "', '" . sql_escape_string($source->title) . "',
-								'" . $source->objectType . "', '" . $new_id_resource . "', '" . $source->idCategory . "', '" . $source->idUser . "',
+								'" . $source->objectType . "', '" . $newIdResource . "', '" . $source->idCategory . "', '" . $source->idUser . "',
 								'" . $source->idAuthor . "', '" . $source->version . "', '" . $source->difficult . "', '" . sql_escape_string($source->description) . "',
 								'" . $source->language . "', '" . $source->resource . "', '" . $source->objective . "', '" . $source->dateInsert . "',
 								'" . $newCourseId . "', '" . $source->prerequisites . "', '" . $source->isTerminator . "', '0',

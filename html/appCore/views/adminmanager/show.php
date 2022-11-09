@@ -85,7 +85,7 @@ var AdminManagement = {
 	},
 
 	formatUsers: function(elLiner, oRecord, oColumn, oData) {
-		var url ='index.php?r=adm/adminmanager/users&amp;id_user='+oRecord.getData("id_user")+'&amp;load=1';
+		var url ='index.php?r=adm/userselector/show&amp;id='+oRecord.getData("id_user")+'&amp;instance=adminmanager';
 		var style = oRecord.getData("has_users") > 0 ? 'subs_users' : 'fd_notice';
 		var title = AdminManagement.oLangs.get('_USERS_ASSOCIATION');
 		elLiner.innerHTML = '<a href="'+url+'" class="ico-sprite '+style+'" title="'+title+'"><span>'+title+'</span></a>';

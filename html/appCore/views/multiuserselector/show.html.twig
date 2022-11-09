@@ -1,0 +1,351 @@
+
+ {{ Form_openForm('form_tabs', 'index.php?r=adm/userselector/associate', false, 'post', 'multipart/form-data') }}
+
+    {{ Form_getHidden('instance','instance',  instanceValue ) }}
+    {{ Form_getHidden('id','id',  instanceId ) }}
+  
+    <div id="multiuserselector_tab" style='margin-top:5%;'>
+        <ul class="nav nav-tabs">
+            {% for tabValue,tab in tabs %}
+                    {% if tab %}
+                    {% set tabname = '_' ~ tabValue|upper ~ '_TAB' %}
+                    {% set tabtrans =  Lang_translate(tabname, 'standard') %}
+                    <li {% if selection == tabValue %} class='active' {% endif %}>
+                        <a data-toggle="tab" href="#multiuser_tab_{{ tabValue }}" rel="{{tabValue}}"><em>{{ tabtrans }}</em></a>
+                    </li>
+                    {% endif %}
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            {% for tabValue,tab in tabs %}
+                {% if tab %}
+                <div class="tab-pane {% if selection == tabValue %} active {% endif %}" id="multiuser_tab_{{ tabValue }}">
+                    {% if tabValue != 'org' %}
+                   <table class="table table-bordered display" rel="{{ tabValue }}" active_search ="0" style="width:100%" id="{{ tabValue }}Content">
+                      
+                    </table> 
+                    {% else %}
+                    <div class='orgchart'>
+                        {{ orgChart.run() }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            {% endfor %}
+    </div>
+    <div class="modal-footer">
+		{{ Form_openButtonSpace() }}
+		{{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+		{{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+		{{ Form_closeButtonSpace() }}
+	</div>
+    {% if debug %}
+    <button id="test-btn" style='margin-top:3%;' class="button btn btn-primary dahsboard__button--save js-save-block" type="submit" >
+        TEST
+    </button>
+    {% endif %}
+{{ Form_closeForm() }}
+ 
+
+<script>
+
+let DTable = [];
+let orgChartSelection = null;
+var columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
+var data = {{ selectedData | json_encode(constant('JSON_HEX_APOS')) | raw }};
+var selection = {{ accessSelection | json_encode(constant('JSON_HEX_APOS')) | raw }};
+var ajax = {{ ajax | json_encode }};
+var options = {
+            rowId: 'id',
+            scrollX: true,
+            paging: true,
+            pageLength: 25,
+            searchDelay: 800,
+            searching: true,
+            dom: 'Blfrtip',
+           // stateSave: true,
+            deferRender: true,
+            'columnDefs': [
+                {
+                    'targets': 0,
+                    'checkboxes': {
+                    'selectRow': true,
+                    }
+                }
+            ],
+            'select': {
+                'all': true,
+                'style': 'multi',
+            },
+            orderCellsTop: true,
+            fixedHeader: true,
+            //buttons: buttons
+            };
+
+$(document).ready(function() {
+
+
+    $('table').each(function(e) {
+
+    var rel = $(this).attr('rel');
+  
+    var domId = '#' + $(this).attr('id');
+
+    var buttons = [
+                {
+                    text: '{{ Lang_translate("_ADVANCED_SEARCH", "standard") }}',
+                    className: 'btn btn-default',
+                    action: function(e, dt, node, config) {
+                        //DTable[rel].searchBar.init().show()
+
+                        if($('.searchbar').length > 0) {
+                            $('.searchbar').each(function(e){
+                                if($(this).hasClass('hidden')) {
+                                    $(this).removeClass('hidden');
+                                } else {
+                                    $(this).addClass('hidden');
+                                }
+                            });
+                        }
+                        
+                    }
+                },
+                {
+                    extend: 'colvis',
+                    text: '{{ Lang_translate("_CHANGEPOLICY", "profile") }}',
+                    className: 'btn btn-default',
+                    collectionLayout: 'dropdown-menu',
+                    columns: ':not(":first")'
+                }
+            ];
+        
+    options.buttons = buttons;
+    options.columns = columns[rel];
+    options.preselection = selection;
+
+
+    if(!ajax) {
+        options.processing = true;
+        options.serverSide = true;
+        options.ajax = {
+              
+                type: 'GET',
+                data: function (d) {
+                    d.dataType = rel;
+                    
+                    d.active_search =   $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search');
+                   
+                    if(parseInt(d.active_search) === 0 && DTable[rel] !== undefined) {
+                      
+                        d.length = DTable[rel].pageLength;
+                    }
+                },
+                complete: function(json) {
+                
+                    return json;
+                },
+                url: 'ajax.adm_server.php?r=adm/userselector/getData',
+            };
+    } else {
+        options.data = data[rel];
+    }
+
+    
+    
+
+    DTable[rel] = new window.frontend.modules.FormaTable(domId, options);
+
+               // Setup - add a text input to each header cell
+    columns[rel].forEach(function(item, i) {
+        if ( item.searchable === true) {
+            
+            var title = item.data;
+            
+            var table = DTable[rel].DataTable;
+
+            var formatable = DTable[rel];
+
+            var cell = $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable thead tr th:nth-child(' + (i + 2) +')')
+
+            var searchInput = $('#' + rel + 'Content_filter');
+
+            var search = $.fn.dataTable.util.throttle(
+                function ( val ) {
+                    table.column(i+1).search( val ).draw();
+                },
+                1000
+            );
+
+            cell.append(getInputSearchField(item.search_field));
+            
+            cell.find('input').add(searchInput.find('input')).on('keyup clear', function (e) {
+
+               if (table.column(i+1).search() !== this.value) {
+                
+                   if(this.value == '') {
+                       $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search', 0);
+                       formatable.activeSearch = false;
+                       $('#' + rel + 'Content_length select').val(formatable.pageLength);
+                       $('#' + rel + 'Content_length').show();
+                     
+                   } else {
+                       formatable.activeSearch = true;
+                        $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search', 1);
+                      
+                      $('#' + rel + 'Content_length').hide();
+                       if(formatable._selection.all) {
+                           $('.buttons-select-none').trigger('click');
+                       }
+                   }
+                    table.settings()[0].jqXHR.abort();
+                    search(this.value);
+                  //table
+                  //    .column(i+1)
+                  //    .search(this.value)
+                  //    .draw();
+               }
+
+                table.columns.adjust();
+            });
+        }
+    });
+        
+    $('#' + rel + 'Content_length select').on('change', function(e) {
+
+        DTable[rel].pageLength = $(this).val();
+    });   
+        
+    });
+
+    $('.sorting .searchbar').on('click focus', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+        var rel = $(this).attr('rel');
+        if(rel!='org') {
+            DTable[rel].DataTable.columns.adjust();
+        }
+        
+    });
+
+})
+
+$('body').on('click', '.ygtvhtml', function() {
+  orgChartSelection = $(this).attr('id');
+});
+
+
+$('#test-btn').on('click', function(e) {
+    e.preventDefault();
+
+    if (!$("table tr.selected").length) {
+        return;
+    }
+    var selectedIds = [];
+    var alertMsg = 'Hai selezionato \n';
+   
+    $('table[id$="Content"]').each(function(e) {
+        alertMsg = alertMsg + 'del tab ' + $(this).attr('rel') + ' i seguenti id: ' + DTable[$(this).attr('rel')]._selection.rows.join(',') + '\n';
+    });
+    
+    if(orgChartSelection) {
+       alertMsg = alertMsg + 'del tab org ' + orgChartSelection;
+    }
+
+    alert(alertMsg);
+
+});
+
+$('#form_tabs').on('submit', function(e) {
+    e.preventDefault();
+
+
+    var data = $(this).serializeArray();
+  //  if (!$("table tr.selected").length ) {
+  //      return;
+  //  }
+
+    var allSelection = [];
+    var selectedIds = [];
+    var excludedIds = [];
+    $('table[id$="Content"]').each(function(e) {
+
+        if(DTable[$(this).attr('rel')]._selection.rows.length > 0) {
+            selectedIds = selectedIds.concat(DTable[$(this).attr('rel')]._selection.rows);
+        }
+
+        if(DTable[$(this).attr('rel')]._selection.all === true && DTable[$(this).attr('rel')].activeSearch === true) {
+            allSelection = allSelection.concat($(this).attr('rel'));
+            excludedIds = excludedIds.concat(DTable[$(this).attr('rel')]._selection.exclusions);
+        }
+        
+    });
+
+    $('.radiosel:checked').each(function(e) {
+        if(parseInt($(this).val()) > 0) {
+            var parts = $(this).attr('id').split('_');
+            selectedIds = selectedIds.concat(parts[2]);
+        }
+    });
+  
+    $(this).append( $('<input>', {
+            type: 'hidden',
+            name: 'selected',
+            value: selectedIds
+    }));
+
+    $(this).append( $('<input>', {
+            type: 'hidden',
+            name: 'allselection',
+            value: allSelection
+    }));
+
+     $(this).append( $('<input>', {
+            type: 'hidden',
+            name: 'excluded',
+            value: excludedIds
+    }));
+    
+    this.submit();
+
+});
+
+
+
+YAHOO.util.Event.onDOMReady(function(e) {
+	
+	var input = YAHOO.util.Dom.get("userselector_input_main");
+	if (input) {
+		YAHOO.util.Event.addListener(input.form, "submit", function(e) {
+			var str = TreeView_orgchart_selector_tree_main.oSelector.toString();
+			if (str) input.value += (input.value != "" ? "," : "")+str;
+		});
+	}
+
+	var E = YAHOO.util.Event;
+	E.addListener("orgchart_unselect_all_main", "click", function(e) {
+		E.preventDefault(e);
+		var t = TreeView_orgchart_selector_tree_main;
+		t.unselectAll();
+	});
+});
+
+
+function getInputSearchField(type, value = '') {
+    var returnString = '<br />';
+    var searchPlaceholder = "{{ Lang_translate('_SEARCH', 'standard') }}";
+
+    switch(type) {
+        case 'date':
+
+        break;
+
+        default:
+            returnString = returnString +  '<input type="text" class="form-control input-sm searchbar hidden" placeholder="' + searchPlaceholder + '" value="' + value + '" />';
+        break;
+    }
+    return returnString;
+}
+</script>

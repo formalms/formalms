@@ -209,11 +209,13 @@ class User_API extends API
                             $this->aclManager->addToGroup($ocd, $id_user);
                             $entities[$oc] = $oc;
                             $entities[$ocd] = $ocd;
+
                         }
                     }
                 }
             }
 
+            $enrollrules = new EnrollrulesAlms();
             if (isset($userdata['orgchart_code'])) {
                 $branches = explode(';', $userdata['orgchart_code']);
                 if (is_array($branches)) {
@@ -227,12 +229,13 @@ class User_API extends API
                             $this->aclManager->addToGroup($ocd, $id_user);
                             $entities[$oc] = $oc;
                             $entities[$ocd] = $ocd;
+                            $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_ORGCHART', [$id_user], $idOrg);
                         }
                     }
                 }
             }
 
-            $enrollrules = new EnrollrulesAlms();
+
             $enrollrules->newRules('_NEW_USER',
                 [$id_user],
                 $userdata['language'],

@@ -21,10 +21,10 @@ class HomerepoDirDb extends RepoDirDb
 {
     public $idOwner = 0;
 
-    public function HomerepoDirDb($table_name, $idOwner)
+    public function __construct($table_name, $idOwner)
     {
         $this->idOwner = $idOwner;
-        parent::RepoDirDb($table_name);
+        parent::__construct($table_name);
     }
 
     public function _getOtherFields($tname = false)

@@ -303,6 +303,12 @@ if (!Docebo::user()->isAnonymous()) {
             $back_url = FormaLms\lib\Get::site_url() . _folder_lms_ . '/' . $back_url;
         }
 
+        if(isset($idCourse) && defined("LMS")) {
+
+            require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
+            Track_Object::updateObjectTitle($_POST['id_comm'], 'item', $_POST['title']);
+        }
+
         $response['back_url'] = str_replace('&amp;', '&', $back_url . '&id_los=' . (int) $idLesson . '&mod_result=1');
         echo json_encode($response);
         exit();

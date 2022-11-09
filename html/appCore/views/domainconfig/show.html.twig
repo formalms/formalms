@@ -1,0 +1,55 @@
+
+
+<!-- Nav tabs -->
+<div class="col-lg-12 page-title">
+    <a href="index.php?r=adm/domainconfig/show"><h1 class="text-uppercase">{{ Lang_translate( title , 'menu') }} </h1></a>
+                                {% if item %}
+                                    <h6> {{ item.title }} </h6>
+                                {% endif %}
+                                </div>
+<br/>
+
+
+<br/><br/>
+{% if message %}
+    <div id="container-feedback" class="container-feedback">
+        <span class="ico-sprite fd_info"><span>{{ Lang_translate('_DETAILS', 'standard') }}</span></span> {{ message }}
+    </div>
+{% endif %}
+
+<div class="col-lg-12">
+    <div class="row nav nav-pills">
+         <div class="form-group">
+                <a style='float:right;' class="btn btn-success" href='{{ insertUrl }}'>{{ Lang_translate('_INSERT','standard') }}</a>
+            </div>
+       
+        </div>
+    
+
+    <table class="table domainconfigtable" style="table-layout:fixed;">
+    <thead>
+        <tr>
+        <th scope="col" style="width: 5%">#</th>
+        <th scope="col" style="width: 10%">{{ Lang_translate('_NAME', 'standard') }}</th>
+        <th scope="col" style="width: 15%">{{ Lang_translate('_DOMAIN', 'domainconfig') }}</th>
+        <th scope="col" style="width: 15%">{{ Lang_translate('_TEMPLATE', 'domainconfig') }}</th>
+        <th scope="col" style="width: 15%">{{ Lang_translate('_ORG', 'domainconfig') }}</th>
+        <th scope="col" style="width: 15%">{{ Lang_translate('_MAIL_CONFIG', 'domainconfig') }}</th>
+        <th scope="col"style="width: 25%">{{ Lang_translate('_ACTIONS', 'standard') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for domain in domains %}
+        {% include 'row.html.twig' %}
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+    <script>
+
+    $(document).ready(function() {
+
+       
+    });
+    </script>
+

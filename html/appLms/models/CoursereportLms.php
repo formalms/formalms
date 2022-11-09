@@ -155,16 +155,19 @@ class CoursereportLms extends Model
 
         $re_tests = sql_query($query_tests);
 
+        $included_test = [];
+        $included_test_report_id = [];
         //while (list($id_r, $id_t) = sql_fetch_row($re_tests)) {
         foreach ($re_tests as $re_test) {
-            $included_test[$re_test['id_report']] = $re_test['id_report'];
-            $included_test_report_id[$re_test['id_source']] = $re_test['id_source'];
+            $included_test_report_id[$re_test['id_report']] = $re_test['id_report'];
+            $included_test[$re_test['id_source']] = $re_test['id_source'];
         }
 
         // XXX: Update if needed
         if ((int) $tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
+
             if (is_array($included_test)) {
                 $test_to_add = array_diff($org_tests, $included_test);
             } else {

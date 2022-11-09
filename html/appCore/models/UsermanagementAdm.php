@@ -169,7 +169,7 @@ class UsermanagementAdm extends Model
         return $output;
     }
 
-    public function getUsersList($idOrg, $descendants = false, $pagination = [], $filter = false, $usersFilter = false, $learning_filter = 'none')
+    public function getUsersList($idOrg, $descendants = false, $pagination = [], $filter = false, $usersFilter = false, $learning_filter = 'none', $columnsFilter = [])
     {
         require_once _adm_ . '/lib/lib.field.php';
 
@@ -393,6 +393,17 @@ class UsermanagementAdm extends Model
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
                 }
+
+                    if(count($columnsFilter)) {
+                        foreach($columnsFilter as $columnName => $columnValue) {
+                            $query .= ' AND (
+                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                            )';
+                        }
+
+                    }
+
+
                 $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ' .
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
@@ -420,6 +431,15 @@ class UsermanagementAdm extends Model
 					)";
                 }
 
+                    if(count($columnsFilter)) {
+                        foreach($columnsFilter as $columnName => $columnValue) {
+                            $query .= ' AND (
+                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                            )';
+                        }
+
+                    }
+
                 $query .= ' ORDER BY f.user_entry ' . $dir . ' ' .
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
@@ -441,6 +461,7 @@ class UsermanagementAdm extends Model
                     . $queryUserFilter_3
                     . ($useSuspended ? '' : ' AND u.valid = 1 ') . ' '
                     . ($useAnonymous ? '' : " AND u.userid <> '/Anonymous' ") . ' ';
+                $query .= ' )';
 
                 if ($searchFilter) {
                     $query .= " AND (
@@ -450,6 +471,15 @@ class UsermanagementAdm extends Model
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
                 }
+
+                    if(count($columnsFilter)) {
+                        foreach($columnsFilter as $columnName => $columnValue) {
+                            $query .= ' AND (
+                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                            )';
+                        }
+
+                    }
 
                 $query .= ' ORDER BY fs.translation ' . $dir . ' ' .
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
@@ -478,6 +508,15 @@ class UsermanagementAdm extends Model
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
                 }
+
+                    if(count($columnsFilter)) {
+                        foreach($columnsFilter as $columnName => $columnValue) {
+                            $query .= ' AND (
+                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                            )';
+                        }
+
+                    }
                 $query .= ' ORDER BY gm.idst ' . (strtolower($dir) == 'asc' ? 'DESC' : 'ASC') . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
@@ -506,6 +545,15 @@ class UsermanagementAdm extends Model
 						u.email LIKE '%" . $searchFilter . "%'
 					)";
                 }
+
+                    if(count($columnsFilter)) {
+                        foreach($columnsFilter as $columnName => $columnValue) {
+                            $query .= ' AND (
+                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                            )';
+                        }
+
+                    }
                 $query .= ' ORDER BY su.value ' . $dir . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
@@ -515,17 +563,8 @@ class UsermanagementAdm extends Model
         $users_rows = [];
 
         $res = $this->db->query($query);
-        while ($row = $this->db->fetch_obj($res)) {
-            $users_rows[$row->idst] = [
-                'idst' => $row->idst,
-                'userid' => $row->userid,
-                'firstname' => $row->firstname,
-                'lastname' => $row->lastname,
-                'email' => $row->email,
-                'register_date' => $row->register_date,
-                'lastenter' => $row->lastenter,
-                'valid' => $row->valid,
-            ];
+        foreach ($res as $row) {
+            $users_rows[$row['idst']] = $row;
         } //end while
 
         //retrieve which fields are required
@@ -544,15 +583,15 @@ class UsermanagementAdm extends Model
 
                 //get values to add in the row
                 $custom_values = [];
-                while ($frow = $this->db->fetch_obj($res_fields)) {
-                    if (!in_array($frow->id_common, $custom_fields)) {
-                        $custom_fields[] = $frow->id_common;
+                foreach ($res_fields as $frow){
+                    if (!in_array($frow['id_common'], $custom_fields)) {
+                        $custom_fields[] = $frow['id_common'];
                     }
 
                     $field_value = '';
-                    switch ($frow->type_field) {
+                    switch ($frow['type_field']) {
                         case 'yesno':
-                            switch ($frow->user_entry) {
+                            switch ($frow['user_entry']) {
                                 case 1:
                                     $field_value = Lang::t('_YES', 'field');
                                     break;
@@ -575,8 +614,8 @@ class UsermanagementAdm extends Model
                                     $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
                                 }
                             }
-                            if (isset($field_sons[$frow->id_common][$frow->user_entry])) {
-                                $field_value = $field_sons[$frow->id_common][$frow->user_entry];
+                            if (isset($field_sons[$frow['id_common']][$frow['user_entry']])) {
+                                $field_value = $field_sons[$frow['id_common']][$frow['user_entry']];
                             } else {
                                 $field_value = '';
                             }
@@ -593,8 +632,8 @@ class UsermanagementAdm extends Model
                                     $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
                                 }
                             }
-                            if (isset($field_sons[$frow->copy_of][$frow->user_entry])) {
-                                $field_value = $field_sons[$frow->copy_of][$frow->user_entry];
+                            if (isset($field_sons[$frow['copy_of']][$frow['user_entry']])) {
+                                $field_value = $field_sons[$frow['copy_of']][$frow['user_entry']];
                             } else {
                                 $field_value = '';
                             }
@@ -607,22 +646,23 @@ class UsermanagementAdm extends Model
                                 $query_countries = 'SELECT id_country, name_country FROM %adm_country ORDER BY name_country';
                                 $res_countries = $this->db->query($query_countries);
                                 $countries = [];
-                                while ($crow = $this->db->fetch_obj($res_countries)) {
-                                    $countries[$crow->id_country] = $crow->name_country;
+                                foreach ($res_countries as $crow){
+                                //while ($crow = $this->db->fetch_obj($res_countries)) {
+                                    $countries[$crow->id_country] = $crow['name_country'];
                                 }
                             }
-                            if (isset($countries[$frow->user_entry])) {
-                                $field_value = $countries[$frow->user_entry];
+                            if (isset($countries[$frow['user_entry']])) {
+                                $field_value = $countries[$frow['user_entry']];
                             } else {
                                 $field_value = '';
                             }
 
                             break;
                         default:
-                            $field_value = $frow->user_entry;
+                            $field_value = $frow['user_entry'];
                             break;
                     }
-                    $custom_values[$frow->id_user]['_custom_' . $frow->id_common] = $field_value; //$frow->user_entry;
+                    $custom_values[$frow['id_user']]['_custom_' . $frow['id_common']] = $field_value; //$frow->user_entry;
                 }
 
                 foreach ($users_rows as $idst => $value) {
@@ -676,7 +716,7 @@ class UsermanagementAdm extends Model
         return $users_rows;
     }
 
-    public function getTotalUsers($idOrg, $descendants = false, $filter = false, $usersFilter = false, $learning_filter = 'none')
+    public function getTotalUsers($idOrg, $descendants = false, $filter = false, $usersFilter = false, $learning_filter = 'none', $columnsFilter = [])
     {
         $useAnonymous = false;
         $searchFilter = isset($filter['text']) ? $filter['text'] : false;
@@ -798,6 +838,15 @@ class UsermanagementAdm extends Model
                 $filtered_query .= ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ';
                 break;
         }
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $filtered_query .= ' AND (
+                    u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+
+        }
         $res = $this->db->query($filtered_query);
         $row = $this->db->fetch_row($res);
         $output = $row[0];
@@ -805,7 +854,7 @@ class UsermanagementAdm extends Model
         return $output;
     }
 
-    public function getAllUsers($idOrg, $descendants = false, $filter = false, $usersFilter = false, $learning_filter = 'none')
+    public function getAllUsers($idOrg, $descendants = false, $filter = false, $usersFilter = false, $learning_filter = 'none', $columnsFilter = [])
     {
         $useAnonymous = false;
         $searchFilter = isset($filter['text']) ? $filter['text'] : false;
@@ -922,6 +971,15 @@ class UsermanagementAdm extends Model
                 $res = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
                 $query .= ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ';
                 break;
+        }
+
+        if(count($columnsFilter)) {
+            foreach($columnsFilter as $columnName => $columnValue) {
+                $query .= ' AND (
+                    u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                )';
+            }
+
         }
 
         // Retrive all the user selected
@@ -3109,7 +3167,7 @@ class UsermanagementAdm extends Model
                 . ' WHERE oct.idst_oc IN (' . implode(',', $admin_tree) . ') OR oct.idst_ocd IN (' . implode(',', $admin_tree) . ') '
                 . ' ORDER BY oct.iLeft ASC';
             $res = $this->db->query($query);
-            foreach ($res as $row){
+            foreach ($res as $row) {
                 if ($return_org) {
                     $output[] = (int)$row['idOrg'];
                 } else {

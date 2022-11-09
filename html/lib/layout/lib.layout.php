@@ -501,8 +501,12 @@ class Layout
                 ['failed']
             );
 
-            $perc_complete = round(($tot_complete / $total) * 100, 2);
-            $perc_failed = round(($tot_failed / $total) * 100, 2);
+            $perc_complete = 0;
+            $perc_failed = 0;
+            if ( $total > 0 ) {
+                $perc_complete = round(($tot_complete / $total) * 100, 2);
+                $perc_failed = round(($tot_failed / $total) * 100, 2);
+            }
 
             $stats = [];
             if (SessionManager::getInstance()->getSession()->has('is_ghost') || SessionManager::getInstance()->getSession()->get('is_ghost') !== true) {

@@ -1215,6 +1215,15 @@ Password: [password]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_SUBJECT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT" attributes="email" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message in the e-learning system at <a href="[url]">[url]</a> in the course [course] from the user [from]]]></key>
         <key id="email&amp;_YOU_RECIVE_MSG_TEXT_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You received a new message from the e-learning system at <a href="[url]">[url]</a> in the course<b> [course] </b>from the user [from]]]></key>
+        <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
+        <key id="email&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the classroom course ([classroom_code]) - [classroom_date]]]></key>
+        <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
+        <key id="email&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
+        <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the course ([course_code]) - [course]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Apply rule]]></key>
@@ -1656,6 +1665,8 @@ In handling this information, accuracy and precision shall be met to ensure the 
         <key id="menu&amp;_COMMUNICATION_MAN" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Communications]]></key>
         <key id="menu&amp;_MANAGEMENT_COMMUNICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Manage Communications]]></key>
         <key id="menu&amp;_CATEGORIES" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Categories]]></key>
+        <key id="menu&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Settings]]></key>
+        <key id="menu&amp;_DOMAIN_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Domains settings]]></key>
         <key id="menu&amp;_CONFIGURATION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Settings]]></key>
         <key id="menu&amp;_CONFIG_ELEARNING" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[E-learning configuration]]></key>
         <key id="menu&amp;_CONFIG_SYS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[System configuration]]></key>
@@ -2349,6 +2360,12 @@ Username: [userid]]]></key>
         <key id="sms&amp;_WAITING_USER_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[There is a new user waiting for the approval]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS" attributes="sms" save_date="2020-09-15 14:47:12"><![CDATA[You have received a new message in the e-learning system in the course [course] from the user [from]]]></key>
         <key id="sms&amp;_YOU_RECIVE_MSG_TEXT_SMS_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[You received a new message on the  e-learning platform in course [course] from the user [from]]]></key>
+        <key id="sms&amp;_EVENT_CLASSROOM_COURSE_DATE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the classroom course ([classroom_code]) - [classroom_date]]]></key>
+        <key id="sms&amp;_EVENT_EDITION_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key>
+        <key id="sms&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT_SMS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
+you have been unsubscribed from the course ([course_code]) - [course]]]></key>
       </module>
       <module id="social">
         <key id="social&amp;_CONNECTED_ACCOUNTS" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Accounts connected:]]></key>
@@ -2793,6 +2810,12 @@ Username: [userid]]]></key>
         <key id="standard&amp;_WIDTH" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Width]]></key>
         <key id="standard&amp;_YEAR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Year]]></key>
         <key id="standard&amp;_YES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Yes]]></key>
+        <key id="standard&amp;_ACTIONS" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Azioni]]></key>
+        <key id="standard&amp;_DEFAULT" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Default]]></key>
+        <key id="standard&amp;_USER_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Users]]></key>
+        <key id="standard&amp;_ROLE_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Roles]]></key>
+        <key id="standard&amp;_ORG_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Organization Chart]]></key>
+        <key id="standard&amp;_GROUP_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Groups]]></key>
       </module>
       <module id="statistic">
         <key id="statistic&amp;_AT_HOUR" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[At hour]]></key>
@@ -3259,6 +3282,38 @@ Username: [userid]]]></key>
         <key id="communication&amp;_MARK_AS_READ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as read]]></key>
         <key id="communication&amp;_MARK_AS_UNREAD" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mark as unread]]></key>
       </module>
+      <module id="mailconfig">
+        <key id="mailconfig&amp;_AUTO_TLS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Auto Tls]]></key>
+        <key id="mailconfig&amp;_HOST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Host]]></key>
+        <key id="mailconfig&amp;_PORT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Port]]></key>
+        <key id="mailconfig&amp;_DEBUG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Debug]]></key>
+        <key id="mailconfig&amp;_SECURE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[SSL]]></key>
+        <key id="mailconfig&amp;_SENDER_MAIL_NOTIFICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender mail notifications]]></key>
+        <key id="mailconfig&amp;_SENDER_NAME_NOTIFICATION" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender name notifications]]></key>
+        <key id="mailconfig&amp;_SENDER_MAIL_SYSTEM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender mail system]]></key>
+        <key id="mailconfig&amp;_SENDER_NAME_SYSTEM" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sender name system]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail Help Desk]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Name Help Desk]]></key>
+        <key id="mailconfig&amp;_HELPER_DESK_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Subject Help Desk]]></key>
+        <key id="mailconfig&amp;_REPLYTO_NAME" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Reply to sender name]]></key>
+        <key id="mailconfig&amp;_REPLYTO_MAIL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Reply to sender mail]]></key>
+        <key id="mailconfig&amp;_SENDER_CC_MAILS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail CC]]></key>
+        <key id="mailconfig&amp;_SENDER_CCN_MAILS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail CCN]]></key>
+        <key id="mailconfig&amp;_BLANK_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The fields: [fields] cannot be blank]]></key>
+        <key id="mailconfig&amp;_MISSING_FIELDS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The fields: [fields] are required]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_OK" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[TEST mail sent successfully]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_KO" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[TEST mail failed with errors]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_SUBJECT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[TEST Mail]]></key>
+        <key id="mailconfig&amp;_TESTMAIL_BODY" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You sent a Test mail to this address]]></key>
+        <key id="mailconfig&amp;_TEST" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Send a Test Mail]]></key>
+      </module>
+      <module id="domainconfig">
+        <key id="domainconfig&amp;_DOMAIN" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Domain]]></key>
+        <key id="domainconfig&amp;_TEMPLATE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Template]]></key>
+        <key id="domainconfig&amp;_ORG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Organization node]]></key>
+        <key id="domainconfig&amp;_MAIL_CONFIG" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Mail setting]]></key>
+        <key id="domainconfig&amp;_SUBS" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sublevels]]></key>
+     </module>
     </platform>
   </LANG>
 </LANGUAGES>

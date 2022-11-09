@@ -873,7 +873,6 @@ class Report_Courses extends Report
 
         $show_suspended = (isset($reportTempData['columns_filter']['show_suspended']) ? (bool) $reportTempData['columns_filter']['show_suspended'] : false);
         $only_students = (isset($reportTempData['columns_filter']['only_students']) ? (bool) $reportTempData['columns_filter']['only_students'] : false);
-        $show_assessment = (isset($reportTempData['columns_filter']['show_assessment']) ? (bool) $reportTempData['columns_filter']['show_assessment'] : false);
 
         $show_classrooms_editions = (isset($reportTempData['columns_filter']['show_classrooms_editions']) ? (bool) $reportTempData['columns_filter']['show_classrooms_editions'] : false);
 
@@ -1034,7 +1033,6 @@ class Report_Courses extends Report
         if (!$show_classrooms_editions) {
             $q_courses = 'SELECT c.idCourse, c.code, c.name, c.description, c.course_type '
                 . ' FROM %lms_course As c '
-                . ($show_assessment ? '' : " WHERE c.course_type <> 'assessment' ")
                 . ' ORDER BY c.code, c.name';
             $r_courses = sql_query($q_courses);
             foreach ($r_courses as $courseData) {
@@ -1056,7 +1054,6 @@ class Report_Courses extends Report
         } else {
             $q_courses = 'SELECT c.idCourse, c.code, c.name, c.description, c.course_type, d.id_date '
                 . ' FROM %lms_course As c LEFT JOIN %lms_course_date AS d ON (c.idCourse = d.id_course) '
-                . ($show_assessment ? '' : " WHERE c.course_type <> 'assessment' ")
                 . ' ORDER BY c.code, c.name, d.code, d.name';
             $r_courses = sql_query($q_courses);
             foreach ($r_courses as $courseData) {

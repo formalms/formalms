@@ -18,7 +18,7 @@ require_once _lms_ . '/admin/modules/category/tree.category.php';
 class CategoryTree extends TreeDb_CatDb
 {
     // Constructor of CategoryTree class
-    public function CategoryTree()
+    public function __construct()
     {
         $this->table = '%lms_category';
         $this->fields = [
@@ -216,7 +216,6 @@ class CategoryTree extends TreeDb_CatDb
     public function _getFolderLimits($idFolder, $lv = false)
     {
         if ($idFolder == 0) {
-            $fields = $this->_getArrBaseFields($this->table);
             $query = 'SELECT COUNT(*)'
             . ' FROM ' . $this->table . $this->_getOtherTables()
             . $this->_outJoinFilter($this->table)

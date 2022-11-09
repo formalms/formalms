@@ -61,8 +61,9 @@ if (!empty($GLOBALS['req'])) {
             $aj_file = $GLOBALS['where_' . $plf] . '/modules/' . $mn . '/ajax.' . $mn . '.php';
         }
     }
+    include $aj_file;
 }
-include $aj_file;
+
 
 // finalize
 Boot::finalize();

@@ -392,6 +392,11 @@ class Lang
      */
     public static function get($reset = false)
     {
+        //retrocompatibilità perchè il domainconfighandler istanzia l'utente di sessione sul clientservice
+        /*************************************** */
+        require_once _base_ . '/lib/lib.user.php';
+        require_once _base_ . '/lib/lib.docebo.php';
+        /***************************************** */
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $currentLang = $session->get('current_lang');
         if ($reset && isset($currentLang)) {

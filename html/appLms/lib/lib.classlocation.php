@@ -25,7 +25,7 @@ class ClassLocationManager
 
     public $status_info = [];
 
-    public function ClassLocationManager($prefix = 'learning', $dbconn = null)
+    public function __construct($prefix = 'learning', $dbconn = null)
     {
         $this->prefix = $prefix;
         $this->dbconn = $dbconn;

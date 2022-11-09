@@ -65,7 +65,7 @@ class OrganizationManagement
         return $l_obj;
     }
 
-    public function getCountUnreaded($id_user, $courses, &$last_access)
+    public static function getCountUnreaded($id_user, $courses, &$last_access)
     {
         $unreaded = [];
         if (empty($courses)) {
@@ -96,7 +96,7 @@ class OrganizationManagement
         return $unreaded;
     }
 
-    public function objectFilter($arr_course, $filter_type = false)
+    public static function objectFilter($arr_course, $filter_type = false)
     {
         $l_obj = [];
         $query_lo = '

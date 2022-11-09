@@ -363,8 +363,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
             _CUS_SUSPEND => 0,
         ],
         'with_wstatus' => [
-            _CUS_RESERVED => 0,
-            _CUS_WAITING_LIST => 0, ],
+            _CUS_WAITING_LIST => 0,
+        ],
         'with_ulevel' => [],
         'expiring' => 0,
         'cert_relesable' => 0,
@@ -649,7 +649,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         }
 
         ++$course_stats['total'];
-        if ($cinfo['user_status'] == _CUS_RESERVED || $cinfo['user_status'] == _CUS_WAITING_LIST) {
+        if ($cinfo['user_status'] == _CUS_WAITING_LIST) {
             ++$course_stats['with_wstatus'][$cinfo['user_status']];
         } elseif ($access['can']) {
             ++$course_stats['u_can_enter'];
@@ -991,8 +991,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
     require_once _lms_ . '/lib/lib.levels.php';
     $lvl = CourseLevel::getTranslatedLevels();
 
-    $arr_status = [_CUS_RESERVED => $lang->def('_T_USER_STATUS_RESERVED'),
-                        _CUS_WAITING_LIST => $lang->def('_WAITING_USERS'),
+    $arr_status = [     _CUS_WAITING_LIST => $lang->def('_WAITING_USERS'),
                         _CUS_CONFIRMED => $lang->def('_T_USER_STATUS_CONFIRMED'),
 
                         _CUS_SUBSCRIBED => $lang->def('_T_USER_STATUS_SUBS'),

@@ -259,7 +259,7 @@ $base_url = preg_replace('/\/cron\//', '', $base_url);
 
 require_once _base_ . '/lib/lib.upload.php';
 
-$mailer = FormaMailer::getInstance();
+$mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
 
 require_once _base_ . '/lib/lib.json.php';
 $json = new Services_JSON();
@@ -382,10 +382,10 @@ if ($lock_stream) {
                         $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']));
                         $body = str_replace('[report_persistence_days]', $report_persistence_days, $body);
 
-                        $response = $mailer->SendMail(FormaLms\lib\Get::sett('sender_event'), //sender
-                            [$recipient['email']], //recipients
-                            $subject, //subject
-                            $body //body
+                        $response = $mailer->SendMail([$recipient['email']], //sender
+                            $subject, //recipients
+                            $body, //subject
+                            FormaLms\lib\Get::sett('sender_event') //body
                         );
 
                         if (!$response[$recipient['email']]) {
@@ -405,10 +405,10 @@ if ($lock_stream) {
                         $mailer->Subject = $subject;
                         $body = date('Y-m-d H:i:s');
 
-                        $response = $mailer->SendMail(FormaLms\lib\Get::sett('sender_event'), //sender
-                            [$recipient['email']], //recipients
-                            $subject, //subject
-                            $body, //body
+                        $response = $mailer->SendMail([$recipient['email']], //sender
+                            $subject, //recipients
+                            $body, //subject
+                            FormaLms\lib\Get::sett('sender_event'), //body
                             [$path . $tmpfile, $row['filter_name'] . '.xls'],
                             []    //params
                         );

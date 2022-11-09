@@ -302,7 +302,7 @@ function modFile(&$url)
 
         $repo = $file_man->getRepoDetails($id_repo);
         if ((int) $repo[LR_TEACHER_ALERT]) {
-            $mailer = FormaMailer::getInstance();
+            $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
             $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
             $courseInfo = Man_Course::getCourseInfo($idCourse);
             $userId = Docebo::user()->getIdst();
@@ -321,10 +321,10 @@ function modFile(&$url)
                 $userInfo = $userManager->getUser($teacher, false);
                 $teacherRecipient = $userInfo[ACL_INFO_EMAIL];
                 $mailer->SendMail(
-                    FormaLms\lib\Get::sett('sender_event'),
                     [$teacherRecipient],
                     $subject,
                     $baseBody,
+                    FormaLms\lib\Get::sett('sender_event'),
                     $attachments,
                     [
                         MAIL_REPLYTO => FormaLms\lib\Get::sett('sender_event'),

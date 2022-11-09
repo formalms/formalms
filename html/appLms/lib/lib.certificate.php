@@ -353,14 +353,12 @@ class Certificate
 
             if (isset($score_final[$id_course][$id_user]) && $score_final[$id_course][$id_user]['max_score']) {
                 $course_score_final = $score_final[$id_course][$id_user()]['score'];
-                $course_score_final_max = $score_final[$id_course][$id_user()]['max_score'];
             }
         } else {
             $score_course = $rep_man->getUserFinalScore([$id_user], [$id_course]);
 
             if (!empty($score_course)) {
                 $course_score_final = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['score'] : false);
-                $course_score_final_max = (isset($score_course[$id_user][$id_course]) ? $score_course[$id_user][$id_course]['max_score'] : false);
             }
         }
 

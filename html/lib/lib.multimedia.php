@@ -478,10 +478,10 @@ function getEmbedPlay($path, $file_name, $ext = false, $width = false, $height =
             return '<img src="' . $rel_path . $file_name . '" alt="' . ($alt_image != false ? $alt_image : $file_name) . '"'
                 . ($img_size[0] == ''
                     ? ' width="' . $width . 'px"'
-                    : $img_size[0] > $width ? ' width="' . $width . 'px"' : '')
+                    : ($img_size[0] > $width ? ' width="' . $width . 'px"' : ''))
                 . ($img_size[1] == ''
                     ? ' height="' . $height . 'px"'
-                    : $img_size[1] > $height ? ' height="' . $height . 'px"' : '')
+                    : ($img_size[1] > $height ? ' height="' . $height . 'px"' : ''))
                 . ' />';
          break;
         case 'wma' :

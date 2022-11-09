@@ -233,7 +233,8 @@ function showResult($object_poll, $id_param)
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
     $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
 
-    Track_Poll::createTrack($id_reference,
+    $trackPoll = new Track_Poll($id_track,$id_poll);
+    $trackPoll->createTrack($id_reference,
                                 $id_track,
                                 getLogUserId(),
                                 date('Y-m-d H:i:s'),

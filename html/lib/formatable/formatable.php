@@ -635,10 +635,13 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
         datatable.on('select', function(e, dt, type, indexes) {
             if (type === 'row') {
                 if (_thisObj._selection.all) {
+                    
                     _thisObj._selection.rows = $(_thisObj._selection.rows).not(datatable.rows(indexes).ids()).get();
+            
                 } else {
                     var _ids = $(datatable.rows(indexes).ids()).not(_thisObj._selection.rows).get();
                     _thisObj._selection.rows = $.merge(_thisObj._selection.rows, _ids);
+                    console.log(_thisObj._selection.rows);
                 }
             }
         });

@@ -3,13 +3,25 @@
 
 $localCfg = [
     'use_smtp_database' => '',
-    'use_smtp' => '',
-    'smtp_host' => '',
-    'smtp_port' => '',
-    'smtp_secure' => '',
-    'smtp_auto_tls' => '',
-    'smtp_user' => '',
-    'smtp_pwd' => '',
+    'active' => '',
+    'host' => '',
+    'port' => '',
+    'secure' => '',
+    'auto_tls' => '',
+    'user' => '',
+    'password' => '',
+    'debug' => '',
+    'sender_mail_notification' => '',
+    'sender_name_notification' => '',
+    'sender_mail_system' => '',
+    'sender_name_system' => '',
+    'sender_cc_mails' => '',
+    'sender_ccn_mails' => '',
+    'helper_desk_mail' => '',
+    'helper_desk_subject' => '',
+    'helper_desk_name' => '',
+    'replyto_name' => '',
+    'replyto_mail' => '',
 ];
 ?>
 
@@ -56,8 +68,8 @@ $localCfg = [
     $smtptoDB = $cfg['use_smtp_database'];
 
     $select = [
-        'on' => 'Si',
-        'off' => 'No',
+        '1' => 'Si',
+        '0' => 'No',
     ];
 
     $secureSelect = ['ssl' => 'SSL', 'tls' => 'TLS'];
@@ -68,18 +80,19 @@ $localCfg = [
 foreach ($localCfg as $key => $value) {
         switch ($key) {
         case 'use_smtp_database':
-        case 'use_smtp':
-        case 'smtp_auto_tls':
-            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $select, $localCfg[$key]) . '</div>';
+        case 'active':
+        case 'auto_tls':
+        case 'debug':
+            echo '<div class="form_line_l"><p><label class="floating" for="mail_info">' . Lang::t('_' . strtoupper($key), 'mailconfig') . '</label></p>' . Form::getInputDropdown('', $key, "mail_info[$key]", $select, $localCfg[$key]) . '</div>';
             break;
-        case 'smtp_secure':
-            echo '<div class="form_line_l"><p><label class="floating" for="smtp_info">' . Lang::t('_' . strtoupper($key)) . '</label></p>' . Form::getInputDropdown('', $key, "smtp_info[$key]", $secureSelect, $localCfg[$key]) . '</div>';
+        case 'secure':
+            echo '<div class="form_line_l"><p><label class="floating" for="mail_info">' . Lang::t('_' . strtoupper($key), 'mailconfig') . '</label></p>' . Form::getInputDropdown('', $key, "mail_info[$key]", $secureSelect, $localCfg[$key]) . '</div>';
             break;
-        case 'smtp_pwd':
-            echo Form::getPassword(Lang::t('_' . strtoupper($key)), $key, "smtp_info[$key]", 255, '', '', '', $value);
+        case 'password':
+            echo Form::getPassword(Lang::t('_' . strtoupper($key), 'mailconfig'), $key, "mail_info[$key]", 255, '', '', '', $value);
             break;
         default:
-            echo Form::getTextfield(Lang::t('_' . strtoupper($key)), $key, "smtp_info[$key]", 255, $value);
+            echo Form::getTextfield(Lang::t('_' . strtoupper($key), 'mailconfig'), $key, "mail_info[$key]", 255, $value);
             break;
     }
     }

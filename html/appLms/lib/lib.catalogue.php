@@ -237,7 +237,7 @@ class Catalogue_Manager
     /**
      * class constructor.
      */
-    public function Catalogue_Manager()
+    public function __construct()
     {
         $this->acl = new DoceboACL();
         $this->aclManager = $this->acl->getACLManager();

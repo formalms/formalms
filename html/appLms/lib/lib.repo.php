@@ -64,8 +64,9 @@ class RepoDirDb extends TreeDb
     public $filterAccess = false;
 
     // Constructor of RepoDirDb class
-    public function RepoDirDb($table_name)
+    public function __construct($table_name)
     {
+        parent::__construct();
         $this->table = $table_name;
         $this->fields = ['id' => 'idRepo', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];
     }

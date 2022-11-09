@@ -426,7 +426,7 @@ class UsermanagementAdmController extends AdmController
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $this->session->get('usermanagement_selected_node'));
             $arr_idst[] = $tmp[0];
-            $acl = &Docebo::user()->getACL();
+            $acl = Docebo::user()->getACL();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }
 
@@ -3170,7 +3170,7 @@ class UsermanagementAdmController extends AdmController
         //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
         //$users = $event->getUsers();
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         //send email alert
         if (isset($sel_properties['send_alert']) && isset($sel_properties['password']) && !empty($info->password)) {

@@ -161,7 +161,7 @@ class UserProfile
     {
         require_once _base_ . '/lib/lib.urlmanager.php';
 
-        $this->_url_man = &UrlManager::getInstance();
+        $this->_url_man = UrlManager::getInstance();
         $this->_url_man->setStdQuery($std_query);
     }
 

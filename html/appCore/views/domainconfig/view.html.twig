@@ -1,0 +1,31 @@
+  <div class="col-lg-12 page-title"><h1 class="text-uppercase">{{ Lang_translate( title , 'standard') }}</h1></div>
+<br/>
+
+
+<br/><br/>
+{% if message %}
+    <div id="container-feedback" class="container-feedback">
+        <span class="ico-sprite fd_info"><span>{{ Lang_translate('_DETAILS', 'standard') }}</span></span> {{ message }}
+    </div>
+{% endif %}
+
+{{ Form_openForm('upsert_settings', 'index.php?r=adm/domainconfig/save', false, 'post', 'multipart/form-data') }}
+
+{% if id %}
+     {{ Form_getHidden('id', 'id', id) }}
+{% endif %}
+    {{ Form_getTextfield( Lang_translate('_TITLE', 'domainconfig') , 'title', 'title', 255, item.title) }}
+    {{ Form_getTextfield( Lang_translate('_DOMAIN', 'domainconfig') , 'domain', 'domain', 255, item.domain) }}  
+    {{ Form_getDropdown(Lang_translate('_TEMPLATE', 'domainconfig'), 'template', 'template', templates, item.template) }}</td>
+    {{ Form_getDropdown(Lang_translate('_ORG', 'domainconfig'), 'orgId', 'orgId', orgs, item.orgId) }}</td>
+    {{ Form_getDropdown(Lang_translate('_MAIL_CONFIG', 'domainconfig'), 'mailConfigId', 'mailConfigId', mailConfigs, item.mailConfigId) }}</td>
+
+{% if parentId %}
+        {{ Form_getHidden('parentId', 'parentId', parentId) }}
+{% endif %}
+
+    {{ Form_openButtonSpace() }}
+        {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+        {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+    {{ Form_closeButtonSpace() }}
+{{ Form_closeForm() }}

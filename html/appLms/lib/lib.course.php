@@ -341,7 +341,7 @@ class Man_Course
      *
      * @return array return som info about the course [code, name, description, status, difficult, subscribe_method, max_num_subscribe]
      */
-    public function getCourseInfo($idCourse)
+    public static function getCourseInfo($idCourse)
     {
         $query = "
 		SELECT *
@@ -1066,8 +1066,8 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 $numPrerequisites = 0;
                 $prerequisiteSatisfied = 0;
                 foreach ($result as $row) {
-                    $prerequisites = $row['$prerequisites'];
-                    if ($prerequisites !== '') {
+                    $prerequisites = $row['prerequisites'];
+                    if (!empty($prerequisites)) {
                         $hasPrerequisites = true;
                         $countPrerequisites = count(explode(',', $prerequisites));
                         ++$numPrerequisites;
@@ -1129,6 +1129,8 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
     public function getClassroomTeachers($idCourse)
     {
+
+        $teachers = [];
         $q = 'select  id_user, lcdu.id_date, u.firstname, u.lastname, lcd.code, lcd.name 
              from %lms_course_date_user lcdu, %lms_course_date lcd, %adm_user u, %lms_courseuser lcu
              where lcd.id_date = lcdu.id_date and 
@@ -2019,7 +2021,7 @@ class Man_CourseUser
      * @return array the list of the course with the carachteristic of it array( id_course => array(
      *               idCourse, code, name, description
      */
-    public function getUserWithLevelFilter($level, $arr_user = false)
+    public static function getUserWithLevelFilter($level, $arr_user = false)
     {
         $users = [];
         $query_courses = '
