@@ -33,6 +33,7 @@ class InstallAdmController extends AdmController
         $params['languages'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
  
+ 
         $this->render('show', $params);
 
     }

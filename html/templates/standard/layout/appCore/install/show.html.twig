@@ -87,13 +87,55 @@
         }
       }
 
-      function finalize() {
-        let result = true;
-        let index = 1;
-        $('section.body').each(function() {
+      var busy = false; //acts like a 'mutex' so we have only one upload in progress at any given time
+      var arr = []; // bucket in which we copy the file chunks to mark them later on (isComplete)
+      var timer = 0;
 
-          if(result) {
-            let postData = {'check': index};
+      function currentArrIndex() {
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].isComplete)
+            continue;
+        
+          else 
+            return i;
+        }
+      }
+
+      function finalize() {
+      
+        let index = 1;
+      
+        $('.debug').val("Loading...");
+        $('section.body').each(function() {
+        
+          arr.push({
+            index: index,
+            isComplete: false
+          });
+          
+          index++;
+        });
+
+        timer = setTimeout(process, 1000);
+      }     
+
+
+      function process() {
+
+         let response = {};
+        if (busy) {
+          //we might hit here if a file takes longer than the current setTimeout interval (1sec)
+          timer = setTimeout(process, 1000); //re-queue timer
+        } else {
+
+          if (currentArrIndex() < arr.length) {
+              let xhrIndex = currentArrIndex()
+               let postData = {'check': arr[xhrIndex].index};
+        
+          // So when ajax completes we'd mark this item as done and turn off busy 
+            // so next item of arr will get processed in timer's next 'alarm'
+
+            busy = true; // mark it as busy
             $.ajax({
               type: "POST",
               data: postData,
@@ -101,10 +143,10 @@
               url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/finalize",
               success: function (data) {
                 console.log(data);
-                var response = JSON.parse(data);
-                
-                var $debug = $('.debug').val();
-                $('.debug').val($debug + "\n" + response.messages.join("\n"));
+                response = JSON.parse(data);
+                arr[xhrIndex].isComplete = true;
+                busy = false;
+           
                 result = response.success;
             
               },
@@ -114,12 +156,20 @@
               },
               });
 
-              index++;
+            timer = setTimeout(process, 1000); //re-queue timer
+          } else {
+            clearTimeout(timer);
+          
           }
-            });
-        }     
+        }
+        var $debug = $('.debug').val();
+        
+        $('.debug').val($debug + "\n" + response.messages.join("\n") + "\nLoading...");
+        //When sent, figure out the percentage uploaded and update the progress bar
+        var percentage = 100 / arr.length * (currentArrIndex() + 1);
+        $('.progress-bar').css('width', percentage + '%');
 
-
+      }
 
       function checkPrerequisites() {
           if($("#checkRequirements").val() && $('#agree').is(":checked")) {
@@ -309,7 +359,7 @@
           let postData = {};
           var result = false;
 
-          if($("#useSmtp").val() == 'off') {
+          if($("#useSmtp").val() == '0') {
              return true;
           } else {
             $("#smtpPanel .required").each(function(e) {
@@ -359,6 +409,11 @@
         });
 
         $("input[type=text]").on("focusout", function(e) {
+            setData($(this).attr('name'), $(this).val());
+       
+        });
+
+         $("input[type=password]").on("focusout", function(e) {
             setData($(this).attr('name'), $(this).val());
        
         });

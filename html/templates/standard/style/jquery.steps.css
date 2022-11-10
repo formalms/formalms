@@ -380,3 +380,14 @@
 {
     display: list-item;
 }
+
+#progress {
+    width: 100%;
+    background-color: #eee;
+  }
+  
+  .progress-bar {
+    width: 1%;
+    height: 30px;
+    background-color: green;
+  }

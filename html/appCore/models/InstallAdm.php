@@ -452,8 +452,8 @@ class InstallAdm extends Model
             define('IN_FORMA', true);
             include _base_ . '/config.php';
     
-            foreach ($localCfg as $key => $value) {
-                $localCfg['smtp'][$key] = $cfg[$key];
+            foreach ($localCfg['smtp'] as $key => $value) {
+                $localCfg['smtp'][$key] = $cfg[lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))))];
             }
         }
 
@@ -814,13 +814,21 @@ class InstallAdm extends Model
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = $this->checkDbInstallation();
-          
+                //sleep(3);
+                //$success = true;
+                //if($success) {
+                //    $messages[] = 'OK DB';
+                //} else {
+                //    $messages[] = 'Error DB';
+                //}
             
                 break;
             case 3:
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = $this->registerAdminUser() && $this->storeSettings() && $this->addInstallerRoles();
+                //sleep(3);
+                //$success = true;
                 if($success) {
                     $messages[] = 'OK Admin';
                 } else {
@@ -833,6 +841,8 @@ class InstallAdm extends Model
                   
                //inserisco file di lingua
                $success = $this->importLangs();
+                //sleep(3);
+                //$success = true;
                 if($success) {
                     $messages[] = 'OK Lang';
                 } else {
@@ -842,7 +852,15 @@ class InstallAdm extends Model
 
             case 5:
             
-            //verifico smtp e intallo
+            //verifico smtp 
+            $success = $this->saveSmtpToDatabase();
+            //sleep(3);
+            //    $success = true;
+            if($success) {
+                $messages[] = 'OK Smtp';
+            } else {
+                $messages[] = 'Error Smtp';
+            }
 
                 break;
 
@@ -1106,6 +1124,40 @@ class InstallAdm extends Model
         }
         
         return true;
+    }
+    private function saveSmtpToDatabase()
+    {
+        $values = $this->session->get('setValues');
+        DbConn::getInstance(false,
+            [
+                'db_type' => 'mysqli',
+                'db_host' => $values['dbHost'],
+                'db_user' => $values['dbUser'],
+                'db_pass' => $values['dbPass'],
+                'db_name' => $values['dbName'],
+            ]
+        );
+
+        $mailConfigs = $this->getSmtpConfig();
+
+        $queryInsert = 'INSERT INTO'
+        . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
+
+        $result = sql_query($queryInsert);
+
+        $mailConfigId = sql_insert_id();
+
+        foreach($mailConfigs['smtp'] as $type => $value) {
+
+            $realValue = $values[$type] ?? $value; 
+            $queryInsert = 'INSERT INTO'
+            . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("'. $mailConfigId .'", "'. $type .'", "'. $realValue .'")';
+            $result = sql_query($queryInsert);
+        }
+
+
+        return $result;
+
     }
   
 

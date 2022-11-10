@@ -122,7 +122,7 @@ class Boot
         $step_report = [];
         //controllare request
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = preg_match("/[adm\/install\/]+[^\/]+$/", $request->query->get('r')) ? true : false;
+        $checkRoute = static::checkInstallRoutes($request); 
         //unset all the globals that aren't php setted
         if (ini_get('register_globals')) {
             self::log("Unset all the globals that aren't php setted. (Emulate register global = off)");
@@ -327,7 +327,7 @@ class Boot
 
         //controllare request
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = preg_match("/[adm\/install\/]+[^\/]+$/", $request->query->get('r')) ? true : false;
+        $checkRoute = static::checkInstallRoutes($request);
        
         if (!DbConn::$connected && file_exists(_base_ . '/install') && !$checkRoute) {
             header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
@@ -469,8 +469,8 @@ class Boot
         if (($ldap_used === 'on') && isset($_POST['modname']) && ($_POST['modname'] === 'login') && isset($_POST['passIns'])) {
             $_POST['passIns'] = \voku\helper\UTF8::clean(stripslashes($password_login));
         }
-
-        if (!defined('IS_API') && !defined('IS_PAYPAL') && (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || defined('IS_AJAX'))) {
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+        if ((!defined('IS_API') && !defined('IS_PAYPAL') && (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || defined('IS_AJAX'))) && !static::checkInstallRoutes($request)) {
             // If this is a post or a ajax request then we must have a signature attached
             Util::checkSignature();
         }
@@ -624,5 +624,9 @@ class Boot
             echo '</table>';
             exit();
         }
+    }
+
+    public static function checkInstallRoutes($request) {
+        return preg_match("/[adm\/install\/]+[^\/]+$/", $request->query->get('r')) ? true : false;
     }
 }
