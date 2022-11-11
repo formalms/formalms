@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-function addRoles($roles, $group_id)
+function addRoles($roles, $group_id = null)
 {
     foreach ($roles as $val) {
         $role = trim($val);
