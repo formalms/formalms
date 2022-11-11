@@ -206,3 +206,14 @@ define('_FTP_LOGIN_FAIL', 'FTP login failed');
 define('_NOT_VALID_EMAIL', 'Email not valid');
 define('_NOT_MATCHING_PASSWORD', 'Not matching password');
 define('_SMTP_FAILED', 'Smtp connection failed!');
+
+/****************************FINALIZATION */
+define('_CONFIG_STEP_SUCCESS', 'Config file generated successfully');
+define('_CONFIG_STEP_ERROR', 'Config file generated with errors');
+define('_ADMIN_STEP_SUCCESS', 'Admin user generated successfully');
+define('_ADMIN_STEP_ERROR', 'Admin user generated with errors');
+define('_LANG_STEP_SUCCESS', 'Languages imported successfully');
+define('_LANG_STEP_ERROR', 'Languages imported with errors');
+define('_MAIL_STEP_SUCCESS', 'Mail settings saved successfully');
+define('_MAIL_STEP_ERROR', 'Mail settings saved with errors');
+define('_NOT_SUPPORTED_OPERATION', 'Operation not supported');
