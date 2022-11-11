@@ -5,6 +5,7 @@
 
 <h3><?php echo Lang::t('_SERVERINFO'); ?></h3>
 <ul class="info">
+	<?php var_dump(sql_get_client_info()); ?>
 	<li><?php echo Lang::t('_SERVER_SOFTWARE'); ?>: <span><?php echo $_SERVER['SERVER_SOFTWARE']; ?></span></li>
 	<li class="<?php echo $cl['php']; ?>"><?php echo Lang::t('_PHPVERSION'); ?>: <span><?php echo phpversion(); ?></span></li>
     <li class="<?php echo $cl['mysql_client']; ?>"><?php echo Lang::t('_MYSQLCLIENT_VERSION'); ?>: <span><?php

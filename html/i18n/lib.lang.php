@@ -490,6 +490,42 @@ class Lang
 
         return self::$_lang_cache[$lang_code]->lang_direction;
     }
+
+    public static function getLangNameFromFile($file)
+    {
+        return ucwords(str_replace('_', ' ', str_replace('lang[', '', str_replace('].xml', '', $file))));
+    }
+
+    public static function getLangFileNameFromName($file)
+    {
+        return sprintf('lang[%s].xml', str_replace(' ', '_', strtolower($name)));
+    }
+
+    public static function getSelLang()
+    {
+        return \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('sel_lang') ?? 'english';
+    }
+
+    public static function getFileSystemCoreLanguages($arrayKey = null)
+    {
+        $langs = [];
+        $langs[''] = static::t('_SELECT_LANG', 'standard');
+        $files = scandir(_langs_);
+
+        foreach ($files as $file) {
+            if (strpos($file, '.xml') !== false) {
+
+                if($arrayKey) {
+                    $key = strtolower(static::getLangNameFromFile($file));
+                } else {
+                    $key = $file;
+                }
+                $langs[$key] = static::getLangNameFromFile($file);
+            }
+        }
+
+        return $langs;
+    }
 }
 
 /**
@@ -1208,4 +1244,6 @@ class DoceboLangManager
 
         return $stats;
     }
+
+   
 }

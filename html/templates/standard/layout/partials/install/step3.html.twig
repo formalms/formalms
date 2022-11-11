@@ -1,0 +1,19 @@
+<h1>{{ adminInfoLabel }}</h1>
+
+<div id="adminPanel">
+    {{ Form_getTextfield(adminUserLabel, 'admin_user', 'adminUser', 255, setValues.adminUser) }}
+    {{ Form_getTextfield(adminNameLabel, 'admin_firstname', 'adminName', 255, setValues.adminName) }}
+    {{ Form_getTextfield(adminLastnameLabel, 'admin_lastname', 'adminLastname', 255, setValues.adminLastname) }}
+    {{ Form_getPassword(adminPasswordLabel, 'admin_pass', 'adminPassword', 255) }}
+    {{ Form_getPassword(adminConfpassLabel, 'admin_confpass', 'adminConfpass', 255) }}
+    {{ Form_getTextfield(adminEmailLabel, 'admin_email', 'adminEmail', 255, setValues.adminEmail) }}
+</div>
+
+
+<h1>{{ langInstallLabel }}</h1>
+<ul class="lang_to_install_list">
+        {% set languages = languages|slice(start + 1, length) %}
+        {% for code, language in languages %}
+            <li> {{ Form_getCheckbox(language, 'lang_' ~ code, 'lang_install['~  code ~ ']', code , (setLang == code or code in setLangs)  ? '1' : '0' ) }} </li>
+        {% endfor %}
+</ul>

@@ -109,3 +109,6 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
   * Dispatched before the user-selector widget is rendered.
   * Event object can contains JS scripts to prepend to the default one. Useful to introduce custom logic into the user-selector widget.
 
+
+*#DOCTRINE ORM 
+php bin/doctrine orm:convert:mapping annotation /app/html/Entity --from-database

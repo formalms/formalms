@@ -1,0 +1,28 @@
+<div class="step2">
+    <h1>{{databaseInfoLabel}}</h1>
+    <div class="form_line_l">
+        <div id="database_data">
+
+        {{ Form_getTextfield(dbHostLabel, 'db_host', 'dbHost', 255, setValues.dbHost) }}
+        {{ Form_getTextfield(dbNameLabel, 'db_name', 'dbName', 255, setValues.dbName) }}
+        {{ Form_getTextfield(dbUsernameLabel, 'db_user', 'dbUser', 255, setValues.dbUser) }}
+        {{ Form_getPassword(dbPassLabel, 'db_pass', 'dbPass', 255) }}
+        </div>
+        <h6>{{ uploadMethodLabel }}</h6>
+
+        {{ Form_getRadio(httpUploadLabel, 'http_upload', 'uploadMethod', 'http', setValues.uploadMethod == 'http' ? 1 : 0) }}
+
+        {{ Form_getRadio(ftpUploadLabel, 'ftp_upload', 'uploadMethod', 'ftp', setValues.uploadMethod == 'ftp' ? 1 : 0) }}
+        <div id="ftp_data" style=" margin-top: 1.6em;">
+        {{ Form_getTextfield(ftpHostLabel, 'ftp_host', 'ftpHost', 255, setValues.ftpHost) }}
+        {{ Form_getTextfield(ftpPortLabel, 'ftp_port', 'ftpPort', 255, setValues.ftpPort) }}
+        {{ Form_getTextfield(ftpUserLabel, 'ftp_user', 'ftpUser', 255, setValues.ftpUser) }}
+        {{ Form_getPassword(ftpPassLabel, 'ftp_pass', 'ftpPass', 255, setValues.ftpPass) }}
+        {{ Form_getTextfield(ftpPathLabel, 'ftp_path', 'ftpPath', 255, setValues.ftpPath) }}
+        </div>
+    </div>
+</div>
+
+
+
+

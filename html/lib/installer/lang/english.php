@@ -18,7 +18,7 @@ define('_LOADING', 'Loading');
 define('_TRY_AGAIN', 'Try again');
 //--------------------------------------
 define('_INTRODUCTION', 'Introduction');
-define('_TITLE_STEP1', 'Step 1: Select language');
+define('_TITLE_STEP1', 'Step 1: Getting Started');
 define('_LANGUAGE', 'Language');
 define('_INSTALLER_INTRO_TEXT', '
 forma.lms is a free open source Learning Management System mantained by an italian group of companies, already used by hundreds of companies and universities all over the world.
@@ -41,7 +41,7 @@ forma.lms is a free open source Learning Management System mantained by an itali
 define('_WARNINGS', 'Warnings');
 define('WARNING_PUB_ADMIN_DELETED', 'All public admins willl be deleted');
 // ---------------------------------------
-define('_TITLE_STEP2', 'Step 2: System Check');
+define('_TITLE_STEP2', 'Step 2: Database and FTP Settings');
 define('_SERVERINFO', 'Server information');
 define('_SERVER_SOFTWARE', 'Server software : ');
 define('_PHPVERSION', 'PHP Version : ');
@@ -67,12 +67,14 @@ define('_POST_MAX_SIZE', 'post_max_size : ');
 define('_MAX_EXECUTION_TIME', 'max_execution_time : ');
 define('_ON', 'ON ');
 define('_OFF', 'OFF ');
+define('_YES', 'YES');
+define('_NO', 'NO');
 
 // -----------------------------------------
-define('_TITLE_STEP3', 'Step 3: License');
+define('_TITLE_STEP3', 'Step 3: Admin and Language Settings');
 define('_AGREE_LICENSE', 'I agree with the term of the license');
 // -----------------------------------------
-define('_TITLE_STEP4', 'Step 4: Configuration');
+define('_TITLE_STEP4', 'Step 4: SMTP Configuration');
 define('_SITE_BASE_URL', 'Base url of the website');
 define('_DATABASE_INFO', 'Database information');
 define('_DB_TYPE', 'Type');
@@ -100,7 +102,7 @@ define('_SQL_STRICT_MODE_WARN', "You have MySQL <a href=\"http://dev.mysql.com/d
 define('_SQL_STRICT_MODE', 'MySQL <a href="http://dev.mysql.com/doc/en/server-sql-mode.html" target="_blank">strict mode</a>');
 define('_DB_WILL_BE_CREATED', 'Db will be created');
 // -----------------------------------------
-define('_TITLE_STEP5', 'Step 5: Configuration');
+define('_TITLE_STEP5', 'Step 5: Finalization');
 define('_ADMIN_USER_INFO', 'Information regarding the administrator user (first login)');
 define('_ADMIN_USERNAME', 'Username');
 define('_ADMIN_FIRSTNAME', 'Firstname');
@@ -123,27 +125,30 @@ define('_LANGUAGES', 'Languages');
 define('_TITLE_STEP7', 'Step 7: Configurazione SMTP');
 define('_SMTP_INFO', "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
 define('_USE_SMTP_DATABASE', 'Impostazioni SMTP su Database');
-define('_ACTIVE', 'Usa SMTP');
-define('_HOST', 'Host SMTP');
-define('_PORT', 'Porta SMTP');
-define('_SECURE', 'Tipo di sicurezza');
-define('_AUTO_TLS', 'Impostazione Auto TLS SMTP');
-define('_USER', 'User SMTP');
-define('_PASSWORD', 'Password SMTP');
-define('_DEBUG', 'Debug SMTP');
-define('_SENDER_MAIL_NOTIFICATION', 'Mail mittente notifica');
-define('_SENDER_NAME_NOTIFICATION', 'Nome mittente notifica');
-define('_SENDER_MAIL_SYSTEM', 'Mail mittente di sistema');
-define('_SENDER_NAME_SYSTEM', 'Nome mittente di sistema');
-define('_HELPER_DESK_MAIL', 'Mail Help Desk');
-define('_HELPER_DESK_SUBJECT', 'Nome Help Desk');
-define('_HELPER_DESK_NAME', 'Oggetto di default Help Desk');
-define('_REPLYTO_NAME', 'Nome mittente Reply to');
-define('_REPLYTO_MAIL', 'Mail mittente Reply to');
-define('_SENDER_CC_MAILS', 'Mail CC');
-define('_SENDER_CCN_MAILS', 'Mail CCN');
+define('_USE_SMTP', 'Usa SMTP');
+define('_SMTP_HOST', 'Host SMTP');
+define('_SMTP_PORT', 'Porta SMTP');
+define('_SMTP_SECURE', 'Tipo di sicurezza');
+define('_SMTP_AUTO_TLS', 'Impostazione Auto TLS SMTP');
+define('_SMTP_USER', 'User SMTP');
+define('_SMTP_PWD', 'Password SMTP');
+define('_SMTP_DEBUG', 'Debug SMTP');
+define('_SMTP_SENDERMAIL', 'Mail notification Sender');
+define('_SMTP_SENDERNAME', 'Mail notification Name');
+define('_SMTP_SENDERMAILSYS', 'System mail Sender');
+define('_SMTP_SENDERNAMESYS', 'System mail Name');
+define('_SMTP_SENDERCCMAIL', 'CC mails');
+define('_SMTP_SENDERCCNMAILS', 'CCn mails');
+define('_SMTP_HDESKMAIL', 'Helper Desk mail');
+define('_SMTP_HDESKSUBJECT', 'Helper Desk subject');
+define('_SMTP_HDESKNAME', 'Helper Desk Name');
+define('_SMTP_REPLYTONAME', 'Reply to Name');
+define('_SMTP_REPLYTOMAIL', 'Reply to Mail');
+define('_SMTP_ACTIVE', 'Active');
+define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');
 // -----------------------------------------
-define('_TITLE_STEP8', 'Step 8: Installation completed');
+define('_TITLE_STEP8', 'Installation completed');
+define('_FINALIZE_INSTALL', 'Confirm installation data');
 define('REMOVE_INSTALL_FOLDER', 'It is suggested to remove the install folder, forma is vulnerable until it is reachable.');
 define('_INSTALLATION_COMPLETED', 'Installation has been completed');
 define('_INSTALLATION_DETAILS', 'Details');
@@ -190,3 +195,14 @@ define('_SMTP_SECURE', 'Tipo di sicurezza');
 define('_SMTP_USER', 'User SMTP');
 define('_SMTP_PWD', 'Password SMTP');
 define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');
+
+/************************VALIDATION*************/
+define('_MISSING_LICENSE_CHECK', 'License terms must be checked');
+define('_UNSUITABLE_REQUIREMENTS', 'Minimal requirements are not satisfied');
+define('_MISSING_FIELD', 'Missing Field');
+define('_FTP_NOT_SUPPORTED', 'FTP Methods are not supported');
+define('_FTP_CONNECT_FAIL', 'FTP connection failed');
+define('_FTP_LOGIN_FAIL', 'FTP login failed');
+define('_NOT_VALID_EMAIL', 'Email not valid');
+define('_NOT_MATCHING_PASSWORD', 'Not matching password');
+define('_SMTP_FAILED', 'Smtp connection failed!');

@@ -1,0 +1,19 @@
+<div id="smtpPanel">
+
+{% for smtpKey, smtpValue in smtp %}
+      
+        {% if (smtpKey == 'useSmtpDatabase') or (smtpKey == 'useSmtp') or (smtpKey == 'smtpAutoTls') or (smtpKey == 'smtpDebug') or (smtpKey == 'active')%}
+            {{ Form_getLineDropdown('form_line_l', 'floating', smtpLabels[smtpKey], 'dropdown '  ~ ((smtpKey in smtpFieldsRequired) ? 'required':''), smtpKey, smtpKey, selectEnabling, setValues[smtpKey], '','','') }}
+        {% elseif (smtpKey == 'smtpSecure') %}
+             {{ Form_getLineDropdown('form_line_l', 'floating', smtpLabels[smtpKey], 'dropdown '  ~ ((smtpKey in smtpFieldsRequired) ? 'required':''), smtpKey, smtpKey, secureSelect, setValues[smtpKey], '','','') }}
+        {% elseif (smtpKey == 'smtpPwd') %}
+            {{ Form_getLinePassword('form_line_l', 'floating', smtpLabels[smtpKey], 'textfield '  ~ ((smtpKey in smtpFieldsRequired) ? 'required':''),smtpKey, smtpKey, smtpKey, 255, '',  '', '', '') }}
+        {% else %}
+
+            {{ Form_getLineTextfield('form_line_l', '', smtpLabels[smtpKey], 'textfield '  ~ ((smtpKey in smtpFieldsRequired) ? 'required':''), smtpKey, smtpKey,setValues[smtpKey],smtpKey, 255, '', '', '') }}
+    
+        {% endif %}
+  
+{% endfor %}
+</div>
+

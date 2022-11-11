@@ -47,3 +47,7 @@ docs/
 .vscode/**
 .DS_Store
 html/check.php
+
+# doctrine
+bin/doctrine
+bin/doctrine-dbal

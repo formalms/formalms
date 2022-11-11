@@ -68,7 +68,7 @@ if ($maintenance === 'on') {
 $sso = FormaLms\lib\Get::req('login_user', DOTY_MIXED, false) && FormaLms\lib\Get::req('time', DOTY_MIXED, false) && FormaLms\lib\Get::req('token', DOTY_MIXED, false);
 
 // get required action - default: homepage if not logged in, no action if logged in
-$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Docebo::user()->isAnonymous() ? _homepage_ : false)));
+$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Docebo::user()->isAnonymous() ? ($db->connected ? _homepage_ : _install_): false)));
 
 $req = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $req);
 
@@ -87,11 +87,13 @@ $requestedRoute = sprintf('%s/%s', $platform, $mvcName);
 $allowedControllers = [
     _homepage_base_,
     _homecatalog_base_,
+    _install_base_,
 ];
 
 $templatesToRender = [
     _homepage_base_ => 'home',
     _homecatalog_base_ => 'home_catalogue',
+    _install_base_ => 'installer',
 ];
 
 if ($req) {
