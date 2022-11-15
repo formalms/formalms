@@ -75,6 +75,10 @@ class InstallAdm extends Model
         $labels['installerTitle'] = _INSTALLER_TITLE;
         $labels['next'] = _NEXT;
         $labels['back'] = _BACK;
+        $labels['cancel'] = _CANCEL;
+        $labels['current'] = _CURRENT;
+        $labels['pagination'] = _PAGINATION;
+        $labels['finish'] = _FINISH;
         $labels['loading'] = _LOADING;
         $labels['tryAgain'] = _TRY_AGAIN;
         $labels['serverInfo'] = _SERVERINFO;
@@ -493,7 +497,15 @@ class InstallAdm extends Model
             if($keyParam === 'selectLangs' || $keyParam === 'deselectLangs') {
                 $result =  $this->setLangs($paramValue , $keyParam === 'selectLangs' ? 1 : 0);
             } else {
-                $result =  $this->saveValue($keyParam, $paramValue);
+                //per retrocompatibilità
+                if('sel_lang' === $keyParam) {
+                    $this->session->set($keyParam, $paramValue);
+                    $this->session->save();
+                    $result = true;
+                } else {
+                    $result =  $this->saveValue($keyParam, $paramValue);
+                }
+                
             }
             
         }

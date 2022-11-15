@@ -16,6 +16,10 @@ define('_NEXT', 'Next step');
 define('_BACK', 'Back');
 define('_LOADING', 'Loading');
 define('_TRY_AGAIN', 'Try again');
+define('_CANCEL', 'Cancel');
+define('_CURRENT', 'current step:');
+define('_PAGINATION', 'Pagination');
+define('_FINISH', 'Finish');
 //--------------------------------------
 define('_INTRODUCTION', 'Introduction');
 define('_TITLE_STEP1', 'Step 1: Getting Started');

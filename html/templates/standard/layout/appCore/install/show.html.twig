@@ -24,6 +24,10 @@
     let nextLabel = {{ next|json_encode|raw }};
     let prevLabel = {{ back|json_encode|raw }};
     let loading = {{ loading|json_encode|raw }};
+    let cancel = {{ cancel|json_encode|raw }};
+    let current = {{ current|json_encode|raw }};
+    let pagination = {{ pagination|json_encode|raw }};
+    let finish = {{ finish|json_encode|raw }};
   </script>
   <script type="text/javascript" src="{{ Layout_getPath() }}script/install/install.js"></script>
 
