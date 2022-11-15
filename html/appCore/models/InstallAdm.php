@@ -833,7 +833,7 @@ class InstallAdm extends Model
                 $messages[] = $this->installDatabase();
 
                 //controllo che le tabelle siano effettivamente presenti
-                $success = $this->checkDbInstallation();
+                $success = static::checkDbInstallation($this->session->get('setValues'));
                 //sleep(3);
                 //$success = true;
                 //if($success) {
@@ -901,9 +901,9 @@ class InstallAdm extends Model
     }
 
 
-    private function checkDbInstallation() {
+    public static function checkDbInstallation($values) {
 
-        $values = $this->session->get('setValues');
+       
         DbConn::getInstance(false,
             [
                 'db_type' => 'mysqli',
