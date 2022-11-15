@@ -32,6 +32,12 @@ class InstallAdm extends Model
     protected $debug;
 
     protected $response;
+
+    const CHECK_REQUIREMENTS = '1';
+    const CHECK_DATABASE = '2';
+    const CHECK_ADMIN = '3';
+    const CHECK_SMTP = '4';
+    const CHECK_FINAL = '5';
    
     public function __construct($debug = null)
     {
@@ -49,11 +55,11 @@ class InstallAdm extends Model
     }
 
     public function fillSteps() {
-        $this->steps = ['1' => _TITLE_STEP1, 
-                        '2' => _TITLE_STEP2, 
-                        '3' => _TITLE_STEP3,
-                        '4' => _TITLE_STEP4,
-                        '5' => _TITLE_STEP5
+        $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1, 
+                        self::CHECK_DATABASE => _TITLE_STEP2, 
+                        self::CHECK_ADMIN => _TITLE_STEP3,
+                        self::CHECK_SMTP => _TITLE_STEP4,
+                        self::CHECK_FINAL => _TITLE_STEP5
                     ];
         return $this;
     }
@@ -69,6 +75,10 @@ class InstallAdm extends Model
         $labels['installerTitle'] = _INSTALLER_TITLE;
         $labels['next'] = _NEXT;
         $labels['back'] = _BACK;
+        $labels['cancel'] = _CANCEL;
+        $labels['current'] = _CURRENT;
+        $labels['pagination'] = _PAGINATION;
+        $labels['finish'] = _FINISH;
         $labels['loading'] = _LOADING;
         $labels['tryAgain'] = _TRY_AGAIN;
         $labels['serverInfo'] = _SERVERINFO;
@@ -116,6 +126,8 @@ class InstallAdm extends Model
         $labels['adminConfpassLabel'] = _ADMIN_CONFPASS;
         $labels['adminEmailLabel'] = _ADMIN_EMAIL;
         $labels['langInstallLabel'] = _LANG_TO_INSTALL;
+
+        $labels['loadingLabel'] = _LOADING . '...';
 
         $labels['smtpLabels'] = 
         [
@@ -485,7 +497,15 @@ class InstallAdm extends Model
             if($keyParam === 'selectLangs' || $keyParam === 'deselectLangs') {
                 $result =  $this->setLangs($paramValue , $keyParam === 'selectLangs' ? 1 : 0);
             } else {
-                $result =  $this->saveValue($keyParam, $paramValue);
+                //per retrocompatibilità
+                if('sel_lang' === $keyParam) {
+                    $this->session->set($keyParam, $paramValue);
+                    $this->session->save();
+                    $result = true;
+                } else {
+                    $result =  $this->saveValue($keyParam, $paramValue);
+                }
+                
             }
             
         }
@@ -801,9 +821,9 @@ class InstallAdm extends Model
                  //controllo esistenza file config
                 $success = file_exists(_base_ . '/config.php');
                 if($success) {
-                    $messages[] = 'OK Config';
+                    $messages[] = _CONFIG_STEP_SUCCESS;
                 } else {
-                    $messages[] = 'Error Config';
+                    $messages[] = _CONFIG_STEP_ERROR;
                 }
                 
                 break;
@@ -830,9 +850,9 @@ class InstallAdm extends Model
                 //sleep(3);
                 //$success = true;
                 if($success) {
-                    $messages[] = 'OK Admin';
+                    $messages[] = _ADMIN_STEP_SUCCESS;
                 } else {
-                    $messages[] = 'Error Admin';
+                    $messages[] = _ADMIN_STEP_ERROR;
                 }
             
                 break;
@@ -844,9 +864,9 @@ class InstallAdm extends Model
                 //sleep(3);
                 //$success = true;
                 if($success) {
-                    $messages[] = 'OK Lang';
+                    $messages[] = _LANG_STEP_SUCCESS;
                 } else {
-                    $messages[] = 'Error Lang';
+                    $messages[] = _LANG_STEP_ERROR;
                 }
                 break;
 
@@ -857,16 +877,16 @@ class InstallAdm extends Model
             //sleep(3);
             //    $success = true;
             if($success) {
-                $messages[] = 'OK Smtp';
+                $messages[] = _MAIL_STEP_SUCCESS;
             } else {
-                $messages[] = 'Error Smtp';
+                $messages[] = _MAIL_STEP_ERROR;
             }
 
                 break;
 
             default:
                 $success = false;
-                $messages[] = 'Not Supported';
+                $messages[] = _NOT_SUPPORTED_OPERATION;
                
                 break;
         }
@@ -1127,8 +1147,11 @@ class InstallAdm extends Model
     }
     private function saveSmtpToDatabase()
     {
+        $result = true;
+       
         $values = $this->session->get('setValues');
-        DbConn::getInstance(false,
+        if($values['useSmtpDatabase'] == 'on') {
+            DbConn::getInstance(false,
             [
                 'db_type' => 'mysqli',
                 'db_host' => $values['dbHost'],
@@ -1136,28 +1159,47 @@ class InstallAdm extends Model
                 'db_pass' => $values['dbPass'],
                 'db_name' => $values['dbName'],
             ]
-        );
+            );
 
-        $mailConfigs = $this->getSmtpConfig();
+            $mailConfigs = $this->getSmtpConfig();
 
-        $queryInsert = 'INSERT INTO'
-        . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
-
-        $result = sql_query($queryInsert);
-
-        $mailConfigId = sql_insert_id();
-
-        foreach($mailConfigs['smtp'] as $type => $value) {
-
-            $realValue = $values[$type] ?? $value; 
             $queryInsert = 'INSERT INTO'
-            . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("'. $mailConfigId .'", "'. $type .'", "'. $realValue .'")';
+            . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
+
             $result = sql_query($queryInsert);
+
+            $mailConfigId = sql_insert_id();
+
+            foreach($mailConfigs['smtp'] as $type => $value) {
+
+                $realValue = $values[$type] ?? $value; 
+                $queryInsert = 'INSERT INTO'
+                . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("'. $mailConfigId .'", "'. $type .'", "'. $realValue .'")';
+                $result = sql_query($queryInsert);
+            }
         }
-
-
+        
         return $result;
 
+    }
+
+
+    public function saveFields($request) {
+
+        $params = $request->request->all();
+        
+        foreach($params as $key => $value) {
+            if('lang_install' === $key) {
+                foreach($values as $lang) {
+                    $this->setLangs($lang);
+                }
+            } else {
+                $this->saveValue($key, $value);
+            }
+            
+        }
+
+        return $this->setResponse(true, [])->wrapResponse();
     }
   
 

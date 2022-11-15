@@ -95,5 +95,11 @@ class InstallAdmController extends AdmController
         exit;
     }
 
+    public function formSave() {
+        echo $this->model->saveFields($this->request);
+       
+        exit;
+    }
+
  
 }
