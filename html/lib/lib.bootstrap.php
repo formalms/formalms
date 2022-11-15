@@ -13,6 +13,7 @@
 
 use function GuzzleHttp\default_ca_bundle;
 use FormaLms\lib\Domain\DomainHandler;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
@@ -563,7 +564,7 @@ class Boot
     {
         list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float) $usec + (float) $sec),
+            'time' => ((float)$usec + (float)$sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
@@ -571,7 +572,7 @@ class Boot
     public static function current_time()
     {
         list($usec, $sec) = explode(' ', microtime());
-        $now = ((float) $usec + (float) $sec);
+        $now = ((float)$usec + (float)$sec);
 
         return $now - $GLOBALS['start']['time'];
     }
