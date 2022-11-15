@@ -13,22 +13,24 @@
 
 use function GuzzleHttp\default_ca_bundle;
 use FormaLms\lib\Domain\DomainHandler;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
 const BOOT_CONFIG = 1;
 const BOOT_REQUEST = 2;
-const BOOT_UTILITY = 3;
-const BOOT_DATABASE = 4;
+const BOOT_PLATFORM = 3;
+const BOOT_UTILITY = 4;
 const BOOT_SETTING = 5;
 const BOOT_PLUGINS = 6;
-const BOOT_USER = 7;
-const BOOT_INPUT = 8;
-const BOOT_LANGUAGE = 9;
-const BOOT_DATETIME = 10;
-const BOOT_HOOKS = 11;
-const BOOT_TEMPLATE = 12;
-const BOOT_PAGE_WR = 13;
+const BOOT_SESSION_CHECK = 7;
+const BOOT_USER = 8;
+const BOOT_INPUT = 9;
+const BOOT_LANGUAGE = 10;
+const BOOT_DATETIME = 11;
+const BOOT_HOOKS = 12;
+const BOOT_TEMPLATE = 13;
+const BOOT_PAGE_WR = 14;
 const BOOT_INPUT_ALT = 99;
 
 /**
@@ -41,11 +43,12 @@ class Boot
         BOOT_COMPOSER => 'composer',
         BOOT_CONFIG => 'config',
         BOOT_REQUEST => 'request',
+        BOOT_PLATFORM => 'checkPlatform',
         BOOT_UTILITY => 'utility',
-        BOOT_DATABASE => 'database',
         BOOT_SETTING => 'loadSetting',
         BOOT_PLUGINS => 'plugins',
         BOOT_USER => 'user',
+        BOOT_SESSION_CHECK => 'sessionCheck',
         BOOT_INPUT => 'filteringInput',
         BOOT_INPUT_ALT => 'anonFilteringInput',
         BOOT_LANGUAGE => 'language',
@@ -121,8 +124,7 @@ class Boot
     {
         $step_report = [];
         //controllare request
-        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = static::checkInstallRoutes($request); 
+
         //unset all the globals that aren't php setted
         if (ini_get('register_globals')) {
             self::log("Unset all the globals that aren't php setted. (Emulate register global = off)");
@@ -151,11 +153,6 @@ class Boot
         self::log('Include configuration file.');
 
         $cfg = [];
-        if (!file_exists(__DIR__ . '/../config.php') && $checkRoute) {
-            $path = _deeppath_
-                . str_replace(_base_, '.', constant('_base_'));
-            header('Location: ' . str_replace(['//', '\\/', '/./'], '/', $path) . '/install/');
-        }
         require __DIR__ . '/../config.php';
         $GLOBALS['cfg'] = $cfg;
 
@@ -313,11 +310,19 @@ class Boot
      * - load the appropiate database driver
      * - connect to the database
      * - load setting from database.
+     * - check config
      *
      * @return array
      */
-    private static function database()
+    private static function checkPlatform()
     {
+        self::log('Load database funtion management library.');
+
+        $configExist = true;
+        if (!file_exists(__DIR__ . '/../config.php')) {
+            $configExist = false;
+        }
+
         self::log('Load database funtion management library.');
         require_once _base_ . '/db/lib.docebodb.php';
 
@@ -325,11 +330,20 @@ class Boot
         self::log('Connect to database.');
         DbConn::getInstance();
 
+        $dbIsEmpty = true;
+        if (DbConn::$connected) {
+            try {
+                $dbIsEmpty = !(bool)sql_query("SELECT * FROM `core_setting`");
+            } catch (\Exception $exception) {
+
+            }
+        }
+
         //controllare request
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $checkRoute = static::checkInstallRoutes($request);
-       
-        if (!DbConn::$connected && file_exists(_base_ . '/install') && !$checkRoute) {
+
+        if ((!$configExist || $dbIsEmpty) && file_exists(_base_ . '/install') && !$checkRoute) {
             header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
         }
     }
@@ -361,8 +375,12 @@ class Boot
             self::log(" Start session '" . $session->getName() . "'");
             $request->setSession($session);
         }
+    }
+
+    private static function sessionCheck() {
 
         if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
+            $session = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->getSession();
             $session->invalidate();
             $session->save();
             \Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?msg=103');
@@ -546,7 +564,7 @@ class Boot
     {
         list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float) $usec + (float) $sec),
+            'time' => ((float)$usec + (float)$sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
@@ -554,7 +572,7 @@ class Boot
     public static function current_time()
     {
         list($usec, $sec) = explode(' ', microtime());
-        $now = ((float) $usec + (float) $sec);
+        $now = ((float)$usec + (float)$sec);
 
         return $now - $GLOBALS['start']['time'];
     }
@@ -626,7 +644,8 @@ class Boot
         }
     }
 
-    public static function checkInstallRoutes($request) {
-        return preg_match("/[adm\/install\/]+[^\/]+$/", $request->query->get('r')) ? true : false;
+    public static function checkInstallRoutes(\Symfony\Component\HttpFoundation\Request $request)
+    {
+        return $request->query->get('r') && (bool)preg_match('/[adm\/install\/]+[^\/]+$/', $request->query->get('r'));
     }
 }

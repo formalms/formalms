@@ -57,7 +57,7 @@ class mysqli_DbConn extends DbConn
             $this->log('mysql connected to : ' . $host);
         }
 
-        $this->set_timezone();	// set connection tz
+        $this->set_timezone();    // set connection tz
         if ($dbname != false) {
             return $this->select_db($dbname);
         }
@@ -91,7 +91,7 @@ class mysqli_DbConn extends DbConn
 
         if (FormaLms\lib\Get::cfg('set_mysql_tz', false)) {
             $dt = new DateTime();
-            $offset = $dt->format('P');		// get current timezone offeset
+            $offset = $dt->format('P');        // get current timezone offeset
             $this->query("SET time_zone='" . $offset . "'", $this->conn);
             $this->log('mysql set connection timezone offset to : ' . $offset);
         }
@@ -111,42 +111,47 @@ class mysqli_DbConn extends DbConn
 
     public function query($query)
     {
-        $data = func_get_args();
-        array_shift($data); //remove the query form the list
+        try {
 
-        if (isset($data[0]) && is_array($data[0])) {
-            $data = $data[0];
+            $data = func_get_args();
+            array_shift($data); //remove the query form the list
+
+            if (isset($data[0]) && is_array($data[0])) {
+                $data = $data[0];
+            }
+
+            $parsed_query = $this->parse_query($query, $data);
+
+            if ($this->debug) {
+                $start_at = $this->get_time();
+            }
+
+            $re = mysqli_query($this->conn, $parsed_query);
+
+            if ($this->debug) {
+                $this->query_log($parsed_query, ($this->get_time() - $start_at));
+            }
+
+            return $re;
+        } catch (\Exception $exception) {
+            return false;
         }
-
-        $parsed_query = $this->parse_query($query, $data);
-
-        if ($this->debug) {
-            $start_at = $this->get_time();
-        }
-
-        $re = mysqli_query($this->conn, $parsed_query);
-
-        if ($this->debug) {
-            $this->query_log($parsed_query, ($this->get_time() - $start_at));
-        }
-
-        return $re;
     }
 
     public function query_limit($query)
     {
         $data = func_get_args();
 
-        $results = array_pop($data);	//number of element
-        $from = array_pop($data);	//from the element
-        array_shift($data); 		//remove the query form the list
+        $results = array_pop($data);    //number of element
+        $from = array_pop($data);    //from the element
+        array_shift($data);        //remove the query form the list
 
         if (isset($data[0]) && is_array($data[0])) {
             $data = $data[0];
         }
 
         $parsed_query = $this->parse_query($query, $data)
-            . ' LIMIT ' . (int) $from . ', ' . (int) $results . '';
+            . ' LIMIT ' . (int)$from . ', ' . (int)$results . '';
 
         if ($this->debug) {
             $start_at = $this->get_time();
