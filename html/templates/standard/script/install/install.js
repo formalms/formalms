@@ -13,16 +13,18 @@ let wizard = $("#installer-section").steps({
     startIndex: parseInt(startIndex),
       /* Labels */
     labels: {
-        cancel: "Cancel",
-        current: "current step:",
-        pagination: "Pagination",
-        finish: "Finish",
+        cancel: cancel,
+        current: current,
+        pagination: pagination,
+        finish: finish,
         next: nextLabel,
         previous: prevLabel,
         loading: loading
     },
       onFinished: function (event, currentIndex) {
+        $('a').off('click');
         finalize();
+        $('a').on('click');
     },
      onStepChanging: function (event, currentIndex, newIndex) {
       if(newIndex > currentIndex) {
@@ -436,9 +438,7 @@ $("#language").on("change", function(e) {
 });
     
 $("#agree").on("click", function(e) {
-
     setData($(this).attr('name'), $(this).is(":checked"));
-
 });
 
 $("input[type=text]").on("focusout", function(e) {
@@ -452,6 +452,12 @@ $("input[type=password]").on("focusout", function(e) {
 });
 
 $("input[type=radio]").on("click", function(e) {
+
+  if($(this).val() == 'ftp') {
+      $("#ftp_data").show();
+  } else {
+     $("#ftp_data").hide();
+  }
     setData($(this).attr('name'), $(this).val());
 });
 

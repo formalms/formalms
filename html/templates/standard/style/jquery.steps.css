@@ -395,3 +395,7 @@
 .unlisted {
     display:block !important;
 }
+
+#ftp_data {
+    margin-top: 1.6em;
+}

@@ -182,23 +182,12 @@ define('_UPGRADE_NOT_NEEDED_FILE_IS_LATER', 'Your forma.lms version seems to be 
 
 define('_USEFUL_LINKS', 'Useful links');
 
-define('_COMMUNITY', 'Community');
-define('_COMMERCIAL_SERVICES', 'Commercial services');
-define('_DATABASE', 'Database');
 define('_MIME_CONTENT_TYPE', 'mime_content_type() support');
 
 define('_ASSESSMENT_FUNCTION_REMOVED', 'Assessment function has been removed');
 define('_LEARNING_NEWS_REMOVED', 'Login News function and its data has been removed');
 
-define('_SMTP_INFO', "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
-define('_USE_SMTP_DATABASE', 'Impostazioni SMTP su Database');
-define('_USE_SMTP', 'Usa SMTP');
-define('_SMTP_HOST', 'Host SMTP');
-define('_SMTP_PORT', 'Porta SMTP');
-define('_SMTP_SECURE', 'Tipo di sicurezza');
-define('_SMTP_USER', 'User SMTP');
-define('_SMTP_PWD', 'Password SMTP');
-define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');
+
 
 /************************VALIDATION*************/
 define('_MISSING_LICENSE_CHECK', 'License terms must be checked');

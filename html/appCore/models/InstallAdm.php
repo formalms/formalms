@@ -21,6 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @since 4.0
  */
+require_once(_lib_.'/Helpers/HelperTool.php');
 class InstallAdm extends Model
 {
     /** @var array **/
@@ -29,9 +30,9 @@ class InstallAdm extends Model
     protected $labels;
     /** @var array **/
     protected $errorLabels;
-
+    /** @var bool **/
     protected $debug;
-
+    /** @var array **/
     protected $response;
 
     const CHECK_REQUIREMENTS = '1';
@@ -39,6 +40,10 @@ class InstallAdm extends Model
     const CHECK_ADMIN = '3';
     const CHECK_SMTP = '4';
     const CHECK_FINAL = '5';
+
+    const SMTP_REQUIRED = [
+        'smtpHost', 'smtpPort', 'smtpUser', 'smtpPwd', 'smtpSecure', 'smtpAutoTls'
+    ];
    
     /**
      * Constructor method of the class.
@@ -210,19 +215,29 @@ class InstallAdm extends Model
      * 
      * @return array
      */
-    public function getLabels() {
+    public function getLabels() : array{
 
         return $this->labels;
     }
 
-    public function getSmtpFieldsRequired() {
-        $fields = [
-            'smtpHost', 'smtpPort', 'smtpUser', 'smtpPwd', 'smtpSecure', 'smtpAutoTls'
-        ];
-        return $fields;
+    /**
+     * Method to retrieve required fileds for smtp validation
+     * 
+     * @return array
+     */
+    public function getSmtpFieldsRequired() : array {
+        
+        return self::SMTP_REQUIRED;
     }
 
-    public function getData($request) {
+    /**
+     * Method to retrieve data for the view
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * @return array
+     */
+    public function getData(\Symfony\Component\HttpFoundation\Request $request) : array {
 
         $params = $this->getLabels();
       
@@ -231,6 +246,7 @@ class InstallAdm extends Model
                                 ini_get_all(), 
                                 $this->getLicense(),
                                 $this->getDbConfig(),
+                                $this->getFtpConfig(),
                                 $this->getSmtpConfig(),
                                 ['setValues' => $this->getSetValues()],
                                 ['setLangs' => $this->getSetLangs()],
@@ -264,8 +280,12 @@ class InstallAdm extends Model
         return $params;
     }
 
-    public function checkRequirements()
-    {
+    /**
+     * Method to check minimum technical requirements for installation
+     * 
+     * @return array
+     */
+    public function checkRequirements() : array{
         $res = [];
 
         $checkRequirements = 1;
@@ -331,8 +351,13 @@ class InstallAdm extends Model
         return $resultArray;
     }
 
-    public function checkFolderPerm()
-    {
+    /**
+     * Method to check permissions for involved folders
+     * 
+     * @return string
+     */
+
+    public function checkFolderPerm() : string{
     $res = '';
 
     $platform_folders = $this->session->get('platform_arr');
@@ -425,8 +450,12 @@ class InstallAdm extends Model
     return $res;
     }   
 
-
-    public function getLicense() {
+    /**
+     * Method to retrieve right translated license file
+     * 
+     * @return array
+     */
+    public function getLicense() : array {
 
         $content = '';
         $fn = _lib_.'/installer/license/license_'.Lang::getSelLang().'.txt';
@@ -451,8 +480,13 @@ class InstallAdm extends Model
 
     }
 
-    public function getDbConfig() {
-        $cfg['setValues'] = [
+    /**
+     * Method to retrieve DB settings fields
+     * 
+     * @return array
+     */
+    public function getDbConfig() : array {
+        $localCfg['dbConfig'] = [
             'dbType' => '',
             'dbHost' => 'localhost',
             'dbName' => '',
@@ -460,13 +494,48 @@ class InstallAdm extends Model
             'dbPass' => '',
         ];
         if (file_exists(_base_ . '/config.php')) {
-            $cfg['setValues']['dbPass'] = '_fromconfig';
+            define('IN_FORMA', true);
+            include _base_ . '/config.php';
+    
+            foreach ($localCfg['dbConfig'] as $key => $value) {
+                $localCfg['dbConfig'][$key] = $cfg[HelperTool::camelCaseToSnake($key)];
+            }
         }
 
-        return $cfg;
+        return $localCfg;
     }
 
-    public function getSmtpConfig() {
+    /**
+     * Method to retrieve FTP settings fields
+     * 
+     * @return array
+     */
+    public function getFtpConfig() : array {
+        $localCfg['ftpConfig'] = [
+            'ftpHost' => '',
+            'ftpPath' => 'localhost',
+            'ftpPort' => '',
+            'dbUser' => '',
+            'dbPass' => '',
+        ];
+        if (file_exists(_base_ . '/config.php')) {
+            define('IN_FORMA', true);
+            include _base_ . '/config.php';
+    
+            foreach ($localCfg['ftpConfig'] as $key => $value) {
+                $localCfg['ftpConfig'][$key] = $cfg[strtolower($key)];
+            }
+        }
+
+        return $localCfg;
+    }
+
+    /**
+     * Method to retrieve SMTP settings fields
+     * 
+     * @return array
+     */
+    public function getSmtpConfig() : array {
         $localCfg['smtp'] = 
         [
             'useSmtpDatabase' => '',
@@ -491,14 +560,12 @@ class InstallAdm extends Model
             'replytoMail' => ''
         ];
 
-     
-
         if (file_exists(_base_ . '/config.php')) {
             define('IN_FORMA', true);
             include _base_ . '/config.php';
     
             foreach ($localCfg['smtp'] as $key => $value) {
-                $localCfg['smtp'][$key] = $cfg[lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))))];
+                $localCfg['smtp'][$key] = $cfg[HelperTool::camelCaseToSnake($key)];
             }
         }
 
@@ -514,8 +581,14 @@ class InstallAdm extends Model
         return $localCfg;
     }
 
-
-    public function setValue($request) {
+    /**
+     * Method to set value in session
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * @return bool
+     */
+    public function setValue($request) : bool {
         $params = $request->request->all();
         $result = false;
         foreach($params as $keyParam => $paramValue) {
@@ -538,16 +611,21 @@ class InstallAdm extends Model
                 } else {
                     $result =  $this->saveValue($keyParam, $paramValue);
                 }
-                
             }
-            
         }
 
         return $result;
-
     }
 
-    public function saveValue($key, $value) {
+    /**
+     * Method to save value in session
+     * 
+     * @param string $key identifier for index in session
+     * @param string $value value to save actually in session
+     * 
+     * @return bool
+     */
+    public function saveValue($key, $value) : bool{
 
         $values = $this->session->get('setValues');
         $values[$key] = $value;
@@ -557,7 +635,16 @@ class InstallAdm extends Model
         return true;
      }
 
-     public function setLangs($value, $add = 1) {
+    /**
+     * Method to set languages
+     * 
+     * 
+     * @param string $value value to save actually in session
+     * @param int $add idex to determine if it's a new setting to add or to remove
+     * 
+     * @return bool
+     */
+    public function setLangs($value, $add = 1) : bool {
 
         $values = $this->session->get('setLangs');
         if($add) {
@@ -572,9 +659,12 @@ class InstallAdm extends Model
         return true;
      }
 
-
-    public function getSetValues()
-    {
+    /**
+     * Method to get compiled fields value from session
+     * 
+     * @return array
+     */
+    public function getSetValues() : array{
 
         $values = $this->session->get('setValues',[]);
         if(!in_array('uploadMethod', array_keys($values))) {
@@ -587,14 +677,23 @@ class InstallAdm extends Model
         return  $values;
     }
 
-    public function getSetLangs()
-    {
-
+    /**
+     * Method to get checked languages from session
+     * 
+     * @return array
+     */
+    public function getSetLangs() : ?array{
         return $this->session->get('setLangs');
-
     }
 
-    public function checkAdminData($request) {
+    /**
+     * Method to check admin user compiled value
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * @return string
+     */
+    public function checkAdminData($request) : string{
         $messages = [];
         $params = $request->request->all();
 
@@ -613,7 +712,14 @@ class InstallAdm extends Model
       
     }
 
-    public function checkSmtpData($request) {
+    /**
+     * Method to check smtp compiled value
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * @return string
+     */
+    public function checkSmtpData($request) : string {
         $messages = [];
         $params = $request->request->all();
 
@@ -632,8 +738,14 @@ class InstallAdm extends Model
       
     }
 
-
-    public function checkDbData($request) {
+    /**
+     * Method to check db compiled value
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * @return string
+     */
+    public function checkDbData($request) : string{
         $messages = [];
         $params = $request->request->all();
 
@@ -651,8 +763,17 @@ class InstallAdm extends Model
         return $this->validateConnection($checkConnection, $params['dbName']);
     }
 
-    private function checkConnection( $db_host, $db_name, $db_user, $db_pass)
-    {
+    /**
+     * Method to check DB connection existence
+     * 
+     * @param string $db_host Host for DB
+     * @param string $db_name Name of DB
+     * @param string $db_user User for DB
+     * @param string $db_pass Password for DB
+     * 
+     * @return string
+     */
+    private function checkConnection($db_host, $db_name, $db_user, $db_pass) : string{
         $result = 'err_connect';
 
         $GLOBALS['db_link'] = DbConn::getInstance(false, [
@@ -676,8 +797,16 @@ class InstallAdm extends Model
         return $result;
     }
 
-    private function validateAdminData($password, $confirmPassword, $email)
-    {
+    /**
+     * Method to validate admin fields
+     * 
+     * @param string $password password inserted for admin
+     * @param string $confirmPassword confirm password inserted for admin
+     * @param string $email email for admin
+     * 
+     * @return string
+     */
+    private function validateAdminData($password, $confirmPassword, $email) : string {
         $success = true;
         $messages = [];
 
@@ -695,8 +824,20 @@ class InstallAdm extends Model
 
     }
 
-    private function validateSmtpData($params)
-    {
+    /**
+     * Method to validate smtp fields
+     * 
+     * @param array $params Array picker for parameters
+     * @param string $params['smtpHost'] host for smtp
+     * @param string $params['smtpPort'] port for smtp
+     * @param string $params['smtpSecure'] secure for smtp
+     * @param string $params['smtpAutoTls'] tls for smtp
+     * @param string $params['smtpUser'] user for smtp
+     * @param string $params['smtpPwd'] password for smtp
+     * 
+     * @return string
+     */
+    private function validateSmtpData($params) : string{
         $success = true;
         $messages = [];
 
@@ -709,8 +850,19 @@ class InstallAdm extends Model
 
     }
 
-    public function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd)
-    {
+    /**
+     * Method to validate smtp connection
+     * 
+     * @param string $smtpHost host for smtp
+     * @param string $smtpPort port for smtp
+     * @param string $smtpSecure secure for smtp
+     * @param string $smtpAutoTls tls for smtp
+     * @param string $smtpUser user for smtp
+     * @param string $smtpPwd password for smtp
+     * 
+     * @return bool
+     */
+    public function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd) : bool {
         $mail = new PHPMailer\PHPMailer\PHPMailer();
 
         $mail->Host = $smtpHost;
@@ -736,12 +888,19 @@ class InstallAdm extends Model
         }
     }
 
-    private function validateConnection($connection, $dbName)
-    {
+    /**
+     * Method to validate db connection
+     * 
+     * @param string $connectionResult sql connection result
+     * @param string $dbName name for DB
+     * 
+     * @return string
+     */
+    private function validateConnection($connectionResult, $dbName) : string{
         $success = false;
         $messages = [];
         $removeCreateDb = false;
-        switch ($connection) {
+        switch ($connectionResult) {
             case 'create_db':
                     //mi salvo in sessione che devo creare il db
                     $this->session->set('creationDb', $dbName);
@@ -790,16 +949,27 @@ class InstallAdm extends Model
 
     }
 
-    public function checkDBEmpty($db_name)
-    {
-        $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $db_name . "'", $GLOBALS['db_link']);
+    /**
+     * Method to check if DB is empty
+     * 
+     * @param string $dbName name for DB
+     * 
+     * @return bool
+     */
+    public function checkDBEmpty($dbName) : bool{
+        $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $dbName . "'", $GLOBALS['db_link']);
         list($count) = sql_fetch_row($row);
 
         return $count == 0 ? true : false;
     }
 
-    public function checkDBCharset()
-    {
+    /**
+     * Method to check the charset of db
+     * 
+     * 
+     * @return bool
+     */
+    public function checkDBCharset() : bool{
         $row = sql_query("show variables like 'character_set_database'", $GLOBALS['db_link']);
         list(, $charset) = sql_fetch_row($row);
 
@@ -807,9 +977,14 @@ class InstallAdm extends Model
     }
 
 
-
-    public function checkFtp($request)
-    {
+    /**
+     * Method to check ftp inserted data
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * @return string
+     */
+    public function checkFtp($request) : string{
         $messages = [];
         $timeout = 10;
         $params = $request->request->all();
@@ -843,7 +1018,14 @@ class InstallAdm extends Model
         return $this->setResponse($ftpLogin, $messages)->wrapResponse();
     }
 
-    public function finalize($request) {
+    /**
+     * Method to finalize the installation step by step
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * @return string
+     */
+    public function finalize($request) : string {
 
         $params = $request->request->all();
 
@@ -928,16 +1110,25 @@ class InstallAdm extends Model
         return $this->setResponse($success, $messages)->wrapResponse();
     }
 
-
+    /**
+     * Method to install database through Doctrine migration command
+     * 
+     * @return string
+     */
     private function installDatabase() {
         return shell_exec("php /app/bin/doctrine-migrations migrate --configuration=/app/migrations.yaml --db-configuration=/app/migrations-db.php 2>&1");
       
     }
 
+    /**
+     * Method to check the integrity of installation
+     * 
+     * @param array $values parameters for connection db
+     * 
+     * @return bool
+     */
+    public static function checkDbInstallation($values) : bool {
 
-    public static function checkDbInstallation($values) {
-
-       
         DbConn::getInstance(false,
             [
                 'db_type' => 'mysqli',
@@ -951,7 +1142,15 @@ class InstallAdm extends Model
         return (bool) sql_query("SELECT * FROM `core_setting`");
     }
 
-    public function setResponse($success = false, $messages = []) {
+    /**
+     * Method to check the integrity of installation
+     * 
+     * @param bool $success flag to detect the output of a method
+     * @param array $messages array of transalted string messages
+     * 
+     * @return self
+     */
+    public function setResponse($success = false, $messages = []) : self {
         
         $this->response['success'] = $success;
         $this->response['messages'] = $messages;
@@ -959,6 +1158,13 @@ class InstallAdm extends Model
         return $this;
     }
 
+    /**
+     * Method to get error messages
+     * 
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * @return array
+     */
     public function getErrorMessages($request) :array {
         $params = $request->request->all();
         $messages = [];
@@ -1000,8 +1206,8 @@ class InstallAdm extends Model
         $this->session->save();
     }
 
-        private function generateConfig($tpl_fn)
-        {
+    private function generateConfig($tpl_fn)
+    {
 
         $values = $this->session->get('setValues');
         $config = '';
