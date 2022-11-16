@@ -386,8 +386,12 @@
     background-color: #eee;
   }
   
-  .progress-bar {
+.progress-bar {
     width: 1%;
     height: 30px;
     background-color: green;
-  }
+}
+
+.unlisted {
+    display:block !important;
+}

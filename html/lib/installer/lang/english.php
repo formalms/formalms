@@ -221,3 +221,4 @@ define('_LANG_STEP_ERROR', 'Languages imported with errors');
 define('_MAIL_STEP_SUCCESS', 'Mail settings saved successfully');
 define('_MAIL_STEP_ERROR', 'Mail settings saved with errors');
 define('_NOT_SUPPORTED_OPERATION', 'Operation not supported');
+define('_RESET_INSTALL', 'Restart Clean Installation');
