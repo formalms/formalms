@@ -507,7 +507,7 @@ class TextEntry_Question extends Question
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source,$numberTime = null)
     {
         $re_answer = sql_query('
 		SELECT idAnswer, answer, score_correct, score_incorrect 

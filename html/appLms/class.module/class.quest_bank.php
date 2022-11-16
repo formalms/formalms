@@ -21,7 +21,7 @@ class Module_Quest_Bank extends LmsModule
         questbankDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

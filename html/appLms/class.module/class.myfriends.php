@@ -28,7 +28,7 @@ class Module_MyFriends extends LmsModule
         myfriendsDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

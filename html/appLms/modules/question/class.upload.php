@@ -367,7 +367,7 @@ class Upload_Question extends Question
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source, $numberTime = null)
     {
         // if a file is send
         if ($_FILES['quest']['name'][$this->id] != '') {

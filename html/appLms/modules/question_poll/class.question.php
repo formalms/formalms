@@ -380,7 +380,7 @@ class QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source, $numberTime = null)
     {
         return true;
     }

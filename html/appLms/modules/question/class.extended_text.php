@@ -336,7 +336,7 @@ class ExtendedText_Question extends Question
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function updateAnswer($id_track, &$source)
+    public function updateAnswer($id_track, &$source, $numberTime = null)
     {
         if (!$this->deleteAnswer($id_track)) {
             return false;

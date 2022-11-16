@@ -21,7 +21,7 @@ class Module_Gradebook extends LmsModule
         gradebookDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

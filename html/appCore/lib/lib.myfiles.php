@@ -366,7 +366,7 @@ class MyFilesPolicy extends MyFile
 
     public $_file_number;
 
-    public function MyFilesPolicy($id_user, $viewer, $is_friend = null, $is_teacher = null)
+    public function __construct($id_user, $viewer, $is_friend = null, $is_teacher = null)
     {
         $this->_id_user = $id_user;
         $this->_viewer = $viewer;
@@ -435,7 +435,7 @@ class MyFilesPolicy extends MyFile
         return sql_fetch_row($re_query);
     }
 
-    public function getFileList($area = false, $order_by = false, $from = false, $num_elem = false)
+    public function getFileList($area = false, $extra_filter = false, $order_by = false, $from = false, $num_elem = false)
     {
         $arr_policy = [MF_POLICY_FREE];
         if ($this->isViewerFriend() || $this->_viewer == $this->_id_user) {

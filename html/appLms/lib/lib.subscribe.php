@@ -16,13 +16,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 // user course subscription
 
 //define("_CUS_CANCELLED",	-4);
-define('_CUS_WAITING_LIST', -2); //_CUS_WAITING_PAYMENT
-define('_CUS_CONFIRMED', -1);
-define('_CUS_SUBSCRIBED', 0);
-define('_CUS_BEGIN', 1);
-define('_CUS_END', 2);
-define('_CUS_SUSPEND', 3);
-define('_CUS_OVERBOOKING', 4); //the user is overbooked
+const _CUS_WAITING_LIST = -2; //_CUS_WAITING_PAYMENT
+const _CUS_CONFIRMED = -1;
+const _CUS_SUBSCRIBED = 0;
+const _CUS_BEGIN = 1;
+const _CUS_END = 2;
+const _CUS_SUSPEND = 3;
+const _CUS_OVERBOOKING = 4; //the user is overbooked
 
 class CourseSubscribe_Manager
 {

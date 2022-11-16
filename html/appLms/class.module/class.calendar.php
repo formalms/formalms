@@ -19,7 +19,7 @@ class Module_Calendar extends LmsModule
         drawCalendar();
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

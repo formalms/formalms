@@ -635,7 +635,7 @@ class CourseLms extends Model
         return $out;
     }
 
-    public function getMyDateCourse($idCourse)
+    public static function getMyDateCourse($idCourse)
     {
         $query = 'select lcd.id_date from %lms_course_date lcd, %lms_course_date_user lcdu
             where 

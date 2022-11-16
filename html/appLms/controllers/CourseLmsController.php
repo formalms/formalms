@@ -24,13 +24,17 @@ class CourseLmsController extends LmsController
      */
     public $userProfileDataManager;
 
-    public const STUDENTNOTADMITTED = [_CUS_SUBSCRIBED => _USER_STATUS_SUBS,
-                                    _CUS_BEGIN => _USER_STATUS_BEGIN,
-                                    _CUS_SUSPEND => _USER_STATUS_SUSPEND,
-                                    _CUS_END => _USER_STATUS_END, ];
+
+    public const STUDENTNOTADMITTED = [
+        _CUS_SUBSCRIBED => '_USER_STATUS_SUBS',
+        _CUS_BEGIN => '_USER_STATUS_BEGIN',
+        _CUS_SUSPEND => '_USER_STATUS_SUSPEND',
+        _CUS_END => '_USER_STATUS_END'
+    ];
 
     public function init()
     {
+
         require_once _adm_ . '/lib/lib.field.php';
 
         /* @var Services_JSON json */
@@ -228,7 +232,7 @@ class CourseLmsController extends LmsController
                         name = "' . $this->request->get('course_name') . '", 
                         description = "' . $this->request->get('course_descr') . '", 
                         lang_code = "' . $array_lang[$this->request->get('course_lang')] . '", 
-                        status = "' . (int) $this->request->get('course_status') . '", 
+                        status = "' . (int)$this->request->get('course_status') . '", 
                         level_show_user = "' . $show_level . '", 
                         mediumTime = "' . $this->request->get('course_medium_time') . '",
                         permCloseLO = "' . $this->request->get('course_em') . '", 
@@ -237,7 +241,7 @@ class CourseLmsController extends LmsController
                         show_progress = "' . ($this->request->request->has('course_progress') ? 1 : 0) . '", 
                         show_time = "' . ($this->request->request->has('course_time') ? 1 : 0) . '", 
                         show_extra_info = "' . ($this->request->request->has('course_advanced') ? 1 : 0) . '", 
-                        show_rules = "' . (int) $this->request->get('course_show_rules') . '" 
+                        show_rules = "' . (int)$this->request->get('course_show_rules') . '" 
                     WHERE idCourse = "' . $session->get('idCourse') . '"';
         if (!sql_query($query_course)) {
             $re = false;
@@ -252,11 +256,11 @@ class CourseLmsController extends LmsController
         $msg_composer->setSubjectLangText('email', '_ALERT_SUBJECT_MODCOURSE_INFO', false);
         $msg_composer->setBodyLangText('email', '_ALERT_TEXT_MODCOURSE_INFO', ['[url]' => FormaLms\lib\Get::site_url(),
             '[course_code]' => $this->request->get('course_code'),
-            '[course]' => $this->request->get('course_name'), ]);
+            '[course]' => $this->request->get('course_name'),]);
 
         $msg_composer->setBodyLangText('sms', '_ALERT_TEXT_MODCOURSE_INFO_SMS', ['[url]' => FormaLms\lib\Get::site_url(),
             '[course_code]' => $this->request->get('course_code'),
-            '[course]' => $this->request->get('course_name'), ]);
+            '[course]' => $this->request->get('course_name'),]);
 
         require_once _lms_ . '/lib/lib.course.php';
         $course_man = new Man_Course();
@@ -266,7 +270,7 @@ class CourseLmsController extends LmsController
             'course',
             'add',
             '1',
-            'Inserted course ' . $this->request->get('course_name') ,
+            'Inserted course ' . $this->request->get('course_name'),
             $recipients,
             $msg_composer);
 

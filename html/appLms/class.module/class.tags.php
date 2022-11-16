@@ -21,7 +21,7 @@ class Module_Tags extends LmsModule
         tags_dispatch($GLOBALS['op']);
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

@@ -17,7 +17,7 @@ $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 // access granted only if user is logged in
 if (Docebo::user()->isAnonymous()) {
     // save requested page in session to call it after login
-    $loginRedirect = $_SERVER[REQUEST_URI];
+    $loginRedirect = $_SERVER['REQUEST_URI'];
 
     // redirect to index
 

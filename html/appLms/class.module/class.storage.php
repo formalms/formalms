@@ -44,7 +44,7 @@ class Module_Storage extends LmsModule
     {
     }
 
-    public function getAllToken()
+    public static function getAllToken()
     {
         return [
             'view' => ['code' => 'view',

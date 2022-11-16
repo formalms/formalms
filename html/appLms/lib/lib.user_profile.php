@@ -1576,7 +1576,7 @@ class UserProfileViewer
         $ini = $nav_bar->getSelectedElement();
         $nav_bar->setLink($this->_url_man->getUrl($this->_varname_action . '=view_files&type=' . $type . ''));
 
-        $re_files = $user_file->getFileList($type, false, $ini, UP_FILE_LIMIT);
+        $re_files = $user_file->getFileList($type, false,false, $ini, UP_FILE_LIMIT);
 
         switch ($type) {
             case 'image':
