@@ -87,10 +87,8 @@ class Report_Courses extends Report
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.course_managment.php';
 
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = DoceboLanguage::createInstance('report', 'framework');
 
-        //$sel = new Course_Manager();
-        //$sel->setLink('index.php?modname=report&op=report_rows_filter');
 
         if (isset($_POST['undo_filter'])) {
             Util::jump_to($back_url);
@@ -1895,8 +1893,8 @@ class Report_Courses extends Report
         $buffer->closeHeader();
 
         $i = 0;
-        $tot_waiting = $tot_iscr = $tot_itinere = $tot_nobegin = $tot_comple = '';
-        $tot_perc_itinere = $tot_perc_nobegin = $tot_perc_comple = '';
+        $tot_waiting = $tot_iscr = $tot_itinere = $tot_nobegin = $tot_comple = 0;
+        $tot_perc_itinere = $tot_perc_nobegin = $tot_perc_comple = 0;
         $total_time = 0;
 
         $array_status = [CST_PREPARATION => $lang->def('_CST_PREPARATION', 'course', 'lms'),
@@ -1953,7 +1951,6 @@ class Report_Courses extends Report
 
         $course_man = new Man_Course();
         $buffer->openBody();
-
         foreach ($id_courses as $index => $course_info) {
             $idc = $id_date = 0;
             if ($show_classrooms_editions) {

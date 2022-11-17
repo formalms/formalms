@@ -72,12 +72,12 @@ class Module_Storage extends LmsModule
         ];
     }
 
-    public function getPermissionUi($form_name, $perm)
+    public function getPermissionUi($form_name, $perm, $module_op = '')
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('manmenu');
-        $lang_perm = &DoceboLanguage::createInstance('permission');
+        $lang = DoceboLanguage::createInstance('manmenu');
+        $lang_perm = DoceboLanguage::createInstance('permission');
 
         $tokens = $this->getAllToken();
         $levels = CourseLevel::getTranslatedLevels();

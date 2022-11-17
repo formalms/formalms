@@ -384,7 +384,7 @@ class Util
         return $str;
     }
 
-    public function str_replace_once($search, $replace, $subject, &$count = false)
+    public static function str_replace_once($search, $replace, $subject, &$count = false)
     {
         if (strpos($subject, strval($replace)) === false) {
             if ($count === false) {

@@ -31,7 +31,7 @@ if (!isset($GLOBALS['css_treeview_load']) && isset($GLOBALS['page'])) {//if(!iss
 class TreeDb_CatDb extends TreeDb
 {
     // Constructor of TreeDb_CatDb class
-    public function TreeDb_CatDb($table_name)
+    public function __construct($table_name)
     {
         $this->table = $table_name;
         $this->fields = [

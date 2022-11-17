@@ -550,7 +550,7 @@ class TreeView
             $this->itemToPlay = (int) $arrayState[$this->_getIdPlayItemId()];
         }
 
-        if (array_key_exists('treeview_opplayitem_' . $this->id, $arrayState[$this->id])) {
+        if (array_key_exists('treeview_opplayitem_' . $this->id, $arrayState)) {
             if (is_array($arrayState[$this->id]['treeview_opplayitem_' . $this->id])) {
                 $this->itemToPlay = (int) array_key_first($arrayState[$this->id]['treeview_opplayitem_' . $this->id]);
 

@@ -79,7 +79,7 @@ class AggregatedCertificate
         }
 
         $rs = sql_query($query_certificate);
-
+        $aggCertArr = [];
         $k = 0;
         while ($rows = sql_fetch_assoc($rs)) {
             $aggCertArr[$k]['id_certificate'] = (int) $rows['id_certificate'];

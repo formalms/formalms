@@ -32,7 +32,7 @@ class LmsAdminModule
 
     public $descr_long;
 
-    public function LmsAdminModule($module_name = '')
+    public function __construct($module_name = '')
     {
         if ($module_name == '') {
             $this->module_name = $GLOBALS['modname'];

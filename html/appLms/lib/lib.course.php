@@ -153,7 +153,7 @@ class Selector_Course
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
+        $lang = DoceboLanguage::createInstance('course', 'lms');
 
         $output = '';
         $output .= $this->treeview->load();

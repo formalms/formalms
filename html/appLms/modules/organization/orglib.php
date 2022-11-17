@@ -108,7 +108,7 @@ class OrgDirDb extends RepoDirDb
         }
         $arrPre = explode(',', $prerequisistes);
         $arrResult = [];
-        while (list($key, $val) = each($arrPre)) {
+        foreach($arrPre as $val) {
             if (strncmp($val, $idItem, strlen($idItem)) != 0) {
                 $arrResult[] = $val;
             }
@@ -124,7 +124,7 @@ class OrgDirDb extends RepoDirDb
         }
         $result = '*';
         $arrPre = explode(',', $prerequisites);
-        while (list($key, $val) = each($arrPre)) {
+        foreach ($arrPre as $key=>$val) {
             if (strncmp($val, $idItem, strlen($idItem)) == 0) {
                 $arrSelf = explode('=', $val);
                 if (count($arrSelf) > 1) {
@@ -2099,7 +2099,7 @@ class Org_TreeView extends RepoTreeView
                 if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
                     $node['locked'] = true;
                 } elseif ($isPrerequisitesSatisfied) { // && $event->getAccessible()) {
-                    if (method_exists($lo_class, 'trackDetails')) {
+                    if (is_object($lo_class) && method_exists($lo_class, 'trackDetails')) {
                         $node['track_detail'] = [
                             'type' => $arrData[REPOFIELDOBJECTTYPE],
                             'is_user' => getLogUserId(),

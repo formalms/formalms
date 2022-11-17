@@ -250,9 +250,9 @@ class LmsModule
         return $tb->getTable();
     }
 
-    public function getSelectedPermission($module_op)
+    public function getSelectedPermission()
     {
-        $tokens = $this->getAllToken($module_op);
+        $tokens = $this->getAllToken();
         $levels = CourseLevel::getTranslatedLevels();
         $perm = [];
         foreach ($levels as $lv => $levelname) {
