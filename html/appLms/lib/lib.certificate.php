@@ -338,7 +338,7 @@ class Certificate
     }
 
     //fix: Php7.1+ compatibility
-    public function canRelExceptional($perm_close_lo, $idUser, $idCourse, $pointsRequired,)
+    public function canRelExceptional($perm_close_lo, $idUser, $idCourse, $pointsRequired)
     {
         require_once _lms_ . '/lib/lib.coursereport.php';
         require_once _lms_ . '/lib/lib.orgchart.php';

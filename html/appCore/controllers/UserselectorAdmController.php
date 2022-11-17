@@ -132,6 +132,7 @@ class UserselectorAdmController extends AdmController
                break;
             default:
                 $params = $this->request->query->all();
+             
                 $response = $this->multiUserSelector->retrieveDataselector('org')->getData($params);
                 break;
         }
@@ -176,6 +177,11 @@ class UserselectorAdmController extends AdmController
         return Util::jump_to($this->multiUserSelector->associate($instanceType, $instanceId, $selection));
        
 
+    }
+
+
+    public function getOrgChartData() {
+        dd($this->multiUserSelector->retrieveDataselector('org')->getData());
     }
 
 

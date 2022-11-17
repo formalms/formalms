@@ -69,6 +69,29 @@ class OrgDataSelector extends DataSelector{
                 $idOrg = $this->_getIdOrgByNodeId($node_id);
                 $this->_setSelectedNode($idOrg);
              break;
+
+             default:
+                $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
+                $idOrg = $this->_getIdOrgByNodeId($node_id);
+                $initial = array_key_exists('initial', $params) ? ((int) $params['initial'] > 0 ? true : false) : false;
+
+                $_conversion_table = $this->builder->getOrgchartIdstConversionTable();
+               
+                $nodes = $this->builder->buildOrgChartNodes($idOrg, false, false, true);
+                //nella variabile c'è un array a 2 indici dove nel primo sono listati i grouppi con oc_ e nel secondo quelli con ocd_
+                //l'array viene inziailizzato col nodo zero senza discendenti, il match avviene per chiave dei 2 array basata su idorg 
+
+                if (is_array($nodes)) {
+                    $output = [
+                        'success' => true,
+                        'nodes' => $nodes,
+                        'initial' => $initial,
+                    ];
+                } else {
+                    $output = ['success' => false];
+                }
+
+                break;
         }
 
         return $this->json->encode($output);

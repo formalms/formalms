@@ -1460,6 +1460,70 @@ class UsermanagementAdm extends Model
         return '<span id="orgchart_code_' . (int)$id . '">[' . $code . ']&nbsp;</span>';
     }
 
+    public function buildOrgChartNodes($idNode, $recursive = false, $language = false, $userFilter = false)
+    {
+        $output = [];
+        $isSubadmin = false;
+        
+        if ($userFilter) {
+            $userlevelid = $this->getUserLevel();
+            if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+                $orgTree = $this->_getAdminOrgTree();
+                $isSubadmin = true;
+            }
+        }
+
+        $langCode = ($language == false ? getLanguage() : $language);
+        $searchQuery = "SELECT	t1.idOrg, t1.path, t2.translation, t1.iLeft, t1.iRight, t1.code
+			FROM %adm_org_chart_tree AS t1 LEFT JOIN %adm_org_chart AS t2
+				ON (t1.idOrg = t2.id_dir AND t2.lang_code = '" . $langCode . "' )
+			WHERE t1.idParent = '" . (int)$idNode . "' ORDER BY t2.translation";
+        $results = $this->db->query($searchQuery);
+
+        foreach($results as $result) {
+            $isNodeVisible = true;
+            $codeLabel = $this->_formatFolderCode($$result['idOrg'], $result['code']);
+            if ($isSubadmin) {
+                $isForbidden = !in_array($result['idOrg'], $orgTree);
+                $countSubnodes = $this->_checkSubnodesVisibility($result['idOrg'], $result['iLeft'], $result['iRight'], $orgTree);
+                $hasVisibleSubnodes = ($countSubnodes > 0);
+
+                if ($isForbidden && !$hasVisibleSubnodes) {
+                    //forbidden with no visible subnodes:don't show it
+                    $isNodeVisible = false;
+                } else {
+                    if ($isForbidden) {
+                        //forbidden, but with visible valid subnodes: show it
+                        $label = $codeLabel . $result['translation'];
+                        $hasChildren = true;
+                        $count = $countSubnodes;
+                        $style = 'disabled';
+                    } else {
+                        //not forbidden, check as normal
+                        $label = $codeLabel . $result['translation'];
+                        $hasChildren = $hasVisibleSubnodes;
+                        $count = $countSubnodes;
+                        $style = false;
+                    }
+                }
+            } else {
+                $label = $codeLabel . $result['translation'];
+                $hasChildren = !(($result['iRight'] - $result['iLeft']) == 1);
+                $count = (int)(($result['iRight'] - $result['iLeft'] - 1) / 2);
+                $style = false;
+            }
+
+            //set node for output
+            if ($isNodeVisible) {
+                $output[] = ['id' => $result['idOrg'], 'label' => $label, 'hasChildren' => $hasChildren, 'countContent' => $count, 'style' => $style];
+            }
+        }
+
+        return array_values($output);
+    }
+
+
+    //DA DEPRECARE COL NUOVO FOLDER TREE
     public function getOrgChartNodes($id_node, $recursive = false, $language = false, $userFilter = false)
     {
         $is_subadmin = false;
