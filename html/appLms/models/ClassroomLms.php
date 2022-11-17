@@ -130,7 +130,7 @@ class ClassroomLms extends Model
 
     public function getUserEditionsInfo($id_user, $courses)
     {
-        if ((int) $id_user <= 0) {
+        if ((int)$id_user <= 0) {
             return false;
         }
         if (is_numeric($courses)) {
@@ -156,7 +156,9 @@ class ClassroomLms extends Model
             $id_date_arr[] = $obj->id_date;
         }
 
-        array_unique($id_date_arr);
+        if (is_array($id_date_arr)) {
+            array_unique($id_date_arr);
+        }
         if (empty($id_date_arr)) {
             $id_date_arr = [0];
         }
@@ -189,7 +191,7 @@ class ClassroomLms extends Model
         $query = 'SELECT d.id_date, d.id_course, d.code, d.name, d.status, d.unsubscribe_date_limit
 			FROM %lms_course_date AS d
 			JOIN %lms_course_date_user AS du ON (du.id_date = d.id_date)
-			WHERE du.id_user = ' . (int) $id_user . ' AND d.id_course IN (' . implode(',', $courses) . ')';
+			WHERE du.id_user = ' . (int)$id_user . ' AND d.id_course IN (' . implode(',', $courses) . ')';
 
         $id_date_arr = [];
         $res = sql_query($query);
@@ -222,7 +224,7 @@ class ClassroomLms extends Model
         $query = 'SELECT DISTINCT YEAR(dd.date_begin) AS inscr_year '
             . ' FROM %lms_course_date_user AS du JOIN %lms_course_date_day AS dd '
             . ' ON (du.id_date = dd.id_date) '
-            . ' WHERE du.id_user = ' . (int) $id_user . ' AND dd.deleted = 0'
+            . ' WHERE du.id_user = ' . (int)$id_user . ' AND dd.deleted = 0'
             . ' ORDER BY inscr_year ASC';
         $res = $db->query($query);
         if ($res && $db->num_rows($res) > 0) {
@@ -236,7 +238,7 @@ class ClassroomLms extends Model
 
     public function getUserCoursesByYear($id_user, $year)
     {
-        if ((int) $year <= 0) {
+        if ((int)$year <= 0) {
             return false;
         }
         $output = [];
@@ -246,7 +248,7 @@ class ClassroomLms extends Model
         $query = 'SELECT DISTINCT d.id_course '
             . ' FROM %lms_course_date AS d JOIN %lms_course_date_day AS dd JOIN %lms_course_date_user AS du '
             . ' ON (d.id_date = dd.id_date AND d.id_date = du.id_date) '
-            . ' WHERE du.id_user = ' . (int) $id_user . ' AND dd.deleted = 0'
+            . ' WHERE du.id_user = ' . (int)$id_user . ' AND dd.deleted = 0'
             . " AND (dd.date_begin >= '" . $date_1 . "' AND dd.date_begin <= '" . $date_2 . "')";
         $res = $db->query($query);
         if ($res && $db->num_rows($res) > 0) {
