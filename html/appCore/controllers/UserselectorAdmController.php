@@ -181,7 +181,7 @@ class UserselectorAdmController extends AdmController
 
 
     public function getOrgChartData() {
-        dd($this->multiUserSelector->retrieveDataselector('org')->getData());
+        var_dump($this->multiUserSelector->retrieveDataselector('org')->getData());
     }
 
 
