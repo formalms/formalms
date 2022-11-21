@@ -20,7 +20,7 @@ class FolderTreeAction {
         return $this;
     }
 
-    public function getOptions() : string {
+    public function getOptions() : array {
 
         return $this->options;
     }
@@ -28,6 +28,12 @@ class FolderTreeAction {
     public function setOptions($options) : self {
 
         $this->options = $options;
+        return $this;
+    }
+
+    public function addOption($option) : self {
+
+        $this->options[] = $option;
         return $this;
     }
 

@@ -4,31 +4,59 @@ namespace FormaLms\lib\FolderTree;
 
 class FolderTreeOption { 
 
-    protected string $type;
+  protected string $label;
 
-    protected array $options = [];
+  protected string $name;
+
+  protected string $value;
+
+  protected bool $selected = false;
 
 
-    public function getType() : string {
+    public function getLabel() : string {
 
-        return $this->type;
+        return $this->label;
     }
 
-    public function setType($type) : self {
+    public function setLabel($label) : self {
 
-        $this->type = $type;
+        $this->label = $label;
         return $this;
     }
 
-    public function getOptions() : string {
+    public function getName() : string {
 
-        return $this->options;
+        return $this->name;
     }
 
-    public function setOptions($options) : self {
+    public function setName($name) : self {
 
-        $this->options = $options;
+        $this->name = $name;
         return $this;
     }
+
+    public function getValue() : string {
+
+        return $this->value;
+    }
+
+    public function setValue($value) : self {
+
+        $this->value = $value;
+        return $this;
+    }
+
+    public function getSelected() : bool {
+
+        return $this->selected;
+    }
+
+    public function setSelected($selected) : self {
+
+        $this->selected = $selected;
+        return $this;
+    }
+
+ 
 
 }

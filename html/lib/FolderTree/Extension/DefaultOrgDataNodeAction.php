@@ -33,7 +33,7 @@ class DefaultOrgDataNodeAction extends FolderTreeAction{
 
   private function setDefaultOptions() {
       foreach (self::DEFAULT_OPTIONS as $defaultOption) {
-          $this->addOption(new FolderTreeOption($defaultOption['name'], $defaultOption['value'],$defaultOption['label']));
+          $this->addOption(new OrgDataNodeOption($defaultOption['name'], $defaultOption['value'],$defaultOption['label'],'standard'));
       }
   }
 

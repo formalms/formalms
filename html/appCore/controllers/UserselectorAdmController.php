@@ -142,13 +142,6 @@ class UserselectorAdmController extends AdmController
     }
 
 
-    public function testPostTask()
-    {
-        
-        dd($this->requestObj);
-
-    }
-
     public function associate()
     {
         $instanceType = $this->requestObj->get('instance');
@@ -181,7 +174,7 @@ class UserselectorAdmController extends AdmController
 
 
     public function getOrgChartData() {
-        var_dump($this->multiUserSelector->retrieveDataselector('org')->getData());
+        echo $this->multiUserSelector->retrieveDataselector('org')->getData();
     }
 
 

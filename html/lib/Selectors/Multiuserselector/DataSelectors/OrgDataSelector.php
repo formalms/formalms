@@ -4,6 +4,7 @@ namespace FormaLms\lib\Selectors\Multiuserselector\DataSelectors;
 
 use FormaLms\lib\FolderTree\Extension\OrgDataNode;
 
+
 require_once _adm_ . '/models/UsermanagementAdm.php';
 require_once _base_ . '/widget/lib.widget.php';
 class OrgDataSelector extends DataSelector{ 
@@ -12,17 +13,21 @@ class OrgDataSelector extends DataSelector{
 
     private $widgetBuilder;
 
+ 
+
     public function __construct() {
      
         $this->builder = new \UsermanagementAdm();
         $this->widgetBuilder = new \Widget();
         $this->name = 'OrgDataSelector';
+     
 
         parent::__construct();
     }
 
     public function getData($params = []) {
 
+        $useSerialaizer = false;
         $command = array_key_exists('command', $params) ? (string) $params['command'] : '';
         
         switch ($command) {
@@ -76,6 +81,7 @@ class OrgDataSelector extends DataSelector{
              break;
 
              default:
+                $useSerialaizer = true;
                 $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
                 $idOrg = $this->_getIdOrgByNodeId($node_id);
                 $initial = array_key_exists('initial', $params) ? ((int) $params['initial'] > 0 ? true : false) : false;
@@ -136,13 +142,15 @@ class OrgDataSelector extends DataSelector{
                         'data' => $nodes
                     ];
                 } 
-
+               
                 break;
         }
 
-        dd($output);
-
-        return $this->json->encode($output);
+        if($useSerialaizer) {
+            return $this->serializer->serialize($output, 'json');
+        } else {
+            return $this->json->encode($output);
+        }
 
     }
 

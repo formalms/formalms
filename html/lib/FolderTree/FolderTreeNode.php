@@ -43,7 +43,7 @@ class FolderTreeNode {
         return $this;
     }
 
-    public function getChildren() : string {
+    public function getChildren() : array {
 
         return $this->children;
     }
@@ -93,7 +93,7 @@ class FolderTreeNode {
         return $this;
     }
 
-    public function getActions() : string {
+    public function getActions() : array {
 
         return $this->actions;
     }

@@ -1,22 +1,24 @@
 <?php
 namespace FormaLms\lib\FolderTree\Extension;
 
-use FormaLms\lib\FolderTree\FolderTreeAction;
+use FormaLms\lib\FolderTree\FolderTreeOption;
 
 
-class DefaultOrgDataNodeOption extends FolderTreeOption{ 
+class OrgDataNodeOption extends FolderTreeOption{ 
 
  
 
-  public function __construct() {
+    public function __construct($name, $value, $label, $translationModule = false) {
 
-        $this->setType('radioButton');
-        $this->setDefaultOptions();
-        
-  }
+        require_once _base_.'/i18n/lib.lang.php' ;
+    
+            $this->setName($name);
+            $this->setValue($value);
+            if($translationModule) {
+                $label = \Lang::t($label, $translationModule);
+            }
+            $this->setLabel($label);
+    }
 
-  private function setDefaultOptions() {
-      foreach (self::DEFAULT_OPTIONS as $defaultOption) {
-          $this->addOption(new FolderTreeOption($defaultOption['name'], $defaultOption['value'],$defaultOption['label']));
-      }
-  }
+
+}
