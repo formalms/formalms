@@ -1931,23 +1931,6 @@ class Org_TreeView extends RepoTreeView
             $node = [];
 
             $folder = $this->tdb->getFolderById($idLo);
-            //dump($idLo);
-            // $event = new \appLms\Events\Lms\OrgPropertiesPrintEvent();
-
-            // $event->setElement($folder);
-
-            // $event->setDisplayable(true);
-
-            // $event->setAccessible(true);
-
-            // $event->setId($this->id);
-
-            // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\OrgPropertiesPrintEvent::EVENT_NAME, $event);
-
-            // if (!$event->getDisplayable()) {
-            // 	continue;
-            // }
-
             $kbres = new KbRes();
             $type = $folder->otherValues[REPOFIELDOBJECTTYPE];
             if ($type === 'scormorg') {
@@ -1959,11 +1942,6 @@ class Org_TreeView extends RepoTreeView
             }
 
             $html = '';
-
-            // foreach ($event->getAction() as $action){
-            // $html .= $action;
-            // }
-
             $arrData = $folder->otherValues;
             $lo_type = $arrData[REPOFIELDOBJECTTYPE];
             $lo_class = createLO($lo_type);
