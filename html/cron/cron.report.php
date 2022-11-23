@@ -10,14 +10,15 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+ob_start();
 
-define('CORE', true);
-define('IN_FORMA', true);
-define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+const CORE = true;
+const IN_FORMA = true;
+const _deeppath_ = '../';
+require __DIR__ . '/../base.php';
 
 // start buffer
-ob_start();
+
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
@@ -26,10 +27,8 @@ Boot::init(BOOT_DATETIME);
 if (!function_exists('report_log')) {
     function report_log($string)
     {
-        ob_end_flush();
         $curtime = date('d-m-Y G:i:s');
-        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n";
-        ob_start();
+        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n". "<br>";
     }
 }
 

@@ -1855,6 +1855,8 @@ class Report_User extends Report
                                 $temp = $this->_check($score_course[$id_user][$id_course]['score'], $value['value'], $value['sign'], _FILTER_INTEGER);
                             }
                             break;
+                        default:
+                            break;
                     }
 
                     if ($exclusive) {

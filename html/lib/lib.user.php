@@ -147,7 +147,7 @@ class DoceboUser implements Serializable
 
     public function loadUserCourses()
     {
-        $userCoursesQuery = 'SELECT idCourse,edition_id as idEdtition,level,date_inscr as subscriptionDate,date_first_access as firstAccess,status,date_complete as completedAt, date_begin_validity as dateBeginValidity, date_expire_validity as dateExpireValidity FROM %lms_courseuser where iduser=' . $this->idst;
+        $userCoursesQuery = 'SELECT idCourse,edition_id as idEdtition,level,date_inscr as subscriptionDate,date_first_access as firstAccess,status,date_complete as completedAt, date_begin_validity as dateBeginValidity, date_expire_validity as dateExpireValidity, status AS user_status, waiting FROM %lms_courseuser where iduser=' . $this->idst;
 
         $result = $this->db->query($userCoursesQuery);
 

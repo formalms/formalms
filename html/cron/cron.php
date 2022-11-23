@@ -23,8 +23,8 @@ $path_to_root = '..';
 
 // prepare refer ------------------------------------------------------------------
 
-require_once dirname(__FILE__) . '/' . $path_to_root . '/config.php';
-require_once dirname(__FILE__) . '/' . $path_to_root . '/appLms/config.php';
+require_once __DIR__ . '/' . $path_to_root . '/config.php';
+require_once __DIR__ . '/' . $path_to_root . '/appLms/config.php';
 
 ob_start();
 
