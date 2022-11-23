@@ -531,6 +531,7 @@ class FieldList
             if (!empty($fields)) {
                 $sons_query .= ' AND cf.idField IN (' . implode(',', $fields) . ')';
             }
+            $sons_query .= ' GROUP BY id_common_son,cf.lang_code';
             $sons_rs = sql_query($sons_query);
 
             foreach ($sons_rs as $row) {
