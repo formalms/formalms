@@ -595,7 +595,7 @@ class Track_Object
         return [];
     }
 
-    public function updateObjectTitle($idResource, $objectType, $new_title)
+    public static function updateObjectTitle($idResource, $objectType, $new_title)
     {
         $new_title = str_replace('/', '', $new_title);
 

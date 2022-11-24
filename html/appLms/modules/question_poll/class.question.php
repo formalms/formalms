@@ -323,7 +323,7 @@ class QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function playReport($num_quest)
+    public function playReport($num_quest, $tot_tracks, &$valid_track)
     {
         return '';
     }

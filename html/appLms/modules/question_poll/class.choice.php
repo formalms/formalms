@@ -24,7 +24,7 @@ class Choice_QuestionPoll extends QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function Choice_QuestionPoll($id)
+    public function __construct($id)
     {
         parent::QuestionPoll($id);
     }

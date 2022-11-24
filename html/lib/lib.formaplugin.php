@@ -23,12 +23,12 @@ abstract class FormaPlugin
         //code executed after uninstall
     }
 
-    public function activate()
+    public static function activate()
     {
         //code executed after activation
     }
 
-    public function deactivate()
+    public static function deactivate()
     {
         //code executed after deactivation
     }

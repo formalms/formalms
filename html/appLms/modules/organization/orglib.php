@@ -1925,8 +1925,6 @@ class Org_TreeView extends RepoTreeView
         require_once _lms_ . '/lib/lib.course.php';
 
         $res = [];
-        $idx = 0;
-
         foreach ($idLoList as $index => $idLo) {
             $node = [];
 
@@ -1968,7 +1966,6 @@ class Org_TreeView extends RepoTreeView
 
             $node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
 
-            $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
             if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                 break;
@@ -1993,7 +1990,6 @@ class Org_TreeView extends RepoTreeView
             } else {
                 $node['is_folder'] = true;
             }
-            //$node['is_folder']=count($this->tdb->getidLosIdById($folder->id)) != 0;
 
             if (($folder->otherValues[ORGFIELD_PUBLISHFROM] != '' && $folder->otherValues[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
                 if ($folder->otherValues[ORGFIELD_PUBLISHFROM] > date('Y-m-d H:i:s')) {
@@ -2090,9 +2086,8 @@ class Org_TreeView extends RepoTreeView
             } else {
                 $node['childCount'] = (int) $this->countChildren($folder->id);
             }
-
             $res[$idLo] = $node;
-            ++$idx;
+
         }
 
         return $res;

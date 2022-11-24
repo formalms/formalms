@@ -358,24 +358,29 @@ class PluginmanagerAdm extends Model
         $res = ['ok' => true, 'log' => ''];
 
         $handle = fopen($fn, 'r');
-        $content = fread($handle, filesize($fn));
-        fclose($handle);
-
-        // This two regexp works fine; don't edit them! :)
-        $content = preg_replace('/--(.*)[^$]/', '', $content);
-        $sql_arr = preg_split("/;([\s]*)[\n\r]/", $content);
-        foreach ($sql_arr as $sql) {
-            $qtxt = trim($sql);
-            if (!empty($qtxt)) {
-                $q = sql_query($qtxt);
-                if (!$q) {
-                    $res['log'] .= sql_error() . "\n";
-                    Forma::addError(sql_error());
-                    $res['ok'] = false;
+        if ($handle == false) {
+            $res = ['ok' => false, 'log' => 'error opening file'];
+        }  else {
+            $fileSz = filesize($fn);
+            if ($fileSz > 0 ) {
+                $content = fread($handle, $fileSz);
+                fclose($handle);
+                // This two regexp works fine; don't edit them! :)
+                $content = preg_replace('/--(.*)[^$]/', '', $content);
+                $sql_arr = preg_split("/;([\s]*)[\n\r]/", $content);
+                foreach ($sql_arr as $sql) {
+                    $qtxt = trim($sql);
+                    if (!empty($qtxt)) {
+                        $q = sql_query($qtxt);
+                        if (!$q) {
+                            $res['log'] .= sql_error() . "\n";
+                            Forma::addError(sql_error());
+                            $res['ok'] = false;
+                        }
+                    }
                 }
             }
         }
-
         return $res;
     }
 

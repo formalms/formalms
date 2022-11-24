@@ -418,7 +418,7 @@ class Util
         return strtr($string, $trans_tbl);
     }
 
-    public function widget($widget_name, $params = null, $return = false)
+    public static function widget($widget_name, $params = null, $return = false)
     {
         ob_start();
         $widget = new Widget();

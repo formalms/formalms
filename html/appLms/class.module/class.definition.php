@@ -181,14 +181,14 @@ class LmsModule
         ];
     }
 
-    public function getPermissionUi($form_name, $perm, $module_op)
+    public static function getPermissionUi($form_name, $perm, $module_op)
     {
         require_once _base_ . '/lib/lib.table.php';
 
         $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
         $lang_perm = &DoceboLanguage::createInstance('permission', 'framework');
 
-        $tokens = $this->getAllToken($module_op);
+        $tokens = $self::getAllToken($module_op);
         $levels = CourseLevel::getTranslatedLevels();
         $tb = new Table(0, $lang->def('_VIEW_PERMISSION'), $lang->def('_EDIT_SETTINGS'));
 

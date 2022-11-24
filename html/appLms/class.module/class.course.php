@@ -64,7 +64,7 @@ class Module_Course extends LmsModule
         }
     }
 
-    public function getAllToken($op = '')
+    public static function getAllToken($op = '')
     {
         switch ($op) {
             case 'infocourse':

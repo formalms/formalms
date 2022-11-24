@@ -259,7 +259,7 @@ function statistic()
     ];
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
-    while (list(, $user_info) = each($users_list)) {
+    foreach ($users_list as $user_info ) {
         $cont = [
             '<a href="index.php?modname=statistic&amp;op=userdetails&amp;id=' . $user_info[ACL_INFO_IDST] . '" '
             . 'title="' . $lang->def('_DETAILS') . ' : ' . $acl_man->relativeId($user_info[ACL_INFO_USERID]) . '">'

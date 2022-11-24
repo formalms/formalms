@@ -1445,14 +1445,16 @@ class CoursereportLmsController extends LmsController
 
         $json = new Services_JSON();
         $chart_options = $json->decode($chart_options_json);
-        if (!property_exists($chart_options, 'use_charts')) {
-            $chart_options->use_charts = false;
-        }
-        if (!property_exists($chart_options, 'selected_chart')) {
-            $chart_options->selected_chart = 'column';
-        }
-        if (!property_exists($chart_options, 'show_chart')) {
-            $chart_options->show_chart = 'teacher';
+        if (!empty($chart_options)) {
+            if (!property_exists($chart_options, 'use_charts')) {
+                $chart_options->use_charts = false;
+            }
+            if (!property_exists($chart_options, 'selected_chart')) {
+                $chart_options->selected_chart = 'column';
+            }
+            if (!property_exists($chart_options, 'show_chart')) {
+                $chart_options->show_chart = 'teacher';
+            }
         }
 
         /* XXX: scores */
@@ -1533,7 +1535,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Display user scores
         $i = 0;
-        while (list($idst_user, $user_info) = each($students_info)) {
+        foreach ($students_info as $$idst_user => $user_info) {
             $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                 ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                 : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
@@ -3611,7 +3613,7 @@ class CoursereportLmsController extends LmsController
 
             $question['type'] = $quest['type_quest'];
 
-            reset($answers);
+
             reset($tracks);
 
             $responseValue['questions'][] = $question;

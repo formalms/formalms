@@ -398,7 +398,7 @@ class Services_JSON
                         }
                     }
 
-                    return '{' . join(',', $properties) . '}';
+                    return '{' . implode(',', $properties) . '}';
                 }
 
                 // treat it like a regular array
@@ -410,7 +410,7 @@ class Services_JSON
                     }
                 }
 
-                return '[' . join(',', $elements) . ']';
+                return '[' . implode(',', $elements) . ']';
 
             case 'object':
                 $vars = get_object_vars($var);
@@ -425,7 +425,7 @@ class Services_JSON
                     }
                 }
 
-                return '{' . join(',', $properties) . '}';
+                return '{' . implode(',', $properties) . '}';
 
             default:
                 return ($this->use & SERVICES_JSON_SUPPRESS_ERRORS)
