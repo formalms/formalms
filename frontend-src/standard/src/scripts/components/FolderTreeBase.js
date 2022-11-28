@@ -23,6 +23,7 @@ class FolderTreeBase {
 
     this.options = Object.assign(this.options, options);
 
+    this.data = null;
     this.onLoad = null;
     this.baseApiUrl = baseApiUrl;
     this.controller = controller;
@@ -58,38 +59,7 @@ class FolderTreeBase {
   }
 
   render(targetQuery = FOLDER_TREE_CLASS) {
-
-    const mock = [{
-      id:1, 
-      name: 'Ok', 
-      children: [
-        {
-          id: 2,
-          name: 'Sub ok', 
-          actions: [{
-            type: 'radioButton',
-            options: [{
-                label: 'No',
-                name: 'name',
-                value: 0
-              },
-              {
-                label: 'Si',
-                name: 'name',
-                value: 1
-              },
-              {
-                label: 'Discendenti',
-                name: 'name',
-                value: 2
-              }
-            ]
-          }],
-          children: []}
-      ]}];
-
-    // mock
-    const tree = this.Tree({ data: mock, extra: {form: this.hasForm} });
+    const tree = this.Tree({ data: this.data, extra: {form: this.hasForm} });
     const targetDom = document.querySelector(`.${targetQuery}`);
     targetDom.innerHTML = tree;
     return this;
@@ -296,12 +266,13 @@ class FolderTreeBase {
     this.container.addEventListener('drop', this.onDrop.bind(this));
   }
 
-  async getData(endpoint) {
+  async getData(endpoint, startWithChildren = true) {
     const _this = this;
     try {
       await axios.get(endpoint).then((response) => {
+        _this.data = startWithChildren ? response.data.data[0].children : response.data.data;
 
-        const tree = this.Tree({ data: response.data.data[0].children, extra: {options: this.options, form: this.hasForm} });
+        const tree = this.Tree({ data: _this.data, extra: {options: this.options, form: this.hasForm} });
 
         const treeView = _this.container.querySelector('.folderTree__ul .folderTree__ul');
         treeView.innerHTML = tree;

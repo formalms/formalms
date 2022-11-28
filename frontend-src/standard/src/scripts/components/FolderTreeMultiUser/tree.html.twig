@@ -19,7 +19,12 @@
                             {% for action in el.actions %}
                                 {% if action.type == 'radioButton' %}
                                    {% for option in action.options %}
-                                        <input class="radiosel" id="{{ option.name }}" type="radio" value="{{ option.value }}" name="{{ option.name }}">
+                                        <input id="{{ option.name }}"
+                                            class="radiosel"
+                                            id="{{ option.name }}"
+                                            type="radio"
+                                            value="{{ option.value }}"
+                                            name="userselects_{{el.id}}">
                                         <label for="{{ option.name }}">{{ option.label }}</label>
                                    {% endfor %}
                                 {% endif %}

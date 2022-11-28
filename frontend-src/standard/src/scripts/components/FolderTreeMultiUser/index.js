@@ -12,11 +12,14 @@ class FolderTreeMultiUser extends FolderTreeBase {
      * Associated Twig view
      */
 
-    this.baseApiUrl = this.getBaseApiUrl('adm/userselector/getData?dataType=org');
-
-    this.getData(this.baseApiUrl);
+    this.baseApiUrl = this.getBaseApiUrl('adm/userselector/getData&dataType=org');
 
     this.Tree = Tree;
+  }
+
+  async getTree() {
+    await this.getData(this.baseApiUrl, false);
+    return this.render();
   }
 
   static create(controller = {}, baseApiUrl = '') {
@@ -29,7 +32,7 @@ class FolderTreeMultiUser extends FolderTreeBase {
   }
 
   getBaseApiUrl(action) {
-    let url = `https://forma.local/appLms/index.php?r=${action}`;
+    let url = `https://forma.local/appCore/ajax.adm_server.php?r=${action}`;
     return url; 
   }
 
