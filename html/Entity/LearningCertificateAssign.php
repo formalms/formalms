@@ -2,38 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningCertificateAssign
  *
- * @ORM\Table(name="learning_certificate_assign", indexes={
- *     @ORM\Index(name="id_certificate_idx", columns={"id_certificate"}),
- *     @ORM\Index(name="id_course_idx", columns={"id_course"}),
- *     @ORM\Index(name="id_user_idx", columns={"id_user"})
- * })
+ * @ORM\Table(name="learning_certificate_assign")
  * @ORM\Entity
  */
 class LearningCertificateAssign
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="id_certificate", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idCertificate = '0';
 
@@ -41,7 +25,8 @@ class LearningCertificateAssign
      * @var int
      *
      * @ORM\Column(name="id_course", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idCourse = '0';
 
@@ -49,7 +34,8 @@ class LearningCertificateAssign
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idUser = '0';
 

@@ -1,8 +1,7 @@
 <?php
 
 
-
-namespace FormaLms\Entity;
+namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,7 +13,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ConferenceBooking
 {
-      use Timestamps;
     /**
      * @var int
      *

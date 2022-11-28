@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreRegSetting
  *
- * @ORM\Table(name="core_reg_setting", indexes={
- *     @ORM\Index(name="region_id_idx", columns={"region_id"}),
- *     @ORM\Index(name="val_name_idx", columns={"val_name"})
- * })
+ * @ORM\Table(name="core_reg_setting")
  * @ORM\Entity
  */
 class CoreRegSetting
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="region_id", type="string", length=100, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $regionId = '';
 
@@ -40,7 +25,8 @@ class CoreRegSetting
      * @var string
      *
      * @ORM\Column(name="val_name", type="string", length=100, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $valName = '';
 

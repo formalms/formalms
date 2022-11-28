@@ -2,34 +2,16 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningGamesTrack
  *
- * @ORM\Table(name="learning_games_track", indexes={
- *      @ORM\Index(name="idReference", columns={"idReference"}), 
- *      @ORM\Index(name="idUser", columns={"idUser"}),
- *      @ORM\Index(name="id_track_idx", columns={"idTrack"}), 
- *      @ORM\Index(name="object_type_idx", columns={"objectType"})
- * })
+ * @ORM\Table(name="learning_games_track", indexes={@ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="idReference", columns={"idReference"})})
  * @ORM\Entity
  */
 class LearningGamesTrack
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
@@ -48,7 +30,8 @@ class LearningGamesTrack
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtrack = '0';
 
@@ -56,7 +39,8 @@ class LearningGamesTrack
      * @var string
      *
      * @ORM\Column(name="objectType", type="string", length=20, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $objecttype = '';
 

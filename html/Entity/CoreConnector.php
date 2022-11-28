@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreConnector
  *
- * @ORM\Table(name="core_connector", indexes={
- *     @ORM\Index(name="type_idx", columns={"type"})
- * })
+ * @ORM\Table(name="core_connector")
  * @ORM\Entity
  */
 class CoreConnector
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", length=25, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $type = '';
 

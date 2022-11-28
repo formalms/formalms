@@ -2,8 +2,6 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,8 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningMaterialsTrack
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *

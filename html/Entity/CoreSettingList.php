@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreSettingList
  *
- * @ORM\Table(name="core_setting_list", indexes={
- *     @ORM\Index(name="path_name_idx", columns={"path_name"})
- * })
+ * @ORM\Table(name="core_setting_list")
  * @ORM\Entity
  */
 class CoreSettingList
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="path_name", type="string", length=255, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $pathName = '';
 

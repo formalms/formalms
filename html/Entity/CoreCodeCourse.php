@@ -2,8 +2,6 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,21 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreCodeCourse
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="idCodeGroup", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcodegroup = '0';
 
@@ -36,6 +25,8 @@ class CoreCodeCourse
      * @var int
      *
      * @ORM\Column(name="idCourse", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcourse = '0';
 

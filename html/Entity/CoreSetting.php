@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreSetting
  *
- * @ORM\Table(name="core_setting", indexes={
- *     @ORM\Index(name="param_name_idx", columns={"param_name"})
- * })
+ * @ORM\Table(name="core_setting")
  * @ORM\Entity
  */
 class CoreSetting
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="param_name", type="string", length=255, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $paramName = '';
 

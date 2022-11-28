@@ -2,20 +2,16 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningOrganization
  *
- * @ORM\Table(name="learning_organization", indexes={@ORM\Index(name="path", columns={"path"}), @ORM\Index(name="idParent", columns={"idParent"})})
+ * @ORM\Table(name="learning_organization", indexes={@ORM\Index(name="idParent", columns={"idParent"}), @ORM\Index(name="path", columns={"path"})})
  * @ORM\Entity
  */
 class LearningOrganization
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *

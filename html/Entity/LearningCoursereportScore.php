@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningCoursereportScore
  *
- * @ORM\Table(name="learning_coursereport_score", indexes={
- *     @ORM\Index(name="id_report_idx", columns={"id_report"}),
- *     @ORM\Index(name="id_user_idx", columns={"id_user"})
- * })
+ * @ORM\Table(name="learning_coursereport_score")
  * @ORM\Entity
  */
 class LearningCoursereportScore
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="id_report", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idReport = '0';
 
@@ -40,7 +25,8 @@ class LearningCoursereportScore
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idUser = '0';
 

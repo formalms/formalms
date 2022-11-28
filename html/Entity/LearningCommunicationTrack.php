@@ -2,8 +2,6 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,21 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCommunicationTrack
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="idReference", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idreference = '0';
 
@@ -36,6 +25,8 @@ class LearningCommunicationTrack
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';
 

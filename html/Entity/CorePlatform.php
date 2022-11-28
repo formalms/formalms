@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CorePlatform
  *
- * @ORM\Table(name="core_platform", indexes={
- *     @ORM\Index(name="platform_idx", columns={"platform"})
- * })
+ * @ORM\Table(name="core_platform")
  * @ORM\Entity
  */
 class CorePlatform
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="platform", type="string", length=255, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $platform = '';
 

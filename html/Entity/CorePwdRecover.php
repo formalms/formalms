@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CorePwdRecover
  *
- * @ORM\Table(name="core_pwd_recover", indexes={
- *     @ORM\Index(name="idst_user_idx", columns={"idst_user"})
- * })
+ * @ORM\Table(name="core_pwd_recover")
  * @ORM\Entity
  */
 class CorePwdRecover
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="idst_user", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idstUser = '0';
 

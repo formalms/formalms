@@ -2,8 +2,6 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,23 +12,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCommunicationAccess
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *
      * @ORM\Column(name="id_comm", type="integer", nullable=false)
      * @ORM\Id
-     
+     * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $idComm;
+    private $idComm = '0';
 
     /**
      * @var int
      *
      * @ORM\Column(name="idst", type="integer", nullable=false)
      * @ORM\Id
-     
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idst = '0';
 

@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningCertificateMetaAssign
  *
- * @ORM\Table(name="learning_certificate_meta_assign", indexes={
- *     @ORM\Index(name="id_user_idx", columns={"idUser"}),
- *     @ORM\Index(name="id_meta_certificate_idx", columns={"idMetaCertificate"})
- * })
+ * @ORM\Table(name="learning_certificate_meta_assign")
  * @ORM\Entity
  */
 class LearningCertificateMetaAssign
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';
 
@@ -40,7 +25,8 @@ class LearningCertificateMetaAssign
      * @var int
      *
      * @ORM\Column(name="idMetaCertificate", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idmetacertificate = '0';
 

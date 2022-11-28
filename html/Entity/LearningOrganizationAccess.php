@@ -2,35 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningOrganizationAccess
  *
- * @ORM\Table(name="learning_organization_access", indexes={
- *      @ORM\Index(name="kind_idx", columns={"kind"}),
- *      @ORM\Index(name="value_idx", columns={"value"})
- * })
+ * @ORM\Table(name="learning_organization_access", indexes={@ORM\Index(name="kind", columns={"kind"}), @ORM\Index(name="idObject", columns={"idOrgAccess"})})
  * @ORM\Entity
  */
 class LearningOrganizationAccess
 {
-      use Timestamps;     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var array
      *
      * @ORM\Column(name="kind", type="simple_array", length=0, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $kind = '';
 
@@ -38,7 +25,8 @@ class LearningOrganizationAccess
      * @var int
      *
      * @ORM\Column(name="value", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $value = '0';
 
@@ -46,9 +34,10 @@ class LearningOrganizationAccess
      * @var int
      *
      * @ORM\Column(name="idOrgAccess", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $idorgaccess;
+    private $idorgaccess = '0';
 
     /**
      * @var string|null

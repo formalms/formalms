@@ -2,8 +2,6 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,8 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCalendar
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *
@@ -23,7 +19,7 @@ class LearningCalendar
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private $id = '0';
 
     /**
      * @var int|null

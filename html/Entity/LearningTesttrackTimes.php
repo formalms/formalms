@@ -2,38 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningTesttrackTimes
  *
- * @ORM\Table(name="learning_testtrack_times", indexes={
- *      @ORM\Index(name="number_time_idx", columns={"number_time"}),
- *      @ORM\Index(name="id_track_idx", columns={"idTrack"}),
- *      @ORM\Index(name="id_test_idx", columns={"idTest"})
- * })
+ * @ORM\Table(name="learning_testtrack_times")
  * @ORM\Entity
  */
 class LearningTesttrackTimes
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var bool
      *
      * @ORM\Column(name="number_time", type="boolean", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $numberTime = '0';
 
@@ -41,7 +25,8 @@ class LearningTesttrackTimes
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtrack = '0';
 
@@ -56,7 +41,8 @@ class LearningTesttrackTimes
      * @var int
      *
      * @ORM\Column(name="idTest", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtest = '0';
 

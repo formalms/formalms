@@ -2,10 +2,7 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 
 /**
  * CoreFncroleGroupLang
@@ -15,21 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreFncroleGroupLang
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="id_group", type="integer", nullable=false, options={"unsigned"=true})
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idGroup = '0';
 
@@ -37,6 +25,8 @@ class CoreFncroleGroupLang
      * @var string
      *
      * @ORM\Column(name="lang_code", type="string", length=255, nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $langCode = '';
 

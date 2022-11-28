@@ -2,39 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreTransactionInfo
  *
- * @ORM\Table(name="core_transaction_info", indexes={
- *     @ORM\Index(name="id_trans_idx", columns={"id_trans"}),
- *     @ORM\Index(name="id_course_idx", columns={"id_course"}),
- *     @ORM\Index(name="id_date_idx", columns={"id_date"}),
- *     @ORM\Index(name="id_edition_idx", columns={"id_edition"})
- * })
+ * @ORM\Table(name="core_transaction_info")
  * @ORM\Entity
  */
 class CoreTransactionInfo
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="id_trans", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idTrans = '0';
 
@@ -42,7 +25,8 @@ class CoreTransactionInfo
      * @var int
      *
      * @ORM\Column(name="id_course", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idCourse = '0';
 
@@ -50,7 +34,8 @@ class CoreTransactionInfo
      * @var int
      *
      * @ORM\Column(name="id_date", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idDate = '0';
 
@@ -58,7 +43,8 @@ class CoreTransactionInfo
      * @var int
      *
      * @ORM\Column(name="id_edition", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idEdition = '0';
 

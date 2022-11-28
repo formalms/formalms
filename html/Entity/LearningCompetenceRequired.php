@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningCompetenceRequired
  *
- * @ORM\Table(name="learning_competence_required", indexes={
- *     @ORM\Index(name="idst_idx", columns={"idst"}),
- *     @ORM\Index(name="id_competence_idx", columns={"id_competence"})
- * })
+ * @ORM\Table(name="learning_competence_required")
  * @ORM\Entity
  */
 class LearningCompetenceRequired
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="id_competence", type="integer", nullable=false, options={"unsigned"=true})
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idCompetence = '0';
 
@@ -40,7 +25,8 @@ class LearningCompetenceRequired
      * @var int
      *
      * @ORM\Column(name="idst", type="integer", nullable=false, options={"unsigned"=true})
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idst = '0';
 

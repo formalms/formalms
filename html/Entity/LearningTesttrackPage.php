@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningTesttrackPage
  *
- * @ORM\Table(name="learning_testtrack_page", indexes={
- *      @ORM\Index(name="page_idx", columns={"page"}),
- *      @ORM\Index(name="id_track_idx", columns={"idTrack"})
- * })
+ * @ORM\Table(name="learning_testtrack_page")
  * @ORM\Entity
  */
 class LearningTesttrackPage
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="page", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $page = '0';
 
@@ -40,7 +25,8 @@ class LearningTesttrackPage
      * @var int
      *
      * @ORM\Column(name="idTrack", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idtrack = '0';
 

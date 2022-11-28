@@ -2,38 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreRole
  *
- * @ORM\Table(name="core_role", indexes={
- *      @ORM\Index(name="idPlugin_idx", columns={"idPlugin"}), 
- *      @ORM\Index(name="roleid_idx", columns={"roleid"}),
- *      @ORM\Index(name="idst_idx", columns={"idst"})
- * })
+ * @ORM\Table(name="core_role", indexes={@ORM\Index(name="idPlugin", columns={"idPlugin"}), @ORM\Index(name="roleid", columns={"roleid"})})
  * @ORM\Entity
  */
 class CoreRole
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="idst", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idst = '0';
 

@@ -2,38 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningCourseDatePresence
  *
- * @ORM\Table(name="learning_course_date_presence", indexes={
- *      @ORM\Index(name="day_idx", columns={"day"}), 
- *      @ORM\Index(name="id_date_idx", columns={"id_date"}),
- *      @ORM\Index(name="id_user_idx", columns={"id_user"})
- * })
+ * @ORM\Table(name="learning_course_date_presence")
  * @ORM\Entity
  */
 class LearningCourseDatePresence
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="day", type="date", nullable=false, options={"default"="0000-00-00"})
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $day = '0000-00-00';
 
@@ -41,7 +25,8 @@ class LearningCourseDatePresence
      * @var int
      *
      * @ORM\Column(name="id_date", type="integer", nullable=false, options={"unsigned"=true})
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idDate = '0';
 
@@ -49,7 +34,8 @@ class LearningCourseDatePresence
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false, options={"unsigned"=true})
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idUser = '0';
 

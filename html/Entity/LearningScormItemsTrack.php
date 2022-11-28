@@ -2,20 +2,16 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningScormItemsTrack
  *
- * @ORM\Table(name="learning_scorm_items_track", indexes={@ORM\Index(name="idscorm_item", columns={"idscorm_item"}), @ORM\Index(name="idUser", columns={"idUser"}), @ORM\Index(name="idscorm_tracking", columns={"idscorm_tracking"}), @ORM\Index(name="idscorm_organization", columns={"idscorm_organization"})})
+ * @ORM\Table(name="learning_scorm_items_track", indexes={@ORM\Index(name="idscorm_tracking", columns={"idscorm_tracking"}), @ORM\Index(name="idscorm_organization", columns={"idscorm_organization"}), @ORM\Index(name="idscorm_item", columns={"idscorm_item"}), @ORM\Index(name="idUser", columns={"idUser"})})
  * @ORM\Entity
  */
 class LearningScormItemsTrack
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *

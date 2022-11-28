@@ -1,7 +1,6 @@
 <?php
 use Doctrine\DBAL\DriverManager;
-define('IN_FORMA', true);
-require dirname(__FILE__) . '/html/config.php';
+require __DIR__ . '/../html/config.php';
 return DriverManager::getConnection([
     'driver' => 'pdo_mysql',
     'user' => $cfg['db_user'],

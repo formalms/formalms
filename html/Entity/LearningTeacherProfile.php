@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningTeacherProfile
  *
- * @ORM\Table(name="learning_teacher_profile", indexes={
- *      @ORM\Index(name="id_user_idx", columns={"id_user"})
- * })
+ * @ORM\Table(name="learning_teacher_profile")
  * @ORM\Entity
  */
 class LearningTeacherProfile
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="id_user", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idUser = '0';
 

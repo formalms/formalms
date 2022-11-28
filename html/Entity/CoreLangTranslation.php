@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreLangTranslation
  *
- * @ORM\Table(name="core_lang_translation", indexes={
- *     @ORM\Index(name="id_text_idx", columns={"id_text"}),
- *     @ORM\Index(name="lang_code_idx", columns={"lang_code"})
- * })
+ * @ORM\Table(name="core_lang_translation")
  * @ORM\Entity
  */
 class CoreLangTranslation
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-    * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="id_text", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idText = '0';
 
@@ -40,7 +25,8 @@ class CoreLangTranslation
      * @var string
      *
      * @ORM\Column(name="lang_code", type="string", length=50, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $langCode = '';
 

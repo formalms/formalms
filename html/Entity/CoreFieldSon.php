@@ -2,7 +2,7 @@
 
 
 
-namespace FormaLms\Entity;
+namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,8 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class CoreFieldSon
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *

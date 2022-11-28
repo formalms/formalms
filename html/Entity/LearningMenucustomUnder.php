@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningMenucustomUnder
  *
- * @ORM\Table(name="learning_menucustom_under", indexes={
- *      @ORM\Index(name="id_custom_idx", columns={"idCustom"}),
- *      @ORM\Index(name="id_module_idx", columns={"idModule"})
- * })
+ * @ORM\Table(name="learning_menucustom_under")
  * @ORM\Entity
  */
 class LearningMenucustomUnder
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="idCustom", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idcustom = '0';
 
@@ -40,7 +25,8 @@ class LearningMenucustomUnder
      * @var int
      *
      * @ORM\Column(name="idModule", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idmodule = '0';
 

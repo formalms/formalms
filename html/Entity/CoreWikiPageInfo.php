@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreWikiPageInfo
  *
- * @ORM\Table(name="core_wiki_page_info", indexes={
- *     @ORM\Index(name="page_id_idx", columns={"page_id"}),
- *     @ORM\Index(name="language_idx", columns={"language"})
- * })
+ * @ORM\Table(name="core_wiki_page_info")
  * @ORM\Entity
  */
 class CoreWikiPageInfo
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="page_id", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $pageId = '0';
 
@@ -40,7 +25,8 @@ class CoreWikiPageInfo
      * @var string
      *
      * @ORM\Column(name="language", type="string", length=50, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $language = '';
 

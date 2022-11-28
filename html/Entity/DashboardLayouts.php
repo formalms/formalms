@@ -2,8 +2,6 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,8 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DashboardLayouts
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *
@@ -53,6 +49,19 @@ class DashboardLayouts
      */
     private $default = '0';
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     */
+    private $createdAt = '0000-00-00 00:00:00';
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
 
 }

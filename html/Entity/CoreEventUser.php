@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreEventUser
  *
- * @ORM\Table(name="core_event_user", indexes={
- *     @ORM\Index(name="idst_idx", columns={"idst"}),
- *     @ORM\Index(name="id_event_mgr_idx", columns={"idEventMgr"})
- * })
+ * @ORM\Table(name="core_event_user")
  * @ORM\Entity
  */
 class CoreEventUser
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="idst", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idst = '0';
 
@@ -40,7 +25,8 @@ class CoreEventUser
      * @var int
      *
      * @ORM\Column(name="idEventMgr", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $ideventmgr = '0';
 

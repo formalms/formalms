@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ConferenceTeleskillLog
  *
- * @ORM\Table(name="conference_teleskill_log", indexes={
- *     @ORM\Index(name="room_id_idx", columns={"roomid"}),
- *     @ORM\Index(name="id_user_idx", columns={"idUser"})
- * })
+ * @ORM\Table(name="conference_teleskill_log")
  * @ORM\Entity
  */
 class ConferenceTeleskillLog
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="roomid", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $roomid = '0';
 
@@ -40,7 +25,8 @@ class ConferenceTeleskillLog
      * @var int
      *
      * @ORM\Column(name="idUser", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $iduser = '0';
 

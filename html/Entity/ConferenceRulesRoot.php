@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ConferenceRulesRoot
  *
- * @ORM\Table(name="conference_rules_root", indexes={
- *     @ORM\Index(name="system_type_idx", columns={"system_type"})
- * })
+ * @ORM\Table(name="conference_rules_root")
  * @ORM\Entity
  */
 class ConferenceRulesRoot
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="system_type", type="string", length=0, nullable=false, options={"default"="p2p"})
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $systemType = 'p2p';
 

@@ -2,36 +2,24 @@
 
 
 
-namespace FormaLms\Entity;
+namespace Formalms\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * ConferenceTeleskillRoom
  *
- * @ORM\Table(name="conference_teleskill_room", indexes={
- *     @ORM\Index(name="room_id_idx", columns={"roomId"})
- * })
+ * @ORM\Table(name="conference_teleskill_room")
  * @ORM\Entity
  */
 class ConferenceTeleskillRoom
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="roomid", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $roomid = '0';
 

@@ -2,22 +2,16 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * CoreEventClass
  *
- * @ORM\Table(name="core_event_class", 
- *      uniqueConstraints={@ORM\UniqueConstraint(name="class_2", columns={"class"})
- * })
+ * @ORM\Table(name="core_event_class", uniqueConstraints={@ORM\UniqueConstraint(name="class_2", columns={"class"})}, indexes={@ORM\Index(name="class", columns={"class"})})
  * @ORM\Entity
  */
 class CoreEventClass
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *

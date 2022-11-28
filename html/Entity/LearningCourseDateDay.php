@@ -2,8 +2,6 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,8 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LearningCourseDateDay
 {
-    use Timestamps;    
-      
     /**
      * @var int
      *
@@ -87,6 +83,20 @@ class LearningCourseDateDay
      * @ORM\Column(name="deleted", type="boolean", nullable=true)
      */
     private $deleted = '0';
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=true, options={"default"="CURRENT_TIMESTAMP"})
+     */
+    private $createdAt = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var \DateTime|null
+     *
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
 
 }

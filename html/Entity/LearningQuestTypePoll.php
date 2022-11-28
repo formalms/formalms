@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningQuestTypePoll
  *
- * @ORM\Table(name="learning_quest_type_poll", indexes={
- *      @ORM\Index(name="type_quest_idx", columns={"type_quest"})
- * })
+ * @ORM\Table(name="learning_quest_type_poll")
  * @ORM\Entity
  */
 class LearningQuestTypePoll
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="type_quest", type="string", length=255, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $typeQuest = '';
 

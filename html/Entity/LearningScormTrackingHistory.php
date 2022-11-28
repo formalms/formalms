@@ -2,37 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningScormTrackingHistory
  *
- * @ORM\Table(name="learning_scorm_tracking_history", indexes={
- *      @ORM\Index(name="idscorm_tracking_idx", columns={"idscorm_tracking"}),
- *      @ORM\Index(name="date_action_idx", columns={"date_action"})
- * })
+ * @ORM\Table(name="learning_scorm_tracking_history")
  * @ORM\Entity
  */
 class LearningScormTrackingHistory
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var int
      *
      * @ORM\Column(name="idscorm_tracking", type="integer", nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $idscormTracking = '0';
 
@@ -40,7 +25,8 @@ class LearningScormTrackingHistory
      * @var \DateTime
      *
      * @ORM\Column(name="date_action", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $dateAction = '0000-00-00 00:00:00';
 

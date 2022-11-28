@@ -2,36 +2,22 @@
 
 
 
-namespace FormaLms\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * LearningMiddlearea
  *
- * @ORM\Table(name="learning_middlearea", indexes={
- *      @ORM\Index(name="obj_index_idx", columns={"obj_index"})
- * })
+ * @ORM\Table(name="learning_middlearea")
  * @ORM\Entity
  */
 class LearningMiddlearea
 {
-    use Timestamps;    
-      
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="bigint", nullable=false, options={"autoincrement":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="obj_index", type="string", length=255, nullable=false)
-     
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $objIndex = '';
 
