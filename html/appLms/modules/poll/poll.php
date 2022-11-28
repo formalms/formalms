@@ -458,7 +458,7 @@ function fixPageSequence($id_poll)
 }
 
 // XXX: fixSequence
-function fixPollSequence($id_poll)
+function fixPollSequence()
 {
     checkPerm('view', false, 'storage');
 

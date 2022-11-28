@@ -23,7 +23,7 @@ class Track_Link extends Track_Object
         parent::__construct($idTrack);
     }
 
-    public function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
+    public static function getIdTrack($idReference, $idUser, $idResource, $createOnFail = false)
     {
         $query = 'SELECT idTrack FROM %lms_materials_track'
                 . " WHERE idReference='" . (int) $idReference . "'"

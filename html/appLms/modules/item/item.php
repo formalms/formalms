@@ -207,7 +207,7 @@ if (!Docebo::user()->isAnonymous()) {
         }
 
         //save file
-        if (count($filesInfo)) {
+        if (is_countable($filesInfo) && count($filesInfo)) {
             $path = '/appLms/' . FormaLms\lib\Get::sett('pathlesson');
 
             // retrive and delte ld file --------------------------------------------------

@@ -74,7 +74,7 @@ class Track_Poll extends Track_Object
     /**
      * @return id_track if exists or false
      **/
-    public function getTrack($id_reference, $id_resource, $id_user)
+    public static function getTrack($id_reference, $id_resource, $id_user)
     {
         $query = '
 		SELECT id_track 
