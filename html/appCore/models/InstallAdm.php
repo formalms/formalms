@@ -34,12 +34,19 @@ class InstallAdm extends Model
     protected $debug;
     /** @var array **/
     protected $response;
+    /** @var bool **/
+    protected $upgrade;
+
+    /** @var string **/
+    protected $minSupportedVersion = '3.3.2';
+    protected $minUpgradeVersion = '4.0.0';
 
     const CHECK_REQUIREMENTS = '1';
     const CHECK_DATABASE = '2';
     const CHECK_ADMIN = '3';
     const CHECK_SMTP = '4';
     const CHECK_FINAL = '5';
+    const CHECK_UPGRADE = '2';
 
     const SMTP_REQUIRED = [
         'smtpHost', 'smtpPort', 'smtpUser', 'smtpPwd', 'smtpSecure', 'smtpAutoTls'
@@ -54,7 +61,9 @@ class InstallAdm extends Model
     {
         //soluzione provvisoria in attesa di namespace
         require_once(_lib_.'/installer/lang/'.Lang::getSelLang().'.php');
+        //require_once(_adm_.'/versions.php');
 
+        $this->upgrade = $this->isUpgrade();
         $this->fillSteps();
         $this->fillLabels();
         $this->fillErrorLabels();
@@ -70,12 +79,20 @@ class InstallAdm extends Model
      * @return self
      */
     public function fillSteps() : self {
-        $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1, 
+
+        if($this->upgrade) {
+            $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1, 
+                        self::CHECK_UPGRADE => _TITLE_STEP5
+                        ];
+        } else {
+            $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1, 
                         self::CHECK_DATABASE => _TITLE_STEP2, 
                         self::CHECK_ADMIN => _TITLE_STEP3,
                         self::CHECK_SMTP => _TITLE_STEP4,
                         self::CHECK_FINAL => _TITLE_STEP5
                     ];
+        }
+        
         return $this;
     }
 
@@ -98,6 +115,7 @@ class InstallAdm extends Model
         $labels['introText'] = _INSTALLER_INTRO_TEXT;
         $labels['languageLabel'] = _LANGUAGE;
         $labels['installerTitle'] = _INSTALLER_TITLE;
+        $labels['upgraderTitle'] = _UPGRADER_TITLE;
         $labels['next'] = _NEXT;
         $labels['back'] = _BACK;
         $labels['cancel'] = _CANCEL;
@@ -182,6 +200,10 @@ class InstallAdm extends Model
             'replytoMail' => _SMTP_REPLYTOMAIL,
         ];
 
+        /****************************/
+        $labels['installedVersion'] = _INSTALLED_VERSION;
+        $labels['detectedVersion'] = _DETECTED_VERSION;
+
         $this->labels = $labels;
 
         return $this;
@@ -206,6 +228,7 @@ class InstallAdm extends Model
         $this->errorLabels['not_matching_password'] = _NOT_MATCHING_PASSWORD;
         $this->errorLabels['email_not_valid'] = _NOT_VALID_EMAIL;
         $this->errorLabels['smtp_failed'] = _SMTP_FAILED;
+        $this->errorLabels['block_upgrade'] = _BLOCK_UPGRADE;
 
         return $this;
     }
@@ -243,17 +266,24 @@ class InstallAdm extends Model
       
         $params = array_merge($params, 
                                 $this->checkRequirements(), 
-                                ini_get_all(), 
-                                $this->getLicense(),
+                                ini_get_all());
+        if(!$this->upgrade) {
+            $params = array_merge($params, $this->getLicense(),
                                 $this->getDbConfig(),
                                 $this->getFtpConfig(),
                                 $this->getSmtpConfig(),
                                 ['setValues' => $this->getSetValues()],
                                 ['setLangs' => $this->getSetLangs()],
                                 ['smtpFieldsRequired' => $this->getSmtpFieldsRequired()]);
+        } else {
+            $params = array_merge($params, $this->compareVersions());
+        }
+                                
 
         $params['setLang'] = Lang::getSelLang();
-
+        $params['upgrade'] = (bool) $this->upgrade;
+        $params['currentVersion'] = $this->upgrade;
+        $params['fileVersion'] = _file_version_;
         $params['serverSwInfo'] = $request->server->get('SERVER_SOFTWARE');
         $params['phpVersionInfo'] = phpversion();
         preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $sqlClientVersion);
@@ -1028,6 +1058,36 @@ class InstallAdm extends Model
     public function finalize($request) : string {
 
         $params = $request->request->all();
+        $messages = [];
+
+        if($params['upgrade']) {
+
+            switch($params['check']) {
+                case 1:
+                    //se c'è da installare metto la tabella doctrine migrations
+                    if(version_compare($this->upgrade, $this->minSupportedVersion) == 0 && version_compare(_file_version_, $this->minUpgradeVersion) >= 0) {
+                        $success = $this->installMigrationsTable();
+
+                        if($success) {
+                            $messages[] = 'ok_migrations';
+                        } else {
+                            $messages[] = 'error_migrations';
+                        }
+                    }
+                    break;
+    
+                case 2:
+                    //lancio migrate
+                    $messages[] = $this->migrate();
+                
+                    break;
+            }
+
+
+            return $this->setResponse($success, $messages)->wrapResponse();
+        }
+
+
 
         switch($params['check']) {
             case 1:
@@ -1046,7 +1106,7 @@ class InstallAdm extends Model
 
             case 2:
                
-                $messages[] = $this->installDatabase();
+                $messages[] = $this->migrate();
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation($this->session->get('setValues'));
@@ -1115,7 +1175,7 @@ class InstallAdm extends Model
      * 
      * @return string
      */
-    private function installDatabase() {
+    private function migrate() {
         return shell_exec("php /app/bin/doctrine-migrations migrate --configuration=/app/migrations.yaml --db-configuration=/app/migrations-db.php 2>&1");
       
     }
@@ -1441,7 +1501,79 @@ class InstallAdm extends Model
 
         return $this->setResponse(true, [])->wrapResponse();
     }
+
+
+    public function isUpgrade() {
+        $connection = DbConn::getInstance();
+        
+        if($connection::$connected) {
+            list($currentVerion) = sql_fetch_row(sql_query("SELECT param_value FROM core_setting WHERE param_name = 'core_version' "));
+    
+            if($currentVerion) {
+                return $currentVerion;
+            }
+        }
+
+        return false;
+    }
   
 
+    public function compareVersions() {
+        $result = [];
+
+        $compareMinVersion = version_compare($this->upgrade, $this->minSupportedVersion);
+
+        if(0 > $compareMinVersion) {
+
+            //not supported
+            $result['upgradeTrigger'] = 0;
+            $result['upgradeClass'] = 'err';
+            $result['upgradeResult'] = _NOT_SUPPORTED_VERSION;
+        } else {
+            $compareResult = version_compare($this->upgrade, _file_version_);
+
+            if(0 > $compareResult) {
+                //ok the upgrade is possible
+                $result['upgradeTrigger'] = 1;
+                $result['upgradeClass'] = 'ok';
+                $result['upgradeResult'] = _OK_UPGRADE;
+            } elseif(0 < $compareResult) {
+                //installed version is major than detected
+                $result['upgradeTrigger'] = 0;
+                $result['upgradeClass'] = 'err';
+                $result['upgradeResult'] = _NO_DOWNGRADE;
+
+            } else {
+                //nothing to do
+                $result['upgradeTrigger'] = 0;
+                $result['upgradeClass'] = 'none';
+                $result['upgradeResult'] = _NO_UPGRADE;
+            }
+        }
+
+        return $result ;
+    }
+
+
+    public function installMigrationsTable() {
+        
+        $connection = DbConn::getInstance();
+        $createQuery = "CREATE TABLE IF NOT EXISTS`core_migration_versions`  (
+            `version` varchar(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+            `executed_at` datetime(0) NULL DEFAULT NULL,
+            `execution_time` int(11) NULL DEFAULT NULL,
+            PRIMARY KEY (`version`) USING BTREE
+          ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_unicode_ci ROW_FORMAT = Dynamic";
+
+        $creationTable = sql_query($createQuery);
+
+        if($creationTable) {
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000001','" . (new Datetime())->format("Y-m-d H:i:s") ."', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000002','" . (new Datetime())->format("Y-m-d H:i:s") ."', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000003','" . (new Datetime())->format("Y-m-d H:i:s") ."', 1000)");
+        }
+
+        return $creationTable;
+    }
 
 }

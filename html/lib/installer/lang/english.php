@@ -12,6 +12,14 @@
  */
 
 define('_INSTALLER_TITLE', 'forma.lms - Installation');
+define('_UPGRADER_TITLE', 'forma.lms - Upgrade');
+define('_INSTALLED_VERSION', 'Installed Version');
+define('_DETECTED_VERSION', 'Detected Version');
+define('_OK_UPGRADE', 'You can proceed with Upgrade');
+define('_NO_UPGRADE', 'No upgrade needed');
+define('_NO_DOWNGRADE', 'Downgrade is not supported');
+define('_BLOCK_UPGRADE', 'Impossibile to proceed, read the message in the information block below');
+define('_NOT_SUPPORTED_VERSION', 'You don\'t have the minimum version required for this upgrade please download the right package from <a href="https://www.formalms.org/download.html" target="_blank">here</a>');
 define('_NEXT', 'Next step');
 define('_BACK', 'Back');
 define('_LOADING', 'Loading');

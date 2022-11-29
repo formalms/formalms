@@ -399,3 +399,18 @@
 #ftp_data {
     margin-top: 1.6em;
 }
+
+#intro_txt table {width:100%;}
+
+.frame{border: 2px solid;}
+.frame.err{border:2px solid red;}
+.frame.err span{color:red}
+.frame.ok span{color:green}
+.frame.ok{border: 2px solid green;}
+.frame span {
+    margin: auto;
+    text-align: center;
+    display: block;
+    font-weight: 700;
+    padding: 2%;
+}

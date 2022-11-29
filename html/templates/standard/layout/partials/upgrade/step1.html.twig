@@ -1,0 +1,38 @@
+
+<div class="step1">
+	<div class="lang_sel_box">
+	{{ Form_getDropdown(languageLabel, 'language', 'language', languages, setLang) }}
+	
+
+	</div><div class="no_float"></div>
+
+	<div id="intro_txt">
+		<table>
+			<thead>
+				<th><h1>{{ installedVersion }}</h1></th>
+				<th><h1>{{ detectedVersion }}</h1></th>
+			</thead>
+			<tbody>
+				<tr>
+					<td><span>{{ currentVersion }}</span></td>
+					<td class="{{ upgradeClass }}"><span>{{ fileVersion }}</span></td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="frame {{ upgradeClass }}">
+			<span> {{ upgradeResult|raw }} </span>
+		</div>
+	</div>
+	<div>
+        {% include '/serverinfo.html.twig' %}
+	</div>
+
+	{{ Form_getHidden('checkRequirements','checkRequirements', checkRequirements)}}
+
+
+		{{ Form_getHidden('upgrade','upgrade', upgradeTrigger)}}
+
+	{{checkFolderPerms}}
+
+
+</div>

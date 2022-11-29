@@ -117,7 +117,10 @@ function process() {
       if (currentArrIndex() < arr.length) {
         let xhrIndex = currentArrIndex()
         let postData = {'check': arr[xhrIndex].index};
-    
+        //check if is upgrade
+        if($("#upgrade").length > 0) {
+            postData.upgrade = true;
+        }
         // So when ajax completes we'd mark this item as done and turn off busy 
         // so next item of arr will get processed in timer's next 'alarm'
 
@@ -162,21 +165,34 @@ function process() {
 
 /************FUNCTION TO CHECK SYSTEM REQUIREMENTS*********/
 function checkPrerequisites() {
-    if($("#checkRequirements").val() && $('#agree').is(":checked")) {
-        return true;
-    } else {
-    
+
     var postData = {};
     if(!$("#checkRequirements").val()) {
         postData.unsuitable_requirements = true;
     }
-    if(!$('#agree').is(":checked")) {
-        postData.missing_check = true;
+    //check if is upgrade
+    if($("#upgrade").length > 0) {
+
+        if($("#checkRequirements").val() && $("#upgrade").val() == "1") {
+          return true;
+        }
+
+        postData.block_upgrade = true;
+    } else {
+        if($("#checkRequirements").val() && $('#agree').is(":checked")) {
+            return true;
+        } else {
+        
+      
+        if(!$('#agree').is(":checked")) {
+            postData.missing_check = true;
+        }
+      }
+    
     }
 
     getErrorMessages(postData);
     return false;
-    }
 }
 /*************************************/
 

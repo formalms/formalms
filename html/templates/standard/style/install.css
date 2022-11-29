@@ -24,9 +24,9 @@ ul.lang_to_install_list{}
 ul.lang_to_install_list li{list-style:none;float:left;width:25%;margin-top:0.2em;margin-bottom:0.2em;}
 ul.info{}
 ul.info li{list-style:none;font-weight:normal;margin-top:0.3em;margin-bottom:0.6em;}
-ul.info li.ok span{color:green;font-weight:bold;}
+ul.info li.ok span, td.ok span{color:green;font-weight:bold;}
 ul.info li.err{}
-ul.info li.err span{color:red;font-weight:bold;}
+ul.info li.err span, td.err span{color:red;font-weight:bold;}
 ul.info li.warn{}
 ul.info li.warn span{color:purple;font-weight:bold;}
 a{color:#333333;}
