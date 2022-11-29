@@ -22,6 +22,31 @@ final class Version20221012160433 extends AbstractMigration
       
   
         $this->addSql('SET FOREIGN_KEY_CHECKS=0;');
+
+        $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
+            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255),
+            domain varchar(255),
+            parentId int NULL DEFAULT NULL,
+            template varchar(255),
+            orgId int NULL DEFAULT NULL,
+            mailConfigId int NULL DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+        
+        $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs (
+            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            title varchar(255),
+            system boolean not null default 0
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
+        $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs_fields (
+            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            mailConfigId int,
+            type varchar(255),
+            value varchar(255)
+            )ENGINE=InnoDB DEFAULT CHARSET=utf8");
         //////////$this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE conference_booking ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE room_id room_id INT NOT NULL, CHANGE platform platform VARCHAR(255) NOT NULL, CHANGE module module VARCHAR(100) NOT NULL, CHANGE user_idst user_idst INT NOT NULL, CHANGE approved approved TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE conference_chat_msg ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE id_user id_user INT NOT NULL, CHANGE id_room id_room INT NOT NULL, CHANGE userid userid VARCHAR(255) NOT NULL');
@@ -372,7 +397,7 @@ final class Version20221012160433 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_communication_access ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE id_comm id_comm INT NOT NULL, CHANGE idst idst INT NOT NULL');
         $this->addSql('ALTER TABLE learning_communication_category ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE id_parent id_parent INT UNSIGNED NOT NULL, CHANGE level level INT UNSIGNED NOT NULL, CHANGE iLeft iLeft INT UNSIGNED NOT NULL, CHANGE iRight iRight INT UNSIGNED NOT NULL');
         $this->addSql('ALTER TABLE learning_communication_category_lang DROP INDEX IF EXISTS `PRIMARY`');
-        $this->addSql('ALTER TABLE learning_communication_category_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD description TEXT DEFAULT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE id_category id_category INT UNSIGNED NOT NULL, CHANGE lang_code lang_code VARCHAR(255) NOT NULL, CHANGE translation translation VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE learning_communication_category_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE id_category id_category INT UNSIGNED NOT NULL, CHANGE lang_code lang_code VARCHAR(255) NOT NULL, CHANGE translation translation VARCHAR(255) NOT NULL');
         $this->addSql('CREATE INDEX id_category_idx ON learning_communication_category_lang (id_category)');
         $this->addSql('CREATE INDEX lang_code_idx ON learning_communication_category_lang (lang_code)');
         $this->addSql('ALTER TABLE learning_communication_lang DROP INDEX IF EXISTS `PRIMARY`');

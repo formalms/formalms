@@ -456,18 +456,6 @@ final class Version20220815000001 extends AbstractMigration
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
           
 
-        $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
-            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            title varchar(255),
-            domain varchar(255),
-            parentId int NULL DEFAULT NULL,
-            template varchar(255),
-            orgId int NULL DEFAULT NULL,
-            mailConfigId int NULL DEFAULT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
-
 
         $this->addSql("CREATE TABLE IF NOT EXISTS `core_event` (
             `idEvent` int(11) NOT NULL AUTO_INCREMENT,
@@ -854,18 +842,7 @@ final class Version20220815000001 extends AbstractMigration
 
 
 
-        $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs (
-            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            title varchar(255),
-            system boolean not null default 0
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8");
-
-        $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs_fields (
-            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            mailConfigId int,
-            type varchar(255),
-            value varchar(255)
-            )ENGINE=InnoDB DEFAULT CHARSET=utf8");
+    
 
 
         $this->addSql("CREATE TABLE IF NOT EXISTS `core_menu` (

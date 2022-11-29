@@ -354,6 +354,7 @@ final class Version20220815000002 extends AbstractMigration
             `id_category` int(10) unsigned NOT NULL DEFAULT '0',
             `lang_code` varchar(255) NOT NULL DEFAULT '',
             `translation` varchar(255) NOT NULL DEFAULT '',
+            description text not null,
             PRIMARY KEY (`id_category`,`lang_code`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
