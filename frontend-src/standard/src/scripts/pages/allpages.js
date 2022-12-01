@@ -22,6 +22,7 @@ import Chart from 'chart.js';
 import FolderTree from '../components/FolderTree';
 import FolderTreeMultiUser from '../components/FolderTreeMultiUser';
 
+
 var Page = (function () {
     window.frontend.modules = {};
     window.frontend.helpers = {};
@@ -39,7 +40,6 @@ var Page = (function () {
     window.frontend.modules.Modal = ModalElement;
     window.frontend.helpers.Lang = Lang;
     window.frontend.helpers.Axios = Axios;
-   
 
     function setScroll(elem, action) {
         if (action === 'lock') {

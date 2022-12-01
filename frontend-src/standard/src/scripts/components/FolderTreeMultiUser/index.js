@@ -2,7 +2,6 @@ import 'regenerator-runtime/runtime'
 import Tree from './tree.html.twig';
 import FolderTreeBase from './../FolderTreeBase';
 
-
 class FolderTreeMultiUser extends FolderTreeBase {
 
   constructor(baseApiUrl, controller, type, endpoint, options = {}) {
@@ -19,7 +18,18 @@ class FolderTreeMultiUser extends FolderTreeBase {
 
   async getTree() {
     await this.getData(this.baseApiUrl, false);
-    return this.render();
+    this.render();
+    return this.initEvents();
+  }
+
+  initEvents() {
+    this.container.addEventListener('click', (e) => {
+      console.log(e.target.classList, e);
+      if(e.target.classList.contains('arrow')) {
+        this.getNode(e.target.getAttribute('data-id'));
+      }
+    });
+    return this;
   }
 
   static create(controller = {}, baseApiUrl = '') {
@@ -28,6 +38,14 @@ class FolderTreeMultiUser extends FolderTreeBase {
       dragAndDrop: false,
       sortable: false,
       activeStatus: false
+    });
+  }
+
+  async getNode(id) {
+    const endpoint = 'https://forma.local/appCore/ajax.adm_server.php?r=adm/userselector/getData';
+    console.log(endpoint);
+    await window.frontend.helpers.Axios.get(endpoint + `&node_id=${id}`).then((response) => {
+      console.log(response);
     });
   }
 

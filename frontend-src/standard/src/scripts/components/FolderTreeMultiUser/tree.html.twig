@@ -6,12 +6,12 @@
         {% for el in data %}
             <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} {% if options.dragAndDrop %}is-droppable{% endif %}" {% if options.dragAndDrop %}draggable="true"{% endif %}>
                 <div class="actions">
-                    {% if el.children.length > 0 %}
-                        <span class="arrow"></span>
+                    {% if el.hasChildren %}
+                        <span data-id="{{ el.id }}" class="arrow"></span>
                     {% endif %}
                     <button data-id="{{ el.id }}"
                         type="button"
-                        class="folderTree__link ft-is-folder {% if el.children.length > 0 %}ft-has-child{% endif %} {% if options.dragAndDrop %}is-dropzone{% endif %}">
+                        class="folderTree__link {% if el.hasChildren %}has-children{% endif %} ft-is-folder {% if options.dragAndDrop %}is-dropzone{% endif %}">
                         <span>{{ el.name }}</span>
                     </button>
                     <div class="fields-holder">

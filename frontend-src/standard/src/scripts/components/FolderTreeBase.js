@@ -22,7 +22,10 @@ class FolderTreeBase {
     }
 
     this.options = Object.assign(this.options, options);
-
+    
+    // Set default x-signature
+    window.frontend.helpers.Axios.defaults.headers.get['X-Signature'] = window.frontend.config.signature;
+    
     this.data = null;
     this.onLoad = null;
     this.baseApiUrl = baseApiUrl;
@@ -269,7 +272,7 @@ class FolderTreeBase {
   async getData(endpoint, startWithChildren = true) {
     const _this = this;
     try {
-      await axios.get(endpoint).then((response) => {
+      await window.frontend.helpers.Axios.get(endpoint).then((response) => {
         _this.data = startWithChildren ? response.data.data[0].children : response.data.data;
 
         const tree = this.Tree({ data: _this.data, extra: {options: this.options, form: this.hasForm} });
