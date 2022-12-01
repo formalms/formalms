@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author Emanuele Sandri
  **/
 
-define('STRPOSTCONTENT', '_content');
+const STRPOSTCONTENT = '_content';
 
 function additem($object_item)
 {
@@ -458,9 +458,6 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
 
 if (isset($GLOBALS['op'])) {
     switch ($GLOBALS['op']) {
-        /*case "display": {
-            display();
-        }; break;*/
         case 'additem' :
                 additem();
 

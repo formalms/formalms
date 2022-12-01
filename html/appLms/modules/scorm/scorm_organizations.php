@@ -28,7 +28,7 @@ class Scorm_Organization
 
     public $orgtable = 'scorm_organizations';
 
-    public function Scorm_Organization($org_identifier, $idscorm_package, $connection, $createonfail = false, $title = '')
+    public function __construct($org_identifier, $idscorm_package, $connection, $createonfail = false, $title = '')
     {
         $this->org_identifier = $org_identifier;
         $this->idscorm_package = $idscorm_package;

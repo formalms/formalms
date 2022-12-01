@@ -399,7 +399,7 @@ class Track_Object
     /**
      * print in standard output the details of a track.
      **/
-    public function loadReportDetail($idUser, $idItemDetail)
+    public function loadReportDetail($idUser, $idItemDetail, $idItem = 0)
     {
     }
 

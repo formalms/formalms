@@ -77,7 +77,7 @@ class Scorm_Tracking
      * @param $connection
      * @param $createonfile
      */
-    public function Scorm_Tracking($idUser, $idRefernce, $id, $idscorm_package, $connection, $createonfail = true, $id_isitemid = false)
+    public function __construct($idUser, $idRefernce, $id, $idscorm_package, $connection, $createonfail = true, $id_isitemid = false)
     {
         $this->idUser = $idUser;
         $this->idReference = $idRefernce;

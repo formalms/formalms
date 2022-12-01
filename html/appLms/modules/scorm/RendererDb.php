@@ -29,7 +29,7 @@ class RendererDb extends RendererAbstract
     public $prefix;
     public $idpackage;
 
-    public function RendererDb($connection, $prefix, $idpackage)
+    public function __construct($connection, $prefix, $idpackage)
     {
         $this->dbconn = $connection;
         $this->prefix = $prefix;

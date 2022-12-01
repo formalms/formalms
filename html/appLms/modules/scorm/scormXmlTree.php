@@ -11,11 +11,10 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('LMS', true);
-define('IN_FORMA', true);
-//define("IS_AJAX", true);
-define('_deeppath_', '../../../');
-require dirname(__FILE__) . '/' . _deeppath_ . 'base.php';
+const LMS = true;
+const IN_FORMA = true;
+const _deeppath_ = '../../../';
+require __DIR__ . '/' . _deeppath_ . 'base.php';
 
 // start buffer
 ob_start();
@@ -58,8 +57,8 @@ $rb->idUser = getLogUserId();
 $rb->itemtrack = $it;
 $cpm = new CPManagerDb();
 
-$filepath = dirname(__FILE__) . '/../../' . $filepath;
-//die("->Open( $idReference, $idscorm_package, {$GLOBALS['dbConn']}, {$GLOBALS['prefix_lms']} ");
+$filepath = __DIR__ . '/../../' . $filepath;
+
 
 $bError = false;
 if ($bError == false && !$cpm->Open($idReference, $idscorm_package, $GLOBALS['dbConn'], $GLOBALS['prefix_lms'])) {
@@ -86,7 +85,6 @@ $cpm->RenderOrganization($organization, $rb);
 
 header('Content-Type: text/xml; charset=utf-8');
 echo '<?xml version="1.0" encoding="UTF-8"?>';
-
 echo $rb->getOut();
 
 if ($cpm->errCode != 0) {

@@ -68,7 +68,7 @@ class Scorm_ItemsTrack
      * @param $connection connection to the database
      * @param $prefix the prefix to prepend to all tables names
      **/
-    public function Scorm_ItemsTrack($connection, $prefix)
+    public function __construct($connection, $prefix)
     {
         $this->dbconn = $connection;
         $this->prefix = $prefix;
@@ -144,7 +144,7 @@ class Scorm_ItemsTrack
         }
         $rs = sql_query($query, $this->dbconn);
         if ($rs === false) {
-            exit("Scorm_ItemsTrack::getItemsTrack error in select [$query] " . sql_error($this->dbconn));
+            exit("Scorm_ItemsTrack::getItemTrack error in select [$query] " . sql_error($this->dbconn));
         }
         if (sql_num_rows($rs) == 0) {
             return false;

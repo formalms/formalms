@@ -37,7 +37,7 @@ class Scorm_Item
 
     public $itemtable = 'scorm_items';
 
-    public function Scorm_Item($item_identifier, $idscorm_organization, $idpackage, $connection, $createonfail = false, $idscorm_item = null)
+    public function __construct($item_identifier, $idscorm_organization, $idpackage, $connection, $createonfail = false, $idscorm_item = null)
     {
         $this->item_identifier = $item_identifier;
         $this->idscorm_organization = $idscorm_organization;

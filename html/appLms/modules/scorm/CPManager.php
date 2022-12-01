@@ -448,8 +448,9 @@ class CPManager
     {
         $nextElem = $elem->getFirstChild();
         $node = null;
-        $tagname = $prefix . ':' . $tagname;
-
+        if ($prefix != '') {
+            $tagname = $prefix . ':' . $tagname;
+        }
         while ($nextElem) {
             if (($nextElem->getNodeType() == XML_ELEMENT_NODE)) { // only node elements
                 if ($tagname != '') {
@@ -486,7 +487,9 @@ class CPManager
     {
         $nextElem = $elem->getFirstChild();
         $node = null;
-        $tagname = $prefix . ':' . $tagname;
+        if ($prefix != '') {
+            $tagname = $prefix . ':' . $tagname;
+        }
 
         while ($nextElem) {
             if (($nextElem->getNodeType() == XML_ELEMENT_NODE)) { // only node elements

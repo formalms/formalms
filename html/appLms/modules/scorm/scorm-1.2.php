@@ -21,27 +21,27 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author Emanuele Sandri
  **/
 
-define('SCORM_RTE_STUDENTNAME', 'cmi.core.student_name');
-define('SCORM_RTE_LEARNERNAME', 'cmi.core.student_name');
-define('SCORM_RTE_STUDENTID', 'cmi.core.student_id');
-define('SCORM_RTE_LEARNERID', 'cmi.core.student_id');
+const SCORM_RTE_STUDENTNAME = 'cmi.core.student_name';
+const SCORM_RTE_LEARNERNAME = 'cmi.core.student_name';
+const SCORM_RTE_STUDENTID = 'cmi.core.student_id';
+const SCORM_RTE_LEARNERID = 'cmi.core.student_id';
 
-define('SCORM_RTE_CREDIT', 'cmi.core.credit');
-define('SCORM_RTE_LESSONMODE', 'cmi.core.lesson_mode');
-define('SCORM_RTE_ENTRY', 'cmi.core.entry');
-define('SCORM_RTE_EXIT', 'cmi.core.exit');
-define('SCORM_RTE_TOTALTIME', 'cmi.core.total_time');
-define('SCORM_RTE_SESSIONTIME', 'cmi.core.session_time');
+const SCORM_RTE_CREDIT = 'cmi.core.credit';
+const SCORM_RTE_LESSONMODE = 'cmi.core.lesson_mode';
+const SCORM_RTE_ENTRY = 'cmi.core.entry';
+const SCORM_RTE_EXIT = 'cmi.core.exit';
+const SCORM_RTE_TOTALTIME = 'cmi.core.total_time';
+const SCORM_RTE_SESSIONTIME = 'cmi.core.session_time';
 
-define('SCORM_RTE_MASTERYSCORE', 'cmi.student_data.mastery_score');
-define('SCORM_RTE_COMPLETIONTHRESHOLD', 'cmi.student_data.mastery_score');
-define('SCORM_RTE_PROGRESS', 'cmi.core.score.raw');
-define('SCORM_RTE_LESSONSTATUS', 'cmi.core.lesson_status');
-define('SCORM_RTE_COMPLETIONSTATUS', 'cmi.core.lesson_status');
+const SCORM_RTE_MASTERYSCORE = 'cmi.student_data.mastery_score';
+const SCORM_RTE_COMPLETIONTHRESHOLD = 'cmi.student_data.mastery_score';
+const SCORM_RTE_PROGRESS = 'cmi.core.score.raw';
+const SCORM_RTE_LESSONSTATUS = 'cmi.core.lesson_status';
+const SCORM_RTE_COMPLETIONSTATUS = 'cmi.core.lesson_status';
 
-define('SCORM_RTE_MAXTIMEALLOWED', 'cmi.student_data.max_time_allowed');
-define('SCORM_RTE_LAUNCH_DATA', 'cmi.launch_data');
-define('SCORM_RTE_TIMELIMITACTION', 'cmi.student_data.time_limit_action');
+const SCORM_RTE_MAXTIMEALLOWED = 'cmi.student_data.max_time_allowed';
+const SCORM_RTE_LAUNCH_DATA = 'cmi.launch_data';
+const SCORM_RTE_TIMELIMITACTION = 'cmi.student_data.time_limit_action';
 
 $GLOBALS['xpathwritedb'] = ['lesson_location' => '//cmi/core/lesson_location',
                     'lesson_status' => '//cmi/core/lesson_status',

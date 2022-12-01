@@ -164,7 +164,7 @@ class DDomNode
         return $this->_getNodeType($this->node);
     }
 
-    public function _getNodeType(&$node)
+    public static function _getNodeType(&$node)
     {
         return $node->nodeType;
     }
@@ -180,7 +180,7 @@ class DDomNode
     }
 
     /** funzione astratta per creare oggetti da nodi **/
-    public function createDDomObject(&$node)
+    public static function createDDomObject(&$node)
     {
         if ($node === null) {
             return $node;
@@ -300,7 +300,7 @@ class DDomNodeList
 {
     public $list = null;
 
-    public function DDomNodeList(&$listNode)
+    public function __construct(&$listNode)
     {
         $this->list = $listNode;
     }

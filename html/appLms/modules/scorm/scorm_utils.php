@@ -572,7 +572,7 @@ class SCORM12_Sequencing
     public $dbconn;
     public $prefix;
 
-    public function SCORM12_Sequencing($idReference, $idUser, $idscorm_organization, $dbconn, $prefix)
+    public function __construct($idReference, $idUser, $idscorm_organization, $dbconn, $prefix)
     {
         if ($idUser === false) {
             $this->idUser = sl_sal_getUserId();
