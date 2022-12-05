@@ -200,7 +200,7 @@ class OrgDataSelector extends DataSelector{
         }
         $arr = explode('_', $node_id);
         $acl_man = \Docebo::user()->getACLManager();
-        $groupid = $acl_man->getGroupId((int) $arr[1]);
+        $groupid = $acl_man->getGroupId((int) $arr[0]);
 
         return (int) str_replace('/oc_', '', $groupid);
     }
