@@ -81,6 +81,7 @@ class OrgDataSelector extends DataSelector{
              break;
 
              default:
+                $selected_nodes = array_key_exists('selected_nodes', $params) ? (array) $params['selected_nodes'] : [];
                 $useSerializer = true;
                 $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
                 $idOrg = $this->_getIdOrgByNodeId($node_id);
@@ -103,7 +104,7 @@ class OrgDataSelector extends DataSelector{
                     $index = $result['idOrg'];
                     $id = $_conversion_table[0][$index] . '_' . $_conversion_table[1][$index];
                     $isNodeVisible = true;
-                    $codeLabel = $result['code'];
+                    $codeLabel = $result['code'] ? "[" . $result['code'] . "] " : "";
                     if ($isSubadmin) {
                         $isForbidden = !\in_array($result['idOrg'], $orgTree, true);
                         $countSubnodes = $this->builder->_checkSubnodesVisibility($result['idOrg'], $result['iLeft'], $result['iRight'], $orgTree);
@@ -141,6 +142,10 @@ class OrgDataSelector extends DataSelector{
                     $output = [
                         'data' => $nodes
                     ];
+
+                    if(count($selected_nodes)) {
+                        $output['selected_nodes'] = $selected_nodes;
+                    }
                 } 
                
                 break;

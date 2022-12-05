@@ -16,9 +16,11 @@ class FolderTreeNode {
 
     protected bool $locked = false; 
 
+    protected bool $hasChildren = false;
+
     protected array $actions = [];
 
-    protected bool $hasChildren = false;
+ 
 
     public function getId() : string {
 
@@ -93,6 +95,18 @@ class FolderTreeNode {
         return $this;
     }
 
+    
+    public function getHasChildren() : bool {
+
+        return $this->hasChildren;
+    }
+
+    public function setHasChildren($hasChildren) : self {
+
+        $this->hasChildren = $hasChildren;
+        return $this;
+    }
+
     public function getActions() : array {
 
         return $this->actions;
@@ -110,14 +124,4 @@ class FolderTreeNode {
         return $this;
     }
 
-    public function getHasChildren() : bool {
-
-        return $this->active;
-    }
-
-    public function setHasChildren($hasChildren) : self {
-
-        $this->hasChildren = $hasChildren;
-        return $this;
-    }
 }

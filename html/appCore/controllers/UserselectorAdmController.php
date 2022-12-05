@@ -174,7 +174,18 @@ class UserselectorAdmController extends AdmController
 
 
     public function getOrgChartData() {
-        echo $this->multiUserSelector->retrieveDataselector('org')->getData();
+
+        $accessSelection = [];
+        $params = $this->requestObj->all();
+        $instanceValue = $this->requestObj->get('instance');
+        $instanceId = $this->requestObj->get('id');
+
+        if($instanceValue && $instanceId) {
+            $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId);
+        }
+    
+        $params['selected_nodes'] = $accessSelection;
+        echo $this->multiUserSelector->retrieveDataselector('org')->getData($params);
     }
 
 
