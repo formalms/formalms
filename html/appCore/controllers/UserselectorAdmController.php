@@ -36,7 +36,7 @@ class UserselectorAdmController extends AdmController
 
         $this->multiUserSelector = new MultiUserSelector();
         $this->_mvc_name = 'multiuserselector';
-        $this->requestObj = $this->request->getMethod() == "POST" ? $this->request->request : $this->request->query;
+        $this->requestObj = $this->request->getMethod() == 'POST' ? $this->request->request : $this->request->query;
         
         $tabs = ($this->requestObj->has('tab_filters')) ? $this->requestObj->get('tab_filters') : array_keys($this->tabs);
 
@@ -124,9 +124,9 @@ class UserselectorAdmController extends AdmController
         $params = array_merge($this->requestObj->all(), ['json_format' => true]);
 
         switch($dataType) {
-            case "user":
-            case "group":
-            case "role":
+            case 'user':
+            case 'group':
+            case 'role':
                 $response = $this->multiUserSelector->retrieveDataselector($dataType)->getData($params);
                
                break;

@@ -27,7 +27,7 @@ class OrgDataSelector extends DataSelector{
 
     public function getData($params = []) {
 
-        $useSerialaizer = false;
+        $useSerializer = false;
         $command = array_key_exists('command', $params) ? (string) $params['command'] : '';
         
         switch ($command) {
@@ -59,7 +59,7 @@ class OrgDataSelector extends DataSelector{
                     //extract node data
                     $nodes = $this->builder->getOrgChartNodes($idOrg, false, false, true);
                     //create actions for every node
-                    for ($i = 0; $i < count($nodes); ++$i) {
+                    for ($i = 0, $iMax = count($nodes); $i < $iMax; ++$i) {
                         $index = $nodes[$i]['id'];
                         $nodes[$i]['id'] = $_conversion_table[0][$index] . '_' . $_conversion_table[1][$index];
                         $nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
@@ -81,7 +81,7 @@ class OrgDataSelector extends DataSelector{
              break;
 
              default:
-                $useSerialaizer = true;
+                $useSerializer = true;
                 $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
                 $idOrg = $this->_getIdOrgByNodeId($node_id);
                 $initial = array_key_exists('initial', $params) ? ((int) $params['initial'] > 0 ? true : false) : false;
@@ -105,7 +105,7 @@ class OrgDataSelector extends DataSelector{
                     $isNodeVisible = true;
                     $codeLabel = $result['code'];
                     if ($isSubadmin) {
-                        $isForbidden = !in_array($result['idOrg'], $orgTree);
+                        $isForbidden = !\in_array($result['idOrg'], $orgTree, true);
                         $countSubnodes = $this->builder->_checkSubnodesVisibility($result['idOrg'], $result['iLeft'], $result['iRight'], $orgTree);
                         $hasVisibleSubnodes = ($countSubnodes > 0);
                         if ($isForbidden && !$hasVisibleSubnodes) {
@@ -137,7 +137,7 @@ class OrgDataSelector extends DataSelector{
                 //nella variabile c'è un array a 2 indici dove nel primo sono listati i grouppi con oc_ e nel secondo quelli con ocd_
                 //l'array viene inziailizzato col nodo zero senza discendenti, il match avviene per chiave dei 2 array basata su idorg 
 
-                if (is_array($nodes)) {
+                if (\is_array($nodes)) {
                     $output = [
                         'data' => $nodes
                     ];
@@ -146,7 +146,7 @@ class OrgDataSelector extends DataSelector{
                 break;
         }
 
-        if($useSerialaizer) {
+        if($useSerializer) {
             return $this->serializer->serialize($output, 'json');
         } else {
             return $this->json->encode($output);
@@ -200,7 +200,7 @@ class OrgDataSelector extends DataSelector{
         }
         $arr = explode('_', $node_id);
         $acl_man = \Docebo::user()->getACLManager();
-        $groupid = $acl_man->getGroupId((int) $arr[0]);
+        $groupid = $acl_man->getGroupId((int) $arr[1]);
 
         return (int) str_replace('/oc_', '', $groupid);
     }

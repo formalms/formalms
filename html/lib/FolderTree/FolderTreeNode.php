@@ -34,7 +34,7 @@ class FolderTreeNode {
 
     public function getName() : string {
 
-        return $this->id;
+        return $this->name;
     }
 
     public function setName($name) : self {

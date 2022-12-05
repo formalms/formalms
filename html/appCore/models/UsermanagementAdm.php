@@ -1394,7 +1394,7 @@ class UsermanagementAdm extends Model
 
     //------------------------------------------------------------------------------
 
-    protected function _getAdminOrgTree($idst = false)
+    public function _getAdminOrgTree($idst = false)
     {
         $acl_man = Docebo::user()->getAclManager();
         $admin_idst = (is_numeric($idst) && $idst > 0 ? $idst : Docebo::user()->getIdST());

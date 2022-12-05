@@ -13,12 +13,12 @@
 
 abstract class FormaPlugin
 {
-    public function install()
+    public static function install()
     {
         //code executed after install
     }
 
-    public function uninstall()
+    public static function uninstall()
     {
         //code executed after uninstall
     }
