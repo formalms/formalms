@@ -5,14 +5,23 @@
         {% import _self as macros %}
         {% for el in data %}
             <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} {% if options.dragAndDrop %}is-droppable{% endif %}" {% if options.dragAndDrop %}draggable="true"{% endif %}>
-                <div class="actions">
-                    {% if el.hasChildren %}
-                        <span data-id="{{ el.id }}" class="arrow"></span>
+                <div class="actions" data-id="{{ el.id }}">
+                    {% if el.children.length %}
+                        <span data-id="{{ el.id }}" class="arrow opened"></span>
+                    {% else %}
+                        {% if el.hasChildren %}
+                            <span data-id="{{ el.id }}" class="arrow {% if el.id in data.openFolders %}opened{% endif %}"></span>
+                        {% endif %}
                     {% endif %}
                     <button data-id="{{ el.id }}"
                         type="button"
-                        class="folderTree__link {% if el.hasChildren %}has-children{% endif %} ft-is-folder {% if options.dragAndDrop %}is-dropzone{% endif %}">
-                        <span>{{ el.name }}</span>
+                        class="folderTree__link {% if el.hasChildren %}has-children{% endif %} ft-is-folder {% if options.dragAndDrop %}is-dropzone{% endif %} {% if el.children.length %}ft-is-folderOpen{% endif %}">
+                        <span>{{ el.id }}</span>
+                        <span class="loader loader_{{ el.id }} hidden">
+                            <div style="width: 15px; height: 15px;">
+                                <div class="loading loading--full-height"></div>
+                            </div>
+                        </span>
                     </button>
                     <div class="fields-holder">
                         {% if el.actions %}
@@ -33,7 +42,7 @@
                     </div>
                 </div>
                     {% if el.children %}
-                        <ul class="folderTree__ul {% if options.sortable %}js-sortable-tree{% endif %} hidden">
+                        <ul class="folderTree__ul {% if options.sortable %}js-sortable-tree{% endif %}">
                             {{ macros.tree_links(el.children) }}
                         </ul>
                     {% endif %}

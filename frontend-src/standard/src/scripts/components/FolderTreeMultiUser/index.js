@@ -25,11 +25,32 @@ class FolderTreeMultiUser extends FolderTreeBase {
   initEvents() {
     this.container.addEventListener('click', (e) => {
       console.log(e.target.classList, e);
-      if(e.target.classList.contains('arrow')) {
-        this.getNode(e.target.getAttribute('data-id'));
+      const id = e.target.getAttribute('data-id');
+      if(e.target.classList.contains('actions') && !this.openFolders.includes(id)) {
+        this.getNode(id, () => {
+          this.render();
+        });
+      } else {
+        if(this.openFolders.includes(id)) {
+          this.openFolders.splice(this.openFolders.indexOf(id), 1);
+          this.insertChildren(this.data, id, []);
+          this.render();
+        }
       }
     });
     return this;
+  }
+
+  insertChildren(source, targetId, children) {
+    (source ? source : this.data).forEach((child) => {
+      if(child.id == targetId) {
+        child.children = children;
+      } else {
+        if(child.children.length) {
+          return this.insertChildren(child.children, targetId, children);
+        }
+      }
+    })
   }
 
   static create(controller = {}, baseApiUrl = '') {
@@ -41,11 +62,15 @@ class FolderTreeMultiUser extends FolderTreeBase {
     });
   }
 
-  async getNode(id) {
+  async getNode(id, cb) {
     const endpoint = 'https://forma.local/appCore/ajax.adm_server.php?r=adm/userselector/getData';
-    console.log(endpoint);
+    this.openFolders.push(id);
+    this.container.querySelector(`.loader_${id}`).classList.remove('hidden');
     await window.frontend.helpers.Axios.get(endpoint + `&node_id=${id}`).then((response) => {
-      console.log(response);
+      this.insertChildren(this.data, id, response.data.data);
+      if(cb) {
+        cb();
+      }
     });
   }
 

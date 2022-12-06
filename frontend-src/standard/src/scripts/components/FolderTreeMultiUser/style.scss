@@ -1,4 +1,8 @@
-
+@keyframes loading {
+    to {
+        transform: rotate(1turn);
+    }
+}
 
 div[data-comp|="forma-plugin-ftmu"] {
     .folderTree__li {
@@ -37,6 +41,9 @@ div[data-comp|="forma-plugin-ftmu"] {
                 background: none;
                 z-index: 99;
                 pointer-events: all;
+                &.opened {
+                    transform: rotate(90deg) !important;
+                }
             }
             .fields-holder {
                 align-items: center;
@@ -50,4 +57,23 @@ div[data-comp|="forma-plugin-ftmu"] {
             background-color: transparent !important;
         }
     }
+    .loader {
+        display: inline-block;
+    }
+
+    .loading {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .loading::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border: 4px solid #dddddd;
+        border-top-color: #009579;
+        border-radius: 50%;
+        animation: loading 1s ease infinite;
+    }
+
 }

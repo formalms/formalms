@@ -26,6 +26,7 @@ class FolderTreeBase {
     // Set default x-signature
     window.frontend.helpers.Axios.defaults.headers.get['X-Signature'] = window.frontend.config.signature;
     
+    this.openFolders = [];
     this.data = null;
     this.onLoad = null;
     this.baseApiUrl = baseApiUrl;
@@ -62,9 +63,12 @@ class FolderTreeBase {
   }
 
   render(targetQuery = FOLDER_TREE_CLASS) {
-    const tree = this.Tree({ data: this.data, extra: {form: this.hasForm} });
+    this.data.openFolders = this.openFolders.join('.');
+    console.log(this.data.openFolders);
+    const tree = this.Tree({ data: this.data, extra: {form: this.hasForm, openFolders: this.openFolders} });
     const targetDom = document.querySelector(`.${targetQuery}`);
     targetDom.innerHTML = tree;
+    console.log('openFolders', this.openFolders);
     return this;
   }
 
@@ -167,6 +171,7 @@ class FolderTreeBase {
 
   setOpenedDirs() {
     const openedEls = this.container.querySelectorAll('.ft-is-folderOpen');
+    console.log('opened', openedEls);
     this.openedIds = [];
     openedEls.forEach((item) => {
       let id = item.getAttribute('data-id');
