@@ -448,10 +448,16 @@ class TreeDb
         $query .= ') ' . ' AND t1.' . $this->fields['id'] . '<>0 '
                 . 'GROUP BY ' . $this->_getBaseFields('t1')
                 . $this->_getOtherFields('t1')
-                . ' ORDER BY ' . $this->_getOrderBy('t1');
+                . ' ORDER BY ';
+        if ($arrayId === null) {
+            $query .= $this->_getOrderBy('t1');
+        } else {
+            $query .=  !empty($arrayId) ? 'FIELD(t1.idOrg, ' . implode(',', $arrayId) . ')' : $this->_getOrderBy('t1') ;
+        }
 
         $rs = $this->_executeQuery($query)
                 or $this->_printSQLError('getFoldersCollection: ' . $query);
+              
         $coll = new FoldersCollection($this, $rs, true);
 
         return $coll;
