@@ -113,9 +113,10 @@ class CreateItem {
   getNewLoUrl(type) {
     const _this = this;
     const selectedId = _this.selectedId ? _this.selectedId : 0;
-    const currentState = document.getElementById(`treeview_state_${_this.type}`).value;
+    //const currentState = document.getElementById(`treeview_state_${_this.type}`).value;
 
-    return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${type}&treeview_selected_${_this.type}=${selectedId}&treeview_state_${_this.type}=${currentState}`;
+    //return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${type}&treeview_selected_${_this.type}=${selectedId}&treeview_state_${_this.type}=${currentState}`;
+    return `index.php?modname=storage&op=display&${_this.type}_createLOSel=1&radiolo=${type}&treeview_selected_${_this.type}=${selectedId}`;
   }
 
   clickOnType(event) {

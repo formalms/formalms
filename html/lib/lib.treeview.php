@@ -746,7 +746,7 @@ class TreeView
             if (count($this->compressList) > 0) {
                 $this->selectedFolder = current($this->compressList);
             } else {
-                $this->selectedFolder = 0;
+                $this->selectedFolder = $arrayState[$this->_getSelectedId()] ?? '0' ;
             }
         }
     }
