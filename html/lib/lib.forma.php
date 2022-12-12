@@ -19,6 +19,7 @@ if (!class_exists('Model')) {
 
 require_once _lib_ . '/lib.pluginmanager.php';
 require_once _base_ . '/Exceptions/PathNotFoundException.php';
+
 class Forma
 {
     public static function usePlugins()
@@ -36,9 +37,9 @@ class Forma
      * @param $file
      * @param $pattern
      *
+     * @return string
      * @throws PathNotFoundException
      *
-     * @return string
      */
     public static function include($path, $file, $pattern = '/[a-zA-Z0-9.]+\.php/')
     {
@@ -55,11 +56,11 @@ class Forma
     }
 
     /**
-     * @deprecated It will become private
-     *
      * @param $file
      *
      * @return string
+     * @deprecated It will become private
+     *
      */
     public static function inc($file)
     {
@@ -68,6 +69,15 @@ class Forma
 
         if (substr($file, 0, strlen(_base_)) === _base_) {
             $_file = substr($file, strlen(_base_ . '/'));
+        }
+
+
+        $result = strpos($_file, 'templates/');
+        if (strpos($_file, 'templates/') !== false) {
+            $fileArray = explode('/', $_file);
+            array_shift($fileArray);
+            array_shift($fileArray);
+            $_file = implode('/', $fileArray);
         }
 
         if (self::usePlugins()) {
