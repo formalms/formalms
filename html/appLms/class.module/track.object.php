@@ -39,7 +39,7 @@ class Track_Object
     public function __construct($idTrack, $environment = false)
     {
         $this->environment = $environment ? $environment : 'course_lo';
-        $this->_table = $this->getEnvironmentTable($environment);
+        $this->_table = self::getEnvironmentTable($environment);
         if ($idTrack) {
             $this->idTrack = $idTrack;
             $query = 'SELECT `idReference`, `idUser`, `idTrack`, `objectType`, `dateAttempt`, `status`, `firstAttempt`, `first_complete`, `last_complete` '

@@ -406,7 +406,7 @@ class Boot
         // ip coerency check
         self::log('Ip coerency check.');
         if (FormaLms\lib\Get::sett('session_ip_control', 'on') == 'on') {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR',$_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
