@@ -126,9 +126,10 @@
 
                         actions = [];
                         if (inputActions){
-                            enabledActions = inputActions.querySelectorAll("input[type=checkbox]:checked");
-                            for (j = 0; j < inputActions.length; j++) {
-                                actions.push(inputActions[j].value);
+                            
+                            var enabledActions = inputActions.querySelectorAll("input[type=checkbox]:checked");
+                            for (j = 0; j < enabledActions.length; j++) {
+                                actions.push(enabledActions[j].value);
                             }
                         }
 
@@ -191,26 +192,25 @@
                     }
                 }
 
-                $.ajax({
-                    url: '{{ ajaxUrl.save }}&dashboard=' + dashboardId,
-                    type: 'POST',
-                    data: {
-                        settings: response
-                    },
-                    beforeSend: () => {
-                        saveField.attr('disabled', true);
-                        $('.dashboard__message').css('display', 'none');
-                    },
-                    success: () => {
-                        saveField.removeAttr('disabled');
-                        $('.dashboard__ok').css('display', 'block');
-
-                    },
-                    error: err => {
-                        console.log(err)
-                        $('.dashboard__ko').css('display', 'block');
-                    }
-                })
+               $.ajax({
+                   url: '{{ ajaxUrl.save }}&dashboard=' + dashboardId,
+                   type: 'POST',
+                   data: {
+                       settings: response
+                   },
+                   beforeSend: () => {
+                       saveField.attr('disabled', true);
+                       $('.dashboard__message').css('display', 'none');
+                   },
+                   success: () => {
+                       saveField.removeAttr('disabled');
+                       $('.dashboard__ok').css('display', 'block')
+                   },
+                   error: err => {
+                       console.log(err)
+                       $('.dashboard__ko').css('display', 'block');
+                   }
+               })
 
             });
 
