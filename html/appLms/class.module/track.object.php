@@ -39,7 +39,7 @@ class Track_Object
     public function __construct($idTrack, $environment = false)
     {
         $this->environment = $environment ? $environment : 'course_lo';
-        $this->_table = $this->getEnvironmentTable($environment);
+        $this->_table = self::getEnvironmentTable($environment);
         if ($idTrack) {
             $this->idTrack = $idTrack;
             $query = 'SELECT `idReference`, `idUser`, `idTrack`, `objectType`, `dateAttempt`, `status`, `firstAttempt`, `first_complete`, `last_complete` '
@@ -56,7 +56,7 @@ class Track_Object
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
-    public function getEnvironmentTable($environment)
+    public static function getEnvironmentTable($environment)
     {
         switch ($environment) {
             case 'communication':
@@ -501,7 +501,7 @@ class Track_Object
     /**
      * static function to get status.
      **/
-    public function getStatusFromId($idReference, $idUser, $environment = false)
+    public static function getStatusFromId($idReference, $idUser, $environment = false)
     {
         $query = 'SELECT status '
             . ' FROM ' . self::getEnvironmentTable($environment) . ''

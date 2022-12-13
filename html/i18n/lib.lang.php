@@ -24,6 +24,7 @@ function getUnicode()
 {
     return Lang::charset();
 }
+
 /**
  * Return the current language.
  *
@@ -165,8 +166,8 @@ class Lang
     /**
      * Initialize the static information.
      *
-     * @param string $module   module to load
-     * @param bool   $override override default module
+     * @param string $module module to load
+     * @param bool $override override default module
      */
     public static function init($module, $override = true, $lang_code = false)
     {
@@ -199,7 +200,7 @@ class Lang
     /**
      * Load the module translations.
      *
-     * @param string $module    the module to load
+     * @param string $module the module to load
      * @param string $lang_code the lang code
      */
     public static function load_module($module, $lang_code = false, $includeDisabledPlugins = false)
@@ -224,8 +225,8 @@ class Lang
     /**
      * Return the status of a translation.
      *
-     * @param string $key       the language key
-     * @param string $module    the mdoule (if false, the last one will be used)
+     * @param string $key the language key
+     * @param string $module the mdoule (if false, the last one will be used)
      * @param string $lang_code the lang_code (if false the last one will be used)
      *
      * @return bool true if a translation is defined, false otherwise
@@ -256,12 +257,12 @@ class Lang
     }
 
     /**
-     * @param string $key          the language key
-     * @param string $module       the mdoule (if false, the last one will be used)
-     * @param array  $substitution an array of key => value of substitution that you need inside the translation
-     * @param string $lang_code    the lang_code (if false the last one will be used)
-     * @param string $lang_code    the lang_code (if false the last one will be used)
-     * @param string $default      the default value if a translation is not found
+     * @param string $key the language key
+     * @param string $module the mdoule (if false, the last one will be used)
+     * @param array $substitution an array of key => value of substitution that you need inside the translation
+     * @param string $lang_code the lang_code (if false the last one will be used)
+     * @param string $lang_code the lang_code (if false the last one will be used)
+     * @param string $default the default value if a translation is not found
      *
      * @return string
      */
@@ -283,7 +284,7 @@ class Lang
         self::load_module($module, $lang_code, $includeDisabledPlugins);
 
         $translation = '';
-        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) > 0) {
+        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 0) {
             // LOG MISSING TRANSLATIONS -->
             $missing = false;
             $missing_in_module = false;
@@ -299,7 +300,7 @@ class Lang
         } elseif (isset(self::$translations[$lang_code]['standard'][$key])) {
             //translation found in the standard module
             $translation = self::$translations[$lang_code]['standard'][$key];
-            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) > 1) {
+            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 1) {
                 // LOG MISSING TRANSLATIONS -->
                 if ($module !== 'standard') {
                     $missing_in_module = true;
@@ -310,14 +311,14 @@ class Lang
         } elseif ($default == false) {
             //translation not found
             self::undefinedKey($key, $module, $lang_code);
-            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) > 0) {
+            if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) > 0) {
                 // LOG MISSING TRANSLATIONS -->
                 $missing = true;
                 // <-- LOG MISSING TRANSLATIONS
             }
         }
 
-        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) == 1) {
+        if (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) == 1) {
             // LOG MISSING TRANSLATIONS -->
             if ($missing) {
                 $_substitutions = json_encode($substitution ? $substitution : []);
@@ -327,7 +328,7 @@ class Lang
                 file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
             }
             // <-- LOG MISSING TRANSLATIONS
-        } elseif (FormaLms\lib\Get::cfg('log_missing_translation_level', (int) 0) == 2) {
+        } elseif (FormaLms\lib\Get::cfg('log_missing_translation_level', (int)0) == 2) {
             // LOG MISSING TRANSLATIONS -->
             if ($missing or $missing_in_module) {
                 $_substitutions = json_encode($substitution ? $substitution : []);
@@ -356,8 +357,8 @@ class Lang
     /**
      * This method will be used by the t() method when a translation is not found.
      *
-     * @param string $key       the language key
-     * @param string $module    the mdoule (if false, the last one will be used)
+     * @param string $key the language key
+     * @param string $module the mdoule (if false, the last one will be used)
      * @param string $lang_code the lang_code (if false the last one will be used)
      */
     public static function undefinedKey($key, $module, $lang_code)
@@ -411,9 +412,11 @@ class Lang
                 $browser_lang = FormaLms\lib\Get::user_acceptlang(false);
                 foreach ($browser_lang as $code) {
                     foreach ($all_language as $lang) {
-                        if (strpos($lang->lang_browsercode, (string) $code) !== false) {
-                            $currentLang = $lang->lang_code;
-                            break 2;
+                        if ($code) {
+                            if (strpos($lang->lang_browsercode, (string)$code) !== false) {
+                                $currentLang = $lang->lang_code;
+                                break 2;
+                            }
                         }
                     } // end foreach
                 } // end foreach
@@ -502,11 +505,11 @@ class DoceboLangManager
     /**
      * @static
      * This function encapsulate the computation of a cross module key from
-     *	a key and a module
+     *    a key and a module
      *
      * @param string $key1 the first key
      * @param string $key2 the second key
-     * @param mixed  $key3 Optional. The third key or FALSE
+     * @param mixed $key3 Optional. The third key or FALSE
      *
      * @return string composed key
      **/
@@ -518,7 +521,7 @@ class DoceboLangManager
     /**
      * @static
      * This function encapsulate the computation of a cross module key from
-     *	a key and a module
+     *    a key and a module
      *
      * @param string $composed_key the module key composed
      *
@@ -558,9 +561,9 @@ class DoceboLangManager
     /**
      * DoceboLangManager constructor.
      *
-     * @param string   $param_prefix the prefix for the tables names
+     * @param string $param_prefix the prefix for the tables names
      *                               if not given global $prefix variable is used
-     * @param resource $dbconn       the connection to the database
+     * @param resource $dbconn the connection to the database
      *                               if not given last connection will be used
      */
     private function __construct($param_prefix = false, $dbconn = null)
@@ -640,9 +643,9 @@ class DoceboLangManager
      * return the text translation for a given $lang_code, $key, $module, $platform.
      *
      * @param string $lang_code the lang code to get translation
-     * @param string $key       the key to search or the composed key if $module is FALSE
-     * @param mixed  $module    the module to search or FALSE if $key is composed key
-     * @param mixed  $platform  the platform to search or FALSE if $key or $module are composed key
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
      *
      * @return mixed string with text translation or FALSE if not found
      */
@@ -672,12 +675,12 @@ class DoceboLangManager
 
     /**
      * return an array with all the translations for a given
-     *	platform module lang_code triple.
+     *    platform module lang_code triple.
      *
-     * @param string $platform       the platform
-     * @param mixed  $module         the module name
+     * @param string $platform the platform
+     * @param mixed $module the module name
      *                               if FALSE all modules will be returned
-     * @param string $lang_code      the code of the language
+     * @param string $lang_code the code of the language
      * @param string $trans_contains the text contains this string
      *
      * @return array with index numeric values are arrays with
@@ -725,9 +728,9 @@ class DoceboLangManager
     /**
      * return a key description.
      *
-     * @param string $key      the key to search or the composed key if $module is FALSE
-     * @param mixed  $module   the module to search or FALSE if $key is composed key
-     * @param mixed  $platform the platform to search or FALSE if $key or $module are composed key
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
      *
      * @return mixed
      *               - string description for given key module platform triple
@@ -741,9 +744,9 @@ class DoceboLangManager
     /**
      * return the key attributes.
      *
-     * @param string $key      the key to search or the composed key if $module is FALSE
-     * @param mixed  $module   the module to search or FALSE if $key is composed key
-     * @param mixed  $platform the platform to search or FALSE if $key or $module are composed key
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
      *
      * @return mixed
      *               - string attributes for given key module platform triple
@@ -772,9 +775,9 @@ class DoceboLangManager
     /**
      * delete a key and all associated translations.
      *
-     * @param string $key      the key to search or the composed key if $module is FALSE
-     * @param mixed  $module   the module to search or FALSE if $key is composed key
-     * @param mixed  $platform the platform to search or FALSE if $key or $module are composed key
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
      *
      * @return bool TRUE if success, FALSE otherwise
      */
@@ -809,11 +812,11 @@ class DoceboLangManager
     /**
      * update a key.
      *
-     * @param string $key         the key to search or the composed key if $module is FALSE
-     * @param mixed  $module      the module to search or FALSE if $key is composed key
-     * @param mixed  $platform    the platform to search or FALSE if $key or $module are composed key
-     * @param mixed  $description the description of the key of FALSE for skip
-     * @param mixed  $attributes  the attributes of key (accessibility,sms)
+     * @param string $key the key to search or the composed key if $module is FALSE
+     * @param mixed $module the module to search or FALSE if $key is composed key
+     * @param mixed $platform the platform to search or FALSE if $key or $module are composed key
+     * @param mixed $description the description of the key of FALSE for skip
+     * @param mixed $attributes the attributes of key (accessibility,sms)
      *
      * @return bool TRUE if success, FALSE otherwise
      */
@@ -1080,10 +1083,10 @@ class DoceboLangManager
     /**
      * update a lang_code.
      *
-     * @param string $lang_code        code of lang to test
+     * @param string $lang_code code of lang to test
      * @param string $lang_description optional
-     * @param string $lang_charset     optional
-     * @param string $lang_brosercode  optional
+     * @param string $lang_charset optional
+     * @param string $lang_brosercode optional
      *
      * @return true if success, FALSE otherwise
      **/
@@ -1105,8 +1108,8 @@ class DoceboLangManager
      *
      * @param string $lang_code
      * @param string $lang_description
-     * @param string $lang_charset     optional
-     * @param string $lang_brosercode  optional
+     * @param string $lang_charset optional
+     * @param string $lang_brosercode optional
      *
      * @return bool TRUE if success, FALSE otherwise
      **/
