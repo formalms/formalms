@@ -181,6 +181,15 @@ class TreeDb
         }
     }
 
+    public function _getBaseFieldId($tname = false) {
+        if ($tname === false) {
+            return $this->fields['id'];
+        }
+        else {
+            return $tname . '.' . $this->fields['id'];
+        }
+    }
+
     public function _getOtherTables()
     {
         return '';
@@ -452,7 +461,7 @@ class TreeDb
         if ($arrayId === null) {
             $query .= $this->_getOrderBy('t1');
         } else {
-            $query .=  !empty($arrayId) ? 'FIELD(t1.idOrg, ' . implode(',', $arrayId) . ')' : $this->_getOrderBy('t1') ;
+            $query .=  !empty($arrayId) ? 'FIELD('.$this->_getBaseFieldId('t1').', ' . implode(',', $arrayId) . ')' : $this->_getOrderBy('t1') ;
         }
 
         $rs = $this->_executeQuery($query)
