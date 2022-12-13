@@ -100,7 +100,7 @@ class Forma
 
         return $file;
     }
-
+    
     public static function addError(string $error): string
     {
         \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error', $error);
@@ -115,16 +115,12 @@ class Forma
 
     public static function errorsExists(): bool
     {
-        return count(\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error')) > 0;
+        return \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->has('error');
     }
 
     public static function getErrors(): array
     {
         $errors = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
-        if ($removeErrors) {
-            self::removeErrors();
-        }
-
         return $errors;
     }
 
