@@ -228,7 +228,7 @@ class DashboardsettingsAdm extends Model
             'data' => $setting['data'],
         ];
 
-        $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`, `created_at`) VALUES ( '%s' , '%s', '%s', '%s', CURRENT_TIMESTAMP)", $block, json_encode($config), $setting['position'], $dashboard);
+        $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`, `created_at`) VALUES ( '%s' , '%s', '%s', '%s', CURRENT_TIMESTAMP)", $block, json_encode($config, JSON_HEX_APOS), $setting['position'], $dashboard);
         $this->db->query($insertQuery);
     }
 

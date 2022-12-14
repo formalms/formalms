@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-
+require_once(_lms_.'/admin/models/CommunicationAlms.php');
 /**
  * Class DashboardBlockNewsLms.
  */
@@ -20,9 +20,13 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
 {
     public const DEFAULT_RECORDS = 5;
 
+    protected $model;
+
     public function __construct($jsonConfig)
     {
         parent::__construct($jsonConfig);
+
+        $this->model = new CommunicationAlms();
     }
 
     public function parseConfig($jsonConfig)
@@ -48,6 +52,7 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
         $onlyToRead = $this->data['showread'];
 
         $data['communication'] = $this->getCommunication($limit, $onlyToRead);
+
 
         return $data;
     }
@@ -96,51 +101,10 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
     {
         $communication = [];
 
-        $communication = $this->findAllUnread($limit, Docebo::user()->getId(), ['viewer' => Docebo::user()->getArrSt()], $only_to_read);
-
+        $communication = $this->model->findAllUnread(0, $limit, 'publish_date', 'DESC', Docebo::user()->getId(), ['viewer' => Docebo::user()->getArrSt(), 'only_to_read' => (bool) $only_to_read]);
+     
         return $communication;
     }
 
-    public function findAllUnread($limit, $reader, $filter = false, $only_to_read)
-    {
-
-        $preference = new UserPreferences(Docebo::user()->getId());
-        $selected_lang = $preference->getLanguage();
-
-        $qtxt = 'SELECT c.id_comm, cl.title, cl.description, c.publish_date, c.type_of, c.id_resource, COUNT(ca.id_comm) as access_entity, ct.status, ct.dateAttempt '
-            . ' FROM ( learning_communication AS c '
-            . '    JOIN learning_communication_access AS ca ON (c.id_comm = ca.id_comm) '
-            . '    JOIN learning_communication_lang AS cl ON (c.id_comm = cl.id_comm) )'
-            . '    LEFT JOIN learning_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
-            . " WHERE cl.lang_code = '".$selected_lang."'"
-            . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
-            . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '')
-            . (!empty($_categories) ? ' AND c.id_category IN (' . implode(',', $_categories) . ') ' : '')
-
-            . ' GROUP BY c.id_comm, c.title, description, publish_date ,  type_of, id_resource, ct.status  order by publish_date DESC
-            LIMIT 0,' . $limit;
-
-        if ($only_to_read) {
-            $qtxt = 'SELECT c.id_comm, title, description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, ct.status, ct.dateAttempt '
-                . ' FROM ( learning_communication AS c '
-                . '    JOIN learning_communication_access AS ca ON (c.id_comm = ca.id_comm) ) '
-                . '    LEFT JOIN learning_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
-                . " WHERE ( ct.status = 'failed' OR  ct.status = 'ab-initio' OR  ct.status = 'attempted' OR ct.idReference IS NULL  ) "
-                . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
-                . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '')
-                . (!empty($_categories) ? ' AND c.id_category IN (' . implode(',', $_categories) . ') ' : '')
-
-                . ' GROUP BY c.id_comm, c.title, description, publish_date ,  type_of, id_resource, ct.status, ct.dateAttempt  order by publish_date DESC
-            LIMIT 0,' . $limit;
-        }
-
-        $res = sql_query($qtxt);
-
-        $results = [];
-        while ($row = sql_fetch_assoc($res)) {
-            $results[] = $row;
-        }
-
-        return $results;
-    }
+    
 }
