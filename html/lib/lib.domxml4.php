@@ -45,7 +45,7 @@ function soap__dbgOut1($textOut, $level = 0)
 
 function isSameObject(&$o1, &$o2)
 {
-    if (version_compare(PHP_VERSION, '5.0.0', '>=')) {
+    if (PHP_VERSION_ID >= 50000) {
         return $o1 === $o2;
     }
     /* in php4 ... mmm ... use a trick */

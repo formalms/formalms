@@ -29,7 +29,7 @@ class Field_Upload extends Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'upload';
     }

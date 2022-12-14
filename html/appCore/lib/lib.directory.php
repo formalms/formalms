@@ -871,7 +871,7 @@ class PeopleListView extends ListView
 
         $arrResult['fullname'] = ($arrResult['valid'] != '1' && $arrResult['idst'] != $this->anonymous_idst
                     ? '<em class="user_suspended">' . $this->lang->def('_SUSPENDED') . '</em> '
-                    : '') . join([$arrResult['firstname'], $arrResult['lastname']], ' ');
+                    : '') . join(' ', [$arrResult['firstname'], $arrResult['lastname']]);
 
         for ($i = 0; $i < $this->nFields; ++$i) {
             if (is_numeric($this->cFields[$i])) {
@@ -1201,7 +1201,7 @@ class PeopleListView extends ListView
         while ($values = $this->fetchRecord()) {
             $colData = [];
             foreach ($colInfo as $key => $fieldInfo) {
-                $colData[] = $values[$colInfo[$key]['data']];
+                $colData[] = $values[$fieldInfo['data']];
             }
             $this->rend->addBody($colData, false, false, 'user_row_' . $values['idst']);
 
@@ -1772,8 +1772,8 @@ class GroupListView extends ListView
         while ($values = $this->fetchRecord()) {
             $arr_line = [];
             foreach ($colInfo as $key => $fieldInfo) {
-                $colData[$key]['data'] = $values[$colInfo[$key]['data']];
-                $arr_line[] = $values[$colInfo[$key]['data']];
+                $colData[$key]['data'] = $values[$fieldInfo['data']];
+                $arr_line[] = $values[$fieldInfo['data']];
             }
             //$out .= $this->rend->WriteRowCss($colData);
             $this->rend->addBody($arr_line);
@@ -2014,7 +2014,7 @@ class GroupMembersListView extends ListView
             }
 
             foreach ($colInfo as $key => $fieldInfo) {
-                $colData[$key]['data'] = $values[$colInfo[$key]['data']];
+                $colData[$key]['data'] = $values[$fieldInfo['data']];
             }
             $out .= $this->rend->WriteRowCss($colData);
         }

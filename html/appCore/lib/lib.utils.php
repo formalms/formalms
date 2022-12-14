@@ -119,7 +119,7 @@ class Util
      *                         assumed that $filename is [number]_[number]_[time]_[filename]
      *                         the file sended will have the name [filename].$ext
      */
-    public function download($path, $filename, $ext = null, $sendname = null)
+    public static function download($path, $filename, $ext = null, $sendname = null)
     {
         //empty and close buffer
         if (!(_files_ == substr($path, 0, strlen(_files_)))) {

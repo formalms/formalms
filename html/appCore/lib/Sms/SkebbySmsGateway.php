@@ -256,7 +256,7 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
     protected function skebbyGatewayGetCredit($username, $password, $charset = '')
     {
-        $url = 'http://gateway.skebby.it/api/send/smseasy/advanced/http.php';
+        $url = 'https://gateway.skebby.it/api/send/smseasy/advanced/http.php';
         $method = 'get_credit';
 
         $parameters = 'method='

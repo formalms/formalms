@@ -256,8 +256,7 @@ class Services_JSON
                 return (int) $var;
 
             case 'double':
-            case 'float':
-                return (float) $var;
+                return (double) $var;
 
             case 'string':
                 // STRINGS ARE EXPECTED TO BE IN ASCII OR UTF-8 FORMAT

@@ -23,7 +23,7 @@ define('_OPERATION_SUCCESSFUL', 1);
 
 class MessageModule
 {
-    protected $db;
+    protected static $db;
     protected $mvc_urls;
 
     public function __construct($mvc = false)
@@ -1264,23 +1264,11 @@ class MessageModule
 
     public function messageGetTitleArea($text, $image = '', $alt_image = '')
     {
-        $res = '';
-
-        /*
-        if (FormaLms\lib\Get::cur_plat() == "cms") {
-            $res = getCmsTitleArea($text, $image = '', $alt_image = '');
-        }
-        else {
-            $res = getTitleArea($text, $image = '', $alt_image = '');
-        }
-        */
-
         $res = getTitleArea($text, $image = '', $alt_image = '');
-
         return $res;
     }
 
-    public function quickSendMessage($sender, $recipients, $subject, $textof)
+    public static function quickSendMessage($sender, $recipients, $subject, $textof)
     {
         if (!is_array($recipients)) {
             $recipients = [$recipients];
@@ -1298,10 +1286,10 @@ class MessageModule
 			'',
 			'3'
 		)";
-        if (!$this->db->query($query_mess)) {
+        if (!self::$db->query($query_mess)) {
             return false;
         }
-        list($id_message) = $this->db->fetch_row($this->db->query('SELECT LAST_INSERT_ID()'));
+        list($id_message) = self::$db->fetch_row(self::$db->query('SELECT LAST_INSERT_ID()'));
 
         $re = true;
         $recipients[] = getLogUserId();
@@ -1316,7 +1304,7 @@ class MessageModule
 				'0',
 				'" . ($id_recipient == $logged_user ? _MESSAGE_MY : _MESSAGE_UNREADED) . "'
 			) ";
-            $re &= $this->db->query($query_recipients);
+            $re &= self::$db->query($query_recipients);
         }
 
         return $re;

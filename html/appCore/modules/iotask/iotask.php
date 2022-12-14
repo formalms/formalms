@@ -759,9 +759,9 @@ function ioTask_UITaskRun(&$module, $action)
             if ($index !== 0) {
                 $out->add($index
                             . ' - '
-                            . '(' . implode(', ', $report[$index][0]) . ')'
+                            . '(' . implode(', ', $elem_report[0]) . ')'
                             . ' - '
-                            . $report[$index][1]
+                            . $elem_report[1]
                         );
             }
         }

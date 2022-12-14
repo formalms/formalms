@@ -1264,7 +1264,7 @@ class CourseAlmsController extends AlmsController
 
             $levels = &$course_man->getCourseIdstGroupLevel($id_course);
             if (empty($levels) || implode('', $levels) == '') {
-                $levels = &DoceboCourse::createCourseLevel($id_course);
+                $levels = DoceboCourse::createCourseLevel($id_course);
             }
 
             $course_man->removeCourseRole($id_course);

@@ -11,11 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('CORE', true);
-define('IN_FORMA', true);
-define('IS_AJAX', true);
-define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+const CORE = true;
+const IN_FORMA = true;
+const IS_AJAX = true;
+const _deeppath_ = '../';
+require __DIR__ . '/../base.php';
 
 // start buffer
 ob_start();

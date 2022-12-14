@@ -596,7 +596,7 @@ class CourseLms extends Model
         return $out;
     }
 
-    public function getIdUserOfLevelDate($id_course, $level, $id_date)
+    public static function getIdUserOfLevelDate($id_course, $level, $id_date)
     {
         $users = [];
 
@@ -622,7 +622,7 @@ class CourseLms extends Model
         return $users;
     }
 
-    public function getInfoDate($idDate)
+    public static function getInfoDate($idDate)
     {
         $query = 'select code, name from %lms_course_date where id_date=' . $idDate;
 

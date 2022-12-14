@@ -134,7 +134,7 @@ class CommunicationAlmsController extends AlmsController
 
         $comm_id_arr = [];
         foreach ($array_comm as $key => $value) {
-            $type = $array_comm[$key]['type_of'];
+            $type = $value['type_of'];
             if ($type == 'file') {
                 $comm_id_arr[] = $value['id_comm'];
             }

@@ -882,11 +882,7 @@ function export()
     $id_code_group = FormaLms\lib\Get::req('id_code_group', DOTY_INT, 0);
 
     if ($id_code_group <= 0) {
-        $this->render('invalid', [
-            'message' => Lang::t('_INVALID_ID_CODE_GROUP', 'code'),
-        ]);
-
-        return;
+        return Lang::t('_INVALID_ID_CODE_GROUP', 'code');
     }
 
     //retrieve data to export

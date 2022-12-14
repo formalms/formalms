@@ -67,18 +67,18 @@ class EnrollrulesAlmsController extends AlmsController
         $i = 0;
         foreach ($rules as $id => $rule) {
             if ($i >= $start_index && $i < $start_index + $results) {
-                $rules[$id]->rule_type_text = $types[$rules[$id]->rule_type];
+                $rule->rule_type_text = $types[$rule->rule_type];
                 if ($rule->id_rule != 0) {
-                    $rules[$id]->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
+                    $rule->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
                         . '<span>' . Lang::t('_MANAGE', 'enrollrules') . '</span></a>';
-                    $rules[$id]->mod = '<a id="mod_rules_' . $rule->id_rule . '" class="ico-sprite subs_mod" href="ajax.adm_server.php?r=alms/enrollrules/mod&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MOD', 'enrollrules') . '">'
+                    $rule->mod = '<a id="mod_rules_' . $rule->id_rule . '" class="ico-sprite subs_mod" href="ajax.adm_server.php?r=alms/enrollrules/mod&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MOD', 'enrollrules') . '">'
                         . '<span>' . Lang::t('_MOD', 'enrollrules') . '</span></a>';
-                    $rules[$id]->del = 'ajax.adm_server.php?r=alms/enrollrules/del&amp;id_rule=' . $rule->id_rule . '';
+                    $rule->del = 'ajax.adm_server.php?r=alms/enrollrules/del&amp;id_rule=' . $rule->id_rule . '';
                 } else {
-                    $rules[$id]->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modbaseelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
+                    $rule->mod_elem = '<a class="ico-sprite subs_elem" href="index.php?r=alms/enrollrules/modbaseelem&amp;id_rule=' . $rule->id_rule . '" title="' . Lang::t('_MANAGE', 'enrollrules') . '">'
                         . '<span>' . Lang::t('_MANAGE', 'enrollrules') . '</span></a>';
-                    $rules[$id]->mod = '';
-                    $rules[$id]->del = '';
+                    $rule->mod = '';
+                    $rule->del = '';
                 }
             }
             ++$i;

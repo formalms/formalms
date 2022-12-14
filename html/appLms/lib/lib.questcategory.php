@@ -64,7 +64,7 @@ class Questcategory
         return $categories;
     }
 
-    public function getInfoAboutCategory($category)
+    public static function getInfoAboutCategory($category)
     {
         //search query
         $query_quest_cat = '

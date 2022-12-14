@@ -36,7 +36,7 @@
 
     $html .= '<h3>' . Lang::t('_PHPINFO', 'configuration') . '</h3><ul class="link_list">';
 
-    $html .= '<li>' . Lang::t('_PHPVERSION', 'configuration') . ':&nbsp;<b>' . phpversion() . '</b>';
+    $html .= '<li>' . Lang::t('_PHPVERSION', 'configuration') . ':&nbsp;<b>' . PHP_VERSION . '</b>';
     $html .= '<li>' . Lang::t('_PHP_TIMEZONE', 'configuration') . ':&nbsp;<b>' . @date_default_timezone_get() . '</b>';
     $html .= '<li>' . Lang::t('_SAFEMODE', 'configuration') . ':&nbsp;<b>' . ($php_conf['safe_mode']['local_value']
             ? Lang::t('_ON', 'standard')
@@ -54,13 +54,13 @@
             ? Lang::t('_ON', 'standard')
             : '<span class="red">' . Lang::t('_OFF', 'standard') . ' ' . Lang::t('_USEFULL_ONLY_IF', 'configuration') . '</span>') . '</b>';
 
-    if (version_compare(phpversion(), '5.0.0') == -1) {
+    if (version_compare(PHP_VERSION, '5.0.0') == -1) {
         $html .= '<li>' . Lang::t('_DOMXML', 'configuration') . ':&nbsp;<b>' . (extension_loaded('domxml')
                 ? Lang::t('_ON', 'standard')
                 : '<span class="red">' . Lang::t('_OFF') . ' (' . Lang::t('_NOTSCORM', 'configuration') . ')</span>') . '</b>';
     }
 
-    if (version_compare(phpversion(), '5.2.0', '>')) {
+    if (version_compare(PHP_VERSION, '5.2.0', '>')) {
         $html .= '<li>' . Lang::t('_ALLOW_URL_INCLUDE', 'configuration') . ':&nbsp;<b>' . ($php_conf['allow_url_include']['local_value']
             ? '<span class="red">' . Lang::t('_ON') . '</span>'
             : Lang::t('_OFF')) . '</b>';

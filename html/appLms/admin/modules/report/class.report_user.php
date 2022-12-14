@@ -2242,7 +2242,7 @@ class Report_User extends Report
                 $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                 //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
                 $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
                 $arr_recipients = [];
@@ -2745,7 +2745,7 @@ class Report_User extends Report
                 $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                 //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
                 $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
                 $arr_recipients = [];
@@ -3439,7 +3439,7 @@ class Report_User extends Report
                 $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                 //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
                 $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
                 $arr_recipients = [];
@@ -4700,7 +4700,7 @@ class Report_User extends Report
                 $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                 //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
                 $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                $header .= 'X-Mailer: PHP/' . phpversion() . $GLOBALS['mail_br'];
+                $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
                 $arr_recipients = [];

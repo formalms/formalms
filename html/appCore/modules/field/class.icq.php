@@ -30,7 +30,7 @@ class CField_Icq extends Field_Contact
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'icq';
     }
@@ -419,7 +419,7 @@ class CField_Icq extends Field_Contact
             $re_field = sql_query('
 			SELECT translation
 			FROM ' . Field::_getMainTable() . "
-			WHERE id_common = '" . (int) $id_field . "' AND type_field = '" . CField_Skype::getFieldType() . "'");
+			WHERE id_common = '" . (int) $id_field . "' AND type_field = '" . (new CField_Skype)->getFieldType() . "'");
             list($label) = sql_fetch_row($re_field);
         }
 

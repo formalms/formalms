@@ -696,7 +696,7 @@ class Man_Course
         return $map;
     }
 
-    public function getIdUserOfLevel($idCourse, $levelNumber = false, $idEdition = false)
+    public static function getIdUserOfLevel($idCourse, $levelNumber = false, $idEdition = false)
     {
         $users = [];
         $query_courseuser = '
@@ -2376,7 +2376,7 @@ class DoceboCourse
      *
      * @return array [lv] => idst, [lv] => idst
      */
-    public function createCourseLevel($idCourse)
+    public static function createCourseLevel($idCourse)
     {
         require_once _lms_ . '/lib/lib.levels.php';
 

@@ -60,7 +60,7 @@ class Track_Test extends Track_Object
      *
      * @return int idTrack if the row is created correctly otherwise false
      **/
-    public function createNewTrack($idUser, $idTest, $idReference, $attempt_number = 0)
+    public static function createNewTrack($idUser, $idTest, $idReference, $attempt_number = 0)
     {
         $query = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack 
@@ -84,7 +84,7 @@ class Track_Test extends Track_Object
         }
     }
 
-    public function getTrack($id_test, $id_user)
+    public static function getTrack($id_test, $id_user)
     {
         $query = '
 		SELECT idTrack
@@ -145,7 +145,7 @@ class Track_Test extends Track_Object
      *
      * @return int true if the row exists otherwise false
      **/
-    public function isTrack($idUser, $idTest, $idReference)
+    public static function isTrack($idUser, $idTest, $idReference)
     {
         $query = '
 		SELECT COUNT(*) 
@@ -178,7 +178,7 @@ class Track_Test extends Track_Object
      *               )
      *
      **/
-    public function getTrackInfo($idUser, $idTest, $idReference)
+    public static function getTrackInfo($idUser, $idTest, $idReference)
     {
         $query = "
 			SELECT idTrack, date_attempt, date_end_attempt, last_page_seen, last_page_saved, number_of_save, number_of_attempt, attempts_for_suspension, suspended_until
@@ -195,7 +195,7 @@ class Track_Test extends Track_Object
         }
     }
 
-    public function getTrackInfoById($idTrack)
+    public static function getTrackInfoById($idTrack)
     {
         $query = "
 			SELECT idTrack, date_attempt, date_end_attempt, last_page_seen, last_page_saved, score, number_of_save, number_of_attempt, attempts_for_suspension, suspended_until
@@ -220,7 +220,7 @@ class Track_Test extends Track_Object
      *
      * @return bool true if success false otherwise
      **/
-    public function updateTrack($idTrack, $new_info)
+    public static function updateTrack($idTrack, $new_info)
     {
         $first = true;
         if (!is_array($new_info)) {

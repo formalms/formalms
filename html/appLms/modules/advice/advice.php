@@ -17,6 +17,9 @@ if (Docebo::user()->isAnonymous()) {
     exit("You can't access");
 }
 
+/** @noinspection PhpUnusedLocalVariableInspection
+ * @noinspection PhpUnusedLocalVariableInspection
+ */
 function adviceList()
 {
     require_once _base_ . '/lib/lib.navbar.php';
@@ -219,6 +222,7 @@ function archiveList()
         . $nav_bar->getNavBar($ini));
 }
 
+/** @noinspection PhpUnusedLocalVariableInspection */
 function advice()
 {
     checkPerm('view');
@@ -458,11 +462,6 @@ function upadvice()
 
     if ($_REQUEST['title'] == '') {
         $_REQUEST['title'] = Lang::t('_NOTITLE');
-    }
-    if ($_REQUEST['impo'] != '1') {
-        $impo = '0';
-    } else {
-        $impo = '1';
     }
 
     $query_advice = '

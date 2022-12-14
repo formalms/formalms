@@ -1468,15 +1468,16 @@ class UsermanagementAdmController extends AdmController
         }
 
         $template = getDefaultTemplate();
-        $template_arr = getTemplateList();
-        $template_tmp_arr = array_flip($template_arr);
-        $template_id = $template_tmp_arr[$template];
-        unset($template_tmp_arr);
+        $template_array = getTemplateList();
+        $template_id = array_search($template,$template_array);
+
+
 
         $this->render('add_folder', [
             'id_parent' => $id_parent,
             'title' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
             'json' => $this->json,
+            'template_array' => $template_array,
             'default_template' => $template_id,
         ]);
     }

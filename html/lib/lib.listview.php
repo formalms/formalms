@@ -427,7 +427,7 @@ class ListView
 
         while ($values = $this->fetchRecord()) {
             foreach ($colInfo as $key => $fieldInfo) {
-                $colData[$key]['data'] = $values[$colInfo[$key]['data']];
+                $colData[$key]['data'] = $values[$fieldInfo['data']];
             }
             $out .= $this->rend->WriteRowCss($colData);
         }

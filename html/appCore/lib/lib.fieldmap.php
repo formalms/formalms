@@ -271,7 +271,7 @@ class FieldMapManager
             } elseif ((!isset($field_map[$field_id])) && (!in_array($field_id, $map_custom_fields))) {
                 $resource = '_not_mapped';
                 $type = 'custom';
-                $res[$resource][$type][$field_id]['description'] = $field_info[$field_id][FIELD_INFO_TRANSLATION];
+                $res[$resource][$type][$field_id]['description'] = $info[FIELD_INFO_TRANSLATION];
                 $res[$resource][$type][$field_id]['value'] = $field_val[$field_id];
                 if (($debug) && (empty($field_val[$field_id]))) {
                     echo $field_id . ' :: ';

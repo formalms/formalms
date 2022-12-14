@@ -86,7 +86,7 @@ class DoceboEventManager
      * @internal if you pass an int $class_id or an array of int in the first parameter
      *				you can relate the consumer to these class ids
      **/
-    public function registerEventConsumer($class_name, $consumer_class, $consumer_file)
+    public static function registerEventConsumer($class_name, $consumer_class, $consumer_file)
     {
         $idConsumer = DoceboEventManager::_registerConsumer($consumer_class, $consumer_file);
         if ($idConsumer === false) {

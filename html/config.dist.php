@@ -157,3 +157,8 @@ $cfg['mail_br'] = "\r\n";
  */
 //$cfg['certificate_encryption'] = true;
 //$cfg['certificate_password']  = "12345678901234567890123456789012";
+
+/*
+ *  Enabling SMS sending
+ */
+//$cfg['sms_on'] = true;

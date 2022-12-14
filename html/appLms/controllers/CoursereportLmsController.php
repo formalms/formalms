@@ -149,7 +149,7 @@ class CoursereportLmsController extends LmsController
             }
             foreach ($test_details as $id_test => $single_detail) {
                 if (isset($single_detail['num_result'])) {
-                    $test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
+                    $test_details[$id_test]['average'] /= $single_detail['num_result'];
                 }
             }
             reset($test_details);
@@ -194,7 +194,7 @@ class CoursereportLmsController extends LmsController
         //while (list($id_report , $single_detail) = each ($report_details)) {
         foreach ($report_details as $id_report => $single_detail) {
             if (isset($single_detail['num_result'])) {
-                $report_details[$id_report]['average'] /= $report_details[$id_report]['num_result'];
+                $report_details[$id_report]['average'] /= $single_detail['num_result'];
             }
         }
 
@@ -642,7 +642,7 @@ class CoursereportLmsController extends LmsController
             }
             foreach ($test_details as $id_test => $single_detail) {
                 if (isset($single_detail['num_result'])) {
-                    $test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
+                    $test_details[$id_test]['average'] /= $single_detail['num_result'];
                 }
             }
             reset($test_details);

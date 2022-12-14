@@ -55,7 +55,7 @@ function retriveTrack($id_reference, $id_test, $id_user, $do_not_create = false)
     return $id_track;
 }
 
-function intro($object_test, $id_param, $deleteLastTrack = false)
+function intro($object_test, $id_param)
 {
     if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) {
         exit("You can't access");
@@ -1844,7 +1844,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
         $query_question = "
 		SELECT q.idQuest, q.type_quest, t.type_file, t.type_class, q.idCategory 
 		FROM %lms_testquest AS q JOIN %lms_quest_type AS t
-		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode($quest_see, ',') . ')
+		WHERE q.idTest = '" . $idTest . "' AND q.type_quest = t.type_quest AND  q.idQuest IN (" . implode(',', $quest_see) . ')
 		ORDER BY q.sequence';
     } else {
         $query_question = "

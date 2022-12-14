@@ -13,8 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/class.definition.php';
-require_once dirname(__FILE__) . '/../lib/lib.directory.php';
+require_once __DIR__ . '/class.definition.php';
+require_once __DIR__ . '/../lib/lib.directory.php';
 
 define('FILTER_FOLD', 'FILTER_FOLD');
 
@@ -2065,47 +2065,47 @@ class Module_Directory extends Module
     }
 
     // Function for permission managment
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         switch ($op) {
             case 'org_chart':
                 return [
                     'view' => ['code' => 'view_org_chart',
                         'name' => '_VIEW_ORG_CHART',
-                        'image' => 'standard/view.png', ],
+                        'image' => 'standard/view.png',],
                     'add' => ['code' => 'createuser_org_chart',
                         'name' => '_NEW_USER',
-                        'image' => 'standard/add.png', ],
+                        'image' => 'standard/add.png',],
                     'mod' => ['code' => 'edituser_org_chart',
                         'name' => '_MOD',
-                        'image' => 'standard/edit.png', ],
+                        'image' => 'standard/edit.png',],
                     'del' => ['code' => 'deluser_org_chart',
                         'name' => '_DELUSER_ORG_CHART',
-                        'image' => 'standard/delete.png', ],
+                        'image' => 'standard/delete.png',],
                     'moderate' => ['code' => 'approve_waiting_user',
                         'name' => '_MODERATE',
-                        'image' => 'org_chart/waiting_identity.png', ],
+                        'image' => 'org_chart/waiting_identity.png',],
                 ];
-                break;
             case 'listgroup':
                 return [
                     'view' => ['code' => 'view_group',
                         'name' => '_VIEW',
-                        'image' => 'standard/view.png', ],
+                        'image' => 'standard/view.png',],
                     'add' => ['code' => 'creategroup',
                         'name' => '_ADD',
-                        'image' => 'standard/add.png', ],
+                        'image' => 'standard/add.png',],
                     'mod' => ['code' => 'editgroup',
                         'name' => '_MOD',
-                        'image' => 'standard/edit.png', ],
+                        'image' => 'standard/edit.png',],
                     'del' => ['code' => 'delgroup',
                         'name' => '_DEL',
-                        'image' => 'standard/delete.png', ],
+                        'image' => 'standard/delete.png',],
                     'associate' => ['code' => 'associate_group',
                         'name' => '_ASSOCIATEUSERTOGROUP',
-                        'image' => 'directory/addto.gif', ],
+                        'image' => 'directory/addto.gif',],
                 ];
-                break;
+            default:
+                return [];
         }
     }
 

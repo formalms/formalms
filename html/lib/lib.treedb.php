@@ -716,7 +716,7 @@ class TreeDb
 
     public function renameFolder(&$folder, $newName)
     {
-        $oldFolder = ((version_compare(phpversion(), '5.0') < 0) ? $folder : clone $folder);
+        $oldFolder = ((version_compare(PHP_VERSION, '5.0') < 0) ? $folder : clone $folder);
 
         $folder->path = $oldFolder->getParentPath() . '/' . $newName;
         $query = 'UPDATE ' . $this->table

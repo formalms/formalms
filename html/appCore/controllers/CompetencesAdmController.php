@@ -1910,8 +1910,8 @@ class CompetencesAdmController extends AdmController
             $line[] = Layout::highlight($acl_man->relativeId($uinfo[$id_user]->userid), $filter_text);
             $line[] = Layout::highlight($uinfo[$id_user]->lastname, $filter_text);
             $line[] = Layout::highlight($uinfo[$id_user]->firstname, $filter_text);
-            $line[] = ($type == 'score' ? $userdata[$id_user]->score_got : '-');
-            $line[] = Format::date($userdata[$id_user]->last_assign_date, 'datetime');
+            $line[] = ($type == 'score' ? $record->score_got : '-');
+            $line[] = Format::date($record->last_assign_date, 'datetime');
             $line[] = $icon_history;
 
             $table->addBody($line);

@@ -48,6 +48,11 @@ class SettingAdm extends Model
             13 => 'Twig',
         ];
 
+        if (!\FormaLms\lib\Get::cfg('sms_on')) {
+            array_splice($names,9,1);
+        }
+
+
 
         // $event->setGroupUnits($names);
         // \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, $event);
@@ -90,7 +95,7 @@ class SettingAdm extends Model
             . '<br />'
 
             . '<div class="conf_line_title">' . $lang->def('_PHPINFO') . '</div>'
-            . config_line($lang->def('_PHPVERSION'), phpversion())
+            . config_line($lang->def('_PHPVERSION'), PHP_VERSION)
             . config_line($lang->def('_SAFEMODE'), ($php_conf['safe_mode']['local_value']
                 ? $lang->def('_ON')
                 : $lang->def('_OFF')))
@@ -108,12 +113,12 @@ class SettingAdm extends Model
                 : '<span class="font_red">' . $lang->def('_OFF') . ' ' . $lang->def('_USEFULL_ONLY_IF') . '</span>'))
             . config_line($lang->def('_PHP_TIMEZONE'), @date_default_timezone_get());
 
-        if (version_compare(phpversion(), '5.0.0') == -1) {
+        if (version_compare(PHP_VERSION, '5.0.0') == -1) {
             echo config_line($lang->def('_DOMXML'), (extension_loaded('domxml')
                 ? $lang->def('_ON')
                 : '<span class="font_red">' . $lang->def('_OFF') . ' (' . $lang->def('_NOTSCORM') . ')</span>'));
         }
-        if (version_compare(phpversion(), '5.2.0', '>')) {
+        if (version_compare(PHP_VERSION, '5.2.0', '>')) {
             echo config_line($lang->def('_ALLOW_URL_INCLUDE'), ($php_conf['allow_url_include']['local_value']
                 ? '<span class="font_red">' . $lang->def('_ON') . '</span>'
                 : $lang->def('_OFF')));

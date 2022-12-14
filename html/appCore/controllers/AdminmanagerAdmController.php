@@ -351,10 +351,6 @@ class AdminmanagerAdmController extends AdmController
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
         $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
-        $searchFilter = [
-            'text' => $filter_text,
-        ];
-
         //instantiate model
         $lmodel = new LocationAlms();
 

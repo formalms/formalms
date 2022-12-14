@@ -72,7 +72,7 @@ class GamesAlmsController extends AlmsController
 
         $games_id_arr = [];
         foreach ($array_games as $key => $value) {
-            $type = $array_games[$key]['type_of'];
+            $type = $value['type_of'];
             if ($type == 'file') {
                 $games_id_arr[] = $value['id_game'];
             }

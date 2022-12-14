@@ -90,7 +90,7 @@ class Format
         return self::$_regset->databaseToTimestamp($date);
     }
 
-    public function dateDistance($date)
+    public static function dateDistance($date)
     {
         // yyyy-mm-dd hh:mm:ss
         // 0123456789012345678

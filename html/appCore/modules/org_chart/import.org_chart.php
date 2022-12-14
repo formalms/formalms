@@ -221,7 +221,7 @@ class ImportUser extends DoceboImport_Destination
         $acl_manager = Docebo::aclm();
 
         foreach ($row as $k => $v) {
-            if ($row[$k] !== false) {
+            if ($v !== false) {
                 $row[$k] = trim($v);
             }
         }

@@ -30,7 +30,7 @@ class CField_Skype extends Field_Contact
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'skype';
     }

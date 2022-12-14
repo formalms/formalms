@@ -373,7 +373,7 @@ class CategoryTree extends TreeDb_CatDb
 
     public function moveFolder(&$folder, &$parentFolder, $newfoldername = false)
     {
-        $oldFolder = ((version_compare(phpversion(), '5.0') < 0) ? $folder : clone $folder);
+        $oldFolder = ((version_compare(PHP_VERSION, '5.0') < 0) ? $folder : clone $folder);
 
         $folder->idParent = $parentFolder->id;
         $folder->path = (($parentFolder->id == 0) ? '/root/' : ($parentFolder->path . '/'))

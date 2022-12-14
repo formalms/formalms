@@ -3125,7 +3125,7 @@ function forumsearch()
 	SELECT m.idThread, t.author AS thread_author, m.posted, m.title, m.author  AS mess_author, m.generator
 	FROM %lms_forumthread AS t LEFT JOIN
 		%lms_forummessage AS m ON ( t.last_post = m.idMessage )
-	WHERE t.idForum IN ( ' . implode($forums, ',') . ' )');
+	WHERE t.idForum IN ( ' . implode(',', $forums) . ' )');
     while (list($idT_p, $id_ta, $posted, $title_p, $id_a, $is_gener) = sql_fetch_row($re_last_post)) {
         $last_authors[$id_ta] = $id_ta;
         if ($posted !== null) {

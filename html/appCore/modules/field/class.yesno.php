@@ -29,7 +29,7 @@ class Field_YesNo extends Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'yesno';
     }
@@ -689,7 +689,6 @@ class Field_YesNo extends Field
 
     public function getClientClassObject()
     {
-        $lang = &DoceboLanguage::createInstance('standard');
 
         return '
       {
@@ -699,7 +698,6 @@ class Field_YesNo extends Field
           var $D = YAHOO.util.Dom, t = [], c;
           c=$D.get("yesno_1_"+id_filter+"_"+id_sel); if (c.checked) t.push(c.value);
           c=$D.get("yesno_2_"+id_filter+"_"+id_sel); if (c.checked) t.push(c.value);
-          //c=$D.get("yesno_0_"+id_filter+"_"+id_sel); if (c.checked) t.push(c.value);
           return t.join(",");
         },
         
@@ -707,7 +705,6 @@ class Field_YesNo extends Field
           var i, $D = YAHOO.util.Dom, t = ((typeof newValue=="string") ? newValue.split(",") : []);
           for (i=0; i<t.length; i++) {
             switch (t[i]) {
-              //case "0": $D.get("yesno_0_"+id_filter+"_"+id_sel).checked=true; break;
               case "1": $D.get("yesno_1_"+id_filter+"_"+id_sel).checked=true; break;
               case "2": $D.get("yesno_2_"+id_filter+"_"+id_sel).checked=true; break;            
             }
@@ -719,19 +716,13 @@ class Field_YesNo extends Field
           
           s = document.createElement("SPAN");
           c = document.createElement("INPUT"); c.type="checkbox"; c.id="yesno_1_"+id_filter+"_"+id_sel; c.value="1";
-          l = document.createElement("LABEL"); l.htmlFor="yesno_1_"+id_filter+"_"+id_sel; l.innerHTML="' . $lang->def('_YES') . '";
+          l = document.createElement("LABEL"); l.htmlFor="yesno_1_"+id_filter+"_"+id_sel; l.innerHTML="' . Lang::t('_YES') . '";
           s.appendChild(c); s.appendChild(l); d.appendChild(s);
           
           s = document.createElement("SPAN");
           c = document.createElement("INPUT"); c.type="checkbox"; c.id="yesno_2_"+id_filter+"_"+id_sel; c.value="2";
-          l = document.createElement("LABEL"); l.htmlFor="yesno_2_"+id_filter+"_"+id_sel; l.innerHTML="' . $lang->def('_NO') . '";
+          l = document.createElement("LABEL"); l.htmlFor="yesno_2_"+id_filter+"_"+id_sel; l.innerHTML="' . Lang::t('_NO') . '";
           s.appendChild(c); s.appendChild(l); d.appendChild(s);
-          /*
-          s = document.createElement("SPAN");
-          c = document.createElement("INPUT"); c.type="checkbox"; c.id="yesno_0_"+id_filter+"_"+id_sel; c.value="0";
-          l = document.createElement("LABEL"); l.htmlFor="yesno_0_"+id_filter+"_"+id_sel; l.innerHTML="' . $lang->def('_NOT_ASSIGNED') . '";
-          s.appendChild(c); s.appendChild(l); d.appendChild(s);
-          */
           oEl.appendChild(d);
         }
       }    

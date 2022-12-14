@@ -75,7 +75,7 @@ class DashboardAdmController extends AdmController
             $problem = true;
         }
 
-        if (version_compare(phpversion(), '5.2.0', '>')) {
+        if (version_compare(PHP_VERSION, '5.2.0', '>')) {
             if ($php_conf['allow_url_include']['local_value']) {
                 $problem = true;
             }

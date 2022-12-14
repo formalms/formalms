@@ -806,7 +806,7 @@ class CourseAlms extends Model
             ];
             $re = insertRoom($rules);
         }
-        $course_idst = &DoceboCourse::createCourseLevel($id_course);
+        $course_idst = DoceboCourse::createCourseLevel($id_course);
 
         // create the course menu -----------------------------------------------------------
         if (!createCourseMenuFromCustom($id_custom, $id_course, $course_idst)) {

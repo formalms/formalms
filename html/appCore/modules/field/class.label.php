@@ -20,7 +20,7 @@ class Field_Textlabel extends Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'textlabel';
     }

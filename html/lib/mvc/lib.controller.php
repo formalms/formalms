@@ -109,8 +109,8 @@ class Controller
         $tplengine = FormaLms\lib\Get::cfg('template_engine', []);
 
         foreach ($tplengine as $tplkey => $tpleng) {
-            if (isset($tplengine[$tplkey]['ext']) && !is_array($tplengine[$tplkey]['ext'])) {
-                $tplengine[$tplkey]['ext'] = [$tplengine[$tplkey]['ext']];
+            if (isset($tpleng['ext']) && !is_array($tpleng['ext'])) {
+                $tplengine[$tplkey]['ext'] = [$tpleng['ext']];
             }
             $extensions[$tplkey] = $tplengine[$tplkey]['ext'];
         }

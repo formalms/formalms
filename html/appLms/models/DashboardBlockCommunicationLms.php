@@ -103,12 +103,16 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
 
     public function findAllUnread($limit, $reader, $filter = false, $only_to_read)
     {
-        $qtxt = 'SELECT c.id_comm, title, description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, ct.status, ct.dateAttempt '
-            . ' FROM ( learning_communication AS c '
-            . '    JOIN learning_communication_access AS ca ON (c.id_comm = ca.id_comm) ) '
-            . '    LEFT JOIN learning_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
 
-            . ' WHERE 1 '
+        $preference = new UserPreferences(Docebo::user()->getId());
+        $selected_lang = $preference->getLanguage();
+
+        $qtxt = 'SELECT c.id_comm, cl.title, cl.description, c.publish_date, c.type_of, c.id_resource, COUNT(ca.id_comm) as access_entity, ct.status, ct.dateAttempt '
+            . ' FROM ( learning_communication AS c '
+            . '    JOIN learning_communication_access AS ca ON (c.id_comm = ca.id_comm) '
+            . '    JOIN learning_communication_lang AS cl ON (c.id_comm = cl.id_comm) )'
+            . '    LEFT JOIN learning_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
+            . " WHERE cl.lang_code = '".$selected_lang."'"
             . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
             . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '')
             . (!empty($_categories) ? ' AND c.id_category IN (' . implode(',', $_categories) . ') ' : '')

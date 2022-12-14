@@ -11,9 +11,9 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('LMS', true);
-define('IN_FORMA', true);
-define('_deeppath_', '../');
+const LMS = true;
+const IN_FORMA = true;
+const _deeppath_ = '../';
 require __DIR__ . '/../base.php';
 require_once _lms_ . '/lib/LMSTemplateController.php';
 

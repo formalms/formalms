@@ -396,7 +396,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
                 $rules = array_merge($rules, $admin_rules);
                 $re = insertRoom($rules);
             }
-            $course_idst = DoceboCourse::createCourseLevel($id_course);
+            $course_idst = DoceboCourse:: createCourseLevel($id_course);
 
             require_once _lms_ . '/lib/lib.manmenu.php';
 
