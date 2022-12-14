@@ -17,7 +17,7 @@ define('_deeppath_', '../');
 require dirname(__FILE__) . '/../base.php';
 
 // start buffer
-ob_start();
+use FormaLms\appCore\Template\Services\ClientService;
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
@@ -44,7 +44,7 @@ $GLOBALS['user_roles'][$roleid] = true;
 $roleid = '/admin/view_all';
 $GLOBALS['user_roles'][$roleid] = true;
 
-setLanguage('english');
+setLanguage(getDefaultLanguage());
 
 function getEmailForSchedule($schedule): array
 {
@@ -373,18 +373,30 @@ if ($lock_stream) {
                     $report_url .= rawurlencode($tmpfile);
 
                     copy($path . $tmpfile, $async_report);
+     
+                    $report_url = ClientService::getInstance()->getBaseUrl(true) . substr($report_url, 1);
 
                     //Sends an email containing the report link
                     foreach ($recipients as $recipient) {
                         //Sends an email containing the report link
 
-                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT', 'email', [], $recipient['language']));
-                        $body = str_replace(['[report_url]', '[report_persistence_days]'], [$report_url, $report_persistence_days], Lang::t('_SCHEDULED_REPORT_BODY', 'email', [], $recipient['language']));
+                        $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email', [], $recipient['language']));
 
-                        $response = $mailer->SendMail([$recipient['email']], //sender
-                            $subject, //recipients
-                            $body, //subject
-                            FormaLms\lib\Get::sett('sender_event') //body
+                        $body = Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']);
+                        if(preg_match('/\[report_url\]/', $body)) {
+                            $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']));
+                        } else {
+                            $body .= '<br />' . $report_url;
+                        }
+        
+                        $body = str_replace('[report_persistence_days]', $report_persistence_days, $body);
+
+                        $response = $mailer->SendMail(FormaLms\lib\Get::sett('sender_event'), //sender
+                            [$recipient['email']], //recipients
+                            $subject, //subject
+                            $body, //body
+                            [],
+                            ['is_html' => true]
                         );
 
                         if (!$response[$recipient['email']]) {
