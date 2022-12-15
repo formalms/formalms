@@ -80,12 +80,12 @@ $(function() {
             { data: 'score', title: '<?php echo Lang::t('_SCORE', 'standard'); ?>', sortable: true } 
         ],
         ajax: {
-            url: "ajax.server.php?r=coursestats/getusertabledata&id_user=<?php echo $id_user; ?>",
+            url: window.frontend.config.url.appLms + "/ajax.server.php?r=coursestats/getusertabledata&id_user=<?php echo $id_user; ?>",
             type: "GET"
         },
         order: [[ 1, "asc" ]],
         edit: {
-            url: "ajax.server.php?r=coursestats/user_inline_editor",
+            url: window.frontend.config.url.appLms + "/ajax.server.php?r=coursestats/user_inline_editor",
             type: "POST",
             data: {
                 id_user: <?php echo $id_user; ?>,
