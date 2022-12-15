@@ -1,7 +1,7 @@
 
 <div data-comp="forma-plugin-ftmu" class="{% if not options.activeStatus %}no-active-gui{% endif %}">
     {% import _self as macros %}
-    {% macro tree_links(data, dataB, parent) %}
+    {% macro tree_links(data, dataB, disabled) %}
         {% import _self as macros %}
         {% for el in data %}
             <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} {% if options.dragAndDrop %}is-droppable{% endif %}" {% if options.dragAndDrop %}draggable="true"{% endif %}>
@@ -30,9 +30,7 @@
                                    {% for option in action.options %}
                                         <input
                                             class="radiosel"
-                                            {% if parent %}
-                                                {% if arrayContains(dataB.extraData.formData, parent.id, 2) %} disabled {% endif %}
-                                            {% endif %}
+                                            {% if disabled %} disabled {% endif %}
                                             data-opt="{{ el.id }}"
                                             id="{{ option.name }}"
                                             {% if arrayContains(dataB.extraData.formData, el.id, option.value) %} checked {% endif %}
@@ -49,7 +47,7 @@
                 </div>
                     {% if el.children %}
                         <ul class="folderTree__ul {% if options.sortable %}js-sortable-tree{% endif %}">
-                            {{ macros.tree_links(el.children, dataB, parent ? parent : el) }}
+                            {{ macros.tree_links(el.children, dataB, disabled ? true : arrayContains(dataB.extraData.formData, el.id, 2) ? true : false) }}
                         </ul>
                     {% endif %}
             </li>

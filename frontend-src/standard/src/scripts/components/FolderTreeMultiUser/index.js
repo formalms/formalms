@@ -18,15 +18,10 @@ Twig.extendFunction('getId', (str, position) => {
 
 class FolderTreeMultiUser extends FolderTreeBase {
 
-  constructor(baseApiUrl, controller, type, endpoint, options = {}) {
+  constructor(baseApiUrl, controller, type, endpoint, options = {}, defaultData = []) {
     super(baseApiUrl, controller, type, endpoint, options);
-
-    /**
-     * Associated Twig view
-     */
-
     this.baseApiUrl = this.getBaseApiUrl('adm/userselector/getData&dataType=org');
-    this.extraData = {formData: []};
+    this.extraData = {formData: defaultData};
     this.Tree = Tree;
   }
 
@@ -95,17 +90,17 @@ class FolderTreeMultiUser extends FolderTreeBase {
     })
   }
 
-  static create(controller = {}, baseApiUrl = '') {
+  static create(controller = {}, baseApiUrl = '', defaultData = []) {
     const type = controller.type ? controller.type : 'plugin';
     return new FolderTreeMultiUser(baseApiUrl, controller, type, 'getfoldertree', {
       dragAndDrop: false,
       sortable: false,
       activeStatus: false
-    });
+    }, defaultData);
   }
 
   async getNode(id, cb) {
-    const endpoint = 'https://forma.local/appCore/ajax.adm_server.php?r=adm/userselector/getData';
+    const endpoint = `${window.frontend.config.url.appCore}/ajax.adm_server.php?r=adm/userselector/getData`; 
     this.openFolders.push(id);
     this.container.querySelector(`.loader_${id}`).classList.remove('hidden');
     await window.frontend.helpers.Axios.get(endpoint + `&node_id=${id}`).then((response) => {
