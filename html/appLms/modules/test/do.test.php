@@ -1989,7 +1989,8 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
                 $GLOBALS['page']->add($str, 'content');
             }
 
-            while (list($id_cat, $name_cat) = each($categories)) {
+            //while (list($id_cat, $name_cat) = each($categories)) 
+            foreach((Array) $categories as $id_cat => $name_cat) {
                 $str = $name_cat . ', ' . $lang->def('_TEST_SCORES') . ': '
                     . (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0) . '<br />';
                 if ($mvc) {

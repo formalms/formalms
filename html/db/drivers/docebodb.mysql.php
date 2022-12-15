@@ -33,8 +33,8 @@ class Mysql_DbConn extends DbConn
         if (is_resource($this->conn)) {
             return $this->conn;
         }
-        if (!$this->conn = @mysql_connect($host, $user, $pwd, true)) {
-            Log::add('mysql connect error : ' . mysql_error());
+        if (!$this->conn = @mysqli_connect($host, $user, $pwd, true)) {
+            Log::add('mysql connect error : ' . mysqli_error());
 
             return false;
         }
@@ -54,8 +54,8 @@ class Mysql_DbConn extends DbConn
 
     public function select_db($dbname)
     {
-        if (!@mysql_select_db($dbname, $this->conn)) {
-            $this->log('mysql select db error : ' . mysql_error());
+        if (!@mysqli_select_db($this->conn, $dbname)) {
+            $this->log('mysql select db error : ' . mysqli_error());
 
             return false;
         }
@@ -91,7 +91,7 @@ class Mysql_DbConn extends DbConn
 
     public function escape($data)
     {
-        return mysql_real_escape_string($data, $this->conn);
+        return mysqli_real_escape_string($this->conn, $data);
     }
 
     public function query($query)
@@ -106,7 +106,7 @@ class Mysql_DbConn extends DbConn
         $parsed_query = $this->parse_query($query, $data);
 
         $start_at = $this->get_time();
-        $re = mysql_query($parsed_query, $this->conn);
+        $re = mysqli_query($this->conn, $parsed_query);
         $this->query_log($parsed_query, ($this->get_time() - $start_at));
 
         return $re;
@@ -128,7 +128,7 @@ class Mysql_DbConn extends DbConn
             . ' LIMIT ' . (int) $from . ', ' . (int) $results . '';
 
         $start_at = $this->get_time();
-        $re = mysql_query($parsed_query, $this->conn);
+        $re = mysqli_query($this->conn, $parsed_query);
         $this->query_log($parsed_query, ($this->get_time() - $start_at));
 
         return $re;
@@ -136,7 +136,7 @@ class Mysql_DbConn extends DbConn
 
     public function insert_id()
     {
-        return mysql_insert_id($this->conn);
+        return mysqli_insert_id($this->conn);
     }
 
     public function fetch_row($result)
@@ -145,7 +145,7 @@ class Mysql_DbConn extends DbConn
             return false;
         }
 
-        return mysql_fetch_row($result);
+        return mysqli_fetch_row($result);
     }
 
     public function fetch_assoc($result)
@@ -154,7 +154,7 @@ class Mysql_DbConn extends DbConn
             return false;
         }
 
-        return mysql_fetch_assoc($result);
+        return mysqli_fetch_assoc($result);
     }
 
     public function fetch_array($result)
@@ -163,7 +163,7 @@ class Mysql_DbConn extends DbConn
             return false;
         }
 
-        return mysql_fetch_array($result);
+        return mysqli_fetch_array($result);
     }
 
     public function fetch_obj($result, $class_name = null, $params = null)
@@ -172,13 +172,13 @@ class Mysql_DbConn extends DbConn
             return false;
         }
         if ($params) {
-            return mysql_fetch_object($result, $class_name, $params);
+            return mysqli_fetch_object($result, $class_name, $params);
         }
         if ($class_name) {
-            return mysql_fetch_object($result, $class_name);
+            return mysqli_fetch_object($result, $class_name);
         }
 
-        return mysql_fetch_object($result);
+        return mysqli_fetch_object($result);
     }
 
     public function escape_string($unescaped_string)
@@ -187,7 +187,7 @@ class Mysql_DbConn extends DbConn
             return false;
         }
 
-        return mysql_escape_string($unescaped_string);
+        return mysqli_escape_string($unescaped_string);
     }
 
     public function num_rows($result)
@@ -196,62 +196,62 @@ class Mysql_DbConn extends DbConn
             return false;
         }
 
-        return mysql_num_rows($result);
+        return mysqli_num_rows($result);
     }
 
     public function affected_rows()
     {
-        return mysql_affected_rows($this->conn);
+        return mysqli_affected_rows($this->conn);
     }
 
     public function errno()
     {
-        return mysql_errno($this->conn);
+        return mysqli_errno($this->conn);
     }
 
     public function error()
     {
-        return mysql_error($this->conn);
+        return mysqli_error($this->conn);
     }
 
     public function free_result($result)
     {
-        return mysql_free_result($result);
+        return mysqli_free_result($result);
     }
 
     public function get_client_info()
     {
-        return mysql_get_client_info($this->conn);
+        return mysqli_get_client_info($this->conn);
     }
 
     public function get_server_info()
     {
-        return mysql_get_server_info($this->conn);
+        return mysqli_get_server_info($this->conn);
     }
 
     public function data_seek($result, $row_number)
     {
-        return mysql_data_seek($result, $row_number);
+        return mysqli_data_seek($result, $row_number);
     }
 
     public function field_seek($result, $row_number)
     {
-        return mysql_field_seek($result, $row_number);
+        return mysqli_field_seek($result, $row_number);
     }
 
     public function num_fields($result)
     {
-        return mysql_num_fields($result);
+        return mysqli_num_fields($result);
     }
 
     public function fetch_field($result)
     {
-        return mysql_fetch_field($result);
+        return mysqli_fetch_field($result);
     }
 
     public function real_escape_string($unescaped_string)
     {
-        return mysql_real_escape_string($unescaped_string, $this->conn);
+        return mysqli_real_escape_string($this->conn, $unescaped_string);
     }
 
     public function start_transaction()
@@ -277,7 +277,7 @@ class Mysql_DbConn extends DbConn
 
     public function close()
     {
-        @mysql_close($this->conn);
+        @mysqli_close($this->conn);
         $this->log('mysql close connection');
     }
 
