@@ -30,6 +30,10 @@ class FolderTreeMultiUser extends FolderTreeBase {
     this.Tree = Tree;
   }
 
+  getFormData() {
+    return this.extraData.formData;
+  }
+
   async getTree() {
     await this.getData(this.baseApiUrl, false);
     this.render();
