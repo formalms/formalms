@@ -1,6 +1,20 @@
 import 'regenerator-runtime/runtime'
 import Tree from './tree.html.twig';
 import FolderTreeBase from './../FolderTreeBase';
+import Twig from 'twig';
+
+Twig.extendFunction('arrayContains', (array, idString, value) => {
+  const spliced = idString.split('_');
+  const found = array.filter((item) => spliced.indexOf(item) !== -1 && spliced.indexOf(item)+1 === Number(value) ? true : false );
+  return found.length ? true : false;
+})
+
+Twig.extendFunction('getId', (str, position) => {
+  const spliced = str.split('_');
+  if(position) {
+    return spliced[position-1];
+  }
+})
 
 class FolderTreeMultiUser extends FolderTreeBase {
 
@@ -12,7 +26,7 @@ class FolderTreeMultiUser extends FolderTreeBase {
      */
 
     this.baseApiUrl = this.getBaseApiUrl('adm/userselector/getData&dataType=org');
-
+    this.extraData = {formData: []};
     this.Tree = Tree;
   }
 
@@ -24,9 +38,24 @@ class FolderTreeMultiUser extends FolderTreeBase {
 
   initEvents() {
     this.container.addEventListener('click', (e) => {
-      console.log(e.target.classList, e);
       const id = e.target.getAttribute('data-id');
-      if(e.target.classList.contains('actions') && !this.openFolders.includes(id)) {
+      // Click on radio
+      if(e.target.classList.contains('radiosel')) {
+        const value = e.target.value;
+        const dataOpt = e.target.getAttribute('data-opt');
+        // Remove all selected of this node
+        const idsToRemove = dataOpt.split('_');
+        this.extraData.formData = this.extraData.formData.filter((id) => idsToRemove.indexOf(id) !== -1 ? false : true);
+        // Add the selected
+        if(value) {
+          if(this.extraData.formData.indexOf(value) === -1) {
+            this.extraData.formData.push(value);
+          }
+        }
+        this.render();
+      }
+      // Click on folders
+      if((e.target.classList.contains('actions') || e.target.classList.contains('arrow')) && !this.openFolders.includes(id)) {
         this.getNode(id, () => {
           this.render();
         });
@@ -34,6 +63,13 @@ class FolderTreeMultiUser extends FolderTreeBase {
         if(this.openFolders.includes(id)) {
           this.openFolders.splice(this.openFolders.indexOf(id), 1);
           this.insertChildren(this.data, id, []);
+          // Remove opened children
+          for (var i = this.openFolders.length - 1; i >= 0; i--) {
+              const openFolderId = this.openFolders[i];
+              if(!this.data.find((item) => item.id === openFolderId)) {
+                this.openFolders.splice(this.openFolders.indexOf(openFolderId), 1)
+              }
+          }
           this.render();
         }
       }
@@ -42,6 +78,8 @@ class FolderTreeMultiUser extends FolderTreeBase {
   }
 
   insertChildren(source, targetId, children) {
+
+    console.log(children);
     (source ? source : this.data).forEach((child) => {
       if(child.id == targetId) {
         child.children = children;

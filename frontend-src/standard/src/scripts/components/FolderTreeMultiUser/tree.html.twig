@@ -1,7 +1,7 @@
 
 <div data-comp="forma-plugin-ftmu" class="{% if not options.activeStatus %}no-active-gui{% endif %}">
     {% import _self as macros %}
-    {% macro tree_links(data) %}
+    {% macro tree_links(data, dataB, parent) %}
         {% import _self as macros %}
         {% for el in data %}
             <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} {% if options.dragAndDrop %}is-droppable{% endif %}" {% if options.dragAndDrop %}draggable="true"{% endif %}>
@@ -10,7 +10,7 @@
                         <span data-id="{{ el.id }}" class="arrow opened"></span>
                     {% else %}
                         {% if el.hasChildren %}
-                            <span data-id="{{ el.id }}" class="arrow {% if el.id in data.openFolders %}opened{% endif %}"></span>
+                            <span id="{{ el.id }}" data-id="{{ el.id }}" class="arrow"></span>
                         {% endif %}
                     {% endif %}
                     <button data-id="{{ el.id }}"
@@ -28,11 +28,17 @@
                             {% for action in el.actions %}
                                 {% if action.type == 'radioButton' %}
                                    {% for option in action.options %}
-                                        <input id="{{ option.name }}"
+                                        <input
                                             class="radiosel"
+                                            {% if parent %}
+                                                {% if arrayContains(dataB.extraData.formData, parent.id, 2) %} disabled {% endif %}
+                                            {% endif %}
+                                            data-opt="{{ el.id }}"
                                             id="{{ option.name }}"
+                                            {% if arrayContains(dataB.extraData.formData, el.id, option.value) %} checked {% endif %}
+                                            {% if not arrayContains(dataB.extraData.formData, el.id, option.value) and not getId(el.id, option.value)%} checked {% endif %}
                                             type="radio"
-                                            value="{{ option.value }}"
+                                            value="{{ getId(el.id, option.value) }}"
                                             name="userselects_{{el.id}}">
                                         <label for="{{ option.name }}">{{ option.label }}</label>
                                    {% endfor %}
@@ -43,11 +49,11 @@
                 </div>
                     {% if el.children %}
                         <ul class="folderTree__ul {% if options.sortable %}js-sortable-tree{% endif %}">
-                            {{ macros.tree_links(el.children) }}
+                            {{ macros.tree_links(el.children, dataB, parent ? parent : el) }}
                         </ul>
                     {% endif %}
             </li>
         {% endfor %}
     {% endmacro %}
-    {{ macros.tree_links(data) }}
+    {{ macros.tree_links(data, data, null) }}
 </div>

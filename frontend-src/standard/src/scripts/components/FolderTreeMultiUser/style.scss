@@ -8,9 +8,15 @@ div[data-comp|="forma-plugin-ftmu"] {
     .folderTree__li {
         pointer-events: all !important;
         border-bottom: 1px solid #efefef;
+        &::marker {
+            content: ''
+        }
         .actions {
             display: flex;
             position: relative;
+            &:hover {
+                background: #EEEEEE;
+            }
             &.selected {
                 background-color: var(--color-1-100);
                 button {
