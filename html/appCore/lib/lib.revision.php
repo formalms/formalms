@@ -36,7 +36,7 @@ class RevisionManager
 
     public $revision_info = [];
 
-    public function RevisionManager($default_keys_val = [], $prefix = false, $dbconn = null)
+    public function __construct($default_keys_val = [], $prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;
@@ -425,7 +425,7 @@ class OldRevisionManager
 
     public $revision_info = [];
 
-    public function OldRevisionManager($type, $parent_id, $sub_key = false, $prefix = false, $dbconn = null)
+    public function __construct($type, $parent_id, $sub_key = false, $prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;

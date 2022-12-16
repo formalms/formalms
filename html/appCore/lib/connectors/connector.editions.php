@@ -93,7 +93,7 @@ class ConnectorEditions extends DoceboConnector
 
     public $tot_row;
 
-    public function ConnectorEditions($params)
+    public function __construct($params)
     {
         if ($params === null) {
             return;
@@ -407,7 +407,7 @@ class ConnectorEditionsUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function ConnectorEditionsUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }

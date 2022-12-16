@@ -89,7 +89,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
 
     public $arr_id_inserted = [];
 
-    public function DoceboConnectorDoceboCourses($params)
+    public function __construct($params)
     {
         $this->default_cols['lang_code'] = getDefaultLanguage();
         if ($params === null) {
@@ -578,7 +578,7 @@ class DoceboConnectorDoceboCoursesUI extends DoceboConnectorUI
     public $step_prev = '';
     public $available_menu = [];
 
-    public function DoceboConnectorDoceboCoursesUI(&$connector)
+    public function __construct(&$connector)
     {
         require_once _lms_ . '/lib/lib.manmenu_course.php';
 

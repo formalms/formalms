@@ -22,7 +22,7 @@ class FieldMapChistory extends FieldMap
     /**
      * class constructor.
      */
-    public function FieldMapChistory()
+    public function __construct()
     {
         $this->lang = &DoceboLanguage::createInstance('company', 'crm');
 

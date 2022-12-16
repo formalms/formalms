@@ -36,7 +36,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector
     public $name = '';
     public $description = '';
 
-    public function DoceboConnectorXmlOrgChart($params)
+    public function __construct($params)
     {
         $this->set_config($params);
     }
@@ -341,7 +341,7 @@ class DoceboConnectorXmlOrgChartUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnectorXmlOrgChartUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }

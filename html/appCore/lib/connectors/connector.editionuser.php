@@ -67,7 +67,7 @@ class ConnectorEditionUser extends DoceboConnector
      *
      * @param array params
      **/
-    public function ConnectorEditionUser($params)
+    public function __construct($params)
     {
         require_once _lms_ . '/lib/lib.edition.php';
 
@@ -415,7 +415,7 @@ class ConnectorUI_EditionUserUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function ConnectorUI_EditionUserUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }

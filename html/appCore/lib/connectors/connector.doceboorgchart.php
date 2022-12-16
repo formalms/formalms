@@ -56,7 +56,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DoceboConnectorDoceboOrgChart($params)
+    public function __construct($params)
     {
         if ($params === null) {
             return;
@@ -449,7 +449,7 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI
 
     public $directory = null;
 
-    public function DoceboConnectorDoceboOrgChartUI(&$connector)
+    public function __construct(&$connector)
     {
         require_once _base_ . '/lib/lib.userselector.php';
         $this->connector = $connector;

@@ -77,7 +77,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DoceboConnector_CourseSap($params)
+    public function __construct($params)
     {
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
@@ -338,7 +338,7 @@ class DoceboConnector_CourseSapUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnector_CourseSapUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }

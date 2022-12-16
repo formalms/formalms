@@ -204,7 +204,7 @@ class CalEvent
     public $_day;
     public $_owner;
 
-    public function CalEvent()
+    public function __construct()
     {
         $this->start = new evDate();
         $this->end = new evDate();

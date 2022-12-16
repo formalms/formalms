@@ -126,7 +126,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DoceboConnectorDoceboUsers($params)
+    public function __construct($params)
     {
         if ($params === null) {
             return;
@@ -1005,7 +1005,7 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI
 
     public $directory = null;
 
-    public function DoceboConnectorDoceboUsersUI(&$connector)
+    public function __construct(&$connector)
     {
         require_once _base_ . '/lib/lib.userselector.php';
         $this->connector = $connector;

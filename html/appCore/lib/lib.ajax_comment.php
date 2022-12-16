@@ -332,7 +332,7 @@ class AjaxCommentRender
 
     public $_profile = false;
 
-    public function AjaxCommentRender($module, $platform)
+    public function __construct($module, $platform)
     {
         $this->_platform = $platform;
         $this->_module = $module;

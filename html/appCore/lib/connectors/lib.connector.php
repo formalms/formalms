@@ -57,7 +57,7 @@ class DoceboConnector
      *
      * @param array params
      **/
-    public function DoceboConnector($params)
+    public function __construct($params)
     {
     }
 

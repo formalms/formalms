@@ -18,8 +18,9 @@ class Dashboard
     /**
      * class constructor.
      */
-    public function Dashboard()
+    public function __construct()
     {
+        
     }
 
     public function getBoxContent()
