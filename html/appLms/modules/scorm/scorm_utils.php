@@ -419,7 +419,7 @@ function sumScormTime($t1, $t2)
 
         $tot['hour'] = $t1_s[9] + $t2_s[9] + $remainder;
 
-        return sprintf('PT%04uH%02uM%02uS', $tot['hour'], $tot['minute'], $tot['second'], $tot['cent']);
+        return sprintf('PT%04uH%02uM%02uS', $tot['hour'], $tot['minute'], $tot['second']);
     }
 }
 
