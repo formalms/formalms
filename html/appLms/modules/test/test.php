@@ -1472,7 +1472,6 @@ function modassigntime()
         SET display_type = '1'
         WHERE idTest = '$idTest'");
         if ($re) {
-            //while (list($idQuest, $difficult) = each($_REQUEST['new_difficult_quest'])) 
             foreach((Array) $_REQUEST['new_difficult_quest'] as $idQuest => $difficult){
                 $re &= sql_query('
                 UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest

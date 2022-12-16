@@ -195,7 +195,6 @@ function outPageView($link)
 
     cout('<div class="align-center">'
         . '<ul class="link_list_inline">', 'content');    
-    //while (list(, $value) = each($times))
     foreach((Array) $times as $key => $value) {
         if ($for == $value) {
             $GLOBALS['page']->add('<li><span>' . $lang->def('_FOR_' . $value) . '</span></li>', 'content');
