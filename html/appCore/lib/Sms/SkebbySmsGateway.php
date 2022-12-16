@@ -191,7 +191,7 @@ class SkebbySmsGateway implements SmsGatewayInterface
 
     protected function skebbyGatewaySendSMS($username, $password, $recipients, $text, $sms_type = SMS_TYPE_CLASSIC, $sender_number = '', $sender_string = '', $user_reference = '', $charset = '', $optional_headers = null)
     {
-        $url = 'http://gateway.skebby.it/api/send/smseasy/advanced/http.php';
+        $url = 'https://gateway.skebby.it/api/send/smseasy/advanced/http.php';
 
         if (!is_array($recipients)) {
             $recipients = [$recipients];
