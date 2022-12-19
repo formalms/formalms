@@ -25,8 +25,4 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
 **/
 
-if (version_compare(PHP_VERSION, '5.0.0') == -1) {
-    require_once dirname(__FILE__) . '/lib.domxml4.php';
-} else {
-    require_once dirname(__FILE__) . '/lib.domxml5.php';
-}
+require_once dirname(__FILE__) . '/lib.domxml5.php';

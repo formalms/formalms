@@ -929,7 +929,7 @@ class OrgDirDb extends RepoDirDb
         return true;
         $arrCurrId = $this->_getAccessUG($idOrgAccess, $kind);
 
-        while (list($currKey, $currId) = each($arrCurrId)) {
+        foreach((Array) $arrCurrId as $currKey => $currId){
             $pos = array_search($currId, $arrId);
             if ($pos === false) {
                 $this->_deleteAccessUG($idOrgAccess, $kind, $currId);
@@ -938,7 +938,7 @@ class OrgDirDb extends RepoDirDb
             }
         }
         // now in $arrId they are only $id to insert
-        while (list($newKey, $newId) = each($arrId)) {
+        foreach((Array) $arrId as $newKey => $newId){
             $this->_insertAccessUG($idOrgAccess, $kind, $newId);
         }
     }
@@ -2136,7 +2136,8 @@ class Org_TreeView extends RepoTreeView
 
         if ($coll !== false) {
             while ($folder = $coll->getNext()) {
-                list($key, $val) = each($stack[$level - 1]['childs']);
+                $key = key($stack[$level - 1]['childs']);
+                $val = current($stack[$level - 1]['childs']);
                 $stack[$level] = [];
                 $stack[$level]['folder'] = $folder;
                 $stack[$level]['childs'] = $val;
