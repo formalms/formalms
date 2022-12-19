@@ -95,6 +95,15 @@ class FolderTreeBase {
     return this;
   }
 
+  getBaseApiUrl(action) {
+    let url = `${window.frontend.config.url.appLms}/index.php?r=${action}`;
+    if (action) {
+        url += `/${action}`;
+    }
+
+    return url;
+  }
+
 
   clickOnFolder(event) {
     const _this = this;
