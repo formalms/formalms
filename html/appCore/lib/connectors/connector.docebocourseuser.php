@@ -745,7 +745,7 @@ class DoceboConnectorUI_DoceboCourseUserUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnectorUI_DoceboCourseUserUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }

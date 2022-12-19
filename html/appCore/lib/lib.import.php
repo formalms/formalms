@@ -222,7 +222,7 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination
      *                      if not given it's computed from table
      *                      fields definition
      **/
-    public function DoceboImport_DestinationMySQL($params)
+    public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
         $this->table = $params['table'];
@@ -362,7 +362,7 @@ class DeceboImport_SourceCSV extends DoceboImport_Source
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DeceboImport_SourceCSV($params)
+    public function __construct($params)
     {
         $this->filename = $params['filename'];
         if (isset($params['first_row_header'])) {

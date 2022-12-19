@@ -1433,7 +1433,7 @@ class GroupListView extends ListView
         return $out;
     }
 
-    public function GroupListView($title, &$data, &$rend, $id)
+    public function __construct($title, &$data, &$rend, $id)
     {
         $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
         parent::ListView($title, $data, $rend, $id);
@@ -1875,7 +1875,7 @@ class GroupMembersListView extends ListView
         return FormaLms\lib\Get::sett('visuItem');
     }
 
-    public function GroupMembersListView($idst, $title, &$data, &$rend, $id)
+    public function __construct($idst, $title, &$data, &$rend, $id)
     {
         $this->idst = $idst;
         parent::ListView($title, $data, $rend, $id);

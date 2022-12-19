@@ -19,7 +19,7 @@ class MenuManager
 
     public $acl_man;
 
-    public function MenuManager()
+    public function __construct()
     {
         $this->acl = &Docebo::user()->getAcl();
         $this->acl_man = &Docebo::user()->getAclManager();

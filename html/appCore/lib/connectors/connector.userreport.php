@@ -84,7 +84,7 @@ class DoceboConnectorUserReport extends DoceboConnector
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DoceboConnectorUserReport($params)
+    public function __construct($params)
     {
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
@@ -361,7 +361,7 @@ class DoceboConnectorUserReportUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnectorUserReportUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }

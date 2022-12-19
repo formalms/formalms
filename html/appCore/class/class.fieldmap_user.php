@@ -22,7 +22,7 @@ class FieldMapUser extends FieldMap
     /**
      * class constructor.
      */
-    public function FieldMapUser()
+    public function __construct()
     {
         $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
 

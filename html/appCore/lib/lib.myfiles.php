@@ -113,7 +113,7 @@ class MyFile
     /**
      * @param int $id_user the idst of the user
      */
-    public function MyFile($id_user)
+    public function __construct($id_user)
     {
         ksort($this->arr_field);
         reset($this->arr_field);
@@ -578,7 +578,7 @@ class MyFileSelector
 {
     public $current_selection;
 
-    public function MyFileSelector()
+    public function __construct()
     {
         $this->current_selection = [];
     }

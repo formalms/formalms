@@ -20,8 +20,9 @@ class FieldMap
     /**
      * class constructor.
      */
-    public function FieldMap()
+    public function __construct()
     {
+        
     }
 
     public function _query($query)

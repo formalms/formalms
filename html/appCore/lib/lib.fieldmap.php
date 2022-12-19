@@ -27,7 +27,7 @@ class FieldMapManager
     public $field_map = false;
     public $map_extra_filter = false;
 
-    public function FieldMapManager($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;

@@ -46,7 +46,7 @@ class DoceboConnectorCsv extends DoceboConnector
      *                      - 'first_row_header' => bool TRUE if first row is header (Optional, default = TRUE )
      *                      - 'separator' => string a char with the fields separator (Optional, default = ,)
      **/
-    public function DoceboConnectorCsv($params)
+    public function __construct($params)
     {
         $this->set_config($params);
     }
@@ -348,7 +348,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
     public $step_next = '';
     public $step_prev = '';
 
-    public function DoceboConnectorCsvUI(&$connector)
+    public function __construct(&$connector)
     {
         $this->connector = $connector;
     }

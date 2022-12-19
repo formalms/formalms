@@ -93,7 +93,7 @@ class MyFriends
     /**
      * class constructor.
      */
-    public function MyFriends($id_user)
+    public function __construct($id_user)
     {
         ksort($this->arr_field);
         reset($this->arr_field);
