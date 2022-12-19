@@ -1,0 +1,38 @@
+
+
+div[data-comp|="forma-plugin-ftmu"] {
+    .folderTree__li {
+        pointer-events: all !important;
+        border-bottom: 1px solid #efefef;
+        .actions {
+            display: flex;
+            position: relative;
+            &.selected {
+                background-color: var(--color-1-100);
+                button {
+                    background-color: transparent !important;
+                }
+            }
+            button {
+                pointer-events: none;
+                flex: 1;
+                border-bottom: 1px solid transparent;
+                padding: 7px 16px 7px 56px;
+            }
+            .arrow {
+                top: 50%;
+                margin-top: 0;
+            }
+            .fields-holder {
+                align-items: center;
+                display: flex;
+                gap: .625rem;
+            }
+        }
+    }
+    &.no-active-gui {
+        .ft-is-selected {
+            background-color: transparent !important;
+        }
+    }
+}

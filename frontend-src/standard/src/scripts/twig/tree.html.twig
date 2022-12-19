@@ -1,3 +1,5 @@
+
+{% import _self as macros %}
 {% macro tree_links(data) %}
     {% import _self as macros %}
     {% for el in data %}
@@ -11,6 +13,9 @@
                 class="folderTree__link ft-is-folder {% if el.children.length > 0 %}ft-has-child{% endif %} is-dropzone">
                 <span>{{ el.name }}</span>
             </button>
+            {% if extra and extra.form %}
+                {{ macros.input('ok') }}
+            {% endif %}
             {% if el.children %}
                 <ul class="folderTree__ul js-sortable-tree hidden">
                     {{ macros.tree_links(el.children) }}
@@ -19,7 +24,5 @@
         </li>
     {% endfor %}
 {% endmacro %}
-
-{% import _self as macros %}
 
 {{ macros.tree_links(data) }}

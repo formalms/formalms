@@ -1,0 +1,39 @@
+
+<div data-comp="forma-plugin-ftmu" class="{% if not options.activeStatus %}no-active-gui{% endif %}">
+    {% import _self as macros %}
+    {% macro tree_links(data) %}
+        {% import _self as macros %}
+        {% for el in data %}
+            <li data-id="{{ el.id }}" class="folderTree__li {% if el.children %}ft-is-parent{% endif %} {% if options.dragAndDrop %}is-droppable{% endif %}" {% if options.dragAndDrop %}draggable="true"{% endif %}>
+                <div class="actions">
+                    {% if el.children.length > 0 %}
+                        <span class="arrow"></span>
+                    {% endif %}
+                    <button data-id="{{ el.id }}"
+                        type="button"
+                        class="folderTree__link ft-is-folder {% if el.children.length > 0 %}ft-has-child{% endif %} {% if options.dragAndDrop %}is-dropzone{% endif %}">
+                        <span>{{ el.name }}</span>
+                    </button>
+                    <div class="fields-holder">
+                        {% if el.actions %}
+                            {% for action in el.actions %}
+                                {% if action.type == 'radioButton' %}
+                                   {% for option in action.options %}
+                                        <input class="radiosel" id="{{ option.name }}" type="radio" value="{{ option.value }}" name="{{ option.name }}">
+                                        <label for="{{ option.name }}">{{ option.label }}</label>
+                                   {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+                    {% if el.children %}
+                        <ul class="folderTree__ul {% if options.sortable %}js-sortable-tree{% endif %} hidden">
+                            {{ macros.tree_links(el.children) }}
+                        </ul>
+                    {% endif %}
+            </li>
+        {% endfor %}
+    {% endmacro %}
+    {{ macros.tree_links(data) }}
+</div>

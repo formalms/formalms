@@ -19,6 +19,8 @@ import ModalElement from './../components/Modal';
 import Axios from 'axios';
 import Select2 from 'select2';
 import Chart from 'chart.js';
+import FolderTree from '../components/FolderTree';
+import FolderTreeMultiUser from '../components/FolderTreeMultiUser';
 
 var Page = (function () {
     window.frontend.modules = {};
@@ -28,6 +30,8 @@ var Page = (function () {
     window.frontend.modules.LearningObject = LearningObject;
     window.frontend.modules.TeacherLearningObject = TeacherLearningObject;
     window.frontend.modules.StudentLearningObject = StudentLearningObject;
+    window.frontend.modules.FolderTree = FolderTree;
+    window.frontend.modules.FolderTreeMultiUser = FolderTreeMultiUser;
     window.frontend.modules.FormaDropZone = FormaDropZone;
     window.frontend.modules.Select2 = Select2;
     window.frontend.modules.Chart = Chart;
