@@ -18,11 +18,16 @@ use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\DataSelector;
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-
+require_once _base_ . '/db/lib.docebodb.php';
 class MultiUserSelector { 
 
-    protected $dataSelectors =  array();
-    protected $accessModel =  null;
+    protected $dataSelectors = array();
+    protected $accessModel = null;
+    protected $db;
+
+    public function __construct() {
+        $this->db = \DbConn::getInstance();
+    }
 
     const NAMESPACE = 'FormaLms\lib\Selectors\Multiuserselector\DataSelectors\\';
 
@@ -70,7 +75,7 @@ class MultiUserSelector {
             case 'communication':
             
                 $oldSelection = $this->accessModel->accessList($instanceId);
-                
+              
                 if ($this->accessModel->updateAccessList($instanceId, $oldSelection, $selection)) {
                     $redirect = 'index.php?r=alms/communication/show&success=1';
                 } else {
@@ -94,7 +99,7 @@ class MultiUserSelector {
    }
 
 
-   public function getaccessList($instanceType, $instanceId) {
+   public function getAccessList($instanceType, $instanceId, $parsing = false) {
         switch($instanceType) {
 
             case 'communication':
@@ -110,6 +115,10 @@ class MultiUserSelector {
                 break;
         }
 
+        if($parsing) {
+            $selection = $this->parseSelection($selection);
+        }
+
         return $selection;
     }
 
@@ -121,6 +130,82 @@ class MultiUserSelector {
     public function retrieveDataSelector($key) : ?DataSelector{
 
         return $this->dataSelectors[$key];
+    }
+
+
+    public function parseSelection($selectedIds) {
+    
+        $selection = [];
+        $selectString = implode(",", $selectedIds);
+        $query = 'SELECT
+                    GROUP_CONCAT( DISTINCT(coretables.idst) ) AS ids,
+                    nametables.table_name AS selector
+                        FROM
+                        (
+                            SELECT
+                                idst,
+                                "user" AS table_name 
+                            FROM
+                                core_user 
+                            WHERE
+                                idst IN ( ' . $selectString . ' ) UNION ALL
+                            SELECT
+                                idst,
+                                "role" AS table_name 
+                            FROM
+                                core_role 
+                            WHERE
+                                idst IN ( ' . $selectString . ' ) UNION ALL
+                            SELECT
+                                idst,
+                                "org" AS table_name 
+                            FROM
+                                core_group 
+                            WHERE
+                                idst IN ( ' . $selectString . ' ) 
+                                AND groupid LIKE \'%/oc%\' UNION ALL
+                            SELECT
+                                idst,
+                                "group" AS table_name 
+                            FROM
+                                core_group 
+                            WHERE
+                                idst IN ( ' . $selectString . ') 
+                                AND groupid NOT LIKE \'%/oc%\' 
+                                ) coretables
+                    RIGHT JOIN (
+                            SELECT
+                                "user" AS table_name 
+                            FROM
+                                core_user UNION 
+                            SELECT
+                                "role" AS table_name 
+                            FROM
+                                core_role UNION 
+                            SELECT
+                                "org" AS table_name 
+                            FROM
+                                core_group 
+                            WHERE
+                                groupid LIKE \'%/oc%\' UNION 
+                            SELECT
+                                "group" AS table_name 
+                            FROM
+                                core_group 
+                            WHERE
+                                groupid NOT LIKE \'%/oc%\' 
+                                ) nametables ON nametables.table_name = coretables.table_name 
+                            GROUP BY
+                                nametables.table_name';
+
+        $results = $this->db->query($query);
+
+        foreach($results as $result) {
+            $selection[$result['selector']] = $result['ids'] ? explode(',', $result['ids']) : [];
+        }
+
+        return $selection;
+
     }
 
    

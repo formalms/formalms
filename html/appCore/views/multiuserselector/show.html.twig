@@ -55,6 +55,13 @@ var columns = {{ columns | json_encode(constant('JSON_HEX_APOS')) | raw }};
 var data = {{ selectedData | json_encode(constant('JSON_HEX_APOS')) | raw }};
 var selection = {{ accessSelection | json_encode(constant('JSON_HEX_APOS')) | raw }};
 var ajax = {{ ajax | json_encode }};
+
+
+console.log(selection, selection['org']);
+const ft = FolderTreeMultiUser.create({}, 'adm/userselector/getData', selection['org']);
+ft.getTree();
+
+
 var options = {
             rowId: 'id',
             scrollX: true,
@@ -121,7 +128,7 @@ $(document).ready(function() {
         
     options.buttons = buttons;
     options.columns = columns[rel];
-    options.preselection = selection;
+    options.preselection = selection[rel];
 
 
     if(!ajax) {
@@ -261,15 +268,10 @@ $('#test-btn').on('click', function(e) {
 $('#form_tabs').on('submit', function(e) {
     e.preventDefault();
 
-
-    var data = $(this).serializeArray();
-  //  if (!$("table tr.selected").length ) {
-  //      return;
-  //  }
-
     var allSelection = [];
     var selectedIds = [];
     var excludedIds = [];
+   
     $('table[id$="Content"]').each(function(e) {
 
         if(DTable[$(this).attr('rel')]._selection.rows.length > 0) {
@@ -283,13 +285,9 @@ $('#form_tabs').on('submit', function(e) {
         
     });
 
-    $('.radiosel:checked').each(function(e) {
-        if(parseInt($(this).val()) > 0) {
-            var parts = $(this).attr('id').split('_');
-            selectedIds = selectedIds.concat(parts[2]);
-        }
-    });
-  
+
+    selectedIds = selectedIds.concat(ft.getFormData());
+
     $(this).append( $('<input>', {
             type: 'hidden',
             name: 'selected',

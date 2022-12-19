@@ -77,8 +77,9 @@ class UserselectorAdmController extends AdmController
         $instanceId = $this->requestObj->get('id');
 
         if($instanceValue && $instanceId) {
-            $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId);
+            $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
         }
+
         $orgChart = null;
         if($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
             $this->selection = $this->requestObj->get('selected_tab');

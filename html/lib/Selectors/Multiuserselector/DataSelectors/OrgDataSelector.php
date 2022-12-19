@@ -84,6 +84,10 @@ class OrgDataSelector extends DataSelector{
                 $selected_nodes = array_key_exists('selected_nodes', $params) ? (array) $params['selected_nodes'] : [];
                 $useSerializer = true;
                 $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
+                $buildRootNode = false;
+                if('' === $node_id) {
+                    $buildRootNode = true;
+                }
                 $idOrg = $this->_getIdOrgByNodeId($node_id);
                 $initial = array_key_exists('initial', $params) ? ((int) $params['initial'] > 0 ? true : false) : false;
                 $output = [];
@@ -98,9 +102,11 @@ class OrgDataSelector extends DataSelector{
                 
                 $_conversion_table = $this->builder->getOrgchartIdstConversionTable();
                
+                
                 $results = $this->builder->buildOrgChartNodes($idOrg, false, false, true);
-
+                
                 foreach($results as $result) {
+                 
                     $index = $result['idOrg'];
                     $id = $_conversion_table[0][$index] . '_' . $_conversion_table[1][$index];
                     $isNodeVisible = true;
@@ -138,6 +144,12 @@ class OrgDataSelector extends DataSelector{
                 //nella variabile c'è un array a 2 indici dove nel primo sono listati i grouppi con oc_ e nel secondo quelli con ocd_
                 //l'array viene inziailizzato col nodo zero senza discendenti, il match avviene per chiave dei 2 array basata su idorg 
 
+                if($buildRootNode) {
+                    $rootNode = new OrgDataNode($this->_getRootNodeId(), 'FORMA', true, true);
+                    $rootNode->setChildren($nodes);
+                    $nodes = [];
+                    $nodes[] = $rootNode;
+                }
                 if (\is_array($nodes)) {
                     $output = [
                         'data' => $nodes

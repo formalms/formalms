@@ -10,17 +10,20 @@ class DefaultOrgDataNodeAction extends FolderTreeAction{
                             [
                               'name' => 'descendants',
                               'value' => "0",
-                              "label" => '_NO'
+                              "label" => '_NO',
+                              "module" => 'standard'
                             ],
                             [
                               'name' => 'descendants',
                               'value' => "1",
-                              "label" => '_YES'
+                              "label" => '_YES',
+                              "module" => 'standard'
                             ],
                             [
                               'name' => 'descendants',
                               'value' => "2",
-                              "label" => '_ORG_CHART_INHERIT'
+                              "label" => '_ORG_CHART_INHERIT',
+                              "module" => 'organization_chart'
                             ],
                         ];
 
@@ -33,7 +36,7 @@ class DefaultOrgDataNodeAction extends FolderTreeAction{
 
   private function setDefaultOptions() {
       foreach (self::DEFAULT_OPTIONS as $defaultOption) {
-          $this->addOption(new OrgDataNodeOption($defaultOption['name'], $defaultOption['value'],$defaultOption['label'],'standard'));
+          $this->addOption(new OrgDataNodeOption($defaultOption['name'], $defaultOption['value'],$defaultOption['label'],$defaultOption['module']));
       }
   }
 
