@@ -12,7 +12,7 @@ const FOLDER_TREE_CLASS = 'folder-tree';
  */
 class FolderTreeBase {
 
-  constructor(baseApiUrl, controller, type, endpoint = 'getfoldertree', options = {}) {
+  constructor(baseApiUrl, controller, type, endpoint = 'getfoldertree', options = {}, classicTree = true) {
 
     // Options
     this.options = {
@@ -58,14 +58,15 @@ class FolderTreeBase {
         }
 
         this.getStatus();// From localStorage
-        this.getData(this.getApiUrl(this.endpoint));
+        if(classicTree) {
+          this.getData(this.getApiUrl(this.endpoint));
+        }
     }
   }
 
   render(targetQuery = FOLDER_TREE_CLASS) {
     this.data.openFolders = this.openFolders.join('.');
     this.data.extraData = this.extraData;
-    console.log(this.extraData);
     const tree = this.Tree({ data: this.data, extra: {form: this.hasForm, openFolders: this.openFolders} });
     const targetDom = document.querySelector(`.${targetQuery}`);
     targetDom.innerHTML = tree;
@@ -171,7 +172,6 @@ class FolderTreeBase {
 
   setOpenedDirs() {
     const openedEls = this.container.querySelectorAll('.ft-is-folderOpen');
-    console.log('opened', openedEls);
     this.openedIds = [];
     openedEls.forEach((item) => {
       let id = item.getAttribute('data-id');
@@ -283,7 +283,9 @@ class FolderTreeBase {
         const tree = this.Tree({ data: _this.data, extra: {options: this.options, form: this.hasForm} });
 
         const treeView = _this.container.querySelector('.folderTree__ul .folderTree__ul');
-        treeView.innerHTML = tree;
+        if(treeView) {
+          treeView.innerHTML = tree;
+        }
 
         // Disable draggable in student-area
         if(document.body.classList.contains('student-area')) {

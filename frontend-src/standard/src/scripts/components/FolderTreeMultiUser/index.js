@@ -19,7 +19,7 @@ Twig.extendFunction('getId', (str, position) => {
 class FolderTreeMultiUser extends FolderTreeBase {
 
   constructor(baseApiUrl, controller, type, endpoint, options = {}, defaultData = []) {
-    super(baseApiUrl, controller, type, endpoint, options);
+    super(baseApiUrl, controller, type, endpoint, options, null, false);
     this.baseApiUrl = this.getBaseApiUrl('adm/userselector/getData&dataType=org');
     this.extraData = {formData: defaultData};
     this.Tree = Tree;
@@ -77,8 +77,6 @@ class FolderTreeMultiUser extends FolderTreeBase {
   }
 
   insertChildren(source, targetId, children) {
-
-    console.log(children);
     (source ? source : this.data).forEach((child) => {
       if(child.id == targetId) {
         child.children = children;

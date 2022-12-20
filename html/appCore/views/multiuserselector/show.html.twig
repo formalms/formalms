@@ -57,8 +57,6 @@ var data = {{ selectedData | json_encode(constant('JSON_HEX_APOS')) | raw }};
 var selection = {{ accessSelection | json_encode(constant('JSON_HEX_APOS')) | raw }};
 var ajax = {{ ajax | json_encode }};
 
-
-console.log(selection, selection['org']);
 const ft = FolderTreeMultiUser.create({}, 'adm/userselector/getData', selection['org']);
 ft.getTree();
 
