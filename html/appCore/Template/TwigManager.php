@@ -61,6 +61,7 @@ class TwigManager
         $this->twig->addGlobal('config', ClientService::getInstance()->getConfig());
         $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
+        $this->twig->addGlobal('currentUser', \Docebo::user());
         if ($debug) {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         }
@@ -110,6 +111,11 @@ class TwigManager
     public function addExtension(ExtensionInterface $extension)
     {
         $this->twig->addExtension($extension);
+    }
+
+    public function addGlobal($key, $value)
+    {
+        $this->twig->addGlobal($key, $value);
     }
 
     public function render($view_name, $data_for_view, $view_path = null)
