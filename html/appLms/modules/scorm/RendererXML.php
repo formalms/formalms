@@ -22,6 +22,7 @@ class RendererXML extends RendererAbstract
     public $itemtrack;
     public $idUser;
     public $out = '';
+    public string $resBase;
 
     /**
      *  @param $cpm reference to CPManager

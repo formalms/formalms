@@ -46,6 +46,7 @@ class PageZone
     public $_endOut = [];
 
     public $print_if_empty;
+    public $name;
 
     public function __construct($name, $print_if_empty = false)
     {
@@ -201,6 +202,8 @@ class PageZone
 
 class PageZoneLang extends PageZone
 {
+    public $name;
+
     public function __construct($name, $print_if_empty = false)
     {
         $this->name = $name;

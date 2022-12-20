@@ -424,6 +424,10 @@ class OldRevisionManager
     public $parent_id = 0;
 
     public $revision_info = [];
+    /**
+     * @var bool|null
+     */
+    public bool $sub_key;
 
     public function __construct($type, $parent_id, $sub_key = false, $prefix = false, $dbconn = null)
     {

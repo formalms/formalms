@@ -18,6 +18,11 @@ class QuestBankMan
     public $_table_category;
 
     public $last_error = '';
+    /**
+     * @var false|mixed|string
+     */
+    public string $user_language;
+    public string $_table_quest;
 
     public function _query($query)
     {
@@ -331,6 +336,17 @@ class QuestBankMan
 
 class QuestBank_Selector
 {
+    public int $item_per_page;
+    public string $selected_quest;
+    public $mod_action;
+    public $all_quest_type_long;
+    public array $all_quest_type;
+    public array $all_difficult;
+    public array $all_categories;
+    public array $all_category;
+    public QuestBankMan $qb_man;
+    public Form $form;
+
     public function QuestBank_Selector()
     {
         $this->lang = &DoceboLanguage::createInstance('test', 'lms');

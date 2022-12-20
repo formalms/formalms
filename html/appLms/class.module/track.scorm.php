@@ -24,6 +24,18 @@ class Track_ScormOrg extends Track_Object
     public $dateAttempt;
     public $status;
     public $objectType;
+    /**
+     * @var string|null
+     */
+    public string $back_url;
+    /**
+     * @var int|null
+     */
+    public int $idParams;
+    /**
+     * @var int|null
+     */
+    public int $idResource;
 
     /**
      * object constructor

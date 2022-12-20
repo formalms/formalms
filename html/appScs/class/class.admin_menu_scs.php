@@ -18,6 +18,10 @@ require_once _adm_ . '/class/class.admin_menu.php';
 
 class Admin_Scs extends Admin
 {
+    public string $platform;
+    public string $table_level_one;
+    public string $table_level_two;
+
     /**
      * class constructor.
      *
@@ -119,6 +123,10 @@ class Admin_Scs extends Admin
 
 class Admin_Managment_Scs extends Admin_Managment
 {
+    public string $platform;
+    public string $table_level_one;
+    public string $table_level_two;
+
     /**
      * class constructor.
      *

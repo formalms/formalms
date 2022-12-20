@@ -759,7 +759,8 @@ class CoreWikiPublic
     public $wiki_language = false;
     public $internal_perm = [];
 
-    protected $session;
+    public $session;
+    public $table_style;
 
     public function __construct($wiki_id)
     {

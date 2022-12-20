@@ -56,7 +56,9 @@ class EcomProductCourse extends EcomProduct
 
 class EcomProductCourseEdition extends EcomProduct
 {
-    public function EcomProductCourseEdition()
+    public CourseSubscribe_Management $subs_man;
+
+    public function __construct()
     {
         require_once _lms_ . '/lib/lib.subscribe.php';
         $this->subs_man = new CourseSubscribe_Management();

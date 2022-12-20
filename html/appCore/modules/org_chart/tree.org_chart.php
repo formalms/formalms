@@ -506,6 +506,12 @@ class TreeView_OrgView extends TreeView
 
     // set this member variable to TRUE to select all
     public $select_all = false;
+    public PeopleListView $lv_view;
+    public PeopleDataRetriever $lv_data;
+    /**
+     * @var bool|mixed
+     */
+    public $deselect_all;
 
     public function __construct($tdb, $id, $rootname = 'root')
     {

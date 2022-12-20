@@ -100,8 +100,6 @@ class UserManager
      * simply execute a query.
      *
      * @param string $query  the query
-     * @param string $prefix specified a prefix
-     * @param mixed     the result of sql_query
      */
     public function _executeQuery($query)
     {
@@ -967,6 +965,7 @@ class UserManagerRenderer
     public $_style_to_use;
     public $_show_accessibility_button;
     public $_show_language_selection;
+    public bool $error;
 
     public function __construct()
     {

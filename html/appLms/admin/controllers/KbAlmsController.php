@@ -19,6 +19,7 @@ class KbAlmsController extends AlmsController
     protected $json = null;
     protected $permissions = null;
     public $show_actions = true;
+    public $data;
 
     public function init()
     {

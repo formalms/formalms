@@ -19,6 +19,10 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class DoceboCalEvent_lms_classroom extends DoceboCalEvent_core
 {
     public $idCourse;
+    /**
+     * @var string
+     */
+    public string $classroom;
 
     public function assignVar()
     {

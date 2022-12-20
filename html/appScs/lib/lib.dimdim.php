@@ -31,6 +31,14 @@ class DimDim_Manager
     public $can_mod = false;
 
     protected $session;
+    /**
+     * @var false|string
+     */
+    public string $port;
+    /**
+     * @var false|string
+     */
+    public string $server;
 
     public function __construct()
     {

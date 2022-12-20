@@ -30,6 +30,7 @@ class CPManager
     public $defaultOrg;
     public $orgElems;
     public $resElems;
+    public DDomDocument $dom;
 
     public function Open($path)
     {

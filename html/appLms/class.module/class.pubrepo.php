@@ -20,6 +20,8 @@ class Module_Pubrepo extends LmsModule
     public $select_destination = false;
 
     //class constructor
+    public $select_destionation;
+
     public function __construct($module_name = '')
     {
         parent::__construct('pubrepo');

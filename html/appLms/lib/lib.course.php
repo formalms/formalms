@@ -2192,6 +2192,7 @@ class DoceboCourse
     public $idCourse;
 
     public $course_info;
+    public $id_course;
 
     public function _executeQuery($query_text)
     {

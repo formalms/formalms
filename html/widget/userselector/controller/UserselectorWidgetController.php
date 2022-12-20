@@ -17,6 +17,9 @@ class UserselectorWidgetController extends Controller
 {
     protected $model = null;
     protected $json = null;
+    public FunctionalrolesAdm $fncrole_model;
+    public GroupmanagementAdm $group_model;
+    public UsermanagementAdm $user_model;
 
     public function init()
     {

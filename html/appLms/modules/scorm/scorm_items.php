@@ -36,6 +36,7 @@ class Scorm_Item
     public $err_text = '';
 
     public $itemtable = 'scorm_items';
+    public $idscorm_resource;
 
     public function __construct($item_identifier, $idscorm_organization, $idpackage, $connection, $createonfail = false, $idscorm_item = null)
     {

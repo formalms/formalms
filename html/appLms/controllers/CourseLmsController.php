@@ -31,6 +31,12 @@ class CourseLmsController extends LmsController
         _CUS_SUSPEND => '_USER_STATUS_SUSPEND',
         _CUS_END => '_USER_STATUS_END'
     ];
+    /**
+     * @var array|true[]
+     */
+    public array $permissions;
+
+    private Services_JSON $json;
 
     public function init()
     {

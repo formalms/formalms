@@ -866,6 +866,9 @@ class QuestionRaw
     public $time_assigned = 0;
     public $answers = [];
     public $extra_info = [];
+    public int $id;
+    public $customfield;
+    public int $textformat;
 
     public function setCategoryFromName($category_name, $autocreate_categories = false)
     {
@@ -895,4 +898,6 @@ class AnswerRaw
     public $comment = false;
     public $score_correct = 0;
     public $score_penalty = 0;
+    public int $id_answer;
+    public $tolerance;
 }

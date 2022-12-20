@@ -20,6 +20,12 @@ require_once _adm_ . '/class/class.admin_menu.php';
 
 class Admin_Lms extends Admin
 {
+    public array $menu;
+    public string $table_level_two;
+    public string $table_level_one;
+
+    public string $platform;
+
     /**
      * class constructor.
      *
@@ -27,7 +33,7 @@ class Admin_Lms extends Admin
      *
      * @return nothing
      */
-    public function Admin_Lms(&$user)
+    public function __construct(&$user)
     {
         $this->user = &$user;
         $this->platform = 'lms';
@@ -123,12 +129,16 @@ class Admin_Lms extends Admin
 
 class Admin_Managment_Lms extends Admin_Managment
 {
+    public string $table_level_two;
+    public string $table_level_one;
+    public string $platform;
+
     /**
      * class constructor.
      *
      * @return nothing
      */
-    public function Admin_Managment_Lms()
+    public function __construct()
     {
         $this->platform = 'lms';
         $this->table_level_one = $GLOBALS['prefix_lms'] . '_menu';

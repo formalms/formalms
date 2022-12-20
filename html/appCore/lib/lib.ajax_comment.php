@@ -331,6 +331,7 @@ class AjaxCommentRender
     public $_continue = true;
 
     public $_profile = false;
+    public UserProfile $profile;
 
     public function __construct($module, $platform)
     {

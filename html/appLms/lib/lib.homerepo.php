@@ -56,6 +56,8 @@ class HomeRepo_DataRetriever extends DataRetriever
     public $filterTypes = null;
 
     // set the selected id
+    public $opDeselectId;
+
     public function setSelectedObject($selectedIdObject)
     {
         $this->selectedIdObject = $selectedIdObject;
@@ -282,6 +284,7 @@ class HomeRepo_ListView extends ListView
     public $itemToDelete = null;
     // id to move
     public $itemToMove = null;
+    public string $addurl;
 
     public function _getOpMoveItemId()
     {

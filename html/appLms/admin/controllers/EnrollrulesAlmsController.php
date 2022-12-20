@@ -21,6 +21,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected $acl_man;
 
     protected $data;
+    public EnrollrulesAlms $model;
 
     public function __construct($mvc_name)
     {

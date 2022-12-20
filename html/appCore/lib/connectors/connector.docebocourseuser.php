@@ -61,6 +61,13 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
     public $userid_cache = false;
 
     public $first_row_header = '1';
+    public bool $_readed_end;
+    public $first_row;
+    public array $all_data;
+    public $tot_row;
+    public int $position;
+    public $today;
+    public $lang;
 
     /**
      * constructor.

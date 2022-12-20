@@ -68,6 +68,8 @@ class DoceboConnector_CourseSap extends DoceboConnector
                                 'cid' => '',
                                 'cod_course' => '',
                                 'year' => '', ];
+    public string $last_error;
+    public array $_cid_list;
 
     /**
      * This constructor require the source file name.

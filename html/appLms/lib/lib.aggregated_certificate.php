@@ -28,6 +28,13 @@ class AggregatedCertificate
     private $_description;
     private $_idAssoc;
     private $_type_assoc;
+    public array $assocTypesArr;
+    public string $table_assign_agg_cert;
+    public string $table_cert_meta_association_coursepath;
+    public string $table_cert_meta_association_courses;
+    public string $table_cert_meta_association;
+    public string $table_cert_tags;
+    public string $table_cert;
 
     public function __construct()
     {

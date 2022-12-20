@@ -61,6 +61,16 @@ class ConnectorEditionUser extends DoceboConnector
     public $first_row_header = '1';
 
     public $cache = ['courses' => [], 'editions' => [], 'users' => []];
+    public bool $_readed_end;
+    public $first_row;
+    public array $all_data;
+    public $tot_row;
+    public int $position;
+    public $today;
+    /**
+     * @var DoceboLanguage|mixed
+     */
+    public mixed $lang;
 
     /**
      * constructor.

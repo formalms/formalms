@@ -38,6 +38,7 @@ class MyFriends
      * the main user.
      */
     public $_id_user;
+    public $id_user;
 
     public $arr_field = [
         MYFRIEND_ID_USER => 'id_user',

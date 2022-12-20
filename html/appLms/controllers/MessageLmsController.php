@@ -32,6 +32,10 @@ class MessageLmsController extends LmsController
     protected $model;
     protected $json;
     protected $aclManager;
+    /**
+     * @var true
+     */
+    public bool $can_send;
 
     public function init()
     {

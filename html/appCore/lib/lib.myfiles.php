@@ -365,6 +365,14 @@ class MyFilesPolicy extends MyFile
     public $_extra_filter_cahced = false;
 
     public $_file_number;
+    /**
+     * @var string|null
+     */
+    public string $_viewer_teacher;
+    /**
+     * @var string|null
+     */
+    public string $_viewer_friend;
 
     public function __construct($id_user, $viewer, $is_friend = null, $is_teacher = null)
     {

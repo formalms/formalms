@@ -75,6 +75,7 @@ class DoceboConnectorUserReport extends DoceboConnector
                                 'complete_date' => '0000-00-00 00:00:00',
                                 'user_status' => '',
                                 'score' => '', ];
+    public string $last_error;
 
     /**
      * This constructor require the source file name.

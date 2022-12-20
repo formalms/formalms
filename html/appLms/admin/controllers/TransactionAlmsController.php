@@ -17,6 +17,8 @@ class TransactionAlmsController extends AlmsController
 {
     protected $acl_man;
     protected $permissions;
+    public TransactionAlms $model;
+    public Services_JSON $json;
 
     public function init()
     {

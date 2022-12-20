@@ -1232,7 +1232,6 @@ class Module_Directory extends Module
         $lv->aclManager = &$this->aclManager;
         $lv->parsePositionData($_POST);
         $GLOBALS['page']->add($lv->printOut(), 'content');
-        $this->selected = $lv->printedItems;
         if ($simple === false) {
             $GLOBALS['page']->add(Form::closeElementSpace(), 'content');
             $GLOBALS['page']->add(Form::getCloseFieldset(), 'content');
@@ -1732,7 +1731,6 @@ class Module_Directory extends Module
             $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
         }
         $GLOBALS['page']->add($lv->printOut(), 'content');
-        //$this->selected = $lv->printedItems;
     }
 
     public function addToTree($treeid)

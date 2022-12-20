@@ -17,6 +17,8 @@ require_once _lms_ . '/class.module/track.object.php';
 
 class Track_Item extends Track_Object
 {
+    public $lobj;
+
     public function __construct($lobj, $id_user = null)
     {
         $this->lobj = $lobj;

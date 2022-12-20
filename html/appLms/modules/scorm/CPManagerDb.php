@@ -28,6 +28,7 @@ class CPManagerDb
     public $idReference;
     public $dbconn;
     public $prefix;
+    public string $path;
 
     public function Open($idReference, $idscorm_package, $dbconn, $prefix)
     {

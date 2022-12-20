@@ -64,6 +64,7 @@ class Scorm_Tracking
 
     public $tracktable = 'scorm_tracking';
     public $historytable = 'scorm_tracking_history';
+    public $idscorm_item;
 
     /**
      * Constructor of the Scorm_Tracking.

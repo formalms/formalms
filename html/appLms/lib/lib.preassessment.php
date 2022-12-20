@@ -53,6 +53,7 @@ class AssessmentList
         USER_ASSES_ID_USER => 'id_user',
         USER_ASSES_TYPE => 'type_of',
     ];
+    public Man_Course $man_course;
 
     public function tableUserAssessment()
     {

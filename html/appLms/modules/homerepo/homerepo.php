@@ -20,6 +20,19 @@ define('REPOFIELDIDOWNER', 13);
 class HomerepoDirDb extends RepoDirDb
 {
     public $idOwner = 0;
+    public $org_publish_for;
+    public $org_access;
+    public $org_publish_to;
+    public $org_publish_from;
+    public $org_height;
+    public $org_width;
+    public $org_milestone;
+    public $org_visible;
+    public $org_idParam;
+    public $org_isTerminator;
+    public $org_prerequisites;
+    public $org_idCourse;
+    public $org_objectType;
 
     public function __construct($table_name, $idOwner)
     {

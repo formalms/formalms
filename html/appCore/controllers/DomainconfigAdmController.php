@@ -22,6 +22,9 @@ class DomainconfigAdmController extends AdmController
     protected $requestObj;
 
     protected $title = ' _DOMAIN_CONFIG';
+    public array $queryString;
+    public UsermanagementAdm $userModel;
+    public MailconfigAdm $mailModel;
 
     public function init()
     {

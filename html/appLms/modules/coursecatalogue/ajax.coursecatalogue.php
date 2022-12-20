@@ -76,7 +76,7 @@ if (Docebo::user()->isAnonymous()) {
             $lang = &DoceboLanguage::createInstance('cart', 'ecom');
 
             require_once $GLOBALS['where_ecom'] . '/lib/lib.cart.php';
-            $cart = &Cart::createInstance();
+            $cart = Cart::createInstance();
 
             $code = $cart->getCart(true);
 

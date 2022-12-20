@@ -79,6 +79,7 @@ class DoceboConnectorCourseReport extends DoceboConnector
                                 'end_course' => '0',
                                 'end_course_perc' => '0%',
                                 'time_in_course' => '00:00:00', ];
+    public array $_first_row;
 
     /**
      * This constructor require the source file name.

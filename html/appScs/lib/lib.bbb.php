@@ -27,6 +27,14 @@ class Bbb_Manager
     public $can_mod = false;
 
     protected $session;
+    /**
+     * @var false|mixed|string
+     */
+    public string $port;
+    /**
+     * @var false|mixed|string
+     */
+    public string $server;
 
     public function Bbb_Manager()
     {

@@ -29,6 +29,7 @@ class NavBar
 
     public $more_page = '...';
     public $current_page = ' [current] ';
+    public string $link;
 
     /**
      * class constructor.

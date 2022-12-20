@@ -28,6 +28,7 @@ class RendererDb extends RendererAbstract
     public $dbconn;
     public $prefix;
     public $idpackage;
+    public int $row;
 
     public function __construct($connection, $prefix, $idpackage)
     {

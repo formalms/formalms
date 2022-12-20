@@ -40,6 +40,11 @@ class UserSelector
     public $use_suspended = false;
     public $id_org = null;
     public $org_type = null;
+    /**
+     * @var true
+     */
+    public bool $multi_choice;
+    public $use_multi_sel;
 
     public function __construct()
     {

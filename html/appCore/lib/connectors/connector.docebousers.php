@@ -117,6 +117,18 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
     public $pwd_force_change_policy = 'do_nothing';
 
     public $inserted_user_org_chart = [];
+    /**
+     * @var true
+     */
+    public bool $eof;
+    public array $simplecols;
+    public int $index;
+    public array $arr_fields;
+    public FieldList $fl;
+    /**
+     * @var false|mixed
+     */
+    public $groupFilter_idst;
 
     /**
      * This constructor require the source file name.

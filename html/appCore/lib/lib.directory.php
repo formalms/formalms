@@ -154,6 +154,7 @@ class PeopleListView extends ListView
     public $_expand_user;
 
     public $editions;
+    public string $idModule;
 
     public function _getOpEditItemId()
     {
@@ -1286,6 +1287,11 @@ class GroupListView extends ListView
     public $mod_perm;
     public $del_perm;
     public $associate_perm;
+    public string $idModule;
+    /**
+     * @var bool|mixed
+     */
+    public mixed $deselect_all;
 
     public function _getOpEditItemId()
     {
@@ -1829,6 +1835,7 @@ class GroupListView extends ListView
 class GroupMembersListView extends ListView
 {
     public $printedItems = [];
+    public $idst;
 
     public function _getMemberTypeImage()
     {

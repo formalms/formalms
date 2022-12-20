@@ -469,6 +469,10 @@ class RegionalSettingsManager
     public $region_info = [];
     public $region_settings = [];
     public $setting_list = [];
+    /**
+     * @var resource|null
+     */
+    public $dbConn;
 
     /**
      * RegionalSettingsManager constructor.

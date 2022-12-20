@@ -26,9 +26,14 @@ class Folder
     public $level;
     public $ileft;
     public $iRight;
+    public $iLeft;
     public $otherValues;
     public $countChildrens;
     public $nested;
+    /**
+     * @var null
+     */
+    public $hasChildrens;
 
     public function __construct(&$tdb, $arrayValues, $childInfo = false, $nested = false)
     {

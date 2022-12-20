@@ -40,6 +40,8 @@ class PubRepo_DataRetriever extends DataRetriever
     public $selectedIdObject = -1;
 
     // set the selected id
+    public $opDeselectId;
+
     public function setSelectedObject($selectedIdObject)
     {
         $this->selectedIdObject = $selectedIdObject;

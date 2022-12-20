@@ -15,6 +15,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class PluginmanagerAdmController extends AdmController
 {
+    public Services_JSON $json;
+    public PluginmanagerAdm $model;
+
     public function init()
     {
         $this->model = new PluginmanagerAdm();

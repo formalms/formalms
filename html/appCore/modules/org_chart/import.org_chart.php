@@ -47,6 +47,23 @@ class ImportUser extends DoceboImport_Destination
     public $set_password = 'from_file';
     public $manual_password = null;
     public $action_on_users = 'create_and_update';
+    public $idst_ocd;
+    public $idst_oc;
+    /**
+     * @var false|mixed
+     */
+    public $userlevel;
+    public array $arr_fields;
+    /**
+     * @var false|mixed
+     */
+    public $idst_desc;
+    /**
+     * @var false|mixed
+     */
+    public $idst_group;
+    public FieldList $fl;
+    public bool $send_alert;
 
     /**
      * constructor for forma users destination connection.
@@ -55,7 +72,7 @@ class ImportUser extends DoceboImport_Destination
      *                      - 'dbconn' => connection to database (required)
      *                      - 'tree' => The id of the destination folder on tree (required)
      **/
-    public function ImportUser($params)
+    public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
         $this->tree = (int) $params['tree'];

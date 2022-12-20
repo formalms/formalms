@@ -74,6 +74,12 @@ class OrgDirDb extends RepoDirDb
     // Constructor of OrgDirDb class
     // set idCourse to current idCourse or to
     // parameter $idCourse
+    /**
+     * @var mixed|string
+     */
+    public $org_objectType;
+    public $org_idObject;
+
     public function __construct($idCourse = false)
     {
         if ($idCourse === false) {
@@ -1096,6 +1102,7 @@ class Org_TreeView extends RepoTreeView
 {
     /** bool $playOnly if true show only play action */
     public $playOnly = false;
+    private bool $user_presence;
 
     public function Org_TreeView($tdb, $id, $rootname = 'root')
     {

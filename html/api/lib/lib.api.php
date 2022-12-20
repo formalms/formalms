@@ -47,6 +47,7 @@ class API
     protected $authenticated = false;
     protected $buffer = '';
     protected \Symfony\Component\HttpFoundation\Request $request;
+    public string $_buffer;
 
     public function __construct()
     {

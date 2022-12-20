@@ -84,6 +84,10 @@ class Report extends \ReportPlugin
 
     public $delay_columns;
     public $LO_columns;
+    /**
+     * @var array|array[]
+     */
+    public array $TESTSTAT_columns;
 
     public function __construct($id_report, $report_name = false)
     {
@@ -787,7 +791,7 @@ class Report extends \ReportPlugin
             Util::jump_to($back_url);
         }
         if (FormaLms\lib\Get::req('is_updating', DOTY_INT, 0) > 0) {
-            $reportDataTemp->set('columns_filter'] = [
+            $reportDataTemp->set('columns_filter', [
                 'filters_list' => FormaLms\lib\Get::req('rc_filter', DOTY_MIXED, []),
                 'exclusive' => (FormaLms\lib\Get::req('rc_filter_exclusive', DOTY_INT, 0) > 0 ? true : false),
             ]);
@@ -3734,10 +3738,10 @@ class Report extends \ReportPlugin
         $ref = &$reportTempData['columns_filter'];
 
         if (isset($_POST['update_tempdata'])) {
-            $ref->set('all_communications'] = FormaLms\lib\Get::req('all_communications', DOTY_INT, 0) > 0);
-            $ref->set('comm_selection'] = FormaLms\lib\Get::req('comm_selection', DOTY_MIXED, []));
-            $ref->set('comm_start_date'] = Format::dateDb(FormaLms\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date'));
-            $ref->set('comm_end_date'] = Format::datedb(FormaLms\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date'));
+            $ref->set('all_communications', FormaLms\lib\Get::req('all_communications', DOTY_INT, 0) > 0);
+            $ref->set('comm_selection', FormaLms\lib\Get::req('comm_selection', DOTY_MIXED, []));
+            $ref->set('comm_start_date', Format::dateDb(FormaLms\lib\Get::req('comm_start_date', DOTY_STRING, ''), 'date'));
+            $ref->set('comm_end_date', Format::datedb(FormaLms\lib\Get::req('comm_end_date', DOTY_STRING, ''), 'date'));
             $ref->save();
         } else {
             //...

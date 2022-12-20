@@ -25,6 +25,10 @@ class Password
     private $algorithm_default;
     private $algorithm_options;
     private $password;
+    /**
+     * @var string[]
+     */
+    public array $algorithm_functions;
 
     /**
      * Password constructor.

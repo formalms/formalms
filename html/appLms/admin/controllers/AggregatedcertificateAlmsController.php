@@ -46,6 +46,10 @@ class AggregatedcertificateAlmsController extends AlmsController
         'delmetacert' => 'delcertificate',
     ];
 
+    public int $id_association;
+    public string $back_url;
+    public string $association_name;
+
     public function init()
     {
         parent::init();

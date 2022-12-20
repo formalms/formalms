@@ -15,6 +15,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class HomecatalogueLmsController extends CatalogLmsController
 {
+    public string $path_course;
+
     public function init()
     {
         if (!HomepageAdm::staticIsCatalogToShow()) {

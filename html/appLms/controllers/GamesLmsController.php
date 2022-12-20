@@ -20,6 +20,7 @@ class GamesLmsController extends LmsController
     protected $json = null;
 
     protected $info = false;
+    public $data;
 
     public function isTabActive($tab_name)
     {

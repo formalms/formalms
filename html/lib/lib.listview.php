@@ -48,6 +48,7 @@ class ListView
     public $lang = null;
     // the recordset
     public $rs = null;
+    public $id;
 
     public function _getOpShowItemId()
     {

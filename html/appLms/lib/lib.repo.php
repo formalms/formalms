@@ -64,6 +64,20 @@ class RepoDirDb extends TreeDb
     public $filterAccess = false;
 
     // Constructor of RepoDirDb class
+    public $org_publish_for;
+    public $org_access;
+    public $org_publish_to;
+    public $org_publish_from;
+    public $org_height;
+    public $org_width;
+    public $org_milestone;
+    public $org_visible;
+    public $org_idParam;
+    public $org_isTerminator;
+    public $org_prerequisites;
+    public $org_idCourse;
+    public $org_objectType;
+
     public function __construct($table_name)
     {
         parent::__construct();

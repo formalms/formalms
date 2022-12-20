@@ -23,7 +23,12 @@ class DashboardLmsController extends LmsController
     public $name = '';
 
     /** @var DashboardLms */
-    private $model;
+    public $model;
+    public Services_JSON $json;
+    /**
+     * @var array|true[]
+     */
+    public array $permissions;
 
     /**
      * DashboardLmsController constructor.

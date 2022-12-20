@@ -19,6 +19,7 @@
 class Config_Scs extends Config
 {
     public $table_root;
+    public string $table;
 
     /**
      * class constructor.

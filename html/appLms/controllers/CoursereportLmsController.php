@@ -24,6 +24,12 @@ class CoursereportLmsController extends LmsController
 
     /** @var int */
     protected $idCourse;
+    public CoursereportLms $model;
+    /**
+     * @var array|true[]
+     */
+    public array $permissions;
+    public Services_JSON $json;
 
     public function init()
     {

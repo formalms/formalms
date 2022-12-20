@@ -19,6 +19,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class DoceboCalEvent_lms extends DoceboCalEvent_core
 {
     public $idCourse;
+    public mixed $owner;
+    public mixed $classroom;
 
     public function assignVar()
     {

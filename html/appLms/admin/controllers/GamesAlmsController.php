@@ -18,6 +18,7 @@ class GamesAlmsController extends AlmsController
     protected $model = null;
     protected $json = null;
     protected $permissions = null;
+    public $data;
 
     public function init()
     {

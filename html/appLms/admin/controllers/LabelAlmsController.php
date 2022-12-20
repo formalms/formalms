@@ -19,6 +19,7 @@ class LabelAlmsController extends AlmsController
     protected $acl_man;
     protected $model;
     protected $permissions;
+    public $data;
 
     public function init()
     {

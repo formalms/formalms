@@ -26,6 +26,9 @@ class Tags
     public $_private_tag_enabled = false;
 
     public $tags_founded = [];
+    public array $private_tags_founded;
+    public bool $_use_tag;
+    public int $_id_course;
 
     public function Tags($resource_type, $viewer = false)
     {
@@ -46,10 +49,7 @@ class Tags
         if (!empty($courseLevel) && $courseLevel > 3) {
             $this->_private_tag_enabled = true;
         }
-        /*if(Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
 
-            $this->_private_tag_enabled = true;
-        }*/
     }
 
     public function setupJs($tags_id, $private_tags = '')

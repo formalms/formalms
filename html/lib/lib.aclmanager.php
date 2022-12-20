@@ -3309,6 +3309,7 @@ class PeopleDataRetriever extends DataRetriever
     public $field_filter = [];
     public $custom_join = [];
     public $custom_where = [];
+    public DoceboACLManager $ACLManager;
 
     public function __construct($dbconn = false, $prefix = false)
     {

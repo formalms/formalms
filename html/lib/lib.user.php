@@ -68,6 +68,7 @@ class DoceboUser implements Serializable
     private array $userCourses;
 
     protected $db = null;
+    public  $aclManager;
 
     /**
      * create a DoceboACLUtil for given user

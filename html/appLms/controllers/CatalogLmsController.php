@@ -634,7 +634,7 @@ class CatalogLmsController extends LmsController
             $res['new_status'] = '<p class="cannot_subscribe">' . Lang::t('_USER_STATUS_SUBS', 'catalogue') . '</p>';
         }
 
-        $res['message'] = $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
+       $res['message'] = UIFeedback::info(Lang::t('_SUBSCRIPTION_CORRECT', 'catalogue'), true);
 
         echo $this->json->encode($res);
     }

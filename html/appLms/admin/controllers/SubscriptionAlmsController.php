@@ -26,6 +26,10 @@ class SubscriptionAlmsController extends AlmsController
     protected $permissions;
     protected $db;
     protected $reached_max_user_subscribed = false;
+    public string $link_classroom;
+    public string $link_edition;
+    public string $link_course;
+    public string $link;
 
     public function init()
     {

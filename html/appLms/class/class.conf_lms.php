@@ -21,6 +21,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class Config_Lms extends Config
 {
     /**
+     * @var mixed|string
+     */
+    public $table;
+
+    /**
      * class constructor.
      */
     public function Config_Lms($table = false)

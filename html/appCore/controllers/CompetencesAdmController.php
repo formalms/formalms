@@ -24,6 +24,8 @@ class CompetencesAdmController extends AdmController
     /*
      * initialize the class
      */
+    public array $permissions;
+
     public function init()
     {
         parent::init();

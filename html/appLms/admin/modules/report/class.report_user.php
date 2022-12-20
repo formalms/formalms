@@ -58,6 +58,10 @@ class Report_User extends Report
 
     public $delay_columns;
     public $LO_columns;
+    /**
+     * @var array|array[]
+     */
+    public array $TESTSTAT_columns;
 
     public function __construct($id_report, $report_name = false)
     {

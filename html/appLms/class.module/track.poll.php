@@ -18,6 +18,19 @@ require_once _lms_ . '/class.module/track.object.php';
 class Track_Poll extends Track_Object
 {
     /**
+     * @var string
+     */
+    public string $back_url;
+    /**
+     * @var int|null
+     */
+    public int $idParams;
+    /**
+     * @var int|null
+     */
+    public int $idResource;
+
+    /**
      * object constructor
      * Table : learning_commontrack
      * id_reference | idUser | id_track | objectType | date_attempt  | status |.
