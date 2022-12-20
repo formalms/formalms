@@ -78,7 +78,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     private static function _incrementSessionLoginFailuresNumber()
     {
-        $session = (self::$session);
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->set('user_attempt_lasttime', time());
 
         if (!$session->get('user_attempt_number')) {
@@ -94,7 +94,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     {
         new UserManager(); // TODO: rimuovere workaround
         $options = new UserManagerOption();
-        $session = self::$session;
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $save_log_attempts = $options->getOption('save_log_attempt');
 
         switch ($save_log_attempts) {
