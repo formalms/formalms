@@ -110,5 +110,14 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
   * Event object can contains JS scripts to prepend to the default one. Useful to introduce custom logic into the user-selector widget.
 
 
-*#DOCTRINE ORM 
-php bin/doctrine orm:convert:mapping annotation /app/html/Entity --from-database
+#### DOCTRINE ORM 
+* php bin/doctrine orm:convert:mapping annotation /app/html/Entity --from-database
+
+#### UPGRADE
+* in the up method of the migration before or after the queries insert
+* \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__, "pre")]);
+* \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__, "post")]);
+* To set params for the event
+* \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__, "pre"), "params" =>["arg1"=> "val1",...."argN" => "valN"]]);
+
+

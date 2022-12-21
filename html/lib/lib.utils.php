@@ -953,6 +953,48 @@ function highlightText($string, $key, $classname = 'highlight')
 
     return preg_replace('/' . $key . '/i', '<span class="highlight">$0</span>', $string);
 }
+
+/**
+ * function formatUpgradeClass
+ *	format the class for upgrade in the right passed string.
+ *
+ *  @param string $classPath whole path of a class 
+ *  @param string $prefix prefix that should be pre or post
+ *
+ *	@return string
+ **/
+function formatUpgradeClass(string $classPath, string $prefix = 'post') : string {
+
+    return ucfirst($prefix) . (new \ReflectionClass($classPath))->getShortName();
+    
+}
+
+/**
+ * function recursiveRmdir
+ *	remove directory and all its content recursively.
+ *
+ *  @param string $dir 
+ *
+ *	@return void
+ **/
+function recursiveRmdir($dir) {
+
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != '.' && $object != '..') {
+                if (is_dir($dir . '/' . $object)) {
+                    recursiveRmdir($dir . '/' . $object);
+                } else {
+                    unlink($dir . '/' . $object);
+                }
+            }
+        }
+        rmdir($dir);
+    }
+}
+
+
 function doDebug($text)
 {
     if (FormaLms\lib\Get::sett('do_debug') == 'on') {

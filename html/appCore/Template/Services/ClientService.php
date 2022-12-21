@@ -71,10 +71,15 @@ class ClientService
     {
         $possiblePhpEndpoints = [];
         $path = '';
+        $basePath = '/';
 
-        $basePath = $this->request->getSchemeAndHttpHost();
-        $requestUri = $this->request->getBaseUrl();
-
+        try {
+            $basePath = $this->request->getSchemeAndHttpHost();
+            $requestUri = $this->request->getBaseUrl();
+        } catch(\Error $e) {
+            // non deve mai andare qui, ma ci passa se vengono chiamate shell exec come le migrate
+        }
+        
         if (!$onlyBasePath) {
             preg_match('/\/(.*?).php/', $requestUri, $match);
             if (!empty($match)) {

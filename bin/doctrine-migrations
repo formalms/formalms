@@ -14,6 +14,18 @@ namespace Composer;
 
 $GLOBALS['_composer_bin_dir'] = __DIR__;
 $GLOBALS['_composer_autoload_path'] = __DIR__ . '/..'.'/html/vendor/autoload.php';
+define('IN_FORMA', true);
+
+if (getenv('FORMA_BASE_PATH') !== false) {
+    define('_deeppath_', getenv('FORMA_BASE_PATH'));
+    require_once getenv('FORMA_BASE_PATH') . '/base.php';
+} else {
+    define('_deeppath_', dirname(__DIR__, 1));
+    require_once dirname(__DIR__, 1).'/html/base.php';
+}
+
+require_once _lib_ . '/lib.bootstrap.php';
+\Boot::init(BOOT_HOOKS);
 
 if (PHP_VERSION_ID < 80000) {
     if (!class_exists('Composer\BinProxyWrapper')) {
@@ -116,5 +128,6 @@ if (PHP_VERSION_ID < 80000) {
         exit(0);
     }
 }
+
 
 include __DIR__ . '/..'.'/html/vendor/doctrine/migrations/bin/doctrine-migrations';

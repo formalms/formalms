@@ -81,3 +81,4 @@ const _homewebpage_ = _homepage_base_ . '/webpage';
 const _sso_ = _homepage_base_ . '/sso';
 const _homecatalog_ = _homecatalog_base_ . '/show';
 const _install_ = _install_base_ . '/show';
+const _upgradeclass_ = 'upgrade_class';

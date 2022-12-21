@@ -262,6 +262,8 @@ class Boot
 
         //create the handeler who will fix values ins ession
         $domainHandler = DomainHandler::getInstance();
+
+    
         // template
         self::log('Load template library.');
         require_once _base_ . '/lib/lib.template.php';

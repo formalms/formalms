@@ -36,9 +36,13 @@ class DomainHandler
     //the constructor
     public function __construct()
     {
+     
         $this->request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+       
         $httpHost = $this->request->server->get('HTTP_HOST');
+      
         $notUseTemplate = $this->request->query->get('notuse_template');
+ 
         $this->entity = new DomainConfigEntity($httpHost);
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
