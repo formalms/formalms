@@ -4,7 +4,7 @@ Options -Indexes
 DirectoryIndex index.php index.html index.htm
 
 <Files favicon.ico>
-        ErrorDocument 404 "The requested file favicon.ico was not found.
+        ErrorDocument 404 "The requested file favicon.ico was not found."
 </Files>
 
 <IfModule mod_rewrite.c>
