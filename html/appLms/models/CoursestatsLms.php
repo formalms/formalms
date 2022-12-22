@@ -195,7 +195,7 @@ class CoursestatsLms extends Model
 
     public function countTotalCourseUsersStats($id_course, $id_user, $search = null, $filtered = false)
     {
-        $query = 'SELECT COUNT(o.idOrg) AS count'
+        $query = 'SELECT count( DISTINCT o.path) as count'
             . ' FROM ' . $this->tables['organization'] . ' as o '
             . ' LEFT JOIN ' . $this->tables['commontrack'] . ' as c '
             . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int) $id_user . ') '
