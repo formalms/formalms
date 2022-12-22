@@ -17,7 +17,7 @@ require_once __DIR__ . '/learning.object.php';
 
 class Learning_Item extends Learning_Object
 {
-    public string $back_url;
+    public $back_url;
 
     public function __construct($id_resource = null, $environment = false)
     {

@@ -20,7 +20,7 @@ class Track_Poll extends Track_Object
     /**
      * @var string
      */
-    public string $back_url;
+    public array $back_url;
     /**
      * @var int|null
      */

@@ -27,7 +27,7 @@ class Track_ScormOrg extends Track_Object
     /**
      * @var string|null
      */
-    public string $back_url;
+    public array $back_url;
     /**
      * @var int|null
      */
