@@ -15,14 +15,14 @@ ob_start();
 const CORE = true;
 const IN_FORMA = true;
 const _deeppath_ = '../';
-require __DIR__ . '/../base.php';
+require dirname(__DIR__,1) . '/base.php';
 
 // start buffer
 use FormaLms\appCore\Template\Services\ClientService;
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_DATETIME);
+Boot::init(BOOT_HOOKS);
 
 if (!function_exists('report_log')) {
     function report_log($string)
