@@ -9,6 +9,8 @@ class PostVersion20221012160433 extends Upgrader{
 
         $this->remapSmtpParams();
         $this->remapDomainParams();
+        $this->removeOldInstallationFolders();
+
     }
 
     private function remapSmtpParams()
@@ -108,6 +110,20 @@ class PostVersion20221012160433 extends Upgrader{
             //no settings found - nothing to do
                 return true;
         }
+
+    }
+
+    private function removeOldInstallationFolders()
+    {
+        $mainPath = dirname(__DIR__, 2);
+        if(is_dir($mainPath . "/install")) {
+            recursiveRmdir($mainPath . "/install");
+        }
+
+        if(is_dir($mainPath . "/upgrade")) {
+            recursiveRmdir($mainPath . "/upgrade");
+        }
+        
 
     }
 

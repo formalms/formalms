@@ -1079,6 +1079,8 @@ class InstallAdm extends Model
                 case 2:
                     //lancio migrate
                     $messages[] = $this->migrate();
+
+                    $messages[] = $this->saveUpgradeVersion();
                 
                     break;
             }
@@ -1176,7 +1178,10 @@ class InstallAdm extends Model
      * @return string
      */
     private function migrate() {
-        return shell_exec("php /app/bin/doctrine-migrations migrate --configuration=/app/migrations.yaml --db-configuration=/app/migrations-db.php 2>&1");
+
+        $migrationFile = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
+        $mainPath = dirname(__DIR__, 2);
+        return shell_exec("php " . $migrationFile . " migrate --configuration=" . $mainPath ."/migrations.yaml --db-configuration=" . $mainPath ."/migrations-db.php 2>&1");
       
     }
 
@@ -1508,7 +1513,7 @@ class InstallAdm extends Model
         
         if($connection::$connected) {
             list($currentVerion) = sql_fetch_row(sql_query("SELECT param_value FROM core_setting WHERE param_name = 'core_version' "));
-    
+
             if($currentVerion) {
                 return $currentVerion;
             }
@@ -1574,6 +1579,13 @@ class InstallAdm extends Model
         }
 
         return $creationTable;
+    }
+
+
+    private function saveUpgradeVersion() {
+
+        $qtxt = "UPDATE core_setting SET param_value='" . _file_version_ ."' WHERE param_name='core_version'";
+        return sql_query($qtxt);
     }
 
 }

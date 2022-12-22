@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 define('IN_FORMA',true);
-require_once __DIR__.'/html/vendor/autoload.php';
-require __DIR__ . '/html/config.php';
+require_once __DIR__.'/vendor/autoload.php';
+require __DIR__ . '/config.php';
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\DependencyFactory;
 use Doctrine\Migrations\Configuration\Migration\PhpFile;

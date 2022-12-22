@@ -33,7 +33,7 @@ class InstallAdmController extends AdmController
         $params['languages'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
  
- 
+
         $this->render('show', $params);
 
     }
@@ -54,8 +54,9 @@ class InstallAdmController extends AdmController
 
     public function testMigrations() {
 
-    
-        $result = shell_exec("php /app/bin/doctrine-migrations migrate --configuration=/app/migrations.yaml --db-configuration=/app/migrations-db.php 2>&1");
+        $path = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
+        $mainPath = dirname(__DIR__, 2);
+        $result = shell_exec("php " . $path . " migrate --configuration=" . $mainPath ."/migrations.yaml --db-configuration=" . $mainPath ."/migrations-db.php 2>&1");
       
         dd($result);
     }
