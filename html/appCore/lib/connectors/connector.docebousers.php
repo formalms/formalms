@@ -43,7 +43,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         'templatename',
         'language',
         'valid',
-        'tree_code', ];
+        'tree_code',];
 
     public $mandatory_cols = ['userid'];
 
@@ -61,7 +61,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         'signature' => '',
         'templatename' => '',
         'language' => '',
-        'tree_code' => '', ];
+        'tree_code' => '',];
 
     public $ignore_cols = ['idst',
         'avatar',
@@ -69,7 +69,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         'valid',
         'pwd_expire_at',
         'level',
-        'register_date', ];
+        'register_date',];
 
     public $valid_filed_type = ['textfield', 'date', 'dropdown', 'yesno', 'upload', 'freetext', 'country'];
 
@@ -291,7 +291,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
             [DOCEBOIMPORT_COLNAME => 'tree_code',
                 DOCEBOIMPORT_COLID => 'tree_code',
                 DOCEBOIMPORT_COLMANDATORY => false,
-                DOCEBOIMPORT_DATATYPE => 'text', ];
+                DOCEBOIMPORT_DATATYPE => 'text',];
 
         //Added language field
         $this->cols_descriptor[] =
@@ -426,12 +426,12 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
 
     public function is_readonly()
     {
-        return (bool) ($this->readwrite & 1);
+        return (bool)($this->readwrite & 1);
     }
 
     public function is_writeonly()
     {
-        return (bool) ($this->readwrite & 2);
+        return (bool)($this->readwrite & 2);
     }
 
     public function get_tot_cols()
@@ -474,32 +474,32 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         //find user field value
         foreach ($this->simplecols as $field_id => $name) {
             if (is_numeric($field_id)) {
-                $p = $this->fl->fieldValue((int) $field_id, [$row[0]]);
+                $p = $this->fl->fieldValue((int)$field_id, [$row[0]]);
                 $export[] = reset($p);
             } else {
                 switch ($field_id) {
                     case 'userid':
-                            $export[] = substr($row[1], 1);
+                        $export[] = substr($row[1], 1);
 
                         break;
                     case 'firstname':
-                            $export[] = $row[2];
+                        $export[] = $row[2];
 
                         break;
                     case 'lastname':
-                            $export[] = $row[3];
+                        $export[] = $row[3];
 
                         break;
                     case 'pass':
-                            $export[] = '*****';
+                        $export[] = '*****';
 
                         break;
                     case 'email':
-                            $export[] = $row[4];
+                        $export[] = $row[4];
 
                         break;
                     case 'signature':
-                            $export[] = $row[6];
+                        $export[] = $row[6];
 
                         break;
                 }
@@ -609,6 +609,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         }
 
         $arr_user = $this->get_row_bypk($pk);
+        $idst = false;
 
         if ($arr_user === false) {  // User doesn't exist
             if ($firstname === null || $firstname === '') {
@@ -715,7 +716,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         if ($idst !== false) {
             //destination folder
             if ($this->org_chart_destination > 0) {
-                $res = DbConn::getInstance()->query('SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE idOrg = ' . (int) $this->org_chart_destination);
+                $res = DbConn::getInstance()->query('SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE idOrg = ' . (int)$this->org_chart_destination);
                 if ($res && DbConn::getInstance()->num_rows($res) > 0) {
                     list($oc, $ocd) = DbConn::getInstance()->fetch_row($res);
                     if ($oc && $ocd) {
@@ -730,6 +731,32 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
             }
             if ($this->sendnotify == 1) {
                 // - Send alert ----------------------------------------------------
+                require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                $reg_code = null;
+                $uma = new UsermanagementAdm();
+                $nodes = $uma->getUserFolders($idst);
+                if ($nodes) {
+                    $idst_oc = array_keys($nodes)[0];
+
+                    $query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1");
+                    if ($query) {
+                        $reg_code = sql_fetch_object($query)->idOrg;
+                    }
+                }
+
+                $array_subst = array(
+                    '[url]' => \FormaLms\lib\Get::sett('url', ''),
+                    '[userid]' => $userid,
+                    '[password]' => $pass,
+                    '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
+                );
+
+                $e_msg = new EventMessageComposer();
+                $e_msg->setSubjectLangText('email', '_REGISTERED_USER_SBJ', false);
+                $e_msg->setBodyLangText('email', '_REGISTERED_USER_TEXT', $array_subst);
+                $e_msg->setBodyLangText('sms', '_REGISTERED_USER_TEXT_SMS', $array_subst);
+                $recipients = array($idst);
+                createNewAlert('UserNew', 'directory', 'edit', '1', 'User ' . $userid . ' created', $recipients, $e_msg, true);
             }
 
             //Assign the user to correct folder
@@ -878,7 +905,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
      * Adding a row in core_setting_user, with the path_name, id user and
      * language that he use.
      *
-     * @param int    $idst
+     * @param int $idst
      * @param string $language
      */
     public function add_language_to_user_by_idst($idst, $language)
@@ -894,7 +921,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         // TO add remove query from this table - why isn't working?
         $q_lang = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_setting_user (path_name, id_user, value) '
             . "VALUES ('" . $path_name . "', "
-            . (int) $idst . ", '"
+            . (int)$idst . ", '"
             . $language
             . "' )";
 
@@ -913,7 +940,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         $path_name = 'ui.language'; // ???
 
         $q_lang = 'UPDATE ' . $GLOBALS['prefix_fw'] . "_setting_user SET value = '" . $language . "' WHERE path_name = '" . $path_name
-            . "' AND id_user = " . (int) $idst;
+            . "' AND id_user = " . (int)$idst;
 
         $rs = sql_query($q_lang, $this->dbconn);
 
@@ -1068,7 +1095,7 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI
 
             $this->post_params['org_chart_destination'] =
                 isset($arr_new_params['org_chart_destination'])
-                    ? (int) $arr_new_params['org_chart_destination']
+                    ? (int)$arr_new_params['org_chart_destination']
                     : $this->post_params['org_chart_destination'];
         }
         $this->_load_step_info();
@@ -1178,21 +1205,21 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI
             $this->_get_base_name() . '[readwrite]',
             [$this->lang->def('_READ') => '1',
                 $this->lang->def('_WRITE') => '2',
-                $this->lang->def('_READWRITE') => '3', ],
+                $this->lang->def('_READWRITE') => '3',],
             $this->post_params['readwrite']);
         // ---- access type read/write -----
         $out .= $this->form->getRadioSet($this->lang->def('_SENDNOTIFY'),
             $this->_get_base_name() . '_sendnotify',
             $this->_get_base_name() . '[sendnotify]',
             [$this->lang->def('_SEND') => '1',
-                $this->lang->def('_DONTSEND') => '2', ],
+                $this->lang->def('_DONTSEND') => '2',],
             $this->post_params['sendnotify']);
         // ---- suspend users ----
         $out .= $this->form->getRadioSet($this->lang->def('_CANCELED_USERS'),
             $this->_get_base_name() . '_canceled',
             $this->_get_base_name() . '[canceled]',
             [$this->lang->def('_SUSPENDED') => '1',
-                $this->lang->def('_DEL') => '2', ],
+                $this->lang->def('_DEL') => '2',],
             $this->post_params['canceled']);
 
         $out .= $this->form->getTextfield($this->lang->def('_PREG_MATCH_FOLDER'),

@@ -11,17 +11,17 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-define('CORE', true);
-define('IN_FORMA', true);
-define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+const CORE = true;
+const IN_FORMA = true;
+const _deeppath_ = '../';
+require dirname(__DIR__,1) . '/base.php';
 
 // start buffer
 ob_start();
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_DATETIME);
+Boot::init(BOOT_HOOKS);
 
 if (!function_exists('report_log')) {
     function report_log($string)

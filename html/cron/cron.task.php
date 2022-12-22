@@ -13,14 +13,14 @@
 
 define('IN_FORMA', true);
 define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+require dirname(__DIR__,1) . '/base.php';
 
 // start buffer
 ob_start();
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_DATETIME);
+Boot::init(BOOT_HOOKS);
 
 // not a pagewriter but something similar
 $GLOBALS['operation_result'] = '';
