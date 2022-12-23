@@ -182,7 +182,7 @@ class PubRepo_ListView extends ListView
 class PubDirDb extends TreeDb
 {
     // it's all ok! only to set table name and fields name
-    public function PubDirDb()
+    public function __construct()
     {
         $this->table = $GLOBALS['prefix_lms'] . '_pubrepo_dir';
         $this->fields = ['id' => 'id', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];

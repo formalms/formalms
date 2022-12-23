@@ -45,7 +45,7 @@ class sys_forum
     /** language object */
     public $lang = null;
 
-    public function sys_forum($platform, $key1, $key2 = 0, $key3 = null)
+    public function __construct($platform, $key1, $key2 = 0, $key3 = null)
     {
         $this->out = &$GLOBALS['page'];
         $this->lang = &DoceboLanguage::createInstance('sysforum', $platform);

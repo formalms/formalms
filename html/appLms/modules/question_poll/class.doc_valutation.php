@@ -26,7 +26,7 @@ class DocValutation_QuestionPoll extends QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function DocValutation_QuestionPoll($id)
+    public function __construct($id)
     {
         parent::QuestionPoll($id);
     }

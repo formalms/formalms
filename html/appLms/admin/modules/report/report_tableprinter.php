@@ -29,7 +29,7 @@ class ReportTablePrinter
     public $rowCounter;
     public $overflow;
 
-    public function ReportTablePrinter($type = _HTML, $overflow = false)
+    public function __construct($type = _HTML, $overflow = false)
     {
         $this->type = $type;
 

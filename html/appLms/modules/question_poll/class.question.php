@@ -38,7 +38,7 @@ class QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function QuestionPoll($id)
+    public function __construct($id)
     {
         $this->id = $id;
 

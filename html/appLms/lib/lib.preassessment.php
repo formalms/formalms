@@ -86,7 +86,7 @@ class AssessmentList
         return $re;
     }
 
-    public function AssessmentList()
+    public function __construct()
     {
         require_once _lms_ . '/lib/lib.course.php';
         $this->man_course = new Man_Course();

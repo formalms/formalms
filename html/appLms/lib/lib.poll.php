@@ -24,7 +24,7 @@ class PollManagement
      *
      * @param int $id_poll the id of the test
      */
-    public function PollManagement($id_poll)
+    public function __construct($id_poll)
     {
         $this->id_poll = $id_poll;
         $this->_load($id_poll);
@@ -121,7 +121,7 @@ class PlayPollManagement
 
     public $track_info;
 
-    public function PlayPollManagement($id_poll, $id_user, $id_track, &$test_man)
+    public function __construct($id_poll, $id_user, $id_track, &$test_man)
     {
         $this->id_poll = $id_poll;
         $this->id_track = $id_track;

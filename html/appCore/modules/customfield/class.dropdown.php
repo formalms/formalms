@@ -30,7 +30,7 @@ class Field_Dropdown extends Field
     /**
      * class constructor.
      */
-    public function Field_Dropdown($id_field)
+    public function __construct($id_field)
     {
         parent::Field($id_field);
     }

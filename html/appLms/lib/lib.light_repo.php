@@ -64,7 +64,7 @@ class LightRepoManager
         LR_USER_LOCKED => 'repo_lock',
     ];
 
-    public function LightRepoManager($id_user, $id_course)
+    public function __construct($id_user, $id_course)
     {
         ksort($this->_field_repo);
         reset($this->_field_repo);

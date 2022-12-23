@@ -17,7 +17,7 @@ require_once _lms_ . '/class.module/track.object.php';
 
 class Track_Link extends Track_Object
 {
-    public function Track_Link($idTrack)
+    public function __construct($idTrack)
     {
         $this->objectType = 'link';
         parent::__construct($idTrack);

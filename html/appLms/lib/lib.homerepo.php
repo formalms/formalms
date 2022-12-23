@@ -500,7 +500,7 @@ class HomeDirDb extends TreeDb
     public $hd_filterTypes = null;
 
     // it's all ok! only to set table name and fields name
-    public function HomeDirDb($idUser = null)
+    public function __construct($idUser = null)
     {
         $this->table = $GLOBALS['prefix_lms'] . '_homerepo_dir';
         $this->fields = ['id' => 'id', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];

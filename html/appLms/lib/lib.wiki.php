@@ -28,7 +28,7 @@ class LmsWikiAdmin extends CoreWikiAdmin
 {
     public $course_id = 0;
 
-    public function LmsWikiAdmin($source_platform = 'lms')
+    public function __construct($source_platform = 'lms')
     {
         $this->lang = &DoceboLanguage::createInstance('wiki', 'framework');
         $this->source_platform = $source_platform;

@@ -23,7 +23,7 @@ class LmsUserProfile extends UserProfile
     /**
      * class constructor.
      */
-    public function LmsUserProfile($id_user, $edit_mode = false)
+    public function __construct($id_user, $edit_mode = false)
     {
         parent::__construct($id_user, $edit_mode);
     }
@@ -51,7 +51,7 @@ class LmsUserProfileViewer extends UserProfileViewer
     /**
      * class constructor.
      */
-    public function LmsUserProfileViewer(&$user_profile, $varname_action)
+    public function __construct(&$user_profile, $varname_action)
     {
         parent::UserProfileViewer($user_profile, $varname_action);
     }

@@ -91,7 +91,7 @@ class Man_Eportfolio
     /**
      * Class constructor, initialize the instance.
      */
-    public function Man_Eportfolio()
+    public function __construct()
     {
     }
 
@@ -1930,7 +1930,7 @@ class EpfShowPresentation
      * @param Man_Eportfolio $man_epf         a valid instance of the eportfolio manager class
      * @param int            $id_presentation the id of the presentation
      */
-    public function EpfShowPresentation($man_epf, $id_presentation = false)
+    public function __construct($man_epf, $id_presentation = false)
     {
         $this->id_presentation = $id_presentation;
         $this->man_epf = $man_epf;

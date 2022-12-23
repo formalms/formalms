@@ -28,7 +28,7 @@ class PDF extends TCPDF
     public $last_rc4_key_c;     //last RC4 computed key
     public $page_delimiter;
 
-    public function PDF($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8')
+    public function __construct($orientation = 'P', $unit = 'mm', $format = 'A4', $unicode = true, $encoding = 'UTF-8')
     {
         parent::__construct($orientation, $unit, $format, $unicode, $encoding);
 

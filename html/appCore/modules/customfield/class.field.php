@@ -57,7 +57,7 @@ class Field
     /**
      * class constructor.
      */
-    public function Field($id_field)
+    public function __construct($id_field)
     {
         $this->field_entry_table = $GLOBALS['prefix_fw'] . '_customfield_entry';
         $this->id_field = $id_field;
@@ -796,7 +796,7 @@ class ContactField extends Field
     /**
      * class constructor.
      */
-    public function ContactField($id_field)
+    public function __construct($id_field)
     {
         parent::Field($id_field);
     }

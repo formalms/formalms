@@ -102,7 +102,7 @@ class TreeView_CatView extends TreeView
         $this->hide_inline_action = false;
     }
 
-    public function TreeView_CatView($tdb, $id, $rootname = 'root')
+    public function __construct($tdb, $id, $rootname = 'root')
     {
         $query_course = 'SELECT idCategory, COUNT(*) FROM %lms_course GROUP BY idCategory ';
         $re_course = sql_query($query_course);

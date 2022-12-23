@@ -27,7 +27,7 @@ class Tags
 
     public $tags_founded = [];
 
-    public function Tags($resource_type, $viewer = false)
+    public function __construct($resource_type, $viewer = false)
     {
         $this->resource_type = $resource_type;
         $this->_tag_t = $GLOBALS['prefix_fw'] . '_tag';

@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class GroupTestManagement
 {
-    public function GroupTestManagement()
+    public function __construct()
     {
     }
 
@@ -429,7 +429,7 @@ class TestManagement
      *
      * @param int $id_test the id of the test
      */
-    public function TestManagement($id_test)
+    public function __construct($id_test)
     {
         $this->id_test = $id_test;
         $this->_load($id_test);
@@ -767,7 +767,7 @@ class PlayTestManagement
 
     public $track_info;
 
-    public function PlayTestManagement($id_test, $id_user, $id_track, &$test_man)
+    public function __construct($id_test, $id_user, $id_track, &$test_man)
     {
         $this->id_test = $id_test;
         $this->id_track = $id_track;

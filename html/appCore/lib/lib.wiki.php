@@ -1705,7 +1705,7 @@ class CoreWikiManager
 
     public $_wikiNavLinks = false;
 
-    public function CoreWikiManager($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;
@@ -2585,7 +2585,7 @@ class TreeDb_WikiDb extends TreeDb
     public $wiki_lang = '';
 
     // Constructor of TreeDb_WikiDb class
-    public function TreeDb_WikiDb($table_name, $info_table, $wiki_id, $wiki_lang)
+    public function __construct($table_name, $info_table, $wiki_id, $wiki_lang)
     {
         $this->wiki_id = $wiki_id;
 
@@ -2692,7 +2692,7 @@ class TreeView_WikiView extends TreeView
 
     public $hide_inline_action = true;
 
-    public function TreeView_WikiView($tdb, $id, $rootname = 'root')
+    public function __construct($tdb, $id, $rootname = 'root')
     {
         parent::__construct($tdb, $id, $rootname);
         $this->can_add = true;

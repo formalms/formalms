@@ -167,7 +167,7 @@ class DoceboDOMNode
      *
      * @param DOMNode $node
      **/
-    public function DoceboDOMNode($node)
+    public function __construct($node)
     {
         $this->nodeRef = $node;
     }
@@ -275,7 +275,7 @@ class DoceboDOMText extends DoceboDOMNode
     /**
      * Constructor from DOMText.
      **/
-    public function DoceboDOMText($domtext)
+    public function __construct($domtext)
     {
         $this->nodeRef = $domtext;
     }
@@ -302,7 +302,7 @@ class DoceboDOMDocument extends DoceboDOMNode
     /**
      * Constructor from DOMDocument.
      **/
-    public function DoceboDOMDocument($version = '1.0')
+    public function __construct($version = '1.0')
     {
         if (is_object($version)) {
             parent::DoceboDOMNode($version);
@@ -487,7 +487,7 @@ class DoceboDOMDocumentType extends DoceboDOMNode
      *
      * @param DomDocumentType $documentType
      **/
-    public function DoceboDOMDocumentType(&$documentType)
+    public function __construct(&$documentType)
     {
         parent::DoceboDOMNode($documentType);
     }
@@ -543,7 +543,7 @@ class DoceboDOMAttr extends DoceboDOMNode
      *
      * @param DOMAttribute $attr
      **/
-    public function DoceboDOMAttr(&$attr)
+    public function __construct(&$attr)
     {
         parent::DoceboDOMNode($attr);
     }
@@ -607,7 +607,7 @@ class DoceboDOMElement extends DoceboDOMNode
      *
      * @param DOMElement $element
      **/
-    public function DoceboDOMElement(&$element)
+    public function __construct(&$element)
     {
         parent::DoceboDOMNode($element);
     }
@@ -706,7 +706,7 @@ class DoceboDOMNodeList
 {
     public $arr_nodes = null;
 
-    public function DoceboDOMNodeList(&$arr)
+    public function __construct(&$arr)
     {
         $this->arr_nodes = &$arr;
     }
@@ -743,7 +743,7 @@ class DoceboDOMNamedNodeMap
 {
     public $arr_nodes = null;
 
-    public function DoceboDOMNamedNodeMap(&$arr)
+    public function __construct(&$arr)
     {
         $this->arr_nodes = &$arr;
     }
@@ -797,7 +797,7 @@ class DoceboDOMXPath
 {
     public $xpath = null;
 
-    public function DoceboDOMXPath($document)
+    public function __construct($document)
     {
         $domDocument = DoceboDOMNode::getRef($document);
         $this->xpath = $domDocument->xpath_new_context();

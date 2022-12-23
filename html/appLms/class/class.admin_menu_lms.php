@@ -27,7 +27,7 @@ class Admin_Lms extends Admin
      *
      * @return nothing
      */
-    public function Admin_Lms(&$user)
+    public function __construct(&$user)
     {
         $this->user = &$user;
         $this->platform = 'lms';
@@ -128,7 +128,7 @@ class Admin_Managment_Lms extends Admin_Managment
      *
      * @return nothing
      */
-    public function Admin_Managment_Lms()
+    public function __construct()
     {
         $this->platform = 'lms';
         $this->table_level_one = $GLOBALS['prefix_lms'] . '_menu';

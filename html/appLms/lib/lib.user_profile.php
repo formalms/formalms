@@ -89,7 +89,7 @@ class UserProfile
     /**
      * class constructor.
      */
-    public function UserProfile($id_user, $edit_mode = false)
+    public function __construct($id_user, $edit_mode = false)
     {
         $this->_id_user = $id_user;
 
@@ -982,7 +982,7 @@ class UserProfileViewer
     /**
      * class constructor.
      */
-    public function UserProfileViewer(&$user_profile, $varname_action = 'ap')
+    public function __construct(&$user_profile, $varname_action = 'ap')
     {
         $this->_user_profile = &$user_profile;
         $this->acl_man = Docebo::user()->getAclManager();
@@ -3337,7 +3337,7 @@ class UserProfileData
     /**
      * class constructor.
      */
-    public function UserProfileData($db_conn = null)
+    public function __construct($db_conn = null)
     {
         require_once _base_ . '/lib/lib.user.php';
         require_once _base_ . '/lib/lib.preference.php';

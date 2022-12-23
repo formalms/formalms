@@ -1001,7 +1001,7 @@ class CourseSubscribe_Management
     public $acl_man;
     public $db = null;
 
-    public function CourseSubscribe_Management()
+    public function __construct()
     {
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.levels.php';

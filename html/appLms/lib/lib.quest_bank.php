@@ -39,7 +39,7 @@ class QuestBankMan
         return sql_num_rows($re);
     }
 
-    public function QuestBankMan()
+    public function __construct()
     {
         $this->_table_category = $GLOBALS['prefix_lms'] . '_quest_category';
         $this->_table_quest = $GLOBALS['prefix_lms'] . '_testquest';
@@ -331,7 +331,7 @@ class QuestBankMan
 
 class QuestBank_Selector
 {
-    public function QuestBank_Selector()
+    public function __construct()
     {
         $this->lang = &DoceboLanguage::createInstance('test', 'lms');
         $this->form = new Form();

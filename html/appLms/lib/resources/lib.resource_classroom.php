@@ -22,7 +22,7 @@ require_once _adm_ . '/lib/resources/lib.resource_model.php';
 
 class ResourceClassroom extends ResourceModel
 {
-    public function ResourceClassroom($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->setResourceCode('classroom');
         parent::ResourceModel($prefix, $dbconn);

@@ -244,7 +244,7 @@ class ListView
         }
     }
 
-    public function ListView($title, &$data, &$rend, $id)
+    public function __construct($title, &$data, &$rend, $id)
     {
         $this->title = $title;
         $this->data = &$data;

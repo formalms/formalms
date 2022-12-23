@@ -31,7 +31,7 @@ class Selector_Catalogue
     /**
      * Class constructor.
      */
-    public function Selector_Catalogue()
+    public function __construct()
     {
         $this->show_filter = true;
     }
@@ -439,7 +439,7 @@ class AdminCatalogue
     /**
      * class constructor.
      */
-    public function AdminCatalogue()
+    public function __construct()
     {
     }
 

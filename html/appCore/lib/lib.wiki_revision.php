@@ -24,7 +24,7 @@ require_once _adm_ . '/lib/lib.revision.php';
 
 class WikiRevisionManager extends RevisionManager
 {
-    public function WikiRevisionManager($default_keys_val = [], $prefix = false, $dbconn = null)
+    public function __construct($default_keys_val = [], $prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;
