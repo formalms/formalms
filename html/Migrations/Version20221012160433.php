@@ -19,8 +19,6 @@ final class Version20221012160433 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        
-        /*
       
         $this->addSql('SET FOREIGN_KEY_CHECKS=0;');
 
@@ -670,7 +668,7 @@ final class Version20221012160433 extends AbstractMigration
         $this->addSql('UPDATE `core_reg_setting` SET `value` = "-" WHERE `region_id` = "england" AND `val_name` = "date_sep"');
         $this->addSql('SET FOREIGN_KEY_CHECKS=1;');
 
-        */
+        
         \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__)]);
 
     }

@@ -24,7 +24,7 @@ let wizard = $("#installer-section").steps({
       onFinished: function (event, currentIndex) {
         $('a').off('click');
         finalize();
-        $('a').on('click');
+   
     },
      onStepChanging: function (event, currentIndex, newIndex) {
       if(newIndex > currentIndex) {
@@ -147,7 +147,10 @@ function process() {
         timer = setTimeout(process, 1000); //re-queue timer
       } else {
         clearTimeout(timer);
-      
+        $('a').on('click');
+        $('.debug').val($('.debug').val() + "\n" + "END");
+        $("#finalButtons").show();
+        $("#success").show();
       }
     }
     var $debug = $('.debug').val();

@@ -219,3 +219,11 @@ define('_MAIL_STEP_SUCCESS', 'Mail settings saved successfully');
 define('_MAIL_STEP_ERROR', 'Mail settings saved with errors');
 define('_NOT_SUPPORTED_OPERATION', 'Operation not supported');
 define('_RESET_INSTALL', 'Restart Clean Installation');
+
+define('_VERSION_STEP_OK', 'Version check OK');
+define('_VERSION_STEP_ERROR', 'Version check Error');
+define('_UPGRADE_STEP_SUCCESS', 'Core upgrade OK');
+define('_UPGRADE_STEP_ERROR', 'Core upgrade Error');
+define('_TEMPLATE_STEP_SUCCESS', 'Template reset OK');
+define('_TEMPLATE_STEP_ERROR', 'Template reset Error');
+define('_CLEARTWIG_CACHE_OK', 'Twig Cache Cleared');

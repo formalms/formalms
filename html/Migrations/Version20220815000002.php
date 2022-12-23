@@ -1044,6 +1044,7 @@ final class Version20220815000002 extends AbstractMigration
             `id_course` int(11) NOT NULL DEFAULT '0',
             `repo_title` varchar(255) NOT NULL DEFAULT '',
             `repo_descr` text NOT NULL,
+            `repo_teacher_alert` boolean default 0,
             PRIMARY KEY (`id_repository`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8") ;
 

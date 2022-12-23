@@ -1069,9 +1069,9 @@ class InstallAdm extends Model
                         $success = $this->installMigrationsTable();
 
                         if($success) {
-                            $messages[] = 'ok_migrations';
+                            $messages[] = _VERSION_STEP_OK;
                         } else {
-                            $messages[] = 'error_migrations';
+                            $messages[] =  _VERSION_STEP_ERROR;
                         }
                     }
                     break;
@@ -1080,7 +1080,22 @@ class InstallAdm extends Model
                     //lancio migrate
                     $messages[] = $this->migrate();
 
-                    $messages[] = $this->saveUpgradeVersion();
+                    $success = $this->saveUpgradeVersion();
+                    if($success) {
+                        $messages[] = _UPGRADE_STEP_SUCCESS;
+                    } else {
+                        $messages[] = _UPGRADE_STEP_ERROR;
+                    }
+
+                    $success = $this->setDefaultTemplate();
+                    if($success) {
+                        $messages[] = _TEMPLATE_STEP_SUCCESS;
+                    } else {
+                        $messages[] = _TEMPLATE_STEP_ERROR;
+                    }
+                    recursiveRmdir(FormaLms\appCore\Template\TwigManager::getCacheDir());
+                    $messages[] = _CLEARTWIG_CACHE_OK;
+
                 
                     break;
             }
@@ -1112,21 +1127,14 @@ class InstallAdm extends Model
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation($this->session->get('setValues'));
-                //sleep(3);
-                //$success = true;
-                //if($success) {
-                //    $messages[] = 'OK DB';
-                //} else {
-                //    $messages[] = 'Error DB';
-                //}
+        
             
                 break;
             case 3:
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = $this->registerAdminUser() && $this->storeSettings() && $this->addInstallerRoles();
-                //sleep(3);
-                //$success = true;
+          
                 if($success) {
                     $messages[] = _ADMIN_STEP_SUCCESS;
                 } else {
@@ -1139,8 +1147,7 @@ class InstallAdm extends Model
                   
                //inserisco file di lingua
                $success = $this->importLangs();
-                //sleep(3);
-                //$success = true;
+           
                 if($success) {
                     $messages[] = _LANG_STEP_SUCCESS;
                 } else {
@@ -1152,8 +1159,7 @@ class InstallAdm extends Model
             
             //verifico smtp 
             $success = $this->saveSmtpToDatabase();
-            //sleep(3);
-            //    $success = true;
+         
             if($success) {
                 $messages[] = _MAIL_STEP_SUCCESS;
             } else {
@@ -1242,10 +1248,26 @@ class InstallAdm extends Model
         return $messages;
     }
 
+     /**
+     * Method to wrap response for user interface
+     * 
+     * @param boolean $success Response of an action
+     * @param array $messages Array of retrun messages
+     * 
+     * @return string
+     */
+
     public function wrapResponse($success = false, $messages = []) {
         
         return json_encode($this->response);
     }
+
+
+      /**
+     * Method to save configuration file
+     * 
+     * @return void
+     */
 
     private function saveConfig()
     {
@@ -1271,6 +1293,13 @@ class InstallAdm extends Model
         $this->session->save();
     }
 
+    /**
+     * Method to generate config file from standard file
+     * 
+     * @param string $tpl_fn
+     * 
+     * @return string
+     */
     private function generateConfig($tpl_fn)
     {
 
@@ -1338,6 +1367,11 @@ class InstallAdm extends Model
         return $config;
     }
 
+      /**
+     * Method to register seed admin user
+     * 
+     * @return boolean
+     */
     private function registerAdminUser()
     {
         // ----------- Registering admin user ---------------------------------
@@ -1390,6 +1424,12 @@ class InstallAdm extends Model
         return $q;
     }
 
+      /**
+     * Method to store settings in db
+     * 
+     * 
+     * @return boolean
+     */
     private function storeSettings()
     {
         require_once _adm_ . '/versions.php';
@@ -1417,6 +1457,12 @@ class InstallAdm extends Model
         return $q;
     }
 
+      /**
+     * Method to install default roles for admin
+     * 
+     * 
+     * @return boolean
+     */
     private function addInstallerRoles()
     {
         require_once _lib_ . '/installer/lib.role.php';
@@ -1435,6 +1481,12 @@ class InstallAdm extends Model
         return true;
     }
 
+      /**
+     * Method to import languages file
+     * 
+     * 
+     * @return boolean
+     */
     private function importLangs()
     {
         $LangAdm = new LangAdm();
@@ -1450,6 +1502,14 @@ class InstallAdm extends Model
         
         return true;
     }
+
+
+      /**
+     * Method to save smtp data in db
+     * 
+     * 
+     * @return boolean
+     */
     private function saveSmtpToDatabase()
     {
         $result = true;
@@ -1488,7 +1548,14 @@ class InstallAdm extends Model
 
     }
 
-
+    /**
+     * Method to save fields in session
+     * 
+    * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     * 
+     * 
+     * @return self
+     */
     public function saveFields($request) {
 
         $params = $request->request->all();
@@ -1508,6 +1575,12 @@ class InstallAdm extends Model
     }
 
 
+     /**
+     * Method to determine if installation or upgrade
+     * 
+     * 
+     * @return boolean
+     */
     public function isUpgrade() {
         $connection = DbConn::getInstance();
         
@@ -1522,7 +1595,12 @@ class InstallAdm extends Model
         return false;
     }
   
-
+    /**
+     * Method to compare version file and db version
+     * 
+     * 
+     * @return array
+     */
     public function compareVersions() {
         $result = [];
 
@@ -1559,7 +1637,12 @@ class InstallAdm extends Model
         return $result ;
     }
 
-
+    /**
+     * Method to install migration table if database already ecists
+     * 
+     * 
+     * @return boolean
+     */
     public function installMigrationsTable() {
         
         $connection = DbConn::getInstance();
@@ -1581,10 +1664,27 @@ class InstallAdm extends Model
         return $creationTable;
     }
 
-
+    /**
+     * Method to save file version in db
+     * 
+     * 
+     * @return boolean
+     */
     private function saveUpgradeVersion() {
 
         $qtxt = "UPDATE core_setting SET param_value='" . _file_version_ ."' WHERE param_name='core_version'";
+        return sql_query($qtxt);
+    }
+
+    /**
+     * Method to set standard template after upgrade
+     * 
+     * 
+     * @return boolean
+     */
+    private function setDefaultTemplate() {
+
+        $qtxt = "UPDATE core_setting SET param_value='standard' WHERE param_name='defaultTemplate'";
         return sql_query($qtxt);
     }
 
