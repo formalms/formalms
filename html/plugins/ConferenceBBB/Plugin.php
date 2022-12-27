@@ -15,7 +15,7 @@ namespace Plugin\ConferenceBBB;
 
 class Plugin extends \FormaPlugin
 {
-    public function install()
+    public static function install()
     {
         // test salt : 8cd8ef52e8e101574e400365b55e11a6
         parent::addSetting('ConferenceBBB_max_mikes', 'string', 255, '2');

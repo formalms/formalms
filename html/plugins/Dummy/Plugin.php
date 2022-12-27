@@ -17,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Plugin extends \FormaPlugin
 {
-    public function install()
+    public static function install()
     {
         $acl_manager = \Docebo::user()->getAclManager();
 
