@@ -17,7 +17,7 @@ require_once _adm_ . '/class/class.dashboard.php';
 
 class Dashboard_Scs extends Dashboard
 {
-    public function Dashboard_Scs()
+    public function __construct()
     {
     }
 }

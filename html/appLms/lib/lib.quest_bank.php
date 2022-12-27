@@ -347,7 +347,7 @@ class QuestBank_Selector
     public QuestBankMan $qb_man;
     public Form $form;
 
-    public function QuestBank_Selector()
+    public function __construct()
     {
         $this->lang = &DoceboLanguage::createInstance('test', 'lms');
         $this->form = new Form();

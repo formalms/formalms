@@ -32,7 +32,7 @@ class ScsAdminModule
 
     public $descr_long;
 
-    public function ScsAdminModule($module_name = '')
+    public function __construct($module_name = '')
     {
         if ($module_name == '') {
             $this->module_name = $GLOBALS['modname'];

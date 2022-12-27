@@ -23,7 +23,7 @@ class ChatBooking
     public $room_subscriptions = null;
     public $user_subscriptions = null;
 
-    public function ChatBooking($module, $prefix = false, $dbconn = null)
+    public function __construct($module, $prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_scs']);
         $this->dbconn = $dbconn;

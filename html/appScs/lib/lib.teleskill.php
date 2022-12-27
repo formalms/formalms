@@ -28,7 +28,7 @@ define('TELESKILL_CAPACITY', 7);
 
 class Teleskill_Management
 {
-    public function Teleskill_Management()
+    public function __construct()
     {
     }
 

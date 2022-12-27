@@ -29,7 +29,7 @@ class Admin_Scs extends Admin
      *
      * @return nothing
      */
-    public function Admin_Scs(&$user)
+    public function __construct(&$user)
     {
         $this->user = &$user;
         $this->platform = 'scs';
@@ -132,7 +132,7 @@ class Admin_Managment_Scs extends Admin_Managment
      *
      * @return nothing
      */
-    public function Admin_Managment_Scs()
+    public function __construct()
     {
         $this->platform = 'scs';
         $this->table_level_one = $GLOBALS['prefix_scs'] . '_menu';

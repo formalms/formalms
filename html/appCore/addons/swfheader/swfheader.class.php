@@ -39,7 +39,7 @@ class swfheader
     // swfheader($debug) : 	Constructor, basically does nothing but initilize
     //											debug and data fields
     //---------------------------------------------------------------------------
-    public function swfheader($debug = false)
+    public function __construct($debug = false)
     {
         $this->debug = $debug;
         $this->init();

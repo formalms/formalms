@@ -36,7 +36,7 @@ class Bbb_Manager
      */
     public string $server;
 
-    public function Bbb_Manager()
+    public function __construct()
     {
         $this->server = FormaLms\lib\Get::sett('ConferenceBBB_server');
         $this->port = FormaLms\lib\Get::sett('ConferenceBBB_port');

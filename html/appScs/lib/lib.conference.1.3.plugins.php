@@ -32,7 +32,7 @@ class Conference_Manager
 {
     public $PluginConferenceAdm;
 
-    public function Conference_Manager()
+    public function __construct()
     {
         $this->creation_limit_per_user = FormaLms\lib\Get::sett('conference_creation_limit_per_user');
 

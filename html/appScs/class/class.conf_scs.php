@@ -24,7 +24,7 @@ class Config_Scs extends Config
     /**
      * class constructor.
      */
-    public function Config_Scs($table = false)
+    public function __construct($table = false)
     {
         parent::Config($table);
 

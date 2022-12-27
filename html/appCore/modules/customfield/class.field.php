@@ -798,7 +798,7 @@ class ContactField extends Field
      */
     public function __construct($id_field)
     {
-        parent::Field($id_field);
+        parent::__construct($id_field);
     }
 
     /**
