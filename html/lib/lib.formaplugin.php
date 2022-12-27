@@ -33,6 +33,21 @@ abstract class FormaPlugin
         //code executed after deactivation
     }
 
+    public static function img($plugin_name)
+    {
+        return FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/images';
+    }
+
+    public static function css($plugin_name, $css_name)
+    {
+        Util::get_css(FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/style/' . $css_name, true, true);
+    }
+
+    public static function js($plugin_name, $js_name)
+    {
+        Util::get_js(FormaLms\lib\Get::rel_path('plugins') . '/' . $plugin_name . '/js/' . $js_name, true, true);
+    }
+
     public static function getPath($file = '')
     {
         return _plugins_ . '/' . static::getName() . '/' . $file;
