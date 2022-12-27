@@ -30,7 +30,7 @@ class Tags
     public bool $_use_tag;
     public int $_id_course;
 
-    public function Tags($resource_type, $viewer = false)
+    public function __construct($resource_type, $viewer = false)
     {
         $this->resource_type = $resource_type;
         $this->_tag_t = $GLOBALS['prefix_fw'] . '_tag';

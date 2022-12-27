@@ -27,7 +27,7 @@ class ResourceModel
     public $resource_code = false;
     public $allowed_simultaneously = 1;
 
-    public function ResourceModel($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;

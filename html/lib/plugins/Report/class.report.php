@@ -241,7 +241,7 @@ class ReportBox
 
     public $show_collapse_cmd = false;
 
-    public function ReportBox($id = '')
+    public function __construct($id = '')
     {
         $this->id = $id;
     }

@@ -36,7 +36,7 @@ class SimpleSelector
 
     public $saved_data = null;
 
-    public function SimpleSelector($use_multi_sel, &$lang)
+    public function __construct($use_multi_sel, &$lang)
     {
         $this->lang = &$lang;
         $this->use_multi_sel = $use_multi_sel;

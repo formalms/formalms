@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 class userSelection
 {
-    public function userSelection($title = '')
+    public function __construct($title = '')
     {
         if ($title != '') {
             echo '<div class="title">' . $title . '</div>';

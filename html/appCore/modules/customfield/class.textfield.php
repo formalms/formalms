@@ -27,7 +27,7 @@ class Field_Textfield extends Field
     /**
      * class constructor.
      */
-    public function Field_Textfield($id_common)
+    public function __construct($id_common)
     {
         parent::Field($id_common);
     }

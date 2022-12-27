@@ -2211,7 +2211,7 @@ class DoceboCourse
         $this->course_info = sql_fetch_assoc($re_load);
     }
 
-    public function DoceboCourse($idCourse)
+    public function __construct($idCourse)
     {
         $this->id_course = $idCourse;
         $this->_load();

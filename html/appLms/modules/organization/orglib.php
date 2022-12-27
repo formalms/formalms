@@ -1104,7 +1104,7 @@ class Org_TreeView extends RepoTreeView
     public $playOnly = false;
     private bool $user_presence;
 
-    public function Org_TreeView($tdb, $id, $rootname = 'root')
+    public function __construct($tdb, $id, $rootname = 'root')
     {
         parent::__construct($tdb, $id, $rootname);
     }

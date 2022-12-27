@@ -57,7 +57,7 @@ class Man_Reservation
     /**
      * Class constructor, initialize the instance.
      */
-    public function Man_Reservation()
+    public function __construct()
     {
     }
 

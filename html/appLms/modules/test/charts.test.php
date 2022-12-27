@@ -46,7 +46,7 @@ class Test_Charts
 
     public $settings = null;
 
-    public function Test_Charts($idTest, $idUser)
+    public function __construct($idTest, $idUser)
     {
         //check ids
         if ((int) $idTest <= 0 || (int) $idUser <= 0) {

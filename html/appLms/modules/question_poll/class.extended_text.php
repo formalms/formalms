@@ -26,7 +26,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      *
      * @return nothing
      */
-    public function ExtendedText_QuestionPoll($id)
+    public function __construct($id)
     {
         parent::QuestionPoll($id);
     }

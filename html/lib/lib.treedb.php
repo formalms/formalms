@@ -758,7 +758,7 @@ class FoldersCollection
     public $childInfo;
     public $nested;
 
-    public function FoldersCollection(&$tdb, $rs, $childInfo = false, $nested = false)
+    public function __construct(&$tdb, $rs, $childInfo = false, $nested = false)
     {
         $this->tdb = $tdb;
         $this->rs = $rs;

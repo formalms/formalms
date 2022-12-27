@@ -25,7 +25,7 @@ class ClassEventManager
 
     public $status_info = [];
 
-    public function ClassEventManager($prefix = 'learning', $dbconn = null)
+    public function __construct($prefix = 'learning', $dbconn = null)
     {
         $this->prefix = $prefix;
         $this->dbconn = $dbconn;

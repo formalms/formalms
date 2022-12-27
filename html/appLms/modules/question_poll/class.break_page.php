@@ -26,7 +26,7 @@ class BreakPage_QuestionPoll extends QuestionPoll
      *
      * @return nothing
      */
-    public function BreakPage_QuestionPoll($id)
+    public function __construct($id)
     {
         parent::QuestionPoll($id);
     }

@@ -26,7 +26,7 @@ class Title_QuestionPoll extends QuestionPoll
      *
      * @return nothing
      */
-    public function Title_QuestionPoll($id)
+    public function __construct($id)
     {
         parent::QuestionPoll($id);
     }

@@ -89,7 +89,7 @@ class Course_Manager
     /**
      * Class constructor.
      */
-    public function Course_Manager()
+    public function __construct()
     {
         require_once _base_ . '/lib/lib.tab.php';
 

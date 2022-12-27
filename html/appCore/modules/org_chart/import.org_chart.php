@@ -683,7 +683,7 @@ class ImportGroupUser extends DoceboImport_Destination
      *                      - 'dbconn' => connection to database (required)
      *                      - 'tree' => The id of the destination folder on tree (required)
      **/
-    public function ImportGroupUser($params)
+    public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
         $this->acl_man = &Docebo::user()->getAclManager();

@@ -174,7 +174,7 @@ class DoceboEvent
      *
      * @param int $event_id the unique id of the event
      **/
-    public function DoceboEvent($event_id)
+    public function __construct($event_id)
     {
         $this->event_id = $event_id;
 
@@ -371,7 +371,7 @@ class DoceboEventConsumer
      *                            - if is int $consumer_ref is used as consumer_id
      *                            - if is string is used as consumer_class
      **/
-    public function DoceboEventConsumer($class_ref)
+    public function __construct($class_ref)
     {
         $query = 'SELECT idConsumer, consumer_class, consumer_file '
                 . '  FROM ' . $GLOBALS['prefix_fw'] . '_event_consumer';

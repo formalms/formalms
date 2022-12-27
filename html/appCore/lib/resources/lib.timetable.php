@@ -23,7 +23,7 @@ class Timetable
     public $prefix = null;
     public $dbconn = null;
 
-    public function Timetable($prefix = false, $dbconn = null)
+    public function __construct($prefix = false, $dbconn = null)
     {
         $this->prefix = ($prefix !== false ? $prefix : $GLOBALS['prefix_fw']);
         $this->dbconn = $dbconn;

@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class ReservationRoomPermissions
 {
-    public function ReservationRoomPermissions()
+    public function __construct()
     {
     }
 

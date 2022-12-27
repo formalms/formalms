@@ -44,7 +44,7 @@ class QuestBankMan
         return sql_num_rows($re);
     }
 
-    public function QuestBankMan()
+    public function __construct()
     {
         $this->_table_category = $GLOBALS['prefix_lms'] . '_quest_category';
         $this->_table_quest = $GLOBALS['prefix_lms'] . '_testquest';

@@ -236,6 +236,7 @@ class LocationAlmsController extends AlmsController
         $location_id = FormaLms\lib\Get::req('location_id', DOTY_STRING, Lang::get());
 
         $classroom_list = $this->model->getClassroomList();
+        $module_list = $this->model->getModuleList();
         array_unshift($module_list, Lang::t('_ALL'));
 
         $language_list_diff = $language_list = $this->model->getLangCodeList();

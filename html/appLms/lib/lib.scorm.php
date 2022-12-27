@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class GroupScormObjMan
 {
-    public function GroupScormObjMan()
+    public function __construct()
     {
     }
 

@@ -33,7 +33,7 @@ class Selector_CoursePath
     /**
      * Class constructor.
      */
-    public function Selector_CoursePath()
+    public function __construct()
     {
         $this->show_filter = true;
     }
@@ -293,7 +293,7 @@ class CoursePath_Manager
 
     public $filter_or_in_path = false;
 
-    public function CoursePath_Manager()
+    public function __construct()
     {
         ksort($this->_path_field);
         reset($this->_path_field);

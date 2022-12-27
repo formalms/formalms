@@ -26,7 +26,7 @@ class CourseValutation_QuestionPoll extends QuestionPoll
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
-    public function CourseValutation_QuestionPoll($id)
+    public function __construct($id)
     {
         parent::QuestionPoll($id);
     }
