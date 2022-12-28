@@ -26,7 +26,7 @@ class FieldMapUser extends FieldMap
     {
         $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
 
-        parent::FieldMap();
+        parent::__construct();
     }
 
     public function getPrefix()

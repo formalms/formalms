@@ -29,7 +29,7 @@ class Field_Textfield extends Field
      */
     public function __construct($id_common)
     {
-        parent::Field($id_common);
+        parent::__construct($id_common);
     }
 
     /**

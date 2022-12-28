@@ -38,7 +38,7 @@ class WikiRevisionManager extends RevisionManager
             'content',
         ];
 
-        parent::RevisionManager($default_keys_val);
+        parent::__construct($default_keys_val);
     }
 
     public function _getRevisionTable()

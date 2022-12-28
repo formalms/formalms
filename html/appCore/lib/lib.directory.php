@@ -310,7 +310,7 @@ class PeopleListView extends ListView
     {
         require_once _adm_ . '/lib/lib.field.php';
         $this->field_list = new FieldList();
-        parent::ListView($title, $data, $rend, $id);
+        parent::__construct($title, $data, $rend, $id);
         $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
 
         $field_available = 0;
@@ -1442,7 +1442,7 @@ class GroupListView extends ListView
     public function __construct($title, &$data, &$rend, $id)
     {
         $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
-        parent::ListView($title, $data, $rend, $id);
+        parent::__construct($title, $data, $rend, $id);
 
         $this->mod_perm = checkPerm('editgroup', true, 'directory', 'framework');
         $this->del_perm = checkPerm('delgroup', true, 'directory', 'framework');
@@ -1885,7 +1885,7 @@ class GroupMembersListView extends ListView
     public function __construct($idst, $title, &$data, &$rend, $id)
     {
         $this->idst = $idst;
-        parent::ListView($title, $data, $rend, $id);
+        parent::__construct($title, $data, $rend, $id);
     }
 
     public function getTreeTranslation($groupid)
