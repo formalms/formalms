@@ -753,7 +753,7 @@ class ImportGroupUser extends DoceboImport_Destination
      *
      * @return true if the row was succesfully inserted, FALSE otherwise
      **/
-    public function add_row($row)
+    public function add_row($row, $tocompare)
     {
         foreach ($row as $k => $v) {
             $row[$k] = sql_escape_string($v);

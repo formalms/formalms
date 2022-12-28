@@ -23,7 +23,7 @@ class Module_Configuration extends Module
         configurationDispatch($GLOBALS['op']);
     }
 
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         return [
             'view' => ['code' => 'view',

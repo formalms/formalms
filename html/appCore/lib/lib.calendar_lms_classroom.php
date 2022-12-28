@@ -23,7 +23,7 @@ class DoceboCal_lms_classroom extends DoceboCal_core
 {
     public $calClass = 'lms_classroom';
 
-    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $classroom = '')
+    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $classroom = '', $category = '', $type = '', $owner = '')
     {
         $where = '';
 

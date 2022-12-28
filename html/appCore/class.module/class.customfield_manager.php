@@ -22,7 +22,7 @@ class Module_Customfield_Manager extends Module
         require_once _adm_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
     }
 
-    public static function getAllToken()
+    public static function getAllToken($op)
     {
         return [
             'view' => ['code' => 'view',

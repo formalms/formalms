@@ -35,7 +35,7 @@ class DbPurifier extends HTMLPurifier
     /**
      * return the instance of the DbPurifier.
      */
-    public function &getInstance()
+    public static function &getInstance($prototype = null)
     {
         if (!isset($GLOBALS['html_purifier'])) {
             $GLOBALS['html_purifier'] = new DBPurifier();

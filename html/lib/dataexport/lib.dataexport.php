@@ -364,7 +364,7 @@ class DataSource
      *
      * @return <bool>
      */
-    public function setRowIndex()
+    public function setRowIndex($offset)
     {
         return true;
     }

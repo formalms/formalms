@@ -552,7 +552,7 @@ class Field_Dropdown extends Field
      *
      * @return bool true if operation success false otherwise
      */
-    public function store($id_obj)
+    public function store($id_obj, $no_overwrite, $int_userid = true)
     {
         if (($int_objid) || (empty($id_obj))) {
             $id_obj = (int) $id_obj;

@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 class DoceboCal_core
 {
-    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $category = '', $type = '', $owner = '')
+    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $classroom = '', $category = '', $type = '', $owner = '')
     {
         $where = '';
 

@@ -534,7 +534,7 @@ class Field_Textfield extends Field
         return $obj_entry;
     }
 
-    public function multiLangPlay($id_user, $freeze, $mandatory = false)
+    public function multiLangPlay($id_user, $freeze, $mandatory = false, $value = null, $registrationLayout = false)
     {
         $res = '';
         require_once _base_ . '/lib/lib.form.php';
@@ -649,7 +649,7 @@ class Field_Textfield extends Field
      *
      * @return bool true if operation success false otherwise
      */
-    public function store($id_obj)
+    public function store($id_user, $no_overwrite, $int_userid = true)
     {
         if (($int_objid) || (empty($id_obj))) {
             $id_obj = (int) $id_obj;

@@ -40,7 +40,7 @@ class Module_Event_Manager extends Module
     }
 
     // Function for permission managment
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         return [
             'view' => ['code' => 'view_event_manager',

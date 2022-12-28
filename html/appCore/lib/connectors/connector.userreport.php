@@ -457,7 +457,7 @@ class DoceboConnectorUserReportUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {

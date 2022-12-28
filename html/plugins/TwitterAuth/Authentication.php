@@ -26,7 +26,7 @@ use OAuth\OAuth1\Service\Twitter;
 
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface
 {
-    public static function getLoginGUI()
+    public static function getLoginGUI($redirect = '')
     {
         $social = $session->get('social');
         if (isset($social)) {

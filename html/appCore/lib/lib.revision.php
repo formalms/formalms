@@ -386,7 +386,7 @@ class RevisionManager
      * having content that matches the searched text for
      * the current revision type and, if available, subkey.
      */
-    public function searchInLatestRevision($return_val, $ini = false, $vis_item = false)
+    public function searchInLatestRevision($return_val, $search, $ini = false, $vis_item = false)
     {
         $data = $this->getLatestRevisionList($ini, $vis_item);
 

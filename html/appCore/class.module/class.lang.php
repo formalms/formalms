@@ -35,7 +35,7 @@ class Module_Lang extends Module
     }
 
     // Function for permission managment
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         switch ($op) {
             case 'lang':

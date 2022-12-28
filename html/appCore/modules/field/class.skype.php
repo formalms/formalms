@@ -457,7 +457,7 @@ class CField_Skype extends Field_Contact
      *
      * @return bool true if operation success false otherwise
      */
-    public function store($id_user, $no_overwrite)
+    public function store($id_user, $no_overwrite, $int_userid = true)
     {
         if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
             return true;
@@ -506,7 +506,7 @@ class CField_Skype extends Field_Contact
      *
      * @return bool true if success false otherwise
      */
-    public function storeDirect($id_user, $value, $is_id, $no_overwrite)
+    public function storeDirect($id_user, $value, $is_id, $no_overwrite, $int_userid = true)
     {
         $re_entry = sql_query('
 		SELECT user_entry

@@ -1884,7 +1884,7 @@ class CoreWikiManager
         return $data_info;
     }
 
-    public function saveWiki($data, $source_platform)
+    public function saveWiki($data, $source_platform, $course_id)
     {
         $wiki_id = (int) $data['id'];
         $public = (isset($data['public']) ? 1 : 0);

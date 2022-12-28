@@ -33,7 +33,7 @@ class LmsUserProfile extends UserProfile
     /**
      * instance the viewer class of the profile.
      */
-    public function initViewer($varname_action)
+    public function initViewer($varname_action, $platform = null)
     {
         $this->_up_viewer = new LmsUserProfileViewer($this, $varname_action);
     }

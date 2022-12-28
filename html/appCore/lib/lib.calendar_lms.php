@@ -22,7 +22,7 @@ use FormaLms\lib\Session\SessionManager;
 
 class DoceboCal_lms extends DoceboCal_core
 {
-    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '')
+    public function getEvents($year = 0, $month = 0, $day = 0, $start_date = '', $end_date = '', $classroom = '', $category = '', $type = '', $owner = '')
     {
         $session = SessionManager::getInstance()->getSession();
 

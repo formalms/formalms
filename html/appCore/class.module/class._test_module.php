@@ -25,7 +25,7 @@ class Module__Test_Module extends Module
     }
 
     // Function for permission managment
-    public function getAllToken($op)
+    public static function getAllToken($op)
     {
         return [
             'view' => ['code' => 'view',

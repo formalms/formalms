@@ -292,7 +292,7 @@ class DoceboConnectorCsv extends DoceboConnector
         return 0;
     }
 
-    public function add_row($row)
+    public function add_row($row, $pk = null)
     {
         $arr_out = array_flip($this->cols_descriptor);
         foreach ($arr_out as $colname => $val) {
@@ -469,7 +469,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {

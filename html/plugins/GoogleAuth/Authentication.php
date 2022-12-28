@@ -22,7 +22,7 @@ use OAuth\Common\Storage\Session;
 
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface
 {
-    public static function getLoginGUI()
+    public static function getLoginGUI($redirect = '')
     {
         $session = self::$session;
         $social = $session->get('social');

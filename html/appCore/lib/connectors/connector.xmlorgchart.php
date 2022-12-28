@@ -279,7 +279,7 @@ class DoceboConnectorXmlOrgChart extends DoceboConnector
         return 0;
     }
 
-    public function add_row($row)
+    public function add_row($row = null, $pk = null)
     {
         return false;
     }
@@ -442,7 +442,7 @@ class DoceboConnectorXmlOrgChartUI extends DoceboConnectorUI
         return '';
     }
 
-    public function get_html()
+    public function get_html($get = null, $post = null)
     {
         $out = '';
         switch ($this->post_params['step']) {

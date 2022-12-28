@@ -175,7 +175,7 @@ class DoceboImport_Destination
      *
      * @return true if the row was succesfully inserted, FALSE otherwise
      **/
-    public function add_row($row)
+    public function add_row($row, $tocompare)
     {
         $row = $row;
     }

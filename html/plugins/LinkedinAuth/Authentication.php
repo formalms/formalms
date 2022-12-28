@@ -24,7 +24,7 @@ use OAuth\OAuth2\Service\Linkedin;
 
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface
 {
-    public static function getLoginGUI()
+    public static function getLoginGUI($redirect = '')
     {
         $form = '';
         $session = self::$session;
