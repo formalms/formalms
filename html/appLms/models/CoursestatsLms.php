@@ -195,7 +195,7 @@ class CoursestatsLms extends Model
 
     public function countTotalCourseUsersStats($id_course, $id_user, $search = null, $filtered = false)
     {
-        $query = 'SELECT count( DISTINCT o.path) as count'
+        $query = 'SELECT COUNT(o.idOrg) AS count'
             . ' FROM ' . $this->tables['organization'] . ' as o '
             . ' LEFT JOIN ' . $this->tables['commontrack'] . ' as c '
             . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int) $id_user . ') '
@@ -269,7 +269,7 @@ class CoursestatsLms extends Model
             . ' ON (c.idReference = o.idOrg AND c.idUser=' . (int) $id_user . ') '
             . ' WHERE o.idCourse=' . (int) $id_course . $where;
 
-        $query .= ' GROUP BY o.path ORDER BY ' . $sort . ' ' . $dir . ' ';
+        $query .= ' GROUP BY o.idOrg ORDER BY ' . $sort . ' ' . $dir . ' ';
         if (is_array($pagination)) {
             $query .= 'LIMIT ' . $startIndex . ', ' . $rowsPerPage;
         }
