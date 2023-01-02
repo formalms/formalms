@@ -28,140 +28,86 @@ class OrgDataSelector extends DataSelector{
     public function getData($params = []) {
 
         $useSerializer = false;
-        $command = array_key_exists('command', $params) ? (string) $params['command'] : '';
         
-        switch ($command) {
-            case 'expand':
-                $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
-                $idOrg = $this->_getIdOrgByNodeId($node_id);
-                $initial = array_key_exists('initial', $params) ? ((int) $params['initial'] > 0 ? true : false) : false;
-
-                $_conversion_table = $this->builder->getOrgchartIdstConversionTable();
-
-           
-                if ($initial) {
-                    //get selected node from session and set the expanded tree
-                    $idOrg = $this->_getSelectedNode();
-                    $nodes = $this->builder->getOrgChartInitialNodes($idOrg, true);
-                    //create actions for every node
-                    $this->_assignActions($nodes, $_conversion_table);
-                    //set output
-                    if (is_array($nodes)) {
-                        $output = [
-                            'success' => true,
-                            'nodes' => $nodes,
-                            'initial' => $initial,
-                        ];
-                    } else {
-                        $output = ['success' => false];
-                    }
-                } else {
-                    //extract node data
-                    $nodes = $this->builder->getOrgChartNodes($idOrg, false, false, true);
-                    //create actions for every node
-                    for ($i = 0, $iMax = count($nodes); $i < $iMax; ++$i) {
-                        $index = $nodes[$i]['id'];
-                        $nodes[$i]['id'] = $_conversion_table[0][$index] . '_' . $_conversion_table[1][$index];
-                        $nodes[$i]['options'] = $this->_getNodeActions($nodes[$i]);
-                    }
-                    //set output
-                    $output = [
-                        'success' => true,
-                        'nodes' => $nodes,
-                        'initial' => $initial,
-                    ];
-                }
-                
-             break;
-
-            case 'set_selected_node':
-                $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
-                $idOrg = $this->_getIdOrgByNodeId($node_id);
-                $this->_setSelectedNode($idOrg);
-             break;
-
-             default:
-                $selected_nodes = array_key_exists('selected_nodes', $params) ? (array) $params['selected_nodes'] : [];
-                $useSerializer = true;
-                $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
-                $buildRootNode = false;
-                if('' === $node_id) {
-                    $buildRootNode = true;
-                }
-                $idOrg = $this->_getIdOrgByNodeId($node_id);
-                $initial = array_key_exists('initial', $params) ? ((int) $params['initial'] > 0 ? true : false) : false;
-                $output = [];
-                $isSubadmin = false;
-                $nodes = [];
-              
-                $userlevelid = $this->builder->getUserLevel();
-                if ($userlevelid != ADMIN_GROUP_GODADMIN) {
-                    $orgTree = $this->builder->_getAdminOrgTree();
-                    $isSubadmin = true;
-                }
-                
-                $_conversion_table = $this->builder->getOrgchartIdstConversionTable();
-               
-                
-                $results = $this->builder->buildOrgChartNodes($idOrg, false, false, true);
-                
-                foreach($results as $result) {
-                 
-                    $index = $result['idOrg'];
-                    $id = $_conversion_table[0][$index] . '_' . $_conversion_table[1][$index];
-                    $isNodeVisible = true;
-                    $codeLabel = $result['code'] ? "[" . $result['code'] . "] " : "";
-                    if ($isSubadmin) {
-                        $isForbidden = !\in_array($result['idOrg'], $orgTree, true);
-                        $countSubnodes = $this->builder->_checkSubnodesVisibility($result['idOrg'], $result['iLeft'], $result['iRight'], $orgTree);
-                        $hasVisibleSubnodes = ($countSubnodes > 0);
-                        if ($isForbidden && !$hasVisibleSubnodes) {
-                            //forbidden with no visible subnodes:don't show it
-                            $isNodeVisible = false;
-                        } else {
-                            if ($isForbidden) {
-                                //forbidden, but with visible valid subnodes: show it
-                                $label = $codeLabel . $result['translation'];
-                                $hasChildren = true;
-                    
-                            } else {
-                                //not forbidden, check as normal
-                                $label = $codeLabel . $result['translation'];
-                                $hasChildren = $hasVisibleSubnodes;
-                            }
-                        }
-                    } else {
-                        $label = $codeLabel . $result['translation'];
-                        $hasChildren = !(($result['iRight'] - $result['iLeft']) == 1);
-                        
-                    }
-                    //set node for output
-                    if ($isNodeVisible) {
-                        $nodes[] = new OrgDataNode($id, $label, $hasChildren);
-                    }
-                
-                }
-                //nella variabile c'è un array a 2 indici dove nel primo sono listati i grouppi con oc_ e nel secondo quelli con ocd_
-                //l'array viene inziailizzato col nodo zero senza discendenti, il match avviene per chiave dei 2 array basata su idorg 
-
-                if($buildRootNode) {
-                    $rootNode = new OrgDataNode($this->_getRootNodeId(), 'FORMA', true, true);
-                    $rootNode->setChildren($nodes);
-                    $nodes = [];
-                    $nodes[] = $rootNode;
-                }
-                if (\is_array($nodes)) {
-                    $output = [
-                        'data' => $nodes
-                    ];
-
-                    if(count($selected_nodes)) {
-                        $output['selected_nodes'] = $selected_nodes;
-                    }
-                } 
-               
-                break;
+        $selected_nodes = array_key_exists('selected_nodes', $params) ? (array) $params['selected_nodes'] : [];
+        $useSerializer = true;
+        $node_id = array_key_exists('node_id', $params) ? (string) $params['node_id'] : '';
+        $buildRootNode = false;
+        if('' === $node_id) {
+            $buildRootNode = true;
         }
+        $idOrg = $this->_getIdOrgByNodeId($node_id);
+        $initial = array_key_exists('initial', $params) ? ((int) $params['initial'] > 0 ? true : false) : false;
+        $output = [];
+        $isSubadmin = false;
+        $nodes = [];
+        
+        $userlevelid = $this->builder->getUserLevel();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN) {
+            $orgTree = $this->builder->_getAdminOrgTree();
+            $isSubadmin = true;
+        }
+        
+        $_conversion_table = $this->builder->getOrgchartIdstConversionTable();
+        
+        
+        $results = $this->builder->buildOrgChartNodes($idOrg, false, false, true);
+        
+        foreach($results as $result) {
+            
+            $index = $result['idOrg'];
+            $id = $_conversion_table[0][$index] . '_' . $_conversion_table[1][$index];
+            $isNodeVisible = true;
+            $codeLabel = $result['code'] ? "[" . $result['code'] . "] " : "";
+            if ($isSubadmin) {
+                $isForbidden = !\in_array($result['idOrg'], $orgTree, true);
+                $countSubnodes = $this->builder->_checkSubnodesVisibility($result['idOrg'], $result['iLeft'], $result['iRight'], $orgTree);
+                $hasVisibleSubnodes = ($countSubnodes > 0);
+                if ($isForbidden && !$hasVisibleSubnodes) {
+                    //forbidden with no visible subnodes:don't show it
+                    $isNodeVisible = false;
+                } else {
+                    if ($isForbidden) {
+                        //forbidden, but with visible valid subnodes: show it
+                        $label = $codeLabel . $result['translation'];
+                        $hasChildren = true;
+            
+                    } else {
+                        //not forbidden, check as normal
+                        $label = $codeLabel . $result['translation'];
+                        $hasChildren = $hasVisibleSubnodes;
+                    }
+                }
+            } else {
+                $label = $codeLabel . $result['translation'];
+                $hasChildren = !(($result['iRight'] - $result['iLeft']) == 1);
+                
+            }
+            //set node for output
+            if ($isNodeVisible) {
+                $nodes[] = new OrgDataNode($id, $label, $hasChildren);
+            }
+        
+        }
+        //nella variabile c'è un array a 2 indici dove nel primo sono listati i grouppi con oc_ e nel secondo quelli con ocd_
+        //l'array viene inziailizzato col nodo zero senza discendenti, il match avviene per chiave dei 2 array basata su idorg 
+
+        if($buildRootNode) {
+            $rootNode = new OrgDataNode($this->_getRootNodeId(), 'FORMA', true, true);
+            $rootNode->setChildren($nodes);
+            $nodes = [];
+            $nodes[] = $rootNode;
+        }
+        if (\is_array($nodes)) {
+            $output = [
+                'data' => $nodes
+            ];
+
+            if(count($selected_nodes)) {
+                $output['selected_nodes'] = $selected_nodes;
+            }
+        } 
+               
 
         if($useSerializer) {
             return $this->serializer->serialize($output, 'json');
@@ -236,45 +182,7 @@ class OrgDataSelector extends DataSelector{
         return [];
     }
 
-    public function getChart($selection = [], $id = 'main') {
-        $_languages = [
-            '_ROOT' => \FormaLms\lib\Get::sett('title_organigram_chart', \Lang::t('_ORG_CHART', 'organization_chart')),
-            '_YES' => \Lang::t('_CONFIRM', 'organization_chart'),
-            '_NO' => \Lang::t('_UNDO', 'organization_chart'),
-            '_LOADING' => \Lang::t('_LOADING', 'standard'),
-            '_AREYOUSURE' => \Lang::t('_AREYOUSURE', 'organization_chart'),
-            '_NAME' => \Lang::t('_NAME', 'standard'),
-            '_RADIO_NO' => \Lang::t('_NO', 'standard'),
-            '_RADIO_YES' => \Lang::t('_YES', 'standard'),
-            '_RADIO_INHERIT' => \Lang::t('_INHERIT', 'standard'),
-        ];
-        
-        $orgchart_rel_action = '<a class="" id="orgchart_unselect_all_' . $id . '" href="javascript:;" '
-            . ' title="' . \Lang::t('_UNSELECT_ALL', 'organization_chart') . '">'
-            . '<span>' . \Lang::t('_UNSELECT_ALL', 'organization_chart') . '</span>'
-            . '</a>';
 
-        return  $this->widgetBuilder->widget('tree', [
-            'id' => 'orgchart_selector_tree_' . $id,
-            'ajaxUrl' => 'ajax.adm_server.php?r=adm/userselector/getData', //widget/userselector/getorgcharttreedata 
-            'treeClass' => 'SelectorTree',
-            'treeFile' => \FormaLms\lib\Get::rel_path('base') . '/widget/tree/selectortree.js',
-                'options' => ['simple' => $this->show_orgchart_simple_selector],
-            'languages' => $_languages,
-            'rootNodeId' => $this->_getRootNodeId() ?? 0,
-            'initialSelectedNode' => 0,
-            'initialSelectorData' => $selection,
-            'canSelectRoot' => true,
-            'show' => 'tree',
-            'dragDrop' => false,
-            'rel_action' => $orgchart_rel_action,
-        ], false);
-
-      
-    }
-
-
-    
     protected function _selectAll($params = [], $columnsFilter = []){}
 
     protected function _getDynamicFilter($input){}

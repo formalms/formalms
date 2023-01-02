@@ -55,7 +55,7 @@ function view_area()
                 <<<HTML
 <li id="$item->idMenu">
     <span>$title</span>
-    <a class="ico-sprite subs_users" href="index.php?modname=middlearea&op=select_menu_permission&load=1&id=$item->idMenu"><span>$vp</span></a>
+    <a class="ico-sprite subs_users" href="index.php?r=adm/userselector/show&id=$item->idMenu&instance=lmsmenu&load=1&showSelectAll=true"><span>$vp</span></a>
     <a class="ico-sprite $activation_icon" href="index.php?modname=middlearea&op=switch_menu_active&id=$item->idMenu"><span>$ea</span></a>
 </li>
 HTML;

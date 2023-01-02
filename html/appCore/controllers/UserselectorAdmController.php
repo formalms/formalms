@@ -75,12 +75,12 @@ class UserselectorAdmController extends AdmController
         $disableAjax = $this->requestObj->has('disable_ajax') ? true : false;
         $instanceValue = $this->requestObj->get('instance');
         $instanceId = $this->requestObj->get('id');
+        $showSelectAll = $this->requestObj->get('showSelectAll') ?? false;
+        $selectAllValue = 0;
 
         if($instanceValue && $instanceId) {
             $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
         }
-
-        $orgChart = null;
         if($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
             $this->selection = $this->requestObj->get('selected_tab');
         }
@@ -100,19 +100,22 @@ class UserselectorAdmController extends AdmController
             }
         }
 
-        if($this->tabs['org']) {
-            $orgChart = $this->multiUserSelector->retrieveDataSelector('org')->getChart($accessSelection);
+        if($showSelectAll) {
+            if(in_array($this->multiUserSelector->getSelectedAllValue(), $accesSelection['org'])) {
+                $selectAllValue = $this->multiUserSelector->getSelectedAllValue();
+            }
         }
 
         $this->render('show',['tabs' => $this->tabs,
                             'selection'=> $this->selection,
                             'columns' => $columns,
-                            'orgChart' => $orgChart,
                             'ajax' => $disableAjax,
                             'selectedData' => $selectedData,
                             'instanceValue' => $instanceValue,
                             'instanceId' => $instanceId,
                             'accessSelection' => $accessSelection,
+                            'showSelectAll' => $showSelectAll,
+                            'selectAllValue' => $selectAllValue,
                             'debug' => $this->requestObj->has('debug') ? $this->requestObj->get('debug') : false
                         ]);
     }

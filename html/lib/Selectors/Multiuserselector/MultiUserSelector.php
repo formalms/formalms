@@ -31,12 +31,15 @@ class MultiUserSelector {
 
     const NAMESPACE = 'FormaLms\lib\Selectors\Multiuserselector\DataSelectors\\';
 
+    const ALL_USER_ACCESS = 1; //è l'idst che corrisponde al nodo master di org di forma che non è selezionabile in alcun modo dallo user selector e solo tramite il checkbox apposito
+
     const ACCESS_MODELS = [
         'communication' => ['includes' => _lms_ . '/admin/models/CommunicationAlms.php',
                             'className' => 'CommunicationAlms'],
         'adminmanager' => ['includes' => _adm_.'/models/AdminmanagerAdm.php',
-                            'className' => 'AdminmanagerAdm'
-                            ]
+                            'className' => 'AdminmanagerAdm'],
+        'lmsmenu' => ['includes' => _lms_ . '/admin/models/LmsMenuAlms.php',
+                            'className' => 'LmsMenuAlms'],
     ];
 
     public function setDataSelectors(string $dataSelector, string $key) : self{
@@ -113,6 +116,12 @@ class MultiUserSelector {
                 $selection = $this->accessModel->loadUserSelectorSelection($instanceId);
             
                 break;
+
+            case 'lmsmenu':
+    
+                $selection = $this->accessModel->getRoleMemebers($instanceId);
+            
+            break;
         }
 
         if($parsing) {
@@ -126,6 +135,10 @@ class MultiUserSelector {
    public function getAccessModel() : object {
        return $this->accessModel;
    }
+
+   public function getSelectedAllValue() : int {
+        return self::ALL_USER_ACCESS;
+    }
 
     public function retrieveDataSelector($key) : ?DataSelector{
 

@@ -2811,6 +2811,10 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="standard&amp;_ROLE_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Ruoli]]></key>
         <key id="standard&amp;_ORG_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Organigramma]]></key>
         <key id="standard&amp;_GROUP_TAB" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Gruppi]]></key>
+        <key id="standard&amp;_SHOW_LMS_MENU" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Mostra il menu:]]></key>
+        <key id="standard&amp;_SHOW_LMS_MENU_ALL" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[A tutti]]></key>
+        <key id="standard&amp;_SHOW_LMS_MENU_ONLY" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Solo ad utenti selezionati]]></key>
+     
       </module>
       <module id="statistic">
         <key id="statistic&amp;_AT_HOUR" attributes="" save_date="2015-09-30 15:32:40"><![CDATA[Alle ore]]></key>

@@ -4,6 +4,12 @@
     {{ Form_getHidden('instance','instance',  instanceValue ) }}
     {{ Form_getHidden('id','id',  instanceId ) }}
   
+    {% if showSelectAll %}
+        {{ Form_getOpenCombo( Lang_translate('_SHOW_LMS_MENU')) }}
+            {{ Form_getRadio(Lang_translate('_SHOW_LMS_MENU_ALL'), 'lms_menu_everyone', 'all_idst','0', (selectAllValue == 0)) }}
+            {{ Form_getRadio(Lang_translate('_SHOW_LMS_MENU_ONLY'), 'lms_menu_not_everyone', 'all_idst','1', (selectAllValue == 1)) }}
+        {{ Form_getCloseCombo()}}
+    {% endif %}
     <div id="multiuserselector_tab" style='margin-top:5%;'>
         <ul class="nav nav-tabs">
             {% for tabValue,tab in tabs %}
