@@ -32,14 +32,38 @@ class LmsMenuAlms extends Model
      * 
      * @return array
     */
-    public function getRoleMemebers(int $idMenu) : array {
+    public function getRoleMembers(int $idMenu) : array {
 
         $menu = CoreMenu::get($idMenu);
         $roleIdst = $this->aclManager->getRole(false, $menu->role)[0];
     
         $members = $this->aclManager->getRoleMembers($roleIdst);
-
+        
         return $members;
+    }
+
+
+    /**
+     * Method to save role members bounded to menu
+     * 
+     * @param int $idMenu id menu da recuperare
+     * @param array $selection array di idst selezionati
+     * @param array $oldMembers array degli idst vecchi selezionati
+     * 
+     * @return bool
+    */
+    public function saveMembersAssociation(int $idMenu, array $selection, array $oldMemebers) : bool {
+        $menu = CoreMenu::get($idMenu);
+        $roleIdst = $this->aclManager->getRole(false, $menu->role)[0];
+        foreach($oldMemebers as $oldMember) {
+            $this->aclManager->removeFromRole($roleIdst, $oldMember);
+        }
+        
+        foreach ($selection as $member) {
+            $this->aclManager->addToRole($roleIdst, $member);
+        }
+
+        return true;
     }
 
 }

@@ -6,8 +6,8 @@
   
     {% if showSelectAll %}
         {{ Form_getOpenCombo( Lang_translate('_SHOW_LMS_MENU')) }}
-            {{ Form_getRadio(Lang_translate('_SHOW_LMS_MENU_ALL'), 'lms_menu_everyone', 'all_idst','0', (selectAllValue == 0)) }}
-            {{ Form_getRadio(Lang_translate('_SHOW_LMS_MENU_ONLY'), 'lms_menu_not_everyone', 'all_idst','1', (selectAllValue == 1)) }}
+            {{ Form_getRadio(Lang_translate('_SHOW_LMS_MENU_ALL'), 'lms_menu_everyone', 'all_idst','1', (selectAllValue == 1)) }}
+            {{ Form_getRadio(Lang_translate('_SHOW_LMS_MENU_ONLY'), 'lms_menu_not_everyone', 'all_idst','0', (selectAllValue == 0)) }}
         {{ Form_getCloseCombo()}}
     {% endif %}
     <div id="multiuserselector_tab" style='margin-top:5%;'>
@@ -315,25 +315,6 @@ $('#form_tabs').on('submit', function(e) {
 
 });
 
-
-
-YAHOO.util.Event.onDOMReady(function(e) {
-	
-	var input = YAHOO.util.Dom.get("userselector_input_main");
-	if (input) {
-		YAHOO.util.Event.addListener(input.form, "submit", function(e) {
-			var str = TreeView_orgchart_selector_tree_main.oSelector.toString();
-			if (str) input.value += (input.value != "" ? "," : "")+str;
-		});
-	}
-
-	var E = YAHOO.util.Event;
-	E.addListener("orgchart_unselect_all_main", "click", function(e) {
-		E.preventDefault(e);
-		var t = TreeView_orgchart_selector_tree_main;
-		t.unselectAll();
-	});
-});
 
 
 function getInputSearchField(type, value = '') {

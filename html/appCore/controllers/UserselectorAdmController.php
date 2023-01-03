@@ -80,6 +80,7 @@ class UserselectorAdmController extends AdmController
 
         if($instanceValue && $instanceId) {
             $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
+          
         }
         if($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
             $this->selection = $this->requestObj->get('selected_tab');
@@ -101,7 +102,7 @@ class UserselectorAdmController extends AdmController
         }
 
         if($showSelectAll) {
-            if(in_array($this->multiUserSelector->getSelectedAllValue(), $accesSelection['org'])) {
+            if(in_array($this->multiUserSelector->getSelectedAllValue(), $accessSelection['org'])) {
                 $selectAllValue = $this->multiUserSelector->getSelectedAllValue();
             }
         }
@@ -154,8 +155,14 @@ class UserselectorAdmController extends AdmController
         $selection =  explode(',', $this->requestObj->get('selected'));
         $exclusion =  explode(',', $this->requestObj->get('excluded'));
         $allSelections =  explode(',', $this->requestObj->get('allselection'));
-
+        $allIdst =  (int) $this->requestObj->get('all_idst');
         
+        //if allidst is checked empty all selections
+    
+        if($allIdst) {
+            $allSelections = $selection = $exclusion = [];
+            $selection[] = $allIdst;
+        }
         if(count($allSelections)) {
             foreach($allSelections as $allSelection) {
                 if(in_array($allSelection, array_keys($this->tabs))) {

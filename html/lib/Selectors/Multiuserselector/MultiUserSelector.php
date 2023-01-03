@@ -73,6 +73,7 @@ class MultiUserSelector {
 
 
    public function associate($instanceType, $instanceId, $selection) {
+
         switch($instanceType) {
 
             case 'communication':
@@ -95,6 +96,18 @@ class MultiUserSelector {
                     $redirect = 'index.php?r=adm/adminmanager/show&res=err_ins';
                 }
             
+                break;
+
+            case 'lmsmenu':
+    
+                $oldSelection = $this->accessModel->getRoleMemebers($instanceId);
+                
+                if ($this->accessModel->saveMembersAssociation($instanceId, $selection, $oldSelection)) {
+                    $redirect = 'index.php?modname=middlearea&amp;op=view_area&amp;result=ok&amp;of_platform=lms';
+                } else {
+                    $redirect = 'index.php?modname=middlearea&amp;op=view_area&amp;result=err&amp;of_platform=lms';
+                }
+
                 break;
         }
 
@@ -119,15 +132,16 @@ class MultiUserSelector {
 
             case 'lmsmenu':
     
-                $selection = $this->accessModel->getRoleMemebers($instanceId);
+                $selection = $this->accessModel->getRoleMembers($instanceId);
             
             break;
         }
+     
 
         if($parsing) {
             $selection = $this->parseSelection($selection);
         }
-
+  
         return $selection;
     }
 
