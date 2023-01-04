@@ -1,5 +1,7 @@
 <?php
+
 use \FormaLms\lib\Template\TemplateInfo;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -14,9 +16,9 @@ use \FormaLms\lib\Template\TemplateInfo;
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * @author 		Fabio Pirovano <fabio@docebo.com>
+ * @author        Fabio Pirovano <fabio@docebo.com>
  *
- * @version 	$Id: lib.template.php 995 2007-03-09 14:15:07Z fabio $
+ * @version    $Id: lib.template.php 995 2007-03-09 14:15:07Z fabio $
  */
 
 /**
@@ -98,8 +100,8 @@ function parseTemplateDomain($curr_domain = false)
                 return $item['template'];
             }
         }
-    } 
-    
+    }
+
     return false;
 }
 
@@ -137,7 +139,7 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
 /**
  * This function change the template used only in the session.
  *
- * @param string 	a valid template name
+ * @param string    a valid template name
  */
 function setTemplate($new_template)
 {
@@ -190,6 +192,7 @@ function readTemplateManifest($template_name, $key = false)
     }
 
 }
+
 /**
  * Check the template version.
  *
@@ -240,16 +243,18 @@ function getTemplateList($set_keys = false, $platform = false)
     }
     closedir($templ->handle);
 
-    if (!$set_keys) {
-        sort($templArray);
-    } else {
-        ksort($templArray);
+    if (is_array($templArray)) {
+        if (!$set_keys) {
+            sort($templArray);
+        } else {
+            ksort($templArray);
+        }
+        reset($templArray);
     }
-
-    reset($templArray);
 
     return $templArray;
 }
+
 /**
  * Search for the default template.
  *
@@ -349,10 +354,10 @@ function getPathRestylingImage($platform = false)
 }
 
 /**
- * @param string $text        The title of the area
- * @param string $image       the name of the gif in tampltes/xxx/images/area_title/
- * @param string $alt_image   The alt for the image [deprecated, not used]
- * @param bool   $ignore_glob ignore global value of the title
+ * @param string $text The title of the area
+ * @param string $image the name of the gif in tampltes/xxx/images/area_title/
+ * @param string $alt_image The alt for the image [deprecated, not used]
+ * @param bool $ignore_glob ignore global value of the title
  *
  * @return string the code for a graceful title area
  */
@@ -413,8 +418,8 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
 }
 
 /**
- * @param string $message    the error message
- * @param bool   $with_image add the standard error image or not
+ * @param string $message the error message
+ * @param bool $with_image add the standard error image or not
  *
  * @return string the code for a graceful error user interface
  */
@@ -467,32 +472,32 @@ function getBackUi($link, $name, $type = 'link')
 {
     switch ($type) {
         case 'button':
-                return '<div class="container-back_button">'
-                    . '<input class="button" type="button" value="' . $name . '" /></div>';
+            return '<div class="container-back_button">'
+                . '<input class="button" type="button" value="' . $name . '" /></div>';
 
             break;
         case 'submit':
-                return '<div class="container-back_button">'
-                    . '<input class="button" type="submit" value="' . $name . '" /></div>';
+            return '<div class="container-back_button">'
+                . '<input class="button" type="submit" value="' . $name . '" /></div>';
 
             break;
         default:
-                return '<div class="container-back">' . "\n\t" . '<a href="' . $link . '" '
-                    . (FormaLms\lib\Get::sett('use_accesskey') == 'on' ? 'accesskey="b">' . $name . ' (b)' : '>' . $name) . '</a>' . "\n"
-                    . '</div>' . "\n";
+            return '<div class="container-back">' . "\n\t" . '<a href="' . $link . '" '
+                . (FormaLms\lib\Get::sett('use_accesskey') == 'on' ? 'accesskey="b">' . $name . ' (b)' : '>' . $name) . '</a>' . "\n"
+                . '</div>' . "\n";
     }
 }
 
 /**
- * @param string $are_you_sure    the text to display in the title
- * @param string $central_text    the text in the central part
+ * @param string $are_you_sure the text to display in the title
+ * @param string $central_text the text in the central part
  * @param string $command_is_link if the undo and confirm command is link or button,
- * @param string $confirm_ref     if $command_is_link is true, this is the confirm link, else the button name and id
+ * @param string $confirm_ref if $command_is_link is true, this is the confirm link, else the button name and id
  *                                if the name contains "[" "]" they change it in this way "[" => "_", "]" => ""
- * @param string $undo_ref        if $command_is_link is true, this is the undo link, else the button name and id
+ * @param string $undo_ref if $command_is_link is true, this is the undo link, else the button name and id
  *                                if the name contains "[" "]" they change it in this way "[" => "_", "]" => ""
- * @param string $confirm_text    the text of the confirm action (optional)
- * @param string $undo_text       the text of the undo action (optional
+ * @param string $confirm_text the text of the confirm action (optional)
+ * @param string $undo_text the text of the undo action (optional
  *
  * @return string the html code for the requested interface
  */
@@ -504,7 +509,8 @@ function getDeleteUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-) {
+)
+{
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
@@ -532,15 +538,15 @@ function getDeleteUi(
 }
 
 /**
- * @param string $are_you_sure    the text to display in the title
- * @param string $central_text    the text in the central part
+ * @param string $are_you_sure the text to display in the title
+ * @param string $central_text the text in the central part
  * @param string $command_is_link if the undo and confirm command is link or button,
- * @param string $confirm_ref     if $command_is_link is true, this is the confirm link, else the button name and id
+ * @param string $confirm_ref if $command_is_link is true, this is the confirm link, else the button name and id
  *                                if the name contains "[" "]" they change it in this way "[" => "_", "]" => ""
- * @param string $undo_ref        if $command_is_link is true, this is the undo link, else the button name and id
+ * @param string $undo_ref if $command_is_link is true, this is the undo link, else the button name and id
  *                                if the name contains "[" "]" they change it in this way "[" => "_", "]" => ""
- * @param string $confirm_text    the text of the confirm action (optional)
- * @param string $undo_text       the text of the undo action (optional
+ * @param string $confirm_text the text of the confirm action (optional)
+ * @param string $undo_text the text of the undo action (optional
  *
  * @return string the html code for the requested interface
  */
@@ -552,7 +558,8 @@ function getModifyUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-) {
+)
+{
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'

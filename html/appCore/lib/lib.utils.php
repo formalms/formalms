@@ -455,7 +455,7 @@ class Util
         return true;
     }
 
-    public function getIsAjaxRequest()
+    public static function getIsAjaxRequest()
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
     }

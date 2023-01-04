@@ -86,7 +86,7 @@ class DoceboEventClass
      * @param mixed the name of the class or FALSE if it's was not found
      * @static
      **/
-    public function getClassName($class_id)
+    public static function getClassName($class_id)
     {
         $query = 'SELECT class FROM ' . $GLOBALS['prefix_fw'] . '_event_class'
                 . " WHERE idClass = '" . $class_id . "'";

@@ -394,14 +394,14 @@ class UsermanagementAdm extends Model
 					)";
                 }
 
-                    if(count($columnsFilter)) {
-                        foreach($columnsFilter as $columnName => $columnValue) {
-                            $query .= ' AND (
-                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                if (count($columnsFilter)) {
+                    foreach ($columnsFilter as $columnName => $columnValue) {
+                        $query .= ' AND (
+                                u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
-                        }
-
                     }
+
+                }
 
 
                 $query .= ' ORDER BY ' . $sort . ' ' . $dir . ' ' .
@@ -431,14 +431,14 @@ class UsermanagementAdm extends Model
 					)";
                 }
 
-                    if(count($columnsFilter)) {
-                        foreach($columnsFilter as $columnName => $columnValue) {
-                            $query .= ' AND (
-                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                if (count($columnsFilter)) {
+                    foreach ($columnsFilter as $columnName => $columnValue) {
+                        $query .= ' AND (
+                                u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
-                        }
-
                     }
+
+                }
 
                 $query .= ' ORDER BY f.user_entry ' . $dir . ' ' .
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
@@ -472,14 +472,14 @@ class UsermanagementAdm extends Model
 					)";
                 }
 
-                    if(count($columnsFilter)) {
-                        foreach($columnsFilter as $columnName => $columnValue) {
-                            $query .= ' AND (
-                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                if (count($columnsFilter)) {
+                    foreach ($columnsFilter as $columnName => $columnValue) {
+                        $query .= ' AND (
+                                u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
-                        }
-
                     }
+
+                }
 
                 $query .= ' ORDER BY fs.translation ' . $dir . ' ' .
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
@@ -509,14 +509,14 @@ class UsermanagementAdm extends Model
 					)";
                 }
 
-                    if(count($columnsFilter)) {
-                        foreach($columnsFilter as $columnName => $columnValue) {
-                            $query .= ' AND (
-                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                if (count($columnsFilter)) {
+                    foreach ($columnsFilter as $columnName => $columnValue) {
+                        $query .= ' AND (
+                                u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
-                        }
-
                     }
+
+                }
                 $query .= ' ORDER BY gm.idst ' . (strtolower($dir) == 'asc' ? 'DESC' : 'ASC') . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
@@ -546,14 +546,14 @@ class UsermanagementAdm extends Model
 					)";
                 }
 
-                    if(count($columnsFilter)) {
-                        foreach($columnsFilter as $columnName => $columnValue) {
-                            $query .= ' AND (
-                                u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                if (count($columnsFilter)) {
+                    foreach ($columnsFilter as $columnName => $columnValue) {
+                        $query .= ' AND (
+                                u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                             )';
-                        }
-
                     }
+
+                }
                 $query .= ' ORDER BY su.value ' . $dir . ', u.userid ' . $dir . ' ' . //we assume that idsts of level groups are pre-ordered
                     ' LIMIT ' . (int)$startIndex . ', ' . (int)$results;
 
@@ -583,7 +583,7 @@ class UsermanagementAdm extends Model
 
                 //get values to add in the row
                 $custom_values = [];
-                foreach ($res_fields as $frow){
+                foreach ($res_fields as $frow) {
                     if (!in_array($frow['id_common'], $custom_fields)) {
                         $custom_fields[] = $frow['id_common'];
                     }
@@ -646,8 +646,8 @@ class UsermanagementAdm extends Model
                                 $query_countries = 'SELECT id_country, name_country FROM %adm_country ORDER BY name_country';
                                 $res_countries = $this->db->query($query_countries);
                                 $countries = [];
-                                foreach ($res_countries as $crow){
-                                //while ($crow = $this->db->fetch_obj($res_countries)) {
+                                foreach ($res_countries as $crow) {
+                                    //while ($crow = $this->db->fetch_obj($res_countries)) {
                                     $countries[$crow->id_country] = $crow['name_country'];
                                 }
                             }
@@ -839,10 +839,10 @@ class UsermanagementAdm extends Model
                 break;
         }
 
-        if(count($columnsFilter)) {
-            foreach($columnsFilter as $columnName => $columnValue) {
+        if (count($columnsFilter)) {
+            foreach ($columnsFilter as $columnName => $columnValue) {
                 $filtered_query .= ' AND (
-                    u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                    u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                 )';
             }
 
@@ -973,10 +973,10 @@ class UsermanagementAdm extends Model
                 break;
         }
 
-        if(count($columnsFilter)) {
-            foreach($columnsFilter as $columnName => $columnValue) {
+        if (count($columnsFilter)) {
+            foreach ($columnsFilter as $columnName => $columnValue) {
                 $query .= ' AND (
-                    u.' .$columnName . ' LIKE "%' . $columnValue . '%" 
+                    u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
                 )';
             }
 
@@ -1204,7 +1204,9 @@ class UsermanagementAdm extends Model
                         ++$folder_count;
                     }
                 }
-                reset($folders);
+                if (is_array($folders)) {
+                    reset($folders);
+                }
 
                 if ($folder_count == 0) {
                     if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -1462,7 +1464,7 @@ class UsermanagementAdm extends Model
 
     public function buildOrgChartNodes($idNode, $recursive = false, $language = false)
     {
-        
+
 
         $langCode = ($language == false ? getLanguage() : $language);
         $searchQuery = "SELECT	t1.idOrg, t1.path, t2.translation, t1.iLeft, t1.iRight, t1.code

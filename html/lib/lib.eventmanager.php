@@ -62,7 +62,7 @@ class DoceboEventManager
      * @internal if you pass an int $class_id in the first parameter you can
      *				create a new event from the class_id specified
      **/
-    public function &newEvent($class_name, $module, $section, $priority, $description)
+    public static function newEvent($class_name, $module, $section, $priority, $description)
     {
         $class = new DoceboEventClass($class_name);
         $istance = $class->createEvent($module, $section, $priority, $description);
@@ -165,7 +165,7 @@ class DoceboEventManager
      *               consumer_id => array( consumer_class, consumer_file )
      * @static
      **/
-    public function listConsumerFromClassId($class_id)
+    public static function listConsumerFromClassId($class_id)
     {
         $query = 'SELECT DISTINCT ev.idConsumer, ev.consumer_class, ev.consumer_file '
                 . '  FROM ' . $GLOBALS['prefix_fw'] . '_event_consumer AS ev'
@@ -196,7 +196,7 @@ class DoceboEventManager
      * @param DoceboEvent $event the event to be dispatched
      * @static
      **/
-    public function dispatch(&$event)
+    public static function dispatch(&$event)
     {
         $arr_consumer = DoceboEventManager::listConsumerFromClassId($event->getClassId());
 
