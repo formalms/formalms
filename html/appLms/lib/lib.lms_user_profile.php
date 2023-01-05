@@ -53,20 +53,7 @@ class LmsUserProfileViewer extends UserProfileViewer
      */
     public function __construct(&$user_profile, $varname_action)
     {
-        parent::UserProfileViewer($user_profile, $varname_action);
-    }
-
-    /**
-     * print the title of the page.
-     *
-     * @param mixed  $text  the title of the area, or the array with zone path and name
-     * @param string $image the image to load before the title
-     *
-     * @return string the html code for space open
-     */
-    public function getTitleArea()
-    {
-        return '';
+        parent::__construct($user_profile, $varname_action);
     }
 
     /**
@@ -79,13 +66,4 @@ class LmsUserProfileViewer extends UserProfileViewer
         return '<div class="up_main">' . "\n";
     }
 
-    /**
-     * Print the footer of the module space.
-     *
-     * @return string the html code for space close
-     */
-    public function getFooter()
-    {
-        return '</div>' . "\n";
-    }
 }
