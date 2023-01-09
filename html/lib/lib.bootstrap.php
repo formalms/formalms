@@ -175,30 +175,33 @@ class Boot
         }
         self::log('Time zone setted to TZ= ' . @date_default_timezone_get());
 
+        
         // debugging ?
         self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
-            if (!in_array('debug_level', $cfg, true)) {
+            if (!in_array('debug_level', $cfg)) {
                 $cfg['debug_level'] = 'all';
             }
+        
             switch ($cfg['debug_level']) {
                 case 'error':
-                    @error_reporting(E_ERROR);
+                    error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
+                    @ini_set('display_startup_errors', 1);
                     break;
                 case 'warning':
-                    @error_reporting(E_WARNING);
+                    error_reporting(E_WARNING);
                     break;
                 case 'notice':
-                    @error_reporting(E_NOTICE);
+                    error_reporting(E_NOTICE);
                     break;
                 case 'deprecated':
-                    @error_reporting(E_DEPRECATED);
+                    error_reporting(E_DEPRECATED);
                     break;
                 default:
-                    @error_reporting(E_ALL);
+                    error_reporting(E_ALL);
                     break;
             }
-
+      
             @ini_set('display_errors', 1);
         } else {
             @error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);

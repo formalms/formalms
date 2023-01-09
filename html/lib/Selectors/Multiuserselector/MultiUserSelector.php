@@ -6,6 +6,8 @@ use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\RoleDataSelector;
 use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\GroupDataSelector;
 use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\OrgDataSelector;
 use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\DataSelector;
+use FormaLms\lib\Services\Courses\CourseSubscriptionService;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -40,6 +42,7 @@ class MultiUserSelector {
                             'className' => 'AdminmanagerAdm'],
         'lmsmenu' => ['includes' => _lms_ . '/admin/models/LmsMenuAlms.php',
                             'className' => 'LmsMenuAlms'],
+        'coursesubscription' => ['includes' => 'FormaLms\lib\Services\Courses\\' , 'className' => 'CourseSubscriptionService', 'use_namespace' =>  true],
     ];
 
     public function setDataSelectors(string $dataSelector, string $key) : self{
@@ -62,9 +65,12 @@ class MultiUserSelector {
 
     public function injectAccessModel(string $type) : self {
 
-      
-        require_once (self::ACCESS_MODELS[$type]['includes']);
-        $className = self::ACCESS_MODELS[$type]['className'];
+        if(self::ACCESS_MODELS[$type]['use_namespace']) {
+            $className = self::ACCESS_MODELS[$type]['includes'].self::ACCESS_MODELS[$type]['className'];
+        } else {
+            require_once (self::ACCESS_MODELS[$type]['includes']);
+            $className = self::ACCESS_MODELS[$type]['className'];
+        }
        
         $this->accessModel = new $className();
         
@@ -133,6 +139,13 @@ class MultiUserSelector {
             case 'lmsmenu':
     
                 $selection = $this->accessModel->getRoleMembers($instanceId);
+            
+            break;
+
+
+            case 'coursesubscription':
+    
+                $selection = [];
             
             break;
         }

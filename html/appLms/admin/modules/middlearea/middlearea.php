@@ -326,7 +326,10 @@ function select_permission()
     cout('</div>');
 }
 
-function select_menu_permission()
+/**
+ * @deprecated
+ */
+function select_menu_permission() //DEPRECATED FOR MULTIUSERSELECTOR
 {
     checkPerm('view');
 
