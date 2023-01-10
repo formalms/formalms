@@ -52,11 +52,11 @@
                 {% endif %}
             {% else %}
                 {% if course.in_cart %}
-                    <a href="javascript:void(0);" class="forma-button forma-button--orange-hover">
+                    <a href="javascript:void(0);" class="forma-button forma-button--primary">
                         <p class="forma-button__label">{{ Lang_translate('_COURSE_IN_CART', 'catalogue') }}</p>
                     </a>
                 {% else %}
-                    <a class="forma-button forma-button--green forma-button--orange-hover" href="javascript:;"
+                    <a class="forma-button forma-button--secondary" href="javascript:;"
                        onclick ="chooseEdition({{ course.idCourse }})">
                         <span class="forma-button__label">{{ Lang_translate('_ADD_TO_CART', 'catalogue') }}</span>
                     </a>

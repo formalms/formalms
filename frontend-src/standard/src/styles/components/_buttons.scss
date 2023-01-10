@@ -25,8 +25,8 @@
   text-transform: uppercase;
   text-shadow: none;
   line-height: 40px;
-  color: var(--color-0-000);
-  background: var(--color-3);
+  color: var(--color-primary-text);
+  background: var(--color-primary);
   // border: 2px solid var(--color-3);
   font-family: $font;
   font-size: 12px;
@@ -53,13 +53,14 @@
 
   &:hover {
     text-decoration: none;
-    color: var(--color-0-000);
+    color: var(--color-primary);
+    background: var(--color-primary-text);
   }
 
   &:focus {
     text-decoration: none;
-    background-color: var(--color-3-450);
-    color: var(--color-0-000);
+    color: var(--color-primary);
+    background: var(--color-primary-text);
   }
 
   .user-panel & {
@@ -107,10 +108,14 @@
 // </a>
 //
 // Style guide: 2.1.1
-.forma-button--orange-hover {
+.forma-button--primary {
+  color: var(--color-primary-text);
+  background: var(--color-primary);
+  border: 2px solid var(--color-transparent);
   &:hover {
-    background: var(--color-1-550);
-    color: var(--color-0-000);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    background: var(--color-primary-text);
     // border-color: var(--color-1-550);
     .forma-button__label:after {
       animation-duration: 500ms;
@@ -131,9 +136,9 @@
 // Style guide: 2.2
 .forma-button--disabled {
   pointer-events: none;
-  background: var(--color-0-000);
+  background: var(--color-disabled);
   // border: 2px solid var(--color-0-250);
-  color: var(--color-0-250);
+  color: var(--color-disabled-text);
   position: relative;
   &::before {
     position: absolute;
@@ -151,7 +156,7 @@
     &:before {
       content: '\f023';
       font-family: $icon;
-      color: var(--color-0-400);
+      color: var(--color-disabled-text);
       padding-right: 5px;
     }
 
@@ -176,6 +181,11 @@
 .forma-button--green {
   background: var(--color-6);
   border: 2px solid var(--color-6);
+}
+.forma-button--secondary {
+  background: var(--color-secondary);
+  color: var(--color-seconday-text);
+  border: 2px solid var(--color-secondary);
 }
 
 // Green Bordered Button
@@ -220,9 +230,10 @@
 // </a>
 //
 // Style guide: 2.6
-.forma-button--black {
-  background: var(--color-0-1000);
-  border: 2px solid var(--color-0-1000);
+// USATO
+.forma-button--info {
+  background: var(--color-info);
+  border: 2px solid var(--color-info-text);
 
   .forma-button__label {
     &:after {
@@ -237,6 +248,12 @@
 
   .homepage & {
     border: 0;
+  }
+
+  &:hover {
+    text-decoration: none;
+    background: var(--color-info-text);
+    color: var(--color-info);
   }
 }
 
@@ -402,15 +419,15 @@ a.btn.btn-default {
     font-family: $font;
     text-transform: uppercase;
     font-size: 12px;
-    background-color: var(--color-0-1000);
+    background-color: var(--color-primary);
     text-shadow: none;
-    color: var(--color-0-000);
+    color: var(--color-primary-text);
     border: 0;
     border-radius: 5px;
 
     &:hover {
-      background-color: var(--color-0-1000);
-      color: var(--color-0-000);
+      background-color: var(--color-primary-text);
+      color: var(--color-primary);
     }
   }
 }
@@ -444,8 +461,8 @@ a.btn.btn-default {
   height: 30px;
   position: relative;
   vertical-align: middle;
-  background-color: var(--color-0-750);
-  color: var(--color-0-000);
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
   transition: background-color 0.25s ease 0s;
 
   &:before,
@@ -456,7 +473,7 @@ a.btn.btn-default {
     position: absolute;
     top: calc(50% - 1px);
     left: calc(50% - 10px);
-    background-color: var(--color-0-000);
+    background-color: var(--color-primary-text);
   }
 
   &:before {
@@ -468,7 +485,7 @@ a.btn.btn-default {
   }
 
   .close-button:hover & {
-    background-color: var(--color-1-550);
+    background-color: var(--color-primary-text);
   }
 }
 
@@ -478,11 +495,11 @@ a.btn.btn-default {
   margin-left: 10px;
   font-size: 12px;
   text-transform: uppercase;
-  color: var(--color-0-400);
+  color: var(--color-primary-text);
   transition: color 0.25s ease 0s;
 
   .close-button:hover & {
-    color: var(--color-1-550);
+    color: var(--color-primary-text);
   }
 }
 

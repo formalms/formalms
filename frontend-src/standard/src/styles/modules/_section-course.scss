@@ -106,9 +106,13 @@
 .section-coourse__menu {
   overflow: visible;
   border-bottom: none;
-  background-color: var(--color-0-050);
+  background-color: var(--color-wrapper-bg);
+  ul li a {
+    padding: 2px;
+  }
   ul li a:hover {
-    color: var(--color-3);
+    background-color: var(--color-wrapper-text-50);
+    color: var(--color-navbtn-bg-inter);
   }
   .prv,
   .nxt {

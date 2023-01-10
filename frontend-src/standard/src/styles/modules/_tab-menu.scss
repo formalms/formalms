@@ -50,29 +50,30 @@
       width: 100%;
       height: 40px;
       padding: 12px 35px;
-      color: var(--color-0-400);
-      background-color: var(--color-0-050) !important;
+      color: var(--color-navbtn-text);
+      background-color: var(--color-navbtn-bg) !important;
       border-radius: 100vh !important;
       transition: color 0.2s ease 0s;
       text-transform: uppercase;
       display: block;
 
       &:hover {
-        background-color: var(--color-0-100) !important;
+        background-color: var(--color-navbtn-bg-inter) !important;
+        color: var(--color-navbtn-text-inter);
       }
 
       &:focus {
-        color: var(--color-0-400);
+        color: var(--color-navbtn-bg-inter);
       }
     }
 
     &.active > a {
       width: 100%;
-      background-color: var(--color-1-300) !important;
       border: none !important;
-      color: var(--color-1-020) !important;
+      color: var(--color-navbtn-text-inter);
+      background-color: var(--color-navbtn-bg-inter) !important;
       &:hover {
-        background-color: var(--color-1-400) !important;
+        background-color: var(--color-navbtn-bg-inter) !important;
       }
     }
   }

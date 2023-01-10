@@ -8,7 +8,10 @@
   border-radius: $border-radius;
 }
 .filterBar {
-  background-color: var(--color-0-050) !important;
+  background-color: var(--color-wrapper-bg) !important;
+}
+.filterBar.forma-quick-search-form {
+  border-bottom: 2px solid var(--color-wrapper-text);
 }
 
 // Open & Close effects
@@ -219,6 +222,12 @@
 .filterBar__buttonLink {
   @extend %filterBarGlobalButton;
 
+
+  svg {
+    background: var(--color-icon-bg);
+    color: var(--color-icon-text);
+  }
+
   .filterBar__button & {
     border-radius: 100vh;
     height: 40px;
@@ -245,17 +254,24 @@
     }
 
     &:hover {
-      background-color: var(--color-0-020);
+      background-color: var(--color-wrapper-text);
+    }
+
+    &:hover:before { // icona?
+      background-color: var(--color-wrapper-bg);
     }
 
   }
 
   .filterBar__button.selected & {
-    background-color: var(--color-0-005) !important;
-    color: var(--color-0-700);
-    box-shadow: 0 0 2px 2px var(--color-0-050);
+    background-color: var(--color-wrapper-text) !important;
+    color: var(--color-wrapper-bg) !important;
+    box-shadow: 0 0 2px 2px var(--color-wrapper-text);
+    &:before {
+      background-color: var(--color-wrapper-bg) !important;
+    }
     &:hover {
-      background-color: white !important;
+      // background-color: white !important;
     }
   }
 }
@@ -299,8 +315,9 @@
 // # shared button
 
 %filterBarGlobalButton {
-  color: var(--color-0-550);
-  background-color: var(--color-0-050);
+  color: var(--color-wrapper-text);
+  background-color: var(--color-wrapper-text-50);
+  padding: 3px;
   // box-shadow: var(--color-0-250) 2px 2px 0 0;
   display: flex;
   align-items: center;
@@ -314,8 +331,8 @@
   &:hover {
     // box-shadow: var(--color-0-350) 2px 2px 0 0;
     text-decoration: none;
-    background-color: var(--color-0-020);
-    color: var(--color-0-600);
+    background-color: var(--color-wrapper-text);
+    color: var(--color-wrapper-bg);
   }
   &:active {
     transform: scale(0.95,0.95);

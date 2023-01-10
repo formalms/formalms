@@ -1960,8 +1960,8 @@ class UserManagerRenderer
 
         $out .= '<div class="homepage__row">'
             . '<div class="col-xs-12 col-sm-6 col-sm-offset-3">'
-            //. '<button type="submit" class="forma-button forma-button--black">Registrati</button>'
-            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--black ')
+            //. '<button type="submit" class="forma-button forma-button--info">Registrati</button>'
+            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--info ')
             . '</div>'
             . '</div>';
 
@@ -2282,8 +2282,8 @@ class UserManagerRenderer
 
         $out .= '<div class="homepage__row">'
             . '<div class="col-xs-12 col-sm-6 col-sm-offset-3">'
-            //. '<button type="submit" class="forma-button forma-button--black">Registrati</button>'
-            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--black ')
+            //. '<button type="submit" class="forma-button forma-button--info">Registrati</button>'
+            . Form::getButton('reg_button', 'reg_button', $lang->def('_REGISTER'), ' forma-button forma-button--info ')
             . '</div>'
             . '</div>';
 

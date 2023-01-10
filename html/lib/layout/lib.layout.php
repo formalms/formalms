@@ -285,7 +285,7 @@ class Layout
         $html = '';
         if (HomepageAdm::staticIsCatalogToShow()) {
             $eventResult = Events::trigger('lms.catalogue.external.showing', ['catalogueLink' => _homecatalog_]);
-            $html = '<a class="forma-button forma-button--orange" href="index.php?r=' . $eventResult['catalogueLink'] . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
+            $html = '<a class="forma-button forma-button--primary" href="index.php?r=' . $eventResult['catalogueLink'] . '">' . Lang::t('_CATALOGUE', 'standard') . '</a>';
         }
 
         return $html;

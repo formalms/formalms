@@ -269,7 +269,7 @@ class HomepageAdmController extends AdmController
         }
         $lostUsernameForm .= '</div>'
             . '<div class="col-xs-12 col-sm-2">'
-            . Form::getButton('lost_user_send', 'send', Lang::t('_SEND', 'register'), 'forma-button forma-button--black thin')
+            . Form::getButton('lost_user_send', 'send', Lang::t('_SEND', 'register'), 'forma-button forma-button--info thin')
             . '</div>'
             . Form::closeForm();
 
@@ -291,7 +291,7 @@ class HomepageAdmController extends AdmController
         }
         $lostPwdForm .= '</div>'
             . '<div class="col-xs-12 col-sm-2">'
-            . Form::getButton('lost_pwd_send', 'send', Lang::t('_SEND', 'register'), 'forma-button forma-button--black thin')
+            . Form::getButton('lost_pwd_send', 'send', Lang::t('_SEND', 'register'), 'forma-button forma-button--info thin')
             . '</div>'
             . Form::closeForm() .
             '</div>';

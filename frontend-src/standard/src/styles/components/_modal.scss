@@ -118,10 +118,10 @@
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       border: 1px solid var(--color-0-400)04;
-      color: var(--color-3);
+      color: var(--color-wrapper-text);
       font-weight: bold;
       font-size: 18px;
-      background-color: var(--color-0-050);
+      background-color: var(--color-wrapper-bg);
 
       @include breakpoint($tablet) {
         border-top-left-radius: 0;
@@ -264,7 +264,7 @@
   height: 100%;
 }
 .modal-header--bio {
-  background-color: var(--color-1-550);
+  background-color: var(--color-wrapper-bg);
   border: none;
   position: relative;
   padding-left: 12px;
