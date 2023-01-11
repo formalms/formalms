@@ -1786,7 +1786,7 @@ class Course_API extends API
 
         //--- delete classroom or editions -----------------------------------------
         if ($course_type == 'classroom') {
-            require_once _lms_ . '/admin/model/ClassroomAlms.php';
+            require_once _lms_ . '/admin/models/ClassroomAlms.php';
             $classroom_model = new ClassroomAlms($id_course);
 
             $classroom = $classroom_model->classroom_man->getDateIdForCourse($id_course);
@@ -1797,7 +1797,7 @@ class Course_API extends API
                 }
             }
         } elseif ($course_edition == 1) {
-            require_once _lms_ . '/admin/model/EditionAlms.php';
+            require_once _lms_ . '/admin/models/EditionAlms.php';
             $edition_model = new EditionAlms($id_course);
 
             $editions = $edition_model->classroom_man->getEditionIdFromCourse($id_course);
