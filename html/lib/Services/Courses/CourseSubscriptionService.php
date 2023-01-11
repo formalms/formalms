@@ -29,7 +29,7 @@ class CourseSubscriptionService
     }
 
 
-    protected function add($selection, $courseType, $courseId) {
+    public function add($selection, $courseType, $courseId, $params = []) : array {
 
        
         if (!$this->permissions['subscribe_course']) {
@@ -57,17 +57,21 @@ class CourseSubscriptionService
         switch($courseType) {
 
             case "edition" : 
-                $this->baseModel->setIdEdition($id_course);
+                $this->baseModel->setIdEdition($courseId);
+                break;
+
+            case "date" : 
+                $this->baseModel->setIdDate($courseId);
                 break;
 
             default:
-                $this->baseModel->setIdCourse($id_course);
+                $this->baseModel->setIdCourse($courseId);
                 break;
         }
         
-        
-        $userSelected = $this->baseModel->acl_man->getAllUsersFromSelection($selection);
-        $userAlredySubscribed = $model->loadUserSelectorSelection();
+       
+        $userSelected = $this->baseModel->getAclManager()->getAllUsersFromSelection($selection);
+        $userAlredySubscribed = $this->baseModel->loadUserSelectorSelection();
         $userSelected = array_diff($userSelected, $userAlredySubscribed);
 
         if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -98,7 +102,7 @@ class CourseSubscriptionService
             $userSelected = array_intersect($userSelected, $adminUsers);
         }
 
-        $userSelected = $this->baseModel->acl_man->getUsersFromMixedIdst($user_selected);
+        $userSelected = $this->baseModel->getAclManager()->getUsersFromMixedIdst($userSelected);
         if (count($userSelected) == 0) {
 
             $this->setResponse('error',
@@ -109,205 +113,203 @@ class CourseSubscriptionService
             return $this->response;
          }
 
-            $sel_date_begin_validity = FormaLms\lib\Get::req('sel_date_begin_validity', DOTY_INT, 0) > 0;
-            $sel_date_expire_validity = FormaLms\lib\Get::req('sel_date_expire_validity', DOTY_INT, 0) > 0;
-            $date_begin_validity = $sel_date_begin_validity ? FormaLms\lib\Get::req('set_date_begin_validity', DOTY_STRING, '') : false;
-            $date_expire_validity = $sel_date_expire_validity ? FormaLms\lib\Get::req('set_date_expire_validity', DOTY_STRING, '') : false;
-            if ($date_begin_validity) {
-                $date_begin_validity = Format::dateDb($date_begin_validity, 'date');
-            }
-            if ($date_expire_validity) {
-                $date_expire_validity = Format::dateDb($date_expire_validity, 'date');
-            }
-
-            $select_level_mode = FormaLms\lib\Get::req('select_level_mode', DOTY_STRING, '');
-            switch ($select_level_mode) {
-                case 'students':
-                        // subscribe the selection with the students level
-                        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                        $course_info = $model->getCourseInfoForSubscription();
-
-                        //check if the subscriber is a sub admin and, if true check it's limitation
-                        $can_subscribe = true;
-                        $subscribe_method = $course_info['subscribe_method'];
-                        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                            $limited_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                            $max_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                            $direct_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
-
-                            if ($limited_subscribe == 'on') {
-                                $limited_subscribe = true;
-                            } else {
-                                $limited_subscribe = false;
-                            }
-                            if ($direct_subscribe == 'on') {
-                                $direct_subscribe = true;
-                            } else {
-                                $direct_subscribe = false;
-                            }
-                        } else {
-                            $limited_subscribe = false;
-                            $max_subscribe = 0;
-                            $direct_subscribe = true;
-                        }
-
-                        if ($can_subscribe) {
-                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                            $docebo_course = new DoceboCourse($id_course);
-
-                            $level_idst = &$docebo_course->getCourseLevel($id_course);
-                            if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = &$docebo_course->createCourseLevel($id_course);
-                            }
-
-                            $waiting = 0;
-                            $user_subscribed = [];
-                            $user_waiting = [];
-
-                            if (!$direct_subscribe) {
-                                $waiting = 1;
-                            }
-
-                            // do the subscriptions
-                            $result = true;
-                            $this->db->start_transaction();
-                            foreach ($user_selected as $id_user) {
-                                if (!$limited_subscribe || $max_subscribe) {
-                                    //$this->acl_man->addToGroup($level_idst[3], $id_user);
-                                    $this->_addToCourseGroup($level_idst[3], $id_user);
-
-                                    if ($model->subscribeUser($id_user, 3, $waiting, $date_begin_validity, $date_expire_validity)) {
-                                        --$max_subscribe;
-                                    } else {
-                                        $this->acl_man->removeFromGroup($level_idst[3], $id_user);
-                                        $result = false;
-                                    }
-                                }
-                            } //End While
-                            $this->db->commit();
-
-                            // Save limit preference for admin
-                            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                                $to_subscribe = count($user_selected);
-
-                                if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                                    $user_pref->setPreference('user_subscribed_count', $subscribed_count + $to_subscribe);
-                                }
-                            }
-
-                            reset($user_selected);
-                            $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
-                            //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
-                            if (!empty($user_selected) && $send_alert) {
-                                require_once _base_ . '/lib/lib.eventmanager.php';
-
-                                $uma = new UsermanagementAdm();
-
-                                foreach (array_keys($user_selected) as $user_id) {
-                                    $reg_code = null;
-                                    if ($nodes = $uma->getUserFolders($user_id)) {
-                                        $idst_oc = array_keys($nodes)[0];
-
-                                        if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
-                                            $reg_code = sql_fetch_object($query)->idOrg;
-                                        }
-                                    }
-
-                                    $array_subst = [
-                                        '[url]' => FormaLms\lib\Get::site_url(),
-                                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
-                                        '[course]' => $course_info['name'],
-                                        '[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
-                                        '[course_name]' => $course_info['name'],
-                                        '[course_code]' => $course_info['code'],
-                                    ];
-
-                                    // message to user that is waiting
-                                    $msg_composer = new EventMessageComposer();
-                                    $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
-                                    $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
-                                    $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
-
-                                    // send message to the user subscribed
-                                    createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
-
-                                    if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                                        $uinfo = Docebo::aclm()->getUser($user_id, false);
-                                        $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
-                                        $msg_composer->setAttachments([$calendar->getFile()]);
-                                    }
-                                }
-                            }
-                        }
-
-                        $result = $result > 0 ? '_operation_successful' : '_operation_failed';
-                        Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date . '&res=' . $result);
-
-                    break;
-                default:
-                    break;
-            }
-
-            $model->loadSelectedUser($user_selected);
-
-            $course_info = $this->model->getCourseInfoForSubscription();
-            $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
-
-            $this->render('level', [
-                'id_course' => $id_course,
-                'id_edition' => $id_edition,
-                'id_date' => $id_date,
-                'model' => $model,
-                'course_info' => $cman->getInfo($id_course, $id_edition, $id_date),
-                'num_subscribed' => count($user_selected),
-                'send_alert' => FormaLms\lib\Get::req('send_alert', DOTY_INT, 0),
-                'date_begin_validity' => $date_begin_validity,
-                'date_expire_validity' => $date_expire_validity,
-                'course_name' => $course_name,
-            ]);
-       
-        
-        /*
-        else {
-            if (isset($_GET['err']) && $_GET['err'] !== '') {
-                UIFeedback::error(Lang::t(strtoupper($_GET['err']), 'subscription'));
-            }
-
-            $user_selector->show_user_selector = true;
-            $user_selector->show_group_selector = true;
-            $user_selector->show_orgchart_selector = true;
-            $user_selector->show_orgchart_simple_selector = true;
-
-            $user_alredy_subscribed = [];
-            if (isset($_GET['load'])) {
-                $user_selector->requested_tab = PEOPLEVIEW_TAB;
-                $user_alredy_subscribed = $model->loadUserSelectorSelection();
-                $user_selector->resetSelection($user_alredy_subscribed);
-            }
-
-            //find if the event manager is configured to send an alert or not in case of new subscription
-            list($send_alert) = sql_fetch_row(sql_query('SELECT permission '
-                . ' FROM %adm_event_class as ec'
-                . ' JOIN %adm_event_manager as em'
-                . " WHERE ec.idClass = em.idClass AND ec.class = 'UserCourseInserted' "));
-
-            $course_info = $this->model->getCourseInfoForSubscription();
-            $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
-
-            $this->render('add', [
-                'id_course' => $id_course,
-                'id_edition' => $id_edition,
-                'id_date' => $id_date,
-                'model' => $model,
-                'course_info' => $cman->getInfo($id_course, $id_edition, $id_date),
-                'user_selector' => $user_selector,
-                'user_alredy_subscribed' => $user_alredy_subscribed,
-                'send_alert' => ($send_alert == 'mandatory'),
-                'course_name' => $course_name,
-            ]);
+        $selDateBeginValidity = (bool) $params['sel_date_begin_validity'];
+        $selDateExpireValidity = (bool) $params['sel_date_expire_validity'];
+        $dateBeginValidity = $selDateBeginValidity ? $params['set_date_begin_validity'] : false;
+        $dateExpireValidity = $selDateExpireValidity ? $params['set_date_expire_validity'] : false;
+        if ($dateBeginValidity) {
+            $dateBeginValidity = Format::dateDb($dateBeginValidity, 'date');
+        }
+        if ($dateExpireValidity) {
+            $dateExpireValidity = Format::dateDb($dateExpireValidity, 'date');
         }
 
-        */
+        $selectLevelMode = $params['select_level_mode'] ?? '';
+        switch ($selectLevelMode) {
+            case 'students':
+                    // subscribe the selection with the students level
+                    $courseInfo = $this->baseModel->getCourseInfoForSubscription();
+
+                    //check if the subscriber is a sub admin and, if true check it's limitation
+                    $canSubscribe = true;
+                    $subscribeMethod = $courseInfo['subscribe_method'];
+                    if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                        $limitedSubscribe = $this->doceboUser->preference->getAdminPreference('admin_rules.limit_course_subscribe');
+                        $maxSubscribe = $this->doceboUser->preference->getAdminPreference('admin_rules.max_course_subscribe');
+                        $directSubscribe = $this->doceboUser->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+
+                        if ($limitedSubscribe == 'on') {
+                            $limitedSubscribe = true;
+                        } else {
+                            $limitedSubscribe = false;
+                        }
+                        if ($directSubscribe == 'on') {
+                            $directSubscribe = true;
+                        } else {
+                            $directSubscribe = false;
+                        }
+                    } else {
+                        $limitedSubscribe = false;
+                        $maxSubscribe = 0;
+                        $directSubscribe = true;
+                    }
+
+                    if ($canSubscribe) {
+                   
+                        $doceboCourse = new \DoceboCourse($idCourse);
+
+                        $levelIdst = $doceboCourse->getCourseLevel($idCourse);
+                        if (count($levelIdst) == 0 || $levelIdst[1] == '') {
+                            $levelIdst = $doceboCourse->createCourseLevel($idCourse);
+                        }
+
+                        $waiting = 0;
+                        $userSubscribed = [];
+                        $userWaiting = [];
+
+                        if (!$directSubscribe) {
+                            $waiting = 1;
+                        }
+
+                        // do the subscriptions
+                        $result = true;
+                        $this->baseModel->db->start_transaction();
+                        foreach ($userSelected as $idUser) {
+                            if (!$limitedSubscribe || $maxSubscribe) {
+                           
+                                $this->_addToCourseGroup($levelIdst[3], $idUser);
+
+                                if ($this->baseModel->subscribeUser($idUser, 3, $waiting, $dateBeginValidity, $dateExpireValidity)) {
+                                    --$maxSubscribe;
+                                } else {
+                                    $this->baseModel->getAclManager()->removeFromGroup($levelIdst[3], $idUser);
+                                    $result = false;
+                                }
+                            }
+                        } //End While
+                        $this->baseModel->db->commit();
+
+                        // Save limit preference for admin
+                        if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                            $toSubscribe = count($userSelected);
+
+                            if ($preference['admin_rules.limit_course_subscribe'] == 'on') {
+                                $userPreference->setPreference('user_subscribed_count', $subscribedCount + $toSubscribe);
+                            }
+                        }
+
+                        reset($userSelected);
+                        $sendAlert = (int) $params['send_alert'];
+                        //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
+                        if (!empty($userSelected) && $sendAlert) {
+
+                            $userManagement = new \UsermanagementAdm();
+
+                            foreach (array_keys($userSelected) as $userId) {
+                                $regCode = null;
+                                if ($nodes = $userManagement->getUserFolders($userId)) {
+                                    $idstOc = array_keys($nodes)[0];
+
+                                    if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idstOc LIMIT 1")) {
+                                        $regCode = sql_fetch_object($query)->idOrg;
+                                    }
+                                }
+
+                                $arraySubstitions = [
+                                    '[url]' => (\ClientService::getInstance())->getBaseUrl(),
+                                    '[dynamic_link]' => getCurrentDomain($regCode) ?: (\ClientService::getInstance())->getBaseUrl(),
+                                    '[course]' => $courseInfo['name'],
+                                    '[medium_time]' => $courseInfo['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
+                                    '[course_name]' => $courseInfo['name'],
+                                    '[course_code]' => $courseInfo['code'],
+                                ];
+
+                                // message to user that is waiting
+                                $msgComposer = new \EventMessageComposer();
+                                $msgComposer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
+                                $msgComposer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $arraySubstitions);
+                                $msgComposer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $arraySubstitions);
+
+                                // send message to the user subscribed
+                                createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$userId], $msgComposer, $sendAlert);
+
+                                if ($courseInfo['sendCalendar'] && $courseInfo['course_type'] == 'classroom') {
+                                    $uinfo = \Docebo::aclm()->getUser($userId, false);
+                                    $idDate = 0;
+                                    
+                                    switch($courseType) {
+
+                                        case "date" : 
+                                            $idDate = $courseId;
+                                            $courseId = 0;
+                                            break;
+                            
+                                        default:
+                                            
+                                            break;
+                                    }
+                                    $calendar = \CalendarManager::getCalendarDataContainerForDateDays((int) $courseId, (int) $idDate, (int) $uinfo[ACL_INFO_IDST]);
+                                    $msgComposer->setAttachments([$calendar->getFile()]);
+                                }
+                            }
+                        }
+                    }
+
+                    $result = $result > 0 ? '_operation_successful' : '_operation_failed';
+                    
+                    return $this->setResponse('ok',
+                        $result,
+                        'index.php?r=' . self::LINK_COURSE . '/show'
+                    );
+                break;
+            default:
+                break;
+        }
+
+
+        if($params['viewParams']) {
+            //find if the event manager is configured to send an alert or not in case of new subscription
+
+            $courseInfo = $this->baseModel->getCourseInfoForSubscription();
+            $courseName = ($courseInfo['code'] !== '' ? '[' . $courseInfo['code'] . '] ' : '') . $courseInfo['name'];
+
+            switch($courseType) {
+
+                case "date" : 
+                    $idDate = $courseId;
+                    $courseId = 0;
+                    $idEdition = 0;
+                    break;
+
+                case "edition" : 
+                    $idEdition = $courseId;
+                    $courseId = 0;
+                    $idDate = 0;
+                    break;
+    
+                default:
+                $idDate = 0;
+              
+                $idEdition = 0;
+                    break;
+            }
+            $moreCourseInfo = $courseManager->getInfo($courseId, $idEdition, $idDate);
+
+            $this->baseModel->loadSelectedUser($userSelected);
+            return [
+                'id_course' => $courseId,
+                'id_edition' => $idEdition,
+                'id_date' => $idDate,
+                'model' => $this->baseModel,
+                'course_info' => $moreCourseInfo ,
+                'num_subscribed' => count($userSelected),
+                'post_url' => 'alms/subscription',
+                'user_alredy_subscribed' => $userAlredySubscribed,
+                'course_name' => $courseName,
+            ];
+        }
+
+        return [];
         
     }
 
@@ -322,14 +324,14 @@ class CourseSubscriptionService
 
         if ($this->reachedMaxUserSubscribed) {
             $res = false;
-        } elseif (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-            $admin_pref = new AdminPreference();
-            $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+        } elseif ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            $adminPreference = new \AdminPreference();
+            $preference = $adminPreference->getAdminRules($this->doceboUser->getIdSt());
      
-            if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                $user_pref = new UserPreferences(Docebo::user()->getIdSt());
-                $subscribed_count = $user_pref->getPreference('user_subscribed_count');
-                if ($subscribed_count >= $pref['admin_rules.max_course_subscribe']) {
+            if ($preference['admin_rules.limit_course_subscribe'] == 'on') {
+                $userPreference = new \UserPreferences($this->doceboUser->getIdSt());
+                $subscribedCount = $userPreference->getPreference('user_subscribed_count');
+                if ($subscribedCount >= $preference['admin_rules.max_course_subscribe']) {
                     // $this->permissions['subscribe_course']=false;
                     // $this->permissions['subscribe_coursepath']=false;
                     $this->reachedMaxUserSubscribed = true;
@@ -377,6 +379,30 @@ class CourseSubscriptionService
         }
 
         return $message;
+    }
+
+    protected function _addToCourseGroup($idGroup, $idUser)
+    {
+        \Docebo::aclm()->addToGroup($idGroup, $idUser);
+    }
+
+    public function getSubscribed($courseId, $courseType) {
+
+        switch($courseType) {
+
+            case "edition" : 
+                $this->baseModel->setIdEdition($courseId);
+                break;
+
+            case "date" : 
+                $this->baseModel->setIdDate($courseId);
+                break;
+
+            default:
+                $this->baseModel->setIdCourse($courseId);
+                break;
+        }
+        return  $this->baseModel->loadUserSelectorSelection();
     }
 
 }

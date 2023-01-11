@@ -40,10 +40,13 @@ echo getTitleArea([
 
     $array_content = [];
 
-    echo Form::openForm('choose_level', 'index.php?r=' . $this->link . '/ins&amp;id_course=' . $model->getIdCourse() . '&amp;id_edition=' . $model->getIdEdition() . '&amp;id_date=' . $model->getIdDate())
-        . Form::getHidden('send_alert', 'send_alert', $send_alert);
+    echo Form::openForm('choose_level', 'index.php?r=' . ($post_url ?? $this->link) . '/ins&amp;id_course=' . $model->getIdCourse() . '&amp;id_edition=' . $model->getIdEdition() . '&amp;id_date=' . $model->getIdDate());
 
-        echo Form::getHidden('subs', 'subs', '');
+    if($send_alert) {
+        echo Form::getHidden('send_alert', 'send_alert', $send_alert);
+    }
+
+    echo Form::getHidden('subs', 'subs', '');
 
     if ($date_begin_validity) {
         echo Form::getLineBox(Lang::t('_DATE_BEGIN_VALIDITY', 'subscribe'), Format::date(substr($date_begin_validity, 0, 10), 'date'));
@@ -80,6 +83,10 @@ echo getTitleArea([
         'summary' => Lang::t('_LEVELS', 'subscribe'),
         'caption' => false, //Lang::t('_LEVELS', 'subscribe')
     ]);
+
+    echo  Form::getInputCheckbox('send_alert', 'send_alert', 0, 0, false)
+    . ' <label for="send_alert">' . Lang::t('_SEND_ALERT', 'subscribe') . '</label>&nbsp;&nbsp;&nbsp;&nbsp;';
+  
 
     echo Form::openButtonSpace();
     echo Form::getButton('subscribe', 'subscribe', Lang::t('_SUBSCRIBE', 'subscribe'));

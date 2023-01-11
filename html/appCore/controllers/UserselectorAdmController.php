@@ -76,6 +76,7 @@ class UserselectorAdmController extends AdmController
         $instanceValue = $this->requestObj->get('instance');
         $instanceId = $this->requestObj->get('id');
         $showSelectAll = $this->requestObj->get('showSelectAll') ?? false;
+        $showUserAlert = $this->requestObj->get('showUserAlert') ?? false;
         $selectAllValue = 0;
 
         if($instanceValue && $instanceId) {
@@ -116,6 +117,7 @@ class UserselectorAdmController extends AdmController
                             'instanceId' => $instanceId,
                             'accessSelection' => $accessSelection,
                             'showSelectAll' => $showSelectAll,
+                            'showUserAlert' => $showUserAlert,
                             'selectAllValue' => $selectAllValue,
                             'debug' => $this->requestObj->has('debug') ? $this->requestObj->get('debug') : false
                         ]);
@@ -177,9 +179,22 @@ class UserselectorAdmController extends AdmController
             }
             
         }
+
+        $result = $this->multiUserSelector->associate($instanceType, $instanceId, $selection);
+        
+        switch($result['type']) {
+            case "redirect":
+                return Util::jump_to($result['redirect']);
        
-        return Util::jump_to($this->multiUserSelector->associate($instanceType, $instanceId, $selection));
-       
+                break;
+            
+            case "render":
+                $this->_mvc_name = $result['subFolderView'];
+             
+                return $this->render($result['view'], $result['params'], false, $result['additionalPaths']);
+                break;
+        }
+        
 
     }
 

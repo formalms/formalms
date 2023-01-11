@@ -16,7 +16,7 @@
 			<tr class="yui-dt-first yui-dt-last">
 				<?php $first = true; $last = false; $i = 0;
                 foreach ($this->header  as $key => $row) {
-                    $last = ($i == count($row) - 1); ?>
+                    $last = is_array($row) ? ($i == count($row) - 1) : false; ?>
 
 				<th class="yui-dt-<?php echo($first ? 'first' : ($last ? 'last' : '')) . (!empty($this->styles[$key]) ? ' ' . $this->styles[$key] : ''); ?>; ?>">
 					<div class="yui-dt-liner">

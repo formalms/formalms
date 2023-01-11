@@ -1615,5 +1615,11 @@ class SubscriptionAlms extends Model
         }
     }
 
+
+    public function getAclManager() {
+
+        return $this->acl_man;
+    }
+
     //--- end coursepaths --------------------------------------------------------
 }

@@ -40,6 +40,10 @@
     </div>
     <div class="modal-footer">
 		{{ Form_openButtonSpace() }}
+        {% if showUserAlert %}
+            {{ Form_getInputCheckbox('send_alert', 'send_alert', 0, 0, false) }}
+            <label for="send_alert">{{ Lang_translate('_SEND_ALERT', 'subscribe') }}</label>&nbsp;&nbsp;&nbsp;&nbsp;'
+        {% endif %}
 		{{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
 		{{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
 		{{ Form_closeButtonSpace() }}

@@ -37,12 +37,18 @@ class MultiUserSelector {
 
     const ACCESS_MODELS = [
         'communication' => ['includes' => _lms_ . '/admin/models/CommunicationAlms.php',
-                            'className' => 'CommunicationAlms'],
+                            'className' => 'CommunicationAlms', 'returnType' => 'redirect'],
         'adminmanager' => ['includes' => _adm_.'/models/AdminmanagerAdm.php',
-                            'className' => 'AdminmanagerAdm'],
+                            'className' => 'AdminmanagerAdm','returnType' => 'redirect'],
         'lmsmenu' => ['includes' => _lms_ . '/admin/models/LmsMenuAlms.php',
-                            'className' => 'LmsMenuAlms'],
-        'coursesubscription' => ['includes' => 'FormaLms\lib\Services\Courses\\' , 'className' => 'CourseSubscriptionService', 'use_namespace' =>  true],
+                            'className' => 'LmsMenuAlms', 'returnType' => 'redirect'],
+        'coursesubscription' => ['includes' => 'FormaLms\lib\Services\Courses\\' , 
+                            'className' => 'CourseSubscriptionService', 
+                            'returnType' => 'render',
+                            'returnView' => 'level',
+                            'subFolderView' => 'subscription',
+                            'additionalPaths' => [_lms_.'/admin/views'],
+                            'use_namespace' =>  true],
     ];
 
     public function setDataSelectors(string $dataSelector, string $key) : self{
@@ -80,6 +86,8 @@ class MultiUserSelector {
 
    public function associate($instanceType, $instanceId, $selection) {
 
+        $return['type'] = self::ACCESS_MODELS[$instanceType]['returnType'];
+
         switch($instanceType) {
 
             case 'communication':
@@ -87,9 +95,9 @@ class MultiUserSelector {
                 $oldSelection = $this->accessModel->accessList($instanceId);
               
                 if ($this->accessModel->updateAccessList($instanceId, $oldSelection, $selection)) {
-                    $redirect = 'index.php?r=alms/communication/show&success=1';
+                    $return['redirect']  = 'index.php?r=alms/communication/show&success=1';
                 } else {
-                    $redirect = 'index.php?r=alms/communication/show&error=1';
+                    $return['redirect']  = 'index.php?r=alms/communication/show&error=1';
                 }
             
                 break;
@@ -97,9 +105,9 @@ class MultiUserSelector {
             case 'adminmanager':
         
                 if ($this->accessModel->saveUsersAssociation($instanceId, $selection)) {
-                    $redirect = 'index.php?r=adm/adminmanager/show&res=ok_ins';
+                    $return['redirect'] = 'index.php?r=adm/adminmanager/show&res=ok_ins';
                 } else {
-                    $redirect = 'index.php?r=adm/adminmanager/show&res=err_ins';
+                    $return['redirect']  = 'index.php?r=adm/adminmanager/show&res=err_ins';
                 }
             
                 break;
@@ -109,15 +117,27 @@ class MultiUserSelector {
                 $oldSelection = $this->accessModel->getRoleMemebers($instanceId);
                 
                 if ($this->accessModel->saveMembersAssociation($instanceId, $selection, $oldSelection)) {
-                    $redirect = 'index.php?modname=middlearea&amp;op=view_area&amp;result=ok&amp;of_platform=lms';
+                    $return['redirect']  = 'index.php?modname=middlearea&amp;op=view_area&amp;result=ok&amp;of_platform=lms';
                 } else {
-                    $redirect = 'index.php?modname=middlearea&amp;op=view_area&amp;result=err&amp;of_platform=lms';
+                    $return['redirect'] = 'index.php?modname=middlearea&amp;op=view_area&amp;result=err&amp;of_platform=lms';
                 }
+
+                break;
+
+            case 'coursesubscription':
+
+                $moreParams['viewParams'] = true;
+                
+                $return['params'] = $this->accessModel->add($selection, 'course', $instanceId, $moreParams);
+                $return['subFolderView'] = self::ACCESS_MODELS[$instanceType]['subFolderView'] ?? '';
+                $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
+                $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
+                
 
                 break;
         }
 
-        return $redirect;
+        return $return;
    }
 
 
@@ -145,7 +165,7 @@ class MultiUserSelector {
 
             case 'coursesubscription':
     
-                $selection = [];
+                $selection = $this->accessModel->getSubscribed($instanceId, 'course');
             
             break;
         }
