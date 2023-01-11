@@ -11,7 +11,7 @@
     size: cover;
     position: 50% 50%;
     repeat: no-repeat;
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 
   @include breakpoint($tablet) {
@@ -24,10 +24,10 @@
   margin: 30px auto 0 auto;
   padding-bottom: 30px;
   text-align: center;
-  color: var(--color-0-000);
+  color: var(--color-white);
 
   a {
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 }
 
@@ -36,7 +36,7 @@
   max-width: 760px;
   position: relative;
   margin: 0 auto;
-  // background-color: var(--color-0-000);
+  // background-color: var(--color-white);
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
   overflow: visible;
 
@@ -91,8 +91,8 @@ p {
   padding-top: 15px;
   padding-bottom: 15px;
   overflow: visible;
-  background-color: var(--color-0-000);
-  border-bottom: solid 3px var(--color-3);
+  background-color: var(--color-white);
+  border-bottom: solid 3px var(--color-primary);
   position: relative;
   text-align: left;
 
@@ -147,18 +147,18 @@ p {
 }
 
 :is(.homepage__row--gray.homepage__back,.homepage__row--gray.homepage__back ~ .homepage__row--gray, .homepage__back ~ .homepage__form--lost-pwd,.homepage__back ~ .homepage__row) {
-  background-color: var(--color-0-000);
+  background-color: var(--color-white);
   margin-top: 0;
   margin-bottom: 0;
 }
 .homepage__row--footer {
-  background-color: var(--color-0-000);
+  background-color: var(--color-white);
 }
 .homepage__back ~ .row {
   margin: 0;
 }
 .homepage__row--login.homepage__row--gray ~ .homepage__row {
-  background-color: var(--color-0-000);
+  background-color: var(--color-white);
 }
 
 .homepage__row--login.homepage__row--gray + .homepage__row {
@@ -192,7 +192,7 @@ p {
 .homepage__row--privacy {
   .has-error {
     padding: 6px 12px;
-    border: solid 2px var(--color-1-550);
+    border: solid 2px var(--color-primary);
     border-radius: 4px;
   }
 }
@@ -229,7 +229,7 @@ p {
     size: cover;
     position: 50% 50%;
     repeat: no-repeat;
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 }
 
@@ -285,7 +285,7 @@ p {
 
   .homepage__row--footer & {
     padding: 10px 0 20px;
-    border-top: solid 2px var(--color-2);
+    border-top: solid 2px var(--color-primary);
   }
 }
 
@@ -382,7 +382,7 @@ a.forma-button {
     transition: background-color 0.25s ease 0s;
 
     &:hover {
-      background-color: var(--color-1-550);
+      background-color: var(--color-primary);
     }
   }
 }
@@ -399,7 +399,7 @@ a.forma-button {
 .logout,
 .login_failed {
   .homepage__row--login & {
-    color: var(--color-3);
+    color: var(--color-primary);
     font-size: 1rem;
     background: white;
     padding: .3rem;
@@ -409,7 +409,7 @@ a.forma-button {
 
 .form-control.has-error {
   .homepage__row--form & {
-    border: solid 2px var(--color-1-550);
+    border: solid 2px var(--color-primary);
   }
 }
 
@@ -418,7 +418,7 @@ a.forma-button {
   .homepage__row--privacy & {
     display: none;
     margin-top: 4px;
-    color: var(--color-1-550);
+    color: var(--color-primary);
   }
 
   .has-error + & {
@@ -558,7 +558,7 @@ a.forma-button {
     font-weight: 300;
   }
     &:hover {
-    background: var(--color-0-000);
+    background: var(--color-white);
     color: var(--color-1-700);
     border: 0;
 
@@ -568,7 +568,7 @@ a.forma-button {
   display: none;
 }
 :is(.homepage #login_userid, .homepage #login_pwd) {
-  background: var(--color-0-000-06);
+  background: var(--color-white-06);
 }
 // Template
 //

@@ -151,7 +151,7 @@
   .nav.nav-tabs.visible-xs {
     height: 46px;
     padding: 0;
-    background-color: var(--color-3);
+    background-color: var(--color-primary);
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
   
@@ -219,7 +219,7 @@
               a {
                 background-image: none;
                 background-color: transparent;
-                color: var(--color-3);
+                color: var(--color-primary);
                 font-weight: bold;
               }
             }
@@ -241,14 +241,14 @@
       h2 {
         font-size: 24px;
         font-weight: bold;
-        color: #666;
+        color: var(--color-secondary);
         display: block;
         margin-bottom: 20px;
       }
       h3 {
         font-size: 20px;
         font-weight: bold;
-        color: #666;
+        color: var(--color-secondary);
         text-transform: capitalize;
         margin-bottom: 20px;
         display: block;

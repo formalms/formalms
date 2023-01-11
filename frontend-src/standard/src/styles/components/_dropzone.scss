@@ -2,7 +2,7 @@
 .forma-drop-zone {
 	position: relative;
 	font-family: inherit;
-	background-color: var(--color-0-000);
+	background-color: var(--color-white);
 	background-image: -webkit-linear-gradient(top, #bababa, #bababa);
 	background-image: -moz-linear-gradient(top, #bababa, #bababa);
 	background-image: linear-gradient(top, #bababa, #bababa);
@@ -20,8 +20,8 @@
 	&:hover {
 		cursor: pointer;
 		.fd-middle-wrapper {
-			border: 6px dashed var(--color-1-550);
-			color: var(--color-1-550);
+			border: 6px dashed var(--color-primary);
+			color: var(--color-primary);
 		}
 	}
 	&.has-files {
@@ -260,7 +260,7 @@
 		}
 		button {
 			outline: none;
-			background: var(--color-1-550);
+			background: var(--color-primary);
 			width: 100%;
 			border: 0;
 			border-radius: 4px;

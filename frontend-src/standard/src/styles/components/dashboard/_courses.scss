@@ -79,7 +79,7 @@
 .d-course__title {
   height: 34px;
   font-weight: $bold;
-  color: var(--color-1-550);
+  color: var(--color-primary);
   line-height: 17px;
   overflow: hidden;
 }
@@ -94,7 +94,7 @@
       width: 9px;
       height: 9px;
       @include center-object(y, absolute);
-      background-color: var(--color-1-550);
+      background-color: var(--color-primary);
       border-radius: 50%;
       left: -12px;
     }
@@ -162,7 +162,7 @@
 }
 
 .d-courses__desc {
-  color: var(--color-1-550);
+  color: var(--color-primary);
   font-weight: $bold;
   height: 34px;
   overflow: hidden;

@@ -2,7 +2,7 @@
   font-family: $font;
 
   .fc-button{
-    background-color: var(--color-0-000)!important;
+    background-color: var(--color-white)!important;
     border: none!important;
   }
 
@@ -15,13 +15,13 @@
   }
 
   .fc-sun {
-    color: var(--color-1-550);
+    color: var(--color-primary);
   }
 
   .fc-left {
     > h2 {
       font-weight: $bold;
-      color: var(--color-1-550);
+      color: var(--color-secondary);
     }
   }
 
@@ -56,7 +56,7 @@
     
     &.is-closed {
       &:before {
-        background-color: var(--color-1-550);
+        background-color: var(--color-primary);
       }
     }
 
@@ -103,7 +103,7 @@
 
   .fc-icon-chevron-left,
   .fc-icon-chevron-right {
-    color: var(--color-1-550);
+    color: var(--color-primary);
   }
 }
 

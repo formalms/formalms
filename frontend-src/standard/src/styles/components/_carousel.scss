@@ -9,7 +9,7 @@
       content: '';
       height: 1px;
       width: 100%;
-      background-color: var(--color-3);
+      background-color: var(--color-primary);
       position: absolute;
       top: -8px;
     }
@@ -85,8 +85,8 @@
       }
 
       li.active {
-        border: 1px solid var(--color-3);
-        background-color: var(--color-3);
+        border: 1px solid var(--color-primary);
+        background-color: var(--color-primary);
       }
     }
   }

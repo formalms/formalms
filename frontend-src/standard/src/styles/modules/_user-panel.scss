@@ -189,7 +189,7 @@
     width: 320px;
     //height: 712px;
     //height: auto;
-    background-color: var(--color-0-000);
+    background-color: var(--color-white);
     border-radius: 5px;
     box-shadow: var(--color-0-250) 0px 5px 20px 0px;
     transform: translateX(350px);
@@ -290,7 +290,7 @@
             left: 0;
             right: inherit;
             font-family: $icon;
-            color: var(--color-3);
+            color: var(--color-primary);
             text-align: center;
 
             @include breakpoint($tablet) {
@@ -328,7 +328,7 @@
         padding-bottom: 15px;
         padding-top: 19px;
         border: none;
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
 
@@ -423,7 +423,7 @@
 
       &.comunication {
         padding: 10px 0 20px;
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
 
         @include breakpoint($tablet) {
           background-color: transparent;
@@ -444,7 +444,7 @@
 
       &.career {
         //tabella carriera
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
         padding: 0;
 
         @include breakpoint($tablet) {
@@ -460,7 +460,7 @@
             padding-right: 10px;
             position: relative;
             font-weight: bold;
-            background-color: var(--color-0-000);
+            color: var(--color-secondary);
             overflow: hidden;
             font-size: 16px;
             text-transform: none;
@@ -492,7 +492,7 @@
               &:before {
                 content: "\f111";
                 font-family: $icon;
-                color: var(--color-3);
+                color: var(--color-primary);
                 position: absolute;
                 left: 0;
                 top: 50%;
@@ -501,7 +501,7 @@
               }
 
               .badge {
-                background-color: var(--color-0-000);
+                background-color: var(--color-white);
                 color: var(--color-0-1000);
                 padding: 0;
                 font-size: 14px;
@@ -519,7 +519,7 @@
 
       &.course-subscription {
         //iscrizione al corso
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
 
         @include breakpoint($tablet) {
           margin: 0 -9px 0 -9px;
@@ -549,9 +549,9 @@
               height: 40px;
 
               &:focus {
-                border-color: var(--color-1-550);
+                border-color: var(--color-primary);
                 box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-                  0 0 8px var(--color-1-550);
+                  0 0 8px var(--color-primary);
               }
 
               &::-webkit-input-placeholder,
@@ -575,7 +575,7 @@
 
       &.news {
         //news carousel
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
         margin: 0;
 
         @include breakpoint($tablet) {
@@ -593,7 +593,8 @@
           overflow: hidden;
           font-size: 16px;
           text-transform: none;
-          background-color: var(--color-0-050);
+          background-color: var(--color-secondary);
+          color: var(--color-secondary-text);
           z-index: 20;
         }
 
@@ -631,7 +632,7 @@
       }
 
       &.lang {
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
 
@@ -735,7 +736,7 @@
 
   .table-credit__row--head {
     background-color: var(--color-5);
-    color: var(--color-0-000);
+    color: var(--color-white);
     font-weight: bold;
     border-radius: 5px;
   }

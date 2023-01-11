@@ -63,7 +63,7 @@
       border: 1px solid var(--color-0-070);
       font-family: $font;
       background-image: none;
-      background-color: var(--color-0-000);
+      background-color: var(--color-white);
       box-shadow: none;
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
@@ -91,20 +91,20 @@
 
           &:before {
             content: '\f107';
-            color: var(--color-3);
+            color: var(--color-primary);
             font-size: 18px;
           }
         }
       }
 
       &:hover {
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
         border: 1px solid var(--color-0-070);
       }
 
       &:active,
       &:focus {
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
         border: 1px solid var(--color-0-070);
         box-shadow: none;
       }
@@ -114,7 +114,7 @@
       }
 
       &:active:hover {
-        background-color: var(--color-0-000);
+        background-color: var(--color-white);
         border: 1px solid var(--color-0-070);
       }
 
@@ -129,7 +129,7 @@
 
       button {
         max-width: 100%;
-        background-color: var(--color-0-000) !important;
+        background-color: var(--color-white) !important;
         border: 1px solid var(--color-0-400) !important;
         box-shadow: none !important;
         border-bottom-width: 0 !important;
@@ -187,7 +187,7 @@
           &:active,
           &:focus {
             background-image: none;
-            background-color: var(--color-0-000);
+            background-color: var(--color-white);
           }
 
           span.text {
@@ -203,7 +203,7 @@
 
         &:hover {
           background-image: none;
-          background-color: var(--color-0-000);
+          background-color: var(--color-white);
           cursor: pointer;
         }
 
@@ -320,11 +320,11 @@
       width: 100%;
       height: 100%;
       border-radius: 5px !important;
-      border: 2px solid var(--color-1-550);
+      border: 2px solid var(--color-primary);
       font-family: $font;
 
       &:focus {
-        border: 2px solid var(--color-1-550);
+        border: 2px solid var(--color-primary);
         box-shadow: none;
       }
 
@@ -348,7 +348,7 @@
 
         .glyphicon.glyphicon-search {
           font-family: $icon;
-          color: var(--color-3);
+          color: var(--color-primary);
 
           &:before {
             content: '\f002';
@@ -377,7 +377,7 @@
   display: block;
   height: 100%;
   float: left;
-  background: var(--color-0-000);
+  background: var(--color-white);
   border: 1px solid var(--color-0-250);
   box-shadow: none !important;
   border-radius: 0;
@@ -385,7 +385,7 @@
   max-width: 100%;
   &:hover {
     background-color: var(--color-0-250);
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 }
 
@@ -425,7 +425,7 @@
   transition: $transition-base;
 
   &:hover {
-    border-color: var(--color-1-550);
+    border-color: var(--color-primary);
   }
 
   li > a {
@@ -434,7 +434,7 @@
     transition: $transition-base;
 
     &:hover {
-      color: var(--color-1-550);
+      color: var(--color-primary);
     }
   }
 
@@ -453,7 +453,7 @@
     border: none;
 
     &:hover {
-      background-color: var(--color-0-000);
+      background-color: var(--color-white);
       color: initial;
     }
   }

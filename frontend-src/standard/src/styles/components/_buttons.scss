@@ -27,7 +27,7 @@
   line-height: 40px;
   color: var(--color-primary-text);
   background: var(--color-primary);
-  // border: 2px solid var(--color-3);
+  // border: 2px solid var(--color-primary);
   font-family: $font;
   font-size: 12px;
   border-radius: $border-radius;
@@ -116,7 +116,10 @@
     color: var(--color-primary);
     border: 2px solid var(--color-primary);
     background: var(--color-primary-text);
-    // border-color: var(--color-1-550);
+    // border-color: var(--color-primary);
+    .forma-button__label {
+      color: var(--color-primary) !important;
+    }
     .forma-button__label:after {
       animation-duration: 500ms;
       animation-name: formaButtonLabelAfter;
@@ -204,7 +207,7 @@
   &:hover {
     background-color: var(--color-6);
     border-color: var(--color-6);
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 }
 
@@ -266,16 +269,16 @@
 //
 // Style guide: 2.7
 .forma-button--white {
-  background: var(--color-0-000);
-  color: var(--color-3);
-  border: 2px solid var(--color-0-000);
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-white);
 
   &:hover {
-    color: var(--color-3);
+    color: var(--color-primary);
   }
 
   &:focus {
-    color: var(--color-3);
+    color: var(--color-primary);
   }
 }
 
@@ -289,13 +292,13 @@
 // Style guide: 2.8
 .forma-button--border {
   background-color: transparent;
-  border: solid 2px var(--color-3);
-  color: var(--color-3);
+  border: solid 2px var(--color-primary);
+  color: var(--color-primary);
 
   &:hover {
-    background-color: var(--color-3);
-    border-color: var(--color-3);
-    color: var(--color-0-000);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
   }
 }
 
@@ -308,21 +311,21 @@
 //
 // Style guide: 2.9
 .forma-button--orange {
-  // border: solid 2px var(--color-1-550);
-  background: var(--color-0-000);
-  color: var(--color-1-550);
+  // border: solid 2px var(--color-primary);
+  background: var(--color-white);
+  color: var(--color-primary);
 
   &:hover {
-    background-color: var(--color-1-550);
-    color: var(--color-0-000);
+    background-color: var(--color-primary);
+    color: var(--color-white);
 
     &:focus {
-      color: var(--color-0-000);
+      color: var(--color-white);
     }
   }
 
   &:focus {
-    color: var(--color-1-550);
+    color: var(--color-primary);
   }
 }
 
@@ -349,7 +352,7 @@
     // content: '\f061';
     font-family: $icon;
     font-size: inherit;
-    color: var(--color-0-000);
+    color: var(--color-white);
     margin-left: 6px;
 
     .d-courses &,
@@ -394,7 +397,7 @@ input[type='submit'].btn.btn-default {
     font-family: $font;
     background-color: var(--color-0-750);
     text-transform: uppercase;
-    color: var(--color-0-000);
+    color: var(--color-white);
     background-image: none;
     border: 0;
     border-radius: 5px !important;

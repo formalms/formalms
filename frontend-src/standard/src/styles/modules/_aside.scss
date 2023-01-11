@@ -33,7 +33,7 @@
 //             <span class="indent"></span><span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>Subcat
 //             1.1 (0)
 //         </li>
-//         <li class="list-group-item node-treeview1 node-selected" data-nodeid="7" style="color:#FFFFFF;background-color:var(--color-2);"><span class="indent"></span><span class="indent"></span><span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>Test
+//         <li class="list-group-item node-treeview1 node-selected" data-nodeid="7" style="color:#FFFFFF;background-color:var(--color-primary);"><span class="indent"></span><span class="indent"></span><span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>Test
 //             subcat 1.1.1 (0)
 //         </li>
 //         <li class="list-group-item node-treeview1" data-nodeid="8" style="color:undefined;background-color:undefined;">
@@ -138,7 +138,7 @@
       &:hover {
         cursor: pointer;
         background-color: var(--color-1-350) !important;
-        color: var(--color-0-000) !important;
+        color: var(--color-white) !important;
       }
     }
 
@@ -154,7 +154,7 @@
   }
 
   .node-checked {
-    background-color: var(--color-0-000) !important;
+    background-color: var(--color-white) !important;
     color: var(--color-0-1000) !important;
   }
 }

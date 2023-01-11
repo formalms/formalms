@@ -70,7 +70,7 @@
 
 .course-info__link {
   text-decoration: none;
-  color: var(--color-1-550);
+  color: var(--color-primary);
   font-family: $font;
   margin-right: 7px;
 
@@ -116,7 +116,7 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background-color: var(--color-1-550);
+  background-color: var(--color-primary);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -132,7 +132,7 @@
 .course-info__peoplename {
   display: block;
   font-size: 14px;
-  color: var(--color-1-550);
+  color: var(--color-primary);
   margin-bottom: 16px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -145,7 +145,7 @@
 }
 
 .course-info__peoplename--modal {
-  color: var(--color-0-000);
+  color: var(--color-white);
   width: calc(100% - 124px);
   margin-bottom: 0;
   text-overflow: inherit;

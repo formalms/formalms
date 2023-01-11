@@ -189,7 +189,7 @@ header.header {
 
           &:hover {
             background-color: transparent;
-            color: var(--color-1-550);
+            color: var(--color-primary);
           }
 
           .title-with-icon {
@@ -206,7 +206,7 @@ header.header {
 
             &:hover {
               &:before {
-                border-color: var(--color-1-550);
+                border-color: var(--color-primary);
               }
             }
 
@@ -287,7 +287,7 @@ header.header {
 
         &.active {
           a {
-            color: var(--color-1-550);
+            color: var(--color-primary);
           }
         }
 
@@ -312,11 +312,11 @@ header.header {
 
               a {
                 .username {
-                  color: var(--color-1-550);
+                  color: var(--color-primary);
 
                   &:before {
                     background-image: url('#{$assets}images/icons/top-menu/icon--profile-hover.svg');
-                    border: 1px solid var(--color-1-550);
+                    border: 1px solid var(--color-primary);
                   }
                 }
               }
@@ -326,7 +326,7 @@ header.header {
             a {
               width: 100%;
               display: inline-block;
-              background-color: var(--color-0-000);
+              background-color: var(--color-white);
               line-height: 1;
               text-decoration: none;
               border-right: none !important;
@@ -353,7 +353,7 @@ header.header {
                 &:hover {
                   &:before {
                     background-image: url('#{$assets}images/icons/top-menu/icon--profile-hover.svg');
-                    border: 1px solid var(--color-1-550);
+                    border: 1px solid var(--color-primary);
                   }
                 }
 
@@ -422,7 +422,7 @@ header.header {
             height: 70px;
             margin-bottom: 10px;
             padding: 15px 20px;
-            background-color: var(--color-0-000);
+            background-color: var(--color-white);
             border-radius: 5px;
             font-weight: bold;
 
@@ -453,7 +453,7 @@ header.header {
                 right: -35px;
                 font-family: $icon;
                 font-size: 23px;
-                color: var(--color-3);
+                color: var(--color-primary);
               }
 
               .glyphicon {

@@ -1,7 +1,8 @@
 :root {
   --color-0: hsla(0, 0%, 40%, 1.0);
   --color-transparent: transparent;
-
+  --color-white: '#FFFFFF';
+  --color-grey: hsla(0, 0%, 93%, 1.0);
   --color-navbtn-bg: hsla(27, 96%, 80%, 1.0);
   --color-navbtn-text: hsla(0, 0%, 100%, 1.0); // calcolato automaticamente questo dovrebbe essere uno dei due colori calcolati (di default grigio scuro)
   --color-navbtn-bg-inter: hsla(27, 96%, 47%, 1.0);
@@ -20,7 +21,7 @@
 
   --color-primary: hsla(19, 100%, 39%, 1.0);
   --color-primary-text: hsla(0, 0%, 100%, 1.0); // automatico
-  --color-secondary: hsla(19, 100%, 39%, 1.0);
+  --color-secondary: rgb(90, 199, 0);
   --color-seconday-text: hsla(0, 0%, 100%, 1.0); // automatico
   --color-info: #3CAAD1;
   --color-info-text: hsla(0, 0%, 100%, 1.0); // automatico
@@ -39,8 +40,8 @@
 
 
 
-  --color-0-000: hsla(0, 0%, 100%, 1.0);
-  --color-0-000-06: hsla(0, 0%, 100%, 0.6);
+  --color-white: hsla(0, 0%, 100%, 1.0);
+  --color-white-06: hsla(0, 0%, 100%, 0.6);
 
   --color-0-005: hsla(0, 0%, 99.5%, 1.0);
   --color-0-010: hsla(0, 0%, 99%, 1.0);

@@ -6,7 +6,7 @@
     .d-title {
       font-weight: $bold;
       font-size: 14px;
-      color: var(--color-1-550);
+      color: var(--color-primary);
       padding: 3px;
     }
     .d-date {
@@ -20,7 +20,7 @@
       color: var(--color-0-870);
       padding: 6px;
       &:hover {
-        color: var(--color-1-550);
+        color: var(--color-primary);
       }
     }
     .d-subtitle {

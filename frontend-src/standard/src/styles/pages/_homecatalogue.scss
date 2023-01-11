@@ -11,7 +11,7 @@
     size: cover;
     position: 50% 50%;
     repeat: no-repeat;
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 
   @include breakpoint($tablet) {
@@ -22,7 +22,7 @@
 .homecatalogue__content {
   position: relative;
   margin: 0 auto;
-  // background-color: var(--color-0-000);
+  // background-color: var(--color-white);
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
   overflow: visible;
   display: flex;
@@ -76,8 +76,8 @@ p {
   height: auto;
   padding-top: 15px;
   overflow: visible;
-  background-color: var(--color-0-000);
-  border-bottom: solid 3px var(--color-3);
+  background-color: var(--color-white);
+  border-bottom: solid 3px var(--color-primary);
   position: relative;
   text-align: left;
 
@@ -93,8 +93,8 @@ p {
   height: 950px;
   padding-bottom: 15px;
   overflow: scroll;
-  background-color: var(--color-0-000);
-  border-bottom: solid 3px var(--color-3);
+  background-color: var(--color-white);
+  border-bottom: solid 3px var(--color-primary);
   position: relative;
   text-align: left;
 
@@ -123,7 +123,7 @@ p {
     size: cover;
     position: 50% 50%;
     repeat: no-repeat;
-    color: var(--color-0-000);
+    color: var(--color-white);
   }
 }
 
