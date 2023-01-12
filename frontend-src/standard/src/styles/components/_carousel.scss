@@ -20,7 +20,7 @@
       display: block;
       font-family: $font;
       font-size: 14px;
-      color: var(--color-0-600);
+      color: var(--color-grey-04);
     }
 
     h3 {
@@ -54,14 +54,14 @@
       position: absolute;
       bottom: 0;
       font-size: 12px;
-      color: var(--color-0-250);
+      color: var(--color-grey);
 
       &:before {
         content: '';
         position: absolute;
         width: 14px;
         height: 1px;
-        background-color: var(--color-0-250);
+        background-color: var(--color-grey);
         left: 0;
         top: 50%;
         transform: translateY(-50%);
@@ -79,7 +79,7 @@
         height: 10px;
         margin: 0 5px 0 0;
         padding: 0 !important;
-        border: 1px solid var(--color-0-250);
+        border: 1px solid var(--color-grey);
         transition: border-color 0.2s ease-in 0s,
           background-color 0.2s ease-in 0s;
       }

@@ -72,7 +72,7 @@ header.header {
   height: 73px;
   //padding: 0 36px 0 30px;
   padding: 0;
-  border-bottom: 2px solid var(--color-0-050);
+  border-bottom: 2px solid var(--color-grey);
   position: fixed;
 
   @include breakpoint($tablet) {
@@ -183,7 +183,7 @@ header.header {
         a {
           height: 14px;
           padding: 0;
-          color: var(--color-0-600);
+          color: var(--color-grey-04);
           transition: color 0.2s ease 0s;
           line-height: 1;
 
@@ -221,7 +221,7 @@ header.header {
               width: 35px;
               height: 35px;
               display: inline-block;
-              // border: 1px solid var(--color-0-250);
+              // border: 1px solid var(--color-grey);
               border-radius: 50%;
               background-size: 20px;
               background-repeat: no-repeat;
@@ -251,7 +251,8 @@ header.header {
             &.glyphicon-cog {
               &:hover {
                 &:before {
-                  background-image: url('#{$assets}images/icons/top-menu/icon--admin-hover.svg');
+                  -webkit-mask-image: url('#{$assets}images/icons/top-menu/icon--admin-hover.svg');
+                  background-color: var(--color-primary);
                 }
               }
 
@@ -365,7 +366,7 @@ header.header {
                   width: 35px;
                   height: 35px;
                   border-radius: $border-radius;
-                  border: 1px solid var(--color-0-250);
+                  border: 1px solid var(--color-grey);
                   background-position: center;
                   background-size: 13px;
                   background-repeat: no-repeat;
@@ -405,7 +406,7 @@ header.header {
         float: left;
         margin-top: 10px;
         padding: 20px;
-        background-color: var(--color-0-070);
+        background-color: var(--color-grey);
 
         @media (min-width: 768px) and (max-width: 1023px) {
           display: block !important;
@@ -445,7 +446,7 @@ header.header {
               position: relative;
               line-height: 40px;
               margin-right: 40px;
-              border-right: 2px solid var(--color-0-070);
+              border-right: 2px solid var(--color-grey);
 
               &:before {
                 content: '\f105';
@@ -507,7 +508,7 @@ header.header {
   margin-bottom: 6px;
   text-align: center;
   font-family: $font;
-  color: var(--color-0-400);
+  color: var(--color-grey-03);
   font-size: 16px;
 
   @include breakpoint($ipad) {

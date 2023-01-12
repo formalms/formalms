@@ -45,7 +45,7 @@
   width: 100%;
   display: block;
   font-size: 9px;
-  color: var(--color-0-400);
+  color: var(--color-grey-03);
   margin-bottom: 5px;
   text-transform: uppercase;
 
@@ -160,7 +160,7 @@
 
 .course-info__peoplebio {
   text-decoration: underline;
-  color: var(--color-0-600);
+  color: var(--color-grey-04);
   font-size: 12px;
   float: left;
   margin-right: 20px;
@@ -188,8 +188,8 @@
   line-height: 22px;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: var(--color-3-450);
-  border-color: var(--color-3-450);
+  background-color: var(--color-primary-450);
+  border-color: var(--color-primary-450);
 
   @include breakpoint($tablet) {
     font-size: 10px;

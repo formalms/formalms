@@ -18,7 +18,7 @@ $course-box-border: 2px;
   border-radius: $border-radius;
   font-family: $font;
   overflow: hidden;
-  border: solid $course-box-border var(--color-0-070);
+  border: solid $course-box-border var(--color-grey);
   transition:
     // transform 0.2s ease 0s,
     box-shadow 0.3s ease 0s
@@ -36,9 +36,9 @@ $course-box-border: 2px;
 }
 
 .course-box:hover {
-  box-shadow: var(--color-0-070) 5px 5px 0 0;
+  box-shadow: var(--color-grey) 5px 5px 0 0;
   // transform: scale(1.01,1.01);
-  // border: $course-box-border solid var(--color-0-250);
+  // border: $course-box-border solid var(--color-grey);
   // border-bottom: $course-box-border solid var(--color-primary);
   // border-right: $course-box-border solid var(--color-primary);
   .course-box__cover {
@@ -118,14 +118,14 @@ $course-box-border: 2px;
       height: $dropdownToggleSize;
       display: grid;
       place-content: center;
-      color: var(--color-0-400);
+      color: var(--color-grey-03);
       cursor: pointer;
       z-index: 1000;
       border: 1px solid red;
       border-radius: 50%;
       background: white;
       padding: 10px;
-      border: 1px solid var(--color-0-250);
+      border: 1px solid var(--color-grey);
 
       &:before {
         content: "";
@@ -134,7 +134,7 @@ $course-box-border: 2px;
         position: absolute;
         top: 0;
         left: 0;
-        // border: solid 1px var(--color-0-400);
+        // border: solid 1px var(--color-grey-03);
         // border-radius: 50%;
       }
 
@@ -151,7 +151,7 @@ $course-box-border: 2px;
       padding: 3px 0;
       top: calc(100% + 1px);
       right: 0;
-      border: solid 1px var(--color-0-250);
+      border: solid 1px var(--color-grey);
       box-shadow: none;
       z-index: 1000;
       border-radius: $border-radius;
@@ -211,7 +211,7 @@ $course-box-border: 2px;
 
 .course-box__description {
   padding: 0 9px 0 9px;
-  color: var(--color-0-600);
+  color: var(--color-grey-04);
   font-size: 11px;
   line-height: 1.3em;
   overflow: hidden;
@@ -226,7 +226,7 @@ $course-box-border: 2px;
   justify-content: flex-start;
   align-items: center;
   padding-left: 9px;
-  background-color: var(--color-0-050) !important;
+  background-color: var(--color-grey) !important;
 
  .course-box__closingdate__text {
    display: block;
@@ -333,7 +333,7 @@ $course-box-border: 2px;
       min-width: 140px;
       max-width: 100%;
       float: right;
-      background-color: var(--color-0-250);
+      background-color: var(--color-grey);
     }
 
     &.forma-button--disabled {
@@ -360,9 +360,9 @@ div {
     padding-left: 40px;
     line-height: 50px;
     float: left;
-    color: var(--color-0-400);
+    color: var(--color-grey-03);
     font-size: 12px;
-    border: 1px solid var(--color-0-250);
+    border: 1px solid var(--color-grey);
     border-radius: 5px;
 
     &:before {
@@ -390,8 +390,8 @@ div {
   }
 
   .course-box__date-box--no-date {
-    color: var(--color-0-250);
-    border-color: var(--color-0-250);
+    color: var(--color-grey);
+    border-color: var(--color-grey);
 
     &:before {
       left: 50%;
@@ -408,7 +408,7 @@ div {
     float: left;
     margin: 0 6px;
     padding-top: 18px;
-    color: var(--color-0-400);
+    color: var(--color-grey-03);
   }
 
   .course-box__dl-course-supply,
@@ -460,7 +460,7 @@ div {
       top: 50%;
       left: calc(50% - 236px);
       transform: translateY(-50%);
-      border: solid 1px var(--color-0-400);
+      border: solid 1px var(--color-grey-03);
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -487,7 +487,7 @@ div {
   }
 
   .course-box__modal__entry {
-    border-top: solid 1px var(--color-0-250);
+    border-top: solid 1px var(--color-grey);
 
     &:first-child {
       border-top-color: var(--color-primary);
@@ -500,14 +500,14 @@ div {
     &:last-child {
       padding-bottom: 35px;
       margin-bottom: 45px;
-      border-bottom: solid 1px var(--color-0-250);
+      border-bottom: solid 1px var(--color-grey);
     }
   }
 
   .course-box__modal__title {
     font-size: 18px;
     line-height: 20px;
-    color: var(--color-0-400);
+    color: var(--color-grey-03);
 
     .course-box__modal__header & {
       max-width: calc(100% - 90px);
@@ -529,7 +529,7 @@ div {
     table-layout: fixed;
     width: 100%;
     font-size: 14px;
-    color: var(--color-0-400);
+    color: var(--color-grey-03);
 
     @include breakpoint(480px) {
       table-layout: auto;

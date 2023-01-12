@@ -60,7 +60,7 @@
     line-height: 38px;
     font-size: 14px;
     transition: display 0.2s ease 0s;
-    color: var(--color-0-500) !important;
+    color: var(--color-) !important;
     &:before {
       content: "";
       font-family: $icon;
@@ -117,7 +117,7 @@
 
 
 #course_search_filter_reset {
-  color: var(--color-0-400);
+  color: var(--color-grey-03);
   font-style: italic;
 }
 
@@ -318,7 +318,7 @@
   color: var(--color-wrapper-text);
   background-color: var(--color-wrapper-text-50);
   padding: 3px;
-  // box-shadow: var(--color-0-250) 2px 2px 0 0;
+  // box-shadow: var(--color-grey) 2px 2px 0 0;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -143,7 +143,7 @@ p {
 
 
 .homepage__row--login.homepage__row--gray {
-  background-color: var(--color-0-050-02);
+  background-color: var(--color-grey-02);
 }
 
 :is(.homepage__row--gray.homepage__back,.homepage__row--gray.homepage__back ~ .homepage__row--gray, .homepage__back ~ .homepage__form--lost-pwd,.homepage__back ~ .homepage__row) {
@@ -438,7 +438,7 @@ a.forma-button {
 }
 
 .homepage__text {
-  color: var(--color-0-750);
+  color: var(--color-grey-04);
   font-size: 16px;
 }
 
@@ -559,7 +559,7 @@ a.forma-button {
   }
     &:hover {
     background: var(--color-white);
-    color: var(--color-1-700);
+    color: var(--color-primary);
     border: 0;
 
   }
@@ -568,7 +568,7 @@ a.forma-button {
   display: none;
 }
 :is(.homepage #login_userid, .homepage #login_pwd) {
-  background: var(--color-white-06);
+  background: var(--color-grey);
 }
 // Template
 //

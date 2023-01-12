@@ -11,7 +11,7 @@
   width: 130px;
   height: auto;
   padding: 7px;
-  background-color: var(--color-dashboard-popup-bg);
+  background-color: var(--color-grey);
   border-radius: 6px;
   position: relative;
 }
@@ -44,7 +44,7 @@
   }
 
   .is-classroom & {
-    color: var(--color-classroom);
+    color: var(--color-info);
 
     &:before {
       content: '';
@@ -68,7 +68,7 @@
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
-  color: var(--color-dashboard-popup-desc);
+  color: var(--color-grey-02);
 }
 
 .d-popup__category {
@@ -77,7 +77,7 @@
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
-  color: var(--color-dashboard-popup-title);
+  color: var(--color-grey-03);
 }
 
 .d-popup__hours {
@@ -85,7 +85,7 @@
   font-size: 12px;
   font-weight: $regular;
   line-height: 17px; 
-  color: var(--color-dashboard-popup-desc);
+  color: var(--color-grey-02);
 }
 
 .d-popup__title {
@@ -98,7 +98,7 @@
   font-weight: $bold;
   line-height: 14px;
   overflow: hidden;
-  color: var(--color-dashboard-popup-title);
+  color: var(--color-grey-03);
   position: relative;
   
   &:before {
@@ -126,7 +126,7 @@
   height: 0;
   border-style: solid;
   border-width: 0 12px 12px 12px;
-  border-color: transparent transparent var(--color-dashboard-popup-bg) transparent;
+  border-color: transparent transparent var(--color-grey) transparent;
   @include center-object(x, absolute);
   top: -12px;
 }

@@ -17,7 +17,9 @@ $user-icons: '1', '2', '3', '4', '5', '6', '7';
 @each $icon in $user-icons {
   .course-box__owner--#{$icon} {
     &:before {
-      background-image: url('images/icons/users/icon--#{$icon}.svg');
+      -webkit-mask-image: url('images/icons/users/icon--#{$icon}.svg');
+      background-color: var(--color-wrapper-text);
+      -webkit-mask-size: contain;
     }
   }
 }

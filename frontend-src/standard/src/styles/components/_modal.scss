@@ -117,7 +117,7 @@
       display: block;
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
-      border: 1px solid var(--color-0-400)04;
+      border: 1px solid var(--color-grey-03)04;
       color: var(--color-wrapper-text);
       font-weight: bold;
       font-size: 18px;
@@ -131,7 +131,7 @@
         line-height: 30px;
 
         &:nth-child(3n) {
-          border-right: 1px solid var(--color-0-400)04;
+          border-right: 1px solid var(--color-grey-03)04;
         }
       }
     }
@@ -143,7 +143,7 @@
     .section-coourse-modal & {
       line-height: 60px;
       display: block;
-      border: 1px solid var(--color-0-400)04;
+      border: 1px solid var(--color-grey-03)04;
       border-top: none;
       font-size: 16px;
 
@@ -153,7 +153,7 @@
         line-height: 45px;
 
         &:nth-child(3n) {
-          border-right: 1px solid var(--color-0-400)04;
+          border-right: 1px solid var(--color-grey-03)04;
         }
       }
     }

@@ -18,13 +18,13 @@
     .d-date {
       font-weight: $bold;
       font-size: 10px;
-      color: var(--color-0-870);
+      color: var(--color-black);
       padding: 3px;
     }
     .d-link {
       font-weight: $bold;
       font-size: 12px;
-      color: var(--color-0-870);
+      color: var(--color-black);
       padding: 6px;
       &:hover {
         color: var(--color-primary);
@@ -34,7 +34,7 @@
       font-weight: $regular;
       font-size: 14px;
       padding: 3px;
-      color: var(--color-0-870);
+      color: var(--color-black);
     }
   }
 }

@@ -71,8 +71,8 @@
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 700;
-  background-color: var(--color-3-450);
-  border-color: var(--color-3-450);
+  background-color: var(--color-primary-450);
+  border-color: var(--color-primary-450);
 
   @include breakpoint($tablet) {
     font-size: 12px;

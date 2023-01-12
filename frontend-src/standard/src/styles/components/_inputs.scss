@@ -60,7 +60,7 @@
       height: 100%;
       padding-right: 25px;
       padding-left: 20px;
-      border: 1px solid var(--color-0-070);
+      border: 1px solid var(--color-grey);
       font-family: $font;
       background-image: none;
       background-color: var(--color-white);
@@ -71,7 +71,7 @@
       border-bottom-right-radius: 5px;
 
       .filter-option {
-        color: var(--color-0-400);
+        color: var(--color-grey-03);
         font-size: 14px;
       }
 
@@ -99,13 +99,13 @@
 
       &:hover {
         background-color: var(--color-white);
-        border: 1px solid var(--color-0-070);
+        border: 1px solid var(--color-grey);
       }
 
       &:active,
       &:focus {
         background-color: var(--color-white);
-        border: 1px solid var(--color-0-070);
+        border: 1px solid var(--color-grey);
         box-shadow: none;
       }
 
@@ -115,7 +115,7 @@
 
       &:active:hover {
         background-color: var(--color-white);
-        border: 1px solid var(--color-0-070);
+        border: 1px solid var(--color-grey);
       }
 
       &:not(.pseudo-class-first-child) {
@@ -130,7 +130,7 @@
       button {
         max-width: 100%;
         background-color: var(--color-white) !important;
-        border: 1px solid var(--color-0-400) !important;
+        border: 1px solid var(--color-grey-03) !important;
         box-shadow: none !important;
         border-bottom-width: 0 !important;
         border-bottom-left-radius: 0 !important;
@@ -166,7 +166,7 @@
 
       &.inner {
         width: 100%;
-        border: 1px solid var(--color-0-400) !important;
+        border: 1px solid var(--color-grey-03) !important;
         border-top-left-radius: 0 !important;
         border-top-right-radius: 0 !important;
         border-bottom-left-radius: 5px !important;
@@ -213,7 +213,7 @@
           height: 20px;
           margin-top: 0 !important;
           padding-top: 1px;
-          border: 1px solid var(--color-0-250);
+          border: 1px solid var(--color-grey);
           border-radius: 5px;
           text-align: center;
           position: absolute;
@@ -223,7 +223,7 @@
           &:before {
             content: '\f00c';
             font-family: $icon;
-            color: var(--color-0-600);
+            color: var(--color-grey-04);
             opacity: 0;
           }
         }
@@ -378,13 +378,13 @@
   height: 100%;
   float: left;
   background: var(--color-white);
-  border: 1px solid var(--color-0-250);
+  border: 1px solid var(--color-grey);
   box-shadow: none !important;
   border-radius: 0;
   color: #333;
   max-width: 100%;
   &:hover {
-    background-color: var(--color-0-250);
+    background-color: var(--color-grey);
     color: var(--color-white);
   }
 }
@@ -421,7 +421,7 @@
 
 .forma-dropdown {
   border-radius: 5px;
-  border: 1px solid var(--color-0-250);
+  border: 1px solid var(--color-grey);
   transition: $transition-base;
 
   &:hover {
@@ -445,7 +445,7 @@
       top: none;
       left: none;
       bottom: none;
-      right: 1px solid var(--color-0-250);
+      right: 1px solid var(--color-grey);
     }
   }
 

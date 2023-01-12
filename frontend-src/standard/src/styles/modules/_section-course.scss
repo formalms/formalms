@@ -85,7 +85,7 @@
 .section-coourse__img {
   display: inline-block;
   padding: 2px;
-  border: 1px solid var(--color-0-400)04;
+  border: 1px solid var(--color-grey-03)04;
 
   @include breakpoint($ipad) {
     max-width: 70%;
@@ -138,7 +138,7 @@
   }
 
   @include breakpoint($tablet) {
-    background-color: var(--color-0-050);
+    background-color: var(--color-grey);
   }
 }
 
@@ -167,7 +167,7 @@
 
 .section-coourse__progress-container {
   padding: 4px;
-  border: 1px solid var(--color-0-250);
+  border: 1px solid var(--color-grey);
   border-radius: 5px;
   margin-top: 30px;
 
@@ -206,7 +206,7 @@
 
 .progress-bar-warning--black {
   span {
-    color: var(--color-0-1000) !important;
+    color: var(--color-black) !important;
   }
 }
 
@@ -220,7 +220,7 @@
     bottom: 20px;
   }
   position: relative;
-  background-color: var(--color-0-050);
+  background-color: var(--color-grey);
 
   &:before {
     width: calc(100% - 60px);
@@ -229,13 +229,13 @@
     position: absolute;
     top: 0;
     left: 30px;
-    background-color: var(--color-0-070);
+    background-color: var(--color-grey);
   }
 }
 
 .slider-menu {
   .section-coourse__menu-horizontal & {
-    border-bottom: solid 1px var(--color-0-070);
+    border-bottom: solid 1px var(--color-grey);
   }
 }
 

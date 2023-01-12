@@ -140,7 +140,7 @@
 .forma-button--disabled {
   pointer-events: none;
   background: var(--color-disabled);
-  // border: 2px solid var(--color-0-250);
+  // border: 2px solid var(--color-grey);
   color: var(--color-disabled-text);
   position: relative;
   &::before {
@@ -221,8 +221,8 @@
 // Style guide: 2.5
 .forma-button--gray {
   pointer-events: none;
-  background: var(--color-0-250);
-  border: 2px solid var(--color-0-250);
+  background: var(--color-grey);
+  border: 2px solid var(--color-grey);
 }
 
 // Black Button
@@ -395,7 +395,7 @@
 input[type='submit'].btn.btn-default {
   .user-panel & {
     font-family: $font;
-    background-color: var(--color-0-750);
+    background-color: var(--color-grey-04);
     text-transform: uppercase;
     color: var(--color-white);
     background-image: none;
