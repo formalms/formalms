@@ -479,7 +479,7 @@
               width: 100%;
               height: 1px;
               position: absolute;
-              top: -8px;
+              top: -2px;
               right: 0;
             }
 
@@ -593,8 +593,7 @@
           overflow: hidden;
           font-size: 16px;
           text-transform: none;
-          background-color: var(--color-secondary);
-          color: var(--color-secondary-text);
+          color: var(--color-secondary);
           z-index: 20;
         }
 
@@ -648,7 +647,7 @@
 
             p {
               font-family: $font;
-              color: var(--color-grey);
+              color: var(--color-grey-04);
               line-height: 40px;
             }
           }

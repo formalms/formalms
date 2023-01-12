@@ -214,12 +214,12 @@ header.header {
               content: '';
               position: absolute;
               @include breakpoint($ipad) {
-                top: -11px;
+                top: -6px;
                 right: -48px;
               }
             
-              width: 35px;
-              height: 35px;
+              width: 26px;
+              height: 26px;
               display: inline-block;
               // border: 1px solid var(--color-grey);
               border-radius: 50%;
@@ -251,13 +251,14 @@ header.header {
             &.glyphicon-cog {
               &:hover {
                 &:before {
-                  -webkit-mask-image: url('#{$assets}images/icons/top-menu/icon--admin-hover.svg');
                   background-color: var(--color-primary);
                 }
               }
 
               &:before {
-                background-image: url('#{$assets}images/icons/top-menu/icon--admin.svg');
+                -webkit-mask-image: url('#{$assets}images/icons/top-menu/icon--admin.svg');
+                -webkit-mask-size: contain;
+                background-color: var(--color-grey-04);
               }
             }
 
