@@ -20,7 +20,7 @@ VALUES
 	NULL,
 	'alms/communication/showCategories' 
 	);
-ALTER TABLE `learning_communication_category_lang` ADD COLUMN IF NOT EXISTS `description` TEXT AFTER `translation`;
+ALTER TABLE `learning_communication_category_lang` ADD COLUMN `description` TEXT AFTER `translation`;
 CREATE TABLE IF NOT EXISTS learning_communication_lang (
     id_comm int,
     lang_code varchar(255),
