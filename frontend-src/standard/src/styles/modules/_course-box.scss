@@ -89,6 +89,8 @@ $course-box-border: 2px;
       left: 0;
       top: 0;
       border-radius: 50%;
+      background-color: var(--color-grey-04);
+      -webkit-mask-size: contain;
       background: {
         position: center;
         repeat: no-repeat;
@@ -178,6 +180,7 @@ $course-box-border: 2px;
   top: 116px;
   left: 5px;
   background: rgba(255,255,255,0.8);
+  color: var(--color-grey-04);
   border-radius: 100vh;
   font-weight: 600;
   text-transform: uppercase;
@@ -196,6 +199,7 @@ $course-box-border: 2px;
   background-position: 50% 50%;
   background-size: cover;
   transition: background-position 300ms ease-in-out;
+
 }
 
 .course-box__title {

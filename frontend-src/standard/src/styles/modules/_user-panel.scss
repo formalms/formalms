@@ -277,7 +277,7 @@
           &:hover {
             &:before {
               @include breakpoint($tablet) {
-                background-image: url("#{$assets}images/icons/user-panel/icon--up-close-hover.png");
+                background-color: var(--color-primary)
               }
             }
           }
@@ -297,7 +297,9 @@
               content: "";
               width: 30px;
               height: 30px;
-              background-image: url("#{$assets}images/icons/user-panel/icon--up-close.png");
+              -webkit-mask-image: url("#{$assets}images/icons/user-panel/icon--up-close.svg");
+              background-color: var(--color-grey-04);
+              -webkit-mask-size: contain;
             }
           }
         }
@@ -308,17 +310,19 @@
 
           &:hover {
             &:before {
-              background-image: url("#{$assets}images/icons/user-panel/icon--up-logout-hover.png");
+              background-color: var(--color-primary);
             }
           }
 
           &:before {
-            width: 19px;
+            width: 12px;
             height: 16px;
             top: 7px;
-            right: 0;
+            right: 3px;
             left: inherit;
-            background-image: url("#{$assets}images/icons/user-panel/icon--up-logout.png");
+            -webkit-mask-image: url("#{$assets}images/icons/user-panel/icon--up-logout.svg");
+            -webkit-mask-size: contain;
+            background-color: var(--color-grey-04);
           }
         }
       }
