@@ -634,13 +634,18 @@ class CourseSubscribe_Manager
             . " AND idCourse = '" . $id_course . "'";
 
         $resultStatus = $this->db->query($queryStatus);
-        $oldStatus = $this->db->fetch_row($resultStatus);
-        $current_data = ['status' => $oldStatus];
+        $oldStatus = $this->db->fetch_assoc($resultStatus);
+        if (is_array($oldStatus) && array_key_exists('status', $oldStatus)) {
+            $oldStatus = $oldStatus['status'];
+        }
+        $currentData = ['status' => $new_status, 'prev_status' => $oldStatus, 'new_date_complete' => $new_date_complete];
         $data = Events::trigger('lms.course_user.updating', [
             'id_user' => $id_user,
             'id_course' => $id_course,
-            'new_data' => $current_data,
+            'new_data' => $currentData,
         ]);
+
+        $new_status = $data['new_data']['status'];
 
         $query = 'UPDATE ' . $this->subscribe_table
             . ' SET status = ' . (int)$new_status
@@ -655,16 +660,20 @@ class CourseSubscribe_Manager
         }
 
         if ($this->db->query($query)) {
-            $current_data = ['status' => $new_status, 'prev_status' => $oldStatus];
-            Events::trigger('lms.course_user.updated', [
+            $current_data = ['status' => $new_status, 'prev_status' => $oldStatus, 'new_date_complete' => $new_date_complete];
+            $data = Events::trigger('lms.course_user.updated', [
                 'id_user' => $id_user,
                 'id_course' => $id_course,
                 'new_data' => $current_data,
             ]);
-            if (!empty($new_date_complete)) {
-                $this->updateUserDateCompleteInCourse($id_user, $id_course, $new_date_complete);
-            }
+
+            $new_status = $data['new_data']['status'];
+
             if ($new_status == _CUS_END) {
+
+                if (!empty($new_date_complete)) {
+                    $this->updateUserDateCompleteInCourse($id_user, $id_course, $new_date_complete);
+                }
                 //require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
                 //$cman = new Competences_Manager();
                 $cmodel = new CompetencesAdm();
