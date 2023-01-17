@@ -16,8 +16,12 @@ DirectoryIndex index.php index.html index.htm
         # Redirect to the www version of the site
         #RewriteCond %{HTTP_HOST} !^www\. [NC]
         #RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-        RewriteRule ^upgrade/?$ /index.php?r=adm/install/show
-        RewriteRule ^install/?$ /index.php?r=adm/install/show
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^(.*)/$ /$1 [R=301,L]
+
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^upgrade?$ /index.php?r=adm/install/show
+        RewriteRule ^install?$ /index.php?r=adm/install/show
 </IfModule>
 
 <FilesMatch "\.(htpasswd|ini|php|fla|psd|log|sh)$">
