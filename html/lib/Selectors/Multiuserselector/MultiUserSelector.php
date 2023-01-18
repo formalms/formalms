@@ -26,10 +26,10 @@ class MultiUserSelector {
     protected $dataSelectors = array();
     protected $accessModel = null;
     protected $db;
+    protected $session;
 
-    public function __construct() {
-        $this->db = \DbConn::getInstance();
-    }
+
+    const SESSION_KEY = 'selectedUsers';
 
     const NAMESPACE = 'FormaLms\lib\Selectors\Multiuserselector\DataSelectors\\';
 
@@ -49,7 +49,25 @@ class MultiUserSelector {
                             'subFolderView' => 'subscription',
                             'additionalPaths' => [_lms_.'/admin/views'],
                             'use_namespace' =>  true],
+        'multiplecoursesubscription' => ['includes' => 'FormaLms\lib\Services\Courses\\' , 
+                            'className' => 'CourseSubscriptionService', 
+                            'returnType' => 'render',
+                            'returnView' => 'multiple_subscription_2',
+                            'subFolderView' => 'subscription',
+                            'additionalPaths' => [_lms_.'/admin/views'],
+                            'use_namespace' =>  true],
+        'lmstab' => ['includes' => _lms_ . '/lib/lib.middlearea.php',
+                    'className' => 'Man_MiddleArea', 'returnType' => 'redirect'],
+        'lmsblock' => ['includes' => _lms_ . '/lib/lib.middlearea.php',
+                    'className' => 'Man_MiddleArea', 'returnType' => 'redirect'],
     ];
+
+
+    
+    public function __construct() {
+        $this->db = \DbConn::getInstance();
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+    }
 
     public function setDataSelectors(string $dataSelector, string $key) : self{
 
@@ -94,7 +112,7 @@ class MultiUserSelector {
             
                 $oldSelection = $this->accessModel->accessList($instanceId);
               
-                if ($this->accessModel->updateAccessList($instanceId, $oldSelection, $selection)) {
+                if ($this->accessModel->updateAccessList((int)  $instanceId, $oldSelection, $selection)) {
                     $return['redirect']  = 'index.php?r=alms/communication/show&success=1';
                 } else {
                     $return['redirect']  = 'index.php?r=alms/communication/show&error=1';
@@ -104,7 +122,7 @@ class MultiUserSelector {
 
             case 'adminmanager':
         
-                if ($this->accessModel->saveUsersAssociation($instanceId, $selection)) {
+                if ($this->accessModel->saveUsersAssociation((int) $instanceId, $selection)) {
                     $return['redirect'] = 'index.php?r=adm/adminmanager/show&res=ok_ins';
                 } else {
                     $return['redirect']  = 'index.php?r=adm/adminmanager/show&res=err_ins';
@@ -114,7 +132,7 @@ class MultiUserSelector {
 
             case 'lmsmenu':
     
-                $oldSelection = $this->accessModel->getRoleMemebers($instanceId);
+                $oldSelection = $this->accessModel->getRoleMemebers((int) $instanceId);
                 
                 if ($this->accessModel->saveMembersAssociation($instanceId, $selection, $oldSelection)) {
                     $return['redirect']  = 'index.php?modname=middlearea&amp;op=view_area&amp;result=ok&amp;of_platform=lms';
@@ -127,14 +145,37 @@ class MultiUserSelector {
             case 'coursesubscription':
 
                 $moreParams['viewParams'] = true;
-                
-                $return['params'] = $this->accessModel->add($selection, 'course', $instanceId, $moreParams);
+          
+                $return['params'] = $this->accessModel->add($selection, 'course', (int) $instanceId, $moreParams);
                 $return['subFolderView'] = self::ACCESS_MODELS[$instanceType]['subFolderView'] ?? '';
                 $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
                 $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
                 
 
                 break;
+
+            case 'multiplecoursesubscription':
+
+                $filteredSelection = $this->accessModel->checkSelection($selection, $moreParams);
+                $moreParams['viewParams'] = true;
+                
+                $this->setSessionData($instanceType, $filteredSelection);
+                $return['params'] =  $this->accessModel->multipleAdd($filteredSelection, $moreParams);;
+                $return['subFolderView'] = self::ACCESS_MODELS[$instanceType]['subFolderView'] ?? '';
+                $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
+                $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
+                
+
+                break;
+
+                case 'lmsblock':
+                case 'lmstab':
+    
+                    $result = $this->accessModel->setObjIdstList($instanceId, $selection);
+               
+                    $return['redirect'] = 'index.php?modname=middlearea&amp;op=view_area&amp;of_platform=lms&amp;result=' . ($result ? 'ok' : 'err');
+    
+                    break;
         }
 
         return $return;
@@ -162,12 +203,26 @@ class MultiUserSelector {
             
             break;
 
+            case 'multiplecoursesubscription':
+    
+                //handled by session
+            
+            break;
+
 
             case 'coursesubscription':
     
                 $selection = $this->accessModel->getSubscribed($instanceId, 'course');
             
             break;
+
+            case 'lmsblock':
+            case 'lmstab':
+
+                $selection = $this->accessModel->getObjIdstList($instanceId);
+
+                break;
+
         }
      
 
@@ -266,6 +321,19 @@ class MultiUserSelector {
 
         return $selection;
 
+    }
+
+
+    public function getSessionData(string $instance) : array{
+        return $this->session->get($instance . '_' . self::SESSION_KEY) ? $this->parseSelection($this->session->get($instance . '_' . self::SESSION_KEY)) : [];
+    }
+
+
+    public function setSessionData(string $instance, array $selection) : bool{
+        $this->session->set($instance . '_' . self::SESSION_KEY, $selection);
+        $this->session->save();
+
+        return true;
     }
 
    

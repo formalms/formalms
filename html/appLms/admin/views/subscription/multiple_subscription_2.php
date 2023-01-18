@@ -22,7 +22,7 @@
             . Form::getHidden('user_selection', 'user_selection', $user_selection)
             . $course_selector->loadCourseSelector(true)
             . Form::openButtonSpace()
-            . Form::getButton('back', 'back', Lang::t('_PREV', 'course'))
+            . Form::getButton('back', 'back', Lang::t('_PREV', 'course'), false, 'onclick="event.preventDefault();location.href=\'index.php?r=adm/userselector/show&instance=multiplecoursesubscription\'"')
             . Form::getButton('next', 'next', Lang::t('_NEXT', 'course'))
             . Form::getButton('undo', 'undo', Lang::t('_UNDO', 'standard'))
             . Form::closeButtonSpace()

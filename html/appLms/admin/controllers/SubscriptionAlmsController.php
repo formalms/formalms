@@ -1508,12 +1508,15 @@ class SubscriptionAlmsController extends AlmsController
             $step = 0;
         }
 
+        
         switch ($step) {
             case '0':
                 Util::jump_to('index.php?r=' . $this->link_course . '/show');
                 break;
 
             case '1':
+
+                //vedo la sessione
                 if (isset($_POST['back'])) {
                     $course_selector->parseForState($_POST);
 

@@ -2,6 +2,9 @@
 
 namespace FormaLms\lib\Services\Courses;
 
+
+
+require_once _lms_.'/lib/lib.course.php';
 use FormaLms\lib\Get;
 
 class CourseSubscriptionService
@@ -17,6 +20,8 @@ class CourseSubscriptionService
 
     protected $doceboUser;
 
+    protected $session;
+
     const LINK_COURSE = 'alms/course';
 
     public function __construct() {
@@ -28,6 +33,8 @@ class CourseSubscriptionService
             'subscribe_coursepath' => checkPerm('subscribe', true, 'coursepath', 'lms'),
             'moderate' => checkPerm('moderate', true, 'course', 'lms'),
         ];
+
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
 
@@ -359,7 +366,7 @@ class CourseSubscriptionService
             $this->response['view'] = $view;
         }
 
-        return $this->resèponse;
+        return $this->response;
 
     }
 
@@ -405,6 +412,67 @@ class CourseSubscriptionService
                 break;
         }
         return  $this->baseModel->loadUserSelectorSelection();
+    }
+
+
+    public function checkSelection($selection, $params=[]) {
+        
+
+        $userSelected = $this->baseModel->getAclManager()->getAllUsersFromSelection($selection); //$acl_man->getAllUsersFromIdst($_selection);
+    
+
+        if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            require_once _base_ . '/lib/lib.preference.php';
+            $adminManager = new \AdminPreference();
+            $adminTree = $adminManager->getAdminTree($this->doceboUser->getIdST());
+            $adminUsers = $this->acl_man->getAllUsersFromIdst($adminTree);
+
+            $userSelected = array_intersect($userSelected, $adminUsers);
+
+            $toSubscribe = count($userSelected);
+
+            if ($adminTree['admin_rules.limit_course_subscribe'] == 'on') {
+                $userPref = new \UserPreferences(Docebo::user()->getIdSt());
+                $subscribedCount = $userPref->getPreference('user_subscribed_count');
+                if ($subscribedCount + $toSubscribe > $adminTree['admin_rules.max_course_subscribe']) {
+                    $this->setResponse('error',
+                        Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'),
+                        'index.php?r=' . self::LINK_COURSE . '/show',
+                        'invalid'
+                    );
+
+                    return $this->response;
+                }
+            }
+
+        }
+
+        if (count($userSelected) == 0) {
+            Util::jump_to('index.php?r=adm/userselector/show&instance=multiplecoursesubscription');
+        }
+
+        return $userSelected;
+      
+    }
+
+
+    public function multipleAdd($selection, $params=[]) {
+        $idCat = $params['id_cat'];
+
+
+        $this->baseModel->setUserData(urlencode(\Util::serialize($selection)));
+   
+        if($params['viewParams']) {
+                return [
+                    'model' => $this->baseModel,
+                    'id_cat' => $idCat,
+                    'course_selector' => new \Selector_Course(),
+                    'user_selection' => $this->baseModel->getUserData()
+                ];
+
+            }
+       
+        return [];
     }
 
 }

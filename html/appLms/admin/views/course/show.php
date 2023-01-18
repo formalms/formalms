@@ -168,7 +168,7 @@ if ($permissions['add']) {
 }
 
 if ($permissions['subscribe']) {
-    $_table_params['rel_actions'] .= ' <a class="ico-wt-sprite subs_users" href="index.php?r=' . $base_link_subscription . '/multiplesubscription"><span>' . Lang::t('_MULTIPLE_SUBSCRIPTION', 'course') . '</span></a>'
+    $_table_params['rel_actions'] .= ' <a class="ico-wt-sprite subs_users" href="index.php?r=adm/userselector/show&instance=multiplecoursesubscription&clearSelection=true"><span>' . Lang::t('_MULTIPLE_SUBSCRIPTION', 'course') . '</span></a>'
         . ((int) $unsubscribe_requests > 0
             ? '<a class="ico-wt-sprite subs_users" href="index.php?r=' . $base_link_subscription . '/unsubscriberequests">'
                 . '<span>' . Lang::t('_UNSUBSCRIBE_REQUESTS', 'course') . ' (' . (int) $unsubscribe_requests . ')</span></a>'

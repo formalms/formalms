@@ -72,17 +72,28 @@ class UserselectorAdmController extends AdmController
 
         $selectedData = [];
         $accessSelection = [];
+        
+
         $disableAjax = $this->requestObj->has('disable_ajax') ? true : false;
         $instanceValue = $this->requestObj->get('instance');
         $instanceId = $this->requestObj->get('id');
         $showSelectAll = $this->requestObj->get('showSelectAll') ?? false;
         $showUserAlert = $this->requestObj->get('showUserAlert') ?? false;
+        $clearSelection = $this->requestObj->get('clearSelection') ?? false;
         $selectAllValue = 0;
 
-        if($instanceValue && $instanceId) {
-            $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
-          
+        if($instanceValue) {
+
+            if($clearSelection) {
+                $this->multiUserSelector->setSessionData($instanceValue, []);
+            }
+            $accessSelection = $this->multiUserSelector->getSessionData($instanceValue);
+            if($instanceId) {
+                $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
+            }
         }
+
+
         if($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
             $this->selection = $this->requestObj->get('selected_tab');
         }
@@ -152,7 +163,7 @@ class UserselectorAdmController extends AdmController
     public function associate()
     {
         $instanceType = $this->requestObj->get('instance');
-        $instanceId = (int) $this->requestObj->get('id');
+        $instanceId = $this->requestObj->get('id');
 
         $selection =  explode(',', $this->requestObj->get('selected'));
         $exclusion =  explode(',', $this->requestObj->get('excluded'));

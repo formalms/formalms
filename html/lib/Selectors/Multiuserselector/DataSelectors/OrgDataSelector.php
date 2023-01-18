@@ -91,9 +91,9 @@ class OrgDataSelector extends DataSelector{
         }
         //nella variabile c'è un array a 2 indici dove nel primo sono listati i grouppi con oc_ e nel secondo quelli con ocd_
         //l'array viene inziailizzato col nodo zero senza discendenti, il match avviene per chiave dei 2 array basata su idorg 
-
+   
         if($buildRootNode) {
-            $rootNode = new OrgDataNode($this->_getRootNodeId(), 'FORMA', true, true);
+            $rootNode = new OrgDataNode($this->_getRootNodeId(), $this->getChartTitle(), true, true);
             $rootNode->setChildren($nodes);
             $nodes = [];
             $nodes[] = $rootNode;
@@ -177,6 +177,13 @@ class OrgDataSelector extends DataSelector{
         return $arr_idst['/oc_0'] . '_' . $arr_idst['/ocd_0'];
 
     }
+
+
+    protected function getChartTitle() {
+        return \FormaLms\lib\Get::sett('title_organigram_chart');
+    }
+
+  
 
     public function getAllSelection($exclusions = []) {
         return [];

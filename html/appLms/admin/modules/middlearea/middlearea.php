@@ -28,7 +28,7 @@ function view_area()
 
     $re_menu_voice = sql_query($query_menu);
 
-    $base_url = 'index.php?modname=middlearea&amp;op=select_permission&amp;load=1&amp;obj_index=';
+    $base_url = 'index.php?r=adm/userselector/show&id=';
     $second_url = 'index.php?modname=middlearea&amp;op=switch_active&amp;obj_index=';
     $third_url = 'index.php?modname=middlearea&amp;op=set_home&amp;obj_index=';
 
@@ -95,7 +95,7 @@ HTML;
         $tab_list .= '<li id="' . $id . '">'
             . '<a class="ico-sprite subs_location' . ($is_home ? '_green' : '') . '" href="' . $third_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
             . ' <span>' . $name . '</span>'
-            . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
+            . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '&instance=lmstab"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
             . ' <a class="ico-sprite subs_' . (isset($disabled_list[$id]) ? 'noac' : 'actv') . '" href="' . ($is_home ? '' : $second_url . $id) . '"><span>' . Lang::t('_ENABLE_AREA', 'middlearea') . '</span></a>'
             . '</li>';
     }
@@ -116,7 +116,7 @@ HTML;
     foreach ($slider_options as $id => $name) {
         $block_list .= '<div class="direct_block">'
             . '<span>' . $name . '</span>'
-            . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
+            . ' <a class="ico-sprite subs_users" href="' . $base_url . $id . '&instance=lmsblock"><span>' . Lang::t('_VIEW_PERMISSION', 'standard') . '</span></a>'
             . ' <a class="ico-sprite subs_' . (isset($disabled_list[$id]) ? 'noac' : 'actv') . '" href="' . $second_url . $id . '"><span>' . Lang::t('_ENABLE_AREA', 'middlearea') . '</span></a>'
             . '</div><br/>';
     }
