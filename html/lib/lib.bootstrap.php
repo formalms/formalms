@@ -13,6 +13,7 @@
 
 use function GuzzleHttp\default_ca_bundle;
 use FormaLms\lib\Domain\DomainHandler;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
@@ -121,6 +122,18 @@ class Boot
      */
     private static function config()
     {
+        $configExist = true;
+        if (!file_exists(__DIR__ . '/../config.php') || !isset($cfg) || !is_array($cfg)) {
+            $configExist = false;
+        }
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+        $checkRoute = static::checkInstallRoutes($request);
+
+        if (!$configExist && !$checkRoute) {
+
+            header('Location: ' . FormaLms\lib\Get::getBaseUrl() . '/install');
+        }
+
         $step_report = [];
         //controllare request
 
@@ -153,13 +166,23 @@ class Boot
 
         $cfg = [];
         require __DIR__ . '/../config.php';
+
         $GLOBALS['cfg'] = $cfg;
+        if (empty($cfg)) {
+            $cfg['prefix_fw'] = 'core';
+            $cfg['prefix_lms'] = 'learning';
+            $cfg['prefix_cms'] = 'cms';
+            $cfg['prefix_scs'] = 'conference';
+            $cfg['prefix_ecom'] = 'ecom';
+            $cfg['prefix_crm'] = 'crm';
+        }
 
         $GLOBALS['prefix_fw'] = $cfg['prefix_fw'];
         $GLOBALS['prefix_lms'] = $cfg['prefix_lms'];
         $GLOBALS['prefix_scs'] = $cfg['prefix_scs'];
         $GLOBALS['prefix_ecom'] = $cfg['prefix_ecom'];
         $GLOBALS['prefix_crm'] = $cfg['prefix_crm'];
+
 
         // setup some php.ini things
         $step_report[] = 'Setup some php.ini settings.';
@@ -175,14 +198,17 @@ class Boot
         }
         self::log('Time zone setted to TZ= ' . @date_default_timezone_get());
 
-        
-        // debugging ?
+        if (!isset($cfg['do_debug'])) {
+            $cfg['do_debug'] = false;
+        }
+            // debugging ?
+
         self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
             if (!in_array('debug_level', $cfg)) {
                 $cfg['debug_level'] = 'all';
             }
-        
+
             switch ($cfg['debug_level']) {
                 case 'error':
                     error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
@@ -201,7 +227,7 @@ class Boot
                     error_reporting(E_ALL);
                     break;
             }
-      
+
             @ini_set('display_errors', 1);
         } else {
             @error_reporting(E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR);
@@ -266,7 +292,7 @@ class Boot
         //create the handeler who will fix values ins ession
         $domainHandler = DomainHandler::getInstance();
 
-    
+
         // template
         self::log('Load template library.');
         require_once _base_ . '/lib/lib.template.php';
@@ -323,7 +349,7 @@ class Boot
         self::log('Load database funtion management library.');
 
         $configExist = true;
-        if (!file_exists(__DIR__ . '/../config.php')) {
+        if (!file_exists(__DIR__ . '/../config.php') || !isset($cfg) || !is_array($cfg)) {
             $configExist = false;
         }
 
@@ -346,7 +372,7 @@ class Boot
         //controllare request
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $checkRoute = static::checkInstallRoutes($request);
-       
+
         if ((!$configExist || $dbIsEmpty) && file_exists(_base_ . '/install') && !$checkRoute) {
             header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
         }
@@ -371,8 +397,12 @@ class Boot
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
+            $cfg = [];
             require __DIR__ . '/../config.php';
-            $config = $cfg && isset($cfg['session']) ? $cfg['session'] : [];
+            $config = [];
+            if (!empty($cfg)) {
+                $config = $cfg['session'] ?? [];
+            }
             FormaLms\lib\Session\SessionManager::getInstance()->initSession($config);
 
             $session = FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -381,7 +411,8 @@ class Boot
         }
     }
 
-    private static function sessionCheck() {
+    private static function sessionCheck()
+    {
 
         if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $session = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->getSession();
@@ -411,7 +442,7 @@ class Boot
         // ip coerency check
         self::log('Ip coerency check.');
         if (FormaLms\lib\Get::sett('session_ip_control', 'on') == 'on') {
-            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR',$_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
@@ -568,7 +599,7 @@ class Boot
     {
         list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float) $usec + (float) $sec),
+            'time' => ((float)$usec + (float)$sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
@@ -576,7 +607,7 @@ class Boot
     public static function current_time()
     {
         list($usec, $sec) = explode(' ', microtime());
-        $now = ((float) $usec + (float) $sec);
+        $now = ((float)$usec + (float)$sec);
 
         return $now - $GLOBALS['start']['time'];
     }

@@ -42,6 +42,14 @@ define('DOTY_MVC', 10);
 
 class Get
 {
+
+    public const coreFolders = [
+        'appLms',
+        'appCore',
+        'appScs',
+        'api',
+    ];
+
     /**
      * Import var from GET and POST, if the var exists in POST and GET, the post value will be preferred.
      *
@@ -241,6 +249,64 @@ class Get
         return 'framework';
     }
 
+
+    public static function getBaseUrl($onlyBasePath = false){
+
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+
+        $possiblePhpEndpoints = [];
+        $path = '';
+        $basePath = '/';
+
+        try {
+            $basePath = $request->getSchemeAndHttpHost();
+            $requestUri = $request->getBaseUrl();
+        } catch(\Error $e) {
+            // non deve mai andare qui, ma ci passa se vengono chiamate shell exec come le migrate
+        }
+
+
+
+        if (!$onlyBasePath) {
+            preg_match('/\/(.*?).php/', $requestUri, $match);
+            if (!empty($match)) {
+                $explodedMatch = explode('/', $match[0]);
+                $possiblePhpEndpoint = '';
+                foreach ($explodedMatch as $item) {
+                    if (!empty($item) && str_contains($item, '.php')) {
+                        $possiblePhpEndpoint .= str_replace(self::coreFolders, '', $item);
+                    }
+                }
+
+                $possiblePhpEndpoints[] = $possiblePhpEndpoint;
+            }
+
+            $possiblePhpEndpoints[] = '/?';
+            $possiblePhpEndpoints[] = '/api';
+
+            foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
+                if (str_contains($requestUri, $possiblePhpEndpoint)) {
+                    $requestUriArray = explode($possiblePhpEndpoint, $requestUri);
+                    $requestUriArray = explode('/', $requestUriArray[0]);
+                    break;
+                }
+            }
+
+            if (empty($requestUriArray) && !empty($requestUri)) {
+                $requestUriArray = explode('/', $requestUri);
+            }
+
+            foreach ($requestUriArray as $requestUriItem) {
+                if (!empty($requestUriItem) && !in_array($requestUriItem, self::coreFolders, true)) {
+                    $path .= sprintf('/%s', $requestUriItem);
+                }
+            }
+
+            $path = $basePath.$path;
+        }
+
+        return $path != '' ? $path : $basePath;
+    }
     /**
      * Return the calculated relative path form the current zone (platform) to the requested one.
      *
@@ -411,7 +477,7 @@ class Get
     public static function site_url($disableUrlSetting = false)
     {
         if (!($url = self::sett('url')) || $disableUrlSetting) {
-            $url = ClientService::getInstance()->getBaseUrl();
+            $url = Get::getBaseUrl();
         }
 
         return rtrim($url, '/') . '/';

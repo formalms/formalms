@@ -36,19 +36,10 @@ class DbConn
     public static $connected = false;
 
     /**
-     * Not really used.
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * This function return the current instance for the class, if it's the first
      * time that is called it will instance the class.
      *
-     * @param bool  $link
+     * @param bool $link
      * @param array $connection_parameters
      *
      * @return bool|DbConn
@@ -71,31 +62,55 @@ class DbConn
             return $link;
         }
         if (self::$instance == null) {
-            if (empty($db_type)) {
-                $db_type = function_exists('mysqli_connect') ? 'mysqli' : null;
-            }
-            switch ($db_type) {
-                case 'mysqli':
-                    require_once _base_ . '/db/drivers/docebodb.mysqli.php';
-                    self::$instance = new Mysqli_DbConn();
-                    self::$instance->debug = FormaLms\lib\Get::cfg('do_debug');
+            self::$instance = self::getConnection($db_type, $host, $user, $pass, $name);
 
-                    $conn = self::$instance->connect($host,
-                                                        $user,
-                                                        $pass,
-                                                        $name);
-                    if ($conn) {
-                        self::$connected = true;
-                    }
-                 break;
+            if (self::$instance) {
+                self::$connected = true;
             }
         }
 
         return self::$instance;
     }
 
+    public static function getConnection($dbType, $dbHost, $dbUser, $dbPassword, $dbName, $debug = null)
+    {
+        if (empty($dbType)) {
+            $dbType = function_exists('mysqli_connect') ? 'mysqli' : null;
+        }
+        switch ($dbType) {
+            case 'mysqli':
+                require_once _base_ . '/db/drivers/docebodb.mysqli.php';
+                $instance = new Mysqli_DbConn();
+                if (!$debug) {
+                    $instance->debug = FormaLms\lib\Get::cfg('do_debug');
+                } else {
+                    $instance->debug = $debug;
+                }
+
+                $conn = $instance->connect($dbHost,
+                    $dbUser,
+                    $dbPassword,
+                    $dbName);
+
+
+                return $instance;
+
+                break;
+        }
+        return false;
+    }
+
+    public static function checkConnection($dbType, $dbHost, $dbUser, $dbPassword, $dbName, $debug)
+    {
+        $conn = self::getConnection($dbType, $dbHost, $dbUser, $dbPassword, $dbName, $debug);
+        if ($conn) {
+            return true;
+        }
+        return false;
+    }
+
     /**
-     *	Write a log in the logger classe.
+     *    Write a log in the logger classe.
      */
     public function log($str)
     {
@@ -114,9 +129,9 @@ class DbConn
     /**
      * Select the database.
      *
+     * @param $dbname string the database name
      * @return bool true if the database was selected successfully, false otherwise
      *
-     * @param $dbname string the database name
      */
     public function select_db($dbname)
     {
@@ -134,9 +149,9 @@ class DbConn
     /**
      * Escape the data in order to safely use it in a query.
      *
+     * @param $data mixed the data to escape
      * @return mixed the escaped data
      *
-     * @param $data mixed the data to escape
      */
     public function escape($data)
     {
@@ -146,9 +161,9 @@ class DbConn
      * Parse a quer in search for %type and replace the term founded with the
      * data passed formatting and validating the data
      * accpted tags are (
-     * 	%% = %
-     * 	%NULL = NULL value
-     * 	%autoinc = autoincrement generate index
+     *    %% = %
+     *    %NULL = NULL value
+     *    %autoinc = autoincrement generate index
      *  %i = integer
      *  %f = float
      *  %d = double
@@ -156,10 +171,10 @@ class DbConn
      *  %text = string
      *  $s = string.
      *
-     * @return
-     *
      * @param $query Object
      * @param $data Array[optional]
+     * @return
+     *
      */
     public function parse_query($query, $data = false)
     {
@@ -191,10 +206,18 @@ class DbConn
 
                 switch ($type) {
                     // manage table prefix ==================================
-                    case '%adm_':	$parsed_query .= FormaLms\lib\Get::cfg('prefix_fw') . '_'; break;
-                    case '%lms_':	$parsed_query .= FormaLms\lib\Get::cfg('prefix_lms') . '_'; break;
-                    case '%cms_':	$parsed_query .= FormaLms\lib\Get::cfg('prefix_cms') . '_'; break;
-                    case '%scs_':	$parsed_query .= FormaLms\lib\Get::cfg('prefix_scs') . '_'; break;
+                    case '%adm_':
+                        $parsed_query .= FormaLms\lib\Get::cfg('prefix_fw') . '_';
+                        break;
+                    case '%lms_':
+                        $parsed_query .= FormaLms\lib\Get::cfg('prefix_lms') . '_';
+                        break;
+                    case '%cms_':
+                        $parsed_query .= FormaLms\lib\Get::cfg('prefix_cms') . '_';
+                        break;
+                    case '%scs_':
+                        $parsed_query .= FormaLms\lib\Get::cfg('prefix_scs') . '_';
+                        break;
                     // select by type =======================================
                     /*
                     case "%%" : {
@@ -239,9 +262,9 @@ class DbConn
     /**
      * Perform a query on the database (variable number of argument).
      *
+     * @param $query string
      * @return resource_id
      *
-     * @param $query string
      */
     public function query($query)
     {
@@ -251,12 +274,12 @@ class DbConn
      * Perform a query and limit the result with the last two args passed, the must be the start record to consider from and
      * the numbers of record to retrive.
      *
-     * @return resource_id
-     *
      * @param $query string the query to perform
      * @param mixed number of extra args
      * @param int the start record
      * @param int the number of records to retrive
+     * @return resource_id
+     *
      */
     public function query_limit($query)
     {
@@ -274,9 +297,9 @@ class DbConn
     /**
      * Get a result row as an enumerated array.
      *
+     * @param $resource resource_id
      * @return array
      *
-     * @param $resource resource_id
      */
     public function fetch_row($resource)
     {
@@ -285,9 +308,9 @@ class DbConn
     /**
      * Get a result row as an associative array.
      *
+     * @param $resource resource_id
      * @return array
      *
-     * @param $resource resource_id
      */
     public function fetch_assoc($resource)
     {
@@ -296,9 +319,9 @@ class DbConn
     /**
      * Get a result row as an array.
      *
+     * @param $resource resource_id
      * @return array
      *
-     * @param $resource resource_id
      */
     public function fetch_array($resource)
     {
@@ -321,9 +344,9 @@ class DbConn
     /**
      * Retrieves the number of rows from a result set.
      *
+     * @param $resource resource_id
      * @return int
      *
-     * @param $resource resource_id
      */
     public function num_rows($resource)
     {
@@ -512,7 +535,7 @@ class DbConn
     {
         list($usec, $sec) = explode(' ', microtime());
 
-        return (float) $usec + (float) $sec;
+        return (float)$usec + (float)$sec;
     }
 }
 
@@ -523,6 +546,7 @@ function sql_query($query, $conn = false)
 
     return $re;
 }
+
 function sql_limit_query($query, $from, $results, $conn = false)
 {
     $db = DbConn::getInstance($conn);
@@ -652,6 +676,7 @@ function sql_affected_rows($link = null)
 
     return $re;
 }
+
 function sql_field_seek($result, $fieldnr)
 {
     $db = DbConn::getInstance();
@@ -659,6 +684,7 @@ function sql_field_seek($result, $fieldnr)
 
     return $re;
 }
+
 function sql_num_field($res)
 {
     $db = DbConn::getInstance();
@@ -666,6 +692,7 @@ function sql_num_field($res)
 
     return $re;
 }
+
 function sql_fetch_field($result)
 {
     $db = DbConn::getInstance();
@@ -673,6 +700,7 @@ function sql_fetch_field($result)
 
     return $re;
 }
+
 function sql_real_escape_string()
 {
     $db = DbConn::getInstance();

@@ -17,10 +17,6 @@ class mysqli_DbConn extends DbConn
 {
     protected $conn = null;
 
-    public function __construct()
-    {
-    }
-
     public function __destruct()
     {
         if (is_resource($this->conn)) {
@@ -30,7 +26,7 @@ class mysqli_DbConn extends DbConn
 
     private function false_if_null($return)
     {
-        return isset($return) ? $return : false;
+        return $return ?? false;
     }
 
     public function connect($host, $user, $pwd, $dbname = false)
@@ -48,9 +44,13 @@ class mysqli_DbConn extends DbConn
             $this->log('mysql connected to : ' . $host);
             $this->log('mysql db selected');
         } else {
-            if (!$this->conn = @mysqli_connect($host, $user, $pwd)) {
-                Log::add('mysql connect error : ' . mysqli_connect_error());
-                //Util::fatal('Cannot connect to the database server.');
+            try {
+                if (!$this->conn = @mysqli_connect($host, $user, $pwd)) {
+                    Log::add('mysql connect error : ' . mysqli_connect_error());
+                    //Util::fatal('Cannot connect to the database server.');
+                    return false;
+                }
+            } catch (\Exception $exception) {
                 return false;
             }
             $GLOBALS['dbConn'] = $this;
@@ -106,7 +106,10 @@ class mysqli_DbConn extends DbConn
 
     public function escape($escapestr)
     {
-        return mysqli_real_escape_string($this->conn, $escapestr);
+        if ($this->conn) {
+            return mysqli_real_escape_string($this->conn, $escapestr);
+        }
+        return false;
     }
 
     public function query($query)
@@ -126,13 +129,16 @@ class mysqli_DbConn extends DbConn
                 $start_at = $this->get_time();
             }
 
-            $re = mysqli_query($this->conn, $parsed_query);
+            if ($this->conn) {
+                $re = mysqli_query($this->conn, $parsed_query);
 
-            if ($this->debug) {
-                $this->query_log($parsed_query, ($this->get_time() - $start_at));
+                if ($this->debug) {
+                    $this->query_log($parsed_query, ($this->get_time() - $start_at));
+                }
+
+                return $re;
             }
-
-            return $re;
+            return false;
         } catch (\Exception $exception) {
             return false;
         }
@@ -227,7 +233,10 @@ class mysqli_DbConn extends DbConn
 
     public function affected_rows()
     {
-        return mysqli_affected_rows($this->conn);
+        if ($this->conn) {
+            return mysqli_affected_rows($this->conn);
+        }
+        return false;
     }
 
     public function errno()
@@ -237,7 +246,10 @@ class mysqli_DbConn extends DbConn
 
     public function error()
     {
-        return mysqli_error($this->conn);
+        if ($this->conn) {
+            return mysqli_error($this->conn);
+        }
+        return false;
     }
 
     public function free_result($result)
@@ -252,7 +264,11 @@ class mysqli_DbConn extends DbConn
 
     public function get_server_info()
     {
-        return mysqli_get_server_info($this->conn);
+        if ($this->conn) {
+            return mysqli_get_server_info($this->conn);
+        }
+        return false;
+
     }
 
     public function data_seek($result, $offset)
@@ -277,12 +293,12 @@ class mysqli_DbConn extends DbConn
 
     public function escape_string($escapestring)
     {
-        return mysqli_real_escape_string($this->conn, $escapestring);
+        return $this->escape($escapestring);
     }
 
     public function real_escape_string($escapestring)
     {
-        return mysqli_real_escape_string($this->conn, $escapestring);
+        return $this->escape($escapestring);
     }
 
     public function start_transaction()
@@ -308,7 +324,9 @@ class mysqli_DbConn extends DbConn
 
     public function close()
     {
-        @mysqli_close($this->conn);
+        if ($this->conn) {
+            @mysqli_close($this->conn);
+        }
         $this->log('mysql close connection');
     }
 

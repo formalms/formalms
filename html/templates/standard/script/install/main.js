@@ -383,7 +383,7 @@ function checkSmtpSettings() {
     let postData = {};
     var result = false;
 
-    if($("#useSmtp").val() == '0') {
+    if($("#useSmtp").val() == 'off') {
         return true;
     } else {
     $("#smtpPanel .required").each(function(e) {

@@ -2,6 +2,8 @@
 
 namespace FormaLms\lib\Services\Courses;
 
+use FormaLms\lib\Get;
+
 class CourseSubscriptionService
 {
 
@@ -216,8 +218,8 @@ class CourseSubscriptionService
                                 }
 
                                 $arraySubstitions = [
-                                    '[url]' => (\ClientService::getInstance())->getBaseUrl(),
-                                    '[dynamic_link]' => getCurrentDomain($regCode) ?: (\ClientService::getInstance())->getBaseUrl(),
+                                    '[url]' => Get::getBaseUrl(),
+                                    '[dynamic_link]' => getCurrentDomain($regCode) ?: Get::getBaseUrl(),
                                     '[course]' => $courseInfo['name'],
                                     '[medium_time]' => $courseInfo['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
                                     '[course_name]' => $courseInfo['name'],

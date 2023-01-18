@@ -210,7 +210,7 @@ class MediagalleryAdmController extends AdmController
         ];
 
         if (($queryResults) && (sql_num_rows($queryResults) > 0)) {
-            $baseUrl = ClientService::getInstance()->getBaseUrl();
+            $baseUrl = \FormaLms\lib\Get::getBaseUrl();
             $site_url = $baseUrl . $path . '/common/users/';
             foreach ($queryResults as $queryResult) {
                 if (empty($queryResult['media_url'])) {

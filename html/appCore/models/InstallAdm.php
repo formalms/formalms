@@ -21,23 +21,24 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @since 4.0
  */
-require_once(_lib_.'/Helpers/HelperTool.php');
+require_once(_lib_ . '/Helpers/HelperTool.php');
+
 class InstallAdm extends Model
 {
-    /** @var array **/
+    /** @var array * */
     protected $steps;
-    /** @var array **/
+    /** @var array * */
     protected $labels;
-    /** @var array **/
+    /** @var array * */
     protected $errorLabels;
-    /** @var bool **/
+    /** @var bool * */
     protected $debug;
-    /** @var array **/
+    /** @var array * */
     protected $response;
-    /** @var bool **/
+    /** @var bool * */
     protected $upgrade;
 
-    /** @var string **/
+    /** @var string * */
     protected $minSupportedVersion = '3.3.2';
     protected $minUpgradeVersion = '4.0.0';
 
@@ -51,16 +52,16 @@ class InstallAdm extends Model
     const SMTP_REQUIRED = [
         'smtpHost', 'smtpPort', 'smtpUser', 'smtpPwd', 'smtpSecure', 'smtpAutoTls'
     ];
-   
+
     /**
      * Constructor method of the class.
-     * 
+     *
      * @param bool debug Debug not implemented yet
      */
     public function __construct($debug = false)
     {
         //soluzione provvisoria in attesa di namespace
-        require_once(_lib_.'/installer/lang/'.Lang::getSelLang().'.php');
+        require_once(_lib_ . '/installer/lang/' . Lang::getSelLang() . '.php');
         //require_once(_adm_.'/versions.php');
 
         $this->upgrade = $this->isUpgrade();
@@ -70,48 +71,51 @@ class InstallAdm extends Model
 
         $this->setResponse(false, []);
         parent::__construct();
-    
+
     }
 
     /**
      * Method to fill default steps.
-     * 
+     *
      * @return self
      */
-    public function fillSteps() : self {
+    public function fillSteps(): self
+    {
 
-        if($this->upgrade) {
-            $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1, 
-                        self::CHECK_UPGRADE => _TITLE_STEP5
-                        ];
+        if ($this->upgrade) {
+            $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1,
+                self::CHECK_UPGRADE => _TITLE_STEP5
+            ];
         } else {
-            $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1, 
-                        self::CHECK_DATABASE => _TITLE_STEP2, 
-                        self::CHECK_ADMIN => _TITLE_STEP3,
-                        self::CHECK_SMTP => _TITLE_STEP4,
-                        self::CHECK_FINAL => _TITLE_STEP5
-                    ];
+            $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1,
+                self::CHECK_DATABASE => _TITLE_STEP2,
+                self::CHECK_ADMIN => _TITLE_STEP3,
+                self::CHECK_SMTP => _TITLE_STEP4,
+                self::CHECK_FINAL => _TITLE_STEP5
+            ];
         }
-        
+
         return $this;
     }
 
     /**
      * Method to get steps.
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    public function getSteps() : array {
+    public function getSteps(): array
+    {
         return $this->steps;
     }
 
     /**
      * Method to fill labels for view definitions.
-     * 
+     *
      * @return self
      */
-    public function fillLabels() : self{
- 
+    public function fillLabels(): self
+    {
+
         $labels['introText'] = _INSTALLER_INTRO_TEXT;
         $labels['languageLabel'] = _LANGUAGE;
         $labels['installerTitle'] = _INSTALLER_TITLE;
@@ -137,7 +141,7 @@ class InstallAdm extends Model
         $labels['phpTimezone'] = _PHP_TIMEZONE;
         $labels['phpInfo'] = _PHPINFO;
         $labels['allowUrlFopenLabel'] = _ALLOW_URL_FOPEN;
-        $labels['magicQuotesGpc'] = _MAGIC_QUOTES_GPC; 
+        $labels['magicQuotesGpc'] = _MAGIC_QUOTES_GPC;
         $labels['safeMode'] = _SAFEMODE;
         $labels['registerGlobals'] = _REGISTER_GLOBALS;
         $labels['allowUrlIncludeLabel'] = _ALLOW_URL_INCLUDE;
@@ -175,30 +179,30 @@ class InstallAdm extends Model
         $labels['goToLogin'] = _SITE_HOMEPAGE;
         $labels['resetInstallation'] = _RESET_INSTALL;
 
-        $labels['smtpLabels'] = 
-        [
-            'useSmtpDatabase' => _USE_SMTP_DATABASE,
-            'useSmtp' => _USE_SMTP,
-            'smtpHost' => _SMTP_HOST,
-            'smtpPort' => _SMTP_PORT,
-            'smtpSecure' => _SMTP_SECURE,
-            'smtpAutoTls' => _SMTP_AUTO_TLS,
-            'smtpUser' => _SMTP_USER,
-            'smtpPwd' => _SMTP_PWD,
-            'active' => _SMTP_ACTIVE,
-            'smtpDebug' => _SMTP_DEBUG,
-            'senderMailNotification' => _SMTP_SENDERMAIL,
-            'senderNameNotification' => _SMTP_SENDERNAME,
-            'senderMailSystem' => _SMTP_SENDERMAILSYS,
-            'senderNameSystem' => _SMTP_SENDERNAMESYS,
-            'senderCcMails' => _SMTP_SENDERCCMAIL,
-            'senderCcnMails' => _SMTP_SENDERCCNMAILS,
-            'helperDeskMail' => _SMTP_HDESKMAIL,
-            'helperDeskSubject' => _SMTP_HDESKSUBJECT,
-            'helperDeskName' => _SMTP_HDESKNAME,
-            'replytoName' => _SMTP_REPLYTONAME,
-            'replytoMail' => _SMTP_REPLYTOMAIL,
-        ];
+        $labels['smtpLabels'] =
+            [
+                'useSmtpDatabase' => _USE_SMTP_DATABASE,
+                'useSmtp' => _USE_SMTP,
+                'smtpHost' => _SMTP_HOST,
+                'smtpPort' => _SMTP_PORT,
+                'smtpSecure' => _SMTP_SECURE,
+                'smtpAutoTls' => _SMTP_AUTO_TLS,
+                'smtpUser' => _SMTP_USER,
+                'smtpPwd' => _SMTP_PWD,
+                'active' => _SMTP_ACTIVE,
+                'smtpDebug' => _SMTP_DEBUG,
+                'senderMailNotification' => _SMTP_SENDERMAIL,
+                'senderNameNotification' => _SMTP_SENDERNAME,
+                'senderMailSystem' => _SMTP_SENDERMAILSYS,
+                'senderNameSystem' => _SMTP_SENDERNAMESYS,
+                'senderCcMails' => _SMTP_SENDERCCMAIL,
+                'senderCcnMails' => _SMTP_SENDERCCNMAILS,
+                'helperDeskMail' => _SMTP_HDESKMAIL,
+                'helperDeskSubject' => _SMTP_HDESKSUBJECT,
+                'helperDeskName' => _SMTP_HDESKNAME,
+                'replytoName' => _SMTP_REPLYTONAME,
+                'replytoMail' => _SMTP_REPLYTOMAIL,
+            ];
 
         /****************************/
         $labels['installedVersion'] = _INSTALLED_VERSION;
@@ -211,10 +215,11 @@ class InstallAdm extends Model
 
     /**
      * Method to fill error labels for view validation.
-     * 
+     *
      * @return self
      */
-    public function fillErrorLabels() : self {
+    public function fillErrorLabels(): self
+    {
         $this->errorLabels['unsuitable_requirements'] = _UNSUITABLE_REQUIREMENTS;
         $this->errorLabels['missing_check'] = _MISSING_LICENSE_CHECK;
         $this->errorLabels['missing_field'] = _MISSING_FIELD;
@@ -222,8 +227,8 @@ class InstallAdm extends Model
         $this->errorLabels['ftp_connection_fail'] = _FTP_CONNECT_FAIL;
         $this->errorLabels['ftp_login_fail'] = _FTP_LOGIN_FAIL;
         $this->errorLabels['db_not_utf8'] = _DB_NOT_UTF8;
-        $this->errorLabels['db_not_empty'] = _DB_NOT_EMPTY;             
-        $this->errorLabels['cant_connect_db'] = _CANT_CONNECT_WITH_DB; 
+        $this->errorLabels['db_not_empty'] = _DB_NOT_EMPTY;
+        $this->errorLabels['cant_connect_db'] = _CANT_CONNECT_WITH_DB;
         $this->errorLabels['cant_select_db'] = _CANT_SELECT_DB;
         $this->errorLabels['not_matching_password'] = _NOT_MATCHING_PASSWORD;
         $this->errorLabels['email_not_valid'] = _NOT_VALID_EMAIL;
@@ -235,64 +240,71 @@ class InstallAdm extends Model
 
     /**
      * Method to fill error labels for view validation.
-     * 
+     *
      * @return array
      */
-    public function getLabels() : array{
+    public function getLabels(): array
+    {
 
         return $this->labels;
     }
 
     /**
      * Method to retrieve required fileds for smtp validation
-     * 
+     *
      * @return array
      */
-    public function getSmtpFieldsRequired() : array {
-        
+    public function getSmtpFieldsRequired(): array
+    {
+
         return self::SMTP_REQUIRED;
     }
 
     /**
      * Method to retrieve data for the view
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
+     *
      * @return array
      */
-    public function getData(\Symfony\Component\HttpFoundation\Request $request) : array {
+    public function getData(\Symfony\Component\HttpFoundation\Request $request): array
+    {
 
         $params = $this->getLabels();
-      
-        $params = array_merge($params, 
-                                $this->checkRequirements(), 
-                                ini_get_all());
-        if(!$this->upgrade) {
+
+        $params = array_merge($params,
+            $this->checkRequirements(),
+            ini_get_all());
+        if (!$this->upgrade) {
             $params = array_merge($params, $this->getLicense(),
-                                $this->getDbConfig(),
-                                $this->getFtpConfig(),
-                                $this->getSmtpConfig(),
-                                ['setValues' => $this->getSetValues()],
-                                ['setLangs' => $this->getSetLangs()],
-                                ['smtpFieldsRequired' => $this->getSmtpFieldsRequired()]);
+                $this->getDbConfig(),
+                $this->getFtpConfig(),
+                $this->getSmtpConfig(),
+                ['setValues' => $this->getSetValues()],
+                ['setLangs' => $this->getSetLangs()],
+                ['smtpFieldsRequired' => $this->getSmtpFieldsRequired()]);
         } else {
             $params = array_merge($params, $this->compareVersions());
         }
-                                
+
 
         $params['setLang'] = Lang::getSelLang();
-        $params['upgrade'] = (bool) $this->upgrade;
+        $params['upgrade'] = (bool)$this->upgrade;
         $params['currentVersion'] = $this->upgrade;
         $params['fileVersion'] = _file_version_;
         $params['serverSwInfo'] = $request->server->get('SERVER_SOFTWARE');
         $params['phpVersionInfo'] = phpversion();
         preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $sqlClientVersion);
-        $params['sqlClientVersion'] = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1]; 
-        preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_server_info(), $sqlServerVersion);
-        $params['sqlServerVersion'] = empty($sqlServerVersion[1]) ? 'unknown' : $sqlServerVersion[1]; 
+        $params['sqlClientVersion'] = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1];
+        try {
+            preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_server_info(), $sqlServerVersion);
+        } catch (\Exception $exception) {
+            $sqlServerVersion = '';
+        }
+        $params['sqlServerVersion'] = empty($sqlServerVersion[1]) ? 'unknown' : $sqlServerVersion[1];
         $params['mbstringData'] = extension_loaded('mbstring') ? _ON : _OFF;
         $params['mimeCtData'] = $params['mimeCt'] == 'ok' ? _ON : _OFF;
-        $params['fileInfoData'] =  extension_loaded('fileinfo') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_FILEINFO;
+        $params['fileInfoData'] = extension_loaded('fileinfo') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_FILEINFO;
         $params['ldapData'] = extension_loaded('ldap') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_IT;
         $params['openSslData'] = extension_loaded('openssl') ? _ON : _OFF . ' ' . _WARINNG_SOCIAL;
         $params['phpTimezoneData'] = @date_default_timezone_get();
@@ -300,22 +312,23 @@ class InstallAdm extends Model
         $params['safeModeData'] = $params['safe_mode']['local_value'] != '' ? _ON : _OFF;
         $params['registerGlobalsData'] = $params['register_globals']['local_value'] != '' ? _ON : _OFF;
         $params['allowUrlFopenData'] = $params['allow_url_fopen']['local_value'] != '' ? _ON : _OFF . ' ' . _WARINNG_SOCIAL;
-        $params['allowUrlIncludeData'] = $params['allow_url_include']['local_value'] != '' ? _ON : _OFF; 
+        $params['allowUrlIncludeData'] = $params['allow_url_include']['local_value'] != '' ? _ON : _OFF;
         $params['uploadMaxFilesizeData'] = $params['upload_max_filesize']['local_value'];
         $params['postMaxSizeData'] = $params['post_max_size']['local_value'];
-        $params['maxExecutionTimeData'] = $params['max_execution_time']['local_value'].'s';
+        $params['maxExecutionTimeData'] = $params['max_execution_time']['local_value'] . 's';
         $params['checkFolderPerms'] = $this->checkFolderPerm();
         $params['uploadMetodFlag'] = $params['safe_mode']['local_value'] == '';
-       
+
         return $params;
     }
 
     /**
      * Method to check minimum technical requirements for installation
-     * 
+     *
      * @return array
      */
-    public function checkRequirements() : array{
+    public function checkRequirements(): array
+    {
         $res = [];
 
         $checkRequirements = 1;
@@ -371,8 +384,8 @@ class InstallAdm extends Model
         $res['requirements']['allowUrlInclude'] = ($php_conf['allow_url_include']['local_value'] ? 'err' : 'ok');
         $res['mandatory']['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
 
-      
-        if(in_array('err', $res['mandatory'])) {
+
+        if (in_array('err', $res['mandatory'])) {
             $checkRequirements = 0;
         }
 
@@ -383,39 +396,40 @@ class InstallAdm extends Model
 
     /**
      * Method to check permissions for involved folders
-     * 
+     *
      * @return string
      */
 
-    public function checkFolderPerm() : string{
-    $res = '';
+    public function checkFolderPerm(): string
+    {
+        $res = '';
 
-    $platform_folders = $this->session->get('platform_arr');
-    $file_to_check = ['config.php'];
-    $dir_to_check = [];
-    $empty_dir_to_check = [];
+        $platform_folders = $this->session->get('platform_arr');
+        $file_to_check = ['config.php'];
+        $dir_to_check = [];
+        $empty_dir_to_check = [];
 
-    // common dir to check
-    $dir_to_check = [
-        'files/tmp',
-        'files/common/comment',
-        'files/common/iofiles',
-        'files/common/users',
-    ];
+        // common dir to check
+        $dir_to_check = [
+            'files/tmp',
+            'files/common/comment',
+            'files/common/iofiles',
+            'files/common/users',
+        ];
 
-    foreach ($platform_folders as $platform_code => $dir_name) {
-        $specific_file_to_check = [];
-        $specific_dir_to_check = [];
+        foreach ($platform_folders as $platform_code => $dir_name) {
+            $specific_file_to_check = [];
+            $specific_dir_to_check = [];
 
-        if (!is_dir(_base_ . '/' . $dir_name . '/')) {
-            $install[$platform_code] = false;
-        } else {
-            $install[$platform_code] = true;
+            if (!is_dir(_base_ . '/' . $dir_name . '/')) {
+                $install[$platform_code] = false;
+            } else {
+                $install[$platform_code] = true;
 
-            $empty_specific_dir_to_check = null;
+                $empty_specific_dir_to_check = null;
 
-            switch ($platform_code) {
-                case 'lms':
+                switch ($platform_code) {
+                    case 'lms':
                         $specific_dir_to_check = [
                             'files/appLms/certificate',
                             'files/appLms/forum',
@@ -430,9 +444,9 @@ class InstallAdm extends Model
                         ];
                         $empty_specific_dir_to_check = ['files/appLms/course', 'files/appLms/scorm'];
 
-                    break;
+                        break;
 
-                case 'framework':
+                    case 'framework':
                         $specific_dir_to_check = [
                             'files/appCore/field',
                             'files/appCore/photo',
@@ -440,57 +454,58 @@ class InstallAdm extends Model
                             'files/common/users',
                         ];
 
-                    break;
+                        break;
+                }
+
+                $dir_to_check = array_merge($dir_to_check, $specific_dir_to_check);
+                $file_to_check = array_merge($file_to_check, $specific_file_to_check);
+
+                if ((is_array($specific_dir_to_check)) && (count($specific_dir_to_check) > 0) && (is_array($empty_specific_dir_to_check))) {
+                    $empty_dir_to_check = array_merge($empty_dir_to_check, $empty_specific_dir_to_check);
+                }
             }
+        }
 
-            $dir_to_check = array_merge($dir_to_check, $specific_dir_to_check);
-            $file_to_check = array_merge($file_to_check, $specific_file_to_check);
-
-            if ((is_array($specific_dir_to_check)) && (count($specific_dir_to_check) > 0) && (is_array($empty_specific_dir_to_check))) {
-                $empty_dir_to_check = array_merge($empty_dir_to_check, $empty_specific_dir_to_check);
+        // Write permission
+        $checked_dir = [];
+        foreach ($dir_to_check as $dir_name) {
+            if (!is_dir(_base_ . '/' . $dir_name . '/')) {
+                $checked_dir[] = $dir_name;
+            } elseif (!is_writable(_base_ . '/' . $dir_name . '/')) {
+                $checked_dir[] = $dir_name;
             }
         }
-    }
-
-    // Write permission
-    $checked_dir = [];
-    foreach ($dir_to_check as $dir_name) {
-        if (!is_dir(_base_ . '/' . $dir_name . '/')) {
-            $checked_dir[] = $dir_name;
-        } elseif (!is_writable(_base_ . '/' . $dir_name . '/')) {
-            $checked_dir[] = $dir_name;
+        if (!empty($checked_dir)) {
+            $res .= '<h3>' . Lang::t('_CHECKED_DIRECTORIES') . '</h3>'
+                . '<ul class="info"><li class="err">' . implode('</li><li class="err">', $checked_dir) . '</li></ul>';
         }
-    }
-    if (!empty($checked_dir)) {
-        $res .= '<h3>' . Lang::t('_CHECKED_DIRECTORIES') . '</h3>'
-            . '<ul class="info"><li class="err">' . implode('</li><li class="err">', $checked_dir) . '</li></ul>';
-    }
 
-    $checked_file = [];
-    foreach ($file_to_check as $file_name) {
-        if (!is_writable(_base_ . '/' . $file_name)) {
-            $checked_file[] = $file_name;
+        $checked_file = [];
+        foreach ($file_to_check as $file_name) {
+            if (!is_writable(_base_ . '/' . $file_name)) {
+                $checked_file[] = $file_name;
+            }
         }
-    }
-    if (!empty($checked_file)) {
-        $res .= '<h3>' . Lang::t('_CHECKED_FILES') . '</h3>'
-            . '<ul class="info"><li class="err">' . implode('</li><li class="err">', $checked_file) . '</li></ul>';
-    }
+        if (!empty($checked_file)) {
+            $res .= '<h3>' . Lang::t('_CHECKED_FILES') . '</h3>'
+                . '<ul class="info"><li class="err">' . implode('</li><li class="err">', $checked_file) . '</li></ul>';
+        }
 
-    return $res;
-    }   
+        return $res;
+    }
 
     /**
      * Method to retrieve right translated license file
-     * 
+     *
      * @return array
      */
-    public function getLicense() : array {
+    public function getLicense(): array
+    {
 
         $content = '';
-        $fn = _lib_.'/installer/license/license_'.Lang::getSelLang().'.txt';
-    
-        $english_fn = _lib_.'/installer/license/license_english.txt';
+        $fn = _lib_ . '/installer/license/license_' . Lang::getSelLang() . '.txt';
+
+        $english_fn = _lib_ . '/installer/license/license_english.txt';
 
         $handle = false;
         if ((!file_exists($fn)) && (file_exists($english_fn))) {
@@ -512,10 +527,11 @@ class InstallAdm extends Model
 
     /**
      * Method to retrieve DB settings fields
-     * 
+     *
      * @return array
      */
-    public function getDbConfig() : array {
+    public function getDbConfig(): array
+    {
         $localCfg['dbConfig'] = [
             'dbType' => '',
             'dbHost' => 'localhost',
@@ -526,7 +542,7 @@ class InstallAdm extends Model
         if (file_exists(_base_ . '/config.php')) {
             define('IN_FORMA', true);
             include _base_ . '/config.php';
-    
+
             foreach ($localCfg['dbConfig'] as $key => $value) {
                 $localCfg['dbConfig'][$key] = $cfg[HelperTool::camelCaseToSnake($key)];
             }
@@ -537,10 +553,11 @@ class InstallAdm extends Model
 
     /**
      * Method to retrieve FTP settings fields
-     * 
+     *
      * @return array
      */
-    public function getFtpConfig() : array {
+    public function getFtpConfig(): array
+    {
         $localCfg['ftpConfig'] = [
             'ftpHost' => '',
             'ftpPath' => 'localhost',
@@ -551,7 +568,7 @@ class InstallAdm extends Model
         if (file_exists(_base_ . '/config.php')) {
             define('IN_FORMA', true);
             include _base_ . '/config.php';
-    
+
             foreach ($localCfg['ftpConfig'] as $key => $value) {
                 $localCfg['ftpConfig'][$key] = $cfg[strtolower($key)];
             }
@@ -562,38 +579,39 @@ class InstallAdm extends Model
 
     /**
      * Method to retrieve SMTP settings fields
-     * 
+     *
      * @return array
      */
-    public function getSmtpConfig() : array {
-        $localCfg['smtp'] = 
-        [
-            'useSmtpDatabase' => '',
-            'useSmtp' => '',
-            'smtpHost' => 'localhost',
-            'smtpPort' => '',
-            'smtpSecure' => '',
-            'smtpAutoTls' => '',
-            'smtpUser' => '',
-            'smtpPwd' => '',
-            'smtpDebug' => '',
-            'senderMailNotification' => '',
-            'senderNameNotification' => '',
-            'senderMailSystem' => '',
-            'senderNameSystem' => '',
-            'senderCcMails' => '',
-            'senderCcnMails' => '',
-            'helperDeskMail' => '',
-            'helperDeskSubject' => '',
-            'helperDeskName' => '',
-            'replytoName' => '',
-            'replytoMail' => ''
-        ];
+    public function getSmtpConfig(): array
+    {
+        $localCfg['smtp'] =
+            [
+                'useSmtpDatabase' => '',
+                'useSmtp' => '',
+                'smtpHost' => 'localhost',
+                'smtpPort' => '',
+                'smtpSecure' => '',
+                'smtpAutoTls' => '',
+                'smtpUser' => '',
+                'smtpPwd' => '',
+                'smtpDebug' => '',
+                'senderMailNotification' => '',
+                'senderNameNotification' => '',
+                'senderMailSystem' => '',
+                'senderNameSystem' => '',
+                'senderCcMails' => '',
+                'senderCcnMails' => '',
+                'helperDeskMail' => '',
+                'helperDeskSubject' => '',
+                'helperDeskName' => '',
+                'replytoName' => '',
+                'replytoMail' => ''
+            ];
 
         if (file_exists(_base_ . '/config.php')) {
             define('IN_FORMA', true);
             include _base_ . '/config.php';
-    
+
             foreach ($localCfg['smtp'] as $key => $value) {
                 $localCfg['smtp'][$key] = $cfg[HelperTool::camelCaseToSnake($key)];
             }
@@ -605,7 +623,7 @@ class InstallAdm extends Model
             'on' => _YES,
             'off' => _NO,
         ];
-    
+
         $localCfg['secureSelect'] = ['ssl' => 'SSL', 'tls' => 'TLS'];
 
         return $localCfg;
@@ -613,33 +631,34 @@ class InstallAdm extends Model
 
     /**
      * Method to set value in session
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
+     *
      * @return bool
      */
-    public function setValue($request) : bool {
+    public function setValue($request): bool
+    {
         $params = $request->request->all();
         $result = false;
-        foreach($params as $keyParam => $paramValue) {
-            if($paramValue === 'true') {
+        foreach ($params as $keyParam => $paramValue) {
+            if ($paramValue === 'true') {
                 $paramValue = true;
             }
 
-            if($paramValue === 'false') {
+            if ($paramValue === 'false') {
                 $paramValue = false;
             }
 
-            if($keyParam === 'selectLangs' || $keyParam === 'deselectLangs') {
-                $result =  $this->setLangs($paramValue , $keyParam === 'selectLangs' ? 1 : 0);
+            if ($keyParam === 'selectLangs' || $keyParam === 'deselectLangs') {
+                $result = $this->setLangs($paramValue, $keyParam === 'selectLangs' ? 1 : 0);
             } else {
                 //per retrocompatibilità
-                if('sel_lang' === $keyParam) {
+                if ('sel_lang' === $keyParam) {
                     $this->session->set($keyParam, $paramValue);
                     $this->session->save();
                     $result = true;
                 } else {
-                    $result =  $this->saveValue($keyParam, $paramValue);
+                    $result = $this->saveValue($keyParam, $paramValue);
                 }
             }
         }
@@ -649,13 +668,14 @@ class InstallAdm extends Model
 
     /**
      * Method to save value in session
-     * 
+     *
      * @param string $key identifier for index in session
      * @param string $value value to save actually in session
-     * 
+     *
      * @return bool
      */
-    public function saveValue($key, $value) : bool{
+    public function saveValue($key, $value): bool
+    {
 
         $values = $this->session->get('setValues');
         $values[$key] = $value;
@@ -663,129 +683,135 @@ class InstallAdm extends Model
         $this->session->save();
 
         return true;
-     }
+    }
 
     /**
      * Method to set languages
-     * 
-     * 
+     *
+     *
      * @param string $value value to save actually in session
      * @param int $add idex to determine if it's a new setting to add or to remove
-     * 
+     *
      * @return bool
      */
-    public function setLangs($value, $add = 1) : bool {
+    public function setLangs($value, $add = 1): bool
+    {
 
         $values = $this->session->get('setLangs');
-        if($add) {
+        if ($add) {
             $values[$value] = $value;
         } else {
             unset($values[$value]);
         }
-        
+
         $this->session->set('setLangs', $values);
         $this->session->save();
 
         return true;
-     }
+    }
 
     /**
      * Method to get compiled fields value from session
-     * 
+     *
      * @return array
      */
-    public function getSetValues() : array{
+    public function getSetValues(): array
+    {
 
-        $values = $this->session->get('setValues',[]);
-        if(!in_array('uploadMethod', array_keys($values))) {
+        $values = $this->session->get('setValues', []);
+        if (!in_array('uploadMethod', array_keys($values))) {
             $values['uploadMethod'] = 'http';
         }
 
-        if(!in_array('step', array_keys($values))) {
+        if (!in_array('step', array_keys($values))) {
             $values['step'] = 0;
         }
-        return  $values;
+        return $values;
     }
 
     /**
      * Method to get checked languages from session
-     * 
+     *
      * @return array
      */
-    public function getSetLangs() : ?array{
+    public function getSetLangs(): ?array
+    {
         return $this->session->get('setLangs');
     }
 
     /**
      * Method to check admin user compiled value
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
+     *
      * @return string
      */
-    public function checkAdminData($request) : string{
+    public function checkAdminData($request): string
+    {
         $messages = [];
         $params = $request->request->all();
 
-        foreach($params as $key => $param) {
-            if('' == $param) {
-                $messages[] = $this->errorLabels['missing_field'] .":".$this->labels[$key.'Label'];
+        foreach ($params as $key => $param) {
+            if ('' == $param) {
+                $messages[] = $this->errorLabels['missing_field'] . ":" . $this->labels[$key . 'Label'];
             }
         }
 
-        if(count($messages)) {
+        if (count($messages)) {
             return $this->setResponse(false, $messages)->wrapResponse();
         }
 
         //controllo che le password siano coincidenti e che il campo mail sia una mail
         return $this->validateAdminData($params['adminPassword'], $params['adminConfpass'], $params['adminEmail']);
-      
+
     }
 
     /**
      * Method to check smtp compiled value
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
+     *
      * @return string
      */
-    public function checkSmtpData($request) : string {
+    public function checkSmtpData($request): string
+    {
         $messages = [];
         $params = $request->request->all();
 
-        foreach($params as $key => $param) {
-            if('' == $param) {
-                $messages[] = $this->errorLabels['missing_field'] .":".$this->labels['smtpLabels'][$key];
+        foreach ($params as $key => $param) {
+            if ('' == $param) {
+                $messages[] = $this->errorLabels['missing_field'] . ":" . $this->labels['smtpLabels'][$key];
             }
         }
 
-        if(count($messages)) {
+        if (count($messages)) {
             return $this->setResponse(false, $messages)->wrapResponse();
         }
 
         //controllo la connessione
         return $this->validateSmtpData($params);
-      
+
     }
 
     /**
      * Method to check db compiled value
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
+     *
      * @return string
      */
-    public function checkDbData($request) : string{
+    public function checkDbData($request): string
+    {
         $messages = [];
         $params = $request->request->all();
 
-        foreach($params as $key => $param) {
-            if('' == $param) {
-                $messages[] = $this->errorLabels['missing_field'] .":".$this->labels[$key.'Label'];
+        foreach ($params as $key => $param) {
+            if ('' == $param) {
+                $messages[] = $this->errorLabels['missing_field'] . ":" . $this->labels[$key . 'Label'];
             }
         }
 
-        if(count($messages)) {
+        if (count($messages)) {
             return $this->setResponse(false, $messages)->wrapResponse();
         }
         $checkConnection = $this->checkConnection($params['dbHost'], $params['dbName'], $params['dbUser'], $params['dbPass']);
@@ -795,23 +821,26 @@ class InstallAdm extends Model
 
     /**
      * Method to check DB connection existence
-     * 
+     *
      * @param string $db_host Host for DB
      * @param string $db_name Name of DB
      * @param string $db_user User for DB
      * @param string $db_pass Password for DB
-     * 
+     *
      * @return string
      */
-    private function checkConnection($db_host, $db_name, $db_user, $db_pass) : string{
+    private function checkConnection($db_host, $db_name, $db_user, $db_pass): string
+    {
         $result = 'err_connect';
 
-        $GLOBALS['db_link'] = DbConn::getInstance(false, [
-            'db_type' => 'mysql',
-            'db_host' => $db_host,
-            'db_user' => $db_user,
-            'db_pass' => $db_pass,
-        ]);
+        $GLOBALS['db_link'] = DbConn::getConnection(
+            'mysqli',
+            $db_host,
+            $db_user,
+            $db_pass,
+            $db_name,
+            true
+        );
         if ($GLOBALS['db_link']::$connected) {
             if ($db_name == '') {
                 return 'err_db_sel';
@@ -829,51 +858,53 @@ class InstallAdm extends Model
 
     /**
      * Method to validate admin fields
-     * 
+     *
      * @param string $password password inserted for admin
      * @param string $confirmPassword confirm password inserted for admin
      * @param string $email email for admin
-     * 
+     *
      * @return string
      */
-    private function validateAdminData($password, $confirmPassword, $email) : string {
+    private function validateAdminData($password, $confirmPassword, $email): string
+    {
         $success = true;
         $messages = [];
 
-        if($password != $confirmPassword) {
+        if ($password != $confirmPassword) {
             $success = false;
             $messages[] = $this->errorLabels['not_matching_password'];
         }
 
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $success = false;
             $messages[] = $this->errorLabels['email_not_valid'];
         }
-    
+
         return $this->setResponse($success, $messages)->wrapResponse();
 
     }
 
     /**
      * Method to validate smtp fields
-     * 
+     *
      * @param array $params Array picker for parameters
-     * @param string $params['smtpHost'] host for smtp
-     * @param string $params['smtpPort'] port for smtp
-     * @param string $params['smtpSecure'] secure for smtp
-     * @param string $params['smtpAutoTls'] tls for smtp
-     * @param string $params['smtpUser'] user for smtp
-     * @param string $params['smtpPwd'] password for smtp
-     * 
+     * @param string $params ['smtpHost'] host for smtp
+     * @param string $params ['smtpPort'] port for smtp
+     * @param string $params ['smtpSecure'] secure for smtp
+     * @param string $params ['smtpAutoTls'] tls for smtp
+     * @param string $params ['smtpUser'] user for smtp
+     * @param string $params ['smtpPwd'] password for smtp
+     *
      * @return string
      */
-    private function validateSmtpData($params) : string{
+    private function validateSmtpData($params): string
+    {
         $success = true;
         $messages = [];
 
         $success = $this->checkSmtpConnection($params['smtpHost'], $params['smtpPort'], $params['smtpSecure'], $params['smtpAutoTls'], $params['smtpUser'], $params['smtpPwd']);
 
-        if(!$success) {
+        if (!$success) {
             $messages[] = $this->errorLabels['smtp_failed'];
         }
         return $this->setResponse($success, $messages)->wrapResponse();
@@ -882,17 +913,18 @@ class InstallAdm extends Model
 
     /**
      * Method to validate smtp connection
-     * 
+     *
      * @param string $smtpHost host for smtp
      * @param string $smtpPort port for smtp
      * @param string $smtpSecure secure for smtp
      * @param string $smtpAutoTls tls for smtp
      * @param string $smtpUser user for smtp
      * @param string $smtpPwd password for smtp
-     * 
+     *
      * @return bool
      */
-    public function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd) : bool {
+    public function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd): bool
+    {
         $mail = new PHPMailer\PHPMailer\PHPMailer();
 
         $mail->Host = $smtpHost;
@@ -920,56 +952,57 @@ class InstallAdm extends Model
 
     /**
      * Method to validate db connection
-     * 
+     *
      * @param string $connectionResult sql connection result
      * @param string $dbName name for DB
-     * 
+     *
      * @return string
      */
-    private function validateConnection($connectionResult, $dbName) : string{
+    private function validateConnection($connectionResult, $dbName): string
+    {
         $success = false;
         $messages = [];
         $removeCreateDb = false;
         switch ($connectionResult) {
             case 'create_db':
-                    //mi salvo in sessione che devo creare il db
-                    $this->session->set('creationDb', $dbName);
-                    $this->session->save();
-                    $success = true;
+                //mi salvo in sessione che devo creare il db
+                $this->session->set('creationDb', $dbName);
+                $this->session->save();
+                $success = true;
 
                 break;
             case 'ok':
                 $removeCreateDb = true;
-                    if ($this->checkDBEmpty($dbName)) {
-                        if ($this->checkDBCharset()) {
-                            $success = true;
-                        } else {
-                            $success = false;
-                            $messages[] = $this->errorLabels['db_not_utf8'];
-                     
-                        }
+                if ($this->checkDBEmpty($dbName)) {
+                    if ($this->checkDBCharset()) {
+                        $success = true;
                     } else {
                         $success = false;
-                        $messages[] = $this->errorLabels['db_not_empty'];
+                        $messages[] = $this->errorLabels['db_not_utf8'];
+
                     }
+                } else {
+                    $success = false;
+                    $messages[] = $this->errorLabels['db_not_empty'];
+                }
 
                 break;
             case 'err_connect':
                 $removeCreateDb = true;
-                    $success = false;
-                    $messages[] =  $this->errorLabels['cant_connect_db'];
+                $success = false;
+                $messages[] = $this->errorLabels['cant_connect_db'];
 
                 break;
             case 'err_db_sel':
                 $removeCreateDb = true;
-                    $success = false;
-                    $messages[] = $this->errorLabels['cant_select_db'];
-          
+                $success = false;
+                $messages[] = $this->errorLabels['cant_select_db'];
+
                 break;
             default:
         }
 
-        if($removeCreateDb && $this->session->has('creationDb')) {
+        if ($removeCreateDb && $this->session->has('creationDb')) {
             //rimuovo dalla sessione il valore di creazione db
             $this->session->remove('creationDb');
             $this->session->save();
@@ -981,12 +1014,13 @@ class InstallAdm extends Model
 
     /**
      * Method to check if DB is empty
-     * 
+     *
      * @param string $dbName name for DB
-     * 
+     *
      * @return bool
      */
-    public function checkDBEmpty($dbName) : bool{
+    public function checkDBEmpty($dbName): bool
+    {
         $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $dbName . "'", $GLOBALS['db_link']);
         list($count) = sql_fetch_row($row);
 
@@ -995,11 +1029,12 @@ class InstallAdm extends Model
 
     /**
      * Method to check the charset of db
-     * 
-     * 
+     *
+     *
      * @return bool
      */
-    public function checkDBCharset() : bool{
+    public function checkDBCharset(): bool
+    {
         $row = sql_query("show variables like 'character_set_database'", $GLOBALS['db_link']);
         list(, $charset) = sql_fetch_row($row);
 
@@ -1009,19 +1044,20 @@ class InstallAdm extends Model
 
     /**
      * Method to check ftp inserted data
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
+     *
      * @return string
      */
-    public function checkFtp($request) : string{
+    public function checkFtp($request): string
+    {
         $messages = [];
         $timeout = 10;
         $params = $request->request->all();
 
-        foreach($params as $key => $param) {
-            if('' == $param) {
-                $messages[] = $this->errorLabels['missing_field'] .":".$this->labels[$key.'Label'];
+        foreach ($params as $key => $param) {
+            if ('' == $param) {
+                $messages[] = $this->errorLabels['missing_field'] . ":" . $this->labels[$key . 'Label'];
             }
         }
 
@@ -1029,11 +1065,11 @@ class InstallAdm extends Model
             $messages[] = $this->errorLabels['ftp_not_supported'];
         }
 
-        if(count($messages)) {
+        if (count($messages)) {
             return $this->setResponse(false, $messages)->wrapResponse();
         }
 
-       
+
         $ftpConnection = ftp_connect($params['ftpHost'], $params['ftpPort'], $timeout);
         if ($ftpConnection === false) {
             return $this->setResponse(false, [$this->errorLabels['ftp_connection_fail']])->wrapResponse();
@@ -1041,7 +1077,7 @@ class InstallAdm extends Model
 
         $ftpLogin = ftp_login($ftpConnection, $params['ftpUser'], $params['ftpPass']);
 
-        if(!$ftpLogin) {
+        if (!$ftpLogin) {
             $messages[] = $this->errorLabels['ftp_login_fail'];
         }
 
@@ -1050,45 +1086,46 @@ class InstallAdm extends Model
 
     /**
      * Method to finalize the installation step by step
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
+     *
      * @return string
      */
-    public function finalize($request) : string {
+    public function finalize($request): string
+    {
 
         $params = $request->request->all();
         $messages = [];
 
-        if($params['upgrade']) {
+        if ($params['upgrade']) {
 
-            switch($params['check']) {
+            switch ($params['check']) {
                 case 1:
                     //se c'è da installare metto la tabella doctrine migrations
-                    if(version_compare($this->upgrade, $this->minSupportedVersion) == 0 && version_compare(_file_version_, $this->minUpgradeVersion) >= 0) {
+                    if (version_compare($this->upgrade, $this->minSupportedVersion) == 0 && version_compare(_file_version_, $this->minUpgradeVersion) >= 0) {
                         $success = $this->installMigrationsTable();
 
-                        if($success) {
+                        if ($success) {
                             $messages[] = _VERSION_STEP_OK;
                         } else {
-                            $messages[] =  _VERSION_STEP_ERROR;
+                            $messages[] = _VERSION_STEP_ERROR;
                         }
                     }
                     break;
-    
+
                 case 2:
                     //lancio migrate
                     $messages[] = $this->migrate();
 
                     $success = $this->saveUpgradeVersion();
-                    if($success) {
+                    if ($success) {
                         $messages[] = _UPGRADE_STEP_SUCCESS;
                     } else {
                         $messages[] = _UPGRADE_STEP_ERROR;
                     }
 
                     $success = $this->setDefaultTemplate();
-                    if($success) {
+                    if ($success) {
                         $messages[] = _TEMPLATE_STEP_SUCCESS;
                     } else {
                         $messages[] = _TEMPLATE_STEP_ERROR;
@@ -1096,7 +1133,7 @@ class InstallAdm extends Model
                     recursiveRmdir(FormaLms\appCore\Template\TwigManager::getCacheDir());
                     $messages[] = _CLEARTWIG_CACHE_OK;
 
-                
+
                     break;
             }
 
@@ -1105,50 +1142,49 @@ class InstallAdm extends Model
         }
 
 
-
-        switch($params['check']) {
+        switch ($params['check']) {
             case 1:
-                 //genero il file config
-                 $this->saveConfig();
+                //genero il file config
+                $this->saveConfig();
 
-                 //controllo esistenza file config
+                //controllo esistenza file config
                 $success = file_exists(_base_ . '/config.php');
-                if($success) {
+                if ($success) {
                     $messages[] = _CONFIG_STEP_SUCCESS;
                 } else {
                     $messages[] = _CONFIG_STEP_ERROR;
                 }
-                
+
                 break;
 
             case 2:
-               
+
                 $messages[] = $this->migrate();
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation($this->session->get('setValues'));
-        
-            
+
+
                 break;
             case 3:
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = $this->registerAdminUser() && $this->storeSettings() && $this->addInstallerRoles();
-          
-                if($success) {
+
+                if ($success) {
                     $messages[] = _ADMIN_STEP_SUCCESS;
                 } else {
                     $messages[] = _ADMIN_STEP_ERROR;
                 }
-            
+
                 break;
 
             case 4:
-                  
-               //inserisco file di lingua
-               $success = $this->importLangs();
-           
-                if($success) {
+
+                //inserisco file di lingua
+                $success = $this->importLangs();
+
+                if ($success) {
                     $messages[] = _LANG_STEP_SUCCESS;
                 } else {
                     $messages[] = _LANG_STEP_ERROR;
@@ -1156,49 +1192,51 @@ class InstallAdm extends Model
                 break;
 
             case 5:
-            
-            //verifico smtp 
-            $success = $this->saveSmtpToDatabase();
-         
-            if($success) {
-                $messages[] = _MAIL_STEP_SUCCESS;
-            } else {
-                $messages[] = _MAIL_STEP_ERROR;
-            }
+
+                //verifico smtp
+                $success = $this->saveSmtpToDatabase();
+
+                if ($success) {
+                    $messages[] = _MAIL_STEP_SUCCESS;
+                } else {
+                    $messages[] = _MAIL_STEP_ERROR;
+                }
 
                 break;
 
             default:
                 $success = false;
                 $messages[] = _NOT_SUPPORTED_OPERATION;
-               
+
                 break;
         }
-     
+
         return $this->setResponse($success, $messages)->wrapResponse();
     }
 
     /**
      * Method to install database through Doctrine migration command
-     * 
+     *
      * @return string
      */
-    private function migrate() {
+    private function migrate()
+    {
 
         $migrationFile = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
         $mainPath = dirname(__DIR__, 2);
-        return shell_exec("php " . $migrationFile . " migrate --configuration=" . $mainPath ."/migrations.yaml --db-configuration=" . $mainPath ."/migrations-db.php 2>&1");
-      
+        return shell_exec("php " . $migrationFile . " migrate --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php 2>&1");
+
     }
 
     /**
      * Method to check the integrity of installation
-     * 
+     *
      * @param array $values parameters for connection db
-     * 
+     *
      * @return bool
      */
-    public static function checkDbInstallation($values) : bool {
+    public static function checkDbInstallation($values): bool
+    {
 
         DbConn::getInstance(false,
             [
@@ -1210,19 +1248,20 @@ class InstallAdm extends Model
             ]
         );
 
-        return (bool) sql_query("SELECT * FROM `core_setting`");
+        return (bool)sql_query("SELECT * FROM `core_setting`");
     }
 
     /**
      * Method to check the integrity of installation
-     * 
+     *
      * @param bool $success flag to detect the output of a method
      * @param array $messages array of transalted string messages
-     * 
+     *
      * @return self
      */
-    public function setResponse($success = false, $messages = []) : self {
-        
+    public function setResponse($success = false, $messages = []): self
+    {
+
         $this->response['success'] = $success;
         $this->response['messages'] = $messages;
 
@@ -1231,16 +1270,17 @@ class InstallAdm extends Model
 
     /**
      * Method to get error messages
-     * 
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
+     *
      * @return array
      */
-    public function getErrorMessages($request) :array {
+    public function getErrorMessages($request): array
+    {
         $params = $request->request->all();
         $messages = [];
-        foreach($params as $key=>$value) {
-            if($value) {
+        foreach ($params as $key => $value) {
+            if ($value) {
                 $messages[] = $this->errorLabels[$key];
             }
         }
@@ -1248,24 +1288,25 @@ class InstallAdm extends Model
         return $messages;
     }
 
-     /**
+    /**
      * Method to wrap response for user interface
-     * 
+     *
      * @param boolean $success Response of an action
      * @param array $messages Array of retrun messages
-     * 
+     *
      * @return string
      */
 
-    public function wrapResponse($success = false, $messages = []) {
-        
+    public function wrapResponse($success = false, $messages = [])
+    {
+
         return json_encode($this->response);
     }
 
 
-      /**
+    /**
      * Method to save configuration file
-     * 
+     *
      * @return void
      */
 
@@ -1273,7 +1314,7 @@ class InstallAdm extends Model
     {
         // ----------- Generating config file -----------------------------
         $config = '';
-        $fn = _base_ .'/config_template.php';
+        $fn = _base_ . '/config_template.php';
 
         $config = $this->generateConfig($fn);
 
@@ -1295,9 +1336,9 @@ class InstallAdm extends Model
 
     /**
      * Method to generate config file from standard file
-     * 
+     *
      * @param string $tpl_fn
-     * 
+     *
      * @return string
      */
     private function generateConfig($tpl_fn)
@@ -1367,15 +1408,15 @@ class InstallAdm extends Model
         return $config;
     }
 
-      /**
+    /**
      * Method to register seed admin user
-     * 
+     *
      * @return boolean
      */
     private function registerAdminUser()
     {
         // ----------- Registering admin user ---------------------------------
-    
+
 
         $values = $this->session->get('setValues');
 
@@ -1424,10 +1465,10 @@ class InstallAdm extends Model
         return $q;
     }
 
-      /**
+    /**
      * Method to store settings in db
-     * 
-     * 
+     *
+     *
      * @return boolean
      */
     private function storeSettings()
@@ -1457,10 +1498,10 @@ class InstallAdm extends Model
         return $q;
     }
 
-      /**
+    /**
      * Method to install default roles for admin
-     * 
-     * 
+     *
+     *
      * @return boolean
      */
     private function addInstallerRoles()
@@ -1481,132 +1522,135 @@ class InstallAdm extends Model
         return true;
     }
 
-      /**
+    /**
      * Method to import languages file
-     * 
-     * 
+     *
+     *
      * @return boolean
      */
     private function importLangs()
     {
         $LangAdm = new LangAdm();
         $langsToInstall = $this->session->get('setLangs');
-        foreach($langsToInstall as $lang) {
+        foreach ($langsToInstall as $lang) {
             $fn = _base_ . '/xml_language/lang[' . $lang . '].xml';
 
             if (file_exists($fn)) {
-              
+
                 $LangAdm->importTranslation($fn, true, false);
             }
         }
-        
+
         return true;
     }
 
 
-      /**
+    /**
      * Method to save smtp data in db
-     * 
-     * 
+     *
+     *
      * @return boolean
      */
     private function saveSmtpToDatabase()
     {
         $result = true;
-       
+
         $values = $this->session->get('setValues');
-        if($values['useSmtpDatabase'] == 'on') {
+        if ($values['useSmtpDatabase'] == 'on') {
             DbConn::getInstance(false,
-            [
-                'db_type' => 'mysqli',
-                'db_host' => $values['dbHost'],
-                'db_user' => $values['dbUser'],
-                'db_pass' => $values['dbPass'],
-                'db_name' => $values['dbName'],
-            ]
+                [
+                    'db_type' => 'mysqli',
+                    'db_host' => $values['dbHost'],
+                    'db_user' => $values['dbUser'],
+                    'db_pass' => $values['dbPass'],
+                    'db_name' => $values['dbName'],
+                ]
             );
 
             $mailConfigs = $this->getSmtpConfig();
 
             $queryInsert = 'INSERT INTO'
-            . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
+                . ' %adm_mail_configs (title, system) VALUES ("DEFAULT", "1")';
 
             $result = sql_query($queryInsert);
 
             $mailConfigId = sql_insert_id();
 
-            foreach($mailConfigs['smtp'] as $type => $value) {
+            foreach ($mailConfigs['smtp'] as $type => $value) {
 
-                $realValue = $values[$type] ?? $value; 
+                $realValue = $values[$type] ?? $value;
                 $queryInsert = 'INSERT INTO'
-                . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("'. $mailConfigId .'", "'. $type .'", "'. $realValue .'")';
+                    . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("' . $mailConfigId . '", "' . $type . '", "' . $realValue . '")';
                 $result = sql_query($queryInsert);
             }
         }
-        
+
         return $result;
 
     }
 
     /**
      * Method to save fields in session
-     * 
-    * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     * 
-     * 
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
+     *
+     *
      * @return self
      */
-    public function saveFields($request) {
+    public function saveFields($request)
+    {
 
         $params = $request->request->all();
-        
-        foreach($params as $key => $value) {
-            if('lang_install' === $key) {
-                foreach($values as $lang) {
+
+        foreach ($params as $key => $value) {
+            if ('lang_install' === $key) {
+                foreach ($values as $lang) {
                     $this->setLangs($lang);
                 }
             } else {
                 $this->saveValue($key, $value);
             }
-            
+
         }
 
         return $this->setResponse(true, [])->wrapResponse();
     }
 
 
-     /**
+    /**
      * Method to determine if installation or upgrade
-     * 
-     * 
+     *
+     *
      * @return boolean
      */
-    public function isUpgrade() {
+    public function isUpgrade()
+    {
         $connection = DbConn::getInstance();
-        
-        if($connection::$connected) {
+
+        if ($connection::$connected) {
             list($currentVerion) = sql_fetch_row(sql_query("SELECT param_value FROM core_setting WHERE param_name = 'core_version' "));
 
-            if($currentVerion) {
+            if ($currentVerion) {
                 return $currentVerion;
             }
         }
 
         return false;
     }
-  
+
     /**
      * Method to compare version file and db version
-     * 
-     * 
+     *
+     *
      * @return array
      */
-    public function compareVersions() {
+    public function compareVersions()
+    {
         $result = [];
 
         $compareMinVersion = version_compare($this->upgrade, $this->minSupportedVersion);
 
-        if(0 > $compareMinVersion) {
+        if (0 > $compareMinVersion) {
 
             //not supported
             $result['upgradeTrigger'] = 0;
@@ -1615,12 +1659,12 @@ class InstallAdm extends Model
         } else {
             $compareResult = version_compare($this->upgrade, _file_version_);
 
-            if(0 > $compareResult) {
+            if (0 > $compareResult) {
                 //ok the upgrade is possible
                 $result['upgradeTrigger'] = 1;
                 $result['upgradeClass'] = 'ok';
                 $result['upgradeResult'] = _OK_UPGRADE;
-            } elseif(0 < $compareResult) {
+            } elseif (0 < $compareResult) {
                 //installed version is major than detected
                 $result['upgradeTrigger'] = 0;
                 $result['upgradeClass'] = 'err';
@@ -1634,17 +1678,18 @@ class InstallAdm extends Model
             }
         }
 
-        return $result ;
+        return $result;
     }
 
     /**
      * Method to install migration table if database already ecists
-     * 
-     * 
+     *
+     *
      * @return boolean
      */
-    public function installMigrationsTable() {
-        
+    public function installMigrationsTable()
+    {
+
         $connection = DbConn::getInstance();
         $createQuery = "CREATE TABLE IF NOT EXISTS`core_migration_versions`  (
             `version` varchar(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
@@ -1655,10 +1700,10 @@ class InstallAdm extends Model
 
         $creationTable = sql_query($createQuery);
 
-        if($creationTable) {
-            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000001','" . (new Datetime())->format("Y-m-d H:i:s") ."', 1000)");
-            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000002','" . (new Datetime())->format("Y-m-d H:i:s") ."', 1000)");
-            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000003','" . (new Datetime())->format("Y-m-d H:i:s") ."', 1000)");
+        if ($creationTable) {
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000001','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000002','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
+            sql_query("INSERT IGNORE INTO `core_migration_versions`(`version`, `executed_at`, `execution_time`) VALUES ('Formalms\\\Migrations\\\Version20220815000003','" . (new Datetime())->format("Y-m-d H:i:s") . "', 1000)");
         }
 
         return $creationTable;
@@ -1666,23 +1711,25 @@ class InstallAdm extends Model
 
     /**
      * Method to save file version in db
-     * 
-     * 
+     *
+     *
      * @return boolean
      */
-    private function saveUpgradeVersion() {
+    private function saveUpgradeVersion()
+    {
 
-        $qtxt = "UPDATE core_setting SET param_value='" . _file_version_ ."' WHERE param_name='core_version'";
+        $qtxt = "UPDATE core_setting SET param_value='" . _file_version_ . "' WHERE param_name='core_version'";
         return sql_query($qtxt);
     }
 
     /**
      * Method to set standard template after upgrade
-     * 
-     * 
+     *
+     *
      * @return boolean
      */
-    private function setDefaultTemplate() {
+    private function setDefaultTemplate()
+    {
 
         $qtxt = "UPDATE core_setting SET param_value='standard' WHERE param_name='defaultTemplate'";
         return sql_query($qtxt);

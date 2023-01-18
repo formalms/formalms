@@ -20,6 +20,8 @@ DirectoryIndex index.php index.html index.htm
         RewriteRule ^(.*)/$ /$1 [R=301,L]
 
         RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteRule ^(.*)/upgrade?$ /$1/index.php?r=adm/install/show
+        RewriteRule ^(.*)/install?$ /$1/index.php?r=adm/install/show
         RewriteRule ^upgrade?$ /index.php?r=adm/install/show
         RewriteRule ^install?$ /index.php?r=adm/install/show
 </IfModule>

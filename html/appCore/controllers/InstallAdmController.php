@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 class InstallAdmController extends AdmController
 {
 
-    protected $model;
+    protected InstallAdm $model;
   
     public function init()
     {
