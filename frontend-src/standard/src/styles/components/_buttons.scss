@@ -237,7 +237,7 @@
 .forma-button--info {
   background: var(--color-info);
   border: 2px solid var(--color-info-text);
-
+  color: var(--color-info-text);
   .forma-button__label {
     &:after {
       display: none;
