@@ -1,5 +1,6 @@
 :root {
 
+  // Statics
   --color-0: hsla(0, 0%, 40%, 1.0);
   --color-transparent: transparent;
   --color-white: hsla(0, 0%, 100%, 1.0);
@@ -8,8 +9,10 @@
   --color-grey-03: hsla(0, 0%, 60%, 1.0);
   --color-grey-04: hsla(0, 0%, 25%, 1.0);
   --color-black: hsla(0, 0%, 0%, 1.0);
+  --color-disabled: rgb(220, 220, 220); // FISSO
+  --color-disabled-text: rgb(173, 173, 173); // FISSO
 
-
+  // Dynamics
   --color-navbtn-bg: hsla(27, 96%, 80%, 1.0);
   --color-navbtn-text: hsla(0, 0%, 100%, 1.0); // calcolato automaticamente questo dovrebbe essere uno dei due colori calcolati (di default grigio scuro)
   --color-navbtn-bg-inter: hsla(27, 96%, 47%, 1.0);
@@ -34,17 +37,4 @@
   --color-warning-text: rgb(57, 57, 57); // automatico
   --color-error: #E73E1B;
   --color-error-text: hsla(0, 0%, 100%, 1.0); // automatico
-
-  --color-disabled: rgb(220, 220, 220); // FISSO
-  --color-disabled-text: rgb(173, 173, 173); // FISSO
-
-  // Restanti da sostituire
-  --color-3-400: hsla(19, 100%, 60%, 1.0);
-  --color-3-450: hsla(19, 100%, 55%, 1.0);  
-  --color-5:hsla(37, 92%, 55%, 1.0);
-  --color-5-100: hsla(37, 92%, 90%, 1.0);
-  --color-6: hsla(89, 100%, 42%, 1.0);
-  --color-6-500: hsla(89, 100%, 50%, 1.0);
-  --color-6-800: hsla(89, 100%, 20%, 1.0);
-
 }

@@ -555,6 +555,7 @@ header.header {
 
 .navbar-nav {
   .badge {
-    background-color: var(--color-3-400);
+    background-color: var(--color-warning);
+    color: var(--color-warning-text);
   }
 }

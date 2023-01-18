@@ -182,8 +182,8 @@
 //
 // Style guide: 2.3
 .forma-button--green {
-  background: var(--color-6);
-  border: 2px solid var(--color-6);
+  background: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
 }
 .forma-button--secondary {
   background: var(--color-secondary);
@@ -201,12 +201,12 @@
 // Style guide: 2.4
 .forma-button--green-border {
   background-color: transparent;
-  border: solid 2px var(--color-6);
-  color: var(--color-6);
+  border: solid 2px var(--color-secondary);
+  color: var(--color-secondary);
 
   &:hover {
-    background-color: var(--color-6);
-    border-color: var(--color-6);
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
     color: var(--color-white);
   }
 }

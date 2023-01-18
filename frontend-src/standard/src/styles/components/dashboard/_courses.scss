@@ -106,7 +106,7 @@
       width: 9px;
       height: 9px;
       @include center-object(y, absolute);
-      background-color: var(--color-6);
+      background-color: var(--color-secondary);
       border-radius: 50%;
       left: -12px;
     }
@@ -155,7 +155,7 @@
     height: 0;
     border-style: solid;
     border-width: 6px 0 6px 10px;
-    border-color: transparent transparent transparent var(--color-6);
+    border-color: transparent transparent transparent var(--color-secondary);
     @include center-object(y, absolute);
     left: -11px;
   }
