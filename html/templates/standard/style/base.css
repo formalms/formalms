@@ -385,6 +385,17 @@ ul.style_none li{list-style:none; }
 .yui-skin-docebo .form_autocomplete_container{display:inline; }
 .yui-skin-docebo .form_autocomplete_container .yui-ac-input{position:static; width:20em;}
 .yui-skin-docebo .form_autocomplete_container .yui-ac-container{width:20em;}
+div.yui-ac-container div.yui-ac-content {
+    width: 280px !important;
+}
+
+div.yui-ac-container div.yui-ac-content li span{
+    font-size: 17px !important;
+}
+
+div.yui-ac-container div.yui-ac-content li{
+    font-size: 17px !important;
+}
 /* Filers and advanced filters */
 .advanced_search{display:inline-block;display:-moz-inline-box;margin:0 0 4px;font-size:83%;}
 .simple_search_box{display:block;}
