@@ -918,7 +918,9 @@ class CourseAlmsController extends AlmsController
                         if (array_key_exists((int) $oldPrerequisite, $learningObjectsIdOrgs)) {
                             $newLearningObjectId = $learningObjectsIdOrgs[(int) $oldPrerequisite];
 
-                            $newPrerequisites[] = $newLearningObjectId;
+                            if ($newLearningObjectId !== $newIdReference) {
+                                $newPrerequisites[] = $newLearningObjectId;
+                            }
                         }
                     }
                     if (!empty($newPrerequisites)) {

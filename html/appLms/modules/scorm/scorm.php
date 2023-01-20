@@ -377,7 +377,7 @@ function _scorm_copyitem($idscorm_package, $idscorm_organization)
     $scopath = str_replace('\\', '/', _files_ . '/appLms/' . FormaLms\lib\Get::sett('pathscorm'));
 
     /* copy package record */
-    $rs_package = sql_query("SELECT idpackage,idProg,'" . $path . "',defaultOrg,idUser,scormVersion "
+    $rs_package = sql_query("SELECT idpackage,idProg,\"" . $path . "\",defaultOrg,idUser,scormVersion "
         . ' FROM %lms_scorm_package '
         . " WHERE idscorm_package='" . (int) $idscorm_package . "'");
 
