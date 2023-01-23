@@ -49,6 +49,7 @@ $tab-filter-icons: 'all', '0', '1', '2';
 @each $icon in $tab-filter-icons {
   .icon--filter-#{$icon} {
     &:before {
+      -webkit-mask-repeat: round;
       -webkit-mask-image: url('images/icons/course-filter/icon--filter-#{$icon}.svg');
       background-color: var(--color-wrapper-text);
       -webkit-mask-size: contain;

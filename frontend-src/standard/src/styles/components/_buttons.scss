@@ -507,9 +507,15 @@ a.btn.btn-default {
 }
 
 .create-object-button {
-  background: #B2CE4F !important;
-  color: white;
+  background: var(--color-action-button) !important;
+  color:  var(--color-action-button-text);
   font-weight: bold;
   text-shadow: 0 0 black;
   border-color: transparent !important;
+  &:hover {
+    color:  var(--color-action-button-text);
+  }
+  &:active {
+    color:  var(--color-action-button-text);
+  }
 }

@@ -95,7 +95,7 @@
 
 .section-coourse__title {
   padding-top: 30px;
-  color: #333;
+  color: var(--color-primary);
   font-weight: bold;
 
   @include breakpoint($tablet) {
@@ -106,13 +106,13 @@
 .section-coourse__menu {
   overflow: visible;
   border-bottom: none;
-  background-color: var(--color-wrapper-bg);
+  background-color: var(--color-grey);
   ul li a {
     padding: 2px;
   }
   ul li a:hover {
-    background-color: var(--color-wrapper-text-50);
-    color: var(--color-navbtn-bg-inter);
+    background-color: var(--color-grey);
+    color: var(--color-primary);
   }
   .prv,
   .nxt {
@@ -243,6 +243,12 @@
   &:hover {
     background-color: var(--color-primary);
     color: var(--color-primary-text);
+    &:before {
+      background: var(--color-primary-text) !important;
+    }
+  }
+  &:before {
+    background: var(--color-grey-04) !important;
   }
 }
 

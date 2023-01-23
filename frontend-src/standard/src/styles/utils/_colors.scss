@@ -18,8 +18,8 @@
   --color-navbtn-bg-inter: hsla(27, 96%, 47%, 1.0);
   --color-navbtn-text-inter: hsla(0, 0%, 100%, 1.0);
 
-  --color-wrapper-bg: rgb(237, 110, 231); // rgb(242, 242, 242)
-  --color-wrapper-text: rgb(60, 60, 60);
+  --color-wrapper-bg: var(--color-grey); // rgb(242, 242, 242)
+  --color-wrapper-text: rgb(60, 60, 60); // automatico
   --color-wrapper-text-50: rgba(47, 47, 47, 0.057); // calcolato automaticamente, è una variante luminosità di --color-wrapper-text
 
   --color-icon-bg:hsla(27, 96%, 80%, 1.0);
@@ -37,4 +37,8 @@
   --color-warning-text: rgb(57, 57, 57); // automatico
   --color-error: #E73E1B;
   --color-error-text: hsla(0, 0%, 100%, 1.0); // automatico
+  --color-success: #1be73d;
+  --color-success-text: hsla(0, 0%, 100%, 1.0); // automatico
+  --color-action-button: #7a1be7;
+  --color-action-button-text: hsla(0, 0%, 100%, 1.0); // automatico
 }

@@ -72,7 +72,7 @@
 }
 
 .fv-is-selected {
-  background-color: var(--color-primary);
+  background-color: var(--color-grey);
   font-weight: bold;
 }
 
@@ -98,6 +98,10 @@
   .sortable-chosen & {
     opacity: 0;
   }
+
+  &:hover {
+    
+  }
 }
 
 .folderView__visibleActions {
@@ -115,11 +119,13 @@
 
 .folderView__action,
 .folderView__button {
+  -webkit-mask-size: contain;
+  -webkit-mask-position-y: center;
   cursor: pointer;
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: var(--color-primary);
+  background-color: transparent;
   border: 1px solid #000;
   margin: 0 4px;
   transition: all .2s ease-in-out;
@@ -129,10 +135,22 @@
     size: 18px;
   };
 
-  &:hover {
-    background-color: #ff6c00;
-    border-color: #ff6c00;
+  a:hover {
+    background-color: var(--color-primary);
+    color: var(--color-primary-text);
+    border-color: var(--color-primary);
     transition: all .2s ease-in-out;
+  }
+
+  &:after {
+    content: '';
+    -webkit-mask-size: contain;
+    background: red;
+    width: 20px;
+    -webkit-mask-repeat: no-repeat;
+    height: 20px;
+    display: block;
+    margin: 12px 13px;
   }
 }
 
@@ -160,8 +178,9 @@
   }
 }
 
-.fv-is-play {
-  background-image: url('images/folderView/icon-eye.svg');
+.fv-is-play:after {
+  -webkit-mask-image: url('images/folderView/icon-eye.svg');
+  margin: 16px 13px
 }
 
 .fv-is-edit {

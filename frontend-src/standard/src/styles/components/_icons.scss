@@ -18,7 +18,8 @@
   }
 
   &:before {
-    background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-default.svg);
+    -webkit-mask-image: url(#{$assets}images/icons/course-menu/icon--course-menu-default.svg);
+    background: var(--color-grey-04);
     background-size: contain;
     width: 18px;
     height: 18px;
@@ -35,7 +36,7 @@
 
   &:hover {
     &:before {
-      background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-default--hover.svg);
+      background: var(--color-primary)
     }
   }
 }

@@ -103,6 +103,12 @@
         transition: .2 all ease-in-out;
         text-align: right;
         border: 1px solid #000;
+        &:hover {
+          color: var(--color-action-button-text);
+        }
+        &:focus {
+          color: var(--color-action-button-text);
+        }
       }
     }
     .dropdown-menu {
@@ -213,7 +219,7 @@
 }
 
 .ft-is-selected {
-  background-color: var(--color-primary);
+  border-left: 2px solid var(--color-primary);
 }
 
 .folderTree__btn {
