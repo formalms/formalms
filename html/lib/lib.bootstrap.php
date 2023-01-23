@@ -165,7 +165,9 @@ class Boot
         self::log('Include configuration file.');
 
         $cfg = [];
-        require __DIR__ . '/../config.php';
+        if (file_exists(__DIR__ . '/../config.php')) {
+            require __DIR__ . '/../config.php';
+        }
 
         $GLOBALS['cfg'] = $cfg;
         if (empty($cfg)) {
@@ -201,7 +203,7 @@ class Boot
         if (!isset($cfg['do_debug'])) {
             $cfg['do_debug'] = false;
         }
-            // debugging ?
+        // debugging ?
 
         self::log(($cfg['do_debug'] ? 'Enable (set: E_ALL) ' : 'Disable (set: E_COMPILE_ERROR|E_ERROR|E_CORE_ERROR)') . ' error reporting.');
         if ($cfg['do_debug']) {
@@ -397,8 +399,7 @@ class Boot
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
-            $cfg = [];
-            require __DIR__ . '/../config.php';
+
             $config = [];
             if (!empty($cfg)) {
                 $config = $cfg['session'] ?? [];

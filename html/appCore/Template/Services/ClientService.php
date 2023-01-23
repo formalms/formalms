@@ -46,14 +46,23 @@ class ClientService
         }
         $config['signature'] = \Util::getSignature();
 
-        $langCode = $this->langAdm->getLanguage(\Lang::get())->lang_browsercode;
+        $langCode = \Lang::getDefault();
 
-        $langCode = explode(';', $langCode);
+        $language = $this->langAdm->getLanguage(\Lang::get());
+        if ($language) {
+            $langCode = $this->langAdm->getLanguage(\Lang::get())->lang_browsercode;
+
+            $langCode = explode(';', $langCode);
+
+            if (is_array($langCode)) {
+                $langCode = $langCode[0];
+            }
+        }
 
         $config['lang'] = [
             'enabledLanguages' => $this->langAdm->getLangList(),
             'currentLanguage' => \Lang::getDefault(),
-            'currentLangCode' => $langCode[0],
+            'currentLangCode' => $langCode,
             'translations' => $this->langAdm->langTranslation(),
         ];
 

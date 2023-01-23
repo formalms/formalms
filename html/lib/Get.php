@@ -257,7 +257,7 @@ class Get
         $possiblePhpEndpoints = [];
         $path = '';
         $basePath = '/';
-
+        $requestUri = '';
         try {
             $basePath = $request->getSchemeAndHttpHost();
             $requestUri = $request->getBaseUrl();
@@ -283,6 +283,8 @@ class Get
 
             $possiblePhpEndpoints[] = '/?';
             $possiblePhpEndpoints[] = '/api';
+
+            $requestUriArray = [];
 
             foreach ($possiblePhpEndpoints as $possiblePhpEndpoint) {
                 if (str_contains($requestUri, $possiblePhpEndpoint)) {
