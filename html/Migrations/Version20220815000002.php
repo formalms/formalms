@@ -623,7 +623,8 @@ final class Version20220815000002 extends AbstractMigration
             `requesting_unsubscribe_date` datetime DEFAULT NULL,
             PRIMARY KEY (`idUser`,`idCourse`,`edition_id`),
             KEY `idCourse` (`idCourse`),
-            KEY `idUser` (`idUser`)
+            KEY `idUser` (`idUser`),
+            INDEX `courseuser_course_idx` (`idCourse`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
 

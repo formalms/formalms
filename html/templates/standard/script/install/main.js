@@ -23,6 +23,7 @@ let wizard = $("#installer-section").steps({
     },
       onFinished: function (event, currentIndex) {
         $('a').off('click');
+        $('a[role="menuitem"]').addClass('disabledActions');
         finalize();
    
     },
@@ -148,6 +149,9 @@ function process() {
       } else {
         clearTimeout(timer);
         $('a').on('click');
+    
+        $('a[role="menuitem"]').hide();
+        $('a[role="menuitem"]').removeClass('disabledActions');
         $('.debug').val($('.debug').val() + "\n" + "END");
         $("#finalButtons").show();
         $("#success").show();

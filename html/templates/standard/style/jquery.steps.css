@@ -123,10 +123,11 @@
 
 .wizard > .steps .done a,
 .wizard > .steps .done a:hover,
-.wizard > .steps .done a:active
+.wizard > .steps .done a:active,
+.disabledActions
 {
-    background: var(--color-2-200);;
-    color: #fff;
+    background: var(--color-2-200) !important;
+    color: #fff !important;
 }
 
 .wizard > .steps .error a,

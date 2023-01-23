@@ -125,7 +125,7 @@ class InstallAdm extends Model
         $labels['cancel'] = _CANCEL;
         $labels['current'] = _CURRENT;
         $labels['pagination'] = _PAGINATION;
-        $labels['finish'] = _FINISH;
+        $labels['finish'] = !$this->upgrade ? _FINISH : _UPGRADE_FINISH;
         $labels['loading'] = _LOADING;
         $labels['tryAgain'] = _TRY_AGAIN;
         $labels['serverInfo'] = _SERVERINFO;

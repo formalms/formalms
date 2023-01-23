@@ -72,7 +72,8 @@ define('_NEXT', 'Passo successivo');
 define('_BACK', 'Torna indietro');
 define('_REFRESH', 'Aggiorna');
 define('_DOINSTALL', 'Installa');
-define('_FINISH', 'Fine');
+define('_FINISH', 'Installa');
+define('_UPGRADE_FINISH', 'Aggiorna');
 
 define('_DATABASE_INFO', 'Informazioni sul database');
 define('_DB_HOST', 'Indirizzo');
