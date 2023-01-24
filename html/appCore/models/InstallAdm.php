@@ -1435,11 +1435,14 @@ class InstallAdm extends Model
         $qtxt = "SELECT * FROM core_user WHERE userid='/" . $values['adminUser'] . "'";
         $q = sql_query($qtxt);
 
+
+        $doceboAclManager = new DoceboACLManager();
+
         if (($q) && (sql_num_rows($q) > 0)) { // Did the user refreshed the page?
             // You never know..
             $qtxt = "UPDATE core_user SET firstname='" . $values['adminName'] . "',
                 lastname='" . $values['adminLastname'] . "',
-                pass='" . md5($admInfo['adminPassword']) . "' ";
+                pass='" . $doceboAclManager->encrypt($admInfo['adminPassword']) . "' ";
             $qtxt .= "WHERE userid='/" . $admInfo['adminUser'] . "'";
             $q = sql_query($qtxt);
         } else { // Let's create the admin user..
@@ -1470,7 +1473,7 @@ class InstallAdm extends Model
             $qtxt = 'INSERT INTO core_user (idst, userid, firstname, lastname, pass, email) ';
             $qtxt .= "VALUES ('" . $user_idst . "', '/" . $values['adminUser'] . "',
                 '" . $values['adminName'] . "', '" . $values['adminLastname'] . "',
-                '" . md5($values['adminPassword']) . "', '" . $values['adminEmail'] . "')";
+                '" . $doceboAclManager->encrypt($values['adminPassword']) . "', '" . $values['adminEmail'] . "')";
             $q = sql_query($qtxt);
         }
 
@@ -1542,14 +1545,14 @@ class InstallAdm extends Model
      */
     private function importLangs()
     {
-        $LangAdm = new LangAdm();
+        $langAdm = new LangAdm();
         $langsToInstall = $this->session->get('setLangs');
         foreach ($langsToInstall as $lang) {
             $fn = _base_ . '/xml_language/lang[' . $lang . '].xml';
 
             if (file_exists($fn)) {
 
-                $LangAdm->importTranslation($fn, true, false);
+                $langAdm->importTranslation($fn, true, true);
             }
         }
 

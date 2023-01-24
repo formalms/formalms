@@ -358,7 +358,13 @@ class Boot
         self::log('Load database funtion management library.');
 
         $configExist = true;
-        if (!file_exists(__DIR__ . '/../config.php') || empty($cfg)) {
+        if (!file_exists(__DIR__ . '/../config.php')) {
+            $configExist = false;
+        }
+
+        require __DIR__ . '/../config.php';
+
+        if (!isset($cfg) || !is_array($cfg)) {
             $configExist = false;
 
             $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -395,7 +401,7 @@ class Boot
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $checkRoute = static::checkInstallRoutes($request);
 
-        if ((!$configExist || $dbIsEmpty) && file_exists(_base_ . '/install') && !$checkRoute) {
+        if ((!$configExist || $dbIsEmpty) && !$checkRoute) {
             header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
         }
     }
@@ -702,6 +708,6 @@ class Boot
 
     public static function checkInstallRoutes(\Symfony\Component\HttpFoundation\Request $request)
     {
-        return $request->query->get('r') && (bool)preg_match('/[adm\/install\/]+[^\/]+$/', $request->query->get('r'));
+        return $request->query->get('r') && (bool)preg_match('/^(adm\/install\/)(\w+)+$/', $request->query->get('r'));
     }
 }
