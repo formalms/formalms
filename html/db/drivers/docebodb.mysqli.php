@@ -36,7 +36,7 @@ class mysqli_DbConn extends DbConn
         }
         if ($dbname != false) {
             if (!$this->conn = @mysqli_connect($host, $user, $pwd, $dbname)) {
-                Log::add('mysql connect error : ' . mysqli_connect_error());
+                $this->log('mysql connect error : ' . mysqli_connect_error());
                 //Util::fatal('Cannot connect to the database server.');
                 return false;
             }
@@ -46,7 +46,7 @@ class mysqli_DbConn extends DbConn
         } else {
             try {
                 if (!$this->conn = @mysqli_connect($host, $user, $pwd)) {
-                    Log::add('mysql connect error : ' . mysqli_connect_error());
+                    $this->log('mysql connect error : ' . mysqli_connect_error());
                     //Util::fatal('Cannot connect to the database server.');
                     return false;
                 }
@@ -68,7 +68,7 @@ class mysqli_DbConn extends DbConn
     public function select_db($dbname)
     {
         if (!@mysqli_select_db($this->conn, $dbname)) {
-            Log::add('mysql select db error');
+            $this->log('mysql select db error');
             //Util::fatal('Cannot connect to the database server.');
             return false;
         }

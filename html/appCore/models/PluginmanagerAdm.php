@@ -238,17 +238,19 @@ class PluginmanagerAdm extends Model
             }
             $re = $this->db->query($query);
             $plugins = [];
-            foreach ($re as $row){
-                if ($row['core'] == 1) {
-                    if ($row['active'] == 1) {
-                        $plugins[$row['name']] = $row;
+            if (is_iterable($re)) {
+                foreach ($re as $row) {
+                    if ($row['core'] == 1) {
+                        if ($row['active'] == 1) {
+                            $plugins[$row['name']] = $row;
+                        } else {
+                            $plugins[$row['name']] = false;
+                        }
                     } else {
-                        $plugins[$row['name']] = false;
+                        $plugins[$row['name']] = $row;
                     }
-                } else {
-                    $plugins[$row['name']] = $row;
+                    $plugins[$row['name']]['missing'] = !file_exists(_base_ . '/plugins/' . $row['name']);
                 }
-                $plugins[$row['name']]['missing'] = !file_exists(_base_ . '/plugins/' . $row['name']);
             }
             foreach ($this->plugin_core as $core_name) {
                 if (!array_key_exists($core_name, $plugins)) {
@@ -363,9 +365,9 @@ class PluginmanagerAdm extends Model
         $handle = fopen($fn, 'rb');
         if ($handle == false) {
             $res = ['ok' => false, 'log' => 'error opening file'];
-        }  else {
+        } else {
             $fileSz = filesize($fn);
-            if ($fileSz > 0 ) {
+            if ($fileSz > 0) {
                 $content = fread($handle, $fileSz);
                 fclose($handle);
                 // This two regexp works fine; don't edit them! :)

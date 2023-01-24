@@ -1,7 +1,18 @@
 <?php
+
 use Doctrine\DBAL\DriverManager;
+
 define('IN_FORMA', true);
-require dirname(__FILE__) . '/config.php';
+if (file_exists(__DIR__ . '/config.php')) {
+    require __DIR__ . '/config.php';
+}
+else {
+
+    require sys_get_temp_dir(). '/config.php';
+}
+
+DbConn::getInstance(null,$cfg);
+
 return DriverManager::getConnection([
     'driver' => 'pdo_mysql',
     'user' => $cfg['db_user'],

@@ -122,8 +122,15 @@ class Boot
      */
     private static function config()
     {
+        $cfg = null;
         $configExist = true;
-        if (!file_exists(__DIR__ . '/../config.php') || !isset($cfg) || !is_array($cfg)) {
+        if (!file_exists(__DIR__ . '/../config.php')) {
+            $configExist = false;
+        }
+
+        require __DIR__ . '/../config.php';
+
+        if (!isset($cfg) || !is_array($cfg)) {
             $configExist = false;
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
@@ -351,16 +358,29 @@ class Boot
         self::log('Load database funtion management library.');
 
         $configExist = true;
-        if (!file_exists(__DIR__ . '/../config.php') || !isset($cfg) || !is_array($cfg)) {
+        if (!file_exists(__DIR__ . '/../config.php') || empty($cfg)) {
             $configExist = false;
+
+            $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+            // i'm in installer
+            if ($session->has('setValues')) {
+                $values = $session->get('setValues');
+
+                $cfg['db_type'] = 'mysqli';
+                $cfg['db_user'] = $values['dbUser'];
+                $cfg['db_pass'] = $values['dbPass'];
+                $cfg['db_name'] = $values['dbName'];
+                $cfg['db_host'] = $values['dbHost'];
+            }
         }
+
 
         self::log('Load database funtion management library.');
         require_once _base_ . '/db/lib.docebodb.php';
 
         // utf8 support
         self::log('Connect to database.');
-        DbConn::getInstance();
+        DbConn::getInstance(null, $cfg);
 
         $dbIsEmpty = true;
         if (DbConn::$connected) {

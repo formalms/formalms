@@ -44,7 +44,7 @@ class DbConn
      *
      * @return bool|DbConn
      */
-    public static function &getInstance($link = false, $connection_parameters = [])
+    public static function getInstance($link = false, $connection_parameters = [])
     {
         $db_type = FormaLms\lib\Get::cfg('db_type');
         $host = FormaLms\lib\Get::cfg('db_host');

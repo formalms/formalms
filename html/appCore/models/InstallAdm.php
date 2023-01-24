@@ -1320,14 +1320,26 @@ class InstallAdm extends Model
 
         $save_fn = _base_ . '/config.php';
         $saved = false;
-        if (is_writeable($save_fn)) {
-            $handle = fopen($save_fn, 'w');
+        touch($save_fn);
+        if (is_writable($save_fn)) {
+            $handle = fopen($save_fn, 'wb');
             if (fwrite($handle, $config)) {
                 $saved = true;
             }
             fclose($handle);
 
             @chmod($save_fn, 0644);
+        }
+
+        $tempConfig = sys_get_temp_dir(). '/config.php';
+        touch($tempConfig);
+        if (is_writable($tempConfig)) {
+            $handle = fopen($tempConfig, 'wb');
+            if (fwrite($handle, $config)) {
+            }
+            fclose($handle);
+
+            @chmod($tempConfig, 0644);
         }
 
         $this->session->set('config_saved', $saved);
