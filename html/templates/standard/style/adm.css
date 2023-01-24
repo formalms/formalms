@@ -24,6 +24,9 @@ html, body {}
 .block_spacer h3 {color:var(--color-info); padding-bottom:6px; margin-bottom:10px;border-bottom:3px solid #eeeeee;text-transform:uppercase;}
 .chart {margin:0 auto;width:80%;height:250px;}
 
+#admcontainer a:hover {
+  color: var(--color-primary) !important;
+}
 
 /*
  * SmartMenus jQuery v1.0.1
