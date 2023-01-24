@@ -21,7 +21,7 @@ html, body {}
 #admin_box_login legend{display:none;}
 /* dashboard */
 .block_spacer{margin-bottom:20px;}
-.block_spacer h3 {color:#003d6b; padding-bottom:6px; margin-bottom:10px;border-bottom:3px solid #eeeeee;text-transform:uppercase;}
+.block_spacer h3 {color:var(--color-info); padding-bottom:6px; margin-bottom:10px;border-bottom:3px solid #eeeeee;text-transform:uppercase;}
 .chart {margin:0 auto;width:80%;height:250px;}
 
 

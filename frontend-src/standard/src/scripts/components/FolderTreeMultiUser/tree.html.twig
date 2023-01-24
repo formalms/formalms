@@ -36,8 +36,7 @@
                                             {% if arrayContains(dataB.extraData.formData, el.id, option.value) %} checked {% endif %}
                                             {% if not arrayContains(dataB.extraData.formData, el.id, option.value) and not getId(el.id, option.value)%} checked {% endif %}
                                             type="radio"
-                                            value="{{ getId(el.id, option.value) }}"
-                                            name="userselects_{{el.id}}">
+                                            value="{{ getId(el.id, option.value) }}">
                                         <label for="{{ option.name }}">{{ option.label }}</label>
                                    {% endfor %}
                                 {% endif %}
