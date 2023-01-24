@@ -1552,7 +1552,7 @@ class InstallAdm extends Model
 
             if (file_exists($fn)) {
 
-                $langAdm->importTranslation($fn, true, true);
+                $langAdm->importTranslation($fn, true, false);
             }
         }
 
