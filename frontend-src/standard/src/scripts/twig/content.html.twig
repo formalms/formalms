@@ -15,7 +15,7 @@
                     {% if el.visible_actions | length %}
                         {% for action in el.visible_actions %}
                             {% if action.type == 'submit' %}
-                                <input type="submit"
+                                <button type="submit"
                                        id="{{ action.content }}"
                                        name="{{ action.content }}"
                                        class="folderView__action fv-is-{{ action.name }} js-fv-action"
@@ -46,7 +46,7 @@
                                     <button type="button" class="folderView__button fv-is-{{ action.name }} js-fv-open-overlay" title="{{ action.label }}"></button>
                                 {% else %}
                                     {% if action.type == 'submit' %}
-                                        <input type="submit"
+                                        <button type="submit"
                                             id="{{ action.content }}"
                                             name="{{ action.content }}"
                                             class="folderView__action fv-is-{{ action.name }} js-fv-action"

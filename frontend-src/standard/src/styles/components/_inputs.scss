@@ -458,3 +458,15 @@
     }
   }
 }
+
+
+.glyphicon-chevron-down:before {
+  content: "\e114";
+  color: var(--color-grey-04) !important;
+}
+
+.forma-dropdown:hover {
+  .glyphicon:before {
+    color: var(--color-primary) !important;
+  }
+}

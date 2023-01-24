@@ -250,7 +250,7 @@ class FolderView extends LearningView {
         const _this = this;
 
         if (el) {
-            if (el.tagName === 'BUTTON') {
+            if (el.tagName === 'BUTTON' && el.getAttribute('type') !== 'submit') {
                 e.preventDefault();
             }
 

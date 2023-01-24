@@ -9,3 +9,8 @@
 }
 
 //$tablet-view-top-menu: 1024px;
+
+.glyphicon-chevron-down:before {
+  content: "\e114";
+  color: var(--color-primary) !important;
+}

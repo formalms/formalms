@@ -99,9 +99,6 @@
     opacity: 0;
   }
 
-  &:hover {
-    
-  }
 }
 
 .folderView__visibleActions {
@@ -126,7 +123,7 @@
   height: 48px;
   border-radius: 50%;
   background-color: transparent;
-  border: 1px solid #000;
+  border: 1px solid var(--color-primary);
   margin: 0 4px;
   transition: all .2s ease-in-out;
   background: {
@@ -145,12 +142,42 @@
   &:after {
     content: '';
     -webkit-mask-size: contain;
-    background: red;
+    background: var(--color-primary);
     width: 20px;
     -webkit-mask-repeat: no-repeat;
     height: 20px;
     display: block;
     margin: 12px 13px;
+  }
+}
+
+.folderView__action {
+    &:hover {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+      &:after {
+        background-color: var(--color-primary-text);
+      }
+    }
+}
+
+.folderView__button {
+  &:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    &:after {
+      background-color: var(--color-primary-text);
+    }
+  }
+}
+
+input.folderView__action {
+  &:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    &:after {
+      background-color: var(--color-primary-text);
+    }
   }
 }
 
@@ -183,96 +210,97 @@
   margin: 16px 13px
 }
 
-.fv-is-edit {
-  background-image: url('images/folderView/icon-edit.svg');
+.fv-is-edit:after {
+  -webkit-mask-image: url('images/folderView/icon-edit.svg');
+  margin: 13px 13px;
 }
 
-.fv-is-copy {
-  background-image: url('images/folderView/icon-copy.svg');
+.fv-is-copy:after {
+  -webkit-mask-image: url('images/folderView/icon-copy.svg');
 }
 
-.fv-is-properties {
-  background-image: url('images/folderView/icon-settings.svg');
+.fv-is-properties:after {
+  -webkit-mask-image: url('images/folderView/icon-settings.svg');
 }
 
-.fv-is-access {
-  background-image: url('images/folderView/icon-user.svg');
+.fv-is-access:after {
+  -webkit-mask-image: url('images/folderView/icon-user.svg');
 }
 
-.fv-is-categorize {
-  background-image: url('images/folderView/icon-categorize.svg');
+.fv-is-categorize:after {
+  -webkit-mask-image: url('images/folderView/icon-categorize.svg');
 }
 
-.fv-is-delete {
-  background-image: url('images/folderView/icon-delete.svg');
+.fv-is-delete:after {
+  -webkit-mask-image: url('images/folderView/icon-delete.svg');
 }
 
-.fv-is-folder {
-  background-image: url('images/folderView/icon-folder.svg');
+.fv-is-folder:after {
+  -webkit-mask-image: url('images/folderView/icon-folder.svg');
 }
 
-.fv-is-faq {
-  background-image: url('images/folderView/icon-faq.svg');
+.fv-is-faq:after {
+  -webkit-mask-image: url('images/folderView/icon-faq.svg');
 }
 
-.fv-is-htmlpage {
-  background-image: url('images/folderView/icon-document.svg');
+.fv-is-htmlpage:after {
+  -webkit-mask-image: url('images/folderView/icon-document.svg');
 }
 
-.fv-is-link {
-  background-image: url('images/folderView/icon-link.svg');
+.fv-is-link:after {
+  -webkit-mask-image: url('images/folderView/icon-link.svg');
 }
 
-.fv-is-attachment {
-  background-image: url('images/folderView/icon-attachment.svg');
+.fv-is-attachment:after {
+  -webkit-mask-image: url('images/folderView/icon-attachment.svg');
 }
 
-.fv-is-test {
-  background-image: url('images/folderView/icon-test.svg');
+.fv-is-test:after {
+  -webkit-mask-image: url('images/folderView/icon-test.svg');
 }
 
-.fv-is-item {
-  background-image: url('images/folderView/icon-item.svg');
+.fv-is-item:after {
+  -webkit-mask-image: url('images/folderView/icon-item.svg');
 }
 
-.fv-is-glossary {
-  background-image: url('images/folderView/icon-glossary.svg');
+.fv-is-glossary:after {
+  -webkit-mask-image: url('images/folderView/icon-glossary.svg');
 }
 
-.fv-is-poll {
-  background-image: url('images/folderView/icon-survey.svg');
+.fv-is-poll:after {
+  -webkit-mask-image: url('images/folderView/icon-survey.svg');
 }
 
-.fv-is-menu-open {
-  background-image: url('images/folderView/icon-horizontal-dots.svg');
+.fv-is-menu-open:after {
+  -webkit-mask-image: url('images/folderView/icon-horizontal-dots.svg');
 }
 
-.fv-is-menu-close {
-  background-image: url('images/folderView/icon-vertical-dots.svg');
+.fv-is-menu-close:after {
+  -webkit-mask-image: url('images/folderView/icon-vertical-dots.svg');
 }
 
-.fv-is-scormorg {
-  background-image: url('images/folderView/icon-scorm.svg');
+.fv-is-scormorg:after {
+  -webkit-mask-image: url('images/folderView/icon-scorm.svg');
 }
 
-.fv-is-attempted,
-.fv-is-incomplete,
-.fv-is-not-attempted,
-.fv-is-ab-initio {
-  background-image: url('images/folderView/icon-attempted.svg');
+.fv-is-attempted:after,
+.fv-is-incomplete:after,
+.fv-is-not-attempted:after,
+.fv-is-ab-initio:after {
+  -webkit-mask-image: url('images/folderView/icon-attempted.svg');
 }
 
-.fv-is-completed,
-.fv-is-passed {
-  background-image: url('images/folderView/icon-completed.svg');
+.fv-is-completed:after,
+.fv-is-passed:after {
+  -webkit-mask-image: url('images/folderView/icon-completed.svg');
 }
 
-.fv-is-failed {
-  background-image: url('images/folderView/icon-failed.svg');
+.fv-is-failed:after {
+  -webkit-mask-image: url('images/folderView/icon-failed.svg');
 }
 
-.fv-is-tracking {
-  background-image: url('images/folderView/icon-chart.svg');
+.fv-is-tracking:after {
+  -webkit-mask-image: url('images/folderView/icon-chart.svg');
 }
 
 .folderView__copyOverlay {
