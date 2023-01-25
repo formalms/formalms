@@ -174,7 +174,6 @@ define('_DOWNLOAD_CONFIG', 'Download config');
 define('_CHECKED_DIRECTORIES', 'Some directory where files are stored does not exist or does not have correct permission');
 define('_CHECKED_FILES', 'Certain files does not have adequate permission');
 // -----------------------------------------
-define('_UPGRADER_TITLE', 'forma.lms - Upgrade');
 define('_UPGRADE_CONFIG', 'Upgrading config.php file');
 define('_UPG_CONFIG_OK', 'Config.php file updated successfully');
 define('_UPG_CONFIG_NOT_CHANGED', 'Config.php already updated');

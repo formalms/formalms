@@ -56,23 +56,27 @@ class RegionalSettings
         $this->region_id = $this->regset_manager->checkRegion($region_id);
 
         $settings = $this->regset_manager->getRegionSettings($this->region_id);
-        $this->date_sep = $settings['date_sep'];
 
-        if ($settings['date_format'] != 'custom') {
-            $this->date_token = $this->getToken($settings['date_format'], $this->date_sep);
-        } else {
-            $this->date_token = $settings['custom_date_format'];
-        }
+        if($settings) {
+            $this->date_sep = $settings['date_sep'];
 
-        if ($settings['time_format'] != 'custom') {
-            $this->time_token = $this->getToken($settings['time_format'], $this->time_sep);
-        } else {
-            $this->time_token = $settings['custom_time_format'];
+            if ($settings['date_format'] != 'custom') {
+                $this->date_token = $this->getToken($settings['date_format'], $this->date_sep);
+            } else {
+                $this->date_token = $settings['custom_date_format'];
+            }
+    
+            if ($settings['time_format'] != 'custom') {
+                $this->time_token = $this->getToken($settings['time_format'], $this->time_sep);
+            } else {
+                $this->time_token = $settings['custom_time_format'];
+            }
+    
+            if ((isset($settings['time_offset'])) && (!empty($settings['time_offset']))) {
+                $this->time_offset = (int) $settings['time_offset'];
+            }
         }
-
-        if ((isset($settings['time_offset'])) && (!empty($settings['time_offset']))) {
-            $this->time_offset = (int) $settings['time_offset'];
-        }
+        
 
         $this->full_token = $this->date_token . ' ' . $this->time_token;
     }
@@ -103,7 +107,7 @@ class RegionalSettings
         $res = '';
         $from_arr = ['d', 'm', 'Y', 'y', 'H', 'h', 'i', 's', 'a', '_', '.'];
         $to_arr = ['%d', '%m', '%Y', '%y', '%H', '%I', '%M', '%S', '%P', $sep, ' '];
-        $res = str_replace($from_arr, $to_arr, $format_str);
+        $res = str_replace($from_arr, $to_arr, (string) $format_str);
 
         return $res;
     }
@@ -645,7 +649,7 @@ class RegionalSettingsManager
             $this->region_settings = $this->loadRegionSettings($region_id);
         }
 
-        return $this->region_settings[$region_id];
+        return array_key_exists($region_id, $this->region_settings) ? $this->region_settings[$region_id] : null;
     }
 
     /**

@@ -557,8 +557,8 @@ class Boot
             $_POST['passIns'] = \voku\helper\UTF8::clean(stripslashes($password_login));
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $requestMethod = array_key_exists('REQUEST_METHOD', $_SERVER) ? $_SERVER['REQUEST_METHOD'] : '';
-        if ((!defined('IS_API') && !defined('IS_PAYPAL') && (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || defined('IS_AJAX'))) && !static::checkInstallRoutes($request)) {
+    
+        if ((!defined('IS_API') && !defined('IS_PAYPAL') && ($request->isMethod('post') || defined('IS_AJAX'))) && !static::checkInstallRoutes($request)) {
             // If this is a post or a ajax request then we must have a signature attached
             Util::checkSignature();
         }

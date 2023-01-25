@@ -259,7 +259,7 @@ class mysqli_DbConn extends DbConn
 
     public function get_client_info()
     {
-        return mysqli_get_client_info($this->conn);
+        return mysqli_get_client_info();
     }
 
     public function get_server_info()

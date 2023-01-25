@@ -1856,7 +1856,7 @@ final class Version20220815000001 extends AbstractMigration
             ('ignore_score', 'off', 'enum', 3, '0', 4, 16, 1, 0, ''),
             ('course_quota', '500', 'string', 255, '0', 4, 9, 1, 0, ''),
             ('currency_symbol', '€', 'string', 10, 'ecommerce', 4, 18, 1, 0, ''),
-            ('ldap_user_string', '$user@domain2.domain1', 'string', 255, 'email_settings', 9, 4, 1, 0, ''),
+            ('ldap_user_string', 'user@domain2.domain1', 'string', 255, 'email_settings', 9, 4, 1, 0, ''),
             ('custom_fields_mandatory_for_admin', 'off', 'enum', 3, 'register', 3, 21, 1, 0, ''),
             ('defaultTemplate', 'standard', 'template', 255, '0', 1, 4, 1, 0, ''),
             ('default_language', 'italian', 'language', 255, '0', 1, 3, 1, 0, ''),

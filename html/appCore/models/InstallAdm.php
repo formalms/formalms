@@ -372,7 +372,6 @@ class InstallAdm extends Model
         $res['requirements']['allowUrlInclude'] = ($php_conf['allow_url_include']['local_value'] ? 'err' : 'ok');
         $res['mandatory']['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
 
-
         if (in_array('err', $res['mandatory'])) {
             $checkRequirements = 0;
         }

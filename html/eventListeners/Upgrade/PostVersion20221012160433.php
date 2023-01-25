@@ -90,21 +90,21 @@ class PostVersion20221012160433 extends Upgrader{
                 $results = json_decode($param_value);
             }
 
-            
-            foreach($results as $key => $result) {
-                $queryInsert = 'INSERT INTO'
-                . ' %adm_domain_configs (title, domain, template, orgId) VALUES'
-                . '("PROFILE-'.($key+1).'", "'.$result->domain.'","'.$result->template.'","'.$result->node.'")';
-
-                $result = sql_query($queryInsert);
+            if(is_array($results)) {
+                foreach($results as $key => $result) {
+                    $queryInsert = 'INSERT INTO'
+                    . ' %adm_domain_configs (title, domain, template, orgId) VALUES'
+                    . '("PROFILE-'.($key+1).'", "'.$result->domain.'","'.$result->template.'","'.$result->node.'")';
+    
+                    $result = sql_query($queryInsert);
+                }
             }
-
             
-            if($result) {
-                $queryDelete = 'DELETE FROM %adm_setting WHERE param_name = "template_domain"';
-                $result = sql_query($queryDelete);
-                return $result;
-            }
+          
+            $queryDelete = 'DELETE FROM %adm_setting WHERE param_name = "template_domain"';
+            $result = sql_query($queryDelete);
+            return (bool) $result;
+            
         } else {
 
             //no settings found - nothing to do

@@ -495,7 +495,7 @@ class Lang
         }
         self::$_lang_cache[$lang_code] = self::$_lang->getLanguage($lang_code);
 
-        return self::$_lang_cache[$lang_code]->lang_direction;
+        return isset(self::$_lang_cache[$lang_code]->lang_direction) ?? null;
     }
 
     public static function getLangNameFromFile($file)

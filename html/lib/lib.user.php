@@ -126,6 +126,7 @@ class DoceboUser implements Serializable
     public function initRole($preset, $idst)
     {
         $arr_levels_idst = [];
+        $arr_levels_id  = [];
         $aclManager = $this->acl->getACLManager();
         $adminLevels = $aclManager->getAdminLevels();
         if(count($adminLevels)) {

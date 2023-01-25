@@ -2,7 +2,6 @@
 
 use Doctrine\DBAL\DriverManager;
 
-define('IN_FORMA', true);
 if (file_exists(__DIR__ . '/config.php')) {
     require __DIR__ . '/config.php';
 }
