@@ -40,7 +40,7 @@ class Field_Dropdown extends Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'dropdown';
     }
@@ -1528,45 +1528,6 @@ class Field_Dropdown extends Field
         $js_sons = '{' . implode(',', $temp) . '}';
 
         return 'YAHOO.dynamicFilter.renderTypes.get("' . $this->getFieldType() . '", ' . $js_sons . ')';
-        /*
-    return '
-      {
-        type: "'.$this->getFieldType().'",
-
-        getValue: function(id_sel, id_filter) {
-          return YAHOO.util.Dom.get("dropdown_"+id_filter+"_"+id_sel).value;
-        },
-
-        setValue: function(id_sel, id_filter, newValue) {
-          if (!newValue) newValue=0;
-          var i, s = YAHOO.util.Dom.get("dropdown_"+id_filter+"_"+id_sel);
-          for (i=0; i<s.options.length; i++) {
-            if (s.options[i].value == newValue) {
-              s.selectedIndex = i;
-              break;
-            }
-          }
-        },
-
-        render: function(id_sel, id_filter, oEl, id_field) {
-          var i, sons = '.$js_sons.', s = document.createElement("SELECT"), d = document.createElement("DIV");
-
-          s.className = "dropdon_filter_value";
-          if (id_field.split("_")[0] == "std") return; //at the moment dropdown are not allowed for standard fields
-          var t = sons["field_"+id_field.split("_")[1]];
-          d.className = "dropdown_container"; s.id = "dropdown_"+id_filter+"_"+id_sel;
-          for (i=0; i<t.length; i++) {
-            opt = document.createElement("OPTION");
-            opt.value = t[i].value;
-            opt.text = t[i].text;
-            try { s.add(opt, null); } catch(e) { s.add(opt); }
-          }
-          d.appendChild(s);
-          oEl.appendChild(d);
-        }
-      }
-    ';
-        */
     }
 
     public function checkUserField($value, $filter)
@@ -1585,37 +1546,6 @@ class Field_Dropdown extends Field
             "WHERE id_field = '" . $this->id_field . "' AND user_entry = " . (int) $filter;
 
         return $output;
-        /*
-                if ($filter['value'] == "") return "1";
-
-                $son = $this->getAllSon();
-
-                $selected = array();
-                foreach ($son as $id=>$value) {
-                    switch ($filter['cond']) {
-                        case 0: { //equal
-                            if ($value == $filter['value']) $selected[] = $id;
-                        } break;
-
-                        case 1: { //contains
-                            if (stristr($value, $filter['value'])) $selected[] = $id;
-                        } break;
-
-                        case 2: { //not equal
-                            if ($value != $filter['value']) $selected[] = $id;
-                        } break;
-
-                        case 3: { //do not contains
-                            if (!stristr($value, $filter['value'])) $selected[] = $id;
-                        } break;
-                    }
-                }
-
-                $output = (count($selected)>0 ? "SELECT id_user as idst ".
-                    "FROM  ".$this->_getUserEntryTable()." ".
-                    "WHERE id_field = '".$this->id_field."' AND user_entry IN ('".implode("','", $selected)."')" : "0");
-                return $output;
-        */
     }
 
     public function toString($field_value)

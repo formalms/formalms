@@ -182,7 +182,7 @@ class Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'field';
     }
@@ -806,7 +806,7 @@ class ContactField extends Field
      *
      * @return string return the identifier of the field
      */
-    public function getFieldType()
+    public static function getFieldType()
     {
         return 'contact_field';
     }
