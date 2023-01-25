@@ -15,10 +15,10 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
 const BOOT_CONFIG = 1;
-const BOOT_REQUEST = 2;
-const BOOT_PLATFORM = 3;
-const BOOT_UTILITY = 4;
-const BOOT_SETTING = 5;
+const BOOT_UTILITY = 2;
+const BOOT_SETTING = 3;
+const BOOT_REQUEST = 4;
+const BOOT_PLATFORM = 5;
 const BOOT_PLUGINS = 6;
 const BOOT_SESSION_CHECK = 7;
 const BOOT_USER = 8;
@@ -39,10 +39,10 @@ class Boot
     private static $_boot_seq = [
         BOOT_COMPOSER => 'composer',
         BOOT_CONFIG => 'config',
-        BOOT_REQUEST => 'request',
-        BOOT_PLATFORM => 'checkPlatform',
         BOOT_UTILITY => 'utility',
         BOOT_SETTING => 'loadSetting',
+        BOOT_REQUEST => 'request',
+        BOOT_PLATFORM => 'checkPlatform',
         BOOT_PLUGINS => 'plugins',
         BOOT_USER => 'user',
         BOOT_SESSION_CHECK => 'sessionCheck',
@@ -248,7 +248,7 @@ class Boot
 
         // config manager
         self::log('Include configuration file.');
-        require_once Forma::inc(_base_ . '/lib/lib.utils.php');
+        require_once _base_ . '/lib/lib.utils.php';
 
         // UTF8 Support
         \Patchwork\Utf8\Bootup::initAll();
@@ -273,12 +273,12 @@ class Boot
         require_once _lib_ . '/lib.acl.php';
 
         self::log('Load mailer library.');
-        require_once Forma::inc(_base_ . '/lib/lib.mailer.php');
+        require_once _base_ . '/lib/lib.mailer.php';
 
         self::log('Load Calendar library.');
-        require_once Forma::inc(_lib_ . '/calendar/CalendarManager.php');
-        require_once Forma::inc(_lib_ . '/calendar/CalendarDataContainer.php');
-        require_once Forma::inc(_lib_ . '/calendar/CalendarMailer.php');
+        require_once _lib_ . '/calendar/CalendarManager.php';
+        require_once _lib_ . '/calendar/CalendarDataContainer.php';
+        require_once _lib_ . '/calendar/CalendarMailer.php';
     }
 
     /**
@@ -361,8 +361,14 @@ class Boot
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
-            require __DIR__ . '/../config.php';
-            $config = $cfg && isset($cfg['session']) ? $cfg['session'] : [];
+
+            if (file_exists(__DIR__ . '/../config.php')) {
+                require __DIR__ . '/../config.php';
+            }
+            $config = [];
+            if (!empty($cfg)) {
+                $config = $cfg['session'] ?? [];
+            }
             FormaLms\lib\Session\SessionManager::getInstance()->initSession($config);
 
             $session = FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -371,7 +377,8 @@ class Boot
         }
     }
 
-    private static function sessionCheck() {
+    private static function sessionCheck()
+    {
 
         if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $session = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->getSession();
@@ -401,7 +408,7 @@ class Boot
         // ip coerency check
         self::log('Ip coerency check.');
         if (FormaLms\lib\Get::sett('session_ip_control', 'on') == 'on') {
-            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR',$_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
@@ -558,7 +565,7 @@ class Boot
     {
         list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float) $usec + (float) $sec),
+            'time' => ((float)$usec + (float)$sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
@@ -566,7 +573,7 @@ class Boot
     public static function current_time()
     {
         list($usec, $sec) = explode(' ', microtime());
-        $now = ((float) $usec + (float) $sec);
+        $now = ((float)$usec + (float)$sec);
 
         return $now - $GLOBALS['start']['time'];
     }

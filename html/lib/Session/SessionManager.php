@@ -60,15 +60,23 @@ class SessionManager
 
             $this->setConfig($config);
 
+            $ttlSession = \FormaLms\lib\Get::sett('ttlSession', 0);
+
+            if ($ttlSession > 0){
+                $this->config->setLifetime($ttlSession);
+            }
+
+            ini_set('session.gc_maxlifetime', $this->config->getLifetime());
+
             switch ($this->config->getHandler()) {
                 case self::MEMCACHED:
-                    $this->sessionHandler = new MemcachedHandler($config);
+                    $this->sessionHandler = new MemcachedHandler($this->config);
                     break;
                 case self::REDIS:
-                    $this->sessionHandler = new RedisHandler($config);
+                    $this->sessionHandler = new RedisHandler($this->config);
                     break;
                 case self::PDO:
-                    $this->sessionHandler = new PdoHandler($config);
+                    $this->sessionHandler = new PdoHandler($this->config);
                     try {
                         $this->sessionHandler->createTable();
                     } catch (\PDOException $exception) {
@@ -80,7 +88,7 @@ class SessionManager
                     break;*/
                 case self::FILESYSTEM:
                 default:
-                    $this->sessionHandler = new FilesystemHandler($config);
+                    $this->sessionHandler = new FilesystemHandler($this->config);
                     break;
             }
 
