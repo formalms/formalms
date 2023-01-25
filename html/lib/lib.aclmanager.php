@@ -2876,15 +2876,15 @@ class DoceboACLManager
         $list = $this->getBasePathGroupST('/framework/level/');
 
         $output = [];
-        if(array_key_exists(ADMIN_GROUP_GODADMIN), $list) {
+        if(array_key_exists(ADMIN_GROUP_GODADMIN, $list)) {
             $output[ADMIN_GROUP_GODADMIN] = $list[ADMIN_GROUP_GODADMIN];
         }
 
-        if(array_key_exists(ADMIN_GROUP_ADMIN), $list) {
+        if(array_key_exists(ADMIN_GROUP_ADMIN, $list)) {
             $output[ADMIN_GROUP_ADMIN] = $list[ADMIN_GROUP_ADMIN];
         }
 
-        if(array_key_exists(ADMIN_GROUP_USER), $list) {
+        if(array_key_exists(ADMIN_GROUP_USER, $list)) {
             $output[ADMIN_GROUP_USER] = $list[ADMIN_GROUP_USER];
         }
 

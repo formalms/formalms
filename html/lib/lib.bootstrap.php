@@ -475,7 +475,8 @@ class Boot
         // ip coerency check
         self::log('Ip coerency check.');
         if (FormaLms\lib\Get::sett('session_ip_control', 'on') == 'on') {
-            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+            $fallbackIp = array_key_exists('REMOTE_ADDR', $_SERVER) ? $_SERVER['REMOTE_ADDR'] : '::1';
+            $ip = (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER) && $_SERVER['HTTP_X_FORWARDED_FOR']) ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $fallbackIp;
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
@@ -556,6 +557,7 @@ class Boot
             $_POST['passIns'] = \voku\helper\UTF8::clean(stripslashes($password_login));
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+        $requestMethod = array_key_exists('REQUEST_METHOD', $_SERVER) ? $_SERVER['REQUEST_METHOD'] : '';
         if ((!defined('IS_API') && !defined('IS_PAYPAL') && (strtoupper($_SERVER['REQUEST_METHOD']) === 'POST' || defined('IS_AJAX'))) && !static::checkInstallRoutes($request)) {
             // If this is a post or a ajax request then we must have a signature attached
             Util::checkSignature();

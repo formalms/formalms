@@ -26,6 +26,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 require_once _base_ . '/lib/lib.acl.php';
 
+require_once _base_ . '/lib/Helpers/HelperTool.php';
+
+
 require_once _base_ . '/lib/lib.preference.php';
 
 define('REFRESH_LAST_ENTER', 600);    //refresh the user last action every specified seconds
@@ -65,7 +68,7 @@ class DoceboUser implements Serializable
 
     public $user_level = false;
 
-    private array $userCourses;
+    private array $userCourses = [];
 
     protected $db = null;
     public  $aclManager;
@@ -797,24 +800,29 @@ class DoceboUser implements Serializable
 
     public function serialize()
     {
-        //
+//        return serialize( $this->__serialize() );
     }
 
     public function unserialize($data)
     {
-        //
+        
+//        $this->__unserialize( unserialize( $data) );
     }
 
 
-    public function __serialize()
-    {
-        //
-    }
-
-    public function __unserialize($data)
-    {
-        //
-    }
+//    public function __serialize()
+//    {
+//        //
+//        return HelperTool::classMapping($this);
+//        //get_object_vars( $this );
+//    }
+//
+//    public function __unserialize($data)
+//    {
+//        foreach ( $data as $key => $value ) {
+//            $this->$key = $value;
+//          }
+//    }
 
 }
 

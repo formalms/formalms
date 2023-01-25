@@ -38,4 +38,17 @@ class HelperTool
     public static function snakeToCamelCase($string, $separator = '_') {
         return lcfirst(str_replace(' ', '', ucwords(str_replace($separator, ' ', $string))));
     }
+
+
+    public static function classMapping($obj) {
+
+        $refl = new ReflectionClass($obj);
+
+        // Retrieve the properties and strip the ReflectionProperty objects down
+        // to their values, accessing even private members.
+        return array_merge(...array_map(function($prop) use ($obj) {
+            $prop->setAccessible(true);
+            return [$prop->getName() => $prop->getValue($obj)];
+        }, $refl->getProperties()));
+    }
 }
