@@ -18,19 +18,20 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 const BOOT_COMPOSER = 0;
 const BOOT_CONFIG = 1;
-const BOOT_REQUEST = 2;
-const BOOT_PLATFORM = 3;
-const BOOT_UTILITY = 4;
-const BOOT_SETTING = 5;
-const BOOT_PLUGINS = 6;
-const BOOT_SESSION_CHECK = 7;
-const BOOT_USER = 8;
-const BOOT_INPUT = 9;
-const BOOT_LANGUAGE = 10;
-const BOOT_DATETIME = 11;
-const BOOT_HOOKS = 12;
-const BOOT_TEMPLATE = 13;
-const BOOT_PAGE_WR = 14;
+const BOOT_UTILITY = 2;
+const BOOT_SETTING = 3;
+const BOOT_REQUEST = 4;
+const BOOT_PLATFORM = 5;
+const BOOT_DOMAIN_AND_TEMPLATE = 6;
+const BOOT_PLUGINS = 7;
+const BOOT_SESSION_CHECK = 8;
+const BOOT_USER = 9;
+const BOOT_INPUT = 10;
+const BOOT_LANGUAGE = 11;
+const BOOT_DATETIME = 12;
+const BOOT_HOOKS = 13;
+const BOOT_TEMPLATE = 14;
+const BOOT_PAGE_WR = 15;
 const BOOT_INPUT_ALT = 99;
 
 /**
@@ -42,10 +43,11 @@ class Boot
     private static $_boot_seq = [
         BOOT_COMPOSER => 'composer',
         BOOT_CONFIG => 'config',
-        BOOT_REQUEST => 'request',
-        BOOT_PLATFORM => 'checkPlatform',
         BOOT_UTILITY => 'utility',
         BOOT_SETTING => 'loadSetting',
+        BOOT_REQUEST => 'request',
+        BOOT_PLATFORM => 'checkPlatform',
+        BOOT_DOMAIN_AND_TEMPLATE => 'domainAndTemplate',
         BOOT_PLUGINS => 'plugins',
         BOOT_USER => 'user',
         BOOT_SESSION_CHECK => 'sessionCheck',
@@ -126,12 +128,12 @@ class Boot
         $configExist = true;
         if (!file_exists(__DIR__ . '/../config.php')) {
             $configExist = false;
-        }
+        } else {
+            require __DIR__ . '/../config.php';
 
-        require __DIR__ . '/../config.php';
-
-        if (!isset($cfg) || !is_array($cfg)) {
-            $configExist = false;
+            if (!isset($cfg) || !is_array($cfg)) {
+                $configExist = false;
+            }
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $checkRoute = static::checkInstallRoutes($request);
@@ -284,7 +286,7 @@ class Boot
 
         // config manager
         self::log('Include configuration file.');
-        require_once Forma::inc(_base_ . '/lib/lib.utils.php');
+        require_once _base_ . '/lib/lib.utils.php';
 
         // UTF8 Support
         \Patchwork\Utf8\Bootup::initAll();
@@ -298,6 +300,19 @@ class Boot
         self::log('Load yui library.');
         require_once _base_ . '/lib/lib.yuilib.php';
 
+        // mimetype
+        self::log('Load mimetype library.');
+        require_once _base_ . '/lib/lib.mimetype.php';
+
+        require_once _lib_ . '/lib.acl.php';
+
+        self::log('Load Calendar library.');
+        require_once _lib_ . '/calendar/CalendarManager.php';
+        require_once _lib_ . '/calendar/CalendarDataContainer.php';
+        require_once _lib_ . '/calendar/CalendarMailer.php';
+    }
+
+    private static function domainAndTemplate(){
         //create the handeler who will fix values ins ession
         $domainHandler = DomainHandler::getInstance();
 
@@ -308,18 +323,6 @@ class Boot
 
         // i set mail later because it has a dependancy on li.template
         $domainHandler->attachDefaultMailer();
-
-
-        // mimetype
-        self::log('Load mimetype library.');
-        require_once _base_ . '/lib/lib.mimetype.php';
-
-        require_once _lib_ . '/lib.acl.php';
-
-        self::log('Load Calendar library.');
-        require_once Forma::inc(_lib_ . '/calendar/CalendarManager.php');
-        require_once Forma::inc(_lib_ . '/calendar/CalendarDataContainer.php');
-        require_once Forma::inc(_lib_ . '/calendar/CalendarMailer.php');
     }
 
     /**
@@ -360,9 +363,9 @@ class Boot
         $configExist = true;
         if (!file_exists(__DIR__ . '/../config.php')) {
             $configExist = false;
+        } else {
+            require __DIR__ . '/../config.php';
         }
-
-        require __DIR__ . '/../config.php';
 
         if (!isset($cfg) || !is_array($cfg)) {
             $configExist = false;
@@ -426,6 +429,9 @@ class Boot
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
 
+            if (file_exists(__DIR__ . '/../config.php')) {
+                require __DIR__ . '/../config.php';
+            }
             $config = [];
             if (!empty($cfg)) {
                 $config = $cfg['session'] ?? [];

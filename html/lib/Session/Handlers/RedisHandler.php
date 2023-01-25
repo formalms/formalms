@@ -30,7 +30,13 @@ class RedisHandler extends RedisSessionHandler
                 }
                 $config->setUrl($url);
             }
-            $connection = RedisAdapter::createConnection($config->getUrl(), $config->getOptions());
+
+            $options = [];
+
+            $options = array_merge($options, $config->getOptions());
+
+
+            $connection = RedisAdapter::createConnection($config->getUrl(), $options);
         } catch (\Exception $exception) {
             exit($exception->getMessage());
         }

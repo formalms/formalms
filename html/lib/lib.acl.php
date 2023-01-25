@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_base_ . '/lib/lib.aclmanager.php');
+require_once _base_ . '/lib/lib.aclmanager.php';
 
 /**
  * Acl common tasks class
