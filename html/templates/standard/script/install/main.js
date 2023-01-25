@@ -54,7 +54,7 @@ function validateStep(index) {
         return checkPrerequisites();
       break;
       case 2:
-        return checkDbSettingsAndUploadSettings();
+        return checkDbSettings();
       break;
       case 3:
         return checkAdminSettings();
@@ -205,19 +205,10 @@ function checkPrerequisites() {
 
 
 /************FUNCTION TO CHECK DB AND UPLOAD SETTINGS*********/
-function checkDbSettingsAndUploadSettings() {
-    let uploadsettings = true;
+function checkDbSettings() {
 
-    if($("input[name=uploadMethod]:checked").val() == 'ftp') {
-        uploadsettings = checkFtpConnection();
-    } 
-
-    if(uploadsettings) {
-        //check db connection
-        return checkDbData();
-    } else {
-        return false;
-    }
+    //check db connection
+    return checkDbData();
 }
 /*************************************/
 
@@ -277,44 +268,6 @@ function checkDbData() {
 }
 /*************************************/
 
-
-/************FUNCTION TO CHECK FTP CONNECTION*********/
-function checkFtpConnection() {
-      
-    let postData = {};
-    var result = false;
-    $("#ftp_data input").each(function(e) {
-
-        postData[$(this).attr('name')] = $(this).val();
-    });
-
-    $.ajax({
-        type: "POST",
-        data: postData,
-           async: false,
-        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/checkFtp",
-        success: function (data) {
-          
-          var response = JSON.parse(data);
-          if(!response.success) {
-             let text = response.messages.join("\n");
-            alert(text);
-          }
-         
-         result = response.success;
-
-
-        },
-        error: function (e) {
-        alert("Error: \n" + e.status + " - " + e.statusText);
-        return false;
-        },
-    });
-
-    return result;
-     
-}
-/*************************************/
 
 
 /************FUNCTION TO SET DATA IN SESSION*********/
@@ -474,15 +427,6 @@ $("input[type=password]").on("focusout", function(e) {
 
 });
 
-$("input[type=radio]").on("click", function(e) {
-
-  if($(this).val() == 'ftp') {
-      $("#ftp_data").show();
-  } else {
-     $("#ftp_data").hide();
-  }
-    setData($(this).attr('name'), $(this).val());
-});
 
 $(".lang_to_install_list input[type=checkbox]").on("click", function(e) {
     var key = null;

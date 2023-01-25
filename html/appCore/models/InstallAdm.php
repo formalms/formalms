@@ -156,14 +156,6 @@ class InstallAdm extends Model
         $labels['dbNameLabel'] = _DB_NAME;
         $labels['dbUsernameLabel'] = _DB_USERNAME;
         $labels['dbPassLabel'] = _DB_PASS;
-        $labels['uploadMethodLabel'] = _UPLOAD_METHOD;
-        $labels['httpUploadLabel'] = _HTTP_UPLOAD;
-        $labels['ftpUploadLabel'] = _FTP_UPLOAD;
-        $labels['ftpHostLabel'] = _FTP_HOST;
-        $labels['ftpPortLabel'] = _FTP_PORT;
-        $labels['ftpUserLabel'] = _FTP_USERNAME;
-        $labels['ftpPassLabel'] = _FTP_PASS;
-        $labels['ftpPathLabel'] = _FTP_PATH;
         /*************************************** */
         $labels['adminInfoLabel'] = _ADMIN_USER_INFO;
         $labels['adminUserLabel'] = _ADMIN_USERNAME;
@@ -223,9 +215,6 @@ class InstallAdm extends Model
         $this->errorLabels['unsuitable_requirements'] = _UNSUITABLE_REQUIREMENTS;
         $this->errorLabels['missing_check'] = _MISSING_LICENSE_CHECK;
         $this->errorLabels['missing_field'] = _MISSING_FIELD;
-        $this->errorLabels['ftp_not_supported'] = _FTP_NOT_SUPPORTED;
-        $this->errorLabels['ftp_connection_fail'] = _FTP_CONNECT_FAIL;
-        $this->errorLabels['ftp_login_fail'] = _FTP_LOGIN_FAIL;
         $this->errorLabels['db_not_utf8'] = _DB_NOT_UTF8;
         $this->errorLabels['db_not_empty'] = _DB_NOT_EMPTY;
         $this->errorLabels['cant_connect_db'] = _CANT_CONNECT_WITH_DB;
@@ -278,7 +267,6 @@ class InstallAdm extends Model
         if (!$this->upgrade) {
             $params = array_merge($params, $this->getLicense(),
                 $this->getDbConfig(),
-                $this->getFtpConfig(),
                 $this->getSmtpConfig(),
                 ['setValues' => $this->getSetValues()],
                 ['setLangs' => $this->getSetLangs()],
@@ -551,31 +539,6 @@ class InstallAdm extends Model
         return $localCfg;
     }
 
-    /**
-     * Method to retrieve FTP settings fields
-     *
-     * @return array
-     */
-    public function getFtpConfig(): array
-    {
-        $localCfg['ftpConfig'] = [
-            'ftpHost' => '',
-            'ftpPath' => 'localhost',
-            'ftpPort' => '',
-            'dbUser' => '',
-            'dbPass' => '',
-        ];
-        if (file_exists(_base_ . '/config.php')) {
-            define('IN_FORMA', true);
-            include _base_ . '/config.php';
-
-            foreach ($localCfg['ftpConfig'] as $key => $value) {
-                $localCfg['ftpConfig'][$key] = $cfg[strtolower($key)];
-            }
-        }
-
-        return $localCfg;
-    }
 
     /**
      * Method to retrieve SMTP settings fields
@@ -1043,48 +1006,6 @@ class InstallAdm extends Model
 
 
     /**
-     * Method to check ftp inserted data
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
-     *
-     * @return string
-     */
-    public function checkFtp($request): string
-    {
-        $messages = [];
-        $timeout = 10;
-        $params = $request->request->all();
-
-        foreach ($params as $key => $param) {
-            if ('' == $param) {
-                $messages[] = $this->errorLabels['missing_field'] . ":" . $this->labels[$key . 'Label'];
-            }
-        }
-
-        if (!function_exists('ftp_connect')) {
-            $messages[] = $this->errorLabels['ftp_not_supported'];
-        }
-
-        if (count($messages)) {
-            return $this->setResponse(false, $messages)->wrapResponse();
-        }
-
-
-        $ftpConnection = ftp_connect($params['ftpHost'], $params['ftpPort'], $timeout);
-        if ($ftpConnection === false) {
-            return $this->setResponse(false, [$this->errorLabels['ftp_connection_fail']])->wrapResponse();
-        }
-
-        $ftpLogin = ftp_login($ftpConnection, $params['ftpUser'], $params['ftpPass']);
-
-        if (!$ftpLogin) {
-            $messages[] = $this->errorLabels['ftp_login_fail'];
-        }
-
-        return $this->setResponse($ftpLogin, $messages)->wrapResponse();
-    }
-
-    /**
      * Method to finalize the installation step by step
      *
      * @param \Symfony\Component\HttpFoundation\Request $request Request derived from controller
@@ -1370,29 +1291,6 @@ class InstallAdm extends Model
         $config = str_replace('[%-DB_PASS-%]', addslashes($values['dbPass']), $config);
         $config = str_replace('[%-DB_NAME-%]', addslashes($values['dbName']), $config);
 
-        switch ($values['uploadMethod']) {
-            case 'http':
-                $upload_method = 'fs';
-
-                $config = str_replace('[%-FTP_HOST-%]', 'localhost', $config);
-                $config = str_replace('[%-FTP_PORT-%]', '21', $config);
-                $config = str_replace('[%-FTP_USER-%]', '', $config);
-                $config = str_replace('[%-FTP_PASS-%]', '', $config);
-                $config = str_replace('[%-FTP_PATH-%]', '/', $config);
-                break;
-            case 'ftp':
-                $upload_method = 'ftp';
-
-                $config = str_replace('[%-FTP_HOST-%]', addslashes($values['ftpHost']), $config);
-                $config = str_replace('[%-FTP_PORT-%]', addslashes($values['ftpPort']), $config);
-                $config = str_replace('[%-FTP_USER-%]', addslashes($values['ftpUser']), $config);
-                $config = str_replace('[%-FTP_PASS-%]', addslashes($values['ftpPass']), $config);
-                $config = str_replace('[%-FTP_PATH-%]', addslashes($values['ftpPath']), $config);
-                break;
-            default:
-                break;
-        }
-
         if ($values['useSmtpDatabase'] == 'on') {
             $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes($values['useSmtpDatabase']), $config);
             $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes($values['useSmtp']), $config);
@@ -1414,8 +1312,6 @@ class InstallAdm extends Model
             $config = str_replace('[%-SMTP_PWD-%]', addslashes(''), $config);
             $config = str_replace('[%-SMTP_DEBUG-%]', addslashes('0'), $config);
         }
-
-        $config = str_replace('[%-UPLOAD_METHOD-%]', $upload_method, $config);
 
         return $config;
     }

@@ -12,8 +12,8 @@
 
 namespace Composer;
 
-$GLOBALS['_composer_bin_dir'] = __DIR__;
-$GLOBALS['_composer_autoload_path'] = __DIR__ . '/..'.'/html/vendor/autoload.php';
+$GLOBALS['_composer_bin_dir'] = dirname(__DIR__, 1);
+$GLOBALS['_composer_autoload_path'] = dirname(__DIR__, 1) .'/vendor/autoload.php';
 
 if (PHP_VERSION_ID < 80000) {
     if (!class_exists('Composer\BinProxyWrapper')) {
@@ -112,9 +112,9 @@ if (PHP_VERSION_ID < 80000) {
         (function_exists('stream_get_wrappers') && in_array('phpvfscomposer', stream_get_wrappers(), true))
         || (function_exists('stream_wrapper_register') && stream_wrapper_register('phpvfscomposer', 'Composer\BinProxyWrapper'))
     ) {
-        include("phpvfscomposer://" . __DIR__ . '/..'.'/html/vendor/doctrine/orm/bin/doctrine');
+        include("phpvfscomposer://" . dirname(__DIR__, 1) .'/vendor/doctrine/orm/bin/doctrine');
         exit(0);
     }
 }
 
-include __DIR__ . '/..'.'/html/vendor/doctrine/orm/bin/doctrine';
+include dirname(__DIR__, 1) .'/vendor/doctrine/orm/bin/doctrine';

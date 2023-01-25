@@ -277,7 +277,7 @@ class Util
             return;
         }
 
-        $db = &DbConn::getInstance();
+        $db = DbConn::getInstance();
 
         $re_sett = $db->query('SELECT param_name, param_value, value_type ' .
         'FROM ' . $from_table . ' ' .

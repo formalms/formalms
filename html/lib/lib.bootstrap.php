@@ -126,14 +126,14 @@ class Boot
     {
         $cfg = null;
         $configExist = true;
-        if (!file_exists(__DIR__ . '/../config.php')) {
+        if (!file_exists(dirname(__DIR__, 1).'/config.php')) {
             $configExist = false;
         } else {
-            require __DIR__ . '/../config.php';
+            require dirname(__DIR__, 1).'/config.php';
+        }
 
-            if (!isset($cfg) || !is_array($cfg)) {
-                $configExist = false;
-            }
+        if (!isset($cfg) || !is_array($cfg)) {
+            $configExist = false;
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $checkRoute = static::checkInstallRoutes($request);
@@ -361,10 +361,10 @@ class Boot
         self::log('Load database funtion management library.');
 
         $configExist = true;
-        if (!file_exists(__DIR__ . '/../config.php')) {
+        if (!file_exists(dirname(__DIR__, 1).'/config.php')) {
             $configExist = false;
         } else {
-            require __DIR__ . '/../config.php';
+            require dirname(__DIR__, 1) .'/config.php';
         }
 
         if (!isset($cfg) || !is_array($cfg)) {

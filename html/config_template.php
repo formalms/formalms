@@ -47,23 +47,6 @@ $cfg['prefix_scs'] = 'conference';
 $cfg['prefix_ecom'] = 'ecom';
 $cfg['prefix_crm'] = 'crm';
 
-/*
- * File upload
- * -------------------------------------------------------------------------
- * upload type (fs|ftp)
- * ftphost: the ftp hostname
- * ftpport: the ftp port
- * ftpuser: the ftp username
- * ftppass: the ftp password
- * ftppath: the ftp path from the user main home dir to the docebo root folder
- */
-$cfg['uploadType'] = '[%-UPLOAD_METHOD-%]';
-
-$cfg['ftphost'] = '[%-FTP_HOST-%]';
-$cfg['ftpport'] = '[%-FTP_PORT-%]';
-$cfg['ftpuser'] = '[%-FTP_USER-%]';
-$cfg['ftppass'] = '[%-FTP_PASS-%]';
-$cfg['ftppath'] = '[%-FTP_PATH-%]';
 
 /*
  * External smtp config

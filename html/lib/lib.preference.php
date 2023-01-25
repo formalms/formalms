@@ -628,7 +628,7 @@ class UserPreferences
             'swedish' => 'sv',
             'norwegian' => 'nb',
         ];
-        if (array_key_exists($this->_preferences['ui.language'], $locale_language_array)) {
+        if (array_key_exists('ui.language', $this->_preferences) && array_key_exists($this->_preferences['ui.language'], $locale_language_array)) {
             return $locale_language_array[$this->_preferences['ui.language']];
         } else {
             if ($this->is_anonymous) {

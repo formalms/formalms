@@ -99,14 +99,17 @@ class DoceboUser implements Serializable
         $user_manager = new DoceboACLManager();
         $userInfo = $user_manager->getUser($this->idst, false);
 
-        $this->firstName = $userInfo[ACL_INFO_FIRSTNAME];
-        $this->lastName = $userInfo[ACL_INFO_LASTNAME];
-        $this->email = $userInfo[ACL_INFO_EMAIL];
-        $this->avatar = $userInfo[ACL_INFO_AVATAR];
-        $this->facebookId = $userInfo[ACL_INFO_FACEBOOK_ID];
-        $this->twitterId = $userInfo[ACL_INFO_TWITTER_ID];
-        $this->linkedinId = $userInfo[ACL_INFO_LINKEDIN_ID];
-        $this->googleId = $userInfo[ACL_INFO_GOOGLE_ID];
+        if(is_array($userInfo)) {
+           $this->firstName = $userInfo[ACL_INFO_FIRSTNAME];
+            $this->lastName = $userInfo[ACL_INFO_LASTNAME];
+            $this->email = $userInfo[ACL_INFO_EMAIL];
+            $this->avatar = $userInfo[ACL_INFO_AVATAR];
+            $this->facebookId = $userInfo[ACL_INFO_FACEBOOK_ID];
+            $this->twitterId = $userInfo[ACL_INFO_TWITTER_ID];
+            $this->linkedinId = $userInfo[ACL_INFO_LINKEDIN_ID];
+            $this->googleId = $userInfo[ACL_INFO_GOOGLE_ID]; 
+        }
+        
 
         $this->preference = new UserPreferences($this->idst);
 
@@ -119,9 +122,14 @@ class DoceboUser implements Serializable
 
     public function initRole($preset, $idst)
     {
+        $arr_levels_idst = [];
         $aclManager = $this->acl->getACLManager();
-        $arr_levels_id = array_flip($aclManager->getAdminLevels());
-        $arr_levels_idst = array_keys($arr_levels_id);
+        $adminLevels = $aclManager->getAdminLevels();
+        if(count($adminLevels)) {
+            $arr_levels_id = array_flip($aclManager->getAdminLevels());
+            $arr_levels_idst = array_keys($arr_levels_id);
+        }
+        
         $level_st = array_intersect($arr_levels_idst, $preset);
 
         if (count($level_st) == 0) {
@@ -149,15 +157,17 @@ class DoceboUser implements Serializable
 
     public function loadUserCourses()
     {
+        $userCourses = [];
         $userCoursesQuery = 'SELECT idCourse,edition_id as idEdtition,level,date_inscr as subscriptionDate,date_first_access as firstAccess,status,date_complete as completedAt, date_begin_validity as dateBeginValidity, date_expire_validity as dateExpireValidity FROM %lms_courseuser where iduser=' . $this->idst;
 
         $result = $this->db->query($userCoursesQuery);
 
-        $userCourses = [];
-        foreach ($result as $userCourse) {
-            $userCourses[$userCourse['idCourse']] = $userCourse;
+        if(is_countable($result)) {
+           foreach ($result as $userCourse) {
+                $userCourses[$userCourse['idCourse']] = $userCourse;
+            } 
         }
-
+        
         return $userCourses;
     }
 
@@ -791,6 +801,17 @@ class DoceboUser implements Serializable
     }
 
     public function unserialize($data)
+    {
+        //
+    }
+
+
+    public function __serialize()
+    {
+        //
+    }
+
+    public function __unserialize($data)
     {
         //
     }
