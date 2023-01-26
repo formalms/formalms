@@ -20,10 +20,21 @@ DirectoryIndex index.php index.html index.htm
         RewriteRule ^(.*)/$ /$1 [R=301,L]
 
         RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule ^(.*)/upgrade?$ /$1/index.php?r=adm/install/show
-        RewriteRule ^(.*)/install?$ /$1/index.php?r=adm/install/show
-        RewriteRule ^upgrade?$ /index.php?r=adm/install/show
-        RewriteRule ^install?$ /index.php?r=adm/install/show
+        RewriteRule ^(.*)/upgrade?$ /$1/upgrader [R,L]
+        RewriteRule ^(.*)/install?$ /$1/installer [R,L]
+        RewriteRule ^upgrade?$ /upgrader [R,L]
+        RewriteRule ^install?$ /installer [R,L]
+
+        RewriteRule ^(.*)/upgrade/?$ /$1/upgrader [R,L]
+        RewriteRule ^(.*)/install/?$ /$1/installer [R,L]
+        RewriteRule ^upgrade/?$ /upgrader [R,L]
+        RewriteRule ^install/?$ /installer [R,L]
+
+
+        RewriteRule ^(.*)/installer?$ /$1/index.php?r=adm/install/show
+        RewriteRule ^(.*)/upgrader?$ /$1/index.php?r=adm/install/show
+        RewriteRule ^installer?$ /index.php?r=adm/install/show
+        RewriteRule ^upgrader?$ /index.php?r=adm/install/show
 </IfModule>
 
 <FilesMatch "\.(htpasswd|ini|php|fla|psd|log|sh)$">
