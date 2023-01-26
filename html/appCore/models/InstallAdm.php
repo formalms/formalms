@@ -141,9 +141,6 @@ class InstallAdm extends Model
         $labels['phpTimezone'] = _PHP_TIMEZONE;
         $labels['phpInfo'] = _PHPINFO;
         $labels['allowUrlFopenLabel'] = _ALLOW_URL_FOPEN;
-        $labels['magicQuotesGpc'] = _MAGIC_QUOTES_GPC;
-        $labels['safeMode'] = _SAFEMODE;
-        $labels['registerGlobals'] = _REGISTER_GLOBALS;
         $labels['allowUrlIncludeLabel'] = _ALLOW_URL_INCLUDE;
         $labels['uploadMaxFilesize'] = _UPLOAD_MAX_FILESIZE;
         $labels['postMaxSize'] = _POST_MAX_SIZE;
@@ -296,16 +293,13 @@ class InstallAdm extends Model
         $params['ldapData'] = extension_loaded('ldap') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_IT;
         $params['openSslData'] = extension_loaded('openssl') ? _ON : _OFF . ' ' . _WARINNG_SOCIAL;
         $params['phpTimezoneData'] = @date_default_timezone_get();
-        $params['magicQuotesGpcData'] = $params['magic_quotes_gpc']['local_value'] != '' ? _ON : _OFF;
-        $params['safeModeData'] = $params['safe_mode']['local_value'] != '' ? _ON : _OFF;
-        $params['registerGlobalsData'] = $params['register_globals']['local_value'] != '' ? _ON : _OFF;
-        $params['allowUrlFopenData'] = $params['allow_url_fopen']['local_value'] != '' ? _ON : _OFF . ' ' . _WARINNG_SOCIAL;
-        $params['allowUrlIncludeData'] = $params['allow_url_include']['local_value'] != '' ? _ON : _OFF;
-        $params['uploadMaxFilesizeData'] = $params['upload_max_filesize']['local_value'];
-        $params['postMaxSizeData'] = $params['post_max_size']['local_value'];
-        $params['maxExecutionTimeData'] = $params['max_execution_time']['local_value'] . 's';
+        $params['allowUrlFopenData'] = $params['allowUrlFopen'] != 'err' ? _ON : _OFF . ' ' . _WARNING_SOCIAL;
+        $params['allowUrlIncludeData'] = $params['allowUrlInclude'] != 'err' ? _ON : _OFF;
+        $params['uploadMaxFilesizeData'] = $params['uploadMaxFilesize'];
+        $params['postMaxSizeData'] = $params['postMaxSize'];
+        $params['maxExecutionTimeData'] = $params['maxExecutionTime'] . 's';
         $params['checkFolderPerms'] = $this->checkFolderPerm();
-        $params['uploadMetodFlag'] = $params['safe_mode']['local_value'] == '';
+  
 
         return $params;
     }
@@ -364,12 +358,13 @@ class InstallAdm extends Model
         } else {
             $res['requirements']['mysql'] = 'err';
         }
+
         $res['requirements']['xml'] = (extension_loaded('domxml') ? 'ok' : 'err');
         $res['mandatory']['mbstring'] = (extension_loaded('mbstring') ? 'ok' : 'err');
         $res['requirements']['ldap'] = (extension_loaded('ldap') ? 'ok' : 'err');
         $res['requirements']['openssl'] = (extension_loaded('openssl') ? 'ok' : 'err');
-        $res['requirements']['allowUrlFopen'] = ($php_conf['allow_url_fopen']['local_value'] ? 'ok' : 'err');
-        $res['requirements']['allowUrlInclude'] = ($php_conf['allow_url_include']['local_value'] ? 'err' : 'ok');
+        $res['requirements']['allowUrlFopen'] = ((bool) ini_get('allow_url_fopen') ? 'ok' : 'err');
+        $res['requirements']['allowUrlInclude'] = ((bool) ini_get('allow_url_include') ? 'err' : 'ok');
         $res['mandatory']['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
 
         if (in_array('err', $res['mandatory'])) {
@@ -378,6 +373,7 @@ class InstallAdm extends Model
 
         $resultArray = array_merge($res['mandatory'], $res['requirements']);
         $resultArray['checkRequirements'] = $checkRequirements;
+ 
         return $resultArray;
     }
 
@@ -391,7 +387,7 @@ class InstallAdm extends Model
     {
         $res = '';
 
-        $platform_folders = $this->session->get('platform_arr');
+        $platform_folders = (array) $this->session->get('platform_arr');
         $file_to_check = ['config.php'];
         $dir_to_check = [];
         $empty_dir_to_check = [];
@@ -527,7 +523,7 @@ class InstallAdm extends Model
             'dbPass' => '',
         ];
         if (file_exists(_base_ . '/config.php')) {
-            define('IN_FORMA', true);
+        
             include _base_ . '/config.php';
 
             foreach ($localCfg['dbConfig'] as $key => $value) {
@@ -571,15 +567,13 @@ class InstallAdm extends Model
             ];
 
         if (file_exists(_base_ . '/config.php')) {
-            define('IN_FORMA', true);
+    
             include _base_ . '/config.php';
 
             foreach ($localCfg['smtp'] as $key => $value) {
-                $localCfg['smtp'][$key] = $cfg[HelperTool::camelCaseToSnake($key)];
+                $localCfg['smtp'][$key] = isset($cfg[HelperTool::camelCaseToSnake($key)]) ? $cfg[HelperTool::camelCaseToSnake($key)] : '';
             }
         }
-
-        $localCfg['smtp']['useSmtpDatabase'] = $cfg['useSmtpDatabase'];
 
         $localCfg['selectEnabling'] = [
             'on' => _YES,
@@ -1057,7 +1051,7 @@ class InstallAdm extends Model
                     break;
             }
 
-
+            $this->cleanSession();
             return $this->setResponse($success, $messages)->wrapResponse();
         }
 
@@ -1101,6 +1095,10 @@ class InstallAdm extends Model
 
             case 4:
 
+                foreach($this->session->get('setLangs') as $lang) {
+                    $messages[] = ucfirst($lang);
+                }
+                $messages[] = ucfirst(Lang::getSelLang());
                 //inserisco file di lingua
                 $success = $this->importLangs();
 
@@ -1130,7 +1128,7 @@ class InstallAdm extends Model
 
                 break;
         }
-
+        $this->cleanSession();
         return $this->setResponse($success, $messages)->wrapResponse();
     }
 
@@ -1141,10 +1139,9 @@ class InstallAdm extends Model
      */
     private function migrate()
     {
-
         $migrationFile = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
         $mainPath = dirname(__DIR__, 2);
-        return shell_exec("php " . $migrationFile . " migrate --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php 2>&1");
+        return shell_exec("php " . $migrationFile . " migrate --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php "); //2>&1
 
     }
 
@@ -1442,6 +1439,7 @@ class InstallAdm extends Model
     {
         $langAdm = new LangAdm();
         $langsToInstall = $this->session->get('setLangs');
+        $langsToInstall[] = Lang::getSelLang();
         foreach ($langsToInstall as $lang) {
             $fn = _base_ . '/xml_language/lang[' . $lang . '].xml';
 
@@ -1643,6 +1641,23 @@ class InstallAdm extends Model
 
         $qtxt = "UPDATE core_setting SET param_value='standard' WHERE param_name='defaultTemplate'";
         return sql_query($qtxt);
+    }
+
+
+    /**
+     * Method to celan session after installation
+     *
+     *
+     * @return boolean
+     */
+    private function cleanSession()
+    {
+        $this->session->set('setValues', []);
+        $this->session->set('setLangs', []);
+        $this->session->set('step', 0);
+        $this->session->save();
+
+        return true;
     }
 
 }

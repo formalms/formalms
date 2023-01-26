@@ -207,7 +207,7 @@ class Form
     {
         $search = ['"', '<', '>'];
         $replace = ['&quot;', '&lt;', '&gt;'];
-        $value = str_replace($search, $replace, $value);
+        $value = str_replace($search, $replace, (string) $value);
 
         return '<input type="text" '
         . "\n\t" . 'class="form-control ' . $css_text . '" '
