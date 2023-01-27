@@ -39,7 +39,7 @@ class InstallAdm extends Model
     protected $upgrade;
 
     /** @var string * */
-    protected $minSupportedVersion = '3.3.2';
+    protected $minSupportedVersion = '3.3.3';
     protected $minUpgradeVersion = '4.0.0';
 
     const CHECK_REQUIREMENTS = '1';
