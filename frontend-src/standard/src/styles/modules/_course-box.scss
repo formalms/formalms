@@ -66,7 +66,7 @@ $course-box-border: 2px;
   height: 25px;
   background: rgba(255,255,255,0.2);
   border-radius: 100vh;
-  padding: 3px 0;
+  padding: 3px 2px;
 
   .course-box__icon {
     position: relative;
@@ -88,9 +88,10 @@ $course-box-border: 2px;
       height: 100%;
       left: 0;
       top: 0;
-      border-radius: 50%;
+      //border-radius: 50%;
       background-color: var(--color-grey-04);
       -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
       background: {
         position: center;
         repeat: no-repeat;

@@ -206,6 +206,19 @@
   }
 }
 
+.progress-bar-warning {
+  background-image: -webkit-linear-gradient(top,var(--color-secondary) 0,var(--color-secondary) 100%);
+  background-image: -o-linear-gradient(top,var(--color-secondary) 0,var(--color-secondary) 100%);
+  background-image: -webkit-gradient(linear,left top,left bottom,from(var(--color-secondary)),to(var(--color-secondary)));
+  background-image: linear-gradient(to bottom,var(--color-secondary) 0,var(--color-secondary) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff0ad4e', endColorstr='#ffec971f', GradientType=0);
+  background-repeat: repeat-x;
+
+  span {
+    color: var(--color-secondary-text) !important;
+  }
+}
+
 .progress-bar-warning--black {
   span {
     color: var(--color-black) !important;
