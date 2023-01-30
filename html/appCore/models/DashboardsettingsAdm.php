@@ -20,7 +20,7 @@ class DashboardsettingsAdm extends Model
 {
     protected $db;
 
-    protected $enabledBlocks;
+    protected $enabledBlocks= [];
 
     protected $installedBlocks;
 
