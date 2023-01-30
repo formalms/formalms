@@ -191,7 +191,7 @@ class DashboardsettingsAdmController extends AdmController
 
     public function getLayouts()
     {
-        $selectedDashboardId = FormaLms\lib\Get::req('dashboard', DOTY_INT, false);
+        $selectedDashboardId = $this->model->getDefaultLayout();
         $search = FormaLms\lib\Get::req('search', DOTY_MIXED, false);
         $layouts = $this->model->getLayouts();
         $res = [];
@@ -210,8 +210,8 @@ class DashboardsettingsAdmController extends AdmController
 
             $item = [];
             for ($i = 0; $i < count($keys) - 1; ++$i) {
-                $item[$keys[$i]] = $layout[$i];
-                $item['selected'] = $layout[0] == $selectedDashboardId;
+                $item[$keys[$i]] = $layout[$i+2];
+                $item['selected'] = $layout[2] == $selectedDashboardId;
             }
 
             if (!$search['value'] || strpos($item['name'], $search['value']) !== false || strpos($item['caption'], $search['value']) !== false) {

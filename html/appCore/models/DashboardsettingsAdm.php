@@ -20,7 +20,7 @@ class DashboardsettingsAdm extends Model
 {
     protected $db;
 
-    protected $enabledBlocks= [];
+    protected $enabledBlocks = [];
 
     protected $installedBlocks;
 
@@ -276,4 +276,14 @@ class DashboardsettingsAdm extends Model
 
         return [];
     }
+
+    public function getDefaultLayout(){
+        foreach ($this->layouts as $layout ) {
+            if ($layout->isDefault()) {
+                return $layout->getId();
+            }
+        }
+        return 0;
+    }
+
 }
