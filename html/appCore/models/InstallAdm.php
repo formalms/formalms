@@ -138,6 +138,7 @@ class InstallAdm extends Model
         $labels['fileInfoLabel'] = _FILEINFO;
         $labels['ldapLabel'] = _LDAP;
         $labels['openSslLabel'] = _OPENSSL;
+        $labels['disableFunctionsLabel'] = _DISABLE_FUNCTIONS;
         $labels['phpTimezone'] = _PHP_TIMEZONE;
         $labels['phpInfo'] = _PHPINFO;
         $labels['allowUrlFopenLabel'] = _ALLOW_URL_FOPEN;
@@ -166,7 +167,6 @@ class InstallAdm extends Model
         $labels['loadingLabel'] = _LOADING . '...';
         $labels['successLabel'] = _INSTALLATION_COMPLETED;
         $labels['goToLogin'] = _SITE_HOMEPAGE;
-        $labels['resetInstallation'] = _RESET_INSTALL;
 
         $labels['smtpLabels'] =
             [
@@ -256,6 +256,7 @@ class InstallAdm extends Model
     public function getData(\Symfony\Component\HttpFoundation\Request $request): array
     {
 
+ 
         $params = $this->getLabels();
 
         $params = array_merge($params,
@@ -292,12 +293,13 @@ class InstallAdm extends Model
         $params['fileInfoData'] = extension_loaded('fileinfo') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_FILEINFO;
         $params['ldapData'] = extension_loaded('ldap') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_IT;
         $params['openSslData'] = extension_loaded('openssl') ? _ON : _OFF . ' ' . _WARINNG_SOCIAL;
+        $params['disableFunctionsData'] = $params['disableFunctions'] != 'err' ? _OFF : _ON;
         $params['phpTimezoneData'] = @date_default_timezone_get();
         $params['allowUrlFopenData'] = $params['allowUrlFopen'] != 'err' ? _ON : _OFF . ' ' . _WARNING_SOCIAL;
         $params['allowUrlIncludeData'] = $params['allowUrlInclude'] != 'err' ? _ON : _OFF;
-        $params['uploadMaxFilesizeData'] = $params['uploadMaxFilesize'];
-        $params['postMaxSizeData'] = $params['postMaxSize'];
-        $params['maxExecutionTimeData'] = $params['maxExecutionTime'] . 's';
+        $params['uploadMaxFilesizeData'] = ini_get('upload_max_filesize');
+        $params['postMaxSizeData'] = ini_get('post_max_size');
+        $params['maxExecutionTimeData'] = ini_get('max_execution_time') . 's';
         $params['checkFolderPerms'] = $this->checkFolderPerm();
   
 
@@ -366,11 +368,13 @@ class InstallAdm extends Model
         $res['requirements']['allowUrlFopen'] = ((bool) ini_get('allow_url_fopen') ? 'ok' : 'err');
         $res['requirements']['allowUrlInclude'] = ((bool) ini_get('allow_url_include') ? 'err' : 'ok');
         $res['mandatory']['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
-
+        $res['mandatory']['disableFunctions'] = in_array('shell_exec', explode(',',ini_get('disable_functions'))) ? 'err' : 'ok';
+       
         if (in_array('err', $res['mandatory'])) {
             $checkRequirements = 0;
         }
 
+    
         $resultArray = array_merge($res['mandatory'], $res['requirements']);
         $resultArray['checkRequirements'] = $checkRequirements;
  
@@ -1047,11 +1051,11 @@ class InstallAdm extends Model
                     recursiveRmdir(FormaLms\appCore\Template\TwigManager::getCacheDir());
                     $messages[] = _CLEARTWIG_CACHE_OK;
 
-
+                    $this->cleanSession();
                     break;
             }
 
-            $this->cleanSession();
+      
             return $this->setResponse($success, $messages)->wrapResponse();
         }
 
@@ -1094,15 +1098,14 @@ class InstallAdm extends Model
                 break;
 
             case 4:
-
-                foreach($this->session->get('setLangs') as $lang) {
-                    $messages[] = ucfirst($lang);
-                }
-                $messages[] = ucfirst(Lang::getSelLang());
                 //inserisco file di lingua
-                $success = $this->importLangs();
+                $installedLanguages = $this->importLangs();
 
-                if ($success) {
+                if (count($installedLanguages)) {
+
+                    foreach($installedLanguages as $lang) {
+                        $messages[] = $lang;
+                    }
                     $messages[] = _LANG_STEP_SUCCESS;
                 } else {
                     $messages[] = _LANG_STEP_ERROR;
@@ -1119,7 +1122,7 @@ class InstallAdm extends Model
                 } else {
                     $messages[] = _MAIL_STEP_ERROR;
                 }
-
+                $this->cleanSession();
                 break;
 
             default:
@@ -1128,7 +1131,7 @@ class InstallAdm extends Model
 
                 break;
         }
-        $this->cleanSession();
+        
         return $this->setResponse($success, $messages)->wrapResponse();
     }
 
@@ -1433,23 +1436,24 @@ class InstallAdm extends Model
      * Method to import languages file
      *
      *
-     * @return boolean
+     * @return array
      */
-    private function importLangs()
+    private function importLangs() : array
     {
         $langAdm = new LangAdm();
         $langsToInstall = $this->session->get('setLangs');
+        $installedLanguages = [];
         $langsToInstall[] = Lang::getSelLang();
         foreach ($langsToInstall as $lang) {
             $fn = _base_ . '/xml_language/lang[' . $lang . '].xml';
 
             if (file_exists($fn)) {
-
+                $installedLanguages[] = $lang;
                 $langAdm->importTranslation($fn, true, false);
             }
         }
 
-        return true;
+        return $installedLanguages;
     }
 
 

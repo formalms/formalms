@@ -200,6 +200,7 @@ define('_DOMXML', 'domxml();');
 define('_LDAP', 'Ldap');
 define('_FILEINFO', 'Supporto Fileinfo');
 define('_OPENSSL', 'Openssl : ');
+define('_DISABLE_FUNCTIONS', 'Disabilita shell_exec : ');
 define('_WARINNG_SOCIAL', 'Considerare questa nota solo se si intende usare i login social');
 define('_ON', 'ON ');
 define('_OFF', 'OFF ');

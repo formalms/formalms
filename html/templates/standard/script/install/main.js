@@ -174,9 +174,10 @@ function process() {
 function checkPrerequisites() {
 
     var postData = {};
-    if(!$("#checkRequirements").val()) {
+    if($("#checkRequirements").val() == 0) {
         postData.unsuitable_requirements = true;
     }
+
     //check if is upgrade
     if($("#upgrade").length > 0) {
 
@@ -186,7 +187,7 @@ function checkPrerequisites() {
 
         postData.block_upgrade = true;
     } else {
-        if($("#checkRequirements").val() && $('#agree').is(":checked")) {
+        if($("#checkRequirements").val() == 1 && $('#agree').is(":checked")) {
             return true;
         } else {
         
