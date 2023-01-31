@@ -29,7 +29,7 @@ class InstallAdmController extends AdmController
     {
       
         $params = $this->model->getData($this->request);
-        
+
         $params['steps'] = $this->model->getSteps();
         $params['languages'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();

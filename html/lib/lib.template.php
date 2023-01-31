@@ -231,6 +231,7 @@ function getTemplateVersion($template_name)
  */
 function getTemplateList($set_keys = false, $platform = false)
 {
+    $templArray = [];
     $templ = dir(_templates_ . '/');
     while ($elem = $templ->read()) {
         if ((is_dir(_templates_ . '/' . $elem)) && ($elem != '.') && ($elem != '..') && ($elem != '.svn') && $elem[0] != '_' && checkTemplateVersion($elem)) {
@@ -268,7 +269,7 @@ function getDefaultTemplate($platform = false)
     } else {
         $array = getTemplateList();
 
-        return array_pop($array);
+        return count($array) ? array_pop($array) : 'standard';
     }
 }
 

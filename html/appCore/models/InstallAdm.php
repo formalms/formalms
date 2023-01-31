@@ -258,7 +258,7 @@ class InstallAdm extends Model
 
  
         $params = $this->getLabels();
-
+        $params['debug'] = $request->query->has('debug') ? $request->query->get('debug') : false;
         $params = array_merge($params,
             $this->checkRequirements(),
             ini_get_all());
@@ -1033,7 +1033,19 @@ class InstallAdm extends Model
 
                 case 2:
                     //lancio migrate
-                    $messages[] = $this->migrate();
+                    $messages[] = $this->migrate($params['debug']);
+
+                    $overWrittenLangs = $this->importLangs($this->getInstalledLanguages());
+                    if (count($overWrittenLangs)) {
+
+                        foreach($overWrittenLangs as $lang) {
+                            $messages[] = $lang;
+                        }
+                        $messages[] = _LANG_STEP_SUCCESS;
+                    } else {
+                        $messages[] = _LANG_STEP_ERROR;
+                    }
+
 
                     $success = $this->saveUpgradeVersion();
                     if ($success) {
@@ -1077,7 +1089,7 @@ class InstallAdm extends Model
 
             case 2:
 
-                $messages[] = $this->migrate();
+                $messages[] = $this->migrate($params['debug']);
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation($this->session->get('setValues'));
@@ -1140,11 +1152,16 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private function migrate()
+    private function migrate($debug = false)
     {
         $migrationFile = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
         $mainPath = dirname(__DIR__, 2);
-        return shell_exec("php " . $migrationFile . " migrate --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php "); //2>&1
+
+        $debugString = '';
+        if($debug) {
+            $debugString = '2>&1';
+        }
+        return shell_exec("php " . $migrationFile . " migrate --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
 
     }
 
@@ -1438,10 +1455,10 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    private function importLangs() : array
+    private function importLangs($langs = []) : array
     {
         $langAdm = new LangAdm();
-        $langsToInstall = $this->session->get('setLangs');
+        $langsToInstall = count($langs) ? $langs : $this->session->get('setLangs');
         $installedLanguages = [];
         $langsToInstall[] = Lang::getSelLang();
         foreach ($langsToInstall as $lang) {
@@ -1455,6 +1472,20 @@ class InstallAdm extends Model
 
         return $installedLanguages;
     }
+
+    /**
+     * Method to import languages file
+     *
+     *
+     * @return array
+     */
+    private function getInstalledLanguages() : array
+    {
+        $langAdm = new LangAdm();
+
+        return $langAdm->getLangCodeList();
+    }
+   
 
 
     /**

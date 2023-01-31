@@ -116,7 +116,7 @@
 .wizard > .steps .current a:hover,
 .wizard > .steps .current a:active
 {
-    background: var(--color-primary);
+    background: var(--color-navbtn-bg-inter);
     color: #fff;
     cursor: default;
 }
@@ -126,7 +126,7 @@
 .wizard > .steps .done a:active,
 .disabledActions
 {
-    background: var(--color-2-200) !important;
+    background: var(--color-navbtn-bg) !important;
     color: #fff !important;
 }
 
