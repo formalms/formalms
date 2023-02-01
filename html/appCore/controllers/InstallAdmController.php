@@ -21,7 +21,7 @@ class InstallAdmController extends AdmController
     public function init()
     {
         $debug =  $this->request->query->has('debug') ? (int) $this->request->query->get('debug') : 0;
-        
+
         $this->model = new InstallAdm($debug);
     }
 

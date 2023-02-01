@@ -9,6 +9,21 @@ class SettingAdm extends Model
 
     protected $table;
 
+    public const NAMES = [
+        1 => 'Main_options',
+        3 => 'User',
+        4 => 'conf_lms',
+        6 => 'Videoconference',
+        7 => 'Ldap',
+        8 => 'Advanced',
+        5 => 'Ecommerce',
+        9 => 'Api_SSO',
+        10 => 'Google',
+        11 => 'Sms',
+        12 => 'Social',
+        13 => 'Twig',
+    ];
+
     public function __construct()
     {
         $this->db = DbConn::getInstance();
@@ -32,27 +47,11 @@ class SettingAdm extends Model
 		ORDER BY regroup ");
 
         // $event = new \appCore\Events\Core\ConfigGetRegroupUnitsEvent();
-
-        $names = [
-            1 => 'Main_options',
-            3 => 'User',
-            4 => 'conf_lms',
-            6 => 'Videoconference',
-            7 => 'Ldap',
-            8 => 'Advanced',
-            5 => 'Ecommerce',
-            9 => 'Api_SSO',
-            10 => 'Google',
-            11 => 'Sms',
-            12 => 'Social',
-            13 => 'Twig',
-        ];
-
         if (!\FormaLms\lib\Get::cfg('sms_on')) {
-            array_splice($names,9,1);
+            $names = array_diff(self::NAMES, ['Sms']);
+        } else {
+            $names = self::NAMES;
         }
-
-
 
         // $event->setGroupUnits($names);
         // \appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\ConfigGetRegroupUnitsEvent::EVENT_NAME, $event);

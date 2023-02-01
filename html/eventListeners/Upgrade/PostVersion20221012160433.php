@@ -18,13 +18,13 @@ class PostVersion20221012160433 extends Upgrader{
     
         $smtp_group = 14;
         $arrayConfig = [
-            'smtp_auto_ls' => 'auto_tls',
+            'smtp_auto_tls' => 'auto_tls',
             'smtp_debug' => 'debug',
             'smtp_host' => 'host',
             'smtp_port' => 'port',
             'smtp_secure' => 'secure',
             'smtp_user' => 'user',
-            'smtp_password' => 'password',
+            'smtp_pwd' => 'password',
             'use_smtp' => 'active',
             'mail_sender' => 'sender_mail_system',
             'mail_sender_name_from' => 'sender_name_system',

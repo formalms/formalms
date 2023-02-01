@@ -65,6 +65,7 @@ class InstallAdm extends Model
         //require_once(_adm_.'/versions.php');
 
         $this->upgrade = $this->isUpgrade();
+        $this->debug = $debug;
         $this->fillSteps();
         $this->fillLabels();
         $this->fillErrorLabels();
@@ -258,7 +259,7 @@ class InstallAdm extends Model
 
  
         $params = $this->getLabels();
-        $params['debug'] = $request->query->has('debug') ? $request->query->get('debug') : false;
+        $params['debug'] = $this->debug;
         $params = array_merge($params,
             $this->checkRequirements(),
             ini_get_all());
@@ -1460,7 +1461,10 @@ class InstallAdm extends Model
         $langAdm = new LangAdm();
         $langsToInstall = count($langs) ? $langs : $this->session->get('setLangs');
         $installedLanguages = [];
-        $langsToInstall[] = Lang::getSelLang();
+        if(!count($langs)) {
+            $langsToInstall[] = Lang::getSelLang();
+        }
+        
         foreach ($langsToInstall as $lang) {
             $fn = _base_ . '/xml_language/lang[' . $lang . '].xml';
 
@@ -1634,7 +1638,7 @@ class InstallAdm extends Model
     {
 
         $connection = DbConn::getInstance();
-        $createQuery = "CREATE TABLE IF NOT EXISTS`core_migration_versions`  (
+        $createQuery = "CREATE TABLE IF NOT EXISTS `core_migration_versions`  (
             `version` varchar(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
             `executed_at` datetime(0) NULL DEFAULT NULL,
             `execution_time` int(11) NULL DEFAULT NULL,

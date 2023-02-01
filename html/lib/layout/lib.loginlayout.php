@@ -117,6 +117,7 @@ class LoginLayout
             }
             if (isset($_GET['msg'])) {
                 $class = 'login_failed';
+                $msg = '';
                 switch ((int) $_GET['msg']) {
                     case 101:  // Security issue, the request seem invalid ! (failed checkSignature)
                         $msg = Lang::t('_INVALID_REQUEST', 'login');

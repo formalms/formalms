@@ -122,6 +122,8 @@ function process() {
         if($("#upgrade").length > 0) {
             postData.upgrade = true;
         }
+
+        postData.debug = $("#debug").val();
         // So when ajax completes we'd mark this item as done and turn off busy 
         // so next item of arr will get processed in timer's next 'alarm'
 

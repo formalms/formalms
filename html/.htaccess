@@ -33,8 +33,8 @@ DirectoryIndex index.php index.html index.htm
 
         RewriteRule ^(.*)/installer?$ /$1/index.php?r=adm/install/show
         RewriteRule ^(.*)/upgrader?$ /$1/index.php?r=adm/install/show
-        RewriteRule ^installer?$ /index.php?r=adm/install/show
-        RewriteRule ^upgrader?$ /index.php?r=adm/install/show
+        RewriteRule ^installer?$ /index.php?r=adm/install/show&$1 [L,QSA]
+        RewriteRule ^upgrader?$ /index.php?r=adm/install/show&$1 [L,QSA]
 </IfModule>
 
 <FilesMatch "\.(htpasswd|ini|php|fla|psd|log|sh)$">
