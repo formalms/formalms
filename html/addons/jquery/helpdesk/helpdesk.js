@@ -59,7 +59,7 @@ function validateEmail(email) {
         $(".modalbox").fancybox();
         $("#contact").submit(function() { return false; });
 
-        $("#send").before('<em id="send-loading" style="display: none;"><img src="../templates/standard/images/tree/loading.gif"></em>');
+        $("#send").before('<em id="send-loading" style="display: none;"><img src="../templates/standard/images/tree/loading.gif" title="Loading"></em>');
         
         $("#send").on("click", function(){
             var emailval  = $("#email").val();
