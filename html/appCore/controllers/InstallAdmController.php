@@ -54,9 +54,21 @@ class InstallAdmController extends AdmController
 
     public function testMigrations() {
 
+        $params = $this->request->request->all();
+
+        $debugLine = '';
+        if((int) $params['upgrade']) {
+            $this->model->installMigrationsTable();
+        }
+
+        if((int) $params['debug']) {
+            $debugLine = '2>&1';
+        }
         $path = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
         $mainPath = dirname(__DIR__, 2);
-        $result = shell_exec("php " . $path . " migrate --configuration=" . $mainPath ."/migrations.yaml --db-configuration=" . $mainPath ."/migrations-db.php 2>&1");
+        $writeSqlFile = "/files/migration" . floor(microtime(true) * 1000) .".sql";
+
+        $result = shell_exec("php " . $path . " migrate --dry-run --write-sql=" . $mainPath . $writeSqlFile . " --no-interaction --configuration=" . $mainPath ."/migrations.yaml --db-configuration=" . $mainPath ."/migrations-db.php ".$debugLine);
       
         dd($result);
     }

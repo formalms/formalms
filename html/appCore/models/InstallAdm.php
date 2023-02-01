@@ -1162,7 +1162,7 @@ class InstallAdm extends Model
         if($debug) {
             $debugString = '2>&1';
         }
-        return shell_exec("php " . $migrationFile . " migrate --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
+        return shell_exec("php " . $migrationFile . " migrate --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
 
     }
 

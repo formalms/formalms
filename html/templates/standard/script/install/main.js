@@ -449,3 +449,28 @@ $("#smtpPanel select").on("change", function(e) {
 });
 
 /***********************************/
+
+function testMigrations() {
+
+  var result = false;
+  let postData = {};
+  postData['debug'] = $("#debug").val();
+  postData['upgrade'] = $("#upgrade").val();
+  $.ajax({
+    type: "POST",
+    data: postData,
+    async: false,
+    url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/testMigrations",
+    success: function (data) {
+        
+    var response = JSON.parse(data);
+    result = response.success;
+
+
+    },
+    error: function (e) {
+        alert("Error: \n" + e.status + " - " + e.statusText);
+        return false;
+    },
+});
+}
