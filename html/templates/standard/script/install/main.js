@@ -466,6 +466,11 @@ function testMigrations() {
     var response = JSON.parse(data);
     result = response.success;
 
+    var $debug = $('.debug').val();
+    if(response.messages) {
+      $('.debug').val($debug + "\n" + response.messages.join("\n") + "\n");
+    }
+
 
     },
     error: function (e) {

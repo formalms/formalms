@@ -198,6 +198,9 @@ class InstallAdm extends Model
         $labels['installedVersion'] = _INSTALLED_VERSION;
         $labels['detectedVersion'] = _DETECTED_VERSION;
 
+        $labels['testButton'] = !$this->upgrade ? _TEST_INSTALL : _TEST_UPGRADE;
+
+
         $this->labels = $labels;
 
         return $this;
@@ -1153,7 +1156,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private function migrate($debug = false)
+    public function migrate($debug = false, $testLine = '')
     {
         $migrationFile = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
         $mainPath = dirname(__DIR__, 2);
@@ -1162,7 +1165,7 @@ class InstallAdm extends Model
         if($debug) {
             $debugString = '2>&1';
         }
-        return shell_exec("php " . $migrationFile . " migrate --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
+        return shell_exec("php " . $migrationFile . " migrate ". $testLine ." --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
 
     }
 

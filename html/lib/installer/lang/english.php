@@ -15,6 +15,8 @@ define('_INSTALLER_TITLE', 'forma.lms - Installation');
 define('_UPGRADER_TITLE', 'forma.lms - Upgrade');
 define('_INSTALLED_VERSION', 'Installed Version');
 define('_DETECTED_VERSION', 'Detected Version');
+define('_TEST_INSTALL', 'Test Installation');
+define('_TEST_UPGRADE', 'Test Upgrade');
 define('_OK_UPGRADE', 'You can proceed with Upgrade');
 define('_NO_UPGRADE', 'No upgrade needed');
 define('_NO_DOWNGRADE', 'Downgrade is not supported');

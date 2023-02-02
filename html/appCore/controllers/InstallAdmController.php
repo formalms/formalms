@@ -56,21 +56,17 @@ class InstallAdmController extends AdmController
 
         $params = $this->request->request->all();
 
-        $debugLine = '';
         if((int) $params['upgrade']) {
             $this->model->installMigrationsTable();
         }
+        $writeSqlFile = dirname(__DIR__, 2) . "/files/migration" . floor(microtime(true) * 1000) .".sql";
 
-        if((int) $params['debug']) {
-            $debugLine = '2>&1';
-        }
-        $path = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
-        $mainPath = dirname(__DIR__, 2);
-        $writeSqlFile = "/files/migration" . floor(microtime(true) * 1000) .".sql";
-
-        $result = shell_exec("php " . $path . " migrate --dry-run --write-sql=" . $mainPath . $writeSqlFile . " --no-interaction --configuration=" . $mainPath ."/migrations.yaml --db-configuration=" . $mainPath ."/migrations-db.php ".$debugLine);
+        $testLine = '--dry-run --write-sql=' . $writeSqlFile;
+        $messages[] = $this->model->migrate((bool) $params['debug'], $testLine);
+        $messages[] = 'CHECK: ' . $writeSqlFile;
+       
+        echo $this->model->setResponse(true, $messages)->wrapResponse();
       
-        dd($result);
     }
 
     public function getErrorMessages() {
