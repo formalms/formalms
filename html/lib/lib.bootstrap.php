@@ -13,6 +13,7 @@
 
 use function GuzzleHttp\default_ca_bundle;
 use FormaLms\lib\Domain\DomainHandler;
+use FormaLms\Exceptions\FormaStatusException;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -79,6 +80,7 @@ class Boot
      */
     public static function init($load_option = BOOT_PAGE_WR)
     {
+       
         if (is_array($load_option)) {
             $last_step = BOOT_PAGE_WR;
             $step_list = $load_option;
@@ -310,6 +312,9 @@ class Boot
         require_once _lib_ . '/calendar/CalendarManager.php';
         require_once _lib_ . '/calendar/CalendarDataContainer.php';
         require_once _lib_ . '/calendar/CalendarMailer.php';
+
+        require_once _base_.'/Exceptions/FormaStatusException.php';
+        throw new FormaStatusException();
     }
 
     private static function domainAndTemplate(){

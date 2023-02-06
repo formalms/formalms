@@ -35,6 +35,12 @@ DirectoryIndex index.php index.html index.htm
         RewriteRule ^(.*)/upgrader?$ /$1/index.php?r=adm/install/show
         RewriteRule ^installer?$ /index.php?r=adm/install/show&$1 [L,QSA]
         RewriteRule ^upgrader?$ /index.php?r=adm/install/show&$1 [L,QSA]
+
+        RewriteRule ^(.*)/status?$ /$1/status.php
+        RewriteRule ^status/([a-zA-Z-]*)$ /status.php?msg=$1
+
+        ErrorDocument 404 /status.php?msg=found
+        
 </IfModule>
 
 <FilesMatch "\.(htpasswd|ini|php|fla|psd|log|sh)$">
@@ -52,7 +58,7 @@ DirectoryIndex index.php index.html index.htm
         Deny from all
 </FilesMatch>
 
-<FilesMatch "(index\.php|ajax\..*\.php|paypal\.php|cron\.php|tasks\.php|tinymce\.gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php|keep_alive\.php|text\.php|users\.php|write\.php|check\.php)$">
+<FilesMatch "(index\.php|status\.php|ajax\..*\.php|paypal\.php|cron\.php|tasks\.php|tinymce\.gzip\.php|index_tiny\.php|scormXmlTree\.php|soaplms\.php|scorm_page_body\.php|keep_alive\.php|text\.php|users\.php|write\.php|check\.php)$">
         Order Allow,Deny
         Allow from all
 </FilesMatch>
