@@ -82,3 +82,24 @@ const _sso_ = _homepage_base_ . '/sso';
 const _homecatalog_ = _homecatalog_base_ . '/show';
 const _install_ = _system_base_ . '/install';
 const _upgradeclass_ = 'upgrade_class';
+
+
+const BOOT_COMPOSER = 0;
+const BOOT_PHP = 1;
+const BOOT_CONFIG = 2;
+const BOOT_UTILITY = 3;
+const BOOT_SETTING = 4;
+const BOOT_REQUEST = 5;
+const BOOT_PLATFORM = 6;
+const BOOT_DOMAIN_AND_TEMPLATE = 7;
+const BOOT_PLUGINS = 8;
+const BOOT_USER = 9;
+const BOOT_SESSION_CHECK = 10;
+const BOOT_INPUT = 11;
+const BOOT_INPUT_ALT = 12;
+const BOOT_LANGUAGE = 13;
+const BOOT_HOOKS = 14;
+const BOOT_DATETIME = 15;
+const BOOT_TEMPLATE = 16;
+const BOOT_PAGE_WR = 17;
+const CHECK_SYSTEM_STATUS = 18;

@@ -17,12 +17,15 @@ class SystemAdmController extends AdmController
 {
 
     protected InstallAdm $installModel;
+
+    protected SystemAdm $systemModel;
   
     public function init()
     {
         $debug =  $this->request->query->has('debug') ? (int) $this->request->query->get('debug') : 0;
 
         $this->installModel = new InstallAdm($debug);
+        $this->systemModel = new SystemAdm();
     }
 
     public function install()
@@ -114,8 +117,14 @@ class SystemAdmController extends AdmController
     public function checkSystemStatus()
     {
     
+        $params['checks'] = $this->systemModel->getChecks();
+        $errorStatus = $this->request->get('errorStatus');
 
-        $this->render('checkstatus', []);
+        if($errorStatus) {
+            $params['errorChecks'] = $this->systemModel->decodeErrorStatus($errorStatus);
+        }
+
+        $this->render('checkstatus', $params);
 
     }
 

@@ -13,3 +13,5 @@
 
 const _file_version_ = '4.0.0';
 const _template_min_version_ = '4.0.0';
+const _php_min_version_ = '7.4.0';
+const _php_max_version_ = '8.1.14';

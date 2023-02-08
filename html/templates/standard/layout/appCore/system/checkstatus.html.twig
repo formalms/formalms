@@ -1,1 +1,54 @@
-<b>Ciao</b>
+<style>
+
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+
+
+.col-centered { 
+    display: block;
+    float: none;
+    margin: auto;
+}
+
+.container-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+</style>
+
+<section class="vh-100" style="background-color: var(--color-secondary); height:100%">
+  <div class="container py-5 h-100 container-center">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-8 col-xl-6 col-centered">
+        <div class="card rounded-3">
+          <div class="card-body p-4">
+
+            <p class="mb-2"><span class="h2 me-2">{{ Lang_translate('_FORMALMS_STATUS') }}</span> <span
+                class="badge bg-danger">STATUS</span></p>
+            <p class="text-muted pb-2">{{ "now"|date("d/m/Y H:i:s") }}</p>
+
+            <ul class="list-group rounded-0">
+              
+            {% for keycheck,check in checks %}
+                <li class="list-group-item border-0 d-flex align-items-center ps-0">
+                    <input class="form-check-input me-3" type="checkbox" value="{{ keycheck }}"  {{ (keycheck in errorChecks) ? '':'checked'}} disabled />
+                    {% set check = check | upper %}
+                    <b {{ (keycheck in errorChecks) ? 'style=color:red;':''}}>{{ Lang_translate('_' ~ check) }}</b>
+                </li>
+
+            {% endfor %}
+            </ul>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

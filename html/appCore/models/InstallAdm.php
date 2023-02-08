@@ -322,9 +322,9 @@ class InstallAdm extends Model
         $checkRequirements = 1;
         //TODO PHP7x: set const for Minimum PHP required version: 7.4
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
-        if (version_compare(PHP_VERSION, '7.4', '<')) {
+        if (version_compare(PHP_VERSION, _php_min_version_, '<')) {
             $res['mandatory']['php'] = 'err';
-        } elseif (version_compare(PHP_VERSION, '8.0', '>=')) {
+        } elseif (version_compare(PHP_VERSION, _php_max_version_, '>=')) {
             $res['mandatory']['php'] = 'warn';
         } else {
             $res['mandatory']['php'] = 'ok';

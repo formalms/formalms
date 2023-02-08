@@ -18,24 +18,7 @@ use FormaLms\Exceptions\FormaStatusException;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-const BOOT_COMPOSER = 0;
-const BOOT_CONFIG = 1;
-const BOOT_UTILITY = 2;
-const BOOT_SETTING = 3;
-const BOOT_REQUEST = 4;
-const BOOT_PLATFORM = 5;
-const BOOT_DOMAIN_AND_TEMPLATE = 6;
-const BOOT_PLUGINS = 7;
-const BOOT_USER = 8;
-const BOOT_SESSION_CHECK = 9;
-const BOOT_INPUT = 10;
-const BOOT_INPUT_ALT = 11;
-const BOOT_LANGUAGE = 12;
-const BOOT_HOOKS = 13;
-const BOOT_DATETIME = 14;
-const BOOT_TEMPLATE = 15;
-const BOOT_PAGE_WR = 16;
-const CHECK_SYSTEM_STATUS = 17;
+
 
 
 /**
@@ -47,10 +30,11 @@ class Boot
 
     private static array $checkStatusFlags;
 
-    private static string $webServer;
+    private static bool $prettyRedirect;
 
     private static $_boot_seq = [
         BOOT_COMPOSER => 'composer',
+        BOOT_PHP => 'checkPhpVersion',
         BOOT_CONFIG => 'config',
         BOOT_UTILITY => 'utility',
         BOOT_SETTING => 'loadSetting',
@@ -92,6 +76,8 @@ class Boot
        
         //inizializzazione
         self::$checkStatusFlags = [];
+
+        self::checkWebServer();
 
         if (is_array($load_option)) {
             $last_step = CHECK_SYSTEM_STATUS;
@@ -141,28 +127,26 @@ class Boot
     private static function config()
     {
 
-        self::$checkStatusFlags[] = __FUNCTION__;
         $cfg = null;
-        $configExist = true;
+  
         if (!file_exists(dirname(__DIR__, 1).'/config.php')) {
-            $configExist = false;
+         
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         } else {
             require dirname(__DIR__, 1).'/config.php';
         }
 
         if (!isset($cfg) || !is_array($cfg)) {
-            $configExist = false;
+         
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $checkRoute = static::checkSystemRoutes($request);
 
-        if (!$configExist && !$checkRoute) {
-
-            header('Location: ' . FormaLms\lib\Get::getBaseUrl() . '/install');
+        if (!$checkRoute && !static::fileLockExistence()) {
+            static::customRedirect('install');
         }
 
-        //$this->checkStatusFlags[] = 3;
-        $step_report = [];
         //controllare request
 
         //unset all the globals that aren't php setted
@@ -193,8 +177,8 @@ class Boot
         self::log('Include configuration file.');
 
         $cfg = [];
-        if (file_exists(__DIR__ . '/../config.php')) {
-            require __DIR__ . '/../config.php';
+        if (file_exists(dirname(__DIR__, 1). '/config.php')) {
+            require dirname(__DIR__, 1). '/config.php';
         }
 
         $GLOBALS['cfg'] = $cfg;
@@ -379,8 +363,6 @@ class Boot
     private static function checkPlatform()
     {
 
-        self::checkWebServer();
-
         self::log('Load database funtion management library.');
 
         $configExist = true;
@@ -427,8 +409,11 @@ class Boot
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $checkRoute = static::checkSystemRoutes($request);
 
-        if ((!$configExist || $dbIsEmpty) && !$checkRoute) {
-            header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
+        if($dbIsEmpty) {
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
+        }
+        if (!$checkRoute && !static::fileLockExistence()) {
+            static::customRedirect('install');
         }
     }
 
@@ -452,8 +437,8 @@ class Boot
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
 
-            if (file_exists(__DIR__ . '/../config.php')) {
-                require __DIR__ . '/../config.php';
+            if (file_exists(dirname(__DIR__, 1). '/config.php')) {
+                require dirname(__DIR__, 1). '/config.php';
             }
             $config = [];
             if (!empty($cfg)) {
@@ -745,7 +730,8 @@ class Boot
     public static function checkSystemStatus()
     {
         if(count(self::$checkStatusFlags)) {
-            dd(self::$checkStatusFlags);
+            $params['errorStatus'] = base64_encode(implode("_", array_unique(self::$checkStatusFlags)));
+            static::customRedirect('checkSystemStatus', $params);
         }
       
     }
@@ -756,18 +742,39 @@ class Boot
       
     }
 
-    public static function checkPhpVersion()
-    {
-       
-      
-    }
-
 
     public static function checkWebServer()
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        echo $request->server->get('SERVER_SOFTWARE');
-        exit;
         
+        self::$prettyRedirect = (bool)preg_match('/^(Apache)/', $request->server->get('SERVER_SOFTWARE'));
+        
+    }
+
+    public static function customRedirect($route, $params = [])
+    {
+        $baseRoute = FormaLms\lib\Get::rel_path('base') . '/';
+        $sistemPrefix = '/index.php?r=adm/system/';
+        $baseRoute .= (self::$prettyRedirect) ? $route : ($sistemPrefix . $route);
+
+        if(count($params)) {
+            $baseRoute .= (self::$prettyRedirect) ? '&' : '?';
+            foreach($params as $key => $param) {
+                $baseRoute .= $key . '=' . $param;
+            }
+        }
+
+        header('Location: ' . $baseRoute);
+      
+    }
+
+    public static function checkPhpVersion()
+    {
+        require_once _adm_ . '/versions.php';
+       
+        if (version_compare(PHP_VERSION, _php_min_version_, '<') || version_compare(PHP_VERSION, _php_max_version_, '>')) 
+        {
+            self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
+        }
     }
 }
