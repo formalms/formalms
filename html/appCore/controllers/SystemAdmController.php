@@ -13,34 +13,34 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class InstallAdmController extends AdmController
+class SystemAdmController extends AdmController
 {
 
-    protected InstallAdm $model;
+    protected InstallAdm $installModel;
   
     public function init()
     {
         $debug =  $this->request->query->has('debug') ? (int) $this->request->query->get('debug') : 0;
 
-        $this->model = new InstallAdm($debug);
+        $this->installModel = new InstallAdm($debug);
     }
 
-    public function show()
+    public function install()
     {
       
-        $params = $this->model->getData($this->request);
+        $params = $this->installModel->getData($this->request);
 
-        $params['steps'] = $this->model->getSteps();
+        $params['steps'] = $this->installModel->getSteps();
         $params['languages'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
 
-        $this->render('show', $params);
+        $this->render('install', $params);
 
     }
 
     public function set() {
 
-        $result = json_encode(array('success' => $this->model->setValue($this->request)));
+        $result = json_encode(array('success' => $this->installModel->setValue($this->request)));
         echo $result;
       
         exit;
@@ -48,7 +48,7 @@ class InstallAdmController extends AdmController
 
     public function checkDbData() {
 
-        echo $this->model->checkDbData($this->request);
+        echo $this->installModel->checkDbData($this->request);
         exit;
     }
 
@@ -57,21 +57,21 @@ class InstallAdmController extends AdmController
         $params = $this->request->request->all();
 
         if((int) $params['upgrade']) {
-            $this->model->installMigrationsTable();
+            $this->installModel->installMigrationsTable();
         }
         $writeSqlFile = dirname(__DIR__, 2) . "/files/migration" . floor(microtime(true) * 1000) .".sql";
 
         $testLine = '--dry-run --write-sql=' . $writeSqlFile;
-        $messages[] = $this->model->migrate((bool) $params['debug'], $testLine);
+        $messages[] = $this->installModel->migrate((bool) $params['debug'], $testLine);
         $messages[] = 'CHECK: ' . $writeSqlFile;
        
-        echo $this->model->setResponse(true, $messages)->wrapResponse();
+        echo $this->installModel->setResponse(true, $messages)->wrapResponse();
       
     }
 
     public function getErrorMessages() {
 
-        $result = json_encode(array('messages' =>  $this->model->getErrorMessages($this->request)));
+        $result = json_encode(array('messages' =>  $this->installModel->getErrorMessages($this->request)));
         echo $result;
         exit;
        
@@ -79,7 +79,7 @@ class InstallAdmController extends AdmController
 
     public function checkFtp() {
 
-        echo $this->model->checkFtp($this->request);
+        echo $this->installModel->checkFtp($this->request);
        
         exit;
        
@@ -87,27 +87,36 @@ class InstallAdmController extends AdmController
 
 
     public function checkAdminData() {
-        echo $this->model->checkAdminData($this->request);
+        echo $this->installModel->checkAdminData($this->request);
        
         exit;
     }
 
     public function checkSmtpData() {
-        echo $this->model->checkSmtpData($this->request);
+        echo $this->installModel->checkSmtpData($this->request);
        
         exit;
     }
 
     public function finalize() {
-        echo $this->model->finalize($this->request);
+        echo $this->installModel->finalize($this->request);
        
         exit;
     }
 
     public function formSave() {
-        echo $this->model->saveFields($this->request);
+        echo $this->installModel->saveFields($this->request);
        
         exit;
+    }
+
+
+    public function checkSystemStatus()
+    {
+    
+
+        $this->render('checkstatus', []);
+
     }
 
  

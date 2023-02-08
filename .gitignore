@@ -47,6 +47,7 @@ docs/
 .vscode/**
 .DS_Store
 html/check.php
+html/forma.lock
 
 # doctrine
 bin/doctrine

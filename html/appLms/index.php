@@ -21,7 +21,7 @@ LMSTemplateController::init();
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_PAGE_WR);
+Boot::init(CHECK_SYSTEM_STATUS);
 
 // connect to the database
 $db = &DbConn::getInstance();

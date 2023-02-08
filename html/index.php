@@ -32,7 +32,7 @@ if (isset($_REQUEST['notuse_template'])) {
     $GLOBALS['notuse_template'] = true;
 }
 
-Boot::init(BOOT_PAGE_WR);
+Boot::init(CHECK_SYSTEM_STATUS);
 
 // connect to the database
 $db = &DbConn::getInstance();
@@ -87,13 +87,13 @@ $requestedRoute = sprintf('%s/%s', $platform, $mvcName);
 $allowedControllers = [
     _homepage_base_,
     _homecatalog_base_,
-    _install_base_,
+    _system_base_,
 ];
 
 $templatesToRender = [
     _homepage_base_ => 'home',
     _homecatalog_base_ => 'home_catalogue',
-    _install_base_ => 'installer',
+    _system_base_ => 'installer',
 ];
 
 if ($req) {

@@ -23,7 +23,7 @@ $GLOBALS['orig_post'] = $_POST; // not filtered
 
 // initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_PAGE_WR);
+Boot::init(CHECK_SYSTEM_STATUS);
 
 // -----------------------------------------------------------------------------
 

@@ -1147,6 +1147,9 @@ class InstallAdm extends Model
 
                 break;
         }
+
+        //genero il file lock
+        $this->generateLock();
         
         return $this->setResponse($success, $messages)->wrapResponse();
     }
@@ -1700,6 +1703,20 @@ class InstallAdm extends Model
         $this->session->save();
 
         return true;
+    }
+
+     /**
+     * Method to generate lock file
+     *
+     * @return void
+     */
+
+    private function generateLock()
+    {
+        // ----------- Generating lock file -----------------------------
+
+        $lockFile = _base_ . '/forma.lock';
+        touch($lockFile);
     }
 
 }

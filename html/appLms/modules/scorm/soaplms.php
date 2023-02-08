@@ -22,7 +22,7 @@ if (!defined('LMS')) {
 
     // initialize
     require _base_ . '/lib/lib.bootstrap.php';
-    Boot::init(BOOT_PAGE_WR);
+    Boot::init(CHECK_SYSTEM_STATUS);
 }
 $prefix = $GLOBALS['prefix_lms'];
 

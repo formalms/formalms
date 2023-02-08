@@ -21,7 +21,7 @@ require dirname(__FILE__) . '/' . _deeppath_ . 'base.php';
 
 // Initialize
 require _base_ . '/lib/lib.bootstrap.php';
-Boot::init(BOOT_PAGE_WR);
+Boot::init(CHECK_SYSTEM_STATUS);
 
 // Utils and so on
 require_once _base_ . '/lib/lib.platform.php';

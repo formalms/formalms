@@ -66,7 +66,7 @@ const _plugins_ = _base_ . '/' . _folder_plugins_;
 
 /* other nice setting */
 const _homepage_base_ = 'adm/homepage';
-const _install_base_ = 'adm/install';
+const _system_base_ = 'adm/system';
 const _homecatalog_base_ = 'lms/homecatalogue';
 
 const _homepage_ = _homepage_base_ . '/show';
@@ -80,5 +80,5 @@ const _newpwd_ = _homepage_base_ . '/newpwd';
 const _homewebpage_ = _homepage_base_ . '/webpage';
 const _sso_ = _homepage_base_ . '/sso';
 const _homecatalog_ = _homecatalog_base_ . '/show';
-const _install_ = _install_base_ . '/show';
+const _install_ = _system_base_ . '/install';
 const _upgradeclass_ = 'upgrade_class';

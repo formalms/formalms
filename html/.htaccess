@@ -31,10 +31,10 @@ DirectoryIndex index.php index.html index.htm
         RewriteRule ^install/?$ /installer [R,L]
 
 
-        RewriteRule ^(.*)/installer?$ /$1/index.php?r=adm/install/show
-        RewriteRule ^(.*)/upgrader?$ /$1/index.php?r=adm/install/show
-        RewriteRule ^installer?$ /index.php?r=adm/install/show&$1 [L,QSA]
-        RewriteRule ^upgrader?$ /index.php?r=adm/install/show&$1 [L,QSA]
+        RewriteRule ^(.*)/installer?$ /$1/index.php?r=adm/system/install
+        RewriteRule ^(.*)/upgrader?$ /$1/index.php?r=adm/system/install
+        RewriteRule ^installer?$ /index.php?r=adm/system/install&$1 [L,QSA]
+        RewriteRule ^upgrader?$ /index.php?r=adm/system/install&$1 [L,QSA]
 
         RewriteRule ^(.*)/status?$ /$1/status.php
         RewriteRule ^status/([a-zA-Z-]*)$ /status.php?msg=$1

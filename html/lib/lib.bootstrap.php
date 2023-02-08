@@ -10,10 +10,11 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
-
+require_once _base_ . '/vendor/autoload.php';
 use function GuzzleHttp\default_ca_bundle;
 use FormaLms\lib\Domain\DomainHandler;
 use FormaLms\Exceptions\FormaStatusException;
+
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -25,15 +26,17 @@ const BOOT_REQUEST = 4;
 const BOOT_PLATFORM = 5;
 const BOOT_DOMAIN_AND_TEMPLATE = 6;
 const BOOT_PLUGINS = 7;
-const BOOT_SESSION_CHECK = 8;
-const BOOT_USER = 9;
+const BOOT_USER = 8;
+const BOOT_SESSION_CHECK = 9;
 const BOOT_INPUT = 10;
-const BOOT_LANGUAGE = 11;
-const BOOT_DATETIME = 12;
+const BOOT_INPUT_ALT = 11;
+const BOOT_LANGUAGE = 12;
 const BOOT_HOOKS = 13;
-const BOOT_TEMPLATE = 14;
-const BOOT_PAGE_WR = 15;
-const BOOT_INPUT_ALT = 99;
+const BOOT_DATETIME = 14;
+const BOOT_TEMPLATE = 15;
+const BOOT_PAGE_WR = 16;
+const CHECK_SYSTEM_STATUS = 17;
+
 
 /**
  * This class manage the startup operation needed.
@@ -41,6 +44,11 @@ const BOOT_INPUT_ALT = 99;
  */
 class Boot
 {
+
+    private static array $checkStatusFlags;
+
+    private static string $webServer;
+
     private static $_boot_seq = [
         BOOT_COMPOSER => 'composer',
         BOOT_CONFIG => 'config',
@@ -59,6 +67,7 @@ class Boot
         BOOT_DATETIME => 'dateTime',
         BOOT_TEMPLATE => 'template',
         BOOT_PAGE_WR => 'loadPageWriter',
+        CHECK_SYSTEM_STATUS => 'checkSystemStatus'
     ];
 
     public static $log_array = [];
@@ -67,7 +76,7 @@ class Boot
     {
         // composer autoload
         self::log('Load composer autoload.');
-        require_once _base_ . '/vendor/autoload.php';
+      
     }
 
     /**
@@ -78,17 +87,21 @@ class Boot
      *                        if you pass an array you can tell the function
      *                        exactly which step you want to be done
      */
-    public static function init($load_option = BOOT_PAGE_WR)
+    public static function init($load_option = CHECK_SYSTEM_STATUS)
     {
        
+        //inizializzazione
+        self::$checkStatusFlags = [];
+
         if (is_array($load_option)) {
-            $last_step = BOOT_PAGE_WR;
+            $last_step = CHECK_SYSTEM_STATUS;
             $step_list = $load_option;
         } else {
             // custom boot sequence given, use this one
             $last_step = $load_option;
             $step_list = self::$_boot_seq;
         }
+        
         foreach ($step_list as $step_num => $step_method) {
             // custom boot sequence given, must retrive the correct method to call
             if (is_array($load_option)) {
@@ -96,6 +109,7 @@ class Boot
             }
 
             if ($last_step >= $step_num) {
+               
                 self::log($step_num . ' ) ' . __CLASS__ . '->' . $step_method);
                 self::$step_method();
             }
@@ -126,6 +140,8 @@ class Boot
      */
     private static function config()
     {
+
+        self::$checkStatusFlags[] = __FUNCTION__;
         $cfg = null;
         $configExist = true;
         if (!file_exists(dirname(__DIR__, 1).'/config.php')) {
@@ -138,13 +154,14 @@ class Boot
             $configExist = false;
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = static::checkInstallRoutes($request);
+        $checkRoute = static::checkSystemRoutes($request);
 
         if (!$configExist && !$checkRoute) {
 
             header('Location: ' . FormaLms\lib\Get::getBaseUrl() . '/install');
         }
 
+        //$this->checkStatusFlags[] = 3;
         $step_report = [];
         //controllare request
 
@@ -313,8 +330,6 @@ class Boot
         require_once _lib_ . '/calendar/CalendarDataContainer.php';
         require_once _lib_ . '/calendar/CalendarMailer.php';
 
-        require_once _base_.'/Exceptions/FormaStatusException.php';
-        throw new FormaStatusException();
     }
 
     private static function domainAndTemplate(){
@@ -363,6 +378,9 @@ class Boot
      */
     private static function checkPlatform()
     {
+
+        self::checkWebServer();
+
         self::log('Load database funtion management library.');
 
         $configExist = true;
@@ -407,7 +425,7 @@ class Boot
 
         //controllare request
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = static::checkInstallRoutes($request);
+        $checkRoute = static::checkSystemRoutes($request);
 
         if ((!$configExist || $dbIsEmpty) && !$checkRoute) {
             header('Location: ' . FormaLms\lib\Get::rel_path('base') . '/install/');
@@ -563,7 +581,7 @@ class Boot
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
     
-        if ((!defined('IS_API') && !defined('IS_PAYPAL') && ($request->isMethod('post') || defined('IS_AJAX'))) && !static::checkInstallRoutes($request)) {
+        if ((!defined('IS_API') && !defined('IS_PAYPAL') && ($request->isMethod('post') || defined('IS_AJAX'))) && !static::checkSystemRoutes($request)) {
             // If this is a post or a ajax request then we must have a signature attached
             Util::checkSignature();
         }
@@ -719,8 +737,37 @@ class Boot
         }
     }
 
-    public static function checkInstallRoutes(\Symfony\Component\HttpFoundation\Request $request)
+    public static function checkSystemRoutes(\Symfony\Component\HttpFoundation\Request $request)
     {
-        return $request->query->get('r') && (bool)preg_match('/^(adm\/install\/)(\w+)+$/', $request->query->get('r'));
+        return $request->query->get('r') && (bool)preg_match('/^(adm\/system\/)(\w+)+$/', $request->query->get('r'));
+    }
+
+    public static function checkSystemStatus()
+    {
+        if(count(self::$checkStatusFlags)) {
+            dd(self::$checkStatusFlags);
+        }
+      
+    }
+
+    public static function fileLockExistence()
+    {
+        return (bool) file_exists(_base_ . '/forma.lock');
+      
+    }
+
+    public static function checkPhpVersion()
+    {
+       
+      
+    }
+
+
+    public static function checkWebServer()
+    {
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+        echo $request->server->get('SERVER_SOFTWARE');
+        exit;
+        
     }
 }

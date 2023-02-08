@@ -83,11 +83,14 @@ class Forma
         if (self::usePlugins()) {
             $plugins = PluginManager::get_all_plugins();
             foreach ($plugins as $plugin) {
-                $plugin_folder = _plugins_ . '/' . $plugin['name'];
-                $plugin_file = "$plugin_folder/Features/$_file";
-                if (file_exists($plugin_file)) {
-                    return $plugin_file;
+                if(isset($plugin['name'])) {
+                    $plugin_folder = _plugins_ . '/' . $plugin['name'];
+                    $plugin_file = "$plugin_folder/Features/$_file";
+                    if (file_exists($plugin_file)) {
+                        return $plugin_file;
+                    }
                 }
+                
             }
         }
 
