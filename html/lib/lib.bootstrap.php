@@ -729,7 +729,7 @@ class Boot
 
     public static function checkSystemStatus()
     {
-        if(count(self::$checkStatusFlags)) {
+        if(count(self::$checkStatusFlags) && static::fileLockExistence()) {
             $params['errorStatus'] = base64_encode(implode("_", array_unique(self::$checkStatusFlags)));
             static::customRedirect('checkSystemStatus', $params);
         }

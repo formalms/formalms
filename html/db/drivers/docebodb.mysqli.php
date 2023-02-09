@@ -34,27 +34,31 @@ class mysqli_DbConn extends DbConn
         if (is_resource($this->conn)) {
             return $this->conn;
         }
-        if ($dbname != false) {
-            if (!$this->conn = @mysqli_connect($host, $user, $pwd, $dbname)) {
-                $this->log('mysql connect error : ' . mysqli_connect_error());
-                //Util::fatal('Cannot connect to the database server.');
-                return false;
-            }
-            $GLOBALS['dbConn'] = $this;
-            $this->log('mysql connected to : ' . $host);
-            $this->log('mysql db selected');
-        } else {
-            try {
-                if (!$this->conn = @mysqli_connect($host, $user, $pwd)) {
+        try {
+
+            if ($dbname != false) {
+                if (!$this->conn = @mysqli_connect($host, $user, $pwd, $dbname)) {
                     $this->log('mysql connect error : ' . mysqli_connect_error());
                     //Util::fatal('Cannot connect to the database server.');
                     return false;
                 }
-            } catch (\Exception $exception) {
-                return false;
+                $GLOBALS['dbConn'] = $this;
+                $this->log('mysql connected to : ' . $host);
+                $this->log('mysql db selected');
+            } else {
+            
+                    if (!$this->conn = @mysqli_connect($host, $user, $pwd)) {
+                        $this->log('mysql connect error : ' . mysqli_connect_error());
+                        //Util::fatal('Cannot connect to the database server.');
+                        return false;
+                    }
+            
+                $GLOBALS['dbConn'] = $this;
+                $this->log('mysql connected to : ' . $host);
             }
-            $GLOBALS['dbConn'] = $this;
-            $this->log('mysql connected to : ' . $host);
+
+        } catch (\Exception $exception) {
+            return false;
         }
 
         $this->set_timezone();    // set connection tz
@@ -67,7 +71,7 @@ class mysqli_DbConn extends DbConn
 
     public function select_db($dbname)
     {
-        if (!@mysqli_select_db($this->conn, $dbname)) {
+        if (!$this->conn || !@mysqli_select_db($this->conn, $dbname)) {
             $this->log('mysql select db error');
             //Util::fatal('Cannot connect to the database server.');
             return false;

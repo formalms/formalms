@@ -33,13 +33,11 @@ DirectoryIndex index.php index.html index.htm
 
         RewriteRule ^(.*)/installer?$ /$1/index.php?r=adm/system/install
         RewriteRule ^(.*)/upgrader?$ /$1/index.php?r=adm/system/install
-        RewriteRule ^installer?$ /index.php?r=adm/system/install&$1 [L,QSA]
-        RewriteRule ^upgrader?$ /index.php?r=adm/system/install&$1 [L,QSA]
+        RewriteRule ^installer?$ /index.php?r=adm/system/install [L,QSA]
+        RewriteRule ^upgrader?$ /index.php?r=adm/system/install [L,QSA]
 
-        RewriteRule ^(.*)/status?$ /$1/status.php
-        RewriteRule ^status/([a-zA-Z-]*)$ /status.php?msg=$1
-
-        ErrorDocument 404 /status.php?msg=found
+        RewriteRule ^(.*)/checkSystemStatus?$ /$1/index.php?r=adm/system/checkSystemStatus
+        RewriteRule ^checkSystemStatus?$ /index.php?r=adm/system/checkSystemStatus [L,QSA]
         
 </IfModule>
 

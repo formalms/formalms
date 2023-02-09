@@ -111,7 +111,8 @@ copy and rename `/test/behat/behat_config.yml.dist` and change `base_url` to you
 
 
 #### DOCTRINE ORM 
-* php bin/doctrine orm:convert:mapping annotation /app/html/Entity --from-database
+* php bin/doctrine orm:convert:mapping annotation /app/html/Entity --from-database  //create entities
+* php bin/doctrine doctrine:migrations:diff  //To generate migrations from entity annotation updates
 
 #### UPGRADE
 * in the up method of the migration before or after the queries insert
