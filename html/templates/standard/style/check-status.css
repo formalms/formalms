@@ -1,0 +1,31 @@
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+
+
+.col-centered { 
+    display: block;
+    float: none;
+    margin: auto;
+}
+
+.container-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.section-check {
+    background-color: var(--color-wrapper-bg); 
+    height:100%
+}
+
+.section-check input[type="checkbox"][disabled]{
+    background: red; 
+    color:white;
+}

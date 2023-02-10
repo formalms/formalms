@@ -722,14 +722,20 @@ class Boot
         }
     }
 
-    public static function checkSystemRoutes(\Symfony\Component\HttpFoundation\Request $request)
+    public static function checkSystemRoutes(\Symfony\Component\HttpFoundation\Request $request, $check = false)
     {
-        return $request->query->get('r') && (bool)preg_match('/^(adm\/system\/)(\w+)+$/', $request->query->get('r'));
+        $route = '/^(adm\/system\/)(\w+)+$/';
+        if($check) {
+            $route = '/^(adm\/system\/checkSystemStatus)+$/';
+        }
+        return $request->query->get('r') && (bool)preg_match($route, $request->query->get('r'));
     }
 
     public static function checkSystemStatus()
     {
-        if(count(self::$checkStatusFlags) && static::fileLockExistence()) {
+        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+
+        if(count(self::$checkStatusFlags) && static::fileLockExistence() && !static::checkSystemRoutes($request, true) && !defined('IS_AJAX')) {
             $params['errorStatus'] = base64_encode(implode("_", array_unique(self::$checkStatusFlags)));
             static::customRedirect('checkSystemStatus', $params);
         }
@@ -758,7 +764,7 @@ class Boot
         $baseRoute .= (self::$prettyRedirect) ? $route : ($sistemPrefix . $route);
 
         if(count($params)) {
-            $baseRoute .= (self::$prettyRedirect) ? '&' : '?';
+            $baseRoute .= (self::$prettyRedirect) ? '?' : '?';
             foreach($params as $key => $param) {
                 $baseRoute .= $key . '=' . $param;
             }

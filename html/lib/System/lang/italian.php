@@ -282,3 +282,7 @@ define('_SENDER_CC_MAILS', 'Mail CC');
 define('_SENDER_CCN_MAILS', 'Mail CCN');
 
 define('_CANT_CONNECT_SMTP', 'impossibile connettersi al server SMTP selezionato');
+
+define('_DATABASE_OK', 'Connessione al database effettuata correttamente');
+define('_CONFIG_OK', 'File di configurazione istanziato');
+define('_PHPVERSION_OK', 'Versione di PHP compatibile');

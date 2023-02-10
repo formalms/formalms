@@ -61,8 +61,8 @@ class InstallAdm extends Model
     public function __construct($debug = false)
     {
         //soluzione provvisoria in attesa di namespace
-        require_once(_lib_ . '/installer/lang/' . Lang::getSelLang() . '.php');
-        //require_once(_adm_.'/versions.php');
+        require_once(_lib_ . '/System/lang/' . Lang::getSelLang() . '.php');
+    
 
         $this->upgrade = $this->isUpgrade();
         $this->debug = $debug;
@@ -494,9 +494,9 @@ class InstallAdm extends Model
     {
 
         $content = '';
-        $fn = _lib_ . '/installer/license/license_' . Lang::getSelLang() . '.txt';
+        $fn = _lib_ . '/System/license/license_' . Lang::getSelLang() . '.txt';
 
-        $english_fn = _lib_ . '/installer/license/license_english.txt';
+        $english_fn = _lib_ . '/System/license/license_english.txt';
 
         $handle = false;
         if ((!file_exists($fn)) && (file_exists($english_fn))) {
@@ -1440,16 +1440,16 @@ class InstallAdm extends Model
      */
     private function addInstallerRoles()
     {
-        require_once _lib_ . '/installer/lib.role.php';
+        require_once _lib_ . '/System/lib.role.php';
 
         $godadmin = getGroupIdst('/framework/level/godadmin');
         $oc0 = getGroupIdst('/oc_0');
 
-        $fn = _lib_ . '/installer/role/rolelist_godadmin.txt';
+        $fn = _lib_ . '/System/role/rolelist_godadmin.txt';
         $roles = explode("\n", file_get_contents($fn));
         addRoles($roles, $godadmin);
 
-        $fn = _lib_ . '/installer/role/rolelist_oc0.txt';
+        $fn = _lib_ . '/System/role/rolelist_oc0.txt';
         $roles = explode("\n", file_get_contents($fn));
         addRoles($roles, $oc0);
 

@@ -93,7 +93,7 @@ $allowedControllers = [
 $templatesToRender = [
     _homepage_base_ => 'home',
     _homecatalog_base_ => 'home_catalogue',
-    _system_base_ => 'installer',
+    _system_base_ => 'system',
 ];
 
 if ($req) {

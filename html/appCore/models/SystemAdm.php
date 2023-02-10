@@ -21,21 +21,29 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @since 4.0
  */
-require_once(_lib_ . '/Helpers/HelperTool.php');
 
 class SystemAdm extends Model
 {
 
+    public function __construct($lang) {
+        if(!in_array($lang, array_keys($this->wholeLangs))) {
+            $lang = 'en';
+        }
+      //  require_once(_lib_ . '/System/lang/' . $this->wholeLangs[$lang] . '.php');
+    }
+
     private array $systemChecks = [
-        BOOT_CONFIG => 'config',
-        BOOT_PLATFORM => 'database',
-        BOOT_PHP => 'phpversion',
+        BOOT_CONFIG => _CONFIG_OK,
+        BOOT_PLATFORM => _DATABASE_OK,
+        BOOT_PHP => _PHPVERSION_OK,
 
     ];
 
-    public function checkSystem() {
-        
-    }
+    private array $wholeLangs = [
+        'it' => 'italian',
+        'en' => 'english',
+
+    ];
 
     public function getChecks() {
         return $this->systemChecks;

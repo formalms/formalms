@@ -36,7 +36,7 @@ DirectoryIndex index.php index.html index.htm
         RewriteRule ^installer?$ /index.php?r=adm/system/install [L,QSA]
         RewriteRule ^upgrader?$ /index.php?r=adm/system/install [L,QSA]
 
-        RewriteRule ^(.*)/checkSystemStatus?$ /$1/index.php?r=adm/system/checkSystemStatus
+        RewriteRule ^(.*)/checkSystemStatus?$ /$1/index.php?r=adm/system/checkSystemStatus [L,QSA]
         RewriteRule ^checkSystemStatus?$ /index.php?r=adm/system/checkSystemStatus [L,QSA]
         
 </IfModule>

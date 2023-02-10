@@ -132,7 +132,7 @@ function process() {
           type: "POST",
           data: postData,
           async: false,
-          url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/finalize",
+          url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/finalize",
           success: function (data) {
             response = JSON.parse(data);
             arr[xhrIndex].isComplete = true;
@@ -221,7 +221,7 @@ function getErrorMessages(postData) {
     $.ajax({
         type: "POST",
         data: postData,
-        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/getErrorMessages",
+        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/getErrorMessages",
         success: function (data) {
           
             var response = JSON.parse(data);
@@ -249,7 +249,7 @@ function checkDbData() {
         type: "POST",
         data: postData,
          async: false,
-        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/checkDbData",
+        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/checkDbData",
         success: function (data) {
           
             var response = JSON.parse(data);
@@ -283,7 +283,7 @@ function setData(key, value) {
     $.ajax({
         type: "POST",
         data: postData,
-        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/set",
+        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/set",
         success: function (data) {
           
           var result = JSON.parse(data);
@@ -313,7 +313,7 @@ function checkAdminSettings() {
         type: "POST",
         data: postData,
            async: false,
-        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/checkAdminData",
+        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/checkAdminData",
         success: function (data) {
           
           var response = JSON.parse(data);
@@ -355,7 +355,7 @@ function checkSmtpSettings() {
         type: "POST",
         data: postData,
            async: false,
-        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/checkSmtpData",
+        url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/checkSmtpData",
         success: function (data) {
           
             var response = JSON.parse(data);
@@ -390,7 +390,7 @@ function formStore(index) {
             type: "POST",
             data: postData,
             async: false,
-            url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/formSave",
+            url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/formSave",
             success: function (data) {
                 
             var response = JSON.parse(data);
@@ -460,7 +460,7 @@ function testMigrations() {
     type: "POST",
     data: postData,
     async: false,
-    url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/install/testMigrations",
+    url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/testMigrations",
     success: function (data) {
         
     var response = JSON.parse(data);

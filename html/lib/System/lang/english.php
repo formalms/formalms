@@ -230,3 +230,8 @@ define('_UPGRADE_STEP_ERROR', 'Core upgrade Error');
 define('_TEMPLATE_STEP_SUCCESS', 'Template reset OK');
 define('_TEMPLATE_STEP_ERROR', 'Template reset Error');
 define('_CLEARTWIG_CACHE_OK', 'Twig Cache Cleared');
+
+
+define('_DATABASE_OK', 'Database connected correctly');
+define('_CONFIG_OK', 'Configuration file found');
+define('_PHPVERSION_OK', 'Suitable PHP Version');

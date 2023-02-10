@@ -23,9 +23,10 @@ class SystemAdmController extends AdmController
     public function init()
     {
         $debug =  $this->request->query->has('debug') ? (int) $this->request->query->get('debug') : 0;
-
+        $lang = substr($this->request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
+       
         $this->installModel = new InstallAdm($debug);
-        $this->systemModel = new SystemAdm();
+        $this->systemModel = new SystemAdm($lang);
     }
 
     public function install()
@@ -116,7 +117,7 @@ class SystemAdmController extends AdmController
 
     public function checkSystemStatus()
     {
-    
+       
         $params['checks'] = $this->systemModel->getChecks();
         $errorStatus = $this->request->get('errorStatus');
 
