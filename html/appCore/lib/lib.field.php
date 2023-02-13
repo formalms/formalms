@@ -527,7 +527,7 @@ class FieldList
         if ($translate) {
             $sons_arr = [];
             $sons_query = 'SELECT cf.idField, id_common_son, cfs.translation'
-                . " FROM %adm_field_son as cfs JOIN %adm_field cf ON cf.idField=cfs.idField WHERE cf.lang_code='" . Lang::get() . "' AND cf.type_field NOT in ('textfield','freetext') ";
+                . " FROM %adm_field_son as cfs JOIN %adm_field cf ON cf.idField=cfs.idField WHERE cfs.lang_code='" . Lang::get() . "' AND cf.type_field NOT in ('textfield','freetext') ";
             if (!empty($fields)) {
                 $sons_query .= ' AND idField IN (' . implode(',', $fields) . ')';
             }
