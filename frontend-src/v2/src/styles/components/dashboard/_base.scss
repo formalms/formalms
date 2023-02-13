@@ -1,0 +1,12 @@
+.dashboard {
+  margin-bottom: 100px;
+}
+
+.d-widget {
+  &.d-calendar,
+  &.d-courses,
+  &.d-advise {
+    color: var(--color-black);
+    padding: 0 14px;
+  }
+}

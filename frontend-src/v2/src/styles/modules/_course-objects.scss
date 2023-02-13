@@ -1,0 +1,48 @@
+.course-objects {
+}
+
+.course-objects__item {
+  height: 82px;
+  vertical-align: middle !important;
+  border: none !important;
+  font-size: 18px;
+  text-align: left;
+  color: #333;
+
+  &:first-of-type {
+    border-radius: 5px 0 0 5px;
+  }
+
+  &:last-of-type {
+    border-radius: 0 5px 5px 0;
+  }
+
+  tr:nth-child(odd) & {
+    background-color: var(--color-grey);
+  }
+}
+
+.course-objects__item--icon {
+  width: 82px;
+  padding: 20px 0 !important;
+  text-align: center;
+
+  tr:nth-child(odd) & {
+    background-color: var(--color-grey) !important;
+  }
+}
+
+.course-objects__item--name {
+  padding: 20px !important;
+}
+
+.course-objects__item--action {
+  width: 40px;
+  padding: 20px 5px !important;
+  text-align: center;
+}
+
+.course-objects__item--dropdown {
+  width: 160px;
+  padding: 20px 20px 20px 0 !important;
+}

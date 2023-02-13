@@ -1,0 +1,102 @@
+.user-profile {
+  .course-info__label {
+    vertical-align: top;
+    padding-top: 5px;
+  }
+
+  .box-title {
+    @include breakpoint($tablet) {
+      margin-bottom: 21px;
+    }
+  }
+}
+
+.user-profile__firstcolumn--special {
+  @include breakpoint($tablet) {
+    min-width: 320px;
+  }
+}
+
+.user-profile__column {
+  margin-bottom: 22px;
+  padding-left: 0;
+  padding-right: 0;
+
+  @include breakpoint($tablet) {
+    margin-bottom: 55px;
+  }
+}
+
+.user-profile__column--minwidth {
+  @include breakpoint($tablet) {
+    min-width: 300px;
+  }
+}
+
+.user-profile__content {
+  width: 100%;
+  margin-bottom: 15px;
+
+  @include breakpoint($tablet) {
+    display: table;
+  }
+}
+
+.user-profile__infocontainer {
+  display: flex;
+  justify-content: space-between;
+
+  @include breakpoint($tablet) {
+    justify-content: none;
+    display: block;
+  }
+}
+
+.user-profile__imgcontainer {
+  margin-right: 32px;
+}
+
+.user-profile__img {
+  width: 120px;
+  // height: 120px;
+  display: table-cell;
+}
+
+.user-profile__cta {
+  display: block;
+  width: auto;
+  height: auto;
+  margin-top: 17px;
+  line-height: 39px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  background-color: var(--color-primary-450);
+  border-color: var(--color-primary-450);
+
+  @include breakpoint($tablet) {
+    font-size: 12px;
+    margin-top: 16px;
+    width: 100%;
+  }
+}
+
+.user-profile__mailicon {
+  background: url('images/icons/icon--mail.svg') no-repeat center center;
+  width: 16px;
+  height: 12px;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+  margin-right: 5px;
+}
+
+.user-profile__namelink {
+  color: var(--color-primary);
+  margin-right: 5px;
+
+  &:hover {
+    text-decoration: underline;
+    color: var(--color-secondary);
+  }
+}

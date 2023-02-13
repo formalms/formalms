@@ -1,0 +1,30 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "node": true,
+    "jquery": true,
+    "mocha": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 8
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+    "System": false
+  },
+  "rules": {
+    "no-console": 0,
+    "strict": [
+      2,
+      "safe"
+    ],
+    "linebreak-style": 0,
+    "quotes": [
+      2,
+      "single"
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M10.308,0.231 L4.898,5.648 L2.474,3.216 C2.32,3.062 2.133,2.985 1.913,2.985 C1.693,2.985 1.507,3.062 1.353,3.216 L0.231,4.337 C0.077,4.491 0,4.678 0,4.898 C0,5.118 0.077,5.305 0.231,5.458 L3.216,8.444 L4.337,9.565 C4.491,9.719 4.678,9.796 4.898,9.796 C5.118,9.796 5.305,9.719 5.458,9.565 L6.58,8.444 L12.551,2.474 C12.704,2.32 12.781,2.133 12.781,1.913 C12.781,1.693 12.704,1.506 12.551,1.353 L11.429,0.231 C11.275,0.077 11.088,0 10.868,0 C10.648,0 10.462,0.077 10.308,0.231 Z" id="path-1"></path>
+    </defs>
+    <g id="ELEMENTS" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="03-_-STYLEGUIDE---Icon-System" transform="translate(-559.000000, -257.000000)">
+            <g id="STATUS-ICONS" transform="translate(559.000000, 257.000000)">
+                <g id="STATUS-TYPE-/-iscritto">
+                    <g id="ISCRITTO-ICON">
+                        <circle id="Oval" stroke="#F6A623" stroke-width="2" cx="15" cy="15" r="14"></circle>
+                        <g id="Page-1" transform="translate(9.000000, 10.000000)">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <g id="Clip-2"></g>
+                            <polygon id="Fill-1" fill="#F6A623" mask="url(#mask-2)" points="-5 14.796 17.781 14.796 17.781 -5 -5 -5"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

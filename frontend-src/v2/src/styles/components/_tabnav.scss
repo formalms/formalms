@@ -1,0 +1,83 @@
+.tabnav {
+  overflow: hidden;
+  margin-top: 10px;
+  background-color: var(--color-white);
+  padding: 10px;
+
+  @include breakpoint($tablet) {
+    padding: 0;
+    background-color: transparent;
+  }
+}
+
+.tabnav__label-wrapper {
+  margin-bottom: 40px;
+}
+
+.tabnav__label {
+  width: calc(50% - 10px);
+  margin-right: 20px;
+  line-height: 40px;
+  font-family: $font;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid var(--color-black);
+  border-radius: 10px 10px 0 0;
+  opacity: 0.3;
+  float: left;
+  border-bottom: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+  transition: $transition-base;
+  z-index: 10;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+
+  &.selected {
+    opacity: 1;
+
+    &:before {
+      content: '';
+      width: 100%;
+      height: 1px;
+      background-color: var(--color-white);
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+
+    &:hover {
+      color: var(--color-black);
+    }
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.tabnav__content-wrapper {
+  position: relative;
+  min-height: 345px;
+}
+
+.tabnav__content {
+  width: 100%;
+  overflow: hidden;
+  border-top: 1px solid var(--color-black);
+  transition: $transition-base;
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  opacity: 0;
+
+  &.is-visible {
+    visibility: visible;
+    opacity: 1;
+  }
+}

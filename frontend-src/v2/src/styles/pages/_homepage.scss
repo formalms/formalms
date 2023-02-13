@@ -1,0 +1,617 @@
+// Homepage
+//
+// Style guide: 12
+
+.homepage {
+  height: auto; /* Importante per posizione corretta bootstrap datepicker */
+  max-height: initial; /* Importante per posizione corretta bootstrap datepicker */
+  position: relative;
+  background: {
+    image: url('#{$assets}images/login/bg.jpg');
+    size: cover;
+    position: 50% 50%;
+    repeat: no-repeat;
+    color: var(--color-white);
+  }
+
+  @include breakpoint($tablet) {
+    padding-top: 30px;
+  }
+}
+
+.homepage__footer {
+  padding: 0;
+  margin: 30px auto 0 auto;
+  padding-bottom: 30px;
+  text-align: center;
+  color: var(--color-white);
+
+  a {
+    color: var(--color-grey-04);
+  }
+}
+
+.homepage__content {
+  width: 100%;
+  max-width: 760px;
+  position: relative;
+  margin: 0 auto;
+  // background-color: var(--color-white);
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.15);
+  overflow: visible;
+
+  @include breakpoint($tablet) {
+    margin: 0 auto;
+    border-radius: $border-radius;
+  }
+}
+
+.homepage__row {
+  padding: 0 14px;
+  overflow: hidden;
+  line-height: 1.5;
+  text-align: center;
+  background: white;
+
+  @include breakpoint($tablet) {
+    padding: 0 30px;
+  }
+
+  &.row-fluid {
+    @include breakpoint($tablet) {
+      padding: 10px 15px;
+    }
+  }
+
+  &.clearfix {
+    overflow: visible;
+  }
+}
+
+.homepage__row--text-left {
+  text-align: left;
+}
+
+h3 {
+  .homepage__row & {
+    font-size: 18px;
+  }
+}
+
+p {
+  .homepage__row & {
+    font-size: 12px;
+    color: #666;
+    width: 100%;
+  }
+}
+
+.homepage__row--header {
+  height: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  overflow: visible;
+  background-color: var(--color-white);
+  border-bottom: solid 3px var(--color-primary);
+  position: relative;
+  text-align: left;
+
+  @include breakpoint($tablet) {
+    padding-top: 38px;
+    padding-bottom: 34px;
+    // margin-bottom: 12px;
+    border: none;
+  }
+}
+.pull-right {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  margin-top: 1rem;
+}
+.select-language > .hidden-xs {
+  visibility: hidden;
+}
+
+.homepage__row--login {
+  padding-top: 14px;
+  padding-bottom: 47px;
+  position: relative;
+  backdrop-filter: blur(5px);
+
+  @include breakpoint($tablet) {
+    padding-top: 32px;
+  }
+
+  &::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    background:black;
+    // background:rgba(0,0,0,0.8);
+
+    filter:blur(4px);
+    -o-filter:blur(4px);
+    -ms-filter:blur(4px);
+    -moz-filter:blur(4px);
+    -webkit-filter:blur(4px);
+  }
+}
+
+
+.homepage__row--login.homepage__row--gray {
+  background-color: var(--color-grey-02);
+}
+
+:is(.homepage__row--gray.homepage__back,.homepage__row--gray.homepage__back ~ .homepage__row--gray, .homepage__back ~ .homepage__form--lost-pwd,.homepage__back ~ .homepage__row) {
+  background-color: var(--color-white);
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.homepage__row--footer {
+  background-color: var(--color-white);
+}
+.homepage__back ~ .row {
+  margin: 0;
+}
+.homepage__row--login.homepage__row--gray ~ .homepage__row {
+  background-color: var(--color-white);
+}
+
+.homepage__row--login.homepage__row--gray + .homepage__row {
+  padding-top: 2rem;
+}
+
+.homepage__row--form {
+  text-align: left;
+
+  & > * {
+    margin-top: 10px;
+
+    @include breakpoint($tablet) {
+      margin-top: 0;
+    }
+  }
+}
+
+.homepage__row--form-disclaimer {
+  margin: 5px 0 10px;
+  font-size: 12px;
+  font-style: italic;
+  color: #d0d0d0;
+
+  & > p {
+    max-height: 70px;
+    overflow: auto;
+  }
+}
+
+.homepage__row--privacy {
+  .has-error {
+    padding: 6px 12px;
+    border: solid 2px var(--color-primary);
+    border-radius: 4px;
+  }
+}
+
+.homepage__back {
+  font-weight: bold;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: left;
+
+  a {
+    display: block;
+    padding: 10px 0;
+    color: inherit;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .fa {
+    color: var(--color-primary);
+  }
+}
+
+.homepage__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: {
+    image: url('#{$assets}images/login/bg.jpg');
+    size: cover;
+    position: 50% 50%;
+    repeat: no-repeat;
+    color: var(--color-white);
+  }
+}
+
+.homepage__form {
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+.homepage__links {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  font-size: 0;
+
+  & > a {
+    display: inline-block;
+    margin: 0 4px;
+    line-height: 1;
+    font-size: 12px;
+    text-decoration: none;
+    color: #000;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:nth-child(n + 2) {
+      padding-left: 3px;
+      // border-left: solid 1px currentColor;
+    }
+    &[href$="register"]::before {
+      content: "\f090";
+      font-family: 'FontAwesome';
+      font-weight: 300;
+      margin-right: .5rem;
+    }
+    &[href$="lostpwd"]::before {
+      content: "\f29c";
+      font-family: 'FontAwesome';
+      font-weight: 300;
+      margin-right: .5rem;
+    }
+
+    .homepage__row--login & {
+      font-size: 14px;
+    }
+
+    .homepage__row--footer & {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+
+  .homepage__row--footer & {
+    padding: 10px 0 20px;
+    border-top: solid 2px var(--color-primary);
+  }
+}
+
+.pull-right {
+  .homepage__row--header & {
+    text-align: right;
+  }
+}
+
+.left_logo {
+  .homepage & {
+    height: 30px;
+
+    @include breakpoint($tablet) {
+      height: 54px;
+    }
+  }
+}
+
+.poweredby {
+  .homepage__footer & {
+    font-size: 11px;
+  }
+}
+
+.checkbox-inline {
+  .homepage__row & {
+    font-size: 12px;
+    line-height: 1.4;
+    color: #717171;
+  }
+
+  .homepage__row--form & {
+    font-size: 14px;
+    //color: #C4C2C2;
+  }
+}
+
+.check {
+  .homepage__row--form & {
+    position: absolute;
+    top: 0;
+  }
+}
+
+.forma-button {
+  .homepage & {
+    font-weight: bold;
+  }
+
+  .homepage__row--header & {
+    width: 239px;
+  }
+
+  .homepage__row--login & {
+    margin-bottom: 15px;
+  }
+
+  &[type='submit'] {
+    .homepage__row & {
+      margin-top: 15px;
+    }
+
+    .homepage__form--lost-pwd & {
+      margin-top: 0;
+
+      @include breakpoint($tablet) {
+        margin-top: 5px;
+      }
+    }
+  }
+
+  .homepage__form--lost-pwd &.thin {
+    height: 34px;
+    margin-top: 0;
+    line-height: 34px;
+  }
+}
+
+a.forma-button {
+  .homepage__row & {
+    width: auto;
+    margin-top: 15px;
+  }
+}
+.homepage__row--header {
+  a.forma-button {
+    margin-top: 0;
+  }
+}
+
+.forma-button--black {
+  .homepage & {
+    transition: background-color 0.25s ease 0s;
+
+    &:hover {
+      background-color: var(--color-primary);
+    }
+  }
+}
+
+.form-control,
+.logout,
+.login_failed {
+  .homepage__row--login & {
+    display: block;
+    margin-top: 15px;
+  }
+}
+
+.logout,
+.login_failed {
+  .homepage__row--login & {
+    color: var(--color-primary);
+    font-size: 1rem;
+    background: white;
+    padding: .3rem;
+    margin-bottom: 3rem;
+  }
+}
+
+.form-control.has-error {
+  .homepage__row--form & {
+    border: solid 2px var(--color-primary);
+  }
+}
+
+.form-text {
+  .homepage__row--form &,
+  .homepage__row--privacy & {
+    display: none;
+    margin-top: 4px;
+    color: var(--color-primary);
+  }
+
+  .has-error + & {
+    .homepage__row--form &,
+    .homepage__row--privacy & {
+      display: block;
+    }
+  }
+}
+
+.fa-check {
+  .homepage & {
+    margin: 20px auto;
+    font-size: 54px;
+    color: var(--color-secondary);
+  }
+}
+
+.homepage__text {
+  color: var(--color-grey-04);
+  font-size: 16px;
+}
+
+.homepage__text--title {
+  .homepage__row & {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+}
+
+.homepage__text--description {
+  .homepage__row & {
+    margin-top: 10px;
+    margin-bottom: 70px;
+  }
+}
+
+.homepage__text--justified {
+  text-align: justify;
+}
+
+.homepage__text--centered {
+  text-align: center;
+}
+
+.homepage__text--left {
+  text-align: left;
+}
+
+// Collapsable description
+//
+// Markup:
+//<div class="homepage__row">
+//  <br>
+//  <div class="homepage__collapsed-text js-collapsed-text collapse in" id="description" aria-expanded="true" style="">
+//	<p style="line-height: 26px;">
+//		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean maximus, est id consectetur sodales, massa diam ultricies nibh, eget facilisis turpis risus quis dui. Duis viverra odio non accumsan feugiat. Donec placerat tincidunt dignissim. Phasellus finibus ex non finibus placerat. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Morbi in odio ac dui tempus posuere. Phasellus auctor velit mi, vitae viverra mauris vulputate non. Quisque quis turpis scelerisque, suscipit neque nec, volutpat erat. Nulla posuere nunc non semper placerat. Sed id mauris leo. Aenean et leo hendrerit, pellentesque lacus non, molestie purus. Cras augue ante, viverra id consequat id, sodales non lacus. Ut massa sem, tempor sed velit eget, molestie finibus tellus. Nunc bibendum ante at neque euismod vestibulum. Praesent tincidunt libero vitae semper pretium. Donec felis mi, sodales vel vestibulum vel, luctus id nisl. Praesent accumsan velit eget massa laoreet suscipit. Quisque efficitur nisl libero, et tempus nunc finibus non. Proin vel pretium ante. Cras cursus neque fermentum consectetur fermentum. Vestibulum vel est neque. Vivamus sit amet tempor ipsum, in imperdiet ligula. Fusce vitae magna in ante consectetur finibus ac in turpis. Mauris et orci ut justo efficitur mollis vitae non mi. Etiam vel metus ante. Nunc efficitur non neque eget pulvinar. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+//	</p>
+//  </div>
+//  <div class="collapse-wrapper" data-toggle="collapse" data-target="#description" aria-expanded="true">
+//	<a class="forma-button forma-button--orange js-show-collapsed-text" href="javascript:void(0)">Read More</a>
+//	<span class="glyphicon glyphicon-remove icon icon--close">Close</span>
+//	<br><br>
+//  </div>
+//</div>
+//
+// Style guide: 12.5
+.homepage__collapsed-text {
+  height: 75px;
+  min-height: 75px;
+  display: block;
+  overflow: hidden;
+
+  &.in {
+    height: auto;
+  }
+}
+
+.icon--close {
+  .homepage__collapsed-text + .collapse-wrapper & {
+    padding-left: 40px;
+    cursor: pointer;
+    width: 95px;
+    font-family: $font;
+    color: #666;
+    padding-top: 5px;
+  }
+
+  &:hover {
+    &:before {
+      background-image: url('#{$assets}images/icons/user-panel/icon--up-close-hover.png');
+    }
+  }
+
+  &:before {
+    top: 0;
+    left: 0;
+    right: inherit;
+    width: 30px;
+    height: 30px;
+    background-image: url('#{$assets}images/icons/user-panel/icon--up-close.png');
+  }
+}
+
+.collapse-wrapper {
+  .homepage__collapsed-text + & {
+    height: 80px;
+
+    .icon {
+      display: none;
+      position: relative;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .homepage__collapsed-text.in + & {
+    .icon {
+      display: block;
+    }
+
+    .forma-button {
+      display: none;
+    }
+  }
+}
+.forma-button--orange.js-show-collapsed-text {
+  border: 0;
+  position: relative;
+  &::after {
+    position: absolute;
+    content: "\f175";
+    right: -.5rem;
+    top: 0;
+    font-family: 'FontAwesome';
+    font-weight: 300;
+  }
+    &:hover {
+    background: var(--color-white);
+    color: var(--color-primary);
+    border: 0;
+
+  }
+}
+.homepage #login_pwd:invalid ~ #login {
+  display: none;
+}
+:is(.homepage #login_userid, .homepage #login_pwd) {
+  background: var(--color-grey);
+}
+// Template
+//
+// Markup:
+//<div class="homepage">
+//	<div class="homepage__content">
+//		<div class="homepage__row homepage__row--header">Page header</div>
+//		<div class="homepage__row homepage__row--gray">
+//			<br>
+//			Page content (gray background)
+//			<br><br>
+//		</div>
+//		<div class="homepage__row">
+//			<br>
+//			Page content (white background)
+//			<br><br>
+//		</div>
+//		<div class="homepage__row homepage__row--footer">
+//			<nav class="homepage__links">
+//				<a href="#">Link example 1</a>
+//				<a href="#">Link example 2</a>
+//				<a href="#">Link example 3</a>
+//			</nav>
+//		</div>
+//	</div>
+//	<footer class="homepage__footer">
+//		<p class="powered_by">
+//			<span class="ownedby">Testing formalms - Copyright (c) forma.lms</span><br>
+//			<span class="poweredby"><a href="http://www.formalms.org/" target="_blank">Powered by forma.lms CE</a></span>
+//		</p>
+//	</footer>
+//</div>
+//
+// Style guide: 12.1
+
+// Login
+//
+// For login form, standard Bootstrap's ".form-control" inputs are used in this section along with Bootstrap's grid system
+//
+// Style guide: 12.3
+
+// Registration
+//
+// For registration forms, standard Bootstrap's ".form-control" inputs are used in this section along with Bootstrap's grid system
+//
+// Style guide: 12.6

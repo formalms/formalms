@@ -1,0 +1,162 @@
+.has-icon {
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: $transition-base;
+  }
+}
+
+.icon--coourse-menu {
+  padding-left: 30px !important;
+
+  @include breakpoint($ipad) {
+    padding-left: 50px !important;
+  }
+
+  &:before {
+    -webkit-mask-image: url(#{$assets}images/icons/course-menu/icon--course-menu-default.svg);
+    background: var(--color-grey-04);
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+
+    @include breakpoint($ipad) {
+      width: 22px;
+      height: 22px;
+      left: 15px;
+    }
+  }
+
+  &:hover {
+    &:before {
+      background: var(--color-primary)
+    }
+  }
+}
+
+.icon--coourse-menu-area-studenti {
+  padding-left: 30px !important;
+
+  @include breakpoint($ipad) {
+    padding-left: 50px !important;
+  }
+
+  &:before {
+    background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-area-studenti.png);
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+
+    @include breakpoint($ipad) {
+      width: 22px;
+      height: 22px;
+      left: 15px;
+    }
+  }
+
+  &:hover {
+    &:before {
+      background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-area-studenti--hover.png);
+    }
+  }
+}
+
+.icon--coourse-menu-area-social {
+  padding-left: 30px !important;
+
+  @include breakpoint($ipad) {
+    padding-left: 50px !important;
+  }
+
+  &:before {
+    background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-area-social.png);
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+
+    @include breakpoint($ipad) {
+      width: 22px;
+      height: 22px;
+      left: 15px;
+    }
+  }
+
+  &:hover {
+    &:before {
+      background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-area-social--hover.png);
+    }
+  }
+}
+
+.icon--coourse-menu-gestione {
+  padding-left: 30px !important;
+
+  @include breakpoint($ipad) {
+    padding-left: 50px !important;
+  }
+
+  &:before {
+    background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-gestione.png);
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+
+    @include breakpoint($ipad) {
+      width: 22px;
+      height: 22px;
+      left: 15px;
+    }
+  }
+
+  &:hover {
+    &:before {
+      background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-gestione--hover.png);
+    }
+  }
+}
+
+.icon--coourse-menu-statistiche {
+  padding-left: 30px !important;
+
+  @include breakpoint($ipad) {
+    padding-left: 50px !important;
+  }
+
+  &:before {
+    background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-statistiche.png);
+    background-size: contain;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+
+    @include breakpoint($ipad) {
+      width: 22px;
+      height: 22px;
+      left: 15px;
+    }
+  }
+
+  &:hover {
+    &:before {
+      background-image: url(#{$assets}images/icons/course-menu/icon--course-menu-statistiche--hover.png);
+    }
+  }
+}

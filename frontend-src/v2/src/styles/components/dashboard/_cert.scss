@@ -1,0 +1,33 @@
+.d-cert {
+  .d-item {
+    margin: 18px 0;
+    overflow: hidden;
+
+    .d-title {
+      font-weight: $bold;
+      font-size: 14px;
+      color: var(--color-primary);
+      padding: 3px;
+    }
+    .d-date {
+      font-weight: $bold;
+      font-size: 10px;
+      color: var(--color-black);
+    }
+    .d-link {
+      font-weight: $bold;
+      font-size: 12px;
+      color: var(--color-black);
+      padding: 6px;
+      &:hover {
+        color: var(--color-primary);
+      }
+    }
+    .d-subtitle {
+      font-weight: $regular;
+      font-size: 14px;
+      padding: 3px;
+      color: var(--color-black);
+    }
+  }
+}

@@ -1,0 +1,323 @@
+// Course Statistic
+//
+//  Markup:
+//  <div class="section-coourse-modal">
+//  <div class="modal-body">
+//    <div class="row">                      
+//        <div class="modal__item col-sm-12 col-md-4">
+//          <h3 class="title">
+//              Tempo parziale
+//          </h3>
+//          <p class="text">
+//            00m 
+//          </p>
+//        </div>
+//        <div class="modal__item col-sm-12 col-md-4">
+//          <h3 class="title">
+//              Tempo totale
+//          </h3>
+//          <p class="text">
+//              19h 49m 
+//          </p>
+//        </div>           
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Utenti on line
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Materiali
+//        </h3>
+//        <p class="text">
+//            3
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            Completato
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-4">
+//        <h3 class="title">
+//            progress failed
+//        </h3>
+//        <p class="text">
+//            2
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-6">
+//        <h3 class="title">
+//            passed
+//        </h3>
+//        <p class="text">
+//            1
+//        </p>
+//      </div>
+//      <div class="modal__item col-sm-12 col-md-6">
+//        <h3 class="title">
+//            failed
+//        </h3>
+//        <p class="text">
+//            0
+//        </p>
+//      </div>
+//    </div>
+//  </div>
+//  </div>
+//
+// Style guide: 3.4
+
+.modal {
+  font-family: $font;
+
+  &.section-coourse-modal {
+
+  }
+}
+
+.modal-dialog {
+  .section-coourse-modal & {
+    width: 90%;
+    max-width: 768px;
+    max-height: calc(100% - 150px);
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%)!important;
+
+    @include breakpoint($ipad) {
+      width: 45%;
+    }
+
+    @include breakpoint($desktop) {
+      width: 40%;
+    }
+  }
+}
+
+.modal-body {
+  .section-coourse-modal & {
+  }
+}
+
+
+.title {
+  .modal__item & {
+    .section-coourse-modal & {
+      text-transform: uppercase;
+      line-height: 40px;
+      display: block;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      border: 1px solid var(--color-grey-03)04;
+      color: var(--color-wrapper-text);
+      font-weight: bold;
+      font-size: 18px;
+      background-color: var(--color-wrapper-bg);
+
+      @include breakpoint($tablet) {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-right: none;
+        font-size: 12px;
+        line-height: 30px;
+
+        &:nth-child(3n) {
+          border-right: 1px solid var(--color-grey-03)04;
+        }
+      }
+    }
+  }
+}
+
+.text {
+  .modal__item & {
+    .section-coourse-modal & {
+      line-height: 60px;
+      display: block;
+      border: 1px solid var(--color-grey-03)04;
+      border-top: none;
+      font-size: 16px;
+
+      @include breakpoint($tablet) {
+        border-right: none;
+        font-size: 12px;
+        line-height: 45px;
+
+        &:nth-child(3n) {
+          border-right: 1px solid var(--color-grey-03)04;
+        }
+      }
+    }
+  }
+}
+
+.modal__item {
+  .section-coourse-modal & {
+    text-align: center;
+    margin-bottom: 15px;
+    -webkit-font-smoothing: antialiased;
+
+    @include breakpoint($ipad) {
+      padding: 0;
+    }
+  }
+}
+
+
+.modal-dialog--notitle {
+  width: 90%;
+  max-width: 768px;
+  max-height: calc(100% - 150px);
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+
+  @include breakpoint($ipad) {
+    width: 45%;
+  }
+
+  @include breakpoint($desktop) {
+    width: 40%;
+  }
+}
+
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none;
+
+  @include breakpoint($ipad) {
+    width: 80%;
+    height: 70%;
+  }
+
+  @include breakpoint($desktop) {
+    width: 80%;
+    height: 70%;
+  }
+}
+
+.modal-dialog--bio {
+  width: 90%;
+  height: 70%;
+  max-width: none;
+
+  @include breakpoint($ipad) {
+    width: 55%;
+    height: auto;
+  }
+
+  @include breakpoint($desktop) {
+    width: 55%;
+    height: auto;
+  }
+}
+
+.modal-dialog--video {
+  width: 90%;
+  height: 70%;
+  max-width: none;
+
+  @include breakpoint($ipad) {
+    width: 80%;
+    height: 70%;
+  }
+
+  @include breakpoint($desktop) {
+    width: 80%;
+    height: 70%;
+  }
+}
+
+.modal-header--notitle {
+  border: none;
+
+  .close {
+    opacity: 1;
+    color: #fff;
+  }
+}
+
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%;
+}
+.modal-header--bio {
+  background-color: var(--color-wrapper-bg);
+  border: none;
+  position: relative;
+  padding-left: 12px;
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+
+  .close {
+    opacity: 1;
+    color: #fff;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32px;
+
+    @include breakpoint($ipad) {
+      right: 25px;
+    }
+  }
+}
+
+.modal-content--full {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-body--nopadding {
+  padding: 0;
+  margin: 0;
+  line-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-content--bio {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  margin-bottom: 20px;
+  box-shadow: none;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.modal__text {
+  line-height: 20px;
+}
+
+.modal__textcontainer {
+  padding: 26px 14px;
+}

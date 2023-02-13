@@ -1,0 +1,68 @@
+// Icons
+//
+// These are the restyled icons
+//
+// Style guide: 10
+.icon {
+  transition: $transition-base;
+
+  &:before {
+    content: '';
+    position: absolute;
+  }
+}
+
+$user-icons: '1', '2', '3', '4', '5', '6', '7';
+
+@each $icon in $user-icons {
+  .course-box__owner--#{$icon} {
+    &:before {
+      -webkit-mask-image: url('images/icons/users/icon--#{$icon}.svg');
+      background-color: var(--color-wrapper-text);
+      -webkit-mask-size: contain;
+    }
+  }
+}
+
+$filter-icons: 'active', 'all', 'concluded', 'deactive', 'suspended';
+
+@each $icon in $filter-icons {
+  .course-icon--#{$icon} {
+    &:after {
+      background-image: url('images/icons/course/icon--#{$icon}.png');
+    }
+  }
+}
+
+$calendar-icons: 'check', 'gray-cross', 'green-cross';
+
+@each $icon in $calendar-icons {
+  .calendar-icon--#{$icon} {
+    &:before {
+      background-image: url('images/icons/calendar/icon-calendar--#{$icon}.svg');
+    }
+  }
+}
+
+$tab-filter-icons: 'all', '0', '1', '2';
+
+@each $icon in $tab-filter-icons {
+  .icon--filter-#{$icon} {
+    &:before {
+      -webkit-mask-repeat: round;
+      -webkit-mask-image: url('images/icons/course-filter/icon--filter-#{$icon}.svg');
+      background-color: var(--color-wrapper-text);
+      -webkit-mask-size: contain;
+    }
+  }
+}
+
+$menu-top-icons: 'profile', 'help-desk', 'admin';
+
+@each $icon in $menu-top-icons {
+  .icon--#{$icon} {
+    &:before {
+      background-image: url('images/icons/top-menu/icon--#{$icon}.svg');
+    }
+  }
+}

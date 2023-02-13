@@ -1,0 +1,33 @@
+.d-advise {
+  
+}
+
+.d-advise__item {
+  height: 84px;
+  margin-top: 38px;
+}
+
+.d-advise__date {
+  font-weight: $bold;
+  font-size: 10px;
+  line-height: 14px;
+  color: var(--color-black);
+}
+
+.d-advise__title {
+  height: 17px;
+  font-weight: $bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--color-primary);
+  overflow: hidden;
+}
+
+.d-advise__desc {
+  height: 51px;
+  font-weight: $regular;
+  font-size: 14px;
+  line-height: 17px;
+  color: var(--color-black);
+  overflow: hidden;
+}

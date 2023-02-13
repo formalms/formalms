@@ -1,0 +1,84 @@
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-light-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-light-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-light-webfont.woff') format('woff');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-lightitalic-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-lightitalic-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-lightitalic-webfont.woff') format('woff');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-regular-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-regular-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-regular-webfont.woff') format('woff');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-italic-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-italic-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-italic-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-semibold-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-semibold-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-semibold-webfont.woff') format('woff');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-semibolditalic-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-semibolditalic-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-semibolditalic-webfont.woff') format('woff');
+  font-weight: 600;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-bold-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-bold-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-bold-webfont.woff') format('woff');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-bolditalic-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-bolditalic-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-bolditalic-webfont.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-extrabold-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-extrabold-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-extrabold-webfont.woff') format('woff');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: 'Open-sans';
+  src: url('#{$assets}fonts/opensans-extrabolditalic-webfont.eot') format('opentype');
+  src: url('#{$assets}fonts/opensans-extrabolditalic-webfont.ttf') format('truetype'),
+  url('#{$assets}fonts/opensans-extrabolditalic-webfont.woff') format('woff');
+  font-weight: 800;
+  font-style: italic;
+}

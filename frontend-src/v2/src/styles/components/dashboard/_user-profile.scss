@@ -1,0 +1,54 @@
+.d-user-profile {
+  height: 100%;
+
+  > .d-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .forma-button {
+    font-size: 14px;
+  }
+}
+
+.d-user-profile__avatar-wrapper {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  @include center-object(y, absolute);
+  right: 10px;
+}
+
+.d-user-profile__img {
+  min-width: 100%;
+  min-height: 100%;
+  @include center-object(all, absolute);
+}
+
+.d-user-profile__content-wrapper {
+  padding: {
+    top: 27px;
+    right: 78px;
+    bottom: 27px;
+  }
+}
+
+.d-user-profile__text {
+  display: block;
+  line-height: 1.2;
+  text-align: right;
+  font-size: 18px;
+}
+
+.d-user-profile__padder {
+  padding: {
+    left: 14px;
+    right: 14px;
+  };
+
+  @include breakpoint($ipad) {
+    padding: 0;
+  }
+}

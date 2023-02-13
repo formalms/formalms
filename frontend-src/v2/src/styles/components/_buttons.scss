@@ -1,0 +1,521 @@
+// Buttons
+//
+// Site buttons
+//
+// Style guide: 2
+
+// Button default
+//
+// Markup:
+// <a class="forma-button" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.1
+
+.forma-button {
+  display: inline-block;
+  width: 100%;
+  max-width: 140px;
+  //padding: 14px 20px;
+  padding: 0;
+  //height: 40px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  text-shadow: none;
+  line-height: 40px;
+  color: var(--color-primary-text);
+  background: var(--color-primary);
+  // border: 2px solid var(--color-primary);
+  font-family: $font;
+  font-size: 12px;
+  border-radius: $border-radius;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  transition: all 0.4s ease 0s;
+  &.dropdown-toggle {
+    max-width: initial !important;
+  }
+
+  @include breakpoint($tablet) {
+    font-size: 11px;
+  }
+
+  @include breakpoint($desktop) {
+    font-size: 13px;
+  }
+
+  .homepage & {
+    font-size: 11px;
+  }
+
+  &:hover {
+    text-decoration: none;
+    color: var(--color-primary);
+    background: var(--color-primary-text);
+  }
+
+  &:focus {
+    text-decoration: none;
+    color: var(--color-primary);
+    background: var(--color-primary-text);
+  }
+
+  .user-panel & {
+    height: auto;
+    line-height: 1;
+    font-size: 12px;
+  }
+
+  .homepage & {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .d-courses &,
+  .d-user-profile & {
+    font-size: 16px;
+  }
+
+  &.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &.thin {
+    height: 25px;
+    min-height: 25px;
+    padding: {
+      top: 0;
+      bottom: 0;
+    }
+    //line-height: 25px;
+  }
+
+  .course-box & {
+    //padding: 14px 0;
+    max-height: 40px;
+  }
+}
+
+// Button orange:hover
+//
+// Markup:
+// <a class="forma-button forma-button--orange-hover" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.1.1
+.forma-button--primary {
+  color: var(--color-primary-text);
+  background: var(--color-primary);
+  border: 2px solid var(--color-transparent);
+  &:hover {
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    background: var(--color-primary-text);
+    // border-color: var(--color-primary);
+    .forma-button__label {
+      color: var(--color-primary) !important;
+    }
+    .forma-button__label:after {
+      animation-duration: 500ms;
+      animation-name: formaButtonLabelAfter;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+  }
+}
+
+// Button disabled
+//
+// Markup:
+// <a class="forma-button forma-button--disabled" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.2
+.forma-button--disabled {
+  pointer-events: none;
+  background: var(--color-disabled);
+  // border: 2px solid var(--color-grey);
+  color: var(--color-disabled-text);
+  position: relative;
+  &::before {
+    position: absolute;
+    content: '';
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 21px;
+    background-color: white;
+    clip-path: polygon(100% 0, 105% 100%, 0 100%);
+    transition: all 0.4s ease 0s;
+  }
+
+  .forma-button__label {
+    &:before {
+      content: '\f023';
+      font-family: $icon;
+      color: var(--color-disabled-text);
+      padding-right: 5px;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+
+  // .course-box & {
+    //padding: 10px 0;
+  // }
+}
+
+// Green Button
+//
+// Markup:
+// <a class="forma-button forma-button--green" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.3
+.forma-button--green {
+  background: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+}
+.forma-button--secondary {
+  background: var(--color-secondary);
+  color: var(--color-secondary-text);
+  border: 2px solid var(--color-secondary);
+}
+
+// Green Bordered Button
+//
+// Markup:
+// <a class="forma-button forma-button--green-border" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.4
+.forma-button--green-border {
+  background-color: transparent;
+  border: solid 2px var(--color-secondary);
+  color: var(--color-secondary);
+
+  &:hover {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-white);
+  }
+}
+
+// Gray Button
+//
+// Markup:
+// <a class="forma-button forma-button--gray" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.5
+.forma-button--gray {
+  pointer-events: none;
+  background: var(--color-grey);
+  border: 2px solid var(--color-grey);
+}
+
+// Black Button
+//
+// Markup:
+// <a class="forma-button forma-button--black" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.6
+// USATO
+.forma-button--info {
+  background: var(--color-info);
+  border: 2px solid var(--color-info-text);
+  color: var(--color-info-text);
+  .forma-button__label {
+    &:after {
+      display: none;
+    }
+  }
+
+  .user-panel & {
+    padding: 7px 9px;
+    border: 0;
+  }
+
+  .homepage & {
+    border: 0;
+  }
+
+  &:hover {
+    text-decoration: none;
+    background: var(--color-info-text);
+    color: var(--color-info);
+  }
+}
+
+// White Button
+//
+// Markup:
+// <a class="forma-button forma-button--white" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.7
+.forma-button--white {
+  background: var(--color-white);
+  color: var(--color-primary);
+  border: 2px solid var(--color-white);
+
+  &:hover {
+    color: var(--color-primary);
+  }
+
+  &:focus {
+    color: var(--color-primary);
+  }
+}
+
+// Bordered Button
+//
+// Markup:
+// <a class="forma-button forma-button--border" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.8
+.forma-button--border {
+  background-color: transparent;
+  border: solid 2px var(--color-primary);
+  color: var(--color-primary);
+
+  &:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+  }
+}
+
+// Orange bordered Button
+//
+// Markup:
+// <a class="forma-button forma-button--orange" href="#">
+//  <span class="forma-button__label">button</span>
+// </a>
+//
+// Style guide: 2.9
+.forma-button--orange {
+  // border: solid 2px var(--color-primary);
+  background: var(--color-white);
+  color: var(--color-primary);
+
+  &:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+
+    &:focus {
+      color: var(--color-white);
+    }
+  }
+
+  &:focus {
+    color: var(--color-primary);
+  }
+}
+
+@keyframes formaButtonLabelAfter {
+  from {
+    margin-left: 6px;
+  }
+
+  to {
+    margin-left: 11px;
+  }
+}
+
+.forma-button__label {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  font: inherit;
+  text-decoration: inherit;
+
+  &:after {
+    position: absolute;
+    content: '\f178';
+    // content: '\f061';
+    font-family: $icon;
+    font-size: inherit;
+    color: var(--color-white);
+    margin-left: 6px;
+
+    .d-courses &,
+    .d-user-profile & {
+      display: none;
+    }
+  }
+
+  &:before {
+    .d-user-profile & {
+      content: '';
+      width: 24px;
+      height: 24px;
+      @include center-object(y, absolute);
+      left: -30px;
+    }
+
+    .d-button--cert & {
+      background-image: url(#{$assets}images/icons/icon--file.svg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  
+    .d-button--mess & {
+      background-image: url(#{$assets}images/icons/icon--envelope.svg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .d-user-profile & { 
+    position: relative;
+  }
+}
+
+/* NEW TEST */
+
+input[type='submit'].btn.btn-default {
+  .user-panel & {
+    font-family: $font;
+    background-color: var(--color-grey-04);
+    text-transform: uppercase;
+    color: var(--color-white);
+    background-image: none;
+    border: 0;
+    border-radius: 5px !important;
+    font-size: 12px;
+    line-height: 25px;
+    height: 25px;
+    text-shadow: none;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+a.btn.btn-default {
+  .user-panel .row & {
+    width: 100%;
+    display: inline-block;
+    background-image: none;
+    line-height: 25px;
+    height: 25px;
+    padding-top: 0;
+    padding-bottom: 0;
+    font-family: $font;
+    text-transform: uppercase;
+    font-size: 12px;
+    background-color: var(--color-primary);
+    text-shadow: none;
+    color: var(--color-primary-text);
+    border: 0;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: var(--color-primary-text);
+      color: var(--color-primary);
+    }
+  }
+}
+
+// Close Button
+//
+// Markup:
+// <a class="close-button" href="#">
+//	<span class="close-button__icon"></span>
+//  <span class="close-button__label">close</span>
+// </a>
+//
+// Style guide: 2.10
+.close-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  outline: 0;
+  box-shadow: none;
+  font-size: 0;
+  cursor: pointer;
+}
+
+.close-button__icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  position: relative;
+  vertical-align: middle;
+  background-color: var(--color-primary);
+  color: var(--color-primary-text);
+  transition: background-color 0.25s ease 0s;
+
+  &:before,
+  &:after {
+    width: 20px;
+    height: 2px;
+    content: '';
+    position: absolute;
+    top: calc(50% - 1px);
+    left: calc(50% - 10px);
+    background-color: var(--color-primary-text);
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  .close-button:hover & {
+    background-color: var(--color-primary-text);
+  }
+}
+
+.close-button__label {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--color-primary-text);
+  transition: color 0.25s ease 0s;
+
+  .close-button:hover & {
+    color: var(--color-primary-text);
+  }
+}
+
+.create-object-button {
+  background: var(--color-action-button) !important;
+  color:  var(--color-action-button-text);
+  font-weight: bold;
+  text-shadow: 0 0 black;
+  border-color: transparent !important;
+  &:hover {
+    color:  var(--color-action-button-text);
+  }
+  &:active {
+    color:  var(--color-action-button-text);
+  }
+}

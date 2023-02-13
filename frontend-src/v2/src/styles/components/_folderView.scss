@@ -1,0 +1,394 @@
+.folderViewContent--two-third {
+  width: 100%;
+
+  @include breakpoint($ipad) {
+    width: 75%;
+    padding: 0 32px;
+  }
+}
+
+.folderView {
+  padding: 16px;
+}
+
+.folderView__ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.folderView__li {
+  border-bottom: 1px solid #efefef;
+  cursor: pointer;
+  color: #000;
+  position: relative;
+  height: 64px;
+  overflow: visible;
+
+  .folderView__copyOverlay__content & {
+    height: 48px;
+  }
+}
+
+.folderView__el {
+  display: flex;
+  height: 100%;
+  max-width: 370px;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  padding: 8px 16px 8px 56px;
+  overflow: visible;
+  background: {
+    repeat: no-repeat;
+    position: 16px center;
+    size: 24px auto;
+  };
+
+  .folderView__copyOverlay__content & {
+    padding-left: 16px;
+    justify-content: center;
+  }
+}
+
+.folderView__label {
+  pointer-events: none;
+  padding: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+  .folderView__label {
+    max-width: 210px !important;
+  }
+  .fv-is-tracking {
+    display: none !important;
+  }
+}
+
+
+.fv-is-selecteds {
+  background-color: red;
+  font-weight: bold;
+}
+
+.fv-is-selected {
+  background-color: var(--color-grey);
+  font-weight: bold;
+}
+
+.fv-is-dropped {
+  opacity: .4;
+  border: 1px solid #ccc;
+}
+
+.folderView__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  position: absolute;
+  top: 8px;
+  right: -100%;
+  transition: all .5s ease-in-out;
+
+  .fv-is-selected & {
+    right: 0;
+    transition: all .5s ease-in-out;
+  }
+
+  .sortable-chosen & {
+    opacity: 0;
+  }
+
+}
+
+.folderView__visibleActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  position: absolute;
+  top: 8px;
+  right: 56px;
+
+  .fv-is-teacher-area & {
+    display: none;
+  }
+}
+
+.folderView__action,
+.folderView__button {
+  -webkit-mask-size: contain;
+  -webkit-mask-position-y: center;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 1px solid var(--color-primary);
+  margin: 0 4px;
+  transition: all .2s ease-in-out;
+  background: {
+    repeat: no-repeat;
+    position: center;
+    size: 18px;
+  };
+
+  a:hover {
+    background-color: var(--color-primary);
+    color: var(--color-primary-text);
+    border-color: var(--color-primary);
+    transition: all .2s ease-in-out;
+  }
+
+  &:after {
+    content: '';
+    -webkit-mask-size: contain;
+    background: var(--color-primary);
+    width: 20px;
+    -webkit-mask-repeat: no-repeat;
+    height: 20px;
+    display: block;
+    margin: 12px 13px;
+  }
+}
+
+.folderView__action {
+    &:hover {
+      background-color: var(--color-primary);
+      border-color: var(--color-primary);
+      &:after {
+        background-color: var(--color-primary-text);
+      }
+    }
+}
+
+.folderView__button {
+  &:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    &:after {
+      background-color: var(--color-primary-text);
+    }
+  }
+}
+
+input.folderView__action {
+  &:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    &:after {
+      background-color: var(--color-primary-text);
+    }
+  }
+}
+
+.folderView__status {
+  width: 48px;
+  height: 48px;
+  margin: 0 4px;
+  background: {
+    repeat: no-repeat;
+    position: center;
+    size: 24px;
+  };
+}
+
+.folderView__buttons {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  opacity: 1;
+
+  .fv-is-selected &,
+  .sortable-chosen &,
+  .fv-is-student-area & {
+    opacity: 0;
+  }
+}
+
+.fv-is-play:after {
+  -webkit-mask-image: url('images/folderView/icon-eye.svg');
+  margin: 16px 13px
+}
+
+.fv-is-edit:after {
+  -webkit-mask-image: url('images/folderView/icon-edit.svg');
+  margin: 13px 13px;
+}
+
+.fv-is-copy:after {
+  -webkit-mask-image: url('images/folderView/icon-copy.svg');
+}
+
+.fv-is-properties:after {
+  -webkit-mask-image: url('images/folderView/icon-settings.svg');
+}
+
+.fv-is-access:after {
+  -webkit-mask-image: url('images/folderView/icon-user.svg');
+}
+
+.fv-is-categorize:after {
+  -webkit-mask-image: url('images/folderView/icon-categorize.svg');
+}
+
+.fv-is-delete:after {
+  -webkit-mask-image: url('images/folderView/icon-delete.svg');
+}
+
+.fv-is-folder:after {
+  -webkit-mask-image: url('images/folderView/icon-folder.svg');
+}
+
+.fv-is-faq:after {
+  -webkit-mask-image: url('images/folderView/icon-faq.svg');
+}
+
+.fv-is-htmlpage:after {
+  -webkit-mask-image: url('images/folderView/icon-document.svg');
+}
+
+.fv-is-link:after {
+  -webkit-mask-image: url('images/folderView/icon-link.svg');
+}
+
+.fv-is-attachment:after {
+  -webkit-mask-image: url('images/folderView/icon-attachment.svg');
+}
+
+.fv-is-test:after {
+  -webkit-mask-image: url('images/folderView/icon-test.svg');
+}
+
+.fv-is-item:after {
+  -webkit-mask-image: url('images/folderView/icon-item.svg');
+}
+
+.fv-is-glossary:after {
+  -webkit-mask-image: url('images/folderView/icon-glossary.svg');
+}
+
+.fv-is-poll:after {
+  -webkit-mask-image: url('images/folderView/icon-survey.svg');
+}
+
+.fv-is-menu-open:after {
+  -webkit-mask-image: url('images/folderView/icon-horizontal-dots.svg');
+}
+
+.fv-is-menu-close:after {
+  -webkit-mask-image: url('images/folderView/icon-vertical-dots.svg');
+}
+
+.fv-is-scormorg:after {
+  -webkit-mask-image: url('images/folderView/icon-scorm.svg');
+}
+
+.fv-is-attempted:after,
+.fv-is-incomplete:after,
+.fv-is-not-attempted:after,
+.fv-is-ab-initio:after {
+  -webkit-mask-image: url('images/folderView/icon-attempted.svg');
+}
+
+.fv-is-completed:after,
+.fv-is-passed:after {
+  -webkit-mask-image: url('images/folderView/icon-completed.svg');
+}
+
+.fv-is-failed:after {
+  -webkit-mask-image: url('images/folderView/icon-failed.svg');
+}
+
+.fv-is-tracking:after {
+  -webkit-mask-image: url('images/folderView/icon-chart.svg');
+}
+
+.folderView__copyOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, .9);
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  display: none;
+
+  &.is-shown {
+    display: flex;
+  }
+}
+
+.folderView__copyOverlay__content {
+  position: relative;
+  width: 360px;
+  padding: 32px 0 0 0;
+
+  .dropdown-menu {
+    width: 100%;
+  }
+
+  .btn.dropdown-toggle {
+    display: block;
+    width: 100%;
+    background: none;
+    padding: 12px;
+    transition: .2 all ease-in-out;
+    border: 1px solid #000;
+    background-color: #fff;
+    text-align: center;
+  }
+}
+
+.folderView__copyOverlay__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: {
+    image: url('images/folderView/icon-delete.svg');
+    size: 18px 18px;
+    color: transparent;
+  };
+  border: 0;
+  padding: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.folderView__copyOverlay__title {
+  font-size: 16px;
+  text-align: center;
+  margin-right: auto;
+  display: block;
+  padding-bottom: 5px;
+}
+
+.fv-is-student-area {
+
+  .fv-is-locked {
+    opacity: .5;
+    pointer-events: none;
+    cursor: default;
+    background: {
+      image: url('images/folderView/icon-lock.svg');
+      repeat: no-repeat;
+      position: 97% center;
+    };
+    .folderView__status {
+      display: none;
+    }
+  }
+
+}
+
+
+.actions-wrapper {
+  overflow: hidden;
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 500px;
+  height: 64px;
+}

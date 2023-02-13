@@ -1,0 +1,65 @@
+/// This set/remove element aspect ratio
+/// @param {number} $w - element width
+/// @param {number} $h - element height
+/// @example scss - Set aspect ratio
+///   @include ratio(16,9);
+/// @example scss - Remove aspect ratio
+///   @include ratio(0,0);
+/// @group helpers
+@mixin ratio($w, $h) {
+  @if $w == 0 {
+    &:before {
+      display: none;
+    }
+  } @else {
+    &:before {
+      display: block;
+      content: '';
+      width: 100%;
+      padding-bottom: ($h/$w) * 100%;
+      position: relative;
+    }
+  }
+}
+
+.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.not-displayed {
+  display: none;
+}
+
+.collapse-wrapper {
+  width: auto;
+  margin: 0 auto;
+}
+
+@function rem($size) {
+  @return #{calc($size / 16)}rem;
+}
+
+@mixin center-object($direction: x, $position: absolute) {
+
+  position: $position;
+
+  @if $direction == 'x' {
+
+    left: 50%;
+    transform: translateX(-50%);
+
+  } @else if $direction == 'y' {
+
+    top: 50%;
+    transform: translateY(-50%);
+
+  } @else if $direction == 'all' {
+
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+  }
+
+}

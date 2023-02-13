@@ -1,0 +1,16 @@
+.forma-quick-search-form {
+  $screen-sm: 1024px;
+
+  @import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/dropdowns.scss';
+  @import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/button-groups.scss';
+  @import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/input-groups.scss';
+  @import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/navs.scss';
+  @import '../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/navbar.scss';
+}
+
+//$tablet-view-top-menu: 1024px;
+
+.glyphicon-chevron-down:before {
+  content: "\e114";
+  color: var(--color-primary) !important;
+}

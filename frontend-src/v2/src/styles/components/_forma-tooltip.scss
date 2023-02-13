@@ -1,0 +1,100 @@
+// Tooltip
+//
+// Markup:
+// <div class="has-forma-tooltip">
+//	Hover here
+//	<div class="forma-tooltip">Example message</div>
+// </div>
+//
+// Style guide: 11
+.forma-tooltip {
+  display: block;
+  width: 156px;
+  padding: 17px 12px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 99999;
+  border-radius: $border-radius;
+  background-color: var(--color-primary);
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  text-align: center;
+  color: var(--color-white);
+  opacity: 0;
+  visibility: hidden;
+  transition: {
+    // property: transform, opacity, visibility;
+    property: opacity, visibility;
+    duration: 0.7s;
+    timing-function: ease;
+    delay: 0.2ms;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+  }
+  &.down {
+    left: -61px;
+    top: -200px;
+    &:after {
+      border: {
+        top: none;
+        right: solid 6px transparent;
+        bottom: solid 12px var(--color-primary);
+        left: solid 6px transparent;
+      }
+      //transform: translate(0%, 100%) translateY(-285px);
+
+    }
+  }
+  &.left {
+    transition-duration: 0s;
+  }
+
+  .has-forma-tooltip:hover & {
+    transform: translate(0%, -100%) translateY(-15px);
+    // transform: translate3d(-50%, -100%, 0) translateY(-15px);
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.has-forma-tooltip {
+  overflow: visible !important;
+  &:hover {
+    .forma-tooltip.down {
+      top: 125px;
+      z-index: 1;
+      &:after {
+        transform: translate(-50%, 0%);
+        // border-top: none;
+        // border-bottom: 12px solid var(--color-primary);
+        // border-right: solid 6px transparent;
+        // border-left: solid 6px transparent;
+        bottom: 100%;
+      }
+    }
+    .forma-tooltip.left {
+      left: auto;
+      right: -12px;
+      top: 160%;
+      bottom: auto;
+      transition-duration: 0s;
+      &:after {
+        transform: translate(-100%, 0%);
+        border-top: solid 6px transparent;
+        border-right: none;
+        border-left: solid 12px var(--color-primary);
+        border-bottom: solid 6px transparent;
+        bottom: calc(50% - 6px);
+        right: -23px;
+        left: auto;
+      }
+    }
+  }
+}

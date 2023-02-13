@@ -1,0 +1,26 @@
+.accordion {
+  position: relative;
+  overflow: hidden;
+
+  .accordion__subset > & {
+  }
+}
+
+.accordion__item {
+  overflow: hidden;
+  position: relative;
+
+  &.is-active {
+  }
+
+  .accordion__subset & {
+  }
+}
+
+.accordion__subset {
+  height: 0;
+  overflow: hidden;
+  position: relative;
+  margin: 0 auto;
+  white-space: normal;
+}

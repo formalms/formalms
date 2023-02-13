@@ -1,0 +1,160 @@
+// Aside
+//
+// Aside menù
+//
+// Style guide: 8
+
+// Aside
+//
+// Markup:
+// <div class="col-md-6">
+// <div id="treeview1" class="aside treeview">
+//     <ul class="list-group">
+//         <li class="list-group-item node-treeview1 node-checked" data-nodeid="0" style="color:undefined;background-color:undefined;"><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>&nbsp;&nbsp;Tutti
+//             i corsi
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="1" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>COMMERCIALE (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="2" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="indent"></span><span class="icon glyphicon"></span><span class="icon node-icon"></span>Subcat 2.1 (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="3" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>Titolo
+//             con l'apice (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="4" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="indent"></span><span class="indent"></span><span class="icon glyphicon"></span><span class="icon node-icon"></span>nuova cat con l\'apice modificata (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="5" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>COMUNICAZIONE (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="6" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>Subcat
+//             1.1 (0)
+//         </li>
+//         <li class="list-group-item node-treeview1 node-selected" data-nodeid="7" style="color:#FFFFFF;background-color:var(--color-primary);"><span class="indent"></span><span class="indent"></span><span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-down"></span><span class="icon node-icon"></span>Test
+//             subcat 1.1.1 (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="8" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="indent"></span><span class="indent"></span><span \class="indent"></span><span class="icon glyphicon"></span><span class="icon node-icon"></span>subcat
+//             1.1.1.1 (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="9" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="indent"></span><span class="indent"></span><span class="icon glyphicon"></span><span class="icon node-icon"></span>Test subcat'egory (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="10" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-right"></span><span class="icon node-icon"></span>subcat
+//             1.2 (0)
+//         </li>
+//         <li class="list-group-item node-treeview1" data-nodeid="12" style="color:undefined;background-color:undefined;">
+//             <span class="indent"></span><span class="icon expand-icon glyphicon glyphicon-chevron-right"></span><span class="icon node-icon"></span>GESTIONALE (0)
+//         </li>
+//     </ul>
+// </div>
+// </div>
+//
+// Style guide: 8.1
+
+.aside {
+  padding: 4px;
+  border: 2px solid var(--color-grey);
+  border-radius: $border-radius;
+  font-family: $font;
+
+  .indent {
+    display: inline;
+    width: 20px;
+    height: 20px;
+  }
+
+  .icon.expand-icon {
+    width: 10px;
+    height: 15px;
+    margin-right: 2px;
+    //top: 50%;
+    //transform: translateY(-50%);
+    display: inline;
+    position: relative;
+    z-index: 9999;
+
+    &:before {
+      content: '';
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: absolute;
+      //top: 50%;
+      //transform: translateY(-50%);
+      top: 2px;
+    }
+
+    &.glyphicon-chevron-right {
+      &:before {
+        width: 10px;
+        height: 15px;
+        background-image: url('#{$assets}images/icons/aside/icon--arrow-right.svg');
+        left: -20px;
+      }
+    }
+
+    &.glyphicon-chevron-down {
+      &:before {
+        width: 23px;
+        height: 14px;
+        background-image: url('#{$assets}images/icons/aside/icon--arrow-down.svg');
+        left: -30px;
+      }
+    }
+  }
+
+  .list-group {
+    box-shadow: none;
+    margin-bottom: 0;
+  }
+
+  .list-group-item {
+    height: 32px;
+    margin-bottom: 5px;
+    padding: {
+      top: 0;
+      right: 8px;
+      bottom: 0;
+      left: 14px;
+    }
+    line-height: 32px;
+    position: relative;
+    border-radius: $border-radius;
+    transition: $transition-base;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.node-treeview1 {
+      &:hover {
+        cursor: pointer;
+        background-color: var(--color-primary) !important;
+        color: var(--color-white) !important;
+      }
+    }
+
+    &:first-child {
+      padding-left: 25px;
+
+      .glyphicon-chevron-down {
+        &:before {
+          left: -25px;
+        }
+      }
+    }
+  }
+
+  .node-checked {
+    background-color: var(--color-white) !important;
+    color: var(--color-black) !important;
+  }
+}

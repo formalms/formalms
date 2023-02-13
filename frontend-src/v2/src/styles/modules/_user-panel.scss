@@ -1,0 +1,781 @@
+// User Panel
+//
+// This is the user panel
+//
+// Style guide: 7
+
+// User Panel
+//
+// Remove the inline style when implementing
+//
+// Markup:
+//<div class="c-menu user-panel is-active" style="max-height:inherit;position:relative;top:auto;right:auto;bottom:auto;left:auto;">
+//  	<div class="container-fluid">
+//		<div class="row">
+//			<div class="col-xs-6">
+//			  	<a href="javascript:void(0)" class="c-menu__close"><span class="glyphicon glyphicon-remove">Hide menu</span></a>
+//			</div>
+//			<div class="col-xs-6">
+//				<a title="Logout" href="#">
+//					<span class="glyphicon glyphicon-off">Logout</span>
+//				</a>
+//			</div>
+//		</div>
+//		<div class="tabnav js-tabnav">
+//			<div class="tabnav__label-wrapper">
+//				<div class="tabnav__label selected" data-tab="profile">profile</div>
+//				<div class="tabnav__label" data-tab="credits">timeperiods</div>
+//			</div>
+//			<div class="tabnav__content-wrapper" style="height: 371px;">
+//				<div class="tabnav__content tabnav__content--profile is-visible">
+//					<div class="row profile">
+//						<div class="col-xs-5">
+//							<div class="boxed" style="background-image: url(../templates/standard/static/)images/icons/user-panel/icon--up-photo-placeholder.png"></div>
+//						</div>
+//						<div class="col-xs-7">
+//							<a href="#" title="User profile">
+//								<span class="glyphicon glyphicon-pencil">User profile</span>
+//							</a>
+//							<a href="#">Name</a>
+//							<a href="#">name@domain.com</a>
+//						</div>
+//					</div>
+//					<div class="row comunication">
+//						<div class="col-xs-4">
+//							<a class="btn btn-default" href="#">Certifications</a>
+//						</div>
+//						<div class="col-xs-4">
+//							<a class="btn btn-default" href="#">Skills</a>
+//						</div>
+//						<div class="col-xs-4">
+//							<a class="btn btn-default" href="#">Messages</a>
+//						</div>
+//					</div>
+//					<div class="row career">
+//						<div class="col-xs-12">
+//							<h2>Career</h2>
+//							<ul class="list-group">
+//								<li class="list-group-item">Total courses<span class="badge">8</span></li>
+//								<li class="list-group-item">Completed courses<span class="badge">8</span></li>
+//								<li class="list-group-item">Ending courses<span class="badge">4</span></li>
+//								<li class="list-group-item">Your courses as Student<span class="badge">4</span></li>
+//								<li class="list-group-item">Your courses as Administrator<span class="badge">12</span></li>
+//								<li class="list-group-item">Available Certifications<span class="badge"><a href="#">8</a></span></li>
+//							</ul>
+//						</div>
+//					</div>
+//				</div>
+//				<div class="tabnav__content tabnav__content--credits">
+//					<div class="row credits">
+//						<div class="col-xs-12">
+//							<div class="js-credits-ajax-container">
+//								<div class="table-credit-wrapper">
+//									<table class="table-credit">
+//										<thead>
+//											<tr class="table-credit__row table-credit__row--head">
+//												<td>Course</td>
+//												<td>Credits</td>
+//											</tr>
+//										</thead>
+//										<tbody>
+//											<tr class="table-credit__row">
+//												<td>Course 1 name</td>
+//												<td>10</td>
+//											</tr>
+//											<tr class="table-credit__row">
+//												<td>Course 2 name</td>
+//												<td>5</td>
+//											</tr>
+//											<tr class="table-credit__row">
+//												<td>Course 3 name</td>
+//												<td>15</td>
+//											</tr>
+//										</tbody>
+//										<tfoot>
+//											<tr class="table-credit__row table-credit__row--footer">
+//												<td>Total</td>
+//												<td>30</td>
+//											</tr>
+//										</tfoot>
+//									</table>
+//								</div>
+//							</div>
+//						</div>
+//					</div>
+//				</div>
+//			</div>
+//		</div>
+//		<div class="row course-subscription">
+//		  <div class="col-xs-12">
+//			<div class="input-group">
+//				<form class="std_form" id="course_autoregistration" method="post" action="#">
+//					<div class="">
+//						<input type="hidden" id="authentic_request_course_autoregistration" name="authentic_request" value="">
+//						<input type="text" class="form-control" id="course_autoregistration_code" name="course_autoregistration_code" value="" maxlength="30" alt="" size="30" placeholder="Subscribtion code">
+//						<div class="input-group-btn">
+//							<input type="submit" class="button btn btn-default btn btn-default" id="subscribe_info" name="subscribe_info" value="Subscribe">
+//						</div>
+//					</div>
+//				</form>
+//			</div>
+//		  </div>
+//		</div>
+//		<div class="row news">
+//			<div class="col-xs-12">
+//				<h2 class="heading">News</h2>
+//				<div id="user-panel-carousel" class="carousel slide carousel-fade" data-ride="carousel">
+//					<ol class="carousel-indicators">
+//						<li class="" data-target="#user-panel-carousel" data-slide-to="0"></li>
+//						<li class="active" data-target="#user-panel-carousel" data-slide-to="1"></li>
+//						<li class="" data-target="#user-panel-carousel" data-slide-to="2"></li>
+//					</ol>
+//					<div class="carousel-inner" role="listbox">
+//						<div class="item active left">
+//							<h3>News title</h3>
+//							<p>News description</p>
+//							<span>gg-mm-yyyy</span>
+//						</div>
+//						<div class="item next left">
+//							<h3>News title</h3>
+//							<p>News description</p>
+//							<span>gg-mm-yyyy</span>
+//						</div>
+//						<div class="item">
+//							<h3>News title</h3>
+//							<p>News description</p>
+//							<span>gg-mm-yyyy</span>
+//						</div>
+//					</div>
+//				</div>
+//			</div>
+//	  	</div>
+//		<div class="row lang">
+//			<div class="col-xs-6">
+//				<p>Cambia lingua</p>
+//			</div>
+//			<div class="col-xs-6">
+//				<ul class="list-inline" id="language_selection">
+//					<li><a class="lang-sprite lang_english" href="#" title="English"></a></li>
+//					<li><a class="lang-sprite lang_finnish" href="#" title="Finnish"></a></li>
+//					<li><a class="lang-sprite lang_italian current" href="#" title="Italiano"></a></li>
+//					<li><a class="lang-sprite lang_spanish" href="#" title="Spanish"></a></li>
+//				</ul>
+//			</div>
+//		</div>
+//		<div class="row footer">
+//			<div class="col-xs-12">
+//				<p>Testing forma.lms - Copyright © forma.lms<br>Powered by forma.lms CE</p>
+//			</div>
+//		</div>
+//	</div>
+//</div>
+//
+// Style guide: 7.1
+.user-panel {
+  width: 100%;
+  //height: 840px;
+  height: auto;
+  max-height: calc(100vh - 70px);
+  top: 60px;
+  overflow: scroll;
+  background-color: var(--color-grey);
+  transform: translateX(100%);
+  font-family: $font;
+  text-align: left;
+  border-radius: 0;
+  z-index: 9000;
+
+  @include breakpoint($tablet) {
+    width: 320px;
+    //height: 712px;
+    //height: auto;
+    background-color: var(--color-white);
+    border-radius: 5px;
+    box-shadow: var(--color-grey) 0px 5px 20px 0px;
+    transform: translateX(350px);
+  }
+
+  .c-menu__close {
+    background-color: transparent;
+
+    span {
+      padding-left: 39px;
+    }
+  }
+
+  .container-fluid {
+    padding: 0 15px;
+    background-color: var(--color-grey);
+
+    @include breakpoint($tablet) {
+      background-color: transparent;
+      padding: 0 9px;
+      //background-color: var(--color-grey);
+    }
+
+    .row {
+      margin: 0;
+      padding: 0 15px;
+
+      @include breakpoint($tablet) {
+        padding: 0;
+      }
+
+      &:first-child {
+        padding: 9px 25px 9px 0;
+        height: 50px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+
+        @include breakpoint($tablet) {
+          border-bottom: 1px solid var(--color-grey);
+          margin-top: 0;
+          margin-bottom: 0;
+          padding: 9px 0;
+        }
+
+        a {
+          span {
+            width: auto;
+            font-family: $font;
+            color: var(--color-grey-03);
+            line-height: 32px;
+            font-size: 12px;
+            text-transform: uppercase;
+          }
+        }
+
+        .col-xs-6 {
+          text-align: left;
+        }
+
+        .col-xs-6 + .col-xs-6 {
+          text-align: right;
+
+          span {
+            padding-right: 25px;
+          }
+        }
+
+        .glyphicon {
+          &:before {
+            content: "";
+            position: absolute;
+            border-radius: 0;
+            border: none;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            transition: background-image 0.2s ease 0s;
+          }
+        }
+
+        .glyphicon.glyphicon-remove {
+          //width: 100%;
+          width: auto;
+
+          &:hover {
+            &:before {
+              @include breakpoint($tablet) {
+                background-color: var(--color-primary)
+              }
+            }
+          }
+
+          &:before {
+            content: "\f053";
+            width: 30px;
+            height: 30px;
+            top: 0;
+            left: 0;
+            right: inherit;
+            font-family: $icon;
+            color: var(--color-primary);
+            text-align: center;
+
+            @include breakpoint($tablet) {
+              content: "";
+              width: 30px;
+              height: 30px;
+              -webkit-mask-image: url("#{$assets}images/icons/user-panel/icon--up-close.svg");
+              background-color: var(--color-grey-04);
+              -webkit-mask-size: contain;
+            }
+          }
+        }
+
+        .glyphicon.glyphicon-off {
+          //width: 80%;
+          width: auto;
+
+          &:hover {
+            &:before {
+              background-color: var(--color-primary);
+            }
+          }
+
+          &:before {
+            width: 12px;
+            height: 16px;
+            top: 7px;
+            right: 3px;
+            left: inherit;
+            -webkit-mask-image: url("#{$assets}images/icons/user-panel/icon--up-logout.svg");
+            -webkit-mask-size: contain;
+            background-color: var(--color-grey-04);
+          }
+        }
+      }
+
+      &.profile {
+        min-height: 116px;
+        padding-bottom: 15px;
+        padding-top: 19px;
+        border: none;
+        background-color: var(--color-white);
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+
+        @include breakpoint($tablet) {
+          background-color: transparent;
+          border-radius: 0;
+        }
+
+        .col-xs-5 {
+          padding-left: 9px;
+          padding-right: 0;
+
+          .boxed {
+            width: 97px;
+            height: 97px;
+            padding: 0;
+            border: none;
+            background-image: url("#{$assets}images/icons/user-panel/icon--up-photo-placeholder.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+        }
+
+        .col-xs-7 {
+          padding: 17px 0 0 0;
+          text-align: left;
+
+          a {
+            //display: block;
+            display: inline-block;
+            //width: 100%;
+            width: auto;
+            margin-bottom: 5px;
+            text-transform: none;
+
+            &:first-child {
+              height: 17px;
+              color: var(--color-grey);
+
+              .glyphicon.glyphicon-pencil {
+                width: 100%;
+                height: 17px;
+                line-height: 16px;
+                padding-left: 25px;
+                font-family: $font;
+                border-radius: 0;
+
+                &:before {
+                  content: "";
+                  border: none;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  background-image: url("#{$assets}images/icons/user-panel/icon--up-edit.png");
+                  background-size: contain;
+                  background-repeat: no-repeat;
+                  background-position: center;
+                  width: 16px;
+                  height: 17px;
+                  border-radius: 0;
+                }
+              }
+            }
+
+            &:nth-child(2) {
+              color: var(--color-grey-04);
+              font-weight: bold;
+              font-size: 12px;
+
+              @include breakpoint($tablet) {
+                font-size: 14px;
+              }
+            }
+
+            &:last-child {
+              color: var(--color-grey-04);
+              font-size: 12px;
+
+              @include breakpoint($tablet) {
+                font-size: 14px;
+              }
+            }
+          }
+        }
+      }
+
+      &.social {
+        //social
+        display: none;
+      }
+
+      &.comunication {
+        padding: 10px 0 20px;
+        background-color: var(--color-white);
+
+        @include breakpoint($tablet) {
+          background-color: transparent;
+          //padding: 10px 15px 20px;
+        }
+
+        .col-xs-4 {
+          padding: 0 9px 0 9px;
+
+          a.btn.btn-default {
+            margin-bottom: 9px;
+          }
+          a {
+            padding: 0;
+          }
+        }
+      }
+
+      &.career {
+        //tabella carriera
+        background-color: var(--color-white);
+        padding: 0;
+
+        @include breakpoint($tablet) {
+          background-color: transparent;
+          //padding: 0 15px;
+        }
+
+        .col-xs-12 {
+          padding: 0 9px 0 9px;
+
+          h2 {
+            width: auto;
+            padding-right: 10px;
+            position: relative;
+            font-weight: bold;
+            color: var(--color-secondary);
+            overflow: hidden;
+            font-size: 16px;
+            text-transform: none;
+            z-index: 20;
+          }
+
+          .list-group {
+            border-radius: 0;
+            box-shadow: none;
+            list-style: none;
+            position: relative;
+
+            &:before {
+              content: "";
+              background-color: var(--color-grey);
+              width: 100%;
+              height: 1px;
+              position: absolute;
+              top: -2px;
+              right: 0;
+            }
+
+            .list-group-item {
+              padding: 5px 7px 5px 9px;
+              border: 0;
+              position: relative;
+              font-size: 14px;
+
+              &:before {
+                content: "\f111";
+                font-family: $icon;
+                color: var(--color-primary);
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 5px;
+              }
+
+              .badge {
+                background-color: var(--color-white);
+                color: var(--color-black);
+                padding: 0;
+                font-size: 14px;
+
+                a {
+                  &:hover {
+                    color: var(--color-black);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &.course-subscription {
+        //iscrizione al corso
+        background-color: var(--color-white);
+
+        @include breakpoint($tablet) {
+          margin: 0 -9px 0 -9px;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+          background-color: var(--color-grey);
+        }
+
+        .col-xs-12 {
+          padding: 20px 9px;
+          position: relative;
+          background-color: var(--color-grey);
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+
+          @include breakpoint($tablet) {
+            background-color: transparent;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+          }
+
+          .input-group {
+            width: 100%;
+
+            .form-control {
+              border-radius: 5px;
+              height: 40px;
+
+              &:focus {
+                border-color: var(--color-primary);
+                box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+                  0 0 8px var(--color-primary);
+              }
+
+              &::-webkit-input-placeholder,
+              &::-moz-placeholder,
+              &:-ms-input-placeholder,
+              &:-moz-placeholder {
+                font-style: italic;
+              }
+            }
+
+            .input-group-btn {
+              width: auto;
+              position: absolute;
+              right: 9px;
+              top: 7px;
+              z-index: 10;
+            }
+          }
+        }
+      }
+
+      &.news {
+        //news carousel
+        background-color: var(--color-white);
+        margin: 0;
+
+        @include breakpoint($tablet) {
+          margin: 0 -9px 0 -9px;
+          background-color: var(--color-grey);
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+        }
+
+        h2 {
+          width: auto;
+          padding-right: 10px;
+          position: relative;
+          font-weight: bold;
+          overflow: hidden;
+          font-size: 16px;
+          text-transform: none;
+          color: var(--color-secondary);
+          z-index: 20;
+        }
+
+        .col-xs-12 {
+          background-color: var(--color-grey);
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
+
+          @include breakpoint($tablet) {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+          }
+        }
+
+        .carousel {
+          padding-bottom: 36px;
+
+          .item {
+            padding: {
+              top: 5px;
+              bottom: 25px;
+            }
+          }
+        }
+      }
+
+      &.credits {
+        height: auto;
+        padding-right: 0;
+        margin: {
+          top: 0;
+          bottom: 15px;
+        }
+        border: none;
+      }
+
+      &.lang {
+        background-color: var(--color-white);
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+        @include breakpoint($tablet) {
+          background-color: transparent;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+
+        .col-xs-6 {
+          &:first-child {
+            padding: 0 9px 0 9px;
+
+            p {
+              font-family: $font;
+              color: var(--color-grey-04);
+              line-height: 40px;
+            }
+          }
+
+          &:last-child {
+            padding: 0 11px 0 20px;
+            .list-inline {
+              margin: 0;
+              line-height: 40px;
+
+              li {
+                padding: 0;
+                margin-left: 10px;
+                border: none;
+
+                &:first-child {
+                  margin-left: 0;
+                }
+
+                &:nth-child(4n + 1) {
+                  margin-left: 0;
+                  clear: both;
+                }
+
+                a.lang-sprite {
+                  width: 19px;
+                  height: 14px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      &.footer {
+        margin: 30px 0;
+        text-align: center;
+        font-family: $font;
+        color: var(--color-grey-03);
+        font-size: 16px;
+
+        @include breakpoint($tablet) {
+          display: none;
+        }
+      }
+
+      .col-xs-6 {
+        padding: 0;
+      }
+    }
+  }
+
+  .table-credit-wrapper {
+    border-radius: 5px;
+    border: 1px solid var(--color-grey-03);
+    overflow: hidden;
+  }
+
+  .table-credit {
+    width: 100%;
+    font-family: $font;
+  }
+
+  .table-credit__row {
+    line-height: 40px;
+    border-top: 1px solid var(--color-grey);
+
+    &:first-child {
+      border-top: none;
+    }
+
+    td {
+      border-right: 1px solid var(--color-grey-03);
+
+      &:first-child {
+        padding-left: 10px;
+      }
+
+      &:last-child {
+        border-right: none;
+        text-align: center;
+      }
+    }
+  }
+
+  .table-credit__row--head {
+    background-color: var(--color-warning);
+    color: var(--color-warning-text);
+    font-weight: bold;
+    border-radius: 5px;
+  }
+
+  .table-credit__row--footer {
+    background-color: var(--color-grey);
+    font-weight: bold;
+    color: var(--color-grey-04);
+    border-radius: 5px;
+  }
+
+  .form_line_l {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 15px;
+
+    p {
+      display: none;
+    }
+  }
+
+  .form-control {
+    width: 100%;
+  }
+}
+
+.c-mask {
+  background-color: transparent;
+}
+
+/* TEMPORARY STYLES */
+
+.social-accounts-title {
+  display: none;
+}
+
+.social-accounts {
+  display: none !important;
+}

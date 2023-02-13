@@ -1,0 +1,169 @@
+// Course Slider Menu
+//
+// Internal menu of courses
+//
+// Markup:
+// <div class="section-coourse__menu col-xs-12">
+//    <div class="row-fluid">
+//      <div class="section-coourse__dropdown col-sm-5 text-center">
+//        <div class="row">
+//          <div class="col-xs-12">
+//            <div class="forma-dropdown">
+//              <button type="button" class="forma-dropdown__selected forma-button dropdown-toggle has-icon icon--coourse-menu icon--coourse-menu-area-corso" data-toggle="dropdown">Area corso</button>
+//              <button type="button" class="forma-dropdown__toggle forma-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+//                <span class="glyphicon glyphicon-chevron-down"></span>
+//                <span class="sr-only">Toggle Dropdown</span>
+//              </button>
+//              <ul class="dropdown-menu">
+//                  <li>
+//                    <a href="" data-id="" class="has-icon icon--coourse-menu icon--coourse-menu-area-corso">
+//                      <span class="" aria-hidden="true"></span>
+//                      Area corso
+//                    </a>
+//                  </li>
+//                  <li>
+//                    <a href="" data-id="" class="has-icon icon--coourse-menu icon--coourse-menu-statistiche">
+//                      <span class="" aria-hidden="true"></span>
+//                      Statistiche
+//                    </a>
+//                  </li>
+//                  <li>
+//                    <a href="" data-id="" class="has-icon icon--coourse-menu icon--coourse-menu-area-social">
+//                      <span class="" aria-hidden="true"></span>
+//                      Area social
+//                    </a>
+//                  </li>
+//                  <li>
+//                    <a href="" data-id="" class="has-icon icon--coourse-menu icon--coourse-menu-gestione">
+//                      <span class="" aria-hidden="true"></span>
+//                      Gestione
+//                    </a>
+//                  </li>
+//             </ul>
+//            </div>
+//          </div>
+//        </div>
+//      </div>
+//        <div class="col-sm-7 section-coourse__menu-horizontal">
+//          <ul class="slider-menu">
+//            <li class="slider-menu__item is-selected">
+//              <a href="">Materiali</a>
+//            </li>
+//            <li class="slider-menu__item">
+//              <a href="">Valutazioni</a>
+//            </li>
+//            <li class="slider-menu__item">
+//              <a href="">Scheda corso</a>
+//            </li>
+//          </ul>
+//        </div>
+//      </div>
+//      <div class="clearfix"></div>
+//    </div>
+//
+// Style guide: 3.3
+
+.slider-menu {
+  padding: 0 22px;
+  margin: 0;
+
+  &.hidden-arrows {
+    .slider-menu__arrow {
+      @include breakpoint($ipad) {
+        display: none !important;
+      }
+    }
+  }
+}
+
+.slider-menu--tabs {
+
+  .slick-slide {
+    margin-right: 9px;
+  }
+
+}
+
+.slider-menu__item {
+  height: 30px;
+  padding: 5px 10px;
+  position: relative;
+  font-size: 15px;
+  line-height: 19px;
+
+  .slider-menu & {
+    list-style-type: none;
+    display: inline-block;
+  }
+
+  .slick-slide:nth-child(n + 2) & {
+    padding-left: 13px;
+
+    &:before {
+      width: 3px;
+      height: 3px;
+      content: '\f0da';
+      font-family: $icon;
+      font-size: 9px;
+      position: absolute;
+      //top: calc(50% - 1px);
+      left: 0;
+      //background-color: currentColor;
+      background-color: transparent;
+      //border-radius: 50%;
+    }
+  }
+
+  a {
+    font-family: $font;
+    transition: $transition-base;
+    &:hover {
+      color: var(--color-navbtn-bg-inter);
+    }
+  }
+
+  &.is-selected {
+    a {
+      color: var(--color-navbtn-bg-inter);
+      // background-color: var(--color-wrapper-text-50);
+      font-weight: bold;
+    }
+  }
+}
+
+.slider-menu__item--selected-area {
+  color: var(--color-primary);
+}
+
+.slider-menu__arrow {
+  //width: 30px;
+  width: 18px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  line-height: 30px;
+  text-align: center;
+
+  &.slick-prev {
+    left: 0;
+  }
+
+  &.slick-next {
+    right: 0;
+  }
+
+  &.slick-disabled {
+    visibility: hidden;
+  }
+
+  span {
+    &:last-child {
+      margin-left: -8px;
+    }
+  }
+
+  .slider-menu--tabs & {
+    top: 5px;
+  }
+}

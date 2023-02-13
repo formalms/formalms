@@ -1,0 +1,38 @@
+.d-banner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: {
+    position: center;
+    size: cover;
+    repeat: no-repeat;
+  };
+  position: relative;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    position: relative;
+    display: block;
+    padding-bottom: 17.333%;
+  }
+}
+
+.d-banner__text {
+  font-weight: $bold;
+  color: var(--color-white);
+  @include center-object(all, absolute);
+  z-index: 10;
+  font-size: 22px;
+
+  @include breakpoint($ipad) {
+    @include center-object(y, absolute);
+    left: 33px;
+  }
+}
+
+.d-banner__img {
+  @include center-object(all, absolute);
+  z-index: 1;
+  height: 100%;
+}

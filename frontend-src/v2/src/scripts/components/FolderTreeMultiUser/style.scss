@@ -1,0 +1,85 @@
+@keyframes loading {
+    to {
+        transform: rotate(1turn);
+    }
+}
+
+div[data-comp|="forma-plugin-ftmu"] {
+    .folderTree__li {
+        pointer-events: all !important;
+        border-bottom: 1px solid #efefef;
+        &::marker {
+            content: ''
+        }
+        .actions {
+            display: flex;
+            position: relative;
+            &:hover {
+                background: #EEEEEE;
+            }
+            &.selected {
+                background-color: var(--color-primary);
+                button {
+                    background-color: transparent !important;
+                }
+            }
+            button {
+                pointer-events: none;
+                flex: 1;
+                border-bottom: 1px solid transparent;
+                padding: 7px 16px 7px 56px;
+            }
+            .arrow {
+                top: 45%;
+                margin-top: 0;
+                display: block;
+                position: absolute;
+                cursor: pointer;
+                margin-left: 10px;
+                transform: translateY(-50%);
+                border-top: 4px solid transparent;
+                border-bottom: 4px solid transparent;
+                border-left: 6px solid #000;
+                border-right: none;
+                transition: all .2s ease-in-out;
+                width: 0;
+                height: 0;
+                background: none;
+                z-index: 99;
+                pointer-events: all;
+                &.opened {
+                    transform: rotate(90deg) !important;
+                }
+            }
+            .fields-holder {
+                align-items: center;
+                display: flex;
+                gap: .625rem;
+            }
+        }
+    }
+    &.no-active-gui {
+        .ft-is-selected {
+            background-color: transparent !important;
+        }
+    }
+    .loader {
+        display: inline-block;
+    }
+
+    .loading {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .loading::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border: 4px solid #dddddd;
+        border-top-color: #009579;
+        border-radius: 50%;
+        animation: loading 1s ease infinite;
+    }
+
+}

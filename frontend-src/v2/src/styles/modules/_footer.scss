@@ -1,0 +1,41 @@
+// Footer
+//
+// Site Footer<br />
+//
+// Style guide: 9
+
+// Footer
+//
+// Restyled footer
+//
+// Markup:
+// <div id="footer" class="layout_footer">
+//   <p class="powered_by">
+//     <span class="ownedby">Testing formalms - Copyright (c) forma.lms</span><br />
+//     <span class="poweredby"><a href="http://www.formalms.org/" target="_blank">Powered by forma.lms CE</a></span>
+//   </p>
+// </div>
+//
+// Style guide: 9.1
+.layout_footer {
+  padding-top: 30px;
+  border-top: 2px solid var(--color-primary);
+  text-align: center;
+  background-color: var(--color-white);
+
+  .powered_by {
+    .ownedby {
+      font-size: 14px;
+      color: var(--color-grey-04);
+    }
+
+    .poweredby {
+      font-size: 12px;
+
+      a {
+        color: var(--color-grey-03);
+        text-decoration: none;
+      }
+    }
+  }
+}

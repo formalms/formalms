@@ -1,0 +1,561 @@
+.HTML__COMMENTATO {
+  display: none;
+  // Top-menu
+//
+// This is the top-menu of the site
+//
+// Style guide: 6
+
+// Top-menu
+//
+// N.B. when implementing remove the inline styling of the header tag
+//
+// Markup:
+// <header class="header white-bg" style="position: static";>
+//   <nav>
+//     <div class="row-fluid" id="lms_menu_container">
+//       <div class="navbar-header">
+//         <a class="navbar-brand" href="">
+//           <img class="left_logo" width="120" src="../../../templates/standard/images/company_logo.png" alt="logo di sinistra">
+//         </a>
+//         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+//                 aria-expanded="false" aria-controls="navbar">
+//           <span class="glyphicon glyphicon-align-justify"></span>
+//         </button>
+//       </div>
+//       <div id="navbar" class="navbar-collapse collapse ">
+//         <div>
+//           <ul class="nav navbar-nav">
+//             <li>
+//               <a href="" class="" title="I miei corsi">I miei corsi</a>
+//             </li>
+//             <li>
+//               <a href="" class="" title="Catalogo Corsi">Catalogo Corsi</a>
+//             </li>
+//             <li>
+//               <a href="" class="" title="Community">Community</a>
+//             </li>
+//             <li>
+//               <a class="no-border-right no-before" href="#inline" class="modalbox" title="Help Desk">
+//                 <span class="glyphicon glyphicon-question-sign top-menu__label">Help Desk</span>
+//               </a>
+//             </li>
+//             <li>
+//               <a class="no-border-right no-before" href="" title="Amministrazione">
+//                 <span class="glyphicon glyphicon-cog top-menu__label">Amministrazione</span>
+//               </a>
+//             </li>
+//             <li>
+//               <div id="o-wrapper" class="o-wrapper">
+//                 <button id="c-button--slide-right" class="c-button">
+//                   <a data-toggle="dropdown" href="#" title="Il mio profilo">
+//                     <span class="username icon--profile"> Super Amministratore</span>
+//                   </a>
+//                 </button>
+//               </div>
+//             </li>
+//           </ul>
+//           <div class="top-menu__disclaimer">Testing forma.lms - Copyright © forma.lms<br />Powered by forma.lms CE</div>
+//           <div id="c-mask" class="c-mask"></div>
+//         </div>
+//       </div>
+//     </div>
+//   </nav>
+// </header>
+//
+// Style guide: 6.1
+  
+}
+
+
+header.header {
+  height: 73px;
+  //padding: 0 36px 0 30px;
+  padding: 0;
+  border-bottom: 2px solid var(--color-grey);
+  position: fixed;
+
+  @include breakpoint($tablet) {
+    padding: 10px 15px;
+    height: 71px;
+  }
+
+  .row-fluid {
+    .navbar-header {
+      @media (min-width: 768px) and (max-width: 1023px) {
+        width: 100%;
+      }
+
+      .navbar-brand {
+        padding: 15px 0 0 15px;
+        position: relative;
+
+        @include breakpoint($tablet) {
+          padding-left: 30px;
+        }
+
+        img {
+          height: 100%;
+          position: relative;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+
+        @include breakpoint($tablet) {
+          height: 42px;
+          padding: 0;
+        }
+      }
+
+      .navbar-toggle {
+        position: relative;
+        margin-top: 15px;
+        margin-right: 5px;
+        transition: $transition-base;
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+          display: block !important;
+          margin-top: 0;
+        }
+
+        &.collapsed {
+          .glyphicon.glyphicon-align-justify {
+            &:before {
+              width: 30px;
+              height: 30px;
+              top: -15px;
+              right: 0;
+              background-image: url('#{$assets}images/icons/icon--hamburger-mobile.svg');
+            }
+          }
+        }
+
+        .glyphicon.glyphicon-align-justify {
+          &:before {
+            content: '';
+            width: 22px;
+            height: 22px;
+            display: inline-block;
+            position: absolute;
+            top: -11px;
+            right: 5px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url('#{$assets}images/icons/icon--hamburger-mobile-cross.svg');
+          }
+        }
+      }
+    }
+
+    .navbar-collapse {
+      float: right;
+      padding: 0;
+
+      @media (min-width: 768px) and (max-width: 1023px) {
+        margin-top: 1px !important;
+      }
+
+      li {
+        padding: 14px 10px 10px 6px;
+        font-family: $font;
+        font-size: 14px;
+
+        @include breakpoint($tablet) {
+          text-transform: uppercase;
+        }
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+          display: block !important;
+        }
+
+        &:first-child {
+          @include breakpoint($tablet) {
+            padding-left: 0;
+          }
+        }
+
+        &:last-child {
+          padding-right: 0;
+          border-right: none;
+        }
+
+        a {
+          height: 14px;
+          padding: 0;
+          color: var(--color-grey-04);
+          transition: color 0.2s ease 0s;
+          line-height: 1;
+
+          &:hover {
+            background-color: transparent;
+            color: var(--color-primary);
+          }
+
+          .title-with-icon {
+            display: block;
+            @include breakpoint($ipad) {
+              display: none;
+            }
+          }
+
+          .glyphicon {
+            position: relative;
+            width: 35px;
+            height: 35px;   
+
+            &:hover {
+              &:before {
+                border-color: var(--color-primary);
+              }
+            }
+
+            &:before {
+              content: '';
+              position: absolute;
+              @include breakpoint($ipad) {
+                top: -6px;
+                right: -48px;
+              }
+            
+              width: 26px;
+              height: 26px;
+              display: inline-block;
+              // border: 1px solid var(--color-grey);
+              border-radius: 50%;
+              background-size: 20px;
+              background-repeat: no-repeat;
+              background-position: center;
+              transition: border-color 0.2s ease 0s,
+                background-image 0.2s ease 0s;
+
+              @include breakpoint($ipad) {
+                right: 0;
+              }
+            }
+
+            &.glyphicon-question-sign {
+              &:hover {
+                &:before {
+                  background-image: url('#{$assets}images/icons/top-menu/icon--help-desk-hover.svg');
+          
+                }
+              }
+
+              &:before {
+                background-image: url('#{$assets}images/icons/top-menu/icon--help-desk.svg');
+                top:0;
+              }
+            }
+
+            &.glyphicon-cog {
+              &:hover {
+                &:before {
+                  background-color: var(--color-primary);
+                }
+              }
+
+              &:before {
+                -webkit-mask-image: url('#{$assets}images/icons/top-menu/icon--admin.svg');
+                -webkit-mask-size: contain;
+                background-color: var(--color-grey-04);
+              }
+            }
+
+            &.glyphicon-bell {
+              &:hover {
+                &:before {
+                  background-image: url("images/icons/top-menu/icon--bell-hover.svg");
+                }
+              }
+              &:before {
+                background-image: url("images/icons/top-menu/icon--bell.svg");
+              }
+            }
+
+            &.glyphicon-shopping-cart {
+              &:hover {
+                &:before {
+                  background-image: url('#{$assets}images/icons/top-menu/icon--cart-hover.svg');
+                }
+              }
+
+              &:before {
+                background-image: url('#{$assets}images/icons/top-menu/icon--cart.svg');
+              }
+            }
+          }
+        }
+
+        &.active {
+          a {
+            color: var(--color-primary);
+          }
+        }
+
+        .o-wrapper {
+          line-height: 1;
+
+          .c-button {
+            width: calc(100% - 40px);
+            margin: 0 40px 0 0;
+            padding: 0;
+            background: transparent none repeat scroll 0 0;
+            border: 0;
+            text-align: left;
+
+            @include breakpoint($ipad) {
+              width: auto;
+              text-align: center;
+            }
+
+            &:disabled {
+              opacity: 1;
+
+              a {
+                .username {
+                  color: var(--color-primary);
+
+                  &:before {
+                    background-image: url('#{$assets}images/icons/top-menu/icon--profile-hover.svg');
+                    border: 1px solid var(--color-primary);
+                  }
+                }
+              }
+            }
+
+            &.open,
+            a {
+              width: 100%;
+              display: inline-block;
+              background-color: var(--color-white);
+              line-height: 1;
+              text-decoration: none;
+              border-right: none !important;
+
+              @include breakpoint($ipad) {
+                width: auto;
+              }
+
+              &:before {
+                display: none !important;
+              }
+
+              .username {
+                width: 100%;
+                position: relative;
+                display: inline-block;
+                font-weight: normal;
+
+                @include breakpoint($tablet) {
+                  text-transform: uppercase;
+                  font-weight: bold;
+                }
+
+                &:hover {
+                  &:before {
+                    background-image: url('#{$assets}images/icons/top-menu/icon--profile-hover.svg');
+                    border: 1px solid var(--color-primary);
+                  }
+                }
+
+                &:before {
+                  content: '';
+                  position: absolute;
+                  top: 3px;
+                  right: -48px;
+                  width: 35px;
+                  height: 35px;
+                  border-radius: $border-radius;
+                  border: 1px solid var(--color-grey);
+                  background-position: center;
+                  background-size: 13px;
+                  background-repeat: no-repeat;
+                  transition: border 0.2s ease 0s, background-image 0.2s ease 0s;
+
+                  @include breakpoint($ipad) {
+                    top: -11px;
+                    right: -45px;
+                  }
+                }
+              }
+            }
+          }
+
+          &.has-slide-right {
+            .c-button.open {
+              text-align: left;
+            }
+          }
+        }
+      }
+
+      &.collapse {
+        @media (min-width: 768px) and (max-width: 1023px) {
+          display: none !important;
+        }
+      }
+
+      &.collapse.in {
+        overflow-y: visible;
+        max-height: 685px;
+      }
+
+      &.collapsing,
+      &.collapse.in {
+        width: 100%;
+        float: left;
+        margin-top: 10px;
+        padding: 20px;
+        background-color: var(--color-grey);
+
+        @media (min-width: 768px) and (max-width: 1023px) {
+          display: block !important;
+        }
+
+        .nav.navbar-nav {
+          margin: 0;
+
+          @media (min-width: 768px) and (max-width: 1023px) {
+            text-align: left !important;
+          }
+
+          li {
+            height: 70px;
+            margin-bottom: 10px;
+            padding: 15px 20px;
+            background-color: var(--color-white);
+            border-radius: 5px;
+            font-weight: bold;
+
+            @media (min-width: 768px) and (max-width: 1023px) {
+              display: block;
+            }
+
+            .no-border-right {
+              border-right: none;
+            }
+
+            .no-before {
+              &:before {
+                display: none;
+              }
+            }
+
+            a {
+              height: 40px;
+              position: relative;
+              line-height: 40px;
+              margin-right: 40px;
+              border-right: 2px solid var(--color-grey);
+
+              &:before {
+                content: '\f105';
+                position: absolute;
+                right: -35px;
+                font-family: $icon;
+                font-size: 23px;
+                color: var(--color-primary);
+              }
+
+              .glyphicon {
+                width: 100%;
+                height: 40px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  nav {
+    border: none !important;
+  }
+}
+
+.header--external-catalogue {
+  .navbar-toggle {
+    display: none;
+  }
+}
+
+.top-menu__label {
+  font-weight: normal;
+  font-family: $font;
+  font-size: 0;
+//  @include breakpoint($ipad) {
+//    display: block;
+//    font-size: 0;
+//  }
+
+  @include breakpoint($ipad) {
+    top:-13px;
+  }
+
+  &:before {
+
+      top: -22px;
+    
+    }
+  #cart_element {
+    font-size: 10px;
+    line-height: 13px;
+  }
+}
+
+.top-menu__disclaimer {
+  margin-top: 40px;
+  margin-bottom: 6px;
+  text-align: center;
+  font-family: $font;
+  color: var(--color-grey-03);
+  font-size: 16px;
+
+  @include breakpoint($ipad) {
+    display: none;
+  }
+}
+
+
+
+.header__profilecontainer {
+  background-color: plum;
+  object-fit: contain;
+}
+
+
+
+.header__profile__button {
+  display: flex;
+  margin: 0 !important;
+  width: 150px !important;
+  justify-content: space-between;
+  align-items: stretch;
+  .header__profile__name {
+    flex: 1;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    justify-content: flex-end;
+    padding-right: .6rem;
+  }
+  .header__profile__picture {
+    flex: 0 0 32px;
+    height: 32px;
+    img {
+      width: 100%;
+      max-height: 100%;
+      border-radius: $border-radius;
+    }
+  }
+}
+
+
+.navbar-nav {
+  .badge {
+    background-color: var(--color-warning);
+    color: var(--color-warning-text);
+  }
+}
