@@ -175,7 +175,7 @@ class DoceboImport_Destination
      *
      * @return true if the row was succesfully inserted, FALSE otherwise
      **/
-    public function add_row($row, $tocompare)
+    public function add_row($row, $tocompare = false)
     {
         $row = $row;
     }
@@ -304,7 +304,7 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination
         return count($this->mandatory_cols);
     }
 
-    public function add_row($row)
+    public function add_row($row, $compare = false)
     {
         if ($this->mandatory_cols === null) {
             return false;

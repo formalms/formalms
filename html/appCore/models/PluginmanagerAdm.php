@@ -244,7 +244,7 @@ class PluginmanagerAdm extends Model
                         if ($row['active'] == 1) {
                             $plugins[$row['name']] = $row;
                         } else {
-                            $plugins[$row['name']] = false;
+                            $plugins[$row['name']] = [];
                         }
                     } else {
                         $plugins[$row['name']] = $row;

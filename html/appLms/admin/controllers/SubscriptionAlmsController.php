@@ -1908,7 +1908,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 $docebo_course = new DoceboCourse($this->id_course);
 
-                $level_idst = &$docebo_course->getCourseLevel($this->id_course);
+                $level_idst = $docebo_course->getCourseLevel($this->id_course);
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
                     $level_idst = &$docebo_course->createCourseLevel($this->id_course);
@@ -1994,7 +1994,7 @@ class SubscriptionAlmsController extends AlmsController
                             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
                             $docebo_course = new DoceboCourse($this->id_course);
 
-                            $level_idst = &$docebo_course->getCourseLevel($this->id_course);
+                            $level_idst = $docebo_course->getCourseLevel($this->id_course);
 
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
                                 $level_idst = &$docebo_course->createCourseLevel($this->id_course);
@@ -2058,7 +2058,7 @@ class SubscriptionAlmsController extends AlmsController
                             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
                             $docebo_course = new DoceboCourse($this->id_course);
 
-                            $level_idst = &$docebo_course->getCourseLevel($this->id_course);
+                            $level_idst = $docebo_course->getCourseLevel($this->id_course);
 
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
                                 $level_idst = &$docebo_course->createCourseLevel($this->id_course);

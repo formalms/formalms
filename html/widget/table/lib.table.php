@@ -149,7 +149,7 @@ class TableWidget extends Widget
         }
 
         if (!is_array($this->paginator)) {
-            $lang = &DoceboLanguage::CreateInstance('standard', 'framework');
+            $lang = DoceboLanguage::CreateInstance('standard', 'framework');
             $this->paginator = [
                 'template' => '{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} '
                     . '{RangeRecords} ' . $lang->def('_OF') . ' <strong>{TotalRecords}</strong>'

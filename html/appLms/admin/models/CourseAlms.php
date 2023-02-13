@@ -42,7 +42,7 @@ class CourseAlms extends Model
         $this->classroom_man = new DateManager();
         $this->edition_man = new EditionManager();
 
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = Docebo::user()->getAclManager();
         parent::__construct();
     }
 
@@ -504,13 +504,13 @@ class CourseAlms extends Model
         $id_custom = $data_params['selected_menu'];
 
         // calc quota limit
-        $quota = $data_params['course_quota'];
+        $quota = (float) $data_params['course_quota'];
         if (isset($data_params['inherit_quota'])) {
             $quota = FormaLms\lib\Get::sett('course_quota');
             $data_params['course_quota'] = COURSE_QUOTA_INHERIT;
         }
 
-        $quota = $quota * 1024 * 1024;
+        $quota = (float) $quota * 1024 * 1024;
 
         $path = FormaLms\lib\Get::sett('pathcourse');
         $path = '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . (substr($path, -1) != '/' && substr($path, -1) != '\\' ? '/' : '');

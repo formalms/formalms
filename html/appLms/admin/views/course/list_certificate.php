@@ -22,7 +22,7 @@ Util::get_js('../appLms/admin/modules/certificate/certificate.js', true, true);
 
 $vars = 'var ajax_url="ajax.adm_server.php?plf=lms&mn=certificate"; var _CLOSE="' . Lang::t('_CLOSE') . '"; var _STOP="' . Lang::t('_STOP') . '"; '
     . 'var glob_id_certificate = 0, glob_id_course = ' . (int) $id_course . ';'
-    . 'var single_list = [' . (count($downloadables) ? '"' . implode('","', $downloadables) . '"' : '') . ']; '
+    . 'var single_list = [' . (isset($downloadables) && count($downloadables) ? '"' . implode('","', $downloadables) . '"' : '') . ']; '
     . 'var reload_url = "' . str_replace('&amp;', '&', (isset(/*$form_url*/ $submit_url) ? /*$form_url*/ $submit_url : '')) . '", '
     . '_ERROR_PARSE = "' . Lang::t('_OPERATION_FAILURE') . '", _SUCCESS = "' . Lang::t('_OPERATION_SUCCESSFUL') . '", '
     . '_AREYOUSURE="' . Lang::t('_AREYOUSURE', 'standard') . '";';

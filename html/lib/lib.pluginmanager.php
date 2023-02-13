@@ -232,7 +232,9 @@ class PluginManager
     {
         $plugin_list = self::get_all_plugins();
         foreach ($plugin_list as $plugin) {
-            self::include_plugin_file($plugin['name'], 'Event.php');
+            if(array_key_exists('name',$plugin)) {
+                self::include_plugin_file($plugin['name'], 'Event.php');
+            }
         }
     }
 
@@ -240,7 +242,10 @@ class PluginManager
     {
         $plugin_list = self::get_all_plugins();
         foreach ($plugin_list as $plugin) {
-            self::include_plugin_file($plugin['name'], $plugin['name'] . '.php');
+            if(array_key_exists('name',$plugin)) {
+                self::include_plugin_file($plugin['name'], $plugin['name'] . '.php');
+            }
+            
         }
     }
 }

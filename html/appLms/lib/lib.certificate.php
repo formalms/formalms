@@ -325,12 +325,14 @@ class Certificate
 
         $assignable = [];
         $res = sql_query($query);
-        foreach ($res as $row) {
-            if (
-                $this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])
-                && $this->canRelExceptional($row['perm_close_lo'], $row['id_user'], $row['id_course'], $row['point_required'])
-            ) {
-                $assignable[] = $row;
+        if(is_array($res)) {
+            foreach ($res as $row) {
+                if (
+                    $this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])
+                    && $this->canRelExceptional($row['perm_close_lo'], $row['id_user'], $row['id_course'], $row['point_required'])
+                ) {
+                    $assignable[] = $row;
+                }
             }
         }
 

@@ -51,7 +51,7 @@ class Format
     public static function date($date, $type = false, $seconds = false)
     {
         if (!self::$_regset) {
-            self::istance();
+            self::instance();
         }
 
         return self::$_regset->databaseToRegional($date, $type, $seconds);
@@ -68,7 +68,7 @@ class Format
     public static function dateDb($date, $type = false)
     {
         if (!self::$_regset) {
-            self::istance();
+            self::instance();
         }
 
         return self::$_regset->regionalToDatabase($date, $type);
@@ -84,7 +84,7 @@ class Format
     public static function toTimestamp($date)
     {
         if (!self::$_regset) {
-            self::istance();
+            self::instance();
         }
 
         return self::$_regset->databaseToTimestamp($date);

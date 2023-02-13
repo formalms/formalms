@@ -2350,7 +2350,7 @@ class DoceboCourse
 
         $map = [];
         $levels = $subscribe_man->getUserLevel(); //CourseLevel::getTranslatedLevels();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         // find all the group created for this menu custom for permission management
         $arr_groupid = [];
