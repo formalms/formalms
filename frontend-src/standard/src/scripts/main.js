@@ -1,7 +1,7 @@
 // device
 require('@ciffi-js/device');
 require('./pages/allpages');
-var Twig = require('twig');
+var Twig = require('twigjs');
 
 
 /**
