@@ -37,7 +37,7 @@
 }
 
 @function rem($size) {
-  @return #{$size / 16}rem;
+  @return #{calc($size / 16)}rem;
 }
 
 @mixin center-object($direction: x, $position: absolute) {

@@ -1,7 +1,7 @@
 import 'regenerator-runtime/runtime'
 import Tree from './tree.html.twig';
 import FolderTreeBase from './../FolderTreeBase';
-import Twig from 'twig';
+import Twig from 'twigjs';
 
 Twig.extendFunction('arrayContains', (array, idString, value) => {
   const spliced = idString.split('_');
