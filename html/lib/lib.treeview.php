@@ -96,7 +96,7 @@ class TreeView
         $this->selectedFolder = 0;
         $this->op = '';
         $this->rootname = $rootname;
-        $this->lang = &DoceboLanguage::createInstance('treeview', 'framework');
+        $this->lang = DoceboLanguage::createInstance('treeview', 'framework');
         $this->aclManager = new DoceboACLManager();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }

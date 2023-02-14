@@ -2191,9 +2191,9 @@ class SubscriptionAlmsController extends AlmsController
 
             $docebo_course = new DoceboCourse($this->id_course);
 
-            $level_idst = &$docebo_course->getCourseLevel($this->id_course);
+            $level_idst = $docebo_course->getCourseLevel($this->id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$docebo_course->createCourseLevel($this->id_course);
+                $level_idst = $docebo_course->createCourseLevel($this->id_course);
             }
 
             $query = 'SELECT idUser, MIN(level) AS level'
@@ -2229,7 +2229,7 @@ class SubscriptionAlmsController extends AlmsController
 
             $docebo_course = new DoceboCourse($this->id_course);
 
-            $level_idst = &$docebo_course->getCourseLevel($this->id_course);
+            $level_idst = $docebo_course->getCourseLevel($this->id_course);
 
             if (count($level_idst) == 0 || $level_idst[1] == '') {
                 $level_idst = &$docebo_course->createCourseLevel($this->id_course);
@@ -2351,10 +2351,10 @@ class SubscriptionAlmsController extends AlmsController
 
                 $docebo_course = new DoceboCourse($id_course);
 
-                $level_idst = &$docebo_course->getCourseLevel($id_course);
+                $level_idst = $docebo_course->getCourseLevel($id_course);
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$docebo_course->createCourseLevel($id_course);
+                    $level_idst = $docebo_course->createCourseLevel($id_course);
                 }
 
                 $waiting = 0;

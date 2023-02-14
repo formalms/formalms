@@ -88,7 +88,7 @@ class TreeView_CatView extends TreeView
     public $lang = false;
     public $show_action = true;
 
-    public $cat_not_empty = false;
+    public $cat_not_empty = [];
 
     public $hide_inline_action = false;
 

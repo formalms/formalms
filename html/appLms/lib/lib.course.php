@@ -59,7 +59,7 @@ class Selector_Course
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.levels.php';
 
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
+        $lang = DoceboLanguage::createInstance('course', 'lms');
 
         $this->show_filter = true;
         $this->treeDB = new TreeDb_CatDb('%lms_category');

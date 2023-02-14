@@ -2110,7 +2110,7 @@ class DoceboACLManager
         }
 
         if (count($values) > 0) {
-            $query = 'INSERT INTO ' . $this->_getTableGroupMembers()
+            $query = 'INSERT IGNORE INTO ' . $this->_getTableGroupMembers()
                 . ' (idst, idstMember, filter) VALUES '
                 //." ('".$idst."','".$idstMember."','".$filter."')";
                 . implode(',', $values);
