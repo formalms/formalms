@@ -324,7 +324,7 @@ class Lang
                 $_substitutions = json_encode($substitution ? $substitution : []);
                 $log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t \n";
                 $date = date('Y_m_d');
-                if (!mkdir(_files_ . "/log/missing_translations/$lang_code/", 0777, true)) {
+                if (!@mkdir(_files_ . "/log/missing_translations/$lang_code/", 0777, true)) {
                     echo "<script>console.log('Directory creato con successo');</script>";
                 }
                 file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
@@ -336,7 +336,7 @@ class Lang
                 $_substitutions = json_encode($substitution ? $substitution : []);
                 $log = "KEY: '$key'\t- MODULE: '$module'\t- SUBTITUTIONS: $_substitutions\t- FOUND IN STANDARD: $found_in_standard\n";
                 $date = date('Y_m_d');
-                if (!mkdir(_files_ . "/log/missing_translations/$lang_code/", 0777, true)) {
+                if (!@mkdir(_files_ . "/log/missing_translations/$lang_code/", 0777, true)) {
                     echo "<script>console.log('Directory creato con successo');</script>";
                 }
                 file_put_contents(_files_ . "/log/missing_translations/$lang_code/$date.log", $log, FILE_APPEND);
