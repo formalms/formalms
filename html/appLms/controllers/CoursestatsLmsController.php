@@ -873,7 +873,8 @@ class CoursestatsLmsController extends LmsController
 
         $head = [];
         $head[] = $this->_formatCsvValue(Lang::t('_USERNAME', 'standard'), $delimiter);
-        $head[] = $this->_formatCsvValue(Lang::t('_FULLNAME', 'standard'), $delimiter);
+        $head[] = $this->_formatCsvValue(Lang::t('_NAME', 'standard'), $delimiter);
+        $head[] = $this->_formatCsvValue(Lang::t('_LASTNAME', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_LEVEL', 'standard'), $delimiter);
         $head[] = $this->_formatCsvValue(Lang::t('_STATUS', 'standard'), $delimiter);
         foreach ($lo_list as $id_lo => $lo_info) {
@@ -913,7 +914,8 @@ class CoursestatsLmsController extends LmsController
                 foreach ($records as $record) {
                     $row = [];
                     $row[] = $acl_man->relativeId($record->userid);
-                    $row[] = $record->firstname . ' ' . $record->lastname;
+                    $row[] = $record->firstname;
+                    $row[] = $record->lastname;
                     $row[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : '';
                     $row[] = isset($arr_status[$record->status]) ? $arr_status[$record->status] : '';
                     $num_completed = 0;
@@ -976,7 +978,8 @@ class CoursestatsLmsController extends LmsController
                     $rowa = [];
                     $rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard') . ' :';
                     $rowa[] = Lang::t('_USERNAME', 'standard') . ' : ' . $acl_man->relativeId($record->userid);
-                    $rowa[] = Lang::t('_FULLNAME', 'standard') . ' : ' . $record->firstname . ' ' . $record->lastname;
+                    $rowa[] = Lang::t('_NAME', 'standard') . ' : ' . $record->firstname;
+                    $rowa[] = Lang::t('_LASTNAME', 'standard') . ' : ' . $record->lastname;
                     $rowa[] = Lang::t('_LEVEL', 'standard') . ' : ';
                     $rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : '';
                     $rowa[] = Lang::t('_STATUS', 'standard') . ' : ';
@@ -1119,7 +1122,8 @@ class CoursestatsLmsController extends LmsController
                     $rowa = [];
                     $rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard') . ' :';
                     $rowa[] = Lang::t('_USERNAME', 'standard') . ' : ' . $acl_man->relativeId($record->userid);
-                    $rowa[] = Lang::t('_FULLNAME', 'standard') . ' : ' . $record->firstname . ' ' . $record->lastname;
+                    $rowa[] = Lang::t('_NAME', 'standard') . ' : ' . $record->firstname;
+                    $rowa[] = Lang::t('_LASTNAME', 'standard') . ' : ' . $record->lastname;
                     $rowa[] = Lang::t('_LEVEL', 'standard') . ' : ';
                     $rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : '';
                     $rowa[] = Lang::t('_STATUS', 'standard') . ' : ';
@@ -1199,7 +1203,8 @@ class CoursestatsLmsController extends LmsController
         $rowa = [];
         $rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard');
         $rowa[] = Lang::t('_USERNAME', 'standard') . ' : ' . $acl_man->relativeId($info->userid);
-        $rowa[] = Lang::t('_FULLNAME', 'standard') . ' : ' . $info->firstname . ' ' . $info->lastname;
+        $rowa[] = Lang::t('_NAME', 'standard') . ' : ' . $info->firstname;
+        $rowa[] = Lang::t('_LASTNAME', 'standard') . ' : ' . $info->lastname;
         $rowa[] = '';
         $rowa[] = '';
         $rowa[] = Lang::t('_DATE_FIRST_ACCESS', 'standard') . ' : ' . $info->first_access;
@@ -1279,7 +1284,8 @@ class CoursestatsLmsController extends LmsController
                     $rowa = [];
                     $rowa[] = Lang::t('_PARTICIPANT_DATA', 'standard') . ' :';
                     $rowa[] = Lang::t('_USERNAME', 'standard') . ' : ' . $acl_man->relativeId($record->userid);
-                    $rowa[] = Lang::t('_FULLNAME', 'standard') . ' : ' . $record->firstname . ' ' . $record->lastname;
+                    $rowa[] = Lang::t('_NAME', 'standard') . ' : ' . $record->firstname;
+                    $rowa[] = Lang::t('_LASTNAME', 'standard') . ' : ' . $record->lastname;
                     $rowa[] = Lang::t('_LEVEL', 'standard') . ' : ';
                     $rowa[] = isset($arr_level[$record->level]) ? $arr_level[$record->level] : '';
                     $rowa[] = Lang::t('_STATUS', 'standard') . ' : ';
