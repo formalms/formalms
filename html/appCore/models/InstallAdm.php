@@ -202,7 +202,7 @@ class InstallAdm extends Model
         $labels['detectedVersion'] = _DETECTED_VERSION;
 
         $labels['testButton'] = !$this->upgrade ? _TEST_INSTALL : _TEST_UPGRADE;
-
+        $labels['generateLock'] = _GENERATE_LOCK;
 
         $this->labels = $labels;
 
@@ -1711,15 +1711,21 @@ class InstallAdm extends Model
      /**
      * Method to generate lock file
      *
-     * @return void
+     * @return bool
      */
 
-    private function generateLock()
+    public function generateLock()
     {
+        $response = false;
         // ----------- Generating lock file -----------------------------
+        if(!file_exists(_base_ . '/forma.lock')) {
+            $lockFile = _base_ . '/forma.lock';
+            touch($lockFile);
+            $response = true;
+        }
 
-        $lockFile = _base_ . '/forma.lock';
-        touch($lockFile);
+        return $this->setResponse($response, [])->wrapResponse();
+        
     }
 
 }

@@ -114,6 +114,12 @@ class SystemAdmController extends AdmController
         exit;
     }
 
+    public function generateLock() {
+        echo $this->installModel->generateLock();
+       
+        exit;
+    }
+
 
     public function checkSystemStatus()
     {

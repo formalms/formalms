@@ -748,7 +748,7 @@ class Boot
       
     }
 
-
+    //Disabled - htacces use not used at moment
     public static function checkWebServer()
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
@@ -761,10 +761,10 @@ class Boot
     {
         $baseRoute = FormaLms\lib\Get::rel_path('base') . '/';
         $sistemPrefix = '/index.php?r=adm/system/';
-        $baseRoute .= (self::$prettyRedirect) ? $route : ($sistemPrefix . $route);
+        $baseRoute .= ($sistemPrefix . $route);
 
         if(count($params)) {
-            $baseRoute .= (self::$prettyRedirect) ? '?' : '?';
+            $baseRoute .=  '?';
             foreach($params as $key => $param) {
                 $baseRoute .= $key . '=' . $param;
             }

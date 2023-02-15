@@ -30,9 +30,17 @@
 	{{ Form_getHidden('checkRequirements','checkRequirements', checkRequirements)}}
 
 
-		{{ Form_getHidden('upgrade','upgrade', upgradeTrigger)}}
+	{{ Form_getHidden('upgrade','upgrade', upgradeTrigger)}}
 
 	{{checkFolderPerms}}
 
+
+	<div id="lockGenerator" class="wizard">
+	<div class="actions clearfix">
+		<ul>
+		<li class="unlisted"><a href="#" onclick="event.preventDefault(); generateLockFile();">{{generateLock}}</a></li>
+		<ul>
+	</div>
+	</div>
 
 </div>

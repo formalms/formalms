@@ -479,3 +479,38 @@ function testMigrations() {
     },
 });
 }
+
+/***********************************/
+
+function generateLockFile() {
+
+  $('a').off('click');
+  $('a[role="menuitem"]').addClass('disabledActions');
+  var result = false;
+  let postData = {};
+  $.ajax({
+    type: "POST",
+    data: postData,
+    async: false,
+    url: window.frontend.config.url.base + "/appCore/ajax.adm_server.php?r=adm/system/generateLock",
+    success: function (data) {
+        
+    var response = JSON.parse(data);
+    result = response.success;
+  
+    if(result) {
+ 
+      window.location.replace(window.frontend.config.url.base);
+    }
+
+    $('a').on('click');
+    
+    $('a[role="menuitem"]').removeClass('disabledActions');
+
+    },
+    error: function (e) {
+        alert("Error: \n" + e.status + " - " + e.statusText);
+        return false;
+    },
+  });
+}

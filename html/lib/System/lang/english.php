@@ -17,6 +17,7 @@ define('_INSTALLED_VERSION', 'Installed Version');
 define('_DETECTED_VERSION', 'Detected Version');
 define('_TEST_INSTALL', 'Test Installation');
 define('_TEST_UPGRADE', 'Test Upgrade');
+define('_GENERATE_LOCK', 'Generate lock file');
 define('_OK_UPGRADE', 'You can proceed with Upgrade');
 define('_NO_UPGRADE', 'No upgrade needed');
 define('_NO_DOWNGRADE', 'Downgrade is not supported');

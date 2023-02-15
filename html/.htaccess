@@ -16,28 +16,7 @@ DirectoryIndex index.php index.html index.htm
         # Redirect to the www version of the site
         #RewriteCond %{HTTP_HOST} !^www\. [NC]
         #RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule ^(.*)/$ /$1 [R=301,L]
-
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule ^(.*)/upgrade?$ /$1/upgrader [R,L]
-        RewriteRule ^(.*)/install?$ /$1/installer [R,L]
-        RewriteRule ^upgrade?$ /upgrader [R,L]
-        RewriteRule ^install?$ /installer [R,L]
-
-        RewriteRule ^(.*)/upgrade/?$ /$1/upgrader [R,L]
-        RewriteRule ^(.*)/install/?$ /$1/installer [R,L]
-        RewriteRule ^upgrade/?$ /upgrader [R,L]
-        RewriteRule ^install/?$ /installer [R,L]
-
-
-        RewriteRule ^(.*)/installer?$ /$1/index.php?r=adm/system/install
-        RewriteRule ^(.*)/upgrader?$ /$1/index.php?r=adm/system/install
-        RewriteRule ^installer?$ /index.php?r=adm/system/install [L,QSA]
-        RewriteRule ^upgrader?$ /index.php?r=adm/system/install [L,QSA]
-
-        RewriteRule ^(.*)/checkSystemStatus?$ /$1/index.php?r=adm/system/checkSystemStatus [L,QSA]
-        RewriteRule ^checkSystemStatus?$ /index.php?r=adm/system/checkSystemStatus [L,QSA]
+   
         
 </IfModule>
 
