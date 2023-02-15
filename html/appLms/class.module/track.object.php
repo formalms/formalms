@@ -265,7 +265,17 @@ class Track_Object
             . " dateAttempt ='" . $data['dateAttempt'] . "',"
             . " status ='" . $data['status'] . "'"
             . " WHERE idTrack = '" . (int) $this->idTrack . "' AND objectType = '" . $this->objectType . "'";
-        if (!sql_query($query) || sql_affected_rows() === 0) {
+        $resSql = sql_query($query);
+
+        $query = "SELECT first_complete, last_complete FROM " . $this->_table 
+                . " WHERE idTrack = " . (int) $this->idTrack 
+                . " AND objectType = '" . $this->objectType . "'"
+                . " AND dateAttempt ='" . $data['dateAttempt'] . "'"
+                . " AND status = '" . $data['status'] . "'";
+        $res = sql_query($query);
+        $sql_affected_rows =  sql_num_rows($res);
+
+        if (!$resSql || $sql_affected_rows === 0) {
             $query = 'INSERT INTO ' . $this->_table . ' '
                 . '( `idReference`, `idUser`, `idTrack`, `objectType`, `firstAttempt`, `dateAttempt`, `status` )'
                 . ' VALUES ('
