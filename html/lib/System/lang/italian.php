@@ -70,10 +70,12 @@ define('_SCS', 'forma.lms Syncronous Collaborative System');
 
 define('_NEXT', 'Passo successivo');
 define('_BACK', 'Torna indietro');
+define('_CANCEL', 'Annulla');
 define('_REFRESH', 'Aggiorna');
 define('_DOINSTALL', 'Installa');
 define('_FINISH', 'Installa');
 define('_UPGRADE_FINISH', 'Aggiorna');
+
 
 define('_DATABASE_INFO', 'Informazioni sul database');
 define('_DB_HOST', 'Indirizzo');
@@ -194,7 +196,6 @@ define('_MAGIC_QUOTES_GPC', 'magic_quotes_gpc');
 define('_UPLOAD_MAX_FILESIZE', 'upload_max_filsize');
 define('_POST_MAX_SIZE', 'post_max_size');
 define('_MAX_EXECUTION_TIME', 'max_execution_time');
-define('_ALLOW_URL_INCLUDE', 'allow_url_include');
 define('_DANGER', 'Pericolo - Settare ad OFF');
 define('_DOMXML', 'domxml();');
 define('_LDAP', 'Ldap');
