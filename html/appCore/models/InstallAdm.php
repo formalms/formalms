@@ -60,9 +60,12 @@ class InstallAdm extends Model
      */
     public function __construct($debug = false)
     {
-        //soluzione provvisoria in attesa di namespace
+        //TODO: refactoring using namespace and improvements
+        $cur_error_rep = error_reporting();
+        error_reporting(0);
         require_once(_lib_ . '/System/lang/' . Lang::getSelLang() . '.php');
-    
+        require_once(_lib_ . '/System/lang/' . 'english' . '.php');
+        error_reporting($cur_error_rep);
 
         $this->upgrade = $this->isUpgrade();
         $this->debug = $debug;
