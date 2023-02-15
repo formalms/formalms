@@ -202,6 +202,7 @@ class ElearningLmsController extends LmsController
                 INNER JOIN learning_course_date_user du ON dt.id_date = du.id_date
                 WHERE dt.id_course = c.idCourse AND status IN (1,2) AND du.id_user = ' . $params[':id_user'] . '
             ) ';
+            $conditions[] = '(cu.status <> 2)';// NO completed courses
         }
 
         // course type: elearning, all, classroom
