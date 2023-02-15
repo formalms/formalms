@@ -47,8 +47,8 @@ class Track_ScormOrg extends Track_Object
         $this->objectType = 'scormorg';
         parent::__construct($idTrack, $environment);
 
-        $this->idResource = $idResource;
-        $this->idParams = $idParams;
+        $this->idResource = (int)$idResource;
+        $this->idParams = (int)$idParams;
         if ($back_url === null) {
             $this->back_url = [];
         } else {

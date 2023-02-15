@@ -126,7 +126,7 @@ function insitem()
         $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
         $used = $GLOBALS['course_descriptor']->getUsedSpace();
 
-        if (Util::exceed_quota(false, $quota, $used, $zip_extracted_size)) {
+        if (Util::exceed_quota(false, (int)$quota, (int)$used, (int)$zip_extracted_size)) {
             sl_unlink($path . $savefile);
             Forma::addError(Lang::t('_QUOTA_EXCEDED'));
             Util::jump_to('' . $back_url . '&create_result=0');
