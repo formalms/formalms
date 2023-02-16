@@ -135,6 +135,7 @@ class InstallAdm extends Model
         $labels['serverInfo'] = _SERVERINFO;
         $labels['serverSw'] = _SERVER_SOFTWARE;
         $labels['phpVersion'] = _PHPVERSION;
+        $labels['phpCliVersion'] = _PHPCLIVERSION;
         $labels['mysqlClientVersion'] = _MYSQLCLIENT_VERSION;
         $labels['mysqlServerVersion'] = _MYSQLSERVER_VERSION;
         $labels['mbstringLabel'] = _MBSTRING;
@@ -287,6 +288,7 @@ class InstallAdm extends Model
         $params['fileVersion'] = _file_version_;
         $params['serverSwInfo'] = $request->server->get('SERVER_SOFTWARE');
         $params['phpVersionInfo'] = phpversion();
+        $params['phpCliVersionInfo'] = $this->getPhpCliVersion();
         preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $sqlClientVersion);
         $params['sqlClientVersion'] = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1];
         try {
@@ -323,14 +325,24 @@ class InstallAdm extends Model
         $res = [];
 
         $checkRequirements = 1;
+
+        $phpCli = $this->getPhpCliVersion();
         //TODO PHP7x: set const for Minimum PHP required version: 7.4
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
         if (version_compare(PHP_VERSION, _php_min_version_, '<')) {
             $res['mandatory']['php'] = 'err';
-        } elseif (version_compare(PHP_VERSION, _php_max_version_, '>=')) {
+        } elseif (version_compare(PHP_VERSION, _php_max_version_, '>')) {
             $res['mandatory']['php'] = 'warn';
         } else {
             $res['mandatory']['php'] = 'ok';
+        }
+
+        if (version_compare($phpCli, _php_min_version_, '<')) {
+            $res['mandatory']['phpcli'] = 'err';
+        } elseif (version_compare($phpCli, _php_max_version_, '>')) {
+            $res['mandatory']['phpcli'] = 'warn';
+        } else {
+            $res['mandatory']['phpcli'] = 'ok';
         }
 
         $driver = [
@@ -1726,6 +1738,17 @@ class InstallAdm extends Model
 
         return $this->setResponse($response, [])->wrapResponse();
         
+    }
+
+    /**
+     * Method to retrieve php cli version
+     *
+     * @return string
+     */
+    public function getPhpCliVersion()
+    {
+        preg_match('/(?<= )\d+\.\d+\.\d+/', shell_exec("php -v"), $match);
+        return $match[0];
     }
 
 }

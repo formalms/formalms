@@ -61,6 +61,7 @@ define('_TITLE_STEP2', 'Step 2: Database and FTP Settings');
 define('_SERVERINFO', 'Server information');
 define('_SERVER_SOFTWARE', 'Server software : ');
 define('_PHPVERSION', 'PHP Version : ');
+define('_PHPCLIVERSION', 'PHP Cli Version : ');
 define('_MYSQLCLIENT_VERSION', 'MySQL/MariaDB Client Version : ');
 define('_MYSQLSERVER_VERSION', 'MySQL/MariaDB Server Version : ');
 define('_LDAP', 'Ldap : ');

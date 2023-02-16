@@ -186,6 +186,7 @@ define('_SERVER_ADMIN', 'Amministratore server');
 define('_SERVER_SOFTWARE', 'Server software');
 define('_PHPINFO', 'PHP Info');
 define('_PHPVERSION', 'PHP Version');
+define('_PHPCLIVERSION', 'PHP Cli Version : ');
 define('_MYSQLCLIENT_VERSION', 'Versione Client MySQL : ');
 define('_MYSQLSERVER_VERSION', 'Versione Server MySQL : ');
 define('_SAFEMODE', 'Safe mode');
