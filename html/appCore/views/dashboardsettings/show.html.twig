@@ -116,13 +116,15 @@
 
                 { data: 'permission', title: '&nbsp;', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
-                        return '<div class="text-center"><a href="' + permissionUrl + '&dashboard=' + row.id + '" class="btn btn-success"><i class="glyphicon glyphicon-user"></i> </a></div>';
+                        var disabled = row.default ? 'disabled' : '';
+                        return '<div class="text-center"><a href="' + permissionUrl + '&dashboard=' + row.id + '" class="btn btn-success ' + disabled + '"><i class="glyphicon glyphicon-user"></i> </a></div>';
                     }
                 }, 
 
                 { data: 'delete', title: '&nbsp;', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
-                        return '<div class="text-center"><button type="button" class="btn btn-danger btn-del" data-id="' + row.id + '"><i class="glyphicon glyphicon-trash"></i> </button></div>';
+                         var disabled = row.default ? 'disabled' : '';
+                        return '<div class="text-center"><button ' + disabled + ' type="button" class="btn btn-danger btn-del" data-id="' + row.id + '"><i class="glyphicon glyphicon-trash"></i> </button></div>';
                     }
                 },
                 

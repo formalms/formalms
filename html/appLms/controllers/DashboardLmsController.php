@@ -45,7 +45,9 @@ class DashboardLmsController extends LmsController
     public function show()
     {
         checkPerm('view', true, $this->_mvc_name);
-        $defaultLayout = $this->model->getDefaultLayout();
+       
+        $blocks = [];
+        $blockPaths = [];
 
         if (FormaLms\lib\Get::req('mycourses_tab', DOTY_STRING, null)) {
             $this->widget('lms_tab', [
@@ -54,19 +56,19 @@ class DashboardLmsController extends LmsController
             ]);
         }
 
-        $blocks = [];
-        $blockPaths = [];
-
-        if (!$defaultLayout->userCanAccess(Docebo::user())) {
-            $layouts = $this->model->getLayouts();
-            /** @var DashboardLayoutLms $layout */
-            foreach ($layouts as $layout) {
-                if ($layout->userCanAccess(Docebo::user())) {
-                    $defaultLayout = $layout;
-                    break;
-                }
+        $layouts = $this->model->getLayouts();
+        /** @var DashboardLayoutLms $layout */
+        foreach ($layouts as $layout) {
+            if (!$layout->isDefault() && $layout->userCanAccess(Docebo::user())) {
+                $defaultLayout = $layout;
+                break;
             }
         }
+
+        if(!$defaultLayout) {
+            $defaultLayout = $this->model->getDefaultLayout();
+        }
+
 
         if ($defaultLayout) {
             $blocks = $this->model->getBlocksViewData($defaultLayout->getId());
