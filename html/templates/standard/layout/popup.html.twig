@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ Layout_getLangCode() }}">
+
+<head>
+     {% block compatibility %}
+    		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+     {% endblock %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ Layout_getTitle() }}</title>
+    <!-- zone  -->
+    {{ Layout_getZone('meta') }}
+    <!-- meta  -->
+    {{ Layout_getMeta() }}
+    <link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.png" type="image/png"/>
+    <link rel="shortcut icon" href="{{ Layout_getPath() }}images/favicon.ico"/>
+
+    <!-- reset and font stylesheet -->
+    {{ Layout_getResetter() }}
+
+    <!-- JQuery, Bootstrap  -->
+    {% block jquery_core %}
+        {{ jqueryLib|raw }}
+    {% endblock %}
+
+    {% block bootstrap %}
+    {{ boostrap|raw }}
+
+    <script>$.fn.bootstrapBtn = $.fn.button.noConflict();</script>
+    {% endblock %}
+
+    <!-- specific stylesheet -->
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/base.css?v={{ Template_getVersion() }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/responsive.css?v={{ Template_getVersion() }}"/>
+
+    <!-- to be eliminated -->
+    {{ Yui_load() }}
+    <!-- printer stylesheet-->
+    <link rel="stylesheet" type="text/css" href="{{ Layout_getPath() }}style/print.css?v={{ Template_getVersion() }}" media="print"/>
+    {{ Layout_getAccessibility() }}
+    <!-- Page Head area -->
+    {{ Layout_getZone('page_head') }}
+    {{ Layout_getRtl() }}
+    {% block pagehead %}
+    {% endblock %}
+</head>
+<body class="yui-skin-docebo yui-skin-sam">
+	<!-- blind nav -->
+	{{ Layout_getZone('blind_navigation') }}
+	<!-- content -->
+	<div class="layout_colum_container">
+		{{ Layout_getZone('content') }}
+		<div class="nofloat"></div>
+	</div>
+	<!-- scripts -->
+	{{ Layout_getZone('scripts') }}
+	<!-- end scripts -->
+	{{ Layout_getZone('debug') }}
+</body>
+</html>
