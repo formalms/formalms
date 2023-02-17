@@ -11,5 +11,5 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-const _file_version_ = '3.3.3';
+const _file_version_ = '3.3.4';
 const _template_min_version_ = '3.0.2';
