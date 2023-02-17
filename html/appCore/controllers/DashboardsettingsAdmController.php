@@ -191,38 +191,31 @@ class DashboardsettingsAdmController extends AdmController
 
     public function getLayouts()
     {
-        $selectedDashboardId = $this->model->getDefaultLayout();
-        $search = FormaLms\lib\Get::req('search', DOTY_MIXED, false);
+        $selectedDashboardId = $this->request->query->has('dashboard') ? (int) $this->request->query->get('dashboard') : (int) $this->model->getDefaultLayout();
+        $search = $this->request->query->has('search') ? $this->request->query->get('search') : false;
         $layouts = $this->model->getLayouts();
         $res = [];
 
-        foreach ($layouts as $layout) {
-            $layout = array_values((array) $layout);
 
-            $keys = [
-                'id',
-                'name',
-                'caption',
-                'status',
-                'default',
-                'selected',
-            ];
-
-            $item = [];
-            for ($i = 0; $i < count($keys) - 1; ++$i) {
-                $item[$keys[$i]] = $layout[$i+2];
-                $item['selected'] = $layout[2] == $selectedDashboardId;
-            }
-
-            if (!$search['value'] || strpos($item['name'], $search['value']) !== false || strpos($item['caption'], $search['value']) !== false) {
-                $res[] = $item;
-            }
+       if($search && !empty($search['value'])) {
+            $layouts = array_filter($layouts, function($layout) use ($search) {
+                 return $layout->getName() == $search['value'] || $layout->getCaption() == $search['value'];
+            });
         }
 
+       //$layouts = array_map($layouts, function($layout) use ($selectedDashboardId) {
+       //    $layout->selected = false;
+       //    if((int) $item->id === $selectedDashboardId) {
+       //        $layout->selected = true;
+       //    }
+       //    return $layout;
+       //});
+     
+
         $response = [
-            'data' => $res,
-            'recordsFiltered' => count($res),
-            'recordsTotal' => count($res),
+            'data' => $layouts,
+            'recordsFiltered' => count($layouts),
+            'recordsTotal' => count($layouts),
         ];
 
         echo $this->json_response(200, $response);
@@ -387,7 +380,8 @@ class DashboardsettingsAdmController extends AdmController
         // ok, validation error, or failure
         header('Status: ' . $status[$code]);
 
-        return json_encode($message);
+        return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($message,'json');
+
     }
 
     public function save()
