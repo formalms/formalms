@@ -276,4 +276,14 @@ class DashboardsettingsAdm extends Model
 
         return [];
     }
+
+    public function getDefaultLayout(){
+        /** @var DashboardLayoutLms $layout */
+        foreach ($this->layouts as $layout ) {
+            if ($layout->isDefault()) {
+                return $layout->getId();
+            }
+        }
+        return 0;
+    }
 }
