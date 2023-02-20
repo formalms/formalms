@@ -676,7 +676,7 @@ class SettingAdm extends Model
         $reSetting = sql_query('
 		SELECT param_name, value_type, extra_info
 		FROM ' . $this->table . "
-		WHERE regroup = '" . $regroup . "' AND hide_in_modify = '0'");
+		WHERE regroup = '" . $regroup . "' AND hide_in_modify = '0' and value_type != 'button'");
 
         $re = true;
         while (list($var_name, $value_type, $extra_info) = sql_fetch_row($reSetting)) {
