@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -689,7 +689,7 @@ class Get
     public static function user_acceptlang($main_only = true)
     {
         $lang_list = [];
-        $main_langs = explode(',', array_key_exists('HTTP_ACCEPT_LANGUAGE',$_SERVER) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '');
+        $main_langs = explode(',', array_key_exists('HTTP_ACCEPT_LANGUAGE', $_SERVER) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '');
         foreach ($main_langs as $lang_set) {
             $single_lang = explode(';', $lang_set);
             foreach ($single_lang as $i => $lang_code) {

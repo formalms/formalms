@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -303,9 +303,8 @@ if (!Docebo::user()->isAnonymous()) {
             $back_url = FormaLms\lib\Get::site_url() . _folder_lms_ . '/' . $back_url;
         }
 
-        if(isset($idCourse) && defined("LMS")) {
-
-            require_once($GLOBALS['where_lms'].'/class.module/track.object.php');
+        if (isset($idCourse) && defined('LMS')) {
+            require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
             Track_Object::updateObjectTitle($_POST['id_comm'], 'item', $_POST['title']);
         }
 

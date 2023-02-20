@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -738,7 +738,7 @@ class CatalogLms extends Model
             }
 
             if (!empty($showRulesValues)) {
-                $query .= ' AND %lms_course.show_rules IN (' . implode(',',$showRulesValues) . ')';
+                $query .= ' AND %lms_course.show_rules IN (' . implode(',', $showRulesValues) . ')';
             }
 
             list($c) = sql_fetch_row(sql_query($query));

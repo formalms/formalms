@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -308,7 +308,7 @@ class Boot
      * - load the appropiate database driver
      * - connect to the database
      * - load setting from database.
-     * - check config
+     * - check config.
      *
      * @return array
      */
@@ -331,9 +331,8 @@ class Boot
         $dbIsEmpty = true;
         if (DbConn::$connected) {
             try {
-                $dbIsEmpty = !(bool)sql_query("SELECT * FROM `core_setting`");
+                $dbIsEmpty = !(bool) sql_query('SELECT * FROM `core_setting`');
             } catch (\Exception $exception) {
-
             }
         }
 
@@ -361,7 +360,6 @@ class Boot
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
-
             if (file_exists(__DIR__ . '/../config.php')) {
                 require __DIR__ . '/../config.php';
             }
@@ -379,7 +377,6 @@ class Boot
 
     private static function sessionCheck()
     {
-
         if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $session = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->getSession();
             $session->invalidate();
@@ -565,7 +562,7 @@ class Boot
     {
         list($usec, $sec) = explode(' ', microtime());
         $GLOBALS['start'] = [
-            'time' => ((float)$usec + (float)$sec),
+            'time' => ((float) $usec + (float) $sec),
             'memory' => function_exists('memory_get_usage') ? memory_get_usage() : 0,
         ];
     }
@@ -573,7 +570,7 @@ class Boot
     public static function current_time()
     {
         list($usec, $sec) = explode(' ', microtime());
-        $now = ((float)$usec + (float)$sec);
+        $now = ((float) $usec + (float) $sec);
 
         return $now - $GLOBALS['start']['time'];
     }

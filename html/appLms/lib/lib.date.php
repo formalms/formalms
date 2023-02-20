@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -1837,7 +1837,7 @@ class DateManager
 
             $subscribe_man = new CourseSubscribe_Manager();
             $level = $this->subscribe_man->getUserLeveInCourse($id_user, $id_course);
-            $subscribe_man->delUserFromCourse($id_user, $id_course, null,$id_date);
+            $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_date);
 
             $docebo_course = new DoceboCourse($id_course);
             $level_idst = &$docebo_course->getCourseLevel($id_course);

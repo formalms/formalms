@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -60,9 +60,10 @@ class PluginmanagerAdm extends Model
             } else {
                 if (is_array($man_array) && $key !== false) {
                     if (array_key_exists($key, $man_array)) {
-                        return $man_array[(string)$key];
+                        return $man_array[(string) $key];
                     }
                 }
+
                 return $man_array;
             }
         } else {
@@ -230,7 +231,6 @@ class PluginmanagerAdm extends Model
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         if (!isset(self::$plugins_active)) {
-
             if ($session && $session->has('notuse_plugin') && $session->get('notuse_plugin') === true) {
                 $query = 'SELECT * FROM ' . $this->table . ' WHERE core=1 ORDER BY priority ASC';
             } else {
@@ -238,7 +238,7 @@ class PluginmanagerAdm extends Model
             }
             $re = $this->db->query($query);
             $plugins = [];
-            foreach ($re as $row){
+            foreach ($re as $row) {
                 if ($row['core'] == 1) {
                     if ($row['active'] == 1) {
                         $plugins[$row['name']] = $row;
@@ -422,7 +422,7 @@ class PluginmanagerAdm extends Model
      */
     private function removeSettings($plugin_name)
     {
-        return (bool)sql_query('DELETE FROM %adm_setting WHERE pack="' . $plugin_name . '"');
+        return (bool) sql_query('DELETE FROM %adm_setting WHERE pack="' . $plugin_name . '"');
     }
 
     /**
@@ -436,7 +436,7 @@ class PluginmanagerAdm extends Model
     {
         $plugin_info = $this->getPluginFromDB($plugin_name, 'name');
 
-        return (bool)sql_query('DELETE FROM %adm_requests WHERE plugin="' . $plugin_info['plugin_id'] . '"');
+        return (bool) sql_query('DELETE FROM %adm_requests WHERE plugin="' . $plugin_info['plugin_id'] . '"');
     }
 
     private function getIdMenu($plugin_name)
@@ -489,7 +489,7 @@ class PluginmanagerAdm extends Model
             $lang_file = $path . 'lang[' . $installedLang . '].xml';
 
             if (file_exists($lang_file)) {
-                $check = $model->importTranslation($lang_file, true, false, (int)$plugin_info['plugin_id']);
+                $check = $model->importTranslation($lang_file, true, false, (int) $plugin_info['plugin_id']);
             }
         }
 
@@ -510,9 +510,9 @@ class PluginmanagerAdm extends Model
      * Insert specified plugin in forma.
      *
      * @param $plugin_name
-     * @param int $priority
+     * @param int  $priority
      * @param bool $update
-     * @param int $core
+     * @param int  $core
      *
      * @return bool|mixed
      */
@@ -526,7 +526,7 @@ class PluginmanagerAdm extends Model
         $query = 'insert into ' . $this->table . "
 				values(null,'" . addslashes($plugin_name) . "', '" . addslashes($plugin_info['title']) . "', '" . addslashes($plugin_info['category']) . "',
 					'" . addslashes($plugin_info['version']) . "', '" . addslashes($plugin_info['author']) . "', '" . addslashes($plugin_info['link']) . "', $priority,
-					'" . addslashes($plugin_info['description']) . "'," . time() . ' ,0,' . (int)$core . ' )';
+					'" . addslashes($plugin_info['description']) . "'," . time() . ' ,0,' . (int) $core . ' )';
         if ($plugin_info) {
             $result = sql_query($query);
             if ($result) {
@@ -562,7 +562,7 @@ class PluginmanagerAdm extends Model
     {
         $updateQuery = sql_query('
         UPDATE ' . $this->table . '
-        SET priority=' . (int)$priority . "
+        SET priority=' . (int) $priority . "
         WHERE name = '" . $plugin_name . "'");
         if ($updateQuery) {
             return true;
@@ -623,7 +623,7 @@ class PluginmanagerAdm extends Model
 
         sql_query('
 			UPDATE ' . $this->table . '
-			SET active=' . (int)$active . "
+			SET active=' . (int) $active . "
 			WHERE name = '" . $plugin_id . "'");
 
         return $reSetting;

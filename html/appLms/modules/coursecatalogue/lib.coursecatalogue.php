@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -105,7 +105,6 @@ function displayCourseList(&$url, $order_type)
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!Docebo::user()->isAnonymous()) {
-
         if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
             $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
@@ -115,7 +114,7 @@ function displayCourseList(&$url, $order_type)
 
             $rule_man = new AssessmentRule();
             $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-            $session->set('cp_assessment_effect',urlencode(Util::serialize($ass_elem)));
+            $session->set('cp_assessment_effect', urlencode(Util::serialize($ass_elem)));
             $session->save();
         } else {
             $ass_elem = Util::unserialize(urldecode($session->get('cp_assessment_effect')));
@@ -393,7 +392,7 @@ function displayCoursePathList(&$url, $selected_tab)
 
             $rule_man = new AssessmentRule();
             $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
-            $session->set('cp_assessment_effect',urlencode(Util::serialize($ass_elem)));
+            $session->set('cp_assessment_effect', urlencode(Util::serialize($ass_elem)));
             $session->save();
         } else {
             $ass_elem = Util::unserialize(urldecode($session->get('cp_assessment_effect')));
@@ -442,10 +441,10 @@ function displayCoursePathList(&$url, $selected_tab)
             }
         } else {
             switch ($path[COURSEPATH_METHOD]) {
-                case METHOD_WAIT:  $in_h .= $lang->def('_METHOD_WAIT'); ; break;
-                case METHOD_AUTO:  $in_h .= $lang->def('_METHOD_AUTO'); ; break;
+                case METHOD_WAIT:  $in_h .= $lang->def('_METHOD_WAIT'); break;
+                case METHOD_AUTO:  $in_h .= $lang->def('_METHOD_AUTO'); break;
                 case METHOD_MANUAL:
-                default:  $in_h .= $lang->def('_METHOD_MANUAL'); $can_subs = false; ; break;
+                default:  $in_h .= $lang->def('_METHOD_MANUAL'); $can_subs = false; break;
             }
         }
         $in_h .= '</span>';
@@ -594,7 +593,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                             $lang->def('_COURSE_INTRO_WITH_MAX'));
 
             if ($cinfo['enrolled'] >= $cinfo['max_num_subscribe'] && $cinfo['allow_overbooking'] == '1') {
-            // limited number of subscription reached
+                // limited number of subscription reached
                 $html .= '<br/>' . $lang->def('_CAN_JOIN_WAITING_LIST');
             }
         }
@@ -834,7 +833,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                 );
         switch ($action[0]) {
             case 'can_buy':
-            case 'can_reserve':  $html .= $cinfo['prize'] . ' ' . _ECOM_CURRENCY; ; break;
+            case 'can_reserve':  $html .= $cinfo['prize'] . ' ' . _ECOM_CURRENCY; break;
         }
         $html .= ($action[2] != false ? '<img src="' . getPathImage() . 'coursecatalogue/' . $action[2] . '" '
                     . 'alt="' . $lang->def('_ALT_' . strtoupper($action[0])) . '"/>' : '')
@@ -880,7 +879,8 @@ function must_search_filter()
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $courseCatalogue = $session->get('coursecatalogue');
-    return  $courseCatalogue && isset($courseCatalogue['in_search']) && $courseCatalogue['in_search'] == true;
+
+    return $courseCatalogue && isset($courseCatalogue['in_search']) && $courseCatalogue['in_search'] == true;
 }
 
 function get_searched($var, $default)
@@ -888,7 +888,7 @@ function get_searched($var, $default)
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $prefix = 'coursecatalogue';
     if (isset($_POST['do_search'])) {
-        $session->set($prefix,['in_search' => true]);
+        $session->set($prefix, ['in_search' => true]);
         $session->save();
     }
     if (isset($_POST['reset_search'])) {
@@ -905,13 +905,14 @@ function get_searched($var, $default)
 
         $sessionData[$var] = $_REQUEST[$var];
 
-        $session->set($prefix,$sessionData);
+        $session->set($prefix, $sessionData);
         $session->save();
 
         return $_REQUEST[$var];
     }
 
     $sessionData = $session->get($prefix);
+
     return $sessionData[$var] ?? $default;
 }
 
@@ -981,7 +982,7 @@ function searchForm(&$url, &$lang)
  */
 function relationWithCourse($id_course, &$course, $uc_details, $edition_id = false)
 {
-// 	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
+    // 	require_once($GLOBALS['where_ecom'].'/lib/lib.cart.php');
     // 	$cart =& Cart::createInstance();
 
     list($enrolled) = sql_fetch_row(sql_query('SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . "_courseuser WHERE idCourse = '" . $id_course . "' AND edition_id = '0'"));
@@ -1003,7 +1004,7 @@ function relationWithCourse($id_course, &$course, $uc_details, $edition_id = fal
         }
     }
     switch ($course['can_subscribe']) {
-        case '0':  return ['impossible', false, false, 'subscribe_lock']; ; break;
+        case '0':  return ['impossible', false, false, 'subscribe_lock']; break;
         case '2':
             $today = date('Y-m-d H:i:s');
             if ($course['sub_start_date'] != 'NULL' && strcmp($course['sub_start_date'], $today) > 0) {
@@ -1012,7 +1013,7 @@ function relationWithCourse($id_course, &$course, $uc_details, $edition_id = fal
             if ($course['sub_end_date'] != 'NULL' && strcmp($course['sub_end_date'], $today) < 0) {
                 return ['impossible', false, false, 'date_range'];
             }
-        ; break;
+         break;
     }
     if ($course['subscribe_method'] > 0) {
         $pl_man = &PlatformManager::CreateInstance();

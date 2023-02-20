@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -181,11 +181,11 @@ class TreeDb
         }
     }
 
-    public function _getBaseFieldId($tname = false) {
+    public function _getBaseFieldId($tname = false)
+    {
         if ($tname === false) {
             return $this->fields['id'];
-        }
-        else {
+        } else {
             return $tname . '.' . $this->fields['id'];
         }
     }
@@ -461,12 +461,12 @@ class TreeDb
         if ($arrayId === null) {
             $query .= $this->_getOrderBy('t1');
         } else {
-            $query .=  !empty($arrayId) ? 'FIELD('.$this->_getBaseFieldId('t1').', ' . implode(',', $arrayId) . ')' : $this->_getOrderBy('t1') ;
+            $query .= !empty($arrayId) ? 'FIELD(' . $this->_getBaseFieldId('t1') . ', ' . implode(',', $arrayId) . ')' : $this->_getOrderBy('t1');
         }
 
         $rs = $this->_executeQuery($query)
                 or $this->_printSQLError('getFoldersCollection: ' . $query);
-              
+
         $coll = new FoldersCollection($this, $rs, true);
 
         return $coll;

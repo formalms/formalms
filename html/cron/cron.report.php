@@ -3,19 +3,20 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+
 ob_start();
 
 const CORE = true;
 const IN_FORMA = true;
 const _deeppath_ = '../';
-require dirname(__DIR__,1) . '/base.php';
+require dirname(__DIR__, 1) . '/base.php';
 
 // start buffer
 use FormaLms\appCore\Template\Services\ClientService;
@@ -28,7 +29,7 @@ if (!function_exists('report_log')) {
     function report_log($string)
     {
         $curtime = date('d-m-Y G:i:s');
-        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n". "<br>";
+        echo "[$curtime] $string" . PHP_EOL . "\r\n" . "\n" . '<br>';
     }
 }
 
@@ -372,7 +373,7 @@ if ($lock_stream) {
                     $report_url .= rawurlencode($tmpfile);
 
                     copy($path . $tmpfile, $async_report);
-     
+
                     $report_url = ClientService::getInstance()->getBaseUrl(true) . substr($report_url, 1);
 
                     //Sends an email containing the report link
@@ -382,12 +383,12 @@ if ($lock_stream) {
                         $subject = str_replace('[name]', $row['filter_name'], Lang::t('_SCHEDULED_REPORT_SUBJECT_', 'email', [], $recipient['language']));
 
                         $body = Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']);
-                        if(preg_match('/\[report_url\]/', $body)) {
+                        if (preg_match('/\[report_url\]/', $body)) {
                             $body = str_replace('[report_url]', $report_url, Lang::t('_SCHEDULED_REPORT_BODY_', 'email', [], $recipient['language']));
                         } else {
                             $body .= '<br />' . $report_url;
                         }
-        
+
                         $body = str_replace('[report_persistence_days]', $report_persistence_days, $body);
 
                         $response = $mailer->SendMail(FormaLms\lib\Get::sett('sender_event'), //sender

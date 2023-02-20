@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -38,8 +38,8 @@ class Forma
      * @param $pattern
      *
      * @return string
-     * @throws PathNotFoundException
      *
+     * @throws PathNotFoundException
      */
     public static function include($path, $file, $pattern = '/[a-zA-Z0-9.]+\.php/')
     {
@@ -59,8 +59,8 @@ class Forma
      * @param $file
      *
      * @return string
-     * @deprecated It will become private
      *
+     * @deprecated It will become private
      */
     public static function inc($file)
     {
@@ -70,7 +70,6 @@ class Forma
         if (substr($file, 0, strlen(_base_)) === _base_) {
             $_file = substr($file, strlen(_base_ . '/'));
         }
-
 
         $result = strpos($_file, 'templates/');
         if (strpos($_file, 'templates/') !== false) {
@@ -100,7 +99,7 @@ class Forma
 
         return $file;
     }
-    
+
     public static function addError(string $error): string
     {
         \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error', $error);
@@ -121,6 +120,7 @@ class Forma
     public static function getErrors(): array
     {
         $errors = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
+
         return $errors;
     }
 

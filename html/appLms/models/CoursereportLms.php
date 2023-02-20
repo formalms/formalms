@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -167,7 +167,6 @@ class CoursereportLms extends Model
         if ((int) $tot_report === 0) {
             $report_man->initializeCourseReport($org_tests);
         } else {
-
             if (is_array($included_test)) {
                 $test_to_add = array_diff($org_tests, $included_test);
             } else {

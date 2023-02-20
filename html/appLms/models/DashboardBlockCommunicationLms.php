@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-require_once(_lms_.'/admin/models/CommunicationAlms.php');
+require_once _lms_ . '/admin/models/CommunicationAlms.php';
 /**
  * Class DashboardBlockNewsLms.
  */
@@ -52,7 +52,6 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
         $onlyToRead = $this->data['showread'];
 
         $data['communication'] = $this->getCommunication($limit, $onlyToRead);
-
 
         return $data;
     }
@@ -102,9 +101,7 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
         $communication = [];
 
         $communication = $this->model->findAllUnread(0, $limit, 'publish_date', 'DESC', Docebo::user()->getId(), ['viewer' => Docebo::user()->getArrSt(), 'only_to_read' => (bool) $only_to_read]);
-     
+
         return $communication;
     }
-
-    
 }

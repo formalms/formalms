@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -560,13 +560,13 @@ class FieldList
         $rs = sql_query($query);
 
         $result = [];
-        foreach ($rs as $row){
+        foreach ($rs as $row) {
             $id_user = $row['id_user'];
             $id_field = $row['id_common'];
             $value = $row['user_entry'];
             if ($translate) {
-                if (array_key_exists((int)$id_field, $sons_arr)) {
-                    $result[$id_user][$id_field] = $sons_arr[(int)$id_field][(int)$value] ?? '';
+                if (array_key_exists((int) $id_field, $sons_arr)) {
+                    $result[$id_user][$id_field] = $sons_arr[(int) $id_field][(int) $value] ?? '';
                 } elseif (in_array($id_field, $yesno_fields)) {
                     $yntrans = Lang::t('_NOT_ASSIGNED', 'field');
                     switch ($value) {

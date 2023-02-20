@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -73,7 +73,6 @@ class CommunicationAlms extends Model
 
     public function findAllUnread($start_index, $results, $sort, $dir, $reader, $filter = false, $language = false)
     {
-       
         $sortable = ['title', 'description', 'type_of', 'publish_date'];
         $sortable = array_flip($sortable);
         $lang_code = ($language == false ? getLanguage() : $language);
@@ -86,19 +85,18 @@ class CommunicationAlms extends Model
             . ' LEFT JOIN %lms_communication_lang AS cl ON (c.id_comm = cl.id_comm) AND cl.lang_code = "' . $lang_code . '"'
             . ' LEFT JOIN %lms_course AS cs ON (c.id_course = cs.idCourse)'
             . '	LEFT JOIN %lms_communication_track AS ct ON (c.id_comm = ct.idReference AND ct.idUser = ' . (int) $reader . '  )'
-    
+
             . (!($filter['only_to_read']) ? ' WHERE ( ct.status = "failed" OR  ct.status = "ab-initio" OR  ct.status = "attempted" OR ct.idReference IS NULL ) ' : ' WHERE 1')
             . (!empty($filter['text']) ? " AND ( title LIKE '%" . $filter['text'] . "%' OR description LIKE '%" . $filter['text'] . "%' ) " : '')
             . (!empty($filter['viewer']) ? ' AND ca.idst IN ( ' . implode(',', $filter['viewer']) . ' ) ' : '')
             . (!empty($filter['categories']) ? ' AND c.id_category IN (' . implode(',', $filter['categories']) . ') ' : '')
- 
+
             . ' GROUP BY c.id_comm'
             . (isset($sortable[$sort])
                 ? ' ORDER BY ' . $sort . ' ' . ($dir == 'asc' ? 'ASC' : 'DESC') . ' '
                 : '')
             . ($results != 0 ? ' LIMIT ' . (int) $start_index . ', ' . (int) $results : '');
 
-           
         $re = $this->db->query($qtxt);
 
         if (!$re) {
