@@ -531,9 +531,10 @@ class PluginmanagerAdm extends Model
         }
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
         $query = 'insert into ' . $this->table . "
+                (plugin_id, name, title, category, version, author, link, priority, description, regroup, active, core, created_at, updated_at) 
 				values(null,'" . addslashes($plugin_name) . "', '" . addslashes($plugin_info['title']) . "', '" . addslashes($plugin_info['category']) . "',
 					'" . addslashes($plugin_info['version']) . "', '" . addslashes($plugin_info['author']) . "', '" . addslashes($plugin_info['link']) . "', $priority,
-					'" . addslashes($plugin_info['description']) . "'," . time() . ' ,0,' . (int)$core . ' )';
+					'" . addslashes($plugin_info['description']) . "'," . time() . ' ,0,' . (int)$core . ', now(), now() )';
         if ($plugin_info) {
             $result = sql_query($query);
             if ($result) {
@@ -778,7 +779,8 @@ class PluginmanagerAdm extends Model
                         version = '" . addslashes($plugin_info['version']) . "',
                         author = '" . addslashes($plugin_info['author']) . "',
                         link = '" . addslashes($plugin_info['link']) . "',
-                        description = '" . addslashes($plugin_info['description']) . "'
+                        description = '" . addslashes($plugin_info['description']) . "',
+                        updated_at = now()
                     WHERE
                         plugin_id = " . $plugin_db['plugin_id'];
             $result = sql_query($query);
