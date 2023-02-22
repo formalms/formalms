@@ -2294,11 +2294,11 @@ class DoceboCourse
     public function getQuotaLimit()
     {
         $course_quota = $this->course_info['course_quota'];
-        if ($course_quota == COURSE_QUOTA_INHERIT) {
+        if ($course_quota == COURSE_QUOTA_INHERIT || $course_quota == '') {
             $course_quota = FormaLms\lib\Get::sett('course_quota');
         }
 
-        return $course_quota;
+        return (int)$course_quota;
     }
 
     public function getUsedSpace()
