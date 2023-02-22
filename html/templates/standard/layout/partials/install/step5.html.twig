@@ -5,10 +5,20 @@
 <span id="loading" style="display:none;">{{loadingLabel}}</span>
 <textarea disabled class="debug"></textarea>
 <span id="success" style="display:none;">{{successLabel}}</span>
+<span id="failure" style="display:none;">{{errorLabel}}</span>
 <div id="finalButtons" class="wizard" style="display:none;">
   <div class="actions clearfix">
     <ul>
       <li class="unlisted"><a href="/">{{goToLogin}}</a></li>
+    </ul>
+  </div>
+</div>
+<div id="errorSection" class="wizard" style="display:none;">
+  <div class="actions clearfix">
     <ul>
+      <li class="unlisted config" style="display:none;"><a  target="_blank" href="/index.php?r=adm/system/downloadConfigFile">{{goToLogin}}</a></li>
+      <li class="unlisted database" style="display:none;">{{logSql}}</li>
+      <li class="unlisted lock" style="display:none;"><a  target="_blank" href="/index.php?r=adm/system/downloadLockFile">{{goToLogin}}</a></li>
+    </ul>
   </div>
 </div>

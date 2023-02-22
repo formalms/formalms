@@ -238,6 +238,7 @@
 {
     display: inline-block;
     text-align: right;
+    white-space: pre-wrap;
 }
 
 .wizard > .actions > ul > li

@@ -10,7 +10,6 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
-
 define('IN_FORMA', true);
 define('_deeppath_', '');
 require __DIR__ . '/base.php';
@@ -35,7 +34,7 @@ if (isset($_REQUEST['notuse_template'])) {
 Boot::init(CHECK_SYSTEM_STATUS);
 
 // connect to the database
-$db = &DbConn::getInstance();
+$db = DbConn::getInstance();
 
 // -----------------------------------------------------------------------------
 
@@ -68,7 +67,7 @@ if ($maintenance === 'on') {
 $sso = FormaLms\lib\Get::req('login_user', DOTY_MIXED, false) && FormaLms\lib\Get::req('time', DOTY_MIXED, false) && FormaLms\lib\Get::req('token', DOTY_MIXED, false);
 
 // get required action - default: homepage if not logged in, no action if logged in
-$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Docebo::user()->isAnonymous() ?  _homepage_ : false)));
+$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Docebo::user()->isAnonymous() ? _homepage_ : false)));
 
 $req = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $req);
 

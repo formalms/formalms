@@ -2,7 +2,7 @@
 namespace FormaLms\eventListeners\Upgrade;
 
 
-class PostVersion20221012160433 extends Upgrader{
+class PostVersion20221012000004 extends Upgrader{
 
 
     public function run() {

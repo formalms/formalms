@@ -46,11 +46,23 @@ class DbConn
      */
     public static function getInstance($link = false, $connection_parameters = [])
     {
-        $db_type = FormaLms\lib\Get::cfg('db_type');
-        $host = FormaLms\lib\Get::cfg('db_host');
-        $user = FormaLms\lib\Get::cfg('db_user');
-        $pass = FormaLms\lib\Get::cfg('db_pass');
-        $name = FormaLms\lib\Get::cfg('db_name');
+
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $cfg = [];
+        if ($session?->has('setValues')) {
+            $values = $session->get('setValues');
+
+            $cfg['db_type'] = 'mysqli';
+            $cfg['db_user'] = $values['dbUser'];
+            $cfg['db_pass'] = $values['dbPass'];
+            $cfg['db_name'] = $values['dbName'];
+            $cfg['db_host'] = $values['dbHost'];
+        }
+        $db_type = FormaLms\lib\Get::cfg('db_type') ?: ($cfg['db_type'] ?? false);
+        $host = FormaLms\lib\Get::cfg('db_host') ?: ($cfg['db_host'] ?? false);
+        $user = FormaLms\lib\Get::cfg('db_user') ?: ($cfg['db_user'] ?? false);
+        $pass = FormaLms\lib\Get::cfg('db_pass') ?: ($cfg['db_pass'] ?? false);
+        $name = FormaLms\lib\Get::cfg('db_name') ?: ($cfg['db_name'] ?? false);
         if (isset($connection_parameters['db_type']) && isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass'])) {
             $db_type = $connection_parameters['db_type'];
             $host = $connection_parameters['db_host'];

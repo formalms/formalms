@@ -42,14 +42,14 @@ class InstallAdm extends Model
     protected $minSupportedVersion = '3.3.3';
     protected $minUpgradeVersion = '4.0.0';
 
-    const CHECK_REQUIREMENTS = '1';
-    const CHECK_DATABASE = '2';
-    const CHECK_ADMIN = '3';
-    const CHECK_SMTP = '4';
-    const CHECK_FINAL = '5';
-    const CHECK_UPGRADE = '2';
+    public const CHECK_REQUIREMENTS = '1';
+    public const CHECK_DATABASE = '2';
+    public const CHECK_ADMIN = '3';
+    public const CHECK_SMTP = '4';
+    public const CHECK_FINAL = '5';
+    public const CHECK_UPGRADE = '2';
 
-    const SMTP_REQUIRED = [
+    public const SMTP_REQUIRED = [
         'smtpHost', 'smtpPort', 'smtpUser', 'smtpPwd', 'smtpSecure', 'smtpAutoTls'
     ];
 
@@ -75,7 +75,6 @@ class InstallAdm extends Model
 
         $this->setResponse(false, []);
         parent::__construct();
-
     }
 
     /**
@@ -85,7 +84,6 @@ class InstallAdm extends Model
      */
     public function fillSteps(): self
     {
-
         if ($this->upgrade) {
             $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1,
                 self::CHECK_UPGRADE => _TITLE_STEP5
@@ -119,7 +117,6 @@ class InstallAdm extends Model
      */
     public function fillLabels(): self
     {
-
         $labels['introText'] = _INSTALLER_INTRO_TEXT;
         $labels['languageLabel'] = _LANGUAGE;
         $labels['installerTitle'] = _INSTALLER_TITLE;
@@ -171,7 +168,11 @@ class InstallAdm extends Model
 
         $labels['loadingLabel'] = _LOADING . '...';
         $labels['successLabel'] = _INSTALLATION_COMPLETED;
+        $labels['errorLabel'] = _INSTALLATION_ERROR;
         $labels['goToLogin'] = _SITE_HOMEPAGE;
+        $labels['downloadLock'] = _DOWNLOAD_LOCK;
+        $labels['downloadConfig'] = _DOWNLOAD_CONFIG;
+        $labels['logSql'] = _LOG_SQL;
 
         $labels['smtpLabels'] =
             [
@@ -239,7 +240,6 @@ class InstallAdm extends Model
      */
     public function getLabels(): array
     {
-
         return $this->labels;
     }
 
@@ -250,7 +250,6 @@ class InstallAdm extends Model
      */
     public function getSmtpFieldsRequired(): array
     {
-
         return self::SMTP_REQUIRED;
     }
 
@@ -263,32 +262,35 @@ class InstallAdm extends Model
      */
     public function getData(\Symfony\Component\HttpFoundation\Request $request): array
     {
-
- 
         $params = $this->getLabels();
         $params['debug'] = $this->debug;
-        $params = array_merge($params,
+        $params = array_merge(
+            $params,
             $this->checkRequirements(),
-            ini_get_all());
+            ini_get_all()
+        );
         if (!$this->upgrade) {
-            $params = array_merge($params, $this->getLicense(),
+            $params = array_merge(
+                $params,
+                $this->getLicense(),
                 $this->getDbConfig(),
                 $this->getSmtpConfig(),
                 ['setValues' => $this->getSetValues()],
                 ['setLangs' => $this->getSetLangs()],
-                ['smtpFieldsRequired' => $this->getSmtpFieldsRequired()]);
+                ['smtpFieldsRequired' => $this->getSmtpFieldsRequired()]
+            );
         } else {
             $params = array_merge($params, $this->compareVersions());
         }
 
-
+        $phpCli = $this->getPhpCliVersion();
         $params['setLang'] = Lang::getSelLang();
         $params['upgrade'] = (bool)$this->upgrade;
         $params['currentVersion'] = $this->upgrade;
         $params['fileVersion'] = _file_version_;
         $params['serverSwInfo'] = $request->server->get('SERVER_SOFTWARE');
         $params['phpVersionInfo'] = phpversion();
-        $params['phpCliVersionInfo'] = $this->getPhpCliVersion();
+        $params['phpCliVersionInfo'] = array_key_exists('error', $phpCli) ? _PHP_NOT_FOUND : $phpCli['version'];
         preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $sqlClientVersion);
         $params['sqlClientVersion'] = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1];
         try {
@@ -310,7 +312,7 @@ class InstallAdm extends Model
         $params['postMaxSizeData'] = ini_get('post_max_size');
         $params['maxExecutionTimeData'] = ini_get('max_execution_time') . 's';
         $params['checkFolderPerms'] = $this->checkFolderPerm();
-  
+
 
         return $params;
     }
@@ -337,13 +339,18 @@ class InstallAdm extends Model
             $res['mandatory']['php'] = 'ok';
         }
 
-        if (version_compare($phpCli, _php_min_version_, '<')) {
+        if (array_key_exists('error', $phpCli)) {
             $res['mandatory']['phpcli'] = 'err';
-        } elseif (version_compare($phpCli, _php_max_version_, '>')) {
-            $res['mandatory']['phpcli'] = 'warn';
         } else {
-            $res['mandatory']['phpcli'] = 'ok';
+            if (version_compare($phpCli['version'], _php_min_version_, '<')) {
+                $res['mandatory']['phpcli'] = 'err';
+            } elseif (version_compare($phpCli['version'], _php_max_version_, '>')) {
+                $res['mandatory']['phpcli'] = 'warn';
+            } else {
+                $res['mandatory']['phpcli'] = 'ok';
+            }
         }
+
 
         $driver = [
             'mysqli' => extension_loaded('mysqli'),
@@ -387,16 +394,16 @@ class InstallAdm extends Model
         $res['requirements']['allowUrlFopen'] = ((bool) ini_get('allow_url_fopen') ? 'ok' : 'err');
         $res['requirements']['allowUrlInclude'] = ((bool) ini_get('allow_url_include') ? 'err' : 'ok');
         $res['mandatory']['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
-        $res['mandatory']['disableFunctions'] = in_array('shell_exec', explode(',',ini_get('disable_functions'))) ? 'err' : 'ok';
-       
+        $res['mandatory']['disableFunctions'] = in_array('shell_exec', explode(',', ini_get('disable_functions'))) ? 'err' : 'ok';
+
         if (in_array('err', $res['mandatory'])) {
             $checkRequirements = 0;
         }
 
-    
+
         $resultArray = array_merge($res['mandatory'], $res['requirements']);
         $resultArray['checkRequirements'] = $checkRequirements;
- 
+
         return $resultArray;
     }
 
@@ -507,7 +514,6 @@ class InstallAdm extends Model
      */
     public function getLicense(): array
     {
-
         $content = '';
         $fn = _lib_ . '/System/license/license_' . Lang::getSelLang() . '.txt';
 
@@ -528,7 +534,6 @@ class InstallAdm extends Model
         $params['licenseContent'] = $content;
 
         return $params;
-
     }
 
     /**
@@ -546,7 +551,6 @@ class InstallAdm extends Model
             'dbPass' => '',
         ];
         if (file_exists(_base_ . '/config.php')) {
-        
             include _base_ . '/config.php';
 
             foreach ($localCfg['dbConfig'] as $key => $value) {
@@ -590,7 +594,6 @@ class InstallAdm extends Model
             ];
 
         if (file_exists(_base_ . '/config.php')) {
-    
             include _base_ . '/config.php';
 
             foreach ($localCfg['smtp'] as $key => $value) {
@@ -655,7 +658,6 @@ class InstallAdm extends Model
      */
     public function saveValue($key, $value): bool
     {
-
         $values = $this->session->get('setValues');
         $values[$key] = $value;
         $this->session->set('setValues', $values);
@@ -675,7 +677,6 @@ class InstallAdm extends Model
      */
     public function setLangs($value, $add = 1): bool
     {
-
         $values = $this->session->get('setLangs');
         if ($add) {
             $values[$value] = $value;
@@ -689,6 +690,26 @@ class InstallAdm extends Model
         return true;
     }
 
+     /**
+     * Method to set errors
+     *
+     *
+     * @param string $value value to save actually in session
+     *
+     * @return bool
+     */
+    public function setErrors($value): bool
+    {
+        $values = $this->session->get('installErrors');
+        $values[] = $value;
+
+        $this->session->set('installErrors', $values);
+        $this->session->save();
+
+        return true;
+    }
+
+
     /**
      * Method to get compiled fields value from session
      *
@@ -696,7 +717,6 @@ class InstallAdm extends Model
      */
     public function getSetValues(): array
     {
-
         $values = $this->session->get('setValues', []);
         if (!in_array('uploadMethod', array_keys($values))) {
             $values['uploadMethod'] = 'http';
@@ -742,7 +762,6 @@ class InstallAdm extends Model
 
         //controllo che le password siano coincidenti e che il campo mail sia una mail
         return $this->validateAdminData($params['adminPassword'], $params['adminConfpass'], $params['adminEmail']);
-
     }
 
     /**
@@ -769,7 +788,6 @@ class InstallAdm extends Model
 
         //controllo la connessione
         return $this->validateSmtpData($params);
-
     }
 
     /**
@@ -860,7 +878,6 @@ class InstallAdm extends Model
         }
 
         return $this->setResponse($success, $messages)->wrapResponse();
-
     }
 
     /**
@@ -887,7 +904,6 @@ class InstallAdm extends Model
             $messages[] = $this->errorLabels['smtp_failed'];
         }
         return $this->setResponse($success, $messages)->wrapResponse();
-
     }
 
     /**
@@ -958,7 +974,6 @@ class InstallAdm extends Model
                     } else {
                         $success = false;
                         $messages[] = $this->errorLabels['db_not_utf8'];
-
                     }
                 } else {
                     $success = false;
@@ -988,7 +1003,6 @@ class InstallAdm extends Model
         }
 
         return $this->setResponse($success, $messages)->wrapResponse();
-
     }
 
     /**
@@ -1030,12 +1044,11 @@ class InstallAdm extends Model
      */
     public function finalize($request): string
     {
-
         $params = $request->request->all();
         $messages = [];
+        $type = 'standard';
 
         if ($params['upgrade']) {
-
             switch ($params['check']) {
                 case 1:
                     //se c'è da installare metto la tabella doctrine migrations
@@ -1056,8 +1069,7 @@ class InstallAdm extends Model
 
                     $overWrittenLangs = $this->importLangs($this->getInstalledLanguages());
                     if (count($overWrittenLangs)) {
-
-                        foreach($overWrittenLangs as $lang) {
+                        foreach ($overWrittenLangs as $lang) {
                             $messages[] = $lang;
                         }
                         $messages[] = _LANG_STEP_SUCCESS;
@@ -1086,8 +1098,8 @@ class InstallAdm extends Model
                     break;
             }
 
-      
-            return $this->setResponse($success, $messages)->wrapResponse();
+
+            return $this->setResponse($success, $messages, $type)->wrapResponse();
         }
 
 
@@ -1095,12 +1107,14 @@ class InstallAdm extends Model
             case 1:
                 //genero il file config
                 $this->saveConfig();
-
+                $this->saveTmpConfig();
                 //controllo esistenza file config
                 $success = file_exists(_base_ . '/config.php');
                 if ($success) {
                     $messages[] = _CONFIG_STEP_SUCCESS;
                 } else {
+                    $type = 'config';
+                    $this->setErrors($type);
                     $messages[] = _CONFIG_STEP_ERROR;
                 }
 
@@ -1112,7 +1126,12 @@ class InstallAdm extends Model
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation($this->session->get('setValues'));
-
+                $this->setErrors($type);
+                $type = 'database';
+                if (!$success) {
+                    $this->setErrors($type);
+                    $type = 'database';
+                }
 
                 break;
             case 3:
@@ -1133,12 +1152,13 @@ class InstallAdm extends Model
                 $installedLanguages = $this->importLangs();
 
                 if (count($installedLanguages)) {
-
-                    foreach($installedLanguages as $lang) {
+                    $success = true;
+                    foreach ($installedLanguages as $lang) {
                         $messages[] = $lang;
                     }
                     $messages[] = _LANG_STEP_SUCCESS;
                 } else {
+                    $success = false;
                     $messages[] = _LANG_STEP_ERROR;
                 }
                 break;
@@ -1153,7 +1173,18 @@ class InstallAdm extends Model
                 } else {
                     $messages[] = _MAIL_STEP_ERROR;
                 }
+
+
+                $lock = $this->handleErrors();
+                //genero il file lock
+                if ($lock) {
+                    $this->generateLock();
+                } else {
+                    $type = 'lock';
+                }
+
                 $this->cleanSession();
+
                 break;
 
             default:
@@ -1163,10 +1194,11 @@ class InstallAdm extends Model
                 break;
         }
 
-        //genero il file lock
-        $this->generateLock();
-        
-        return $this->setResponse($success, $messages)->wrapResponse();
+
+
+        //cancello il file tmp del config se tutto è andato in porto e cancello il resto
+
+        return $this->setResponse($success, $messages, $type)->wrapResponse();
     }
 
     /**
@@ -1180,11 +1212,11 @@ class InstallAdm extends Model
         $mainPath = dirname(__DIR__, 2);
 
         $debugString = '';
-        if($debug) {
+        if ($debug) {
             $debugString = '2>&1';
         }
-        return shell_exec("php " . $migrationFile . " migrate ". $testLine ." --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
 
+        return shell_exec("php " . $migrationFile . " migrate ". $testLine ." --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
     }
 
     /**
@@ -1196,8 +1228,8 @@ class InstallAdm extends Model
      */
     public static function checkDbInstallation($values): bool
     {
-
-        DbConn::getInstance(false,
+        DbConn::getInstance(
+            false,
             [
                 'db_type' => 'mysqli',
                 'db_host' => $values['dbHost'],
@@ -1214,15 +1246,16 @@ class InstallAdm extends Model
      * Method to check the integrity of installation
      *
      * @param bool $success flag to detect the output of a method
-     * @param array $messages array of transalted string messages
+     * @param array $messages array of translated string messages
+     * @param string $type type to identify response
      *
      * @return self
      */
-    public function setResponse($success = false, $messages = []): self
+    public function setResponse($success = false, $messages = [], $type = 'default'): self
     {
-
         $this->response['success'] = $success;
         $this->response['messages'] = $messages;
+        $this->response['type'] = $type;
 
         return $this;
     }
@@ -1250,16 +1283,13 @@ class InstallAdm extends Model
     /**
      * Method to wrap response for user interface
      *
-     * @param boolean $success Response of an action
-     * @param array $messages Array of retrun messages
      *
      * @return string
      */
 
-    public function wrapResponse($success = false, $messages = [])
+    public function wrapResponse()
     {
-
-        return json_encode($this->response);
+        return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($this->response, 'json');
     }
 
 
@@ -1273,9 +1303,9 @@ class InstallAdm extends Model
     {
         // ----------- Generating config file -----------------------------
         $config = '';
-        $fn = _base_ . '/config_template.php';
 
-        $config = $this->generateConfig($fn);
+
+        $config = $this->generateConfig();
 
         $save_fn = _base_ . '/config.php';
         $saved = false;
@@ -1290,6 +1320,21 @@ class InstallAdm extends Model
             @chmod($save_fn, 0644);
         }
 
+
+        $this->session->set('config_saved', $saved);
+        $this->session->save();
+    }
+
+     /**
+     * Method to save tmp configuration file
+     *
+     * @return void
+     */
+
+    public function saveTmpConfig()
+    {
+        $config = $this->generateConfig();
+
         $tempConfig = sys_get_temp_dir(). '/config.php';
         touch($tempConfig);
         if (is_writable($tempConfig)) {
@@ -1300,21 +1345,28 @@ class InstallAdm extends Model
 
             @chmod($tempConfig, 0644);
         }
+    }
 
-        $this->session->set('config_saved', $saved);
-        $this->session->save();
+    /**
+     * Method to delete tmp configuration file
+     *
+     * @return void
+     */
+
+    public function deleteTmpConfig()
+    {
+        @unlink(sys_get_temp_dir(). '/config.php');
     }
 
     /**
      * Method to generate config file from standard file
      *
-     * @param string $tpl_fn
      *
      * @return string
      */
-    private function generateConfig($tpl_fn)
+    private function generateConfig()
     {
-
+        $tpl_fn = _base_ . '/config_template.php';
         $values = $this->session->get('setValues');
         $config = '';
 
@@ -1363,12 +1415,10 @@ class InstallAdm extends Model
     {
         // ----------- Registering admin user ---------------------------------
 
-
         $values = $this->session->get('setValues');
 
         $qtxt = "SELECT * FROM core_user WHERE userid='/" . $values['adminUser'] . "'";
         $q = sql_query($qtxt);
-
 
         $doceboAclManager = new DoceboACLManager();
 
@@ -1376,8 +1426,8 @@ class InstallAdm extends Model
             // You never know..
             $qtxt = "UPDATE core_user SET firstname='" . $values['adminName'] . "',
                 lastname='" . $values['adminLastname'] . "',
-                pass='" . $doceboAclManager->encrypt($admInfo['adminPassword']) . "' ";
-            $qtxt .= "WHERE userid='/" . $admInfo['adminUser'] . "'";
+                pass='" . $doceboAclManager->encrypt($values['adminPassword']) . "' ";
+            $qtxt .= "WHERE userid='/" . $values['adminUser'] . "'";
             $q = sql_query($qtxt);
         } else { // Let's create the admin user..
             $qtxt = 'INSERT INTO core_st (idst) VALUES(NULL)';
@@ -1424,7 +1474,8 @@ class InstallAdm extends Model
     {
         require_once _adm_ . '/versions.php';
         $values = $this->session->get('setValues');
-        DbConn::getInstance(false,
+        DbConn::getInstance(
+            false,
             [
                 'db_type' => 'mysqli',
                 'db_host' => $values['dbHost'],
@@ -1477,15 +1528,15 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    private function importLangs($langs = []) : array
+    private function importLangs($langs = []): array
     {
         $langAdm = new LangAdm();
         $langsToInstall = count($langs) ? $langs : $this->session->get('setLangs');
         $installedLanguages = [];
-        if(!count($langs)) {
+        if (!count($langs)) {
             $langsToInstall[] = Lang::getSelLang();
         }
-        
+
         foreach ($langsToInstall as $lang) {
             $fn = _base_ . '/xml_language/lang[' . $lang . '].xml';
 
@@ -1504,13 +1555,13 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    private function getInstalledLanguages() : array
+    private function getInstalledLanguages(): array
     {
         $langAdm = new LangAdm();
 
         return $langAdm->getLangCodeList();
     }
-   
+
 
 
     /**
@@ -1525,7 +1576,8 @@ class InstallAdm extends Model
 
         $values = $this->session->get('setValues');
         if ($values['useSmtpDatabase'] == 'on') {
-            DbConn::getInstance(false,
+            DbConn::getInstance(
+                false,
                 [
                     'db_type' => 'mysqli',
                     'db_host' => $values['dbHost'],
@@ -1545,7 +1597,6 @@ class InstallAdm extends Model
             $mailConfigId = sql_insert_id();
 
             foreach ($mailConfigs['smtp'] as $type => $value) {
-
                 $realValue = $values[$type] ?? $value;
                 $queryInsert = 'INSERT INTO'
                     . ' %adm_mail_configs_fields (mailConfigId, type, value) VALUES ("' . $mailConfigId . '", "' . $type . '", "' . $realValue . '")';
@@ -1554,7 +1605,6 @@ class InstallAdm extends Model
         }
 
         return $result;
-
     }
 
     /**
@@ -1567,7 +1617,6 @@ class InstallAdm extends Model
      */
     public function saveFields($request)
     {
-
         $params = $request->request->all();
 
         foreach ($params as $key => $value) {
@@ -1578,7 +1627,6 @@ class InstallAdm extends Model
             } else {
                 $this->saveValue($key, $value);
             }
-
         }
 
         return $this->setResponse(true, [])->wrapResponse();
@@ -1619,7 +1667,6 @@ class InstallAdm extends Model
         $compareMinVersion = version_compare($this->upgrade, $this->minSupportedVersion);
 
         if (0 > $compareMinVersion) {
-
             //not supported
             $result['upgradeTrigger'] = 0;
             $result['upgradeClass'] = 'err';
@@ -1637,7 +1684,6 @@ class InstallAdm extends Model
                 $result['upgradeTrigger'] = 0;
                 $result['upgradeClass'] = 'err';
                 $result['upgradeResult'] = _NO_DOWNGRADE;
-
             } else {
                 //nothing to do
                 $result['upgradeTrigger'] = 0;
@@ -1657,7 +1703,6 @@ class InstallAdm extends Model
      */
     public function installMigrationsTable()
     {
-
         $connection = DbConn::getInstance();
         $createQuery = "CREATE TABLE IF NOT EXISTS `core_migration_versions`  (
             `version` varchar(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
@@ -1685,7 +1730,6 @@ class InstallAdm extends Model
      */
     private function saveUpgradeVersion()
     {
-
         $qtxt = "UPDATE core_setting SET param_value='" . _file_version_ . "' WHERE param_name='core_version'";
         return sql_query($qtxt);
     }
@@ -1698,7 +1742,6 @@ class InstallAdm extends Model
      */
     private function setDefaultTemplate()
     {
-
         $qtxt = "UPDATE core_setting SET param_value='standard' WHERE param_name='defaultTemplate'";
         return sql_query($qtxt);
     }
@@ -1714,6 +1757,7 @@ class InstallAdm extends Model
     {
         $this->session->set('setValues', []);
         $this->session->set('setLangs', []);
+        $this->session->set('installErrors', []);
         $this->session->set('step', 0);
         $this->session->save();
 
@@ -1730,14 +1774,13 @@ class InstallAdm extends Model
     {
         $response = false;
         // ----------- Generating lock file -----------------------------
-        if(!file_exists(_base_ . '/forma.lock')) {
+        if (!file_exists(_base_ . '/forma.lock')) {
             $lockFile = _base_ . '/forma.lock';
             touch($lockFile);
             $response = true;
         }
 
         return $this->setResponse($response, [])->wrapResponse();
-        
     }
 
     /**
@@ -1747,8 +1790,115 @@ class InstallAdm extends Model
      */
     public function getPhpCliVersion()
     {
-        preg_match('/(?<= )\d+\.\d+\.\d+/', shell_exec("php -v"), $match);
-        return $match[0];
+        $matches = [];
+        $result['version'] = '';
+        //preg_match('/(php:\snot\sfound)/', shell_exec("php -v 2>&1"), $matches);
+        preg_match('/(?<= )\d+\.\d+\.\d+/', shell_exec("php -v"), $matches);
+        if (!count($matches)) {
+            $result['error'] = true;
+        } else {
+            $result['version'] = $matches[0];
+        }
+
+        return $result;
     }
 
+   /**
+     * Method to download config file
+     *
+     * @return void
+     */
+    public function downlodConfigFile()
+    {
+        $tmpName = sys_get_temp_dir(). '/config.php';
+
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/php');
+        header('Content-Disposition: attachment; filename=config.php');
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($tmpName));
+
+        ob_clean();
+        flush();
+        readfile($tmpName);
+        die();
+
+        //unlink($tmpName);
+    }
+
+      /**
+     * Method to download lock file
+     *
+     * @return void
+     */
+    public function downloadLockFile()
+    {
+        header('Content-Description: File Transfer');
+        header('Content-Type: text/plain');
+        header('Content-Disposition: attachment; filename=forma.lock');
+        header('Content-Transfer-Encoding: binary');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($tmpName));
+
+        ob_clean();
+        flush();
+        readfile($tmpName);
+        unlink($tmpName);
+        die();
+    }
+
+    /**
+     * Method to download config file
+     *
+     * @return bool
+     */
+    private function handleErrors(): bool
+    {
+        $errors = $this->session->get('installErrors') ?? [];
+        $result = true;
+        if (count($errors)) {
+            $result = false;
+        }
+        foreach ($errors as $error) {
+            if ($error === 'database') {
+                $this->testMigrate();
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Method to generate sql file in logs folder
+     *
+     * @param $params array of useful parameters
+     *
+     * @return self
+     */
+    public function testMigrate($params = [], $save = false)
+    {
+        if ((int) $params['upgrade']) {
+            $this->installModel->installMigrationsTable();
+        }
+        $writeSqlFile = dirname(__DIR__, 2) . "/files/logs/migration" . floor(microtime(true) * 1000) .".sql";
+
+        $testLine = '--dry-run --write-sql=' . $writeSqlFile;
+
+        if ($save) {
+            $this->saveTmpConfig();
+        }
+
+        $messages[] = $this->migrate((bool) $params['debug'], $testLine);
+
+
+        $messages[] = 'CHECK: ' . $writeSqlFile;
+
+        return $this->setResponse(true, $messages)->wrapResponse();
+    }
 }

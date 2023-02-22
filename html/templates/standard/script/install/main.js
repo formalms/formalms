@@ -2,6 +2,7 @@
 var busy = false; //acts like a 'mutex' so we have only one upload in progress at any given time
 var arr = []; // bucket in which we copy the file chunks to mark them later on (isComplete)
 var timer = 0;
+let errors = [];
 
 /*JQUERY STEPS INSTANCE*/
 let wizard = $("#installer-section").steps({
@@ -109,6 +110,7 @@ function finalize() {
 /************FUNCTION TO PROCESS STEPS OF INSTALLATION*********/
 function process() {
 
+   
     let response = {};
     if (busy) {
       //we might hit here if a file takes longer than the current setTimeout interval (1sec)
@@ -139,6 +141,11 @@ function process() {
             busy = false;
     
             result = response.success;
+            if(response.type !== 'standard') {
+         
+              errors.push(response.type);
+             
+            }
         
           },
           error: function (e) {
@@ -155,13 +162,32 @@ function process() {
         $('a[role="menuitem"]').hide();
         $('a[role="menuitem"]').removeClass('disabledActions');
         $('.debug').val($('.debug').val() + "\n" + "END");
-        $("#finalButtons").show();
-        $("#success").show();
+     
+        if(errors.length > 0){
+      
+          errors.forEach(function(error) {
+            console.log($("li."+ error).html());
+              $("li."+ error).show();
+          });
+          $("#failure").show();
+          $("#errorSection").show();
+
+          
+        } else {
+      
+          $("#success").show();
+          $("#finalButtons").show();
+        }
+        
       }
     }
     var $debug = $('.debug').val();
     if(response.messages) {
       $('.debug').val($debug + "\n" + response.messages.join("\n") + "\n" + $("#loading").text());
+    }
+
+    if(response.type !== 'default') {
+      errors.push(response.type);
     }
     
     //When sent, figure out the percentage uploaded and update the progress bar

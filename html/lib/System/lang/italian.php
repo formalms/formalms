@@ -42,6 +42,9 @@ define('_TITLE_STEP7', 'Step 7: Configurazione SMTP');
 define('_TITLE_STEP8', 'Step 8: Installazione completata');
 define('_INTRODUCTION', 'Introduzione');
 define('_INSTALLATION_COMPLETED', 'Installazione completata');
+define('_INSTALLATION_ERROR', 'Installation fallita');
+define('_DOWNLOAD_LOCK', 'Download lock file');
+define('_DOWNLOAD_CONFIG', 'Download Config file');
 define('REMOVE_INSTALL_FOLDER', 'Si suggerisce di rimuovere la cartella di installazione, Forma è vulnerabile fino a quando questa è raggiungibile.');
 define('_INSTALLATION_DETAILS', 'Dettagli installazione');
 
@@ -187,6 +190,8 @@ define('_SERVER_SOFTWARE', 'Server software');
 define('_PHPINFO', 'PHP Info');
 define('_PHPVERSION', 'PHP Version');
 define('_PHPCLIVERSION', 'PHP Cli Version : ');
+define('_PHP_NOT_FOUND', 'Perfavore installa php come comando di sistema');
+define('_LOG_SQL', 'Controlla i file .sql nella tua cartella files/logs');
 define('_MYSQLCLIENT_VERSION', 'Versione Client MySQL : ');
 define('_MYSQLSERVER_VERSION', 'Versione Server MySQL : ');
 define('_SAFEMODE', 'Safe mode');

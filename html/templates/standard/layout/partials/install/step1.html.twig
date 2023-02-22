@@ -14,7 +14,7 @@
 	</div>
 
 	{{ Form_getHidden('checkRequirements','checkRequirements', checkRequirements)}}
-	{{checkFolderPerms}}
+	{{ checkFolderPerms|raw }}
 
 
 	<label for="license" style="visibility: hidden;"> {{ licenseLabel }} </label><br />

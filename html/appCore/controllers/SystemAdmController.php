@@ -38,6 +38,7 @@ class SystemAdmController extends AdmController
         $params['languages'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
 
+      
         $this->render('install', $params);
 
     }
@@ -60,16 +61,10 @@ class SystemAdmController extends AdmController
 
         $params = $this->request->request->all();
 
-        if((int) $params['upgrade']) {
-            $this->installModel->installMigrationsTable();
-        }
-        $writeSqlFile = dirname(__DIR__, 2) . "/files/migration" . floor(microtime(true) * 1000) .".sql";
+        echo $this->installModel->testMigrate($params, true);
+        
 
-        $testLine = '--dry-run --write-sql=' . $writeSqlFile;
-        $messages[] = $this->installModel->migrate((bool) $params['debug'], $testLine);
-        $messages[] = 'CHECK: ' . $writeSqlFile;
-       
-        echo $this->installModel->setResponse(true, $messages)->wrapResponse();
+        exit;
       
     }
 
@@ -134,6 +129,16 @@ class SystemAdmController extends AdmController
         $this->render('checkstatus', $params);
 
     }
+
+    public function downloadConfigFile() {
+         $this->installModel->downlodConfigFile();
+       
+    }
+
+    public function downloadLockFile() {
+        $this->installModel->downloadLockFile();
+      
+   }
 
  
 }

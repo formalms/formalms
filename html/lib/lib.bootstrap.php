@@ -37,10 +37,10 @@ class Boot
         BOOT_PHP => 'checkPhpVersion',
         BOOT_CONFIG => 'config',
         BOOT_UTILITY => 'utility',
-        BOOT_SETTING => 'loadSetting',
         BOOT_REQUEST => 'request',
         BOOT_PLATFORM => 'checkPlatform',
         BOOT_DOMAIN_AND_TEMPLATE => 'domainAndTemplate',
+        BOOT_SETTING => 'loadSetting',
         BOOT_PLUGINS => 'plugins',
         BOOT_USER => 'user',
         BOOT_SESSION_CHECK => 'sessionCheck',
@@ -317,7 +317,7 @@ class Boot
     }
 
     private static function domainAndTemplate(){
-        //create the handeler who will fix values ins ession
+        //create the handler who will fix values in session
         $domainHandler = DomainHandler::getInstance();
 
 
@@ -365,6 +365,7 @@ class Boot
 
         self::log('Load database funtion management library.');
 
+        $cfg = null;
         $configExist = true;
         if (!file_exists(dirname(__DIR__, 1).'/config.php')) {
             $configExist = false;
@@ -753,7 +754,7 @@ class Boot
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         
-        self::$prettyRedirect = (bool)preg_match('/^(Apache)/', $request->server->get('SERVER_SOFTWARE'));
+        self::$prettyRedirect = (bool)preg_match('/^(Apache)/', $request->server->get('SERVER_SOFTWARE')??'');
         
     }
 
