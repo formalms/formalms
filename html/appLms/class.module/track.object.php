@@ -560,22 +560,20 @@ class Track_Object
     {
         Events::trigger('lms.lo_user.deleting', [
             'ids_reference' => (array) $idReference,
-            'environment' => $this->environment,
+            'environment' => self::$environment,
         ]);
 
         if (is_numeric($idReference)) {
-            $query = 'DELETE FROM ' . $this->_table . ''
-                . ' WHERE (idReference = ' . (int) $idReference . ')';
+            $query = 'DELETE FROM ' . self::$_table . ' WHERE (idReference = ' . (int) $idReference . ')';
         } elseif (is_array($idReference)) {
-            $query = 'DELETE FROM ' . $this->_table . ''
-                . ' WHERE (idReference IN (' . implode(',', $idReference) . '))';
+            $query = 'DELETE FROM ' . self::$_table . ' WHERE (idReference IN (' . implode(',', $idReference) . '))';
         }
         $rs = sql_query($query)
         or exit("Error in query=[ $query ] " . sql_error());
 
         Events::trigger('lms.lo_user.deleted', [
             'ids_reference' => (array) $idReference,
-            'environment' => $this->environment,
+            'environment' => self::$environment,
         ]);
 
         return $rs;

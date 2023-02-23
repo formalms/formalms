@@ -31,7 +31,8 @@ function retriveTrack($id_reference, $id_test, $id_user, $do_not_create = false)
         } elseif ($do_not_create == false) {
             $id_track = Track_Test::createNewTrack($id_user, $id_test, $id_reference);
             if ($id_track) {
-                Track_Test::createTrack(
+                $tt = new Track_Test($id_track);
+                $tt->createTrack(
                     $id_reference,
                     $id_track,
                     $id_user,

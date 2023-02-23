@@ -23,7 +23,7 @@ class Track_Test extends Track_Object
     protected $number_of_attempt;
     public array $back_url;
     public int $idParams;
-    public int $idResource;
+    public $idResource;
     private $db;
 
     /**
@@ -40,7 +40,7 @@ class Track_Test extends Track_Object
         if ($idTrack !== null) {
             $res = $this->db->query("SELECT idTest,idUser,idReference, number_of_attempt FROM %lms_testtrack WHERE idTrack = '" . (int) $idTrack . "'");
             if ($res && $this->db->num_rows($res) > 0) {
-                list($this->idTest, $this->idUser, $this->idReference, $this->number_of_attempt) = $this->db->fetch_row($res);
+                [$this->idTest, $this->idUser, $this->idReference, $this->number_of_attempt] = $this->db->fetch_row($res);
             }
         }
 
