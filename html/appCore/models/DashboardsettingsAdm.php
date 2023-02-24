@@ -37,12 +37,13 @@ class DashboardsettingsAdm extends Model
 
     public function loadLayouts()
     {
-        $query = 'SELECT `id`, `name`, `caption`, `status`, `default`, `idst_list` FROM `dashboard_layouts` LEFT JOIN `dashboard_permission` ON `dashboard_layouts`.`id` =`dashboard_permission`.`id_dashboard` ORDER BY `default` DESC, `created_at` ASC';
+        $query = 'SELECT `dashboard_layouts`.`id`, `name`, `caption`, `status`, `default`, `idst_list` FROM `dashboard_layouts` LEFT JOIN `dashboard_permission` ON `dashboard_layouts`.`id` =`dashboard_permission`.`id_dashboard` ORDER BY `default` DESC, `created_at` ASC';
 
         $result = sql_query($query);
         $this->layouts = [];
 
         foreach ($result as $layout) {
+
             /** @var DashboardLayoutLms $layoutObj */
             $layoutObj = new DashboardLayoutLms();
             $layoutObj->setId($layout['id']);

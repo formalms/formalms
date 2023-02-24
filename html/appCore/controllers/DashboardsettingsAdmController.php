@@ -199,7 +199,7 @@ class DashboardsettingsAdmController extends AdmController
 
        if($search && !empty($search['value'])) {
             $layouts = array_filter($layouts, function($layout) use ($search) {
-                 return $layout->getName() == $search['value'] || $layout->getCaption() == $search['value'];
+                 return strpos($layout->getName(),$search['value']) || strpos($layout->getCaption(), $search['value']);
             });
         }
 
