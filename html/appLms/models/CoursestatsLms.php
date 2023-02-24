@@ -574,7 +574,9 @@ class CoursestatsLms extends Model
         if ($res) {
             if ($this->db->num_rows($res) > 0) {
                 while ($row = $this->db->fetch_row($res)) {
-                    $output += $this->timeToSec($this->parsePTTime($row[0])); // Sum in seconds
+                    if (!empty($row[0] )) {
+                        $output += $this->timeToSec($this->parsePTTime($row[0])); // Sum in seconds
+                    }
                 }
             }
         }
@@ -585,8 +587,8 @@ class CoursestatsLms extends Model
     private function timeToSec($time)
     {
         $seconds = 0;
-        list($time) = explode('.', $time); // Remove decimals
-        list($hour, $minute, $second) = explode(':', $time);
+        [$time] = explode('.', $time); // Remove decimals
+        [$hour, $minute, $second] = explode(':', $time);
         $seconds += $hour * 3600;
         $seconds += $minute * 60;
         $seconds += $second;
