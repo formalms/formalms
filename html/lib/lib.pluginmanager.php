@@ -173,10 +173,10 @@ class PluginManager
                 . "     AND r.app = '$mvc_app'"
                 . "     AND r.name = '$mvc_name'"
                 . '     AND p.active = 1'
-                . ' ORDER BY p.priority ASC'; // TODO: valutare se usare invece funzione is_plugin_active"
+                . ' ORDER BY p.priority ASC LIMIT 1'; // TODO: valutare se usare invece funzione is_plugin_active"
 
         $r = sql_query($query);
-        list($plugin, $controller, $model) = sql_fetch_row($r);
+        [$plugin, $controller, $model] = sql_fetch_row($r);
 
         return [$plugin, $controller, $model];
     }
