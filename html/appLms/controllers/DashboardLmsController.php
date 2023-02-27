@@ -100,6 +100,7 @@ class DashboardLmsController extends LmsController
     public function ajaxAction()
     {
         $result = ['status' => 200];
+        $result['response'] = [];
         $blockParameter = FormaLms\lib\Get::pReq('block', DOTY_MIXED);
         $actionParameter = FormaLms\lib\Get::pReq('blockAction', DOTY_MIXED);
         $dashboardLayoutIdParameter = FormaLms\lib\Get::pReq('dashboardLayoutId', DOTY_MIXED);

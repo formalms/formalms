@@ -128,7 +128,7 @@ class DashboardLayoutLms extends Model
 
     public function userCanAccess(DoceboUser $user)
     {
-        $canAccess = true;
+        $canAccess = false;
 
         if (!empty($this->permissionList)) {
             $canAccess = !empty(array_intersect($user->getArrSt(), $this->permissionList));
