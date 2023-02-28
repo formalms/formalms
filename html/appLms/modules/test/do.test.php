@@ -667,7 +667,7 @@ function play($object_test, $id_param)
     // save page track info
     $play_man->updateTrackForPage($page_to_display);
 
-    $quest_sequence_number = $test_man->getInitQuestSequenceNumberForPage($page_to_display);
+    $quest_sequence_number = intval($test_man->getInitQuestSequenceNumberForPage($page_to_display));
     $query_question = $play_man->getQuestionsForPage($page_to_display);
     $time_in_test = $play_man->userTimeInTheTest();
 

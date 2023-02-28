@@ -60,9 +60,9 @@ echo getTitleArea([
 	<br />
 	<br />
 <?php
-if (method_exists($object_lo, 'loadReport')) {
+if (is_object($object_lo) && method_exists($object_lo, 'loadReport')) {
             echo $object_lo->loadReport($id_user, true);
-        }
+}
 ?>
 <?php echo getBackUi($back_url, Lang::t('_BACK', 'standard')); ?>
 </div>
