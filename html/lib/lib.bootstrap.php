@@ -765,7 +765,7 @@ class Boot
         $baseRoute .= ($sistemPrefix . $route);
 
         if(count($params)) {
-            $baseRoute .=  '?';
+            $baseRoute .=  '&';
             foreach($params as $key => $param) {
                 $baseRoute .= $key . '=' . $param;
             }
