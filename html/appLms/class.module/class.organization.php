@@ -41,7 +41,7 @@ class Module_Organization extends LmsModule
     {
         require_once Forma::inc(_lms_ . "/modules/$this->module_name/$this->module_name.php");
         $ready = false;
-        $this->lang = &DoceboLanguage::createInstance('organization', 'lms');
+        $this->lang = DoceboLanguage::createInstance('organization', 'lms');
 
         if (isset($_GET['sor']) && false) {
             // reload from previously saved session

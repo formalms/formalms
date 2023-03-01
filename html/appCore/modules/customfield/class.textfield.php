@@ -54,10 +54,10 @@ class Field_Textfield extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
+        $std_lang = DoceboLanguage::createInstance('standard');
+        $lang = DoceboLanguage::createInstance('field');
         $array_lang = Docebo::langManager()->getAllLangCode();
-        $out = &$GLOBALS['page'];
+        $out = $GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
             //undo action
@@ -86,6 +86,27 @@ class Field_Textfield extends Field
             if ($_POST['new_textfield'][$mand_lang] == $lang->def('_FIELD_NAME') || trim($_POST['new_textfield'][$mand_lang]) == '') {
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
+                    . getBackUi($this->getUrl() . '&amp;type_field='
+                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                    'content'
+                );
+
+                return;
+            }
+
+            if (!isset($_POST['filter_area_field'])) {
+                $out->add(
+                    getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_AREACODE'))
+                    . getBackUi($this->getUrl() . '&amp;type_field='
+                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                    'content'
+                );
+
+                return;
+            }
+            if (trim($_POST['filter_area_field']) == '') {
+                $out->add(
+                    getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_AREACODE'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
                         . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'

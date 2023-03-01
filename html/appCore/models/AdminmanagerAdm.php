@@ -28,7 +28,7 @@ class AdminmanagerAdm extends Model
         require_once _base_ . '/lib/lib.preference.php';
         $this->preference = new AdminPreference();
 
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = Docebo::user()->getAclManager();
 
         $idst = key($this->acl_man->getGroupsIdstFromBasePath('/framework/level/admin'));
         $this->idst_admin_group = $idst;

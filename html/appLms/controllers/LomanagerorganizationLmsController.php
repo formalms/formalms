@@ -113,7 +113,7 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                     'label' => 'Access',
                 ];
 
-                if ($lo['canBeCategorized']) {
+                if (isset($lo['canBeCategorized'])) {
                     $lo['actions'][] = [
                         'name' => 'categorize',
                         'active' => true,

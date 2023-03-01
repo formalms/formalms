@@ -2224,7 +2224,7 @@ class DoceboCourse
 
     public function getValue($param)
     {
-        return $this->course_info[$param];
+        return is_array($this->course_info) ? $this->course_info[$param] : false;
     }
 
     public function setValues($arr_new_values)

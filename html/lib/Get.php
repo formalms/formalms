@@ -104,7 +104,7 @@ class Get
                 $value = (float) $value;
                 break;
             case DOTY_STRING:
-                $value = strip_tags($value);
+                $value = strip_tags($value ?? '');
                 break;
             case DOTY_ALPHANUM:
                 $value = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $value);

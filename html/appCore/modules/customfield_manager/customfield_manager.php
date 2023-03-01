@@ -31,9 +31,9 @@ function field_list()
     //require_once(_i18n_.'/lib.lang.php');
 
     $back_coded = htmlentities(urlencode('index.php?modname=customfield_manager&op=field_list'));
-    $std_lang = &DoceboLanguage::createInstance('standard', 'framework');
-    $lang = &DoceboLanguage::createInstance('field', 'framework');
-    $out = &$GLOBALS['page'];
+    $std_lang = DoceboLanguage::createInstance('standard', 'framework');
+    $lang = DoceboLanguage::createInstance('field', 'framework');
+    $out = $GLOBALS['page'];
     $filter = new Form();
 
     //find available field type
@@ -47,6 +47,8 @@ function field_list()
         $field_av[] = $type_field;
         $field_select[] = $lang->def('_' . strtoupper($type_field));
     }
+
+
 
     $out->setWorkingZone('content');
     $out->add(getTitleArea($lang->def('_CUSTOMFIELD_MANAGER', 'menu'), 'field_manager'));
@@ -100,6 +102,8 @@ function field_list()
             " AND cl.translation LIKE '%" . $filter_name_field . "%'" :
             '') . '
 	ORDER BY c.sequence';
+
+   
     $re_field_display = sql_query($query_field_display);
     $all_fields = sql_num_rows($re_field_display);
 

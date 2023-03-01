@@ -21,7 +21,7 @@ $_tab_op_map = [
     'pubrepo' => 'storage_pubrepo',
 ];
 
-function save_state(&$data)
+function save_state($data)
 {
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
@@ -60,7 +60,7 @@ function destroy_TabView(&$tv)
     save_state($tv->getState());
 }
 
-function &create_activeTab(&$tv)
+function create_activeTab(&$tv)
 {
     switch ($tv->getActiveTab()) {
         case 'storage_home':
@@ -98,7 +98,7 @@ function storage_display()
 {
     $tv = create_TabView($GLOBALS['op']);
 
-    $repo = &create_activeTab($tv);
+    $repo = create_activeTab($tv);
 
     $repo->initialize();
     $GLOBALS['page']->setWorkingZone('content');

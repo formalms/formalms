@@ -63,7 +63,7 @@ class MycertificateLms extends Model
             }
         }
 
-        if ($order = $_REQUEST['order']) {
+        if ($order = isset($_REQUEST['order']) ? $_REQUEST['order'] : null) {
             $sort_index = $order[0]['column'];
 
             $fields = [

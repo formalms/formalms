@@ -238,7 +238,7 @@ class Boot
                     error_reporting(E_DEPRECATED);
                     break;
                 default:
-                    error_reporting(E_ALL);
+                    error_reporting(E_ALL ^ E_DEPRECATED);
                     break;
             }
 

@@ -244,7 +244,7 @@ class CourseLms extends Model
         $parsedData['userCanUnsubscribe'] = self::userCanUnsubscribe($parsedData);
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        if (!$parsedData['course_full'] && $parsedData['selling']) {
+        if (!$parsedData['course_full'] && isset($parsedData['selling'])) {
             $parsedData['in_cart'] = ($session->has('lms_cart') && isset($session->get('lms_cart')[$parsedData['idCourse']]));
         }
 

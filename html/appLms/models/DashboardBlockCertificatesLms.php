@@ -92,7 +92,7 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     private function getCertificates()
     {
-        if (!$limit = (int) $this->data['max_last_records']) {
+        if (!$limit = (int) array_key_exists('max_last_records', $this->data) ? $this->data['max_last_records'] : 0) {
             $limit = self::MAX_CERTIFICATES;
         }
 

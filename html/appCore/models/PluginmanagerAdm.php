@@ -144,13 +144,14 @@ class PluginmanagerAdm extends Model
         $forma_version = FormaLms\lib\Get::sett('core_version');
         $check['dependencies'] = [];
         $check['forma_version'] = [];
+        
         if (array_key_exists('forma_version', $manifest)) {
-            if (array_key_exists('min', $manifest['forma_version'])) {
+            if (is_array($manifest['forma_version']) && array_key_exists('min', $manifest['forma_version'])) {
                 if (version_compare($forma_version, $manifest['forma_version']['min']) < 0) {
                     $check['forma_version'][] = ['name' => 'forma.lms', 'version' => $manifest['forma_version']['min']];
                 }
             }
-            if (array_key_exists('max', $manifest['forma_version'])) {
+            if (is_array($manifest['forma_version']) && array_key_exists('max', $manifest['forma_version'])) {
                 if (version_compare($manifest['forma_version']['max'], $forma_version) < 0) {
                     $check['forma_version'][] = ['name' => 'forma.lms', 'version' => $manifest['forma_version']['max']];
                 }
@@ -282,7 +283,8 @@ class PluginmanagerAdm extends Model
                 $tmpDependencies = [];
                 $manifest = self::readPluginManifest($file);
                 //accept only plugins where manifest name is the folder name
-                if ($manifest['name'] == $file) {
+                
+                if ($manifest && $manifest['name'] == $file) {
                     $info = $this->getPluginFromDB($file, 'name');
                     //if plugin is installed
                     if ($info) {

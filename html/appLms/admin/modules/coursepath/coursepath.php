@@ -362,7 +362,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.coursepath.php';
 
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = DoceboLanguage::createInstance('coursepath', 'lms');
 
         $id_path = importVar('id_path', true, 0);
         $mod_perm = checkPerm('mod', true);
@@ -425,7 +425,7 @@ if (!Docebo::user()->isAnonymous()) {
                 $num_course = count($courses[$id_slot]);
 
                 $all_courses = true;
-
+                $admin_courses = [];
                 if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $all_courses = false;
 
@@ -487,7 +487,7 @@ if (!Docebo::user()->isAnonymous()) {
                         $cont[] = '';
                     }
                     if ($mod_perm) {
-                        if (in_array($id_item, $admin_courses['course']) || $all_courses) {
+                        if (array_key_exists('course', $admin_courses) && in_array($id_item, $admin_courses['course']) || $all_courses) {
                             if ($i != $num_course - 1) {
                                 $cont[] = '<a href="index.php?modname=coursepath&amp;op=downelem&amp;id_path=' . $id_path . '&amp;id_course=' . $id_item . '&amp;id_slot=' . $id_slot . '" '
                                         . 'title="' . $lang->def('_MOVE_DOWN') . ' : ' . $course_info[$id_item]['name'] . '">'
@@ -783,7 +783,8 @@ if (!Docebo::user()->isAnonymous()) {
         $id_path = importVar('id_path', true, 0);
 
         $new_prerequisites = '';
-        $new_prerequisites = implode(',', $_POST['prerequisites']);
+        $postPrerequisites = array_key_exists('prerequisites', $_POST) ? $_POST['prerequisites'] : [];
+        $new_prerequisites = implode(',', $postPrerequisites);
 
         $re = sql_query('
 	UPDATE ' . $GLOBALS['prefix_lms'] . "_coursepath_courses

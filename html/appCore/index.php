@@ -26,7 +26,7 @@ require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(CHECK_SYSTEM_STATUS);
 
 // connect to the database
-$db = &DbConn::getInstance();
+$db = DbConn::getInstance();
 
 // some specific lib to load
 require_once _base_ . '/lib/lib.platform.php';

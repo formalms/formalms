@@ -50,18 +50,22 @@ class LomanagerLmsController extends LmsController
     {
         $loData = array_values($this->model->getFolders($idCourse, $idFolder));
         $results = [];
-        switch ($loData[0]['typeId']) {
-            case LomanagerLms::ORGDIRDB:
-                $results = LomanagerorganizationLmsController::formatLoData($loData);
-                break;
-            case LomanagerLms::REPODIRDB:
-                $results = LomanagerrepoLmsController::formatLoData($loData);
-                break;
-            case LomanagerLms::HOMEREPODIRDB:
-                $results = LomanagerhomerepoLmsController::formatLoData($loData);
-                break;
-            default:
+        if(count($loData)){
+            switch ($loData[0]['typeId']) {
+                case LomanagerLms::ORGDIRDB:
+                    $results = LomanagerorganizationLmsController::formatLoData($loData);
+                    break;
+                case LomanagerLms::REPODIRDB:
+                    $results = LomanagerrepoLmsController::formatLoData($loData);
+                    break;
+                case LomanagerLms::HOMEREPODIRDB:
+                    $results = LomanagerhomerepoLmsController::formatLoData($loData);
+                    break;
+                default:
+            }
         }
+
+        
         if (!empty($loData)) {
             $eventData = Events::trigger(sprintf('lms.course_lo_%s.folder_listing', $loData[0]['typeId']), ['teacher' => true, 'idCourse' => $idCourse, 'idFolder' => $idFolder, 'learningObjects' => $results]);
             $results = $eventData['learningObjects'];

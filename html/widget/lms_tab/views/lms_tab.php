@@ -32,6 +32,10 @@
 
     while (list($obj_index) = sql_fetch_row($re_tablist)) {
         $id = $obj_index;
+
+        if(!array_key_exists($id, $tab)) {
+            continue;
+        }
         $cid = substr($obj_index, 3);
         $name = $tab[$id];
         if ($this->isActive($cid)) {

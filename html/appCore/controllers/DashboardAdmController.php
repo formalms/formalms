@@ -71,7 +71,7 @@ class DashboardAdmController extends AdmController
         $php_conf = ini_get_all(); //this
         $problem = false;
 
-        if ($php_conf['register_globals']['local_value']) {
+        if (array_key_exists('register_globals', $php_conf) ? $php_conf['register_globals']['local_value'] : false) {
             $problem = true;
         }
 

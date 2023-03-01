@@ -18,7 +18,7 @@ if (!Docebo::user()->isAnonymous()) {
     function additem($object_item)
     {
         //checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('item');
+        $lang = DoceboLanguage::createInstance('item');
 
         require_once _base_ . '/lib/lib.form.php';
 

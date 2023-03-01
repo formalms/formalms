@@ -1926,7 +1926,10 @@ class Org_TreeView extends RepoTreeView
         }
 
         $idLoList = (array) $idLoList;
-        include_once _base_ . '/customscripts/appLms/Events/Lms/OrgPropertiesPrintEvent.php';
+        if(file_exists(_base_ . '/customscripts/appLms/Events/Lms/OrgPropertiesPrintEvent.php')) {
+            include_once _base_ . '/customscripts/appLms/Events/Lms/OrgPropertiesPrintEvent.php';
+        }
+        
         require_once _lms_ . '/lib/lib.kbres.php';
         require_once _lms_ . '/class.module/track.object.php';
         require_once _lms_ . '/lib/lib.course.php';
@@ -1942,7 +1945,7 @@ class Org_TreeView extends RepoTreeView
                 $type = 'scorm';
             }
             $kbres_information = $kbres->getResourceFromItem($folder->otherValues[REPOFIELDIDRESOURCE], $type, 'course_lo');
-            if (isset($kbres_information)) {
+            if (isset($kbres_information) && is_array($kbres_information)) {
                 $node['isPublic'] = $kbres_information['force_visible'];
             }
 
@@ -1957,7 +1960,7 @@ class Org_TreeView extends RepoTreeView
 
             $node['title'] = $this->getFolderPrintName($folder);
 
-            $idCourse = $folder->otherValues[ORGFIELDIDCOURSE];
+            $idCourse = isset($folder->otherValues[ORGFIELDIDCOURSE]) ? $folder->otherValues[ORGFIELDIDCOURSE] : null;
             $course = new DoceboCourse($idCourse);
 
             $node['actions'] = [];
@@ -1969,12 +1972,14 @@ class Org_TreeView extends RepoTreeView
             $node['courseType'] = $course->getValue('course_type');
             $node['courseTypeTranslation'] = Lang::t($course->getValue('course_type'), 's4b');
 
-            $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied($folder->otherValues[ORGFIELDPREREQUISITES], getLogUserId());
+            $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(isset($folder->otherValues[ORGFIELDPREREQUISITES]) ? $folder->otherValues[ORGFIELDPREREQUISITES] : null, 
+                                                                                        getLogUserId());
 
             $node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
 
             $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
+            $orgFieldPublishFor = isset($folder->otherValues[ORGFIELD_PUBLISHFOR]) ? $folder->otherValues[ORGFIELD_PUBLISHFOR] : null;
+            if ($orgFieldPublishFor == PF_TEACHER && $levelCourse <= 3) {
                 break;
             }
 
@@ -1986,7 +1991,7 @@ class Org_TreeView extends RepoTreeView
 
             $node['resource'] = $folder->otherValues[REPOFIELDIDRESOURCE];
 
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+            if ($orgFieldPublishFor == PF_ATTENDANCE && !$this->presence()) {
                 $node['active'] = false;
             } elseif ($isPrerequisitesSatisfied) { // && $event->getAccessible()){
                 $node['active'] = true;
@@ -1998,22 +2003,27 @@ class Org_TreeView extends RepoTreeView
                 $node['is_folder'] = true;
             }
 
-            if (($folder->otherValues[ORGFIELD_PUBLISHFROM] != '' && $folder->otherValues[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
-                if ($folder->otherValues[ORGFIELD_PUBLISHFROM] > date('Y-m-d H:i:s')) {
+            $orgFieldPublishFrom = isset($folder->otherValues[ORGFIELD_PUBLISHFROM]) ? $folder->otherValues[ORGFIELD_PUBLISHFROM] : null;
+           
+            if (($orgFieldPublishFrom != '' && $orgFieldPublishFrom != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
+                if ($orgFieldPublishFrom > date('Y-m-d H:i:s')) {
                     continue;
                 }
             }
-            if (($folder->otherValues[ORGFIELD_PUBLISHTO] != '' && $folder->otherValues[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
-                if ($folder->otherValues[ORGFIELD_PUBLISHTO] < date('Y-m-d H:i:s')) {
+
+            $orgFieldPublishTo = isset($folder->otherValues[ORGFIELD_PUBLISHTO]) ? $folder->otherValues[ORGFIELD_PUBLISHTO] : null;
+           
+            if (($orgFieldPublishTo != '' && $orgFieldPublishTo != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
+                if ($orgFieldPublishTo < date('Y-m-d H:i:s')) {
                     continue;
                 }
             }
 
             $status = Track_Object::getStatusFromId($folder->id, getLogUserId());
 
-            if ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
+            if ($orgFieldPublishFor == PF_TEACHER && $levelCourse <= 3) {
                 continue;
-            } elseif ($folder->otherValues[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+            } elseif ($orgFieldPublishFor == PF_ATTENDANCE && !$this->presence()) {
                 $node['locked'] = true;
             } elseif ($isPrerequisitesSatisfied) { // && $event->getAccessible() ) {
                 if (!$node['is_folder']) {
@@ -2072,12 +2082,12 @@ class Org_TreeView extends RepoTreeView
                 $node['image_type'] = 'folder';
             }
 
-            $node['properties'] = $folder->properties;
+            $node['properties'] = isset($folder->properties) ? $folder->properties : null;
 
             $node['img_path'] = FormaLms\lib\Get::rel_path('files_lms') . '/lo/';
 
             if (!$node['is_folder']) {
-                if ($arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
+                if (isset($arrData[ORGFIELD_PUBLISHFOR]) && $arrData[ORGFIELD_PUBLISHFOR] == PF_ATTENDANCE && !$this->presence()) {
                     $node['locked'] = true;
                 } elseif ($isPrerequisitesSatisfied) { // && $event->getAccessible()) {
                     if (is_object($lo_class) && method_exists($lo_class, 'trackDetails')) {

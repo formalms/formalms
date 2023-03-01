@@ -53,6 +53,7 @@ class DashboardLmsController extends LmsController
        
         $blocks = [];
         $blockPaths = [];
+        $defaultLayout = null;
 
         if (FormaLms\lib\Get::req('mycourses_tab', DOTY_STRING, null)) {
             $this->widget('lms_tab', [

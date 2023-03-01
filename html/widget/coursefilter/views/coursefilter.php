@@ -33,7 +33,7 @@ $str_all = Lang::t('_ALL_COURSE_TYPE', 'course');
                     </select>
 
                     <?php echo $auxiliary_filter ? $auxiliary_filter : ''; ?>
-                    <?php echo $_label_list ? $_label_list : ''; ?>
+                    <?php echo isset($_label_list) ? $_label_list : ''; ?>
                     
                     <script>
                         var this_user = '<?php echo Docebo::user()->idst; ?>';

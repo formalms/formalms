@@ -1085,10 +1085,10 @@ class DoceboDate
         }
 
         if ($todo == 'add') {
-            $new_temp_val = $date_arr[$cur] + $offset;
+            $new_temp_val = (int) $date_arr[$cur] + $offset;
             $exceed = ($new_temp_val > $max ? true : false);
         } elseif ($todo == 'sub') {
-            $new_temp_val = $date_arr[$cur] - $offset;
+            $new_temp_val = (int) $date_arr[$cur] - $offset;
             //$new_temp_val=$date_arr[$cur]-($offset % $tot);
             $exceed = ($new_temp_val < $min ? true : false);
         }

@@ -51,7 +51,7 @@ function GetCompanyLogo()
 
 function BackToLms()
 {
-    $lang = &DoceboLanguage::createInstance('menu', 'framework');
+    $lang = DoceboLanguage::createInstance('menu', 'framework');
 
     return '<li data-sm-reverse="true" style="float:right">
                 <a href="' . $GLOBALS['where_lms_relative'] . '"><i class="fa fa-home" aria-hidden="true"></i>&nbsp;' .

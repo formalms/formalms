@@ -24,7 +24,7 @@ class AdminrulesAdm extends Model
     {
         require_once _base_ . '/lib/lib.preference.php';
         $this->preference = new AdminPreference();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = Docebo::user()->getAclManager();
         $this->rules_path = '/framework/adminrules/';
         $this->rules_cache = null;
         parent::__construct();
@@ -212,6 +212,8 @@ class AdminrulesAdm extends Model
 
     public function createPerm($id_menu, $name, $collapse, $module_name, $default_name, $class_file, $class_name, $mvc_path, $of_platform)
     {
+
+        $total_perm = [];
         if ($module_name && ($mvc_path !== '')) {
             $tmp = explode('/', $mvc_path);
             $platform_name = $tmp[0];
@@ -316,7 +318,7 @@ class AdminrulesAdm extends Model
             }
         }
 
-        return [$total_perm, $module_perm];
+        return [$total_perm, $module_perm ?? []];
     }
 
     public function printTable($total_perm, $module_perm, $adm_old_perm, $tb, $th, $ts, $array_image, $id_menu, $name, $collapse, $module_name, $default_name, $class_file, $class_name, $mvc_path, $of_platform)

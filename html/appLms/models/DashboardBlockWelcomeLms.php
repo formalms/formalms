@@ -48,13 +48,13 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
             'platform' => FormaLms\lib\Get::sett('page_title'),
         ];
 
-        $msg = Lang::t($this->data['welcome_text'] ?: '_DASHBOARD_WELCOME_MESSAGE', 'dashboardsetting');
+        $msg = Lang::t(array_key_exists('welcome_text',$this->data) ? $this->data['welcome_text'] : '_DASHBOARD_WELCOME_MESSAGE', 'dashboardsetting');
         $placeholders = array_keys($data['data']);
         foreach ($placeholders as $placeholder) {
             $msg = str_replace("[$placeholder]", $data['data'][$placeholder], $msg);
         }
         $data['msg'] = $msg;
-        $data['title'] = $this->data['title'];
+        $data['title'] = array_key_exists('title',$this->data) ? $this->data['title'] : '';
 
         return $data;
     }
