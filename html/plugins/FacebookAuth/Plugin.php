@@ -17,9 +17,28 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Plugin extends \FormaPlugin
 {
+    public static function getModule() {
+		return "facebookauth";
+	}
+
     public static function install()
     {
         parent::addSetting('facebook.oauth_key', 'string', 255);
         parent::addSetting('facebook.oauth_secret', 'string', 255);
+    }
+
+    public static function uninstall()
+    {
+
+    }
+
+    public static function activate()
+    {
+
+    }    
+
+    public static function deactivate()
+    {
+        
     }
 }

@@ -17,9 +17,28 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Plugin extends \FormaPlugin
 {
+    public static function getModule() {
+		return "linkedinauth";
+	}
+
     public static function install()
     {
         parent::addSetting('linkedin.oauth_key', 'string', 255);
         parent::addSetting('linkedin.oauth_secret', 'string', 255);
+    }
+
+    public static function uninstall()
+    {
+
+    }
+
+    public static function activate()
+    {
+
+    }    
+
+    public static function deactivate()
+    {
+        
     }
 }
