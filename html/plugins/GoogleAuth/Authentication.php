@@ -19,12 +19,13 @@ use Form;
 use Lang;
 use OAuth\Common\Consumer\Credentials;
 use OAuth\Common\Storage\Session;
+use FormaLms\lib\Get;
 
 class Authentication extends \PluginAuthentication implements \PluginAuthenticationWithRedirectInterface
 {
     public static function getLoginGUI($redirect = '')
     {
-        $session = self::$session;
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $social = $session->get('social');
         $form = '';
         if (isset($social)) {
@@ -32,7 +33,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
                 $form = '<i class="fa fa-google"></i>' . ' '
                         . Lang::t('_YOU_ARE_CONNECTING_SOCIAL_ACCOUNT', 'social')
                         . ' <b>' . ($social['data']['name'] != '' ? $social['data']['name'] : $social['data']['email']) . '</b>'
-                        . Form::openForm('cancel_social', FormaLms\lib\Get::rel_path('base'))
+                        . Form::openForm('cancel_social', Get::rel_path('base'))
                           . Form::openButtonSpace()
                               . Form::getButton('cancel', 'cancel_social', Lang::t('_CANCEL', 'standard'))
                           . Form::closeButtonSpace()
@@ -57,8 +58,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     public static function getUserFromLogin()
     {
-        $error = FormaLms\lib\Get::req('error', DOTY_STRING, false);
-        $code = FormaLms\lib\Get::req('code', DOTY_STRING, false);
+        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        
+        $error = Get::req('error', DOTY_STRING, false);
+        $code = Get::req('code', DOTY_STRING, false);
 
         if ($error || !$code) {
             return UNKNOWN_SOCIAL_ERROR;
@@ -80,10 +83,10 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $user = \DoceboUser::createDoceboUserFromField('google_id', $user_info['id'], 'public_area');
 
         if (!$user) {
-            (self::$session)->set('social', ['plugin' => Plugin::getName(),
+            ($session)->set('social', ['plugin' => Plugin::getName(),
                         'data' => $user_info,
             ]);
-            (self::$session)->save();
+            ($session)->save();
 
             return USER_NOT_FOUND;
         }
@@ -107,9 +110,9 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
         $storage = new Session(false);
 
         $credentials = new Credentials(
-            FormaLms\lib\Get::sett('google.oauth_key'),
-            FormaLms\lib\Get::sett('google.oauth_secret'),
-            FormaLms\lib\Get::abs_path() . 'index.php?r=' . _login_ . '&plugin=' . Plugin::getName()
+            Get::sett('google.oauth_key'),
+            Get::sett('google.oauth_secret'),
+            Get::abs_path() . 'index.php?r=' . _login_ . '&plugin=' . Plugin::getName()
         );
 
         return $serviceFactory->createService('google', $credentials, $storage, ['userinfo_email']);
