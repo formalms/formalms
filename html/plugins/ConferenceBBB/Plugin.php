@@ -13,8 +13,14 @@
 
 namespace Plugin\ConferenceBBB;
 
+use FormaLms\lib\Get;
+
 class Plugin extends \FormaPlugin
 {
+    public static function getModule() {
+		return "conferencebbb";
+	}
+    
     public static function install()
     {
         // test salt : 8cd8ef52e8e101574e400365b55e11a6
@@ -27,5 +33,20 @@ class Plugin extends \FormaPlugin
         parent::addSetting('ConferenceBBB_server', 'string', 255, 'http://test-install.blindsidenetworks.com/bigbluebutton/');
         parent::addSetting('ConferenceBBB_port', 'string', 255, '80');
         parent::addSetting('ConferenceBBB_user', 'string', 255, '');
+    }
+
+    public static function uninstall()
+    {
+
+    }
+
+    public static function activate()
+    {
+
+    }    
+
+    public static function deactivate()
+    {
+        
     }
 }
