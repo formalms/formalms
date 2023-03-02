@@ -40,7 +40,7 @@ class InlineChoice_Question extends Question
      */
     public function _lineAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
             . '<label for="is_correct_' . $i . '">' . $lang->def('_TEST_CORRECT') . '</label><br /><br />'
@@ -94,7 +94,7 @@ class InlineChoice_Question extends Question
      */
     public function _lineModAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
             . '<label for="is_correct_' . $i . '">' . $lang->def('_TEST_CORRECT') . '</label><br /><br />', 'content');
@@ -152,7 +152,7 @@ class InlineChoice_Question extends Question
      */
     public function create($idTest, $back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -289,7 +289,7 @@ class InlineChoice_Question extends Question
      */
     public function edit($back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -579,7 +579,7 @@ class InlineChoice_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         list($id_quest, $title_quest, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest, shuffle 
@@ -760,7 +760,7 @@ class InlineChoice_Question extends Question
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';

@@ -669,9 +669,11 @@ class qformat_gift
             $question->text = text_format_name( (int)$textformat );
             $question->text = "[$question->text]";
         }*/
+
+       
         $qtext_format = '[' . $question->qtype . ']';
         // output depends on question type
-        switch ($question->qtype) {
+        switch (strtolower($question->qtype)) {
             case 'category' :
                 // not a real question, used to insert category switch
                 $expout .= "\$CATEGORY: $question->category\n";
@@ -774,7 +776,7 @@ class qformat_gift
                 }
                 $expout .= "}\n";
              break;
-            case NUMERICAL:
+            case 'numerical':
                 $expout .= '::' . $this->repchar($question->prompt) . '::' . $qtext_format . $this->repchar($question->quest_text) . "{#\n";
                 foreach ($question->options->answers as $answer) {
                     if ($answer->text != '') {
@@ -790,10 +792,10 @@ class qformat_gift
                 }
                 $expout .= "}\n";
                 break;
-            case DESCRIPTION:
+            case 'description':
                 $expout .= "// DESCRIPTION type is not supported\n";
                 break;
-            case MULTIANSWER:
+            case 'multianswer':
                 $expout .= "// CLOZE type is not supported\n";
                 break;
             default:

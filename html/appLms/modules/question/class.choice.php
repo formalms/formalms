@@ -40,7 +40,7 @@ class Choice_Question extends Question
      */
     public function _lineAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
@@ -107,7 +107,7 @@ class Choice_Question extends Question
      */
     public function _lineModAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
@@ -177,7 +177,7 @@ class Choice_Question extends Question
      */
     public function create($idTest, $back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -330,7 +330,7 @@ class Choice_Question extends Question
      */
     public function edit($back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -662,7 +662,7 @@ class Choice_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         list($id_quest, $title_quest, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest, shuffle 
@@ -712,13 +712,6 @@ class Choice_Question extends Question
             . '<div class="title_question">' . $num_quest . ') ' . $title_quest . '</div>'
             . '<div class="answer_question">';
         while (list($id_answer, $answer) = sql_fetch_row($re_answer)) {
-            // $content .=  '<input type="radio" id="quest_'.$id_quest.'_'.$id_answer.'" '
-            // 	.'name="quest['.$id_quest.']" value="'.$id_answer.'"'
-            // 	.( ($find_prev && $id_answer == $id_answer_do) ? ' checked="checked"' : '' )
-            // 	.( $find_prev && $freeze ? ' disabled="disabled"' : '' ).' />'
-            // 	.'<label class="text_answer" for="quest_'.$id_quest.'_'.$id_answer.'">'.$answer.'</label><br />';
-
-            // wrapping radio button: mod by Andrea Fiadone - 10/03/2016
             $content .= '<div class="answer-item"><div class="input-wrapper input-wrapper-radio">'
                 . '<input type="radio" id="quest_' . $id_quest . '_' . $id_answer . '" '
                 . 'name="quest[' . $id_quest . ']" value="' . $id_answer . '"'
@@ -867,7 +860,7 @@ class Choice_Question extends Question
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';

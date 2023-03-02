@@ -40,15 +40,14 @@ class Associate_Question extends Question
      */
     public function _lineAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td class="access-only valign_top align_center">'
             . '<label for="elem_a_' . $i . '">' . $lang->def('_TEST_QUEST_ELEM') . ': ' . ($i + 1) . '</label>'
             . '</td>'
             . '<td class="image">'
-            //.Form::getTextarea('', 'elem_a_'.$i, 'elem_a['.$i.']', ( isset($_POST['elem_a'][$i]) ? stripslashes($_POST['elem_a'][$i]) : '' ),false,'','form_line_l','floating','textarea',true)
-
+       
             . loadHtmlEditor('',
                 'elem_a_' . $i,
                 'elem_a[' . $i . ']',
@@ -57,9 +56,7 @@ class Associate_Question extends Question
                 '',
                 true)
 
-            //.'<textarea class="test_area_answer" id="elem_a_'.$i.'" name="elem_a['.$i.']" cols="19" rows="3">'
-            //.( isset($_POST['elem_a'][$i]) ? stripslashes($_POST['elem_a'][$i]) : '' ) //$lang->def('_QUEST_ANSWER')
-            //.'</textarea>'
+   
             . '</td>'
             . '<td class="access-only valign_top align_center">'
             . '<label for="elem_b_' . $i . '">' . $lang->def('_TEST_QUEST_ELEM') . ': ' . ($i + 1) . '</label>'
@@ -74,10 +71,7 @@ class Associate_Question extends Question
                 '',
                 true)
 
-            //.Form::getTextarea('', 'elem_b_'.$i, 'elem_b['.$i.']', ( isset($_POST['elem_b'][$i]) ? stripslashes($_POST['elem_b'][$i]) : '' ),false,'','form_line_l','floating','textarea',true)
-            //.'<textarea class="test_area_answer" id="elem_b_'.$i.'" name="elem_b['.$i.']" cols="19" rows="3">'
-            //.( isset($_POST['elem_b'][$i]) ? stripslashes($_POST['elem_b'][$i]) : '' ) //$lang->def('_QUEST_ANSWER')
-            //.'</textarea>'
+        
             . '</td>'
             . '</tr>' . "\n", 'content');
     }
@@ -93,7 +87,7 @@ class Associate_Question extends Question
      */
     public function _lineAssociateAnswer($i, $content_field_b)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2">', 'content');
@@ -146,7 +140,7 @@ class Associate_Question extends Question
      */
     public function _lineModAnswer($i)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td class="access-only valign_top align_center">'
@@ -165,9 +159,7 @@ class Associate_Question extends Question
                 '',
                 true)
 
-            //.'<textarea class="test_area_answer" id="elem_a_'.$i.'" name="elem_a['.$i.']" cols="19" rows="3">'
-            //.( isset($_POST['elem_a'][$i]) ? stripslashes($_POST['elem_a'][$i]) : '' )
-            //.'</textarea>'
+       
             . '</td>'
             . '<td class="access-only valign_top align_center">'
             . '<input type="hidden" name="elem_b_id[' . $i . ']" value="'
@@ -177,13 +169,7 @@ class Associate_Question extends Question
             . '<td class="image">'
             //.Form::getTextarea('', 'elem_b_'.$i, 'elem_b['.$i.']', ( isset($_POST['elem_b'][$i]) ? stripslashes($_POST['elem_b'][$i]) : '' ),false,'','form_line_l','floating','textarea',true)
 
-            /*.loadHtmlEditor('',
-                            'elem_b_'.$i,
-                            'elem_b['.$i.']',
-                            ( isset($_POST['elem_b'][$i]) ? stripslashes($_POST['elem_b'][$i]) : ''),
-                            false,
-                            '',
-                            true)*/
+       
             . '<textarea class="test_area_answer" id="elem_b_' . $i . '" name="elem_b[' . $i . ']" cols="19" rows="3">'
             . (isset($_POST['elem_b'][$i]) ? stripslashes($_POST['elem_b'][$i]) : '')
             . '</textarea>'
@@ -202,7 +188,7 @@ class Associate_Question extends Question
      */
     public function _lineModAssociateAnswer($i, $content_field_b)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2">', 'content');
@@ -265,7 +251,7 @@ class Associate_Question extends Question
      */
     public function create($idTest, $back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -471,7 +457,7 @@ class Associate_Question extends Question
      */
     public function edit($back_test)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -919,7 +905,7 @@ class Associate_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         list($id_quest, $title_quest, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest, shuffle 
@@ -1157,7 +1143,7 @@ class Associate_Question extends Question
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';

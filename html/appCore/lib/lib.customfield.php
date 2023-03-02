@@ -141,7 +141,7 @@ class CustomFieldList
     }
 
 
-    public function &getFieldInstance($id_field, $type_file = false, $type_class = false)
+    public function getFieldInstance($id_field, $type_file = false, $type_class = false)
     {
         if ($type_file === false && $type_class === false) {
             $query = 'SELECT ft.id_field, tft.type_file, tft.type_class'
@@ -186,7 +186,7 @@ class CustomFieldList
         return $output;
     }
 
-    public function &getFieldInstanceFromString($id_field, $type_file, $type_class)
+    public function getFieldInstanceFromString($id_field, $type_file, $type_class)
     {
         $query = 'SELECT ft.id_field, tft.type_file, tft.type_class'
             . '  FROM ' . $this->getFieldTable() . ' AS ft'
@@ -1015,7 +1015,7 @@ class CustomFieldList
      **/
     public function playFields($idst_obj = -1, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false, $separate_output = false, $check_precompiled = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = Docebo::user()->getACL();
 
         $query = "SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class, 'false' as mandatory"
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1071,8 +1071,8 @@ class CustomFieldList
      **/
     public function playFieldsFlat($idst_obj = -1)
     {
-        $acl = &Docebo::user()->getACL();
-
+        $acl = Docebo::user()->getACL();
+        $check_precompiled = 0;
         $query = 'SELECT ft.id_field, ft.code, ft.type_field, tft.type_file, tft.type_class, flt.translation as name'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
             . '  JOIN ' . $this->getTypeFieldTable() . ' AS tft JOIN ' . $this->getFieldLangTable() . ' AS flt )'
@@ -1125,7 +1125,7 @@ class CustomFieldList
      **/
     public function hiddenFieldForUserArr($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = Docebo::user()->getACL();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
@@ -1193,7 +1193,7 @@ class CustomFieldList
      **/
     public function isFilledFieldsForUser($idst_user, $arr_idst = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = Docebo::user()->getACL();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
@@ -1382,7 +1382,7 @@ class CustomFieldList
             return true;
         }
 
-        $acl = &Docebo::user()->getACL();
+        $acl = Docebo::user()->getACL();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1424,7 +1424,7 @@ class CustomFieldList
      **/
     public function playSpecFields($arr_field, $custom_mandatory = false, $user_id = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = Docebo::user()->getACL();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'

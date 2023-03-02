@@ -46,10 +46,10 @@ class Field_Upload extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
+        $std_lang = DoceboLanguage::createInstance('standard');
+        $lang = DoceboLanguage::createInstance('field');
         $array_lang = Docebo::langManager()->getAllLangCode();
-        $out = &$GLOBALS['page'];
+        $out = $GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
             //undo action
@@ -167,8 +167,8 @@ class Field_Upload extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
+        $std_lang = DoceboLanguage::createInstance('standard');
+        $lang = DoceboLanguage::createInstance('field');
         $array_lang = Docebo::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
@@ -442,7 +442,7 @@ class Field_Upload extends Field
     public function play_filter($id_field, $value = false, $label = false, $field_prefix = false, $other_after = '', $other_before = '', $field_special = false)
     {
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('field');
+        $lang = DoceboLanguage::createInstance('field');
 
         if ($value === false) {
             echo 'Trallallero: ' . Field::getFieldValue_Filter($_POST, $id_field, $field_prefix, 'false');
@@ -577,7 +577,7 @@ class Field_Upload extends Field
 
     public function getClientClassObject()
     {
-        $lang = &DoceboLanguage::createInstance('field');
+        $lang = DoceboLanguage::createInstance('field');
 
         return '{
 			type: "' . $this->getFieldType() . '",

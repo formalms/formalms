@@ -23,7 +23,7 @@ function repoList(&$url)
 {
     checkPerm('view');
 
-    $lang = &DoceboLanguage::createInstance('light_repo');
+    $lang = DoceboLanguage::createInstance('light_repo');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
     $file_man = new LightRepoManager(getLogUserId(), $idCourse);
@@ -557,7 +557,7 @@ function downloadFile(&$url)
 function lightrepoDispatch($op)
 {
     require_once _base_ . '/lib/lib.urlmanager.php';
-    $url = &UrlManager::getInstance('light_repo');
+    $url = UrlManager::getInstance('light_repo');
     $url->setStdQuery('modname=light_repo&op=repolist');
 
     if (isset($_POST['undo'])) {

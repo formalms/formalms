@@ -1881,9 +1881,10 @@ class Org_TreeView extends RepoTreeView
         foreach ($ids as $id) {
             if (in_array($id, $loToShow)) {
                 $folder = $this->tdb->getFolderById($id);
+                $repoFieldTitle = isset($folder->otherValues[REPOFIELDTITLE]) ? $folder->otherValues[REPOFIELDTITLE] : null;
                 $tree[$id] = [
                     'id' => $id,
-                    'name' => $folder->otherValues[REPOFIELDTITLE],
+                    'name' =>  $repoFieldTitle,
                     'children' => $this->tdb->getChildrensIdById($id, true),
                     'isPrerequisitesSatisfied' => $info[$id]['isPrerequisitesSatisfied'],
                     'active' => $info[$id]['active'],
@@ -1940,18 +1941,21 @@ class Org_TreeView extends RepoTreeView
 
             $folder = $this->tdb->getFolderById($idLo);
             $kbres = new KbRes();
-            $type = $folder->otherValues[REPOFIELDOBJECTTYPE];
+            $type = isset($folder->otherValues[REPOFIELDOBJECTTYPE]) ? $folder->otherValues[REPOFIELDOBJECTTYPE] : null;
+       
             if ($type === 'scormorg') {
                 $type = 'scorm';
             }
-            $kbres_information = $kbres->getResourceFromItem($folder->otherValues[REPOFIELDIDRESOURCE], $type, 'course_lo');
+
+            $repoFieldIdResource = isset($folder->otherValues[REPOFIELDIDRESOURCE]) ? $folder->otherValues[REPOFIELDIDRESOURCE] : null;
+            $kbres_information = $kbres->getResourceFromItem($repoFieldIdResource, $type, 'course_lo');
             if (isset($kbres_information) && is_array($kbres_information)) {
                 $node['isPublic'] = $kbres_information['force_visible'];
             }
 
             $html = '';
             $arrData = $folder->otherValues;
-            $lo_type = $arrData[REPOFIELDOBJECTTYPE];
+            $lo_type =  $type;
             $lo_class = createLO($lo_type);
 
             $node['html'] = $html;
@@ -1989,7 +1993,7 @@ class Org_TreeView extends RepoTreeView
 
             $node['id'] = $folder->id;
 
-            $node['resource'] = $folder->otherValues[REPOFIELDIDRESOURCE];
+            $node['resource'] = $repoFieldIdResource;
 
             if ($orgFieldPublishFor == PF_ATTENDANCE && !$this->presence()) {
                 $node['active'] = false;
@@ -2072,10 +2076,10 @@ class Org_TreeView extends RepoTreeView
             $node['status_logo'] = getPathImage() . 'lobject/' . $img;
             $node['status_label'] = $status;
 
-            $node['type'] = $folder->otherValues[1];
+            $node['type'] = $type;
 
-            if ($folder->otherValues[1] != '') {
-                $node['image_type'] = $folder->otherValues[1];
+            if ($type != '') {
+                $node['image_type'] = $type;
             }
 
             if (!array_key_exists('image_type', $node)) {

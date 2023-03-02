@@ -515,13 +515,14 @@ function getDeleteUi(
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
+        . '<div class="clearfix"></div>'
         . '<p class="spacer">'
         . $central_text
         . '</p>'
-        . '<p>';
+        . '<p style="float:right;">';
     if ($command_is_link) {
         $txt .= '<a href="' . $confirm_ref . '">'
-            . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '" />'
+            . '<img src="' . getPathImage() . 'standard/publish.png" alt="' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '" />'
             . '&nbsp;' . ($confirm_text == false ? Lang::t('_CONFIRM') : $confirm_text) . '</a>&nbsp;&nbsp;'
             . '<a href="' . $undo_ref . '">'
             . '<img src="' . getPathImage() . 'standard/cancel.png" alt="' . ($undo_text == false ? Lang::t('_UNDO') : $undo_text) . '" />'

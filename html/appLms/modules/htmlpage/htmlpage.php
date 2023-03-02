@@ -20,7 +20,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('htmlpage');
+        $lang = DoceboLanguage::createInstance('htmlpage');
 
         $GLOBALS['page']->add(getTitleArea($lang->def('_SECT_PAGE'), 'htmlpage')
         . '<script>' . "\n"

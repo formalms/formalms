@@ -89,12 +89,12 @@ function forum()
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::CreateInstance('forum');
+    $lang = DoceboLanguage::CreateInstance('forum');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $mod_perm = checkPerm('mod', true);
     $moderate = checkPerm('moderate', true);
     $base_link = 'index.php?modname=forum&amp;op=forum';
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = Docebo::user()->getAclManager();
 
     $idCourse = $session->get('idCourse');
     $unreadedForum = $session->get('unreaded_forum');
@@ -4063,7 +4063,7 @@ function getEmoticonsArr()
 function forumDispatch($op)
 {
     require_once _base_ . '/lib/lib.urlmanager.php';
-    $url_man = &UrlManager::getInstance('forum');
+    $url_man = UrlManager::getInstance('forum');
     $url_man->setStdQuery('index.php?modname=forum&op=forum');
 
     switch ($op) {

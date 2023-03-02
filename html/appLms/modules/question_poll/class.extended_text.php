@@ -52,7 +52,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      */
     public function create($id_poll, $back_poll)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = DoceboLanguage::createInstance('poll');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_poll));
@@ -121,7 +121,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
 
     public function edit($back_poll)
     {
-        $lang = &DoceboLanguage::createInstance('poll');
+        $lang = DoceboLanguage::createInstance('poll');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_poll));
@@ -222,7 +222,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         list($id_poll, $title_quest) = sql_fetch_row(sql_query('
 		SELECT id_quest, title_quest 
@@ -364,7 +364,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = &DoceboLanguage::createInstance('test');
+        $lang = DoceboLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';
@@ -400,7 +400,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
     {
         $idItem = $num_quest;
         $html = '';
-        $lang = &DoceboLanguage::createInstance('stats', 'lms');
+        $lang = DoceboLanguage::createInstance('stats', 'lms');
         require_once _base_ . '/lib/lib.table.php';
 
         $query_quest = 'SELECT id_quest, title_quest' .
@@ -449,7 +449,7 @@ class ExtendedText_QuestionPoll extends QuestionPoll
     {
         $idItem = $num_quest;
         $csv = '';
-        $lang = &DoceboLanguage::createInstance('poll', 'lms');
+        $lang = DoceboLanguage::createInstance('poll', 'lms');
         require_once _base_ . '/lib/lib.table.php';
 
         $query_quest = 'SELECT id_quest, title_quest' .
