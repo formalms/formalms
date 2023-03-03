@@ -379,12 +379,18 @@ class DateManager
             $res .= $this->lang->def('_NOT_ASSIGNED');
         }
 
+      
+
         $query = 'SELECT c.name, cl.location '
             . ' FROM %lms_classroom AS c '
             . ' JOIN %lms_class_location AS cl '
-            . ' ON (c.location_id = cl.location_id) '
-            . ' WHERE c.idClassroom IN (' . implode(',', $array_classroom) . ')'
-            . ' ORDER BY c.name';
+            . ' ON (c.location_id = cl.location_id) ';
+
+        if(count($array_classroom)) {
+            $query .= ' WHERE c.idClassroom IN (' . implode(',', $array_classroom) . ')';
+        }
+            
+        $query .= ' ORDER BY c.name';
 
         $result = sql_query($query);
 

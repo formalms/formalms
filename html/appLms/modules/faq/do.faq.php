@@ -21,7 +21,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.param.php';
 
-        $lang = &DoceboLanguage::createInstance('faq');
+        $lang = DoceboLanguage::createInstance('faq');
 
         $idCategory = $object_faq->getId();
         $mode = importVar('mode', false, 'faq');
@@ -237,7 +237,7 @@ if (!Docebo::user()->isAnonymous()) {
         }
         $GLOBALS['page']->add('<div class="align_center">'
         . '<a href="#top">'
-            . '<img src="' . getPathImage() . 'standard/upcheck.gif" title="' . $lang->def('_BACKTOTOP') . '" />'
+            . '<img src="' . getPathImage() . 'standard/up_arrow.png" title="' . $lang->def('_BACKTOTOP') . '" />'
             . $lang->def('_BACKTOTOP')
         . '</a>'
         . getBackUi(Util::str_replace_once('&', '&amp;', $object_faq->back_url), $lang->def('_BACK')), 'content');

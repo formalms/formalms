@@ -352,38 +352,41 @@ class CourseLms extends Model
         $next_lesson_array = [];
         $currentDate = new DateTime();
 
-        // user can be enrolled in more than one edition (as a teacher or crazy student....)
-        foreach ($course_editions[$id_course] as $id_date => $obj_data) {
-            // skip if course if over or not available
-            try {
-                $end_course = new DateTime(Format::date($obj_data->date_max, 'datetime'));
-            } catch (Exception $e) {
-                $end_course = clone $currentDate;
-            }
-            if (((int) $obj_data->status === 0) && ($end_course > $currentDate)) {
-                $out[$id_date]['code'] = $obj_data->code;
-                $out[$id_date]['name'] = $obj_data->name;
-                $out[$id_date]['date_begin'] = $obj_data->date_min;
-                $out[$id_date]['date_end'] = $obj_data->date_max;
-                $out[$id_date]['unsubscribe_date_limit'] = $obj_data->unsubscribe_date_limit;
-                $array_day = $dm->getDateDayDateDetails($obj_data->id_date);
+        if(array_key_exists($id_course, $course_editions)) {
+            // user can be enrolled in more than one edition (as a teacher or crazy student....)
+            foreach ($course_editions[$id_course] as $id_date => $obj_data) {
+                // skip if course if over or not available
+                try {
+                    $end_course = new DateTime(Format::date($obj_data->date_max, 'datetime'));
+                } catch (Exception $e) {
+                    $end_course = clone $currentDate;
+                }
+                if (((int) $obj_data->status === 0) && ($end_course > $currentDate)) {
+                    $out[$id_date]['code'] = $obj_data->code;
+                    $out[$id_date]['name'] = $obj_data->name;
+                    $out[$id_date]['date_begin'] = $obj_data->date_min;
+                    $out[$id_date]['date_end'] = $obj_data->date_max;
+                    $out[$id_date]['unsubscribe_date_limit'] = $obj_data->unsubscribe_date_limit;
+                    $array_day = $dm->getDateDayDateDetails($obj_data->id_date);
 
-                foreach ($array_day as $id => $day) {
-                    $out[$id_date]['days'][$id]['classroom'] = $day['classroom'];
-                    $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
-                    $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
-                    $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
-                    $out[$id_date]['days'][$id]['full_date'] = $day['date_begin'];
+                    foreach ($array_day as $id => $day) {
+                        $out[$id_date]['days'][$id]['classroom'] = $day['classroom'];
+                        $out[$id_date]['days'][$id]['day'] = Format::date($day['date_begin'], 'date');
+                        $out[$id_date]['days'][$id]['begin'] = Format::date($day['date_begin'], 'time');
+                        $out[$id_date]['days'][$id]['end'] = Format::date($day['date_end'], 'time');
+                        $out[$id_date]['days'][$id]['full_date'] = $day['date_begin'];
 
-                    try {
-                        $nextLesson = new DateTime(Format::date($day['date_begin'], 'datetime'));
-                    } catch (Exception $e) {
-                        $nextLesson = '';
+                        try {
+                            $nextLesson = new DateTime(Format::date($day['date_begin'], 'datetime'));
+                        } catch (Exception $e) {
+                            $nextLesson = '';
+                        }
+                        $next_lesson_array[$id_date . ',' . $id] = $nextLesson;
                     }
-                    $next_lesson_array[$id_date . ',' . $id] = $nextLesson;
                 }
             }
         }
+        
 
         // calculating what's next lession will be; safe mode in case of more editions with different days
         if (count($next_lesson_array) > 0) {

@@ -215,6 +215,7 @@ class CoursereportLmsController extends LmsController
                         switch ($info_report->getSourceOf()) {
                             case CoursereportLms::SOURCE_OF_TEST:
                                     $testObj = Learning_Test::load($info_report->getIdSource());
+                                    $score = 0;
                                     if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
                                         $scoreStatus = $tests_score[$info_report->getIdSource()][$idst_user]['score_status'];
                                         switch ($scoreStatus) {
@@ -366,8 +367,6 @@ class CoursereportLmsController extends LmsController
                                         $test_details[$info_report->getIdSource()]['not_passed'] = 0;
                                     }
 
-                                    $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']);
-                                    $test_details[$id_test]['varianza'] = sqrt($test_details[$id_test]['varianza']);
                                 }
 
                                 $passed = (isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED]) ? round($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED], 2) : '-');

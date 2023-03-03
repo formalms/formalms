@@ -156,7 +156,7 @@ class ClassroomLms extends Model
             $id_date_arr[] = $obj->id_date;
         }
 
-        if (is_array($id_date_arr)) {
+        if (isset($id_date_arr) && is_array($id_date_arr)) {
             array_unique($id_date_arr);
         }
         if (empty($id_date_arr)) {

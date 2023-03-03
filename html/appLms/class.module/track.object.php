@@ -371,8 +371,8 @@ class Track_Object
                     'environment' => $this->environment,
                     'old_data' => $old_data,
                     'new_data' => [
-                        'last_complete' => $data['last_complete'],
-                        'first_complete' => $data['first_complete'],
+                        'last_complete' => array_key_exists('last_complete', $data) ? $data['last_complete'] : '',
+                        'first_complete' => array_key_exists('first_complete', $data) ? $data['first_complete'] : '',
                     ],
                 ]);
             }

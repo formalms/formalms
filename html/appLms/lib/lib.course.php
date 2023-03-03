@@ -606,7 +606,7 @@ class Man_Course
             // BUG FIX 2469: GETTING THE USERS OF THE ADMIN
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
             $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
@@ -681,7 +681,7 @@ class Man_Course
     {
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         // find all the group created for this menu custom for permission management
         foreach ($levels as $lv => $name_level) {
@@ -818,7 +818,7 @@ class Man_Course
         require_once Forma::include(_lms_ . '/lib/', 'lib.manmenu.php');
         require_once Forma::include(_adm_ . '/lib/', 'lib.istance.php');
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $re = true;
         $query_menu = '
@@ -861,7 +861,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
     public function removeCourseRole($idCourse)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
         $base_path = '/lms/course/private/' . $idCourse . '/';
         $acl_man->deleteRoleFromPath($base_path);
     }
@@ -1365,7 +1365,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
 
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
             $all_courses = false;
@@ -2096,7 +2096,7 @@ class Man_CourseUser
 
         $subscriber = new CourseSubscribe_Management();
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $query_course = 'SELECT idCourse' .
             ' FROM %lms_course' .
@@ -2276,7 +2276,7 @@ class DoceboCourse
      */
     public function getSubscribed()
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
         /*
         $group_info = $acl_man->getGroup(FALSE, '/lms/course/'.$this->id_course.'/subscribed/alluser');
         $idst_group = $group_info[ACL_INFO_IDST];
@@ -2383,7 +2383,7 @@ class DoceboCourse
 
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $idst_main = $acl_man->registerGroup('/lms/course/' . $idCourse . '/group/alluser',
             'all the user of a course',
@@ -2415,7 +2415,7 @@ class DoceboCourse
  */
 function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $edition_id = 0)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = Docebo::user()->getAclManager();
     $id_users = [];
 
     $query_courseuser = "
@@ -2455,7 +2455,7 @@ function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false
  */
 function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $status = false, $edition_id = false, $sort = false, $user_filter = '', $group_all_members = false, $limit = false, $date_id = false)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = Docebo::user()->getAclManager();
     $id_users = [];
 
     $query_courseuser = '
@@ -2544,7 +2544,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
  */
 function getSubscribedLevel($idCourse, $subdived_for_level = false, $id_level = false, $edition_id = 0)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = Docebo::user()->getAclManager();
     $id_users = [];
 
     $query_courseuser = "
@@ -2572,7 +2572,7 @@ function getSubscribedLevel($idCourse, $subdived_for_level = false, $id_level = 
 
 function getIDGroupAlluser($idCourse)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = Docebo::user()->getAclManager();
     $info = $acl_man->getGroup(false, '/lms/course/' . $idCourse . '/group/alluser');
 
     return $info[ACL_INFO_IDST];
@@ -2583,14 +2583,14 @@ function getIDGroupAlluser($idCourse)
  *
  * @return
  */
-function &fromIdstToUser($id_user)
+function fromIdstToUser($id_user)
 {
     $users = [];
     if (!is_array($id_user) || (count($id_user) == 0)) {
         return $users;
     }
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = Docebo::user()->getAclManager();
     foreach ($id_user as $id_u) {
         $user_info = $acl_man->getUser($id_u, false);
         if ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME] == '') {
