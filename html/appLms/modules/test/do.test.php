@@ -1374,10 +1374,10 @@ function showResult($object_test, $id_param)
                     while ($row = sql_fetch_row($q)) {
                         $idscorm_tracking = $row[0];
                         $sql = "DELETE FROM %lms_scorm_tracking WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Docebo::user()->getIdst();
-                        $q = sql_query($sql);
+                        sql_query($sql);
                     }
                     $sql = "DELETE FROM %lms_scorm_items_track WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
-                    $q = sql_query($sql);
+                    sql_query($sql);
                 }
                 $suspend_info['attempts_for_suspension'] = 0;
             }
