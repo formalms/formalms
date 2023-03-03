@@ -477,7 +477,7 @@ class AggregatedCertificate
             $courseRow['codeCourse'] = $rows['code'];
             $courseRow['nameCourse'] = $rows['name'];
             if ($idCategory !== 0) {
-                $courseRow['pathCourse'] = substr($rows['path'], 6);
+                $courseRow['pathCourse'] = array_key_exists('path', $rows) ? substr($rows['path'], 6) : '';
             } else {
                 $courseRow['pathCourse'] = Lang::t('_ALT_ROOT');
             }
@@ -1096,7 +1096,7 @@ class AggregatedCertificate
         if ($rs) {
             $r = sql_fetch_row($rs);
 
-            return $r[0];
+            return is_array($r) ? $r[0] : false;
         }
 
         return '';

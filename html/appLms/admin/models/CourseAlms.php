@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden');
 
-use UsermanagementAdm;
+
 
 class CourseAlms extends Model
 {
@@ -298,7 +298,7 @@ class CourseAlms extends Model
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
 
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
 

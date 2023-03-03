@@ -1311,6 +1311,7 @@ class Form
             $css_text = 'textarea';
         }
         $maxlength_info = '';
+        $script = '';
         if ($maxlength) {
             $maxlength_info = '<small>(' . Lang::t('_MAX_LENGTH_TEXT_AREA', 'course') . ' <em>' . $maxlength . '</em>)</small> <br/><small>' . Lang::t('_TOTAL_CHARS', 'course') . ": <em class='charNum'> " . strlen($value) . '</em></small> ';
 

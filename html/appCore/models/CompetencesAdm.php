@@ -608,7 +608,10 @@ class CompetencesAdm extends Model
             }
         }
 
-        $output->langs = $langs;
+        if($output) {
+            $output->langs = $langs;
+        }
+        
 
         return $output;
     }

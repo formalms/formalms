@@ -29,7 +29,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.navbar.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -38,7 +38,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = &Docebo::user()->getAcl();
+        $acl = Docebo::user()->getAcl();
         $user_idst = getLogUserId();
 
         $events = [];
@@ -57,7 +57,7 @@ if (!Docebo::user()->isAnonymous()) {
             }
         }
 
-        if (count($events)) {
+        if (is_array($events) && count($events)) {
             $tb = new Table(10, $lang->def('_EVENT_CAPTION'), $lang->def('_EVENT_CAPTION'));
             $tb->initNavBar('ini', 'button');
 
@@ -145,7 +145,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -255,7 +255,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_event = importVar('id_event', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -370,7 +370,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_event = importVar('id_event', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -410,7 +410,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -496,7 +496,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -565,7 +565,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_category = importVar('id_category', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -632,7 +632,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $id_category = importVar('id_category', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -672,7 +672,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.navbar.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $mod_perm = checkPerm('mod', true);
 
@@ -681,7 +681,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = &Docebo::user()->getAcl();
+        $acl = Docebo::user()->getAcl();
         $user_idst = getLogUserId();
 
         $events = [];
@@ -704,7 +704,7 @@ if (!Docebo::user()->isAnonymous()) {
             }
         }
 
-        if (count($events)) {
+        if (is_array($events) && count($events)) {
             $tb = new Table(10, $lang->def('_RESERVATION_CAPTION'), $lang->def('_RESERVATION_SUMMARY'));
             $tb->initNavBar('ini', 'button');
 
@@ -778,7 +778,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.navbar.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $id_event = importVar('id_event', true, 0);
 
@@ -789,9 +789,9 @@ if (!Docebo::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = &Docebo::user()->getAcl();
+        $acl = Docebo::user()->getAcl();
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $user_idst = getLogUserId();
 
@@ -879,13 +879,13 @@ if (!Docebo::user()->isAnonymous()) {
 
     function getExcelFile()
     {
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $id_event = importVar('id_event', true, 0);
 
         $man_res = new Man_Reservation();
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $user_subscribed = [];
 
@@ -946,7 +946,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         $subscribed_empty = [];
 
-        $lang = &DoceboLanguage::CreateInstance('reservation');
+        $lang = DoceboLanguage::CreateInstance('reservation');
         $out = &$GLOBALS['page'];
 
         $user_select = new UserSelector();
@@ -963,7 +963,7 @@ if (!Docebo::user()->isAnonymous()) {
             $user_select->resetSelection($subscribed);
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
         $user_select->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
 
         $user_select->loadSelector('index.php?modname=reservation&amp;op=add_registration&amp;id_course=' . $id_course . '&amp;id_event=' . $id_event,
@@ -981,7 +981,7 @@ if (!Docebo::user()->isAnonymous()) {
         $id_course = importVar('id_course', true, 0);
         $id_event = importVar('id_event', true, 0);
 
-        $lang = &DoceboLanguage::CreateInstance('reservation');
+        $lang = DoceboLanguage::CreateInstance('reservation');
         $out = &$GLOBALS['page'];
 
         $man_res = new Man_Reservation();
@@ -1037,7 +1037,7 @@ if (!Docebo::user()->isAnonymous()) {
         $id_event = importVar('id_event', true, 0);
         $id_user = importVar('id_user', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('reservation');
+        $lang = DoceboLanguage::createInstance('reservation');
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1082,7 +1082,7 @@ function setRoomViewPerm()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('reservation', 'lms');
+    $lang = DoceboLanguage::createInstance('reservation', 'lms');
 
     $roomperm = new ReservationRoomPermissions();
 
@@ -1108,7 +1108,7 @@ function setRoomViewPerm()
             }
         }
 
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = Docebo::user()->getAclManager();
 
         $url = 'index.php?modname=reservation&amp;op=set_room_view_perm&amp;id_event=' . $id_event;
         //$mdir->setNFields(0);

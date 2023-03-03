@@ -16,5 +16,5 @@
 
     cout($tb->getTable()
                 . $tb->getNavBar($ini, $countAssociations)
-                . getBackUi('index.php?r=alms/' . $controller_name . '/' . $arrOps['home'], Lang::t('_BACK'))
+                . getBackUi('index.php?r=alms/' . $controller_name . '/' . array_key_exists('home', $arrOps) ?  '':$arrOps['home'] , Lang::t('_BACK'))
                 . '</div>');

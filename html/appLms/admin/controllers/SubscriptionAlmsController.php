@@ -1106,10 +1106,10 @@ class SubscriptionAlmsController extends AlmsController
 
                 $docebo_course = new DoceboCourse($this->id_course);
 
-                $level_idst = &$docebo_course->getCourseLevel($this->model->getIdCourse());
+                $level_idst = $docebo_course->getCourseLevel($this->model->getIdCourse());
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$docebo_course->createCourseLevel($this->id_course);
+                    $level_idst = $docebo_course->createCourseLevel($this->id_course);
                 }
 
                 //$this->acl_man->addToGroup($level_idst[$level], $id_user);
@@ -2469,7 +2469,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.edition.php';
         require_once _lms_ . '/lib/lib.date.php';
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
         $edition_man = new EditionManager();
         $date_man = new DateManager();
 
@@ -3634,14 +3634,14 @@ class SubscriptionAlmsController extends AlmsController
         $edition_id = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
         $ed_url_param = '&id_edition=' . $edition_id;
 
-        $out = &$GLOBALS['page'];
-        $lang = &DoceboLanguage::CreateInstance('course', 'lms');
-        $lang = &DoceboLanguage::CreateInstance('subscribe', 'lms');
-        $acl_man = &Docebo::user()->getAclManager();
+        $out = $GLOBALS['page'];
+        $lang = DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = DoceboLanguage::CreateInstance('subscribe', 'lms');
+        $acl_man = Docebo::user()->getAclManager();
         $levels = CourseLevel::getTranslatedLevels();
 
-        $waiting_users = &$man_course->getWaitingSubscribed($id_course, $edition_id);
-        $users_name = &$acl_man->getUsers($waiting_users['all_users_id']);
+        $waiting_users = $man_course->getWaitingSubscribed($id_course, $edition_id);
+        $users_name = $acl_man->getUsers($waiting_users['all_users_id']);
 
         $arr_status = [ //_CUS_RESERVED		=> $lang->def('_USER_STATUS_RESERVED'),
             _CUS_WAITING_LIST => $lang->def('_WAITING_USERS'),
@@ -3818,7 +3818,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
         $acl_man->removeFromGroup($lv_group, $id_user);
 
         if ($edition_id > 0) {

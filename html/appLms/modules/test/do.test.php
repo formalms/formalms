@@ -875,7 +875,7 @@ function play($object_test, $id_param)
     );
 
     // FIX sugli ordinamenti random e le risposte a tempo
-    if ($idQuest) {
+    if (isset($idQuest)) {
         $query_question = str_replace('WHERE', 'WHERE q.idQuest = ' . $idQuest . ' AND', $query_question);
     }
     // END FIX
@@ -903,6 +903,7 @@ function play($object_test, $id_param)
             'content'
         );
 
+
         switch ($type_quest) {
             case 'course_valutation':
             case 'choice_multiple':
@@ -912,9 +913,9 @@ function play($object_test, $id_param)
                 $query = 'SELECT idAnswer, is_correct'
                     . ' FROM %lms_testquestanswer'
                     . ' WHERE idQuest = ' . (int) $idQuest;
-                $result = sql_query($query);
-                while (list($id_answer, $is_correct) = sql_fetch_assoc($result)) {
-                    $array_answer[$idQuest][$id_answer] = $is_correct;
+                $results = sql_query($query);
+                foreach ($results as $result) {
+                    $array_answer[$idQuest][$result['idAnswer']] = $result['is_correct'];
                 }
                 $array_answer[$idQuest]['type'] = $type_quest;
                 ++$tot_question;
@@ -925,7 +926,7 @@ function play($object_test, $id_param)
 
         // Save question visualization sequence
         sql_query('
-		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
+		INSERT IGNORE INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
 		(idTrack, idQuest, page) VALUES 
 		('" . (int) $id_track . "', '" . (int) $idQuest . "', '" . $page_to_display . "')");
 
@@ -1335,7 +1336,7 @@ function showResult($object_test, $id_param)
             (idTrack, idReference, idTest, date_attempt, number_time, score, score_status, date_begin, date_end, time) VALUES
             ('" . $id_track . "', '" . $id_reference . "', '" . $id_test . "', now(), '" . $new_info['number_of_save'] . "', '" . $new_info['score'] . "', '" . $new_info['score_status'] . "', '" . $testDateBegin . "', '" . date('Y-m-d H:i:s') . "', '" . $time . "')");
 
-          
+
             $session->remove('test_date_begin');
             $session->save();
         }
@@ -1422,8 +1423,6 @@ function showResult($object_test, $id_param)
         }
     }
     if ($test_info['show_score_cat']) {
-     
-
         //** LRZ    bug fix #9171
         //** in caso di partizioni di domande a categorie ( e no a tutte le domande della categoria)
         $sql_test = 'SELECT c.idCategory, c.name, COUNT(q.idQuest)
@@ -1491,7 +1490,7 @@ function showResult($object_test, $id_param)
                 ]
             );
 
-       
+
             $GLOBALS['page']->add($eventResult['scoreCategoryTable'], 'content');
         }
     }
@@ -1767,7 +1766,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
     $quest_sequence_number = 1;
     $report_test = '';
     $point_do_cat = [];
- 
+
     if ($order_type >= 2) {
         $re_visu_quest = sql_query("SELECT idQuest
 		FROM %lms_testtrack_quest

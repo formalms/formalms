@@ -734,7 +734,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         // Users after editing (there may be the same users, new users added, or user to delete)
 
         $user_selection = new UserSelector();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
         $aclManager = new DoceboACLManager();
         $userSelectionArr = array_map('intval', $user_selection->getSelection($_POST));
         $userSelectionArr = $aclManager->getAllUsersFromIdst($userSelectionArr);
@@ -852,7 +852,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         // Users after editing (there may be the same users, new users added, or user to delete)
 
         $user_selection = new UserSelector();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
         $aclManager = new DoceboACLManager();
         $userSelectionArr = array_map('intval', $user_selection->getSelection($_POST));
         $userSelectionArr = $aclManager->getAllUsersFromIdst($userSelectionArr);
@@ -997,7 +997,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = ocebo::user()->getAclManager();
 
         $id_association = FormaLms\lib\Get::req('id_association', DOTY_INT, 0);
 
@@ -1343,7 +1343,9 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         if (count($nodesArr) > 0) {
             foreach ($nodesArr as $index => $node) { // Processing all nodes with idParent
-                $nodesArr[$index]['text'] = end(explode('/', $nodesArr[$index]['text']));
+           
+                $testArray = explode('/', $nodesArr[$index]['text']);
+                $nodesArr[$index]['text'] = $testArray[array_key_last($testArray)];
                 $nodesArr[$index]['idCategory'] = (int) $nodesArr[$index]['idCategory'];
                 $nodesArr[$index]['level'] = (int) $nodesArr[$index]['level'];
                 if (!$nodesArr[$index]['isLeaf']) {

@@ -10,7 +10,7 @@
                     . $form->getHidden('type_assoc', 'type_assoc', $type_assoc)
                     . $form->getHidden('selected_courses', 'selected_courses', $selected_courses)
                     . $form->getHidden('selected_users', 'selected_users', $selected_users)
-                    . $form->getHidden('selected_users', 'selected_idsCoursePath', $selected_idsCoursePath)
+                    . $form->getHidden('selected_users', 'selected_idsCoursePath', isset($selected_idsCoursePath) ? $associationCreate : 0 )
                     . $form->getHidden('title', 'title', $title)
                     . $form->getHidden('description', 'description', $description)
      );
