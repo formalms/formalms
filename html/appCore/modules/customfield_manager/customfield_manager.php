@@ -103,7 +103,7 @@ function field_list()
             '') . '
 	ORDER BY c.sequence';
 
-   
+ 
     $re_field_display = sql_query($query_field_display);
     $all_fields = sql_num_rows($re_field_display);
 

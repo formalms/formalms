@@ -228,13 +228,13 @@ class MyFriends
     /**
      * return the userid/username of the user that are friends.
      */
-    public function &getFriendsInfo($arr_id_friends = false, $limit = false, $waiting = 0)
+    public function getFriendsInfo($arr_id_friends = false, $limit = false, $waiting = 0)
     {
         if ($arr_id_friends === false) {
             $arr_id_friends = $this->getFriendsList($limit, false, $waiting, true);
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $users_info = &$acl_man->getUsers($arr_id_friends);
 

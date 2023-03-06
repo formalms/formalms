@@ -24,7 +24,7 @@ function mycourses(&$url)
 {
     checkPerm('view');
     require_once _base_ . '/lib/lib.user_profile.php';
-    $lang = &DoceboLanguage::createInstance('catalogue');
+    $lang = DoceboLanguage::createInstance('catalogue');
 
     require_once _lms_ . '/lib/lib.middlearea.php';
     $ma = new Man_MiddleArea();
@@ -233,7 +233,9 @@ function mycourses(&$url)
                     . '<div class="news_textof">'
                     . '<span class="news_data">' . Format::date($publish_date, 'date') . ' - </span>'
                         . $short_desc
-                    . '</div>', 'content');
+                    . '</div>',
+                    'content'
+                );
                 ++$displayed;
             }
         } // end news display
@@ -274,23 +276,28 @@ function mycourses(&$url)
 
             . '<ul class="flat_tab">'
 
-            . ($course_stats['with_ustatus'][_CUS_END] != $course_stats['total'] ?
+            . (
+                $course_stats['with_ustatus'][_CUS_END] != $course_stats['total'] ?
                 '<li ' . ($current_tab == 'lo_plan' ? 'class="now_selected"' : '') . '>'
                 . '<a href="index.php?modname=course&amp;op=mycourses&amp;current_tab=lo_plan"><span>' . $lang->def('_COURSE') . '</span></a></li>'
                 : ''
             )
-            . ($course_stats['with_ustatus'][_CUS_END] != 0 ?
+            . (
+                $course_stats['with_ustatus'][_CUS_END] != 0 ?
                 '<li ' . ($current_tab == 'lo_history' ? 'class="now_selected"' : '') . '>'
                     . '<a href="index.php?modname=course&amp;op=mycourses&amp;current_tab=lo_history"><span>' . $lang->def('_COMPLETED') . '</span></a></li>'
                 : ''
             )
-            . ($course_stats['with_wstatus'][_CUS_RESERVED] != 0 || $course_stats['with_wstatus'][_CUS_WAITING_LIST] != 0 ?
+            . (
+                $course_stats['with_wstatus'][_CUS_RESERVED] != 0 || $course_stats['with_wstatus'][_CUS_WAITING_LIST] != 0 ?
                 '<li ' . ($current_tab == 'lo_waiting' ? 'class="now_selected"' : '') . '>'
                     . '<a href="index.php?modname=course&amp;op=mycourses&amp;current_tab=lo_waiting"><span>' . $lang->def('_LO_WAITING') . '</span></a></li>'
                 : ''
             )
             . '</ul>'
-            . '</div>', 'content');
+            . '</div>',
+            'content'
+        );
     } else {
         $GLOBALS['page']->addStart(
             '<div class="lo_tab">'
@@ -298,7 +305,9 @@ function mycourses(&$url)
                 . $lang->def('_WELCOME') . ': '
                 . '<span>' . Docebo::user()->getUserName() . '</span>'
             . '</h1>'
-            . '</div>', 'content');
+            . '</div>',
+            'content'
+        );
     }
 }
 
@@ -417,8 +426,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $classroom_man = new ClassroomManager();
     $classrooms = $classroom_man->getClassroomNameList();
 
-    $lang = &DoceboLanguage::createInstance('catalogue');
-    $lang_c = &DoceboLanguage::createInstance('course');
+    $lang = DoceboLanguage::createInstance('catalogue');
+    $lang_c = DoceboLanguage::createInstance('course');
 
     $man_course = new Man_Course();
 
@@ -474,9 +483,12 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         $arr_temp = [];
         foreach ($arr_order_course as $key => $value) {
             switch ($value) {
-                case 'status': $arr_temp[] = ' u.status '; break;
-                case 'code': $arr_temp[] = ' c.code '; break;
-                case 'name': $arr_temp[] = ' c.name '; break;
+                case 'status': $arr_temp[] = ' u.status ';
+                break;
+                case 'code': $arr_temp[] = ' c.code ';
+                break;
+                case 'name': $arr_temp[] = ' c.name ';
+                break;
             }
         }
         $order_course = $order_course . implode(', ', $arr_temp);
@@ -599,7 +611,9 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         if ($page_add) {
             $GLOBALS['page']->add(
                 '<div id="mycourse_asses">'
-                . '<h1>' . $lang_c->def('_ASSESSMENT_LIST') . '</h1>', 'content');
+                . '<h1>' . $lang_c->def('_ASSESSMENT_LIST') . '</h1>',
+                'content'
+            );
         }
         foreach ($preass_list as $cinfo) {
             $cinfo['user_score'] = (isset($user_score[$cinfo['idCourse']]) ? $user_score[$cinfo['idCourse']] : null);
@@ -608,10 +622,12 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
                 $cinfo['comment_count'] = $comment_count[$cinfo['idCourse']];
             }
             if ($page_add) {
-                $GLOBALS['page']->add(dashmyassess($url,
-                                                $lang_c,
-                                                $cinfo,
-                                                $i++), 'content');
+                $GLOBALS['page']->add(dashmyassess(
+                    $url,
+                    $lang_c,
+                    $cinfo,
+                    $i++
+                ), 'content');
             }
         }
         if ($page_add) {
@@ -625,17 +641,25 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
     $title = $lang->def('_COURSE_LIST');
     switch ($filter) {
-        case 'access': 	 $title = $lang->def('_COURSE_YOU_CAN_ACCESS'); break;
-        case 'expiring': 	 $title = $lang->def('_COURSE_EXPIRING'); break;
-        case 'subscribed':  $title = $lang->def('_COURSE_SUBSCRIBED'); break;
-        case 'begin': 		 $title = $lang->def('_COURSE_BEGIN'); break;
-        case 'end': 		 $title = $lang->def('_COURSE_END'); break;
-        case 'level': 		 $title = str_replace('[level]', $lvl[$_GET['filter_on']], $lang->def('_COURSE_AS')); break;
+        case 'access': 	 $title = $lang->def('_COURSE_YOU_CAN_ACCESS');
+        break;
+        case 'expiring': 	 $title = $lang->def('_COURSE_EXPIRING');
+        break;
+        case 'subscribed':  $title = $lang->def('_COURSE_SUBSCRIBED');
+        break;
+        case 'begin': 		 $title = $lang->def('_COURSE_BEGIN');
+        break;
+        case 'end': 		 $title = $lang->def('_COURSE_END');
+        break;
+        case 'level': 		 $title = str_replace('[level]', $lvl[$_GET['filter_on']], $lang->def('_COURSE_AS'));
+        break;
     }
     if ($page_add) {
         $GLOBALS['page']->add(
             '<div id="mycourse_list">'
-            . '<h1>' . $title . '</h1>', 'content');
+            . '<h1>' . $title . '</h1>',
+            'content'
+        );
     }
 
     $i = 0;
@@ -729,20 +753,24 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
             // the course is not related with a coursepath, so i can print it --------------
             if ($filter == 'level') {
                 if ($subscription['course'][$cinfo['idCourse']]['level'] == $filter_level) {
-                    $dash = dashmycourse($url,
-                                        $lang_c,
-                                        $subscription,
-                                        $cinfo,
-                                        $i++);
+                    $dash = dashmycourse(
+                        $url,
+                        $lang_c,
+                        $subscription,
+                        $cinfo,
+                        $i++
+                    );
                 } else {
                     $dash = '';
                 }
             } else {
-                $dash = dashmycourse($url,
-                                        $lang_c,
-                                        $subscription,
-                                        $cinfo,
-                                        $i++);
+                $dash = dashmycourse(
+                    $url,
+                    $lang_c,
+                    $subscription,
+                    $cinfo,
+                    $i++
+                );
             }
 
             if ($use_tab == true) {
@@ -765,32 +793,32 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
                         if ($access['can'] && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                     break;
+                        break;
                     case 'expiring' :
                         if ($expiring && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                     break;
+                        break;
                     case 'subscribed' :
                         if ($cinfo['user_status'] == _CUS_SUBSCRIBED && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                     break;
+                        break;
                     case 'begin' :
                         if ($cinfo['user_status'] == _CUS_BEGIN && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                     break;
+                        break;
                     case 'end' :
                         if ($cinfo['user_status'] == _CUS_END && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                     break;
+                        break;
                     case 'level' :
                         if ($_GET['filter_on'] == $cinfo['level'] && $page_add) {
                             $GLOBALS['page']->add($dash, 'content');
                         }
-                     break;
+                        break;
                     default: if ($page_add) {
                         $GLOBALS['page']->add($dash, 'content');
                     }
@@ -810,24 +838,28 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
 
             if ($filter == 'level') {
                 if ($subscription['course'][$cinfo['idCourse']]['level'] == $filter_level) {
-                    $course_cache[$cinfo['idCourse']] = dashmycourse($url,
-                                                                        $lang_c,
-                                                                        $subscription,
-                                                                        $cinfo,
-                                                                        1,
-                                                                        true,
-                                                                        4);
+                    $course_cache[$cinfo['idCourse']] = dashmycourse(
+                        $url,
+                        $lang_c,
+                        $subscription,
+                        $cinfo,
+                        1,
+                        true,
+                        4
+                    );
                 } else {
                     $course_cache[$cinfo['idCourse']] = '';
                 }
             } else {
-                $course_cache[$cinfo['idCourse']] = dashmycourse($url,
-                                                                    $lang_c,
-                                                                    $subscription,
-                                                                    $cinfo,
-                                                                    1,
-                                                                    true,
-                                                                    4);
+                $course_cache[$cinfo['idCourse']] = dashmycourse(
+                    $url,
+                    $lang_c,
+                    $subscription,
+                    $cinfo,
+                    1,
+                    true,
+                    4
+                );
             }
         } // end else-if -------------------------------------------------------
     } //  end while ------------------------------------------------------------
@@ -874,7 +906,9 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         if ($page_add) {
             $GLOBALS['page']->add(
                 '<div id="mycoursepath_list">'
-                . '<h1>' . $lang->def('_COURSEPATH_LIST') . '</h1>', 'content');
+                . '<h1>' . $lang->def('_COURSEPATH_LIST') . '</h1>',
+                'content'
+            );
         }
 
         $i = 0;
@@ -907,13 +941,17 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
                         }
                     } else {
                         if ($slot_info['min_selection'] > 0 && $slot_info['max_selection'] > 0) {
-                            $title = str_replace(['[min_selection]', '[max_selection]'],
-                                                    [$slot_info['min_selection'], $slot_info['max_selection']],
-                                                    $lang->def('_COURSE_PATH_SLOT_MIN_MAX'));
+                            $title = str_replace(
+                                ['[min_selection]', '[max_selection]'],
+                                [$slot_info['min_selection'], $slot_info['max_selection']],
+                                $lang->def('_COURSE_PATH_SLOT_MIN_MAX')
+                            );
                         } elseif ($slot_info['max_selection'] > 0) {
-                            $title = str_replace('[max_selection]',
-                                                    $slot_info['max_selection'],
-                                                    $lang->def('_COURSE_PATH_SLOT_MAX'));
+                            $title = str_replace(
+                                '[max_selection]',
+                                $slot_info['max_selection'],
+                                $lang->def('_COURSE_PATH_SLOT_MAX')
+                            );
                         } else {
                             $title = $lang->def('_COURSE_PATH_SLOT');
                         }
@@ -1025,12 +1063,14 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
         $access = Man_Course::canEnterCourse($cinfo);
 
         $lb_param = '';
-        if ($cinfo['first_is_scorm'][0] != '' && $cinfo['first_is_scorm'][0] != '0') {
-            $lb_param .= ';width=' . $cinfo['first_is_scorm'][0] . '';
-        }
+        if (is_array($cinfo['first_is_scorm'])) {
+            if ($cinfo['first_is_scorm'][0] != '' && $cinfo['first_is_scorm'][0] != '0') {
+                $lb_param .= ';width=' . $cinfo['first_is_scorm'][0] . '';
+            }
 
-        if ($cinfo['first_is_scorm'][1] != '' && $cinfo['first_is_scorm'][1] != '0') {
-            $lb_param .= ';height=' . $cinfo['first_is_scorm'][1] . '';
+            if ($cinfo['first_is_scorm'][1] != '' && $cinfo['first_is_scorm'][1] != '0') {
+                $lb_param .= ';height=' . $cinfo['first_is_scorm'][1] . '';
+            }
         }
 
         $intest .= '<h2>';
@@ -1058,36 +1098,47 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
         $intest .= '</h2>';
         // not editon
         //if($cinfo['level'] >= 4) {
+        $arr_coursestatus_course_status = false;
+        if (array_key_exists('course_status', $cinfo) && array_key_exists($cinfo['course_status'], $arr_coursestatus)) {
+            $arr_coursestatus_course_status = $arr_coursestatus[$cinfo['course_status']];
+        }
 
         $intest .= '<p class="course_support_info">' .
-                str_replace(['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
-                                [$course_type,
-                                        createDateDistance($cinfo['create_date'], 'catalogue', true),
-                                        (isset($cinfo['enrolled'][0]) ? $cinfo['enrolled'][0] : 0),
-                                        $arr_coursestatus[$cinfo['course_status']], ],
-                                $lang->def('_COURSE_INTRO')) .
+                str_replace(
+                    ['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
+                    [$course_type,
+                            createDateDistance($cinfo['create_date'], 'catalogue', true),
+                            (isset($cinfo['enrolled'][0]) ? $cinfo['enrolled'][0] : 0),
+                            $arr_coursestatus_course_status, ],
+                    $lang->def('_COURSE_INTRO')
+                ) .
 
                 ($cinfo['date_begin'] != '0000-00-00' || $cinfo['date_end'] != '0000-00-00'
                     ?
-                        str_replace(['[date_begin]', '[date_end]'],
-                                    [Format::date($cinfo['date_begin'], 'date'),
-                                            Format::date($cinfo['date_end'], 'date'), ],
-                                    $lang->def('_COURSE_DATE'))
+                        str_replace(
+                            ['[date_begin]', '[date_end]'],
+                            [Format::date($cinfo['date_begin'], 'date'),
+                                    Format::date($cinfo['date_end'], 'date'), ],
+                            $lang->def('_COURSE_DATE')
+                        )
                     : '') .
                 '</p>';
         //}
 
         if ($cinfo['classrooms'] != '') {
             $intest .= '<p class="course_support_info">' .
-                    str_replace(['[classrooms_name]', '[classrooms_location]'],
-                                    [$cinfo['classrooms']['classroom'], $cinfo['classrooms']['location']],
-                                    $lang->def('_IN_THE_CLASSROOM'))
+                    str_replace(
+                        ['[classrooms_name]', '[classrooms_location]'],
+                        [$cinfo['classrooms']['classroom'], $cinfo['classrooms']['location']],
+                        $lang->def('_IN_THE_CLASSROOM')
+                    )
                     . '</p>';
         }
 
         $intest .= '<p class="course_support_info">'
             . $arr_status[$cinfo['user_status']]
-            . ($cinfo['level'] >= 4
+            . (
+                $cinfo['level'] >= 4
                 ? str_replace('[level]', $lvl[$cinfo['level']], $lang->def('_USER_LVL'))
             . ' ' . (trim($cinfo['code']) != '' ? '<br />[' . $cinfo['code'] . '] ' : '')
                 : ''
@@ -1156,19 +1207,23 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
         //if($sub_info['level'] >= 4) {
 
         $intest .= '<p class="course_support_info">'
-                . str_replace(['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
-                                [$ed_info['edition_type'],
-                                        createDateDistance($cinfo['create_date'], 'catalogue', true),
-                                        $cinfo['enrolled'][$ed_id],
-                                        $arr_coursestatus[$ed_info['status']], ],
-                                $lang->def('_COURSE_INTRO'))
+                . str_replace(
+                    ['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
+                    [$ed_info['edition_type'],
+                            createDateDistance($cinfo['create_date'], 'catalogue', true),
+                            $cinfo['enrolled'][$ed_id],
+                            $arr_coursestatus[$ed_info['status']], ],
+                    $lang->def('_COURSE_INTRO')
+                )
                 . '</p>';
         //}
         if ($ed_info['classrooms'] != '') {
             $intest .= '<p class="course_support_info">' .
-                    str_replace(['[classrooms_name]', '[classrooms_location]'],
-                                    [$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
-                                    $lang->def('_IN_THE_CLASSROOM'))
+                    str_replace(
+                        ['[classrooms_name]', '[classrooms_location]'],
+                        [$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
+                        $lang->def('_IN_THE_CLASSROOM')
+                    )
                     . '</p>';
         }
         $intest .= '<p class="course_support_info">'
@@ -1233,20 +1288,24 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
             //if($sub_info['level'] >= 4) {
 
             $intest .= '<p class="course_support_info">'
-                    . str_replace(['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
-                                    [$ed_info['edition_type'],
-                                            createDateDistance($cinfo['create_date'], 'catalogue', true),
-                                            $cinfo['enrolled'][$ed_id],
-                                            $arr_coursestatus[$ed_info['status']], ],
-                                    $lang->def('_COURSE_INTRO'))
+                    . str_replace(
+                        ['[course_type]', '[create_date]', '[enrolled]', '[course_status]'],
+                        [$ed_info['edition_type'],
+                                createDateDistance($cinfo['create_date'], 'catalogue', true),
+                                $cinfo['enrolled'][$ed_id],
+                                $arr_coursestatus[$ed_info['status']], ],
+                        $lang->def('_COURSE_INTRO')
+                    )
                     . '</p>';
             //}
 
             if ($ed_info['classrooms'] != '') {
                 $intest .= '<p class="course_support_info">' .
-                        str_replace(['[classrooms_name]', '[classrooms_location]'],
-                                        [$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
-                                        $lang->def('_IN_THE_CLASSROOM'))
+                        str_replace(
+                            ['[classrooms_name]', '[classrooms_location]'],
+                            [$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
+                            $lang->def('_IN_THE_CLASSROOM')
+                        )
                         . '</p>';
             }
             $intest .= '<p class="course_support_info">'
@@ -1405,9 +1464,9 @@ function dashAcourse($id_course, $h_number)
     require_once _lms_ . '/lib/lib.coursepath.php';
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
-    $lang = &DoceboLanguage::createInstance('standard', 'framework');
+    $lang = DoceboLanguage::createInstance('standard', 'framework');
     $lang->setGlobal();
-    $lang = &DoceboLanguage::createInstance('course', 'lms');
+    $lang = DoceboLanguage::createInstance('course', 'lms');
 
     $normal_subs = 1;
 

@@ -32,7 +32,7 @@ class CartLms extends Model
         $this->edition_man = new EditionManager();
         $this->classroom_man = new DateManager();
 
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = Docebo::user()->getAclManager();
         parent::__construct();
     }
 

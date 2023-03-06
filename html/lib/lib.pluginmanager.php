@@ -100,7 +100,7 @@ class PluginManager
             $plugin_list = self::get_all_plugins(true);
             $this->load_lib();
             foreach ($plugin_list as $class_name) {
-                if (self::include_plugin_file($class_name['name'], 'Plugin.php')) {
+                if (array_key_exists('name', $class_name) && self::include_plugin_file($class_name['name'], 'Plugin.php')) {
                     if (self::include_plugin_file($class_name['name'], $category . '.php')) {
                         $namespace_class = 'Plugin\\' . $class_name['name'] . '\\' . $category;
                         if (method_exists($namespace_class, $method)) {

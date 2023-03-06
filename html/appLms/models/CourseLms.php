@@ -172,13 +172,16 @@ class CourseLms extends Model
             $parsedData['img_course'] = FormaLms\lib\Get::tmpl_path() . 'images/course/course_nologo.png';
         }
 
-        if (strlen($parsedData['nameCategory']) > 1) {
+        if (array_key_exists('nameCategory', $parsedData) && strlen($parsedData['nameCategory']) > 1) {
             $parsedData['nameCategory'] = substr($parsedData['nameCategory'], strripos($parsedData['nameCategory'], '/') + 1);
         }
 
-        $parsedData['level_icon'] = $parsedData['level'];
-        $parsedData['level_text'] = $levels[$parsedData['level']];
+        $parsedData['level_icon'] = array_key_exists('level', $parsedData) ? $parsedData['level'] : false;
+        if($parsedData['level_icon']) {
+            $parsedData['level_text'] = array_key_exists($parsedData['level'], $parsedData) ? $levels[$parsedData['level']] : '';
 
+        }
+        
         //LRZ:  if validity day is setting
         $date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], Docebo::user()->getIdSt()));
         if ($parsedData['valid_time'] > 0 && $date_first_access > 0) {
@@ -208,7 +211,7 @@ class CourseLms extends Model
         $parsedData['editions'] = false;
         $parsedData['course_full'] = false;
         $parsedData['in_cart'] = false;
-        $parsedData['waiting'] = ($infoEnroll['waiting'] || $infoEnroll['status'] == 4); // 4 = overbooked
+        $parsedData['waiting'] = array_key_exists('waiting', $infoEnroll) ? ($infoEnroll['waiting'] || $infoEnroll['status'] == 4) : false; // 4 = overbooked
         switch ($parsedData['course_type']) {
             case 'elearning':
                 if (!empty($infoEnroll)) {

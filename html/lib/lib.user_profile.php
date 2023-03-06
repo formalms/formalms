@@ -708,7 +708,7 @@ class UserProfile
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
                 }
             } else {
-                $acl_man = &Docebo::user()->getAclManager();
+                $acl_man = Docebo::user()->getAclManager();
                 $id_anonymous = $acl_man->getAnonymousId();
                 if ($this->_id_viewer !== $id_anonymous) {
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
@@ -1308,7 +1308,7 @@ class UserProfileViewer
         //addJs($GLOBALS['where_framework_relative'].'/lib/', 'ajax.user_profile.js');
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/ajax.user_profile.js', true, true);
 
-        $lang = &DoceboLanguage::createInstance($this->_user_profile->_module_name, $this->_user_profile->_platform);
+        $lang = DoceboLanguage::createInstance($this->_user_profile->_module_name, $this->_user_profile->_platform);
 
         $GLOBALS['page']->add('<script type="text/javascript">'
             . "	setup_user_profile('" . $GLOBALS['where_framework_relative'] . "/ajax.adm_server.php?file=user_profile', "
@@ -1414,7 +1414,7 @@ class UserProfileViewer
     public function getUserInfo()
     {
         $viewer = $this->getViewer();
-
+        $stato_admin = '';
         $this->loadUserData($viewer);
         $user_field = $this->loadUserField();
         $user_contacts = $this->loadUserContact();
@@ -1486,10 +1486,10 @@ class UserProfileViewer
             }
         }
 
-        $lv_lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $lv_lang = DoceboLanguage::createInstance('admin_directory', 'framework');
         if ($this->_user_profile->godMode()) {
             // show user level
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
             switch ($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
                 case ADMIN_GROUP_GODADMIN:
                     $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN);
@@ -2204,7 +2204,7 @@ class UserProfileViewer
     public function homePhotoProfile($picture = false, $viewer = false, $intest = false)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
 
         $html = '';
@@ -2221,9 +2221,10 @@ class UserProfileViewer
     public function homeUserProfile($picture = false, $viewer = false, $intest = false)
     { //crea la parte del profilo riguardante la foto e i certificati/messaggi
         $this->loadUserData($this->getViewer());
-
+        $unread_num = 0;
+        $perm_message = false;
         list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
-
+        $pendent = 0;
         //$html = ' <div class="container-fluid"> <div class="row">';
         $html = '<div class="row profile">';
 
@@ -2395,7 +2396,7 @@ class UserProfileViewer
     public function userIdMailProfile($picture = false, $viewer = false, $intest = true)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $html = '<div class="user_presentation">' . "\n"
 
@@ -2465,7 +2466,7 @@ class UserProfileViewer
         $html .= $preference->getModifyMask('ui.');
 
         if ($this->_user_profile->godMode()) {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
 
             $html .= Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'),
                 'up_new_pwd',
@@ -2481,7 +2482,7 @@ class UserProfileViewer
                 $html .= Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, $this->user_info[ACL_INFO_FORCE_CHANGE]);
             }
 
-            $lv_lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+            $lv_lang = DoceboLanguage::createInstance('admin_directory', 'framework');
             if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $level_list = [
                     ADMIN_GROUP_GODADMIN => $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN),
@@ -2624,7 +2625,7 @@ class UserProfileViewer
      */
     public function checkUserPwd()
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $this->loadUserData(getLogUserId());
         if (!$this->_user_profile->godMode()) {
@@ -2879,7 +2880,7 @@ class UserProfileViewer
         $last_view = $this->_up_data_man->getUserProfileViewList($this->_user_profile->getIdUser(), 15);
         $user_stat = $this->_up_data_man->getUserStats($this->_user_profile->getIdUser());
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         $html = '<h2 class="up_type1">' . $this->_lang->def('_COMMUNITY') . '</h2>';
 
@@ -3304,7 +3305,7 @@ class UserProfileViewer
 
     public function getUserCourseStatUi($stats_data)
     {
-        $lang_test = &DoceboLanguage::createInstance('test', 'lms');
+        $lang_test = DoceboLanguage::createInstance('test', 'lms');
 
         $tb = new Table(0, $this->_lang->def('_USERCOURSE_CAPTION'), $this->_lang->def('_USERCOURSE_STATS_SUMMARY'));
         $tb->addHead([
@@ -3858,10 +3859,10 @@ class UserProfileData
     /**
      * return the list of user friends.
      */
-    public function &getUserFriend($id_user)
+    public function getUserFriend($id_user)
     {
         $my_fr = new MyFriends($id_user);
-        $users_info = &$my_fr->getFriendsInfo(false, UP_FRIEND_LIMIT);
+        $users_info = $my_fr->getFriendsInfo(false, UP_FRIEND_LIMIT);
 
         return $users_info;
     }
@@ -4174,7 +4175,7 @@ class UserProfileData
             return false;
         }
         if (isset($data['level'])) {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
             $current_level = $acl_man->getUserLevelId($id_user);
             if ($data['level'] != $current_level) {
                 $arr_levels = $acl_man->getAdminLevels();
@@ -4514,8 +4515,8 @@ class UserProfileData
 
         $stats = [];
 
-        $c_lang = &DoceboLanguage::CreateInstance('course', 'lms');
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
+        $c_lang = DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = DoceboLanguage::createInstance('course', 'lms');
 
         $id_courses = [];
         $query_course_user = '

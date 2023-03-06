@@ -844,7 +844,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($users == '') {
             $output = ['success' => true, 'count' => 0, 'total' => 0];
         } else {
-            $level_idst = &$docebo_course->getCourseLevel($this->id_course);
+            $level_idst = $docebo_course->getCourseLevel($this->id_course);
             $list_users = explode(',', $users);
             $count = 0;
             $total = count($list_users);

@@ -51,7 +51,7 @@ class CatalogLmsController extends LmsController
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
         $this->_mvc_name = 'catalog';
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = Docebo::user()->getAclManager();
     }
 
     protected function getBaseData()
@@ -458,7 +458,7 @@ class CatalogLmsController extends LmsController
             // message to user that is waiting
             require_once _base_ . '/lib/lib.eventmanager.php';
 
-            $acl = &Docebo::user()->getAcl();
+            $acl = Docebo::user()->getAcl();
             $acl_man = &$this->acl_man;
 
             $recipients = [];

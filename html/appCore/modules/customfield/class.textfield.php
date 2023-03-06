@@ -58,6 +58,7 @@ class Field_Textfield extends Field
         $lang = DoceboLanguage::createInstance('field');
         $array_lang = Docebo::langManager()->getAllLangCode();
         $out = $GLOBALS['page'];
+        $filter_area_field = false;
 
         if (isset($_POST['undo'])) {
             //undo action
@@ -190,7 +191,7 @@ class Field_Textfield extends Field
         }
 
         $out->add(
-            $form->getDropdown($lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
+            $form->getDropdown('<span class="mandatory">*</span>'. $lang->def('_FIELD_AREA'), 'filter_area_field', 'filter_area_field',
             $field_select, $filter_area_field)
                 );
 

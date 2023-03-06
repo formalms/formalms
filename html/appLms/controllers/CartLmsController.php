@@ -40,7 +40,7 @@ class CartLmsController extends LmsController
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
 
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = Docebo::user()->getAclManager();
 
         Util::get_css(FormaLms\lib\Get::rel_path(_base_) . '/appLms/views/cart/cart.css', true, true);
     }

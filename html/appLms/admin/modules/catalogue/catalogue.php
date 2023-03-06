@@ -27,7 +27,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+        $lang = DoceboLanguage::createInstance('catalogue', 'lms');
         $out = &$GLOBALS['page'];
 
         $mod_perm = checkPerm('mod', true);
@@ -207,7 +207,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+        $lang = DoceboLanguage::createInstance('catalogue', 'lms');
         $out = &$GLOBALS['page'];
 
         $title_area = [
@@ -342,8 +342,8 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = DoceboLanguage::createInstance('catalogue', 'lms');
+        $out = $GLOBALS['page'];
 
         $id_cat = FormaLms\lib\Get::req('id', DOTY_INT, 0);
         $cat_name = getCatalogueName($id_cat);
@@ -373,7 +373,7 @@ if (!Docebo::user()->isAnonymous()) {
         $coursepath_man = new CoursePath_Manager();
         $coursespath_name = &$coursepath_man->getNames($coursepath);
 
-        $course_name = &getCoursesInfo($courses);
+        $course_name = getCoursesInfo($courses);
 
         $cont_h = [$lang->def('_CODE'), $lang->def('_NAME'), $lang->def('_TYPE')];
         $type_h = ['', '', ''];
@@ -532,7 +532,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('mod');
         require_once _lms_ . '/lib/lib.course_managment.php';
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+        $lang = DoceboLanguage::createInstance('catalogue', 'lms');
         $id_cat = importVar('id_cat', true, 0);
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -668,8 +668,8 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('mod');
 
-        $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
-        $acl_man = &Docebo::user()->getAclManager();
+        $lang = DoceboLanguage::createInstance('catalogue', 'lms');
+        $acl_man = Docebo::user()->getAclManager();
 
         require_once _lms_ . '/lib/lib.course.php';
         require_once _base_ . '/lib/lib.form.php';
