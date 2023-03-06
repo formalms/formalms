@@ -64,7 +64,7 @@ class CourseAlms extends Model
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
 
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
 
@@ -107,7 +107,7 @@ class CourseAlms extends Model
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
 
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
 
@@ -135,7 +135,7 @@ class CourseAlms extends Model
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = Docebo::user()->getAclManager();
 
             $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
 
@@ -865,7 +865,7 @@ class CourseAlms extends Model
         $array_lang = Docebo::langManager()->getAllLangCode();
         $array_lang[] = 'none';
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = Docebo::user()->getAclManager();
 
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
@@ -1527,7 +1527,8 @@ class CourseAlms extends Model
         $res = ['0' => 'root'];
 
         while (list($id_cat, $path, $level) = sql_fetch_row($result)) {
-            $name = end(explode('/', $path));
+            $arrayName = explode('/', $path);
+            $name = end($arrayName);
 
             for ($i = 0; $i < $level; ++$i) {
                 $name = '&nbsp;&nbsp;' . $name;
