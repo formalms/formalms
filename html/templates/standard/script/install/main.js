@@ -31,13 +31,15 @@ let wizard = $("#installer-section").steps({
      onStepChanging: function (event, currentIndex, newIndex) {
       if(newIndex > currentIndex) {
         var result = validateStep(currentIndex + 1);
-        if(!result) {
-          setData('step', currentIndex);
-        } else {
-          formStore(currentIndex + 1);
-          setData('step', newIndex);
+        if($("#upgrade").length <= 0) {
+          if(!result) {
+            setData('step', currentIndex);
+          } else {
+            formStore(currentIndex + 1);
+            setData('step', newIndex);
+          }
         }
-
+        
         return result;
       }
       //sto tornando indietro

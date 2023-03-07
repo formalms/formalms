@@ -6,7 +6,10 @@ html/vendor/**
 
 # Sezione html/files
 html/files/**
+!html/files/logs
+html/files/logs/*
 !html/files/**/.htaccess
+
 !html/files/**/index.html
 !html/files/common/iofiles/demo_20060313_095630.csv
 !html/files/common/iofiles/demo_tree_20060412_234612.xml

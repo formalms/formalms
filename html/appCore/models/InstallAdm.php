@@ -1375,33 +1375,37 @@ class InstallAdm extends Model
             $config = fread($handle, filesize($tpl_fn));
             fclose($handle);
         }
-        $config = str_replace('[%-DB_TYPE-%]', addslashes('mysqli'), $config);
-        $config = str_replace('[%-DB_HOST-%]', addslashes($values['dbHost']), $config);
-        $config = str_replace('[%-DB_USER-%]', addslashes($values['dbUser']), $config);
-        $config = str_replace('[%-DB_PASS-%]', addslashes($values['dbPass']), $config);
-        $config = str_replace('[%-DB_NAME-%]', addslashes($values['dbName']), $config);
 
-        if ($values['useSmtpDatabase'] == 'on') {
-            $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes($values['useSmtpDatabase']), $config);
-            $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes($values['useSmtp']), $config);
-            $config = str_replace('[%-SMTP_HOST-%]', addslashes($values['smtpHost']), $config);
-            $config = str_replace('[%-SMTP_PORT-%]', addslashes($values['smtpPort']), $config);
-            $config = str_replace('[%-SMTP_SECURE-%]', addslashes($values['smtpSecure']), $config);
-            $config = str_replace('[%-SMTP_AUTO_TLS-%]', addslashes($values['smtpAutoTls']), $config);
-            $config = str_replace('[%-SMTP_USER-%]', addslashes($values['smtpUser']), $config);
-            $config = str_replace('[%-SMTP_PWD-%]', addslashes($values['smtpPwd']), $config);
-            $config = str_replace('[%-SMTP_DEBUG-%]', addslashes('0'), $config);
-        } else {
-            $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes('off'), $config);
-            $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes('off'), $config);
-            $config = str_replace('[%-SMTP_HOST-%]', addslashes(''), $config);
-            $config = str_replace('[%-SMTP_PORT-%]', addslashes(''), $config);
-            $config = str_replace('[%-SMTP_SECURE-%]', addslashes(''), $config);
-            $config = str_replace('[%-SMTP_AUTO_TLS-%]', addslashes(''), $config);
-            $config = str_replace('[%-SMTP_USER-%]', addslashes(''), $config);
-            $config = str_replace('[%-SMTP_PWD-%]', addslashes(''), $config);
-            $config = str_replace('[%-SMTP_DEBUG-%]', addslashes('0'), $config);
+        if ($values) {
+            $config = str_replace('[%-DB_TYPE-%]', addslashes('mysqli'), $config);
+            $config = str_replace('[%-DB_HOST-%]', addslashes($values['dbHost']), $config);
+            $config = str_replace('[%-DB_USER-%]', addslashes($values['dbUser']), $config);
+            $config = str_replace('[%-DB_PASS-%]', addslashes($values['dbPass']), $config);
+            $config = str_replace('[%-DB_NAME-%]', addslashes($values['dbName']), $config);
+
+            if ($values['useSmtpDatabase'] == 'on') {
+                $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes($values['useSmtpDatabase']), $config);
+                $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes($values['useSmtp']), $config);
+                $config = str_replace('[%-SMTP_HOST-%]', addslashes($values['smtpHost']), $config);
+                $config = str_replace('[%-SMTP_PORT-%]', addslashes($values['smtpPort']), $config);
+                $config = str_replace('[%-SMTP_SECURE-%]', addslashes($values['smtpSecure']), $config);
+                $config = str_replace('[%-SMTP_AUTO_TLS-%]', addslashes($values['smtpAutoTls']), $config);
+                $config = str_replace('[%-SMTP_USER-%]', addslashes($values['smtpUser']), $config);
+                $config = str_replace('[%-SMTP_PWD-%]', addslashes($values['smtpPwd']), $config);
+                $config = str_replace('[%-SMTP_DEBUG-%]', addslashes('0'), $config);
+            } else {
+                $config = str_replace('[%-SMTP_USE_DATABASE-%]', addslashes('off'), $config);
+                $config = str_replace('[%-SMTP_USE_SMTP-%]', addslashes('off'), $config);
+                $config = str_replace('[%-SMTP_HOST-%]', addslashes(''), $config);
+                $config = str_replace('[%-SMTP_PORT-%]', addslashes(''), $config);
+                $config = str_replace('[%-SMTP_SECURE-%]', addslashes(''), $config);
+                $config = str_replace('[%-SMTP_AUTO_TLS-%]', addslashes(''), $config);
+                $config = str_replace('[%-SMTP_USER-%]', addslashes(''), $config);
+                $config = str_replace('[%-SMTP_PWD-%]', addslashes(''), $config);
+                $config = str_replace('[%-SMTP_DEBUG-%]', addslashes('0'), $config);
+            }
         }
+
 
         return $config;
     }
@@ -1883,8 +1887,8 @@ class InstallAdm extends Model
      */
     public function testMigrate($params = [], $save = false)
     {
-        if ((int) $params['upgrade']) {
-            $this->installModel->installMigrationsTable();
+        if (array_key_exists('upgrade', $params) && (int) $params['upgrade']) {
+            $this->installMigrationsTable();
         }
         $writeSqlFile = dirname(__DIR__, 2) . "/files/logs/migration" . floor(microtime(true) * 1000) .".sql";
 
@@ -1894,7 +1898,7 @@ class InstallAdm extends Model
             $this->saveTmpConfig();
         }
 
-        $messages[] = $this->migrate((bool) $params['debug'], $testLine);
+        $messages[] = $this->migrate((bool) array_key_exists('debug', $params), $testLine);
 
 
         $messages[] = 'CHECK: ' . $writeSqlFile;
