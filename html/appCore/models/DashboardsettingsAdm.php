@@ -222,14 +222,16 @@ class DashboardsettingsAdm extends Model
 
     public function saveBlockSetting($block, $setting, $dashboard)
     {
+
         $config = [
             'type' => $setting['type'],
             'enabled' => $setting['enabled'],
             'enabledActions' => $setting['enabledActions'],
             'data' => $setting['data'],
         ];
-
-        $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`, `created_at`) VALUES ( '%s' , '%s', '%s', '%s', CURRENT_TIMESTAMP)", $block, json_encode($config, JSON_HEX_APOS), $setting['position'], $dashboard);
+        $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`, `created_at`) VALUES ( '%s' , '%s', '%s', '%s', CURRENT_TIMESTAMP)", $block, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_APOS), $setting['position'], $dashboard);
+  
+      
         $this->db->query($insertQuery);
     }
 
