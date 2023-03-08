@@ -22,7 +22,7 @@ $body .= Form::getTextfield(Lang::t('_CODE', 'organization_chart'), 'org_code', 
 if ($mod_org) {
     $body .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_array, $default_template);
 } else {
-    $template_array = [$default_template => $template_array[$default_template]];
+    //$template_array = [$default_template => $template_array[$default_template]];
     $body .= Form::getDropdown(Lang::t('_DEFAULTTEMPLATE', 'configuration'), 'associated_template', 'associated_template', $template_array, $default_template);
 }
 $body .= Form::getBreakRow();

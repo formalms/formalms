@@ -1478,6 +1478,7 @@ class UsermanagementAdmController extends AdmController
             'title' => Lang::t('_ORGCHART_ADDNODE', 'organization_chart'),
             'json' => $this->json,
             'default_template' => $template_id,
+            'template_array' => $template_arr,
         ]);
     }
 

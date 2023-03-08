@@ -395,8 +395,8 @@ class DashboardsettingsAdmController extends AdmController
 
     public function save()
     {
-        $dashboard = FormaLms\lib\Get::req('dashboard', DOTY_MIXED);
-        $requestSettings = FormaLms\lib\Get::pReq('settings', DOTY_MIXED);
+        $dashboard = $this->request->query->get('dashboard');
+        $requestSettings = $this->request->request->get('settings');
 
         $response = ['status' => 200];
         foreach ($requestSettings as $data) {
