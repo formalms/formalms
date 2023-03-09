@@ -3512,7 +3512,7 @@ VALUES (@max, '_DASHBOARD', '', 4, 'true', 'true', NULL, NULL, 'lms');
 
 INSERT IGNORE INTO `core_menu_under`(`idUnder`, `idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`,
                                      `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path`)
-VALUES (@max, @max, 'course', '_DASHBOARD', NULL, 'view', 'lms', 4, NULL, NULL, 'lms/dashboard/show');
+VALUES (@max, @max, 'dashboard', '_DASHBOARD', NULL, 'view', 'lms', 4, NULL, NULL, 'lms/dashboard/show');
 
 SET @max = (SELECT MAX(idMenu) + 1 FROM `core_menu`);
 
