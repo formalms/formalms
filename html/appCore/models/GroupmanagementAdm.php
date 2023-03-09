@@ -144,9 +144,10 @@ class GroupmanagementAdm extends Model
             $output = [];
             $glist = [];
             while ($obj = $this->db->fetch_obj($res)) {
+                $groupId = explode('/', $obj->groupid);
                 $obj->membercount = 0;
                 $obj->usercount = 0;
-                $obj->groupid = end(explode('/', $obj->groupid));
+                $obj->groupid = end($groupId);
                 $output[$obj->idst] = $obj;
             }
 

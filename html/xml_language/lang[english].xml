@@ -729,7 +729,7 @@
         <key id="course&amp;_CLASSROOM_EDITION" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Classrooms/Editions]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Warning: some classrooms are already occupied by other courses]]></key>
         <key id="course&amp;_CLASSROOM_OCCUPATED_YES" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Class occupied]]></key>
-        <key id="course&amp;_CLOSING_DATA" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Closing data]]></key>
+        <key id="course&amp;_CLOSING_DATA" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Closing date]]></key>
         <key id="course&amp;_CONFIRM_EXIT" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Your data will be saved.]]></key>
         <key id="course&amp;_COPY_SUBSCRIPTION_TO_COURSE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Copy subscriptions to course]]></key>
         <key id="course&amp;_COURSE_ADVANCE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Advance payment]]></key>
@@ -1064,9 +1064,9 @@ Otherwise, you must register in our system, following this link: <br />
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCERTIFICATESLMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Certificates]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCERTIFICATESLMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Description Certificates]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOMMUNICATIONLMS" attributes="" save_date="2022-03-22 11:20:27"><![CDATA[Communications]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOMMUNICATIONLMS_DESCRIPTION" attributes="" save_date="2022-03-22 11:22:30"><![CDATA[Shows classroom courses that are going to start or e-learning courses that are near to closing data, or both]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOMMUNICATIONLMS_DESCRIPTION" attributes="" save_date="2022-03-22 11:22:30"><![CDATA[Shows classroom courses that are going to start or e-learning courses that are near to closing date, or both]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Courses]]></key>
-        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS_DESCRIPTION" attributes="" save_date="2022-03-22 11:13:57"><![CDATA[Shows classroom courses that are going to start or e-learning courses that are near to closing data, or both]]></key>
+        <key id="dashboardsetting&amp;_DASHBOARDBLOCKCOURSESLMS_DESCRIPTION" attributes="" save_date="2022-03-22 11:13:57"><![CDATA[Shows classroom courses that are going to start or e-learning courses that are near to closing date, or both]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKMESSAGESLMS" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Messages]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKMESSAGESLMS_DESCRIPTION" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Description Message]]></key>
         <key id="dashboardsetting&amp;_DASHBOARDBLOCKNEWSLMS" attributes="" save_date="2022-03-22 11:23:40"><![CDATA[News]]></key>

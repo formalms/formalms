@@ -52,7 +52,7 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
         $msg = str_replace('u0027', '\'', array_key_exists('welcome_text',$this->data) ? $this->data['welcome_text'] : '');
 
 
-        $msg = Lang::t($msg : '_DASHBOARD_WELCOME_MESSAGE', 'dashboardsetting');
+        $msg = Lang::t($msg ?: '_DASHBOARD_WELCOME_MESSAGE', 'dashboardsetting');
 
 
         $placeholders = array_keys($data['data']);

@@ -140,7 +140,8 @@ class UserDataSelector extends DataSelector{
     protected function mapData($records, $filter = ''){
 
         $date_fields = $this->fieldList->getFieldsByType('date');
-
+        $idOrg = 0;
+        $var_fields = [];
         $acl_man = \Docebo::user()->getAclManager();
         $idst_org = $acl_man->getGroupST('/oc_' . (int) $idOrg);
         $output_results = [];
@@ -152,7 +153,7 @@ class UserDataSelector extends DataSelector{
 
                 $record_row = [
                     'id' =>  $record['idst'],
-                    'userid' => \Layout::highlight($acl_man->relativeId($record['userid']), $filter_text),
+                    'userid' => \Layout::highlight($acl_man->relativeId($record['userid']), $filter),
                     'firstname' => \Layout::highlight($record['firstname'], $filter),
                     'lastname' => \Layout::highlight($record['lastname'], $filter),
                     'relation' => isset($relation[0]) ? $relation[0] : '',
