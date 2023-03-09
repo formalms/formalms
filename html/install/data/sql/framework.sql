@@ -2043,7 +2043,8 @@ INSERT INTO `core_role` (`idst`, `roleid`, `description`) VALUES
 (11835, '/lms/course/private/presence/view', ''),
 (11836, '/lms/admin/certificate/assign', NULL),
 (11837, '/lms/admin/certificate/release', NULL),
-(11838, '/lms/admin/report/schedule', NULL);
+(11838, '/lms/admin/report/schedule', NULL),
+(11839, '/lms/course/public/course/view', NULL);
 
 -- --------------------------------------------------------
 
@@ -2703,7 +2704,8 @@ INSERT INTO `core_st` (`idst`) VALUES
 (11835),
 (11836),
 (11837),
-(11838);
+(11838),
+(11839);
 
 -- --------------------------------------------------------
 
