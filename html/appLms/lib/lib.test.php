@@ -47,7 +47,7 @@ class GroupTestManagement
      */
     public function getMaxScore($id_test)
     {
-        list($question_random_number) = sql_fetch_row(sql_query('SELECT question_random_number FROM %lms_test WHERE idTest = ' . $id_test));
+        [$question_random_number] = sql_fetch_row(sql_query('SELECT question_random_number FROM %lms_test WHERE idTest = ' . $id_test));
 
         if (isset($this->_max_score_cache[$id_test])) {
             return $this->_max_score_cache[$id_test];
@@ -97,7 +97,7 @@ class GroupTestManagement
 		SELECT point_required
 		FROM ' . $GLOBALS['prefix_lms'] . "_test 
 		WHERE idTest = '" . $id_test . "'";
-        list($score_req) = sql_fetch_row(sql_query($query_select));
+        [$score_req] = sql_fetch_row(sql_query($query_select));
 
         return $score_req;
     }
@@ -207,7 +207,7 @@ class GroupTestManagement
 		FROM ' . $GLOBALS['prefix_lms'] . "_test 
 		WHERE idTest = '" . $id_test . "'";
         $re_test = sql_query($query_test);
-        list($point_required, $show_only_status) = sql_fetch_row($re_test);
+        [$point_required, $show_only_status] = sql_fetch_row($re_test);
         $old_scores = &$this->getTestsScores([$id_test], false, true);
         $re = true;
 
@@ -281,7 +281,7 @@ class GroupTestManagement
 		FROM ' . $GLOBALS['prefix_lms'] . "_test 
 		WHERE idTest = '" . $id_test . "'";
         $re_test = sql_query($query_test);
-        list($point_required, $show_only_status) = sql_fetch_row($re_test);
+        [$point_required, $show_only_status] = sql_fetch_row($re_test);
 
         $re = true;
         $query_scores = '
@@ -338,10 +338,11 @@ class GroupTestManagement
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack 
 		WHERE idTest='" . $id_test . "' AND idUser='" . $id_user . "'";
         $rs = sql_query($query);
-        list($id_track) = sql_fetch_row($rs);
+        [$id_track] = sql_fetch_row($rs);
 
         editUserReport($id_user, $id_test, $id_track, $number_time, $edit_new_score);
     }
+
 
     public function saveReview($id_test, $id_user)
     {
@@ -352,7 +353,7 @@ class GroupTestManagement
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack 
 		WHERE idTest='" . $id_test . "' AND idUser='" . $id_user . "'";
         $rs = sql_query($query);
-        list($id_track) = sql_fetch_row($rs);
+        [$id_track] = sql_fetch_row($rs);
 
         saveManualUserReport($id_user, $id_test, $id_track);
     }
@@ -377,7 +378,7 @@ class GroupTestManagement
         if (!$rs) {
             return false;
         }
-        list($id_track) = sql_fetch_row($rs);
+        [$id_track] = sql_fetch_row($rs);
 
         if (!$id_track) {
             return false;
@@ -472,7 +473,7 @@ class TestManagement
                     . " AND type_quest <> 'break_page'"
                     . " AND idTest = '" . $this->id_test . "'";
 
-        list($result) = sql_fetch_row(sql_query($query));
+        [$result] = sql_fetch_row(sql_query($query));
 
         return $result;
     }
@@ -546,19 +547,19 @@ class TestManagement
                 $tot_page = $this->test_info['question_random_number'];
             }
         } elseif (!$this->test_info['display_type']) {
-            list($tot_page) = sql_fetch_row(sql_query('
+            [$tot_page] = sql_fetch_row(sql_query('
 			SELECT MAX(page) 
 			FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 			WHERE idTest = '" . $this->id_test . "'"));
         } else {
             if ($this->test_info['order_type'] == 0) {
-                list($tot_page) = sql_fetch_row(sql_query('
+                [$tot_page] = sql_fetch_row(sql_query('
 				SELECT COUNT(*)
 				FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 				WHERE idTest = '" . $this->id_test . "' "
                     . " AND type_quest <> 'break_page'"));
             } else {
-                list($tot_page) = sql_fetch_row(sql_query('
+                [$tot_page] = sql_fetch_row(sql_query('
 				SELECT COUNT(*)
 				FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 				WHERE idTest = '" . $this->id_test . "' "
@@ -580,7 +581,7 @@ class TestManagement
      */
     public function _getPageNumber()
     {
-        list($seq, $page) = sql_fetch_row(sql_query('
+        [$seq, $page] = sql_fetch_row(sql_query('
 		SELECT MAX(sequence), MAX(page)
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idTest = '" . $this->id_test . "'"));
@@ -588,7 +589,7 @@ class TestManagement
             return 1;
         }
 
-        list($type_quest) = sql_fetch_row(sql_query('
+        [$type_quest] = sql_fetch_row(sql_query('
 		SELECT type_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE sequence = '" . $seq . "' AND idTest = '" . $this->id_test . "'"));
@@ -606,7 +607,7 @@ class TestManagement
      */
     public function getMaxSequence()
     {
-        list($quest_sequence_number) = sql_fetch_row(sql_query('
+        [$quest_sequence_number] = sql_fetch_row(sql_query('
 		SELECT COUNT(*)
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idTest = '" . $this->id_test . "'"));
@@ -622,7 +623,7 @@ class TestManagement
     public function getInitQuestSequenceNumberForPage($page_number)
     {
         if (!$this->test_info['display_type']) {
-            list($quest_sequence_number) = sql_fetch_row(sql_query('
+            [$quest_sequence_number] = sql_fetch_row(sql_query('
 			SELECT COUNT(*) + 1 
 			FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 			WHERE idTest = '" . $this->id_test . "' AND page < '" . $page_number . "' 
@@ -702,7 +703,7 @@ class TestManagement
             if (!sql_query($ins_query)) {
                 return false;
             }
-            list($id_quest) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$id_quest] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
             if (!$id_quest) {
                 return false;
             }
@@ -746,7 +747,7 @@ class TestManagement
                             . " WHERE idResource = '" . $this->id_test . "'"
                             . "	AND objectType = 'test'";
 
-        list($prerequisites) = sql_fetch_row(sql_query($query_prerequisite));
+        [$prerequisites] = sql_fetch_row(sql_query($query_prerequisite));
 
         return $prerequisites;
     }
@@ -838,7 +839,7 @@ class PlayTestManagement
             return $time_accumulated;
         }
 
-        list($from_ts, $to, $to_ts, $accumulated) = sql_fetch_row($re_time);
+        [$from_ts, $to, $to_ts, $accumulated] = sql_fetch_row($re_time);
 
         if ($to !== null) {
             $time_accumulated += abs($to_ts - $from_ts);
@@ -868,7 +869,7 @@ class PlayTestManagement
             sql_query($query_track);
         } else {
             $time_accumulated = 0;
-            list($from, $from_ts, $to, $to_ts, $accumulated) = sql_fetch_row($re_time);
+            [$from, $from_ts, $to, $to_ts, $accumulated] = sql_fetch_row($re_time);
 
             if ($to == null) {
                 $time_accumulated = time() - $from_ts;
@@ -896,7 +897,7 @@ class PlayTestManagement
 		WHERE idTrack = '" . $this->id_track . "' AND page = '" . $page . "'";
         $re_time = sql_query($query_time);
         if (sql_num_rows($re_time)) {
-            list($to) = sql_fetch_row($re_time);
+            [$to] = sql_fetch_row($re_time);
             if ($to === null) {
                 $query_track = '
 				UPDATE ' . $GLOBALS['prefix_lms'] . "_testtrack_page
@@ -943,7 +944,7 @@ class PlayTestManagement
 		SELECT COUNT(*) 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
 		WHERE idTrack = '" . $this->id_track . "'";
-        list($question_number) = sql_fetch_row(sql_query($query_quest_seen));
+        [$question_number] = sql_fetch_row(sql_query($query_quest_seen));
 
         return $question_number;
     }

@@ -2750,13 +2750,13 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
             require_once _lms_ . '/lib/lib.orgchart.php';
             $orgman = new OrganizationManagement($session->get('idCourse'));
             $first_lo = &$orgman->getInfoWhereType(false, $session->get('idCourse'));
-            $jumpurl = 'index.php?modname=organization&op=' . $first_page['op'] . '&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=1';
+            $jumpurl = 'index.php?modname=organization&op=' . $first_page['op'] . '&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=' . $first_page['idMain'];
 
             if (count($first_lo) == 1) {
                 $session->set('direct_play', 1);
                 $session->save();
                 $obj = array_shift($first_lo);
-                Util::jump_to('index.php?modname=organization&op=organization&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=1&id_item=' . $obj['id_org'] . '');
+                Util::jump_to('index.php?modname=organization&op=organization&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=' . $first_page['idMain'] . '&id_item=' . $obj['id_org'] . '');
             } elseif (count($first_lo) >= 2) {
                 $obj = array_shift($first_lo);
                 // if we have more than an object we need to play the first one until it's completed
@@ -2768,7 +2768,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
                 } else {
                     $session->set('direct_play', 1);
                     $session->save();
-                    Util::jump_to('index.php?modname=organization&op=organization&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=1&id_item=' . $obj['id_org'] . '');
+                    Util::jump_to('index.php?modname=organization&op=organization&id_module_sel=' . $first_page['idModule'] . '&id_main_sel=' . $first_page['idMain'] . '&id_item=' . $obj['id_org'] . '');
                 }
             }
         }
