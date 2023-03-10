@@ -183,13 +183,13 @@ class CourseLms extends Model
         }
         
         //LRZ:  if validity day is setting
-        //$date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], Docebo::user()->getIdSt()));
-        //if ($parsedData['valid_time'] > 0 && $date_first_access > 0) {
-        //    $time_expired = $date_first_access + ($parsedData['valid_time'] * 24 * 3600);
-        //    $parsedData['dateClosing_year'] = date('Y', $time_expired);
-        //    $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date('m', $time_expired), -2), 'standard');
-        //    $parsedData['dateClosing_day'] = date('d', $time_expired);
-        //}
+        $date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], Docebo::user()->getIdSt()));
+        if ($parsedData['valid_time'] > 0 && $date_first_access > 0) {
+            $time_expired = $date_first_access + ($parsedData['valid_time'] * 24 * 3600);
+            $parsedData['dateClosing_year'] = date('Y', $time_expired);
+            $parsedData['dateClosing_month'] = Lang::t('_MONTH_' . substr('0' . date('m', $time_expired), -2), 'standard');
+            $parsedData['dateClosing_day'] = date('d', $time_expired);
+        }
 
         $date_closing = getdate(strtotime(Format::date($parsedData['date_end'], 'date')));
         if ($date_closing['year'] > 0) {
