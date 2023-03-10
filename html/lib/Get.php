@@ -45,15 +45,15 @@ class Get
     /**
      * Import var from GET and POST, if the var exists in POST and GET, the post value will be preferred.
      *
-     * @author Pirovano Fabio
-     *
-     * @param string $name      the var to import
-     * @param int    $typeof    the type of the variable (used for casting)
-     * @param mixed  $default   the default value
-     * @param mixed  $only_from false if can take from both post and get; else get or post
+     * @param string $name the var to import
+     * @param int $typeof the type of the variable (used for casting)
+     * @param mixed $default the default value
+     * @param mixed $only_from false if can take from both post and get; else get or post
      *                          to force the reading from one method
      *
      * @return mixed return the var founded in post/get or the default value if the var doesn't exixst
+     * @author Pirovano Fabio
+     *
      */
     public static function req($var_name, $typeof = DOTY_MIXED, $default_value = '', $only_from = false)
     {
@@ -80,8 +80,8 @@ class Get
     /**
      * Data filtering.
      *
-     * @param mixed $value  the value to clean
-     * @param int   $typeof the type of the variable
+     * @param mixed $value the value to clean
+     * @param int $typeof the type of the variable
      *
      * @return mixede the cleaned value
      */
@@ -89,11 +89,11 @@ class Get
     {
         switch ($typeof) {
             case DOTY_INT:
-                $value = (int) $value;
+                $value = (int)$value;
                 break;
             case DOTY_DOUBLE:
             case DOTY_FLOAT:
-                $value = (float) $value;
+                $value = (float)$value;
                 break;
             case DOTY_STRING:
                 $value = strip_tags($value);
@@ -106,29 +106,29 @@ class Get
                 break;
 
             case DOTY_JSONDECODE:
-                    if (!isset($GLOBALS['obj']['json_service'])) {
-                        require_once _base_ . '/lib/lib.json.php';
-                        $GLOBALS['obj']['json_service'] = new Services_JSON();
-                    }
-                    $value = $GLOBALS['obj']['json_service']->decode($value);
+                if (!isset($GLOBALS['obj']['json_service'])) {
+                    require_once _base_ . '/lib/lib.json.php';
+                    $GLOBALS['obj']['json_service'] = new Services_JSON();
+                }
+                $value = $GLOBALS['obj']['json_service']->decode($value);
 
                 break;
             case DOTY_JSONENCODE:
-                    if (!isset($GLOBALS['obj']['json_service'])) {
-                        require_once _base_ . '/lib/lib.json.php';
-                        $GLOBALS['obj']['json_service'] = new Services_JSON();
-                    }
-                    $value = $GLOBALS['obj']['json_service']->encode($value);
+                if (!isset($GLOBALS['obj']['json_service'])) {
+                    require_once _base_ . '/lib/lib.json.php';
+                    $GLOBALS['obj']['json_service'] = new Services_JSON();
+                }
+                $value = $GLOBALS['obj']['json_service']->encode($value);
 
                 break;
             case DOTY_BOOL:
                 $value = ($value ? true : false);
                 break;
             case DOTY_MVC:
-                    $value = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $value);
-                    if ($value[0] === '/') {
-                        $value = '';
-                    }
+                $value = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $value);
+                if ($value[0] === '/') {
+                    $value = '';
+                }
 
                 break;
             case DOTY_MIXED:
@@ -170,13 +170,15 @@ class Get
      * Return the value of a configuration.
      *
      * @param string $cfg_name The configuration name
-     * @param mixed  $default  The default value return if the configuration is not found or not set
+     * @param mixed $default The default value return if the configuration is not found or not set
      *
      * @return mixed The value of the configuration param
      */
     public static function cfg($cfg_name, $default = false)
     {
-        if (!isset($GLOBALS['cfg'][$cfg_name])) {
+        if (getenv($cfg_name)) {
+            $value = getenv($cfg_name);
+        } elseif (!isset($GLOBALS['cfg'][$cfg_name])) {
             $value = $default;
         } else {
             $value = $GLOBALS['cfg'][$cfg_name];
@@ -189,17 +191,20 @@ class Get
      * Return the value of a plugin configuration.
      *
      * @param string $plugin_name The plugin name
-     * @param string $cfg_name    The configuration name
-     * @param mixed  $default     The default value return if the configuration is not found or not set
+     * @param string $cfg_name The configuration name
+     * @param mixed $default The default value return if the configuration is not found or not set
      *
      * @return mixed The value of the configuration param
      */
     public static function pcfg($plugin_name, $cfg_name, $default = false)
     {
-        if (!isset($GLOBALS['cfg'][$plugin_name][$cfg_name])) {
+        if (getenv($plugin_name . '_' . $cfg_name)) {
+            $value = getenv($plugin_name . '_' . $cfg_name);
+        } elseif (!isset($GLOBALS['cfg'][$plugin_name][$cfg_name])) {
             $value = $default;
+        } else {
+            $value = $GLOBALS['cfg'][$plugin_name][$cfg_name];
         }
-        $value = $GLOBALS['cfg'][$plugin_name][$cfg_name];
 
         return $value;
     }
@@ -212,14 +217,17 @@ class Get
      *
      * @return mixed the value of the setting or the default value
      */
-    public static function sett($sett_name, $default = false)
+    public static function sett($sett_name, $default = false, $platform = 'framework')
     {
-        $platform = 'framework';
-        if (!isset($GLOBALS[$platform][$sett_name])) {
-            return $default;
+        if (getenv($platform . '_' . $sett_name)) {
+            $value = getenv($platform . '_' . $sett_name);
+        } elseif (!isset($GLOBALS[$platform][$sett_name])) {
+            $value = $default;
+        } else {
+            $value = $GLOBALS[$platform][$sett_name];
         }
 
-        return $GLOBALS[$platform][$sett_name];
+        return $value;
     }
 
     /**
@@ -535,7 +543,7 @@ class Get
      *
      * @param array $text_array the title of the page or an array with  the breadcrmbs elements (key => value)
      *                          if the key is a string it will be userd as a link
-     * @param bool  $echo       if true the output will be automaticaly echoed
+     * @param bool $echo if true the output will be automaticaly echoed
      *
      * @return string
      */
@@ -714,20 +722,20 @@ class Get
     public static function user_is_bot()
     {
         $to_test = [
-            'googlebot',		// Google
-            'scooter',			// Altavista
-            'altavista',		// Altavista UK
-            'webcrawler',		// AllTheWeb
-            'architextspider',	// Excite
-            'slurp',			// Inktomi
-            'iltrovatore',		// Il Trovatore
-            'ultraseek',		// Infoseek
-            'lookbot',			// look.com
-            'mantraagent',		// looksmart.com
-            'lycos_spider',		// Lycos
-            'msnbot',			// Msn Search (the hated)
-            'shinyseek',		// ShinySeek
-            'robozilla',			// dmoz.org
+            'googlebot',        // Google
+            'scooter',            // Altavista
+            'altavista',        // Altavista UK
+            'webcrawler',        // AllTheWeb
+            'architextspider',    // Excite
+            'slurp',            // Inktomi
+            'iltrovatore',        // Il Trovatore
+            'ultraseek',        // Infoseek
+            'lookbot',            // look.com
+            'mantraagent',        // looksmart.com
+            'lycos_spider',        // Lycos
+            'msnbot',            // Msn Search (the hated)
+            'shinyseek',        // ShinySeek
+            'robozilla',            // dmoz.org
         ];
         $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
         foreach ($to_test as $botname) {
@@ -793,23 +801,23 @@ class Get
         $class_name = 'notice_display';
         switch ($message_type) {
             case 'notice':
-                    $class_name .= ' notice_display_notice';
+                $class_name .= ' notice_display_notice';
 
                 break;
             case 'success':
-                    $class_name .= ' notice_display_success';
+                $class_name .= ' notice_display_success';
 
                 break;
             case 'failure':
-                    $class_name .= ' notice_display_failure';
+                $class_name .= ' notice_display_failure';
 
                 break;
             case 'error':
-                    $class_name .= ' notice_display_error';
+                $class_name .= ' notice_display_error';
 
                 break;
             default:
-                    $class_name .= ' notice_display_default';
+                $class_name .= ' notice_display_default';
 
                 break;
         }
@@ -832,12 +840,12 @@ class Get
 
         switch ($type) {
             case 'filterCourse':
-                    $pattern = '/filter_+[^=;]+/';
+                $pattern = '/filter_+[^=;]+/';
                 break;
 
             default:
                 return $results;
-            break;
+                break;
         }
 
         preg_match($pattern, http_build_query($_REQUEST), $results);
