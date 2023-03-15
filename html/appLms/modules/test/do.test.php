@@ -380,7 +380,6 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
                     'date' => date ('Y-m-d H:i:s')
                 ];
                 Events::trigger('lms.test.complete', $event);
-
           }
         } elseif (str_replace('NULL', '', $prerequisite) !== $prerequisite) {
             if ($score_status !== 'valid' && $score_status !== 'passed') {
@@ -508,7 +507,7 @@ function playTestDispatch($object_test, $id_param)
     	$event['action'] = 'action_time_elapsed';
     }
 
-    Events::trigger('lms.test.play.test.dispatch', $event);
+    Events::trigger('lms.test.play.test.dispatch', $event);               
 
     if (isset($_POST['deleteandbegin'])) {
         // play test

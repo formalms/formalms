@@ -98,9 +98,6 @@ function instest()
 
     $test = Learning_Test::load($id_test);
 
-    // $event = new \appLms\Events\Lms\TestCreateEvent($test, $lang);
-
-  
     Events::trigger('lms.test.create', ['object_test' => $test]);
 
     if ($id_test > 0) {
@@ -264,7 +261,6 @@ function modtestgui($object_test)
     $tabs[] = '<li>' . '<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
         . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_FEEDBACK_MANAGEMENT') . '">'
         . $lang->def('_FEEDBACK_MANAGEMENT') . '</a>' . '</li>';
-
     /** REMOVED COURSE REPORT MANAGEMENT TAB */
     /*$event->addTab ('_COURSEREPORT_MANAGEMENT' , '<li>' . '<a href="index.php?modname=test&amp;op=coursereportman&amp;idTest='
         . $object_test->getId () . '&amp;back_url=' . $url_encode . '" title="' . $lang->def ('_COURSEREPORT_MANAGEMENT') . '">'

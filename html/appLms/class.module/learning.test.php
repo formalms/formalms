@@ -384,9 +384,7 @@ class Learning_Test extends Learning_Object
     final public static function getTestTypes()
     {
         $event['types'][] = 'test';
-        
         $event = Events::trigger('lms.test.get_types', $event);
-       
         return $event['types'];
     }
 

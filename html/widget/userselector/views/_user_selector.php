@@ -9,7 +9,6 @@
  */
 //js global variable name
 $_varname = 'UserSelector_' . $id;
-
 Events::trigger('widget.user_selector.render_js_script', []);
 ?>
 

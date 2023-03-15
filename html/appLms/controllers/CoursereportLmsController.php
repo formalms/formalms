@@ -373,8 +373,6 @@ class CoursereportLmsController extends LmsController
                                 $maxScore = (isset($test_details[$info_report->getIdSource()]['max_score']) ? round($test_details[$info_report->getIdSource()]['max_score'], 2) : '-');
                                 $minScore = (isset($test_details[$info_report->getIdSource()]['min_score']) ? round($test_details[$info_report->getIdSource()]['min_score'], 2) : '-');
 
-                          
-
                                 $eventResult = Events::trigger('lms.test.coursereport.coursereport', ['object_test' => $testObj, 'overViewTestQuestionLink' => $chartLink]);
                                 $chartLink = $eventResult['overViewTestQuestionLink'];
 
@@ -904,7 +902,6 @@ class CoursereportLmsController extends LmsController
                                   
                                         $courseReportDetailValues[] = $value;
                                     }
-
                                     Events::trigger('lms.coursereport.detail', $event);
 
                                     if(count($event['values'])) {
@@ -1015,7 +1012,6 @@ class CoursereportLmsController extends LmsController
                 $students_array[] = $student;
             }
         }
-
         $info_final = $this->model->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_FINAL_VOTE);
 
         $reports = $this->model->getReportsForFinal();
