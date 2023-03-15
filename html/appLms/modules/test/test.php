@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -28,7 +28,7 @@ function saveTestStatus($save_this)
     return $save_name;
 }
 
-function loadTestStatus($save_name)
+function &loadTestStatus($save_name)
 {
     $save = new Session_Save();
 
@@ -40,7 +40,7 @@ function addtest($object_test)
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
     if (!is_a($object_test, 'Learning_Test')) {
         Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
@@ -77,7 +77,7 @@ function instest()
 
     require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     if (trim($_REQUEST['title']) == '') {
         $_REQUEST['title'] = $lang->def('_NOTITLE');
@@ -98,7 +98,8 @@ function instest()
 
     $test = Learning_Test::load($id_test);
 
- 
+    Events::trigger('lms.test.create', ['object_test' => $test]);
+
     if ($id_test > 0) {
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&id_lo=' . $id_test . '&create_result=1');
     } else {
@@ -110,7 +111,7 @@ function instest()
 function modtest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
     $id_test = importVar('idTest', true, 0);
@@ -149,7 +150,7 @@ function modtest()
 function uptest(Learning_Test $obj_test = null)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
@@ -177,7 +178,12 @@ function uptest(Learning_Test $obj_test = null)
         Track_Object::updateObjectTitle($id_test, $obj_test->getObjectType(), $_REQUEST['title']);
     }
 
-   
+    // $test = Learning_Test::load($id_test);
+
+    // $event = new \appLms\Events\Lms\TestUpdateEvent($test, $lang);
+
+    // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestUpdateEvent::EVENT_NAME, $event);
+
     Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $id_test . '&back_url=' . $url_encode);
 }
 
@@ -185,7 +191,7 @@ function uptest(Learning_Test $obj_test = null)
 function modtestgui($object_test)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     YuiLib::load('table');
     Util::get_js(_lms_ . '/modules/quest_bank/ajax.quest_bank.js', true, true);
@@ -255,8 +261,12 @@ function modtestgui($object_test)
     $tabs[] = '<li>' . '<a href="index.php?modname=test&amp;op=feedbackman&amp;idTest='
         . $object_test->getId() . '&amp;back_url=' . $url_encode . '" title="' . $lang->def('_FEEDBACK_MANAGEMENT') . '">'
         . $lang->def('_FEEDBACK_MANAGEMENT') . '</a>' . '</li>';
+    /** REMOVED COURSE REPORT MANAGEMENT TAB */
+    /*$event->addTab ('_COURSEREPORT_MANAGEMENT' , '<li>' . '<a href="index.php?modname=test&amp;op=coursereportman&amp;idTest='
+        . $object_test->getId () . '&amp;back_url=' . $url_encode . '" title="' . $lang->def ('_COURSEREPORT_MANAGEMENT') . '">'
+        . $lang->def ('_COURSEREPORT_MANAGEMENT') . '</a>' . '</li>');
 
-  
+    */
     $eventResult = Events::trigger('lms.test.configuration_tabs_render', ['object_test' => $object_test, 'url_encode' => $url_encode, 'lang' => $lang, 'tabs' => $tabs]);
 
     $tabs = $eventResult['tabs'];
@@ -381,7 +391,27 @@ function modtestgui($object_test)
             . '</form>';
         //$tab->addActionAdd( $move_quest );
     }
-
+    //------------------------------------------------------------------
+    /*  $re_type = sql_query("
+    SELECT type_quest
+    FROM ".$GLOBALS['prefix_lms']."_quest_type
+    ORDER BY sequence");
+    $add_quest = '<form method="post" action="index.php?modname=test&amp;op=addquest">'
+        .'<div>'
+        .'<input type="hidden" id="authentic_request_test" name="authentic_request" value="'.Util::getSignature().'" />'
+        .'<input type="hidden" name="back_url" value="'.$url_encode.'" />'
+        .'<input type="hidden" name="idTest" value="'.$object_test->getId().'" />';
+    $add_quest .= '<label class="text_bold" for="add_test_quest">'.$lang->def('_TEST_ADDQUEST').'</label>&nbsp;'
+        .'<select id="add_test_quest" name="add_test_quest">';
+    while(list($type_quest) = sql_fetch_row($re_type)) {
+        $add_quest .= '<option value="'.$type_quest.'"'
+        .( $last_type == $type_quest ? ' selected="selected"' : '' ).'>'
+        .$lang->def('_QUEST_ACRN_'.strtoupper($type_quest)).' - '.$lang->def('_QUEST_'.strtoupper($type_quest)).'</option>';
+    }
+    $add_quest .= '</select>';
+    $add_quest .= '&nbsp;<input class="button_nowh" type="submit" name="add_quest" value="'.$lang->def('_ADD').'" />'
+        .'</div>'
+        .'</form>';*/
 
     $re_type = sql_query('
     SELECT type_quest 
@@ -413,6 +443,26 @@ function modtestgui($object_test)
         'content'
     );
 
+    /*
+    $GLOBALS['page']->add(
+        Form::openForm('add_question', 'index.php?modname=test&amp;op=importquest', false, false, 'multipart/form-data')
+
+        .Form::openElementSpace()
+        .Form::getOpenFieldset($lang->def('_IMPORT_FROM_XML'))
+        .Form::getHidden('back_url', 'back_url', $url_encode)
+        .Form::getHidden('idTest', 'idTest', $object_test->getId())
+        .Form::getFilefield($lang->def('_FILE'), 'xml_file', 'xml_file')
+        .Form::getCloseFieldset()
+        .Form::closeElementSpace()
+
+        .Form::openButtonSpace()
+        .form::getButton('import', 'import', $lang->def('_IMPORT'))
+        .Form::closeButtonSpace()
+
+        .Form::closeForm()
+    , 'content');
+    */
+
     if ($seq_error_detected) {
         $GLOBALS['page']->add(
             ' <a href="index.php?modname=test&amp;op=fixsequence&amp;idTest=' . $object_test->getId() . $uri_back . '" title="' . $lang->def('_FIX_SEQUENCE') . '">'
@@ -432,7 +482,7 @@ function modtestgui($object_test)
             . '<input type="hidden" name="idTest" value="' . $object_test->getId() . '" />'
 
             . '<div class="align_right">
-            <input type="submit"  id="export_quest" name="export_quest" value="' . $lang->def('_EXPORT') . '">
+            <input type="submit" id="export_quest" name="export_quest" value="' . $lang->def('_EXPORT') . '">
             <select id="export_quest_select" name="export_quest_select">',
         'content'
     );
@@ -469,7 +519,7 @@ function modtestgui($object_test)
 function movequestion($direction)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -508,7 +558,7 @@ function movequestion($direction)
 function movequest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -574,7 +624,7 @@ function fixQuestSequence()
 function fixPageSequence($id_test)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     list($tot_quest) = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
@@ -606,10 +656,10 @@ function fixPageSequence($id_test)
         sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $tot_quest . "'");
 }
 
-function istanceQuest($type_of_quest, $id)
+function &istanceQuest($type_of_quest, $id)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $re_quest = sql_query('
     SELECT type_file, type_class 
@@ -630,7 +680,7 @@ function istanceQuest($type_of_quest, $id)
 function addquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
 
@@ -669,7 +719,7 @@ function addquest()
 function modquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
 
@@ -714,7 +764,7 @@ function delquest()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -770,7 +820,7 @@ function defmodality()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.json.php';
@@ -964,7 +1014,33 @@ function defmodality()
         );
     }
 
-    
+    //------------------------------------------------------------------------------
+    /*
+    $chart_options_decoded = new stdClass();
+    if ($chart_options!="") {
+        $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
+        $decoded = $json->decode($chart_options);
+    }
+    $chart_options_decoded->use_charts = (isset($decoded['use_charts']) ? (bool)$decoded['use_charts'] : false);
+    $chart_options_decoded->selected_chart = (isset($decoded['selected_chart']) ? (string)$decoded['selected_chart'] : 'column');
+    $chart_options_decoded->show_mode = (isset($decoded['show_mode']) ? $decoded['show_mode'] : 'teacher');
+
+    $chart_list = array(
+            'stacked' => $lang->def('_STACKED_CHART'),
+            'bar' => $lang->def('_BAR_CHART'),
+            //'radar' => $lang->def('_RADAR_CHART'),
+            'column' => $lang->def('_COLUMN_CHART')
+        );
+
+    $chart_show = array(
+            'teacher' => $lang->def('_SHOWMODE_TEACHER'),
+            'course' => $lang->def('_SHOWMODE_COURSE')
+        );
+
+    $chart_list = array_flip($chart_list);
+    $chart_show = array_flip($chart_show);
+    */
+    //-order-answer----------------------------------------------
     $GLOBALS['page']->add(
         '<div class="text_bold">' . $lang->def('_TEST_MM1_ANSWER_ORDER') . '</div>'
             . Form::getRadio($lang->def('_TEST_MM1_ANSWER_SEQUENCE'), 'shuffle_answer_seq', 'shuffle_answer', 0, !$shuffle_answer)
@@ -1101,7 +1177,7 @@ function updatemodality()
 
     require_once _base_ . '/lib/lib.json.php';
     $json = new Services_JSON();
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1181,7 +1257,7 @@ function deftime()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
 
@@ -1341,7 +1417,7 @@ function deftime()
 // XXX: updatetime
 function updatetime()
 {
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1377,7 +1453,7 @@ function modassigntime()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
@@ -1393,7 +1469,7 @@ function modassigntime()
         SET display_type = '1'
         WHERE idTest = '$idTest'");
         if ($re) {
-            foreach((Array) $_REQUEST['new_difficult_quest'] as $idQuest => $difficult){
+            while (list($idQuest, $difficult) = each($_REQUEST['new_difficult_quest'])) {
                 $re &= sql_query('
                 UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
                 SET difficult = '" . $difficult . "', 
@@ -1529,7 +1605,7 @@ function defpoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
 
@@ -1632,7 +1708,7 @@ function updatepoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1659,7 +1735,7 @@ function modassignpoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
@@ -1864,7 +1940,7 @@ function modassignpoint()
 function importquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1909,7 +1985,7 @@ function importquest()
 function doimportquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1957,7 +2033,7 @@ function doimportquest()
 function exportquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1988,7 +2064,7 @@ function exportquest()
 function exportquestqb()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -2043,7 +2119,7 @@ function doexportquestqb()
 {
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
     $qb_man = new QuestBankMan();
@@ -2213,7 +2289,7 @@ function coursereportMan()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.json.php';
@@ -2253,7 +2329,7 @@ function coursereportMan()
 
 function updatecoursereport()
 {
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = &DoceboLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -2390,7 +2466,7 @@ if (isset($_REQUEST['import_quest'])) {
 if (isset($_REQUEST['export_quest'])) {
     $GLOBALS['op'] = 'exportquest';
 }
-if (isset($_REQUEST['export_quest_select']) && $_REQUEST['export_quest_select'] == 5) {
+if ($_REQUEST['export_quest_select'] == 5) {
     $GLOBALS['op'] = 'exportquestqb';
 }
 

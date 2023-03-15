@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -24,12 +24,6 @@ class CoursereportLmsController extends LmsController
 
     /** @var int */
     protected $idCourse;
-    public CoursereportLms $model;
-    /**
-     * @var array|true[]
-     */
-    public array $permissions;
-    public Services_JSON $json;
 
     public function init()
     {
@@ -155,14 +149,16 @@ class CoursereportLmsController extends LmsController
             }
             foreach ($test_details as $id_test => $single_detail) {
                 if (isset($single_detail['num_result'])) {
-                    $test_details[$id_test]['average'] /= $single_detail['num_result'];
+                    $test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
                 }
             }
             reset($test_details);
         }
 
         $report_details = [];
+        //while (list($id_report , $users_result) = each ($reports_scores)) {
         foreach ($reports_scores as $id_report => $users_result) {
+            //while (list($id_user , $single_report) = each ($users_result)) {
             foreach ($users_result as $id_user => $single_report) {
                 if ($single_report['score_status'] == 'valid') {
                     // max
@@ -195,9 +191,10 @@ class CoursereportLmsController extends LmsController
                 }
             }
         }
+        //while (list($id_report , $single_detail) = each ($report_details)) {
         foreach ($report_details as $id_report => $single_detail) {
             if (isset($single_detail['num_result'])) {
-                $report_details[$id_report]['average'] /= $single_detail['num_result'];
+                $report_details[$id_report]['average'] /= $report_details[$id_report]['num_result'];
             }
         }
 
@@ -215,7 +212,6 @@ class CoursereportLmsController extends LmsController
                         switch ($info_report->getSourceOf()) {
                             case CoursereportLms::SOURCE_OF_TEST:
                                     $testObj = Learning_Test::load($info_report->getIdSource());
-                                    $score = 0;
                                     if (isset($tests_score[$info_report->getIdSource()][$idst_user])) {
                                         $scoreStatus = $tests_score[$info_report->getIdSource()][$idst_user]['score_status'];
                                         switch ($scoreStatus) {
@@ -338,7 +334,7 @@ class CoursereportLmsController extends LmsController
                         case CoursereportLms::SOURCE_OF_TEST:
                                 $testObj = Learning_Test::load($info_report->getIdSource());
 
-                                // $event = new \appLms\Events\Lms\TestCousereportEvent($testObj);
+                          
 
                                 $type = $testObj->getObjectType();
                                 $id = $info_report->getIdSource();
@@ -347,15 +343,14 @@ class CoursereportLmsController extends LmsController
                                 $results_activity[] = ['id' => $testObj->getObjectType() . '_' . $info_report->getIdSource(), 'name' => $name];
 
                                 if ($mod_perm) {
-                                    //$chartLink = 'index.php?modname=coursereport&op=testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                     $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                                    // $event->setOverViewTestQuestionLink($chartLink);
+                                 
 
                                     $editLink = 'index.php?r=lms/coursereport/testvote&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
                                     $trashLinkVisible = false;
                                 } elseif ($view_perm) {
                                     $chartLink = 'index.php?r=lms/coursereport/testQuestion&type_filter=' . $type_filter . '&id_test=' . $info_report->getIdSource();
-                                    // $event->setOverViewTestQuestionLink($chartLink);
+                                  
                                     $trashLinkVisible = false;
                                 }
 
@@ -367,6 +362,8 @@ class CoursereportLmsController extends LmsController
                                         $test_details[$info_report->getIdSource()]['not_passed'] = 0;
                                     }
 
+                                    $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']);
+                                    $test_details[$id_test]['varianza'] = sqrt($test_details[$id_test]['varianza']);
                                 }
 
                                 $passed = (isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED]) ? round($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED], 2) : '-');
@@ -375,9 +372,6 @@ class CoursereportLmsController extends LmsController
                                 $average = (isset($test_details[$info_report->getIdSource()]['average']) ? round($test_details[$info_report->getIdSource()]['average'], 2) : '-');
                                 $maxScore = (isset($test_details[$info_report->getIdSource()]['max_score']) ? round($test_details[$info_report->getIdSource()]['max_score'], 2) : '-');
                                 $minScore = (isset($test_details[$info_report->getIdSource()]['min_score']) ? round($test_details[$info_report->getIdSource()]['min_score'], 2) : '-');
-
-                                // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCousereportEvent::EVENT_NAME, $event);
-                                // $chartLink = $event->getOverViewTestQuestionLink();
 
                                 $eventResult = Events::trigger('lms.test.coursereport.coursereport', ['object_test' => $testObj, 'overViewTestQuestionLink' => $chartLink]);
                                 $chartLink = $eventResult['overViewTestQuestionLink'];
@@ -604,7 +598,7 @@ class CoursereportLmsController extends LmsController
             $included_test_report_id[$idReport] = $idReport;
         }
 
-        $tests_score = &$test_man->getTestsScores($included_test, $id_students);
+        $tests_score = $test_man->getTestsScores($included_test, $id_students);
 
         $test_details = [];
 
@@ -644,7 +638,7 @@ class CoursereportLmsController extends LmsController
             }
             foreach ($test_details as $id_test => $single_detail) {
                 if (isset($single_detail['num_result'])) {
-                    $test_details[$id_test]['average'] /= $single_detail['num_result'];
+                    $test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
                 }
             }
             reset($test_details);
@@ -653,7 +647,7 @@ class CoursereportLmsController extends LmsController
         foreach ($reportsArray as $info_report) {
             $reports_id[] = $info_report->getIdReport();
         }
-        $reports_score = &$report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+        $reports_score = $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
         $results_names = [];
         $results_activity = [];
@@ -663,6 +657,7 @@ class CoursereportLmsController extends LmsController
         if (!empty($students_info)) {
             require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
 
+            //while (list($idst_user , $user_info) = each ($students_info)) {
             foreach ($students_info as $idst_user => $user_info) {
                 $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                     ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
@@ -708,12 +703,18 @@ class CoursereportLmsController extends LmsController
 
                 $student['activities_results'] = [];
                 $student['total_result'] = '-';
+                $event = [
+                    'object_test' => $testObj,
+                    'info_report' => $info_report,
+                    'idst_user' => $idst_user,
+                    'test_score' => $tests_score,
+                    'values' => [],
+                ];
 
                 foreach ($reportsArray as $info_report) {
                     if ($info_report->getSourceOf() != CoursereportLms::SOURCE_OF_FINAL_VOTE) {
                         $testObj = Learning_Test::load($info_report->getIdSource());
 
-                        // $courseReportDetailEvent = new \appLms\Events\Lms\CourseReportDetailEvent($testObj, $tests_score, $info_report, $idst_user, $acl_man, $user_info);
                         $courseReportDetailValues = [];
 
                         switch ($info_report->getSourceOf()) {
@@ -738,7 +739,7 @@ class CoursereportLmsController extends LmsController
                                                         'active' => false,
                                                     ];
 
-                                                    // $courseReportDetailEvent->addValue($value);
+                                        
                                                     $courseReportDetailValues[] = $value;
 
                                                 break;
@@ -756,7 +757,6 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => false,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
 
                                                             $value = [
@@ -767,7 +767,6 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => true,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
                                                             $courseReportDetailValues[] = $value;
                                                         } else {
                                                             $value = [
@@ -778,7 +777,7 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => false,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
+                                                   
                                                             $courseReportDetailValues[] = $value;
 
                                                             $value = [
@@ -789,7 +788,7 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => true,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
+                                               
                                                             $courseReportDetailValues[] = $value;
                                                         }
                                                     } else {
@@ -802,7 +801,7 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => false,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
+                                                     
                                                             $courseReportDetailValues[] = $value;
 
                                                             $value = [
@@ -813,7 +812,7 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => true,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
+                                                       
                                                             $courseReportDetailValues[] = $value;
                                                         } else {
                                                             $value = [
@@ -824,7 +823,7 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => false,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
+                                                      
                                                             $courseReportDetailValues[] = $value;
 
                                                             $value = [
@@ -835,7 +834,7 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => true,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
+                                                    
                                                             $courseReportDetailValues[] = $value;
                                                         }
                                                     }
@@ -850,7 +849,7 @@ class CoursereportLmsController extends LmsController
                                                     'active' => false,
                                                 ];
 
-                                                // $courseReportDetailEvent->addValue($value);
+                                        
                                                 $courseReportDetailValues[] = $value;
                                         }
                                     } else {
@@ -862,13 +861,10 @@ class CoursereportLmsController extends LmsController
                                             'active' => false,
                                         ];
 
-                                        // $courseReportDetailEvent->addValue($value);
+                                
                                         $courseReportDetailValues[] = $value;
                                     }
 
-                                    // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME, $courseReportDetailEvent);
-
-                                    // $student['activities_results'][] = $courseReportDetailEvent->getValues();
                                     $student['activities_results'][] = $courseReportDetailValues;
 
                                 break;
@@ -889,7 +885,7 @@ class CoursereportLmsController extends LmsController
                                         'active' => false,
                                     ];
 
-                                    // $courseReportDetailEvent->addValue($value);
+                            
                                     $courseReportDetailValues[] = $value;
 
                                     $history = $scormItem->getHistory();
@@ -903,13 +899,14 @@ class CoursereportLmsController extends LmsController
                                             'active' => true,
                                         ];
 
-                                        // $courseReportDetailEvent->addValue($value);
+                                  
                                         $courseReportDetailValues[] = $value;
                                     }
+                                    Events::trigger('lms.coursereport.detail', $event);
 
-                                    // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME, $courseReportDetailEvent);
-
-                                    // $student['activities_results'][] = $courseReportDetailEvent->getValues();
+                                    if(count($event['values'])) {
+                                        $courseReportDetailValues = array_merge($event['values'], $courseReportDetailValues);
+                                    }
                                     $student['activities_results'][] = $courseReportDetailValues;
 
                                 break;
@@ -931,7 +928,7 @@ class CoursereportLmsController extends LmsController
                                                         'active' => false,
                                                     ];
 
-                                                    // $courseReportDetailEvent->addValue($value);
+                                               
                                                     $courseReportDetailValues[] = $value;
 
                                                 break;
@@ -947,7 +944,7 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => false,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
+                                                        
                                                             $courseReportDetailValues[] = $value;
                                                         } else {
                                                             $value = [
@@ -958,7 +955,7 @@ class CoursereportLmsController extends LmsController
                                                                 'active' => false,
                                                             ];
 
-                                                            // $courseReportDetailEvent->addValue($value);
+                                                    
                                                             $courseReportDetailValues[] = $value;
                                                         }
                                                     } else {
@@ -970,7 +967,7 @@ class CoursereportLmsController extends LmsController
                                                             'active' => false,
                                                         ];
 
-                                                        // $courseReportDetailEvent->addValue($value);
+                                               
                                                         $courseReportDetailValues[] = $value;
                                                     }
 
@@ -984,7 +981,7 @@ class CoursereportLmsController extends LmsController
                                                     'active' => false,
                                                 ];
 
-                                                // $courseReportDetailEvent->addValue($value);
+                                        
                                                 $courseReportDetailValues[] = $value;
                                         }
                                     } else {
@@ -996,12 +993,14 @@ class CoursereportLmsController extends LmsController
                                             'active' => false,
                                         ];
 
-                                        // $courseReportDetailEvent->addValue($value);
+                                  
                                         $courseReportDetailValues[] = $value;
                                     }
-                                    // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\CourseReportDetailEvent::EVENT_NAME, $courseReportDetailEvent);
+                                    Events::trigger('lms.coursereport.detail', $event);
 
-                                    // $student['activities_results'][] = $courseReportDetailEvent->getValues();
+                                    if(count($event['values'])) {
+                                        $courseReportDetailValues = array_merge($event['values'], $courseReportDetailValues);
+                                    }
                                     $student['activities_results'][] = $courseReportDetailValues;
 
                                 break;
@@ -1013,7 +1012,6 @@ class CoursereportLmsController extends LmsController
                 $students_array[] = $student;
             }
         }
-
         $info_final = $this->model->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_FINAL_VOTE);
 
         $reports = $this->model->getReportsForFinal();
@@ -1387,7 +1385,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Reset track of user
         if (isset($_POST['reset_track'])) {
             $re = $this->saveTestUpdate($id_test, $test_man);
-            $id_user = key($_POST['reset_track']);
+            list($id_user) = each($_POST['reset_track']);
 
             $user_info = $acl_man->getUser($id_user, false);
 
@@ -1446,16 +1444,14 @@ class CoursereportLmsController extends LmsController
 
         $json = new Services_JSON();
         $chart_options = $json->decode($chart_options_json);
-        if (!empty($chart_options)) {
-            if (!property_exists($chart_options, 'use_charts')) {
-                $chart_options->use_charts = false;
-            }
-            if (!property_exists($chart_options, 'selected_chart')) {
-                $chart_options->selected_chart = 'column';
-            }
-            if (!property_exists($chart_options, 'show_chart')) {
-                $chart_options->show_chart = 'teacher';
-            }
+        if (!property_exists($chart_options, 'use_charts')) {
+            $chart_options->use_charts = false;
+        }
+        if (!property_exists($chart_options, 'selected_chart')) {
+            $chart_options->selected_chart = 'column';
+        }
+        if (!property_exists($chart_options, 'show_chart')) {
+            $chart_options->show_chart = 'teacher';
         }
 
         /* XXX: scores */
@@ -1536,7 +1532,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Display user scores
         $i = 0;
-        foreach ($students_info as $$idst_user => $user_info) {
+        while (list($idst_user, $user_info) = each($students_info)) {
             $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                 ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                 : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
@@ -1771,7 +1767,7 @@ class CoursereportLmsController extends LmsController
         // XXX: Save input if needed
         if (isset($_POST['view_answer'])) {
             $re = $this->saveTestUpdate($id_test, $test_man);
-            $id_user = key($_POST['view_answer']);
+            list($id_user) = each($_POST['view_answer']);
         } else {
             $id_user = importVar('id_user', true, 0);
         }
@@ -2030,7 +2026,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Display user scores
         $i = 0;
-        foreach((Array) $students_info as $idst_user => $user_info) {
+        while (list($idst_user, $user_info) = each($students_info)) {
             $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                 ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                 : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
@@ -2200,7 +2196,7 @@ class CoursereportLmsController extends LmsController
 
         $final_score = [];
 
-        foreach((Array) $id_students as $key => $id_user) {
+        while (list(, $id_user) = each($id_students)) {
             $user_score = 0;
 
             foreach ($reports as $info_report) {
@@ -2246,7 +2242,7 @@ class CoursereportLmsController extends LmsController
 
         $re = true;
 
-        foreach((Array) $final_score as $user => $score) {
+        while (list($user, $score) = each($final_score)) {
             if (isset($exists_final[$user])) {
                 $query_scores = "
 			UPDATE %lms_coursereport_score
@@ -2789,7 +2785,7 @@ class CoursereportLmsController extends LmsController
 
             // XXX: Display user scores
             $i = 0;
-            foreach((Array) $students_info as $idst_user => $user_info) {
+            while (list($idst_user, $user_info) = each($students_info)) {
                 $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                     ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                     : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
@@ -3182,8 +3178,8 @@ class CoursereportLmsController extends LmsController
 
         $test_details = [];
         if (is_array($included_test)) {
-            foreach((Array) $tests_score as $id_test => $users_result) {
-                foreach((Array) $users_result as $id_user => $single_test) {
+            while (list($id_test, $users_result) = each($tests_score)) {
+                while (list($id_user, $single_test) = each($users_result)) {
                     if ($single_test['score_status'] == 'valid') {
                         if (!isset($test_details[$id_test]['max_score'])) {
                             $test_details[$id_test]['max_score'] = $single_test['score'];
@@ -3211,7 +3207,7 @@ class CoursereportLmsController extends LmsController
                     }
                 }
             }
-            foreach((Array) $test_details as $id_test => $single_detail) {
+            while (list($id_test, $single_detail) = each($test_details)) {
                 if (isset($single_detail['num_result'])) {
                     $test_details[$id_test]['average'] /= $test_details[$id_test]['num_result'];
                 }
@@ -3223,8 +3219,8 @@ class CoursereportLmsController extends LmsController
         );
 
         $report_details = [];
-        foreach((Array) $reports_score as $id_report => $users_result) {
-            foreach((Array) $users_result as $id_user => $single_report) {
+        while (list($id_report, $users_result) = each($reports_score)) {
+            while (list($id_user, $single_report) = each($users_result)) {
                 if ($single_report['score_status'] == 'valid') {
                     if (!isset($report_details[$id_report]['max_score'])) {
                         $report_details[$id_report]['max_score'] = $single_report['score'];
@@ -3252,7 +3248,7 @@ class CoursereportLmsController extends LmsController
                 }
             }
         }
-        foreach((Array) $report_details as $id_report => $single_detail) {
+        while (list($id_report, $single_detail) = each($report_details)) {
             if (isset($single_detail['num_result'])) {
                 $report_details[$id_report]['average'] /= $report_details[$id_report]['num_result'];
             }
@@ -3260,7 +3256,7 @@ class CoursereportLmsController extends LmsController
         reset($report_details);
 
         if (!empty($students_info)) {
-            foreach((Array) $students_info as $idst_user => $user_info) {
+            while (list($idst_user, $user_info) = each($students_info)) {
                 $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
                     ? $user_info[ACL_INFO_LASTNAME] . ' ' . $user_info[ACL_INFO_FIRSTNAME]
                     : $acl_man->relativeId($user_info[ACL_INFO_USERID]));
@@ -3614,7 +3610,7 @@ class CoursereportLmsController extends LmsController
 
             $question['type'] = $quest['type_quest'];
 
-
+            reset($answers);
             reset($tracks);
 
             $responseValue['questions'][] = $question;

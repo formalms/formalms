@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -383,14 +383,9 @@ class Learning_Test extends Learning_Object
 
     final public static function getTestTypes()
     {
-        //TODO: EVT_OBJECT (§)
-        //$event = new \appLms\Events\Lms\TestGetTypesEvent();
-        //$event->addTestType('test');
-        //TODO: EVT_LAUNCH (&)
-        //\appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestGetTypesEvent::EVENT_NAME, $event);
-
-        //return $event->getTestTypes();
-        return ['test'];
+        $event['types'][] = 'test';
+        $event = Events::trigger('lms.test.get_types', $event);
+        return $event['types'];
     }
 
     /**
