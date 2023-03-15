@@ -371,26 +371,17 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
             } else {
                 $GLOBALS['page']->add($lang->def('_TEST_COMPLETED'), 'content');
 
-                //TODO: EVT_OBJECT (§)
-                //$event = new appLms\Events\Lms\TestCompletedEvent($object_test , Docebo::user ()->getIdst () , Docebo::user ()->getAclManager ());
+                $event = [
+                    'object_test' => $object_test,
+                    'idst' => Docebo::user ()->getIdst (),
+                    'acl' => Docebo::user ()->getAclManager (),
+                    'lang' => $lang,
+                    'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
+                    'date' => date ('Y-m-d H:i:s')
+                ];
+                Events::trigger('lms.test.complete', $event);
 
-                //$event->setLang ($lang);
-
-                //$event->setTestScore ($tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ]);
-
-                //$event->setTestDate (date ('Y-m-d H:i:s'));
-
-                //$smsCellField = FormaLms\lib\Get::sett ('sms_cell_num_field');
-
-                //$query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user ()->getIdst ();
-                //list($userPhoneNumber) = sql_fetch_row (sql_query ($query));
-                //$userPhoneNumber = ltrim (FormaLms\lib\Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
-
-                //$event->setUserPhoneNumber ($userPhoneNumber);
-
-                //TODO: EVT_LAUNCH (&)
-                //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME , $event);
-            }
+          }
         } elseif (str_replace('NULL', '', $prerequisite) !== $prerequisite) {
             if ($score_status !== 'valid' && $score_status !== 'passed') {
                 //--- check max attempts
@@ -404,25 +395,15 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
             } else {
                 $GLOBALS['page']->add($lang->def('_TEST_COMPLETED'), 'content');
 
-                //TODO: EVT_OBJECT (§)
-                //$event = new appLms\Events\Lms\TestCompletedEvent($object_test , Docebo::user ()->getIdst () , Docebo::user ()->getAclManager ());
-
-                //$event->setLang ($lang);
-
-                //$event->setTestScore ($tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ]);
-
-                //$event->setTestDate (date ('Y-m-d H:i:s'));
-
-                //$smsCellField = FormaLms\lib\Get::sett ('sms_cell_num_field');
-
-                //$query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user ()->getIdst ();
-                //list($userPhoneNumber) = sql_fetch_row (sql_query ($query));
-                //$userPhoneNumber = ltrim (FormaLms\lib\Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
-
-                //$event->setUserPhoneNumber ($userPhoneNumber);
-
-                //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME , $event);
-            }
+                $event = [
+                    'object_test' => $object_test,
+                    'idst' => Docebo::user ()->getIdst (),
+                    'acl' => Docebo::user ()->getAclManager (),
+                    'lang' => $lang,
+                    'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
+                    'date' => date ('Y-m-d H:i:s')
+                ];
+                Events::trigger('lms.test.complete', $event);  }
         } else {
             //--- check max attempts
             if ($maxAttempts) {
@@ -501,33 +482,33 @@ function playTestDispatch($object_test, $id_param)
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.test.php';
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = DoceboLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
-    //TODO: EVT_OBJECT (§)
-    //$event = new \appLms\Events\Lms\TestPlayTestDispatchEvent(Docebo::user () , $object_test , $id_param , $id_test , $id_track);
+    $event = ['object_test' => $object_test , 
+                'id_param' => $id_param , 
+                'id_test' => $id_test , 
+                'id_track' => $id_track,
+                'idst' => Docebo::user()->getIdst()];
 
-    //$dispatchAction = \appLms\Events\Lms\TestPlayTestDispatchEvent::DISPATCH_ACTION_PLAY;
 
-    //if (isset($_POST[ 'deleteandbegin' ])) {
-    //	$dispatchAction = \appLms\Events\Lms\TestPlayTestDispatchEvent::DISPATCH_ACTION_DELETE_AND_BEGIN;
-    //} else if (isset($_POST[ 'restart' ])) {
-    //	$dispatchAction = \appLms\Events\Lms\TestPlayTestDispatchEvent::DISPATCH_ACTION_RESTART;
-    //} elseif (isset($_POST[ 'test_save_keep' ])) {
-    //	$dispatchAction = \appLms\Events\Lms\TestPlayTestDispatchEvent::DISPATCH_ACTION_TEST_SAVE_KEEP;
-    //} elseif (isset($_POST[ 'show_result' ])) {
-    //	$dispatchAction = \appLms\Events\Lms\TestPlayTestDispatchEvent::DISPATCH_ACTION_SHOW_RESULT;
-    //} elseif (isset($_POST[ 'time_elapsed' ]) && $_POST[ 'time_elapsed' ] == '1') {
-    //	$dispatchAction = \appLms\Events\Lms\TestPlayTestDispatchEvent::DISPATCH_ACTION_TIME_ELAPSED;
-    //}
+    $event['action'] = 'action_play';
+    if (isset($_POST[ 'deleteandbegin' ])) {
+        $event['action'] = 'action_delete_and_begin';
+    } else if (isset($_POST[ 'restart' ])) {
+    	$event['action'] = 'action_restart';
+    } elseif (isset($_POST[ 'test_save_keep' ])) {
+        $event['action'] = 'action_test_save_keep';
+    } elseif (isset($_POST[ 'show_result' ])) {
+        $event['action'] = 'action_show_result';
+    } elseif (isset($_POST[ 'time_elapsed' ]) && $_POST[ 'time_elapsed' ] == '1') {
+    	$event['action'] = 'action_time_elapsed';
+    }
 
-    //$event->setDispatchAction ($dispatchAction);
-
-    //TODO: EVT_LAUNCH (&)
-    //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestPlayTestDispatchEvent::EVENT_NAME , $event);
+    Events::trigger('lms.test.play.test.dispatch', $event);
 
     if (isset($_POST['deleteandbegin'])) {
         // play test
@@ -1324,26 +1305,15 @@ function showResult($object_test, $id_param)
         . '<br />', 'content');
 
     if ($next_status != 'failed') {
-        //TODO: EVT_OBJECT (§)
-        //$event = new appLms\Events\Lms\TestCompletedEvent($object_test , Docebo::user ()->getIdst () , Docebo::user ()->getAclManager ());
-
-        //$event->setLang ($lang);
-
-        //$event->setTestScore ($point_do);
-
-        //$event->setTestDate ($test_track->dateAttempt);
-
-        //$smsCellField = FormaLms\lib\Get::sett ('sms_cell_num_field');
-
-        //$query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user ()->getIdst ();
-        //list($userPhoneNumber) = sql_fetch_row (sql_query ($query));
-        //$userPhoneNumber = ltrim (FormaLms\lib\Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
-
-        //$event->setUserPhoneNumber ($userPhoneNumber);
-
-        //TODO: EVT_LAUNCH (&)
-        //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME , $event);
-    }
+        $event = [
+            'object_test' => $object_test,
+            'idst' => Docebo::user ()->getIdst (),
+            'acl' => Docebo::user ()->getAclManager (),
+            'lang' => $lang,
+            'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
+            'date' => date ('Y-m-d H:i:s')
+        ];
+        Events::trigger('lms.test.complete', $event);  }
 
     if ($test_info['point_type'] != '1') {
         $save_score = $point_do;
@@ -1369,26 +1339,15 @@ function showResult($object_test, $id_param)
             (idTrack, idReference, idTest, date_attempt, number_time, score, score_status, date_begin, date_end, time) VALUES
             ('" . $id_track . "', '" . $id_reference . "', '" . $id_test . "', now(), '" . $new_info['number_of_save'] . "', '" . $new_info['score'] . "', '" . $new_info['score_status'] . "', '" . $testDateBegin . "', '" . date('Y-m-d H:i:s') . "', '" . $time . "')");
 
-            //TODO: EVT_OBJECT (§)
-            //$event = new appLms\Events\Lms\TestCompletedEvent($object_test , Docebo::user ()->getIdst () , Docebo::user ()->getAclManager ());
-
-            //$event->setLang ($lang);
-
-            //$event->setTestScore ($new_info[ 'score' ]);
-
-            //$event->setTestDate ($new_info[ 'date_end_attempt' ]);
-
-            //$smsCellField = FormaLms\lib\Get::sett ('sms_cell_num_field');
-
-            //$query = "SELECT user_entry FROM %adm_field_userentry WHERE id_common=" . $smsCellField . " AND id_user=" . Docebo::user ()->getIdst ();
-            //list($userPhoneNumber) = sql_fetch_row (sql_query ($query));
-            //$userPhoneNumber = ltrim (FormaLms\lib\Get::sett ('sms_international_prefix' , '') . $userPhoneNumber , '+');
-
-            //$event->setUserPhoneNumber ($userPhoneNumber);
-
-            //TODO: EVT_LAUNCH (&)
-            //\appCore\Events\DispatcherManager::dispatch (\appLms\Events\Lms\TestCompletedEvent::EVENT_NAME , $event);
-
+            $event = [
+                'object_test' => $object_test,
+                'idst' => Docebo::user ()->getIdst (),
+                'acl' => Docebo::user ()->getAclManager (),
+                'lang' => $lang,
+                'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
+                'date' => date ('Y-m-d H:i:s')
+            ];
+            Events::trigger('lms.test.complete', $event);
             $session->remove('test_date_begin');
             $session->save();
         }

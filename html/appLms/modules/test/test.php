@@ -100,7 +100,8 @@ function instest()
 
     // $event = new \appLms\Events\Lms\TestCreateEvent($test, $lang);
 
-    // \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Lms\TestCreateEvent::EVENT_NAME, $event);
+  
+    Events::trigger('lms.test.create', ['object_test' => $test]);
 
     if ($id_test > 0) {
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&id_lo=' . $id_test . '&create_result=1');

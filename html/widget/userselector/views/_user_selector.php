@@ -9,9 +9,8 @@
  */
 //js global variable name
 $_varname = 'UserSelector_' . $id;
-// $event = new \appLms\Events\Widget\UserSelectorRenderJSScriptEvent();
-// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorRenderJSScriptEvent::EVENT_NAME, $event);
 
+Events::trigger('widget.user_selector.render_js_script', []);
 ?>
 
 <script type="text/javascript">
@@ -56,22 +55,22 @@ $_varname = 'UserSelector_' . $id;
 		<div class="simple_search_box" id="userselector_simple_filter_options_<?php echo $id; ?>" style="display: inline;">
 			<?php
             echo Form::getInputTextfield('search_t', 'user_filter_text_' . $id, 'filter_text', $filter_text, '', 255, '');
-            echo Form::getButton('user_filter_set_' . $id, 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b', '', true, false);
-            echo Form::getButton('user_filter_reset_' . $id, 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b', '', true, false);
-            echo '<div id="user_filter_text_' . $id . '_container"></div>';
-            ?>
+echo Form::getButton('user_filter_set_' . $id, 'filter_set', Lang::t('_SEARCH', 'standard'), 'search_b', '', true, false);
+echo Form::getButton('user_filter_reset_' . $id, 'filter_reset', Lang::t('_RESET', 'standard'), 'reset_b', '', true, false);
+echo '<div id="user_filter_text_' . $id . '_container"></div>';
+?>
 		</div>
 		<div class="overlay_menu advanced_search_box" id="userselector_advanced_filter_options_<?php echo $id; ?>">
 			<?php
-            $dyn_data = $dynamic_filter->get(true, true);
-            echo $dyn_data['html'];
-            echo $dyn_data['js'];
-            echo Form::openButtonSpace();
-            echo Form::getButton('user_apply_dyn_filter_' . $id, 'apply_dyn_filter', Lang::t('_SEARCH', 'admin_directory'), false, '', true, false);
-            echo ' ';
-            echo Form::getButton('user_reset_dyn_filter_' . $id, 'reset_dyn_filter', Lang::t('_RESET', 'admin_directory'), false, '', true, false);
-            echo Form::closeButtonSpace();
-            ?>
+$dyn_data = $dynamic_filter->get(true, true);
+echo $dyn_data['html'];
+echo $dyn_data['js'];
+echo Form::openButtonSpace();
+echo Form::getButton('user_apply_dyn_filter_' . $id, 'apply_dyn_filter', Lang::t('_SEARCH', 'admin_directory'), false, '', true, false);
+echo ' ';
+echo Form::getButton('user_reset_dyn_filter_' . $id, 'reset_dyn_filter', Lang::t('_RESET', 'admin_directory'), false, '', true, false);
+echo Form::closeButtonSpace();
+?>
 		</div>
 	</div>
 </div>
@@ -123,8 +122,16 @@ $rel_action_bottom = '<span>'
 $id_org = isset($data_for_view['id_org']) ? $data_for_view['id_org'] : 0;
 $fields = ['id', 'userid', 'firstname', 'lastname', '_dyn_field_0', '_dyn_field_1', '_dyn_field_2', 'valid'];
 
-// $event = new \appLms\Events\Widget\UserSelectorBeforeRenderEvent($id_org, $_varname, $columns_arr, $fields);
-// \appCore\Events\DispatcherManager::dispatch(\appLms\Events\Widget\UserSelectorBeforeRenderEvent::EVENT_NAME, $event);
+$event = compact('id_org', '_varname', 'columns_arr', 'fields');
+Events::trigger('widget.user_selector.before_render', $event);
+
+if (count($event['columns'])) {
+    $columns_arr = array_merge($event['columns'], $columns_arr);
+}
+
+if (count($event['fields'])) {
+    $fields = array_merge($event['fields'], $fields);
+}
 
 $this->widget('table', [
     'id' => 'user_selector_table_' . $id,
