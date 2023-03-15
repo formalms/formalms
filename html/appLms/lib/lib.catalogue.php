@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -31,7 +31,7 @@ class Selector_Catalogue
     /**
      * Class constructor.
      */
-    public function __construct()
+    public function Selector_Catalogue()
     {
         $this->show_filter = true;
     }
@@ -237,7 +237,7 @@ class Catalogue_Manager
     /**
      * class constructor.
      */
-    public function __construct()
+    public function Catalogue_Manager()
     {
         $this->acl = new DoceboACL();
         $this->aclManager = $this->acl->getACLManager();
@@ -289,6 +289,8 @@ class Catalogue_Manager
     public function getUserAllCatalogueId($id_user)
     {
         $catalogues = [];
+
+        $this->acl = Docebo::user()->getAclManager();
         $user_groups = $this->acl->getSTGroupsST($id_user);
 
         if (empty($user_groups)) {
@@ -439,7 +441,7 @@ class AdminCatalogue
     /**
      * class constructor.
      */
-    public function __construct()
+    public function AdminCatalogue()
     {
     }
 
