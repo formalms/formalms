@@ -2388,7 +2388,7 @@ class UserProfileViewer
     public function userIdMailProfile($picture = false, $viewer = false, $intest = true)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = &Docebo::user()->getAclManager();
 
         $html = '<div class="user_presentation">' . "\n"
 
