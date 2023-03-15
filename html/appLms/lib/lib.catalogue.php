@@ -289,6 +289,8 @@ class Catalogue_Manager
     public function getUserAllCatalogueId($id_user)
     {
         $catalogues = [];
+
+        $this->acl = Docebo::user()->getAclManager();
         $user_groups = $this->acl->getSTGroupsST($id_user);
 
         if (empty($user_groups)) {
