@@ -2,9 +2,9 @@ var $ = require('jquery');
 import TinyMce from '../components/tinymce';
 
 const TextEditor = (function() {
-  $(document).ready(function () {
+  $(function(){
     return new TinyMce();
   });
 })();
 
-module.exports = TextEditor;
+export default TextEditor;

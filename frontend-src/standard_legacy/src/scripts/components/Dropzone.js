@@ -282,4 +282,4 @@ Element.prototype.FormaFileUploader = function(options) {
   new FormaDropZone(this, options);
 }
 
-export default FormaDropZone;
+module.exports = FormaDropZone;

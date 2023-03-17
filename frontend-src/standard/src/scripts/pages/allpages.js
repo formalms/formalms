@@ -4,7 +4,8 @@ require('../modules/slider-menu');
 require('../modules/text-editor');
 require('../modules/modal-accordion');
 require('../../plugins/select2totree/js/select2totree');
-
+// eslint-disable-next-line no-unused-vars
+import * as TwigExtensions from './../helpers/TwigHelpers';
 import {InfoCourse} from '../modules/InfoCourse';
 import {DashBoardCalendar} from '../modules/DashboardCalendar';
 import {DashboardVideo} from '../modules/DashboardVideo';
@@ -18,12 +19,15 @@ import FormaTable from './../components/FormaTable';
 import ModalElement from './../components/Modal';
 import Axios from 'axios';
 import Select2 from 'select2';
-import Chart from 'chart.js';
+// import Chart from 'chart.js';
+import { Chart as ChartJS, LinearScale } from 'chart.js';
+ChartJS.register(LinearScale);
 import FolderTree from '../components/FolderTree';
 import FolderTreeMultiUser from '../components/FolderTreeMultiUser';
 
 
 var Page = (function () {
+    
     window.frontend.modules = {};
     window.frontend.helpers = {};
     window.TeacherLearningObject = TeacherLearningObject;
@@ -35,7 +39,7 @@ var Page = (function () {
     window.frontend.modules.FolderTreeMultiUser = FolderTreeMultiUser;
     window.frontend.modules.FormaDropZone = FormaDropZone;
     window.frontend.modules.Select2 = Select2;
-    window.frontend.modules.Chart = Chart;
+    window.frontend.modules.Chart = ChartJS;
     window.frontend.modules.FormaTable = FormaTable;
     window.frontend.modules.Modal = ModalElement;
     window.frontend.helpers.Lang = Lang;
@@ -164,8 +168,9 @@ var Page = (function () {
 
     Page.prototype.load = function () {
     };
+    // alert('Nessun errore bloccante');
 
     return new Page();
 })();
 
-module.exports = Page;
+export default Page;

@@ -12,7 +12,9 @@ import 'tinymce/plugins/lists';
 import 'tinymce/plugins/link';
 import 'tinymce/plugins/image';
 import 'tinymce/plugins/charmap';
+import 'tinymce/plugins/print';
 import 'tinymce/plugins/preview';
+import 'tinymce/plugins/hr';
 import 'tinymce/plugins/anchor';
 import 'tinymce/plugins/pagebreak';
 import 'tinymce/plugins/searchreplace';
@@ -26,20 +28,15 @@ import 'tinymce/plugins/media';
 import 'tinymce/plugins/nonbreaking';
 import 'tinymce/plugins/save';
 import 'tinymce/plugins/table';
+import 'tinymce/plugins/contextmenu';
 import 'tinymce/plugins/directionality';
 import 'tinymce/plugins/emoticons';
 import 'tinymce/plugins/template';
-
-// Non presenti nella 6 (Premium)
 import 'tinymce/plugins/paste';
-import 'tinymce/plugins/print';
-import 'tinymce/plugins/hr';
-import 'tinymce/plugins/contextmenu';
 import 'tinymce/plugins/textcolor';
 import 'tinymce/plugins/colorpicker';
 import 'tinymce/plugins/textpattern';
 import 'tinymce/plugins/imagetools';
-
 
 class TinyMce {
 
@@ -66,8 +63,8 @@ class TinyMce {
   init(authentic_request) {
     this.authentic_request = authentic_request;
 
-    this.initComplex('.tinymce_complex');
-    this.initSimple('.tinymce_simple');
+    this.initComplex('tinymce_complex');
+    this.initSimple('tinymce_simple');
   }
 
   initComplex(editor_selector) {
@@ -77,7 +74,7 @@ class TinyMce {
       mode: 'textareas',
       skin: false,
       branding: false,
-      selector: editor_selector,
+      editor_selector,
       forced_root_block: false,
       force_p_newlines: false,
       force_br_newlines: true,

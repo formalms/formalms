@@ -14,39 +14,34 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
+        loaders: ["style-loader", "css-loader", "less-loader"]
       }, {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        loaders: ["style-loader", "css-loader"]
       },
       {
         test: /\.js$/,
         enforce: 'pre',
+        loader: 'eslint-loader',
         exclude: [/(node_modules)/, __dirname + '/' + 'src/scripts/vendors'],
-        use: [{
-          loader: 'eslint-webpack-plugin',
-          options: {
-            configFile: './.eslintrc'
-          }
-        }]
+        options: {
+          configFile: './.eslintrc'
+        }
       },
       {
         test: /\.js$/,
-        exclude: [/node_modules/],
+        exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           options: {
-            // presets: ['@babel/preset-env'],
-            presets: ['@babel/preset-env','@babel/preset-react'],
-            plugins: ['@babel/plugin-transform-runtime']
+            presets: ['env', 'react', 'es2015', 'stage-0']
           }
         }
       },
-      /*
       {
         test: /\.jsx$/,
         use: {
@@ -56,14 +51,13 @@ module.exports = {
           }
         }
       },
-      */
       {
         test: /\.twig$/,
-        use: 'twig-loader'
+        loader: 'twig-loader'
       },
       {
         test: /(jquery-mousewheel|malihu-custom-scrollbar-plugin)/,
-        use: 'imports-loader?define=>false&this=>window'
+        loader: 'imports-loader?define=>false&this=>window'
       }
     ]
   },

@@ -1,6 +1,6 @@
 
 const path = require('path');
-// const ESLintPlugin = require('eslint-webpack-plugin');
+
 
 module.exports = {
   entry: {
@@ -20,76 +20,50 @@ module.exports = {
     rules: [
       {
         test: /\.scss$/,
-        use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              implementation: require('sass'),
-            },
-          },
-        ]
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       },
-      /*
       {
         test: /\.js$/,
         enforce: 'pre',
-        use: {
-          loader: 'eslint-webpack-plugin',
-          options: {
-            configFile: './.eslintrc'
-          }
-        },
-        exclude: [/node_modules/, __dirname + '/' + 'src/scripts/vendors'],
+        loader: 'eslint-loader',
+        exclude: [/(node_modules)/, __dirname + '/' + 'src/scripts/vendors'],
+        options: {
+          configFile: './.eslintrc'
+        }
       },
-      */
       {
         test: /\.js$/,
-        exclude: [/node_modules/],
+        exclude: [/(node_modules)/],
         use: {
           loader: 'babel-loader',
           options: {
-            // presets: ['@babel/preset-env'],
-            presets: ['@babel/preset-env','@babel/preset-react'],
-            plugins: ['@babel/plugin-transform-runtime']
+            presets: ['env','react', 'es2015', 'stage-0']
           }
         }
       },
-      /*
       {
         test: /\.jsx$/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env']
+            presets: ['env','react', 'es2015', 'stage-0']
           }
         }
       },
-      */
       {
         test: /\.twig$/,
-        use: 'twig-loader'
+        loader: 'twig-loader'
       },
       {
         test: /(jquery-mousewheel|malihu-custom-scrollbar-plugin)/,
-        use: 'imports-loader?define=>false&this=>window'
+        loader: 'imports-loader?define=>false&this=>window'
       }
     ]
   },
-  resolve: {
-		alias: {
-			path: require.resolve('path-browserify'),
-		},
-	},
  // resolve: {
  //   alias: {
  //     Config: path.resolve(
@@ -99,8 +73,7 @@ module.exports = {
  //   }
  // },
   plugins: [
-  ],
-
+  ]
 };
 
 

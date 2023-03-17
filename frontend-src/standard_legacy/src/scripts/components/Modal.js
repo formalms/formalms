@@ -63,4 +63,4 @@ class ModalElement extends FormaPlugin {
   
 }
 
-export default ModalElement
+module.exports = ModalElement

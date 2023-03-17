@@ -1018,4 +1018,4 @@ Element.prototype.FormaTable = function(options) {
     new FormaTable(this, options);
   }
   
-export default FormaTable;
+module.exports = FormaTable;
