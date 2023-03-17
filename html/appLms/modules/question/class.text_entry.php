@@ -61,7 +61,7 @@ class TextEntry_Question extends Question
             }
 
             //find id of auto_increment colum
-            list($idQuest) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+            [$idQuest] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
             if (!$idQuest) {
                 errorCommunication($lang->def('_OPERATION_FAILURE')
                     . getBackUi(Util::str_replace_once('&', '&amp;', $back_test), $lang->def('_BACK')));
@@ -218,14 +218,14 @@ class TextEntry_Question extends Question
         //create array of difficult
         $arr_dufficult = [5 => '5 - ' . $lang->def('_VERY_HARD'), 4 => '4 - ' . $lang->def('_HARD'), 3 => '3 - ' . $lang->def('_DIFFICULT_MEDIUM'), 2 => '2 - ' . $lang->def('_DIFFICULT_EASY'), 1 => '1 - ' . $lang->def('_DIFFICULT_VERYEASY')];
         //load data
-        list($cat_sel, $title_quest, $diff_sel, $sel_time) = sql_fetch_row(sql_query('
+        [$cat_sel, $title_quest, $diff_sel, $sel_time] = sql_fetch_row(sql_query('
 		SELECT idCategory, title_quest, difficult, time_assigned
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
-		WHERE idQuest = '" . (int) $this->id . "'"));
-        list($answer, $comment, $score_correct, $score_incorrect) = sql_fetch_row(sql_query('
+		WHERE idQuest = '" . (int)$this->id . "'"));
+        [$answer, $comment, $score_correct, $score_incorrect] = sql_fetch_row(sql_query('
 		SELECT answer, comment, score_correct, score_incorrect 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
-		WHERE idQuest = '" . (int) $this->id . "'"));
+		WHERE idQuest = '" . (int)$this->id . "'"));
 
         //drawing form
         $GLOBALS['page']->add(
@@ -334,10 +334,10 @@ class TextEntry_Question extends Question
     public function copy($new_id_test, $back_test = null)
     {
         //retriving question
-        list($sel_cat, $quest, $sel_diff, $time_ass, $sequence, $page) = sql_fetch_row(sql_query('
+        [$sel_cat, $quest, $sel_diff, $time_ass, $sequence, $page] = sql_fetch_row(sql_query('
 		SELECT idCategory, title_quest, difficult, time_assigned, sequence, page 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
-		WHERE idQuest = '" . (int) $this->id . "'"));
+		WHERE idQuest = '" . (int)$this->id . "'"));
         //insert question
         $ins_query = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testquest 
@@ -354,7 +354,7 @@ class TextEntry_Question extends Question
             return false;
         }
         //find id of auto_increment colum
-        list($new_id_quest) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+        [$new_id_quest] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
         if (!$new_id_quest) {
             return false;
         }
@@ -400,7 +400,7 @@ class TextEntry_Question extends Question
     {
         $lang = &DoceboLanguage::createInstance('test');
 
-        list($id_quest, $title_quest) = sql_fetch_row(sql_query('
+        [$id_quest, $title_quest] = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
@@ -424,11 +424,11 @@ class TextEntry_Question extends Question
             if (sql_num_rows($re_answer_do)) {
                 //find previous answer
                 $find_prev = true;
-                list($answer_do) = sql_fetch_row($re_answer_do);
+                [$answer_do] = sql_fetch_row($re_answer_do);
             }
         }
 
-        list($id_answer, $answer) = sql_fetch_row($re_answer);
+        [$id_answer, $answer] = sql_fetch_row($re_answer);
         $num_char = strlen($answer);
         $text = '<input class="test_te_input" type="text" id="quest_' . $id_quest . '" name="quest[' . $id_quest . ']" '
                 . 'maxlength="' . strlen($answer) . '" autocomplete="off" placeholder="' . str_repeat($lang->def('_QUEST_TE_ANSWERHERE'), $num_char) . '" '
@@ -475,7 +475,7 @@ class TextEntry_Question extends Question
 		SELECT idAnswer, answer, score_correct, score_incorrect 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . (int) $this->id . "'");
-        list($id_answer, $answer, $score_corr, $score_incorr) = sql_fetch_row($re_answer);
+        [$id_answer, $answer, $score_corr, $score_incorr] = sql_fetch_row($re_answer);
 
         if (strtolower($answer) == strtolower(stripslashes($source['quest'][$this->id]))) {
             $is_correct = true;
@@ -513,7 +513,7 @@ class TextEntry_Question extends Question
 		SELECT idAnswer, answer, score_correct, score_incorrect 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquestanswer 
 		WHERE idQuest = '" . (int) $this->id . "'");
-        list($id_answer, $answer, $score_corr, $score_incorr) = sql_fetch_row($re_answer);
+        [$id_answer, $answer, $score_corr, $score_incorr] = sql_fetch_row($re_answer);
 
         if (strtolower($answer) == strtolower(stripslashes($source['quest'][$this->id]))) {
             $is_correct = true;
@@ -566,7 +566,7 @@ class TextEntry_Question extends Question
         $comment = '';
         $com_is_correct = '';
 
-        list($id_quest, $title_quest) = sql_fetch_row(sql_query('
+        [$id_quest, $title_quest] = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
@@ -589,9 +589,9 @@ class TextEntry_Question extends Question
             $recover_answer .= ' ORDER BY number_time DESC LIMIT 1';
         }
 
-        list($answer_do) = sql_fetch_row(sql_query($recover_answer));
+        [$answer_do] = sql_fetch_row(sql_query($recover_answer));
 
-        list($id_answer, $answer, $com) = sql_fetch_row($re_answer);
+        [$id_answer, $answer, $com] = sql_fetch_row($re_answer);
 
         $text = '<span class="text_bold">' . (trim($answer_do) != '' ? $answer_do : $lang->def('_EMPTY_ANSWER')) . '</span>';
         if (strtolower($answer_do) == strtolower($answer)) {

@@ -32,7 +32,7 @@ class Title_Question extends Question
     /**
      * function create().
      *
-     * @param $back_url	the url where the function retutn at the end of the operation
+     * @param $back_url    the url where the function retutn at the end of the operation
      *
      * @return nothing
      */
@@ -55,7 +55,7 @@ class Title_Question extends Question
 				'0' ) ")) {
                 errorCommunication($lang->def('_OPERATION_FAILURE')
                     . getBackUi('index.php?modname=question&amp;op=create&amp;type_quest='
-                    . $this->getQuestionType() . '&amp;idTest=' . $idTest . '&amp;back_test=' . $url_encode, $lang->def('_BACK')));
+                        . $this->getQuestionType() . '&amp;idTest=' . $idTest . '&amp;back_test=' . $url_encode, $lang->def('_BACK')));
             }
             Util::jump_to('' . $back_test);
         }
@@ -100,11 +100,11 @@ class Title_Question extends Question
 			WHERE idQuest = '" . $this->id . "'")) {
                 errorCommunication($lang->def('_ERR_INS_QUEST')
                     . getBackUi('index.php?modname=question&amp;op=edit&amp;type_quest='
-                    . $this->getQuestionType() . '&amp;idQuest=' . $this->id . '&amp;back_test=' . $url_encode, $lang->def('_BACK')));
+                        . $this->getQuestionType() . '&amp;idQuest=' . $this->id . '&amp;back_test=' . $url_encode, $lang->def('_BACK')));
             }
             Util::jump_to('' . $back_test);
         }
-        list($title_quest) = sql_fetch_row(sql_query('
+        [$title_quest] = sql_fetch_row(sql_query('
 		SELECT title_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
@@ -156,10 +156,10 @@ class Title_Question extends Question
     /**
      * display the quest for play, if.
      *
-     * @param int  $num_quest      the number of the quest to display in front of the quest title
+     * @param int $num_quest the number of the quest to display in front of the quest title
      * @param bool $shuffle_answer randomize the answer display order
-     * @param int  $id_track       where find the answer, if find -> load
-     * @param bool $freeze         if true, when load disable the user interaction
+     * @param int $id_track where find the answer, if find -> load
+     * @param bool $freeze if true, when load disable the user interaction
      *
      * @return string of html question code
      *
@@ -167,7 +167,7 @@ class Title_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        list($title_quest) = sql_fetch_row(sql_query('
+        [$title_quest] = sql_fetch_row(sql_query('
 		SELECT title_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
@@ -178,14 +178,14 @@ class Title_Question extends Question
     /**
      * display the question with the result of a user.
      *
-     * @param int $id_track    the test relative to this question
-     * @param int $num_quest   the quest sequqnce number
+     * @param int $id_track the test relative to this question
+     * @param int $num_quest the quest sequqnce number
      * @param int $number_time the quest attempt number
      *
      * @return array return an array with xhtml code in this way
-     *               string	'quest' 	=> the quest,
-     *               double	'score'		=> score obtained from this question,
-     *               string	'comment'	=> relative comment to the quest )
+     *               string    'quest'    => the quest,
+     *               double    'score'        => score obtained from this question,
+     *               string    'comment'    => relative comment to the quest )
      *
      * @author Fabio Pirovano (fabio@docebo.com)
      */
@@ -197,13 +197,13 @@ class Title_Question extends Question
         $comment = '';
         $com_is_correct = '';
 
-        list($id_quest, $title_quest) = sql_fetch_row(sql_query('
+        [$id_quest, $title_quest] = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest 
 		FROM ' . $GLOBALS['prefix_lms'] . "_testquest 
 		WHERE idQuest = '" . $this->id . "'"));
 
         return ['quest' => '<strong class="quest_title_review">' . $title_quest . '</strong>',
-                        'score' => false,
-                        'comment' => '', ];
+            'score' => false,
+            'comment' => ''];
     }
 }

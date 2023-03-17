@@ -58,15 +58,15 @@ function getCompilationTable($id_user, $id_test)
     }
 
     $query = 'SELECT *'
-                . ' FROM %lms_testtrack'
-                . ' WHERE idTest = ' . (int) $id_test
-                . ' AND idUser = ' . (int) $id_user;
+        . ' FROM %lms_testtrack'
+        . ' WHERE idTest = ' . (int)$id_test
+        . ' AND idUser = ' . (int)$id_user;
 
     $result = sql_query($query);
 
     cout(getTitleArea('')
-            . '<div class="std_block">'
-            . $back, 'content');
+        . '<div class="std_block">'
+        . $back, 'content');
 
     if (sql_num_rows($result) > 0) {
         $track_info = sql_fetch_assoc($result);
@@ -85,6 +85,7 @@ function getCompilationTable($id_user, $id_test)
         } else {
             $incomplete = true;
         }
+
         $show_solution = false;
         if ($test_info['show_solution'] == 1) {
             $show_solution = true;
@@ -98,8 +99,8 @@ function getCompilationTable($id_user, $id_test)
         }
 
         $query = 'SELECT date_attempt, score'
-                    . ' FROM %lms_testtrack_times'
-                    . ' WHERE idTrack = ' . (int) $track_info['idTrack'];
+            . ' FROM %lms_testtrack_times'
+            . ' WHERE idTrack = ' . (int)$track_info['idTrack'];
 
         $result = sql_query($query);
 
@@ -119,9 +120,9 @@ function getCompilationTable($id_user, $id_test)
             }
 
             cout($tb->getTable()
-                    . '</div>', 'content');
+                . '</div>', 'content');
         }
-        $query_passed = 'SELECT status FROM %lms_commontrack WHERE idTrack = ' . (int) $track_info['idTrack'] . " AND objectType = 'test' AND idUser = " . (int) $id_user;
+        $query_passed = 'SELECT status FROM %lms_commontrack WHERE idTrack = ' . (int)$track_info['idTrack'] . " AND objectType = 'test' AND idUser = " . (int)$id_user;
         $result_passed = sql_query($query_passed);
         $test_passed = false;
         if (sql_num_rows($result_passed) > 0) {
@@ -133,7 +134,7 @@ function getCompilationTable($id_user, $id_test)
         if ($test_info['show_doanswer'] == 1 || ($test_info['show_doanswer'] == 2 && $test_passed)) {
             $re_visu_quest = sql_query("SELECT idQuest
             FROM %lms_testtrack_quest
-            WHERE idTrack = '" . (int) $track_info['idTrack'] . "' ");
+            WHERE idTrack = '" . (int)$track_info['idTrack'] . "' ");
 
             $quest_see = [];
             while (list($id_q) = sql_fetch_row($re_visu_quest)) {
@@ -158,29 +159,34 @@ function getCompilationTable($id_user, $id_test)
                 $quest_obj = eval("return new $type_class( $idQuest );");
 
                 $review = $quest_obj->displayUserResult($track_info['idTrack'],
-                                                            ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
-                                                            $show_solution);
+                    ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
+                    $show_solution);
 
                 cout('<div class="test_quest_review_container">'
-                        . $review['quest'], 'content');
+                    . $review['quest'], 'content');
 
                 if ($review['score'] !== false) {
-                    cout('<div class="test_answer_comment">'
-                            . '<div class="test_score_note">' . Lang::t('_SCORE', 'test') . ' : ', 'content');
+                    cout('<div class="test_answer_comment">');
 
-                    if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                        cout(Lang::t('_NOT_ASSIGNED', 'test'), 'content');
-                    } else {
-                        if ($review['score'] > 0) {
-                            cout('<span class="test_score_positive">' . $review['score'] . '</span>', 'content');
+                    if ($test_info['show_quest_score']) {
+
+                        cout('<div class="test_score_note">' . Lang::t('_SCORE', 'test') . ' : ', 'content');
+
+                        if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
+                            cout(Lang::t('_NOT_ASSIGNED', 'test'), 'content');
                         } else {
-                            cout('<span class="test_score_negative">' . $review['score'] . '</span>', 'content');
+                            if ($review['score'] > 0) {
+                                cout('<span class="test_score_positive">' . $review['score'] . '</span>', 'content');
+                            } else {
+                                cout('<span class="test_score_negative">' . $review['score'] . '</span>', 'content');
+                            }
                         }
+
+                        cout('</div>','content');
                     }
 
-                    cout('</div>'
-                            . ($review['comment'] != '' ? $review['comment'] : '')
-                            . '</div>', 'content');
+                    cout( ($review['comment'] != '' ? $review['comment'] : '')
+                        . '</div>', 'content');
                 }
 
                 cout('</div>', 'content');
@@ -193,7 +199,7 @@ function getCompilationTable($id_user, $id_test)
     }
 
     cout($back
-            . '</div>', 'content');
+        . '</div>', 'content');
 }
 
 function getTrackingTable($id_user, $id_org)

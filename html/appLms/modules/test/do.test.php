@@ -91,14 +91,14 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     $tests_score = &$group_test_man->getTestsScores([$id_test], [Docebo::user()->getIdst()]);
 
     if ($test_info['time_dependent'] && $test_info['time_assigned']) {
-        $minute_assigned = (int) ($test_info['time_assigned'] / 60);
-        $second_assigned = (int) ($test_info['time_assigned'] % 60);
+        $minute_assigned = (int)($test_info['time_assigned'] / 60);
+        $second_assigned = (int)($test_info['time_assigned'] % 60);
         if (strlen($second_assigned) == 1) {
             $second_assigned = '0' . $second_assigned;
         }
-        $time_readable = str_replace('[time_assigned]' , $minute_assigned . ':' . $second_assigned . '',
+        $time_readable = str_replace('[time_assigned]', $minute_assigned . ':' . $second_assigned . '',
             $lang->def('_TEST_TIME_ASSIGNED'));
-        $time_readable = str_replace('[second_assigned]' , '' . $second_assigned,
+        $time_readable = str_replace('[second_assigned]', '' . $second_assigned,
             str_replace('[minute_assigned]', '' . $minute_assigned, $time_readable));
     }
 
@@ -110,13 +110,6 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
     $maxAttempts = false;
 
-    //--- check max attempts
-    /*
-     * @todo rimuovere test360
-     */
-    if (method_exists($object_test, 'checkMaxDailyAttempts')) {
-        $maxAttempts = $object_test->checkMaxDailyAttempts($id_track);
-    }//--end check max attempts
 
     $GLOBALS['page']->add(
         getTitleArea($page_title, 'test', $lang->def('_TEST_INFO'))
@@ -277,13 +270,13 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
         if ($test_info['suspension_prerequisites']) {
             if ($prerequisite != '') {
                 //check all prerequisites conditions
-                $query = 'SELECT idOrg FROM ' . $GLOBALS['prefix_lms'] . "_organization WHERE objectType='test' AND idResource=" . (int) $test_info['idTest'];
+                $query = 'SELECT idOrg FROM ' . $GLOBALS['prefix_lms'] . "_organization WHERE objectType='test' AND idResource=" . (int)$test_info['idTest'];
                 list($idOrg) = sql_fetch_row(sql_query($query));
 
                 $conditions = explode(',', $prerequisite);
                 $req_arr = [];
                 foreach ($conditions as $condition) {
-                    if (is_numeric($condition) && (int) $condition != $idOrg) {
+                    if (is_numeric($condition) && (int)$condition != $idOrg) {
                         $req_arr[] = $condition;
                     }
                 }
@@ -464,7 +457,7 @@ function resetTrack($testObj, $id_track)
         'last_page_saved' => 0,
         'score' => 0,
         'bonus_score' => 0,
-        'score_status' => 'not_complete', ];
+        'score_status' => 'not_complete',];
     $re_update = Track_Test::updateTrack($id_track, $new_info);
 
     return $re_update;
@@ -487,9 +480,9 @@ function playTestDispatch($object_test, $id_param)
     $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
-    $event = ['object_test' => $object_test , 
-                'id_param' => $id_param , 
-                'id_test' => $id_test , 
+    $event = ['object_test' => $object_test ,
+                'id_param' => $id_param ,
+                'id_test' => $id_test ,
                 'id_track' => $id_track,
                 'idst' => Docebo::user()->getIdst()];
 
@@ -507,7 +500,7 @@ function playTestDispatch($object_test, $id_param)
     	$event['action'] = 'action_time_elapsed';
     }
 
-    Events::trigger('lms.test.play.test.dispatch', $event);               
+    Events::trigger('lms.test.play.test.dispatch', $event);
 
     if (isset($_POST['deleteandbegin'])) {
         // play test
@@ -627,7 +620,7 @@ function play($object_test, $id_param)
     }
     $new_info = [
         'last_page_seen' => $page_to_display,
-        'score_status' => 'doing', ];
+        'score_status' => 'doing',];
     if (isset($_POST['page_to_save'])) {
         if ($test_info['mod_doanswer']) {
             $new_info['last_page_saved'] = $_POST['page_to_save'];
@@ -673,7 +666,7 @@ function play($object_test, $id_param)
             }
         }
         $time_string .= '<div class="test_time_left">' . $lang->def('_TIME_LEFT') . ' : '
-            . '<span id="time_left">' . (int) ($start_time / 60) . ' m ' . ($start_time % 60) . ' s</span>'
+            . '<span id="time_left">' . (int)($start_time / 60) . ' m ' . ($start_time % 60) . ' s</span>'
             . '</div>';
 
         // Js for time counter
@@ -916,7 +909,7 @@ function play($object_test, $id_param)
             case 'text_entry':
                 $query = 'SELECT idAnswer, is_correct'
                     . ' FROM %lms_testquestanswer'
-                    . ' WHERE idQuest = ' . (int) $idQuest;
+                    . ' WHERE idQuest = ' . (int)$idQuest;
                 $result = sql_query($query);
                 while (list($id_answer, $is_correct) = sql_fetch_assoc($result)) {
                     $array_answer[$idQuest][$id_answer] = $is_correct;
@@ -932,7 +925,7 @@ function play($object_test, $id_param)
         sql_query('
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
 		(idTrack, idQuest, page) VALUES 
-		('" . (int) $id_track . "', '" . (int) $idQuest . "', '" . $page_to_display . "')");
+		('" . (int)$id_track . "', '" . (int)$idQuest . "', '" . $page_to_display . "')");
 
         if (($type_quest != 'break_page') && ($type_quest != 'title')) {
             ++$quest_sequence_number;
@@ -958,19 +951,19 @@ function play($object_test, $id_param)
                     if ($tot_correct == 0) {
                         --$tot_question;
                     } else {
-                        cout('YAHOO.util.Event.onDOMReady(configureMultiC, \'\', \'' . (int) $id_quest . '\');' . "\n", 'content');
+                        cout('YAHOO.util.Event.onDOMReady(configureMultiC, \'\', \'' . (int)$id_quest . '\');' . "\n", 'content');
                         $tot_correct_array[$id_quest] = $tot_correct;
                     }
                     break;
                 case 'choice':
                 case 'course_valutation':
-                    cout('YAHOO.util.Event.onDOMReady(configureSingleC, \'\', \'' . (int) $id_quest . '\');' . "\n", 'content');
+                    cout('YAHOO.util.Event.onDOMReady(configureSingleC, \'\', \'' . (int)$id_quest . '\');' . "\n", 'content');
                     break;
                 case 'text_entry':
-                    cout('YAHOO.util.Event.onDOMReady(configureTextE, \'\', \'' . (int) $id_quest . '\');' . "\n", 'content');
+                    cout('YAHOO.util.Event.onDOMReady(configureTextE, \'\', \'' . (int)$id_quest . '\');' . "\n", 'content');
                     break;
                 case 'associate':
-                    cout('YAHOO.util.Event.onDOMReady(configureAss, \'\', \'' . (int) $id_quest . '\');' . "\n", 'content');
+                    cout('YAHOO.util.Event.onDOMReady(configureAss, \'\', \'' . (int)$id_quest . '\');' . "\n", 'content');
                     break;
             }
         }
@@ -991,13 +984,13 @@ function play($object_test, $id_param)
 
         cout('
              var num_answer_control = ' . $js_array . ';' . "\n"
-            . 'var tot_question = ' . (int) $tot_question . ';' . "\n"
+            . 'var tot_question = ' . (int)$tot_question . ';' . "\n"
             . 'var mandatory = true ;' . "\n"
             . '</script>', 'content');
     } else {
         //** NOT MANDATORY - LRZ **
         cout('<script type="text/javascript">', 'content');
-        cout('var tot_question = ' . (int) $tot_question . ';' . "\n"
+        cout('var tot_question = ' . (int)$tot_question . ';' . "\n"
             . 'var mandatory = false ;' . "\n"
             . '</script>', 'content');
     }
@@ -1063,7 +1056,7 @@ function saveAndExit($object_test, $id_param)
     if ($test_info['save_keep']) {
         $new_info = [
             'last_page_seen' => $previous_page,
-            'score_status' => 'not_complete', ];
+            'score_status' => 'not_complete',];
         if (isset($_POST['page_to_save'])) {
             if ($test_info['mod_doanswer']) {
                 $new_info['last_page_saved'] = $_POST['page_to_save'];
@@ -1158,7 +1151,7 @@ function showResult($object_test, $id_param)
 
     $new_info = [
         'last_page_seen' => $previous_page,
-        'score_status' => 'doing', ];
+        'score_status' => 'doing',];
 
     if (isset($_POST['page_to_save']) && (($_POST['page_to_save'] > $track_info['last_page_saved']) || $test_info['mod_doanswer'])) {
         if ($track_info['score_status'] != 'not_complete' && $track_info['score_status'] != 'doing') {
@@ -1411,7 +1404,7 @@ function showResult($object_test, $id_param)
     list($bonus_score, $score_status) = sql_fetch_row(sql_query('
 	SELECT bonus_score, score_status
 	FROM ' . $GLOBALS['prefix_lms'] . "_testtrack
-	WHERE idTrack = '" . (int) $id_track . "'"));
+	WHERE idTrack = '" . (int)$id_track . "'"));
 
     if ($test_info['show_score'] && $test_info['point_type'] != '1') {
         $GLOBALS['page']->add('<span class="test_score_note">' . $lang->def('_TEST_TOTAL_SCORE') . '</span> ' . ($point_do + $bonus_score) . ' / ' . $max_score . '<br />', 'content');
@@ -1486,27 +1479,27 @@ function showResult($object_test, $id_param)
             $categoryScoreData = [];
             while (list($id_cat, $name_cat, $quest_number) = sql_fetch_row($re_category)) {
                 $categorytable .= '<tr><td>' . $name_cat . '</td>'
-                   . '<td class="number">' . $array_question_number[(int) $id_cat] . '</td>'
-                   . '<td class="number">' . (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0) . '</td></tr>';
+                    . '<td class="number">' . $array_question_number[(int)$id_cat] . '</td>'
+                    . '<td class="number">' . (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0) . '</td></tr>';
 
                 $categoryScoreData[] = [
-                   'idCategory' => $id_cat,
-                   'nameCategory' => $name_cat,
-                   'maxCategoryQuestions' => $array_question_number[(int) $id_cat],
-                   'score' => (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0),
-               ];
+                    'idCategory' => $id_cat,
+                    'nameCategory' => $name_cat,
+                    'maxCategoryQuestions' => $array_question_number[(int)$id_cat],
+                    'score' => (isset($point_do_cat[$id_cat]) ? $point_do_cat[$id_cat] : 0),
+                ];
                 ++$i;
             }
 
             $categorytable .= '</tbody></table>';
 
             $eventResult = Events::trigger('lms.test.completed.category.showing',
-               [
-                   'objectTest' => $object_test,
-                   'user' => Docebo::user(),
-                   'scoreCategoryData' => $categoryScoreData,
-                   'scoreCategoryTable' => $categorytable,
-               ]);
+                [
+                    'objectTest' => $object_test,
+                    'user' => Docebo::user(),
+                    'scoreCategoryData' => $categoryScoreData,
+                    'scoreCategoryTable' => $categorytable,
+                ]);
 
             /*
             $GLOBALS['page']->add('<br />'
@@ -1575,13 +1568,13 @@ function showResult($object_test, $id_param)
             . Form::closeForm(), 'content');
     } elseif ($test_info['show_doanswer'] == 1) {
         $GLOBALS['page']->add(Form::openForm('test_show', 'index.php?modname=test&amp;op=play')
-                . Form::getHidden('next_step', 'next_step', 'test_review')
-                . Form::getHidden('id_test', 'id_test', $id_test)
-                . Form::getHidden('id_param', 'id_param', $id_param)
-                . Form::getHidden('back_url', 'back_url', $url_coded)
-                . Form::getHidden('idTrack', 'idTrack', $id_track)
-                . Form::getButton('review', 'review', $lang->def('_TEST_REVIEW_ANSWER'))
-                . Form::closeForm(), 'content');
+            . Form::getHidden('next_step', 'next_step', 'test_review')
+            . Form::getHidden('id_test', 'id_test', $id_test)
+            . Form::getHidden('id_param', 'id_param', $id_param)
+            . Form::getHidden('back_url', 'back_url', $url_coded)
+            . Form::getHidden('idTrack', 'idTrack', $id_track)
+            . Form::getButton('review', 'review', $lang->def('_TEST_REVIEW_ANSWER'))
+            . Form::closeForm(), 'content');
     } elseif ($test_info['show_solution'] != 2 && $test_info['show_doanswer'] != 2) {
         if ($test_info['show_solution'] || $test_info['show_doanswer']) {
             $GLOBALS['page']->add(Form::openForm('test_show', 'index.php?modname=test&amp;op=play')
@@ -1645,7 +1638,7 @@ function review($object_test, $id_param)
     if ($test_info['order_type'] >= 2) {
         $re_visu_quest = sql_query('SELECT idQuest
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
-		WHERE idTrack = '" . (int) $idTrack . "' ");
+		WHERE idTrack = '" . (int)$idTrack . "' ");
 
         while (list($id_q) = sql_fetch_row($re_visu_quest)) {
             $quest_see[] = $id_q;
@@ -1677,32 +1670,36 @@ function review($object_test, $id_param)
     $GLOBALS['page']->add('<div class="test_answer_space">', 'content');
     $quest_sequence_number = 1;
     while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-        require_once _lms_ . '/modules/question/' . $type_file;
+
+        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         $review = $quest_obj->displayUserResult($idTrack,
-                                                    ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
-                                                     $show_solution);
+            ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
+            $show_solution);
 
         $GLOBALS['page']->add('<div class="test_quest_review_container">'
             . $review['quest'], 'content');
 
         if ($review['score'] !== false) {
             $GLOBALS['page']->add(
-                '<div class="test_answer_comment">'
-                . '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ', 'content');
-            if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                $GLOBALS['page']->add($lang->def('_NOT_ASSIGNED'), 'content');
-            } else {
-                if ($review['score'] > 0) {
-                    $GLOBALS['page']->add('<span class="test_score_positive">' . $review['score'] . '</span>', 'content');
+                '<div class="test_answer_comment">', 'content');
+
+            if (!$test_info['show_quest_score']) {
+                $GLOBALS['page']->add('<div class="test_score_note">' . $lang->def('_SCORE') . ' : ', 'content');
+                if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
+                    $GLOBALS['page']->add($lang->def('_NOT_ASSIGNED'), 'content');
                 } else {
-                    $GLOBALS['page']->add('<span class="test_score_negative">' . $review['score'] . '</span>', 'content');
+                    if ($review['score'] > 0) {
+                        $GLOBALS['page']->add('<span class="test_score_positive">' . $review['score'] . '</span>', 'content');
+                    } else {
+                        $GLOBALS['page']->add('<span class="test_score_negative">' . $review['score'] . '</span>', 'content');
+                    }
                 }
+                $GLOBALS['page']->add('</div>', 'content');
             }
             $GLOBALS['page']->add(
-                '</div>'
-                . ($review['comment'] != '' ? $review['comment'] : '')
+                ($review['comment'] != '' ? $review['comment'] : '')
                 . '</div>', 'content');
         }
         $GLOBALS['page']->add(
@@ -1736,18 +1733,18 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
         $idTrack = $id_track;
     }
     //test info---------------------------------------------------------
-    list($title , $mod_doanswer , $point_type , $point_required , $question_random_number,
+    list($title, $mod_doanswer, $point_type, $point_required, $question_random_number,
         $show_score, $show_score_cat, $show_doanswer, $order_type) = sql_fetch_row(sql_query("
 	SELECT  title, mod_doanswer, point_type, point_required, question_random_number, 
 			show_score, show_score_cat, show_doanswer, 
 			 order_type
 	FROM %lms_test
-	WHERE idTest = '" . (int) $idTest . "'"));
+	WHERE idTest = '" . (int)$idTest . "'"));
 
     list($score, $bonus_score, $date_attempt, $date_attempt_mod) = sql_fetch_row(sql_query("
 	SELECT score, bonus_score, date_attempt, date_attempt_mod 
 	FROM %lms_testtrack
-	WHERE idTrack = '" . (int) $idTrack . "'"));
+	WHERE idTrack = '" . (int)$idTrack . "'"));
 
     require_once _lms_ . '/class.module/track.test.php';
     require_once _lms_ . '/lib/lib.test.php';
@@ -1793,7 +1790,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
     if ($order_type >= 2) {
         $re_visu_quest = sql_query("SELECT idQuest
 		FROM %lms_testtrack_quest
-		WHERE idTrack = '" . (int) $idTrack . "' ");
+		WHERE idTrack = '" . (int)$idTrack . "' ");
 
         while (list($id_q) = sql_fetch_row($re_visu_quest)) {
             $quest_see[] = $id_q;
@@ -1822,28 +1819,31 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
         $quest_point_do = $quest_obj->userScore($idTrack);
 
         $quest_max_score = $quest_obj->getMaxScore();
-        if (($type_quest != 'title') && ($type_quest != 'break_page')) {
-            $review = $quest_obj->displayUserResult($idTrack ,
-                ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number),
+        if ($type_quest != 'break_page') {
+            $review = $quest_obj->displayUserResult($idTrack,
+                $quest_sequence_number++,
                 $show_solution);
 
             $report_test .= '<div class="test_quest_review_container">'
                 . $review['quest'];
 
             if ($review['score'] !== false) {
-                $report_test .= '<div class="test_answer_comment">'
-                    . '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
-                if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                    $report_test .= $lang->def('_NOT_ASSIGNED');
-                } else {
-                    if ($review['score'] > 0) {
-                        $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
+                $report_test .= '<div class="test_answer_comment">';
+                if ($test_info['show_quest_score']) {
+
+                    $report_test .= '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
+                    if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
+                        $report_test .= $lang->def('_NOT_ASSIGNED');
                     } else {
-                        $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
+                        if ($review['score'] > 0) {
+                            $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
+                        } else {
+                            $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
+                        }
                     }
+                    $report_test . '</div>';
                 }
-                $report_test .= '</div>'
-                    . ($review['comment'] != '' ? $review['comment'] : '')
+                $report_test .= ($review['comment'] != '' ? $review['comment'] : '')
                     . '</div>';
             }
 
@@ -1974,19 +1974,19 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
     $lang = &DoceboLanguage::createInstance('test');
 
     //test info---------------------------------------------------------
-    list($title , $mod_doanswer , $point_type , $point_required , $question_random_number ,
-        $show_score , $show_score_cat , $show_doanswer,
+    list($title, $mod_doanswer, $point_type, $point_required, $question_random_number,
+        $show_score, $show_score_cat, $show_doanswer,
         $show_solution, $order_type) = sql_fetch_row(sql_query('
 	SELECT  title, mod_doanswer, point_type, point_required, question_random_number, 
 			show_score, show_score_cat, show_doanswer, 
 			show_solution, order_type
 	FROM ' . $GLOBALS['prefix_lms'] . "_test
-	WHERE idTest = '" . (int) $id_test . "'"));
+	WHERE idTest = '" . (int)$id_test . "'"));
 
     list($score, $bonus_score, $date_attempt, $date_attempt_mod, $date_end_attempt) = sql_fetch_row(sql_query('
 	SELECT score, bonus_score, date_attempt, date_attempt_mod, date_end_attempt
 	FROM ' . $GLOBALS['prefix_lms'] . "_testtrack
-	WHERE idTrack = '" . (int) $id_track . "'"));
+	WHERE idTrack = '" . (int)$id_track . "'"));
 
     $point_do = 0;
     $max_score = 0;
@@ -1999,7 +1999,7 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
     if ($order_type >= 2) {
         $re_visu_quest = sql_query('SELECT idQuest
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
-		WHERE idTrack = '" . (int) $id_track . "' ");
+		WHERE idTrack = '" . (int)$id_track . "' ");
 
         while (list($id_q) = sql_fetch_row($re_visu_quest)) {
             $quest_see[] = $id_q;
@@ -2017,6 +2017,11 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
 		WHERE q.idTest = '" . $id_test . "' AND q.type_quest = t.type_quest 
 		ORDER BY q.sequence";
     }
+
+    require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+    $test_man = new TestManagement($id_test);
+    $test_info = $test_man->getTestAllInfo();
+
     $reQuest = sql_query($query_question);
     while (list($id_quest, $type_quest, $type_file, $type_class, $id_cat) = sql_fetch_row($reQuest)) {
         require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
@@ -2026,9 +2031,10 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
         $quest_obj = eval("return new $type_class( $id_quest );");
         $quest_point_do = $quest_obj->userScore($id_track, $number_time);
         $quest_max_score = $quest_obj->getMaxScore();
-        if (($type_quest != 'title') && ($type_quest != 'break_page')) {
-            $review = $quest_obj->displayUserResult($id_track ,
-                ($type_quest != 'title' ? $quest_sequence_number++ : $quest_sequence_number) ,
+
+        if (($type_quest != 'break_page')) {
+            $review = $quest_obj->displayUserResult($id_track,
+                $quest_sequence_number++,
                 true,
                 $number_time);
 
@@ -2036,27 +2042,31 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
                 . $review['quest'];
 
             if ($review['score'] !== false) {
-                $report_test .= '<div class="test_answer_comment_nomargin">'
-                    . '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
-                if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                    $report_test .= $lang->def('_NOT_ASSIGNED');
-                } else {
-                    if ($review['score'] > 0) {
-                        $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
-                    } else {
-                        $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
+                $report_test .= '<div class="test_answer_comment_nomargin">';
+                    if ($test_info['show_quest_score']) {
+
+                        $report_test .= '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
+                        if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
+                            $report_test .= $lang->def('_NOT_ASSIGNED');
+                        } else {
+                            if ($review['score'] > 0) {
+                                $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
+                            } else {
+                                $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
+                            }
+                        }
+                        $report_test . '</div>';
                     }
-                }
-                $report_test .= '</div>'
-                    . ($review['comment'] != '' ? $review['comment'] : '')
+
+                $report_test .= ($review['comment'] != '' ? $review['comment'] : '')
                     . '</div>';
             }
             if ($edit_new_score) {
                 $report_test .=
                     '<div class="test_edit_scores">'
-                    . Form::getTextfield($lang->def('_NEW_SCORE_FOR_QUESTION') ,
-                        'new_user_score_' . $id_quest ,
-                        'new_user_score[' . $id_quest . ']' ,
+                    . Form::getTextfield($lang->def('_NEW_SCORE_FOR_QUESTION'),
+                        'new_user_score_' . $id_quest,
+                        'new_user_score[' . $id_quest . ']',
                         8,
                         '')
                     . '</div>' . "\n"
@@ -2078,9 +2088,9 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
 
     if (!$quest_obj instanceof CourseValutation_Question) {
         $GLOBALS['page']->add('<br />'
-            . Form::getTextfield($lang->def('_BONUS_SCORE_FOR_TEST') ,
-                'bonus_score' ,
-                'bonus_score' ,
+            . Form::getTextfield($lang->def('_BONUS_SCORE_FOR_TEST'),
+                'bonus_score',
+                'bonus_score',
                 8,
                 $bonus_score)
             . '<br />'
@@ -2150,24 +2160,24 @@ function saveManualUserReport($id_user, $id_test, $id_track)
 {
     require_once _lms_ . '/class.module/track.test.php';
 
-    list($title , $mod_doanswer , $point_type , $point_required , $question_random_number ,
-        $show_score , $show_score_cat , $show_doanswer,
+    list($title, $mod_doanswer, $point_type, $point_required, $question_random_number,
+        $show_score, $show_score_cat, $show_doanswer,
         $show_solution, $show_only_status, $order_type) = sql_fetch_row(sql_query('
 	SELECT  title, mod_doanswer, point_type, point_required, question_random_number, 
 			show_score, show_score_cat, show_doanswer, 
 			show_solution, show_only_status, order_type
 	FROM ' . $GLOBALS['prefix_lms'] . "_test
-	WHERE idTest = '" . (int) $id_test . "'"));
+	WHERE idTest = '" . (int)$id_test . "'"));
 
     list($score, $bonus_score, $date_attempt, $date_attempt_mod, $score_status) = sql_fetch_row(sql_query('
 	SELECT score, bonus_score, date_attempt, date_attempt_mod, score_status 
 	FROM ' . $GLOBALS['prefix_lms'] . "_testtrack
-	WHERE idTrack = '" . (int) $id_track . "'"));
+	WHERE idTrack = '" . (int)$id_track . "'"));
 
     if ($order_type >= 2) {
         $re_visu_quest = sql_query('SELECT idQuest
 		FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
-		WHERE idTrack = '" . (int) $id_track . "' ");
+		WHERE idTrack = '" . (int)$id_track . "' ");
 
         while (list($id_q) = sql_fetch_row($re_visu_quest)) {
             $quest_see[] = $id_q;

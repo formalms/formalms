@@ -1,0 +1,1 @@
+ALTER TABLE `learning_test` ADD COLUMN `show_quest_score` tinyint(1) NOT NULL AFTER `show_score_in_export`;

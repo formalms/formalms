@@ -485,7 +485,7 @@ class TestManagement
 			point_type, point_required, 
 			display_type, order_type, shuffle_answer, question_random_number, 
 			save_keep, mod_doanswer, can_travel, 
-			show_only_status, show_score, show_score_cat, show_doanswer, show_solution, 
+			show_only_status, show_score, show_score_cat, show_doanswer, show_solution, show_quest_score,
 			time_dependent, time_assigned, penality_test, penality_time_test, penality_quest, penality_time_quest, 
 			max_attempt, hide_info, order_info, cf_info,
 			use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, chart_options, mandatory_answer

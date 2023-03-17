@@ -94,7 +94,7 @@ function instest()
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&create_result=0');
     }
 
-    list($id_test) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
+    [$id_test] = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
     $test = Learning_Test::load($id_test);
 
@@ -118,7 +118,7 @@ function modtest()
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
 
-    list($test_title, $textof) = sql_fetch_row(sql_query('
+    [$test_title, $textof] = sql_fetch_row(sql_query('
     SELECT title, description
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $id_test . "'"));
@@ -207,7 +207,7 @@ function modtestgui($object_test)
     require_once _base_ . '/lib/lib.form.php';
     $url_encode = htmlentities(urlencode($object_test->back_url));
 
-    list($test_title) = sql_fetch_row(sql_query('
+    [$test_title] = sql_fetch_row(sql_query('
     SELECT title 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $object_test->getId() . "'"));
@@ -220,7 +220,7 @@ function modtestgui($object_test)
     ORDER BY tq.sequence");
 
     $num_quest = sql_num_rows($re_quest);
-    list($num_page) = sql_fetch_row(sql_query('
+    [$num_page] = sql_fetch_row(sql_query('
     SELECT MAX(page) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . $object_test->getId() . "'"));
@@ -525,7 +525,7 @@ function movequestion($direction)
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
 
-    list($seq, $idTest) = sql_fetch_row(sql_query('
+    [$seq, $idTest] = sql_fetch_row(sql_query('
     SELECT sequence, idTest 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '$idQuest'"));
@@ -566,7 +566,7 @@ function movequest()
     $source_seq = importVar('source_quest', true, 0);
     $dest_seq = importVar('dest_quest', true, 0);
 
-    list($idQuest) = sql_fetch_row(sql_query('
+    [$idQuest] = sql_fetch_row(sql_query('
     SELECT idQuest 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND sequence = '$source_seq'"));
@@ -626,7 +626,7 @@ function fixPageSequence($id_test)
     checkPerm('view', false, 'storage');
     $lang = &DoceboLanguage::createInstance('test');
 
-    list($tot_quest) = sql_fetch_row(sql_query('
+    [$tot_quest] = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . $id_test . "'"));
@@ -668,7 +668,7 @@ function &istanceQuest($type_of_quest, $id)
     if (!sql_num_rows($re_quest)) {
         return;
     }
-    list($type_file, $type_class) = sql_fetch_row($re_quest);
+    [$type_file, $type_class] = sql_fetch_row($re_quest);
 
     require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
     $quest_obj = eval("return new $type_class ( $id );");
@@ -723,7 +723,7 @@ function modquest()
 
     $idQuest = importVar('idQuest', true, 0);
 
-    list($idTest, $type_quest) = sql_fetch_row(sql_query('
+    [$idTest, $type_quest] = sql_fetch_row(sql_query('
     SELECT idTest, type_quest 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '" . $idQuest . "'"));
@@ -770,7 +770,7 @@ function delquest()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($idTest, $title_quest, $type_quest, $seq) = sql_fetch_row(sql_query('
+    [$idTest, $title_quest, $type_quest, $seq] = sql_fetch_row(sql_query('
     SELECT idTest, title_quest, type_quest, sequence 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idQuest = '" . $idQuest . "'"));
@@ -834,25 +834,25 @@ function defmodality()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list(
+    [
         $title, $description, $display_type, $order_type, $shuffle_answer, $question_random_number,
         $save_keep, $mod_doanswer, $can_travel,
-        $show_score, $show_score_cat, $show_doanswer, $show_solution,
+        $show_score, $show_score_cat, $show_doanswer, $show_solution, $show_quest_score,
         $max_attempt, $hide_info,
         $order_info, $cf_info, $use_suspension, $suspension_num_attempts, $suspension_num_hours, $suspension_prerequisites, $mandatory_answer, $retain_answers_history
-    ) = sql_fetch_row(sql_query("
+    ] = sql_fetch_row(sql_query("
     SELECT title, description, display_type, order_type, shuffle_answer, question_random_number, 
         save_keep, mod_doanswer, can_travel, 
-        show_score, show_score_cat, show_doanswer, show_solution, 
+        show_score, show_score_cat, show_doanswer, show_solution, show_quest_score
         max_attempt, hide_info,
         order_info, cf_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer, retain_answers_history
     FROM %lms_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest) = sql_fetch_row(sql_query('
+    [$tot_quest] = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
-    WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
+    WHERE idTest = '" . (int)$idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
 
     $re_quest = sql_query('
     SELECT idQuest
@@ -1105,6 +1105,15 @@ function defmodality()
     $section_str .= '<label for="show_tot_yes">' . $lang->def('_YES') . '</label>';
     $section_str .= '<br /><br />';
 
+    $section_str .= $lang->def('_TEST_MM4_SHOWQUESTSCORE') . '<br />';
+    $section_str .= '<input class="valign_middle" type="radio" id="show_quest_score_no" name="show_quest_score" value="0"' . ($show_quest_score == 0 ? '  checked="checked"' : '') . ' /> ';
+    $section_str .= '<label for="show_quest_score_no">' . $lang->def('_NO') . '</label>&nbsp;&nbsp;';
+    $section_str .= '<input class="valign_middle" type="radio" id="show_quest_score_yes" name="show_quest_score" value="1"' . ($show_quest_score == 1 ? '  checked="checked"' : '') . ' /> ';
+    $section_str .= '<label for="show_quest_score_yes">' . $lang->def('_YES') . '</label>&nbsp;&nbsp;';
+    $section_str .= '<input class="valign_middle" type="radio" id="show_quest_score_yes_if_passed" name="show_quest_score" value="2"' . ($show_quest_score == 2 ? '  checked="checked"' : '') . ' /> ';
+    $section_str .= '<label for="show_quest_score_yes_if_passed">' . $lang->def('_YES_IF_PASSED') . '</label>';
+    $section_str .= '<br /><br />';
+
     $section_str .= $lang->def('_TEST_MM4_SHOWCAT') . '<br />';
     $section_str .= '<input class="valign_middle" type="radio" id="show_cat_no" name="show_cat" value="0"' . (!$show_score_cat ? '  checked="checked"' : '') . ' /> ';
     $section_str .= '<label for="show_cat_no">' . $lang->def('_NO') . '</label>&nbsp;&nbsp;';
@@ -1183,7 +1192,7 @@ function updatemodality()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($time_dependent) = sql_fetch_row(sql_query('
+    [$time_dependent] = sql_fetch_row(sql_query('
     SELECT time_dependent 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
@@ -1230,6 +1239,7 @@ function updatemodality()
         show_score_cat = '" . ($_REQUEST['show_cat'] ? 1 : 0) . "',
         show_doanswer = '" . $_REQUEST['show_doanswer'] . "',
         show_solution = '" . $_REQUEST['show_solution'] . "',
+        show_quest_score = '" . $_REQUEST['show_quest_score'] . "',
         retain_answers_history = '" . $_REQUEST['retain_answers_history'] . "',
         max_attempt = '" . (int) $_REQUEST['max_attempt'] . "'"
         . ($time_dependent == 2 && $_REQUEST['display_type'] == 0 ? ' ,time_dependent = 0 ' : '')
@@ -1265,10 +1275,10 @@ function deftime()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list(
+    [
         $time_dependent, $time_assigned,
         $penality_test, $penality_time_test, $penality_quest, $penality_time_quest
-    ) = sql_fetch_row(sql_query('
+    ] = sql_fetch_row(sql_query('
     SELECT time_dependent, time_assigned, 
         penality_test, penality_time_test, penality_quest, penality_time_quest 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
@@ -1334,7 +1344,7 @@ function deftime()
 
                 break;
             case 2:
-                    list($actual_tot_time) = sql_fetch_row(sql_query('
+                    [$actual_tot_time] = sql_fetch_row(sql_query('
                 SELECT SUM(time_assigned) 
                 FROM ' . $GLOBALS['prefix_lms'] . "_testquest
                 WHERE idTest = '$idTest'"));
@@ -1480,12 +1490,12 @@ function modassigntime()
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=' . ($re ? 1 : 0));
     }
 
-    list($test_title) = sql_fetch_row(sql_query('
+    [$test_title] = sql_fetch_row(sql_query('
     SELECT title 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest, $tot_difficult, $actual_tot_time) = sql_fetch_row(sql_query('
+    [$tot_quest, $tot_difficult, $actual_tot_time] = sql_fetch_row(sql_query('
     SELECT COUNT(*), SUM(difficult), SUM(time_assigned) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
@@ -1613,7 +1623,7 @@ function defpoint()
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list($title, $description, $point_type, $point_required) = sql_fetch_row(sql_query('
+    [$title, $description, $point_type, $point_required] = sql_fetch_row(sql_query('
     SELECT title, description, point_type, point_required 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
@@ -1771,12 +1781,12 @@ function modassignpoint()
         }
     }
 
-    list($test_title) = sql_fetch_row(sql_query('
+    [$test_title] = sql_fetch_row(sql_query('
     SELECT title 
     FROM ' . $GLOBALS['prefix_lms'] . "_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest, $tot_difficult) = sql_fetch_row(sql_query('
+    [$tot_quest, $tot_difficult] = sql_fetch_row(sql_query('
     SELECT COUNT(*), SUM(difficult) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '$idTest' AND type_quest <> 'break_page' AND type_quest <> 'title'"));
