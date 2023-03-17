@@ -439,7 +439,7 @@ class CatalogLms extends Model
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
-        $res = &$cat_man->getUserAllCatalogueInfo($id_user);
+        $res = $cat_man->getUserAllCatalogueInfo($id_user);
 
         return $res;
     }

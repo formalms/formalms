@@ -31,7 +31,7 @@ class Selector_Catalogue
     /**
      * Class constructor.
      */
-    public function Selector_Catalogue()
+    public function __construct()
     {
         $this->show_filter = true;
     }
@@ -199,8 +199,13 @@ class Selector_Catalogue
         $tb->addHead($cont_h);
         while (list($id_catalogue, $name, $descr) = sql_fetch_row($re_catalogue)) {
             $tb_content = [
-                Form::getInputCheckbox('new_catalogue_selected_' . $id_catalogue, 'new_catalogue_selected[' . $id_catalogue . ']', $id_catalogue,
-                    isset($this->current_selection[$id_catalogue]), ''),
+                Form::getInputCheckbox(
+                    'new_catalogue_selected_' . $id_catalogue,
+                    'new_catalogue_selected[' . $id_catalogue . ']',
+                    $id_catalogue,
+                    isset($this->current_selection[$id_catalogue]),
+                    ''
+                ),
                 '<label for="new_catalogue_selected_' . $id_catalogue . '">' . $name . '</label>',
                 '<label for="new_catalogue_selected_' . $id_catalogue . '">' . $descr . '</label>',
             ];
@@ -237,7 +242,7 @@ class Catalogue_Manager
     /**
      * class constructor.
      */
-    public function Catalogue_Manager()
+    public function __construct()
     {
         $this->acl = new DoceboACL();
         $this->aclManager = $this->acl->getACLManager();
@@ -313,7 +318,7 @@ class Catalogue_Manager
      *
      * @return array some info about the catalogues associated to the user  array( [id] => array([idCatalogue], [name], [description]), ...)
      */
-    public function &getUserAllCatalogueInfo($id_user)
+    public function getUserAllCatalogueInfo($id_user)
     {
         $catalogues = [];
         $user_groups = $this->acl->getSTGroupsST($id_user);
@@ -438,12 +443,7 @@ class AdminCatalogue
      */
     public $aclManager;
 
-    /**
-     * class constructor.
-     */
-    public function AdminCatalogue()
-    {
-    }
+
 
     /**
      * exucute querys and do some debug function.
