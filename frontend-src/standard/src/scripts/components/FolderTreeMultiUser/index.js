@@ -98,7 +98,7 @@ class FolderTreeMultiUser extends FolderTreeBase {
   }
 
   async getNode(id, cb) {
-    const endpoint = `${window.frontend.config.url.appCore}/ajax.adm_server.php?r=adm/userselector/getData`; 
+    const endpoint = this.getBaseApiUrl(`adm/userselector/getData`);
     this.openFolders.push(id);
     this.container.querySelector(`.loader_${id}`).classList.remove('hidden');
     await window.frontend.helpers.Axios.get(endpoint + `&node_id=${id}`).then((response) => {
@@ -110,7 +110,7 @@ class FolderTreeMultiUser extends FolderTreeBase {
   }
 
   getBaseApiUrl(action) {
-    let url = `https://forma.local/appCore/ajax.adm_server.php?r=${action}`;
+    let url = `${window.frontend.config.url.appCore}/ajax.adm_server.php?r=${action}`;
     return url; 
   }
 
