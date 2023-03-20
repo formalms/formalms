@@ -96,7 +96,7 @@ class FolderTreeMultiUser extends FolderTreeBase {
   }
 
   getBaseApiUrl(action) {
-    let url = `https://forma.local/appCore/ajax.adm_server.php?r=${action}`;
+    let url = `${window.frontend.config.url.appCore}/ajax.adm_server.php?r=${action}`;
     return url; 
   }
 
