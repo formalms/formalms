@@ -1,6 +1,6 @@
 <?php
 
-use \FormaLms\lib\Template\TemplateInfo;
+use FormaLms\lib\Template\TemplateInfo;
 
 /*
  * FORMA - The E-Learning Suite
@@ -93,9 +93,7 @@ function parseTemplateDomain($curr_domain = false)
 
     $result = sql_query($queryTxt);
     if (sql_num_rows($result) > 0) {
-
         while ($item = sql_fetch_assoc($result)) {
-
             if ($item['domain'] == $curr_domain) {
                 return $item['template'];
             }
@@ -113,11 +111,8 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
     $domains = [];
     $result = sql_query($queryTxt);
     if (sql_num_rows($result) > 0) {
-
         while ($item = sql_fetch_assoc($result)) {
-
             $domains[$item['orgId']] = $item;
-
         }
     }
 
@@ -132,7 +127,6 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
         }
     }
 
-
     return $domain;
 }
 
@@ -143,7 +137,6 @@ function getCurrentDomain($idOrg = null, $baseUrl = false)
  */
 function setTemplate($new_template)
 {
-
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (is_dir(_templates_ . '/' . $new_template)) {
         $session->set('template', $new_template);
@@ -169,7 +162,6 @@ function resetTemplate()
 
 function readTemplateManifest($template_name, $key = false)
 {
-
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($session->has('template_info') && $session->get('template_info') != false) {
         return $session->get('template_info')->getVersion();
@@ -190,7 +182,6 @@ function readTemplateManifest($template_name, $key = false)
             return false;
         }
     }
-
 }
 
 /**
@@ -510,8 +501,7 @@ function getDeleteUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-)
-{
+) {
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
@@ -560,8 +550,7 @@ function getModifyUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-)
-{
+) {
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'

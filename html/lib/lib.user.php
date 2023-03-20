@@ -43,11 +43,11 @@ class DoceboUser implements Serializable
 {
     public $sprefix = '';
     public $acl = null;
+    public $aclManager = null;
     public $userid;
     public $idst;
     public $arrst = [];
     public $preference;
-
 
     /* @var string */
     private $firstName;
@@ -71,7 +71,6 @@ class DoceboUser implements Serializable
     private array $userCourses = [];
 
     protected $db = null;
-    public  $aclManager;
 
     /**
      * create a DoceboACLUtil for given user
@@ -102,17 +101,16 @@ class DoceboUser implements Serializable
         $user_manager = new DoceboACLManager();
         $userInfo = $user_manager->getUser($this->idst, false);
 
-        if(is_array($userInfo)) {
-           $this->firstName = $userInfo[ACL_INFO_FIRSTNAME];
+        if (is_array($userInfo)) {
+            $this->firstName = $userInfo[ACL_INFO_FIRSTNAME];
             $this->lastName = $userInfo[ACL_INFO_LASTNAME];
             $this->email = $userInfo[ACL_INFO_EMAIL];
             $this->avatar = $userInfo[ACL_INFO_AVATAR];
             $this->facebookId = $userInfo[ACL_INFO_FACEBOOK_ID];
             $this->twitterId = $userInfo[ACL_INFO_TWITTER_ID];
             $this->linkedinId = $userInfo[ACL_INFO_LINKEDIN_ID];
-            $this->googleId = $userInfo[ACL_INFO_GOOGLE_ID]; 
+            $this->googleId = $userInfo[ACL_INFO_GOOGLE_ID];
         }
-        
 
         $this->preference = new UserPreferences($this->idst);
 
@@ -129,11 +127,11 @@ class DoceboUser implements Serializable
         $arr_levels_id  = [];
         $aclManager = $this->acl->getACLManager();
         $adminLevels = $aclManager->getAdminLevels();
-        if(count($adminLevels)) {
+        if (count($adminLevels)) {
             $arr_levels_id = array_flip($aclManager->getAdminLevels());
             $arr_levels_idst = array_keys($arr_levels_id);
         }
-        
+
         $level_st = array_intersect($arr_levels_idst, $preset);
 
         if (count($level_st) == 0) {
@@ -166,12 +164,12 @@ class DoceboUser implements Serializable
 
         $result = $this->db->query($userCoursesQuery);
 
-        if(is_countable($result)) {
-           foreach ($result as $userCourse) {
+        if (is_countable($result)) {
+            foreach ($result as $userCourse) {
                 $userCourses[$userCourse['idCourse']] = $userCourse;
-            } 
+            }
         }
-        
+
         return $userCourses;
     }
 
@@ -504,7 +502,7 @@ class DoceboUser implements Serializable
         return $du;
     }
 
-    public static function setupUser(&$user)
+    public static function setupUser($user)
     {
         $user->loadUserSectionST();
         $user->SaveInSession();
@@ -523,9 +521,17 @@ class DoceboUser implements Serializable
     public function setLastEnter($lastenter)
     {
         if (!$this->isAnonymous()) {
-            return $this->aclManager->updateUser($this->idst,
-                false, false, false, false, false, false, false,
-                $lastenter);
+            return $this->aclManager->updateUser(
+                $this->idst,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                $lastenter
+            );
         } else {
             return true;
         }
@@ -802,29 +808,13 @@ class DoceboUser implements Serializable
     public function serialize()
     {
 //        return serialize( $this->__serialize() );
+        // TODO: Implement serialize() method.
     }
 
     public function unserialize($data)
     {
-        
-//        $this->__unserialize( unserialize( $data) );
+        // TODO: Implement unserialize() method.
     }
-
-
-//    public function __serialize()
-//    {
-//        //
-//        return HelperTool::classMapping($this);
-//        //get_object_vars( $this );
-//    }
-//
-//    public function __unserialize($data)
-//    {
-//        foreach ( $data as $key => $value ) {
-//            $this->$key = $value;
-//          }
-//    }
-
 }
 
 function getLogUserId()
