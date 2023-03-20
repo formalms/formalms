@@ -295,7 +295,6 @@ class Catalogue_Manager
     {
         $catalogues = [];
 
-        $this->acl = Docebo::user()->getAclManager();
         $user_groups = $this->acl->getSTGroupsST($id_user);
 
         if (empty($user_groups)) {
