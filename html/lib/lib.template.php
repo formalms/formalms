@@ -451,19 +451,19 @@ function getBackUi($link, $name, $type = 'link')
 {
     switch ($type) {
         case 'button':
-                return '<div class="container-back_button">'
-                    . '<input class="button" type="button" value="' . $name . '" /></div>';
+            return '<div class="container-back_button">'
+                . '<input class="button" type="button" value="' . $name . '" /></div>';
 
             break;
         case 'submit':
-                return '<div class="container-back_button">'
-                    . '<input class="button" type="submit" value="' . $name . '" /></div>';
+            return '<div class="container-back_button">'
+                . '<input class="button" type="submit" value="' . $name . '" /></div>';
 
             break;
         default:
-                return '<div class="container-back">' . "\n\t" . '<a href="' . $link . '" '
-                    . (FormaLms\lib\Get::sett('use_accesskey') == 'on' ? 'accesskey="b">' . $name . ' (b)' : '>' . $name) . '</a>' . "\n"
-                    . '</div>' . "\n";
+            return '<div class="container-back">' . "\n\t" . '<a href="' . $link . '" '
+                . (FormaLms\lib\Get::sett('use_accesskey') == 'on' ? 'accesskey="b">' . $name . ' (b)' : '>' . $name) . '</a>' . "\n"
+                . '</div>' . "\n";
     }
 }
 

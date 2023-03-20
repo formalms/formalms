@@ -40,6 +40,7 @@ class DoceboUser implements Serializable
 {
     public $sprefix = '';
     public $acl = null;
+    public $aclManager = null;
     public $userid;
     public $idst;
     public $arrst = [];
@@ -488,7 +489,7 @@ class DoceboUser implements Serializable
         return $du;
     }
 
-    public static function setupUser(&$user)
+    public static function setupUser($user)
     {
         $user->loadUserSectionST();
         $user->SaveInSession();
@@ -507,9 +508,17 @@ class DoceboUser implements Serializable
     public function setLastEnter($lastenter)
     {
         if (!$this->isAnonymous()) {
-            return $this->aclManager->updateUser($this->idst,
-                false, false, false, false, false, false, false,
-                $lastenter);
+            return $this->aclManager->updateUser(
+                $this->idst,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                $lastenter
+            );
         } else {
             return true;
         }

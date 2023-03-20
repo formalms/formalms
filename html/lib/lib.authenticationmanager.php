@@ -101,7 +101,7 @@ class AuthenticationManager
         //////////////////////////////////
         $user->loadUserSectionST();
         $user->SaveInSession();
-
+        Docebo::setUser($user);
         resetTemplate();
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -129,7 +129,7 @@ class AuthenticationManager
             $this->plugin_manager->run_plugin($plugin, 'setSocial', ['id' => $id]);
         }
         $session->save();
-        Docebo::setUser($user);
+
         if (self::_checkMandatoryFields()) {
             return MANDATORY_FIELDS;
         }
