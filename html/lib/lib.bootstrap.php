@@ -11,10 +11,10 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 require_once _base_ . '/vendor/autoload.php';
-use function GuzzleHttp\default_ca_bundle;
 use FormaLms\lib\Domain\DomainHandler;
 use FormaLms\Exceptions\FormaStatusException;
 
+use function GuzzleHttp\default_ca_bundle;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -27,7 +27,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 class Boot
 {
-
     private static array $checkStatusFlags;
 
     private static bool $prettyRedirect;
@@ -60,7 +59,6 @@ class Boot
     {
         // composer autoload
         self::log('Load composer autoload.');
-      
     }
 
     /**
@@ -73,7 +71,6 @@ class Boot
      */
     public static function init($load_option = CHECK_SYSTEM_STATUS)
     {
-       
         //inizializzazione
         self::$checkStatusFlags = [];
 
@@ -87,7 +84,7 @@ class Boot
             $last_step = $load_option;
             $step_list = self::$_boot_seq;
         }
-        
+
         foreach ($step_list as $step_num => $step_method) {
             // custom boot sequence given, must retrive the correct method to call
             if (is_array($load_option)) {
@@ -95,7 +92,6 @@ class Boot
             }
 
             if ($last_step >= $step_num) {
-               
                 self::log($step_num . ' ) ' . __CLASS__ . '->' . $step_method);
                 self::$step_method();
             }
@@ -126,18 +122,15 @@ class Boot
      */
     private static function config()
     {
-
         $cfg = null;
-  
+
         if (!file_exists(dirname(__DIR__, 1).'/config.php')) {
-         
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         } else {
             require dirname(__DIR__, 1).'/config.php';
         }
 
         if (!isset($cfg) || !is_array($cfg)) {
-         
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
@@ -313,10 +306,10 @@ class Boot
         require_once _lib_ . '/calendar/CalendarManager.php';
         require_once _lib_ . '/calendar/CalendarDataContainer.php';
         require_once _lib_ . '/calendar/CalendarMailer.php';
-
     }
 
-    private static function domainAndTemplate(){
+    private static function domainAndTemplate()
+    {
         //create the handler who will fix values in session
         $domainHandler = DomainHandler::getInstance();
 
@@ -362,7 +355,6 @@ class Boot
      */
     private static function checkPlatform()
     {
-
         self::log('Load database funtion management library.');
 
         $cfg = null;
@@ -402,7 +394,6 @@ class Boot
             try {
                 $dbIsEmpty = !(bool)sql_query("SELECT * FROM `core_setting`");
             } catch (\Exception $exception) {
-
             }
         }
 
@@ -410,7 +401,7 @@ class Boot
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         $checkRoute = static::checkSystemRoutes($request);
 
-        if($dbIsEmpty) {
+        if ($dbIsEmpty) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
         if (!$checkRoute && !static::fileLockExistence()) {
@@ -437,7 +428,6 @@ class Boot
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
         if (!$request->hasSession()) {
-
             if (file_exists(dirname(__DIR__, 1). '/config.php')) {
                 require dirname(__DIR__, 1). '/config.php';
             }
@@ -455,7 +445,6 @@ class Boot
 
     private static function sessionCheck()
     {
-
         if (FormaLms\lib\Session\SessionManager::getInstance()->isSessionExpired()) {
             $session = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest()->getSession();
             $session->invalidate();
@@ -566,7 +555,7 @@ class Boot
             $_POST['passIns'] = \voku\helper\UTF8::clean(stripslashes($password_login));
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-    
+
         if ((!defined('IS_API') && !defined('IS_PAYPAL') && ($request->isMethod('post') || defined('IS_AJAX'))) && !static::checkSystemRoutes($request)) {
             // If this is a post or a ajax request then we must have a signature attached
             Util::checkSignature();
@@ -726,7 +715,7 @@ class Boot
     public static function checkSystemRoutes(\Symfony\Component\HttpFoundation\Request $request, $check = false)
     {
         $route = '/^(adm\/system\/)(\w+)+$/';
-        if($check) {
+        if ($check) {
             $route = '/^(adm\/system\/checkSystemStatus)+$/';
         }
         return $request->query->get('r') && (bool)preg_match($route, $request->query->get('r'));
@@ -736,26 +725,23 @@ class Boot
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 
-        if(count(self::$checkStatusFlags) && static::fileLockExistence() && !static::checkSystemRoutes($request, true) && !defined('IS_AJAX')) {
+        if (count(self::$checkStatusFlags) && static::fileLockExistence() && !static::checkSystemRoutes($request, true) && !defined('IS_AJAX')) {
             $params['errorStatus'] = base64_encode(implode("_", array_unique(self::$checkStatusFlags)));
             static::customRedirect('checkSystemStatus', $params);
         }
-      
     }
 
     public static function fileLockExistence()
     {
         return (bool) file_exists(_base_ . '/forma.lock');
-      
     }
 
     //Disabled - htacces use not used at moment
     public static function checkWebServer()
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        
+
         self::$prettyRedirect = (bool)preg_match('/^(Apache)/', $request->server->get('SERVER_SOFTWARE')??'');
-        
     }
 
     public static function customRedirect($route, $params = [])
@@ -764,23 +750,21 @@ class Boot
         $sistemPrefix = '/index.php?r=adm/system/';
         $baseRoute .= ($sistemPrefix . $route);
 
-        if(count($params)) {
+        if (count($params)) {
             $baseRoute .=  '&';
-            foreach($params as $key => $param) {
+            foreach ($params as $key => $param) {
                 $baseRoute .= $key . '=' . $param;
             }
         }
 
         header('Location: ' . $baseRoute);
-      
     }
 
     public static function checkPhpVersion()
     {
         require_once _adm_ . '/versions.php';
-       
-        if (version_compare(PHP_VERSION, _php_min_version_, '<') || version_compare(PHP_VERSION, _php_max_version_, '>')) 
-        {
+
+        if (version_compare(PHP_VERSION, _php_min_version_, '<') || version_compare(PHP_VERSION, _php_max_version_, '>')) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
     }

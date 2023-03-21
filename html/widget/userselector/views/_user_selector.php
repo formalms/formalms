@@ -124,7 +124,7 @@ $fields = ['id', 'userid', 'firstname', 'lastname', '_dyn_field_0', '_dyn_field_
 $event = compact('id_org', '_varname', 'columns_arr', 'fields');
 Events::trigger('widget.user_selector.before_render', $event);
 
-if (count($event['columns'])) {
+if (array_key_exists('columns', $event) && is_array($event['columns'])) {
     $columns_arr = array_merge($event['columns'], $columns_arr);
 }
 

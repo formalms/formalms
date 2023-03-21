@@ -32,47 +32,46 @@ class UserselectorAdmController extends AdmController
                         'org' => false,
                         'role' => false];
 
-    public function init(){
-
+    public function init()
+    {
         $this->multiUserSelector = new MultiUserSelector();
         $this->_mvc_name = 'multiuserselector';
         $this->requestObj = $this->request->getMethod() == 'POST' ? $this->request->request : $this->request->query;
-        
+
         $tabs = ($this->requestObj->has('tab_filters')) ? $this->requestObj->get('tab_filters') : array_keys($this->tabs);
 
-        foreach($tabs as $tabFilter) {
-
-            if(!in_array($tabFilter, array_keys($this->tabs))) {
+        foreach ($tabs as $tabFilter) {
+            if (!in_array($tabFilter, array_keys($this->tabs))) {
                 //non è un filtro accettato lo skippo
                 continue;
             }
             $this->tabs[$tabFilter] = true;
             $dataSelectorName = ucfirst($tabFilter) . 'DataSelector';
-    
-            
+
+
             $this->multiUserSelector->setDataSelectors($dataSelectorName, $tabFilter);
         }
 
-        if($this->requestObj->has('instance') && $this->requestObj->has('id')) {
+        if ($this->requestObj->has('instance') && $this->requestObj->has('id')) {
             $instanceType = $this->requestObj->get('instance');
             $instanceId = (int) $this->requestObj->get('id');
-    
-           
+
+
             $this->multiUserSelector->injectAccessModel($instanceType);
-    
+
             $this->multiUserSelector->getAccessModel();
         }
-        
+
         return $this;
     }
 
-  
 
-    public function show() {
 
+    public function show()
+    {
         $selectedData = [];
         $accessSelection = [];
-        
+
 
         $disableAjax = $this->requestObj->has('disable_ajax') ? true : false;
         $instanceValue = $this->requestObj->get('instance');
@@ -82,44 +81,43 @@ class UserselectorAdmController extends AdmController
         $clearSelection = $this->requestObj->get('clearSelection') ?? false;
         $selectAllValue = 0;
 
-        if($instanceValue) {
-
-            if($clearSelection) {
+        if ($instanceValue) {
+            if ($clearSelection) {
                 $this->multiUserSelector->setSessionData($instanceValue, []);
             }
             $accessSelection = $this->multiUserSelector->getSessionData($instanceValue);
-            if($instanceId) {
+            if ($instanceId) {
                 $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
             }
         }
 
 
-        if($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
+        if ($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
             $this->selection = $this->requestObj->get('selected_tab');
         }
 
-        foreach($this->tabs as $tabKey => $tab) {
+        foreach ($this->tabs as $tabKey => $tab) {
             $multiUserSelectorTab = $this->multiUserSelector->retrieveDataSelector($tabKey);
-           
+
             $columns[$tabKey] = $multiUserSelectorTab->getColumns();
-            if(count($multiUserSelectorTab::ADDITIONAL_COLS)) {
+            if (count($multiUserSelectorTab::ADDITIONAL_COLS)) {
                 $hiddenColumns = $multiUserSelectorTab->getHiddenColumns();
                 $columns[$tabKey] = array_merge($columns[$tabKey], $hiddenColumns);
             }
 
-            if($disableAjax) {
+            if ($disableAjax) {
                 $requestParams['op'] = 'selectall';
                 $selectedData[$tabKey] = $multiUserSelectorTab->getData($requestParams);
             }
         }
 
-        if($showSelectAll) {
-            if(in_array($this->multiUserSelector->getSelectedAllValue(), $accessSelection['org'])) {
+        if ($showSelectAll) {
+            if (in_array($this->multiUserSelector->getSelectedAllValue(), $accessSelection['org'])) {
                 $selectAllValue = $this->multiUserSelector->getSelectedAllValue();
             }
         }
 
-        $this->render('show',['tabs' => $this->tabs,
+        $this->render('show', ['tabs' => $this->tabs,
                             'selection'=> $this->selection,
                             'columns' => $columns,
                             'ajax' => $disableAjax,
@@ -137,7 +135,6 @@ class UserselectorAdmController extends AdmController
 
     public function getDataTask()
     {
-        
         $dataType = $this->requestObj->get('dataType');
         $params = array_merge($this->requestObj->all(), ['json_format' => true]);
 
@@ -146,17 +143,16 @@ class UserselectorAdmController extends AdmController
             case 'group':
             case 'role':
                 $response = $this->multiUserSelector->retrieveDataselector($dataType)->getData($params);
-               
-               break;
+
+                break;
             default:
                 $params = $this->request->query->all();
-             
+
                 $response = $this->multiUserSelector->retrieveDataselector('org')->getData($params);
                 break;
         }
 
         echo $response;
-
     }
 
 
@@ -169,61 +165,54 @@ class UserselectorAdmController extends AdmController
         $exclusion =  explode(',', $this->requestObj->get('excluded'));
         $allSelections =  explode(',', $this->requestObj->get('allselection'));
         $allIdst =  (int) $this->requestObj->get('all_idst');
-        
+
         //if allidst is checked empty all selections
-    
-        if($allIdst) {
+
+        if ($allIdst) {
             $allSelections = $selection = $exclusion = [];
             $selection[] = $allIdst;
         }
-        if(count($allSelections)) {
-            foreach($allSelections as $allSelection) {
-                if(in_array($allSelection, array_keys($this->tabs))) {
+        if (count($allSelections)) {
+            foreach ($allSelections as $allSelection) {
+                if (in_array($allSelection, array_keys($this->tabs))) {
                     $boundSelection = $this->multiUserSelector->retrieveDataselector($allSelection)->getAllSelection($exclusion);
-            
+
                     $cleanArray = array_diff(array_unique($selection), $exclusion); //remove exclude delements
-                
+
                     $selection = array_unique(array_merge($cleanArray, $boundSelection));
                 }
-                
-            
             }
-            
         }
 
         $result = $this->multiUserSelector->associate($instanceType, $instanceId, $selection);
-        
+
         switch($result['type']) {
             case "redirect":
                 return Util::jump_to($result['redirect']);
-       
+
                 break;
-            
+
             case "render":
                 $this->_mvc_name = $result['subFolderView'];
-             
+
                 return $this->render($result['view'], $result['params'], false, $result['additionalPaths']);
                 break;
         }
-        
-
     }
 
 
-    public function getOrgChartData() {
-
+    public function getOrgChartData()
+    {
         $accessSelection = [];
         $params = $this->requestObj->all();
         $instanceValue = $this->requestObj->get('instance');
         $instanceId = $this->requestObj->get('id');
 
-        if($instanceValue && $instanceId) {
+        if ($instanceValue && $instanceId) {
             $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId);
         }
-    
+
         $params['selected_nodes'] = $accessSelection;
         echo $this->multiUserSelector->retrieveDataselector('org')->getData($params);
     }
-
-
 }

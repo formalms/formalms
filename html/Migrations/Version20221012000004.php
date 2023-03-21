@@ -19,8 +19,11 @@ final class Version20221012000004 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-      
         $this->addSql('SET FOREIGN_KEY_CHECKS=0;');
+
+        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta`;');
+        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_assign`;');
+        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_course`;');
 
         $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -33,7 +36,7 @@ final class Version20221012000004 extends AbstractMigration
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
-        
+
         $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs (
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
@@ -371,13 +374,6 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_certificate_course ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_certificate id_certificate INT NOT NULL, CHANGE id_course id_course INT NOT NULL, CHANGE available_for_status available_for_status TINYINT(1) NOT NULL, CHANGE point_required point_required INT NOT NULL, CHANGE minutes_required minutes_required INT NOT NULL');
         $this->addSql('CREATE INDEX id_certificate_idx ON learning_certificate_course (id_certificate)');
         $this->addSql('CREATE INDEX id_course_idx ON learning_certificate_course (id_course)');
-        $this->addSql('ALTER TABLE learning_certificate_meta ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idCertificate idCertificate INT NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE description description LONGTEXT NOT NULL');
-        $this->addSql('ALTER TABLE learning_certificate_meta_assign DROP INDEX IF EXISTS `PRIMARY`');
-        $this->addSql('ALTER TABLE learning_certificate_meta_assign ADD id BIGINT NOT NULL PRIMARY KEY');
-        $this->addSql('ALTER TABLE learning_certificate_meta_assign ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idUser idUser INT NOT NULL, CHANGE idMetaCertificate idMetaCertificate INT NOT NULL, CHANGE idCertificate idCertificate INT NOT NULL, CHANGE cert_file cert_file VARCHAR(255) NOT NULL');
-        $this->addSql('CREATE INDEX id_user_idx ON learning_certificate_meta_assign (idUser)');
-        $this->addSql('CREATE INDEX id_meta_certificate_idx ON learning_certificate_meta_assign (idMetaCertificate)');
-        $this->addSql('ALTER TABLE learning_certificate_meta_course ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idMetaCertificate idMetaCertificate INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE idCourse idCourse INT NOT NULL, CHANGE idCourseEdition idCourseEdition INT NOT NULL');
         $this->addSql('ALTER TABLE learning_certificate_tags DROP INDEX IF EXISTS `PRIMARY`');
         $this->addSql('ALTER TABLE learning_certificate_tags ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE file_name file_name VARCHAR(255) NOT NULL, CHANGE class_name class_name VARCHAR(255) NOT NULL');
         $this->addSql('CREATE INDEX file_name_idx ON learning_certificate_tags (file_name)');
@@ -425,7 +421,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_competence_user ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_competence id_competence INT UNSIGNED NOT NULL, CHANGE id_user id_user INT UNSIGNED NOT NULL, CHANGE score_got score_got DOUBLE PRECISION NOT NULL');
         $this->addSql('CREATE INDEX id_competence_idx ON learning_competence_user (id_competence)');
         $this->addSql('CREATE INDEX id_user_idx ON learning_competence_user (id_user)');
-    
+
         $this->addSql('ALTER TABLE learning_course ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idCategory idCategory INT NOT NULL, CHANGE code code VARCHAR(50) NOT NULL, CHANGE name name VARCHAR(255) NOT NULL, CHANGE lang_code lang_code VARCHAR(100) NOT NULL, CHANGE status status INT NOT NULL, CHANGE level_show_user level_show_user INT NOT NULL, CHANGE subscribe_method subscribe_method TINYINT(1) NOT NULL, CHANGE linkSponsor linkSponsor VARCHAR(255) NOT NULL, CHANGE imgSponsor imgSponsor VARCHAR(255) NOT NULL, CHANGE img_course img_course VARCHAR(255) NOT NULL, CHANGE img_material img_material VARCHAR(255) NOT NULL, CHANGE img_othermaterial img_othermaterial VARCHAR(255) NOT NULL, CHANGE course_demo course_demo VARCHAR(255) NOT NULL, CHANGE mediumTime mediumTime INT UNSIGNED NOT NULL, CHANGE permCloseLO permCloseLO TINYINT(1) NOT NULL, CHANGE userStatusOp userStatusOp INT NOT NULL, CHANGE show_time show_time TINYINT(1) NOT NULL, CHANGE show_who_online show_who_online TINYINT(1) NOT NULL, CHANGE show_extra_info show_extra_info TINYINT(1) NOT NULL, CHANGE show_rules show_rules TINYINT(1) NOT NULL, CHANGE hour_begin hour_begin VARCHAR(5) NOT NULL, CHANGE hour_end hour_end VARCHAR(5) NOT NULL, CHANGE valid_time valid_time INT NOT NULL, CHANGE max_num_subscribe max_num_subscribe INT NOT NULL, CHANGE min_num_subscribe min_num_subscribe INT NOT NULL, CHANGE max_sms_budget max_sms_budget DOUBLE PRECISION NOT NULL, CHANGE selling selling TINYINT(1) NOT NULL, CHANGE prize prize VARCHAR(255) NOT NULL, CHANGE policy_point policy_point VARCHAR(255) NOT NULL, CHANGE point_to_all point_to_all INT NOT NULL, CHANGE course_edition course_edition TINYINT(1) NOT NULL, CHANGE classrooms classrooms VARCHAR(255) NOT NULL, CHANGE certificates certificates VARCHAR(255) NOT NULL, CHANGE security_code security_code VARCHAR(255) NOT NULL, CHANGE used_space used_space VARCHAR(255) NOT NULL, CHANGE course_vote course_vote DOUBLE PRECISION NOT NULL, CHANGE allow_overbooking allow_overbooking TINYINT(1) NOT NULL, CHANGE can_subscribe can_subscribe TINYINT(1) NOT NULL, CHANGE advance advance VARCHAR(255) NOT NULL, CHANGE autoregistration_code autoregistration_code VARCHAR(255) NOT NULL, CHANGE direct_play direct_play TINYINT(1) NOT NULL, CHANGE use_logo_in_courselist use_logo_in_courselist TINYINT(1) NOT NULL, CHANGE show_result show_result TINYINT(1) NOT NULL, CHANGE credits credits DOUBLE PRECISION NOT NULL, CHANGE auto_unsubscribe auto_unsubscribe TINYINT(1) NOT NULL, CHANGE sendCalendar sendCalendar TINYINT(1) DEFAULT NULL');
         $this->addSql('ALTER TABLE learning_course_date ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_course id_course INT UNSIGNED NOT NULL, CHANGE code code VARCHAR(255) NOT NULL, CHANGE name name VARCHAR(255) NOT NULL, CHANGE max_par max_par INT NOT NULL, CHANGE price price VARCHAR(255) NOT NULL, CHANGE overbooking overbooking TINYINT(1) NOT NULL, CHANGE test_type test_type TINYINT(1) NOT NULL, CHANGE status status INT UNSIGNED NOT NULL, CHANGE medium_time medium_time INT NOT NULL, CHANGE calendarId calendarId VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE learning_course_date_day CHANGE id_day id_day INT NOT NULL, CHANGE id_date id_date INT NOT NULL, CHANGE classroom classroom INT UNSIGNED NOT NULL, CHANGE deleted deleted TINYINT(1) DEFAULT NULL, CHANGE created_at created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE updated_at updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
@@ -668,13 +664,12 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('UPDATE `core_reg_setting` SET `value` = "-" WHERE `region_id` = "england" AND `val_name` = "date_sep"');
         $this->addSql('SET FOREIGN_KEY_CHECKS=1;');
 
-        
-        \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__)]);
 
+        \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__)]);
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-   }
+    }
 }
