@@ -366,14 +366,14 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
                 $event = [
                     'object_test' => $object_test,
-                    'idst' => Docebo::user ()->getIdst (),
-                    'acl' => Docebo::user ()->getAclManager (),
+                    'idst' => Docebo::user()->getIdst(),
+                    'acl' => Docebo::user()->getAclManager(),
                     'lang' => $lang,
-                    'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
-                    'date' => date ('Y-m-d H:i:s')
+                    'test_score' => $tests_score[$id_test][Docebo::user()->getIdst()]['comment'],
+                    'date' => date('Y-m-d H:i:s')
                 ];
-                Events::trigger('lms.test.complete', $event);
-          }
+                Events::trigger('lms.test.completed', $event);
+            }
         } elseif (str_replace('NULL', '', $prerequisite) !== $prerequisite) {
             if ($score_status !== 'valid' && $score_status !== 'passed') {
                 //--- check max attempts
@@ -389,13 +389,14 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
                 $event = [
                     'object_test' => $object_test,
-                    'idst' => Docebo::user ()->getIdst (),
-                    'acl' => Docebo::user ()->getAclManager (),
+                    'idst' => Docebo::user()->getIdst(),
+                    'acl' => Docebo::user()->getAclManager(),
                     'lang' => $lang,
-                    'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
-                    'date' => date ('Y-m-d H:i:s')
+                    'test_score' => $tests_score[$id_test][Docebo::user()->getIdst()]['comment'],
+                    'date' => date('Y-m-d H:i:s')
                 ];
-                Events::trigger('lms.test.complete', $event);  }
+                Events::trigger('lms.test.completed', $event);
+            }
         } else {
             //--- check max attempts
             if ($maxAttempts) {
@@ -480,24 +481,24 @@ function playTestDispatch($object_test, $id_param)
     $url_coded = urlencode(Util::serialize($object_test->back_url));
     $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
 
-    $event = ['object_test' => $object_test ,
-                'id_param' => $id_param ,
-                'id_test' => $id_test ,
-                'id_track' => $id_track,
-                'idst' => Docebo::user()->getIdst()];
+    $event = ['object_test' => $object_test,
+        'id_param' => $id_param,
+        'id_test' => $id_test,
+        'id_track' => $id_track,
+        'idst' => Docebo::user()->getIdst()];
 
 
     $event['action'] = 'action_play';
-    if (isset($_POST[ 'deleteandbegin' ])) {
+    if (isset($_POST['deleteandbegin'])) {
         $event['action'] = 'action_delete_and_begin';
-    } else if (isset($_POST[ 'restart' ])) {
-    	$event['action'] = 'action_restart';
-    } elseif (isset($_POST[ 'test_save_keep' ])) {
+    } else if (isset($_POST['restart'])) {
+        $event['action'] = 'action_restart';
+    } elseif (isset($_POST['test_save_keep'])) {
         $event['action'] = 'action_test_save_keep';
-    } elseif (isset($_POST[ 'show_result' ])) {
+    } elseif (isset($_POST['show_result'])) {
         $event['action'] = 'action_show_result';
-    } elseif (isset($_POST[ 'time_elapsed' ]) && $_POST[ 'time_elapsed' ] == '1') {
-    	$event['action'] = 'action_time_elapsed';
+    } elseif (isset($_POST['time_elapsed']) && $_POST['time_elapsed'] == '1') {
+        $event['action'] = 'action_time_elapsed';
     }
 
     Events::trigger('lms.test.play.test.dispatch', $event);
@@ -1297,15 +1298,16 @@ function showResult($object_test, $id_param)
         . '<br />', 'content');
 
     if ($next_status != 'failed') {
-        $event = [
+        /*$event = [
             'object_test' => $object_test,
-            'idst' => Docebo::user ()->getIdst (),
-            'acl' => Docebo::user ()->getAclManager (),
+            'idst' => Docebo::user()->getIdst(),
+            'acl' => Docebo::user()->getAclManager(),
             'lang' => $lang,
-            'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
-            'date' => date ('Y-m-d H:i:s')
+            'test_score' => $tests_score[$id_test][Docebo::user()->getIdst()]['comment'],
+            'date' => date('Y-m-d H:i:s')
         ];
-        Events::trigger('lms.test.complete', $event);  }
+        Events::trigger('lms.test.completed', $event);*/
+    }
 
     if ($test_info['point_type'] != '1') {
         $save_score = $point_do;
@@ -1333,13 +1335,13 @@ function showResult($object_test, $id_param)
 
             $event = [
                 'object_test' => $object_test,
-                'idst' => Docebo::user ()->getIdst (),
-                'acl' => Docebo::user ()->getAclManager (),
+                'idst' => Docebo::user()->getIdst(),
+                'acl' => Docebo::user()->getAclManager(),
                 'lang' => $lang,
-                'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
-                'date' => date ('Y-m-d H:i:s')
+                'test_score' => $tests_score[$id_test][Docebo::user()->getIdst()]['comment'],
+                'date' => date('Y-m-d H:i:s')
             ];
-            Events::trigger('lms.test.complete', $event);
+            Events::trigger('lms.test.completed', $event);
             $session->remove('test_date_begin');
             $session->save();
         }
@@ -2043,20 +2045,20 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
 
             if ($review['score'] !== false) {
                 $report_test .= '<div class="test_answer_comment_nomargin">';
-                    if ($test_info['show_quest_score']) {
+                if ($test_info['show_quest_score']) {
 
-                        $report_test .= '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
-                        if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
-                            $report_test .= $lang->def('_NOT_ASSIGNED');
+                    $report_test .= '<div class="test_score_note">' . $lang->def('_SCORE') . ' : ';
+                    if ($quest_obj->getScoreSetType() == 'manual' && !$review['manual_assigned']) {
+                        $report_test .= $lang->def('_NOT_ASSIGNED');
+                    } else {
+                        if ($review['score'] > 0) {
+                            $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
                         } else {
-                            if ($review['score'] > 0) {
-                                $report_test .= '<span class="test_score_positive">' . $review['score'] . '</span>';
-                            } else {
-                                $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
-                            }
+                            $report_test .= '<span class="test_score_negative">' . $review['score'] . '</span>';
                         }
-                        $report_test . '</div>';
                     }
+                    $report_test . '</div>';
+                }
 
                 $report_test .= ($review['comment'] != '' ? $review['comment'] : '')
                     . '</div>';
