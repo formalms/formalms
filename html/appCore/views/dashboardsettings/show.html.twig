@@ -117,7 +117,7 @@
                 { data: 'permission', title: '&nbsp;', sortable: false, width: '10%', 
                     render: function(data, type, row, meta) {
                         var disabled = row.default ? 'disabled' : '';
-                        return '<div class="text-center"><a href="' + permissionUrl + '&dashboard=' + row.id + '" class="btn btn-success ' + disabled + '"><i class="glyphicon glyphicon-user"></i> </a></div>';
+                        return '<div class="text-center"><a href="' + permissionUrl + '&id=' + row.id + '&instance=dashboardsetting&load=1" class="btn btn-success ' + disabled + '"><i class="glyphicon glyphicon-user"></i> </a></div>';
                     }
                 }, 
 

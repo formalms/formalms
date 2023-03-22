@@ -61,6 +61,8 @@ class MultiUserSelector
                     'className' => 'Man_MiddleArea', 'returnType' => 'redirect'],
         'lmsblock' => ['includes' => _lms_ . '/lib/lib.middlearea.php',
                     'className' => 'Man_MiddleArea', 'returnType' => 'redirect'],
+        'dashboardsetting' => ['includes' => _adm_.'/models/DashboardsettingsAdm.php',
+                    'className' => 'DashboardsettingsAdm','returnType' => 'redirect'],
     ];
 
 
@@ -76,7 +78,7 @@ class MultiUserSelector
         $className = self::NAMESPACE . $dataSelector;
         try {
             $this->dataSelectors[$key] = new $className();
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             //
         }
 
@@ -107,7 +109,7 @@ class MultiUserSelector
    public function associate($instanceType, $instanceId, $selection)
    {
        $return['type'] = self::ACCESS_MODELS[$instanceType]['returnType'];
-
+       $moreParams = [];
        switch($instanceType) {
            case 'communication':
 
@@ -157,8 +159,9 @@ class MultiUserSelector
 
            case 'multiplecoursesubscription':
 
-               $filteredSelection = $this->accessModel->checkSelection($selection, $moreParams);
                $moreParams['viewParams'] = true;
+               $filteredSelection = $this->accessModel->checkSelection($selection, $moreParams);
+
 
                $this->setSessionData($instanceType, $filteredSelection);
                $return['params'] =  $this->accessModel->multipleAdd($filteredSelection, $moreParams);
@@ -167,6 +170,14 @@ class MultiUserSelector
                $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
                $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
 
+
+               break;
+
+           case 'dashboardsetting':
+
+               $result = $this->accessModel->setObjIdstList((int) $instanceId, $selection);
+
+               $return['redirect'] = 'index.php?r=adm/dashboardsettings/show&result=' . ($result ? 'ok' : 'err');
 
                break;
 
@@ -215,6 +226,12 @@ class MultiUserSelector
            case 'coursesubscription':
 
                $selection = $this->accessModel->getSubscribed($instanceId, 'course');
+
+               break;
+
+           case 'dashboardsetting':
+
+               $selection = $this->accessModel->getObjIdstList($instanceId);
 
                break;
 

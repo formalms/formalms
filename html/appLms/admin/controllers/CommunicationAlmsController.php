@@ -62,7 +62,8 @@ class CommunicationAlmsController extends AlmsController
     {
         $message = '';
         switch ($code) {
-            case 'no permission': $message = ''; break;
+            case 'no permission': $message = '';
+            break;
         }
 
         return $message;
@@ -78,6 +79,8 @@ class CommunicationAlmsController extends AlmsController
             UIFeedback::info(Lang::t('_OPERATION_SUCCESSFUL', 'communication'));
         }
 
+        $sort = false;
+
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
         $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 100));
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
@@ -87,10 +90,10 @@ class CommunicationAlmsController extends AlmsController
 
         switch ($dir) {
             case 'desc':
-                    $dir = 'desc';
+                $dir = 'desc';
                 break;
             default:
-                    $dir = 'asc';
+                $dir = 'asc';
                 break;
         }
 
@@ -328,7 +331,7 @@ class CommunicationAlmsController extends AlmsController
             default:
                 Util::jump_to('index.php?r=alms/communication/show');
 
-            break;
+                break;
         }
     }
 
@@ -356,8 +359,12 @@ class CommunicationAlmsController extends AlmsController
                 if ($data['type_of'] == 'file' || $data['type_of'] == 'scorm') { // Save resource as uncategorized
                     require_once _lms_ . '/lib/lib.kbres.php';
                     $kbres = new KbRes();
-                    $kbres->saveUncategorizedResource($data['title'], $data['id_resource'],
-                        $data['type_of'], 'communication', $data['id_comm']
+                    $kbres->saveUncategorizedResource(
+                        $data['title'],
+                        $data['id_resource'],
+                        $data['type_of'],
+                        'communication',
+                        $data['id_comm']
                     );
                 }
                 Util::jump_to('index.php?r=alms/communication/show&success=1');
@@ -522,7 +529,7 @@ class CommunicationAlmsController extends AlmsController
                 default:
                     Util::jump_to('index.php?r=alms/communication/show');
 
-                break;
+                    break;
             }
         } else {
             Util::jump_to('index.php?r=alms/communication/show&error=1');
@@ -586,7 +593,7 @@ class CommunicationAlmsController extends AlmsController
                 default:
                     $re = true;
 
-                break;
+                    break;
             }
         } else {
             $re = true;
@@ -707,9 +714,22 @@ class CommunicationAlmsController extends AlmsController
                 $folders = FormaLms\lib\Get::req('h_selected_folders', DOTY_STRING, '');
                 $json_tags = Util::strip_slashes(FormaLms\lib\Get::req('tag_list', DOTY_STRING, '[]'));
 
-                $res_id = $kbres->saveResource($res_id, $name, $original_name, $desc, $r_item_id,
-                    $type, $env, $env_parent_id, $param, $alt_desc, $lang, $force_visible,
-                    $is_mobile, $folders, $json_tags
+                $res_id = $kbres->saveResource(
+                    $res_id,
+                    $name,
+                    $original_name,
+                    $desc,
+                    $r_item_id,
+                    $type,
+                    $env,
+                    $env_parent_id,
+                    $param,
+                    $alt_desc,
+                    $lang,
+                    $force_visible,
+                    $is_mobile,
+                    $folders,
+                    $json_tags
                 );
 
                 Util::jump_to('index.php?r=alms/communication/show');
@@ -902,11 +922,11 @@ class CommunicationAlmsController extends AlmsController
                     ];
                 }
                 echo $this->json->encode($output);
-             break;
+                break;
 
             case 'set_selected_node':
                 $this->_setSessionValue('selected_node', FormaLms\lib\Get::req('node_id', DOTY_INT, 0));
-             break;
+                break;
 
             case 'delete':
                 //check permissions
@@ -923,7 +943,7 @@ class CommunicationAlmsController extends AlmsController
                     $output['success'] = $this->model->deleteCategory($id);
                 }
                 echo $this->json->encode($output);
-             break;
+                break;
 
             case 'movefolder':
                 //check permissions
@@ -935,7 +955,7 @@ class CommunicationAlmsController extends AlmsController
                 }
 
                 $this->move_categoryTask();
-             break;
+                break;
         }
     }
 
@@ -1121,10 +1141,10 @@ class CommunicationAlmsController extends AlmsController
 
         switch ($dir) {
             case 'desc':
-                    $dir = 'desc';
+                $dir = 'desc';
                 break;
             default:
-                    $dir = 'asc';
+                $dir = 'asc';
                 break;
         }
 
