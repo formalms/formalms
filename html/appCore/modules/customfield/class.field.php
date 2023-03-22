@@ -550,12 +550,11 @@ class Field
     /**
      * store the value inserted by a user into the database, if a entry exists it will be overwrite.
      *
-     * @param int $id_user      the user
-     * @param int $no_overwrite if a entry exists do not overwrite it
+     * @param int $id_obj      the object
      *
      * @return bool true if operation success false otherwise
      */
-    public function store($id_user, $no_overwrite, $int_userid = true)
+    public function store($id_obj)
     {
         return true;
     }

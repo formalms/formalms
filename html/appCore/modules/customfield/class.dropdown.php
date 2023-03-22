@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
-require_once dirname(__FILE__) . '/class.field.php';
+require_once Forma::inc(_adm_ . '/modules/customfield/class.field.php');
 
 class Field_Dropdown extends Field
 {
@@ -552,11 +552,9 @@ class Field_Dropdown extends Field
      *
      * @return bool true if operation success false otherwise
      */
-    public function store($id_obj, $no_overwrite, $int_userid = true)
+    public function store($id_obj)
     {
-        if (($int_objid) || (empty($id_obj))) {
-            $id_obj = (int) $id_obj;
-        }
+        $id_obj = (int) $id_obj;
 
         if (!isset($_POST['field_' . $this->getFieldType()][$this->id_field])) {
             return true;
