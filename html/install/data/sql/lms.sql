@@ -3045,6 +3045,7 @@ CREATE TABLE IF NOT EXISTS `learning_test` (
   `score_max` int(11) NOT NULL DEFAULT '0',
   `obj_type` varchar(45) DEFAULT 'test',
   `retain_answers_history` tinyint(1) NOT NULL DEFAULT '0',
+  `show_quest_score` tinyint(1) NOT NULL,
   PRIMARY KEY (`idTest`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
