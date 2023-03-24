@@ -208,7 +208,7 @@ class CoursestatsLmsController extends LmsController
 		$data = json_decode(file_get_contents('php://input'), true);
 
 		$startIndex = $data['start'];
-		$results = Get::req('results', DOTY_INT, Get::sett('visuItem'));
+		$results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem'));
 		$rowsPerPage = $data['length'];
 
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
