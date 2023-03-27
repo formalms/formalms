@@ -133,7 +133,7 @@
         <div class="edit-classroom-dates">
 
             <div id="js-row-hidden" class="hidden">
-                <!--<tr data-day_id="#day_id#" data-date="#dataset_day_date#" data-date_begin="#dataset_day_date_begin#" data-date_end="#dataset_day_date_end#" data-pause_begin="#dataset_day_pause_begin#" data-pause_end="#dataset_day_pause_end#" data-classroom="#dataset_day_classroom#">
+                <!--<tr data-id_day="#id_day#" data-date="#dataset_day_date#" data-date_begin="#dataset_day_date_begin#" data-date_end="#dataset_day_date_end#" data-pause_begin="#dataset_day_pause_begin#" data-pause_end="#dataset_day_pause_end#" data-classroom="#dataset_day_classroom#">
                     <th scope="row">#day_date#</th>
                     <td>#day_date_begin#</td>
                     <td>#day_date_end#</td>
@@ -162,7 +162,7 @@
                         {% set classroom = availableClassrooms[day.classroom] %}
                     {% endif %}
 
-                    <tr data-day_id="{{ day.id }}" data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}"
+                    <tr data-id_day="{{ day.id }}" data-date="{{ day.date }}" data-date_begin="{{ day.date_begin }}"
                         data-date_end="{{ day.date_end }}" data-pause_begin="{{ day.pause_begin }}"
                         data-pause_end="{{ day.pause_end }}" data-classroom="{{ day.classroom }}">
                         <th scope="row">{{ day.date }}</th>
@@ -190,7 +190,7 @@
 
         <div class="add-classroom-dates" id="js-add-classroom-dates" style="display: none">
             <div class="row mb-4">
-                <input type="hidden" id="form-day_id">
+                <input type="hidden" id="form-id_day">
                 <input type="hidden" id="form-day_value">
                 <div class="col form-data-default">
                     <div class="form-outline">
@@ -355,7 +355,7 @@
     function saveForm(e) {
         e.preventDefault();
         
-        var id = document.getElementById('form-day_id').value;
+        var id = document.getElementById('form-id_day').value;
         var date = document.getElementById('form-day_date').value;
         var editDate = document.getElementById('form-day_value').value;
         var dateFormatted = dateToString(new Date(date));
@@ -402,7 +402,7 @@
             row.dataset.date = dateToString(date, 'YYYY-MM-DD')
             var dateFormatted = dateToString(date, 'DD-MM-YYYY');
         
-            insertOrUpdateRow(row.dataset.day_id, row.dataset.date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
+            insertOrUpdateRow(row.dataset.id_day, row.dataset.date, dateFormatted, dateBegin, dateEnd, pauseBegin, pauseEnd, classroom);
         }
 
         clearForm();
@@ -426,10 +426,10 @@
             for (let row of tableBody.rows) {
                 var dataset = row.dataset;
 
-                if (dataset.day_id === id) {
-                    newTableRow = newTableRow.replace('#day_id#', id);
+                if (dataset.id_day === id) {
+                    newTableRow = newTableRow.replace('#id_day#', id);
                     row.innerHTML = newTableRow;
-                    row.dataset.day_id = id;
+                    row.dataset.id_day = id;
                     row.dataset.date = dateFormatted;
                     row.dataset.date_begin = date + ' ' + dateBegin;
                     row.dataset.date_end = date + ' ' + dateEnd;
@@ -451,7 +451,7 @@
             }
         } else {
 
-            newTableRow = newTableRow.replace('#day_id#', lastInsertedRowId);
+            newTableRow = newTableRow.replace('#id_day#', lastInsertedRowId);
             lastInsertedRowId--;
             tableBody.insertAdjacentHTML('beforeend', newTableRow);
 
@@ -496,7 +496,7 @@
     }
 
     function clearForm() {
-        document.getElementById('form-day_id').value = '';
+        document.getElementById('form-id_day').value = '';
         document.getElementById('form-day_date').value = '';
         document.getElementById('form-day_value').value = '';
         document.getElementById('form-day_date_begin').value = '00:00';
@@ -581,7 +581,7 @@
 
         var rowData = getRowDatasetFromEvent(e);
 
-        document.getElementById('form-day_id').value = rowData.day_id;
+        document.getElementById('form-id_day').value = rowData.id_day;
      
 
         /** convert date string to date object (date string format 01-07-2021) */
@@ -615,7 +615,7 @@
     function deleteRow(e) {
         e.preventDefault()
         var row = e.target.parentNode.parentNode
-        if (row.dataset.day_id > 0) {
+        if (row.dataset.id_day > 0) {
             removedDays.push(JSON.parse(JSON.stringify(row.dataset)));
             insertedDays.pop(row.dataset.date);
         }

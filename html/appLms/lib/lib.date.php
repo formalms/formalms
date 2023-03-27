@@ -215,11 +215,11 @@ class DateManager
         $result = true;
         foreach ($arrayDays as $dayInfo) {
             if (empty($dayInfo['calendarId'])) {
-                $query = "UPDATE %lms_course_date_day SET `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "' WHERE `id_date` = " . $idDate . ' AND `id` =' . $dayInfo['day_id'];
+                $query = "UPDATE %lms_course_date_day SET `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "' WHERE `id_date` = " . $idDate . ' AND `id` =' . $dayInfo['id_day'];
                 DbConn::getInstance()->query($query);
             }
 
-            $query = 'UPDATE %lms_course_date_day SET `deleted` = 1 WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['day_id'];
+            $query = 'UPDATE %lms_course_date_day SET `deleted` = 1 WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['id_day'];
             $res = DbConn::getInstance()->query($query);
 
             if ($res === false) {
@@ -263,7 +263,7 @@ class DateManager
                 continue;
             }
 
-            if ((int) $dayInfo['day_id'] < 0 || !array_key_exists('day_id', $dayInfo)) {
+            if ((int) $dayInfo['id_day'] < 0 || !array_key_exists('id_day', $dayInfo)) {
                 $query = 'INSERT INTO %lms_course_date_day (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end, calendarId)  VALUES 
                 (' . $index . ', ' . $idDate . ', ' . $dayInfo['classroom'] . ", '" . $dayInfo['date_begin'] . "', '" . $dayInfo['date_end'] . "', '" . $dayInfo['pause_begin'] . "', '" . $dayInfo['pause_end'] . "','" . CalendarManager::generateUniqueCalendarId() . "')";
             } else {
@@ -278,7 +278,7 @@ class DateManager
                 if (empty($dayInfo['calendarId'])) {
                     $query .= ", `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "'";
                 }
-                $query .= ' WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['day_id'];
+                $query .= ' WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['id_day'];
             }
             $result = DbConn::getInstance()->query($query);
             $walkedDates[] = $dayInfo['date'];

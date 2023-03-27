@@ -1229,6 +1229,7 @@ class Course_API extends API
         }
 
         $response = $this->validateIdDateExistsInCourseFromParams($params);
+        $courseId = $response['data'];
         if (!$response['success']) {
             return $response;
         }
@@ -1351,7 +1352,7 @@ class Course_API extends API
             //unset($arrayDays[$idDay]);
             $result = $model->classroom_man->removeDateDay($idDate, [
                 [
-                    'day_id' => $idDay,
+                    'id_day' => $idDay,
                 ],
             ]);
 
