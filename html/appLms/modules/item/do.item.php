@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -56,7 +56,7 @@ function play($idResource, $idParams, $back_url)
         require_once _lms_ . '/class.module/track.item.php';
         list($exist, $idTrack) = Track_Item::getIdTrack($idReference, getLogUserId(), $idResource, true);
         if ($exist) {
-            $ti = new Track_Item($idTrack, Docebo::user()->getIdSt());
+            $ti = new Track_Item((int) $idTrack, Docebo::user()->getIdSt());
             $ti->setDate(date('Y-m-d H:i:s'));
             $ti->status = 'completed';
             $ti->update();

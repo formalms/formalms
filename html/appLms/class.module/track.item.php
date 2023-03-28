@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -17,23 +17,32 @@ require_once _lms_ . '/class.module/track.object.php';
 
 class Track_Item extends Track_Object
 {
-    public $lobj;
+    protected $lobj;
 
-    public function __construct($lobj, $id_user = null)
+    public function __construct($lobj, $id_user = null, $objectType = 'item')
     {
         $this->lobj = $lobj;
-        $this->objectType = $this->lobj->obj_type;
-
         //search for prev track
-        $this->idTrack = $this->getIdTrack($this->lobj->id_reference, $id_user, $this->lobj->id, true);
-        parent::__construct($this->idTrack, $this->lobj->environment);
+        if (is_int($lobj)) {
+            $this->idTrack = $lobj;
+            $this->objectType = $objectType;
+            $environment = false;
+        } else {
+            $this->idTrack = static::getIdTrack($this->lobj->id_reference, $id_user, $this->lobj->id, true);
+            $this->objectType = $this->lobj->obj_type;
+            $environment = $this->lobj->environment;
+        }
+
+        parent::__construct($this->idTrack, $environment);
         if ($this->idReference == false) {
-            $this->createTrack($this->lobj->id_reference,
-                                $this->idTrack,
-                                $id_user,
-                                date('Y-m-d H:i:s'),
-                                'attempted',
-                                $this->objectType);
+            $this->createTrack(
+                $this->lobj->id_reference,
+                $this->idTrack,
+                $id_user,
+                date('Y-m-d H:i:s'),
+                'attempted',
+                $this->objectType
+            );
         }
     }
 

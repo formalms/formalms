@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -20,8 +20,6 @@ class Module_Organization extends LmsModule
     public $select_destination = false;
 
     //class constructor
-    public $select_destionation;
-
     public function __construct($module_name = '')
     {
         parent::__construct('organization');
@@ -290,11 +288,14 @@ class Module_Organization extends LmsModule
 
             //#11944 ,  can view LO by teacher
             if (Track_Object::isPrerequisitesSatisfied(
-                    $folder->otherValues[ORGFIELDPREREQUISITES],
-                    getLogUserId()) || (isset($_GET['edit']) && $_GET['edit'])) {
-                $lo->play($idItem,
+                $folder->otherValues[ORGFIELDPREREQUISITES],
+                getLogUserId()
+            ) || (isset($_GET['edit']) && $_GET['edit'])) {
+                $lo->play(
+                    $idItem,
                     $folder->otherValues[ORGFIELDIDPARAM],
-                    $back_url);
+                    $back_url
+                );
             } else {
                 exit("You don't have permissions");
             }
@@ -426,7 +427,9 @@ class Module_Organization extends LmsModule
                 } else {
                     $GLOBALS['page']->addStart(
                         getTitleArea($this->lang->def('_ORGANIZATION', 'organization', 'lms'), 'organization')
-                        . '<div class="std_block">', 'content');
+                        . '<div class="std_block">',
+                        'content'
+                    );
                     $GLOBALS['page']->addEnd('</div>', 'content');
                     if (Forma::errorsExists()) {
                         UIFeedback::error(Forma::getFormattedErrors(true));
@@ -463,9 +466,11 @@ class Module_Organization extends LmsModule
                     . $this->treeView->_getOpPlayEnd()
                     . '=' . $folder->id;
 
-                $lo->play($idItem,
+                $lo->play(
+                    $idItem,
                     $folder->otherValues[ORGFIELDIDPARAM],
-                    $back_url);
+                    $back_url
+                );
                 break;
             case 'copyLOSel':
                 $GLOBALS['page']->add($this->treeView->load());
@@ -500,7 +505,7 @@ class Module_Organization extends LmsModule
                 $saveObj->save($saveName, $saveData);
                 Util::jump_to('index.php?r=lms/lomanagerorganization/completeAction&op=display&crepo=' . $saveName . '&'
                     . $this->treeView->_getOpCopyLOSel() . '=1');
-            // no break
+                // no break
             case 'display' :
             case 'organization' :
             default:
