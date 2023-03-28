@@ -746,7 +746,7 @@ class Boot
 
     public static function customRedirect($route, $params = [])
     {
-        $baseRoute = FormaLms\lib\Get::rel_path('base') . '/';
+        $baseRoute = FormaLms\lib\Get::rel_path('base');
         $sistemPrefix = '/index.php?r=adm/system/';
         $baseRoute .= ($sistemPrefix . $route);
 
