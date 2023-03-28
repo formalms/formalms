@@ -17,21 +17,34 @@ require_once _lms_ . '/class.module/track.object.php';
 
 class Track_Item extends Track_Object
 {
-    public function __construct($lobj, $id_user = null)
+    protected $lobj;
+
+
+
+    public function __construct($lobj, $id_user = null, $objectType = 'item')
     {
         $this->lobj = $lobj;
-        $this->objectType = $this->lobj->obj_type;
-
         //search for prev track
-        $this->idTrack = $this->getIdTrack($this->lobj->id_reference, $id_user, $this->lobj->id, true);
-        parent::__construct($this->idTrack, $this->lobj->environment);
+        if (is_int($lobj)) {
+            $this->idTrack = $lobj;
+            $this->objectType = $objectType;
+            $environment = false;
+        } else {
+            $this->idTrack = static::getIdTrack($this->lobj->id_reference, $id_user, $this->lobj->id, true);
+            $this->objectType = $this->lobj->obj_type;
+            $environment = $this->lobj->environment;
+        }
+
+        parent::__construct($this->idTrack, $environment);
         if ($this->idReference == false) {
-            $this->createTrack($this->lobj->id_reference,
-                                $this->idTrack,
-                                $id_user,
-                                date('Y-m-d H:i:s'),
-                                'attempted',
-                                $this->objectType);
+            $this->createTrack(
+                $this->lobj->id_reference,
+                $this->idTrack,
+                $id_user,
+                date('Y-m-d H:i:s'),
+                'attempted',
+                $this->objectType
+            );
         }
     }
 
@@ -43,7 +56,7 @@ class Track_Item extends Track_Object
      * @param <int> $id_resource
      * @param <bool> $createOnFail create a new entry if not found
      */
-    public function getIdTrack($id_reference, $id_user, $id_resource, $createOnFail = false)
+    public static function getIdTrack($id_reference, $id_user, $id_resource, $createOnFail = false)
     {
         $db = DbConn::getInstance();
 

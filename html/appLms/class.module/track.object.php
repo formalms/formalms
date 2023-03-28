@@ -41,7 +41,7 @@ class Track_Object
         $this->environment = $environment ? $environment : 'course_lo';
         $this->_table = self::getEnvironmentTable($environment);
         if ($idTrack) {
-            $this->idTrack = $idTrack;
+            $this->idTrack = (int) $idTrack;
             $query = 'SELECT `idReference`, `idUser`, `idTrack`, `objectType`, `dateAttempt`, `status`, `firstAttempt`, `first_complete`, `last_complete` '
                 . ' FROM `' . $this->_table . '`'
                 . " WHERE idTrack='" . (int) $idTrack . "'"
@@ -51,6 +51,8 @@ class Track_Object
             if (sql_num_rows($rs) == 1) {
                 list($this->idReference, $this->idUser, $this->idTrack,
                     $this->objectType, $this->dateAttempt, $this->status) = sql_fetch_row($rs);
+
+                $this->idTrack = (int) $this->idTrack;
             }
         }
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -243,7 +245,11 @@ class Track_Object
     public function update()
     {
         $class = get_class($this);
-        $old_track = new $class($this->idTrack, $this->environment);
+        $old_track = $this;
+        if ($class instanceof Track_Object) {
+            $old_track = new $class($this->idTrack, $this->environment);
+        }
+
 
         $data = Events::trigger('lms.lo_user.updating', [
             'id_reference' => $this->idReference,
