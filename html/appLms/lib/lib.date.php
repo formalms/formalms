@@ -263,7 +263,7 @@ class DateManager
                 continue;
             }
 
-            if ((int) $dayInfo['day_id'] < 0 || !array_key_exists('day_id', $dayInfo)) {
+            if ((int) $dayInfo['id'] < 0 || !array_key_exists('id', $dayInfo)) {
                 $query = 'INSERT INTO %lms_course_date_day (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end, calendarId)  VALUES 
                 (' . $index . ', ' . $idDate . ', ' . $dayInfo['classroom'] . ", '" . $dayInfo['date_begin'] . "', '" . $dayInfo['date_end'] . "', '" . $dayInfo['pause_begin'] . "', '" . $dayInfo['pause_end'] . "','" . CalendarManager::generateUniqueCalendarId() . "')";
             } else {
@@ -278,7 +278,7 @@ class DateManager
                 if (empty($dayInfo['calendarId'])) {
                     $query .= ", `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "'";
                 }
-                $query .= ' WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['day_id'];
+                $query .= ' WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['id'];
             }
             $result = DbConn::getInstance()->query($query);
             $walkedDates[] = $dayInfo['date'];
@@ -379,7 +379,7 @@ class DateManager
             $res .= $this->lang->def('_NOT_ASSIGNED');
         }
 
-      
+
 
         $query = 'SELECT c.name, cl.location '
             . ' FROM %lms_classroom AS c '
@@ -389,7 +389,7 @@ class DateManager
         if(count($array_classroom)) {
             $query .= ' WHERE c.idClassroom IN (' . implode(',', $array_classroom) . ')';
         }
-            
+
         $query .= ' ORDER BY c.name';
 
         $result = sql_query($query);
@@ -489,7 +489,7 @@ class DateManager
         $res = [];
 
         foreach ($result as $resultData) {
-            $res[] = $resultData;
+            $res[$resultData['id']] = $resultData;
         }
 
         return $res;
