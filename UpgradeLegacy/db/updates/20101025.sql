@@ -1,0 +1,1 @@
+INSERT INTO `core_setting_list` (`path_name`, `label`, `default_value`, `type`, `visible`, `load_at_startup`, `sequence`) VALUES ('admin_rules.course_presence_admin', '_COURSE_PRESENCE_ADMIN', 'off', 'enum', '1', '1', '7');

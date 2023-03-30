@@ -1,0 +1,2 @@
+ALTER TABLE `learning_course_date_user` ADD COLUMN `overbooking` INT(10) DEFAULT 0 AFTER `subscribed_by`;
+ALTER TABLE `learning_course_date_user` MODIFY COLUMN `presence` MEDIUMTEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL;

@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "2.4.3",
+        "number": "20403",
+        "description": "questa è la 2.4.3",
+        "pretty_desc": "2 4 3",
+        "pre": "20403_pre.php",
+        "post": "20403_post.php",
+        "config": "20403_conf.php",
+        "file_sytem": "20403_fs.php",
+        "role": "20403_role.php",
+        "mysql": "20403_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
+    }
+}

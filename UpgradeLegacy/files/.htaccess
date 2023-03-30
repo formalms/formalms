@@ -1,0 +1,17 @@
+
+Options -Indexes
+#AllowOverride none
+
+AddType text/html .php .php3 .ph3 .ph4 .php4 .ph5 .php5 .pl .py .cgi .rb .asp .aspx
+
+RemoveHandler .php .php3 .ph3 .ph4 .php4 .ph5 .php5 .pl .py .cgi .rb .asp .aspx
+RemoveType .php .php3 .ph3 .ph4 .php4 .ph5 .php5 .pl .py .cgi .rb .asp .aspx
+
+<IfModule  mod_php5.c>
+        php_flag engine off
+</IfModule>
+
+<IfModule  mod_php7.c>
+        php_flag engine off
+</IfModule>
+

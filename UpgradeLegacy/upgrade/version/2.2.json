@@ -1,0 +1,20 @@
+{
+    "version": {
+        "name": "2.2",
+        "number": "20200",
+        "description": "questa è la 2.2",
+        "pretty_desc": "2 2",
+        "pre": "20200_pre.php",
+        "post": "20200_post.php",
+        "config": "20200_conf.php",
+        "file_sytem": "20200_fs.php",
+        "role": "20200_role.php",
+        "mysql": "20200_db.sql",
+        "date": "2000-01-01 00:00",
+        "status": "stable",
+        "php": {
+            "min": "5.6",
+            "max": "7.0" 
+        }
+    }
+}

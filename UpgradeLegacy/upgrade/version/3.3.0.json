@@ -1,0 +1,20 @@
+{
+    "version": {
+      "name": "3.3.0",
+      "number": "30300",
+      "description": "questa è la 3.3.0",
+      "pretty_desc": "3 3 0",
+      "pre": "30300_pre.php",
+      "post": "30300_post.php",
+      "config": "30300_conf.php",
+      "file_sytem": "30300_fs.php",
+      "role": "30300_role.php",
+      "mysql": "30300_db.sql",
+      "date": "2022-06-07 00:00",
+      "status": "stable",
+      "php": {
+        "min": "7.4",
+        "max": "7.4"
+      }
+    }
+  }

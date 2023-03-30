@@ -1,0 +1,35 @@
+html, body{margin:0;padding:0;}
+body{font:13px/1.231 arial, sans-serif;*font-size:small;*font:x-small;background:#F1F4FB;}
+.shadow{margin:5% auto;width:800px;padding:0;background:#dddddd;}
+.install_container{height:650px;background:#ffffff;border:1px solid #cccccc;position:relative;top:-4px;left:-4px;}
+.install_hd{position:relative;border-bottom:1px solid #cccccc;height:45px;margin:0 10px;}
+.install_hd .ibd{padding:12px 20px 0;}
+.install_hd h1{font-size:130%;font-weight:bold;}
+.install_hd b{font-size:90%;font-weight:normal;position:absolute;right:5px;top:8px;}
+.install_bd{position:relative;height:560px;}
+.install_shoulder{width:250px;position:absolute;height:540px;top:10px;left:0px;border-right:1px solid #cccccc;}
+.install_shoulder .logo{margin:15px 15px 15px 20px; width:208px;}
+.install_shoulder .flux{margin:0 20px;width:210px;padding:2px;border:1px solid #ccc;}
+.install_content{margin:0 10px 0 250px;height:550px;overflow:auto;}
+.install_content .ibd{padding:6px 12px 0;}
+.install_content h2{font-size:130%;font-weight:bold;margin:10px 20px 10px;}
+.install_ft{position:relative;border-top:1px solid #cccccc;height:45px;text-align:right;margin:0 10px;}
+.install_ft .ibd{padding:12px 12px 0;}
+.no_float,.nofloat{float:none;clear:both;}
+div.lang_sel_box{width:300px;text-align:right;float:right;}
+div.lang_sel_box div.form_line_l,div.lang_sel_box div.form_line_l p{}
+div.lang_sel_box label{font-weight:bold;}
+#intro_txt{margin-top:1em;}
+ul.lang_to_install_list{}
+ul.lang_to_install_list li{list-style:none;float:left;width:30%;margin-top:0.2em;margin-bottom:0.2em;}
+ul.info{}
+ul.info li{list-style:none;font-weight:normal;margin-top:0.3em;margin-bottom:0.6em;}
+ul.info li.ok span{color:green;font-weight:bold;}
+ul.info li.err{}
+ul.info li.err span{color:red;font-weight:bold;}
+ul.info li.warn{}
+ul.info li.warn span{color:purple;font-weight:bold;}
+a{color:#333333;}
+a:hover{text-decoration:underline;}
+a.nounder{text-decoration:none;}
+a.nounder:hover{text-decoration:underline;}

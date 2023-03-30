@@ -1,0 +1,361 @@
+/*  TABELLA STATISTICHE  - TEMPO    */
+    @media
+    only screen and (max-width: 870px),
+    (min-device-width: 870px) and (max-device-width: 1024px)  {
+
+        #user_stats table, #user_stats thead, #user_stats tbody, #user_stats th, #user_stats td, #user_stats tr {
+            display: block;
+        }
+
+        /* nascondi la prima riga */
+        #user_stats thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+         
+        
+        #user_stats tr { border: 1px solid #ccc!important; }
+
+        #user_stats td {
+         
+            border: none!important;
+            border-bottom: 1px solid #eee!important;
+            position: relative!important;
+            padding-left: 50%!important;
+        }
+         
+        #user_stats td:before {
+           
+            position: absolute!important;
+ 
+            top: 6px!important;
+            left: 6px!important;
+            width: 45%!important;
+            padding-right: 10px!important;
+            white-space: nowrap!important;
+        }
+        
+        /* lms_main_container*/
+        #lms_main_container {
+            margin: 0px;
+        }
+                   
+        
+           
+    }
+
+
+   /*  TABELLA STATISTICHE  - FRUIZIONE    */
+    @media
+    only screen and (max-width: 870px),
+    (min-device-width: 870px) and (max-device-width: 1024px)  {
+
+        #course_stats table, #course_stats thead, #course_stats tbody, #course_stats th, #course_stats td, #course_stats tr {
+            display: block;
+        }
+
+        /* nascondi la prima riga */
+        #course_stats thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+         
+        
+        #course_stats tr { border: 1px solid #ccc!important; }
+
+        #course_stats td {
+         
+            border: none!important;
+            border-bottom: 1px solid #eee!important;
+            position: relative!important;
+            padding-left: 50%!important;
+        }
+         
+        #course_stats td:before {
+           
+            position: absolute!important;
+ 
+            top: 6px!important;
+            left: 6px!important;
+            width: 45%!important;
+            padding-right: 10px!important;
+            white-space: nowrap!important;
+        }
+           
+           
+        /* lms_main_container*/
+        #lms_main_container {
+            margin: 0px;
+        }
+                      
+           
+    }
+    
+    
+    
+   /*  TABELLA FORUM     */
+    @media
+    only screen and (max-width: 870px),
+    (min-device-width: 870px) and (max-device-width: 1024px)  {
+
+         #table_forum table,  #table_forum thead,  #table_forum tbody, #table_forum  th, #table_forum  td, #table_forum  tr {
+            display: block;
+        }
+
+        /* nascondi la prima riga */
+
+        #table_forum  thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        
+       #table_forum   tr { border: 1px solid #ccc!important; }
+
+        #table_forum  td {
+         
+            border: none!important;
+            border-bottom: 1px solid #eee!important;
+            position: relative!important;
+            padding-left: 50%!important;
+        }
+         
+        #table_forum  td:before {
+           
+            position: absolute!important;
+ 
+            top: 6px!important;
+            left: 6px!important;
+            width: 45%!important;
+            padding-right: 10px!important;
+            white-space: nowrap!important;
+        }
+         
+         
+        /* lms_main_container*/
+        #lms_main_container {
+            margin: 0px;
+        }
+           
+    }    
+    
+    
+       
+    
+   /*  TABELLA THREAD     */
+    @media
+    only screen and (max-width: 870px),
+    (min-device-width: 870px) and (max-device-width: 1024px)  {
+
+         #table_thread table,  #table_thread thead,  #table_thread tbody, #table_thread  th, #table_thread  td, #table_thread  tr {
+            display: block;
+        }
+
+        /* nascondi la prima riga */
+
+        #table_thread  thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+
+        
+       #table_thread   tr { border: 1px solid #ccc!important; }
+
+        #table_thread  td {
+         
+            border: none!important;
+            border-bottom: 1px solid #eee!important;
+            position: relative!important;
+            padding-left: 50%!important;
+        }
+         
+        #table_thread  td:before {
+           
+            position: absolute!important;
+ 
+            top: 6px!important;
+            left: 6px!important;
+            width: 45%!important;
+            padding-right: 10px!important;
+            white-space: nowrap!important;
+        }
+        
+        
+        /* lms_main_container*/
+        #lms_main_container {
+            margin: 0px;
+        }
+                   
+        
+           
+    }
+    
+    
+     
+/*  TABELLA CORSI - AMMINISTRAZIONE     */
+    @media
+    only screen and (max-width: 870px),
+    (min-device-width: 870px) and (max-device-width: 1024px)  {
+
+         #yuievtautoid-0 table,  #yuievtautoid-0 thead,  #yuievtautoid-0 tbody, #yuievtautoid-0  th, #yuievtautoid-0  td, #yuievtautoid-0  tr {
+            display: block;
+        }
+
+        /* nascondi la prima riga */
+        #yuievtautoid-0  thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+    
+        
+       #yuievtautoid-0   tr { border: 1px solid #ccc!important; }
+
+        #yuievtautoid-0  td {
+         
+            border: none!important;
+            border-bottom: 1px solid #eee!important;
+            position: relative!important;
+            padding-left: 50%!important;
+        }
+         
+        #yuievtautoid-0  td:before {
+           
+            position: absolute!important;
+ 
+            top: 6px!important;
+            left: 6px!important;
+            width: 45%!important;
+            padding-right: 10px!important;
+            white-space: nowrap!important;
+        }
+        
+        
+                          /*
+                                  @media
+                            only screen and (max-width: 870px),
+                            (min-device-width: 870px) and (max-device-width: 1024px)  {            
+     
+                                        #yuievtautoid-0 td:nth-of-type(1):before { content: "Codice"; }
+                                        #yuievtautoid-0 td:nth-of-type(2):before { content: "Nome"; }
+                                        #yuievtautoid-0 td:nth-of-type(3):before { content: "Tipo"; }
+                                        #yuievtautoid-0 td:nth-of-type(4):before { content: "Studenti"; }
+                                        #yuievtautoid-0 td:nth-of-type(5):before { content: "In attesa"; }
+                                        #yuievtautoid-0 td:nth-of-type(6):before { content: "Classe/Edizione"; }
+                                        #yuievtautoid-0 td:nth-of-type(7):before { content: "Assegnazione Certificati"; }
+                                        #yuievtautoid-0 td:nth-of-type(8):before { content: "Competenze"; }
+                                        #yuievtautoid-0 td:nth-of-type(9):before { content: "Assegna un nuovo menu al corso"; } 
+                                        #yuievtautoid-0 td:nth-of-type(10):before { content: "Crea una copia"; } 
+                                        #yuievtautoid-0 td:nth-of-type(11):before { content: "Modifica"; } 
+                                        #yuievtautoid-0 td:nth-of-type(12):before { content: "Cancella"; } 
+                                        }    
+                                     */   
+        
+        /* lms_main_container*/
+        #lms_main_container {
+            margin: 0px;
+        }
+                         
+    }    
+    
+    
+/*  TABELLA PAGELLA */
+    @media
+    only screen and (max-width: 870px),
+    (min-device-width: 870px) and (max-device-width: 1024px)  {
+
+         #table_pagella table,  #table_pagella thead,  #table_pagella tbody, #table_pagella  th, #table_pagella  td, #table_pagella  tr {
+            display: block;
+        }
+
+        /* nascondi la prima riga */
+        #table_pagella  thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+    
+        
+       #table_pagella   tr { border: 1px solid #ccc!important; }
+
+        #table_pagella  td {
+         
+            border: none!important;
+            border-bottom: 1px solid #eee!important;
+            position: relative!important;
+            padding-left: 50%!important;
+        }
+         
+        #table_pagella  td:before {
+           
+            position: absolute!important;
+ 
+            top: 6px!important;
+            left: 6px!important;
+            width: 45%!important;
+            padding-right: 10px!important;
+            white-space: nowrap!important;
+        }
+        
+        /* lms_main_container*/
+        #lms_main_container {
+            margin: 0px;
+        }
+                         
+    }     
+    
+    
+/*  TABELLA NOTE */
+    @media
+    only screen and (max-width: 870px),
+    (min-device-width: 870px) and (max-device-width: 1024px)  {
+
+         #table_note table,  #table_note thead,  #table_note tbody, #table_note  th, #table_note  td, #table_note  tr {
+            display: block;
+        }
+
+        /* nascondi la prima riga */
+        #table_note  thead tr {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+        }
+    
+        
+       #table_note   tr { border: 1px solid #ccc!important; }
+
+        #table_note  td {
+         
+            border: none!important;
+            border-bottom: 1px solid #eee!important;
+            position: relative!important;
+            padding-left: 50%!important;
+        }
+         
+        #table_note  td:before {
+           
+            position: absolute!important;
+ 
+            top: 6px!important;
+            left: 6px!important;
+            width: 45%!important;
+            padding-right: 10px!important;
+            white-space: nowrap!important;
+        }
+        
+        /* lms_main_container*/
+        #lms_main_container {
+            margin: 0px;
+        }
+                         
+    }    
+    
+    
+    
+    
+    
+    
