@@ -1541,7 +1541,7 @@ class Course_API extends API
         $arrayDays = $model->classroom_man->getDateDay($idDate);
 
         $error = false;
-        $dayExists = in_array($idDay, array_column($arrayDays, 'id'), true);
+        $dayExists = array_key_exists($idDay, $arrayDays);
         if ($dayExists) {
             if (!empty($params['edition_date_selected']) && ($this->_validateDate($params['edition_date_selected']) || $this->_validateDate($params['edition_date_selected'], 'Y-m-d'))) {
                 if ($this->_validateDate($params['edition_date_selected'], 'Y-m-d')) {
