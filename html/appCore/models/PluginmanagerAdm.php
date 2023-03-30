@@ -684,7 +684,6 @@ class PluginmanagerAdm extends Model
             }
             $zip->extractTo(_plugins_);
             $zip->close();
-            fclose(_plugins_ . '/' . $package_name);
             unlink(_plugins_ . '/' . $package_name);
 
             return true;
