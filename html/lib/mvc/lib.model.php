@@ -11,6 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class Model
@@ -19,9 +20,12 @@ class Model
 
     protected \Symfony\Component\HttpFoundation\Session\Session $session;
 
+    protected \FormaLms\lib\Alert\AlertService $alertService; 
+
     public function __construct()
     {
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $this->alertService = \FormaLms\lib\Alert\AlertService::getInstance();
     }
 
     public function __get($name)
@@ -84,5 +88,12 @@ class Model
         }
 
         return $default;
+    }
+
+
+    public function sendAlert(array $users) : void{
+
+        $this->alertService->send($users);
+
     }
 }

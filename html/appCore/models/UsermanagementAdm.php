@@ -11,6 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class UsermanagementAdm extends Model
