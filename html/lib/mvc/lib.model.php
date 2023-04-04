@@ -3,13 +3,14 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -19,9 +20,12 @@ class Model
 
     protected \Symfony\Component\HttpFoundation\Session\Session $session;
 
+    protected \FormaLms\lib\Alert\AlertService $alertService; 
+
     public function __construct()
     {
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $this->alertService = \FormaLms\lib\Alert\AlertService::getInstance();
     }
 
     public function __get($name)
@@ -84,5 +88,12 @@ class Model
         }
 
         return $default;
+    }
+
+
+    public function sendAlert(array $users) : void{
+
+        $this->alertService->send($users);
+
     }
 }

@@ -373,44 +373,10 @@ class SubscriptionAlmsController extends AlmsController
                             $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
                             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
                             if (!empty($user_selected) && $send_alert) {
-                                require_once _base_ . '/lib/lib.eventmanager.php';
 
-                                $uma = new UsermanagementAdm();
-
-                                foreach (array_keys($user_selected) as $user_id) {
-                                    $reg_code = null;
-                                    if ($nodes = $uma->getUserFolders($user_id)) {
-                                        $idst_oc = array_keys($nodes)[0];
-
-                                        if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
-                                            $reg_code = sql_fetch_object($query)->idOrg;
-                                        }
-                                    }
-
-                                    $array_subst = [
-                                        '[url]' => FormaLms\lib\Get::site_url(),
-                                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
-                                        '[course]' => $course_info['name'],
-                                        '[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
-                                        '[course_name]' => $course_info['name'],
-                                        '[course_code]' => $course_info['code'],
-                                    ];
-
-                                    // message to user that is waiting
-                                    $msg_composer = new EventMessageComposer();
-                                    $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
-                                    $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
-                                    $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
-
-                                    // send message to the user subscribed
-                                    createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
-
-                                    if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                                        $uinfo = Docebo::aclm()->getUser($user_id, false);
-                                        $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
-                                        $msg_composer->setAttachments([$calendar->getFile()]);
-                                    }
-                                }
+                                $this->model->sendAlert(array_keys($user_selected));
+                               
+                                
                             }
                         }
 
@@ -607,45 +573,7 @@ class SubscriptionAlmsController extends AlmsController
             $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
             if (!empty($user_selected) && $send_alert) {
-                // message to user that is waiting
-                require_once _base_ . '/lib/lib.eventmanager.php';
-
-                $uma = new UsermanagementAdm();
-
-                foreach (array_keys($user_selected) as $user_id) {
-                    $reg_code = null;
-                    if ($nodes = $uma->getUserFolders($user_id)) {
-                        $idst_oc = array_keys($nodes)[0];
-
-                        if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
-                            $reg_code = sql_fetch_object($query)->idOrg;
-                        }
-                    }
-
-                    $array_subst = [
-                        '[url]' => FormaLms\lib\Get::site_url(),
-                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
-                        '[course]' => $course_info['name'],
-                        '[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'))
-                        '[course_name]' => $course_info['name'],
-                        '[course_code]' => $course_info['code'],
-                    ];
-
-                    // message to user that is waiting
-                    $msg_composer = new EventMessageComposer();
-                    $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
-                    $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
-                    $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
-
-                    if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                        $uinfo = Docebo::aclm()->getUser($user_id, false);
-                        $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
-                        $msg_composer->setAttachments([$calendar->getFile()]);
-                    }
-
-                    // send message to the user subscribed
-                    createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
-                }
+                $this->model->sendAlert(array_keys($user_selected));
             }
 
             $user_selected = [];
@@ -1136,38 +1064,7 @@ class SubscriptionAlmsController extends AlmsController
                 $uinfo = Docebo::aclm()->getUser($id_user, false);
 
                 if ($send_alert) {
-                    $reg_code = null;
-                    if ($nodes = $userModel->getUserFolders($id_user)) {
-                        $idst_oc = array_keys($nodes)[0];
-
-                        if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
-                            $reg_code = sql_fetch_object($query)->idOrg;
-                        }
-                    }
-
-                    $array_subst = [
-                        '[url]' => FormaLms\lib\Get::site_url(),
-                        '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
-                        '[course]' => $course_info['name'],
-                        '[medium_time]' => $course_info['mediumTime'], //Format::date(date("Y-m-d", time() + ($course_info['mediumTime']*24*60*60) ), 'date'),
-                        '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
-                        '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
-                        '[username]' => Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]),
-                    ];
-
-                    // message to user that is waiting
-                    $msg_composer = new EventMessageComposer();
-                    $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
-                    $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
-                    $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
-
-                    if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                        $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
-                        $msg_composer->setAttachments([$calendar->getFile()]);
-                    }
-
-                    // send message to the user subscribed
-                    createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$id_user], $msg_composer, $send_alert);
+                    $this->model->sendAlert([$id_user]);         
                 }
 
                 // Moderator notification
@@ -1904,6 +1801,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 $separator = FormaLms\lib\Get::req('import_separator', DOTY_MIXED, ',');
                 $first_row_header = FormaLms\lib\Get::req('import_first_row_header', DOTY_BOOL, false);
+                $sendAlert = FormaLms\lib\Get::req('send_alert', DOTY_BOOL, false);
                 $import_charset = FormaLms\lib\Get::req('import_charset', DOTY_MIXED, 'UTF-8');
 
                 $docebo_course = new DoceboCourse($this->id_course);
@@ -2140,6 +2038,10 @@ class SubscriptionAlmsController extends AlmsController
                 sl_unlink(_files_ . $path . $savefile);
 
                 sl_close_fileoperations();
+
+                if($sendAlert) {
+                    $this->model->sendAlert($user_subscribed);
+                }
 
                 $course_info = $this->model->getCourseInfoForSubscription();
                 $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
