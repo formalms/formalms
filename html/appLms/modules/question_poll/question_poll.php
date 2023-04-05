@@ -27,7 +27,8 @@ function quest_create($type_quest, $id_poll, $back_poll)
 
     require_once _lms_ . '/modules/question_poll/' . $type_file;
 
-    $quest_obj = eval("return new $type_class( 0 );");
+    
+    $quest_obj = new $type_class( 0 );
     $quest_obj->create($id_poll, $back_poll);
 }
 

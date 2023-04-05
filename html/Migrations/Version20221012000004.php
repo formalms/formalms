@@ -109,14 +109,14 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('CREATE INDEX type_idx ON core_connector (type)');
         $this->addSql('ALTER TABLE core_country ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE name_country name_country VARCHAR(64) NOT NULL, CHANGE iso_code_country iso_code_country VARCHAR(3) NOT NULL, CHANGE id_zone id_zone INT NOT NULL');
         $this->addSql('ALTER TABLE core_customfield ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE code code VARCHAR(255) NOT NULL, CHANGE type_field type_field VARCHAR(255) NOT NULL, CHANGE sequence sequence INT NOT NULL, CHANGE use_multilang use_multilang TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE core_customfield_area DROP INDEX `PRIMARY`');
+        #$this->addSql('ALTER TABLE core_customfield_area DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE core_customfield_area ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE area_code area_code VARCHAR(255) NOT NULL, CHANGE area_name area_name VARCHAR(255) NOT NULL, CHANGE area_table area_table VARCHAR(255) NOT NULL, CHANGE area_field area_field VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE core_customfield_entry DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE core_customfield_entry ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_field id_field VARCHAR(11) NOT NULL, CHANGE id_obj id_obj INT NOT NULL');
-        $this->addSql('ALTER TABLE core_customfield_lang DROP INDEX `PRIMARY`');
+        #$this->addSql('ALTER TABLE core_customfield_lang DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE core_customfield_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_field id_field INT NOT NULL, CHANGE lang_code lang_code VARCHAR(255) NOT NULL, CHANGE translation translation VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE core_customfield_son ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE code code VARCHAR(255) NOT NULL, CHANGE id_field id_field INT NOT NULL, CHANGE sequence sequence INT NOT NULL');
-        $this->addSql('ALTER TABLE core_customfield_son_lang DROP INDEX `PRIMARY`');
+        #$this->addSql('ALTER TABLE core_customfield_son_lang DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE core_customfield_son_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_field_son id_field_son INT NOT NULL, CHANGE lang_code lang_code VARCHAR(50) NOT NULL, CHANGE translation translation VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE core_customfield_type DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE core_customfield_type ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE type_field type_field VARCHAR(255) NOT NULL, CHANGE type_file type_file VARCHAR(255) NOT NULL, CHANGE type_class type_class VARCHAR(255) NOT NULL');
@@ -231,7 +231,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE core_privacypolicy_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_policy id_policy INT UNSIGNED NOT NULL, CHANGE lang_code lang_code VARCHAR(255) NOT NULL');
         $this->addSql('CREATE INDEX id_policy_idx ON core_privacypolicy_lang (id_policy)');
         $this->addSql('CREATE INDEX lang_code_idx ON core_privacypolicy_lang (lang_code)');
-        $this->addSql('ALTER TABLE core_privacypolicy_user DROP INDEX `PRIMARY`');
+        #$this->addSql('ALTER TABLE core_privacypolicy_user DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE core_privacypolicy_user ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE core_pwd_recover DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE core_pwd_recover ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idst_user idst_user INT NOT NULL, CHANGE random_code random_code VARCHAR(255) NOT NULL');
@@ -392,7 +392,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_communication_category_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_category id_category INT UNSIGNED NOT NULL, CHANGE lang_code lang_code VARCHAR(255) NOT NULL, CHANGE translation translation VARCHAR(255) NOT NULL');
         $this->addSql('CREATE INDEX id_category_idx ON learning_communication_category_lang (id_category)');
         $this->addSql('CREATE INDEX lang_code_idx ON learning_communication_category_lang (lang_code)');
-        $this->addSql('ALTER TABLE learning_communication_lang DROP INDEX `PRIMARY`');
+        #$this->addSql('ALTER TABLE learning_communication_lang DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE learning_communication_lang ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_comm id_comm INT DEFAULT NULL, CHANGE lang_code lang_code VARCHAR(255) DEFAULT NULL, CHANGE title title VARCHAR(255) DEFAULT NULL, CHANGE description description TEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE learning_communication_track DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE learning_communication_track ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idReference idReference INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE idTrack idTrack INT NOT NULL, CHANGE objectType objectType VARCHAR(20) NOT NULL, CHANGE status status VARCHAR(20) NOT NULL');
@@ -507,7 +507,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_kb_res ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE r_name r_name VARCHAR(255) NOT NULL, CHANGE r_item_id r_item_id INT NOT NULL, CHANGE r_type r_type VARCHAR(45) NOT NULL, CHANGE r_env r_env VARCHAR(45) NOT NULL, CHANGE r_lang r_lang VARCHAR(50) NOT NULL, CHANGE force_visible force_visible TINYINT(1) NOT NULL, CHANGE is_mobile is_mobile TINYINT(1) NOT NULL, CHANGE is_categorized is_categorized TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE learning_kb_tag ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE tag_name tag_name VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE learning_kb_tree ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE parent_id parent_id INT NOT NULL, CHANGE lev lev INT NOT NULL, CHANGE iLeft iLeft INT NOT NULL, CHANGE iRight iRight INT NOT NULL');
-        $this->addSql('ALTER TABLE learning_kb_tree_info DROP INDEX `PRIMARY`');
+        #$this->addSql('ALTER TABLE learning_kb_tree_info DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE learning_kb_tree_info ADD id INT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_dir id_dir INT NOT NULL, CHANGE lang_code lang_code VARCHAR(50) NOT NULL, CHANGE node_title node_title VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE learning_label DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE learning_label ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_common_label id_common_label INT NOT NULL, CHANGE lang_code lang_code VARCHAR(255) NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE file_name file_name VARCHAR(255) NOT NULL, CHANGE sequence sequence INT UNSIGNED NOT NULL');
@@ -583,7 +583,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('CREATE INDEX type_quest_idx ON learning_quest_type_poll (type_quest)');
         $this->addSql('ALTER TABLE learning_repo ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idParent idParent INT NOT NULL, CHANGE path path VARCHAR(255) NOT NULL, CHANGE lev lev INT NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE objectType objectType VARCHAR(20) NOT NULL, CHANGE idResource idResource INT NOT NULL, CHANGE idCategory idCategory INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE idAuthor idAuthor VARCHAR(11) NOT NULL, CHANGE version version VARCHAR(8) NOT NULL, CHANGE language language VARCHAR(50) NOT NULL, CHANGE resource resource VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE learning_report ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE report_name report_name VARCHAR(255) NOT NULL, CHANGE class_name class_name VARCHAR(255) NOT NULL, CHANGE file_name file_name VARCHAR(255) NOT NULL, CHANGE enabled enabled TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE learning_report_filter ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_report id_report INT UNSIGNED NOT NULL, CHANGE author author INT UNSIGNED NOT NULL, CHANGE filter_name filter_name VARCHAR(255) NOT NULL, CHANGE is_public is_public TINYINT(1) NOT NULL, CHANGE views views INT NOT NULL');
+        $this->addSql('ALTER TABLE learning_report_filter ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_report id_report INT UNSIGNED NOT NULL, CHANGE author author INT UNSIGNED NOT NULL, CHANGE filter_name filter_name VARCHAR(255) NOT NULL, CHANGE filter_data filter_data LONGTEXT NOT NULL, CHANGE is_public is_public TINYINT(1) NOT NULL, CHANGE views views INT NOT NULL');
         $this->addSql('ALTER TABLE learning_report_schedule ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_report_filter id_report_filter INT UNSIGNED NOT NULL, CHANGE id_creator id_creator INT UNSIGNED NOT NULL, CHANGE name name VARCHAR(255) NOT NULL, CHANGE period period VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE learning_report_schedule_recipient DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE learning_report_schedule_recipient ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_report_schedule id_report_schedule INT UNSIGNED NOT NULL, CHANGE id_user id_user INT UNSIGNED NOT NULL');
@@ -662,6 +662,8 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('CREATE INDEX course_id_idx ON learning_wiki_course (course_id)');
         $this->addSql('CREATE INDEX wiki_id_idx ON learning_wiki_course (wiki_id)');
         $this->addSql('UPDATE `core_reg_setting` SET `value` = "-" WHERE `region_id` = "england" AND `val_name` = "date_sep"');
+
+        $this->addSql($this->convertCollation());
         $this->addSql('SET FOREIGN_KEY_CHECKS=1;');
 
 
@@ -671,5 +673,46 @@ final class Version20221012000004 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
+    }
+
+    private function convertCollation() {
+
+        return '
+        DROP PROCEDURE IF EXISTS `convertcollation`;
+        CREATE PROCEDURE convertcollation()
+        BEGIN
+          DECLARE done INT DEFAULT FALSE;
+          DECLARE tblx CHAR(255);
+          DECLARE cur1 CURSOR FOR 
+          SELECT CONCAT("ALTER TABLE `", tbl.TABLE_SCHEMA, "`.`", tbl.TABLE_NAME, "` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci" ) as tblname
+            FROM
+                information_schema.TABLES tbl 
+            WHERE
+                tbl.TABLE_SCHEMA = DATABASE() 
+                AND tbl.TABLE_NAME != "core_migration_versions" ;
+        
+          DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+        
+          OPEN cur1;
+        
+          read_loop: LOOP
+            FETCH cur1 INTO tblx;
+        
+            IF done THEN
+              LEAVE read_loop;
+            END IF;
+        SET @stmt = tblx;
+            PREPARE convertStatement FROM @stmt;
+            EXECUTE convertStatement;
+            DEALLOCATE PREPARE convertStatement;
+        
+          END LOOP;
+        
+          CLOSE cur1;
+        
+        END;
+        
+        CALL convertcollation();
+        DROP PROCEDURE IF EXISTS `convertcollation`;';
     }
 }
