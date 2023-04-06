@@ -362,8 +362,7 @@ final class Version20220815000002 extends AbstractMigration
             id_comm int,
             lang_code varchar(255),
             title varchar(255),
-            description text not null,
-            PRIMARY KEY (`id_comm`)
+            description text not null
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
 
