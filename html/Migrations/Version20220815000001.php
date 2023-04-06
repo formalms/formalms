@@ -2257,10 +2257,7 @@ final class Version20220815000001 extends AbstractMigration
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
 
-        $this->addSql("ALTER TABLE `core_lang_translation`
-        ADD CONSTRAINT `core_lang_translation_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `core_lang_language` (`lang_code`) ON DELETE CASCADE ON UPDATE CASCADE,
-        ADD CONSTRAINT `core_lang_translation_ibfk_2` FOREIGN KEY (`id_text`) REFERENCES `core_lang_text` (`id_text`) ON DELETE CASCADE ON UPDATE CASCADE");
-
+   
         $this->addSql("UPDATE `core_setting` SET `sequence` = '9' WHERE `core_setting`.`param_name` = 'template_domain'");
         $this->addSql("UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_in_lms'");
         $this->addSql("UPDATE `core_setting` SET `regroup` = '8' WHERE `core_setting`.`param_name` = 'google_stat_code'");

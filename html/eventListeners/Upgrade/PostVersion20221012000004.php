@@ -9,7 +9,7 @@ class PostVersion20221012000004 extends Upgrader{
 
         $this->remapSmtpParams();
         $this->remapDomainParams();
-        $this->removeOldInstallationFolders();
+        #$this->removeOldInstallationFolders();
 
     }
 

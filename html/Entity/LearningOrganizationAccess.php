@@ -20,7 +20,7 @@ class LearningOrganizationAccess
     /**
      * @var array
      *
-     * @ORM\Column(name="kind", type="simple_array", length=0, nullable=false)
+     * @ORM\Column(name="kind", type="string", columnDefinition="ENUM('user', 'group')"), length=0, nullable=false)
      
      */
     private $kind = '';

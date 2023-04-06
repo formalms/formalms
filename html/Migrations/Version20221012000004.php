@@ -19,11 +19,11 @@ final class Version20221012000004 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('SET FOREIGN_KEY_CHECKS=0;');
+        $this->addSql('SET FOREIGN_KEY_CHECKS=0');
 
-        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta`;');
-        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_assign`;');
-        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_course`;');
+        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta`');
+        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_assign`');
+        $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_course`');
 
         $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -551,7 +551,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_organization ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idParent idParent INT NOT NULL, CHANGE path path VARCHAR(255) NOT NULL, CHANGE lev lev INT NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE objectType objectType VARCHAR(20) NOT NULL, CHANGE idResource idResource INT NOT NULL, CHANGE idCategory idCategory INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE idAuthor idAuthor INT NOT NULL, CHANGE version version VARCHAR(8) NOT NULL, CHANGE language language VARCHAR(50) NOT NULL, CHANGE resource resource VARCHAR(255) NOT NULL, CHANGE idCourse idCourse INT NOT NULL, CHANGE prerequisites prerequisites VARCHAR(255) NOT NULL, CHANGE isTerminator isTerminator TINYINT(1) NOT NULL, CHANGE idParam idParam INT NOT NULL, CHANGE width width VARCHAR(4) NOT NULL, CHANGE height height VARCHAR(4) NOT NULL, CHANGE publish_for publish_for INT NOT NULL, CHANGE ignoreScore ignoreScore TINYINT(1) NOT NULL');
         $this->addSql('DROP INDEX idObject ON learning_organization_access');
         $this->addSql('ALTER TABLE learning_organization_access DROP INDEX `PRIMARY`');
-        $this->addSql('ALTER TABLE learning_organization_access ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE kind kind LONGTEXT NOT NULL COMMENT \'(DC2Type:simple_array)\', CHANGE value value INT NOT NULL, CHANGE idOrgAccess idOrgAccess INT NOT NULL');
+        $this->addSql('ALTER TABLE learning_organization_access ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE value value INT NOT NULL, CHANGE idOrgAccess idOrgAccess INT NOT NULL');
         $this->addSql('CREATE INDEX value_idx ON learning_organization_access (value)');
         $this->addSql('DROP INDEX kind ON learning_organization_access');
         $this->addSql('CREATE INDEX kind_idx ON learning_organization_access (kind)');
@@ -663,8 +663,12 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('CREATE INDEX wiki_id_idx ON learning_wiki_course (wiki_id)');
         $this->addSql('UPDATE `core_reg_setting` SET `value` = "-" WHERE `region_id` = "england" AND `val_name` = "date_sep"');
 
+        $this->addSql("ALTER TABLE `core_lang_translation`
+        ADD CONSTRAINT `core_lang_translation_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `core_lang_language` (`lang_code`) ON DELETE CASCADE ON UPDATE CASCADE,
+        ADD CONSTRAINT `core_lang_translation_ibfk_2` FOREIGN KEY (`id_text`) REFERENCES `core_lang_text` (`id_text`) ON DELETE CASCADE ON UPDATE CASCADE");
+
         $this->addSql($this->convertCollation());
-        $this->addSql('SET FOREIGN_KEY_CHECKS=1;');
+        $this->addSql('SET FOREIGN_KEY_CHECKS=1');
 
 
         \Events::trigger('platform.upgrade', [_upgradeclass_ => formatUpgradeClass(__CLASS__)]);
@@ -713,6 +717,6 @@ final class Version20221012000004 extends AbstractMigration
         END;
         
         CALL convertcollation();
-        DROP PROCEDURE IF EXISTS `convertcollation`;';
+        DROP PROCEDURE IF EXISTS `convertcollation`';
     }
 }
