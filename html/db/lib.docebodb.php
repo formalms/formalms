@@ -76,6 +76,7 @@ class DbConn
         if (self::$instance == null) {
             self::$instance = self::getConnection($db_type, $host, $user, $pass, $name);
 
+
             if (self::$instance) {
                 self::$connected = true;
             }
@@ -99,11 +100,10 @@ class DbConn
                     $instance->debug = $debug;
                 }
 
-                $conn = $instance->connect($dbHost,
+                self::$connected = $instance->connect($dbHost,
                     $dbUser,
                     $dbPassword,
                     $dbName);
-
 
                 return $instance;
 
@@ -114,8 +114,8 @@ class DbConn
 
     public static function checkConnection($dbType, $dbHost, $dbUser, $dbPassword, $dbName, $debug)
     {
-        $conn = self::getConnection($dbType, $dbHost, $dbUser, $dbPassword, $dbName, $debug);
-        if ($conn) {
+        $instance = self::getConnection($dbType, $dbHost, $dbUser, $dbPassword, $dbName, $debug);
+        if (self::$connected) {
             return true;
         }
         return false;
