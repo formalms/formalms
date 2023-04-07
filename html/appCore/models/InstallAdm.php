@@ -1709,11 +1709,11 @@ class InstallAdm extends Model
     {
         $connection = DbConn::getInstance();
         $createQuery = "CREATE TABLE IF NOT EXISTS `core_migration_versions`  (
-            `version` varchar(1024) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL,
+            `version` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
             `executed_at` datetime(0) NULL DEFAULT NULL,
             `execution_time` int(11) NULL DEFAULT NULL,
             PRIMARY KEY (`version`) USING BTREE
-          ) ENGINE = InnoDB CHARACTER SET = utf8mb3 COLLATE = utf8mb3_unicode_ci ROW_FORMAT = Dynamic";
+          ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic";
 
         $creationTable = sql_query($createQuery);
 
