@@ -25,6 +25,21 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_assign`');
         $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_course`');
 
+        /** FOREIGN KEYS **/
+        $this->addSql('ALTER TABLE `core_lang_translation`
+                        DROP FOREIGN KEY `core_lang_translation_ibfk_1`');
+        $this->addSql('ALTER TABLE `core_lang_translation`
+                        DROP FOREIGN KEY `core_lang_translation_ibfk_2`');
+        $this->addSql('ALTER TABLE `core_role`
+                        DROP FOREIGN KEY `core_role_ibfk_1`');
+        $this->addSql('ALTER TABLE `core_role_members`
+                        DROP FOREIGN KEY `core_role_members_ibfk_1`');
+        $this->addSql('ALTER TABLE `dashboard_block_config`
+                        DROP FOREIGN KEY `config_layout_fk`');
+        /** FOREIGN KEYS **/                  
+                         
+
+
         $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
@@ -662,10 +677,6 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('CREATE INDEX course_id_idx ON learning_wiki_course (course_id)');
         $this->addSql('CREATE INDEX wiki_id_idx ON learning_wiki_course (wiki_id)');
         $this->addSql('UPDATE `core_reg_setting` SET `value` = "-" WHERE `region_id` = "england" AND `val_name` = "date_sep"');
-
-        $this->addSql("ALTER TABLE `core_lang_translation`
-        ADD CONSTRAINT `core_lang_translation_ibfk_1` FOREIGN KEY (`lang_code`) REFERENCES `core_lang_language` (`lang_code`) ON DELETE CASCADE ON UPDATE CASCADE,
-        ADD CONSTRAINT `core_lang_translation_ibfk_2` FOREIGN KEY (`id_text`) REFERENCES `core_lang_text` (`id_text`) ON DELETE CASCADE ON UPDATE CASCADE");
 
         $this->addSql($this->convertCollation());
         $this->addSql('SET FOREIGN_KEY_CHECKS=1');

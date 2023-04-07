@@ -1126,11 +1126,11 @@ class InstallAdm extends Model
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation($this->session->get('setValues'));
-                $this->setErrors($type);
-                $type = 'database';
+        
                 if (!$success) {
-                    $this->setErrors($type);
                     $type = 'database';
+                    $this->setErrors($type);
+                    
                 }
 
                 break;

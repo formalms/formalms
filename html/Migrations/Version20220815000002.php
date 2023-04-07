@@ -2178,9 +2178,6 @@ final class Version20220815000002 extends AbstractMigration
             ) ENGINE = InnoDB
             DEFAULT CHARSET = utf8");
 
-        $this->addSql("ALTER TABLE `dashboard_block_config`
-            ADD CONSTRAINT `config_layout_fk` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboard_layouts` (`id`) ON DELETE CASCADE");
-
         $this->addSql("CREATE TABLE IF NOT EXISTS `dashboard_blocks`
             (
                 `id`          bigint(20)   NOT NULL AUTO_INCREMENT,
@@ -2249,9 +2246,14 @@ final class Version20220815000002 extends AbstractMigration
                     ");
 
 
-
-
         $this->addSql("ALTER TABLE `learning_course` CHANGE `credits` `credits` double NOT NULL DEFAULT 0");
+
+        //* FOREIGN KEYS **/
+        $this->addSql("ALTER TABLE `dashboard_block_config`
+        ADD CONSTRAINT `config_layout_fk` FOREIGN KEY (`dashboard_id`) REFERENCES `dashboard_layouts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE");
+
+        
+        //* FOREIGN KEYS **/
 
     }
 

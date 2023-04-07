@@ -143,7 +143,8 @@ function process() {
             busy = false;
     
             result = response.success;
-            if(response.type !== 'standard') {
+          
+            if(response.type != 'standard') {
          
               errors.push(response.type);
              
@@ -188,9 +189,6 @@ function process() {
       $('.debug').val($debug + "\n" + response.messages.join("\n") + "\n" + $("#loading").text());
     }
 
-    if(response.type !== 'default') {
-      errors.push(response.type);
-    }
     
     //When sent, figure out the percentage uploaded and update the progress bar
     var percentage = 100 / arr.length * (currentArrIndex() + 1);
