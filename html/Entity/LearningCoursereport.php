@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningCoursereport
  *
- * @ORM\Table(name="learning_coursereport")
+ * @ORM\Table(name="learning_coursereport", indexes={
+ *      @ORM\Index(name="id_course_id_report_source_of_idx", columns={"id_course", "id_report", "source_of"}), 
+ *      @ORM\Index(name="id_course_id_report_source_of_id_source_idx", columns={"id_course", "id_report", "source_of", "id_source"}),
+ *      @ORM\Index(name="idCourse_idReport_idx", columns={"id_course","id_report"})
+ * })
  * @ORM\Entity
  */
 class LearningCoursereport

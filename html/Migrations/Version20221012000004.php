@@ -19,6 +19,7 @@ final class Version20221012000004 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
+
         $this->addSql('SET FOREIGN_KEY_CHECKS=0');
 
         $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta`');
@@ -37,8 +38,6 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE `dashboard_block_config`
                         DROP FOREIGN KEY `config_layout_fk`');
         /** FOREIGN KEYS **/                  
-                         
-
 
         $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -321,8 +320,8 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('DROP INDEX twitter_id_2 ON core_user');
         $this->addSql('DROP INDEX linkedin_id_2 ON core_user');
         $this->addSql('DROP INDEX facebook_id_2 ON core_user');
-        $this->addSql('ALTER TABLE core_user DROP INDEX `PRIMARY`');
-        $this->addSql('ALTER TABLE core_user ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idst idst INT AUTO_INCREMENT PRIMARY KEY NOT NULL, CHANGE userid userid VARCHAR(255) NOT NULL, CHANGE firstname firstname VARCHAR(255) NOT NULL, CHANGE lastname lastname VARCHAR(255) NOT NULL, CHANGE pass pass VARCHAR(255) NOT NULL, CHANGE email email VARCHAR(255) NOT NULL, CHANGE avatar avatar VARCHAR(255) NOT NULL, CHANGE level level INT NOT NULL, CHANGE force_change force_change TINYINT(1) NOT NULL, CHANGE privacy_policy privacy_policy TINYINT(1) NOT NULL');
+        #$this->addSql('ALTER TABLE core_user DROP INDEX `PRIMARY`');
+        $this->addSql('ALTER TABLE core_user ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE userid userid VARCHAR(255) NOT NULL, CHANGE firstname firstname VARCHAR(255) NOT NULL, CHANGE lastname lastname VARCHAR(255) NOT NULL, CHANGE pass pass VARCHAR(255) NOT NULL, CHANGE email email VARCHAR(255) NOT NULL, CHANGE avatar avatar VARCHAR(255) NOT NULL, CHANGE level level INT NOT NULL, CHANGE force_change force_change TINYINT(1) NOT NULL, CHANGE privacy_policy privacy_policy TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE core_user_file ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE user_idst user_idst INT NOT NULL, CHANGE type type VARCHAR(20) NOT NULL, CHANGE fname fname VARCHAR(255) NOT NULL, CHANGE real_fname real_fname VARCHAR(255) NOT NULL, CHANGE media_url media_url VARCHAR(255) NOT NULL, CHANGE size size INT NOT NULL');
         $this->addSql('ALTER TABLE core_user_log_attempt ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE userid userid VARCHAR(255) NOT NULL, CHANGE attempt_number attempt_number INT NOT NULL, CHANGE user_ip user_ip VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE core_user_profileview DROP INDEX `PRIMARY`');
@@ -466,6 +465,9 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('CREATE INDEX id_path_idx ON learning_coursepath_user (id_path)');
         $this->addSql('CREATE INDEX id_user_idx ON learning_coursepath_user (idUser)');
         $this->addSql('ALTER TABLE learning_coursereport ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_course id_course INT NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE max_score max_score DOUBLE PRECISION NOT NULL, CHANGE required_score required_score DOUBLE PRECISION NOT NULL, CHANGE weight weight INT NOT NULL, CHANGE sequence sequence INT NOT NULL, CHANGE id_source id_source VARCHAR(255) NOT NULL');
+        $this->addSql('CREATE INDEX id_course_id_report_source_of_idx ON learning_coursereport (id_course,id_report,source_of)');
+        $this->addSql('CREATE INDEX id_course_id_report_source_of_id_source_idx ON learning_coursereport (id_course,id_report,source_of,id_source)');
+        $this->addSql('CREATE INDEX id_course_id_report_idx ON learning_coursereport (id_course,id_report)');
         $this->addSql('ALTER TABLE learning_coursereport_score DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE learning_coursereport_score ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_report id_report INT NOT NULL, CHANGE id_user id_user INT NOT NULL');
         $this->addSql('CREATE INDEX id_report_idx ON learning_coursereport_score (id_report)');
@@ -564,6 +566,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE learning_news_internal ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE title title VARCHAR(100) NOT NULL, CHANGE language language VARCHAR(100) NOT NULL, CHANGE important important TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE learning_notes ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idCourse idCourse INT NOT NULL, CHANGE owner owner INT NOT NULL, CHANGE title title VARCHAR(150) NOT NULL');
         $this->addSql('ALTER TABLE learning_organization ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idParent idParent INT NOT NULL, CHANGE path path VARCHAR(255) NOT NULL, CHANGE lev lev INT NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE objectType objectType VARCHAR(20) NOT NULL, CHANGE idResource idResource INT NOT NULL, CHANGE idCategory idCategory INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE idAuthor idAuthor INT NOT NULL, CHANGE version version VARCHAR(8) NOT NULL, CHANGE language language VARCHAR(50) NOT NULL, CHANGE resource resource VARCHAR(255) NOT NULL, CHANGE idCourse idCourse INT NOT NULL, CHANGE prerequisites prerequisites VARCHAR(255) NOT NULL, CHANGE isTerminator isTerminator TINYINT(1) NOT NULL, CHANGE idParam idParam INT NOT NULL, CHANGE width width VARCHAR(4) NOT NULL, CHANGE height height VARCHAR(4) NOT NULL, CHANGE publish_for publish_for INT NOT NULL, CHANGE ignoreScore ignoreScore TINYINT(1) NOT NULL');
+        $this->addSql('CREATE INDEX objectType_idRTesourse_idx ON learning_organization (objectType,idResource)');
         $this->addSql('DROP INDEX idObject ON learning_organization_access');
         $this->addSql('ALTER TABLE learning_organization_access DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE learning_organization_access ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE value value INT NOT NULL, CHANGE idOrgAccess idOrgAccess INT NOT NULL');
@@ -678,7 +681,14 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('CREATE INDEX wiki_id_idx ON learning_wiki_course (wiki_id)');
         $this->addSql('UPDATE `core_reg_setting` SET `value` = "-" WHERE `region_id` = "england" AND `val_name` = "date_sep"');
 
+
+        /** EX FOREIGN KEYS NOW INDEXES **/
+    
+        $this->addSql('CREATE INDEX dashboard_id_idx ON dashboard_block_config (dashboard_id)');
+ 
+        /** FOREIGN KEYS **/    
         $this->addSql($this->convertCollation());
+       
         $this->addSql('SET FOREIGN_KEY_CHECKS=1');
 
 
@@ -730,4 +740,6 @@ final class Version20221012000004 extends AbstractMigration
         CALL convertcollation();
         DROP PROCEDURE IF EXISTS `convertcollation`';
     }
+
+  
 }

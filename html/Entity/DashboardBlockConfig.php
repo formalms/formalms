@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DashboardBlockConfig
  *
- * @ORM\Table(name="dashboard_block_config", indexes={@ORM\Index(name="block_class_idx", columns={"block_class"}), @ORM\Index(name="config_layout_fk", columns={"dashboard_id"})})
+ * @ORM\Table(name="dashboard_block_config", indexes={@ORM\Index(name="block_class_idx", columns={"block_class"}), @ORM\Index(name="dashboard_id_idx", columns={"dashboard_id"})})
  * @ORM\Entity
  */
 class DashboardBlockConfig

@@ -9,7 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * LearningOrganization
  *
- * @ORM\Table(name="learning_organization", indexes={@ORM\Index(name="path", columns={"path"}), @ORM\Index(name="idParent", columns={"idParent"})})
+ * @ORM\Table(name="learning_organization", indexes={
+ *      @ORM\Index(name="path", columns={"path"}), 
+ *      @ORM\Index(name="idParent", columns={"idParent"}),
+ *      @ORM\Index(name="objectType_idRTesourse_idx", columns={"objectType","idResource"})
+ * })
  * @ORM\Entity
  */
 class LearningOrganization
