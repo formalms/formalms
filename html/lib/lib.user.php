@@ -298,6 +298,203 @@ class DoceboUser implements Serializable
     }
 
     /**
+     * @return mixed|string
+     */
+    public function getSprefix(): mixed
+    {
+        return $this->sprefix;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUserLevel(): bool
+    {
+        return $this->user_level;
+    }
+
+    /**
+     * @param mixed|string $sprefix
+     * @return DoceboUser
+     */
+    public function setSprefix($sprefix)
+    {
+        $this->sprefix = $sprefix;
+        return $this;
+    }
+
+    /**
+     * @param DoceboACL|null $acl
+     * @return DoceboUser
+     */
+    public function setAcl(?DoceboACL $acl): DoceboUser
+    {
+        $this->acl = $acl;
+        return $this;
+    }
+
+    /**
+     * @param DoceboACLManager|mixed|null $aclManager
+     * @return DoceboUser
+     */
+    public function setAclManager($aclManager)
+    {
+        $this->aclManager = $aclManager;
+        return $this;
+    }
+
+    /**
+     * @param mixed $userid
+     * @return DoceboUser
+     */
+    public function setUserid($userid)
+    {
+        $this->userid = $userid;
+        return $this;
+    }
+
+    /**
+     * @param false|mixed $idst
+     * @return DoceboUser
+     */
+    public function setIdst($idst)
+    {
+        $this->idst = $idst;
+        return $this;
+    }
+
+    /**
+     * @param array|bool|float|int|mixed|stdClass|string|null $arrst
+     * @return DoceboUser
+     */
+    public function setArrst($arrst)
+    {
+        $this->arrst = $arrst;
+        return $this;
+    }
+
+    /**
+     * @param UserPreferences $preference
+     * @return DoceboUser
+     */
+    public function setPreference(UserPreferences $preference): DoceboUser
+    {
+        $this->preference = $preference;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $firstName
+     * @return DoceboUser
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $lastName
+     * @return DoceboUser
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $email
+     * @return DoceboUser
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $avatar
+     * @return DoceboUser
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $facebookId
+     * @return DoceboUser
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $twitterId
+     * @return DoceboUser
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitterId = $twitterId;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $linkedinId
+     * @return DoceboUser
+     */
+    public function setLinkedinId($linkedinId)
+    {
+        $this->linkedinId = $linkedinId;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $googleId
+     * @return DoceboUser
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+        return $this;
+    }
+
+    /**
+     * @param bool $user_level
+     * @return DoceboUser
+     */
+    public function setUserLevel(bool $user_level): DoceboUser
+    {
+        $this->user_level = $user_level;
+        return $this;
+    }
+
+    /**
+     * @param array $userCourses
+     * @return DoceboUser
+     */
+    public function setUserCourses(array $userCourses): DoceboUser
+    {
+        $this->userCourses = $userCourses;
+        return $this;
+    }
+
+    /**
+     * @param bool|DbConn|Mysqli_DbConn|null $db
+     * @return DoceboUser
+     */
+    public function setDb($db)
+    {
+        $this->db = $db;
+        return $this;
+    }
+
+
+    /**
      * static public function for load user from session.
      *
      * @param string $prefix optional prefix for session publiciables
