@@ -31,7 +31,7 @@ class LoLms extends Model
     {
         $this->tdb = new OrgDirDb($idCourse);
         $this->tdb->setFilterVisibility(true);
-        $this->tdb->setFilterAccess(Docebo::user()->getArrSt());
+        $this->tdb->setFilterAccess(Forma::user()->getArrSt());
         $this->treeView = new Org_TreeView($this->tdb, 'organization');
 
         return $this->tdb;

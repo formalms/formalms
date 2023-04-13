@@ -67,7 +67,7 @@ define('ADMIN_GROUP_USER', '/framework/level/user');
  *
  * @version  $Id: lib.aclmanager.php 1000 2007-03-23 16:03:43Z fabio $
  */
-class DoceboACLManager
+class FormaACLManager
 {
     /** the actual context for acl management */
     public $context = '';
@@ -240,7 +240,7 @@ class DoceboACLManager
 
     /**
      * An userid/groupid/roleid can be absolute (if start with ACL_SEPARATOR charater) or
-     * relative to actual DoceboACLManager context.
+     * relative to actual FormaACLManager context.
      * This function return always the absolute id of the given id. ( If it's
      *    an absolute id return it unchanged).
      *
@@ -262,7 +262,7 @@ class DoceboACLManager
 
     /**
      * An userid/groupid/roleid can be absolute (if start with ACL_SEPARATOR charater) or
-     * relative to actual DoceboACLManager context.
+     * relative to actual FormaACLManager context.
      * This function return always the relative id of the given id; normally
      *    remove the context from $id if it's absolute.
      * If it's an relative id return it unchanged.
@@ -1065,7 +1065,7 @@ class DoceboACLManager
      */
     public function deleteUser($idst)
     {
-        //if ($idst == Docebo::user()->getIdSt()) return FALSE;
+        //if ($idst == Forma::user()->getIdSt()) return FALSE;
 
         $userdata = $this->getUser($idst, null);
 
@@ -1510,7 +1510,7 @@ class DoceboACLManager
     {
         $path = $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $responseUser['idst'] = $user[ACL_INFO_IDST];
         $responseUser['name'] = $acl_man->getConvertedUserName($user);
@@ -1871,7 +1871,7 @@ class DoceboACLManager
     public function &getAllGroupsId($arr_type = false, $find_text = false, $also_image = true)
     {
         if ($also_image) {
-            $lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+            $lang = &FormaLanguage::createInstance('admin_directory', 'framework');
         }
 
         $query = ' SELECT g.idst, g.groupid, g.description, g.type '
@@ -3031,7 +3031,7 @@ class DoceboACLManager
         if ($owned_directly) {
             $all_roles = $this->getRolesContainer($user_idst);
         } else {
-            $acl = Docebo::user()->getAcl();
+            $acl = Forma::user()->getAcl();
             $all_roles = $acl->getUserAllST(false, '', $user_idst);
         }
 
@@ -3317,12 +3317,12 @@ class PeopleDataRetriever extends DataRetriever
     public $field_filter = [];
     public $custom_join = [];
     public $custom_where = [];
-    public DoceboACLManager $ACLManager;
+    public FormaACLManager $ACLManager;
 
     public function __construct($dbconn = false, $prefix = false)
     {
         parent::__construct($dbconn, $prefix);
-        $this->aclManager = new DoceboACLManager($dbconn, $prefix);
+        $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
 
     public function setUserFilter($arr_users)
@@ -3532,7 +3532,7 @@ class GroupDataRetriever extends DataRetriever
     public function __construct($dbconn = false, $prefix = false)
     {
         parent::__construct($dbconn, $prefix);
-        $this->aclManager = new DoceboACLManager($dbconn, $prefix);
+        $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
 
     public function getFieldCount()
@@ -3653,7 +3653,7 @@ class GroupMembersDataRetriever extends DataRetriever
     {
         $this->idstGroup = $idstGroup;
         parent::__construct($dbconn, $prefix);
-        $this->aclManager = new DoceboACLManager($dbconn, $prefix);
+        $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
 
     public function getFieldCount()

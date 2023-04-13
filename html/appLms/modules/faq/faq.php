@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     // XXX: modfaqgui
     function modfaqgui($object_faq)
     {
@@ -21,7 +21,7 @@ if (!Docebo::user()->isAnonymous()) {
         $del_perm = checkPerm('view', true, 'storage');
 
         require_once _base_ . '/lib/lib.table.php';
-        $lang = DoceboLanguage::createInstance('faq');
+        $lang = FormaLanguage::createInstance('faq');
 
         $back_coded = htmlentities(urlencode($object_faq->back_url));
 
@@ -107,7 +107,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = DoceboLanguage::createInstance('faq');
+        $lang = FormaLanguage::createInstance('faq');
 
         $GLOBALS['page']->add(
         getTitleArea($lang->def('_SECT_FAQ'), 'faq')
@@ -156,7 +156,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = DoceboLanguage::createInstance('faq');
+        $lang = FormaLanguage::createInstance('faq');
 
         $idCategory = importVar('idCategory', true, 0);
         $back_url = urldecode(importVar('back_url'));
@@ -284,7 +284,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = DoceboLanguage::createInstance('faq');
+        $lang = FormaLanguage::createInstance('faq');
 
         $idCategory = importVar('idCategory', true, 0);
         $back_url = urldecode(importVar('back_url'));
@@ -352,7 +352,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = DoceboLanguage::createInstance('faq');
+        $lang = FormaLanguage::createInstance('faq');
 
         $back_url = urldecode($_GET['back_url']);
         $back_coded = htmlentities(urlencode($back_url));
@@ -420,7 +420,7 @@ if (!Docebo::user()->isAnonymous()) {
     function delfaq()
     {
         checkPerm('view', false, 'storage');
-        $lang = DoceboLanguage::createInstance('faq');
+        $lang = FormaLanguage::createInstance('faq');
 
         $back_url = urldecode($_GET['back_url']);
         $back_coded = htmlentities(urlencode($back_url));

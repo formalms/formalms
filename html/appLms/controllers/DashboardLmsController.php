@@ -65,7 +65,7 @@ class DashboardLmsController extends LmsController
         $layouts = $this->model->getLayouts();
         /** @var DashboardLayoutLms $layout */
         foreach ($layouts as $layout) {
-            if (!$layout->isDefault() && $layout->userCanAccess(Docebo::user())) {
+            if (!$layout->isDefault() && $layout->userCanAccess(Forma::user())) {
                 $defaultLayout = $layout;
                 break;
             }

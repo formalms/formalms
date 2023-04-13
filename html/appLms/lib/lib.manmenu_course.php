@@ -58,7 +58,7 @@ function &getCourseLevelSt($id_course)
 {
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     // find all the group created for this menu custom for permission management
     foreach ($levels as $lv => $name_level) {
@@ -83,7 +83,7 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false)
 {
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     // find the idst of all the role of the selected module
     foreach ($all_token as $token) {
@@ -116,7 +116,7 @@ function &getAllModulesPermissionSt($group_idst, $idst_cast = false)
 {
     $old_perm = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     // find all the roles associated to the main groups
     foreach ($levels as $lv => $name_level) {

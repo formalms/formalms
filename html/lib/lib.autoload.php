@@ -48,7 +48,7 @@ function docebo_autoload($classname)
 
         // i18n
         'Lang' => _i18n_ . '/lib.lang.php',
-        'DoceboLanguage' => _i18n_ . '/lib.lang.php',
+        'FormaLanguage' => _i18n_ . '/lib.lang.php',
         'Format' => _i18n_ . '/lib.format.php',
 
         // Cache
@@ -64,14 +64,14 @@ function docebo_autoload($classname)
         'DForm' => _lib_ . '/forms/lib.dform.php',
 
         // lib files
-        'DoceboACL' => _lib_ . '/lib.acl.php',
-        'DoceboACLManager' => _lib_ . '/lib.aclmanager.php',
+        'FormaACL' => _lib_ . '/lib.acl.php',
+        'FormaACLManager' => _lib_ . '/lib.aclmanager.php',
 
         // widget
         'Widget' => _base_ . '/widget/lib.widget.php',
 
         // exception
-        'DoceboException' => _lib_ . '/error/doceboexception.php',
+        'FormaException' => _lib_ . '/error/doceboexception.php',
         'MvcException' => _lib_ . '/error/mvcexception.php',
 
         //aws

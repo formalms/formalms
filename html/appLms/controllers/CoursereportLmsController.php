@@ -69,7 +69,7 @@ class CoursereportLmsController extends LmsController
         $this->model = new CoursereportLms($this->idCourse);
 
         // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -90,7 +90,7 @@ class CoursereportLmsController extends LmsController
             //filter users
             require_once Forma::inc(_base_ . '/lib/lib.preference.php');
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
             foreach ($students as $idst => $user_course_info) {
                 if (!in_array($idst, $ctrl_users)) {
                     // Elimino gli studenti non amministrati
@@ -506,7 +506,7 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         require_once Forma::inc(_adm_ . '/lib/lib.field.php');
 
-     
+
         $redo_final = FormaLms\lib\Get::pReq('redo_final', DOTY_MIXED, false);
         $round_report = FormaLms\lib\Get::pReq('round_report', DOTY_MIXED, false);
         $round_test = FormaLms\lib\Get::pReq('round_test', DOTY_MIXED, false);
@@ -535,7 +535,7 @@ class CoursereportLmsController extends LmsController
 
         $this->model = new CoursereportLms($this->idCourse);
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -562,7 +562,7 @@ class CoursereportLmsController extends LmsController
             //filter users
             require_once Forma::inc(_base_ . '/lib/lib.preference.php');
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
             foreach ($students as $idst => $user_course_info) {
                 if (!in_array($idst, $ctrl_users)) {
                     // Elimino gli studenti non amministrati
@@ -1114,7 +1114,7 @@ class CoursereportLmsController extends LmsController
 
         //is there more any edition ?
         if (sql_num_rows($res) > 0) {
-            $lang = &DoceboLanguage::createInstance('stats', 'lms');
+            $lang = &FormaLanguage::createInstance('stats', 'lms');
             $arr_editions[] = $lang->def('_FILTEREDITIONSELECTONEOPTION');
 
             //list of editions for the dropdown, in the format: "[code] name (date_begin - date_end)"
@@ -1201,7 +1201,7 @@ class CoursereportLmsController extends LmsController
 
         $studentName = FormaLms\lib\Get::gReq('studentName');
 
-        $lang = DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $query_testreport = "
@@ -1264,7 +1264,7 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
         $query_testreport = "
@@ -1345,12 +1345,12 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_test = importVar('id_test', true, 0);
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -1632,7 +1632,7 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
 
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1640,7 +1640,7 @@ class CoursereportLmsController extends LmsController
         $id_test = importVar('id_test', true, 0);
 
         $test_man = new GroupTestManagement();
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $quests = [];
         $answers = [];
@@ -1726,12 +1726,12 @@ class CoursereportLmsController extends LmsController
         $number_time = importVar('number_time', true, null);
         $delete = importVar('delete_track', false, null);
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -1853,7 +1853,7 @@ class CoursereportLmsController extends LmsController
         $delete = importVar('delete_track', false, null);
         $id_user = importVar('id_user', true, 0);
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
@@ -1862,7 +1862,7 @@ class CoursereportLmsController extends LmsController
 
             $test_man->deleteReview($id_test, $id_user, $id_track, $number_time);
 
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
 
             $test_man = new GroupTestManagement();
 
@@ -1887,12 +1887,12 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $report_man = new CourseReportManager();
 
         // XXX: Find students
@@ -2062,12 +2062,12 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         //$id_test = importVar('id_test', true, 0);
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -2117,10 +2117,10 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
 
         // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -2246,7 +2246,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = FormaLms\lib\Get::req('id_report', DOTY_INT, 0);
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
@@ -2468,7 +2468,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
@@ -2593,12 +2593,12 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $report_man = new CourseReportManager();
 
         // XXX: Find users
@@ -2831,12 +2831,12 @@ class CoursereportLmsController extends LmsController
         // XXX: Initializaing
         $id_report = FormaLms\lib\Get::gReq('id_report', DOTY_MIXED, 0);
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $report_man = new CourseReportManager();
 
         if (isset($_POST['confirm'])) {
@@ -2889,7 +2889,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
 
         // XXX: Instance management
         $report_man = new CourseReportManager();
@@ -2931,7 +2931,7 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_base_ . '/lib/lib.form.php');
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
         $included_test = [];
@@ -2939,7 +2939,7 @@ class CoursereportLmsController extends LmsController
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $csv = '';
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -2968,7 +2968,7 @@ class CoursereportLmsController extends LmsController
             //filter users
             require_once Forma::inc(_base_ . '/lib/lib.preference.php');
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
             foreach ($students as $idst => $user_course_info) {
                 if (!in_array($idst, $ctrl_users)) {
                     // Elimino gli studenti non amministrati
@@ -3404,7 +3404,7 @@ class CoursereportLmsController extends LmsController
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(FormaLms\lib\Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
 
         $idTest = importVar('id_test', true, 0);
 
@@ -3636,7 +3636,7 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_base_ . '/lib/lib.table.php');
         require_once Forma::inc(_lms_ . '/lib/lib.test.php');
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
 
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -3920,8 +3920,8 @@ class CoursereportLmsController extends LmsController
         $idUser = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         $chartType = FormaLms\lib\Get::req('chart_type', DOTY_STRING, 'column');
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
-        $acl_man = Docebo::user()->getAclManager();
+        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $acl_man = Forma::user()->getAclManager();
         $user_info = $acl_man->getUser($idUser, false);
         list($title) = sql_fetch_row(sql_query('SELECT title FROM %lms_test WHERE idTest=' . (int) $idTest));
         $backUrl = 'index.php?r=lms/coursereport/testvote&id_test=' . (int) $idTest;

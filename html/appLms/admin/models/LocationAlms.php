@@ -109,7 +109,7 @@ class LocationAlms extends Model
             return false;
         }
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $id_entry = sql_insert_id();
 
             $re = sql_query('

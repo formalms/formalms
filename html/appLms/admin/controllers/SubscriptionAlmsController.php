@@ -44,7 +44,7 @@ class SubscriptionAlmsController extends AlmsController
 
         $this->model = new SubscriptionAlms($this->id_course, $this->id_edition, $this->id_date);
         $this->json = new Services_JSON();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         $this->db = DbConn::getInstance();
 
         $this->permissions = [
@@ -72,9 +72,9 @@ class SubscriptionAlmsController extends AlmsController
 
         if ($this->reached_max_user_subscribed) {
             $res = false;
-        } elseif (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        } elseif (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $admin_pref = new AdminPreference();
-            $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+            $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
             /*
              * Array ( [admin_rules.direct_course_subscribe] => on
              * [admin_rules.direct_user_insert] => on
@@ -85,7 +85,7 @@ class SubscriptionAlmsController extends AlmsController
              */
 
             if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                $user_pref = new UserPreferences(Forma::user()->getIdSt());
                 $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                 if ($subscribed_count >= $pref['admin_rules.max_course_subscribe']) {
                     // $this->permissions['subscribe_course']=false;
@@ -121,7 +121,7 @@ class SubscriptionAlmsController extends AlmsController
 
     protected function _addToCourseGroup($id_group, $id_user)
     {
-        Docebo::aclm()->addToGroup($id_group, $id_user);
+        Forma::aclm()->addToGroup($id_group, $id_user);
     }
 
     public function show()
@@ -167,7 +167,7 @@ class SubscriptionAlmsController extends AlmsController
             'language' => Lang::t('_LANGUAGE', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
+        $f_selected = $this->json->decode(Forma::user()->getPreference('ui.directory.custom_columns'));
         if ($f_selected == false) {
             $f_selected = ['email'];
         }
@@ -246,19 +246,19 @@ class SubscriptionAlmsController extends AlmsController
 
         if (isset($_POST['okselector'])) {
             $_selection = $user_selector->getSelection($_POST);
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $user_selected = $acl_man->getAllUsersFromSelection($_selection); //$acl_man->getAllUsersFromIdst($_selection);
 
             $user_alredy_subscribed = $model->loadUserSelectorSelection();
             $user_selected = array_diff($user_selected, $user_alredy_subscribed);
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $to_subscribe = count($user_selected);
 
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                 if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                    $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                    $user_pref = new UserPreferences(Forma::user()->getIdSt());
                     $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                     if ($subscribed_count + $to_subscribe > $pref['admin_rules.max_course_subscribe']) {
                         $this->render('invalid', [
@@ -271,10 +271,10 @@ class SubscriptionAlmsController extends AlmsController
                 }
             }
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+                $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
                 $user_selected = array_intersect($user_selected, $admin_users);
             }
 
@@ -304,10 +304,10 @@ class SubscriptionAlmsController extends AlmsController
                         //check if the subscriber is a sub admin and, if true check it's limitation
                         $can_subscribe = true;
                         $subscribe_method = $course_info['subscribe_method'];
-                        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                            $limited_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                            $max_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                            $direct_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                            $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
+                            $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
+                            $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
 
                             if ($limited_subscribe == 'on') {
                                 $limited_subscribe = true;
@@ -327,7 +327,7 @@ class SubscriptionAlmsController extends AlmsController
 
                         if ($can_subscribe) {
                             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                            $docebo_course = new DoceboCourse($id_course);
+                            $docebo_course = new FormaCourse($id_course);
 
                             $level_idst = &$docebo_course->getCourseLevel($id_course);
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
@@ -361,7 +361,7 @@ class SubscriptionAlmsController extends AlmsController
                             $this->db->commit();
 
                             // Save limit preference for admin
-                            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                                 $to_subscribe = count($user_selected);
 
                                 if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
@@ -476,10 +476,10 @@ class SubscriptionAlmsController extends AlmsController
 
         $can_subscribe = true;
         $subscribe_method = $course_info['subscribe_method'];
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-            $limited_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-            $max_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-            $direct_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
+            $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
+            $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
 
             if ($limited_subscribe == 'on') {
                 $limited_subscribe = true;
@@ -500,7 +500,7 @@ class SubscriptionAlmsController extends AlmsController
 
         if ($can_subscribe) {
             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-            $docebo_course = new DoceboCourse($id_course);
+            $docebo_course = new FormaCourse($id_course);
 
             $level_idst = &$docebo_course->getCourseLevel($id_course);
 
@@ -557,13 +557,13 @@ class SubscriptionAlmsController extends AlmsController
             $this->db->commit();
 
             // Save limit preference for admin
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $to_subscribe = count($user_selected);
 
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                 if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                    $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                    $user_pref = new UserPreferences(Forma::user()->getIdSt());
                     $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                     $user_pref->setPreference('user_subscribed_count', $subscribed_count + $to_subscribe);
                 }
@@ -736,7 +736,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
-        $docebo_course = new DoceboCourse($this->id_course);
+        $docebo_course = new FormaCourse($this->id_course);
 
         $level_idst = &$docebo_course->getCourseLevel($this->id_course);
         $level = $this->model->getUserLevel($id_user);
@@ -766,7 +766,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
-        $docebo_course = new DoceboCourse($this->id_course);
+        $docebo_course = new FormaCourse($this->id_course);
         $output = [];
 
         if ($users == '') {
@@ -824,7 +824,7 @@ class SubscriptionAlmsController extends AlmsController
             $user = $userModel->getProfileData($id_user);
 
             require_once _lms_ . '/lib/lib.course.php';
-            $docebo_course = new DoceboCourse($this->id_course);
+            $docebo_course = new FormaCourse($this->id_course);
 
             switch ($col) {
                 case 'level':
@@ -871,9 +871,9 @@ class SubscriptionAlmsController extends AlmsController
                                 case _CUS_SUSPEND:
                                     require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                                    $uinfo = Docebo::aclm()->getUser($id_user, false);
+                                    $uinfo = Forma::aclm()->getUser($id_user, false);
 
-                                    $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+                                    $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
 
                                     $array_subst = [
                                         '[url]' => FormaLms\lib\Get::site_url(),
@@ -891,7 +891,7 @@ class SubscriptionAlmsController extends AlmsController
 
                                     $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
-                                    $acl_manager = \Docebo::user()->getAclManager();
+                                    $acl_manager = \Forma::user()->getAclManager();
 
                                     $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                                     $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -997,10 +997,10 @@ class SubscriptionAlmsController extends AlmsController
         $userid = FormaLms\lib\Get::req('userid', DOTY_STRING, ''); //user username
         $result = false;
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
             $is_admin = true;
         }
 
@@ -1008,7 +1008,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($id_user <= 0) {
             $id_user = false;
             if ($userid != '') {
-                $id_user = Docebo::aclm()->getUserST($userid);
+                $id_user = Forma::aclm()->getUserST($userid);
             }
         }
 
@@ -1019,7 +1019,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        if (isset($admin_users) && array_search($id_user, $admin_users, false) === false && Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
+        if (isset($admin_users) && array_search($id_user, $admin_users, false) === false && Forma::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid user')];
             echo $this->json->encode($output);
 
@@ -1032,7 +1032,7 @@ class SubscriptionAlmsController extends AlmsController
             if ($result) {
                 require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                $docebo_course = new DoceboCourse($this->id_course);
+                $docebo_course = new FormaCourse($this->id_course);
 
                 $level_idst = $docebo_course->getCourseLevel($this->model->getIdCourse());
 
@@ -1044,11 +1044,11 @@ class SubscriptionAlmsController extends AlmsController
                 $this->_addToCourseGroup($level_idst[$level], $id_user);
 
                 // Save limit preference for admin
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $admin_pref = new AdminPreference();
-                    $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                    $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                     if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                        $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                        $user_pref = new UserPreferences(Forma::user()->getIdSt());
                         $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                         $user_pref->setPreference('user_subscribed_count', $subscribed_count + 1);
                     }
@@ -1061,7 +1061,7 @@ class SubscriptionAlmsController extends AlmsController
                 $userModel = new UsermanagementAdm();
 
                 $course_info = $docebo_course->getAllInfo();
-                $uinfo = Docebo::aclm()->getUser($id_user, false);
+                $uinfo = Forma::aclm()->getUser($id_user, false);
 
                 if ($send_alert) {
                     $this->model->sendAlert([$id_user]);         
@@ -1084,7 +1084,7 @@ class SubscriptionAlmsController extends AlmsController
                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                     '[course]' => $course_info['name'],
-                    '[username]' => Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]),
+                    '[username]' => Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]),
                 ];
 
                 // message to user that is odified
@@ -1265,13 +1265,13 @@ class SubscriptionAlmsController extends AlmsController
                         switch ((int) $new_status) {
                             case _CUS_SUSPEND:
                                 require_once _lms_ . '/lib/lib.course.php';
-                                $docebo_course = new DoceboCourse($this->id_course);
+                                $docebo_course = new FormaCourse($this->id_course);
 
                                 require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                                $uinfo = Docebo::aclm()->getUser($user, false);
+                                $uinfo = Forma::aclm()->getUser($user, false);
 
-                                $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+                                $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
 
                                 $array_subst = [
                                     '[url]' => FormaLms\lib\Get::site_url(),
@@ -1289,7 +1289,7 @@ class SubscriptionAlmsController extends AlmsController
 
                                 $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
-                                $acl_manager = \Docebo::user()->getAclManager();
+                                $acl_manager = \Forma::user()->getAclManager();
 
                                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -1427,10 +1427,10 @@ class SubscriptionAlmsController extends AlmsController
                 $user_selector->show_orgchart_selector = true;
                 $user_selector->show_orgchart_simple_selector = true;
 
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     require_once _base_ . '/lib/lib.preference.php';
                     $adminManager = new AdminPreference();
-                    $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                    $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
                     $admin_users = $this->acl_man->getAllUsersFromIdst($admin_tree);
 
                     $user_selector->setUserFilter('user', $admin_users);
@@ -1455,25 +1455,25 @@ class SubscriptionAlmsController extends AlmsController
 
                 if (isset($_POST['okselector'])) {
                     $_selection = $user_selector->getSelection($_POST);
-                    $acl_man = Docebo::user()->getAclManager();
+                    $acl_man = Forma::user()->getAclManager();
                     $user_selected = $acl_man->getAllUsersFromSelection($_selection); //$acl_man->getAllUsersFromIdst($_selection);
                     //$user_selected = $user_selector->getSelection($_POST);
 
-                    if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                    if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                         require_once _base_ . '/lib/lib.preference.php';
                         $adminManager = new AdminPreference();
-                        $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                        $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
                         $admin_users = $this->acl_man->getAllUsersFromIdst($admin_tree);
 
                         $user_selected = array_intersect($user_selected, $admin_users);
 
-                        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                             $to_subscribe = count($user_selected);
 
                             $admin_pref = new AdminPreference();
-                            $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                            $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                             if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                                $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                                $user_pref = new UserPreferences(Forma::user()->getIdSt());
                                 $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                                 if ($subscribed_count + $to_subscribe > $pref['admin_rules.max_course_subscribe']) {
                                     $this->render('invalid', [
@@ -1551,10 +1551,10 @@ class SubscriptionAlmsController extends AlmsController
                 $course_selected = Util::unserialize(urldecode($course_selection));
                 $edition_selected = Util::unserialize(urldecode($edition_selected));
 
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                    $limited_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                    $max_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                    $direct_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                    $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
+                    $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
+                    $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
 
                     if ($limited_subscribe == 'on') {
                         $limited_subscribe = true;
@@ -1600,7 +1600,7 @@ class SubscriptionAlmsController extends AlmsController
                         if ($can_subscribe) {
                             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                            $docebo_course = new DoceboCourse($id_course);
+                            $docebo_course = new FormaCourse($id_course);
 
                             $level_idst = &$docebo_course->getCourseLevel($id_course);
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
@@ -1646,7 +1646,7 @@ class SubscriptionAlmsController extends AlmsController
                             if ($can_subscribe) {
                                 require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                                $docebo_course = new DoceboCourse($id_course);
+                                $docebo_course = new FormaCourse($id_course);
 
                                 $level_idst = &$docebo_course->getCourseLevel($id_course);
 
@@ -1690,7 +1690,7 @@ class SubscriptionAlmsController extends AlmsController
                             if ($can_subscribe) {
                                 require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                                $docebo_course = new DoceboCourse($id_course);
+                                $docebo_course = new FormaCourse($id_course);
 
                                 $level_idst = &$docebo_course->getCourseLevel($id_course);
 
@@ -1729,11 +1729,11 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 // Save limit preference for admin
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $admin_pref = new AdminPreference();
-                    $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                    $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                     if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                        $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                        $user_pref = new UserPreferences(Forma::user()->getIdSt());
                         $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                         $user_pref->setPreference('user_subscribed_count', $subscribed_count + $just_subscribed_count);
                     }
@@ -1804,7 +1804,7 @@ class SubscriptionAlmsController extends AlmsController
                 $sendAlert = FormaLms\lib\Get::req('send_alert', DOTY_BOOL, false);
                 $import_charset = FormaLms\lib\Get::req('import_charset', DOTY_MIXED, 'UTF-8');
 
-                $docebo_course = new DoceboCourse($this->id_course);
+                $docebo_course = new FormaCourse($this->id_course);
 
                 $level_idst = $docebo_course->getCourseLevel($this->id_course);
 
@@ -1860,10 +1860,10 @@ class SubscriptionAlmsController extends AlmsController
                 $max_num_subscribe = $course_info['max_num_subscribe'];
                 $subscribe_method = $course_info['subscribe_method'];
 
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                    $limited_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                    $max_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                    $direct_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                    $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
+                    $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
+                    $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
 
                     if ($limited_subscribe == 'on') {
                         $limited_subscribe = true;
@@ -1890,7 +1890,7 @@ class SubscriptionAlmsController extends AlmsController
 
                         if ($can_subscribe) {
                             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                            $docebo_course = new DoceboCourse($this->id_course);
+                            $docebo_course = new FormaCourse($this->id_course);
 
                             $level_idst = $docebo_course->getCourseLevel($this->id_course);
 
@@ -1954,7 +1954,7 @@ class SubscriptionAlmsController extends AlmsController
 
                         if ($can_subscribe) {
                             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                            $docebo_course = new DoceboCourse($this->id_course);
+                            $docebo_course = new FormaCourse($this->id_course);
 
                             $level_idst = $docebo_course->getCourseLevel($this->id_course);
 
@@ -2091,7 +2091,7 @@ class SubscriptionAlmsController extends AlmsController
 
             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-            $docebo_course = new DoceboCourse($this->id_course);
+            $docebo_course = new FormaCourse($this->id_course);
 
             $level_idst = $docebo_course->getCourseLevel($this->id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
@@ -2105,10 +2105,10 @@ class SubscriptionAlmsController extends AlmsController
 
             $result = sql_query($query);
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                $limited_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                $max_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                $direct_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
+                $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
+                $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
 
                 if ($limited_subscribe == 'on') {
                     $limited_subscribe = true;
@@ -2129,7 +2129,7 @@ class SubscriptionAlmsController extends AlmsController
 
             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-            $docebo_course = new DoceboCourse($this->id_course);
+            $docebo_course = new FormaCourse($this->id_course);
 
             $level_idst = $docebo_course->getCourseLevel($this->id_course);
 
@@ -2213,7 +2213,7 @@ class SubscriptionAlmsController extends AlmsController
             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
             foreach ($course_selected as $id_course) {
-                $docebo_course = new DoceboCourse($id_course);
+                $docebo_course = new FormaCourse($id_course);
 
                 $level_idst = &$docebo_course->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
@@ -2227,10 +2227,10 @@ class SubscriptionAlmsController extends AlmsController
 
                 $result = sql_query($query);
 
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                    $limited_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                    $max_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                    $direct_subscribe = Docebo::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                    $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
+                    $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
+                    $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
 
                     if ($limited_subscribe == 'on') {
                         $limited_subscribe = true;
@@ -2251,7 +2251,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                $docebo_course = new DoceboCourse($id_course);
+                $docebo_course = new FormaCourse($id_course);
 
                 $level_idst = $docebo_course->getCourseLevel($id_course);
 
@@ -2371,7 +2371,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.edition.php';
         require_once _lms_ . '/lib/lib.date.php';
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $edition_man = new EditionManager();
         $date_man = new DateManager();
 
@@ -2382,10 +2382,10 @@ class SubscriptionAlmsController extends AlmsController
 
         //if we are a subadmin, check which courses/catalogues we can see
         $can_see_catalogue = true;
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -2394,7 +2394,7 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
 
                 if (count($admin_courses['catalogue']) == 0 && FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
@@ -2613,10 +2613,10 @@ class SubscriptionAlmsController extends AlmsController
             //$user_select->show_orgchart_simple_selector = TRUE;
             //filter selectable user by sub-admin permission
             $user_select->setUserFilter('exclude', [$this->acl_man->getAnonymousId()]);
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
                 $admin_users = $this->acl_man->getAllUsersFromIdst($admin_tree);
                 $user_select->setUserFilter('user', $admin_users);
                 $user_select->setUserFilter('group', $admin_tree);
@@ -2787,7 +2787,7 @@ class SubscriptionAlmsController extends AlmsController
             }
             if ($_u_subscribed) {
                 // user subscribed
-                $docebo_course = new DoceboCourse($id_course);
+                $docebo_course = new FormaCourse($id_course);
                 $level_idst = &$docebo_course->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
                     $level_idst = &$docebo_course->createCourseLevel($id_course);
@@ -2827,7 +2827,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         $man_course = new Man_Course();
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $id_course = FormaLms\lib\Get::Req('id_course', DOTY_INT, 0);
@@ -2886,7 +2886,7 @@ class SubscriptionAlmsController extends AlmsController
         //subscribe user
         $res = $_model->subscribeUser($id_user, $level, false);
         if ($res) {
-            $docebo_course = new DoceboCourse($id_course);
+            $docebo_course = new FormaCourse($id_course);
             $level_idst = &$docebo_course->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
                 $level_idst = &$docebo_course->createCourseLevel($id_course);
@@ -2910,7 +2910,7 @@ class SubscriptionAlmsController extends AlmsController
         $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
         $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
 
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.subscribe.php';
@@ -3436,7 +3436,7 @@ class SubscriptionAlmsController extends AlmsController
             require_once Forma::inc(_lms_ . '/lib/lib.course.php');
 
             foreach ($courses as $id_course) {
-                $docebo_course = new DoceboCourse($id_course);
+                $docebo_course = new FormaCourse($id_course);
                 $level_idst = &$docebo_course->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
                     $level_idst = &$docebo_course->createCourseLevel($id_course);
@@ -3474,7 +3474,7 @@ class SubscriptionAlmsController extends AlmsController
         foreach ($courses as $id_course) {
             $res = true;
 
-            $docebo_course = new DoceboCourse($id_course);
+            $docebo_course = new FormaCourse($id_course);
             $level_idst = &$docebo_course->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
                 $level_idst = &$docebo_course->createCourseLevel($id_course);
@@ -3537,9 +3537,9 @@ class SubscriptionAlmsController extends AlmsController
         $ed_url_param = '&id_edition=' . $edition_id;
 
         $out = $GLOBALS['page'];
-        $lang = DoceboLanguage::CreateInstance('course', 'lms');
-        $lang = DoceboLanguage::CreateInstance('subscribe', 'lms');
-        $acl_man = Docebo::user()->getAclManager();
+        $lang = FormaLanguage::CreateInstance('course', 'lms');
+        $lang = FormaLanguage::CreateInstance('subscribe', 'lms');
+        $acl_man = Forma::user()->getAclManager();
         $levels = CourseLevel::getTranslatedLevels();
 
         $waiting_users = $man_course->getWaitingSubscribed($id_course, $edition_id);
@@ -3720,7 +3720,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0)
     {
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $acl_man->removeFromGroup($lv_group, $id_user);
 
         if ($edition_id > 0) {
@@ -3770,7 +3770,7 @@ class SubscriptionAlmsController extends AlmsController
             require_once _lms_ . '/lib/lib.course.php';
             //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 
-            $docebo_course = new DoceboCourse($id_course);
+            $docebo_course = new FormaCourse($id_course);
 
             $group_levels = $docebo_course->getCourseLevel($id_course);
             if (count($group_levels) == 0 || $group_levels[1] == '') {
@@ -3783,7 +3783,7 @@ class SubscriptionAlmsController extends AlmsController
                     $data = Events::trigger('lms.course_user.approved', [
                         'id_user' => $id_user,
                         'id_course' => $id_course,
-                        'approved_by' => Docebo::user()->idst,
+                        'approved_by' => Forma::user()->idst,
                     ]);
 
                     $text_query = '
@@ -3804,7 +3804,7 @@ class SubscriptionAlmsController extends AlmsController
                     $data = Events::trigger('lms.course_user.refused', [
                         'id_user' => $id_user,
                         'id_course' => $id_course,
-                        'refused_by' => Docebo::user()->idst,
+                        'refused_by' => Forma::user()->idst,
                     ]);
 
                     $level = $waiting_users['users_info'][$id_user]['level'];
@@ -3857,7 +3857,7 @@ class SubscriptionAlmsController extends AlmsController
             );
 
             if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                $uinfo = Docebo::aclm()->getUser($approve_user, false);
+                $uinfo = Forma::aclm()->getUser($approve_user, false);
                 $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }
@@ -3919,11 +3919,11 @@ class SubscriptionAlmsController extends AlmsController
 
         $courses_filter = false;
 
-        $ulevel = Docebo::user()->getUserLevelId();
+        $ulevel = Forma::user()->getUserLevelId();
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $preference = new AdminPreference();
-            $view = $preference->getAdminCourse(Docebo::user()->idst);
+            $view = $preference->getAdminCourse(Forma::user()->idst);
             $all_courses = false;
             if (isset($view['course'][0])) {
                 $all_courses = true;
@@ -3931,7 +3931,7 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -3973,7 +3973,7 @@ class SubscriptionAlmsController extends AlmsController
             if (!$all_courses) {
                 $courses_filter = $view['course'];
             }
-            $filter['user_q'] = $preference->getAdminUsersQuery(Docebo::user()->getIdst(), 'user_id');
+            $filter['user_q'] = $preference->getAdminUsersQuery(Forma::user()->getIdst(), 'user_id');
         }
 
         if ($filter_course > 0) {
@@ -4049,11 +4049,11 @@ class SubscriptionAlmsController extends AlmsController
 
         $courses_filter = false;
 
-        $ulevel = Docebo::user()->user_level;
+        $ulevel = Forma::user()->user_level;
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $preference = new AdminPreference();
-            $view = $preference->getAdminCourse(Docebo::user()->idst);
+            $view = $preference->getAdminCourse(Forma::user()->idst);
             $all_courses = false;
             if (isset($view['course'][0])) {
                 $all_courses = true;
@@ -4061,7 +4061,7 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 

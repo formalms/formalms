@@ -88,7 +88,7 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
 
         $query = 'SELECT cu.status, count(cu.idUser) as cnt'
             . ' FROM ' . $this->subscribeManager->getSubscribeUserTable() . ' cu'
-            . ' WHERE cu.iduser = ' . Docebo::user()->getId() . ' '
+            . ' WHERE cu.iduser = ' . Forma::user()->getId() . ' '
             . ' GROUP BY cu.status';
 
         $resultQuery = $this->db->query($query);

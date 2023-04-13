@@ -19,7 +19,7 @@ class TransactionAlms extends Model
 
     public function __construct()
     {
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         parent::__construct();
     }
 
@@ -243,7 +243,7 @@ class TransactionAlms extends Model
                     $id_course = $prod['id_course'];
                     $edition_id = $prod['id_edition'];
 
-                    $docebo_course = new DoceboCourse($id_course);
+                    $docebo_course = new FormaCourse($id_course);
                     $group_levels = $docebo_course->getCourseLevel($id_course);
                     $waiting_users = $man_course->getWaitingSubscribed($id_course);
 

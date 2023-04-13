@@ -104,8 +104,8 @@ class Boot
      */
     public static function finalize()
     {
-        if (isset($GLOBALS['current_user']) && Docebo::user()->isLoggedIn()) {
-            Docebo::user()->SaveInSession();
+        if (isset($GLOBALS['current_user']) && Forma::user()->isLoggedIn()) {
+            Forma::user()->SaveInSession();
         }
         $db = DbConn::getInstance();
         $db->close();
@@ -478,10 +478,10 @@ class Boot
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
-            if (Docebo::user()->isLoggedIn() && (Docebo::user()->getLogIp() != $ip)) {
+            if (Forma::user()->isLoggedIn() && (Forma::user()->getLogIp() != $ip)) {
                 \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
                 Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?msg=104');
-                //Util::fatal("logip: ".Docebo::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
+                //Util::fatal("logip: ".Forma::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
                 //unlog the user
                 exit();
             }
@@ -530,7 +530,7 @@ class Boot
         // Convert ' and " (quote or unquote)
         self::log('Sanitize the input.');
 
-        if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
             $filter_input = new FilterInput();
             $filter_input->tool = 'none';
             $filter_input->sanitize();
@@ -586,7 +586,7 @@ class Boot
                 break;
         }
 
-        //$glang =& DoceboLanguage::createInstance( 'standard', 'framework');
+        //$glang =& FormaLanguage::createInstance( 'standard', 'framework');
         //$glang->setGlobal();
     }
 

@@ -240,15 +240,15 @@ class AssessmentRuleManager
                     if ($data['type'] == 'score') {
                         $score = (isset($data['score']) ? $data['score'] : 0);
                         if ($score > 0) {
-                            if (!$cmpman->userHasCompetence($c_id, Docebo::user()->getIdst())) {
-                                $cmpman->assignCompetenceUsers($c_id, [Docebo::user()->getIdst() => $score]);
+                            if (!$cmpman->userHasCompetence($c_id, Forma::user()->getIdst())) {
+                                $cmpman->assignCompetenceUsers($c_id, [Forma::user()->getIdst() => $score]);
                             } else {
-                                $cmpman->addScoreToUsers($c_id, [Docebo::user()->getIdst()], $score);
+                                $cmpman->addScoreToUsers($c_id, [Forma::user()->getIdst()], $score);
                             }
                         }
                     } else {
-                        if (!$cmpman->userHasCompetence($c_id, Docebo::user()->getIdst())) {
-                            $cmpman->assignCompetenceUsers($c_id, [Docebo::user()->getIdst() => 1]);
+                        if (!$cmpman->userHasCompetence($c_id, Forma::user()->getIdst())) {
+                            $cmpman->assignCompetenceUsers($c_id, [Forma::user()->getIdst() => 1]);
                         }
                     }
                 }

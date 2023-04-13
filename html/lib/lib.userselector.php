@@ -286,7 +286,7 @@ class UserSelectorUtil
             }
         }
 
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = Forma::user()->getACLManager();
         $res = $acl_man->getArrGroupST($oc_id_arr);
 
         return $res;

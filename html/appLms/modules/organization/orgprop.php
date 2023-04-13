@@ -18,7 +18,7 @@ function organization_property(&$treeView, $idItem)
     require_once _base_ . '/lib/lib.tab.php';
 
     $tv = new TabView('organization_properties', '#');
-    $lang = &DoceboLanguage::createInstance('organization', 'lms');
+    $lang = &FormaLanguage::createInstance('organization', 'lms');
 
     $tv->addTab(new TabElemDefault('prereqisites', $lang->def('_PREREQUISITES'), getPathImage() . 'organizations/prerequisites.gif'));
     $tv->addTab(new TabElemDefault('settings', $lang->def('_PROPERTIES'), getPathImage() . 'organizations/settings1.gif'));
@@ -139,7 +139,7 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang)
 
     $isFolder = ($values['objectType'] === '');
     if (!$isFolder) {
-        if (Docebo::course()->getValue('course_type') == 'classroom') {
+        if (Forma::course()->getValue('course_type') == 'classroom') {
             $GLOBALS['page']->add($form->getDropdown($lang->def('_PUBLISH'),
                                                 'publish_for',
                                                 'publish_for',
@@ -396,7 +396,7 @@ function organization_property_catalogation(&$treeView, $idItem, &$form, &$lang)
                                             )
                         );
 
-    $langArray = Docebo::langManager()->getAllLangCode();
+    $langArray = Forma::langManager()->getAllLangCode();
     if (isset($values['language'])) {
         $selLang = $values['language'];
     } else {
@@ -506,14 +506,14 @@ function organization_access(&$treeView, $idItem)
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _lms_ . '/lib/lib.repo.php';
-    $lang = &DoceboLanguage::createInstance('organization', 'lms');
+    $lang = &FormaLanguage::createInstance('organization', 'lms');
     $folder = $treeView->tdb->getFolderById($idItem);
 
     $user_select = new UserSelector();
     $user_select->learning_filter = 'course';
     $user_select->org_type = $folder->otherValues[REPOFIELDOBJECTTYPE];
 
-    $aclManager = new DoceboACLManager();
+    $aclManager = new FormaACLManager();
     if (isset($_POST['okselector'])) {
         $treeView->tdb->__setAccess($idItem, $user_select->getSelection($_POST), FormaLms\lib\Get::req('relation'));
         Util::jump_to('index.php?modname=storage');

@@ -17,7 +17,7 @@ $command = FormaLms\lib\Get::req('command', DOTY_ALPHANUM, false);
 
 switch ($command) {
     case 'get_rows':
-        $lang = &DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = &FormaLanguage::CreateInstance('course', 'lms');
 
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
         $results = FormaLms\lib\Get::req('results', DOTY_INT, 0); //GLOBALS --> visuItem
@@ -81,7 +81,7 @@ switch ($command) {
 
         require_once _lms_ . '/lib/lib.permission.php';
 
-        if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
+        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
             $moderate = checkPerm('moderate', true, 'course', 'lms');
         } else {
             $moderate = true;

@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package DoceboCore
+ * @package FormaCore
  * @subpackage user_management
  *
  * @author Fabio Pirovano
@@ -269,7 +269,7 @@ class MyFile
     {
         require_once _base_ . '/lib/lib.user.php';
         require_once _base_ . '/lib/lib.user_profile.php';
-        $user_data = new DoceboUser(getLogUserId());
+        $user_data = new FormaUser(getLogUserId());
         $user_profile_data = new UserProfileData();
 
         $file_name = '';
@@ -336,7 +336,7 @@ class MyFile
     {
         require_once _base_ . '/lib/lib.upload.php';
         require_once _base_ . '/lib/lib.user.php';
-        $user_data = new DoceboUser();
+        $user_data = new FormaUser();
 
         $file_info = $this->getFileInfo($id_file);
         sl_open_fileoperations();
@@ -640,7 +640,7 @@ class MyFileSelector
         $file_man = new MyFile(getLogUserId());
         $tab_man = new TabView('myfiles', '');
 
-        $lang = &DoceboLanguage::createInstance('myfiles');
+        $lang = &FormaLanguage::createInstance('myfiles');
 
         $areas = $file_man->getFilesAreas();
         foreach ($areas as $id_page => $area_name) {
@@ -698,7 +698,7 @@ class MyFileSelector
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('myfiles');
+        $lang = &FormaLanguage::createInstance('myfiles');
 
         $GLOBALS['page']->add(
             Form::openButtonSpace()

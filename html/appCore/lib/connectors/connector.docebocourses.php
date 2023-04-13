@@ -23,7 +23,7 @@ require_once _lms_ . '/lib/lib.course.php';
  *
  * @author		Fabio Pirovano <fabio (@) docebo (.) com>
  **/
-class DoceboConnectorDoceboCourses extends DoceboConnector
+class FormaConnectorFormaCourses extends FormaConnector
 {
     public $last_error = '';
 
@@ -133,7 +133,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorDoceboCoursesUI($this);
+        return new FormaConnectorFormaCoursesUI($this);
     }
 
     public function connect()
@@ -192,7 +192,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
      **/
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('course', 'lms');
+        $lang = FormaLanguage::createInstance('course', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
@@ -377,7 +377,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
 
             // import the menu
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $re &= sql_query('
 				INSERT INTO ' . $GLOBALS['prefix_fw'] . "_admin_course 
 				( id_entry, type_of_entry, idst_user ) VALUES 
@@ -396,7 +396,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
                 $rules = array_merge($rules, $admin_rules);
                 $re = insertRoom($rules);
             }
-            $course_idst = DoceboCourse:: createCourseLevel($id_course);
+            $course_idst = FormaCourse:: createCourseLevel($id_course);
 
             require_once _lms_ . '/lib/lib.manmenu.php';
 
@@ -567,7 +567,7 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
  *
  * @author		Fabio Pirovano <fabio (@) docebo (.) com>
  **/
-class DoceboConnectorDoceboCoursesUI extends DoceboConnectorUI
+class FormaConnectorFormaCoursesUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -741,5 +741,5 @@ class DoceboConnectorDoceboCoursesUI extends DoceboConnectorUI
 
 function docebocourses_factory()
 {
-    return new DoceboConnectorDoceboCourses([]);
+    return new FormaConnectorFormaCourses([]);
 }

@@ -14,12 +14,12 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package  DoceboLms
+ * @package  FormaLms
  * @version  $Id: news.php 573 2006-08-23 09:38:54Z fabio $
  * @author     Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -32,7 +32,7 @@ function news()
     require_once _base_ . '/lib/lib.navbar.php';
 
     $mod_perm = checkPerm('mod', true);
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
@@ -154,14 +154,14 @@ function editnews($load = false)
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
     $form = new Form();
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
     $id_news = importVar('id_news', true, 0);
     $all_languages = ['-1' => Lang::t('_ALL', 'standard')];
-    $all_languages += Docebo::langManager()->getAllLangCode();
+    $all_languages += Forma::langManager()->getAllLangCode();
 
     if ($load) {
         $query_news = '
@@ -215,7 +215,7 @@ function editviewer()
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
     $form = new Form();
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -226,7 +226,7 @@ function editviewer()
         'index.php?modname=internal_news&amp;op=news' => $lang->def('_NEWS'),
         $lang->def('_RECIPIENTS'),
     ];
-    $acl_manager = new DoceboACLManager();
+    $acl_manager = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -282,8 +282,8 @@ function savenews()
 
     $id_news = importVar('id_news', true, 0);
     $load = importVar('load', true, 0);
-    $all_languages = Docebo::langManager()->getAllLangCode();
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $all_languages = Forma::langManager()->getAllLangCode();
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
 
     if ($_POST['title'] == '') {
         $_POST['title'] = $lang->def('_NOTITLE');
@@ -326,7 +326,7 @@ function delnews()
     require_once _base_ . '/lib/lib.form.php';
 
     $id_news = FormaLms\lib\Get::req('id_news', DOTY_INT, 0);
-    $lang = &DoceboLanguage::createInstance('admin_news', 'lms');
+    $lang = &FormaLanguage::createInstance('admin_news', 'lms');
 
     if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         $query_news = '

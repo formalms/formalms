@@ -371,7 +371,7 @@ class Course_Manager
     public function loadSelector($show_tabs = true, $noprint = false)
     {
         $this->tab = new TabView('course_management', $this->ref_link);
-        $lang = &DoceboLanguage::createInstance('course_selector', 'lms');
+        $lang = &FormaLanguage::createInstance('course_selector', 'lms');
 
         // overwrite show status looking for permission
         if (!checkPerm('view', true, 'course', 'lms')) {
@@ -651,7 +651,7 @@ class AdminCourseManagment
             }
         } else {
             //automatic filter, based on current user
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $course_array = &$this->getUserAllCourses(getLogUserId());
                 if (empty($course_array)) {
                     if (FormaLms\lib\Get::sett('on_catalogue_empty') == 'on') {

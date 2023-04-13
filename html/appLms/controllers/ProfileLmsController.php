@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access!");
 }
 
@@ -32,7 +32,7 @@ class ProfileLmsController extends LmsController
         $this->db = DbConn::getInstance();
         $this->model = new ProfileLms();
         $this->json = new Services_JSON();
-        $this->aclManager = Docebo::user()->getAClManager();
+        $this->aclManager = Forma::user()->getAClManager();
         $this->max_dim_avatar = 150;
     }
 
@@ -70,7 +70,7 @@ class ProfileLmsController extends LmsController
 
         require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
-        $id_user = Docebo::user()->getIdST();
+        $id_user = Forma::user()->getIdST();
         $profile = new LmsUserProfile($id_user);
         $profile->init('profile', 'framework', 'r=lms/profile/show'/*&id_user'.(int)$id_user*/, 'ap'); //'modname=profile&op=profile&id_user='.$id_user
 
@@ -121,7 +121,7 @@ class ProfileLmsController extends LmsController
         if ($user_manager->clickSaveElapsed()) {
             $error = $user_manager->saveElapsedPassword();
             if ($error['error'] == true) {
-                $res = Docebo::user()->isPasswordElapsed();
+                $res = Forma::user()->isPasswordElapsed();
 
                 if ($res == 2) {
                     $_title = getTitleArea(Lang::t('_CHANGEPASSWORD', 'profile'));
@@ -135,7 +135,7 @@ class ProfileLmsController extends LmsController
                 $this->session->remove('must_renew_pwd');
                 $this->session->save();
                 //Util::jump_to('index.php?r=lms/profile/show');
-                $user = new DoceboUser(Docebo::user()->getUserId(), 'public_area');
+                $user = new FormaUser(Forma::user()->getUserId(), 'public_area');
                 $homepageAdm = new HomepageAdm();
                 switch ($homepageAdm->saveUser($user)) {
                     case MANDATORY_FIELDS:
@@ -151,7 +151,7 @@ class ProfileLmsController extends LmsController
         } else {
             $this->session->set('must_renew_pwd', 1);
             $this->session->save();
-            $res = Docebo::user()->isPasswordElapsed();
+            $res = Forma::user()->isPasswordElapsed();
             if ($res == 2) {
                 $_title = getTitleArea(Lang::t('_CHANGEPASSWORD', 'profile'));
             } else {

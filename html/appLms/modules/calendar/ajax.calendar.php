@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -50,7 +50,7 @@ switch ($op) {
             require_once _adm_ . '/lib/lib.calendar_' . $calClass . '.php';
         }
 
-        $class = 'DoceboCal_' . $calClass;
+        $class = 'FormaCal_' . $calClass;
         $cal = new $class();
 
         if ($calClass == 'lms_classroom') {
@@ -73,7 +73,7 @@ switch ($op) {
             require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';
         }
 
-        $class = 'DoceboCalEvent_' . $calEventClass;
+        $class = 'FormaCalEvent_' . $calEventClass;
         $event = new $class();
 
         $event->assignVar();
@@ -102,7 +102,7 @@ switch ($op) {
             require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';
         }
 
-        $class = 'DoceboCalEvent_' . $calEventClass;
+        $class = 'FormaCalEvent_' . $calEventClass;
         $event = new $class();
 
         //$event->id=$id;
@@ -122,7 +122,7 @@ switch ($op) {
             require_once _adm_ . '/lib/lib.calevent_' . $calEventClass . '.php';
         }
 
-        $class = 'DoceboCalEvent_' . $calEventClass;
+        $class = 'FormaCalEvent_' . $calEventClass;
         $event = new $class();
 
         $form = $event->getForm();
@@ -131,7 +131,7 @@ switch ($op) {
      break;
 
     case 'getLang':
-        $lang = &DoceboLanguage::createInstance('calendar', 'lms');
+        $lang = &FormaLanguage::createInstance('calendar', 'lms');
 
         $lang_obj = '{
 		"_DN":["' . $lang->def('_SUNDAY') . '","' . $lang->def('_MONDAY') . '","' . $lang->def('_TUESDAY') . '","' . $lang->def('_WEDNESDAY') . '","' . $lang->def('_THURSDAY') . '","' . $lang->def('_FRIDAY') . '","' . $lang->def('_SATURDAY') . '","' . $lang->def('_SUNDAY') . '"],

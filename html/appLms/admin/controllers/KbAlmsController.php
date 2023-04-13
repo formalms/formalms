@@ -131,7 +131,7 @@ class KbAlmsController extends AlmsController
             $param = ''; //FormaLms\lib\Get::req('', DOTY_STRING, "");
             $alt_desc = '';
             $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-            $lang_arr = Docebo::langManager()->getAllLangCode();
+            $lang_arr = Forma::langManager()->getAllLangCode();
             $lang = $lang_arr[$lang_id];
             $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
             $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);
@@ -189,7 +189,7 @@ class KbAlmsController extends AlmsController
             $param = ''; //FormaLms\lib\Get::req('', DOTY_STRING, "");
             $alt_desc = '';
             $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-            $lang_arr = Docebo::langManager()->getAllLangCode();
+            $lang_arr = Forma::langManager()->getAllLangCode();
             $lang = $lang_arr[$lang_id];
             $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
             $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);
@@ -543,7 +543,7 @@ class KbAlmsController extends AlmsController
                             . Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
                             . Form::closeForm();
                     } else {
-                        $languages = Docebo::langManager()->getAllLanguages(true); //getAllLangCode();
+                        $languages = Forma::langManager()->getAllLanguages(true); //getAllLangCode();
                         $std_lang = getLanguage();
 
                         $form_content = Form::getHidden('modfolder_id', 'node_id', $id);
@@ -586,7 +586,7 @@ class KbAlmsController extends AlmsController
 
     protected function _getAddFolderDialogContent($id_parent)
     {
-        $languages = Docebo::langManager()->getAllLanguages(true); //getAllLangCode();
+        $languages = Forma::langManager()->getAllLanguages(true); //getAllLangCode();
         $std_lang = getLanguage();
 
         $form_content = Form::getHidden('addfolder_id_parent', 'id_parent', $id_parent);

@@ -20,7 +20,7 @@ function questbank(&$url)
     require_once _lib_ . '/lib.form.php';
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang = &DoceboLanguage::createInstance('test', 'lms');
+    $lang = &FormaLanguage::createInstance('test', 'lms');
     // now add the yui for the table
 
     $qb_select = new QuestBank_Selector();
@@ -97,7 +97,7 @@ function questbank(&$url)
 function addquest(&$url)
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     $type_quest = FormaLms\lib\Get::pReq('add_test_quest', DOTY_STRING, 'choice');
 
@@ -108,7 +108,7 @@ function addquest(&$url)
 
 function modquest(&$url)
 {
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     $id_quest = importVar('id_quest', true, 0);
 
@@ -126,7 +126,7 @@ function importquest(&$url)
 {
     require_once _lib_ . '/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
     $form = new Form();
 
     require_once _lms_ . '/lib/lib.quest_bank.php';
@@ -170,7 +170,7 @@ function doimportquest(&$url)
 {
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang_t = &DoceboLanguage::createInstance('test');
+    $lang_t = &FormaLanguage::createInstance('test');
 
     $qb_man = new QuestBankMan();
 
@@ -215,7 +215,7 @@ function exportquest(&$url)
 {
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -408,7 +408,7 @@ function deletequest(&$url)
 {
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     $quest_selection = FormaLms\lib\Get::req('selected_quest', DOTY_NUMLIST, '');
     $quest_selection = array_filter(preg_split('/,/', $quest_selection, -1, PREG_SPLIT_NO_EMPTY));

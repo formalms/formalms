@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * ( editor = Eclipse 3.2.0[phpeclipse,subclipse,GEF,EMF], tabwidth = 4, font = Courier New )
  */
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -32,8 +32,8 @@ function myfriends(&$url)
     require_once _adm_ . '/lib/lib.myfriends.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('myfriends', 'lms');
-    $acl_man = &Docebo::user()->getAclManager();
+    $lang = &FormaLanguage::createInstance('myfriends', 'lms');
+    $acl_man = &Forma::user()->getAclManager();
 
     $my_fr = new MyFriends(getLogUserId());
 
@@ -93,8 +93,8 @@ function approveuser(&$url)
     require_once _adm_ . '/lib/lib.myfriends.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('myfriends', 'lms');
-    $acl_man = &Docebo::user()->getAclManager();
+    $lang = &FormaLanguage::createInstance('myfriends', 'lms');
+    $acl_man = &Forma::user()->getAclManager();
 
     $my_fr = new MyFriends(getLogUserId());
 
@@ -153,9 +153,9 @@ function searchUser(&$url)
     require_once _base_ . '/lib/lib.form.php';
     require_once _adm_ . '/lib/lib.myfriends.php';
 
-    $lang = &DoceboLanguage::createInstance('myfriends', 'lms');
+    $lang = &FormaLanguage::createInstance('myfriends', 'lms');
     $my_fr = new MyFriends(getLogUserId());
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     $GLOBALS['page']->add(
         getTitleArea([$url->getUrl() => $lang->def('_MY_FRIENDS'), $lang->def('_SEARCH_USER')], 'myfriends')
@@ -232,7 +232,7 @@ function delfriend(&$url)
 
     require_once _adm_ . '/lib/lib.myfriends.php';
 
-    $lang = &DoceboLanguage::createInstance('myfriends', 'lms');
+    $lang = &FormaLanguage::createInstance('myfriends', 'lms');
     $my_fr = new MyFriends(getLogUserId());
     $id_friend = importVar('id_friend', true, 0);
 
@@ -250,7 +250,7 @@ function delfriend(&$url)
     if ($ui == false) {
         $GLOBALS['page']->add(getErrorUi($lang->def('_INVALID_FRIEND')));
     } else {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $ui = current($ui);
         $GLOBALS['page']->add(
             getDeleteUi($lang->def('_AREYOUSURE'),

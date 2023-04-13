@@ -23,7 +23,7 @@ require_once _base_ . '/lib/lib.eventmanager.php';
  *
  * @version 	1.0
  **/
-class ConnectorEditionUser extends DoceboConnector
+class ConnectorEditionUser extends FormaConnector
 {
     public $last_error = '';
 
@@ -68,7 +68,7 @@ class ConnectorEditionUser extends DoceboConnector
     public int $position;
     public $today;
     /**
-     * @var DoceboLanguage|mixed
+     * @var FormaLanguage|mixed
      */
     public mixed $lang;
 
@@ -81,7 +81,7 @@ class ConnectorEditionUser extends DoceboConnector
     {
         require_once _lms_ . '/lib/lib.edition.php';
 
-        $this->acl_man = new DoceboACLManager();
+        $this->acl_man = new FormaACLManager();
         $this->sub_man = new EditionManager();
 
         if ($params === null) {
@@ -131,7 +131,7 @@ class ConnectorEditionUser extends DoceboConnector
     /**
      * get configuration UI.
      *
-     * @return DoceboConnectorUI
+     * @return FormaConnectorUI
      **/
     public function get_configUI()
     {
@@ -143,7 +143,7 @@ class ConnectorEditionUser extends DoceboConnector
      **/
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('rg_report');
+        $this->lang = FormaLanguage::createInstance('rg_report');
 
         $this->_readed_end = false;
         $this->today = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
@@ -255,7 +255,7 @@ class ConnectorEditionUser extends DoceboConnector
 
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('subscribe', 'lms');
+        $lang = FormaLanguage::createInstance('subscribe', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
@@ -415,7 +415,7 @@ class ConnectorEditionUser extends DoceboConnector
     }
 }
 
-class ConnectorUI_EditionUserUI extends DoceboConnectorUI
+class ConnectorUI_EditionUserUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;

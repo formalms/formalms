@@ -121,7 +121,7 @@ class UserManager
     public function _getLoginResult()
     {
         if (UserManagerRenderer::loginAttempt()) {
-            if (Docebo::user()->isAnonymous()) {
+            if (Forma::user()->isAnonymous()) {
                 return false;
             } else {
                 return true;
@@ -505,7 +505,7 @@ class UserManager
 
         $form = new Form();
 
-        $lang = DoceboLanguage::createInstance('register');
+        $lang = FormaLanguage::createInstance('register');
 
         $random_code = FormaLms\lib\Get::req('code', DOTY_MIXED, '');
         $exist_code = $this->getPwdRandomCode(false, $random_code);
@@ -516,7 +516,7 @@ class UserManager
             }
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $user_info = $acl_man->getUser($exist_code['idst_user'], false);
         if (isset($_POST['send'])) {
             if ($_POST['new_password'] === $_POST['retype_new_password']) {
@@ -596,7 +596,7 @@ class UserManager
      */
     public function performLostpwdAction($mail_url)
     {
-        $lang = DoceboLanguage::createInstance('register');
+        $lang = FormaLanguage::createInstance('register');
 
         //lost userid
         if ($this->_render->haveToLostuserAction()) {
@@ -605,7 +605,7 @@ class UserManager
                 exit("This isn't a good email address !");
             }
 
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = &Forma::user()->getAclManager();
             $user_info = $acl_man->getUserByEmail($mail);
 
             if ($user_info !== false) {
@@ -664,7 +664,7 @@ class UserManager
         if ($this->_render->haveToLostpwdAction()) {
             $userid = $this->_render->getLostPwdParam();
 
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = &Forma::user()->getAclManager();
             $user_info = $acl_man->getUser(false, $acl_man->absoluteId($userid));
 
             if ($user_info !== false) {
@@ -825,7 +825,7 @@ class UserManager
 
     public function getProfile($id_user = false, $userid = false)
     {
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $user_info = &$acl_man->getUser($id_user, $userid);
         $user_info[ACL_INFO_USERID] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
@@ -1031,7 +1031,7 @@ class UserManagerRenderer
                 if ($_POST['login_lang'] == 'default') {
                     return '';
                 }
-                $all_languages = Docebo::langManager()->getAllLangCode();
+                $all_languages = Forma::langManager()->getAllLangCode();
 
                 return $all_languages[$_POST['login_lang']];
 
@@ -1055,7 +1055,7 @@ class UserManagerRenderer
             'password' => FormaLms\lib\Get::req('login_pwd', DOTY_STRING),
         ];
 
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = Forma::langManager()->getAllLangCode();
 
         $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, false);
         if ($info['lang'] === 'default') {
@@ -1221,13 +1221,13 @@ class UserManagerRenderer
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = DoceboLanguage::createInstance('login', $platform);
+        $lang = FormaLanguage::createInstance('login', $platform);
 
         if (!isset($GLOBALS['login_tabindex'])) {
             $GLOBALS['login_tabindex'] = 1;
         }
 
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = Forma::langManager()->getAllLangCode();
         $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
 
         if ($this->_style_to_use != false) {
@@ -1340,13 +1340,13 @@ class UserManagerRenderer
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = DoceboLanguage::createInstance('login', $platform);
+        $lang = FormaLanguage::createInstance('login', $platform);
 
         if (!isset($GLOBALS['login_tabindex'])) {
             $GLOBALS['login_tabindex'] = 1;
         }
 
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = Forma::langManager()->getAllLangCode();
         $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
 
         $out = '';
@@ -1395,7 +1395,7 @@ class UserManagerRenderer
         require_once _base_ . '/lib/lib.table.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         if ($options['register_type'] != 'self' && $options['register_type'] != 'self_optin' && $options['register_type'] != 'moderate') {
             return '<div class="register_noactive">' . Lang::t('_REG_NOT_ACTIVE', 'register', $platform) . '</div>';
@@ -1523,7 +1523,7 @@ class UserManagerRenderer
     {
         $res = ['success' => true, 'msg' => ''];
 
-        $lang = &DoceboLanguage::createInstance('register', 'lms');
+        $lang = &FormaLanguage::createInstance('register', 'lms');
         $code_is_mandatory = (FormaLms\lib\Get::sett('mandatory_code', 'off') == 'on');
 
         if ($reg_code != '') {
@@ -1674,7 +1674,7 @@ class UserManagerRenderer
 
     public function _opt_in($options, $platform, $opt_link)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         // Check for error
         $errors = [];
@@ -1682,7 +1682,7 @@ class UserManagerRenderer
         // Insert temporary
         $random_code = md5($_POST['register']['userid'] . mt_rand() . mt_rand() . mt_rand());
         // register as temporary user and send mail
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $iduser = '';
 
         $iduser = $acl_man->registerTempUser(
@@ -1815,7 +1815,7 @@ class UserManagerRenderer
 
     public function _special_field($options, $platform, $opt_link, $errors)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         // Check for error
         $out = '';
@@ -1893,7 +1893,7 @@ class UserManagerRenderer
                 $folder_group = [];
             }
             foreach ($array_folder as $id_org_folder) {
-                $folder_group[] = Docebo::aclm()->getGroupST('/oc_' . $id_org_folder);
+                $folder_group[] = Forma::aclm()->getGroupST('/oc_' . $id_org_folder);
             }
         }
 
@@ -1971,7 +1971,7 @@ class UserManagerRenderer
     private function _first_of_all($options, $platform, $errors = [])
     {
         $precompileLms = new PrecompileLms();
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         $out = '';
         if ($options['use_advanced_form'] == 'off') {
@@ -1994,7 +1994,7 @@ class UserManagerRenderer
 
         $lang_sel = getLanguage();
         $full_langs = [];
-        $langs = Docebo::langManager()->getAllLangCode();
+        $langs = Forma::langManager()->getAllLangCode();
         $full_langs = [];
         foreach ($langs as $v) {
             $full_langs[$v] = $v;
@@ -2220,7 +2220,7 @@ class UserManagerRenderer
 
             $out .= $extraFiledsOut;
         } elseif ($options['use_advanced_form'] == 'on') {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = &Forma::user()->getAclManager();
             $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);
 
             if (!empty($groups)) {
@@ -2296,9 +2296,9 @@ class UserManagerRenderer
 
     public function confirmRegister($platform, $options)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
-        $acl_man = &Docebo::user()->getAclManager();
-        $acl = &Docebo::user()->getAcl();
+        $lang = &FormaLanguage::createInstance('register', $platform);
+        $acl_man = &Forma::user()->getAclManager();
+        $acl = &Forma::user()->getAcl();
 
         if (!isset($_GET['random_code'])) {
         }
@@ -2492,7 +2492,7 @@ class UserManagerRenderer
      */
     public function _checkField($source, $options, $platform, $control_extra_field = true)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         $errors = [];
 
@@ -2533,7 +2533,7 @@ class UserManagerRenderer
         }
 
         // control mail is correct
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $source['register']['email'] = strtolower($source['register']['email']);
 
         if ($source['register']['email'] === '') {
@@ -2672,7 +2672,7 @@ class UserManagerRenderer
      */
     public function getLostpwd($jump_url, $platform)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -2761,7 +2761,7 @@ class UserManagerRenderer
     public function getRenderedProfile($user_info)
     {
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $lang = &FormaLanguage::createInstance('profile', 'framework');
 
         $path = FormaLms\lib\Get::site_url() . $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
@@ -2794,9 +2794,9 @@ class UserManagerRenderer
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
-        $res = Docebo::user()->isPasswordElapsed();
+        $res = Forma::user()->isPasswordElapsed();
 
         $html = '<ul class="instruction_list">';
 
@@ -2841,12 +2841,12 @@ class UserManagerRenderer
 
     public function saveElapsedPassword($platform, $options)
     {
-        $lang = &DoceboLanguage::createInstance('register', $platform);
+        $lang = &FormaLanguage::createInstance('register', $platform);
 
         $html = '';
 
         $idst = getLogUserId();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $user_info = $acl_man->getUser($idst, false);
 
         $password = new Password($_POST['oldpwd']);
@@ -3051,7 +3051,7 @@ class UserManagerOption
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('user_managment', 'framework');
+        $lang = &FormaLanguage::createInstance('user_managment', 'framework');
 
         $reSetting = sql_query('
 		SELECT param_name, param_value, value_type, max_size

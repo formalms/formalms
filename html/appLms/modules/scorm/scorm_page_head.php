@@ -17,7 +17,7 @@ ob_start();
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 $idCourse = $session->get('idCourse');
 
-if (!Docebo::user()->isLoggedIn() || !$idCourse) {
+if (!Forma::user()->isLoggedIn() || !$idCourse) {
     exit('Malformed request');
 }
 

@@ -52,7 +52,7 @@ class API
     public function __construct()
     {
         $this->db = DbConn::getInstance();
-        $this->aclManager = Docebo::user()->getAclManager();
+        $this->aclManager = Forma::user()->getAclManager();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $this->request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
     }
@@ -87,7 +87,7 @@ class API
 
     public function authenticateUser($username, $password)
     {
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $query = 'SELECT * FROM %adm_user '
             . "WHERE userid='" . $this->aclManager->absoluteId($username) . "' AND pass='" . $this->aclManager->encrypt($password) . "'";
         $res = $this->db->query($query);

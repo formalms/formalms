@@ -18,7 +18,7 @@ function schedule_recipients($idrep)
 {
     checkPerm('mod');
 
-    $lang = &DoceboLanguage::createInstance('report', 'framework');
+    $lang = &FormaLanguage::createInstance('report', 'framework');
 
     if (FormaLms\lib\Get::req('schedule_undo', DOTY_MIXED, false)) {
         //$back_op = FormaLms\lib\Get::req()
@@ -36,10 +36,10 @@ function schedule_recipients($idrep)
     require_once _lms_ . '/lib/lib.report.php';
     //require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
 
-    $aclManager = new DoceboACLManager();
+    $aclManager = new FormaACLManager();
     $user_select = new UserSelector();
 
-    $lang = &DoceboLanguage::createInstance('report', 'framework');
+    $lang = &FormaLanguage::createInstance('report', 'framework');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!isset($_POST['is_updating'])) {
@@ -152,7 +152,7 @@ function schedule_set($idrep, $checkperm = 'mod')
         checkPerm($checkperm);
     }
 
-    $lang = &DoceboLanguage::createInstance('report', 'framework');
+    $lang = &FormaLanguage::createInstance('report', 'framework');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     //initialize session data for schedulation, if not updating
     $scheduleTempData = $session->get('schedule_tempdata');
@@ -194,7 +194,7 @@ function schedule_set($idrep, $checkperm = 'mod')
         $year_months[$i] = $i; //TO DO : format with 2 digits filling with 0
     }
 
-    $lang_days = &DoceboLanguage::createInstance('calendar', 'lms');
+    $lang_days = &FormaLanguage::createInstance('calendar', 'lms');
     $week_days = [
             '0' => $lang_days->def('_SUNDAY'),
             '1' => $lang_days->def('_MONDAY'),
@@ -329,7 +329,7 @@ function get_period_text($period, $time)
 {
     $output = '';
 
-    $lang = &DoceboLanguage::createInstance('report', 'framework');
+    $lang = &FormaLanguage::createInstance('report', 'framework');
     $texts = [
         'day' => $lang->def('_REPORT_DAILY'),
         'now' => $lang->def('_REPORT_NOW'),
@@ -337,7 +337,7 @@ function get_period_text($period, $time)
         'month' => $lang->def('_REPORT_MONTHLY'),
     ];
 
-    $lang_days = &DoceboLanguage::createInstance('calendar', 'lms');
+    $lang_days = &FormaLanguage::createInstance('calendar', 'lms');
     $week_days = [
         '0' => $lang_days->def('_SUNDAY'),
         '1' => $lang_days->def('_MONDAY'),
@@ -375,8 +375,8 @@ function get_schedulations_table($idrep = false)
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
     YuiLib::load('selector');
 
-    $acl_man = &Docebo::user()->getACLManager();
-    $level = Docebo::user()->getUserLevelId(getLogUserId());
+    $acl_man = &Forma::user()->getACLManager();
+    $level = Forma::user()->getUserLevelId(getLogUserId());
 
     $admin_cond = '';
     switch ($level) {
@@ -398,7 +398,7 @@ function get_schedulations_table($idrep = false)
         ($idrep ? "AND schedule.id_report_filter=$idrep " : '') .
         'GROUP BY schedule.id_report_schedule';
 
-    $lang = &DoceboLanguage::createInstance('report', 'framework');
+    $lang = &FormaLanguage::createInstance('report', 'framework');
     $output = '';
 
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));

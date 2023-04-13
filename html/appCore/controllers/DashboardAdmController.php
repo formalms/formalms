@@ -184,7 +184,7 @@ class DashboardAdmController extends AdmController
 
         require_once _lms_ . '/lib/lib.course.php';
         $man_course = new Man_Course();
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         if ($id_user <= 0) {
             $id_user = $acl_man->getUserST($c_userid);

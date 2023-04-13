@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -28,8 +28,8 @@ function manmenu()
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
-    $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu', 'framework');
+    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
 
     $mod_perm = checkPerm('mod', true);
 
@@ -131,8 +131,8 @@ function editmenuvoice($load = false)
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
-    $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu', 'framework');
+    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
 
     $out->setWorkingZone('content');
 
@@ -232,8 +232,8 @@ function delmenuvoice()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
-    $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu', 'framework');
+    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
 
     $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
 
@@ -270,8 +270,8 @@ function delmenuvoice()
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
 		WHERE idMain = '" . $id_main . "'");
 
-        Docebo::user()->loadUserSectionST();
-        Docebo::user()->SaveInSession();
+        Forma::user()->loadUserSectionST();
+        Forma::user()->SaveInSession();
 
         Util::jump_to('index.php?modname=manmenu&op=manmenu&result=' . ($re ? 1 : 0));
     } else {
@@ -357,9 +357,9 @@ function manmodule()
     require_once _base_ . '/lib/lib.table.php';
 
     $out = &$GLOBALS['page'];
-    $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
-    $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
-    $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu', 'framework');
+    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
+    $menu_lang = &FormaLanguage::createInstance('menu_course', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $mod_perm = checkPerm('mod', true);
 
@@ -506,14 +506,14 @@ function editmodule($load = false)
     require_once _base_ . '/lib/lib.form.php';
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
-    $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
-    $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu', 'framework');
+    $menu_lang = &FormaLanguage::createInstance('menu_course', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
     $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     $perm = [];
 
     // Load module info
@@ -613,8 +613,8 @@ function upmodule()
     $new_id_main = FormaLms\lib\Get::req('new_id_main', DOTY_INT, 0);
     $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
-    $acl_man = &Docebo::user()->getAclManager();
+    $lang = &FormaLanguage::createInstance('manmenu', 'framework');
+    $acl_man = &Forma::user()->getAclManager();
 
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $id_main);
@@ -706,15 +706,15 @@ function upmodule()
 		( idCourse, idMain, idModule, sequence, my_name ) VALUES 
 		( '" . $idCourse . "', '" . $new_id_main . "', '" . $id_module . "', '" . $seq . "', '" . $my_name . "' ) ");
     }
-    Docebo::user()->loadUserSectionST();
-    Docebo::user()->SaveInSession();
+    Forma::user()->loadUserSectionST();
+    Forma::user()->SaveInSession();
 
     Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $new_id_main . '&result=' . ($re ? 1 : 0));
 }
 
 function removeModule($id_module, $id_main, $id_course)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     // Load module info
     $query_module = '
@@ -760,8 +760,8 @@ function delmodule()
     $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
     $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
 
-    $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
-    $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu', 'framework');
+    $menu_lang = &FormaLanguage::createInstance('menu_course', 'lms');
 
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $id_main);
@@ -770,8 +770,8 @@ function delmodule()
     if (isset($_POST['confirm']) || isset($_GET['confirm'])) {
         $re = removeModule($id_module, $id_main, $idCourse);
 
-        Docebo::user()->loadUserSectionST();
-        Docebo::user()->SaveInSession();
+        Forma::user()->loadUserSectionST();
+        Forma::user()->SaveInSession();
 
         Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $id_main . '&result=' . ($re ? 1 : 0));
     } else {

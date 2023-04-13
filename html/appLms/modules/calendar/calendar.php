@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -55,7 +55,7 @@ function drawCalendar()
         . '\'lms\', '
         . '\'edit\', '
         . '\'' . $permissions . '\', '
-        . '\'' . Docebo::user()->getIdSt() . '\' '
+        . '\'' . Forma::user()->getIdSt() . '\' '
         . ');'
          . '</script>', 'page_head');
 

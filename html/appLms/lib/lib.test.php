@@ -662,14 +662,14 @@ class TestManagement
         require_once _base_ . '/lib/lib.domxml.php';
 
         // initialize DOM class
-        $xml_doc = new DoceboDOMDocument();
+        $xml_doc = new FormaDOMDocument();
         if (!$xml_doc) {
             return false;
         }
         if (!$xml_doc->load($filename)) {
             return false;
         }
-        if (!$xpath = new DoceboDOMXPath($xml_doc)) {
+        if (!$xpath = new FormaDOMXPath($xml_doc)) {
             return false;
         }
 

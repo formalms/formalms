@@ -46,9 +46,9 @@ class Field_YesNo extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $array_lang = Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -165,9 +165,9 @@ class Field_YesNo extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $array_lang = Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -303,7 +303,7 @@ class Field_YesNo extends Field
      */
     public function show($id_user)
     {
-        $lang = &DoceboLanguage::createInstance('field', 'framework');
+        $lang = &FormaLanguage::createInstance('field', 'framework');
 
         list($user_entry) = sql_fetch_row(sql_query('
 		SELECT user_entry
@@ -320,7 +320,7 @@ class Field_YesNo extends Field
 
     public function toString($field_value)
     {
-        $lang = &DoceboLanguage::createInstance('field', 'framework');
+        $lang = &FormaLanguage::createInstance('field', 'framework');
         switch ($field_value) {
             case 1 : return $lang->def('_YES'); break;
             case 2 : return $lang->def('_NO'); break;
@@ -339,7 +339,7 @@ class Field_YesNo extends Field
      */
     public function play($id_user, $freeze, $mandatory = false, $do_not_show_label = false, $value = null, $registrationLayout = false)
     {
-        $lang = &DoceboLanguage::createInstance('field', 'framework');
+        $lang = &FormaLanguage::createInstance('field', 'framework');
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -456,7 +456,7 @@ class Field_YesNo extends Field
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('field');
+        $lang = &FormaLanguage::createInstance('field');
 
         if ($value === false) {
             $value = Field::getFieldValue_Filter($_POST, $id_field, $field_prefix, '');

@@ -105,7 +105,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference)
     require_once Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
-    $lang = DoceboLanguage::CreateInstance('organization', 'lms');
+    $lang = FormaLanguage::CreateInstance('organization', 'lms');
 
     $h_type = ['', '', 'image', 'image', '', 'nowrap', 'image', 'image nowrap'];
     $h_content = [
@@ -168,7 +168,7 @@ function getHistoryTable($id_user, $id_org, $idscorm_item, $idReference)
     require_once Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
-    $lang = DoceboLanguage::CreateInstance('organization', 'lms');
+    $lang = FormaLanguage::CreateInstance('organization', 'lms');
 
     $h_type = ['', '', '', '', ''];
     $h_content = [

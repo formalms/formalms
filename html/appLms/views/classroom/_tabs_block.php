@@ -18,7 +18,7 @@
             // draw search
                 $_model = new ClassroomLms();
                 $_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year',
-                    $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
+                    $_model->getFilterYears(Forma::user()->getIdst()), 0, '');
 
                 $this->widget('tablefilter', [
                     'id' => 'course_search',

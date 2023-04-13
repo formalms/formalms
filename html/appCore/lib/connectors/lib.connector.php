@@ -48,7 +48,7 @@ define('DOCEBO_IMPORT_NOTHINGTOPROCESS', 1);
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnector
+class FormaConnector
 {
     public $cache_inserted = false;
 
@@ -82,7 +82,7 @@ class DoceboConnector
     /**
      * get configuration UI.
      *
-     * @return DoceboConnectorUI
+     * @return FormaConnectorUI
      **/
     public function get_configUI()
     {
@@ -292,7 +292,7 @@ class DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorUI
+class FormaConnectorUI
 {
     public $form = null;
     public $lang = null;
@@ -300,7 +300,7 @@ class DoceboConnectorUI
     /**
      * This method is to set the $lang object.
      *
-     * @param DoceboLang $lang
+     * @param FormaLang $lang
      **/
     public function set_lang(&$lang)
     {

@@ -46,7 +46,7 @@ function coursecatalogue($id_block, $title, $option = [])
     $css_path = FormaLms\lib\Get::tmpl_path('base') . 'yui-skin';
     cout(Util::get_css($css_path . '/tabview.css', true), 'page_head');
 
-    $lang = &DoceboLanguage::CreateInstance('catalogue', 'cms');
+    $lang = &FormaLanguage::CreateInstance('catalogue', 'cms');
 
     $man_cat = new Man_Catalog();
 
@@ -239,9 +239,9 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
 {
     require_once _lms_ . '/lib/lib.course.php';
 
-    $acl_manger = Docebo::user()->getAclManager();
+    $acl_manger = Forma::user()->getAclManager();
 
-    $lang = &DoceboLanguage::CreateInstance('catalogue', 'cms');
+    $lang = &FormaLanguage::CreateInstance('catalogue', 'cms');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if ($course_info['course_type'] !== 'elearning') {
         if (!isset($course_info['dates'])) {
@@ -271,7 +271,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
         }
 
         if ($course_info['selling'] == 0) {
-            if (Docebo::user()->isAnonymous()) {
+            if (Forma::user()->isAnonymous()) {
                 return '<p class="cannot_subscribe">' . $lang->def('_NEED_TO_LOGIN') . '</p>';
             } else {
                 return '<a href="javascript:;" onClick="datePrenotationPopUp(\'' . $course_info['idCourse'] . '\', \'' . $lang->def('_CHART_EDITION_FOR') . ' : ' . addslashes($course_info['name']) . '\')"><p class="can_subscribe">' . $lang->def('_CAN_SUBSCRIBE') . '</p></a>';
@@ -356,7 +356,7 @@ function controlCourse($course_info, $page, $id_catalogue, $id_category, $ini)
         }
 
         if ($course_info['selling'] == 0) {
-            if (Docebo::user()->isAnonymous()) {
+            if (Forma::user()->isAnonymous()) {
                 return '<p class="cannot_subscribe">' . $lang->def('_NEED_TO_LOGIN') . '</p>';
             } else {
                 return '<a href="index.php?pag=' . $page . '&amp;id_catalogue=' . $id_catalogue . ($id_category != 0 ? '&amp;id_cat=' . $id_category : '') . '&amp;id_course=' . $course_info['idCourse'] . '&amp;ini=' . $ini . '&amp;action=subscribe"><p class="can_subscribe">' . $lang->def('_CAN_SUBSCRIBE') . '</p></a>';
@@ -394,7 +394,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 
     $subscribe_man = new CourseSubscribe_Management();
     $date_man = new DateManager();
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     $query = 'SELECT idCourse'
                 . ' FROM %adm_courseuser WHERE idUser = ' . $id_user;
@@ -408,7 +408,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
 
     $dates = $date_man->getUserDates($id_user);
 
-    $docebo_course = new DoceboCourse($id_course);
+    $docebo_course = new FormaCourse($id_course);
 
     $level_idst = &$docebo_course->getCourseLevel($id_course);
 

@@ -24,7 +24,7 @@ class UpdatesLms extends Model
         require_once _lms_ . '/lib/lib.date.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $this->id_user = Docebo::user()->getIdst();
+        $this->id_user = Forma::user()->getIdst();
         $this->db = DbConn::getInstance();
     }
 
@@ -118,7 +118,7 @@ class UpdatesLms extends Model
 
     public function gamesUpdates()
     {
-        $arrst = Docebo::user()->getArrSt();
+        $arrst = Forma::user()->getArrSt();
         $qtxt = 'SELECT COUNT(*) '
             . ' FROM ( %lms_games AS c '
             . '	JOIN %lms_games_access AS ca ON (c.id_game = ca.id_game) ) '
@@ -138,7 +138,7 @@ class UpdatesLms extends Model
     {
         $count = ['unread' => 0, 'history' => 0];
 
-        $arrst = Docebo::user()->getArrSt();
+        $arrst = Forma::user()->getArrSt();
         $qtxt = 'SELECT COUNT(*) '
             . ' FROM ( %lms_games AS c '
             . '	JOIN %lms_games_access AS ca ON (c.id_game = ca.id_game) ) '
@@ -169,7 +169,7 @@ class UpdatesLms extends Model
 
     public function communicationUpdates()
     {
-        $arrst = Docebo::user()->getArrSt();
+        $arrst = Forma::user()->getArrSt();
         $qtxt = 'SELECT COUNT(*) '
             . ' FROM ( %lms_communication AS c '
             . '	JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm) ) '
@@ -190,7 +190,7 @@ class UpdatesLms extends Model
     {
         $count = ['unread' => 0, 'history' => 0];
 
-        $arrst = Docebo::user()->getArrSt();
+        $arrst = Forma::user()->getArrSt();
         $qtxt = 'SELECT COUNT(*) '
             . ' FROM ( %lms_communication AS c '
             . '	JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm) ) '

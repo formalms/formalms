@@ -13,11 +13,11 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     function play($object_link, $id_param)
     {
         //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = &FormaLanguage::createInstance('link');
 
         $idCategory = $object_link->getId();
         $mode = importVar('mode', false, 'link');
@@ -86,7 +86,7 @@ if (!Docebo::user()->isAnonymous()) {
     function displayAsList($idCategory)
     {
         //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = &FormaLanguage::createInstance('link');
 
         $textQuery = '
 	SELECT title, link_address, description 
@@ -110,7 +110,7 @@ if (!Docebo::user()->isAnonymous()) {
         if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) {
             exit("You can't access");
         }
-        $lang = &DoceboLanguage::createInstance('link');
+        $lang = &FormaLanguage::createInstance('link');
 
         $textQuery = '
 	SELECT keyword 

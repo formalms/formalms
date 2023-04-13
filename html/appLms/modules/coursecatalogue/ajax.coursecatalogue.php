@@ -19,16 +19,16 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @category ajax server
  */
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
-    $lang = &DoceboLanguage::createInstance('standard', 'framework');
+    $lang = &FormaLanguage::createInstance('standard', 'framework');
     $lang->setGlobal();
 
-    $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
-    $lang = &DoceboLanguage::createInstance('course', 'lms');
+    $lang = &FormaLanguage::createInstance('catalogue', 'lms');
+    $lang = &FormaLanguage::createInstance('course', 'lms');
 
-    $man_course = new DoceboCourse(importVar('id_course', true, 0));
+    $man_course = new FormaCourse(importVar('id_course', true, 0));
     $course_name = $man_course->getValue('name');
 
     $string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
@@ -50,13 +50,13 @@ if (Docebo::user()->isAnonymous()) {
     $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
     switch ($op) {
         case 'getLang':
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('cart', 'ecom');
+            $lang = &FormaLanguage::createInstance('cart', 'ecom');
 
             $idst = getLogUserId();
-            $acl_man = &Docebo::user()->getAclManager();
-            $userid = Docebo::user()->getUserId();
+            $acl_man = &Forma::user()->getAclManager();
+            $userid = Forma::user()->getUserId();
             $user_info = $acl_man->getUser($idst, false);
 
             $user_email = $user_info[ACL_INFO_EMAIL];
@@ -71,9 +71,9 @@ if (Docebo::user()->isAnonymous()) {
          break;
 
         case 'getCartSummary':
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('cart', 'ecom');
+            $lang = &FormaLanguage::createInstance('cart', 'ecom');
 
             require_once $GLOBALS['where_ecom'] . '/lib/lib.cart.php';
             $cart = Cart::createInstance();
@@ -105,14 +105,14 @@ if (Docebo::user()->isAnonymous()) {
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
 
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('course', 'lms');
+            $lang = &FormaLanguage::createInstance('course', 'lms');
 
             $id_course = importVar('id_course', true, 0);
             $normal_subs = importVar('normal_subs', true, 0);
 
-            $man_course = new DoceboCourse($id_course);
+            $man_course = new FormaCourse($id_course);
             $cinfo = $man_course->getAllInfo();
 
             require_once _lms_ . '/lib/lib.classroom.php';
@@ -182,7 +182,7 @@ if (Docebo::user()->isAnonymous()) {
             $id_course = importVar('id_course', true, 0);
             $evaluation = importVar('evaluation');
 
-            $man_course = new DoceboCourse($id_course);
+            $man_course = new FormaCourse($id_course);
             $man_courseuser = new Man_CourseUser();
 
             $user_score = $man_courseuser->getUserCourseScored(getLogUserId());
@@ -232,14 +232,14 @@ if (Docebo::user()->isAnonymous()) {
         case 'course_action_confirm':
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
 
-            if (Docebo::user()->isAnonymous()) {
-                $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
-                $lang = &DoceboLanguage::createInstance('course', 'lms');
+            if (Forma::user()->isAnonymous()) {
+                $lang = &FormaLanguage::createInstance('catalogue', 'lms');
+                $lang = &FormaLanguage::createInstance('course', 'lms');
 
-                $man_course = new DoceboCourse(importVar('id_course', true, 0));
+                $man_course = new FormaCourse(importVar('id_course', true, 0));
                 $course_name = $man_course->getValue('name');
 
                 $string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
@@ -258,11 +258,11 @@ if (Docebo::user()->isAnonymous()) {
                     define('_ECOM_CURRENCY', $currency_label);
                 }
 
-                $lang = &DoceboLanguage::createInstance('course', 'lms');
+                $lang = &FormaLanguage::createInstance('course', 'lms');
 
                 $id_course = importVar('id_course', true, 0);
 
-                $man_course = new DoceboCourse($id_course);
+                $man_course = new FormaCourse($id_course);
                 $cinfo = $man_course->getAllInfo();
 
                 $man_courseuser = new Man_CourseUser();
@@ -314,14 +314,14 @@ if (Docebo::user()->isAnonymous()) {
         case 'course_action_confirm_edition':
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
 
-            if (Docebo::user()->isAnonymous()) {
-                $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
-                $lang = &DoceboLanguage::createInstance('course', 'lms');
+            if (Forma::user()->isAnonymous()) {
+                $lang = &FormaLanguage::createInstance('catalogue', 'lms');
+                $lang = &FormaLanguage::createInstance('course', 'lms');
 
-                $man_course = new DoceboCourse(importVar('id_course', true, 0));
+                $man_course = new FormaCourse(importVar('id_course', true, 0));
                 $course_name = $man_course->getValue('name');
 
                 $string = $lang->def('_THANKS_LOGIN_OR_REGISTER');
@@ -335,7 +335,7 @@ if (Docebo::user()->isAnonymous()) {
                     'content' => str_replace(array_keys($subst), $subst, $string),
                 ];
             } else {
-                $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+                $lang = &FormaLanguage::createInstance('catalogue', 'lms');
 
                 $value = [
                     'next_op' => '',
@@ -372,16 +372,16 @@ if (Docebo::user()->isAnonymous()) {
 
             $ax_comm->addComment($comment_data);
 
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+            $lang = &FormaLanguage::createInstance('catalogue', 'lms');
 
             $ax_rend = new AjaxCommentRender('catalogue', 'lms');
 
             $man_courseuser = new Man_CourseUser();
             $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), true);
 
-            if (Docebo::user()->isAnonymous()) {
+            if (Forma::user()->isAnonymous()) {
                 $ax_comm->canReply(false);
             } else {
                 $ax_comm->canReply(isset($usercourses[$id_course]));
@@ -417,9 +417,9 @@ if (Docebo::user()->isAnonymous()) {
             require_once _adm_ . '/lib/lib.ajax_comment.php';
             require_once _lms_ . '/lib/lib.course.php';
 
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+            $lang = &FormaLanguage::createInstance('catalogue', 'lms');
 
             $comment_id = importVar('comment_id', true, 0);
             $id_course = importVar('id_course', true, 0);
@@ -431,7 +431,7 @@ if (Docebo::user()->isAnonymous()) {
             $man_courseuser = new Man_CourseUser();
             $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), true);
 
-            if (Docebo::user()->isAnonymous()) {
+            if (Forma::user()->isAnonymous()) {
                 $ax_comm->canReply(false);
             } else {
                 $ax_comm->canReply(isset($usercourses[$id_course]));
@@ -467,9 +467,9 @@ if (Docebo::user()->isAnonymous()) {
             require_once _adm_ . '/lib/lib.ajax_comment.php';
             require_once _lms_ . '/lib/lib.course.php';
 
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('catalogue', 'lms');
+            $lang = &FormaLanguage::createInstance('catalogue', 'lms');
 
             $id_course = importVar('id_course', true, 0);
             $ax_comm = new AjaxComment('course', 'lms');
@@ -478,7 +478,7 @@ if (Docebo::user()->isAnonymous()) {
             $man_courseuser = new Man_CourseUser();
             $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), true);
 
-            if (Docebo::user()->isAnonymous()) {
+            if (Forma::user()->isAnonymous()) {
                 $ax_comm->canReply(false);
             } else {
                 $ax_comm->canReply(isset($usercourses[$id_course]));
@@ -510,19 +510,19 @@ if (Docebo::user()->isAnonymous()) {
          break;
         case 'course_materials':
             require_once _lms_ . '/lib/lib.course.php';
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('course', 'lms');
+            $lang = &FormaLanguage::createInstance('course', 'lms');
 
             $id_course = importVar('id_course', true);
-            $course_man = new DoceboCourse($id_course);
+            $course_man = new FormaCourse($id_course);
             $course_mat = $course_man->getValue('img_material');
 
             $html = '<ul class="course_editions">';
             if ($course_mat != '') {
                 $html .= '<li><b>[' . $course_man->getValue('code') . '] ' . $course_man->getValue('name') . ' ' . $course_mat . '</b>'
                     . '<div class="align_right">'
-                    . '<a href="index.php?modname=' . (Docebo::user()->isAnonymous()
+                    . '<a href="index.php?modname=' . (Forma::user()->isAnonymous()
                                 ? 'login'
                                 : 'coursecatalogue') . '&amp;op=donwloadmaterials'
                             . '&amp;id_course=' . $id_course . '">'
@@ -549,7 +549,7 @@ if (Docebo::user()->isAnonymous()) {
                                                 $lang->def('_EDTION_TIME'));
                     }
                     $html .= '<div class="popup_materials">'
-                            . '<a href="index.php?modname=' . (Docebo::user()->isAnonymous()
+                            . '<a href="index.php?modname=' . (Forma::user()->isAnonymous()
                                 ? 'login'
                                 : 'coursecatalogue') . '&amp;op=donwloadmaterials'
                                 . '&amp;id_course=' . $ed_info['idCourse'] . '&amp;edition_id=' . $ed_info['idCourseEdition'] . '">'
@@ -578,12 +578,12 @@ if (Docebo::user()->isAnonymous()) {
             require_once _lms_ . '/lib/lib.course.php';
             require_once _base_ . '/lib/lib.multimedia.php';
 
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('course', 'lms');
+            $lang = &FormaLanguage::createInstance('course', 'lms');
 
             $id_course = importVar('id_course', true);
-            $course_man = new DoceboCourse($id_course);
+            $course_man = new FormaCourse($id_course);
             $course_demo = $course_man->getValue('course_demo');
 
             $ext = end(explode('.', $course_demo));
@@ -601,9 +601,9 @@ if (Docebo::user()->isAnonymous()) {
             aout($output);
          break;
         default:
-            $lang = &DoceboLanguage::createInstance('standard', 'framework');
+            $lang = &FormaLanguage::createInstance('standard', 'framework');
             $lang->setGlobal();
-            $lang = &DoceboLanguage::createInstance('catalogue', 'framework');
+            $lang = &FormaLanguage::createInstance('catalogue', 'framework');
 
             $value = [
                 'next_op' => 'prova',

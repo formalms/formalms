@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * This is the base library for import/export operations in Docebo.
+ * This is the base library for import/export operations in Forma.
  * You should import this library if you want to develop your own
  * source or destination connector. This file is also imported in
  * modules/ioTask.php
@@ -49,7 +49,7 @@ define('DOCEBOIMPORT_IGNORE', 'ignorefield');
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboImport_Source
+class FormaImport_Source
 {
     /**
      * Return the number of columns.
@@ -126,7 +126,7 @@ class DoceboImport_Source
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboImport_Destination
+class FormaImport_Destination
 {
     /**
      * execute the connection to source.
@@ -204,7 +204,7 @@ class DoceboImport_Destination
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboImport_DestinationMySQL extends DoceboImport_Destination
+class FormaImport_DestinationMySQL extends FormaImport_Destination
 {
     public $dbconn = null;
     public $table = null;
@@ -344,7 +344,7 @@ class DoceboImport_DestinationMySQL extends DoceboImport_Destination
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DeceboImport_SourceCSV extends DoceboImport_Source
+class DeceboImport_SourceCSV extends FormaImport_Source
 {
     public $filename = null;
     public $filehandle = null;
@@ -518,7 +518,7 @@ define('DOCEBOIMPORT_TYPEMYSQL', 1);
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboImport
+class FormaImport
 {
     public $source = null;
     public $destination = null;
@@ -531,9 +531,9 @@ class DoceboImport
      * @static
      *
      * @param int   $type   one of DOCEBOIMPORT_TYPEXXX constant
-     * @param array $params params for the DoceboImport_Source constructor
+     * @param array $params params for the FormaImport_Source constructor
      *
-     * @return DoceboImport_Source instance of DoceboImport_Source; NULL if method
+     * @return FormaImport_Source instance of FormaImport_Source; NULL if method
      *                             fail
      **/
     public function createImport_Source($type, $params)
@@ -552,16 +552,16 @@ class DoceboImport
      * @static
      *
      * @param int   $type   one of DOCEBOIMPORT_TYPEXXX constant
-     * @param array $params params for the DoceboImport_Destination constructor
+     * @param array $params params for the FormaImport_Destination constructor
      *
-     * @return DoceboImport_Destination instance of DoceboImport_Destination;
+     * @return FormaImport_Destination instance of FormaImport_Destination;
      *                                  NULL if method fail
      **/
     public function createImport_Destination($type, $params)
     {
         switch ($type) {
             case DOCEBOIMPORT_MYSQL:
-                return new DoceboImport_DestinationMySQL($params);
+                return new FormaImport_DestinationMySQL($params);
         }
 
         return null;
@@ -585,7 +585,7 @@ class DoceboImport
     {
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
+        $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
         $form = new Form();
         $table = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
 
@@ -694,7 +694,7 @@ class DoceboImport
             }
 
             if ($i == 0) {
-                Docebo::db()->start_transaction();
+                Forma::db()->start_transaction();
                 $open_transaction = true;
             }
             /*
@@ -712,7 +712,7 @@ class DoceboImport
 
             if ($i == 100) {
                 $i = 0;
-                Docebo::db()->commit();
+                Forma::db()->commit();
                 $open_transaction = false;
             } else {
                 ++$i;
@@ -720,11 +720,11 @@ class DoceboImport
             $row = $this->source->get_next_row();
 
             // Increment the counter for users created by this admin:
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                 if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                    $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                    $user_pref = new UserPreferences(Forma::user()->getIdSt());
                     $user_created_count = (int) $user_pref->getPreference('user_created_count');
                     ++$user_created_count;
                     $user_pref->setPreference('user_created_count', $user_created_count);
@@ -732,7 +732,7 @@ class DoceboImport
             }
         }
         if ($open_transaction) {
-            Docebo::db()->commit();
+            Forma::db()->commit();
         }
         $out[0] = ($this->source->first_row_header ? $this->source->get_row_index() - 1 : $this->source->get_row_index());
 

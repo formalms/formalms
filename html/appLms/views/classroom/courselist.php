@@ -112,7 +112,7 @@
 
 		<?php
             $smodel = new SubscriptionAlms();
-            if ($smodel->isUserWaitingForSelfUnsubscribe(Docebo::user()->idst, $course['idCourse'])) {
+            if ($smodel->isUserWaitingForSelfUnsubscribe(Forma::user()->idst, $course['idCourse'])) {
                 echo '<p style="padding:.4em">' . Lang::t('_UNSUBSCRIBE_REQUEST_WAITING_FOR_MODERATION', 'course') . '</p>';
             } else {
                 //auto unsubscribe management: create a link for the user in the course block
@@ -130,7 +130,7 @@
                     } else {
                         $unsubscribe_call_arr[] = $course['idCourse']; ?>
 
-			<?php if ($dm->checkHasValidUnsubscribePeriod($course['idCourse'], Docebo::user()->getIdSt())) { ?>
+			<?php if ($dm->checkHasValidUnsubscribePeriod($course['idCourse'], Forma::user()->getIdSt())) { ?>
 			<a id="self_unsubscribe_link_<?php echo $course['idCourse']; ?> " href="ajax.server.php?r=classroom/self_unsubscribe_dialog&amp;id_course=<?php echo $course['idCourse']; ?>"
 				 title="<?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course'); ?>">
 				 <?php echo Lang::t('_SELF_UNSUBSCRIBE', 'course'); ?>

@@ -88,7 +88,7 @@ class ScsAdminModule
 
     public function getTitle()
     {
-        return 'Docebo 3.0 SCS (Conference) - ' . $this->module_name;
+        return 'Forma 3.0 SCS (Conference) - ' . $this->module_name;
     }
 
     public function loadHeader()
@@ -138,8 +138,8 @@ class ScsAdminModule
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('manmenu');
-        $lang_perm = &DoceboLanguage::createInstance('permission');
+        $lang = &FormaLanguage::createInstance('manmenu');
+        $lang_perm = &FormaLanguage::createInstance('permission');
 
         $tokens = $this->getAllToken($op);
         $tb = new Table(0, '', $lang->def('_EDIT_SETTINGS'));

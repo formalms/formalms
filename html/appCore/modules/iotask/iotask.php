@@ -33,7 +33,7 @@ function ioTask_UITab(&$module, $op)
     require_once _base_ . '/lib/lib.tab.php';
 
     $tv = new TabView('iotask_ui', '#');
-    $lang = &DoceboLanguage::createInstance('iotask', 'framework');
+    $lang = &FormaLanguage::createInstance('iotask', 'framework');
 
     $tv->addTab(new TabElemDefault('connectors', $lang->def('_CONNECTORS'), getPathImage() . 'iotask/connector.gif'));
     $tv->addTab(new TabElemDefault('connections', $lang->def('_CONNECTIONS'), getPathImage() . 'iotask/connection.gif'));
@@ -502,8 +502,8 @@ function ioTask_UITaskNew(&$module, $action, $subop)
             }
         }
         if ($step == 1) {
-            // load the map from DoceboImport object
-            $dimport = new DoceboImport();
+            // load the map from FormaImport object
+            $dimport = new FormaImport();
             $params[CONNMGR_TASK_MAP] = $dimport->parse_map();
         }
     } else {
@@ -607,7 +607,7 @@ function ioTask_UITaskNew_step1(&$module, &$params)
 
     $out->add($form->getLineBox($lang->def('_NAME'), $params[CONNMGR_TASK_NAME]));
 
-    $dimport = new DoceboImport();
+    $dimport = new FormaImport();
     $source = &$connMgr->create_connection_byname($params[CONNMGR_TASK_SOURCE]);
 
     if ($source->is_raw_producer()) {
@@ -733,7 +733,7 @@ function ioTask_UITaskRun(&$module, $action)
     $lang = &$module->get_lang();
     $out = &$module->get_out();
     $form = new Form();
-    $dimport = new DoceboImport();
+    $dimport = new FormaImport();
 
     $params = $connMgr->get_task_byID(key($action));
     $task_name = $params[CONNMGR_TASK_NAME];

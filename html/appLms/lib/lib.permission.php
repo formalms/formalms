@@ -44,7 +44,7 @@ function checkPerm($mode, $return_value = false, $use_mod_name = false, $is_publ
         TrackUser::setActionTrack(getLogUserId(), $idCourse, $mod_name, $suff);
     }
 
-    if (Docebo::user()->matchUserRole($role)) {
+    if (Forma::user()->matchUserRole($role)) {
         return true;
     } elseif ($return_value) {
         return false;
@@ -79,7 +79,7 @@ function checkPermForCourse($mode, $id_course, $return_value = false, $use_mod_n
         TrackUser::setActionTrack(getLogUserId(), $id_course, $mod_name, $suff);
     }
 
-    if (Docebo::user()->matchUserRole($role)) {
+    if (Forma::user()->matchUserRole($role)) {
         return true;
     } else {
         if ($return_value) {
@@ -92,7 +92,7 @@ function checkPermForCourse($mode, $id_course, $return_value = false, $use_mod_n
 
 function checkRole($roleid, $return_value = true)
 {
-    if (Docebo::user()->matchUserRole($roleid)) {
+    if (Forma::user()->matchUserRole($roleid)) {
         return true;
     }
     if ($return_value) {

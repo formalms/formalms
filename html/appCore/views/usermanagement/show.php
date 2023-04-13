@@ -38,12 +38,12 @@ if ($permissions['view_org']) {
     ];
 
     $tree_rel_action = ($permissions['add_org'] ?
-        '<a class="ico-wt-sprite subs_add" id="add_org_folder" href="' . ($this->model->isFolderEnabled($selected_orgchart, Docebo::user()->getIdSt()) ? 'ajax.adm_server.php?r=' . $this->link . '/addfolder_dialog&id=' . (int) $selected_orgchart . '" ' : '" style="visibility:hidden"')
+        '<a class="ico-wt-sprite subs_add" id="add_org_folder" href="' . ($this->model->isFolderEnabled($selected_orgchart, Forma::user()->getIdSt()) ? 'ajax.adm_server.php?r=' . $this->link . '/addfolder_dialog&id=' . (int) $selected_orgchart . '" ' : '" style="visibility:hidden"')
         . ' title="' . Lang::t('_ORGCHART_ADDNODE', 'organization_chart') . '">'
         . '<span>' . Lang::t('_ORGCHART_ADDNODE', 'organization_chart') . '</span>'
         . '</a>' : '')
         . ($permissions['add_user'] ?
-        '<a class="ico-wt-sprite subs_import" id="import_users_action" href="' . ($this->model->isFolderEnabled($selected_orgchart, Docebo::user()->getIdSt()) ? 'index.php?r=' . $this->link . '/importusers&id=' . (int) $selected_orgchart . '" ' : '" style="visibility:hidden"')
+        '<a class="ico-wt-sprite subs_import" id="import_users_action" href="' . ($this->model->isFolderEnabled($selected_orgchart, Forma::user()->getIdSt()) ? 'index.php?r=' . $this->link . '/importusers&id=' . (int) $selected_orgchart . '" ' : '" style="visibility:hidden"')
         . ' title="' . Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart') . '">'
         . '<span>' . Lang::t('_ORG_CHART_IMPORT_USERS', 'organization_chart') . '</span>'
         . '</a>' : '');

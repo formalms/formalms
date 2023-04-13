@@ -165,7 +165,7 @@ class SimpleSelector
 
         $res = '';
 
-        $lang = &DoceboLanguage::createInstance('simplesel', 'framework');
+        $lang = &FormaLanguage::createInstance('simplesel', 'framework');
 
         $tab = new Table(100, $lang->def('_ORGCHART_TITLE'), $lang->def('_ORGCHART_SUMMARY'));
         $form = new Form();
@@ -247,10 +247,10 @@ class SimpleSelector
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('simplesel', 'framework');
+        $lang = &FormaLanguage::createInstance('simplesel', 'framework');
         $form = new Form();
 
-        $acl_manger = Docebo::user()->getAclManager();
+        $acl_manger = Forma::user()->getAclManager();
         $anonymous_idst = $acl_manger->getAnonymousId();
 
         $res .= getBackUi($this->getLink('back'), $lang->def('_BACK'));
@@ -329,7 +329,7 @@ class SimpleSelector
 
     public function getSimpleUserList()
     {
-        $acl_manger = Docebo::user()->getAclManager();
+        $acl_manger = Forma::user()->getAclManager();
         $anonymous_idst = $acl_manger->getAnonymousId();
         $regusers_idst = $acl_manger->getGroupRegisteredId();
 
@@ -363,7 +363,7 @@ class SimpleSelector
     {
         $this->initManualSelector();
 
-        $acl_manger = Docebo::user()->getAclManager();
+        $acl_manger = Forma::user()->getAclManager();
         $regusers_idst = $acl_manger->getGroupRegisteredId();
         $this->mdir->setUserFilter('group', [$regusers_idst]);
 

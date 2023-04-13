@@ -14,13 +14,13 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package  DoceboLms
+ * @package  FormaLms
  * @version  $Id: manmenu.php 573 2006-08-23 09:38:54Z fabio $
  * @category Course menu managment
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -37,7 +37,7 @@ function mancustom()
     require_once _base_ . '/lib/lib.table.php';
 
     $out = &$GLOBALS['page'];
-    $lang = &DoceboLanguage::createInstance('manmenu');
+    $lang = &FormaLanguage::createInstance('manmenu');
 
     $mod_perm = checkPerm('mod', true);
 
@@ -131,7 +131,7 @@ function editcustom($load = false)
     require_once _base_ . '/lib/lib.form.php';
 
     $out = &$GLOBALS['page'];
-    $lang = &DoceboLanguage::createInstance('manmenu');
+    $lang = &FormaLanguage::createInstance('manmenu');
     $mod_perm = checkPerm('mod', true);
 
     $page_title = [
@@ -213,7 +213,7 @@ function savecustom()
 
         list($id_custom) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $levels = CourseLevel::getTranslatedLevels();
         foreach ($levels as $key => $value) {
             $idst = $acl_man->registerGroup('/lms/custom/' . $id_custom . '/' . $key,
@@ -282,8 +282,8 @@ function delcustom()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('manmenu');
-    $acl_man = &Docebo::user()->getAclManager();
+    $lang = &FormaLanguage::createInstance('manmenu');
+    $acl_man = &Forma::user()->getAclManager();
 
     $id_custom = FormaLms\lib\Get::req('id_custom', DOTY_INT, 0);
 
@@ -332,8 +332,8 @@ function manmenu()
     require_once _base_ . '/lib/lib.table.php';
 
     $out = &$GLOBALS['page'];
-    $lang = &DoceboLanguage::createInstance('manmenu');
-    $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu');
+    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
 
     if (isset($_GET['id_custom'])) {
         $id_custom = importVar('id_custom', true, 0);
@@ -448,8 +448,8 @@ function editmenuvoice($load = false)
     require_once _base_ . '/lib/lib.form.php';
 
     $out = &$GLOBALS['page'];
-    $lang = &DoceboLanguage::createInstance('manmenu');
-    $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu');
+    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
 
     // Find images
     $all_images = [];
@@ -555,8 +555,8 @@ function delmenuvoice()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('manmenu');
-    $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu');
+    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
 
     $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
 
@@ -656,9 +656,9 @@ function manmodule()
     require_once _base_ . '/lib/lib.table.php';
 
     $out = &$GLOBALS['page'];
-    $lang = &DoceboLanguage::createInstance('manmenu');
-    $mo_lang = &DoceboLanguage::createInstance('menu', 'lms');
-    $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu');
+    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
+    $menu_lang = &FormaLanguage::createInstance('menu_course', 'lms');
 
     $mod_perm = checkPerm('mod', true);
 
@@ -817,13 +817,13 @@ function editmodule($load = false)
     require_once _base_ . '/lib/lib.form.php';
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
-    $lang = &DoceboLanguage::createInstance('manmenu');
-    $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu');
+    $menu_lang = &FormaLanguage::createInstance('menu_course', 'lms');
 
     $out = &$GLOBALS['page'];
     $id_main = importVar('id_main', true, 0);
     $id_module = importVar('id_module', true, 0);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     $perm = [];
 
     // Load module info
@@ -937,8 +937,8 @@ function upmodule()
     $new_id_main = importVar('new_id_main', true, 0);
     $id_module = importVar('id_module', true, 0);
 
-    $lang = &DoceboLanguage::createInstance('manmenu');
-    $acl_man = &Docebo::user()->getAclManager();
+    $lang = &FormaLanguage::createInstance('manmenu');
+    $acl_man = &Forma::user()->getAclManager();
 
     $id_custom = getIdCustomFromMain($id_main);
 
@@ -1041,7 +1041,7 @@ function upmodule()
 
 function removeModule($id_module, $id_main, $id_custom)
 {
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     // Load module info
     $query_module = '
 	SELECT module_name, default_name, file_name, class_name 
@@ -1085,8 +1085,8 @@ function delmodule()
     $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
     $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
 
-    $lang = &DoceboLanguage::createInstance('manmenu');
-    $menu_lang = &DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = &FormaLanguage::createInstance('manmenu');
+    $menu_lang = &FormaLanguage::createInstance('menu_course', 'lms');
 
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=amanmenu&op=manmodule&id_main=' . $id_main);

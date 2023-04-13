@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * @package DoceboCore
+ * @package FormaCore
  * @subpackage user_management
  * @category library
  * @author Fabio Pirovano
@@ -234,7 +234,7 @@ class MyFriends
             $arr_id_friends = $this->getFriendsList($limit, false, $waiting, true);
         }
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $users_info = &$acl_man->getUsers($arr_id_friends);
 

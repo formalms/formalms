@@ -55,7 +55,7 @@ class DynamicUserFilter
 
     private function getStandardFieldsList()
     {
-        $lang = &DoceboLanguage::createInstance('standard', 'framework');
+        $lang = &FormaLanguage::createInstance('standard', 'framework');
 
         $fields = [
             ['id' => _STANDARD_FIELDS_PREFIX . '_0', 'name' => addslashes(Lang::t('_USERNAME', 'standard')),         'type' => _FIELD_TYPE_TEXT, 'standard' => true],
@@ -152,7 +152,7 @@ class DynamicUserFilter
 
     public function get($domready = true, $tags = true)
     {
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
         $output = [];
 
         $js_initsel = '';
@@ -218,7 +218,7 @@ class DynamicUserFilter
             return $output;
         }
 
-        $a_obj = Docebo::user()->getAclManager();
+        $a_obj = Forma::user()->getAclManager();
         $fman = new FieldList();
 
         $filter = $this->json->decode(stripslashes($f_arr));
@@ -322,7 +322,7 @@ class DynamicUserFilter
 
         $output = [];
         $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
-        $a_obj = new DoceboACLManager();
+        $a_obj = new FormaACLManager();
         $fman = new FieldList();
 
         $user_to_check = FormaLms\lib\Get::req('user', DOTY_INT, false);

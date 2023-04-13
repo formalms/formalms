@@ -244,17 +244,17 @@ class LightRepoManager
         require_once _lms_ . '/lib/lib.course.php';
 
         $file_list = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $view_all_perm = checkPerm('view_all', true);
         $course_man = new Man_Course();
         $course_user = $course_man->getIdUserOfLevel($this->_id_course, 3);
 
         //apply sub admin filters, if needed
-        if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+        if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
             $course_user = array_intersect($course_user, $ctrl_users);
         }
 

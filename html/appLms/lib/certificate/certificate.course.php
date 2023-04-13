@@ -50,7 +50,7 @@ class CertificateSubs_Course extends CertificateSubstitution
 
     public function getUserNameInv($idst_user = false, $user_id = false)
     {
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = &Forma::user()->getAclManager();
         $user_info = $acl_manager->getUser($idst_user, $user_id);
 
         return $user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
@@ -68,8 +68,8 @@ class CertificateSubs_Course extends CertificateSubstitution
         if ($this->id_meta == 0) {
             require_once _lms_ . '/lib/lib.course.php';
 
-            $acl_manager = &Docebo::user()->getAclManager();
-            $man_course = new DoceboCourse($this->id_course);
+            $acl_manager = &Forma::user()->getAclManager();
+            $man_course = new FormaCourse($this->id_course);
 
             $query = 'SELECT idUser'
                 . ' FROM %lms_courseuser'

@@ -47,7 +47,7 @@ class Admin_Scs extends Admin
     {
         return []; // disabling the menu
 
-        $lang = &DoceboLanguage::createInstance('menu', $this->platform);
+        $lang = &FormaLanguage::createInstance('menu', $this->platform);
 
         $query_under = '
 		SELECT tab.idMenu, menu.module_name, menu.associated_token, tab.name, tab.image, tab.collapse, menu.of_platform
@@ -72,7 +72,7 @@ class Admin_Scs extends Admin
 
     public function getLevelOneIntest($idMenu)
     {
-        $lang = &DoceboLanguage::createInstance('menu', $this->platform);
+        $lang = &FormaLanguage::createInstance('menu', $this->platform);
 
         $query_menu = '
 		SELECT name, image
@@ -97,7 +97,7 @@ class Admin_Scs extends Admin
      */
     public function getLevelTwo($id_level_one = false)
     {
-        $lang = &DoceboLanguage::createInstance('menu', $this->platform);
+        $lang = &FormaLanguage::createInstance('menu', $this->platform);
 
         $query_menu = '
 		 SELECT idUnder, module_name, default_name, default_op, associated_token, of_platform
@@ -141,7 +141,7 @@ class Admin_Managment_Scs extends Admin_Managment
 
     public function getLevelOne()
     {
-        $lang = &DoceboLanguage::createInstance('menu', $this->platform);
+        $lang = &FormaLanguage::createInstance('menu', $this->platform);
 
         $query_menu = '
 		SELECT idMenu, name, image
@@ -161,7 +161,7 @@ class Admin_Managment_Scs extends Admin_Managment
     public function savePreferences(&$source_array, $base_path, $adminidst, $all_admin_permission)
     {
         require_once _adm_ . '/lib/lib.adminmanager.php';
-        $aclManager = &Docebo::user()->getAclManager();
+        $aclManager = &Forma::user()->getAclManager();
         $admin_manager = new AdminManager();
 
         // Retriving main menu
@@ -214,10 +214,10 @@ class Admin_Managment_Scs extends Admin_Managment
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.adminmanager.php';
 
-        $lang = &DoceboLanguage::createInstance('menu', 'lms');
+        $lang = &FormaLanguage::createInstance('menu', 'lms');
         $out = &$GLOBALS['page'];
 
-        $aclManager = &Docebo::user()->getAclManager();
+        $aclManager = &Forma::user()->getAclManager();
         $admin_manager = new AdminManager();
 
         // Retriving main menu

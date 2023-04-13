@@ -279,8 +279,8 @@ function saveTrackStatusChange($idUser, $idCourse, $status)
         require_once _lms_ . '/lib/lib.course.php';
         require_once _base_ . '/lib/lib.eventmanager.php';
 
-        $cd = new DoceboCourse($idCourse);
-        $acl_man = &Docebo::user()->getAclManager();
+        $cd = new FormaCourse($idCourse);
+        $acl_man = &Forma::user()->getAclManager();
         $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
 
         $array_subst = [

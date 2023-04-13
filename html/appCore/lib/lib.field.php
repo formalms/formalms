@@ -342,7 +342,7 @@ class FieldList
      */
     public function getFieldsAndValueFromUser($id_user, $manual_id_field = false, $show_invisible_to_user = false, $filter_category = false)
     {
-        $acl = new DoceboACL();
+        $acl = new FormaACL();
         if ($manual_id_field === false) {
             $user_groups = $acl->getUserGroupsST($id_user);
         }
@@ -698,7 +698,7 @@ class FieldList
      **/
     public function showAllFieldForUser($idst_user, $arr_field = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
         $arr_idst = $acl->getUserGroupsST($idst_user);
         $index = count($arr_idst);
 
@@ -948,7 +948,7 @@ class FieldList
      **/
     public function playFieldsForUser($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false, $separate_output = false, $check_precompiled = false, $registrationLayout = false, $registrationErrors = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
         $index = 0;
         if ($arr_idst === false) {
             $arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
@@ -984,7 +984,7 @@ class FieldList
             . '   AND ft.id_common = gft.id_field'
             . "   AND gft.idst IN ('" . implode("','", $arr_idst) . "')";
 
-        switch (Docebo::user()->getUserLevelId()) {
+        switch (Forma::user()->getUserLevelId()) {
             case ADMIN_GROUP_ADMIN:
             case ADMIN_GROUP_USER:
                 $query .= "   AND gft.useraccess <> 'readwrite'"; // Hide invisible;
@@ -1060,7 +1060,7 @@ class FieldList
     public function hiddenFieldForUserArr($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false)
     {
         $index = 0;
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
             $index = count($arr_idst);
@@ -1145,11 +1145,11 @@ class FieldList
      **/
     public function isFilledFieldsForUser($idst_user, $arr_idst = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
         $error_message = [];
 
         // #BUG - 19799
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $selectedNode = $session->get('usermanagement_selected_node');
@@ -1160,7 +1160,7 @@ class FieldList
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $selectedNode);
             $arr_idst[] = $tmp[0];
-            $acl = &Docebo::user()->getACL();
+            $acl = &Forma::user()->getACL();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }
 
@@ -1251,7 +1251,7 @@ class FieldList
     public function isFilledFieldsForUserInRegistration($idst_user, $arr_idst = false)
     {
         $index = 0;
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
             $index = count($arr_idst);
@@ -1350,7 +1350,7 @@ class FieldList
     public function storeFieldsForUser($idst_user, $arr_idst = false, $add_root = true, $int_userid = true)
     {
         $index = 0;
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
             $index = count($arr_idst);
@@ -1423,7 +1423,7 @@ class FieldList
     {
         //return is_numeric($idst_user) && (int)$idst_user > 0 ? $this->storeDirectFieldsForUsers((int)$idst_user, $arr_fields, $is_id, $int_userid) : FALSE;
 
-        $acl = Docebo::user()->getACL();
+        $acl = Forma::user()->getACL();
 
         $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1483,7 +1483,7 @@ class FieldList
             return true;
         }
 
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
 
         $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1530,7 +1530,7 @@ class FieldList
      **/
     public function playSpecFields($arr_field, $custom_mandatory = false, $user_id = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
 
         $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1807,7 +1807,7 @@ class FieldList
         if ($arr_field !== false) {
             $to_remove = &$arr_field;
         } elseif ($id_group !== false) {
-            $acl = &Docebo::user()->getACL();
+            $acl = &Forma::user()->getACL();
             $allgroup_idst = $acl->getUserGroupsST($idst_user);
             // Leave the passed group
             $inc_group = array_search($id_group, $allgroup_idst);
@@ -2043,8 +2043,8 @@ class FieldList
     //----------------------------------------------------------------------------
     public function checkUserMandatoryFields($id_user = false, $only_accessible = false)
     {
-        $id_user = $id_user ? (int) $id_user : Docebo::user()->getIdSt();
-        $acl = new DoceboACL();
+        $id_user = $id_user ? (int) $id_user : Forma::user()->getIdSt();
+        $acl = new FormaACL();
         $user_groups = $acl->getUserGroupsST($id_user);
         $output = true;
 
@@ -2083,7 +2083,7 @@ class FieldList
 
     public function getUserMandatoryFields($id_user)
     {
-        $acl = new DoceboACL();
+        $acl = new FormaACL();
         $user_groups = $acl->getUserGroupsST($id_user);
 
         $output = [];

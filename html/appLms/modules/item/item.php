@@ -13,12 +13,12 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     // XXX: additem
     function additem($object_item)
     {
         //checkPerm('view', false, 'storage');
-        $lang = DoceboLanguage::createInstance('item');
+        $lang = FormaLanguage::createInstance('item');
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -144,7 +144,7 @@ if (!Docebo::user()->isAnonymous()) {
         //checkPerm('view', false, 'storage');
         $units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('item');
+        $lang = &FormaLanguage::createInstance('item');
 
         $back_coded = htmlentities(urlencode($object_item->back_url));
 

@@ -52,7 +52,7 @@ class Title_QuestionPoll extends QuestionPoll
      */
     public function create($id_poll, $back_poll)
     {
-        $lang = DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_poll));
@@ -101,7 +101,7 @@ class Title_QuestionPoll extends QuestionPoll
 
     public function edit($back_poll)
     {
-        $lang = DoceboLanguage::createInstance('poll');
+        $lang = FormaLanguage::createInstance('poll');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_poll));

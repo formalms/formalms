@@ -42,7 +42,7 @@ class CertificateSubs_User extends CertificateSubstitution
     {
         $subs = [];
 
-        $aclman = Docebo::user()->getAclManager();
+        $aclman = Forma::user()->getAclManager();
         $user = $aclman->getUser($this->id_user, false);
 
         if ($this->id_meta) {

@@ -49,7 +49,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             return EMPTY_USERID;
         }
 
-        if (!$user = &\DoceboUser::createDoceboUserFromLogin(
+        if (!$user = &\FormaUser::createFormaUserFromLogin(
                 $login_data['userid'],
                 $login_data['password'],
                 'public_area', // XXX: ???

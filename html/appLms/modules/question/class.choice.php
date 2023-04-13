@@ -40,7 +40,7 @@ class Choice_Question extends Question
      */
     public function _lineAnswer($i)
     {
-        $lang = DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
@@ -107,7 +107,7 @@ class Choice_Question extends Question
      */
     public function _lineModAnswer($i)
     {
-        $lang = DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
@@ -177,7 +177,7 @@ class Choice_Question extends Question
      */
     public function create($idTest, $back_test)
     {
-        $lang = DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -330,7 +330,7 @@ class Choice_Question extends Question
      */
     public function edit($back_test)
     {
-        $lang = DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         require_once _base_ . '/lib/lib.form.php';
         $url_encode = htmlentities(urlencode($back_test));
@@ -662,7 +662,7 @@ class Choice_Question extends Question
      */
     public function play($num_quest, $shuffle_answer = false, $id_track = 0, $freeze = false, $number_time = null)
     {
-        $lang = DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         list($id_quest, $title_quest, $shuffle) = sql_fetch_row(sql_query('
 		SELECT idQuest, title_quest, shuffle 
@@ -860,7 +860,7 @@ class Choice_Question extends Question
      */
     public function displayUserResult($id_track, $num_quest, $show_solution, $number_time = null)
     {
-        $lang = DoceboLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
 
         $quest = '';
         $comment = '';
@@ -895,7 +895,7 @@ class Choice_Question extends Question
         list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
 
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
-        $sql = 'select status from %lms_commontrack where idUser=' . Docebo::user()->getIdSt() . ' and idTrack=' . $id_track;
+        $sql = 'select status from %lms_commontrack where idUser=' . Forma::user()->getIdSt() . ' and idTrack=' . $id_track;
         list($status_test) = sql_fetch_row(sql_query($sql));
 
         $quest = '';

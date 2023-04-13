@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -23,7 +23,7 @@ function repoList(&$url)
 {
     checkPerm('view');
 
-    $lang = DoceboLanguage::createInstance('light_repo');
+    $lang = FormaLanguage::createInstance('light_repo');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
     $file_man = new LightRepoManager(getLogUserId(), $idCourse);
@@ -100,7 +100,7 @@ function modRepo(&$url)
 
     require_once _base_ . '/lib/lib.form.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $lang = &DoceboLanguage::createInstance('light_repo');
+    $lang = &FormaLanguage::createInstance('light_repo');
     $file_man = new LightRepoManager(getLogUserId(), $idCourse);
 
     $id_repo = importVar('id_repo', true, 0);
@@ -192,9 +192,9 @@ function repoMyDetails(&$url, $passed_repo = 0)
 
     require_once _base_ . '/lib/lib.table.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $lang = &DoceboLanguage::createInstance('light_repo');
+    $lang = &FormaLanguage::createInstance('light_repo');
     $file_man = new LightRepoManager(getLogUserId(), $idCourse);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     $id_repo = importVar('id_repo', true, $passed_repo);
     // recovering file repository information
@@ -281,7 +281,7 @@ function modFile(&$url)
 
     require_once _base_ . '/lib/lib.form.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $lang = &DoceboLanguage::createInstance('light_repo');
+    $lang = &FormaLanguage::createInstance('light_repo');
     $file_man = new LightRepoManager(getLogUserId(), $idCourse);
 
     $id_repo = importVar('id_repo', true, 0);
@@ -305,7 +305,7 @@ function modFile(&$url)
             $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
             $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
             $courseInfo = Man_Course::getCourseInfo($idCourse);
-            $userId = Docebo::user()->getIdst();
+            $userId = Forma::user()->getIdst();
             $teacherRecipients = [];
             //pick the parmas for translations
             $arraySubst = [
@@ -316,7 +316,7 @@ function modFile(&$url)
             $subject = Lang::t('_TEACHER_ALERT_SUBJECT', 'light_repo', $arraySubst);
             $baseBody = Lang::t('_TEACHER_ALERT_BODY', 'light_repo', $arraySubst);
             $attachments = [];
-            $userManager = new DoceboACLManager();
+            $userManager = new FormaACLManager();
             foreach ($teachers as $teacher) {
                 $userInfo = $userManager->getUser($teacher, false);
                 $teacherRecipient = $userInfo[ACL_INFO_EMAIL];
@@ -405,7 +405,7 @@ function repoManagerDetails(&$url)
 
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('light_repo');
+    $lang = &FormaLanguage::createInstance('light_repo');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $file_man = new LightRepoManager(getLogUserId(), $idCourse);
 
@@ -463,10 +463,10 @@ function repoUserDetails(&$url, $passed_repo = 0)
 
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('light_repo');
+    $lang = &FormaLanguage::createInstance('light_repo');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $file_man = new LightRepoManager(getLogUserId(), $idCourse);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     $id_repo = importVar('id_repo', true, $passed_repo);
     $of_user = importVar('id_user', true, 0);

@@ -185,8 +185,8 @@ class LmsModule
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('manmenu', 'framework');
-        $lang_perm = &DoceboLanguage::createInstance('permission', 'framework');
+        $lang = &FormaLanguage::createInstance('manmenu', 'framework');
+        $lang_perm = &FormaLanguage::createInstance('permission', 'framework');
 
         $tokens = self::getAllToken($module_op);
         $levels = CourseLevel::getTranslatedLevels();

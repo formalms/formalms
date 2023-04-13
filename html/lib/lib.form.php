@@ -520,7 +520,7 @@ class Form
             $date_format = $regset->date_token;
         }
 
-        $_lang = Docebo::user()->getPreference('ui.lang_code');
+        $_lang = Forma::user()->getPreference('ui.lang_code');
         $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
         $date_picker_other_param = ' data-provide="datepicker" 
     								 data-date-autoclose=true data-date-language="' . $_lang .

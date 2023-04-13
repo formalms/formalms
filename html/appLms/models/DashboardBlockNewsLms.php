@@ -69,11 +69,11 @@ class DashboardBlockNewsLms extends DashboardBlockLms
         $ma = new Man_MiddleArea();
 
         if ($ma->currentCanAccessObj('news')) {
-            $user_assigned = Docebo::user()->getArrSt();
+            $user_assigned = Forma::user()->getArrSt();
             $query_news = "
             SELECT idNews, publish_date, title, short_desc,long_desc, important, viewer
             FROM %lms_news_internal
-            WHERE language = '" . Docebo::user()->preference->getLanguage() . "'
+            WHERE language = '" . Forma::user()->preference->getLanguage() . "'
             OR language = 'all'
             ORDER BY important DESC, publish_date DESC ";
             $re_news = sql_query($query_news);

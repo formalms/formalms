@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -26,7 +26,7 @@ function showgrade()
     require_once _base_ . '/lib/lib.table.php';
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
-    $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
+    $lang = &FormaLanguage::createInstance('gradebook', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
@@ -273,7 +273,7 @@ function coursereport()
     require_once _lms_ . '/lib/lib.coursereport.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
+    $lang = &FormaLanguage::createInstance('gradebook', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
@@ -353,7 +353,7 @@ function coursereport()
     $id_user = getLogUserId();
     if (count($id_test)) {
         $title = $GLOBALS['course_descriptor']->getValue('name');
-        $username = Docebo::user()->getUserName();
+        $username = Forma::user()->getUserName();
 
         $GLOBALS['page']->add(
             getTitleArea($lang->def('_GRADEBOOK_AREATITLE'), 'gradebook')
@@ -419,7 +419,7 @@ function user_test_report($idUser, $idTest, $id_track)
     if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) {
         exit("You can't access");
     }
-    $lang = &DoceboLanguage::createInstance('gradebook', 'lms');
+    $lang = &FormaLanguage::createInstance('gradebook', 'lms');
     $idTrack = $id_track;
 
     //test info---------------------------------------------------------

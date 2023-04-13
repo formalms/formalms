@@ -54,9 +54,9 @@ class Field_Textfield extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = DoceboLanguage::createInstance('standard');
-        $lang = DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = FormaLanguage::createInstance('standard');
+        $lang = FormaLanguage::createInstance('field');
+        $array_lang = Forma::langManager()->getAllLangCode();
         $out = $GLOBALS['page'];
         $filter_area_field = false;
 
@@ -221,9 +221,9 @@ class Field_Textfield extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $array_lang = Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -562,7 +562,7 @@ class Field_Textfield extends Field
         require_once _base_ . '/lib/lib.form.php';
 
         $found_in_post = false;
-        $larr = Docebo::langManager()->getAllLangCode();
+        $larr = Forma::langManager()->getAllLangCode();
         foreach ($larr as $lang) {
             if (isset($_POST['field_' . $this->getFieldType()]) &&
                    isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
@@ -736,7 +736,7 @@ class Field_Textfield extends Field
                 return $res;
             } // (TRUE)
 
-            $larr = Docebo::langManager()->getAllLangCode();
+            $larr = Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
                     $user_entry = $_POST['field_' . $this->getFieldType()][$this->id_common][$lang];
@@ -768,7 +768,7 @@ class Field_Textfield extends Field
             $qtxt = 'INSERT INTO ' . $this->_getUserEntryTable() . ' ';
             $qtxt .= '(id_user, id_common, id_common_son, language, user_entry) VALUES ';
 
-            $larr = Docebo::langManager()->getAllLangCode();
+            $larr = Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
                     $ins_line = "(	'" . $id_user . "', '" . (int) $this->id_common . "', '0', '" . $lang . "', ";
@@ -923,7 +923,7 @@ class Field_Textfield extends Field
                 return $res;
             } // (TRUE)
 
-            $larr = Docebo::langManager()->getAllLangCode();
+            $larr = Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($value[$lang])) {
                     $user_entry = $value[$lang];
@@ -956,7 +956,7 @@ class Field_Textfield extends Field
             $qtxt = 'INSERT INTO ' . $this->_getUserEntryTable() . ' ';
             $qtxt .= '(id_user, id_common, id_common_son, language, user_entry) VALUES ';
 
-            $larr = Docebo::langManager()->getAllLangCode();
+            $larr = Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($value[$lang])) {
                     $ins_line = "(	'" . $id_user . "', '" . (int) $this->id_common . "', '0', '" . $lang . "', ";

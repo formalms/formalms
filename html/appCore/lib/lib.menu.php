@@ -21,8 +21,8 @@ class MenuManager
 
     public function __construct()
     {
-        $this->acl = &Docebo::user()->getAcl();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl = &Forma::user()->getAcl();
+        $this->acl_man = &Forma::user()->getAclManager();
     }
 
     public function addPerm($groupid, $roleid)

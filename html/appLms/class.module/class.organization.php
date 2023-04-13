@@ -39,7 +39,7 @@ class Module_Organization extends LmsModule
     {
         require_once Forma::inc(_lms_ . "/modules/$this->module_name/$this->module_name.php");
         $ready = false;
-        $this->lang = DoceboLanguage::createInstance('organization', 'lms');
+        $this->lang = FormaLanguage::createInstance('organization', 'lms');
 
         if (isset($_GET['sor']) && false) {
             // reload from previously saved session
@@ -64,7 +64,7 @@ class Module_Organization extends LmsModule
             /* TODO: ACL */
             if (!checkPerm('lesson', true, 'storage')) {
                 $this->repoDb->setFilterVisibility(true);
-                $this->repoDb->setFilterAccess(Docebo::user()->getArrSt());
+                $this->repoDb->setFilterAccess(Forma::user()->getArrSt());
             }
 
             $this->treeView = new Org_TreeView($this->repoDb, 'organization', $this->lang->def('_ORGROOTNAME', 'organization'));
@@ -305,7 +305,7 @@ class Module_Organization extends LmsModule
 
         // tree indipendent play end --------------------------------------------
         if ($GLOBALS['op'] == 'custom_enditem') {
-            $lang = &DoceboLanguage::createInstance('organization', 'lms');
+            $lang = &FormaLanguage::createInstance('organization', 'lms');
 
             require_once Forma::inc(_lms_ . '/class.module/track.object.php');
             require_once Forma::inc(_lms_ . '/lib/lib.stats.php');
@@ -352,7 +352,7 @@ class Module_Organization extends LmsModule
                 if (count($first_lo) >= 2) {
                     // if we have more than an object we need to play the first one until it's completed
                     $obj = array_shift($first_lo);
-                    $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) Docebo::user()->getId();
+                    $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) Forma::user()->getId();
                     list($status) = sql_fetch_row(sql_query($query));
                     if ($status == 'completed' || $status == 'passed') {
                         // we have more then one object and the first one is complete, we can go to the course first page

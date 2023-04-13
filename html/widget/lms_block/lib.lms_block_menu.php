@@ -131,7 +131,7 @@ class Lms_BlockWidget_menu extends Widget
         $count = 0;
 
         if ($ma->currentCanAccessObj('news')) {
-            $user_assigned = Docebo::user()->getArrSt();
+            $user_assigned = Forma::user()->getArrSt();
             $query_news = "
             SELECT idNews, publish_date, title, short_desc, important, viewer
             FROM %lms_news_internal
@@ -202,7 +202,7 @@ class Lms_BlockWidget_menu extends Widget
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
         $idCommonLabel = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('id_common_label');
-        echo '<h2 class="heading">' . Lang::t('_LABEL', 'catalogue') . '</h2>' . '<div class="content">' . Form::openForm('label_form', 'index.php?r=elearning/show') . Form::getDropdown(Lang::t('_LABELS', 'catalogue'), 'id_common_label_dd', 'id_common_label', $label_model->getDropdownLabelForUser(Docebo::user()->getId()), ($idCommonLabel == -1 ? -2 : $idCommonLabel)) . Form::closeForm() . '<script type="text/javascript">' . 'var dd = YAHOO.util.Dom.get(\'id_common_label_dd\');' . 'YAHOO.util.Event.onDOMReady(YAHOO.util.Event.addListener(dd, "change", function(e){var form = YAHOO.util.Dom.get(\'label_form\');form.submit();}));' . '</script>' . '</div>';
+        echo '<h2 class="heading">' . Lang::t('_LABEL', 'catalogue') . '</h2>' . '<div class="content">' . Form::openForm('label_form', 'index.php?r=elearning/show') . Form::getDropdown(Lang::t('_LABELS', 'catalogue'), 'id_common_label_dd', 'id_common_label', $label_model->getDropdownLabelForUser(Forma::user()->getId()), ($idCommonLabel == -1 ? -2 : $idCommonLabel)) . Form::closeForm() . '<script type="text/javascript">' . 'var dd = YAHOO.util.Dom.get(\'id_common_label_dd\');' . 'YAHOO.util.Event.onDOMReady(YAHOO.util.Event.addListener(dd, "change", function(e){var form = YAHOO.util.Dom.get(\'label_form\');form.submit();}));' . '</script>' . '</div>';
     }
 
     public function credits()

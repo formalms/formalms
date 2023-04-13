@@ -80,7 +80,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             return EMPTY_SOCIALID;
         }
 
-        $user = \DoceboUser::createDoceboUserFromField('facebook_id', $user_info['id'], 'public_area');
+        $user = \FormaUser::createFormaUserFromField('facebook_id', $user_info['id'], 'public_area');
 
         if (!$user) {
             ($session)->set('social', ['plugin' => Plugin::getName(),
@@ -98,7 +98,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     {
         $query = ' UPDATE %adm_user'
                 . " SET facebook_id = '" . $id . "'"
-                . ' WHERE idst=' . \Docebo::user()->getIdSt();
+                . ' WHERE idst=' . \Forma::user()->getIdSt();
 
         sql_query($query);
     }

@@ -28,7 +28,7 @@ class LabelAlms extends Model
     public function __construct()
     {
         $this->db = DbConn::getInstance();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         parent::__construct();
     }
 

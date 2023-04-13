@@ -17,7 +17,7 @@ require_once _base_ . '/lib/lib.treedb.php';
 require_once _base_ . '/lib/lib.treeview.php';
 
 /*
- * @package  DoceboLms
+ * @package  FormaLms
  * @version  $Id: tree.category.php 573 2006-08-23 09:38:54Z fabio $
  * @category Course category
  * @author   Fabio Pirovano <fabio@docebo.com>
@@ -110,7 +110,7 @@ class TreeView_CatView extends TreeView
             $this->cat_not_empty[$row[0]] = $row[1];
         }
 
-        $user_lvl = Docebo::user()->getUserLevelId();
+        $user_lvl = Forma::user()->getUserLevelId();
 
         parent::__construct($tdb, $id, $rootname);
         $this->can_add = ($user_lvl == ADMIN_GROUP_GODADMIN);
@@ -288,7 +288,7 @@ class TreeView_CatView extends TreeView
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = &FormaLanguage::CreateInstance('course', 'lms');
 
         return Form::openElementSpace()
             . $this->printState()
@@ -306,7 +306,7 @@ class TreeView_CatView extends TreeView
 
     public function loadRenameFolder()
     {
-        $lang = &DoceboLanguage::CreateInstance('course', 'lms');
+        $lang = &FormaLanguage::CreateInstance('course', 'lms');
 
         $tdb = $this->tdb;
         $folder = $tdb->getFolderById($this->getSelectedFolderId());
@@ -330,7 +330,7 @@ class TreeView_CatView extends TreeView
     {
         $tdb = $this->tdb;
         $folder = $tdb->getFolderById($this->getSelectedFolderId());
-        $lang = &DoceboLanguage::createInstance('course', 'lms');
+        $lang = &FormaLanguage::createInstance('course', 'lms');
 
         return $this->printState()
             . getDeleteUi($lang->def('_AREYOUSURE'),
@@ -358,6 +358,6 @@ class TreeView_CatView extends TreeView
 
     public function __wakeup()
     {
-        $this->lang = &DoceboLanguage::createInstance('treeview', 'framework');
+        $this->lang = &FormaLanguage::createInstance('treeview', 'framework');
     }
 }

@@ -17,7 +17,7 @@ function lmsLoginOperation()
     require_once _lms_ . '/lib/lib.preassessment.php';
 
     $pa_man = new AssessmentList();
-    $user_course_as_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
+    $user_course_as_assessment = $pa_man->getUserAssessmentSubsription(Forma::user()->getArrSt());
 
     if (is_array($user_course_as_assessment)) {
         $subs_man = new CourseSubscribe_Management();

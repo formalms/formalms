@@ -44,9 +44,9 @@ class CourseSubscribe_Manager
         $this->user_table = '%adm_user';
 
         $this->db = DbConn::getInstance();
-        $this->acl_man = $acl_man = Docebo::user()->getAclManager();
-        $this->lang = DoceboLanguage::CreateInstance('levels', 'lms');
-        $this->lang = DoceboLanguage::CreateInstance('subscribe', 'lms');
+        $this->acl_man = $acl_man = Forma::user()->getAclManager();
+        $this->lang = FormaLanguage::CreateInstance('levels', 'lms');
+        $this->lang = FormaLanguage::CreateInstance('subscribe', 'lms');
 
         $this->array_user_status = [
             //-4 => $this->lang->def('_USER_STATUS_CANCELLED'),
@@ -185,10 +185,10 @@ class CourseSubscribe_Manager
             $query .= ' AND s.level=' . (int)$level;
         }
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
         }
 
         list($res) = sql_fetch_row(sql_query($query));
@@ -264,10 +264,10 @@ class CourseSubscribe_Manager
         $query .= " AND s.waiting = '" . ($waiting ? '1' : '0') . "' ";
         $query .= ' AND s.status <> 4 '; // exclude overbooking user
 
-        if ($adminFilter && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($adminFilter && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
         }
 
         switch ($sort) {
@@ -337,10 +337,10 @@ class CourseSubscribe_Manager
             . ' JOIN ' . $this->user_table . ' AS u ON u.idst = s.idUser '
             . ' WHERE s.idCourse IN (' . implode(',', $arr) . ') ';
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 's.idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 's.idUser');
         }
 
         if (is_array($filter)) {
@@ -483,10 +483,10 @@ class CourseSubscribe_Manager
         /** dispatch unsubscribe event */
         require_once Forma::include(_base_ . '/lib/', 'lib.eventmanager.php');
 
-        $uinfo = Docebo::aclm()->getUser($idUser, false);
+        $uinfo = Forma::aclm()->getUser($idUser, false);
 
-        $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
-        $doceboCourse = new DoceboCourse($idCourse);
+        $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+        $doceboCourse = new FormaCourse($idCourse);
 
         $arraySubst = [
             '[url]' => FormaLms\lib\Get::site_url(),
@@ -602,7 +602,7 @@ class CourseSubscribe_Manager
         if ($res) {
             require_once _lms_ . '/lib/lib.course.php';
 
-            $docebo_course = new DoceboCourse($id_course);
+            $docebo_course = new FormaCourse($id_course);
 
             $level_idst = &$docebo_course->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
@@ -934,8 +934,8 @@ class CourseSubscribe_Manager
             require_once _base_ . '/lib/lib.eventmanager.php';
 
             $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
-            $cd = new DoceboCourse($idCourse);
-            $acl_man = &Docebo::user()->getAclManager();
+            $cd = new FormaCourse($idCourse);
+            $acl_man = &Forma::user()->getAclManager();
 
             $array_subst = [
                 '[user]' => $acl_man->getUserName($idUser),
@@ -1016,8 +1016,8 @@ class CourseSubscribe_Management
         require_once _lms_ . '/lib/lib.levels.php';
 
         $this->course_man = new Man_Course();
-        $this->acl = &Docebo::user()->getAcl();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl = &Forma::user()->getAcl();
+        $this->acl_man = &Forma::user()->getAclManager();
         $this->db = DbConn::getInstance();
     }
 
@@ -1325,7 +1325,7 @@ class CourseSubscribe_Management
         }
 
         $re = true;
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
         $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
 
@@ -1534,7 +1534,7 @@ class CourseSubscribe_Management
         require_once _lms_ . '/lib/lib.course.php';
 
         $date_man = new DateManager();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         $query = 'SELECT idCourse'
             . ' FROM %lms_courseuser'
@@ -1552,7 +1552,7 @@ class CourseSubscribe_Management
         $level_idst = &getCourseLevel($id_course);
 
         if (count($level_idst) == 0 || $level_idst[1] == '') {
-            $level_idst = &DoceboCourse::createCourseLevel($id_course);
+            $level_idst = &FormaCourse::createCourseLevel($id_course);
         }
 
         list($subscribe_method) = sql_fetch_row(sql_query('SELECT subscribe_method FROM %lms_course WHERE idCourse = ' . $id_course));

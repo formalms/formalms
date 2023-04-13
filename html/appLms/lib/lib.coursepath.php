@@ -120,7 +120,7 @@ class Selector_CoursePath
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
         $output = '';
 
         // Filter
@@ -155,12 +155,12 @@ class Selector_CoursePath
         $query_coursepath = '
 		FROM %lms_coursepath
 		WHERE 1 ';
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             }
@@ -304,7 +304,7 @@ class CoursePath_Manager
         ksort($this->_cp_slot_field);
         reset($this->_cp_slot_field);
 
-        $this->acl = new DoceboACL();
+        $this->acl = new FormaACL();
         $this->aclManager = $this->acl->getACLManager();
     }
 
@@ -842,7 +842,7 @@ class CoursePath_Manager
             $insert_values = [];
             foreach ($users as $id_user) {
                 $course_completed = isset($completed[$id_user]) ? (int) $completed[$id_user] : 0;
-                $insert_values[] = '( ' . (int) $id_path . ', ' . (int) $id_user . ", '" . date('Y-m-d h:i:s') . "', '" . Docebo::user()->getIdst() . "', '" . $course_completed . "' )";
+                $insert_values[] = '( ' . (int) $id_path . ', ' . (int) $id_user . ", '" . date('Y-m-d h:i:s') . "', '" . Forma::user()->getIdst() . "', '" . $course_completed . "' )";
             }
             $query = 'INSERT INTO %lms_coursepath_user (id_path, idUser, date_assign, subscribed_by, course_completed ) VALUES ' . implode(', ', $insert_values);
             if (!sql_query($query)) {

@@ -27,7 +27,7 @@ class EditionLmsController extends LmsController
         require_once _base_ . '/lib/lib.json.php';
 
         $this->json = new Services_JSON();
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = &Forma::user()->getAclManager();
     }
 
     protected function show()

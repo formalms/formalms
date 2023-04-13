@@ -23,7 +23,7 @@ class RegionalSettings
     /** RegionalSettingsManager object */
     public $regset_manager = null;
 
-    /** DoceboDate object */
+    /** FormaDate object */
     public $ddate = null;
 
     public $full_token = '';
@@ -44,7 +44,7 @@ class RegionalSettings
      */
     public function __construct($region_id = false, $param_prefix = false, $dbconn = null)
     {
-        $this->ddate = new DoceboDate();
+        $this->ddate = new FormaDate();
 
         $this->regset_manager = new RegionalSettingsManager($param_prefix, $dbconn);
 
@@ -371,7 +371,7 @@ class RegionalSettings
      * @param string $date  the date in the regional format
      * @param string $token the token with the date format
      *
-     * This function will fill the DoceboDate object with the date elements
+     * This function will fill the FormaDate object with the date elements
      * decoded from the given date/token
      */
     public function _decodeDate($date, $token)
@@ -856,7 +856,7 @@ class RegionalSettingsManager
     }
 }
 
-class DoceboDate
+class FormaDate
 {
     public $day = '00';
     public $month = '00';

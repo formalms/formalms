@@ -68,7 +68,7 @@ function setLanguage($lang_code)
  *
  * @deprecated
  */
-class DoceboLanguage
+class FormaLanguage
 {
     protected static $istances = [];
 
@@ -83,7 +83,7 @@ class DoceboLanguage
     {
         Lang::init($module);
         if (!isset(self::$istances[$module])) {
-            self::$istances[$module] = new DoceboLanguage($module);
+            self::$istances[$module] = new FormaLanguage($module);
         }
 
         return self::$istances[$module];
@@ -410,10 +410,10 @@ class Lang
 
         if (!$currentLang) {
             $currentLang = self::getDefault();
-            // we if (!FormaLms\lib\Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {don't know which language we need
-            if (!FormaLms\lib\Get::cfg('demo_mode', false) && !Docebo::user()->isAnonymous()) {
+            // we if (!FormaLms\lib\Get::cfg('demo_mode', false) && !Forma::user()->isAnonymous()) {don't know which language we need
+            if (!FormaLms\lib\Get::cfg('demo_mode', false) && !Forma::user()->isAnonymous()) {
                 // load the language from the user setting
-                $currentLang = Docebo::user()->preference->getLanguage();
+                $currentLang = Forma::user()->preference->getLanguage();
             } else {
                 // find the user language looking into the browser info
                 $langadm = new LangAdm();
@@ -456,14 +456,14 @@ class Lang
             return false;
         }
 
-        if (Docebo::user()->isAnonymous()) {
+        if (Forma::user()->isAnonymous()) {
             // if the user is anonymous we will remember it's forced selection and set up the selected language as
             // it's user preference when he login
             if ($force) {
                 $session->set('forced_lang', true);
             }
         } else {
-            Docebo::user()->preference->setLanguage($lang_code);
+            Forma::user()->preference->setLanguage($lang_code);
         }
         $session->set('current_lang', $lang_code);
         $session->save();
@@ -538,7 +538,7 @@ class Lang
 /**
  * This class is a "de-facto" model for the language db, but the "effective model" will be the LangAdm class.
  */
-class DoceboLangManager
+class FormaLangManager
 {
     public $globTranslation = null;
     public $globLangModule = null;
@@ -604,7 +604,7 @@ class DoceboLangManager
     }
 
     /**
-     * DoceboLangManager constructor.
+     * FormaLangManager constructor.
      *
      * @param string $param_prefix the prefix for the tables names
      *                               if not given global $prefix variable is used
@@ -623,7 +623,7 @@ class DoceboLangManager
     public static function getInstance()
     {
         if (self::$instance == false) {
-            self::$instance = new DoceboLangManager();
+            self::$instance = new FormaLangManager();
         }
 
         return self::$instance;

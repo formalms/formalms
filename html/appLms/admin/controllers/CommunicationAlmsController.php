@@ -106,7 +106,7 @@ class CommunicationAlmsController extends AlmsController
             $communicationList[$i]['description'] = (strlen(strip_tags($communication['description'])) > 150) ? substr(strip_tags($communication['description']), 0, 150) . '...' : strip_tags($communication['description']);
         }
 
-        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langs = Forma::langManager()->getAllLanguages(true);
         $langCode = getLanguage();
 
         $categoryCount = $this->model->getCategoryTotal();
@@ -216,7 +216,7 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langs = Forma::langManager()->getAllLanguages(true);
         $langCode = getLanguage();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode);
@@ -279,7 +279,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($titles)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -397,7 +397,7 @@ class CommunicationAlmsController extends AlmsController
         $cinfo = $course_model->getCourseModDetails($data['id_course']);
         $courseName = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/ $cinfo['name'];
         YuiLib::load('autocomplete');
-        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langs = Forma::langManager()->getAllLanguages(true);
         $langCode = getLanguage();
 
         $langsMapped = array_map(fn ($value): array => [$value['lang_code'] => [
@@ -459,7 +459,7 @@ class CommunicationAlmsController extends AlmsController
         if (is_array($titles)) {
             $data['langs'] = [];
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -499,7 +499,7 @@ class CommunicationAlmsController extends AlmsController
         if (is_array($titles)) {
             $data['langs'] = [];
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -707,7 +707,7 @@ class CommunicationAlmsController extends AlmsController
                 $param = FormaLms\lib\Get::req('r_param', DOTY_STRING, '');
                 $alt_desc = '';
                 $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-                $lang_arr = Docebo::langManager()->getAllLangCode();
+                $lang_arr = Forma::langManager()->getAllLangCode();
                 $lang = $lang_arr[$lang_id];
                 $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
                 $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);
@@ -978,7 +978,7 @@ class CommunicationAlmsController extends AlmsController
         //retrieve category info (name and description
         $info = $this->model->getCategoryInfo($idCategory);
 
-        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langs = Forma::langManager()->getAllLanguages(true);
         $langCode = getLanguage();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
@@ -1014,7 +1014,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -1085,7 +1085,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -1155,7 +1155,7 @@ class CommunicationAlmsController extends AlmsController
             $categoriesList[$i]['deleteUrl'] = 'ajax.adm_server.php?r=alms/communication/deleteCategory';
         }
 
-        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langs = Forma::langManager()->getAllLanguages(true);
         $langCode = getLanguage();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);

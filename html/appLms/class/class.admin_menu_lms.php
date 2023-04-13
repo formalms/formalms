@@ -40,7 +40,7 @@ class Admin_Lms extends Admin
         $this->table_level_one = $GLOBALS['prefix_lms'] . '_menu';
         $this->table_level_two = $GLOBALS['prefix_lms'] . '_menu_under';
 
-        $lang = &DoceboLanguage::createInstance('menu', 'lms');
+        $lang = &FormaLanguage::createInstance('menu', 'lms');
 
         $query_menu = '
 		SELECT idMenu, idUnder, module_name, default_name, default_op, associated_token, of_platform, mvc_path
@@ -72,7 +72,7 @@ class Admin_Lms extends Admin
      */
     public function getLevelOne()
     {
-        $lang = &DoceboLanguage::createInstance('menu', 'lms');
+        $lang = &FormaLanguage::createInstance('menu', 'lms');
 
         $query_under = '
 		SELECT tab.idMenu, menu.module_name, menu.associated_token, tab.name, tab.image, tab.collapse, menu.of_platform
@@ -97,7 +97,7 @@ class Admin_Lms extends Admin
 
     public function getLevelOneIntest($idMenu)
     {
-        $lang = &DoceboLanguage::createInstance('menu', 'lms');
+        $lang = &FormaLanguage::createInstance('menu', 'lms');
 
         $query_menu = '
 		SELECT name, image
@@ -144,8 +144,8 @@ class Admin_Managment_Lms extends Admin_Managment
         $this->table_level_one = $GLOBALS['prefix_lms'] . '_menu';
         $this->table_level_two = $GLOBALS['prefix_lms'] . '_menu_under';
 
-        $this->lang_over = &DoceboLanguage::createInstance('menu', 'lms');
-        $this->lang = &DoceboLanguage::createInstance('menu', 'lms');
-        $this->lang_perm = &DoceboLanguage::createInstance('permission');
+        $this->lang_over = &FormaLanguage::createInstance('menu', 'lms');
+        $this->lang = &FormaLanguage::createInstance('menu', 'lms');
+        $this->lang_perm = &FormaLanguage::createInstance('permission');
     }
 }

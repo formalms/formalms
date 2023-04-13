@@ -32,7 +32,7 @@ class SubscriptionAlms extends Model
     public function __construct($id_course = false, $id_edition = false, $id_date = false)
     {
         $this->db = DbConn::getInstance();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         $this->setCourseData($id_course, $id_edition, $id_date);
         parent::__construct();
     }
@@ -316,7 +316,7 @@ class SubscriptionAlms extends Model
                     require_once _lms_ . '/lib/lib.levels.php';
                     require_once _base_ . '/lib/lib.eventmanager.php';
 
-                    $acl_man = Docebo::user()->getAclManager();
+                    $acl_man = Forma::user()->getAclManager();
 
                     $event = $status < 0 ? 'UserCourseInsertModerate' : 'UserCourseInserted';
                     $isEventEnabled = getEnabledEvent($event);
@@ -346,7 +346,7 @@ class SubscriptionAlms extends Model
                         $msg_composer->setBodyLangText('email', $body_key, $array_subst);
                         // message to user that is waiting
 
-                        $acl = &Docebo::user()->getAcl();
+                        $acl = &Forma::user()->getAcl();
                         $acl_man = &$this->acl_man;
 
                         $recipients = [];
@@ -436,7 +436,7 @@ class SubscriptionAlms extends Model
 
                     $recipients = [$user_info[ACL_INFO_EMAIL]];
                     require_once _adm_ . '/lib/lib.usernotifier.php';
-                    $user_notification = new DoceboUserNotifier('');
+                    $user_notification = new FormaUserNotifier('');
                     $attachments = false;
                     $user_info_arr = [$user_info];
                     if ($status < 0) { // Waiting
@@ -564,10 +564,10 @@ class SubscriptionAlms extends Model
 
         $is_admin = false;
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_query = $adminManager->getAdminUsersQuery(Docebo::user()->getIdST(), 'idst');
+            $admin_query = $adminManager->getAdminUsersQuery(Forma::user()->getIdST(), 'idst');
             $is_admin = true;
         }
 
@@ -669,7 +669,7 @@ class SubscriptionAlms extends Model
         return $this->delUser($id_user);
 
         /* require_once(_lms_ . '/lib/lib.course.php');
-        $docebo_course = new DoceboCourse($id_course);
+        $docebo_course = new FormaCourse($id_course);
 
         $level_idst = & $docebo_course->getCourseLevel($id_course);
         //$level = $this->getUserLevel($id_user);
@@ -721,8 +721,8 @@ class SubscriptionAlms extends Model
     public function countPendingUnsubscribeRequests()
     {
         $output = 0;
-        $ulevel = Docebo::user()->getUserLevelId();
-        $id_admin = Docebo::user()->getIdSt();
+        $ulevel = Forma::user()->getUserLevelId();
+        $id_admin = Forma::user()->getIdSt();
 
         $filter = false;
         $admin_query_course = '';
@@ -739,7 +739,7 @@ class SubscriptionAlms extends Model
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1116,7 +1116,7 @@ class SubscriptionAlms extends Model
             $msg_composer->setSubjectLangText('sms', '_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS', false);
             $msg_composer->setBodyLangText('sms', '_NEW_USER_UNSUBS_WAITING_TEXT_SMS', $array_subst);
 
-            $acl = &Docebo::user()->getAcl();
+            $acl = &Forma::user()->getAcl();
             $acl_man = &$this->acl_man;
 
             $recipients = [];
@@ -1364,10 +1364,10 @@ class SubscriptionAlms extends Model
             }
         }
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
             $admin_users = $this->acl_man->getAllUsersFromSelection($admin_tree);
 
             $query .= ' AND s.idUser IN (' . implode(',', $admin_users) . ')';
@@ -1378,7 +1378,7 @@ class SubscriptionAlms extends Model
         ($start_index === false ? '' : $query .= ' LIMIT ' . $start_index . ', ' . $results);
 
         $result = sql_query($query);
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = Forma::user()->getACLManager();
         $res = [];
         while ($obj = sql_fetch_object($result)) {
             $res[] = $obj;
@@ -1455,9 +1455,9 @@ class SubscriptionAlms extends Model
             }
         }
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
-            $acl_man = new DoceboACLManager();
+            $acl_man = new FormaACLManager();
             $adminManager = new AdminPreference();
             $admin_tree = $adminManager->getAdminTree(getLogUserId());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_tree);
@@ -1538,9 +1538,9 @@ class SubscriptionAlms extends Model
             }
         }
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
-            $acl_man = new DoceboACLManager();
+            $acl_man = new FormaACLManager();
             $adminManager = new AdminPreference();
             $admin_tree = $adminManager->getAdminTree(getLogUserId());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_tree);

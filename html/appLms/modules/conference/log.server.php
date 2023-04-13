@@ -52,7 +52,7 @@ require_once _base_ . '/lib/lib.json.php';
 
 // load current user from session -----------------------------------------------------
 require_once _base_ . '/lib/lib.user.php';
-$GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
+$GLOBALS['current_user'] = &FormaUser::createFormaUserFromSession('public_area');
 
 //require_once(_i18n_.'/lib.lang.php');
 require_once _base_ . '/lib/lib.template.php';
@@ -92,7 +92,7 @@ if ($xml_answer === false) {
     aout('<?xml version="1.0" encoding="UTF-8"?><ews><errorcode>1</errorcode><errormessage>No data found</errormessage></ews>');
 }
 
-$dom_answer = new DoceboDOMDocument();
+$dom_answer = new FormaDOMDocument();
 $dom_answer->loadXML(trim($xml_answer));
 
 $dlist_code = $dom_answer->getElementsByTagName('errorcode');

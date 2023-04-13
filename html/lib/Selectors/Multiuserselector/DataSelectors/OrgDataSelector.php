@@ -162,7 +162,7 @@ class OrgDataSelector extends DataSelector{
             return 0;
         }
         $arr = explode('_', $node_id);
-        $acl_man = \Docebo::user()->getACLManager();
+        $acl_man = \Forma::user()->getACLManager();
         $groupid = $acl_man->getGroupId((int) $arr[0]);
 
         return (int) str_replace('/oc_', '', $groupid);
@@ -171,7 +171,7 @@ class OrgDataSelector extends DataSelector{
 
     protected function _getRootNodeId()
     {
-        $acl_man = \Docebo::user()->getACLManager();
+        $acl_man = \Forma::user()->getACLManager();
         $arr_idst = $acl_man->getArrGroupST(['/oc_0', '/ocd_0']);
 
         return $arr_idst['/oc_0'] . '_' . $arr_idst['/ocd_0'];

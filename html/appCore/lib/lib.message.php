@@ -262,7 +262,7 @@ class MessageModule
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('message', 'lms');
+        $lang = &FormaLanguage::createInstance('message', 'lms');
         $send_perm = true; //checkPerm('send_all', true) || checkPerm('send_upper', true);
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -272,7 +272,7 @@ class MessageModule
         $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $query = "
 		SELECT m.idMessage, m.idCourse, m.sender, m.posted, m.attach, m.title, m.priority, user.read
@@ -287,13 +287,13 @@ class MessageModule
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
             $res = $acl_man->getAllUsersFromIdst($res);
-            $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Docebo::user()->getIdSt() . ') ';
+            $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Forma::user()->getIdSt() . ') ';
         } else {
             if (isset($idCourse) && $_filter == '') {
                 $_filter = $idCourse;
                 $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
                 $res = $acl_man->getAllUsersFromIdst($res);
-                $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Docebo::user()->getIdSt() . ') ';
+                $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Forma::user()->getIdSt() . ') ';
             }
         }
 
@@ -466,15 +466,15 @@ class MessageModule
 
         //if(!checkPerm('send_all', true) && !checkPerm('send_upper', true)) die("You can't access");
 
-        $lang = &DoceboLanguage::createInstance('message', 'lms');
+        $lang = &FormaLanguage::createInstance('message', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-sent');
         $tb->initNavBar('iniout', 'button');
         $ini = $tb->getSelectedElement('iniout');
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         $query = "
 		SELECT m.idMessage, m.posted, m.attach, m.title, m.priority
@@ -492,13 +492,13 @@ class MessageModule
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
             $res = $acl_man->getAllUsersFromIdst($res);
-            $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Docebo::user()->getIdSt() . ') ';
+            $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Forma::user()->getIdSt() . ') ';
         } else {
             if (isset($idCourse) && $_filter == '') {
                 $_filter = $idCourse;
                 $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
                 $res = $acl_man->getAllUsersFromIdst($res);
-                $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Docebo::user()->getIdSt() . ') ';
+                $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Forma::user()->getIdSt() . ') ';
             }
         }
         $query .= '	ORDER BY ';
@@ -670,13 +670,13 @@ class MessageModule
 
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &DoceboLanguage::createInstance('message', 'lms');
+        $lang = &FormaLanguage::createInstance('message', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $from = importVar('out');
         $um = &UrlManager::getInstance('message');
 
-        $aclManager = new DoceboACLManager();
+        $aclManager = new FormaACLManager();
         $user_select = new UserSelector();
 
         $user_select->show_user_selector = true;
@@ -776,7 +776,7 @@ class MessageModule
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $from = importVar('out');
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $um = &UrlManager::getInstance('message');
 
         if (!isset($_POST['message']['recipients'])) {
@@ -891,19 +891,19 @@ class MessageModule
                         if (!$is_course) {
                             $msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT', ['[url]' => _MESSAGE_PL_URL,
                                                                                                     '[course]' => $course_name,
-                                                                                                    '[from]' => Docebo::user()->getUsername(), ]);
+                                                                                                    '[from]' => Forma::user()->getUsername(), ]);
 
                             $msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS', ['[url]' => _MESSAGE_PL_URL,
                                                                                                      '[course]' => $course_name,
-                                                                                                     '[from]' => Docebo::user()->getUsername(), ]);
+                                                                                                     '[from]' => Forma::user()->getUsername(), ]);
                         } else {
                             $msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT_COURSE', ['[url]' => _MESSAGE_PL_URL,
                                                                                                             '[course]' => $course_name,
-                                                                                                            '[from]' => Docebo::user()->getUsername(), ]);
+                                                                                                            '[from]' => Forma::user()->getUsername(), ]);
 
                             $msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS_COURSE', ['[url]' => _MESSAGE_PL_URL,
                                                                                                             '[course]' => $course_name,
-                                                                                                            '[from]' => Docebo::user()->getUsername(), ]);
+                                                                                                            '[from]' => Forma::user()->getUsername(), ]);
                         }
 
                         createNewAlert('MsgNewReceived', 'directory', 'moderate', '1', 'User group subscription to moderate',
@@ -1046,7 +1046,7 @@ class MessageModule
     {
         //checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('message', 'lms');
+        $lang = &FormaLanguage::createInstance('message', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
@@ -1161,7 +1161,7 @@ class MessageModule
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $from = importVar('out');
 
         // check the viewer rights

@@ -18,7 +18,7 @@ $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 $session = $request->getSession();
 
 // access granted only if user is logged in
-if (Docebo::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
+if (Forma::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
     // save requested page in session to call it after login
     $loginRedirect = $_SERVER['REQUEST_URI'];
 
@@ -33,7 +33,7 @@ $query = ' SELECT param_value FROM %adm_setting'
 $maintenance = $db->fetch_row($db->query($query))[0];
 
 // handling maintenece
-if ($maintenance == 'on' && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+if ($maintenance == 'on' && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // only god admins can access maintenence - logout the user
     Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
 }
@@ -225,5 +225,5 @@ if ($sop) {
 // istance the course description class
 if ($session->has('idCourse') && !isset($GLOBALS['course_descriptor'])) {
     require_once _lms_ . '/lib/lib.course.php';
-    $GLOBALS['course_descriptor'] = new DoceboCourse($session->get('idCourse'));
+    $GLOBALS['course_descriptor'] = new FormaCourse($session->get('idCourse'));
 }

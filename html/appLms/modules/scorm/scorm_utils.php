@@ -56,7 +56,7 @@ function todelete_getelementbynameattrib($node, $name, $attribname = '', $attrib
         soap__dbgOut("-getelementbynameattrib");
         return $elem;*/
     soap__dbgOut('+getelementbynameattrib node=' . print_r($node, true) . ", name=$name, attribname=" . print_r($attribname, true) . ", attribvalue=$attribvalue");
-    $xpath = new DoceboDOMXPath($node->ownerDocument);
+    $xpath = new FormaDOMXPath($node->ownerDocument);
     $result = $xpath->query('*', $node);
     $elem = null;
     for ($iResult = 0; $iResult < $result->length; ++$iResult) {
@@ -82,7 +82,7 @@ function todelete_getelementbynameattrib($node, $name, $attribname = '', $attrib
     return $elem;
     soap__dbgOut('-getelementbynameattrib');
 
-    /*$xpath = new DoceboDOMXPath($node->ownerDocument);
+    /*$xpath = new FormaDOMXPath($node->ownerDocument);
     $query = "child::".$name;
     if( $attribname != "" ) {
         $query .= '[@'.$attribname.' = "'.$attribvalue.'"]';

@@ -196,12 +196,12 @@ class Man_MiddleArea
         if (isset($this->_cache[$obj_index]) && ($this->_cache[$obj_index]['disabled'] == 1)) {
             return false;
         }
-        $user_level = Docebo::user()->getUserLevelId();
+        $user_level = Forma::user()->getUserLevelId();
         if ($user_level == ADMIN_GROUP_GODADMIN) {
             return true;
         }
 
-        $user_assigned = Docebo::user()->getArrSt();
+        $user_assigned = Forma::user()->getArrSt();
         if (isset($this->_cache[$obj_index])) {
             if ($this->_cache[$obj_index]['list'] == '' || empty($this->_cache[$obj_index]['list'])) {
                 return true;

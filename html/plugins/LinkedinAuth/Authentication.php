@@ -15,7 +15,7 @@ namespace Plugin\LinkedinAuth;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-use Docebo;
+use Forma;
 use Form;
 use Lang;
 use OAuth\Common\Consumer\Credentials;
@@ -83,7 +83,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             return EMPTY_SOCIALID;
         }
 
-        $user = \DoceboUser::createDoceboUserFromField('linkedin_id', $user_info['id'], 'public_area');
+        $user = \FormaUser::createFormaUserFromField('linkedin_id', $user_info['id'], 'public_area');
 
         if (!$user) {
             ($session)->set('social', ['plugin' => Plugin::getName(),
@@ -101,7 +101,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     {
         $query = ' UPDATE %adm_user'
                 . " SET linkedin_id = '" . $id . "'"
-                . ' WHERE idst=' . Docebo::user()->getIdSt();
+                . ' WHERE idst=' . Forma::user()->getIdSt();
 
         sql_query($query);
     }

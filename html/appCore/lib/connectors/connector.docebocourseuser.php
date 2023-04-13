@@ -24,7 +24,7 @@ require_once _base_ . '/lib/lib.eventmanager.php';
  *
  * @author        Fabio Pirovano <fabio (@) docebo (.) com>
  **/
-class DoceboConnector_DoceboCourseUser extends DoceboConnector
+class FormaConnector_FormaCourseUser extends FormaConnector
 {
     public $last_error = '';
 
@@ -78,7 +78,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
     {
         require_once _lms_ . '/lib/lib.subscribe.php';
 
-        $this->acl_man = new DoceboACLManager();
+        $this->acl_man = new FormaACLManager();
         $this->sub_man = new CourseSubscribe_Management();
 
         if ($params === null) {
@@ -130,11 +130,11 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
     /**
      * get configuration UI.
      *
-     * @return DoceboConnectorUI
+     * @return FormaConnectorUI
      **/
     public function get_configUI()
     {
-        return new DoceboConnectorUI_DoceboCourseUserUI($this);
+        return new FormaConnectorUI_FormaCourseUserUI($this);
     }
 
     /**
@@ -142,7 +142,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
      **/
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('rg_report');
+        $this->lang = FormaLanguage::createInstance('rg_report');
 
         $this->_readed_end = false;
         $this->today = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
@@ -446,7 +446,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
 
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('subscribe', 'lms');
+        $lang = FormaLanguage::createInstance('subscribe', 'lms');
 
         // get custom field of course and put in property "vett_custom"
         $courseCustomFields = $this->get_custom_field_course();
@@ -742,7 +742,7 @@ class DoceboConnector_DoceboCourseUser extends DoceboConnector
     }
 }
 
-class DoceboConnectorUI_DoceboCourseUserUI extends DoceboConnectorUI
+class FormaConnectorUI_FormaCourseUserUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -908,5 +908,5 @@ class DoceboConnectorUI_DoceboCourseUserUI extends DoceboConnectorUI
 
 function docebocourseuser_factory()
 {
-    return new DoceboConnector_DoceboCourseUser([]);
+    return new FormaConnector_FormaCourseUser([]);
 }

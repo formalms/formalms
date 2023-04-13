@@ -23,7 +23,7 @@ class GroupmanagementAdm extends Model
     public function __construct()
     {
         $this->db = DbConn::getInstance();
-        $this->acl_man = Docebo::user()->getACLManager();
+        $this->acl_man = Forma::user()->getACLManager();
         parent::__construct();
     }
 
@@ -83,11 +83,11 @@ class GroupmanagementAdm extends Model
             . ' FROM %adm_group as g LEFT JOIN (%adm_group_members AS gm ) ON (gm.idst = g.idst) '
             . " WHERE g.hidden = 'false' " . ($learning_filter === 'none' ? "AND g.type <> 'course' " : '');
 
-        $ulevel = Docebo::user()->getUserLevelId();
+        $ulevel = Forma::user()->getUserLevelId();
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
             $query .= ' AND g.idst IN (' . implode(',', $admin_tree) . ') ';
         }
 
@@ -114,7 +114,7 @@ class GroupmanagementAdm extends Model
                 } else {
                     require_once _lms_ . '/lib/lib.course.php';
                     $course_man = new Man_Course();
-                    $all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
+                    $all_courses = $course_man->getUserCourses(Forma::user()->getIdSt());
                     $res = [];
                     foreach ($all_courses as $id_course => $name) {
                         $arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
@@ -185,7 +185,7 @@ class GroupmanagementAdm extends Model
                 } else {
                     require_once _lms_ . '/lib/lib.course.php';
                     $course_man = new Man_Course();
-                    $all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
+                    $all_courses = $course_man->getUserCourses(Forma::user()->getIdSt());
                     $res = [];
                     foreach ($all_courses as $id_course => $name) {
                         $arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
@@ -356,7 +356,7 @@ class GroupmanagementAdm extends Model
         if ($idst > 0 && (is_array($info) || is_object($info))) {
             $output = true;
             $conditions = [];
-            $acl = Docebo::user()->getAclManager();
+            $acl = Forma::user()->getAclManager();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {
@@ -430,7 +430,7 @@ class GroupmanagementAdm extends Model
             $output = true;
             $fields = ['idst'];
             $values = [$idst];
-            $acl = Docebo::user()->getAclManager();
+            $acl = Forma::user()->getAclManager();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {
@@ -475,7 +475,7 @@ class GroupmanagementAdm extends Model
                 $output = $this->db->query($query);
             }
 
-            $ulevel = Docebo::user()->getUserLevelId();
+            $ulevel = Forma::user()->getUserLevelId();
             if ($ulevel == ADMIN_GROUP_ADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $preference = new AdminPreference();
@@ -590,11 +590,11 @@ class GroupmanagementAdm extends Model
 
         $_qfilter = '';
         if ($filter) {
-            $ulevel = Docebo::user()->getUserLevelId();
+            $ulevel = Forma::user()->getUserLevelId();
             if ($ulevel != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
                 //$admin_groups = $this->_extractGroupsFromMixedIdst($admin_tree);
                 $_qfilter .= ' AND idst IN (' . implode(',', $admin_tree) . ') ';
             }

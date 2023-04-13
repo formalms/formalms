@@ -12,7 +12,7 @@
  */
 
 $body = '';
-$languages = Docebo::langManager()->getAllLanguages(true); //getAllLangCode();
+$languages = Forma::langManager()->getAllLanguages(true); //getAllLangCode();
 $std_lang = getLanguage();
 
 $body .= Form::openForm('addfolder_form', 'ajax.adm_server.php?r=' . $this->link . '/createfolder');

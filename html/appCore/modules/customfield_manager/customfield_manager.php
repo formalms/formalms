@@ -31,8 +31,8 @@ function field_list()
     //require_once(_i18n_.'/lib.lang.php');
 
     $back_coded = htmlentities(urlencode('index.php?modname=customfield_manager&op=field_list'));
-    $std_lang = DoceboLanguage::createInstance('standard', 'framework');
-    $lang = DoceboLanguage::createInstance('field', 'framework');
+    $std_lang = FormaLanguage::createInstance('standard', 'framework');
+    $lang = FormaLanguage::createInstance('field', 'framework');
     $out = $GLOBALS['page'];
     $filter = new Form();
 
@@ -213,8 +213,8 @@ function field_del()
 {
     checkPerm('del');
     $back_coded = htmlentities(urlencode('index.php?modname=customfield_manager&op=field_list'));
-    $std_lang = &DoceboLanguage::createInstance('standard', 'framework');
-    $lang = &DoceboLanguage::createInstance('field', 'framework');
+    $std_lang = &FormaLanguage::createInstance('standard', 'framework');
+    $lang = &FormaLanguage::createInstance('field', 'framework');
     $out = &$GLOBALS['page'];
 
     $id_field = importVar('id_field', true, 0);

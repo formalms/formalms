@@ -227,7 +227,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         checkPerm('mod');
 
-        $all_languages = Docebo::langManager()->getAllLanguages();
+        $all_languages = Forma::langManager()->getAllLanguages();
         $languages = [];
 
         foreach ($all_languages as $k => $v) {
@@ -734,8 +734,8 @@ class AggregatedcertificateAlmsController extends AlmsController
         // Users after editing (there may be the same users, new users added, or user to delete)
 
         $user_selection = new UserSelector();
-        $acl_man = Docebo::user()->getAclManager();
-        $aclManager = new DoceboACLManager();
+        $acl_man = Forma::user()->getAclManager();
+        $aclManager = new FormaACLManager();
         $userSelectionArr = array_map('intval', $user_selection->getSelection($_POST));
         $userSelectionArr = $aclManager->getAllUsersFromIdst($userSelectionArr);
         $array_user = $aclManager->getArrUserST($userSelectionArr);
@@ -852,8 +852,8 @@ class AggregatedcertificateAlmsController extends AlmsController
         // Users after editing (there may be the same users, new users added, or user to delete)
 
         $user_selection = new UserSelector();
-        $acl_man = Docebo::user()->getAclManager();
-        $aclManager = new DoceboACLManager();
+        $acl_man = Forma::user()->getAclManager();
+        $aclManager = new FormaACLManager();
         $userSelectionArr = array_map('intval', $user_selection->getSelection($_POST));
         $userSelectionArr = $aclManager->getAllUsersFromIdst($userSelectionArr);
         $array_user = $aclManager->getArrUserST($userSelectionArr);
@@ -1035,7 +1035,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
 
-        $aclManager = new DoceboACLManager();
+        $aclManager = new FormaACLManager();
         $usersArr = array_map('intval', $aclManager->getArrUserST($usersArr));
         $status = $this->aggCertLib->getUserAndCourseFromIdAssoc($this->id_association, $type_assoc);
 

@@ -64,7 +64,7 @@ class AuthenticationManager
 
         Events::trigger('core.user.logging_in', ['user' => $user]);
 
-        if (!($user instanceof DoceboUser)) {
+        if (!($user instanceof FormaUser)) {
             return $user;
         }
 
@@ -80,7 +80,7 @@ class AuthenticationManager
         // TODO: controllo isAnonymous prima del richiamo della funzione
         // TODO: lingua
 
-        $user = Docebo::user();
+        $user = Forma::user();
 
         Events::trigger('core.user.logging_out', ['user' => $user]);
 
@@ -90,18 +90,18 @@ class AuthenticationManager
         \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
 
         // recreate Anonymous user
-        $GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
+        $GLOBALS['current_user'] = &FormaUser::createFormaUserFromSession('public_area');
 
         Events::trigger('core.user.logged_out', ['user' => $user]);
     }
 
     public function saveUser($user)
     {
-        //DoceboUser::setupUser($user); // TODO: secondo me meglio tenere la funzione qui ma valutare
+        //FormaUser::setupUser($user); // TODO: secondo me meglio tenere la funzione qui ma valutare
         //////////////////////////////////
         $user->loadUserSectionST();
         $user->SaveInSession();
-        Docebo::setUser($user);
+        Forma::setUser($user);
         resetTemplate();
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -141,7 +141,7 @@ class AuthenticationManager
 
     private static function _checkPwdElapsed()
     {
-        return Docebo::user()->isPasswordElapsed() > 0;
+        return Forma::user()->isPasswordElapsed() > 0;
     }
 
     private static function _checkMandatoryFields()

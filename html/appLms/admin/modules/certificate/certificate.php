@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 define('IS_META', 0);
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -30,7 +30,7 @@ function certificate()
 
     $currentPlatform = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('current_action_platform', 'framework');
     // create a language istance for module admin_certificate
-    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &FormaLanguage::createInstance('certificate', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
@@ -174,7 +174,7 @@ function list_element_certificate()
     $id_certificate = importVar('id_certificate', true);
 
     // create a language istance for module admin_certificate
-    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &FormaLanguage::createInstance('certificate', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $form = new Form();
@@ -295,13 +295,13 @@ function editcertificate($load = false)
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &FormaLanguage::createInstance('certificate', 'lms');
     $form = new Form();
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
 
     $id_certificate = importVar('id_certificate', true, 0);
-    $all_languages = Docebo::langManager()->getAllLanguages();
+    $all_languages = Forma::langManager()->getAllLanguages();
     $languages = [];
     foreach ($all_languages as $k => $v) {
         $languages[$v[0]] = $v[1];
@@ -367,8 +367,8 @@ function savecertificate()
     $id_certificate = importVar('id_certificate', true, 0);
     $load = importVar('load', true, 0);
 
-    $all_languages = Docebo::langManager()->getAllLangCode();
-    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $all_languages = Forma::langManager()->getAllLangCode();
+    $lang = &FormaLanguage::createInstance('certificate', 'lms');
 
     if ($_POST['name'] == '') {
         $_POST['name'] = $lang->def('_NOTITLE');
@@ -445,7 +445,7 @@ function delcertificate()
     require_once _base_ . '/lib/lib.form.php';
 
     $id_certificate = FormaLms\lib\Get::req('id_certificate', DOTY_INT, 0);
-    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &FormaLanguage::createInstance('certificate', 'lms');
 
     if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
         require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
@@ -505,7 +505,7 @@ function report_certificate()
     $form = new Form();
     $certificate = new Certificate();
 
-    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &FormaLanguage::createInstance('certificate', 'lms');
 
     if (isset($_GET['id_certificate'])) {
         $id_certificate = importVar('id_certificate', true, 0);
@@ -622,7 +622,7 @@ function del_report_certificate()
     $certificate = new Certificate();
     $form = new Form();
 
-    $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+    $lang = &FormaLanguage::createInstance('certificate', 'lms');
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);

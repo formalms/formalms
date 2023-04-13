@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class Docebo
+class Forma
 {
     /**
      * Cache file.
@@ -36,7 +36,7 @@ class Docebo
     /**
      * Return an object that describe the current user logged in.
      *
-     * @return DoceboUser
+     * @return FormaUser
      */
     public static function user()
     {
@@ -51,7 +51,7 @@ class Docebo
     {
         $sessionUser = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('user');
 
-        self::$currentUser = $sessionUser ?? DoceboUser::createDoceboUserFromSession('public_area');
+        self::$currentUser = $sessionUser ?? FormaUser::createFormaUserFromSession('public_area');
     }
 
     public static function setUser($user)
@@ -62,7 +62,7 @@ class Docebo
     /**
      * Return an object that describe the current acl.
      *
-     * @return DoceboAcl
+     * @return FormaAcl
      */
     public static function acl()
     {
@@ -72,7 +72,7 @@ class Docebo
     /**
      * Return an object that describe the current aclmanager.
      *
-     * @return DoceboAclManager
+     * @return FormaAclManager
      */
     public static function aclm()
     {
@@ -130,13 +130,13 @@ class Docebo
     public static function setCourse($id_course)
     {
         require_once _lms_ . '/lib/lib.course.php';
-        $GLOBALS['course_descriptor'] = new DoceboCourse($id_course);
+        $GLOBALS['course_descriptor'] = new FormaCourse($id_course);
     }
 
     /**
      * Return an object that describe the current user logged in.
      *
-     * @return DoceboCourse
+     * @return FormaCourse
      */
     public static function course()
     {
@@ -156,17 +156,17 @@ class Docebo
     /**
      * Return an object that describe the system languages.
      *
-     * @return DoceboLangManager
+     * @return FormaLangManager
      */
     public static function langManager()
     {
-        return DoceboLangManager::getInstance();
+        return FormaLangManager::getInstance();
     }
 
     /**
      * Return an object that describe the system languages.
      *
-     * @return DoceboLangManager
+     * @return FormaLangManager
      */
     public static function inc_all($file, $function = 'include')
     {

@@ -1979,7 +1979,7 @@ class EpfShowPresentation
 
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('eportfolio');
+        $lang = &FormaLanguage::createInstance('eportfolio');
 
         $re_pdp = $this->man_epf->getQueryPdpOfEportfolio($this->id_portfolio);
 
@@ -2030,7 +2030,7 @@ class EpfShowPresentation
 
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('eportfolio');
+        $lang = &FormaLanguage::createInstance('eportfolio');
 
         $re_competence = $this->man_epf->getQueryCompetenceOfEportfolio($this->id_portfolio);
 
@@ -2081,7 +2081,7 @@ class EpfShowPresentation
             return $html;
         }
 
-        $lang = &DoceboLanguage::createInstance('eportfolio');
+        $lang = &FormaLanguage::createInstance('eportfolio');
 
         $curriculum = $this->man_epf->getCurriculum($this->id_portfolio, $this->id_user);
 
@@ -2111,7 +2111,7 @@ class EpfShowPresentation
         require_once _adm_ . '/lib/lib.myfiles.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('eportfolio');
+        $lang = &FormaLanguage::createInstance('eportfolio');
 
         $file_man = new MyFile($this->id_user);
         $files = $this->man_epf->getPresentationAttach($this->id_presentation, $this->id_user);

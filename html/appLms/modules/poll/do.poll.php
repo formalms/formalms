@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -44,7 +44,7 @@ function intro($object_poll, $id_param)
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.poll.php';
 
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
@@ -123,7 +123,7 @@ function play($object_poll, $id_param)
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.poll.php';
 
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
@@ -227,7 +227,7 @@ function showResult($object_poll, $id_param)
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.poll.php';
 
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));

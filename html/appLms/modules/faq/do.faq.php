@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     function play($object_faq, $id_param)
     {
         !checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage');
@@ -21,7 +21,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
         require_once _lms_ . '/lib/lib.param.php';
 
-        $lang = DoceboLanguage::createInstance('faq');
+        $lang = FormaLanguage::createInstance('faq');
 
         $idCategory = $object_faq->getId();
         $mode = importVar('mode', false, 'faq');

@@ -23,7 +23,7 @@ ob_start();
 require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(BOOT_DATETIME);
 
-if (!Docebo::user()->isLoggedIn()) {
+if (!Forma::user()->isLoggedIn()) {
     exit('Malformed request');
 }
 

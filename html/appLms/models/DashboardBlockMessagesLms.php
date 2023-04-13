@@ -91,7 +91,7 @@ class DashboardBlockMessagesLms extends DashboardBlockLms
 
     private function getMessagesForBlock($limit = 0)
     {
-        $id_user = Docebo::user()->idst;
+        $id_user = Forma::user()->idst;
 
         $query = "SELECT 
                 m.idMessage, 

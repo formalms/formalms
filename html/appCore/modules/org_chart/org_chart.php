@@ -53,7 +53,7 @@ function assign_field($id_folder)
     require_once _adm_ . '/lib/lib.field.php';
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
+    $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
 
     $out->add(
         getTitleArea($lang->def('_ORG_CHART'), 'org_chart')
@@ -70,7 +70,7 @@ function loadFormAction(&$tree, $op)
     require_once _base_ . '/lib/lib.form.php';
     require_once dirname(__FILE__) . '/tree.org_chart.php';
 
-    $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
+    $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
 
     $out = &$GLOBALS['page'];
     $out->add('<link href="templates/standard/style/base-old-treeview.css" rel="stylesheet" type="text/css">', 'page_head');

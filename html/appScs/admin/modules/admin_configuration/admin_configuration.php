@@ -13,11 +13,11 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     function maskMultiple($name, $value)
     {
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('admin_config', 'scs');
+        $lang = &FormaLanguage::createInstance('admin_config', 'scs');
 
         return Form::getOpenCombo($lang->def('_' . strtoupper($name)))
 
@@ -37,7 +37,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('admin_config', 'scs');
+        $lang = &FormaLanguage::createInstance('admin_config', 'scs');
         $out = &$GLOBALS['page'];
 
         $out->setWorkingZone('content');

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -42,7 +42,7 @@ function addpoll($object_poll)
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
     if (!is_a($object_poll, 'Learning_Poll')) {
         Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
         Util::jump_to('' . $object_poll->back_url . '&amp;create_result=0');
@@ -77,7 +77,7 @@ function addpoll($object_poll)
 function inspoll()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
 
     if (trim($_POST['title']) == '') {
         $_POST['title'] = $lang->def('_NOTITLE');
@@ -106,7 +106,7 @@ function inspoll()
 function modpoll()
 {
     checkPerm('view', false, 'storage');
-    $lang = &DoceboLanguage::createInstance('poll');
+    $lang = &FormaLanguage::createInstance('poll');
 
     require_once _base_ . '/lib/lib.form.php';
     $id_poll = importVar('id_poll', true, 0);
@@ -145,7 +145,7 @@ function modpoll()
 function uppoll()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     if (trim($_POST['title']) == '') {
         $_POST['title'] = $lang->def('_NOTITLE');
@@ -178,7 +178,7 @@ function uppoll()
 function modpollgui($object_poll)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     if (!is_a($object_poll, 'Learning_Poll')) {
         Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
@@ -345,7 +345,7 @@ function modpollgui($object_poll)
 function movequestion($direction)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_quest = importVar('id_quest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -384,7 +384,7 @@ function movequestion($direction)
 function movequest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_poll = importVar('id_poll', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -425,7 +425,7 @@ function movequest()
 function fixPageSequence($id_poll)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     list($tot_quest) = sql_fetch_row(sql_query('
 	SELECT COUNT(*) 
@@ -485,7 +485,7 @@ function fixPollSequence()
 function istanceQuest($type_of_quest, $id)
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $re_quest = sql_query('
 	SELECT type_file, type_class 
@@ -506,7 +506,7 @@ function istanceQuest($type_of_quest, $id)
 function addquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_poll = importVar('id_poll', true, 0);
 
@@ -538,7 +538,7 @@ function addquest()
 function modquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_quest = importVar('id_quest', true, 0);
 
@@ -575,7 +575,7 @@ function delquest()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = DoceboLanguage::createInstance('poll');
+    $lang = FormaLanguage::createInstance('poll');
 
     $id_quest = importVar('id_quest', true, 0);
     $back_url = urldecode(importVar('back_url'));

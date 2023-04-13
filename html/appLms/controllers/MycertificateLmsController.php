@@ -31,7 +31,7 @@ class MycertificateLmsController extends LmsController
 
     public function init()
     {
-        $this->id_user = Docebo::user()->getIdSt();
+        $this->id_user = Forma::user()->getIdSt();
         $this->json = new Services_JSON();
         $this->model = new MycertificateLms($this->id_user);
         $this->certificate = new Certificate();

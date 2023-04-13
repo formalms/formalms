@@ -27,14 +27,14 @@ class OtherFieldsTypes
     public function __construct()
     {
         $this->db = DbConn::getInstance();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
     }
 
     public function getInitData($js = true)
     {
         //produces languages' list variable
         $temp1 = ['{ id: "standard", value: "[ ' . addslashes(Lang::t('_DEFAULT_LANGUAGE')) . ' ]" }'];
-        foreach (Docebo::langManager()->getAllLanguages() as $lang) {
+        foreach (Forma::langManager()->getAllLanguages() as $lang) {
             $temp1[] = '{ id: "' . $lang[0] . '", value: "' . addslashes($lang[0] . '  (' . $lang[1] . ')') . '" }';
         }
 

@@ -51,7 +51,7 @@ session_start();
 
 // load current user from session -----------------------------------------------------
 require_once _base_ . '/lib/lib.user.php';
-$GLOBALS['current_user'] = &DoceboUser::createDoceboUserFromSession('public_area');
+$GLOBALS['current_user'] = &FormaUser::createFormaUserFromSession('public_area');
 
 //require_once(_i18n_.'/lib.lang.php');
 require_once _base_ . '/lib/lib.template.php';

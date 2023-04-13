@@ -22,7 +22,7 @@ require_once dirname(__FILE__) . '/lib.connector.php';
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorDoceboOrgChart extends DoceboConnector
+class FormaConnectorFormaOrgChart extends FormaConnector
 {
     public $last_error = '';
     public $all_cols = ['idOrg', 'idParent', 'path', 'level'];
@@ -104,7 +104,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorDoceboOrgChartUI($this);
+        return new FormaConnectorFormaOrgChartUI($this);
     }
 
     public function connect()
@@ -116,13 +116,13 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector
         //$this->tree_view = $this->directory->getTreeView_OrgView();
         $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
         $this->tree_view = new TreeView_OrgView($orgDb, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
-        $this->tree_view->aclManager = Docebo::aclm();
+        $this->tree_view->aclManager = Forma::aclm();
 
         list($this->tree_desc) = $this->tree_view->tdb->getDescendantsSTFromST([$this->tree]);
 
         require_once _adm_ . '/lib/lib.field.php';
         // load language for fields names
-        $lang_dir = DoceboLanguage::createInstance('admin_directory', 'framework');
+        $lang_dir = FormaLanguage::createInstance('admin_directory', 'framework');
         $fl = new FieldList();
         $fl->setGroupFieldsTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDTABLE);
         $arr_fields = $fl->getAllFields();
@@ -302,7 +302,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector
         }
 
         // ---- Extract extra languages title
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $array_lang = Forma::langManager()->getAllLangCode();
         if (isset($row['lang_titles'])) {
             $folderName = addslashes($row['lang_titles']);
         } else {
@@ -437,7 +437,7 @@ class DoceboConnectorDoceboOrgChart extends DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI
+class FormaConnectorFormaOrgChartUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -617,7 +617,7 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI
                                                     $this->lang->def('_DEL') => '2', ],
                                             $this->post_params['canceled']);
         // ---- default lang ----
-        $languages = Docebo::langManager()->getAllLangCode();
+        $languages = Forma::langManager()->getAllLangCode();
         $lang_key = [];
         for ($index = 0; $index < count($languages); ++$index) {
             $lang_key[$languages[$index]] = $languages[$index];
@@ -687,5 +687,5 @@ class DoceboConnectorDoceboOrgChartUI extends DoceboConnectorUI
 
 function doceboorgchart_factory()
 {
-    return new DoceboConnectorDoceboOrgChart([]);
+    return new FormaConnectorFormaOrgChart([]);
 }

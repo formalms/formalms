@@ -56,7 +56,7 @@ class JQueryLib
         $local_link .= Util::get_js($jquery_core_lib);
         $local_link .= self::initJQueryAjax();
 
-        $lang = DoceboLangManager::getInstance()->getLanguageBrowsercode(Lang::get());
+        $lang = FormaLangManager::getInstance()->getLanguageBrowsercode(Lang::get());
         $jquery_core_lang = '/addons/' . self::_path . "/core/ui/js/i18n/datepicker-$lang.js";
         $local_link .= Util::get_js($jquery_core_lang);
 
@@ -132,7 +132,7 @@ class JQueryLib
     // if locale does not exist or http header fails, default to en-us
     public static function loadCalenderLocal()
     {
-        $_lang = Docebo::user()->getPreference('ui.lang_code');
+        $_lang = Forma::user()->getPreference('ui.lang_code');
         $locale_calender_path = '/addons/' . self::_path . '/datepicker/locales/';
         if (!is_null($_lang)) {
             $local_js = $locale_calender_path . 'bootstrap-datepicker.' . $_lang . '.min.js';

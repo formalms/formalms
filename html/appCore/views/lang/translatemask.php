@@ -19,7 +19,7 @@ echo Form::openForm('add_lang', 'ajax.adm_server.php?r=adm/lang/insertkey')
 <div id="translation_tab">
 	<ul class="nav nav-tabs">
 <?php
-$_langs = Docebo::langManager()->getAllLanguages(true);
+$_langs = Forma::langManager()->getAllLanguages(true);
 foreach ($_langs as $_lang_code => $_lang_data) {
     echo '<li' . ($_lang_code == getLanguage() ? ' class="active"' : '') . '>'
         . '<a data-toggle="tab" href="#langs_tab_' . $_lang_code . '"><em>' . $_lang_code . '</em></a>'

@@ -9,7 +9,7 @@
 
                 $_model = new ElearningLms();
                 $count = 0;
-                $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
+                $statusFilters = $_model->getFilterStatusCourse(Forma::user()->getIdst());
 
                 $html = '<ul class="filterBar nav nav-pills">';
 
@@ -41,10 +41,10 @@
                 $_model = new ElearningLms();
 
                 // select year
-                $_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, '');
+                $_auxiliary = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Forma::user()->getIdst()), 0, '');
                 $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
 
-                $_list_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Docebo::user()->getIdst(), false), 0, '');
+                $_list_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Forma::user()->getIdst(), false), 0, '');
                 $_list_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_list_category);
 
                 $this->widget('coursefilter', [
@@ -97,7 +97,7 @@
     });
     
     function saveCurrentFilter(){
-        var this_user = '<?php echo Docebo::user()->idst; ?>'
+        var this_user = '<?php echo Forma::user()->idst; ?>'
         var ctype = $('#course_search_filter_type').selectpicker().val();
         setCookie(this_user+'.my_course.type',ctype,60,"/")
         var category = $('#course_search_filter_cat').selectpicker().val();
@@ -108,7 +108,7 @@
     }
 
     function clearCurrentFilter(){
-        var this_user = '<?php echo Docebo::user()->idst; ?>'
+        var this_user = '<?php echo Forma::user()->idst; ?>'
         prev = ["0"];
         setCookie(this_user+'.my_course.type',"",3650,"/")
         setCookie(this_user+'.my_course.category',"",-3650,"/")

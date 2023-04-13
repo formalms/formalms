@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit("You can't access this file directly");
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You must login first.');
 }
 
@@ -21,7 +21,7 @@ function tagslist()
 {
     require_once _base_ . '/lib/lib.table.php';
     require_once _adm_ . '/lib/lib.tags.php';
-    $lang = &DoceboLanguage::createInstance('tags', 'framework');
+    $lang = &FormaLanguage::createInstance('tags', 'framework');
 
     $id_tag = FormaLms\lib\Get::req('id_tag', DOTY_INT, 0);
     $tag_name = FormaLms\lib\Get::req('tag', DOTY_STRING, '');

@@ -18,15 +18,15 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Emanuele Sandri <esandri@docebo.com>
  *
- * This is the class for ClassEvents in Docebo
+ * This is the class for ClassEvents in Forma
  **/
 require_once _base_ . '/lib/lib.event.php';
 
-class DoceboUserNotifier extends DoceboEventConsumer
+class FormaUserNotifier extends FormaEventConsumer
 {
     public function _getConsumerName()
     {
-        return 'DoceboUserNotifier';
+        return 'FormaUserNotifier';
     }
 
     public function actionEvent(&$event)
@@ -36,7 +36,7 @@ class DoceboUserNotifier extends DoceboEventConsumer
         // initializing
         require_once _adm_ . '/lib/lib.field.php';
 
-        $acl_man = &Docebo::user()->getACLManager();
+        $acl_man = &Forma::user()->getACLManager();
         $field_man = new FieldList();
         $send_to_field = FormaLms\lib\Get::sett('sms_cell_num_field');
 
@@ -126,7 +126,7 @@ class DoceboUserNotifier extends DoceboEventConsumer
     public function _sendMail($subject, $body, $attachments, &$mail_recipients, &$users_info = false)
     {
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         foreach ($mail_recipients as $id => $mail) {
             $base_body = $body;

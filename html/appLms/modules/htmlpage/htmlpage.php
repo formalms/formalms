@@ -13,14 +13,14 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     // XXX: addpage
     function addpage($object_page)
     {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = DoceboLanguage::createInstance('htmlpage');
+        $lang = FormaLanguage::createInstance('htmlpage');
 
         $GLOBALS['page']->add(getTitleArea($lang->def('_SECT_PAGE'), 'htmlpage')
         . '<script>' . "\n"
@@ -102,7 +102,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view', false, 'storage');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('htmlpage');
+        $lang = &FormaLanguage::createInstance('htmlpage');
 
         //retriving info
         list($title, $textof) = sql_fetch_row(sql_query('

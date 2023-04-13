@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -25,7 +25,7 @@ function adviceList()
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = &FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -34,7 +34,7 @@ function adviceList()
     $nav_bar->setLink('index.php?modname=advice&amp;op=advice&amp;tab=advice');
     $ini = $nav_bar->getSelectedElement();
 
-    $user_idst = Docebo::user()->getArrSt(); // $acl->getUserGroupsST(getLogUserId());
+    $user_idst = Forma::user()->getArrSt(); // $acl->getUserGroupsST(getLogUserId());
 
     $query_my_advice = 'SELECT DISTINCT idAdvice FROM %lms_adviceuser
 		WHERE ( idUser IN ( ' . implode(',', $user_idst) . " ) AND archivied = '0' )";
@@ -139,7 +139,7 @@ function archiveList()
 {
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = &FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -232,7 +232,7 @@ function advice()
 
     $active_tab = FormaLms\lib\Get::req('tab', DOTY_ALPHANUM, 'advice');
 
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = &FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -276,11 +276,11 @@ function addadvice()
     checkPerm('mod');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = &FormaLanguage::createInstance('advice');
     $form = new Form();
 
     //finding group
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $session->get('idCourse') . '/group/', true);
     $groups = [];
     $groups['me'] = $lang->def('_YOUONLY');
@@ -345,7 +345,7 @@ function insadvice()
     }
     list($id_advice) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     switch ($_REQUEST['idGroup']) {
         case 'sel_user':
@@ -422,7 +422,7 @@ function modadvice()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = &FormaLanguage::createInstance('advice');
     $form = new Form();
 
     $query_advice = '
@@ -482,11 +482,11 @@ function modreader()
     checkPerm('mod');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
-    $lang = &DoceboLanguage::createInstance('advice', 'lms');
+    $lang = &FormaLanguage::createInstance('advice', 'lms');
     $out = &$GLOBALS['page'];
     $id_advice = importVar('id_advice', true, 0);
 
-    $aclManager = new DoceboACLManager();
+    $aclManager = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -552,7 +552,7 @@ function updreader()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
 
-    $lang = &DoceboLanguage::createInstance('advice', 'lms');
+    $lang = &FormaLanguage::createInstance('advice', 'lms');
 
     $id_advice = importVar('id_advice', true, 0);
 
@@ -646,7 +646,7 @@ function deladvice()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('advice');
+    $lang = &FormaLanguage::createInstance('advice');
     $id_advice = importVar('idAdvice', true, 0);
 
     if (isset($_POST['undo'])) {
@@ -700,7 +700,7 @@ function archiveadvice()
 
     $id_advice = importVar('idAdvice');
 
-    $acl = &Docebo::user()->getAcl();
+    $acl = &Forma::user()->getAcl();
     $user_idst = $acl->getUserGroupsST(getLogUserId());
     $iam = getLogUserId();
     $user_idst[] = $iam;

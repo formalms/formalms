@@ -43,7 +43,7 @@ class MessageLmsController extends LmsController
         $this->db = DbConn::getInstance();
         $this->model = new MessageLms();
         $this->json = new Services_JSON();
-        $this->aclManager = Docebo::user()->getAClManager();
+        $this->aclManager = Forma::user()->getAClManager();
         $this->can_send = true; //checkPerm('send_all', true) || checkPerm('send_upper', true);
     }
 

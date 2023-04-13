@@ -53,11 +53,11 @@ function getTemplate()
     require_once('lib.user.php');
     require_once('lib.docebo.php');
     // search template according to the org_chart_tree option
-    if (!Docebo::user()->isAnonymous()) {
+    if (!Forma::user()->isAnonymous()) {
         $qtxt = 'SELECT associated_template FROM
 			%adm_org_chart_tree
 			WHERE associated_template IS NOT NULL AND
-			idst_oc IN (' . implode(',', Docebo::user()->getArrSt()) . ')
+			idst_oc IN (' . implode(',', Forma::user()->getArrSt()) . ')
 			ORDER BY iLeft DESC
 			LIMIT 0,1';
 

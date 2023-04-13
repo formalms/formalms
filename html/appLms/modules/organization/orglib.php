@@ -436,7 +436,7 @@ class OrgDirDb extends RepoDirDb
         if ($lo) { // Add object to the uncategorized resources
             require_once _lms_ . '/lib/lib.kbres.php';
             $kbres = new KbRes();
-            $lang = (isset($this->org_idCourse) && defined('LMS') ? Docebo::course()->getValue('lang_code') : false);
+            $lang = (isset($this->org_idCourse) && defined('LMS') ? Forma::course()->getValue('lang_code') : false);
             $kbres->saveUncategorizedResource($title, $idResource, $objectType, 'course_lo', $this->org_idCourse, false, $lang);
         }
 
@@ -1036,7 +1036,7 @@ class OrgDirDb extends RepoDirDb
 
     public function __setAccess($idOrgAccess, $selection, $relation = '')
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         $id_groups = $acl_man->getAllGroupsFromSelection($selection);
 
@@ -1259,7 +1259,7 @@ class Org_TreeView extends RepoTreeView
         if ($this->playOnly) {
             return [];
         }
-        $langRepo = &DoceboLanguage::createInstance('storage', 'lms');
+        $langRepo = &FormaLanguage::createInstance('storage', 'lms');
         if ($this->isFolderSelected()) {
             $stackData = $this->getSelectedFolderData();
             $arrData = $stackData['folder']->otherValues;
@@ -1574,7 +1574,7 @@ class Org_TreeView extends RepoTreeView
         //check for void selection
         if (is_array($arrData) && isset($arrData[ORGFIELD_ACCESS]) && $this->playOnly) {
             //if (!$this->userSelector->isUserInSelection(getLogUserId(), $arrData[ORGFIELD_ACCESS])) return false;
-            if (!empty($arrData[ORGFIELD_ACCESS]) && !in_array(Docebo::user()->getIdst(), $arrData[ORGFIELD_ACCESS])) {
+            if (!empty($arrData[ORGFIELD_ACCESS]) && !in_array(Forma::user()->getIdst(), $arrData[ORGFIELD_ACCESS])) {
                 return false;
             } //?!?
         }
@@ -1961,7 +1961,7 @@ class Org_TreeView extends RepoTreeView
             $node['title'] = $this->getFolderPrintName($folder);
 
             $idCourse = isset($folder->otherValues[ORGFIELDIDCOURSE]) ? $folder->otherValues[ORGFIELDIDCOURSE] : null;
-            $course = new DoceboCourse($idCourse);
+            $course = new FormaCourse($idCourse);
 
             $node['actions'] = [];
             $node['visible_actions'] = [];

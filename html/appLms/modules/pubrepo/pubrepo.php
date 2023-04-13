@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     require_once _lms_ . '/lib/lib.repo.php';
 
     function pubrepo(&$treeView)
@@ -126,8 +126,8 @@ if (!Docebo::user()->isAnonymous()) {
     function pubrepo_itemproperties(&$treeView, &$arrayData, $idItem)
     {
         //function loadFields( $arrayData, &$lo, $idLO ) {
-        $lang = &DoceboLanguage::createInstance('pubrepo', 'lms');
-        $langClassification = &DoceboLanguage::createInstance('classification', 'lms');
+        $lang = &FormaLanguage::createInstance('pubrepo', 'lms');
+        $langClassification = &FormaLanguage::createInstance('classification', 'lms');
 
         $GLOBALS['page']->add('<form id="manHomerepo" method="post"'
         . ' action="index.php?' . $_SERVER['QUERY_STRING'] . '"'
@@ -155,7 +155,7 @@ if (!Docebo::user()->isAnonymous()) {
             }
         closedir($langl->handle);
         sort($langArray);*/
-        $langArray = Docebo::langManager()->getAllLangCode();
+        $langArray = Forma::langManager()->getAllLangCode();
 
         if (!isset($_POST['idItem'])) {
             if ($idItem !== null) {

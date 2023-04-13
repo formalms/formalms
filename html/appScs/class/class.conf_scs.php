@@ -47,7 +47,7 @@ class Config_Scs extends Config
      */
     public function getRegroupUnit($with_invisible = false)
     {
-        $lang = &DoceboLanguage::createInstance('configuration', 'scs');
+        $lang = &FormaLanguage::createInstance('configuration', 'scs');
 
         $query_regroup = '
 		SELECT DISTINCT regroup 
@@ -65,7 +65,7 @@ class Config_Scs extends Config
 
     public function _getRoot()
     {
-        $lang = &DoceboLanguage::createInstance('admin_config', 'scs');
+        $lang = &FormaLanguage::createInstance('admin_config', 'scs');
 
         $reSetting = sql_query('
 		DESCRIBE ' . $this->table_root . '');
@@ -141,7 +141,7 @@ class Config_Scs extends Config
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('admin_config', 'scs');
+        $lang = &FormaLanguage::createInstance('admin_config', 'scs');
 
         if ($regroup == 'root') {
             return $this->_getRoot();

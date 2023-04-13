@@ -24,7 +24,7 @@ class FieldMapUser extends FieldMap
      */
     public function __construct()
     {
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
         parent::__construct();
     }
@@ -55,7 +55,7 @@ class FieldMapUser extends FieldMap
         $res = [];
         $fl = new FieldList();
 
-        $acl_manager = Docebo::user()->getAclManager();
+        $acl_manager = Forma::user()->getAclManager();
         $user_groups = [$acl_manager->getGroupRegisteredId()];
 
         $pfx = ($with_prefix ? $this->getPrefix() . 'custom_' : '');
@@ -82,8 +82,8 @@ class FieldMapUser extends FieldMap
         // TODO: at this moment the function works only for user creation;
         // does not update the user if it already exists
 
-        $acl = &Docebo::user()->getACL();
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl = &Forma::user()->getACL();
+        $acl_manager = &Forma::user()->getAclManager();
 
         $data = [];
 

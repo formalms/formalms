@@ -21,7 +21,7 @@ class LmsMenuAlms extends Model
     public function __construct()
     {
         $this->db = DbConn::getInstance();
-        $this->aclManager = Docebo::user()->getACLManager();
+        $this->aclManager = Forma::user()->getACLManager();
         parent::__construct();
     }
 

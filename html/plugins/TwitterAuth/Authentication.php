@@ -15,8 +15,8 @@ namespace Plugin\TwitterAuth;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-use Docebo;
-use DoceboUser;
+use Forma;
+use FormaUser;
 use Exception;
 use Form;
 use Lang;
@@ -90,7 +90,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             return EMPTY_SOCIALID;
         }
 
-        $user = DoceboUser::createDoceboUserFromField('twitter_id', $user_info->id, 'public_area');
+        $user = FormaUser::createFormaUserFromField('twitter_id', $user_info->id, 'public_area');
 
         if (!$user) {
             ($session)->set('social', ['plugin' => Plugin::getName(),
@@ -108,7 +108,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     {
         $query = ' UPDATE %adm_user'
                 . " SET twitter_id = '" . $id . "'"
-                . ' WHERE idst=' . Docebo::user()->getIdSt();
+                . ' WHERE idst=' . Forma::user()->getIdSt();
 
         sql_query($query);
     }

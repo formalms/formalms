@@ -74,7 +74,7 @@ class SettingAdm extends Model
 
     public function server_info()
     {
-        $lang = &DoceboLanguage::createInstance('configuration', 'framework');
+        $lang = &FormaLanguage::createInstance('configuration', 'framework');
 
         $php_conf = ini_get_all();
 
@@ -151,7 +151,7 @@ class SettingAdm extends Model
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.platform.php';
 
-        $lang = &DoceboLanguage::createInstance('configuration', 'framework');
+        $lang = &FormaLanguage::createInstance('configuration', 'framework');
         $plat_man = &PlatformManager::createInstance();
 
         $all_platform = $plat_man->getPlatformsInfo();
@@ -369,7 +369,7 @@ class SettingAdm extends Model
                         break;
                     case 'language':
                             //drop down language
-                            $langs = Docebo::langManager()->getAllLangCode();
+                            $langs = Forma::langManager()->getAllLangCode();
                             echo Form::getDropdown(
                                 Lang::t('_' . strtoupper($var_name), 'configuration'),
                                 $var_name,
@@ -743,7 +743,7 @@ class SettingAdm extends Model
 
                     //if is int cast it
                 case 'language':
-                        $lang = Docebo::langManager()->getAllLangCode();
+                        $lang = Forma::langManager()->getAllLangCode();
                         $new_value = $lang[$_POST['option'][$var_name]];
                     break;
                 case 'template':

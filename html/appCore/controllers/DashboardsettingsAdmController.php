@@ -127,7 +127,7 @@ class DashboardsettingsAdmController extends AdmController
         require_once _base_ . '/lib/lib.form.php';
 
         $man_ma = new Man_MiddleArea();
-        $acl_manager = new DoceboACLManager();
+        $acl_manager = new FormaACLManager();
         $user_select = new UserSelector();
 
         // tab of user selector

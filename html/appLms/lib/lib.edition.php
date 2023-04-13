@@ -41,7 +41,7 @@ class EditionManager
         $this->courseuser_table = $GLOBALS['prefix_lms'] . '_courseuser';
         $this->user_table = $GLOBALS['prefix_fw'] . '_user';
 
-        $this->acl_man = $acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = $acl_man = Forma::user()->getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
 
         $this->status_list = [CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
@@ -314,10 +314,10 @@ class EditionManager
                 . ' JOIN ' . $this->user_table . ' AS u ON u.idst = eu.id_user'
                 . ' WHERE eu.id_edition IN (' . implode(',', $id_edition) . ')';
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'eu.id_user');
+                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'eu.id_user');
             }
 
             if (is_array($filter)) {
@@ -467,10 +467,10 @@ class EditionManager
             }
         }
 
-        if ($adminFilter && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($adminFilter && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
         }
 
         switch ($sort) {
@@ -763,7 +763,7 @@ class EditionManager
             $subscribe_man = new CourseSubscribe_Manager();
             $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_edition);
 
-            $docebo_course = new DoceboCourse($id_course);
+            $docebo_course = new FormaCourse($id_course);
             $level_idst = &$docebo_course->getCourseLevel($id_course);
             $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
         }

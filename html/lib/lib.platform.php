@@ -92,7 +92,7 @@ class PlatformManager
      */
     public function getHomePlatform($return_lang = false)
     {
-        $lang = &DoceboLanguage::createInstance('platform', 'framework');
+        $lang = &FormaLanguage::createInstance('platform', 'framework');
 
         $platform_list = [];
         foreach ($this->platform as $platform_code => $platform_info) {
@@ -110,7 +110,7 @@ class PlatformManager
 
     public function getPlatformsInfo()
     {
-        $lang = &DoceboLanguage::createInstance('platform', 'framework');
+        $lang = &FormaLanguage::createInstance('platform', 'framework');
 
         $platform_list = $this->platform;
         foreach ($this->platform as $platform_code => $platform_info) {
@@ -122,7 +122,7 @@ class PlatformManager
 
     public function getPlatformList($exclude_framework = false, $also_inactive = false)
     {
-        $lang = &DoceboLanguage::createInstance('platform', 'framework');
+        $lang = &FormaLanguage::createInstance('platform', 'framework');
 
         $platform_list = [];
         foreach ($this->platform as $platform_code => $platform_info) {
@@ -139,7 +139,7 @@ class PlatformManager
 
     public function getActivePlatformList($exclude_framework = false)
     {
-        $lang = &DoceboLanguage::createInstance('platform', 'framework');
+        $lang = &FormaLanguage::createInstance('platform', 'framework');
 
         $platform_list = [];
         foreach ($this->platform as $platform_code => $platform_info) {

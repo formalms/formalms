@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _adm_ . '/lib/lib.import.php';
 require_once _lms_ . '/admin/models/EnrollrulesAlms.php';
 
-class ImportUser extends DoceboImport_Destination
+class ImportUser extends FormaImport_Destination
 {
     public $last_error = null;
     public $mandatory_cols = ['userid'];
@@ -98,9 +98,9 @@ class ImportUser extends DoceboImport_Destination
         require_once _base_ . '/lib/lib.eventmanager.php';
 
         // Load language for fields names
-        $lang_dir = &DoceboLanguage::createInstance('admin_directory', 'framework');
-        $acl = &Docebo::user()->getACL();
-        $acl_manager = Docebo::user()->getAclManager();
+        $lang_dir = &FormaLanguage::createInstance('admin_directory', 'framework');
+        $acl = &Forma::user()->getACL();
+        $acl_manager = Forma::user()->getAclManager();
 
         $this->fl = new FieldList();
         $this->idst_group = $acl_manager->getGroupST('oc_' . (int) $this->tree);
@@ -234,8 +234,8 @@ class ImportUser extends DoceboImport_Destination
      **/
     public function add_row($row, $tocompare)
     {
-        $acl = &Docebo::user()->getACL();
-        $acl_manager = Docebo::aclm();
+        $acl = &Forma::user()->getACL();
+        $acl_manager = Forma::aclm();
 
         foreach ($row as $k => $v) {
             if ($v !== false) {
@@ -660,7 +660,7 @@ class ImportUser extends DoceboImport_Destination
     }
 }
 
-class ImportGroupUser extends DoceboImport_Destination
+class ImportGroupUser extends FormaImport_Destination
 {
     public $last_error = null;
     public $cols_id = ['userid', 'groupid'];
@@ -686,7 +686,7 @@ class ImportGroupUser extends DoceboImport_Destination
     public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = &Forma::user()->getAclManager();
     }
 
     public function connect()

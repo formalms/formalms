@@ -488,7 +488,7 @@ class UserPreferences
      */
     public function __construct($id_user, $db_conn = null)
     {
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
 
         $this->id_user = $id_user;
 
@@ -653,7 +653,7 @@ class UserPreferences
     public function getFreezeMask($base_path = false, $only_visible = true)
     {
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('preferences', 'framework');
+        $lang = &FormaLanguage::createInstance('preferences', 'framework');
 
         $preferences = $this->_up_db->getFullPreferences($this->id_user, $only_visible, false, $base_path);
 
@@ -720,7 +720,7 @@ class UserPreferences
     public function getModifyMask($base_path = false, $only_visible = true, $separate_output = false)
     {
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('preferences', 'framework');
+        $lang = &FormaLanguage::createInstance('preferences', 'framework');
 
         $preferences = $this->_up_db->getFullPreferences($this->id_user, $only_visible, false, $base_path);
 
@@ -733,7 +733,7 @@ class UserPreferences
                     //drop down language
                     $lang_sel = $this->getLanguage();
 
-                    $langs_var = Docebo::langManager()->getAllLangCode();
+                    $langs_var = Forma::langManager()->getAllLangCode();
                     $langs = [];
                     foreach ($langs_var as $k => $v) {
                         $langs[$k] = $v;
@@ -828,7 +828,7 @@ class UserPreferences
             }
             switch ($pref['type']) {
                 case 'language':
-                    $langs = Docebo::langManager()->getAllLangCode();
+                    $langs = Forma::langManager()->getAllLangCode();
                     $re &= $this->setLanguage($langs[$new_value]);
                     break;
                 case 'template':
@@ -1024,7 +1024,7 @@ class AdminPreference
     public function getLangModifyMask($idst)
     {
         $old_rules = $this->getProfileRules($idst);
-        $all_languages = Docebo::langManager()->getAllLangCode();
+        $all_languages = Forma::langManager()->getAllLangCode();
 
         $res = '';
         if (isset($old_rules[_RULES_LANG])) {
@@ -1203,7 +1203,7 @@ class AdminPreference
 
     public function getAdminUsers($id_admin)
     {
-        $acl_man = Docebo::aclm();
+        $acl_man = Forma::aclm();
         $admin_tree = $this->getAdminTree($id_admin);
         // separate the users and the groups
         $admin_users = $acl_man->getUsersFromMixedIdst($admin_tree);
@@ -1216,7 +1216,7 @@ class AdminPreference
 
     public function getAdminUsersQuery($id_admin, $idst_field_name)
     {
-        $acl_man = Docebo::aclm();
+        $acl_man = Forma::aclm();
         $admin_tree = $this->getAdminTree($id_admin);
         // separate the users and the groups
         $admin_users = $acl_man->getUsersFromMixedIdst($admin_tree);
@@ -1248,7 +1248,7 @@ class AdminPreference
 
     public function getAdminAllSett($id_admin, $idst_field_name)
     {
-        $acl_man = Docebo::aclm();
+        $acl_man = Forma::aclm();
         $admin_tree = $this->getAdminTree($id_admin);
         // separate the users and the groups
         $admin_users = $acl_man->getUsersFromMixedIdst($admin_tree);

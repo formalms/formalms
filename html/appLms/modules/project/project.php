@@ -17,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @version 	$Id: project.php 1002 2007-03-24 11:55:51Z fabio $
  */
 
-if ((Docebo::user()->isAnonymous()) || (!checkPerm('view', true))) {
+if ((Forma::user()->isAnonymous()) || (!checkPerm('view', true))) {
     exit("You can't access!");
 }
 
@@ -32,11 +32,11 @@ function project()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     require_once _base_ . '/lib/lib.table.php';
 
-    $myprj = userProjectsList(Docebo::user()->getIdSt());
+    $myprj = userProjectsList(Forma::user()->getIdSt());
 
     $mod_perm = checkPerm('mod', true);
     $del_perm = checkPerm('del', true);
@@ -126,7 +126,7 @@ function project()
 function getUserGrpArray($userid)
 {
     $user_grp = [];
-    $acl = Docebo::user()->getAcl();
+    $acl = Forma::user()->getAcl();
     $user_grp = $acl->getUserGroupsST($userid);
     $user_grp[] = getLogUserId();
 
@@ -177,7 +177,7 @@ function userProjectsList($userid)
 
 function getGroupsForProject(&$lang)
 {
-    $acl_man = Docebo::user()->getAclManager();
+    $acl_man = Forma::user()->getAclManager();
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     //finding group
     $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $idCourse . '/group/', true);
@@ -204,7 +204,7 @@ function addprj()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
 
     $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
@@ -255,7 +255,7 @@ function addprj_now()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     //area title
     $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
@@ -274,7 +274,7 @@ function addprj_now()
     if ($ptitle == '') {
         $err = $lang->def('_PRJNOTITLE');
     }
-    if (!in_group(Docebo::user()->getIdSt(), $pgroup)) {
+    if (!in_group(Forma::user()->getIdSt(), $pgroup)) {
         $err = $lang->def('_PRJNOVALIDGROUP');
     }
 
@@ -291,7 +291,7 @@ function addprj_now()
             $row = sql_fetch_array($query);
             $id = $row['id'];
 
-            $query = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_prj_users (pid,userid,flag) VALUES('$id','" . Docebo::user()->getIdSt() . "','2');");
+            $query = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_prj_users (pid,userid,flag) VALUES('$id','" . Forma::user()->getIdSt() . "','2');");
             $out->add(sql_error());
 
             //$out->add(getResultUi($lang->def("_OPERATION_SUCCESSFUL")).$goonlink);
@@ -351,7 +351,7 @@ function show_task($id, $row, $modimg)
 {
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     $out->add('<div class="inline_block">' . "\n"
         . '<h2 class="heading">' . $lang->def('_PRJTASKS') . '</h2>');
@@ -377,7 +377,7 @@ function show_task($id, $row, $modimg)
 
     $readlink = $modlink = '';
     $dellink = '';
-    if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
         $modlink = '<a href="index.php?modname=project&amp;op=editprogtot&amp;id=' . $id . '"><img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /></a>';
         $dellink = '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />';
     }
@@ -399,7 +399,7 @@ function show_task($id, $row, $modimg)
             $out->add('</td><td class="align_right">' . $data['tprog'] . "%</td>\n");
             $readlink = $modlink = '';
             $dellink = '';
-            if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+            if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
                 $modlink = "<a href=\"index.php?modname=project&amp;op=prjedititem&amp;type=task&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/edit.png" alt="" /></a>';
                 $dellink = "<a href=\"index.php?modname=project&amp;op=prjdelitem&amp;type=task&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/delete.png" alt="" /></a>';
             }
@@ -411,7 +411,7 @@ function show_task($id, $row, $modimg)
     }
     $out->add('</table>'
             . '</div>');
-    if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
         $out->add('<div class="actions">'
             . '<a href="index.php?modname=project&amp;op=prjadditem&amp;type=task&amp;id=' . $id . '">'
             . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_NEW') . '" /> ' . $lang->def('_NEW') . '</a>'
@@ -424,7 +424,7 @@ function show_news($id, $row, $modimg)
 {
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     $out->add('<div class="inline_block">' . "\n"
         . '<h2 class="heading">' . $lang->def('_NEWS') . '</h2>'
@@ -442,7 +442,7 @@ function show_news($id, $row, $modimg)
             $out->add("<td>$ndate</td>\n");
             $readlink = "<a href=\"index.php?modname=project&amp;op=prjreaditem&amp;type=news&amp;id=$id&amp;itemid=" . $data['id'] . '">' . $data['ntitle'] . '</a>';
             $out->add('<td><b>' . $readlink . '</b></td>');
-            if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+            if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
                 $modlink = "<a href=\"index.php?modname=project&amp;op=prjedititem&amp;type=news&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /></a>';
                 $dellink = "<a href=\"index.php?modname=project&amp;op=prjdelitem&amp;type=news&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" /></a>';
             }
@@ -454,7 +454,7 @@ function show_news($id, $row, $modimg)
         $out->add(Lang::t('_NO_DATA', 'standard'));
     }
     $out->add('</div>');
-    if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
         $out->add('<div class="actions">'
             . '<a href="index.php?modname=project&amp;op=prjadditem&amp;type=news&amp;id=' . $id . '">'
             . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_NEW') . '" /> ' . $lang->def('_NEW') . '</a>'
@@ -467,7 +467,7 @@ function show_files($id, $row, $modimg)
 {
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     $out->add('<div class="inline_block">' . "\n"
         . '<h2 class="heading">' . $lang->def('_PRJFILES') . '</h2>'
@@ -493,7 +493,7 @@ function show_files($id, $row, $modimg)
             $out->add('</td>'
                 //.
                 . "\n");
-            if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+            if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
                 $modlink = "<a href=\"index.php?modname=project&amp;op=prjedititem&amp;type=file&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /></a>';
                 $dellink = "<a href=\"index.php?modname=project&amp;op=prjdelitem&amp;type=file&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" /></a>';
             }
@@ -505,7 +505,7 @@ function show_files($id, $row, $modimg)
         $out->add(Lang::t('_NO_DATA', 'standard'));
     }
     $out->add('</div>');
-    if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
         $out->add('<div class="actions">'
             . '<a href="index.php?modname=project&amp;op=prjadditem&amp;type=file&amp;id=' . $id . '">'
             . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_NEW') . '" /> ' . $lang->def('_NEW') . '</a>'
@@ -518,7 +518,7 @@ function show_todo($id, $row, $modimg)
 {
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     $out->add('<div class="inline_block">' . "\n"
         . '<h2 class="heading">' . $lang->def('_PRJTODO') . '</h2>'
@@ -532,7 +532,7 @@ function show_todo($id, $row, $modimg)
             $out->add('<tr><td><b>' . $readlink . '</b>');
             $modlink = '';
             $dellink = '';
-            if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+            if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
                 $modlink = "<a href=\"index.php?modname=project&amp;op=prjedititem&amp;type=todo&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /></a>';
                 $dellink = "<a href=\"index.php?modname=project&amp;op=prjdelitem&amp;type=todo&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" /></a>';
             }
@@ -545,7 +545,7 @@ function show_todo($id, $row, $modimg)
         $out->add(Lang::t('_NO_DATA', 'standard'));
     }
     $out->add('</div>');
-    if ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id))) {
+    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
         $out->add('<div class="actions">'
             . '<a href="index.php?modname=project&amp;op=prjadditem&amp;type=todo&amp;id=' . $id . '">'
             . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_NEW') . '" /> ' . $lang->def('_NEW') . '</a>'
@@ -560,13 +560,13 @@ function show_prj()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     global $pathprj;
     require_once _base_ . '/lib/lib.table.php';
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     if (!in_array($id, $myprj)) {
         exit("You can't access");
@@ -640,12 +640,12 @@ function show_prj()
 
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
-        //$lang=DoceboLanguage::createInstance("sysforum", "lms");
+        //$lang=FormaLanguage::createInstance("sysforum", "lms");
 
         $sf = new sys_forum('lms', 'project_message', $id);
         $sf->setPrefix($GLOBALS['prefix_lms']);
         $sf->can_write = true;
-        $sf->can_moderate = (bool) ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id)));
+        $sf->can_moderate = (bool) ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)));
         $sf->can_upload = true;
         $sf->use_realname = true;
 
@@ -672,7 +672,7 @@ function manprjadmin()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $from = new Form();
 
@@ -681,12 +681,12 @@ function manprjadmin()
     }
 
     $id = $_GET['id'];
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Docebo::user()->getIdSt(), $id))) {
-        $aclManager = new DoceboACLManager();
+    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Forma::user()->getIdSt(), $id))) {
+        $aclManager = new FormaACLManager();
         $user_select = new UserSelector();
 
         $user_select->show_user_selector = true;
@@ -762,16 +762,16 @@ function edit_news($mode = 'edit')
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -902,16 +902,16 @@ function edit_todo($mode = 'edit')
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1023,16 +1023,16 @@ function edit_tasks($mode = 'edit')
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1155,16 +1155,16 @@ function edit_files($mode = 'edit')
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1317,7 +1317,7 @@ function send_msg()
     require_once _base_ . '/lib/lib.upload.php';
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 }
 
 function read_msg()
@@ -1335,15 +1335,15 @@ function mod_prj()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('mod', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Docebo::user()->getIdSt(), $id))) {
+    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Forma::user()->getIdSt(), $id))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1491,16 +1491,16 @@ function del_prj()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
     $form = new Form();
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('del', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Docebo::user()->getIdSt(), $id))) {
+    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Forma::user()->getIdSt(), $id))) {
         $back_url = 'index.php?modname=project&amp;op=project';
 
         if (isset($_POST['undo'])) {
@@ -1594,18 +1594,18 @@ function del_item()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
     $form = new Form();
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = (int) importVar('id');
     $itemid = (int) importVar('itemid');
 
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
         if (!isset($_GET['type'])) {
             return 0;
         }
@@ -1698,11 +1698,11 @@ function read_item()
 {
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
@@ -1759,16 +1759,16 @@ function edit_progtot()
 {
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('project', 'lms');
+    $lang = &FormaLanguage::createInstance('project', 'lms');
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Docebo::user()->getIdSt());
+    $myprj = user_projects(Forma::user()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Docebo::user()->getIdSt(), $id)) || (is_admin(Docebo::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1923,7 +1923,7 @@ function projectDispatch($op)
 					SELECT pid, fname, ftitle
 					FROM ' . $GLOBALS['prefix_lms'] . "_prj_files
 					WHERE id = '$id'"));
-                    $myprj = user_projects(Docebo::user()->getIdSt());
+                    $myprj = user_projects(Forma::user()->getIdSt());
 
                     if ($can_view && in_array($pid, $myprj)) {
                         $expFileName = explode('.', $fname);

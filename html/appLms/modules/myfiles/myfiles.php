@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -30,7 +30,7 @@ function fileList(&$url)
     $file_man = new MyFile(getLogUserId());
     $tab_man = new TabView('myfiles', '');
 
-    $lang = &DoceboLanguage::createInstance('myfiles');
+    $lang = &FormaLanguage::createInstance('myfiles');
 
     $areas = $file_man->getFilesAreas();
     foreach ($areas  as $id_page => $area_name) {
@@ -109,7 +109,7 @@ function modfiles(&$url)
 
     require_once _base_ . '/lib/lib.form.php';
     $file_man = new MyFile(getLogUserId());
-    $lang = &DoceboLanguage::createInstance('myfiles');
+    $lang = &FormaLanguage::createInstance('myfiles');
 
     $area = importVar('working_area', false, $file_man->getDefaultArea());
     $id_file = importVar('id_file', true, 0);
@@ -187,7 +187,7 @@ function delfiles(&$url)
     checkPerm('view');
 
     $file_man = new MyFile(getLogUserId());
-    $lang = &DoceboLanguage::createInstance('myfiles');
+    $lang = &FormaLanguage::createInstance('myfiles');
 
     $area = importVar('working_area', false, $file_man->getDefaultArea());
     $id_file = importVar('id_file', true, 0);

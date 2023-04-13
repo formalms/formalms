@@ -17,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @version  $Id:  $
  */
 // ----------------------------------------------------------------------------
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -29,7 +29,7 @@ function classEventMain()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('classevent', 'lms');
+    $lang = &FormaLanguage::createInstance('classevent', 'lms');
 
     $back_ui_url = 'index.php?modname=classevent&amp;op=main';
 
@@ -64,7 +64,7 @@ function classEventMain()
     $GLOBALS['page']->add('<script type="text/javascript">'
      //.' setup_url(\''.$GLOBALS['where_lms_relative'].'/modules/calendar/ajax.calendar.php?\',\'lms_classroom\',\'lms_classroom\'); '
      . ' setup_url(\'' . $GLOBALS['where_lms_relative'] . '/ajax.server.php?mn=calendar&\',\'lms_classroom\',\'lms_classroom\'); '
-     . ' setup_mode("edit",' . $permissions . ',"' . Docebo::user()->getUserId() . '"); '
+     . ' setup_mode("edit",' . $permissions . ',"' . Forma::user()->getUserId() . '"); '
      . '</script>', 'page_head');
 
     $width = '90%';
@@ -96,7 +96,7 @@ function addeditClassEvent($id = 0)
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('classevent', 'lms');
+    $lang = &FormaLanguage::createInstance('classevent', 'lms');
 
     require_once _base_ . '/lib/lib.form.php';
     $form = new Form();
@@ -170,7 +170,7 @@ function deleteClassEvent()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('classevent', 'lms');
+    $lang = &FormaLanguage::createInstance('classevent', 'lms');
     $clm = new ClassEventManager();
 
     $back_url = 'index.php?modname=classevent&op=main';

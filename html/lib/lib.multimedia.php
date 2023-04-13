@@ -515,7 +515,7 @@ function getEmbedPlay($path, $file_name, $ext = false, $width = false, $height =
                 . '</object>';
          break;
         case 'flv' :
-            return getDoceboFlashPlayer($path_from_player . $path . $file_name, $width, $height);
+            return getFormaFlashPlayer($path_from_player . $path . $file_name, $width, $height);
          break;
         case 'swf' :
             return getFlashPluginCode($path . $file_name);
@@ -525,10 +525,10 @@ function getEmbedPlay($path, $file_name, $ext = false, $width = false, $height =
             $converted_filename = implode('_', array_slice(explode('_', $file_name), 3));
             $converted_filename = implode('.', array_slice(explode('.', $converted_filename), 0, -1));
 
-            return getDoceboFlashAudioPlayer($path_from_player . $path . $file_name, $converted_filename, false, $width, $height);
-            /* return '<object type="application/x-shockwave-flash" data="'.$GLOBALS['where_framework_relative'].'/addons/players/playerDoceboMp3.swf" height="90" width="295">'
+            return getFormaFlashAudioPlayer($path_from_player . $path . $file_name, $converted_filename, false, $width, $height);
+            /* return '<object type="application/x-shockwave-flash" data="'.$GLOBALS['where_framework_relative'].'/addons/players/playerFormaMp3.swf" height="90" width="295">'
                 .'	<param name="flashvars" value="&stream=false&mp3_name='.$path.$file_name.'&url_server=null" />'
-                .'	<param name="movie" value="'.$GLOBALS['where_framework_relative'].'/addons/players/playerDoceboMp3.swf" />'
+                .'	<param name="movie" value="'.$GLOBALS['where_framework_relative'].'/addons/players/playerFormaMp3.swf" />'
                 .'	<param name="quality" value="high" />'
                 .'</object>'; */
          break;
@@ -569,7 +569,7 @@ function getStreamingEmbed($url, $ext = false, $filename = false)
 
     switch ($ext) {
         case 'flv':
-            $res .= getDoceboFlashPlayer($url);
+            $res .= getFormaFlashPlayer($url);
          break;
 
         case 'swf':
@@ -592,14 +592,14 @@ function getStreamingEmbed($url, $ext = false, $filename = false)
     return $res;
 }
 
-function getDoceboFlashPlayer($src, $width = false, $heigth = false)
+function getFormaFlashPlayer($src, $width = false, $heigth = false)
 {
     $video = urlencode($src);
     // TODO: change the video path to have it more flexible
-    return getFlashPluginCode($GLOBALS['where_framework_relative'] . '/addons/players/playerDocebo.swf?video=' . $video . '', false, $width, $heigth);
+    return getFlashPluginCode($GLOBALS['where_framework_relative'] . '/addons/players/playerForma.swf?video=' . $video . '', false, $width, $heigth);
 }
 
-function getDoceboFlashAudioPlayer($src, $song_title = false, $url_server = false, $width = false, $heigth = false)
+function getFormaFlashAudioPlayer($src, $song_title = false, $url_server = false, $width = false, $heigth = false)
 {
     if ($song_title === false) {
         Lang::t('_UNTITLED_SONG');
@@ -610,7 +610,7 @@ function getDoceboFlashAudioPlayer($src, $song_title = false, $url_server = fals
     $song_title = urlencode(stripslashes($song_title));
     $file = urlencode($src);
     // TODO: change the video path to have it more flexible
-    return getFlashPluginCode($GLOBALS['where_framework_relative'] . '/addons/players/playerDoceboMp3.swf?mp3_name=' . $file . '&song_title=' . $song_title . '&url_server=' . $url_server . '', false, $width, $heigth);
+    return getFlashPluginCode($GLOBALS['where_framework_relative'] . '/addons/players/playerFormaMp3.swf?mp3_name=' . $file . '&song_title=' . $song_title . '&url_server=' . $url_server . '', false, $width, $heigth);
 }
 
 function isYouTube($url)

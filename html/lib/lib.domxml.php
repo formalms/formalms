@@ -15,8 +15,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
  * This package define classes for XML DOM compatibility with PHP < 5
- * In Docebo we use DOM API from PHP5 but you can use the platform also
- *	in PHP4. So in this package we redefine all the DOM API used in Docebo.
+ * In Forma we use DOM API from PHP5 but you can use the platform also
+ *	in PHP4. So in this package we redefine all the DOM API used in Forma.
  * For do that we use domxml.
  *
  * @package admin-library

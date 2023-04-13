@@ -27,7 +27,7 @@ class AdminmanagerAdmController extends AdmController
 
         $this->model = new AdminmanagerAdm();
         $this->json = new Services_JSON();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         $this->permissions = [
             'view' => checkPerm('view', true, 'adminmanager'),
             'assign_profile' => checkPerm('mod', true, 'adminmanager'),
@@ -368,7 +368,7 @@ class AdminmanagerAdmController extends AdmController
         $list = $lmodel->getLocationList($startIndex, $results, $sort, $dir, $filter_text);
 
         //prepare the data for sending
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
             foreach ($list as $idst => $record) {

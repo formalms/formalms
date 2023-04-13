@@ -48,7 +48,7 @@ class Layout
     public static function lang_code()
     {
         if (!self::$_lang) {
-            self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
+            self::$_lang = Forma::langManager()->getLanguageInfo(Lang::get());
         }
         if (!isset(self::$_lang->lang_browsercode)) {
             return 'en';
@@ -100,7 +100,7 @@ class Layout
     {
         echo '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/reset-fonts-grids.css" />';
         if (!self::$_lang) {
-            self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
+            self::$_lang = Forma::langManager()->getLanguageInfo(Lang::get());
         }
         if (isset(self::$_lang->lang_direction) && self::$_lang->lang_direction == 'rtl') {
             echo '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/reset-fonts-grids-rtl.css" />';
@@ -111,7 +111,7 @@ class Layout
     {
         $retval = '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/reset-fonts-grids.css" />' . "\n";
         if (!self::$_lang) {
-            self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
+            self::$_lang = Forma::langManager()->getLanguageInfo(Lang::get());
         }
         if (isset(self::$_lang->lang_direction) && self::$_lang->lang_direction == 'rtl') {
             $retval .= '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/reset-fonts-grids-rtl.css" />' . "\n";
@@ -123,7 +123,7 @@ class Layout
     public static function rtl()
     {
         if (!self::$_lang) {
-            self::$_lang = Docebo::langManager()->getLanguageInfo(Lang::get());
+            self::$_lang = Forma::langManager()->getLanguageInfo(Lang::get());
         }
         if (isset(self::$_lang->lang_direction) && self::$_lang->lang_direction == 'rtl') {
             echo '<link rel="stylesheet" type="text/css" href="' . Layout::path() . 'style/base-rtl.css" />';
@@ -147,7 +147,7 @@ class Layout
     public static function lang_flag()
     {
         $lang_sel = Lang::get();
-        $langs_var = Docebo::langManager()->getAllLanguages();
+        $langs_var = Forma::langManager()->getAllLanguages();
         if (count($langs_var) <= 1) {
             return '';
         }
@@ -294,7 +294,7 @@ class Layout
     public static function lang_dropdown()
     {
         $lang_sel = Lang::get();
-        $langs_var = Docebo::langManager()->getAllLanguages();
+        $langs_var = Forma::langManager()->getAllLanguages();
 
         $html = Form::openForm('language_selection', '?special=changelang')
             . '<select id="new_lang" name="new_lang" onchange="submit();">';
@@ -314,7 +314,7 @@ class Layout
         require_once(_lib_ . '/Version/VersionChecker.php');
         $session = SessionManager::getInstance()->getSession();
 
-        if ($session->has('template') && $session->get('template') !== getTemplate() && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
+        if ($session->has('template') && $session->get('template') !== getTemplate() && Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
             $msgChangeTemplate = Lang::t('_MSG_CHANGE_TEMPLATE', 'standard');
             $msgChangeTemplate = str_replace('[template_name]', $session->get('template'), $msgChangeTemplate);
             $msgChangeTemplate = str_replace('[template_min_version]', VersionChecker::getMinimumTemplateVersion(), $msgChangeTemplate);
@@ -407,7 +407,7 @@ class Layout
     public static function courseMenu()
     {
         $sessionIdCourse = SessionManager::getInstance()->getSession()->get('idCourse');
-        if (!Docebo::user()->isAnonymous() && $sessionIdCourse) {
+        if (!Forma::user()->isAnonymous() && $sessionIdCourse) {
             $db = DbConn::getInstance();
 
             $query_course = 'SELECT name, img_course FROM %lms_course WHERE idCourse = ' . $sessionIdCourse . ' ';
@@ -511,7 +511,7 @@ class Layout
 
             $stats = [];
             if (SessionManager::getInstance()->getSession()->has('is_ghost') || SessionManager::getInstance()->getSession()->get('is_ghost') !== true) {
-                if (Docebo::course()->getValue('show_time') == 1) {
+                if (Forma::course()->getValue('show_time') == 1) {
                     $tot_time_sec = TrackUser::getUserPreviousSessionCourseTime(getLogUserId(), $sessionIdCourse);
                     $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($sessionIdCourse);
                     $tot_time_sec += $partial_time_sec;
@@ -545,13 +545,13 @@ class Layout
             }
 
             // who is online ---------------------------------------------------------
-            $stats['user_stats']['who_is_online']['type'] = Docebo::course()->getValue('show_who_online');
+            $stats['user_stats']['who_is_online']['type'] = Forma::course()->getValue('show_who_online');
             $stats['user_stats']['who_is_online']['user_online'] = TrackUser::getWhoIsOnline($sessionIdCourse);
 
             // print first pannel
 
             // print progress bar -------------------------------------------------
-            if (Docebo::course()->getValue('show_progress') == 1) {
+            if (Forma::course()->getValue('show_progress') == 1) {
                 $show_progress = true;
                 require_once _lms_ . '/lib/lib.stats.php';
                 $total = getNumCourseItems(

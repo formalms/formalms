@@ -61,7 +61,7 @@ class TwigManager
         $this->twig->addGlobal('config', ClientService::getInstance()->getConfig());
         $this->twig->addGlobal('clientConfig', addslashes(json_encode(ClientService::getInstance()->getConfig())));
         $this->twig->addGlobal('GLOBALS', $GLOBALS);
-        $this->twig->addGlobal('currentUser', \Docebo::user());
+        $this->twig->addGlobal('currentUser', \Forma::user());
         if ($debug) {
             $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         }

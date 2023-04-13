@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -38,7 +38,7 @@ $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {
     case 'save_filter_window':
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         $output = [];
         $output['title'] = $lang->def('_SAVE_REPORT_TITLE');
@@ -59,7 +59,7 @@ switch ($op) {
 
     case 'show_recipients_window':
         require_once _lms_ . '/lib/lib.report.php';
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
         $output = [
             'success' => true,
             'header' => Lang::t('_RECIPIENTS', 'standard'),
@@ -80,7 +80,7 @@ switch ($op) {
                             $tb->addHead([Lang::t('_USERNAME', 'standard'), Lang::t('_FULLNAME', 'standard')], ['', '']);
                             foreach ($list as $key => $value) {
                                 $tb->addBody([
-                                    Docebo::aclm()->relativeId($value->name),
+                                    Forma::aclm()->relativeId($value->name),
                                     trim($value->value1 . ' ' . $value->value2),
                                 ]);
                             }
@@ -95,7 +95,7 @@ switch ($op) {
                             $tb->addHead([Lang::t('_GROUPUSER_groupid', 'organization_chart')], ['']);
                             foreach ($list as $key => $value) {
                                 $tb->addBody([
-                                    Docebo::aclm()->relativeId($value->name),
+                                    Forma::aclm()->relativeId($value->name),
                                 ]);
                             }
                             $tables[] = $tb->getTable();
@@ -158,7 +158,7 @@ switch ($op) {
         $report = $session->get('report');
         $query = 'INSERT INTO %lms_report_filter ' .
             '(id_report, author, creation_date, filter_data, filter_name) VALUES ' .
-            '(' . $report['id_report'] . ', ' . Docebo::user()->getIdst() . ', NOW(), ' .
+            '(' . $report['id_report'] . ', ' . Forma::user()->getIdst() . ', NOW(), ' .
             " '" . addslashes(serialize($report)) . "', '$name')";
 
         if (!$output['success'] = sql_query($query)) {

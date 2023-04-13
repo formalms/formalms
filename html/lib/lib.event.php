@@ -27,9 +27,9 @@ define('PROPERTY_CASUALTIES', 50);
  *
  * @author   Emanuele Sandri <esandri@docebo.com>
  *
- * This is the class for ClassEvents in Docebo
+ * This is the class for ClassEvents in Forma
  **/
-class DoceboEventClass
+class FormaEventClass
 {
     /** @var int the unique id of the event class
      *	@internal
@@ -42,7 +42,7 @@ class DoceboEventClass
     public $class_name;
 
     /**
-     * DoceboEventClass constructor.
+     * FormaEventClass constructor.
      *
      * @param mixed $class_ref the reference to the class, the id or the name
      *                         - if is int $class_ref is used as class_id
@@ -108,7 +108,7 @@ class DoceboEventClass
      * @param int    $priority    the priority of the event
      * @param string $description the description of the event
      *
-     * @return DoceboEvent $event the event object
+     * @return FormaEvent $event the event object
      **/
     public function &createEvent($module, $section, $priority, $description)
     {
@@ -123,7 +123,7 @@ class DoceboEventClass
                 . ')';
         $result = sql_query($query);
         if ($result) {
-            $event_istance = new DoceboEvent(sql_insert_id());
+            $event_istance = new FormaEvent(sql_insert_id());
 
             return $event_istance;
         } else {
@@ -141,9 +141,9 @@ class DoceboEventClass
  *
  * @author   Emanuele Sandri <esandri@docebo.com>
  *
- * This is the base class for Events in Docebo.
+ * This is the base class for Events in Forma.
  */
-class DoceboEvent
+class FormaEvent
 {
     /** @var int the unique id of the event
      **/
@@ -170,7 +170,7 @@ class DoceboEvent
     public $description = false;
 
     /**
-     * Constructor of DoceboEvent object.
+     * Constructor of FormaEvent object.
      *
      * @param int $event_id the unique id of the event
      **/
@@ -216,7 +216,7 @@ class DoceboEvent
      **/
     public function getClassName()
     {
-        return DoceboEventClass::getClassName($this->class_id);
+        return FormaEventClass::getClassName($this->class_id);
     }
 
     /**
@@ -343,9 +343,9 @@ class DoceboEvent
  *
  * @author   Emanuele Sandri <esandri@docebo.com>
  *
- * This is the base class for Consumer Events in Docebo.
+ * This is the base class for Consumer Events in Forma.
  **/
-class DoceboEventConsumer
+class FormaEventConsumer
 {
     /** @var int the unique id of the consumer
      *	@internal
@@ -365,7 +365,7 @@ class DoceboEventConsumer
     public $consumer_file = false;
 
     /**
-     * DoceboEventConsumer constructor.
+     * FormaEventConsumer constructor.
      *
      * @param mixed $consumer_ref the reference to the consumer, the id or the name
      *                            - if is int $consumer_ref is used as consumer_id
@@ -491,13 +491,13 @@ class DoceboEventConsumer
      **/
     public function _getCunsumerName()
     {
-        return 'DoceboEventConsumer';
+        return 'FormaEventConsumer';
     }
 
     /**
      * put an event to the consumer.
      *
-     * @param DoceboEvent &$event the event to be consumed
+     * @param FormaEvent &$event the event to be consumed
      *
      * @return true inform the events manager to continue the dispatch of this
      *              events to all others consumer

@@ -678,7 +678,7 @@ class KbAlms extends Model
      */
     public function deleteFolder($node_id, $onlyLeaf = false)
     {
-        $acl = &Docebo::user()->getACLManager();
+        $acl = &Forma::user()->getACLManager();
         $folder = $this->getFolderById($node_id);
 
         if (!$folder) {
@@ -869,9 +869,9 @@ class KbAlms extends Model
         $res = [];
 
         if (empty($user_id)) {
-            $arr_st = Docebo::user()->getArrst();
+            $arr_st = Forma::user()->getArrst();
         } else {
-            $acl = Docebo::user()->getACL();
+            $acl = Forma::user()->getACL();
             $arr_st = $acl->getUserAllST($user_id);
         }
         if (empty($arr_st)) {
@@ -896,12 +896,12 @@ class KbAlms extends Model
         $res = [];
 
         if (empty($user_id)) {
-            $arr_st = Docebo::user()->getArrst();
+            $arr_st = Forma::user()->getArrst();
         } else {
-            $acl = Docebo::user()->getACL();
+            $acl = Forma::user()->getACL();
             $arr_st = $acl->getUserAllST($user_id);
         }
-        $arr_st = Docebo::user()->getArrst();
+        $arr_st = Forma::user()->getArrst();
         if (empty($arr_st)) {
             $arr_st = [0];
         }
@@ -976,15 +976,15 @@ class KbAlms extends Model
 
     public function checkResourcePerm($res_id, $user_id = false, $course_filter = false)
     {
-        $user_id = (empty($user_id) ? Docebo::user()->getIdSt() : $user_id);
+        $user_id = (empty($user_id) ? Forma::user()->getIdSt() : $user_id);
 
         $filter = $this->getSearchFilter(false, false, $course_filter, $res_id);
 
         $fields = 'COUNT(*) as tot';
         $qtxt = 'SELECT ' . $fields . ' FROM %lms_kb_res as kr WHERE ' . $filter['where'];
 
-        $q = Docebo::db()->query($qtxt);
-        $row = Docebo::db()->fetch_assoc($q);
+        $q = Forma::db()->query($qtxt);
+        $row = Forma::db()->fetch_assoc($q);
 
         return $row['tot'] > 0 ? true : false;
     }

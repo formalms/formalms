@@ -49,7 +49,7 @@ class CatalogLms extends Model
             CST_CANCELLED => '_CST_CANCELLED',
         ];
 
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         $this->show_all_category = FormaLms\lib\Get::sett('hide_empty_category') === 'off';
 
         $this->currentCatalogue = 0;
@@ -74,7 +74,7 @@ class CatalogLms extends Model
             . ' WHERE idCourse = ' . $idCourse
             . ' AND idUser = ' . $idUser;
 
-        return Docebo::db()->query($query);
+        return Forma::db()->query($query);
     }
 
     public function getInfoLO($idCourse)
@@ -83,7 +83,7 @@ class CatalogLms extends Model
               FROM %lms_organization AS o WHERE o.objectType != '' AND o.idCourse IN (" . $idCourse . ') ORDER BY o.path) as org 
               GROUP BY org.idCourse';
 
-        return Docebo::db()->query($query);
+        return Forma::db()->query($query);
     }
 
     public function getCourseList($type = '', $page = 1)
@@ -91,7 +91,7 @@ class CatalogLms extends Model
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
-        $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+        $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
 
         switch ($type) {
             case 'elearning':
@@ -188,12 +188,12 @@ class CatalogLms extends Model
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
-        $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+        $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
         $categoryFilter = (empty($idCategory) ? '' : ' and idCategory=' . $idCategory);
         $categoryListFilter = '';
         if ($idCatalog > 0) {
             $query = 'select idEntry from learning_catalogue_entry where idCatalogue=' . $idCatalog . " and type_of_entry='course'";
-            $result = Docebo::db()->query($query);
+            $result = Forma::db()->query($query);
             foreach ($result as $item) {
                 $cat_array[] = $item['idEntry'];
             }
@@ -242,7 +242,7 @@ class CatalogLms extends Model
             . $categoryListFilter
             . ' ORDER BY name';
 
-        return Docebo::db()->query($query);
+        return Forma::db()->query($query);
     }
 
     public function getCatalogCourseList($type, $page, $idCatalog, $idCategory)
@@ -270,7 +270,7 @@ class CatalogLms extends Model
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
-        $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+        $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
 
         switch ($type) {
             case 'elearning':
@@ -380,7 +380,7 @@ class CatalogLms extends Model
         require_once _lms_ . '/lib/lib.date.php';
         $dm = new DateManager();
         $cl = new ClassroomLms();
-        $course_editions = $cl->getUserEditionsInfo(Docebo::user()->idst, $id_course);
+        $course_editions = $cl->getUserEditionsInfo(Forma::user()->idst, $id_course);
         $out = [];
         $course_array['next_lesson'] = '-';
         $next_lesson_array = [];
@@ -568,7 +568,7 @@ class CatalogLms extends Model
                 //Controllo che l'utente non sia iscritto a tutte le edizioni future
                 $date_id = [];
 
-                $user_classroom = $this->classroom_man->getUserDates(Docebo::user()->getIdSt());
+                $user_classroom = $this->classroom_man->getUserDates(Forma::user()->getIdSt());
                 $classroom_full = $this->classroom_man->getFullDateForCourse($row['idCourse']);
                 $classroom_not_confirmed = $this->classroom_man->getNotConfirmetDateForCourse($row['idCourse']);
 
@@ -605,7 +605,7 @@ class CatalogLms extends Model
         } elseif ($row['course_edition'] == 1) {
             $additional_info = '';
 
-            $editions = $this->edition_man->getEditionAvailableForCourse(Docebo::user()->getIdSt(), $row['idCourse']);
+            $editions = $this->edition_man->getEditionAvailableForCourse(Forma::user()->getIdSt(), $row['idCourse']);
 
             if (count($editions) == 0) {
                 return false;

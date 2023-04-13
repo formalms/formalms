@@ -14,7 +14,7 @@
 namespace Plugin\ConferenceBBB;
 
 use BigBlueButton;
-use Docebo;
+use Forma;
 use FormaLms\lib\Session\SessionManager;
 use FormaLms\lib\Get;
 use stdClass;
@@ -73,8 +73,8 @@ class Conference extends \PluginConference
 
     public function insertRoom($idConference, $name, $start_date, $end_date, $maxparticipants)
     {
-        $acl_manager = &Docebo::user()->getAclManager();
-        $display_name = Docebo::user()->getUserName();
+        $acl_manager = &Forma::user()->getAclManager();
+        $display_name = Forma::user()->getUserName();
         $u_info = $acl_manager->getUser(getLogUserId(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
         $confkey = self::generateConfKey();
@@ -167,14 +167,14 @@ class Conference extends \PluginConference
 
     public function getUrl($idConference, $room_type)
     {
-        $lang = &\DoceboLanguage::createInstance('conference', 'lms');
+        $lang = &\FormaLanguage::createInstance('conference', 'lms');
 
         $conf = new \Conference_Manager();
 
         $conference = $conf->roomInfo($idConference);
 
-        $acl_manager = &Docebo::user()->getAclManager();
-        $username = Docebo::user()->getUserName();
+        $acl_manager = &Forma::user()->getAclManager();
+        $username = Forma::user()->getUserName();
         $u_info = $acl_manager->getUser(getLogUserId(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
 

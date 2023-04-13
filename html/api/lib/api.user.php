@@ -299,7 +299,7 @@ class User_API extends API
 
     public function updateUser($id_user, $userdata)
     {
-        $acl_man = new DoceboACLManager();
+        $acl_man = new FormaACLManager();
         $output = [];
 
         $user_data = $this->aclManager->getUser($id_user, false);
@@ -1105,7 +1105,7 @@ class User_API extends API
 
         $id_org = $this->_getBranchByCode($code_org);
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $idst_org = $acl_man->getGroupST('oc_' . $id_org);
         $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
@@ -1304,7 +1304,7 @@ class User_API extends API
                 break;
 
             case 'userdetailsbyuserid':
-                $acl_man = new DoceboACLManager();
+                $acl_man = new FormaACLManager();
                 $idst = $acl_man->getUserST($params['userid']);
                 if (!$idst) {
                     $output = ['success' => false, 'message' => 'Error: invalid userid: ' . $params['userid'] . '.'];
@@ -1321,7 +1321,7 @@ class User_API extends API
 
             case 'updateuserbyuserid':
                 if (count($params) > 0) { //params[0] should contain user id
-                    $acl_man = new DoceboACLManager();
+                    $acl_man = new FormaACLManager();
                     $idst = $acl_man->getUserST($params['userid']);
                     if (!$idst) {
                         $output = ['success' => false, 'message' => 'Error: invalid userid: ' . $params['userid'] . '.'];

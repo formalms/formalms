@@ -101,7 +101,7 @@ class DashboardBlockCertificatesLms extends DashboardBlockLms
 
     private function getCertificatesForBlock($limit = 1)
     {
-        $id_user = Docebo::user()->idst;
+        $id_user = Forma::user()->idst;
 
         $filter['id_user'] = $id_user;
         $pagination['startIndex'] = 0;

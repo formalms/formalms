@@ -24,7 +24,7 @@ class CoreWikiAdmin
 
     public function __construct($source_platform)
     {
-        $this->lang = &DoceboLanguage::createInstance('wiki', 'framework');
+        $this->lang = &FormaLanguage::createInstance('wiki', 'framework');
         $this->source_platform = $source_platform;
         $this->wikiManager = new CoreWikiManager();
     }
@@ -412,7 +412,7 @@ class CoreWikiAdmin
         $info = $this->wikiManager->getCategoryInfo($cat_id);
         $cat_title = $info['title'];
 
-        $doc = new DoceboDOMDocument('1.0');
+        $doc = new FormaDOMDocument('1.0');
         $root = $doc->createElement('FAQCATEGORY');
         $doc->appendChild($root);
 
@@ -768,7 +768,7 @@ class CoreWikiPublic
         $this->wiki_id = (int) $wiki_id;
         $this->session->set('editor_in_wiki', $wiki_id);
         $this->session->save();
-        $this->lang = &DoceboLanguage::createInstance('wiki', 'framework');
+        $this->lang = &FormaLanguage::createInstance('wiki', 'framework');
         $this->wikiManager = new CoreWikiManager();
 
         $this->wikiLangSetup();
@@ -1232,7 +1232,7 @@ class CoreWikiPublic
         $res = false;
 
         $user = &$GLOBALS['current_user'];
-        $acl = new DoceboACL();
+        $acl = new FormaACL();
         $role_id = '/framework/wiki/' . $wiki_id . '/' . $perm;
 
         if (($role_id != '') && ($acl->getRoleST($role_id) != false)) {
@@ -1342,7 +1342,7 @@ class CoreWikiPublic
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.wiki_revision.php';
         $res = '';
-        $lang = &DoceboLanguage::createInstance('wiki', 'framework');
+        $lang = &FormaLanguage::createInstance('wiki', 'framework');
         $um = &UrlManager::getInstance();
         $page_code = $this->getPageCode();
 
@@ -1980,7 +1980,7 @@ class CoreWikiManager
 
         // Delete wiki roles
         $role_id = '/framework/wiki/' . (int) $wiki_id . '/';
-        $acl_manager = Docebo::user()->getAclManager();
+        $acl_manager = Forma::user()->getAclManager();
         $acl_manager->deleteRoleFromPath($role_id);
     }
 
@@ -1993,7 +1993,7 @@ class CoreWikiManager
     {
         $res = [];
         $pl = $this->getWikiPermList();
-        $acl_manager = &Docebo::user()->getACLManager();
+        $acl_manager = &Forma::user()->getACLManager();
 
         foreach ($pl as $key => $val) {
             $role_id = '/framework/wiki/' . $wiki_id . '/' . $val;
@@ -2013,7 +2013,7 @@ class CoreWikiManager
     public function saveWikiPerm($wiki_id, $selected_items, $database_items)
     {
         $pl = $this->getWikiPermList();
-        $acl_manager = &Docebo::user()->getACLManager();
+        $acl_manager = &Forma::user()->getACLManager();
         foreach ($pl as $key => $val) {
             if ((isset($selected_items[$val])) && (is_array($selected_items[$val]))) {
                 $role_id = '/framework/wiki/' . $wiki_id . '/' . $val;
@@ -2048,14 +2048,14 @@ class CoreWikiManager
         $res = [];
 
         require_once _base_ . '/lib/lib.domxml.php';
-        $xml_doc = new DoceboDOMDocument();
+        $xml_doc = new FormaDOMDocument();
 
         if (!$xml_doc) {
             return false;
         }
 
         if ($xml_doc->load($filename)) {
-            $xpath = new DoceboDOMXPath($xml_doc);
+            $xpath = new FormaDOMXPath($xml_doc);
 
             $cat_info = [];
             $category_node = $xpath->query('/FAQCATEGORY');
@@ -2460,7 +2460,7 @@ class CoreWikiManager
     {
         $res = [];
 
-        $lang_arr = Docebo::langManager()->getAllLangCode();
+        $lang_arr = Forma::langManager()->getAllLangCode();
 
         if ($include_other) {
             $res['other'] = Lang::t('_OTHER_LANGUAGE', 'wiki');

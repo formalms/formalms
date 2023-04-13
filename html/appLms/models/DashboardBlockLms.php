@@ -380,8 +380,8 @@ abstract class DashboardBlockLms extends Model
 
     protected function getUser()
     {
-        $user = Docebo::user();
-        $acl_man = Docebo::user()->getAclManager();
+        $user = Forma::user();
+        $acl_man = Forma::user()->getAclManager();
         $user_info = $acl_man->getUser($user->getIdSt(), false);
 
         return [

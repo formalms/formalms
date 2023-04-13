@@ -77,8 +77,8 @@ function sl_sal_getUserId()
 
 function sl_sal_getUserName()
 {
-    $aclManager = Docebo::user()->getACLManager();
-    $arr_result = $aclManager->getUser(Docebo::user()->getIdSt(), false);
+    $aclManager = Forma::user()->getACLManager();
+    $arr_result = $aclManager->getUser(Forma::user()->getIdSt(), false);
 
     return $arr_result[ACL_INFO_LASTNAME] . ',' . $arr_result[ACL_INFO_FIRSTNAME];
 }

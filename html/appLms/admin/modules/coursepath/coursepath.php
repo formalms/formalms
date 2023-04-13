@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     function pathlist()
     {
         checkPerm('view');
@@ -26,8 +26,8 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.table.php';
 
         $out = &$GLOBALS['page'];
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
-        $acl_man = &Docebo::user()->getAclManager();
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
+        $acl_man = &Forma::user()->getAclManager();
 
         $subscribe_perm = checkPerm('subscribe', true);
         $mod_perm = checkPerm('mod', true);
@@ -41,10 +41,10 @@ if (!Docebo::user()->isAnonymous()) {
 	SELECT id_path, path_code, path_name, path_descr
 	FROM %lms_coursepath ';
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -93,10 +93,10 @@ if (!Docebo::user()->isAnonymous()) {
 	FROM %lms_coursepath_user
 	GROUP BY id_path';
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
             if (!empty($admin_users)) {
@@ -199,7 +199,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
 
         $out = &$GLOBALS['page'];
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
 
         if ($load_id === false) {
             $path_code = '';
@@ -274,11 +274,11 @@ if (!Docebo::user()->isAnonymous()) {
 		  '" . $_POST['path_descr'] . "',
 		  '" . $_POST['subscribe_method'] . "' )";
             $re = sql_query($query_insert);
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 list($id_path) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $adminManager->addAdminCoursepath($id_path, Docebo::user()->getIdSt());
+                $adminManager->addAdminCoursepath($id_path, Forma::user()->getIdSt());
             }
         }
         Util::jump_to('index.php?modname=coursepath&op=pathlist&result=' . ($re ? 'ok' : 'err'));
@@ -319,7 +319,7 @@ if (!Docebo::user()->isAnonymous()) {
 		ORDER BY path_name";
             list($path_name, $path_descr) = sql_fetch_row(sql_query($query_pathlist));
 
-            $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+            $lang = &FormaLanguage::createInstance('coursepath', 'lms');
 
             $GLOBALS['page']->add(
             getTitleArea($lang->def('_COURSEPATH'), 'coursepath')
@@ -362,7 +362,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.coursepath.php';
 
-        $lang = DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = FormaLanguage::createInstance('coursepath', 'lms');
 
         $id_path = importVar('id_path', true, 0);
         $mod_perm = checkPerm('mod', true);
@@ -426,12 +426,12 @@ if (!Docebo::user()->isAnonymous()) {
 
                 $all_courses = true;
                 $admin_courses = [];
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $all_courses = false;
 
                     require_once _base_ . '/lib/lib.preference.php';
                     $adminManager = new AdminPreference();
-                    $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+                    $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
                     $all_course = false;
                     if (isset($admin_courses['course'][0])) {
                         $all_course = true;
@@ -439,7 +439,7 @@ if (!Docebo::user()->isAnonymous()) {
                         require_once _lms_ . '/lib/lib.catalogue.php';
                         $cat_man = new Catalogue_Manager();
 
-                        $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                        $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
                         if (count($user_catalogue) > 0) {
                             $courses = [0];
 
@@ -585,7 +585,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.coursepath.php';
 
         $out = &$GLOBALS['page'];
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
 
         $id_path = importVar('id_path', true, 0);
         $id_slot = importVar('id_slot', true, 0);
@@ -688,7 +688,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _base_ . '/lib/lib.form.php';
 
         $out = &$GLOBALS['page'];
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
 
         $id_path = importVar('id_path', true, 0);
         $id_course = importVar('id_course', true, 0);
@@ -825,7 +825,7 @@ if (!Docebo::user()->isAnonymous()) {
 
             $arr_course = [$id_course => $id_course];
             $course_info = &getCoursesInfo($arr_course);
-            $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+            $lang = &FormaLanguage::createInstance('coursepath', 'lms');
 
             $query_pathlist = '
 		SELECT path_name
@@ -872,8 +872,8 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.subscribe.php';
 
         $id_path = importVar('id_path', true, 0);
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
-        $acl_man = &Docebo::user()->getAclManager();
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
+        $acl_man = &Forma::user()->getAclManager();
 
         if (isset($_POST['accept'])) {
             $cpath_man = new CoursePath_Manager();
@@ -992,9 +992,9 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.coursepath.php';
 
         $id_path = importVar('id_path', true, 0);
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
         $out = &$GLOBALS['page'];
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         if (isset($_POST['cancelselector'])) {
             Util::jump_to('index.php?modname=coursepath&amp;op=pathlist');
@@ -1007,10 +1007,10 @@ if (!Docebo::user()->isAnonymous()) {
         $user_select->show_orgchart_selector = true;
         $user_select->show_orgchart_simple_selector = true;
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
             $user_select->setUserFilter('user', $admin_users);
@@ -1031,7 +1031,7 @@ if (!Docebo::user()->isAnonymous()) {
             $user_select->resetSelection($users);
         }
         if (isset($_POST['okselector'])) {
-            $acl_manager = new DoceboACLManager();
+            $acl_manager = new FormaACLManager();
 
             $user_selected = $user_select->getSelection($_POST);
 
@@ -1044,10 +1044,10 @@ if (!Docebo::user()->isAnonymous()) {
 
             $user_selected = array_diff($user_selected, $users);
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
                 $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
                 $user_selected = array_intersect($user_selected, $admin_users);
@@ -1246,7 +1246,7 @@ if (!Docebo::user()->isAnonymous()) {
 
             if (!empty($array_id_date)) {
                 foreach ($array_id_date as $id_date) {
-                    $date_man->addUserToDate($id_date, $id_user, Docebo::user()->getIdSt());
+                    $date_man->addUserToDate($id_date, $id_user, Forma::user()->getIdSt());
                 }
 
                 reset($array_id_date);
@@ -1254,7 +1254,7 @@ if (!Docebo::user()->isAnonymous()) {
 
             if (!empty($array_id_edition)) {
                 foreach ($array_id_edition as $id_edition) {
-                    $edition_man->addUserToEdition($id_edition, $id_user, Docebo::user()->getIdSt());
+                    $edition_man->addUserToEdition($id_edition, $id_user, Forma::user()->getIdSt());
                 }
 
                 reset($array_id_edition);
@@ -1276,7 +1276,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.coursepath.php';
 
         $out = &$GLOBALS['page'];
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
 
         $id_slot = importVar('id_slot');
         $id_path = importVar('id_path');
@@ -1335,7 +1335,7 @@ if (!Docebo::user()->isAnonymous()) {
         require_once _lms_ . '/lib/lib.coursepath.php';
 
         $out = &$GLOBALS['page'];
-        $lang = &DoceboLanguage::createInstance('coursepath', 'lms');
+        $lang = &FormaLanguage::createInstance('coursepath', 'lms');
 
         $id_slot = importVar('id_slot');
         $id_path = importVar('id_path');

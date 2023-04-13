@@ -166,7 +166,7 @@ class ClassEventManager
 
         if ($id == 0) {
             if (empty($location)) {
-                $lang = &DoceboLanguage::createInstance('classevent', 'lms');
+                $lang = &FormaLanguage::createInstance('classevent', 'lms');
                 $location = $lang->def('_UNAMED');
             }
 

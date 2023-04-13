@@ -53,7 +53,7 @@ class CourseLmsController extends LmsController
 
         $this->userProfileDataManager = new UserProfileData();
 
-        if (!Docebo::user()->isAnonymous()) {
+        if (!Forma::user()->isAnonymous()) {
             define('_PATH_COURSE', '/appLms/' . FormaLms\lib\Get::sett('pathcourse'));
 
             require_once _lms_ . '/lib/lib.levels.php';
@@ -69,8 +69,8 @@ class CourseLmsController extends LmsController
         checkPerm('view_info', false, 'course');
         $mod_perm = checkPerm('mod', true);
         try {
-            $acl_man = Docebo::user()->getAclManager();
-            $lang = &DoceboLanguage::createInstance('course');
+            $acl_man = Forma::user()->getAclManager();
+            $lang = &FormaLanguage::createInstance('course');
             $course = $GLOBALS['course_descriptor']->getAllInfo();
             $levels = CourseLevel::getLevels();
         } catch (\Exception $exception) {
@@ -123,7 +123,7 @@ class CourseLmsController extends LmsController
             $course['quota'] = $quota;
         }
 
-        $obj_course = new DoceboCourse($this->session->get('idCourse'));
+        $obj_course = new FormaCourse($this->session->get('idCourse'));
         $info_course = $obj_course->getAllInfo();
         $id_date = CourseLms::getMyDateCourse($this->session->get('idCourse'));
         $info_date = ($info_course['course_type'] == 'classroom' ? CourseLms::getInfoDate($id_date) : '');
@@ -181,14 +181,14 @@ class CourseLmsController extends LmsController
     {
         checkPerm('mod');
 
-        $data['lang_c'] = &DoceboLanguage::createInstance('course');
-        $lang = &DoceboLanguage::createInstance('course');
+        $data['lang_c'] = &FormaLanguage::createInstance('course');
+        $lang = &FormaLanguage::createInstance('course');
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
         $data['id_course'] = $session->get('idCourse');
 
         $data['levels'] = CourseLevel::getTranslatedLevels();
-        $data['array_lang'] = Docebo::langManager()->getAllLangCode();
+        $data['array_lang'] = Forma::langManager()->getAllLangCode();
         $data['difficult_lang'] = [
             'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
             'easy' => $lang->def('_DIFFICULT_EASY'),
@@ -215,7 +215,7 @@ class CourseLmsController extends LmsController
     {
         checkPerm('mod');
 
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $array_lang = Forma::langManager()->getAllLangCode();
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $user_status = 0;
         if ($this->request->request->has('user_status')) {
@@ -253,7 +253,7 @@ class CourseLmsController extends LmsController
             $re = false;
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         // send alert
         require_once _base_ . '/lib/lib.eventmanager.php';
 
@@ -292,7 +292,7 @@ class CourseLmsController extends LmsController
     {
         $idUser = FormaLms\lib\Get::gReq('id_user');
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $user = $acl_man->getUser($idUser, false);
 

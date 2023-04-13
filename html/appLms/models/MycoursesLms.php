@@ -65,7 +65,7 @@ class MycoursesLms extends Model
         if (FormaLms\lib\Get::sett('on_usercourse_empty') == 'on') {
             require_once _lms_ . '/lib/lib.course.php';
             $cu = new Man_CourseUser();
-            if (!$cu->countUserCourses(Docebo::user()->getIdSt())) {
+            if (!$cu->countUserCourses(Forma::user()->getIdSt())) {
                 return true;
             }
         }

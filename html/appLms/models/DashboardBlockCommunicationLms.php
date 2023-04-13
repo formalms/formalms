@@ -101,7 +101,7 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
     {
         $communication = [];
 
-        $communication = $this->model->findAllUnread(0, $limit, 'publish_date', 'DESC', Docebo::user()->getId(), ['viewer' => Docebo::user()->getArrSt(), 'only_to_read' => (bool) $only_to_read]);
+        $communication = $this->model->findAllUnread(0, $limit, 'publish_date', 'DESC', Forma::user()->getId(), ['viewer' => Forma::user()->getArrSt(), 'only_to_read' => (bool) $only_to_read]);
      
         return $communication;
     }

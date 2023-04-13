@@ -24,7 +24,7 @@ switch ($op) {
     case 'getpopup':
         $output = ['success' => true];
 
-        $lang = &DoceboLanguage::createInstance('certificate', 'lms');
+        $lang = &FormaLanguage::createInstance('certificate', 'lms');
         $head = Lang::t('_CERTIFICATES_GENERATION', 'certificate');
         $body = '<div><p>' . Lang::t('_PROGRESS', 'standard') . '</p><div class="box_progress_bar" id="load_line">'
             . '<div id="print_progressbar" class="bar_complete" style="width:0%"></div>'

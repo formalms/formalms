@@ -51,7 +51,7 @@ class ReportPlugin
         if ($report_name == false) {
             $this->_load();
         } else {
-            $lang = &DoceboLanguage::createInstance('report', 'framework');
+            $lang = &FormaLanguage::createInstance('report', 'framework');
             $this->report_name = $lang->def($report_name);
             $this->report_descr = $lang->def($report_name);
         }
@@ -179,7 +179,7 @@ class ReportPlugin
      */
     public function _load()
     {
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         $query_report = '
 		SELECT report_name
@@ -200,12 +200,12 @@ class ReportPlugin
     {
         $p_dr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
 
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = Forma::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $p_dr->intersectGroupFilter(
-                $adminManager->getAdminTree(Docebo::user()->getIdSt())
+                $adminManager->getAdminTree(Forma::user()->getIdSt())
             );
         }
 

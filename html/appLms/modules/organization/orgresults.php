@@ -70,7 +70,7 @@ function getCompilationTable($id_user, $id_test)
 
     if (sql_num_rows($result) > 0) {
         $track_info = sql_fetch_assoc($result);
-        $play_man = new PlayTestManagement($id_test, Docebo::user()->getIdst(), $track_info['idTrack'], $test_man);
+        $play_man = new PlayTestManagement($id_test, Forma::user()->getIdst(), $track_info['idTrack'], $test_man);
         $test_info = $test_man->getTestAllInfo();
         $score_status = $play_man->getScoreStatus();
 
@@ -201,7 +201,7 @@ function getTrackingTable($id_user, $id_org)
     require_once _base_ . '/lib/lib.table.php';
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
-    $lang = DoceboLanguage::CreateInstance('organization', 'lms');
+    $lang = FormaLanguage::CreateInstance('organization', 'lms');
 
     $h_type = ['', '', 'image', 'image', '', 'nowrap', 'image', 'image nowrap'];
     $h_content = [
@@ -291,7 +291,7 @@ function getHistoryTable($id_user, $id_obj)
 
     $id_org = FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
 
-    $lang = DoceboLanguage::CreateInstance('organization', 'lms');
+    $lang = FormaLanguage::CreateInstance('organization', 'lms');
 
     $h_type = ['', '', '', '', ''];
     $h_content = [
@@ -345,7 +345,7 @@ function getInteractionsTable($id_user, $idtrack)
     require_once _base_ . '/lib/lib.table.php';
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
-    $lang = DoceboLanguage::CreateInstance('organization', 'lms');
+    $lang = FormaLanguage::CreateInstance('organization', 'lms');
 
     $id_org = FormaLms\lib\Get::req('id_org', DOTY_INT, 0);
 
@@ -363,10 +363,10 @@ function getInteractionsTable($id_user, $idtrack)
     $res = sql_query($qry);
     $row = sql_fetch_array($res);
 
-    $doc = new DoceboDOMDocument();
+    $doc = new FormaDOMDocument();
     $doc->loadXML($row['xmldata']);
 
-    $context = new DoceboDOMXPath($doc);
+    $context = new FormaDOMXPath($doc);
     $root = $doc->documentElement;
 
     $temp = $context->query('//interactions');

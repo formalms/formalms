@@ -53,12 +53,12 @@ class UsermanagementAdmController extends AdmController
         ];
 
         // Check if the user admin has reached the max number of users he can create
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $this->permissions['view_deleted_user'] = false;
             $admin_pref = new AdminPreference();
-            $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+            $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
             if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                $user_pref = new UserPreferences(Forma::user()->getIdSt());
                 if ($user_pref->getPreference('user_created_count') >= $pref['admin_rules.max_user_insert']) {
                     $this->permissions['add_user'] = false;
                     $this->reached_max_user_created = true;
@@ -127,7 +127,7 @@ class UsermanagementAdmController extends AdmController
             'language' => Lang::t('_LANGUAGE', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(Docebo::user()->getPreference('ui.directory.custom_columns'));
+        $f_selected = $this->json->decode(Forma::user()->getPreference('ui.directory.custom_columns'));
         if ($f_selected == false) {
             $f_selected = ['level', 'email', 'lastenter', 'register_date'];
         }
@@ -188,9 +188,9 @@ class UsermanagementAdmController extends AdmController
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
         Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/usermanagement/usermanagement.js', true, true);
 
-        if (!$this->_issetSessionValue('selected_node') && Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (!$this->_issetSessionValue('selected_node') && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             //select the first folder of the sub admin
-            $this->_setSessionValue('selected_node', $this->model->getAdminFolder(Docebo::user()->getIdst(), true));
+            $this->_setSessionValue('selected_node', $this->model->getAdminFolder(Forma::user()->getIdst(), true));
         }
         $selected_orgchart = $this->_getSessionValue('selected_node', 0);
 
@@ -292,7 +292,7 @@ class UsermanagementAdmController extends AdmController
         $list = $this->model->getUsersList($idOrg, $descendants, $pagination, $searchFilter, true);
 
         //prepare the data for sending
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         require_once _adm_ . '/lib/lib.field.php';
         $fman = new FieldList();
@@ -300,7 +300,7 @@ class UsermanagementAdmController extends AdmController
 
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
-            $current_user = Docebo::user()->getIdSt();
+            $current_user = Forma::user()->getIdSt();
             $user_entry_data = $fman->getUsersFieldEntryData(array_keys($list));
             foreach ($list as $idst => $record) {
                 $record_row = [
@@ -375,7 +375,7 @@ class UsermanagementAdmController extends AdmController
 
         $mask = '';
         $model = new UsermanagementAdm();
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $level = ADMIN_GROUP_USER;
 
         $is_editing = false;
@@ -409,7 +409,7 @@ class UsermanagementAdmController extends AdmController
         }
 
         $language = getDefaultLanguage();
-        $languages = Docebo::langManager()->getAllLanguages();
+        $languages = Forma::langManager()->getAllLanguages();
 
         $pman = &PlatformManager::createInstance(); // = new PlatformManager();
         $platforms = $pman->getPlatformList();
@@ -426,11 +426,11 @@ class UsermanagementAdmController extends AdmController
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $this->session->get('usermanagement_selected_node'));
             $arr_idst[] = $tmp[0];
-            $acl = Docebo::user()->getACL();
+            $acl = Forma::user()->getACL();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }
 
-        $fields_mask = $fman->playFieldsForUser($is_editing ? $idst : -1, $arr_idst, false, true, false, false, !$is_editing ? Docebo::user()->getIdst() : false);
+        $fields_mask = $fman->playFieldsForUser($is_editing ? $idst : -1, $arr_idst, false, true, false, false, !$is_editing ? Forma::user()->getIdst() : false);
 
         $info = new stdClass();
         $info->userid = trim($info_userid);
@@ -536,7 +536,7 @@ class UsermanagementAdmController extends AdmController
         $userdata->email = trim(FormaLms\lib\Get::req('email', DOTY_STRING, ''));
         $userdata->password = $password;
         $userdata->force_change = trim(FormaLms\lib\Get::Req('force_changepwd', DOTY_INT, 0));
-        if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->user_level == ADMIN_GROUP_GODADMIN) {
             $userdata->level = FormaLms\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
         } else {
             $userdata->level = ADMIN_GROUP_USER;
@@ -575,7 +575,7 @@ class UsermanagementAdmController extends AdmController
 
             // Send alert:
             require_once _base_ . '/lib/lib.eventmanager.php';
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
 
             $array_subst = [
                 '[url]' => FormaLms\lib\Get::site_url(),
@@ -607,11 +607,11 @@ class UsermanagementAdmController extends AdmController
             }
 
             // Increment the counter for users created by this admin:
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                 if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                    $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                    $user_pref = new UserPreferences(Forma::user()->getIdSt());
                     $user_created_count = (int) $user_pref->getPreference('user_created_count');
                     ++$user_created_count;
                     $user_pref->setPreference('user_created_count', $user_created_count);
@@ -700,7 +700,7 @@ class UsermanagementAdmController extends AdmController
         if ($check_pwd && !FormaLms\lib\Get::cfg('demo_mode')) {
             $userdata->password = $new_password;
         }
-        if (Docebo::user()->user_level == ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->user_level == ADMIN_GROUP_GODADMIN) {
             $userdata->level = FormaLms\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
         } else {
             $userdata->level = false;
@@ -731,7 +731,7 @@ class UsermanagementAdmController extends AdmController
 
         require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-        $uinfo = Docebo::aclm()->getUser($idst, false);
+        $uinfo = Forma::aclm()->getUser($idst, false);
 
         $array_subst = [
             '[url]' => FormaLms\lib\Get::site_url(),
@@ -748,7 +748,7 @@ class UsermanagementAdmController extends AdmController
 
         $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
-        $acl_manager = \Docebo::user()->getAclManager();
+        $acl_manager = \Forma::user()->getAclManager();
 
         $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
         $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -783,10 +783,10 @@ class UsermanagementAdmController extends AdmController
             exit('Cannot del user during demo mode.');
         }
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $id_user = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_user > 0) {
-            if ($id_user == Docebo::user()->getIdSt()) {
+            if ($id_user == Forma::user()->getIdSt()) {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('cannot self delete')];
                 echo $this->json->encode($output);
 
@@ -795,7 +795,7 @@ class UsermanagementAdmController extends AdmController
 
             $userToDelete = $this->retrieveUserWithRoleInfo($id_user);
 
-            if (Docebo::user()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
                 echo $this->json->encode($output);
 
@@ -808,11 +808,11 @@ class UsermanagementAdmController extends AdmController
                     $output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
                 }
                 // Increment the counter for users created by this admin:
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $admin_pref = new AdminPreference();
-                    $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                    $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                     if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                        $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                        $user_pref = new UserPreferences(Forma::user()->getIdSt());
                         $user_created_count = (int) $user_pref->getPreference('user_created_count');
                         $user_created_count = $user_created_count - 1;
                         $user_pref->setPreference('user_created_count', $user_created_count);
@@ -836,8 +836,8 @@ class UsermanagementAdmController extends AdmController
     public function retrieveUserWithRoleInfo($userId)
     {
         require_once _base_ . '/lib/lib.acl.php';
-        $userInfo = new DoceboUser($userId);
-        $acl = new DoceboACL();
+        $userInfo = new FormaUser($userId);
+        $acl = new FormaACL();
         $arrst = $acl->getUserAllST(false, '', $userId);
 
         $userInfo->initRole($arrst, $userId);
@@ -855,12 +855,12 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $output = [];
         $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         if ($users != '') {
             //eliminates current user idst from list
-            $users = str_replace(Docebo::user()->getIdSt(), '', $users);
+            $users = str_replace(Forma::user()->getIdSt(), '', $users);
             $users = str_replace(',,', ',', $users); //adjust commas
             $users_arr = explode(',', $users);
             $count_users = count($users_arr);
@@ -869,7 +869,7 @@ class UsermanagementAdmController extends AdmController
             foreach ($users_arr as $idst) {
                 $userToDelete = $this->retrieveUserWithRoleInfo($idst);
                 $users[] = $userToDelete;
-                if (Docebo::user()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
+                if (Forma::user()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
                     echo $this->json->encode($output);
 
@@ -894,11 +894,11 @@ class UsermanagementAdmController extends AdmController
                 }
 
                 // Increment the counter for users created by this admin:
-                if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $admin_pref = new AdminPreference();
-                    $pref = $admin_pref->getAdminRules(Docebo::user()->getIdSt());
+                    $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
                     if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                        $user_pref = new UserPreferences(Docebo::user()->getIdSt());
+                        $user_pref = new UserPreferences(Forma::user()->getIdSt());
                         $user_created_count = (int) $user_pref->getPreference('user_created_count');
                         $user_created_count = $user_created_count - $count_users;
                         $user_pref->setPreference('user_created_count', $user_created_count);
@@ -939,9 +939,9 @@ class UsermanagementAdmController extends AdmController
 
                 require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                $uinfo = Docebo::aclm()->getUser($idst, false);
+                $uinfo = Forma::aclm()->getUser($idst, false);
 
-                $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+                $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
 
                 $array_subst = [
                     '[url]' => FormaLms\lib\Get::site_url(),
@@ -958,7 +958,7 @@ class UsermanagementAdmController extends AdmController
 
                 $msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
-                $acl_manager = \Docebo::user()->getAclManager();
+                $acl_manager = \Forma::user()->getAclManager();
 
                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -1025,7 +1025,7 @@ class UsermanagementAdmController extends AdmController
             if ($action == 0) {
                 $output['success'] = $this->model->suspendUsers($arr_users);
 
-                $acl_manager = \Docebo::user()->getAclManager();
+                $acl_manager = \Forma::user()->getAclManager();
 
                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -1036,9 +1036,9 @@ class UsermanagementAdmController extends AdmController
                 foreach ($arr_users as $idst) {
                     require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                    $uinfo = Docebo::aclm()->getUser($idst, false);
+                    $uinfo = Forma::aclm()->getUser($idst, false);
 
-                    $userid = Docebo::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+                    $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
 
                     $array_subst = [
                         '[url]' => FormaLms\lib\Get::site_url(),
@@ -1243,7 +1243,7 @@ class UsermanagementAdmController extends AdmController
                             . Form::closeForm();
                     } else {
                         $folder_info = $this->model->getFolderById($id);
-                        $languages = Docebo::langManager()->getAllLanguages(true); //getAllLangCode();
+                        $languages = Forma::langManager()->getAllLanguages(true); //getAllLangCode();
                         $std_lang = getLanguage();
 
                         $template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : getDefaultTemplate());
@@ -1668,7 +1668,7 @@ class UsermanagementAdmController extends AdmController
             require_once _adm_ . '/lib/lib.directory.php';
             require_once _adm_ . '/class.module/class.directory.php';
 
-            $aclm = Docebo::user()->getAclManager();
+            $aclm = Forma::user()->getAclManager();
             $selector = new UserSelector();
             $selector->use_suspended = true;
 
@@ -1713,7 +1713,7 @@ class UsermanagementAdmController extends AdmController
                 //TODO: EVT_LAUNCH (&)
                 //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
 
-                $acl_manager = \Docebo::user()->getAclManager();
+                $acl_manager = \Forma::user()->getAclManager();
 
                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -1727,7 +1727,7 @@ class UsermanagementAdmController extends AdmController
                     if (!(count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id)))) {
                         require_once _base_ . '/lib/lib.eventmanager.php';
 
-                        $uinfo = Docebo::aclm()->getUser($idst, false);
+                        $uinfo = Forma::aclm()->getUser($idst, false);
 
                         $array_subst = [
                             '[url]' => getCurrentDomain($id) ?: FormaLms\lib\Get::site_url(),
@@ -1820,8 +1820,8 @@ class UsermanagementAdmController extends AdmController
         $table->addHead($cont_h, $type_h);
 
         $fl = new FieldList();
-        $acl = Docebo::user()->getACL();
-        $acl_man = Docebo::user()->getAclManager();
+        $acl = Forma::user()->getACL();
+        $acl_man = Forma::user()->getAclManager();
 
         $body = '';
         $body .= Form::openForm('assignfieldgroup', 'ajax.adm_server.php?r=' . $this->link . '/assignfields_action');
@@ -1912,7 +1912,7 @@ class UsermanagementAdmController extends AdmController
         $nodedata = $this->model->getFolderById($id_org);
 
         $fl = new FieldList();
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $count = 0;
         $all_fields = $fl->getAllFields();
@@ -1983,7 +1983,7 @@ class UsermanagementAdmController extends AdmController
         $id_org = FormaLms\lib\Get::req('id_org', DOTY_INT, -1);
         $success = false;
         if ($id_user > 0 && $id_org > 0) { //idst of the user must be valid and the orgbranch must not be the root
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $idst_org = $acl_man->getGroupST('oc_' . $id_org);
             $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
             //add to group
@@ -2028,7 +2028,7 @@ class UsermanagementAdmController extends AdmController
             $success = true;
         }
         if ($id_user > 0 && $id_org > 0) { //idst of the user must be valid and the orgbranch must not be the root
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $idst_org = $acl_man->getGroupST('oc_' . $id_org);
             $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
             //cancel from group
@@ -2046,7 +2046,7 @@ class UsermanagementAdmController extends AdmController
 
             require_once _base_ . '/lib/lib.eventmanager.php';
 
-            $uinfo = Docebo::aclm()->getUser($id_user, false);
+            $uinfo = Forma::aclm()->getUser($id_user, false);
 
             $array_subst = [
                 '[url]' => FormaLms\lib\Get::site_url(),
@@ -2063,7 +2063,7 @@ class UsermanagementAdmController extends AdmController
 
             $msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
 
-            $acl_manager = \Docebo::user()->getAclManager();
+            $acl_manager = \Forma::user()->getAclManager();
 
             $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
             $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -2104,7 +2104,7 @@ class UsermanagementAdmController extends AdmController
             $output['list'] = [];
         }
         if ($users != '' && $id_org >= 0) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $idst_org = $acl_man->getGroupST('oc_' . $id_org);
             $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
             $arr_users = explode(',', $users);
@@ -2130,7 +2130,7 @@ class UsermanagementAdmController extends AdmController
             //TODO: EVT_LAUNCH (&)
             //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 
-            $acl_manager = \Docebo::user()->getAclManager();
+            $acl_manager = \Forma::user()->getAclManager();
             $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
             $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
@@ -2140,7 +2140,7 @@ class UsermanagementAdmController extends AdmController
             foreach ($arr_users as $idst) {
                 require_once _base_ . '/lib/lib.eventmanager.php';
 
-                $uinfo = Docebo::aclm()->getUser($idst, false);
+                $uinfo = Forma::aclm()->getUser($idst, false);
 
                 $array_subst = [
                     '[url]' => FormaLms\lib\Get::site_url(),
@@ -2248,7 +2248,7 @@ class UsermanagementAdmController extends AdmController
         $confirm_password = FormaLms\lib\Get::req('confirm_password', DOTY_STRING, '');
         $force_changepwd = FormaLms\lib\Get::req('force_changepwd', DOTY_INT, 0);
         $output = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         if ($new_password == '' || $confirm_password == '') {
             $output['success'] = false;
@@ -2314,7 +2314,7 @@ class UsermanagementAdmController extends AdmController
         $output = ['users' => []];
         if ($query != '') {
             $users = $this->model->searchUsersByUserid($query, $results, true);
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             foreach ($users as $user) {
                 $_userid = $acl_man->relativeId($user->userid);
                 $output['users'][] = [
@@ -2354,7 +2354,7 @@ class UsermanagementAdmController extends AdmController
                 break;
 
             case 2:
-                $params['orgchart_list'] = $this->model->getOrgChartDropdownList(Docebo::user()->getIdSt());
+                $params['orgchart_list'] = $this->model->getOrgChartDropdownList(Forma::user()->getIdSt());
 
                 require_once Forma::inc(_base_ . '/lib/lib.upload.php');
 
@@ -2423,7 +2423,7 @@ class UsermanagementAdmController extends AdmController
                 $src->connect();
                 $dst->connect();
 
-                $importer = new DoceboImport();
+                $importer = new FormaImport();
                 $importer->setSource($src);
                 $importer->setDestination($dst);
 
@@ -2471,7 +2471,7 @@ class UsermanagementAdmController extends AdmController
                 $src->connect();
                 $dst->connect();
 
-                $importer = new DoceboImport();
+                $importer = new FormaImport();
                 $importer->setSource($src);
                 $importer->setDestination($dst);
 
@@ -2599,7 +2599,7 @@ class UsermanagementAdmController extends AdmController
         $output .= implode($separator, $head) . $line_end;
 
         if ($users != '') {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $arr_users = explode(',', $users);
             $arr_users = array_map(
                 function ($value) {
@@ -2655,7 +2655,7 @@ class UsermanagementAdmController extends AdmController
             //no luck with idst? then try with userid
             $userid = FormaLms\lib\Get::req('userid', DOTY_STRING, '');
             if ($userid != '') {
-                $acl_man = Docebo::user()->getACLManager();
+                $acl_man = Forma::user()->getACLManager();
                 $id_user = $acl_man->getUserST($userid);
             }
 
@@ -2672,8 +2672,8 @@ class UsermanagementAdmController extends AdmController
 
         $profile = new UserProfile($id_user);
         $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
-        $admin_can_mod = ($this->permissions['mod_user'] && Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN);
-        if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN || $admin_can_mod) {
+        $admin_can_mod = ($this->permissions['mod_user'] && Forma::user()->getUserLevelId() == ADMIN_GROUP_ADMIN);
+        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN || $admin_can_mod) {
             $profile->enableGodMode();
         }
         //$profile->setEndUrl('index.php?modname=directory&op=org_chart#user_row_'.$id_user);
@@ -2711,7 +2711,7 @@ class UsermanagementAdmController extends AdmController
         if ($id_user > 0) {
             $profile = new UserProfile($id_user);
             $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
-            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $profile->enableGodMode();
             }
 
@@ -2764,7 +2764,7 @@ class UsermanagementAdmController extends AdmController
         require_once _adm_ . '/lib/lib.field.php';
         $fman = new FieldList();
 
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = Forma::user()->getACLManager();
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $userid = $acl_man->relativeId($acl_man->getUserid($id_user));
 
@@ -2813,7 +2813,7 @@ class UsermanagementAdmController extends AdmController
 
         //format models' data
         $records = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_userid = $acl_man->relativeId($record->userid);
@@ -2888,7 +2888,7 @@ class UsermanagementAdmController extends AdmController
 
         //format models' data
         $records = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_userid = $acl_man->relativeId($record->userid);
@@ -3018,7 +3018,7 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $level = ADMIN_GROUP_USER;
 
         $arr_levels = $acl_man->getAdminLevels(); //index = idst; value = groupid;
@@ -3035,7 +3035,7 @@ class UsermanagementAdmController extends AdmController
         ];
 
         $language = getDefaultLanguage();
-        $languages = Docebo::langManager()->getAllLanguages();
+        $languages = Forma::langManager()->getAllLanguages();
 
         require_once Forma::inc(_base_ . '/lib/lib.platform.php');
         $pman = &PlatformManager::createInstance(); // = new PlatformManager();
@@ -3172,13 +3172,13 @@ class UsermanagementAdmController extends AdmController
         //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
         //$users = $event->getUsers();
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         //send email alert
         if (isset($sel_properties['send_alert']) && isset($sel_properties['password']) && !empty($info->password)) {
             $uma = new UsermanagementAdm();
 
-            $acl_manager = \Docebo::user()->getAclManager();
+            $acl_manager = \Forma::user()->getAclManager();
 
             $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
             $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -3218,7 +3218,7 @@ class UsermanagementAdmController extends AdmController
                 createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $users[$i] . ' was modified',
                     [$users[$i]], $msg_composer);
 
-                $uinfo = Docebo::aclm()->getUser($users[$i], false);
+                $uinfo = Forma::aclm()->getUser($users[$i], false);
 
                 $array_subst = [
                     '[url]' => FormaLms\lib\Get::site_url(),
@@ -3326,7 +3326,7 @@ class UsermanagementAdmController extends AdmController
      */
     protected function _canUseLevel($level_to_check)
     {
-        $my_level = Docebo::user()->getUserLevelId();
+        $my_level = Forma::user()->getUserLevelId();
         if ($my_level == ADMIN_GROUP_GODADMIN) {
             return true;
         }

@@ -489,7 +489,7 @@ class Course_API extends API
             $sendMailToUser = true;
         }
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $course_man = new Man_Course();
         $db = DbConn::getInstance();
 
@@ -521,7 +521,7 @@ class Course_API extends API
         // --------------- add user: -----------------------------------
 
         $model = new SubscriptionAlms($courseId, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($courseId);
+        $docebo_course = new FormaCourse($courseId);
         $level_idst = $docebo_course->getCourseLevel($courseId);
         if (count($level_idst) == 0 || $level_idst[1] == '') {
             $level_idst = $docebo_course->createCourseLevel($courseId);
@@ -565,7 +565,7 @@ class Course_API extends API
             $recipients = [$user_id];
 
             if ($course_info['sendCalendar']) {
-                $uinfo = Docebo::aclm()->getUser($user_id, false);
+                $uinfo = Forma::aclm()->getUser($user_id, false);
                 $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $courseId, (int) $classroom_id, (int) $uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }
@@ -601,7 +601,7 @@ class Course_API extends API
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
         $user_status = $this->getUserStatusId(isset($params['user_status']) ? $params['user_status'] : false);
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $course_man = new Man_Course();
         $db = DbConn::getInstance();
 
@@ -618,7 +618,7 @@ class Course_API extends API
         // --------------- update user subscription: ------------------------
 
         $model = new SubscriptionAlms($courseId, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($courseId);
+        $docebo_course = new FormaCourse($courseId);
         $level_idst = $docebo_course->getCourseLevel($courseId);
         if (count($level_idst) == 0 || $level_idst[1] == '') {
             $level_idst = $docebo_course->createCourseLevel($courseId);
@@ -651,7 +651,7 @@ class Course_API extends API
                     // $user = $userModel->getProfileData($user_id);
 
                     // require_once(_lms_ . '/lib/lib.course.php');
-                    // $docebo_course = new DoceboCourse($course_id);
+                    // $docebo_course = new FormaCourse($course_id);
 
                     // $event->setUser($user);
                     // $event->setStatus(['id' => $user_status, 'name' => $status_arr[$user_status]]);
@@ -695,7 +695,7 @@ class Course_API extends API
         $user_level = $this->getUserLevelId(isset($params['user_level']) ? $params['user_level'] : false);
         $user_status = $this->getUserStatusId(isset($params['user_status']) ? $params['user_status'] : false);
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $course_man = new Man_Course();
         $db = DbConn::getInstance();
 
@@ -712,7 +712,7 @@ class Course_API extends API
         // --------------- delete user subscription: ------------------------
 
         $model = new SubscriptionAlms($courseId, $edition_id, $classroom_id);
-        $docebo_course = new DoceboCourse($courseId);
+        $docebo_course = new FormaCourse($courseId);
         $level_idst = $docebo_course->getCourseLevel($courseId);
 
         $old_level = $model->getUserLevel($user_id);
@@ -1723,7 +1723,7 @@ class Course_API extends API
 
         $course_man = new Man_Course();
 
-        $course = new DoceboCourse($id_course);
+        $course = new FormaCourse($id_course);
         if (!$course->getAllInfo()) {
             return false;
         }
@@ -1734,11 +1734,11 @@ class Course_API extends API
 
         $levels = &$course_man->getCourseIdstGroupLevel($id_course);
         foreach ($levels as $lv => $idst) {
-            Docebo::aclm()->deleteGroup($idst);
+            Forma::aclm()->deleteGroup($idst);
         }
 
         $alluser = getIDGroupAlluser($id_course);
-        Docebo::aclm()->deleteGroup($alluser);
+        Forma::aclm()->deleteGroup($alluser);
         $course_man->removeCourseRole($id_course);
         $course_man->removeCourseMenu($id_course);
 
@@ -2072,12 +2072,12 @@ class Course_API extends API
     public function authenticateUserById($idUser)
     {
         require_once Forma::inc(_base_ . '/lib/lib.user.php');
-        $user_manager = new DoceboACLManager();
+        $user_manager = new FormaACLManager();
         $user_info = $user_manager->getUser($idUser, false);
 
         if ($user_info != false) {
             $username = $user_info[ACL_INFO_USERID];
-            $du = new DoceboUser($username, $prefix);
+            $du = new FormaUser($username, $prefix);
             $this->session->set('last_enter', $user_info[ACL_INFO_LASTENTER]);
             $du->setLastEnter(date('Y-m-d H:i:s'));
             $this->session->set('user_enter_mark', time());
@@ -2560,14 +2560,14 @@ class Course_API extends API
 
             // find all the group created for this menu custom for permission management
             foreach ($levels as $lv => $name_level) {
-                $group_info = Docebo::aclm()->getGroup(false, '/lms/course/' . $id_course . '/subscribed/' . $lv);
+                $group_info = Forma::aclm()->getGroup(false, '/lms/course/' . $id_course . '/subscribed/' . $lv);
                 $map[$lv] = $group_info[ACL_INFO_IDST];
             }
 
             return $map;
         }
 
-        $docebo_course = new DoceboCourse($id_dupcourse);
+        $docebo_course = new FormaCourse($id_dupcourse);
         $subscribe_man = new CourseSubscribe_Manager();
 
         $group_idst = $docebo_course->createCourseLevel($new_course_dup);
@@ -2578,7 +2578,7 @@ class Course_API extends API
         foreach ($levels as $lv => $name_level) {
             foreach ($perm_form[$lv] as $idrole => $v) {
                 if ($group_idst[$lv] != 0 && $idrole != 0) {
-                    Docebo::aclm()->addToRole($idrole, $group_idst[$lv]);
+                    Forma::aclm()->addToRole($idrole, $group_idst[$lv]);
                 }
             }
         }

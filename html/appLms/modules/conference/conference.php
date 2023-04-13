@@ -31,7 +31,7 @@ function conference_list(&$url)
     checkPerm('view');
     //$mod_perm = checkPerm('mod');
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     require_once _base_ . '/lib/lib.table.php';
     require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
@@ -94,8 +94,8 @@ function conference_list(&$url)
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
 
-        $acl_manager = &Docebo::user()->getAclManager();
-        $display_name = Docebo::user()->getUserName();
+        $acl_manager = &Forma::user()->getAclManager();
+        $display_name = Forma::user()->getUserName();
         $u_info = $acl_manager->getUser(getLogUserId(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
 
@@ -134,14 +134,14 @@ function conference_list(&$url)
 
             $cont[] = $conference->getUrl($room['id'], $room['room_type']);
             if (checkPerm('mod', true)) {
-                if (getLogUserId() == $room['idSt'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+                if (getLogUserId() == $room['idSt'] || Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                     $cont[] = '<a href="index.php?modname=conference&amp;op=modconf&amp;id=' . $room['id'] . '">'
                                 . '<img src="' . getPathImage() . '/standard/edit.png' . '" /></a>';
                 } else {
                     $cont[] = '';
                 }
 
-                if (getLogUserId() == $room['idSt'] || Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+                if (getLogUserId() == $room['idSt'] || Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                     $cont[] = '<a href="index.php?modname=conference&amp;op=delconf&id=' . $room['id'] . '" '
                             . '"><img src="' . getPathImage() . '/standard/delete.png' . '" /></a>';
                 } else {
@@ -192,7 +192,7 @@ function conference_startnewconf($url)
 
     require_once _base_ . '/lib/lib.form.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     if (isset($_POST['create_conf'])) {
         $conference = new Conference_Manager();
@@ -354,7 +354,7 @@ function conference_delconf()
 
     $room = $conference->roomInfo($id);
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
     if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0)) {
         $conference->deleteRoom($id);
 
@@ -384,7 +384,7 @@ function conference_delconf()
 
 function conference_modconf($url = null)
 {
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $id_room = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
@@ -431,7 +431,7 @@ function conference_modconf($url = null)
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &DoceboLanguage::createInstance('conference', 'lms');
+        $lang = &FormaLanguage::createInstance('conference', 'lms');
 
         $conf_system = [];
         //$conf_system[""]="";
@@ -502,7 +502,7 @@ function booking()
 {
     require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $room_id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
@@ -521,13 +521,13 @@ function modBooking()
 
     YuiLib::load(['selector' => 'selector-beta-min.js']);
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $room_id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
     $booking = new RoomBooking();
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     $user_booked = $booking->getRoomSubscriptions($room_id);
 
@@ -640,7 +640,7 @@ function showHistory()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $conference = new Conference_Manager();
 
@@ -743,7 +743,7 @@ function showLog()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('conference', 'lms');
+    $lang = &FormaLanguage::createInstance('conference', 'lms');
 
     $id = FormaLms\lib\Get::req('id', DOTY_INT, 0);
 
@@ -751,7 +751,7 @@ function showLog()
 
     $room_info = $conference->roomInfo($id);
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     cout(getTitleArea('')
             . '<div class="std_block">', 'content');

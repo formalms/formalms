@@ -19,7 +19,7 @@ class LMSTemplateModel
 
     public function __construct()
     {
-        $this->user = Docebo::user();
+        $this->user = Forma::user();
     }
 
     public function selectLayout()

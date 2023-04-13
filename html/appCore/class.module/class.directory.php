@@ -54,8 +54,8 @@ class Module_Directory extends Module
     public function __construct()
     {
         parent::__construct();
-        $this->aclManager = new DoceboACLManager();
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->aclManager = new FormaACLManager();
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
         require_once _adm_ . '/lib/lib.selextend.php';
         $this->sel_extend = new ExtendSelector();
@@ -421,10 +421,10 @@ class Module_Directory extends Module
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $lang = &FormaLanguage::createInstance('profile', 'framework');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         $max_row = 10;
         $tb = new Table($max_row);
@@ -505,7 +505,7 @@ class Module_Directory extends Module
         checkPerm('view_org_chart', false, 'directory', 'framework');
         require_once _base_ . '/lib/lib.user_profile.php';
 
-        $lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $lang = &FormaLanguage::createInstance('profile', 'framework');
 
         $profile = new UserProfile(importVar('id_user', true, 0));
         $profile->init('profile', 'framework', 'modname=directory&op=org_manageuser&id_user=' . importVar('id_user', true, 0), 'ap');
@@ -746,11 +746,11 @@ class Module_Directory extends Module
                     $data->setGroupFilter($idstGroup);
                 }
             } else {
-                $userlevelid = Docebo::user()->getUserLevelId();
+                $userlevelid = Forma::user()->getUserLevelId();
                 if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                     require_once _adm_ . '/lib/lib.adminmanager.php';
                     $adminManager = new AdminManager();
-                    $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
+                    $data->intersectGroupFilter($adminManager->getAdminTree(Forma::user()->getIdSt()));
                 }
             }
             // print out the listview
@@ -809,7 +809,7 @@ class Module_Directory extends Module
         $arr_levels_id = array_flip($arr_levels_id);
         $arr_levels_translation = [];
         foreach ($arr_levels_id as $lev_idst => $lev_id) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 if ($lev_id == ADMIN_GROUP_USER) {
                     $arr_levels_translation[$lev_idst] = $this->lang->def('_DIRECTORY_' . $lev_id);
                 }
@@ -917,7 +917,7 @@ class Module_Directory extends Module
         require_once _adm_ . '/lib/lib.field.php';
         $fields = new FieldList();
         if ($arr_idst_groups != false) {
-            $acl = &Docebo::user()->getACL();
+            $acl = &Forma::user()->getACL();
             $arr_idst_all = $acl->getArrSTGroupsST(array_values($arr_idst_groups));
         } else {
             $arr_idst_all = false;
@@ -1115,7 +1115,7 @@ class Module_Directory extends Module
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
         require_once _adm_ . '/lib/lib.field.php';
-        $acl = &Docebo::user()->getAcl();
+        $acl = &Forma::user()->getAcl();
         $groupLabel = $groupid;
         if ($groupid != '') {
             $arrGroup = $this->aclManager->getGroup(false, $groupid);
@@ -1385,7 +1385,7 @@ class Module_Directory extends Module
         $dst = new ImportGroupUser(['dbconn' => $GLOBALS['dbConn']]);
         $src->connect();
         $dst->connect();
-        $importer = new DoceboImport();
+        $importer = new FormaImport();
         $importer->setSource($src);
         $importer->setDestination($dst);
 
@@ -1427,7 +1427,7 @@ class Module_Directory extends Module
         $dst = new ImportGroupUser(['dbconn' => $GLOBALS['dbConn']]);
         $src->connect();
         $dst->connect();
-        $importer = new DoceboImport();
+        $importer = new FormaImport();
         $importer->setSource($src);
         $importer->setDestination($dst);
 
@@ -1494,8 +1494,8 @@ class Module_Directory extends Module
     public function loadOrgChartView()
     {
         require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
-        $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
+        $userlevelid = Forma::user()->getUserLevelId();
 
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
@@ -1506,7 +1506,7 @@ class Module_Directory extends Module
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
-            $treeView->setFilterNodes($adminManager->getAdminTree(Docebo::user()->getIdSt()));
+            $treeView->setFilterNodes($adminManager->getAdminTree(Forma::user()->getIdSt()));
         }
 
         $treeView->loadState();
@@ -1684,7 +1684,7 @@ class Module_Directory extends Module
     {
         require_once _base_ . '/lib/lib.form.php';
         if (FormaLms\lib\Get::sett('register_deleted_user') == 'on') {
-            $lang = &DoceboLanguage::createInstance('profile', 'framework');
+            $lang = &FormaLanguage::createInstance('profile', 'framework');
             $GLOBALS['page']->add('<br />' . '<a href="index.php?modname=directory&amp;op=view_deleted_user">' . $lang->def('_DELETED_USER_LIST') . '</a>');
         }
         $data = &$treeView->lv_data;
@@ -1724,11 +1724,11 @@ class Module_Directory extends Module
         if ($groupid != '') {
             $data->setGroupFilter($idst, $lv->flat_mode);
         }
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = Forma::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
-            $data->intersectGroupFilter($adminManager->getAdminTree(Docebo::user()->getIdSt()));
+            $data->intersectGroupFilter($adminManager->getAdminTree(Forma::user()->getIdSt()));
         }
         $GLOBALS['page']->add($lv->printOut(), 'content');
     }
@@ -1850,7 +1850,7 @@ class Module_Directory extends Module
                     $this->show_orgchart_selector = false;
                 }
 
-                if (Docebo::user()->getUserLevelId() === '/framework/level/admin') {
+                if (Forma::user()->getUserLevelId() === '/framework/level/admin') {
                     require_once _adm_ . '/lib/lib.adminmanager.php';
 
                     $adminManager = new AdminManager();
@@ -2131,7 +2131,7 @@ class Module_Directory extends Module
 
         $form = new Form();
         $fl = new FieldList();
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
 
         $GLOBALS['page']->setWorkingZone('content');
         $GLOBALS['page']->add(getTitleArea($this->lang->def('_GROUPS')

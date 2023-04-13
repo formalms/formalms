@@ -27,7 +27,7 @@ class CourseSubscriptionService
     public function __construct() {
 
         $this->baseModel = new \SubscriptionAlms();
-        $this->doceboUser = \Docebo::user();
+        $this->doceboUser = \Forma::user();
         $this->permissions = [
             'subscribe_course' => checkPerm('subscribe', true, 'course', 'lms'),
             'subscribe_coursepath' => checkPerm('subscribe', true, 'coursepath', 'lms'),
@@ -165,7 +165,7 @@ class CourseSubscriptionService
 
                     if ($canSubscribe) {
                    
-                        $doceboCourse = new \DoceboCourse($idCourse);
+                        $doceboCourse = new \FormaCourse($idCourse);
 
                         $levelIdst = $doceboCourse->getCourseLevel($idCourse);
                         if (count($levelIdst) == 0 || $levelIdst[1] == '') {
@@ -243,7 +243,7 @@ class CourseSubscriptionService
                                 createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$userId], $msgComposer, $sendAlert);
 
                                 if ($courseInfo['sendCalendar'] && $courseInfo['course_type'] == 'classroom') {
-                                    $uinfo = \Docebo::aclm()->getUser($userId, false);
+                                    $uinfo = \Forma::aclm()->getUser($userId, false);
                                     $idDate = 0;
                                     
                                     switch($courseType) {
@@ -392,7 +392,7 @@ class CourseSubscriptionService
 
     protected function _addToCourseGroup($idGroup, $idUser)
     {
-        \Docebo::aclm()->addToGroup($idGroup, $idUser);
+        \Forma::aclm()->addToGroup($idGroup, $idUser);
     }
 
     public function getSubscribed($courseId, $courseType) {
@@ -432,7 +432,7 @@ class CourseSubscriptionService
             $toSubscribe = count($userSelected);
 
             if ($adminTree['admin_rules.limit_course_subscribe'] == 'on') {
-                $userPref = new \UserPreferences(Docebo::user()->getIdSt());
+                $userPref = new \UserPreferences(Forma::user()->getIdSt());
                 $subscribedCount = $userPref->getPreference('user_subscribed_count');
                 if ($subscribedCount + $toSubscribe > $adminTree['admin_rules.max_course_subscribe']) {
                     $this->setResponse('error',

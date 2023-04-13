@@ -309,7 +309,7 @@ SQL;
             }
 
             $role = self::role($menuUnder['ofPlatform'], $menuUnder['moduleName'], $menuUnder['associatedToken']);
-            $am = Docebo::user()->getACLManager();
+            $am = Forma::user()->getACLManager();
             $role_info = $am->getRole(false, $role);
             if (empty($role_info)) {
                 $idst = $am->registerRole($role, '', $idPlugin);

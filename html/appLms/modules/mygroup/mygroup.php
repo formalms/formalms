@@ -13,14 +13,14 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     function group()
     {
         checkPerm('view');
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.navbar.php';
         require_once _base_ . '/lib/lib.table.php';
-        $lang = &DoceboLanguage::createInstance('standard', 'lms');
+        $lang = &FormaLanguage::createInstance('standard', 'lms');
 
         $field_search = importVar('field_search');
         $search = (isset($_POST['search']) && $_POST['search'] != '' ? $_POST['search'] : false);
@@ -28,8 +28,8 @@ if (!Docebo::user()->isAnonymous()) {
             $search = false;
         }
 
-        $acl_man = &Docebo::user()->getAclManager();
-        $acl = &Docebo::user()->getAcl();
+        $acl_man = &Forma::user()->getAclManager();
+        $acl = &Forma::user()->getAcl();
         $groups = &$acl_man->getAllGroupsId(['free', 'moderate', 'private'],
                                                 $search);
 
@@ -121,7 +121,7 @@ if (!Docebo::user()->isAnonymous()) {
 
         require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('register', 'lms');
+        $lang = &FormaLanguage::createInstance('register', 'lms');
 
         $mand_sym = '<span class="mandatory">*</span>';
         $extra_field = new FieldList();
@@ -149,8 +149,8 @@ if (!Docebo::user()->isAnonymous()) {
             if (!$re_filled) {
                 $GLOBALS['page']->add(getErrorUi($lang->def('_SOME_MANDATORY_EMPTY')), 'content');
             } else {
-                $acl = &Docebo::user()->getAcl();
-                $acl_man = &Docebo::user()->getAclManager();
+                $acl = &Forma::user()->getAcl();
+                $acl_man = &Forma::user()->getAclManager();
 
                 $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);
                 $groups_id = array_keys($groups);

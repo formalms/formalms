@@ -18,7 +18,7 @@ require_once _base_ . '/lib/lib.aclmanager.php';
 /**
  * Acl common tasks class
  * This class is only for check permissions
- * To manage ACLs we must use DoceboACLManager.
+ * To manage ACLs we must use FormaACLManager.
  *
  * NOTE: ST means Security Token
  *
@@ -28,9 +28,9 @@ require_once _base_ . '/lib/lib.aclmanager.php';
  *
  * @version  $Id: lib.acl.php 852 2006-12-16 14:04:44Z giovanni $
  */
-class DoceboACL
+class FormaACL
 {
-    /** Instance of DoceboACLManager */
+    /** Instance of FormaACLManager */
     public $aclManager = null;
 
     /**
@@ -41,7 +41,7 @@ class DoceboACL
      */
     public function __construct($dbconn = false, $prefix = false)
     {
-        $this->aclManager = new DoceboACLManager($dbconn, $prefix);
+        $this->aclManager = new FormaACLManager($dbconn, $prefix);
     }
 
     public function getACLManager()

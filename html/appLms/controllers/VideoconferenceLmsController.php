@@ -49,7 +49,7 @@ class VideoconferenceLmsController extends LmsController
     {
         YuiLib::load('base,tabview');
         Lang::init('course');
-        $this->model = new VideoconferenceLms(Docebo::user()->getIdSt());
+        $this->model = new VideoconferenceLms(Forma::user()->getIdSt());
 
         $upd = new UpdatesLms();
         $this->info = $upd->videoconferenceCounterUpdates();

@@ -121,7 +121,7 @@ class HomepageAdm extends Model
 
     public function sendLostUserId($email)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $user_info = $acl_man->getUserByEmail($email);
 
         if (!$user_info) {
@@ -161,7 +161,7 @@ class HomepageAdm extends Model
 
     public function sendLostPwd($userid)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $user_info = $acl_man->getUser(false, $acl_man->absoluteId($userid));
 
         if (!$user_info) {
@@ -219,7 +219,7 @@ class HomepageAdm extends Model
     public function checkCode($code)
     {
         if ($user = $this->user_manager->getPwdRandomCode(false, $code)) {
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = &Forma::user()->getAclManager();
             $user_info = $acl_man->getUser($user['idst_user'], false);
 
             return $user_info;
@@ -253,7 +253,7 @@ class HomepageAdm extends Model
 
     public function setNewPwd($pwd, $user, $code)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         if (!$this->user_manager->deletePwdRandomCode($user, $code)) {
             return false;

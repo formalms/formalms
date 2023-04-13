@@ -214,7 +214,7 @@ class PageZoneLang extends PageZone
     {
         $out = '';
 
-        if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_USER) {
+        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_USER) {
             return $out;
         }
 
@@ -608,7 +608,7 @@ class onecolPageWriter extends PageWriter
         $this->addStart('<div id="feedback" class="container-feedback">', 'feedback');
         $this->addEnd('</div>' . "\n", 'feedback');
         /*
-        $browser_code = Docebo::langManager()->getLanguageBrowsercode(getLanguage());
+        $browser_code = Forma::langManager()->getLanguageBrowsercode(getLanguage());
         $pos = strpos($browser_code, ';');
         if($pos !== false) $browser_code = substr($browser_code, 0, $pos);
 

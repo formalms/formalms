@@ -13,13 +13,13 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     function notes()
     {
         checkPerm('view');
 
         require_once _base_ . '/lib/lib.table.php';
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
 
@@ -138,7 +138,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         require_once _base_ . '/lib/lib.table.php';
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
 
         list($data, $title, $textof) = sql_fetch_row(sql_query('
 	SELECT data,title,textof 
@@ -168,7 +168,7 @@ if (!Docebo::user()->isAnonymous()) {
         checkPerm('view');
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
 
         $title_page = [
         'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'),
@@ -197,7 +197,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view');
 
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?modname=notes&op=notes');
@@ -230,7 +230,7 @@ if (!Docebo::user()->isAnonymous()) {
 	WHERE  idNotes = '" . $_GET['idNotes'] . "'  AND owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "'"));
 
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
 
         $page_title = [
         'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'),
@@ -261,7 +261,7 @@ if (!Docebo::user()->isAnonymous()) {
     function upnotes()
     {
         checkPerm('view');
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
 
         if (isset($_POST['undo'])) {
             Util::jump_to('index.php?modname=notes&op=notes');
@@ -286,7 +286,7 @@ if (!Docebo::user()->isAnonymous()) {
     function delnotes()
     {
         checkPerm('view');
-        $lang = &DoceboLanguage::createInstance('notes', 'lms');
+        $lang = &FormaLanguage::createInstance('notes', 'lms');
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (isset($_GET['confirm'])) {
             $query = '

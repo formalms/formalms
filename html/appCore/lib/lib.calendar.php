@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version  $Id:$
  */
-class DoceboCal
+class FormaCal
 {
     public $lastId;
 

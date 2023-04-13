@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You cannot access as anonymous');
 }
 
@@ -21,7 +21,7 @@ function showhtml()
 {
     checkPerm('view');
 
-    $lang = &DoceboLanguage::createInstance('htmlfront', 'lms');
+    $lang = &FormaLanguage::createInstance('htmlfront', 'lms');
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $query = '
 	SELECT textof
@@ -84,7 +84,7 @@ function edithtml()
         }
     }
 
-    $lang = &DoceboLanguage::createInstance('htmlfront', 'lms');
+    $lang = &FormaLanguage::createInstance('htmlfront', 'lms');
 
     list($textof) = sql_fetch_row($re_htmlfront);
 

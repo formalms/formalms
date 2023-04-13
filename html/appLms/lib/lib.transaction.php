@@ -235,7 +235,7 @@ class Man_Transaction
 
         $subscribe_man = new CourseSubscribe_Management();
         $date_man = new DateManager();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         $query = 'SELECT idCourse'
                     . ' FROM ' . $this->table_courseuser
@@ -251,7 +251,7 @@ class Man_Transaction
         $dates = $date_man->getUserDates($id_user);
 
         foreach ($activations as $id_course => $details) {
-            $docebo_course = new DoceboCourse($id_course);
+            $docebo_course = new FormaCourse($id_course);
 
             $level_idst = &$docebo_course->getCourseLevel($id_course);
 

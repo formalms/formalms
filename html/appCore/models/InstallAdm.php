@@ -1430,7 +1430,7 @@ class InstallAdm extends Model
         $qtxt = "SELECT * FROM core_user WHERE userid='/" . $values['adminUser'] . "'";
         $q = sql_query($qtxt);
 
-        $doceboAclManager = new DoceboACLManager();
+        $doceboAclManager = new FormaACLManager();
 
         if (($q) && (sql_num_rows($q) > 0)) { // Did the user refreshed the page?
             // You never know..

@@ -22,7 +22,7 @@ require_once dirname(__FILE__) . '/lib.connector.php';
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorDoceboAdmin extends DoceboConnector
+class FormaConnectorFormaAdmin extends FormaConnector
 {
     public $last_error = '';
 
@@ -64,7 +64,7 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector
             $this->set_config($params);
         }
 
-        $this->aclm = Docebo::aclm();
+        $this->aclm = Forma::aclm();
         $this->cols_descriptor = [
             [
                 DOCEBOIMPORT_COLNAME => Lang::t('_TYPE'),
@@ -113,7 +113,7 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorDoceboAdminUI($this);
+        return new FormaConnectorFormaAdminUI($this);
     }
 
     public function get_config()
@@ -365,7 +365,7 @@ class DoceboConnectorDoceboAdmin extends DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorDoceboAdminUI extends DoceboConnectorUI
+class FormaConnectorFormaAdminUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -509,5 +509,5 @@ class DoceboConnectorDoceboAdminUI extends DoceboConnectorUI
 
 function doceboadmin_factory()
 {
-    return new DoceboConnectorDoceboAdmin([]);
+    return new FormaConnectorFormaAdmin([]);
 }

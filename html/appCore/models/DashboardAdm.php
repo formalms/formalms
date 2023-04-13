@@ -30,16 +30,16 @@ class DashboardAdm extends Model
         $this->users_filter = false;
         $this->courses_filter = false;
 
-        $this->user_level = Docebo::user()->getUserLevelId();
+        $this->user_level = Forma::user()->getUserLevelId();
         if ($this->user_level != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
 
             $adminManager = new AdminPreference();
-            $this->users_filter = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $this->users_filter = $adminManager->getAdminUsers(Forma::user()->getIdST());
 
             $all_courses = false;
             $array_courses = [];
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
             foreach ($admin_courses['course'] as $key => $id_course) {
                 if ($key > 0) {
                     $array_courses[$key] = $id_course;
@@ -50,7 +50,7 @@ class DashboardAdm extends Model
             } elseif (isset($admin_courses['course'][-1])) {
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [];
                     foreach ($user_catalogue as $id_cat) {
@@ -216,7 +216,7 @@ class DashboardAdm extends Model
      */
     public function getUsersStats($stats_required = false, $arr_users = false)
     {
-        $aclManager = Docebo::user()->getACLManager();
+        $aclManager = Forma::user()->getACLManager();
         $users = [];
         if ($stats_required == false || empty($stats_required) || !is_array($stats_required)) {
             $stats_required = ['all', 'suspended', 'register_today', 'register_yesterday', 'register_7d',
@@ -235,7 +235,7 @@ class DashboardAdm extends Model
         }
         if (isset($stats_required['suspended'])) {
             $data->addFieldFilter('valid', 0);
-            $data->addFieldFilter('userid', 'Anonymous', '<>'); //or idst <> Docebo::user()->getAnonymousId() ...
+            $data->addFieldFilter('userid', 'Anonymous', '<>'); //or idst <> Forma::user()->getAnonymousId() ...
             $users['suspended'] = $data->getTotalRows();
         }
         if (isset($stats_required['register_today'])) {
@@ -270,7 +270,7 @@ class DashboardAdm extends Model
         if (isset($stats_required['inactive_30d'])) {
             $data->resetFieldFilter();
             $data->addFieldFilter('lastenter', date('Y-m-d', time() - 30 * 86400) . ' 00:00:00', '<');
-            $data->addFieldFilter('userid', 'Anonymous', '<>'); //or idst <> Docebo::user()->getAnonymousId() ...
+            $data->addFieldFilter('userid', 'Anonymous', '<>'); //or idst <> Forma::user()->getAnonymousId() ...
             $users['inactive_30d'] = $data->getTotalRows();
         }
         if (isset($stats_required['waiting'])) {
@@ -815,8 +815,8 @@ class DashboardAdm extends Model
     {
         $report_list = [];
         $where_cond = '';
-        $user_idst = Docebo::user()->getIdSt();
-        $user_level = Docebo::user()->getUserLevelId();
+        $user_idst = Forma::user()->getIdSt();
+        $user_level = Forma::user()->getUserLevelId();
 
         if ($user_level != ADMIN_GROUP_GODADMIN) {
             $where_cond .= "AND (author='" . $user_idst . "' OR is_public>0)";

@@ -48,7 +48,7 @@ class sys_forum
     public function __construct($platform, $key1, $key2 = 0, $key3 = null)
     {
         $this->out = &$GLOBALS['page'];
-        $this->lang = &DoceboLanguage::createInstance('sysforum', $platform);
+        $this->lang = &FormaLanguage::createInstance('sysforum', $platform);
 
         if ($key1 == '') {
             echo "error: The thread key couldn't be null<br />\n";
@@ -293,7 +293,7 @@ class sys_forum
 
         $ini = importVar('ini', true, 0);
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         $path = _files_ . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
@@ -403,7 +403,7 @@ class sys_forum
                 $action .= '</a>';
             }
 
-            if ($author == Docebo::user()->getIdSt() && ($write_perm || $mod_perm) && !$locked_m && $author != '1') {
+            if ($author == Forma::user()->getIdSt() && ($write_perm || $mod_perm) && !$locked_m && $author != '1') {
                 $action .= ' <a href="' . $url . '&amp;sf_op=modmessage' . $pbtxt . '&amp;idMessage=' . $idM . $this->getUrlExtra() . '">'
                         . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $this->lang->def('_MOD') . '" title="' . $this->lang->def('_MOD') . '" /></a>';
             }
@@ -577,7 +577,7 @@ class sys_forum
             $name_file = $this->save_file($_FILES['attach']);
         }
 
-        $author = Docebo::user()->getIdSt();
+        $author = Forma::user()->getIdSt();
         $ins_mess_query = '
 		INSERT INTO ' . $this->prefix . '_sysforum
 		SET ' . get_sql_tk_str($tk, '', ', ') . ",
@@ -623,7 +623,7 @@ class sys_forum
             return;
         }
 
-        if ($author != Docebo::user()->getIdSt()) {
+        if ($author != Forma::user()->getIdSt()) {
             return;
         }
 
@@ -687,7 +687,7 @@ class sys_forum
             exit("You can't access!");
         }
 
-        if ($author != Docebo::user()->getIdSt()) {
+        if ($author != Forma::user()->getIdSt()) {
             return;
         }
 
@@ -728,7 +728,7 @@ class sys_forum
 			textof = '" . $_POST['textof'] . "'
 			" . ($name_file != '' ? ",attach = '" . addslashes($name_file) . "'" : '') . "
 		WHERE idMessage = '" . (int) $_POST['idMessage'] . "' AND
-			author = '" . (int) Docebo::user()->getIdSt() . "'";
+			author = '" . (int) Forma::user()->getIdSt() . "'";
 
         if (!sql_query($ins_mess_query)) {
             errorCommunication($this->lang->def('_ERRINSFORUM'));

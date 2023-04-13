@@ -190,8 +190,8 @@ function homerepo_opfolder(&$treeView, $op)
 function homerepo_itemproperties(&$treeView, &$arrayData, $idItem)
 {
     //function loadFields( $arrayData, &$lo, $idLO ) {
-    $lang = &DoceboLanguage::createInstance('homerepo', 'lms');
-    $langClassification = &DoceboLanguage::createInstance('classification', 'lms');
+    $lang = &FormaLanguage::createInstance('homerepo', 'lms');
+    $langClassification = &FormaLanguage::createInstance('classification', 'lms');
 
     $GLOBALS['page']->add('<form id="manHomerepo" method="post"'
         . ' action="index.php?' . $_SERVER['QUERY_STRING'] . '"'
@@ -219,7 +219,7 @@ function homerepo_itemproperties(&$treeView, &$arrayData, $idItem)
         }
     closedir($langl->handle);
     sort($langArray);*/
-    $langArray = Docebo::langManager()->getAllLangCode();
+    $langArray = Forma::langManager()->getAllLangCode();
 
     if (!isset($_POST['idItem'])) {
         if ($idItem !== null) {

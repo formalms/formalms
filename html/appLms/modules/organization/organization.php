@@ -21,7 +21,7 @@ function organization(&$treeView)
     /*$orgDb = new OrgDirDb();
     if( !checkPerm('lesson') ) {
         $treeView->tdb->setFilterVisibility( TRUE );
-        $treeView->tdb->setFilterAccess( Docebo::user()-> );
+        $treeView->tdb->setFilterAccess( Forma::user()-> );
     }
 $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $treeView = new Org_TreeView($orgDb, $idCourse);
@@ -147,7 +147,7 @@ function organization_opfolder(&$treeView, $op)
 
 function organization_import(&$treeView)
 {
-    $lang = &DoceboLanguage::createInstance('organization', 'lms');
+    $lang = &FormaLanguage::createInstance('organization', 'lms');
     global $modname, $op;
     require_once _lms_ . '/lib/lib.homerepo.php';
 
@@ -223,7 +223,7 @@ function edit()
 
 function organization_showerror(&$treeView)
 {
-    $lang = &DoceboLanguage::createInstance('organization', 'lms');
+    $lang = &FormaLanguage::createInstance('organization', 'lms');
     global $modname, $op;
     $GLOBALS['page']->add('<form id="orgshow" method="post"'
         . ' action="index.php?modname=' . $modname . '&amp;op=organization"'

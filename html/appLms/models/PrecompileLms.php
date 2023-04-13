@@ -39,7 +39,7 @@ class PrecompileLms extends Model
             return false;
         }
 
-        $id_user = Docebo::user()->getIdSt();
+        $id_user = Forma::user()->getIdSt();
         $policy_checked = $this->getAcceptingPolicy($id_user);
 
         if ($privacy_policy == 'off') {
@@ -71,7 +71,7 @@ class PrecompileLms extends Model
         if (!$language) {
             $language = Lang::get();
         }
-        $id_user = Docebo::user()->getIdSt();
+        $id_user = Forma::user()->getIdSt();
 
         //retrieve the translation from DB
         $pmodel = new PrivacypolicyAdm();
@@ -107,7 +107,7 @@ class PrecompileLms extends Model
     {
         //initialize output
         $output = -1;
-        $id_user = Docebo::user()->getIdSt();
+        $id_user = Forma::user()->getIdSt();
 
         $pmodel = new PrivacypolicyAdm();
         $policies = $pmodel->getUserPolicy($id_user);
@@ -214,7 +214,7 @@ class PrecompileLms extends Model
             if (FormaLms\lib\Get::sett('on_usercourse_empty') == 'off') {
                 $url = $array_tab[$tb_home];
             } else {
-                $a = Docebo::user()->getIdSt();
+                $a = Forma::user()->getIdSt();
                 $q = 'Select count(\'x\') from learning_courseuser where idUser =' . $a;
                 list($n) = sql_fetch_row(sql_query($q));
                 if ($n == 0) { //showing catalogue if no enrollment
@@ -230,7 +230,7 @@ class PrecompileLms extends Model
 
     public function getForceChangeUser()
     {
-        $a = Docebo::user()->getIdSt();
+        $a = Forma::user()->getIdSt();
         $q = 'Select force_change from core_user where idst=' . $a;
         list($n) = sql_fetch_row(sql_query($q));
 

@@ -172,7 +172,7 @@ class ClassLocationManager
 
         if ($id == 0) {
             if (empty($location)) {
-                $lang = &DoceboLanguage::createInstance('classlocation', 'lms');
+                $lang = &FormaLanguage::createInstance('classlocation', 'lms');
                 $location = $lang->def('_UNAMED');
             }
 

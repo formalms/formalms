@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -24,7 +24,7 @@ function mycourses(&$url)
 {
     checkPerm('view');
     require_once _base_ . '/lib/lib.user_profile.php';
-    $lang = DoceboLanguage::createInstance('catalogue');
+    $lang = FormaLanguage::createInstance('catalogue');
 
     require_once _lms_ . '/lib/lib.middlearea.php';
     $ma = new Man_MiddleArea();
@@ -212,9 +212,9 @@ function mycourses(&$url)
             . '<div class="course_news">'
             . '<h2>' . $lang->def('_NEWS') . '</h2>', 'content');
 
-        $user_level = Docebo::user()->getUserLevelId();
+        $user_level = Forma::user()->getUserLevelId();
 
-        $user_assigned = Docebo::user()->getArrSt();
+        $user_assigned = Forma::user()->getArrSt();
 
         $query_news = '
 		SELECT idNews, publish_date, title, short_desc, important, viewer
@@ -271,7 +271,7 @@ function mycourses(&$url)
 
             . '<h1>'
                 . $lang->def('_WELCOME') . ': '
-                . '<span>' . Docebo::user()->getUserName() . '</span>'
+                . '<span>' . Forma::user()->getUserName() . '</span>'
             . '</h1>'
 
             . '<ul class="flat_tab">'
@@ -303,7 +303,7 @@ function mycourses(&$url)
             '<div class="lo_tab">'
             . '<h1 class="no_tab">'
                 . $lang->def('_WELCOME') . ': '
-                . '<span>' . Docebo::user()->getUserName() . '</span>'
+                . '<span>' . Forma::user()->getUserName() . '</span>'
             . '</h1>'
             . '</div>',
             'content'
@@ -426,8 +426,8 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $classroom_man = new ClassroomManager();
     $classrooms = $classroom_man->getClassroomNameList();
 
-    $lang = DoceboLanguage::createInstance('catalogue');
-    $lang_c = DoceboLanguage::createInstance('course');
+    $lang = FormaLanguage::createInstance('catalogue');
+    $lang_c = FormaLanguage::createInstance('course');
 
     $man_course = new Man_Course();
 
@@ -498,7 +498,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     }
     // apply search filter --------------------------------------------------------------
 
-    $all_lang = Docebo::langManager()->getAllLangCode();
+    $all_lang = Forma::langManager()->getAllLangCode();
 
     $query = $select_course
         . $from_course
@@ -694,7 +694,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         if (isset($available_cert[$cinfo['idCourse']])) {
             foreach ($available_cert[$cinfo['idCourse']] as $id_cert => $certificate) {
                 if (!isset($released[$id_cert]) && $cert->canRelease($certificate[CERT_AV_STATUS], $cinfo['user_status'])) {
-                    if ($cert->certificateAvailableForUser($id_cert, $cinfo['idCourse'], Docebo::user()->getIdst())) {
+                    if ($cert->certificateAvailableForUser($id_cert, $cinfo['idCourse'], Forma::user()->getIdst())) {
                         ++$course_stats['cert_relesable'];
                     }
                 }
@@ -1036,7 +1036,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
                         _CUS_BEGIN => $lang->def('_T_USER_STATUS_BEGIN'),
                         _CUS_END => $lang->def('_T_USER_STATUS_END'), ];
 
-    DoceboLanguage::createInstance('course', 'lms');
+    FormaLanguage::createInstance('course', 'lms');
 
     $arr_coursestatus = [
         CST_PREPARATION => $lang->def('_CST_PREPARATION', 'course', 'lms'),
@@ -1464,13 +1464,13 @@ function dashAcourse($id_course, $h_number)
     require_once _lms_ . '/lib/lib.coursepath.php';
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
-    $lang = DoceboLanguage::createInstance('standard', 'framework');
+    $lang = FormaLanguage::createInstance('standard', 'framework');
     $lang->setGlobal();
-    $lang = DoceboLanguage::createInstance('course', 'lms');
+    $lang = FormaLanguage::createInstance('course', 'lms');
 
     $normal_subs = 1;
 
-    $man_course = new DoceboCourse($id_course);
+    $man_course = new FormaCourse($id_course);
     $cinfo = $man_course->getAllInfo();
 
     $man_courseuser = new Man_CourseUser();
@@ -1524,13 +1524,13 @@ function downloadMaterials()
 {
     require_once _lms_ . '/lib/lib.course.php';
     require_once _base_ . '/lib/lib.multimedia.php';
-    $lang = DoceboLanguage::createInstance('course', 'lms');
+    $lang = FormaLanguage::createInstance('course', 'lms');
 
     $id_course = importVar('id_course', true, 0);
     $edition_id = importVar('edition_id', true, 0);
 
     if ($id_course != 0) {
-        $man_course = new DoceboCourse($id_course);
+        $man_course = new FormaCourse($id_course);
         $file = $man_course->getValue('img_othermaterial');
     }
     if ($edition_id != 0) {

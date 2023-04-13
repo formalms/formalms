@@ -13,12 +13,12 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     function play($object_glos, $id_param)
     {
         //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
 
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         $letter = importVar('letter', true, '');
         $idGlossary = $object_glos->getId();

@@ -36,7 +36,7 @@ $str_all = Lang::t('_ALL_COURSE_TYPE', 'course');
                     <?php echo isset($_label_list) ? $_label_list : ''; ?>
                     
                     <script>
-                        var this_user = '<?php echo Docebo::user()->idst; ?>';
+                        var this_user = '<?php echo Forma::user()->idst; ?>';
                         $(function(){
                             v = getCookie(this_user+'.my_course.type');
                             if (v != '') {$("#course_search_filter_type").selectpicker('val', v );}

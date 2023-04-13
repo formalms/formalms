@@ -51,7 +51,7 @@ class FormaMailer extends PHPMailer
     /** @var FormaMailer */
     private static $instance = null;
 
-    private \DoceboACLManager $aclManager;
+    private \FormaACLManager $aclManager;
 
     //default config for phpmailer, to set any time we send a mail, except for user-defined params
     private array $config;
@@ -65,7 +65,7 @@ class FormaMailer extends PHPMailer
     //the constructor
     public function __construct($mailConfigId = null, $templateName = null)
     {
-        $this->aclManager = new \DoceboACLManager();
+        $this->aclManager = new \FormaACLManager();
         $this->mailConfigId = $mailConfigId;
 
         $this->config = [

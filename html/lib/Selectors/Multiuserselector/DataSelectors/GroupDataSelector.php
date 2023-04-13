@@ -142,7 +142,7 @@ class GroupDataSelector extends DataSelector{
     protected function mapData($records, $filter = ''){
 
         $list = [];
-        $acl_man = \Docebo::user()->getAclManager();
+        $acl_man = \Forma::user()->getAclManager();
         if (is_array($records)) {
             foreach ($records as $record) {
                 $_groupid = $acl_man->relativeId($record->groupid);

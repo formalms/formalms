@@ -26,7 +26,7 @@ ob_start();
 require_once(_base_.'/lib/lib.bootstrap.php');
 Boot::init(BOOT_TEMPLATE);
 */
-if (Docebo::user()->isLoggedIn()) {
+if (Forma::user()->isLoggedIn()) {
     require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
     require_once Forma::inc(_lms_ . '/modules/scorm/scorm_utils.php');
     require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');

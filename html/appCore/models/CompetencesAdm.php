@@ -539,7 +539,7 @@ class CompetencesAdm extends Model
         $output = $this->db->fetch_obj($res);
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -588,7 +588,7 @@ class CompetencesAdm extends Model
         $output = $this->db->fetch_obj($res);
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -642,7 +642,7 @@ class CompetencesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = Forma::langManager()->getAllLangCode();
         $_void_lang_arr = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_void_lang_arr[$lang_codes[$i]] = [
@@ -927,7 +927,7 @@ class CompetencesAdm extends Model
         if ($output) {
             //insert languages in database
             if (property_exists($params, 'langs')) {
-                $langs = Docebo::langManager()->getAllLangcode();
+                $langs = Forma::langManager()->getAllLangcode();
                 $arr_langs = [];
                 foreach ($langs as $lang_code) {
                     if (isset($params->langs[$lang_code])) {
@@ -1046,7 +1046,7 @@ class CompetencesAdm extends Model
 
         //retrive users list from idst list
         if (count($list) > 0) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $output = $acl_man->getAllUsersFromIdst($list);
         }
 
@@ -1205,7 +1205,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_assign'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Docebo::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = Forma::user()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = $score; //the score assigned
             $params->score_total = $score;
@@ -1251,7 +1251,7 @@ class CompetencesAdm extends Model
             $_params = new stdClass();
             $_params->operation = 'manual_update'; //the type of operation (manual, course etc.)
             $_params->id_course = 0; //the id of the course which has assigned the score
-            $_params->assigned_by = Docebo::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $_params->assigned_by = Forma::user()->getIdSt(); //user/administrator who has assigned the score to the user
             $_params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $_params->score_assigned = $params->score_got; //the score assigned
             $_params->score_total = $params->score_got;
@@ -1284,7 +1284,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_remove'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Docebo::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = Forma::user()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = 0; //the score assigned
             $params->score_total = 0;
@@ -1345,7 +1345,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_addscore'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Docebo::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = Forma::user()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = $score; //the score assigned
             $params->score_total = 0;
@@ -1634,7 +1634,7 @@ class CompetencesAdm extends Model
     {
         //initialize output
         $output = [];
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = Forma::langManager()->getAllLangCode();
         $_langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_langs[$lang_codes[$i]] = [

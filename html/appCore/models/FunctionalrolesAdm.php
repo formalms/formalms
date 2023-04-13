@@ -24,7 +24,7 @@ class FunctionalrolesAdm extends Model
     public function __construct()
     {
         $this->db = DbConn::getInstance();
-        $this->acl_man = Docebo::user()->getACLManager();
+        $this->acl_man = Forma::user()->getACLManager();
         $this->_ugroups_cache = false;
         parent::__construct();
     }
@@ -452,7 +452,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -496,7 +496,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -690,7 +690,7 @@ class FunctionalrolesAdm extends Model
         if ($output) {
             //insert languages in database
             if (is_array($langs)) {
-                $_langs = Docebo::langManager()->getAllLangcode();
+                $_langs = Forma::langManager()->getAllLangcode();
                 $arr_langs = [];
                 foreach ($_langs as $lang_code) {
                     if (isset($langs[$lang_code])) {
@@ -743,7 +743,7 @@ class FunctionalrolesAdm extends Model
         }
 
         if (is_array($langs)) {
-            $langcodes = Docebo::langManager()->getAllLangcode();
+            $langcodes = Forma::langManager()->getAllLangcode();
             $arr_langs = [];
             foreach ($langcodes as $lang_code) {
                 if (isset($langs[$lang_code])) {
@@ -1628,7 +1628,7 @@ class FunctionalrolesAdm extends Model
             . " ON (g.idst = f.id_fncrole) WHERE groupid LIKE '/fncroles/%'";
         $res = $this->db->query($query);
         if ($res) {
-            $lang_codes = Docebo::langManager()->getAllLangCode();
+            $lang_codes = Forma::langManager()->getAllLangCode();
             while ($obj = $this->db->fetch_obj($res)) {
                 $t_obj = new stdClass();
                 $t_obj->id_fncrole = $obj->idst;
@@ -1730,7 +1730,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Docebo::langManager()->getAllLangCode();
+        $lang_codes = Forma::langManager()->getAllLangCode();
         $_void_lang_arr = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_void_lang_arr[$lang_codes[$i]] = [
@@ -1863,11 +1863,11 @@ class FunctionalrolesAdm extends Model
 
         $_qfilter = '';
         if ($filter) {
-            $ulevel = Docebo::user()->getUserLevelId();
+            $ulevel = Forma::user()->getUserLevelId();
             if ($ulevel != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
                 $_qfilter .= ' AND g.idst IN (' . implode(',', $admin_tree) . ') ';
             }
         }

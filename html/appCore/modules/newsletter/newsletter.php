@@ -25,7 +25,7 @@ function newsletter()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     YuiLib::load();
     addJs($GLOBALS['where_framework_relative'] . '/modules/newsletter/', 'newsletter.js');
@@ -47,8 +47,8 @@ function newsletter()
 
     $out->add("<div class=\"std_block\">\n");
 
-    $acl_manager = Docebo::user()->getAclManager();
-    $user_info = $acl_manager->getUser(Docebo::user()->getIdSt(), false);
+    $acl_manager = Forma::user()->getAclManager();
+    $user_info = $acl_manager->getUser(Forma::user()->getIdSt(), false);
     $myemail = $user_info[ACL_INFO_EMAIL];
 
     if ((isset($err)) && ($err != '')) {
@@ -62,7 +62,7 @@ function newsletter()
     $out->add($form->getTextfield($lang->def('_SUBJECT'), 'sub', 'sub', 255, ''));
     $out->add($form->getTextarea($lang->def('_DESCRIPTION'), 'msg', 'msg', ''));
 
-    $lang_list = Docebo::langManager()->getAllLangCode();
+    $lang_list = Forma::langManager()->getAllLangCode();
     //array_unshift($lang_list, $lang->def("_DEFAULT"), $lang->def("_ALL"));
     $lang_list = [_ANY_LANG_CODE => $lang->def('_ALL')] + $lang_list;
 
@@ -106,7 +106,7 @@ function send_newsletter($send_id)
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $out->add(getTitleArea($lang->def('_NEWSLETTER'), 'newsletter'));
 
@@ -146,7 +146,7 @@ function send_newsletter($send_id)
 
     $limit = $cycle * $ipc . ', ' . $ipc;
     $arr_st = getSendToIdst($send_id, $limit);
-    $acl_manager = Docebo::user()->getAclManager();
+    $acl_manager = Forma::user()->getAclManager();
     if ((!empty($sel_lang)) && ($sel_lang != _ANY_LANG_CODE)) {
         $user_info = $acl_manager->getUsersByLanguage($sel_lang, $arr_st);
     } else { // Send to all languages
@@ -180,7 +180,7 @@ function send_newsletter($send_id)
 
                 require_once _adm_ . '/lib/lib.field.php';
 
-                $acl_man = &Docebo::user()->getACLManager();
+                $acl_man = &Forma::user()->getACLManager();
                 $field_man = new FieldList();
 
                 $arr_sms_recipients = [];
@@ -258,7 +258,7 @@ function nl_pause()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $out->add(getTitleArea($lang->def('_NEWSLETTER'), 'newsletter'));
 
@@ -288,7 +288,7 @@ function nl_sendcomplete()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $out->add(getTitleArea($lang->def('_NEWSLETTER'), 'newsletter'));
 
@@ -334,7 +334,7 @@ function init_send()
         }
     }
 
-    $lang_list = Docebo::langManager()->getAllLangCode();
+    $lang_list = Forma::langManager()->getAllLangCode();
 
     $sel_lang = importVar('sel_lang');
     if ($sel_lang > 0) {
@@ -433,11 +433,11 @@ function selSendTo()
         $mdir->show_fncrole_selector = false;
     }
 
-    if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+    if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
         require_once _base_ . '/lib/lib.preference.php';
         $adminManager = new AdminPreference();
-        $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-        $admin_users = Docebo::aclm()->getAllUsersFromSelection($admin_tree);
+        $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+        $admin_users = Forma::aclm()->getAllUsersFromSelection($admin_tree);
 
         $mdir->setUserFilter('user', $admin_users);
         $mdir->setUserFilter('group', $admin_tree);
@@ -445,7 +445,7 @@ function selSendTo()
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $back_url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $id_send;
 
@@ -455,7 +455,7 @@ function selSendTo()
         $send_to_idst = [];
 
         foreach ($arr_selection as $idstMember) {
-            $arr = Docebo::aclm()->getGroupAllUser($idstMember);
+            $arr = Forma::aclm()->getGroupAllUser($idstMember);
             if ((is_array($arr)) && (count($arr) > 0)) {
                 $send_to_idst = array_merge($arr, $send_to_idst);
                 $send_to_idst = array_unique($send_to_idst);
@@ -463,7 +463,7 @@ function selSendTo()
                 $send_to_idst[] = $idstMember;
             }
 
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $send_to_idst = array_intersect($send_to_idst, $admin_users);
             }
         }
@@ -480,7 +480,7 @@ function selSendTo()
         list($lang) = sql_fetch_row($q);
 
         if ($lang != _ANY_LANG_CODE) {
-            $tot = count(Docebo::aclm()->getUsersIdstByLanguage($lang, $send_to_idst));
+            $tot = count(Forma::aclm()->getUsersIdstByLanguage($lang, $send_to_idst));
         } else {
             $tot = count($send_to_idst);
         }
@@ -518,7 +518,7 @@ function selSendTo()
         $mdir->show_orgchart_selector = true;
         $mdir->show_orgchart_simple_selector = false;
 
-        $acl_manager = &Docebo::user()->getAclManager();
+        $acl_manager = &Forma::user()->getAclManager();
         if (defined('IN_LMS')) {
             $id_course = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -543,7 +543,7 @@ function newsletterSummary($id_send)
 
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &DoceboLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $tot = (int) $_GET['tot'];
     $form = new Form();

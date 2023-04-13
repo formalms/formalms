@@ -122,7 +122,7 @@ class EnrollrulesAlms extends Model
 
     public function createRule($data)
     {
-        $languages = Docebo::langManager()->getAllLangCode();
+        $languages = Forma::langManager()->getAllLangCode();
         array_unshift($languages, 'all');
 
         $query = 'INSERT INTO %adm_rules ( title, lang_code, rule_type, creation_date, rule_active )'
@@ -134,7 +134,7 @@ class EnrollrulesAlms extends Model
 
     public function updateRule($data)
     {
-        $languages = Docebo::langManager()->getAllLangCode();
+        $languages = Forma::langManager()->getAllLangCode();
         array_unshift($languages, 'all');
 
         $query = 'UPDATE %adm_rules SET '
@@ -193,7 +193,7 @@ class EnrollrulesAlms extends Model
 
     public function getBaseEntityRule($id_rule, $id_entities = false, $only_existing = false)
     {
-        $entities = Docebo::langManager()->getAllLangCode();
+        $entities = Forma::langManager()->getAllLangCode();
         array_unshift($entities, 'all');
 
         $entities_name = [];
@@ -246,7 +246,7 @@ class EnrollrulesAlms extends Model
                 $entities_name = $folders['idst'];
              break;
             case 'group':
-                $aclman = Docebo::aclm();
+                $aclman = Forma::aclm();
                 $names = $aclman->getGroups($id_entities);
                 if ($names) {
                     foreach ($names as $group) {
@@ -438,7 +438,7 @@ class EnrollrulesAlms extends Model
         $ent = [];
 
         if ($id_org != 0) {
-            $acl_manager = Docebo::aclm();
+            $acl_manager = Forma::aclm();
             $oc_sn = $acl_manager->getGroupST('oc_' . $id_org);
 
             $um_adm = new UsermanagementAdm();
@@ -501,7 +501,7 @@ class EnrollrulesAlms extends Model
     {
         $ent = [];
         if ($id_org != false) {
-            $acl_man = Docebo::aclm();
+            $acl_man = Forma::aclm();
             $oc_sn = $acl_man->getGroupST('oc_' . $id_org);
 
             $um_adm = new UsermanagementAdm();

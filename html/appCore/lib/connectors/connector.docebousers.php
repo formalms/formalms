@@ -28,7 +28,7 @@ define(USER_HAS_NO_LANG, null);
  *
  * @author        Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorDoceboUsers extends DoceboConnector
+class FormaConnectorFormaUsers extends FormaConnector
 {
     public $last_error = '';
 
@@ -197,7 +197,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorDoceboUsersUI($this);
+        return new FormaConnectorFormaUsersUI($this);
     }
 
     public function connect()
@@ -205,13 +205,13 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         require_once _base_ . '/lib/lib.userselector.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $aclManager = Docebo::user()->getACLManager();
+        $aclManager = Forma::user()->getACLManager();
 
         $this->directory = new UserSelector();
         $this->groupFilter_idst = $aclManager->getGroupST($this->groupFilter);
 
         // load language for fields names
-        $lang_dir = DoceboLanguage::createInstance('admin_directory', 'framework');
+        $lang_dir = FormaLanguage::createInstance('admin_directory', 'framework');
         $fl = new FieldList();
         $this->fl = $fl;
 
@@ -625,7 +625,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                 $email = $this->default_cols['email'];
             }
 
-            $idst = Docebo::aclm()->registerUser(
+            $idst = Forma::aclm()->registerUser(
                 $userid,
                 $firstname,
                 $lastname,
@@ -666,7 +666,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
             if ($email === null || $email === '') {
                 $email = false;
             }
-            $result = Docebo::aclm()->updateUser(
+            $result = Forma::aclm()->updateUser(
                 $idst,
                 $userid,
                 $firstname,
@@ -720,8 +720,8 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                 if ($res && DbConn::getInstance()->num_rows($res) > 0) {
                     list($oc, $ocd) = DbConn::getInstance()->fetch_row($res);
                     if ($oc && $ocd) {
-                        Docebo::aclm()->addToGroup($oc, $idst);
-                        Docebo::aclm()->addToGroup($ocd, $idst);
+                        Forma::aclm()->addToGroup($oc, $idst);
+                        Forma::aclm()->addToGroup($ocd, $idst);
                     }
                 }
             }
@@ -787,7 +787,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                     }
                 }
 
-                //Docebo::aclm()->removeFromAllGroup($idst);
+                //Forma::aclm()->removeFromAllGroup($idst);
                 $query = 'select %adm_group.idst as idst from %adm_group join %adm_group_members on %adm_group.idst = %adm_group_members.idst where %adm_group_members.idstMember = ' . $idst . ' AND %adm_group.groupid like "/oc%"';
                 $result = sql_query($query);
                 $idstMembers = [];
@@ -795,7 +795,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                     $idstMembers[] = $item['idst'];
                 }
 
-                Docebo::aclm()->removeFromGroup($idst, $idstMembers);
+                Forma::aclm()->removeFromGroup($idst, $idstMembers);
 
                 require_once _lms_ . '/lib/lib.course.php';
 
@@ -804,10 +804,10 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                 $result = sql_query($query);
 
                 foreach ($result as $item) {
-                    $docebo_course = new DoceboCourse($item['idCourse']);
+                    $docebo_course = new FormaCourse($item['idCourse']);
                     $level_idst = &$docebo_course->getCourseLevel($item['idCourse']);
 
-                    Docebo::aclm()->addToGroup($level_idst[3], $idst);
+                    Forma::aclm()->addToGroup($level_idst[3], $idst);
 
                     $model = new SubscriptionAlms($item['idCourse'], false, false);
                     $model->subscribeUser($idst, 3, 0);
@@ -817,8 +817,8 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
                     $idst_oc_folder = $this->org_chart_group['/oc_' . $id_dir];
                     $idst_ocd_folder = $this->org_chart_group['/ocd_' . $id_dir];
 
-                    Docebo::aclm()->addToGroup($idst_oc_folder, $idst);
-                    Docebo::aclm()->addToGroup($idst_ocd_folder, $idst);
+                    Forma::aclm()->addToGroup($idst_oc_folder, $idst);
+                    Forma::aclm()->addToGroup($idst_ocd_folder, $idst);
 
                     // adding to enrollment rules for org, if any
                     $enrollrules = new EnrollrulesAlms();
@@ -833,17 +833,17 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
 
             //  -------------------------------------------------------------------
             $result = true;
-            Docebo::aclm()->addToGroup($this->tree_oc, $idst);
-            Docebo::aclm()->addToGroup($this->tree_ocd, $idst);
+            Forma::aclm()->addToGroup($this->tree_oc, $idst);
+            Forma::aclm()->addToGroup($this->tree_ocd, $idst);
 
             if ($this->tree != $this->tree_oc) {
-                Docebo::aclm()->addToGroup($this->tree, $idst);
-                Docebo::aclm()->addToGroup($this->tree_desc, $idst);
+                Forma::aclm()->addToGroup($this->tree, $idst);
+                Forma::aclm()->addToGroup($this->tree_desc, $idst);
             }
 
             // add to group level
-            $userlevel = Docebo::aclm()->getGroupST(ADMIN_GROUP_USER);
-            Docebo::aclm()->addToGroup($userlevel, $idst);
+            $userlevel = Forma::aclm()->getGroupST(ADMIN_GROUP_USER);
+            Forma::aclm()->addToGroup($userlevel, $idst);
 
             //-save extra field------------------------------------------
 
@@ -958,9 +958,9 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
             return false;
         } else {
             if ($this->canceled == '1') {
-                Docebo::aclm()->suspendUser($arr_people['idst']);
+                Forma::aclm()->suspendUser($arr_people['idst']);
             } else {
-                Docebo::aclm()->deleteUser($arr_people['idst']);
+                Forma::aclm()->deleteUser($arr_people['idst']);
             }
         }
     }
@@ -979,9 +979,9 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         $arr_idst_todelete = $this->people_view->data->getAllRowsIdst();
         foreach ($arr_idst_todelete as $id_st) {
             if ($this->canceled == '1') {
-                Docebo::aclm()->suspendUser($id_st);
+                Forma::aclm()->suspendUser($id_st);
             } else {
-                Docebo::aclm()->deleteUser($id_st);
+                Forma::aclm()->deleteUser($id_st);
             }
         }
     }
@@ -993,14 +993,14 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         $this->people_view->addFieldFilters([['fieldname' => 'valid', 'value' => '1', 'field_type' => 'text']]);
         $this->people_view->data->addNotFilter($this->arr_idst_inserted);
 
-        $idst_org = Docebo::user()->getAclManager()->getGroupST('oc_' . $this->org_chart_destination);
-        $idst_orgd = Docebo::user()->getAclManager()->getGroupST('ocd_' . $this->org_chart_destination);
+        $idst_org = Forma::user()->getAclManager()->getGroupST('oc_' . $this->org_chart_destination);
+        $idst_orgd = Forma::user()->getAclManager()->getGroupST('ocd_' . $this->org_chart_destination);
 
         $id_groups = UsermanagementAdm::getOrgGroups($this->org_chart_destination, true);
 
         $id_groups[] = $idst_org;
         $id_groups[] = $idst_orgd;
-        $arr_members = Docebo::aclm()->getGroupUMembers($id_groups);
+        $arr_members = Forma::aclm()->getGroupUMembers($id_groups);
         $this->people_view->data->setUserFilter($arr_members);
 
         $idst_rs = $this->people_view->data->getAllRowsIdst();
@@ -1008,9 +1008,9 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
         if ($idst_rs !== false) {
             while (list($id_st) = sql_fetch_row($idst_rs)) {
                 if ($this->canceled == '1') {
-                    Docebo::aclm()->suspendUser($id_st);
+                    Forma::aclm()->suspendUser($id_st);
                 } else {
-                    Docebo::aclm()->deleteUser($id_st);
+                    Forma::aclm()->deleteUser($id_st);
                 }
                 ++$counter;
             }
@@ -1032,7 +1032,7 @@ class DoceboConnectorDoceboUsers extends DoceboConnector
  *
  * @author        Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI
+class FormaConnectorFormaUsersUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -1287,5 +1287,5 @@ class DoceboConnectorDoceboUsersUI extends DoceboConnectorUI
 
 function docebousers_factory()
 {
-    return new DoceboConnectorDoceboUsers([]);
+    return new FormaConnectorFormaUsers([]);
 }

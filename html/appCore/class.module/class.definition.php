@@ -94,7 +94,7 @@ class Module
 
     public function getTitle()
     {
-        return 'Docebo 2.1 LMS - ' . $this->module_name;
+        return 'Forma 2.1 LMS - ' . $this->module_name;
     }
 
     public function loadHeader()
@@ -148,8 +148,8 @@ class Module
 
     public function getPermissionUi($module_name, $modname, $op, $form_name, $perm, $all_perm_tokens)
     {
-        $lang = &DoceboLanguage::createInstance('manmenu');
-        $lang_perm = &DoceboLanguage::createInstance('permission');
+        $lang = &FormaLanguage::createInstance('manmenu');
+        $lang_perm = &FormaLanguage::createInstance('permission');
 
         $tokens = $this->getAllToken($op);
 

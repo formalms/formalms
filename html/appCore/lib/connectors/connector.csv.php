@@ -22,7 +22,7 @@ require_once dirname(__FILE__) . '/lib.connector.php';
  *
  * @author        Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorCsv extends DoceboConnector
+class FormaConnectorCsv extends FormaConnector
 {
     public $curr_file = '';
     public $filename = '';
@@ -94,7 +94,7 @@ class DoceboConnectorCsv extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorCsvUI($this);
+        return new FormaConnectorCsvUI($this);
     }
 
     /**
@@ -338,7 +338,7 @@ class DoceboConnectorCsv extends DoceboConnector
  *
  * @version    1.0
  **/
-class DoceboConnectorCsvUI extends DoceboConnectorUI
+class FormaConnectorCsvUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -591,7 +591,7 @@ class DoceboConnectorCsvUI extends DoceboConnectorUI
 
 function csv_factory()
 {
-    return new DoceboConnectorCsv([]);
+    return new FormaConnectorCsv([]);
 }
 
 function preg_ls($path = '.', $rec = false, $pat = '/.*/')

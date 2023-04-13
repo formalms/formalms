@@ -65,7 +65,7 @@ class AlertService
             createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
 
             if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                $uinfo = \Docebo::aclm()->getUser($user_id, false);
+                $uinfo = \Forma::aclm()->getUser($user_id, false);
                 $calendar = \CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }

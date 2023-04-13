@@ -16,15 +16,15 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _base_ . '/lib/lib.event.php';
 
 /**
- * This is the class for ClassEvents in Docebo.
+ * This is the class for ClassEvents in Forma.
  *
  * @version  $Id:$
  */
-class DoceboSettingNotifier extends DoceboEventConsumer
+class FormaSettingNotifier extends FormaEventConsumer
 {
     public function _getConsumerName()
     {
-        return 'DoceboSettingNotifier';
+        return 'FormaSettingNotifier';
     }
 
     public function actionEvent(&$event)

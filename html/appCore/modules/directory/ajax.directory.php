@@ -22,7 +22,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  */
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -31,7 +31,7 @@ require_once _adm_ . '/lib/lib.permission.php';
 $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {
     case 'getuserprofile':
-        $lang = &DoceboLanguage::createInstance('standard', 'framework');
+        $lang = &FormaLanguage::createInstance('standard', 'framework');
         $lang->setGlobal();
 
         require_once _base_ . '/lib/lib.user_profile.php';

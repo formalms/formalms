@@ -1085,7 +1085,7 @@ class RepoTreeView extends TreeView
                         . ' title="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
                         . ' alt="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
                     if ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') ||
-                        Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+                        Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                         $elem .= '<input type="image" class="tree_view_image" '
                             . ' src="' . $this->_getEditImage() . '"'
                             . ' id="' . $this->id . '_' . $this->_getOpEditLOId() . '_' . $stack[$level]['folder']->id . '" '

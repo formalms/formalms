@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -89,12 +89,12 @@ function forum()
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
-    $lang = DoceboLanguage::CreateInstance('forum');
+    $lang = FormaLanguage::CreateInstance('forum');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $mod_perm = checkPerm('mod', true);
     $moderate = checkPerm('moderate', true);
     $base_link = 'index.php?modname=forum&amp;op=forum';
-    $acl_man = Docebo::user()->getAclManager();
+    $acl_man = Forma::user()->getAclManager();
 
     $idCourse = $session->get('idCourse');
     $unreadedForum = $session->get('unreaded_forum');
@@ -120,7 +120,7 @@ function forum()
 		SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . "_forum AS f
 		WHERE f.idCourse = '" . (int) $idCourse . "'";
     } else {
-        $acl = &Docebo::user()->getAcl();
+        $acl = &Forma::user()->getAcl();
         $all_user_idst = $acl->getSTGroupsST(getLogUserId());
         $all_user_idst[] = getLogUserId();
 
@@ -443,7 +443,7 @@ function addforum()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
 
     $default = 'blank';
     $onchange = "onchange=\"if(document.images) document.images['forum_icon'].src='" . getPathImage() . 'emoticons/' . "'+this.options[this.selectedIndex].value;\"";
@@ -510,7 +510,7 @@ function insforum()
 {
     checkPerm('mod');
 
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
@@ -581,7 +581,7 @@ function modforum()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
 
     list($title, $text, $emoticons, $maxThreads, $threadsArePrivate) = sql_fetch_row(sql_query('
 	SELECT title, description, emoticons, max_threads, threads_are_private
@@ -741,7 +741,7 @@ function delforum()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
     $id_forum = importVar('idForum', true, 0);
 
     list($title, $text, $seq) = sql_fetch_row(sql_query('
@@ -813,11 +813,11 @@ function modforumaccess()
     checkPerm('mod');
 
     require_once _base_ . '/lib/lib.userselector.php';
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
     $out = &$GLOBALS['page'];
     $id_forum = importVar('idForum', true, 0);
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $aclManager = new DoceboACLManager();
+    $aclManager = new FormaACLManager();
     $user_select = new UserSelector();
     $user_select->show_user_selector = true;
     $user_select->show_group_selector = true;
@@ -910,14 +910,14 @@ function thread()
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
 
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
     $id_forum = importVar('idForum', true, 0);
     $ord = importVar('ord');
     $jump_url = 'index.php?modname=forum&amp;op=thread&amp;idForum=' . $id_forum;
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     $all_read = importVar('allread', true, 0);
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -938,7 +938,7 @@ function thread()
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
 	WHERE idCourse = '" . $idCourse . "' AND idForum = '" . $id_forum . "'"));
 
-        $authorId = Docebo::user()->getId();
+        $authorId = Forma::user()->getId();
         $query = 'SELECT COUNT(*) AS numThread FROM %lms_forumthread WHERE `author`=' . $authorId . ' AND `idForum`= ' . $id_forum;
 
         list($numThread) = sql_fetch_row(sql_query($query));
@@ -1073,7 +1073,7 @@ function thread()
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
 
-    $currentUserId = Docebo::user()->getId();
+    $currentUserId = Forma::user()->getId();
 
     while (list($idT, $t_author, $posted, $title, $num_post, $num_view, $locked, $erased, $important, $isPrivate) = sql_fetch_row($re_thread)) {
         $arr_levels_id = array_flip($acl_man->getAdminLevels());
@@ -1288,7 +1288,7 @@ function addthread()
     checkPerm('write');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
     $id_forum = importVar('idForum', true, 0);
     $moderate = $moderate = checkPerm('moderate', true);
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
@@ -1300,7 +1300,7 @@ function addthread()
 
     $canInsert = true;
     if ($moderate === false) {
-        $authorId = Docebo::user()->getId();
+        $authorId = Forma::user()->getId();
         $query = 'SELECT COUNT(*) AS numThread FROM %lms_forumthread WHERE `author`=' . $authorId . ' AND `idForum`= ' . $id_forum;
 
         list($numThread) = sql_fetch_row(sql_query($query));
@@ -1404,7 +1404,7 @@ function insthread()
 {
     checkPerm('write');
 
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
     $id_forum = importVar('idForum', true, 0);
     $isPrivate = FormaLms\lib\Get::pReq('private', DOTY_INT, 0);
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
@@ -1438,7 +1438,7 @@ function insthread()
     if (!isset($members)) {
         $continue = true;
     } else {
-        $acl = &Docebo::user()->getAcl();
+        $acl = &Forma::user()->getAcl();
         $all_user_idst = $acl->getSTGroupsST(getLogUserId());
         $all_user_idst[] = getLogUserId();
 
@@ -1554,13 +1554,13 @@ function modthread()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
     $id_thread = importVar('idThread', true, 0);
     $ini = importVar('ini');
 
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     // retrive info about message
     $mess_query = '
@@ -1633,7 +1633,7 @@ function upthread()
     $mod_perm = checkPerm('mod', true);
 
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
 
     // retrive info about message
     $mess_query = '
@@ -1658,7 +1658,7 @@ function upthread()
 	FROM ' . $GLOBALS['prefix_lms'] . "_forumthread
 	WHERE idThread = '" . $id_thread . "'"));
 
-    $user_level = Docebo::user()->getUserLevelId();
+    $user_level = Forma::user()->getUserLevelId();
 
     if ($user_level !== ADMIN_GROUP_GODADMIN) {
         if ($locked_t || $erased_t && (!$mod_perm && !$moderate)) {
@@ -1716,7 +1716,7 @@ function upthread()
 function delthread()
 {
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
     $id_thread = importVar('idThread', true, 0);
     $ini = importVar('ini');
 
@@ -1888,14 +1888,14 @@ function message()
     require_once _base_ . '/lib/lib.dialog.php';
     setupHrefDialogBox('a[href*=delmessage]');
 
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
     $id_thread = importVar('idThread', true, 0);
 
     $sema_perm = checkPerm('sema', true);
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
     $write_perm = checkPerm('write', true);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     $profile_man = new UserProfile(0);
     $profile_man->init('profile', 'framework', 'index.php?modname=forum&op=forum');
@@ -2341,9 +2341,9 @@ function changeerase()
 function showMessageForAdd($id_thread, $how_much)
 {
     require_once _base_ . '/lib/lib.table.php';
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'));
@@ -2460,14 +2460,14 @@ function addmessage()
     checkPerm('write');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
     $id_thread = importVar('idThread', true, 0);
     $id_message = importVar('idMessage', true, 0);
     $ini = importVar('ini');
 
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     // Some info about forum and thread
     $thread_query = '
@@ -2558,7 +2558,7 @@ function insmessage()
         Util::jump_to('index.php?modname=forum&op=message&idThread=' . $id_thread . '&amp;ini=' . $ini);
     }
 
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
 
     // Some info about forum and thread
     list($id_forum, $thread_title, $locked_t, $erased_t) = sql_fetch_row(sql_query('
@@ -2591,7 +2591,7 @@ function insmessage()
     if (!isset($members)) {
         $continue = true;
     } else {
-        $acl = &Docebo::user()->getAcl();
+        $acl = &Forma::user()->getAcl();
         $all_user_idst = $acl->getSTGroupsST(getLogUserId());
         $all_user_idst[] = getLogUserId();
 
@@ -2691,13 +2691,13 @@ function modmessage()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
     $id_message = importVar('idMessage', true, 0);
     $ini = importVar('ini');
 
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     // retrive info about message
     $mess_query = '
@@ -2777,7 +2777,7 @@ function upmessage()
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
 
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
 
     // retrive info about message
     $mess_query = '
@@ -2843,7 +2843,7 @@ function delmessage()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
 
     $id_message = importVar('idMessage', true, 0);
     $moderate = checkPerm('moderate', true);
@@ -2968,7 +2968,7 @@ function viewprofile()
     checkPerm('view');
 
     require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
 
     $id_message = importVar('idMessage');
     $ini = importVar('ini', true, 1);
@@ -2981,7 +2981,7 @@ function viewprofile()
 
     require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
-    $lang = &DoceboLanguage::createInstance('profile', 'framework');
+    $lang = &FormaLanguage::createInstance('profile', 'framework');
 
     $profile = new LmsUserProfile($idst_user);
     $profile->init('profile', 'framework', 'modname=forum&op=viewprofile&idMessage=' . $id_message . '&ini=' . $ini, 'ap');
@@ -3001,7 +3001,7 @@ function viewprofile()
 
 function forumBackUrl()
 {
-    $lang = &DoceboLanguage::createInstance('profile', 'framework');
+    $lang = &FormaLanguage::createInstance('profile', 'framework');
     $id_user = importVar('id_user', true, 0);
     $ap = importVar('ap', true, 0);
     $ini = importVar('ini', true, 0);
@@ -3037,9 +3037,9 @@ function forumsearch()
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('forum');
+    $lang = &FormaLanguage::createInstance('forum');
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
@@ -3049,7 +3049,7 @@ function forumsearch()
 		FROM ' . $GLOBALS['prefix_lms'] . "_forum
 		WHERE idCourse = '" . (int) $idCourse . "'";
     } else {
-        $acl = &Docebo::user()->getAcl();
+        $acl = &Forma::user()->getAcl();
         $all_user_idst = $acl->getSTGroupsST(getLogUserId());
         $all_user_idst[] = getLogUserId();
 
@@ -3263,14 +3263,14 @@ function forumsearchmessage()
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &DoceboLanguage::createInstance('forum', 'lms');
+    $lang = &FormaLanguage::createInstance('forum', 'lms');
     $id_thread = importVar('idThread', true, 0);
     $ini_thread = importVar('ini_thread');
 
     $sema_perm = checkPerm('sema', true);
     $moderate = checkPerm('moderate', true);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
 
     $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
     $tb->initNavBar('ini', 'link');
@@ -3679,7 +3679,7 @@ function moveThread($id_thread, $id_forum)
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::CreateInstance('forum');
+    $lang = &FormaLanguage::CreateInstance('forum');
 
     $mod_perm = checkPerm('mod', true);
     $moderate = checkPerm('moderate', true);
@@ -3848,7 +3848,7 @@ function addUnreadNotice($id_forum)
         }
 
         $interested_user = [];
-        $aclman = &Docebo::user()->getAclManager();
+        $aclman = &Forma::user()->getAclManager();
         $interested_user = $aclman->getGroupListMembers($members);
         $interested_user = array_merge($interested_user, $members);
 
@@ -3869,7 +3869,7 @@ function export()
     require_once _base_ . '/lib/lib.download.php';
     require_once _adm_ . '/lib/lib.tags.php';
 
-    $acl_man = &Docebo::user()->getAclManager();
+    $acl_man = &Forma::user()->getAclManager();
     $tags = new Tags('lms_forum');
     $id_forum = FormaLms\lib\Get::req('idForum', DOTY_INT, 0);
     $csv_string = '';

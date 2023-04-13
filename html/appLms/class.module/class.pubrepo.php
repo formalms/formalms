@@ -42,7 +42,7 @@ class Module_Pubrepo extends LmsModule
     {
         require_once _lms_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
         $ready = false;
-        $this->lang = DoceboLanguage::createInstance('homerepo', 'lms');
+        $this->lang = FormaLanguage::createInstance('homerepo', 'lms');
         if (isset($_GET['spr']) && false) {
             // reload from previously saved session
             require_once _adm_ . '/lib/lib.sessionsave.php';

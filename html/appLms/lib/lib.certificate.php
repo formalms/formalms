@@ -71,11 +71,11 @@ class Certificate
         }
 
         //apply sub admin filters, if needed
-        $userLevelId = Docebo::user()->getUserLevelId();
-        if ($userLevelId != ADMIN_GROUP_GODADMIN && !Docebo::user()->isAnonymous()) {
+        $userLevelId = Forma::user()->getUserLevelId();
+        if ($userLevelId != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
             $whereConditions .= ' AND cu.idUser IN (' . implode(',', $admin_users) . ')';
         }
 
@@ -235,10 +235,10 @@ class Certificate
             $query .= ' )';
         }
         if (!isset($filter['id_user'])) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
             }
         }
 
@@ -316,10 +316,10 @@ class Certificate
             $query .= ' )';
         }
         if (!isset($filter['id_user'])) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'idUser');
+                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
             }
         }
 
@@ -710,7 +710,7 @@ class Certificate
 
     public function updateCertificateCourseAssign($id_course, $list_of_assign, $list_of_assign_ex, $point_required, $minutes_required)
     {
-        $course = new DoceboCourse($id_course);
+        $course = new FormaCourse($id_course);
 
         $query = 'DELETE FROM %lms_certificate_course WHERE id_course = ' . $id_course;
 

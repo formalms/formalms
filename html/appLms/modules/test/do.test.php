@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -24,7 +24,7 @@ function retriveTrack($id_reference, $id_test, $id_user, $do_not_create = false)
         return importVar('idTrack', true, 0);
     }
     if ($id_reference !== false) {
-        if (Track_Test::isTrack(Docebo::user()->getIdst(), $id_test, $id_reference)) {
+        if (Track_Test::isTrack(Forma::user()->getIdst(), $id_test, $id_reference)) {
             // Load existing info track
             $track_info = Track_Test::getTrackInfo($id_user, $id_test, $id_reference);
             $id_track = $track_info['idTrack'];
@@ -67,12 +67,12 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     require_once _lms_ . '/lib/lib.test.php';
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $test_type = $object_test->getObjectType();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_test->back_url));
-    $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
+    $id_track = retriveTrack($id_reference, $id_test, Forma::user()->getIdst());
 
     if ($id_track === false) {
         $GLOBALS['page']->add(getErrorUi($lang->def('_TEST_TRACK_FAILURE')
@@ -82,13 +82,13 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     $track_info = Track_Test::getTrackInfoById($id_track);
 
     $test_man = new TestManagement($id_test);
-    $play_man = new PlayTestManagement($id_test, Docebo::user()->getIdst(), $id_track, $test_man);
+    $play_man = new PlayTestManagement($id_test, Forma::user()->getIdst(), $id_track, $test_man);
     $test_info = $test_man->getTestAllInfo();
 
     $prerequisite = $test_man->getPrerequisite();
 
     $group_test_man = new GroupTestManagement();
-    $tests_score = &$group_test_man->getTestsScores([$id_test], [Docebo::user()->getIdst()]);
+    $tests_score = &$group_test_man->getTestsScores([$id_test], [Forma::user()->getIdst()]);
 
     if ($test_info['time_dependent'] && $test_info['time_assigned']) {
         $minute_assigned = (int) ($test_info['time_assigned'] / 60);
@@ -180,8 +180,8 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
             . '<br />', 'content');
     }
 
-    if ($tests_score[$id_test][Docebo::user()->getIdst()]['comment'] !== '') {
-        $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_COMMENTS') . ' : </span>' . $tests_score[$id_test][Docebo::user()->getIdst()]['comment'] . '<br /><br />', 'content');
+    if ($tests_score[$id_test][Forma::user()->getIdst()]['comment'] !== '') {
+        $GLOBALS['page']->add('<span class="text_bold">' . $lang->def('_COMMENTS') . ' : </span>' . $tests_score[$id_test][Forma::user()->getIdst()]['comment'] . '<br /><br />', 'content');
     }
 
     // Actions
@@ -373,10 +373,10 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
                 $event = [
                     'object_test' => $object_test,
-                    'idst' => Docebo::user ()->getIdst (),
-                    'acl' => Docebo::user ()->getAclManager (),
+                    'idst' => Forma::user ()->getIdst (),
+                    'acl' => Forma::user ()->getAclManager (),
                     'lang' => $lang,
-                    'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
+                    'test_score' => $tests_score[ $id_test ][ Forma::user ()->getIdst () ][ 'comment' ],
                     'date' => date ('Y-m-d H:i:s')
                 ];
                 Events::trigger('lms.test.complete', $event);
@@ -396,10 +396,10 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
 
                 $event = [
                     'object_test' => $object_test,
-                    'idst' => Docebo::user ()->getIdst (),
-                    'acl' => Docebo::user ()->getAclManager (),
+                    'idst' => Forma::user ()->getIdst (),
+                    'acl' => Forma::user ()->getAclManager (),
                     'lang' => $lang,
-                    'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
+                    'test_score' => $tests_score[ $id_test ][ Forma::user ()->getIdst () ][ 'comment' ],
                     'date' => date ('Y-m-d H:i:s')
                 ];
                 Events::trigger('lms.test.complete', $event);  }
@@ -481,17 +481,17 @@ function playTestDispatch($object_test, $id_param)
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.test.php';
 
-    $lang = DoceboLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_test->back_url));
-    $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
+    $id_track = retriveTrack($id_reference, $id_test, Forma::user()->getIdst());
 
     $event = ['object_test' => $object_test , 
                 'id_param' => $id_param , 
                 'id_test' => $id_test , 
                 'id_track' => $id_track,
-                'idst' => Docebo::user()->getIdst()];
+                'idst' => Forma::user()->getIdst()];
 
 
     $event['action'] = 'action_play';
@@ -515,7 +515,7 @@ function playTestDispatch($object_test, $id_param)
     } elseif (isset($_POST['restart'])) {
         //delete existing track and begin the test
         $test_man = new TestManagement($id_test);
-        $play_man = new PlayTestManagement($id_test, Docebo::user()->getIdst(), $id_track, $test_man);
+        $play_man = new PlayTestManagement($id_test, Forma::user()->getIdst(), $id_track, $test_man);
         $score_status = $play_man->getScoreStatus();
 
         $max_attempt = $test_man->getTestInfo('max_attempt');
@@ -572,18 +572,18 @@ function play($object_test, $id_param)
         $session->save();
     }
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_test->back_url));
-    $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
+    $id_track = retriveTrack($id_reference, $id_test, Forma::user()->getIdst());
 
     if ($id_track === false) {
         $GLOBALS['page']->add(getErrorUi($lang->def('_TEST_TRACK_FAILURE')
             . getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK'))), 'content');
     }
     $test_man = new TestManagement($id_test);
-    $play_man = new PlayTestManagement($id_test, Docebo::user()->getIdst(), $id_track, $test_man);
+    $play_man = new PlayTestManagement($id_test, Forma::user()->getIdst(), $id_track, $test_man);
     $test_info = $test_man->getTestAllInfo();
     $track_info = $play_man->getTrackAllInfo();
 
@@ -1037,18 +1037,18 @@ function saveAndExit($object_test, $id_param)
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/lib/lib.test.php';
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_test->back_url));
-    $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
+    $id_track = retriveTrack($id_reference, $id_test, Forma::user()->getIdst());
 
     if ($id_track === false) {
         $GLOBALS['page']->add(getErrorUi($lang->def('_TEST_TRACK_FAILURE')
             . getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK'))), 'content');
     }
     $test_man = new TestManagement($id_test);
-    $play_man = new PlayTestManagement($id_test, Docebo::user()->getIdst(), $id_track, $test_man);
+    $play_man = new PlayTestManagement($id_test, Forma::user()->getIdst(), $id_track, $test_man);
     $test_info = $test_man->getTestAllInfo();
     $track_info = $play_man->getTrackAllInfo();
 
@@ -1138,11 +1138,11 @@ function showResult($object_test, $id_param)
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_test->back_url));
-    $id_track = retriveTrack($id_reference, $id_test, Docebo::user()->getIdst());
+    $id_track = retriveTrack($id_reference, $id_test, Forma::user()->getIdst());
     $trackObj = new Track_Test($id_track);
 
     if ($id_track === false) {
@@ -1150,7 +1150,7 @@ function showResult($object_test, $id_param)
             . getBackUi(Util::str_replace_once('&', '&amp;', $object_test->back_url), $lang->def('_BACK'))), 'content');
     }
     $test_man = new TestManagement($id_test);
-    $play_man = new PlayTestManagement($id_test, Docebo::user()->getIdst(), $id_track, $test_man);
+    $play_man = new PlayTestManagement($id_test, Forma::user()->getIdst(), $id_track, $test_man);
     $test_info = $test_man->getTestAllInfo();
     $track_info = $play_man->getTrackAllInfo();
 
@@ -1306,10 +1306,10 @@ function showResult($object_test, $id_param)
     if ($next_status != 'failed') {
         $event = [
             'object_test' => $object_test,
-            'idst' => Docebo::user ()->getIdst (),
-            'acl' => Docebo::user ()->getAclManager (),
+            'idst' => Forma::user ()->getIdst (),
+            'acl' => Forma::user ()->getAclManager (),
             'lang' => $lang,
-            'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
+            'test_score' => $tests_score[ $id_test ][ Forma::user ()->getIdst () ][ 'comment' ],
             'date' => date ('Y-m-d H:i:s')
         ];
         Events::trigger('lms.test.complete', $event);  }
@@ -1320,7 +1320,7 @@ function showResult($object_test, $id_param)
         $save_score = $point_do; //round(round($point_do / $max_score, 2) * 100, 2);
     }
 
-    $track_info = Track_Test::getTrackInfo(Docebo::user()->getIdst(), $id_test, $id_reference);
+    $track_info = Track_Test::getTrackInfo(Forma::user()->getIdst(), $id_test, $id_reference);
     if ($score_status == 'valid' || $score_status == 'not_checked' || $score_status == 'passed' || $score_status == 'not_passed') {
         $new_info['date_end_attempt'] = $now;
         $new_info['number_of_save'] = $track_info['number_of_save'] + 1;
@@ -1340,10 +1340,10 @@ function showResult($object_test, $id_param)
 
             $event = [
                 'object_test' => $object_test,
-                'idst' => Docebo::user ()->getIdst (),
-                'acl' => Docebo::user ()->getAclManager (),
+                'idst' => Forma::user ()->getIdst (),
+                'acl' => Forma::user ()->getAclManager (),
                 'lang' => $lang,
-                'test_score' => $tests_score[ $id_test ][ Docebo::user ()->getIdst () ][ 'comment' ],
+                'test_score' => $tests_score[ $id_test ][ Forma::user ()->getIdst () ][ 'comment' ],
                 'date' => date ('Y-m-d H:i:s')
             ];
             Events::trigger('lms.test.complete', $event);
@@ -1361,33 +1361,33 @@ function showResult($object_test, $id_param)
 
             if ($suspend_info['attempts_for_suspension'] >= $test_info['suspension_num_attempts']) {
                 if ($prerequisite = $test_man->getPrerequisite()) {
-                    $sql = "DELETE FROM %lms_materials_track WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
+                    $sql = "DELETE FROM %lms_materials_track WHERE idReference IN ($prerequisite) AND idUser = " . Forma::user()->getIdst();
                     $q = sql_query($sql);
 
                     Events::trigger('lms.lo_user.deleting', [
                         'ids_reference' => $prerequisite,
-                        'id_user' => Docebo::user()->getIdst(),
+                        'id_user' => Forma::user()->getIdst(),
                         'environment' => 'course_lo',
                     ]);
 
-                    $sql = "DELETE FROM %lms_commontrack WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
+                    $sql = "DELETE FROM %lms_commontrack WHERE idReference IN ($prerequisite) AND idUser = " . Forma::user()->getIdst();
                     $q = sql_query($sql);
 
                     Events::trigger('lms.lo_user.deleted', [
                         'ids_reference' => $prerequisite,
-                        'id_user' => Docebo::user()->getIdst(),
+                        'id_user' => Forma::user()->getIdst(),
                         'environment' => 'course_lo',
                     ]);
 
-                    $sql = "SELECT idscorm_tracking FROM %lms_scorm_tracking WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
+                    $sql = "SELECT idscorm_tracking FROM %lms_scorm_tracking WHERE idReference IN ($prerequisite) AND idUser = " . Forma::user()->getIdst();
                     $q = sql_query($sql);
 
                     while ($row = sql_fetch_row($q)) {
                         $idscorm_tracking = $row[0];
-                        $sql = "DELETE FROM %lms_scorm_tracking WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Docebo::user()->getIdst();
+                        $sql = "DELETE FROM %lms_scorm_tracking WHERE idscorm_tracking = $idscorm_tracking AND idUser = " . Forma::user()->getIdst();
                         $q = sql_query($sql);
                     }
-                    $sql = "DELETE FROM %lms_scorm_items_track WHERE idReference IN ($prerequisite) AND idUser = " . Docebo::user()->getIdst();
+                    $sql = "DELETE FROM %lms_scorm_items_track WHERE idReference IN ($prerequisite) AND idUser = " . Forma::user()->getIdst();
                     $q = sql_query($sql);
                 }
                 $suspend_info['attempts_for_suspension'] = 0;
@@ -1453,7 +1453,7 @@ function showResult($object_test, $id_param)
             
              AND idQuest IN (
              SELECT idQuest FROM learning_testtrack_answer AS a , learning_testtrack   AS b
-             WHERE a.idTrack = b.idTrack AND idUser = ' . Docebo::user()->getIdst() . ' )
+             WHERE a.idTrack = b.idTrack AND idUser = ' . Forma::user()->getIdst() . ' )
               GROUP BY c.idCategory 
             ORDER BY c.name';
 
@@ -1503,7 +1503,7 @@ function showResult($object_test, $id_param)
             $eventResult = Events::trigger('lms.test.completed.category.showing',
                [
                    'objectTest' => $object_test,
-                   'user' => Docebo::user(),
+                   'user' => Forma::user(),
                    'scoreCategoryData' => $categoryScoreData,
                    'scoreCategoryTable' => $categorytable,
                ]);
@@ -1543,7 +1543,7 @@ function showResult($object_test, $id_param)
 
     if ($chart_options->use_charts && $chart_options->show_chart == 'course') {
         cout('<div class="align-center">', 'content');
-        $chart = new Test_Charts($test_info['idTest'], Docebo::user()->getIdSt());
+        $chart = new Test_Charts($test_info['idTest'], Forma::user()->getIdSt());
         $chart->render($chart_options->selected_chart, true);
         cout('</div><br /><br />', 'content');
     }
@@ -1606,7 +1606,7 @@ function showResult($object_test, $id_param)
 
 function review($object_test, $id_param)
 {
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     require_once _lms_ . '/lib/lib.param.php';
     require_once _lms_ . '/class.module/track.test.php';
@@ -1617,7 +1617,7 @@ function review($object_test, $id_param)
     $idReference = getLOParam($id_param, 'idReference');
 
     $test_man = new TestManagement($idTest);
-    $play_man = new PlayTestManagement($idTest, Docebo::user()->getIdst(), $idTrack, $test_man);
+    $play_man = new PlayTestManagement($idTest, Forma::user()->getIdst(), $idTrack, $test_man);
     $test_info = $test_man->getTestAllInfo();
     $score_status = $play_man->getScoreStatus();
 
@@ -1718,7 +1718,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
     if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) {
         exit("You can't access");
     }
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     if ($id_param !== false) {
         require_once _lms_ . '/lib/lib.param.php';
@@ -1753,7 +1753,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
     require_once _lms_ . '/lib/lib.test.php';
 
     $test_man = new TestManagement($idTest);
-    $play_man = new PlayTestManagement($idTest, Docebo::user()->getIdst(), $idTrack, $test_man);
+    $play_man = new PlayTestManagement($idTest, Forma::user()->getIdst(), $idTrack, $test_man);
     $test_info = $test_man->getTestAllInfo();
     $score_status = $play_man->getScoreStatus();
 
@@ -1971,7 +1971,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
 
 function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edit_new_score = true)
 {
-    $lang = &DoceboLanguage::createInstance('test');
+    $lang = &FormaLanguage::createInstance('test');
 
     //test info---------------------------------------------------------
     list($title , $mod_doanswer , $point_type , $point_required , $question_random_number ,

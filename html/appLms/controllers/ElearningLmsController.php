@@ -67,11 +67,11 @@ class ElearningLmsController extends LmsController
 
     public function fieldsTask()
     {
-        $level = Docebo::user()->getUserLevelId();
+        $level = Forma::user()->getUserLevelId();
         if (FormaLms\lib\Get::sett('request_mandatory_fields_compilation', 'on') === 'on' && $level !== ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.field.php';
             $fl = new FieldList();
-            $idst_user = Docebo::user()->getIdSt();
+            $idst_user = Forma::user()->getIdSt();
             $res = $fl->storeFieldsForUser($idst_user);
         }
         Util::jump_to('index.php?r=elearning/show');
@@ -88,10 +88,10 @@ class ElearningLmsController extends LmsController
             ];
 
             $params_t = [
-                ':id_user' => (int) Docebo::user()->getId(),
+                ':id_user' => (int) Forma::user()->getId(),
             ];
 
-            $cp_courses = $model->getUserCoursePathCourses(Docebo::user()->getIdst());
+            $cp_courses = $model->getUserCoursePathCourses(Forma::user()->getIdst());
             if (!empty($cp_courses)) {
                 $conditions_t[] = 'cu.idCourse NOT IN (' . implode(',', $cp_courses) . ')';
             }
@@ -117,7 +117,7 @@ class ElearningLmsController extends LmsController
         if ($tb_label) {
             require_once _lms_ . '/admin/models/LabelAlms.php';
             $label_model = new LabelAlms();
-            $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
+            $user_label = $label_model->getLabelForUser(Forma::user()->getId());
             $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);
         } else {
             $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label]);
@@ -158,7 +158,7 @@ class ElearningLmsController extends LmsController
         ];
 
         $params = [
-            ':id_user' => (int) Docebo::user()->getId(),
+            ':id_user' => (int) Forma::user()->getId(),
         ];
 
         if (!empty($filter_text)) {
@@ -249,7 +249,7 @@ class ElearningLmsController extends LmsController
     {
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
-        $user_label = $label_model->getLabelForUser(Docebo::user()->getId());
+        $user_label = $label_model->getLabelForUser(Forma::user()->getId());
         $ret = '';
         foreach ($user_label as $id_common_label => $label_info) {
             $url = 'index.php?r=elearning/show&amp;id_common_label=' . $id_common_label;
@@ -275,14 +275,14 @@ class ElearningLmsController extends LmsController
      */
     public function suggested()
     {
-        $competence_needed = Docebo::user()->requiredCompetences();
+        $competence_needed = Forma::user()->requiredCompetences();
 
         $model = new ElearningLms();
         $courselist = $model->findAll([
             'cu.iduser = :id_user',
             'comp.id_competence IN (:competence_list)',
         ], [
-            ':id_user' => Docebo::user()->getId(),
+            ':id_user' => Forma::user()->getId(),
             ':competence_list' => $competence_needed,
         ], ['LEFT JOIN %lms_competence AS comp ON ( .... ) ']);
 
@@ -298,7 +298,7 @@ class ElearningLmsController extends LmsController
      */
     public function self_unsubscribe()
     {
-        $id_user = Docebo::user()->idst; //FormaLms\lib\Get::req('id_user', DOTY_INT, Docebo::user()->idst);
+        $id_user = Forma::user()->idst; //FormaLms\lib\Get::req('id_user', DOTY_INT, Forma::user()->idst);
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
         $id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);

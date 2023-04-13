@@ -76,8 +76,8 @@ class Module_Storage extends LmsModule
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = DoceboLanguage::createInstance('manmenu');
-        $lang_perm = DoceboLanguage::createInstance('permission');
+        $lang = FormaLanguage::createInstance('manmenu');
+        $lang_perm = FormaLanguage::createInstance('permission');
 
         $tokens = $this->getAllToken();
         $levels = CourseLevel::getTranslatedLevels();

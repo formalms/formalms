@@ -24,7 +24,7 @@ class AdminrulesAdm extends Model
     {
         require_once _base_ . '/lib/lib.preference.php';
         $this->preference = new AdminPreference();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         $this->rules_path = '/framework/adminrules/';
         $this->rules_cache = null;
         parent::__construct();

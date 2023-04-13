@@ -129,7 +129,7 @@ class AssessmentList
             if ($id_course == false) {
                 return false;
             }
-            $level_idst = &DoceboCourse::createCourseLevel($id_course);
+            $level_idst = &FormaCourse::createCourseLevel($id_course);
             if ($level_idst == false) {
                 return false;
             }
@@ -159,7 +159,7 @@ class AssessmentList
             //after creating the assessment course, create directly the test LO
             if ($re) {
                 $query = 'INSERT INTO %lms_test ( author, title, description ) VALUES '
-                    . "( '" . Docebo::user()->getIdSt() . "', '" . $assessment_data['name'] . "', '' )";
+                    . "( '" . Forma::user()->getIdSt() . "', '" . $assessment_data['name'] . "', '' )";
                 if (!sql_query($query)) {
                     //...
                     return false;
@@ -307,8 +307,8 @@ class AssessmentList
     {
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/admin/models/SubscriptionAlms.php';
-        $docebo_course = new DoceboCourse($id_assessment);
-        $acl_man = Docebo::user()->getAclManager();
+        $docebo_course = new FormaCourse($id_assessment);
+        $acl_man = Forma::user()->getAclManager();
         $subsciption_model = new SubscriptionAlms($id_assessment, 0, 0);
 
         $level_idst = $docebo_course->getCourseLevel($id_assessment);

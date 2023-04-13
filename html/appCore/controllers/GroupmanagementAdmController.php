@@ -117,7 +117,7 @@ class GroupmanagementAdmController extends AdmController
 
         //format models' data
         $records = [];
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_groupid = $acl_man->relativeId($record->groupid);
@@ -263,7 +263,7 @@ class GroupmanagementAdmController extends AdmController
         }
 
         if ($id > 0) {
-            $acl = Docebo::user()->getAclManager();
+            $acl = Forma::user()->getAclManager();
             $selector = new UserSelector();
 
             $cancel = FormaLms\lib\Get::req('cancelselector', DOTY_MIXED, false);
@@ -299,7 +299,7 @@ class GroupmanagementAdmController extends AdmController
                 );
                 $sel_title = [
                     'index.php?r=adm/groupmanagement/show' => Lang::t('_GROUPS', 'admin_directory'),
-                    'index.php?r=adm/groupmanagement/show_users&amp;id=' . $id => Lang::t('_ASSIGN_USERS', 'admin_directory') . ': ' . Docebo::aclm()->relativeId($group->groupid),
+                    'index.php?r=adm/groupmanagement/show_users&amp;id=' . $id => Lang::t('_ASSIGN_USERS', 'admin_directory') . ': ' . Forma::aclm()->relativeId($group->groupid),
                     Lang::t('_ADD', 'admin_directory'),
                 ];
                 $selector->loadSelector(Util::str_replace_once('&', '&amp;', $jump_url),
@@ -315,7 +315,7 @@ class GroupmanagementAdmController extends AdmController
     {
         require_once _base_ . '/lib/lib.form.php';
         $group_types = $this->model->getGroupTypes(true);
-        $acl = Docebo::user()->getAclManager();
+        $acl = Forma::user()->getAclManager();
         if ($idst > 0) {
             $group_info = $this->model->getGroupInfo($idst);
             $action = 'ajax.adm_server.php?r=adm/groupmanagement/moddata&id=' . $idst;
@@ -411,7 +411,7 @@ class GroupmanagementAdmController extends AdmController
         $output = ['groups' => []];
         if ($query != '') {
             $groups = $this->model->searchGroupsByGroupid($query, $results, true);
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             foreach ($groups as $group) {
                 $_groupid = $acl_man->relativeId($group->groupid);
                 $output['groups'][] = [
@@ -497,7 +497,7 @@ class GroupmanagementAdmController extends AdmController
         $group = $this->model->getGroupInfo($id_group, true);
         $this->render('show_users', [
             'id_group' => $id_group,
-            'groupid' => Docebo::aclm()->relativeId($group->groupid),
+            'groupid' => Forma::aclm()->relativeId($group->groupid),
             'filter_text' => '',
             'result_message' => $message,
             'permissions' => $this->permissions,
@@ -543,7 +543,7 @@ class GroupmanagementAdmController extends AdmController
         $list = $this->model->getGroupUsersList($id_group, $pagination, $searchFilter);
 
         //prepare the data for sending
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
             foreach ($list as $idst => $record) {

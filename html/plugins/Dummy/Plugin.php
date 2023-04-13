@@ -19,7 +19,7 @@ class Plugin extends \FormaPlugin
 {
     public static function install()
     {
-        $acl_manager = \Docebo::user()->getAclManager();
+        $acl_manager = \Forma::user()->getAclManager();
 
         $permission_godadmin = [$acl_manager->getGroupST(ADMIN_GROUP_GODADMIN)];
         $permission_org_chart_root = [$acl_manager->getGroupST('/oc_0')];

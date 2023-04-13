@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @version  $Id:$
  */
-class DoceboCalEvent_core
+class FormaCalEvent_core
 {
     public $id;
 
@@ -76,7 +76,7 @@ class DoceboCalEvent_core
 
         $this->_owner = importVar('_owner');
         if (!$this->_owner) {
-            $this->_owner == Docebo::user()->getIdSt();
+            $this->_owner == Forma::user()->getIdSt();
         }
 
         $this->category = importVar('category');

@@ -31,7 +31,7 @@ StdPageWriter::createInstance();
 
 // Popup content
 
-$lang = &DoceboLanguage::createInstance('popup_' . POPUP_MOD_NAME, 'framework');
+$lang = &FormaLanguage::createInstance('popup_' . POPUP_MOD_NAME, 'framework');
 $GLOBALS['page']->setWorkingZone('content');
 
 $GLOBALS['page']->add(

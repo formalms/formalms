@@ -32,8 +32,8 @@ class DateManager
     {
         require_once _lms_ . '/lib/lib.subscribe.php';
 
-        $this->lang = DoceboLanguage::CreateInstance('admin_date', 'lms');
-        $this->acl_man =  Docebo::user()->getAclManager();
+        $this->lang = FormaLanguage::CreateInstance('admin_date', 'lms');
+        $this->acl_man =  Forma::user()->getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
     }
 
@@ -124,10 +124,10 @@ class DateManager
             . ' FROM %lms_class_location as loc JOIN %lms_classroom AS cl '
             . ' ON (loc.location_id = cl.location_id) ';
 
-        if (Docebo::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $arr_locations = $adminManager->getAdminClasslocation(Docebo::user()->getIdst());
+            $arr_locations = $adminManager->getAdminClasslocation(Forma::user()->getIdst());
             if (!empty($arr_locations)) {
                 $query .= ' WHERE loc.location_id IN (' . implode(',', $arr_locations) . ') ';
             } else {
@@ -598,7 +598,7 @@ class DateManager
                 //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
                 require_once _lms_ . '/lib/lib.course.php';
 
-                $docebo_course = new DoceboCourse($id_course);
+                $docebo_course = new FormaCourse($id_course);
 
                 $course_man = new Man_Course();
 
@@ -760,10 +760,10 @@ class DateManager
             . ' JOIN %adm_user  AS u ON u.idst = ud.id_user'
             . ' WHERE ud.id_date = ' . $id_date;
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), ' ud.id_user');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), ' ud.id_user');
         }
 
         if (is_array($filter)) {
@@ -814,10 +814,10 @@ class DateManager
             . ' JOIN %adm_user  AS u ON u.idst = ud.id_user '
             . ' WHERE ud.id_date IN (' . implode(',', $arr_id_date) . ')';
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), ' ud.id_user');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), ' ud.id_user');
         }
 
         if (is_array($filter)) {
@@ -1009,11 +1009,11 @@ class DateManager
 
     public function getUserForPresence($id_date, $id_course = null)
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         $is_admin = false;
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && Docebo::user()->getUserLevelId() != ADMIN_GROUP_USER) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && Forma::user()->getUserLevelId() != ADMIN_GROUP_USER) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $is_admin = true;
@@ -1031,8 +1031,8 @@ class DateManager
             $query .= ' AND idCourse = ' . $id_course;
         }
 
-        if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
-            $query .= ($is_admin ? ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'd.id_user') : '');
+        if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
+            $query .= ($is_admin ? ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'd.id_user') : '');
         }
         $query .= ' ORDER BY u.lastname, u.firstname, u.userid';
 
@@ -1063,10 +1063,10 @@ class DateManager
         $query = 'SELECT *'
             . ' FROM %lms_course_date_presence WHERE id_date = ' . $id_date;
 
-        if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
+        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'id_user');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'id_user');
         }
 
         $result = sql_query($query);
@@ -1174,7 +1174,7 @@ class DateManager
 
     public function getUserDates($id_user)
     {
-        $acl_manager = Docebo::user()->getAclManager();
+        $acl_manager = Forma::user()->getAclManager();
 
         if ($id_user == $acl_manager->getAnonymousId()) {
             return [];
@@ -1300,7 +1300,7 @@ class DateManager
     public function getUserDateForCourse($id_user, $id_course)
     {
         $res = [];
-        $aclManager = Docebo::user()->getAclManager();
+        $aclManager = Forma::user()->getAclManager();
 
         if ($id_user !== $aclManager->getAnonymousId()) {
             $query = 'SELECT id_date  FROM %lms_course_date_user   WHERE id_user = ' . $id_user
@@ -1546,20 +1546,20 @@ class DateManager
         $res = [];
 
         while (list($id_date, $code, $name, $status, $date_begin, $date_end, $num_day, $user_subscribed, $unsubscribe_date_limit) = sql_fetch_row($result)) {
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
                 $query = 'SELECT COUNT(*)'
                     . ' FROM %lms_course_date_user '
                     . " WHERE id_date = '" . $id_date . "'"
-                    . ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'id_user');
+                    . ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'id_user');
 
                 list($user_subscribed) = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
                     . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
                     . ' WHERE cd.id_date = ' . (int) $id_date . ' AND cu.level = 3'
-                    . ' AND ' . $adminManager->getAdminUsersQuery(Docebo::user()->getIdSt(), 'cdu.id_user');
+                    . ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'cdu.id_user');
 
                 list($num_student) = sql_fetch_row(sql_query($query));
             } else {
@@ -1831,7 +1831,7 @@ class DateManager
             $subscribe_man->updateForNewDateSubscribe($id_user, $id_course, $waiting);
         }
 
-        return $this->addUserToDate($id_date, $id_user, Docebo::user()->getIdst(), $is_overbooking);
+        return $this->addUserToDate($id_date, $id_user, Forma::user()->getIdst(), $is_overbooking);
     }
 
     public function delUserFromDate($id_user, $id_course, $id_date)
@@ -1845,7 +1845,7 @@ class DateManager
             $level = $this->subscribe_man->getUserLeveInCourse($id_user, $id_course);
             $subscribe_man->delUserFromCourse($id_user, $id_course, null,$id_date);
 
-            $docebo_course = new DoceboCourse($id_course);
+            $docebo_course = new FormaCourse($id_course);
             $level_idst = &$docebo_course->getCourseLevel($id_course);
             $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 

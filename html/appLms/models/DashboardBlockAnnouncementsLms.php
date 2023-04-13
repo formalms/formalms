@@ -78,10 +78,10 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
     private function findEnrolledCourses()
     {
         // exclude course belonging to pathcourse in which the user is enrolled as a student
-        $learning_path_enroll = $this->getUserCoursePathCourses(Docebo::user()->getId());
+        $learning_path_enroll = $this->getUserCoursePathCourses(Forma::user()->getId());
         $exclude_pathcourse = '';
         if (count($learning_path_enroll) > 1 && FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
-            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Docebo::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
+            $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . Forma::user()->getId() . ' and level <= 3 and idCourse in (' . implode(',', $learning_path_enroll) . ')';
             $rs = $this->db->query($exclude_path_course);
             foreach ($rs as $data) {
                 $excl[] = $data['idCourse'];
@@ -92,7 +92,7 @@ class DashboardBlockAnnouncementsLms extends DashboardBlockLms
         $query = 'SELECT c.idCourse'
             . ' FROM %lms_course AS c '
             . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse)  '
-            . ' WHERE cu.iduser = ' . Docebo::user()->getId() . ' '
+            . ' WHERE cu.iduser = ' . Forma::user()->getId() . ' '
             . $exclude_pathcourse
             . ' ORDER BY c.idCourse';
 

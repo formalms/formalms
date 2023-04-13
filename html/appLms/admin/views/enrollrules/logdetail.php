@@ -19,7 +19,7 @@ $tb->addHead(
 
 foreach ($data as $obj) {
     $row = [
-        Docebo::aclm()->relativeId($obj->userid),
+        Forma::aclm()->relativeId($obj->userid),
         $obj->lastname,
         $obj->firstname,
         $obj->code,

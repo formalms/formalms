@@ -324,7 +324,7 @@
                             <li><?php echo Lang::t('_SUSPENDED', 'dashboard') . ': <b>' . $user_stats['suspended'] . '</b>;'; ?></li>
                             <?php echo $can_approve ? '<li>' . Lang::t('_WAITING_USERS', 'dashboard') . ': <b>' . $user_stats['waiting'] . '</b>;</li>' : ''; ?>
                             <li><?php echo Lang::t('_REG_LASTSEVENDAYS', 'dashboard') . ':<b>' . $user_stats['register_7d'] . '</b>;'; ?></li>
-                            <?php if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { ?>
+                            <?php if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { ?>
                                 <li><?php echo Lang::t('_INACTIVE_USER', 'dashboard') . ': <b>' . $user_stats['inactive_30d'] . '</b>;'; ?></li>
                                 <li><?php echo Lang::t('_ONLINE_USER', 'dashboard') . ': <b>' . $user_stats['now_online'] . '</b>;'; ?></li>
                             <?php } ?>
@@ -332,7 +332,7 @@
                     </div>
                     <div class="yui-u">
                         <ul class="link_list">
-                            <?php if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { ?>
+                            <?php if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { ?>
                                 <li><?php echo Lang::t('_SUPERADMIN_USER', 'dashboard') . ': <b>' . $user_stats['superadmin'] . '</b>;'; ?></li>
                                 <li><?php echo Lang::t('_ADMIN_USER', 'dashboard') . ': <b>' . $user_stats['admin'] . '</b>;'; ?></li>
                             <?php } else { ?>

@@ -31,7 +31,7 @@ class EditionAlms extends Model
 
         $this->course_man = new Man_Course();
 
-        $this->acl_man = &Docebo::user()->getAclManager();
+        $this->acl_man = &Forma::user()->getAclManager();
 
         $this->id_course = $id_course;
         $this->id_edition = $id_edition;

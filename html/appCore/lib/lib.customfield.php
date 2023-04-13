@@ -404,7 +404,7 @@ class CustomFieldList
      */
     public function getFieldsAndValueFromUser($id_user, $manual_id_field = false, $show_invisible_to_user = false, $filter_category = false)
     {
-        $acl = new DoceboACL();
+        $acl = new FormaACL();
         if ($manual_id_field === false) {
             $user_groups = $acl->getUserGroupsST($id_user);
         }
@@ -787,7 +787,7 @@ class CustomFieldList
      **/
     public function showAllFieldForUser($idst_user, $arr_field = false)
     {
-        $acl = &Docebo::user()->getACL();
+        $acl = &Forma::user()->getACL();
         $arr_idst = $acl->getUserGroupsST($idst_user);
 
         $acl_man = &$acl->getAclManager();
@@ -1015,7 +1015,7 @@ class CustomFieldList
      **/
     public function playFields($idst_obj = -1, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false, $separate_output = false, $check_precompiled = false)
     {
-        $acl = Docebo::user()->getACL();
+        $acl = Forma::user()->getACL();
 
         $query = "SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class, 'false' as mandatory"
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1071,7 +1071,7 @@ class CustomFieldList
      **/
     public function playFieldsFlat($idst_obj = -1)
     {
-        $acl = Docebo::user()->getACL();
+        $acl = Forma::user()->getACL();
         $check_precompiled = 0;
         $query = 'SELECT ft.id_field, ft.code, ft.type_field, tft.type_file, tft.type_class, flt.translation as name'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1125,7 +1125,7 @@ class CustomFieldList
      **/
     public function hiddenFieldForUserArr($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false)
     {
-        $acl = Docebo::user()->getACL();
+        $acl = Forma::user()->getACL();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
@@ -1193,7 +1193,7 @@ class CustomFieldList
      **/
     public function isFilledFieldsForUser($idst_user, $arr_idst = false)
     {
-        $acl = Docebo::user()->getACL();
+        $acl = Forma::user()->getACL();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
@@ -1327,7 +1327,7 @@ class CustomFieldList
     {
         //return is_numeric($idst_user) && (int)$idst_user > 0 ? $this->storeDirectFieldsForUsers((int)$idst_user, $arr_fields, $is_id, $int_userid) : FALSE;
 
-        $acl = Docebo::user()->getACL();
+        $acl = Forma::user()->getACL();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1382,7 +1382,7 @@ class CustomFieldList
             return true;
         }
 
-        $acl = Docebo::user()->getACL();
+        $acl = Forma::user()->getACL();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1424,7 +1424,7 @@ class CustomFieldList
      **/
     public function playSpecFields($arr_field, $custom_mandatory = false, $user_id = false)
     {
-        $acl = Docebo::user()->getACL();
+        $acl = Forma::user()->getACL();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1679,7 +1679,7 @@ class CustomFieldList
         if ($arr_field !== false) {
             $to_remove = &$arr_field;
         } elseif ($id_group !== false) {
-            $acl = &Docebo::user()->getACL();
+            $acl = &Forma::user()->getACL();
             $allgroup_idst = $acl->getUserGroupsST($idst_user);
             // Leave the passed group
             $inc_group = array_search($id_group, $allgroup_idst);
@@ -1909,8 +1909,8 @@ class CustomFieldList
     //----------------------------------------------------------------------------
     public function checkUserMandatoryFields($id_user = false, $only_accessible = false)
     {
-        $id_user = $id_user ? (int) $id_user : Docebo::user()->getIdSt();
-        $acl = new DoceboACL();
+        $id_user = $id_user ? (int) $id_user : Forma::user()->getIdSt();
+        $acl = new FormaACL();
         $user_groups = $acl->getUserGroupsST($id_user);
         $output = true;
 
@@ -1949,7 +1949,7 @@ class CustomFieldList
 
     public function getUserMandatoryFields($id_user)
     {
-        $acl = new DoceboACL();
+        $acl = new FormaACL();
         $user_groups = $acl->getUserGroupsST($id_user);
         $output = [];
 

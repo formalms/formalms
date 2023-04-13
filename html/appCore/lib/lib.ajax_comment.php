@@ -70,7 +70,7 @@ class AjaxComment
         if (!isset($GLOBALS['current_user'])) {
             $this->reply_status = false;
         } else {
-            $this->reply_status = !Docebo::user()->isAnonymous();
+            $this->reply_status = !Forma::user()->isAnonymous();
         }
     }
 
@@ -350,7 +350,7 @@ class AjaxCommentRender
         }
         reset($this->_data);
 
-        $this->_acl_man = Docebo::user()->getAclManager();
+        $this->_acl_man = Forma::user()->getAclManager();
         $this->_authors = $this->_acl_man->getUsers($users);
 
         $this->profile = new UserProfile(0);
@@ -382,7 +382,7 @@ class AjaxCommentRender
         if ($this->_with_reply) {
         }
 
-        if (Docebo::user()->getUserLevelId() == '/framework/level/godadmin') {
+        if (Forma::user()->getUserLevelId() == '/framework/level/godadmin') {
             $html .= '<p><a href="javascript:;" onclick="delComment(' . $comment_data[AJCOMM_ID] . ',' . $comment_data[AJCOMM_EXTKEY] . ')">'
                 . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . Lang::t('_DEL', 'standard', 'framework') . '" />'
                 . '</a></p>';

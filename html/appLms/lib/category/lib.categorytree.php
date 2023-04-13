@@ -104,8 +104,8 @@ class CourseCategoryTree extends ClientTree
      */
     public function get($domready = true, $tags = true, $global = false)
     {
-        $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
-        $lang = &DoceboLanguage::createInstance('treeview', 'framework');
+        $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
+        $lang = &FormaLanguage::createInstance('treeview', 'framework');
 
         if (!$this->root_name) {
             $this->root_name = $lang->def('_CATEGORY');
@@ -182,7 +182,7 @@ class CourseCategoryTree extends ClientTree
             }
         }
 
-        $acl = new DoceboACLManager();
+        $acl = new FormaACLManager();
         $groups = $acl->getGroupsIdByPaths($branches);
         $output = $acl->getAllUsersFromIdst($groups);
 

@@ -60,7 +60,7 @@ class Test_Charts
         $this->imagePath = $GLOBALS['where_files_relative'] . '/tmp/';
         $this->valid = true;
 
-        $this->lang = &DoceboLanguage::createInstance('test', 'lms');
+        $this->lang = &FormaLanguage::createInstance('test', 'lms');
         $this->_setTestInfo();
         $this->table = new TypeOne();
 

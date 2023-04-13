@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  */
 
-if (Docebo::user()->isAnonymous()) {
+if (Forma::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -63,7 +63,7 @@ switch ($op) {
             if ($session->has('levelCourse') && $session->get('levelCourse') > 3) {
                 $private = true;
             }
-            if (Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $private = true;
             }
         }

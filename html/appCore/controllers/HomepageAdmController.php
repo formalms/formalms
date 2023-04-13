@@ -25,7 +25,7 @@ class HomepageAdmController extends AdmController
 
     public function show()
     {
-        if (!Docebo::user()->isAnonymous()) {
+        if (!Forma::user()->isAnonymous()) {
             self::redirect();
         }
 
@@ -152,7 +152,7 @@ class HomepageAdmController extends AdmController
 
     public function register()
     {
-        if (!Docebo::user()->isAnonymous()) {
+        if (!Forma::user()->isAnonymous()) {
             self::redirect();
         }
         if (!$this->model->isSelfRegistrationActive()) {
@@ -192,7 +192,7 @@ class HomepageAdmController extends AdmController
 
     public function lostPwd()
     {
-        if (!Docebo::user()->isAnonymous()) {
+        if (!Forma::user()->isAnonymous()) {
             self::redirect();
         }
 
@@ -368,7 +368,7 @@ class HomepageAdmController extends AdmController
 
     public function signup()
     {
-        if (!Docebo::user()->isAnonymous()) {
+        if (!Forma::user()->isAnonymous()) {
             self::redirect();
         }
         if (!$this->model->isSelfRegistrationActive()) {
@@ -380,7 +380,7 @@ class HomepageAdmController extends AdmController
 
     public function login()
     {
-        if (!Docebo::user()->isAnonymous()) {
+        if (!Forma::user()->isAnonymous()) {
             self::redirect();
         }
 
@@ -423,7 +423,7 @@ class HomepageAdmController extends AdmController
     {
         $msg = FormaLms\lib\Get::req('msg', DOTY_MIXED, null);
 
-        if (Docebo::user()->isAnonymous()) {
+        if (Forma::user()->isAnonymous()) {
             self::redirect();
         }
 
@@ -490,7 +490,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        if (Docebo::user()->isLoggedIn() && $login_user != Docebo::user()->getACLManager()->relativeId(Docebo::user()->userid)) {
+        if (Forma::user()->isLoggedIn() && $login_user != Forma::user()->getACLManager()->relativeId(Forma::user()->userid)) {
             AuthenticationManager::logout();
             header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
@@ -510,7 +510,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user_manager = &Docebo::user()->getAclManager();
+        $user_manager = &Forma::user()->getAclManager();
 
         if (!$login_idst) {
             $username = '/' . $login_user;
@@ -530,7 +530,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user = new DoceboUser($username, 'public_area');
+        $user = new FormaUser($username, 'public_area');
         Lang::set($user->preference->getLanguage());
 
         $redirection = [];

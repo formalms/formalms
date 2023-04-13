@@ -50,7 +50,7 @@ class QuestBankMan
         $this->_table_quest = $GLOBALS['prefix_lms'] . '_testquest';
         ////require_once(_base_.'/lib/lib.preference.php');
         ////$userPreferencesDb = new UserPreferencesDb();
-        $this->user_language = Docebo::user()->getPreference('ui.language');
+        $this->user_language = Forma::user()->getPreference('ui.language');
     }
 
     public function getCategoryList($author = false)
@@ -349,7 +349,7 @@ class QuestBank_Selector
 
     public function __construct()
     {
-        $this->lang = &DoceboLanguage::createInstance('test', 'lms');
+        $this->lang = &FormaLanguage::createInstance('test', 'lms');
         $this->form = new Form();
         $this->qb_man = new QuestBankMan();
 

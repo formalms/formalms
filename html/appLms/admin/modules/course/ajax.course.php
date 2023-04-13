@@ -152,7 +152,7 @@ function duplicateCourse()
     {
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         // find all the group created for this menu custom for permission management
         foreach ($levels as $lv => $name_level) {
@@ -167,7 +167,7 @@ function duplicateCourse()
     require_once _lms_ . '/lib/lib.manmenu.php';
     require_once _lms_ . '/lib/lib.subscribe.php';
 
-    $docebo_course = new DoceboCourse($id_dupcourse);
+    $docebo_course = new FormaCourse($id_dupcourse);
     $subscribe_man = new CourseSubscribe_Manager();
 
     $group_idst = $docebo_course->createCourseLevel($new_course_dup);
@@ -178,7 +178,7 @@ function duplicateCourse()
     foreach ($levels as $lv => $name_level) {
         foreach ($perm_form[$lv] as $idrole => $v) {
             if ($group_idst[$lv] != 0 && $idrole != 0) {
-                $acl_man = &Docebo::user()->getAclManager();
+                $acl_man = &Forma::user()->getAclManager();
                 $acl_man->addToRole($idrole, $group_idst[$lv]);
             }
         }
@@ -390,12 +390,12 @@ switch ($op) {
 
         if ($filter != '') {
             $query_filter = '';
-            $userlevelid = Docebo::user()->getUserLevelId();
+            $userlevelid = Forma::user()->getUserLevelId();
             if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $acl_man = &Docebo::user()->getAclManager();
-                $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+                $acl_man = &Forma::user()->getAclManager();
+                $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
                 $query_filter .= ' AND idCourse IN (' . implode(',', $admin_courses['course']) . ') ';
             }
 

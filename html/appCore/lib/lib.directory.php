@@ -311,7 +311,7 @@ class PeopleListView extends ListView
         require_once _adm_ . '/lib/lib.field.php';
         $this->field_list = new FieldList();
         parent::__construct($title, $data, $rend, $id);
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
         $field_available = 0;
         for ($i = 0; $i < $this->nFields; ++$i) {
@@ -343,7 +343,7 @@ class PeopleListView extends ListView
         $this->mod_perm = checkPerm('edituser_org_chart', true, 'directory', 'framework');
         $this->del_perm = checkPerm('deluser_org_chart', true, 'directory', 'framework');
 
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
         $this->anonymous_idst = $acl_man->getAnonymousId();
 
         $this->_loadAdminIdst();
@@ -365,14 +365,14 @@ class PeopleListView extends ListView
             . ' name="' . DIRECTORY_ID . '[' . DIRECTORY_ID_PRINTEDITEM . ']"'
             . ' value="' . urlencode(Util::serialize($this->printedItems)) . '" />' . "\n";
         // save state of custom columns
-        Docebo::user()->preference->setPreference(
+        Forma::user()->preference->setPreference(
                         'ui.directory.custom_columns',
                         urlencode(Util::serialize($this->cFields)));
-        Docebo::user()->preference->setPreference(
+        Forma::user()->preference->setPreference(
                         'ui.directory.order_columns',
                         urlencode(Util::serialize($this->arr_fields_order)));
         // save state of filter
-        Docebo::user()->preference->setPreference(
+        Forma::user()->preference->setPreference(
                         'ui.directory.filters.current',
                         urlencode(Util::serialize($this->arr_fields_filter)));
 
@@ -394,7 +394,7 @@ class PeopleListView extends ListView
     public function _getCols()
     {
         require_once _base_ . '/lib/lib.form.php';
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
         $totCol = $this->data->getFieldCount();
         $colInfos = [];
@@ -637,9 +637,9 @@ class PeopleListView extends ListView
             }
         } else {
             // default initializations
-            $this->cFields = Util::unserialize(urldecode(Docebo::user()->preference->getPreference('ui.directory.custom_columns')));
-            $this->arr_fields_order = Util::unserialize(urldecode(Docebo::user()->preference->getPreference('ui.directory.order_columns')));
-            $this->arr_fields_filter = Util::unserialize(urldecode(Docebo::user()->preference->getPreference('ui.directory.filters.current')));
+            $this->cFields = Util::unserialize(urldecode(Forma::user()->preference->getPreference('ui.directory.custom_columns')));
+            $this->arr_fields_order = Util::unserialize(urldecode(Forma::user()->preference->getPreference('ui.directory.order_columns')));
+            $this->arr_fields_filter = Util::unserialize(urldecode(Forma::user()->preference->getPreference('ui.directory.filters.current')));
         }
 
         // remove anonymous ================================================
@@ -659,7 +659,7 @@ class PeopleListView extends ListView
                     : '');
 
                 if ($fvalue != false) {
-                    $acl_man = &Docebo::user()->getAclManager();
+                    $acl_man = &Forma::user()->getAclManager();
                     $members = $acl_man->getGroupAllUser($fvalue);
                     if ($members && !empty($members)) {
                         $this->data->addCustomFilter('', 'idst IN (' . implode(',', $members) . ') ');
@@ -750,7 +750,7 @@ class PeopleListView extends ListView
                 : '');
 
             if ($fvalue != false) {
-                $acl_man = &Docebo::user()->getAclManager();
+                $acl_man = &Forma::user()->getAclManager();
                 $members = $acl_man->getGroupAllUser($fvalue);
                 if ($members && !empty($members)) {
                     $this->data->addCustomFilter('', 'idst IN (' . implode(',', $members) . ') ');
@@ -826,7 +826,7 @@ class PeopleListView extends ListView
     {
         $this->admins_user = [];
 
-        $aclManager = &Docebo::user()->getAclManager();
+        $aclManager = &Forma::user()->getAclManager();
         $arr_levels_id = $aclManager->getAdminLevels();
 
         $arr_groups_godadmin = $aclManager->getGroupUMembers($arr_levels_id[ADMIN_GROUP_GODADMIN]);
@@ -884,7 +884,7 @@ class PeopleListView extends ListView
             }
         }
         if (!$this->selector_mode) { // Normal mode
-            $lev_current_user = Docebo::user()->getUserLevelId();
+            $lev_current_user = Forma::user()->getUserLevelId();
 
             if (($lev_current_user == ADMIN_GROUP_GODADMIN) || !isset($this->admins_user[$arrResult['idst']])) {
                 $arrResult['edit'] = '<a href="index.php?modname=directory&op=org_manageuser&id_user=' . $arrResult['idst'] . '&ap=mod_profile" '
@@ -961,7 +961,7 @@ class PeopleListView extends ListView
     {
         require_once _base_ . '/lib/lib.user_profile.php';
 
-        $lang = &DoceboLanguage::createInstance('profile', 'framework');
+        $lang = &FormaLanguage::createInstance('profile', 'framework');
 
         $profile = new UserProfile($id_user);
         $profile->init('profile', 'framework', 'modname=directory&op=org_manageuser&id_user=' . $id_user, 'ap');
@@ -1228,7 +1228,7 @@ class PeopleListView extends ListView
                 . $this->printState();
 
         //prepare delete confirm popups [id format: "usersmembersdirectory__listview_opdeleteitem__" ]
-        $lang = &DoceboLanguage::CreateInstance('standard');
+        $lang = &FormaLanguage::CreateInstance('standard');
         require_once _base_ . '/lib/lib.dialog.php';
         setupFormDialogBox(
             'directory_org_chart',
@@ -1441,7 +1441,7 @@ class GroupListView extends ListView
 
     public function __construct($title, &$data, &$rend, $id)
     {
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
         parent::__construct($title, $data, $rend, $id);
 
         $this->mod_perm = checkPerm('editgroup', true, 'directory', 'framework');
@@ -1451,7 +1451,7 @@ class GroupListView extends ListView
 
     public function _getCols()
     {
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
         $totCol = $this->data->getFieldCount();
         $colInfos = [];
         if (($this->selector_mode) && (!$this->use_multi_sel)) {
@@ -1650,7 +1650,7 @@ class GroupListView extends ListView
             $arrResult['groupid'] = substr($arrResult['groupid'], strrpos($arrResult['groupid'], '/') + 1);
         }
 
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
 
         if (($arrResult['type'] == 'moderate') || ($arrResult['waiting_user'] > 0)) {
             $arrResult['waiting_user'] = '<input type="submit" class="transparent_aslink_button" '
@@ -1814,7 +1814,7 @@ class GroupListView extends ListView
         //add confirm popups
         if (!$this->selector_mode) {
             require_once _base_ . '/lib/lib.dialog.php';
-            $lang = &DoceboLanguage::createInstance('standard');
+            $lang = &FormaLanguage::createInstance('standard');
             setupFormDialogBox(
                 'dirctory_listgroup',
                 'index.php?modname=directory&op=listgroup',
@@ -1910,7 +1910,7 @@ class GroupMembersListView extends ListView
 
     public function _getCols()
     {
-        $this->lang = &DoceboLanguage::createInstance('admin_directory', 'framework');
+        $this->lang = &FormaLanguage::createInstance('admin_directory', 'framework');
         $totCol = $this->data->getFieldCount();
         $colInfos = [];
         $colInfos[] = ['hLabel' => '',
@@ -1994,7 +1994,7 @@ class GroupMembersListView extends ListView
 
     public function printOut()
     {
-        $acl_man = &Docebo::user()->getAclManager();
+        $acl_man = &Forma::user()->getAclManager();
 
         $out = $this->rend->OpenTable($this->_getTitle());
 

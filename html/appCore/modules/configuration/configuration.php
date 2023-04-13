@@ -23,7 +23,7 @@ function config()
     require_once _base_ . '/lib/lib.form.php';
     require_once _adm_ . '/class/class.conf.php';
 
-    $lang = &DoceboLanguage::createInstance('configuration', 'framework');
+    $lang = &FormaLanguage::createInstance('configuration', 'framework');
     $active_tab = importVar('active_tab', false, 1);
 
     //instance class-------------------------------------------
@@ -111,7 +111,7 @@ function config_line($param_name, $param_value)
 
 function server_info()
 {
-    $lang = &DoceboLanguage::createInstance('configuration', 'framework');
+    $lang = &FormaLanguage::createInstance('configuration', 'framework');
 
     $php_conf = ini_get_all();
 

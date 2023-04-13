@@ -16,15 +16,15 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _base_ . '/lib/lib.event.php';
 
 /**
- * This is the class for ClassEvents in Docebo.
+ * This is the class for ClassEvents in Forma.
  *
  * @version  $Id: lib.coursenotifier.php 113 2006-03-08 18:08:42Z ema $
  */
-class DoceboCourseNotifier extends DoceboEventConsumer
+class FormaCourseNotifier extends FormaEventConsumer
 {
     public function _getConsumerName()
     {
-        return 'DoceboUserNotifier';
+        return 'FormaUserNotifier';
     }
 
     public function actionEvent(&$event)
@@ -33,7 +33,7 @@ class DoceboCourseNotifier extends DoceboEventConsumer
 
         parent::actionEvent($event);
 
-        $acl_man = &Docebo::user()->getACLManager();
+        $acl_man = &Forma::user()->getACLManager();
 
         // recover event information
         $id_user = $event->getProperty('userdeleted');

@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 require_once _base_ . '/lib/lib.event.php';
 
-class DoceboEventManager
+class FormaEventManager
 {
     /**
      * Register a new event class.
@@ -32,7 +32,7 @@ class DoceboEventManager
      **/
     public function registerEventClass($class_name)
     {
-        $class_id = DoceboEventClass::getClassId($class_name);
+        $class_id = FormaEventClass::getClassId($class_name);
         if ($class_id !== false) {
             return $class_id;
         } else {
@@ -56,7 +56,7 @@ class DoceboEventManager
      * @param int    $priority    the priority of the event
      * @param string $description the description of the event
      *
-     * @return DoceboEvent $event the event object
+     * @return FormaEvent $event the event object
      * @static
      *
      * @internal if you pass an int $class_id in the first parameter you can
@@ -64,7 +64,7 @@ class DoceboEventManager
      **/
     public static function newEvent($class_name, $module, $section, $priority, $description)
     {
-        $class = new DoceboEventClass($class_name);
+        $class = new FormaEventClass($class_name);
         $istance = $class->createEvent($module, $section, $priority, $description);
 
         return $istance;
@@ -88,23 +88,23 @@ class DoceboEventManager
      **/
     public static function registerEventConsumer($class_name, $consumer_class, $consumer_file)
     {
-        $idConsumer = DoceboEventManager::_registerConsumer($consumer_class, $consumer_file);
+        $idConsumer = FormaEventManager::_registerConsumer($consumer_class, $consumer_file);
         if ($idConsumer === false) {
             return false;
         }
         if (is_array($class_name)) {
             foreach ($class_name as $cn) {
-                $class_id = DoceboEventClass::getClassId($cn);
+                $class_id = FormaEventClass::getClassId($cn);
                 if ($class_id !== false) {
-                    DoceboEventManager::_makeConsumerClassRelation($idConsumer, $class_id);
+                    FormaEventManager::_makeConsumerClassRelation($idConsumer, $class_id);
                 } else {
                     return false;
                 }
             }
         } else {
-            $class_id = DoceboEventClass::getClassId($class_name);
+            $class_id = FormaEventClass::getClassId($class_name);
             if ($class_id !== false) {
-                DoceboEventManager::_makeConsumerClassRelation($idConsumer, $class_id);
+                FormaEventManager::_makeConsumerClassRelation($idConsumer, $class_id);
             } else {
                 return false;
             }
@@ -139,7 +139,7 @@ class DoceboEventManager
      **/
     public function _registerConsumer($consumer_class, $consumer_file)
     {
-        $consumer_id = DoceboEventConsumer::getConsumerId($consumer_class);
+        $consumer_id = FormaEventConsumer::getConsumerId($consumer_class);
         if ($consumer_id !== false) {
             return $consumer_id;
         } else {
@@ -193,12 +193,12 @@ class DoceboEventManager
      * This method execute the dispatch of the event on all the consumer related
      *	to the class of the event.
      *
-     * @param DoceboEvent $event the event to be dispatched
+     * @param FormaEvent $event the event to be dispatched
      * @static
      **/
     public static function dispatch(&$event)
     {
-        $arr_consumer = DoceboEventManager::listConsumerFromClassId($event->getClassId());
+        $arr_consumer = FormaEventManager::listConsumerFromClassId($event->getClassId());
 
         foreach ($arr_consumer as $consumer_id => $consumer_param) {
             require_once Forma::inc($GLOBALS['where_framework'] . $consumer_param[1]);
@@ -374,7 +374,7 @@ function createNewAlert($class,$module,$section,$priority,$description,
         return;
     }
 
-    $event = &DoceboEventManager::newEvent($class, $module, $section, $priority, $description);
+    $event = &FormaEventManager::newEvent($class, $module, $section, $priority, $description);
 
     $event->deleteOldProperty();
 
@@ -391,7 +391,7 @@ function createNewAlert($class,$module,$section,$priority,$description,
     $event->setProperty('MessageComposer', addslashes(rawurlencode(serialize($msg_composer))));
     $event->setProperty('force_email_send', ($force_email_send === false ? 'false' : 'true'));
     $event->setProperty('attachments', $msg_composer->getAttachments());
-    DoceboEventManager::dispatch($event);
+    FormaEventManager::dispatch($event);
 }
 
 function getEnabledEvent($class)
@@ -420,10 +420,10 @@ function getEnabledEvent($class)
  **/
 /*function createNewAlert(	$class,$module,$section,$priority,$description,
                             $recipients,$subject,$body ) {
-    $event =& DoceboEventManager::newEvent($class, $module, $section, $priority, $description);
+    $event =& FormaEventManager::newEvent($class, $module, $section, $priority, $description);
     $event->setProperty('recipientid',implode(',',$recipients));
     $event->setProperty('subject',$subject);
     $event->setProperty('body',$body);
-    DoceboEventManager::dispatch($event);
+    FormaEventManager::dispatch($event);
 }
 */

@@ -27,7 +27,7 @@ function report_save($report_id, $filter_name, &$filter_data, $is_public = false
     $data = addslashes(serialize($filter_data)); //put serialized data in DB
     $query = 'INSERT INTO %lms_report_filter ' .
         '(id_report, author, creation_date, filter_data, filter_name, is_public) VALUES ' .
-        "($report_id, " . Docebo::user()->getIdst() . ", NOW(), '$data', '$filter_name', " . ($is_public ? '1' : '0') . ')';
+        "($report_id, " . Forma::user()->getIdst() . ", NOW(), '$data', '$filter_name', " . ($is_public ? '1' : '0') . ')';
 
     if (!sql_query($query)) {
         return false;
@@ -58,7 +58,7 @@ function report_save_schedulation($id_rep, $name, $period, $time, &$recipients)
     //TO DO : try to use transation for this
     $query = 'INSERT INTO %lms_report_schedule ' .
         '(id_report_filter, id_creator, name, period, time, creation_date) VALUES ' .
-        "($id_rep, " . Docebo::user()->getIdst() . ",'" . trim($name) . "', '$period', '$time', NOW())";
+        "($id_rep, " . Forma::user()->getIdst() . ",'" . trim($name) . "', '$period', '$time', NOW())";
 
     if (!sql_query($query)) {
         return false;
@@ -91,7 +91,7 @@ function getReportNameById($id)
     if ($row[1]) {
         return $row[0];
     } else {
-        $lang = &DoceboLanguage::createInstance('report', 'framework');
+        $lang = &FormaLanguage::createInstance('report', 'framework');
 
         return $lang->def($row[0]);
     }

@@ -36,7 +36,7 @@ class CourseAlmsController extends AlmsController
         parent::init();
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         $this->model = new CourseAlms();
 
         $this->base_link_course = 'alms/course';
@@ -768,7 +768,7 @@ class CourseAlmsController extends AlmsController
             require_once _lms_ . '/lib/lib.manmenu.php';
             require_once _lms_ . '/lib/lib.subscribe.php';
 
-            $doceboCourse = new DoceboCourse($idCourseToDulicate);
+            $doceboCourse = new FormaCourse($idCourseToDulicate);
             $subscribeManager = new CourseSubscribe_Manager();
 
             $newCourseGroupLevels = $doceboCourse->createCourseLevel($newCourseId);
@@ -779,7 +779,7 @@ class CourseAlmsController extends AlmsController
             foreach ($levels as $level => $levelName) {
                 foreach ($newCoursePermissions[$level] as $idrole => $value) {
                     if ($newCourseGroupLevels[$level] !== 0 && $idrole !== 0) {
-                        Docebo::aclm()->addToRole($idrole, $newCourseGroupLevels[$level]);
+                        Forma::aclm()->addToRole($idrole, $newCourseGroupLevels[$level]);
                     }
                 }
             }
@@ -1150,7 +1150,7 @@ class CourseAlmsController extends AlmsController
         } else {
             require_once _base_ . '/lib/lib.table.php';
 
-            $all_languages = Docebo::langManager()->getAllLanguages(true);
+            $all_languages = Forma::langManager()->getAllLanguages(true);
             $languages = [];
             foreach ($all_languages as $k => $v) {
                 $languages[$v['code']] = $v['description'];
@@ -1187,7 +1187,7 @@ class CourseAlmsController extends AlmsController
             $tb->addHead($cont_h);
 
             $view_cert = false;
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 if (checkPerm('view', true, 'certificate', 'lms')) {
                     $view_cert = true;
                 }
@@ -1261,12 +1261,12 @@ class CourseAlmsController extends AlmsController
             require_once _lms_ . '/lib/lib.manmenu.php';
             require_once _lms_ . '/lib/lib.course.php';
 
-            $acl_man = &Docebo::user()->getAclManager();
+            $acl_man = &Forma::user()->getAclManager();
             $course_man = new Man_Course();
 
             $levels = &$course_man->getCourseIdstGroupLevel($id_course);
             if (empty($levels) || implode('', $levels) == '') {
-                $levels = DoceboCourse::createCourseLevel($id_course);
+                $levels = FormaCourse::createCourseLevel($id_course);
             }
 
             $course_man->removeCourseRole($id_course);
@@ -1293,8 +1293,8 @@ class CourseAlmsController extends AlmsController
                 $this->session->save();
 
                 //loading related ST
-                Docebo::user()->loadUserSectionST('/lms/course/public/');
-                Docebo::user()->SaveInSession();
+                Forma::user()->loadUserSectionST('/lms/course/public/');
+                Forma::user()->SaveInSession();
             }
 
             if ($result) {
@@ -1438,7 +1438,7 @@ class CourseAlmsController extends AlmsController
         $levels = CourseLevel::getTranslatedLevels();
         $label_model = new LabelAlms();
 
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $array_lang = Forma::langManager()->getAllLangCode();
         $array_lang[] = 'none';
 
         //status of course -----------------------------------------------------

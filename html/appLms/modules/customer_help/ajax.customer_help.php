@@ -34,14 +34,14 @@ $op = FormaLms\lib\Get::req('op', DOTY_STRING, '');
 switch ($op) {
     case 'getdialog':
             $idst = getLogUserId();
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $user_info = $acl_man->getUser($idst, false);
             $user_email = $user_info[ACL_INFO_EMAIL];
 
             $body = '';
             $body .= '<div class="line_field">' . Lang::t('_README_HELP', 'customer_help') . '</div>'
                 . '<br />'
-                . '<div class="line_field"><b>' . Lang::t('_USERNAME', 'standard') . ':</b> ' . $acl_man->relativeId(Docebo::user()->getUserId()) . '</div>';
+                . '<div class="line_field"><b>' . Lang::t('_USERNAME', 'standard') . ':</b> ' . $acl_man->relativeId(Forma::user()->getUserId()) . '</div>';
             if (isset($GLOBALS['course_descriptor'])) {
                 $body .= '<div class="line_field"><b>' . Lang::t('_COURSE_NAME', 'admin_course_management') . ':</b> '
                     . $GLOBALS['course_descriptor']->getValue('name') . '</div>';
@@ -77,8 +77,8 @@ switch ($op) {
             $subject .= chelpCheckField($_POST['help_req_subject']);
 
             $idst = getLogUserId();
-            $acl_man = Docebo::user()->getAclManager();
-            $userid = Docebo::user()->getUserId();
+            $acl_man = Forma::user()->getAclManager();
+            $userid = Forma::user()->getUserId();
             $user_info = $acl_man->getUser($idst, false);
 
             //$user_email =$user_info[ACL_INFO_EMAIL];

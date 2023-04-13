@@ -30,7 +30,7 @@ $_tabview_titles = '<ul class="nav nav-tabs">';
 $_tabview_contents = '<div class="tab-content">';
 
 //edit name and description in all languages
-$_langs = Docebo::langManager()->getAllLanguages(true);
+$_langs = Forma::langManager()->getAllLanguages(true);
 foreach ($_langs as $_lang_code => $_lang_data) {
     $_name = isset($group_langs[$_lang_code]) ? $group_langs[$_lang_code]['name'] : '';
     $_desc = isset($group_langs[$_lang_code]) ? $group_langs[$_lang_code]['description'] : '';

@@ -29,7 +29,7 @@ require_once dirname(__FILE__) . '/lib.connector.php';
  *
  * @author		Pirovano Fabio <fabio (@) docebo (.) com>
  **/
-class DoceboConnector_CourseSap extends DoceboConnector
+class FormaConnector_CourseSap extends FormaConnector
 {
     public $name = '';
 
@@ -110,7 +110,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnector_CourseSapUI($this);
+        return new FormaConnector_CourseSapUI($this);
     }
 
     /**
@@ -118,7 +118,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
      **/
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('sap_report');
+        $this->lang = FormaLanguage::createInstance('sap_report');
 
         // perform the query for data retriving
 
@@ -218,7 +218,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
      **/
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('userreport', 'lms');
+        $lang = FormaLanguage::createInstance('userreport', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
@@ -330,7 +330,7 @@ class DoceboConnector_CourseSap extends DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnector_CourseSapUI extends DoceboConnectorUI
+class FormaConnector_CourseSapUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -486,5 +486,5 @@ class DoceboConnector_CourseSapUI extends DoceboConnectorUI
 
 function coursesap_factory()
 {
-    return new DoceboConnector_CourseSap([]);
+    return new FormaConnector_CourseSap([]);
 }

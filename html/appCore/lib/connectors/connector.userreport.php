@@ -22,7 +22,7 @@ require_once dirname(__FILE__) . '/lib.connector.php';
  *
  * @author		Pirovano Fabio <fabio (@) docebo (.) com>
  **/
-class DoceboConnectorUserReport extends DoceboConnector
+class FormaConnectorUserReport extends FormaConnector
 {
     public $name = '';
 
@@ -112,7 +112,7 @@ class DoceboConnectorUserReport extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorUserReportUI($this);
+        return new FormaConnectorUserReportUI($this);
     }
 
     /**
@@ -120,7 +120,7 @@ class DoceboConnectorUserReport extends DoceboConnector
      */
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('ru_report');
+        $this->lang = FormaLanguage::createInstance('ru_report');
 
         $query_course_user = "
                 SELECT u.idst, REPLACE(u.userid,'/','') login, CONCAT (u.firstname, ' ', u.lastname) user_name , c.idCourse id_course,
@@ -212,7 +212,7 @@ class DoceboConnectorUserReport extends DoceboConnector
      **/
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('userreport', 'lms');
+        $lang = FormaLanguage::createInstance('userreport', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
@@ -352,7 +352,7 @@ class DoceboConnectorUserReport extends DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorUserReportUI extends DoceboConnectorUI
+class FormaConnectorUserReportUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -495,5 +495,5 @@ class DoceboConnectorUserReportUI extends DoceboConnectorUI
 
 function userreport_factory()
 {
-    return new DoceboConnectorUserReport([]);
+    return new FormaConnectorUserReport([]);
 }

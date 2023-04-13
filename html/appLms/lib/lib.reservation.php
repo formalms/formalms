@@ -111,7 +111,7 @@ class Man_Reservation
      */
     public function getCategoryName($id_category)
     {
-        $lang = DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         if ($id_category == 0) {
             return $lang->def('_UNDEFINITED');
@@ -183,7 +183,7 @@ class Man_Reservation
      */
     public function getCategory($id_course = false)
     {
-        $lang = DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $query = 'SELECT idCategory, name' .
                 ' FROM ' . $this->getTableCategory() . '';
@@ -224,7 +224,7 @@ class Man_Reservation
      */
     public function getLaboratories()
     {
-        $lang = DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $query = 'SELECT idClassroom, name' .
                 ' FROM ' . $this->getTableClassroom() . '';
@@ -344,7 +344,7 @@ class Man_Reservation
         $idst_user = [];
         $idst_user = $this->getSubscribedUserIdst($id_event);
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         $user_info = [];
         $user_info = &$acl_man->getUsers($idst_user);
@@ -777,7 +777,7 @@ class Man_Reservation
      */
     public function viewEvents($id_course = false, $order_by = false)
     {
-        $lang = DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         if ($id_course) {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
@@ -849,7 +849,7 @@ class Man_Reservation
      */
     public function viewEventsForSubscribedTab($id_course = false, $order_by = false)
     {
-        $lang = DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         if ($id_course) {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
@@ -920,7 +920,7 @@ class Man_Reservation
      */
     public function viewPastEvents($id_course = false, $id_user, $order_by = false)
     {
-        $lang = DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         if ($id_course) {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name' .
@@ -998,7 +998,7 @@ class Man_Reservation
      */
     public function viewMyEvents($id_course = false, $id_user, $order_by = false)
     {
-        $lang = DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         if ($id_course) {
             $query = 'SELECT e.idEvent, e.idCourse, e.idLaboratory, e.idCategory, e.title, e.description, e.date, e.maxUser, e.deadLine, e.fromTime, e.toTime, c.name, l.name' .
@@ -1160,7 +1160,7 @@ class Man_Reservation
 
     public function viewCategory($id_course = false)
     {
-        $lang = DoceboLanguage::createInstance('reservation');
+        $lang = FormaLanguage::createInstance('reservation');
 
         $query = 'SELECT idCategory, name, idCourse, maxSubscription' .
                 ' FROM ' . $this->getTableCategory() . '';

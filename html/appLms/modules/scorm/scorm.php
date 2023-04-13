@@ -27,7 +27,7 @@ function additem($object_item)
 {
     //checkPerm( 'view', FALSE, 'storage' );
 
-    $lang = &DoceboLanguage::createInstance('scorm', 'lms');
+    $lang = &FormaLanguage::createInstance('scorm', 'lms');
     require_once Forma::inc(_lib_ . '/lib.form.php');
     $form = new Form();
 
@@ -248,7 +248,7 @@ function moditem($object_item)
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &DoceboLanguage::createInstance('scorm', 'lms');
+    $lang = &FormaLanguage::createInstance('scorm', 'lms');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');

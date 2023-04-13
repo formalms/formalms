@@ -308,7 +308,7 @@ class LangAdm extends Model
         }
         /*
         // for a better display i need to know if the language is rtl or ltr
-        $langs = Docebo::langManager()->getAllLanguages(true);
+        $langs = Forma::langManager()->getAllLanguages(true);
         $main_dir = $langs[$lang_code]['direction'];
         if($lang_code_diff != false) $diff_dir = $langs[$lang_code_diff]['direction'];
         */
@@ -809,9 +809,9 @@ class LangAdm extends Model
         $elemPlatform->setAttribute('id', 'all');
         $lang->appendChild($elemPlatform);
 
-        $arrModules = Docebo::langManager()->getAllModules();
+        $arrModules = Forma::langManager()->getAllModules();
         foreach ($arrModules as $module) {
-            $arrTranslations = Docebo::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true, $text_items);
+            $arrTranslations = Forma::langManager()->getModuleLangTranslations('all', $module, $lang_code, '', false, false, true, $text_items);
 
             if (count($arrTranslations) > 0) {
                 $elemModule = $doc->createElement('module');
@@ -820,7 +820,7 @@ class LangAdm extends Model
 
                 foreach ($arrTranslations as $tran) {
                     $elem = $doc->createElement('key');
-                    $elem->setAttribute('id', Docebo::langManager()->composeKey($tran[1], $module, 'all'));
+                    $elem->setAttribute('id', Forma::langManager()->composeKey($tran[1], $module, 'all'));
                     $elem->setAttribute('attributes', $tran[3]);
                     $elem->setAttribute('save_date', $tran[4]);
                     $elemText = $doc->createCDATASection($tran[2]);

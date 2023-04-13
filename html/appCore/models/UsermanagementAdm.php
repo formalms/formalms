@@ -27,7 +27,7 @@ class UsermanagementAdm extends Model
     {
         require_once _base_ . '/lib/lib.json.php';
         $this->db = DbConn::getInstance();
-        $this->aclManager = Docebo::user()->getAclManager();
+        $this->aclManager = Forma::user()->getAclManager();
         $this->json = new Services_JSON();
         $this->orgUser = false;
         $this->orgCache = false;
@@ -173,7 +173,7 @@ class UsermanagementAdm extends Model
     {
         require_once _adm_ . '/lib/lib.field.php';
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $acl_man->include_suspended = true;
 
         //retrieve custom fields definitions data
@@ -257,7 +257,7 @@ class UsermanagementAdm extends Model
             if ($userlevelid !== ADMIN_GROUP_GODADMIN && $userlevelid !== ADMIN_GROUP_USER) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_info = $adminManager->getAdminAllSett(Docebo::user()->getIdSt(), 'u.idst');
+                $admin_info = $adminManager->getAdminAllSett(Forma::user()->getIdSt(), 'u.idst');
                 $is_subadmin = true;
             }
         }
@@ -316,7 +316,7 @@ class UsermanagementAdm extends Model
                     if ($userlevelid !== ADMIN_GROUP_GODADMIN) {
                         require_once _lms_ . '/lib/lib.course.php';
                         $course_man = new Man_Course();
-                        $all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
+                        $all_courses = $course_man->getUserCourses(Forma::user()->getIdSt());
                         $res = [];
                         foreach ($all_courses as $id_course => $name) {
                             $arr_idst_group = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -326,11 +326,11 @@ class UsermanagementAdm extends Model
                 }
 
                 $queryUserFilter_1 .= ($userlevelid !== ADMIN_GROUP_GODADMIN ? ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ' : '')
-                    . " AND u.idst <> '" . Docebo::user()->getIdSt() . "' ";
+                    . " AND u.idst <> '" . Forma::user()->getIdSt() . "' ";
                 $queryUserFilter_2 .= ($userlevelid !== ADMIN_GROUP_GODADMIN ? ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ' : '')
-                    . " AND u.idst <> '" . Docebo::user()->getIdSt() . "' ";
+                    . " AND u.idst <> '" . Forma::user()->getIdSt() . "' ";
                 $queryUserFilter_3 .= ($userlevelid !== ADMIN_GROUP_GODADMIN ? ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ' : '')
-                    . " AND u.idst <> '" . Docebo::user()->getIdSt() . "' ";
+                    . " AND u.idst <> '" . Forma::user()->getIdSt() . "' ";
                 break;
             case 'course':
                 $id_course = $this->session->get('idCourse');
@@ -723,7 +723,7 @@ class UsermanagementAdm extends Model
         $useSuspended = isset($filter['suspended']) ? (bool)$filter['suspended'] : true;
         $dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
         $acl_man->include_suspended = true;
 
         //list of users idst to apply in main query as a filter
@@ -736,7 +736,7 @@ class UsermanagementAdm extends Model
             if ($userlevelid !== ADMIN_GROUP_GODADMIN && $userlevelid !== ADMIN_GROUP_USER) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_info = $adminManager->getAdminAllSett(Docebo::user()->getIdSt(), 'u.idst');
+                $admin_info = $adminManager->getAdminAllSett(Forma::user()->getIdSt(), 'u.idst');
                 $is_subadmin = true;
             }
         }
@@ -818,7 +818,7 @@ class UsermanagementAdm extends Model
                     if ($userlevelid !== ADMIN_GROUP_GODADMIN) {
                         require_once _lms_ . '/lib/lib.course.php';
                         $course_man = new Man_Course();
-                        $all_courses = $course_man->getUserCourses(Docebo::user()->getIdSt());
+                        $all_courses = $course_man->getUserCourses(Forma::user()->getIdSt());
                         $res = [];
                         foreach ($all_courses as $id_course => $name) {
                             $arr_idst_group = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -828,7 +828,7 @@ class UsermanagementAdm extends Model
                 }
 
                 $filtered_query .= ($userlevelid !== ADMIN_GROUP_GODADMIN ? ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ' : '')
-                    . " AND u.idst <> '" . Docebo::user()->getIdSt() . "' ";
+                    . " AND u.idst <> '" . Forma::user()->getIdSt() . "' ";
                 break;
             case 'course':
                 $id_course = $this->session->get('idCourse');
@@ -865,7 +865,7 @@ class UsermanagementAdm extends Model
         $admin_info = ['users' => []];
         $usersList = [];
 
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = Forma::user()->getACLManager();
         $acl_man->include_suspended = true;
 
         //detect admin level, if requested
@@ -876,7 +876,7 @@ class UsermanagementAdm extends Model
                 //retrieve a list of idsts of the users that the sub-admin can view
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_info = $adminManager->getAdminAllSett(Docebo::user()->getIdSt(), 'u.idst');
+                $admin_info = $adminManager->getAdminAllSett(Forma::user()->getIdSt(), 'u.idst');
                 $is_subadmin = true;
             }
         }
@@ -1061,7 +1061,7 @@ class UsermanagementAdm extends Model
         $level = ADMIN_GROUP_USER;
 
         if (is_numeric($idst) && $idst > 0) {
-            $this->aclManager = Docebo::user()->getAclManager();
+            $this->aclManager = Forma::user()->getAclManager();
             $arr_levels_id = array_flip($this->aclManager->getAdminLevels());
             $arr_levels_idst = array_keys($arr_levels_id);
 
@@ -1074,7 +1074,7 @@ class UsermanagementAdm extends Model
                 }
             }
         } else {
-            $level = Docebo::user()->getUserLevelId();
+            $level = Forma::user()->getUserLevelId();
         }
 
         return $level;
@@ -1144,7 +1144,7 @@ class UsermanagementAdm extends Model
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
             list($user_pass) = $this->db->fetch_row($res);
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $check_pass = $acl_man->encrypt($password);
             $output = ($user_pass == $check_pass);
         }
@@ -1159,7 +1159,7 @@ class UsermanagementAdm extends Model
         $result = false;
 
         if (property_exists($userdata, 'userid') && $userdata->userid != '') {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             if (FormaLms\lib\Get::sett('custom_fields_mandatory_for_admin', 'off') == 'on') {
                 $fields = new FieldList();
                 $filledFieldsForUser = $fields->isFilledFieldsForUser(0);
@@ -1193,7 +1193,7 @@ class UsermanagementAdm extends Model
                 $acl_man->addToGroup($ocd, $user_idst);
 
                 //apply enroll rules
-                $langs = Docebo::langManager()->getAllLangCode();
+                $langs = Forma::langManager()->getAllLangCode();
                 $lang_code = (isset($langs[(isset($_POST['user_preference']['ui.language']) ? $_POST['user_preference']['ui.language'] : 'eng')]) ? $langs[$_POST['user_preference']['ui.language']] : false);
 
                 $enrollrules = new EnrollrulesAlms();
@@ -1209,8 +1209,8 @@ class UsermanagementAdm extends Model
                 }
 
                 if ($folder_count == 0) {
-                    if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                        $subadmin_folder = $this->getAdminFolder(Docebo::user()->getIdst(), true);
+                    if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                        $subadmin_folder = $this->getAdminFolder(Forma::user()->getIdst(), true);
                         if ($subadmin_folder > 0) {
                             if (!is_array($folders)) {
                                 $folders = [];
@@ -1276,7 +1276,7 @@ class UsermanagementAdm extends Model
         $result = 'unable to edit user properties';
 
         if (is_numeric($idst) && $idst > 0) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $res = $acl_man->updateUser(
                 $idst,
                 (property_exists($userdata, 'userid') ? $userdata->userid : false),
@@ -1359,8 +1359,8 @@ class UsermanagementAdm extends Model
             $users = [$users];
         }
         if (is_array($users)) {
-            $acl_man = Docebo::user()->getAclManager();
-            $current_user = Docebo::user()->getIdSt();
+            $acl_man = Forma::user()->getAclManager();
+            $current_user = Forma::user()->getIdSt();
             $i = 0;
             $open_transaction = false;
             foreach ($users as $user) {
@@ -1398,8 +1398,8 @@ class UsermanagementAdm extends Model
 
     public function _getAdminOrgTree($idst = false)
     {
-        $acl_man = Docebo::user()->getAclManager();
-        $admin_idst = (is_numeric($idst) && $idst > 0 ? $idst : Docebo::user()->getIdST());
+        $acl_man = Forma::user()->getAclManager();
+        $admin_idst = (is_numeric($idst) && $idst > 0 ? $idst : Forma::user()->getIdST());
         if ($this->orgCache === false || $this->orgUser != $admin_idst) {
             $this->orgUser = $admin_idst;
             require_once _base_ . '/lib/lib.preference.php';
@@ -2127,7 +2127,7 @@ class UsermanagementAdm extends Model
             //if node has been correctly inserted then ...
             if ($id) {
                 //create group and descendants
-                $acl = &Docebo::user()->getACLManager();
+                $acl = &Forma::user()->getACLManager();
                 $idst_oc = $acl->registerGroup('/oc_' . (int)$id, '', true);
                 $idst_ocd = $acl->registerGroup('/ocd_' . (int)$id, '', true);
                 $acl->addToGroup($acl->getGroupST('ocd_' . (int)$id_parent), $idst_ocd); //register the idst of the new branch's descendants into the parent node /ocd_
@@ -2138,7 +2138,7 @@ class UsermanagementAdm extends Model
                 if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                     require_once _base_ . '/lib/lib.preference.php';
                     $adminManager = new AdminPreference();
-                    $adminManager->addAdminTree($idst_oc, Docebo::user()->getIdST());
+                    $adminManager->addAdminTree($idst_oc, Forma::user()->getIdST());
                 }
 
                 // update the node inserted with the oc and ocd founded
@@ -2171,7 +2171,7 @@ class UsermanagementAdm extends Model
      */
     public function deleteFolder($idOrg, $onlyLeaf = false)
     {
-        $acl = &Docebo::user()->getACLManager();
+        $acl = &Forma::user()->getACLManager();
         $folder = $this->getFolderById($idOrg);
 
         if (!$folder) {
@@ -2472,7 +2472,7 @@ class UsermanagementAdm extends Model
     public function getFolderUsers($idOrg, $descendants = false)
     {
         $output = false;
-        $acl = &Docebo::user()->getACLManager();
+        $acl = &Forma::user()->getACLManager();
         $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg);
         $query = 'SELECT idstMember FROM %adm_group_members as gm JOIN %adm_user as u '
             . ' ON (gm.idstMember=u.idst) WHERE gm.idst=' . (int)$groupidst . ' ';
@@ -2497,7 +2497,7 @@ class UsermanagementAdm extends Model
      */
     public function assignUsers($idOrg, $users)
     {
-        $acl = &Docebo::user()->getACLManager();
+        $acl = &Forma::user()->getACLManager();
         $acl->include_suspended = true;
         $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg); //get group idst from group table
         $groupdesc = $acl->getGroupSt('/ocd_' . (int)$idOrg); //get descendants' group idst from group table
@@ -2527,12 +2527,12 @@ class UsermanagementAdm extends Model
 
         $_qfilter = '';
         if ($filter) {
-            $ulevel = Docebo::user()->getUserLevelId();
+            $ulevel = Forma::user()->getUserLevelId();
             if ($ulevel != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                //$admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
-                $admin_users = $adminManager->getAdminUsers(Docebo::user()->getIdST()); //$this->aclManager->getAllUsersFromIdst($admin_tree);
+                //$admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST()); //$this->aclManager->getAllUsersFromIdst($admin_tree);
                 $_qfilter .= ' AND idst IN (' . implode(',', $admin_users) . ') ';
             }
         }
@@ -2593,7 +2593,7 @@ class UsermanagementAdm extends Model
             createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
                 [$userid], $msg_composer);
 
-            $uinfo = Docebo::aclm()->getUser($userid, false);
+            $uinfo = Forma::aclm()->getUser($userid, false);
 
             $array_subst = [
                 '[url]' => FormaLms\lib\Get::site_url(),
@@ -2636,7 +2636,7 @@ class UsermanagementAdm extends Model
         require_once _adm_ . '/lib/lib.field.php';
         $fl = new FieldList();
 
-        return $fl->checkUserMandatoryFields((int)$user_idst > 0 ? (int)$user_idst : Docebo::user()->getIdSt());
+        return $fl->checkUserMandatoryFields((int)$user_idst > 0 ? (int)$user_idst : Forma::user()->getIdSt());
     }
 
     public function confirmWaitingUsers($arr_idst)
@@ -2942,7 +2942,7 @@ class UsermanagementAdm extends Model
             list($control) = $this->db->fetch_row($this->db->query($queryRoot));
             if ($control < 0) {
                 $output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
-            } elseif ($control == 0 && Docebo::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { //#3725
+            } elseif ($control == 0 && Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { //#3725
                 $output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
             }
         }
@@ -3200,7 +3200,7 @@ class UsermanagementAdm extends Model
 
     public function getAdminTree($id_admin)
     {
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = Forma::user()->getACLManager();
         require_once _base_ . '/lib/lib.preference.php';
         $adminManager = new AdminPreference();
         $admin_tree = $adminManager->getAdminTree($id_admin);
@@ -3247,7 +3247,7 @@ class UsermanagementAdm extends Model
         }
 
         //user levels
-        $levels_idst = Docebo::aclm()->getAdminLevels();
+        $levels_idst = Forma::aclm()->getAdminLevels();
         $levels_flip = array_flip($levels_idst);
 
         //retrieve language and level for given users

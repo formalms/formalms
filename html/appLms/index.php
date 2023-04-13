@@ -46,7 +46,7 @@ $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 // different way with the introduction of the layout manager)
 if (isset($_GET['no_redirect']) || isset($_POST['no_redirect'])) {
     onecolPageWriter::createInstance();
-} elseif ((!$session->has('idCourse') || empty($session->get('idCourse'))) && !Docebo::user()->isAnonymous()) {
+} elseif ((!$session->has('idCourse') || empty($session->get('idCourse'))) && !Forma::user()->isAnonymous()) {
     onecolPageWriter::createInstance();
 } elseif ($module_cfg !== false && $module_cfg->hideLateralMenu()) {
     onecolPageWriter::createInstance();

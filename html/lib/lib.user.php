@@ -17,8 +17,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * Acl user class
  * This class is for manage user login, preferences, etc
  * It store acl's security tockens in user session
- * For a detailed check use DoceboACL
- * To manage ACLs we must use DoceboACLManager.
+ * For a detailed check use FormaACL
+ * To manage ACLs we must use FormaACLManager.
  *
  * @version  $Id: lib.user.php 977 2007-02-23 10:40:19Z fabio $
  *
@@ -39,7 +39,7 @@ define('USER_QUOTA_UNLIMIT', 0);
 define('_US_EMPTY', 0);
 define('_NOT_DELETED', 0);
 
-class DoceboUser implements Serializable
+class FormaUser implements Serializable
 {
     public $sprefix = '';
     public $acl = null;
@@ -73,7 +73,7 @@ class DoceboUser implements Serializable
     protected $db = null;
 
     /**
-     * create a DoceboACLUtil for given user
+     * create a FormaACLUtil for given user
      * and load all ST stored in session.
      **/
     public function __construct($userid, $sprefix = 'public_area')
@@ -84,7 +84,7 @@ class DoceboUser implements Serializable
 
         $this->db = DbConn::getInstance();
 
-        $this->acl = new DoceboACL();
+        $this->acl = new FormaACL();
         $this->aclManager = $this->acl->getACLManager();
 
         if ($session->has($sprefix . '_idst')) {
@@ -98,7 +98,7 @@ class DoceboUser implements Serializable
             $this->arrst = $json->decode($session->get($sprefix . '_stlist'));
         }
 
-        $user_manager = new DoceboACLManager();
+        $user_manager = new FormaACLManager();
         $userInfo = $user_manager->getUser($this->idst, false);
 
         if (is_array($userInfo)) {
@@ -315,10 +315,10 @@ class DoceboUser implements Serializable
      *
      * @param string $prefix optional prefix for session publiciables
      *
-     * @return mixed DoceboUser instance of logged in user if found user in session
+     * @return mixed FormaUser instance of logged in user if found user in session
      *               FALSE otherwise
      **/
-    public static function &createDoceboUserFromSession($prefix = 'base')
+    public static function &createFormaUserFromSession($prefix = 'base')
     {
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if ($session->has('user_enter_time')) {
@@ -326,7 +326,7 @@ class DoceboUser implements Serializable
         }
 
         if ($session->has($prefix . '_username')) {
-            $du = new DoceboUser($session->get($prefix . '_username'), $prefix);
+            $du = new FormaUser($session->get($prefix . '_username'), $prefix);
 
             if ($session->has('user_enter_mark')) {
                 if ($session->get('user_enter_mark') < time() - REFRESH_LAST_ENTER) {
@@ -352,12 +352,12 @@ class DoceboUser implements Serializable
                     if ($token) {
                         $id_user = RestAPI::getUserIdByToken($token);
                         if ($id_user) {
-                            $user_manager = new DoceboACLManager();
+                            $user_manager = new FormaACLManager();
                             $user_info = $user_manager->getUser($id_user, false);
 
                             if ($user_info != false) {
                                 $username = $user_info[ACL_INFO_USERID];
-                                $du = new DoceboUser($username, $prefix);
+                                $du = new FormaUser($username, $prefix);
                                 $session->set('last_enter', $user_info[ACL_INFO_LASTENTER]);
 
                                 $du->setLastEnter(date('Y-m-d H:i:s'));
@@ -378,10 +378,10 @@ class DoceboUser implements Serializable
                 if (isset($_SERVER['REMOTE_USER'])) {
                     // extract username
                     $username = addslashes(substr($_SERVER['REMOTE_USER'], 0, strpos($_SERVER['REMOTE_USER'], '@')));
-                    $user_manager = new DoceboACLManager();
+                    $user_manager = new FormaACLManager();
                     $user_info = $user_manager->getUser(false, $username);
                     if ($user_info != false) {
-                        $du = new DoceboUser($username, $prefix);
+                        $du = new FormaUser($username, $prefix);
 
                         $du->setLastEnter(date('Y-m-d H:i:s'));
                         $session->set('user_enter_mark', time());
@@ -393,7 +393,7 @@ class DoceboUser implements Serializable
                     }
                 }
             }
-            $du = new DoceboUser('/Anonymous', $prefix);
+            $du = new FormaUser('/Anonymous', $prefix);
 
             return $du;
         }
@@ -406,10 +406,10 @@ class DoceboUser implements Serializable
      * @param string $password password of the user in clear text
      * @param string $prefix   optional prefix for session publiciables
      *
-     * @return mixed DoceboUser instance of logged in user if success in login
+     * @return mixed FormaUser instance of logged in user if success in login
      *               FALSE otherwise
      **/
-    public static function &createDoceboUserFromLogin($login, $password, $prefix = 'base', $new_lang = false)
+    public static function &createFormaUserFromLogin($login, $password, $prefix = 'base', $new_lang = false)
     {
         if ($login == '') {
             $false_public = false;
@@ -417,7 +417,7 @@ class DoceboUser implements Serializable
             return $false_public;
         }
 
-        $user_manager = new DoceboACLManager();
+        $user_manager = new FormaACLManager();
         $user_info = $user_manager->getUser(false, $login);
         // first login
 
@@ -463,7 +463,7 @@ class DoceboUser implements Serializable
         }
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $session->remove($prefix . '_idst');
-        $du = new DoceboUser($login, $prefix);
+        $du = new FormaUser($login, $prefix);
 
         // language policy
         if (!$new_lang && $session->has('forced_lang')) {
@@ -482,9 +482,9 @@ class DoceboUser implements Serializable
         return $du;
     }
 
-    public static function &createDoceboUserFromField($field_name, $field_val, $prefix = 'base')
+    public static function &createFormaUserFromField($field_name, $field_val, $prefix = 'base')
     {
-        $user_manager = new DoceboACLManager();
+        $user_manager = new FormaACLManager();
         $user_info = $user_manager->getUserInfoByField($field_name, $field_val);
 
         $ret_value = false;
@@ -497,7 +497,7 @@ class DoceboUser implements Serializable
         }
 
         $login = $user_info[ACL_INFO_USERID];
-        $du = new DoceboUser($login, $prefix);
+        $du = new FormaUser($login, $prefix);
 
         return $du;
     }
@@ -683,9 +683,9 @@ class DoceboUser implements Serializable
     }
 
     /**
-     * Get refernce to DoceboACL.
+     * Get refernce to FormaACL.
      *
-     * @return DoceboACL the DoceboACL object
+     * @return FormaACL the FormaACL object
      **/
     public function getACL()
     {
@@ -693,9 +693,9 @@ class DoceboUser implements Serializable
     }
 
     /**
-     * Get refernce to DoceboACLManager.
+     * Get refernce to FormaACLManager.
      *
-     * @return DoceboACLManager the DoceboACLManager object
+     * @return FormaACLManager the FormaACLManager object
      **/
     public function getACLManager()
     {
@@ -819,5 +819,5 @@ class DoceboUser implements Serializable
 
 function getLogUserId()
 {
-    return Docebo::user()->getIdSt();
+    return Forma::user()->getIdSt();
 }

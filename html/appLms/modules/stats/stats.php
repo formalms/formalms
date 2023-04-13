@@ -265,10 +265,10 @@ function statuserfilter()
 
     $view_all_perm = checkPerm('view_all_statuser', true);
 
-    $lang = &DoceboLanguage::createInstance('stats', 'lms');
+    $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Docebo::user()->getACLManager();
+    $aclManager = &Forma::user()->getACLManager();
 
     $out->setWorkingZone('content');
 
@@ -455,11 +455,11 @@ function statuserfilter()
     list($total_user) = sql_fetch_row(sql_query($query));
 
     //apply sub admin filters, if needed
-    if (!$view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
         foreach ($students as $idst => $user_course_info) {
             if (!in_array($idst, $ctrl_users)) {
                 // Elimino gli studenti non amministrati
@@ -481,15 +481,15 @@ function statuserfilter()
     $tabStat->setColsStyle($type_h);
     $tabStat->addHead($content_h);
 
-    $aclManager = &Docebo::user()->getACLManager();
-    $acl = &Docebo::user()->getACL();
+    $aclManager = &Forma::user()->getACLManager();
+    $acl = &Forma::user()->getACL();
 
     //apply sub admin filters, if needed
-    if ($view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+    if ($view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
         foreach ($students as $idst => $user_course_info) {
             if (!in_array($idst, $ctrl_users)) {
                 // Elimino gli studenti non amministrati
@@ -555,9 +555,9 @@ function statuserfilter()
 
 function statoneuser()
 {
-    $lang = &DoceboLanguage::createInstance('stats', 'lms');
+    $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
-    $aclManager = &Docebo::user()->getACLManager();
+    $aclManager = &Forma::user()->getACLManager();
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -622,13 +622,13 @@ function statcourse()
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('stats', 'lms');
+    $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
-    $aclManager = &Docebo::user()->getACLManager();
+    $aclManager = &Forma::user()->getACLManager();
     $form = new Form();
 
     if (isset($_POST['group_filter'])) {
@@ -733,14 +733,14 @@ function statitem()
 
     $cs = new CourseSubscribe_Manager();
 
-    $lang = &DoceboLanguage::createInstance('stats', 'lms');
+    $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     $form = new Form();
-    $aclManager = &Docebo::user()->getACLManager();
-    $acl = &Docebo::user()->getACL();
+    $aclManager = &Forma::user()->getACLManager();
+    $acl = &Forma::user()->getACL();
 
     $idItem = (int) $_GET['idItem'];
 
@@ -784,11 +784,11 @@ function statitem()
     list($total_user) = sql_fetch_row(sql_query($query));
 
     //apply sub admin filters, if needed
-    if ($view_all_perm && Docebo::user()->getUserLevelId() == '/framework/level/admin') {
+    if ($view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Docebo::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
         foreach ($students as $idst => $user_course_info) {
             if (!in_array($idst, $ctrl_users)) {
                 // Elimino gli studenti non amministrati
@@ -997,11 +997,11 @@ function statoneuseroneitem()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('stats', 'lms');
+    $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Docebo::user()->getACLManager();
-    $acl = &Docebo::user()->getACL();
+    $aclManager = &Forma::user()->getACLManager();
+    $acl = &Forma::user()->getACL();
 
     $idItem = (int) $_GET['idItem'];
     $idst_user = (int) $_GET['idUser'];
@@ -1047,11 +1047,11 @@ function statoneuseroneitemdetails()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('stats', 'lms');
+    $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Docebo::user()->getACLManager();
-    $acl = &Docebo::user()->getACL();
+    $aclManager = &Forma::user()->getACLManager();
+    $acl = &Forma::user()->getACL();
 
     $backto = $_GET['backto'];
     $idItem = (int) $_GET['idItem'];
@@ -1098,11 +1098,11 @@ function statoneuseroneitemhistory()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &DoceboLanguage::createInstance('stats', 'lms');
+    $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Docebo::user()->getACLManager();
-    $acl = &Docebo::user()->getACL();
+    $aclManager = &Forma::user()->getACLManager();
+    $acl = &Forma::user()->getACL();
 
     $backto = $_GET['backto'];
     $idItem = (int) $_GET['idItem'];
@@ -1144,10 +1144,10 @@ function modstatus()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
-    $lang = &DoceboLanguage::createInstance('stats', 'lms');
+    $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Docebo::user()->getACLManager();
+    $aclManager = &Forma::user()->getACLManager();
 
     $idUser = (int) $_GET['idUser'];
     //$idItem = (int)$_GET['idItem'];

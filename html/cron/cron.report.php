@@ -57,7 +57,7 @@ function getEmailForSchedule($schedule): array
         $recipients[] = $recipientItem['id_user']; //idst of the recipients
     }
 
-    $recipients = Docebo::aclm()->getAllUsersFromSelection($recipients);
+    $recipients = Forma::aclm()->getAllUsersFromSelection($recipients);
 
     if (!empty($recipients)) {
         $queryEmails = "SELECT u.email as email, su.value as lang FROM %adm_user AS u 

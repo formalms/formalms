@@ -179,14 +179,14 @@ class DimDim_Manager
 
     public function getUrl($idConference, $room_type)
     {
-        $lang = &DoceboLanguage::createInstance('conference', 'lms');
+        $lang = &FormaLanguage::createInstance('conference', 'lms');
 
         $conf = new Conference_Manager();
 
         $conference = $conf->roomInfo($idConference);
 
-        $acl_manager = &Docebo::user()->getAclManager();
-        $display_name = Docebo::user()->getUserName();
+        $acl_manager = &Forma::user()->getAclManager();
+        $display_name = Forma::user()->getUserName();
         $u_info = $acl_manager->getUser(getLogUserId(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
 

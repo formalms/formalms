@@ -77,7 +77,7 @@ class CoursepathLmsController extends LmsController
             $conditions[] = "(cpu.date_assign >= '" . $filter_year . "-00-00 00:00:00' AND cpu.date_assign <= '" . $filter_year . "-12-31 23:59:59')";
         }
 
-        $user_coursepath = $this->model->getCoursepath(Docebo::user()->getIdSt(), $conditions, $filter_status);
+        $user_coursepath = $this->model->getCoursepath(Forma::user()->getIdSt(), $conditions, $filter_status);
         $coursepath_courses = $this->model->getCoursepathCourseDetails(array_keys($user_coursepath));
 
         if (count($user_coursepath) > 0) {

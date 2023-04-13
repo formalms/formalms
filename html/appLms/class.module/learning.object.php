@@ -48,7 +48,7 @@ class Learning_Object
         $this->title = '';
 
         $this->db = DbConn::getInstance();
-        $this->aclManager = Docebo::user()->getAclManager();
+        $this->aclManager = Forma::user()->getAclManager();
         $this->table = '';
 
         $this->plugin_manager = new PluginManager('LearningObject');

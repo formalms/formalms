@@ -19,8 +19,8 @@ function view_area()
 
     require_once _lms_ . '/lib/lib.middlearea.php';
 
-    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
-    $lc = &DoceboLanguage::createInstance('menu_course', 'lms');
+    $lang = &FormaLanguage::createInstance('middlearea', 'lms');
+    $lc = &FormaLanguage::createInstance('menu_course', 'lms');
 
     $query_menu = "SELECT mo.idModule, mo.default_name, module_name
     FROM %lms_module as mo WHERE mo.module_info IN ('all','user')
@@ -230,7 +230,7 @@ function switch_active()
 
     $obj_index = importVar('obj_index', false, '');
 
-    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &FormaLanguage::createInstance('middlearea', 'lms');
     $selected = $man_ma->getObjIdstList($obj_index);
     $man_ma->setObjIdstList($obj_index, $selected);
 
@@ -283,14 +283,14 @@ function select_permission()
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &FormaLanguage::createInstance('middlearea', 'lms');
 
     $obj_index = importVar('obj_index', false, '');
 
     // first step load selector
 
     $man_ma = new Man_MiddleArea();
-    $acl_manager = new DoceboACLManager();
+    $acl_manager = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -337,14 +337,14 @@ function select_menu_permission() //DEPRECATED FOR MULTIUSERSELECTOR
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &DoceboLanguage::createInstance('middlearea', 'lms');
+    $lang = &FormaLanguage::createInstance('middlearea', 'lms');
 
     $id = FormaLms\lib\Get::req('id', DOTY_INT);
 
     // first step load selector
 
     $man_ma = new Man_MiddleArea();
-    $acl_manager = new DoceboACLManager();
+    $acl_manager = new FormaACLManager();
     $user_select = new UserSelector();
 
     $user_select->show_user_selector = true;
@@ -354,7 +354,7 @@ function select_menu_permission() //DEPRECATED FOR MULTIUSERSELECTOR
     //$user_select->multi_choice = TRUE;
 
     $menu = CoreMenu::get($id);
-    $am = Docebo::user()->getACLManager();
+    $am = Forma::user()->getACLManager();
     $role_idst = $am->getRole(false, $menu->role)[0];
 
     $members = $am->getRoleMembers($role_idst);

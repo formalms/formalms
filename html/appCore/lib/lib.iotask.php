@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /*
- * This is the base library for import/export operations in Docebo.
+ * This is the base library for import/export operations in Forma.
  * You should import this library if you want to develop your own
  * source or destination connector. This file is also imported in
  * modules/ioTask.php
@@ -76,7 +76,7 @@ define('TASK_IMPORT_TYPE_INSERTREMOVE', '2');
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectionManager
+class FormaConnectionManager
 {
     public $rs_connection = false;
     public $rs_connector = false;
@@ -189,12 +189,12 @@ class DoceboConnectionManager
      * save a new connection or update an old connection.
      *
      * @param string          $old_name
-     * @param DoceboConnector $connection
+     * @param FormaConnector $connection
      **/
     public function save_connection($old_name, $connection)
     {
-        //		$name = Docebo::db()->escape($connection->get_name());
-        //		$description = Docebo::db()->escape($connection->get_description());
+        //		$name = Forma::db()->escape($connection->get_name());
+        //		$description = Forma::db()->escape($connection->get_description());
         $name = $connection->get_name();
         $description = $connection->get_description();
         $type = FormaLms\lib\Get::filter($connection->get_type_name(), DOTY_ALPHANUM);
@@ -352,7 +352,7 @@ class DoceboConnectionManager
      *
      * @param string $type the type of the required connector
      *
-     * @return DoceboConnector the requeste connector
+     * @return FormaConnector the requeste connector
      **/
     public function create_connector_bytype($type)
     {
@@ -631,7 +631,7 @@ class DoceboConnectionManager
     {
         if (!isset($this->lang)) {
             //require_once(_i18n_.'/lib.lang.php');
-            $this->lang = &DoceboLanguage::createInstance('iotask', 'framework');
+            $this->lang = &FormaLanguage::createInstance('iotask', 'framework');
         }
 
         return $this->lang;
@@ -666,7 +666,7 @@ class DoceboConnectionManager
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboImport
+class FormaImport
 {
     public $source = null;
     public $destination = null;
@@ -674,11 +674,11 @@ class DoceboImport
 
     public function execute_task($taskID)
     {
-        $connMgr = new DoceboConnectionManager();
+        $connMgr = new FormaConnectionManager();
         $params = $connMgr->get_task_byID($taskID);
         $source = &$connMgr->create_connection_byname($params[CONNMGR_TASK_SOURCE]);
         $destination = &$connMgr->create_connection_byname($params[CONNMGR_TASK_DESTINATION]);
-        $lang = &DoceboLanguage::createInstance('iotask', 'framework');
+        $lang = &FormaLanguage::createInstance('iotask', 'framework');
 
         $result = $source->connect();
         if ($result === false) {
@@ -718,7 +718,7 @@ class DoceboImport
     {
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
+        $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
         $form = new Form();
         $table = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
 

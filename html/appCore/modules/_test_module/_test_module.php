@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 function formatter_userid(&$column, &$record, &$data, $args = false)
 {
-    $acl = new DoceboACLManager();
+    $acl = new FormaACLManager();
     $output = $acl->relativeId($data);
 
     return $output;
@@ -115,7 +115,7 @@ function dispatch($op)
         case 'dataexport':
             require_once _base_ . '/lib/dataexport/lib.dataexport.php';
 
-            $lang = &DoceboLanguage::CreateInstance('standard', 'framework');
+            $lang = &FormaLanguage::CreateInstance('standard', 'framework');
 
             $query = 'SELECT * FROM core_user ORDER BY lastname LIMIT 0,20 ';
             $source = new DataSource_Query($query);
@@ -141,7 +141,7 @@ function dispatch($op)
         case 'dataexportcsv':
             require_once _base_ . '/lib/lib.download.php';
             require_once _base_ . '/lib/dataexport/lib.dataexport.php';
-            $lang = &DoceboLanguage::CreateInstance('standard', 'framework');
+            $lang = &FormaLanguage::CreateInstance('standard', 'framework');
             $query = 'SELECT * FROM core_user ORDER BY lastname LIMIT 0,20 ';
             $source = new DataSource_Query($query);
             $nameGroup = [];

@@ -5,7 +5,7 @@ $regset = Format::instance();
 $date_format = $regset->date_token;
 $date_sep = $regset->date_sep;
 $date_format = str_replace(['%d', '%m', '%Y', '-'], ['dd', 'mm', 'yyyy', '-'], $date_format);
-$_lang = Docebo::user()->getPreference('ui.lang_code');
+$_lang = Forma::user()->getPreference('ui.lang_code');
 $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-date-language="' . $_lang . '" data-date-format="' . $date_format . '"';
 
 ?>

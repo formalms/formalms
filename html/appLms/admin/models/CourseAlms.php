@@ -42,7 +42,7 @@ class CourseAlms extends Model
         $this->classroom_man = new DateManager();
         $this->edition_man = new EditionManager();
 
-        $this->acl_man = Docebo::user()->getAclManager();
+        $this->acl_man = Forma::user()->getAclManager();
         parent::__construct();
     }
 
@@ -60,15 +60,15 @@ class CourseAlms extends Model
 
     public function getUserInOverbooking($idCourse)
     {
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = Forma::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
 
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -103,15 +103,15 @@ class CourseAlms extends Model
 
     public function getUserInWaiting($idCourse)
     {
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = Forma::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
 
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -131,15 +131,15 @@ class CourseAlms extends Model
 
     public function getUserInCourse($idCourse)
     {
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = Forma::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
 
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -200,11 +200,11 @@ class CourseAlms extends Model
             }
         }
 
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
 
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -212,7 +212,7 @@ class CourseAlms extends Model
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -294,15 +294,15 @@ class CourseAlms extends Model
 
     public function loadCourse($start_index, $results, $sort, $dir, $filter = false)
     {
-        $userlevelid = Docebo::user()->getUserLevelId();
+        $userlevelid = Forma::user()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Docebo::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
 
-            $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -359,7 +359,7 @@ class CourseAlms extends Model
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Docebo::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -498,7 +498,7 @@ class CourseAlms extends Model
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.manmenu.php';
 
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $array_lang = Forma::langManager()->getAllLangCode();
         $array_lang[] = 'none';
 
         $id_custom = $data_params['selected_menu'];
@@ -789,10 +789,10 @@ class CourseAlms extends Model
         $label_model->associateLabelToCourse($label, $id_course);
 
         // add this corse to the pool of course visible by the user that have create it -----
-        if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $adminManager->addAdminCourse($id_course, Docebo::user()->getIdSt());
+            $adminManager->addAdminCourse($id_course, Forma::user()->getIdSt());
         }
 
         //if the scs exist create a room ----------------------------------------------------
@@ -806,7 +806,7 @@ class CourseAlms extends Model
             ];
             $re = insertRoom($rules);
         }
-        $course_idst = DoceboCourse::createCourseLevel($id_course);
+        $course_idst = FormaCourse::createCourseLevel($id_course);
 
         // create the course menu -----------------------------------------------------------
         if (!createCourseMenuFromCustom($id_custom, $id_course, $course_idst)) {
@@ -830,7 +830,7 @@ class CourseAlms extends Model
 
             //AUTO SUBSCRIPTION
             if (isset($data_params['auto_subscription']) && $data_params['auto_subscription'] == 1) {
-                $userId = Docebo::user()->getIdSt();
+                $userId = Forma::user()->getIdSt();
 
                 if (!$this->autoUserRegister($userId, $id_course)) {
                     exit('Error during autosubscription');
@@ -839,7 +839,7 @@ class CourseAlms extends Model
             $res['res'] = '_ok_course';
         }
 
-        $course = new DoceboCourse($id_course);
+        $course = new FormaCourse($id_course);
         Events::trigger('lms.course.created', ['id_course' => $id_course, 'course' => $course, 'parameters' => $data_params]);
 
         return $res;
@@ -862,10 +862,10 @@ class CourseAlms extends Model
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.manmenu.php';
 
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $array_lang = Forma::langManager()->getAllLangCode();
         $array_lang[] = 'none';
 
-        $acl_man = Docebo::user()->getAclManager();
+        $acl_man = Forma::user()->getAclManager();
 
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
@@ -882,7 +882,7 @@ class CourseAlms extends Model
         }
         $quota = (int)$quota * 1024 * 1024;
 
-        $course_man = new DoceboCourse($id_course);
+        $course_man = new FormaCourse($id_course);
         $used = $course_man->getUsedSpace();
 
         if ($data_params['course_name'] == '') {
@@ -1197,7 +1197,7 @@ class CourseAlms extends Model
         $extra_field->storeFieldsForObj($id_course);
 
         //AUTO SUBSCRIPTION
-        $userId = Docebo::user()->getIdSt();
+        $userId = Forma::user()->getIdSt();
         $userSubscribed = $this->isUserSubscribedInCourse($userId, $id_course);
         if (intval($userSubscribed[0]) <= 0) {
             if (isset($data_params['auto_subscription']) && $data_params['auto_subscription'] == 1) {
@@ -1209,7 +1209,7 @@ class CourseAlms extends Model
 
         $res['res'] = '_ok_course';
 
-        $new_course = new DoceboCourse($id_course);
+        $new_course = new FormaCourse($id_course);
         Events::trigger('lms.course.updated', ['id_course' => $id_course, 'old_course' => $course_man, 'new_course' => $new_course]);
 
         return $res;
@@ -1294,7 +1294,7 @@ class CourseAlms extends Model
 
         $course_man = new Man_Course();
 
-        $course = new DoceboCourse($id_course);
+        $course = new FormaCourse($id_course);
         if (!$course->getAllInfo()) {
             return false;
         }
@@ -1305,11 +1305,11 @@ class CourseAlms extends Model
 
         $levels = &$course_man->getCourseIdstGroupLevel($id_course);
         foreach ($levels as $lv => $idst) {
-            Docebo::aclm()->deleteGroup($idst);
+            Forma::aclm()->deleteGroup($idst);
         }
 
         $alluser = getIDGroupAlluser($id_course);
-        Docebo::aclm()->deleteGroup($alluser);
+        Forma::aclm()->deleteGroup($alluser);
         $course_man->removeCourseRole($id_course);
         $course_man->removeCourseMenu($id_course);
 
@@ -1682,7 +1682,7 @@ class CourseAlms extends Model
     {
         $usermanagementAdm = new UsermanagementAdm();
         $usersFilterIds = [];
-        $currentUser = Docebo::user();
+        $currentUser = Forma::user();
         if (ADMIN_GROUP_ADMIN == $currentUser->getUserLevelId()) {
 
             $nodes = $usermanagementAdm->getAdminFolders($currentUser->getIdSt(), true);

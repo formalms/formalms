@@ -13,12 +13,12 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Docebo::user()->isAnonymous()) {
+if (!Forma::user()->isAnonymous()) {
     // XXX: mod glossary interface
     function modglossarygui($object_glos = null)
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         require_once _base_ . '/lib/lib.table.php';
 
@@ -101,7 +101,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view', false, 'storage');
 
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
         require_once _base_ . '/lib/lib.form.php';
 
         $GLOBALS['page']->add(getTitleArea($lang->def('_GLOSSARY'), 'glossary', $lang->def('_GLOSSARY'))
@@ -150,7 +150,7 @@ if (!Docebo::user()->isAnonymous()) {
     {
         checkPerm('view', false, 'storage');
 
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
         require_once _base_ . '/lib/lib.form.php';
 
         $idGlossary = importVar('idGlossary', true, 0);
@@ -218,7 +218,7 @@ if (!Docebo::user()->isAnonymous()) {
     function addterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -248,7 +248,7 @@ if (!Docebo::user()->isAnonymous()) {
     function insterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         $back_url = urldecode($_POST['back_url']);
         $back_coded = htmlentities(urlencode($back_url));
@@ -279,7 +279,7 @@ if (!Docebo::user()->isAnonymous()) {
     function modterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         require_once _base_ . '/lib/lib.form.php';
 
@@ -314,7 +314,7 @@ if (!Docebo::user()->isAnonymous()) {
     function upterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         $back_url = urldecode($_POST['back_url']);
         $back_coded = htmlentities(urlencode($back_url));
@@ -348,7 +348,7 @@ if (!Docebo::user()->isAnonymous()) {
     function delterm()
     {
         checkPerm('view', false, 'storage');
-        $lang = &DoceboLanguage::createInstance('glossary');
+        $lang = &FormaLanguage::createInstance('glossary');
 
         $back_url = urldecode($_GET['back_url']);
         $back_coded = htmlentities(urlencode($back_url));

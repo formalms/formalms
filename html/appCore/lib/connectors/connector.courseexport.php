@@ -27,7 +27,7 @@ require_once dirname(__FILE__) . '/lib.connector.php';
  *
  * @author		Pirovano Fabio <fabio (@) docebo (.) com>
  **/
-class DoceboConnectorCourseExport extends DoceboConnector
+class FormaConnectorCourseExport extends FormaConnector
 {
     public $name = '';
 
@@ -145,7 +145,7 @@ class DoceboConnectorCourseExport extends DoceboConnector
 
     public function get_configUI()
     {
-        return new DoceboConnectorCourseExportUI($this);
+        return new FormaConnectorCourseExportUI($this);
     }
 
     /**
@@ -153,7 +153,7 @@ class DoceboConnectorCourseExport extends DoceboConnector
      **/
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('rg_report');
+        $this->lang = FormaLanguage::createInstance('rg_report');
 
         $this->_readed_end = false;
         $this->today = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
@@ -307,7 +307,7 @@ class DoceboConnectorCourseExport extends DoceboConnector
      **/
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('userreport', 'lms');
+        $lang = FormaLanguage::createInstance('userreport', 'lms');
 
         $col_descriptor = [];
 
@@ -394,7 +394,7 @@ class DoceboConnectorCourseExport extends DoceboConnector
  *
  * @author		Emanuele Sandri <emanuele (@) docebo (.) com>
  **/
-class DoceboConnectorCourseExportUI extends DoceboConnectorUI
+class FormaConnectorCourseExportUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;
@@ -545,5 +545,5 @@ class DoceboConnectorCourseExportUI extends DoceboConnectorUI
 
 function courseexport_factory()
 {
-    return new DoceboConnectorCourseExport([]);
+    return new FormaConnectorCourseExport([]);
 }

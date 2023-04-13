@@ -39,7 +39,7 @@ class Module_IOTask extends Module
     {
         if ($this->lang === null) {
             //require_once(_i18n_.'/lib.lang.php');
-            $this->lang = &DoceboLanguage::createInstance('iotask', 'framework');
+            $this->lang = &FormaLanguage::createInstance('iotask', 'framework');
         }
 
         return $this->lang;
@@ -49,7 +49,7 @@ class Module_IOTask extends Module
     {
         if ($this->connMgr === null) {
             require_once _adm_ . '/lib/lib.iotask.php';
-            $this->connMgr = new DoceboConnectionManager();
+            $this->connMgr = new FormaConnectionManager();
         }
 
         return $this->connMgr;
@@ -146,7 +146,7 @@ class Module_IOTask extends Module
         $out = '';
         $connMgr = &$this->get_connMgr();
         $taskParams = $connMgr->get_first_task();
-        $dimport = new DoceboImport();
+        $dimport = new FormaImport();
         while ($taskParams !== false) {
             $canExecuteResponse = $connMgr->is_task_todo($taskParams, true);
             $out .= '<iotask name="' . $taskParams[CONNMGR_TASK_NAME] . '" executed="' . ($canExecuteResponse['is_task_todo'] ? 'TRUE' : 'FALSE') . '" executionDate="' . $canExecuteResponse['executionDate'] . '" scheduledDate="' . $canExecuteResponse['scheduledDate'] . '"';

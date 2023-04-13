@@ -36,7 +36,7 @@ class MycoursesLmsController extends LmsController
 
         if (count($filters = FormaLms\lib\Get::getRegexUrlMatches('filterCourse'))) {
             foreach ($filters as $filter) {
-                $this->filterManager->setFilterByCookie($this->filterManager->getCookieIndex($filter, Docebo::user()->idst), FormaLms\lib\Get::req($filter));
+                $this->filterManager->setFilterByCookie($this->filterManager->getCookieIndex($filter, Forma::user()->idst), FormaLms\lib\Get::req($filter));
             }
         }
 

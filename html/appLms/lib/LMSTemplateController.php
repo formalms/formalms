@@ -51,7 +51,7 @@ final class LMSTemplateController extends TemplateController
 
     private function notGeneratedCertificates()
     {
-        $id_user = Docebo::user()->getIdSt();
+        $id_user = Forma::user()->getIdSt();
         $model = new MycertificateLms($id_user);
         $availables = 0;
         $certificates = $model->loadMyCertificates(false, false);

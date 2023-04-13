@@ -57,9 +57,9 @@ class Field_Dropdown extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $array_lang = Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -801,8 +801,8 @@ class Field_Dropdown extends Field
 
     public function _show_son()
     {
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
         $out = &$GLOBALS['page'];
 
         $out->setWorkingZone('content');
@@ -913,9 +913,9 @@ class Field_Dropdown extends Field
     public function _edit_field()
     {
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $array_lang = Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -1094,9 +1094,9 @@ class Field_Dropdown extends Field
     public function _add_son()
     {
         $array_lang = [];
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
+        $array_lang = Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -1223,11 +1223,11 @@ class Field_Dropdown extends Field
     public function _mod_son()
     {
         $idSon = importVar('idSon', true, 0);
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
         $out = &$GLOBALS['page'];
         $array_lang = [];
-        $array_lang = Docebo::langManager()->getAllLangCode();
+        $array_lang = Forma::langManager()->getAllLangCode();
 
         if (isset($_POST['undo'])) {
             Util::jump_to($this->getUrl() . '&id_field='
@@ -1373,8 +1373,8 @@ class Field_Dropdown extends Field
     public function _del_son()
     {
         $idSon = importVar('idSon');
-        $std_lang = &DoceboLanguage::createInstance('standard');
-        $lang = &DoceboLanguage::createInstance('field');
+        $std_lang = &FormaLanguage::createInstance('standard');
+        $lang = &FormaLanguage::createInstance('field');
         $out = &$GLOBALS['page'];
 
         require_once _base_ . '/lib/lib.form.php';
@@ -1453,7 +1453,7 @@ class Field_Dropdown extends Field
 
     public function getAllSon($language = false)
     {
-        $lang = &DoceboLanguage::createInstance('field');
+        $lang = &FormaLanguage::createInstance('field');
         if (!$language) {
             $language = getLanguage();
         }
@@ -1493,7 +1493,7 @@ class Field_Dropdown extends Field
 
     public function getFlatAllSon()
     {
-        $lang = &DoceboLanguage::createInstance('field');
+        $lang = &FormaLanguage::createInstance('field');
 
         $sons = [];
         //find available son

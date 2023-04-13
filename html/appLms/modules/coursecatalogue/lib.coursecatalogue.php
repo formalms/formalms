@@ -35,8 +35,8 @@ function displayCourseList(&$url, $order_type)
     $classroom_man = new ClassroomManager();
     $classrooms = $classroom_man->getClassroomNameList();
 
-    $lang = &DoceboLanguage::createInstance('catalogue');
-    $lang_c = &DoceboLanguage::createInstance('course');
+    $lang = &FormaLanguage::createInstance('catalogue');
+    $lang_c = &FormaLanguage::createInstance('course');
 
     $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
     $man_course = new Man_Course();
@@ -81,7 +81,7 @@ function displayCourseList(&$url, $order_type)
     $limit_course = ' LIMIT ' . $ini . ', ' . FormaLms\lib\Get::sett('visuItem');
     $where_course .= " AND c.course_type <> 'assessment'";
 
-    if (Docebo::user()->isAnonymous()) {
+    if (Forma::user()->isAnonymous()) {
         $where_course .= ' AND c.show_rules = 0';
     } else {
         $where_course .= ' AND c.show_rules  <> 2';
@@ -104,11 +104,11 @@ function displayCourseList(&$url, $order_type)
     }
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    if (!Docebo::user()->isAnonymous()) {
+    if (!Forma::user()->isAnonymous()) {
 
         if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
-            $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
+            $arr_assessment = $pa_man->getUserAssessmentSubsription(Forma::user()->getArrSt());
 
             $report = new CourseReportManager();
             $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
@@ -140,7 +140,7 @@ function displayCourseList(&$url, $order_type)
         $filter_date_end = Format::dateDb($filter_date_end, 'date') . ' 00:00:00';
     }
 
-    $all_lang = Docebo::langManager()->getAllLangCode();
+    $all_lang = Forma::langManager()->getAllLangCode();
 
     if (must_search_filter()) {
         if (trim($s_searched) != '') {
@@ -355,8 +355,8 @@ function displayCoursePathList(&$url, $selected_tab)
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.coursereport.php';
 
-    $lang = &DoceboLanguage::createInstance('catalogue');
-    $lang_c = &DoceboLanguage::createInstance('course');
+    $lang = &FormaLanguage::createInstance('catalogue');
+    $lang_c = &FormaLanguage::createInstance('course');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $nav_bar = new NavBar('ini', FormaLms\lib\Get::sett('visuItem'), 0);
     $nav_bar->setLink($url->getUrl());
@@ -383,10 +383,10 @@ function displayCoursePathList(&$url, $selected_tab)
         $path_man->filterInPath([0]);
     }
 
-    if (!Docebo::user()->isAnonymous()) {
+    if (!Forma::user()->isAnonymous()) {
         if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
-            $arr_assessment = $pa_man->getUserAssessmentSubsription(Docebo::user()->getArrSt());
+            $arr_assessment = $pa_man->getUserAssessmentSubsription(Forma::user()->getArrSt());
 
             $report = new CourseReportManager();
             $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
@@ -544,7 +544,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
     $action = relationWithCourse($cinfo['idCourse'], $cinfo, $uc_status, false);
     $there_material = [];
 
-    $lang_c = &DoceboLanguage::createInstance('course', 'lms');
+    $lang_c = &FormaLanguage::createInstance('course', 'lms');
 
     if (!defined('_ECOM_CURRENCY')) {
         $currency_label = getPLSetting('ecom', 'currency_label', '');
@@ -919,7 +919,7 @@ function searchForm(&$url, &$lang)
 {
     //$filter_type = get_searched('filter_type', array('free'=>1, 'editions'=>1, 'sale'=>1));
 
-    $langs = Docebo::langManager()->getAllLangCode();
+    $langs = Forma::langManager()->getAllLangCode();
     $all_lang = ['all' => $lang->def('_ALL_LANGUAGE')];
     $all_lang = array_merge($all_lang, $langs);
 
@@ -988,7 +988,7 @@ function relationWithCourse($id_course, &$course, $uc_details, $edition_id = fal
 
     $course['enrolled'] = $enrolled;
 
-    $base_link = 'index.php?modname=' . (Docebo::user()->isAnonymous() ? 'login' : 'coursecatalogue') . '&op=';
+    $base_link = 'index.php?modname=' . (Forma::user()->isAnonymous() ? 'login' : 'coursecatalogue') . '&op=';
 
     $bought_items = &getEcomItems();
     $product_type = ($edition_id !== false ? 'course_edition' : 'course');
@@ -1121,8 +1121,8 @@ function getCourseEditionList($course_id)
 
     require_once _lms_ . '/lib/lib.course.php';
 
-    $lang_c = &DoceboLanguage::createInstance('catalogue');
-    $lang = &DoceboLanguage::createInstance('course');
+    $lang_c = &FormaLanguage::createInstance('catalogue');
+    $lang = &FormaLanguage::createInstance('course');
 
     $man_course = new Man_Course();
     $course = $man_course->getCourseInfo($course_id);
@@ -1181,8 +1181,8 @@ function getCourseEditionTable($course_id)
     require_once _base_ . '/lib/lib.table.php';
     require_once _lms_ . '/lib/lib.course.php';
 
-    $lang_c = &DoceboLanguage::createInstance('catalogue');
-    $lang = &DoceboLanguage::createInstance('course');
+    $lang_c = &FormaLanguage::createInstance('catalogue');
+    $lang = &FormaLanguage::createInstance('course');
 
     /*
         $qtxt ="SELECT name FROM ".$GLOBALS["prefix_lms"]."_course ";

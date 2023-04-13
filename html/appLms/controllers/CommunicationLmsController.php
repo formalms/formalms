@@ -32,10 +32,10 @@ class CommunicationLmsController extends LmsController
     {
         $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
         $model = new CommunicationAlms();
-        $comm = $model->findByPk($id_comm, Docebo::user()->getArrSt());
+        $comm = $model->findByPk($id_comm, Forma::user()->getArrSt());
 
         if ($comm !== false && $comm['type_of'] == 'none') {
-            $model->markAsRead($id_comm, Docebo::user()->getId());
+            $model->markAsRead($id_comm, Forma::user()->getId());
         }
         if (defined('IS_AJAX')) {
             echo json_encode($comm);
@@ -90,8 +90,8 @@ class CommunicationLmsController extends LmsController
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new CommunicationAlms();
-        $communications = $model->findAllUnread(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
-            'viewer' => Docebo::user()->getArrSt(),
+        $communications = $model->findAllUnread(0, 0, 'publish_date', 'DESC', Forma::user()->getId(), [
+            'viewer' => Forma::user()->getArrSt(),
         ]);
 
         foreach ($communications as $id => $comm) {
@@ -141,8 +141,8 @@ class CommunicationLmsController extends LmsController
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new CommunicationAlms();
-        $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
-            'viewer' => Docebo::user()->getArrSt(),
+        $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Forma::user()->getId(), [
+            'viewer' => Forma::user()->getArrSt(),
         ]);
 
         foreach ($communications as $id => $comm) {
@@ -188,8 +188,8 @@ class CommunicationLmsController extends LmsController
     public function newTask()
     {
         $model = new CommunicationAlms();
-        $communications = $model->findAllUnread(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
-            'viewer' => Docebo::user()->getArrSt(),
+        $communications = $model->findAllUnread(0, 0, 'publish_date', 'DESC', Forma::user()->getId(), [
+            'viewer' => Forma::user()->getArrSt(),
         ]);
         $this->render('communication', [
             'communications' => $communications,
@@ -199,8 +199,8 @@ class CommunicationLmsController extends LmsController
     public function historyTask()
     {
         $model = new CommunicationAlms();
-        $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Docebo::user()->getId(), [
-            'viewer' => Docebo::user()->getArrSt(),
+        $communications = $model->findAllReaded(0, 0, 'publish_date', 'DESC', Forma::user()->getId(), [
+            'viewer' => Forma::user()->getArrSt(),
         ]);
         $this->render('communication', [
             'communications' => $communications,
@@ -212,15 +212,15 @@ class CommunicationLmsController extends LmsController
         $id_comm = FormaLms\lib\Get::req('id_comm', DOTY_INT, 0);
         $unread = FormaLms\lib\Get::req('unread', DOTY_INT, 0);
         $model = new CommunicationAlms();
-        $comm = $model->findByPk($id_comm, Docebo::user()->getArrSt());
+        $comm = $model->findByPk($id_comm, Forma::user()->getArrSt());
 
         if ($comm !== false) {
             switch ($comm['type_of']) {
                 case 'none' :
                     if ($unread) {
-                        $model->markAsUnread($id_comm, Docebo::user()->getId());
+                        $model->markAsUnread($id_comm, Forma::user()->getId());
                     } else {
-                        $model->markAsRead($id_comm, Docebo::user()->getId());
+                        $model->markAsRead($id_comm, Forma::user()->getId());
                     }
 
                     break;

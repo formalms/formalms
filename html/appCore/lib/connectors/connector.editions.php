@@ -22,7 +22,7 @@ require_once _lms_ . '/lib/lib.edition.php';
  *
  * @version 	1.0
  **/
-class ConnectorEditions extends DoceboConnector
+class ConnectorEditions extends FormaConnector
 {
     public $last_error = '';
 
@@ -137,7 +137,7 @@ class ConnectorEditions extends DoceboConnector
 
     public function connect()
     {
-        $this->lang = DoceboLanguage::createInstance('rg_report');
+        $this->lang = FormaLanguage::createInstance('rg_report');
 
         $this->_readed_end = false;
         $this->today = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
@@ -241,7 +241,7 @@ class ConnectorEditions extends DoceboConnector
      **/
     public function get_cols_descripor()
     {
-        $lang = DoceboLanguage::createInstance('course', 'lms');
+        $lang = FormaLanguage::createInstance('course', 'lms');
 
         $col_descriptor = [];
         foreach ($this->all_cols as $k => $col) {
@@ -397,7 +397,7 @@ class ConnectorEditions extends DoceboConnector
  *
  * @version 	1.0
  **/
-class ConnectorEditionsUI extends DoceboConnectorUI
+class ConnectorEditionsUI extends FormaConnectorUI
 {
     public $connector = null;
     public $post_params = null;

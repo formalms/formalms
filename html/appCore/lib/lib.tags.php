@@ -58,7 +58,7 @@ class Tags
             return '';
         }
 
-        $lang = &DoceboLanguage::createInstance('tags', 'framework');
+        $lang = &FormaLanguage::createInstance('tags', 'framework');
 
         $this->tags_id = $tags_id;
         YuiLib::load(['autocomplete' => 'autocomplete-min.js', 'selector' => 'selector-beta-min.js'],

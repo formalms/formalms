@@ -590,7 +590,7 @@ class CompetencesAdmController extends AdmController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -652,7 +652,7 @@ class CompetencesAdmController extends AdmController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Docebo::langManager()->getAllLangcode();
+            $lang_codes = Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -744,7 +744,7 @@ class CompetencesAdmController extends AdmController
         $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
-        $arr = Docebo::langManager()->getAllLangcode();
+        $arr = Forma::langManager()->getAllLangcode();
         foreach ($arr as $lang_code) {
             $_arr_langs[$lang_code] = [
                 'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
@@ -794,7 +794,7 @@ class CompetencesAdmController extends AdmController
         $_lang_desc = FormaLms\lib\Get::req('description', DOTY_MIXED, []);
 
         $_arr_langs = [];
-        $arr = Docebo::langManager()->getAllLangcode();
+        $arr = Forma::langManager()->getAllLangcode();
         foreach ($arr as $lang_code) {
             $_arr_langs[$lang_code] = [
                 'name' => (isset($_lang_name[$lang_code]) ? $_lang_name[$lang_code] : ''),
@@ -938,7 +938,7 @@ class CompetencesAdmController extends AdmController
 
         $output_results = [];
         if (is_array($list)) {
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $required_users = $this->model->getRequiredUsers($id_competence);
 
             foreach ($list as $user) {
@@ -1011,7 +1011,7 @@ class CompetencesAdmController extends AdmController
         } elseif (isset($_POST['okselector'])) {
             //--- SAVE: users selection has been done --------------------------------
 
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $user_selector = new UserSelector();
             $selection = $user_selector->getSelection($_POST);
             $users_selected = &$acl_man->getAllUsersFromIdst($selection);
@@ -1104,12 +1104,12 @@ class CompetencesAdmController extends AdmController
             //$user_select->show_orgchart_simple_selector = TRUE;
 
             //filter selectable user by sub-admin permission
-            $acl_man = Docebo::user()->getAclManager();
+            $acl_man = Forma::user()->getAclManager();
             $user_selector->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
-            if (Docebo::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Docebo::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
                 $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
                 $user_selector->setUserFilter('user', $admin_users);
                 $user_selector->setUserFilter('group', $admin_tree);
@@ -1304,7 +1304,7 @@ class CompetencesAdmController extends AdmController
             $_user_data = $user_model->getUsersDetails($users, true, true);
 
             $_std_score = 0;
-            $acl_man = Docebo::user()->getACLManager();
+            $acl_man = Forma::user()->getACLManager();
             foreach (array_keys($_user_data) as $id_user) {
                 $line = [];
 
@@ -1905,7 +1905,7 @@ class CompetencesAdmController extends AdmController
         $table->addHead($label_h, $style_h);
 
         $type = $this->model->getCompetenceType($id_competence);
-        $acl_man = Docebo::user()->getACLManager();
+        $acl_man = Forma::user()->getACLManager();
         foreach ($userdata as $id_user => $record) {
             $line = [];
 
