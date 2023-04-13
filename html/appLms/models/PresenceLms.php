@@ -28,7 +28,7 @@ class PresenceLms extends Model
         require_once _lms_ . '/admin/models/ClassroomAlms.php';
         $this->classroom_model = new ClassroomAlms($this->id_course, $this->id_date);
         $this->cache = [];
-        $this->acl_man = $GLOBALS['current_user']->getAclManager();
+        $this->acl_man = Docebo::user()->getAclManager();
         parent::__construct();
     }
 
