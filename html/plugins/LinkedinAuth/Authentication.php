@@ -83,7 +83,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             return EMPTY_SOCIALID;
         }
 
-        $user = \FormaUser::createFormaUserFromField('linkedin_id', $user_info['id'], 'public_area');
+        $user = \FormaLms\lib\FormaUser::createFormaUserFromField('linkedin_id', $user_info['id'], 'public_area');
 
         if (!$user) {
             ($session)->set('social', ['plugin' => Plugin::getName(),
@@ -101,7 +101,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
     {
         $query = ' UPDATE %adm_user'
                 . " SET linkedin_id = '" . $id . "'"
-                . ' WHERE idst=' . Forma::user()->getIdSt();
+                . ' WHERE idst=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         sql_query($query);
     }

@@ -66,7 +66,7 @@ class kbcategorizeWidget extends Widget
                 'r_env_parent_id' => $this->r_env_parent_id,
                 'r_param' => $this->r_param,
                 'r_alt_desc' => '',
-                'r_lang' => (!empty($this->language) ? $this->language : getLanguage()),
+                'r_lang' => (!empty($this->language) ? $this->language : Lang::get()),
                 'force_visible' => 0,
                 'is_mobile' => 0,
                 'folders' => [],

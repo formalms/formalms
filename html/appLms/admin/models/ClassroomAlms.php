@@ -31,10 +31,10 @@ class ClassroomAlms extends Model
 
         $this->id_course = $id_course;
         $this->id_date = $id_date;
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->classroom_man = new DateManager();
         $this->course_man = new Man_Course();
-        $this->acl_man = &Forma::user()->getAclManager();
+        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 
@@ -615,7 +615,7 @@ class ClassroomAlms extends Model
 
         $calendarMailer = new CalendarMailer();
         foreach ($users as $user) {
-            $user = Forma::user()->getAclManager()->getUserMappedData(Forma::user()->getAclManager()->getUser($user['id_user'], false));
+            $user = \FormaLms\lib\Forma::getAclManager()->getUserMappedData(\FormaLms\lib\Forma::getAclManager()->getUser($user['id_user'], false));
 
             $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $user['idst']);
 

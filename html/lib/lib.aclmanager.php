@@ -579,7 +579,7 @@ class FormaACLManager
 
         if ($this->_executeQuery($query)) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
-                . 'VALUES ( ' . (int) $idst . ", '" . date('Y-m-d H:i:s') . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int) getLogUserId() . '  )';
+                . 'VALUES ( ' . (int) $idst . ", '" . date('Y-m-d H:i:s') . "', '" . ($alredy_encripted === true ? $pass : $this->encrypt($pass)) . "', " . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '  )';
             $this->_executeQuery($query_h);
 
             Events::triggerDeprecated('core.user.registered', ['idst' => $idst]);
@@ -970,7 +970,7 @@ class FormaACLManager
         $result = $this->_executeQuery($query);
         if ($result && $pass !== false) {
             $query_h = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_password_history ( idst_user, pwd_date, passw, changed_by ) '
-                . 'VALUES ( ' . (int) $idst . ", '" . date('Y-m-d H:i:s') . "', '" . $this->encrypt($pass) . "'," . (int) getLogUserId() . '  )';
+                . 'VALUES ( ' . (int) $idst . ", '" . date('Y-m-d H:i:s') . "', '" . $this->encrypt($pass) . "'," . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '  )';
             $this->_executeQuery($query_h);
         }
 
@@ -1065,7 +1065,7 @@ class FormaACLManager
      */
     public function deleteUser($idst)
     {
-        //if ($idst == Forma::user()->getIdSt()) return FALSE;
+        //if ($idst == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) return FALSE;
 
         $userdata = $this->getUser($idst, null);
 
@@ -1129,7 +1129,7 @@ class FormaACLManager
 
         $insert_query = 'INSERT INTO ' . $this->_getTableUserDeleted() . ' ' .
             ' (id_deletion, idst, userid, firstname, lastname, pass, email, avatar, signature, level, lastenter, valid, pwd_expire_at, register_date, deletion_date, deleted_by)' .
-            " VALUES ('', '" . (int) $idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . addslashes($signature) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . getLogUserId() . "')";
+            " VALUES ('', '" . (int) $idst . "', '" . addslashes($userid) . "', '" . addslashes($firstname) . "', '" . addslashes($lastname) . "', '" . addslashes($pass) . "', '" . addslashes($email) . "', '" . addslashes($avatar) . "', '" . addslashes($signature) . "', '" . $level . "', '" . $lastenter . "', '" . $valid . "', '" . $pwd_expire_at . "', '" . $register_date . "', '" . date('Y-m-d H:i:s') . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')";
 
         $insert_result = sql_query($insert_query);
 
@@ -1180,7 +1180,7 @@ class FormaACLManager
                 $extra_field = new FieldList();
                 $extra_field->quickRemoveUserEntry($idst);
                 //remove also from courseuser if neeeded
-                DbConn::getInstance()->query('DELETE FROM %lms_courseuser WHERE idUser = ' . (int) $idst . ' ');
+                \FormaLms\db\DbConn::getInstance()->query('DELETE FROM %lms_courseuser WHERE idUser = ' . (int) $idst . ' ');
             }
             $query = 'DELETE FROM ' . $this->_getTableTempUser()
                 . " WHERE idst = '" . $idst . "'";
@@ -1510,7 +1510,7 @@ class FormaACLManager
     {
         $path = $GLOBALS['where_files_relative'] . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $responseUser['idst'] = $user[ACL_INFO_IDST];
         $responseUser['name'] = $acl_man->getConvertedUserName($user);
@@ -3031,7 +3031,7 @@ class FormaACLManager
         if ($owned_directly) {
             $all_roles = $this->getRolesContainer($user_idst);
         } else {
-            $acl = Forma::user()->getAcl();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $all_roles = $acl->getUserAllST(false, '', $user_idst);
         }
 
@@ -3225,7 +3225,7 @@ class FormaACLManager
 
     public function &getGroupsIdByPaths($paths = false)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $temp = false;
 

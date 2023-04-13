@@ -64,7 +64,7 @@ class FormaConnectorFormaAdmin extends FormaConnector
             $this->set_config($params);
         }
 
-        $this->aclm = Forma::aclm();
+        $this->aclm = \FormaLms\lib\Forma::getAclManager();
         $this->cols_descriptor = [
             [
                 DOCEBOIMPORT_COLNAME => Lang::t('_TYPE'),
@@ -136,7 +136,7 @@ class FormaConnectorFormaAdmin extends FormaConnector
 
     public function connect()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
 
         $this->org_chart = [];
 

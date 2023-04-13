@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 define('IS_META', 0);
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -125,7 +125,7 @@ function certificate()
         $tb->addBody($cont);
     }
 
-    require_once Forma::inc(_base_ . '/lib/lib.dialog.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.dialog.php');
     setupHrefDialogBox('a[href*=delcertificate]');
 
     if ($mod_perm) {
@@ -301,7 +301,7 @@ function editcertificate($load = false)
     $out->setWorkingZone('content');
 
     $id_certificate = importVar('id_certificate', true, 0);
-    $all_languages = Forma::langManager()->getAllLanguages();
+    $all_languages = \FormaLms\lib\Forma::langManager()->getAllLanguages();
     $languages = [];
     foreach ($all_languages as $k => $v) {
         $languages[$v[0]] = $v[1];
@@ -318,7 +318,7 @@ function editcertificate($load = false)
         $name = '';
         $descr = '';
         $user_release = 1;
-        $base_language = getLanguage();
+        $base_language = Lang::get();
     }
 
     $page_title = [
@@ -367,7 +367,7 @@ function savecertificate()
     $id_certificate = importVar('id_certificate', true, 0);
     $load = importVar('load', true, 0);
 
-    $all_languages = Forma::langManager()->getAllLangCode();
+    $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
     $lang = &FormaLanguage::createInstance('certificate', 'lms');
 
     if ($_POST['name'] == '') {
@@ -429,7 +429,7 @@ function savecertificate()
 
         list($id_certificate) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $certificate = new Certificate();
         $certificate_info = $certificate->getCertificateInfo($id_certificate);
         Events::trigger('lms.certificate.created', ['id_certificate' => $id_certificate, 'certificate_info' => $certificate_info]);
@@ -448,7 +448,7 @@ function delcertificate()
     $lang = &FormaLanguage::createInstance('certificate', 'lms');
 
     if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0) == 1) {
-        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $certificate = new Certificate();
         $certificate_info = $certificate->getCertificateInfo($id_certificate);
 
@@ -493,7 +493,7 @@ function delcertificate()
 function report_certificate()
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
     require_once _lms_ . '/lib/lib.course.php';
     require_once _base_ . '/lib/lib.table.php';
 
@@ -617,7 +617,7 @@ function del_report_certificate()
     checkPerm('view');
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
     $certificate = new Certificate();
     $form = new Form();
@@ -662,8 +662,8 @@ function del_report_certificate()
 
 function send_zip_certificates()
 {
-    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
-    require_once Forma::inc(_base_ . '/lib/lib.download.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.download.php');
 
     $files = [];
     $zipName = date('YmdHis') . '_certs.zip';
@@ -702,8 +702,8 @@ function send_zip_certificates()
 
 function send_certificate()
 {
-    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
-    require_once Forma::inc(_base_ . '/lib/lib.download.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.download.php');
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
@@ -728,8 +728,8 @@ function send_certificate()
 
 function print_certificate()
 {
-    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
-    require_once Forma::inc(_base_ . '/lib/lib.download.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.download.php');
 
     $id_certificate = importVar('certificate_id', true, 0);
     $id_course = importVar('course_id', true, 0);
@@ -745,7 +745,7 @@ function preview()
 {
     checkPerm('view');
 
-    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
     $id_certificate = importVar('id_certificate', true, 0);
 

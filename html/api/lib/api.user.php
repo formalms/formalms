@@ -130,7 +130,7 @@ class User_API extends API
 
         // registration code:
         if ($id_user && !empty($userdata['reg_code']) && !empty($userdata['reg_code_type'])) {
-            require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
             $user_manager = new UserManager();
             $uma = new UsermanagementAdm();
             $reg_code_res = $user_manager->_render->processRegistrationCode(
@@ -509,8 +509,8 @@ class User_API extends API
 
     public function getMyCourses($id_user, $params = false)
     {
-        require_once Forma::include(_lms_ . '/lib/', 'lib.course.php');
-        require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
         $output = [];
 
         $output['success'] = true;
@@ -692,7 +692,7 @@ class User_API extends API
         if (empty($registration_code_type) || empty($code)) {
             $output['success'] = false;
         } else {
-            require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
             $user_manager = new UserManager();
 
             $res = $user_manager->checkRegistrationCode($code, $registration_code_type);
@@ -1105,7 +1105,7 @@ class User_API extends API
 
         $id_org = $this->_getBranchByCode($code_org);
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $idst_org = $acl_man->getGroupST('oc_' . $id_org);
         $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);

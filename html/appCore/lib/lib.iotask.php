@@ -193,8 +193,8 @@ class FormaConnectionManager
      **/
     public function save_connection($old_name, $connection)
     {
-        //		$name = Forma::db()->escape($connection->get_name());
-        //		$description = Forma::db()->escape($connection->get_description());
+        //		$name = \FormaLms\lib\Forma::db()->escape($connection->get_name());
+        //		$description = \FormaLms\lib\Forma::db()->escape($connection->get_description());
         $name = $connection->get_name();
         $description = $connection->get_description();
         $type = FormaLms\lib\Get::filter($connection->get_type_name(), DOTY_ALPHANUM);
@@ -361,7 +361,7 @@ class FormaConnectionManager
             return false;
         }
         require_once _adm_ . '/lib/connectors/lib.connector.php';
-        require_once Forma::inc($GLOBALS['where_framework'] . '/lib/connectors/' . $arr_conn[CONNMGR_CONNTYPE_FILE]);
+        require_once \FormaLms\lib\Forma::inc($GLOBALS['where_framework'] . '/lib/connectors/' . $arr_conn[CONNMGR_CONNTYPE_FILE]);
 
         return eval('return new ' . $arr_conn[CONNMGR_CONNTYPE_CLASS] . '(NULL);');
     }

@@ -43,7 +43,7 @@ class MailconfigAdm extends Model {
     ];
 
     public function __construct() {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
     }
 
 
@@ -123,7 +123,7 @@ class MailconfigAdm extends Model {
                 '[fields]' => implode(',', $missingFields),
             ]);
 
-            Forma::addError($errorMessage);
+            \FormaLms\lib\Forma::addError($errorMessage);
             $output['error'] = true;
         }
         $blankKeys = [];
@@ -148,7 +148,7 @@ class MailconfigAdm extends Model {
                 '[fields]' => implode(',', $blankFields),
             ]);
 
-            Forma::addError($errorMessage);
+            \FormaLms\lib\Forma::addError($errorMessage);
             $output['error'] = true;
         }
 

@@ -70,7 +70,7 @@ function getCompilationTable($id_user, $id_test)
 
     if (sql_num_rows($result) > 0) {
         $track_info = sql_fetch_assoc($result);
-        $play_man = new PlayTestManagement($id_test, Forma::user()->getIdst(), $track_info['idTrack'], $test_man);
+        $play_man = new PlayTestManagement($id_test, \FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), $track_info['idTrack'], $test_man);
         $test_info = $test_man->getTestAllInfo();
         $score_status = $play_man->getScoreStatus();
 
@@ -154,7 +154,7 @@ function getCompilationTable($id_user, $id_test)
             $quest_sequence_number = 1;
 
             while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-                require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
                 $quest_obj = eval("return new $type_class( $idQuest );");
 
                 $review = $quest_obj->displayUserResult($track_info['idTrack'],

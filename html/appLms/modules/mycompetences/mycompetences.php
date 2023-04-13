@@ -23,13 +23,13 @@ function mycompetences(&$url)
 
     $cmodel = new CompetencesAdm();
     $fmodel = new FunctionalrolesAdm();
-    $id_user = getLogUserId();
+    $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
     $ucomps = $cmodel->getUserCompetences($id_user);
     $rcomps = $fmodel->getUserRequiredCompetences($id_user);
 
     $ucomps_info = $cmodel->getCompetencesInfo(array_keys($ucomps));
-    $language = getLanguage();
+    $language = Lang::get();
     $_typologies = $cmodel->getCompetenceTypologies();
     $_types = $cmodel->getCompetenceTypes();
     $icon_actv = '<span class="ico-sprite subs_actv"><span>' . Lang::t('_COMPETENCE_OBTAINED', 'competences') . '</span></span>';

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: mod glossary interface
     function modglossarygui($object_glos = null)
     {
@@ -47,7 +47,7 @@ if (!Forma::user()->isAnonymous()) {
 	WHERE idGlossary = '" . $object_glos->getId() . "'"));
 
         if ($title == '') {
-            Forma::addError($lang->def('_FILEUNSPECIFIED'));
+            \FormaLms\lib\Forma::addError($lang->def('_FILEUNSPECIFIED'));
             Util::jump_to(Util::str_replace_once('&', '&amp;', $object_glos->back_url) . '&amp;create_result=0');
         }
 
@@ -135,9 +135,9 @@ if (!Forma::user()->isAnonymous()) {
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_glossary 
 	SET title = '" . $_POST['title'] . "',
 		description = '" . $_POST['description'] . "',
-		author = '" . (int) getLogUserId() . "'";
+		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($queryIns)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'glossary'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'glossary'));
             Util::jump_to(urldecode($_POST['back_url']) . '&create_result=0');
         }
         list($id) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));

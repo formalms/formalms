@@ -113,7 +113,7 @@ class Conference_Manager
 
         $event->_owner = $idSt;
         if (!$event->_owner) {
-            $event->_owner == Forma::user()->getIdSt();
+            $event->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $event->category = 'b';
@@ -208,7 +208,7 @@ class Conference_Manager
 
         $event->_owner = $idSt;
         if (!$event->_owner) {
-            $event->_owner == Forma::user()->getIdSt();
+            $event->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $event->category = 'b';

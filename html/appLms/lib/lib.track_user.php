@@ -30,17 +30,17 @@ class TrackUser
         list($last_course_access) = sql_fetch_row(sql_query('
 		SELECT UNIX_TIMESTAMP(MAX(lastTime)) 
 		FROM ' . $GLOBALS['prefix_lms'] . "_tracksession 
-		WHERE idCourse = '" . $session->get('idCourse') . "' AND idUser = '" . getLogUserId() . "'"));
+		WHERE idCourse = '" . $session->get('idCourse') . "' AND idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'"));
 
         $session->set('lastCourseAccess', $last_course_access);
         $session->save();
 
-        sql_query('UPDATE %lms_tracksession SET active = 0 WHERE idUser = ' . (int) getLogUserId() . ' and active = 1');
+        sql_query('UPDATE %lms_tracksession SET active = 0 WHERE idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and active = 1');
 
         sql_query("INSERT INTO %lms_tracksession 
 		( idCourse, idUser, session_id, enterTime, lastTime, ip_address, active ) VALUES ( 
 			'" . $session->get('idCourse') . "', 
-			'" . getLogUserId() . "',
+			'" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 			'',
 			'" . $now . "',
 			'" . $now . "',
@@ -92,14 +92,14 @@ class TrackUser
     {
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-        TrackUser::setActionTrack(getLogUserId(), $session->get('idCourse'), '_COURSE_LIST', 'view');
+        TrackUser::setActionTrack(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $session->get('idCourse'), '_COURSE_LIST', 'view');
     }
 
     public static function logoutSessionCourseTrack()
     {
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         if ($session->get('idCourse')) {
-            TrackUser::setActionTrack(getLogUserId(), $session->get('idCourse'), '_LOGOUT', 'view');
+            TrackUser::setActionTrack(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $session->get('idCourse'), '_LOGOUT', 'view');
         }
     }
 
@@ -152,7 +152,7 @@ class TrackUser
 
         if ($session->get('id_enter_course')) {
             $query_time = "SELECT UNIX_TIMESTAMP(enterTime) FROM %lms_tracksession 
-			WHERE idCourse = '" . $id_course . "' AND idUser = '" . getLogUserId() . "' 
+			WHERE idCourse = '" . $id_course . "' AND idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' 
 				AND idEnter = '" . $session->get('id_enter_course') . "'";
             list($partial_time) = sql_fetch_row(sql_query($query_time));
 

@@ -208,7 +208,7 @@ class UserSelectorUtil
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
     }
 
     /**
@@ -286,7 +286,7 @@ class UserSelectorUtil
             }
         }
 
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $res = $acl_man->getArrGroupST($oc_id_arr);
 
         return $res;

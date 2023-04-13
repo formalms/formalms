@@ -17,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @version  $Id:  $
  */
 // ----------------------------------------------------------------------------
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -64,7 +64,7 @@ function classEventMain()
     $GLOBALS['page']->add('<script type="text/javascript">'
      //.' setup_url(\''.$GLOBALS['where_lms_relative'].'/modules/calendar/ajax.calendar.php?\',\'lms_classroom\',\'lms_classroom\'); '
      . ' setup_url(\'' . $GLOBALS['where_lms_relative'] . '/ajax.server.php?mn=calendar&\',\'lms_classroom\',\'lms_classroom\'); '
-     . ' setup_mode("edit",' . $permissions . ',"' . Forma::user()->getUserId() . '"); '
+     . ' setup_mode("edit",' . $permissions . ',"' . \FormaLms\lib\FormaUser::getCurrentUser()->getUserId() . '"); '
      . '</script>', 'page_head');
 
     $width = '90%';

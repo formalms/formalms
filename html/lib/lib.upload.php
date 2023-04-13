@@ -114,7 +114,7 @@ function sl_upload($srcFile, $dstFile, $file_ext = '', $root = false)
             $file_mime_type = mime_content_type($srcFile);
         }
         if (!$valid_ext || !in_array($file_mime_type, $mimetype_arr)) {
-            Forma::addError(Lang::t('_UPLOAD_INVALID_MIMETYPE'));
+            \FormaLms\lib\Forma::addError(Lang::t('_UPLOAD_INVALID_MIMETYPE'));
 
             return false;
         }
@@ -216,7 +216,7 @@ function sl_upload_fs($srcFile, $dstFile, $root = _files_)
     }
     $re = move_uploaded_file($srcFile, $root . $dstFile);
     if (!$re) {
-        Forma::addError(Lang::t("Error on move_uploaded_file from: $srcFile to " . $dstFile));
+        \FormaLms\lib\Forma::addError(Lang::t("Error on move_uploaded_file from: $srcFile to " . $dstFile));
     }
 
     return $re;

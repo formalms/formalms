@@ -50,7 +50,7 @@ class QuestBankMan
         $this->_table_quest = $GLOBALS['prefix_lms'] . '_testquest';
         ////require_once(_base_.'/lib/lib.preference.php');
         ////$userPreferencesDb = new UserPreferencesDb();
-        $this->user_language = Forma::user()->getPreference('ui.language');
+        $this->user_language = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.language');
     }
 
     public function getCategoryList($author = false)
@@ -353,7 +353,7 @@ class QuestBank_Selector
         $this->form = new Form();
         $this->qb_man = new QuestBankMan();
 
-        $this->all_category = $this->qb_man->getCategoryList(getLogUserId());
+        $this->all_category = $this->qb_man->getCategoryList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         //#2269 see it2.php.net/array_unshift#78238
         //array_unshift($this->all_category, $this->lang->def('_ALL_QUEST_CATEGORY'));
         $aany_cat = [0 => $this->lang->def('_ALL_QUEST_CATEGORY')];

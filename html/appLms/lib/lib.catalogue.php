@@ -152,12 +152,12 @@ class Selector_Catalogue
 		FROM %lms_catalogue AS c
 		WHERE 1';
         // Retriving data
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             }
@@ -165,7 +165,7 @@ class Selector_Catalogue
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 if (count($admin_courses['catalogue']) == 0 && FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
@@ -342,8 +342,8 @@ class Catalogue_Manager
     public function getAllCourseOfUser($id_user)
     {
         $courses = [];
-        if ($id_user == getLogUserId()) {
-            $user_groups = Forma::user()->getArrSt();
+        if ($id_user == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
+            $user_groups = \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt();
         } else {
             $user_groups = $this->acl->getSTGroupsST($id_user);
         }

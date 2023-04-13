@@ -110,7 +110,7 @@ class TreeView_CatView extends TreeView
             $this->cat_not_empty[$row[0]] = $row[1];
         }
 
-        $user_lvl = Forma::user()->getUserLevelId();
+        $user_lvl = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
         parent::__construct($tdb, $id, $rootname);
         $this->can_add = ($user_lvl == ADMIN_GROUP_GODADMIN);

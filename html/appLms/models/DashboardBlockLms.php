@@ -13,8 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/models/DashboardBlockForm.php');
-require_once Forma::inc(_lms_ . '/models/DashboardBlockFormItem.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/models/DashboardBlockForm.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/models/DashboardBlockFormItem.php');
 
 /**
  * Class DashboardLms.
@@ -75,7 +75,7 @@ abstract class DashboardBlockLms extends Model
     public function __construct($jsonConfig)
     {
         parent::__construct();
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         if (is_string($jsonConfig)) {
             $jsonConfig = json_decode($jsonConfig, true);
         }
@@ -380,8 +380,8 @@ abstract class DashboardBlockLms extends Model
 
     protected function getUser()
     {
-        $user = Forma::user();
-        $acl_man = Forma::user()->getAclManager();
+        $user = \FormaLms\lib\FormaUser::getCurrentUser();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($user->getIdSt(), false);
 
         return [

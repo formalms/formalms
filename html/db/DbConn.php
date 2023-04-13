@@ -10,9 +10,14 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+namespace FormaLms\db;
+
+use FormaLms\db\drivers\Mysqli;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+
+require_once 'DbHelper.php';
 /**
  * This class follow the singleton design pattern, his purpose is to abstract
  * the normal function that interact with the database and add to them some
@@ -59,11 +64,11 @@ class DbConn
             $cfg['db_name'] = $values['dbName'];
             $cfg['db_host'] = $values['dbHost'];
         }
-        $db_type = FormaLms\lib\Get::cfg('db_type') ?: ($cfg['db_type'] ?? false);
-        $host = FormaLms\lib\Get::cfg('db_host') ?: ($cfg['db_host'] ?? false);
-        $user = FormaLms\lib\Get::cfg('db_user') ?: ($cfg['db_user'] ?? false);
-        $pass = FormaLms\lib\Get::cfg('db_pass') ?: ($cfg['db_pass'] ?? false);
-        $name = FormaLms\lib\Get::cfg('db_name') ?: ($cfg['db_name'] ?? false);
+        $db_type = \FormaLms\lib\Get::cfg('db_type') ?: ($cfg['db_type'] ?? false);
+        $host = \FormaLms\lib\Get::cfg('db_host') ?: ($cfg['db_host'] ?? false);
+        $user = \FormaLms\lib\Get::cfg('db_user') ?: ($cfg['db_user'] ?? false);
+        $pass = \FormaLms\lib\Get::cfg('db_pass') ?: ($cfg['db_pass'] ?? false);
+        $name = \FormaLms\lib\Get::cfg('db_name') ?: ($cfg['db_name'] ?? false);
         if (isset($connection_parameters['db_type']) && isset($connection_parameters['db_host']) && isset($connection_parameters['db_user']) && isset($connection_parameters['db_pass'])) {
             $db_type = $connection_parameters['db_type'];
             $host = $connection_parameters['db_host'];
@@ -93,10 +98,9 @@ class DbConn
         }
         switch ($dbType) {
             case 'mysqli':
-                require_once _base_ . '/db/drivers/docebodb.mysqli.php';
-                $instance = new Mysqli_DbConn();
+                $instance = new Mysqli();
                 if (!$debug) {
-                    $instance->debug = FormaLms\lib\Get::cfg('do_debug');
+                    $instance->debug = \FormaLms\lib\Get::cfg('do_debug');
                 } else {
                     $instance->debug = $debug;
                 }
@@ -128,7 +132,7 @@ class DbConn
     public function log($str)
     {
         if (class_exists('Log')) {
-            Log::add(trim(str_replace(["\t", "\n", "\r"], [' ', '', ''], $str)));
+            \Log::add(trim(str_replace(["\t", "\n", "\r"], [' ', '', ''], $str)));
         }
     }
 
@@ -185,7 +189,7 @@ class DbConn
      *  $s = string.
      *
      * @param $query Object
-     * @param $data Array[optional]
+     * @param $data array[optional]
      * @return
      *
      */
@@ -220,16 +224,16 @@ class DbConn
                 switch ($type) {
                     // manage table prefix ==================================
                     case '%adm_':
-                        $parsed_query .= FormaLms\lib\Get::cfg('prefix_fw') . '_';
+                        $parsed_query .= \FormaLms\lib\Get::cfg('prefix_fw') . '_';
                         break;
                     case '%lms_':
-                        $parsed_query .= FormaLms\lib\Get::cfg('prefix_lms') . '_';
+                        $parsed_query .= \FormaLms\lib\Get::cfg('prefix_lms') . '_';
                         break;
                     case '%cms_':
-                        $parsed_query .= FormaLms\lib\Get::cfg('prefix_cms') . '_';
+                        $parsed_query .= \FormaLms\lib\Get::cfg('prefix_cms') . '_';
                         break;
                     case '%scs_':
-                        $parsed_query .= FormaLms\lib\Get::cfg('prefix_scs') . '_';
+                        $parsed_query .= \FormaLms\lib\Get::cfg('prefix_scs') . '_';
                         break;
                     // select by type =======================================
                     /*
@@ -272,94 +276,65 @@ class DbConn
         return $parsed_query;
     }
 
+
     /**
-     * Perform a query on the database (variable number of argument).
-     *
-     * @param $query string
-     * @return resource_id
-     *
+     * @param $resource
+     * @return void
      */
     public function query($query)
     {
     }
 
-    /**
-     * Perform a query and limit the result with the last two args passed, the must be the start record to consider from and
-     * the numbers of record to retrive.
-     *
-     * @param $query string the query to perform
-     * @param mixed number of extra args
-     * @param int the start record
-     * @param int the number of records to retrive
-     * @return resource_id
-     *
-     */
+
     public function query_limit($query)
     {
     }
 
     /**
-     * Return the last auto increment value inserted.
-     *
-     * @return int
+     * @param $resource
+     * @return void
      */
     public function insert_id()
     {
     }
 
     /**
-     * Get a result row as an enumerated array.
-     *
-     * @param $resource resource_id
-     * @return array
-     *
+     * @param $resource
+     * @return void
      */
     public function fetch_row($resource)
     {
     }
 
     /**
-     * Get a result row as an associative array.
-     *
-     * @param $resource resource_id
-     * @return array
-     *
+     * @param $resource
+     * @return void
      */
     public function fetch_assoc($resource)
     {
     }
 
     /**
-     * Get a result row as an array.
-     *
-     * @param $resource resource_id
-     * @return array
-     *
+     * @param $resource
+     * @return void
      */
     public function fetch_array($resource)
     {
     }
 
     /**
-     * Get a result row as an object.
-     *
-     * @param $resource resource_id
-     * @param null $class_name
-     * @param null $params
-     * @param bool $conn
-     *
-     * @return object
+     * @param $resource
+     * @param $class_name
+     * @param $params
+     * @return void
      */
     public function fetch_obj($resource, $class_name = null, $params = null)
     {
     }
 
     /**
-     * Retrieves the number of rows from a result set.
-     *
-     * @param $resource resource_id
-     * @return int
-     *
+     * @param $resource
+     * @return void
      */
     public function num_rows($resource)
     {
@@ -486,262 +461,53 @@ class DbConn
     }
 
     /**
-     * field_seek info todo:edit.
-     *
      * @param $result
      * @param $fieldnr
-     *
-     * @return string
+     * @return void
      */
     public function field_seek($result, $fieldnr)
     {
     }
 
     /**
-     * num_field info todo:edit.
-     *
      * @param $res
-     *
-     * @return string
+     * @return void
      */
     public function num_fields($res)
     {
     }
 
     /**
-     * fetch_field info todo:edit.
-     *
      * @param $result
-     *
-     * @return string
+     * @return void
      */
     public function fetch_field($result)
     {
     }
 
     /**
-     * escape_string info todo:edit.
-     *
      * @param $res
-     *
-     * @return string
+     * @return void
      */
     public function escape_string($res)
     {
     }
 
     /**
-     * real_escape_string info todo:edit.
-     *
-     * @return string
+     * @param $res
+     * @return void
      */
     public function real_escape_string($res)
     {
     }
 
     /**
-     * Return the current time.
-     *
      * @return float
      */
     protected function get_time()
     {
-        list($usec, $sec) = explode(' ', microtime());
+        [$usec, $sec] = explode(' ', microtime());
 
         return (float)$usec + (float)$sec;
     }
-}
-
-function sql_query($query, $conn = false)
-{
-    $db = DbConn::getInstance($conn);
-    $re = $db->query($query);
-
-    return $re;
-}
-
-function sql_limit_query($query, $from, $results, $conn = false)
-{
-    $db = DbConn::getInstance($conn);
-    $re = $db->query_limit($query, $from, $results);
-
-    return $re;
-}
-
-function sql_insert_id($conn = false)
-{
-    $db = DbConn::getInstance($conn);
-    $re = $db->insert_id();
-
-    return $re;
-}
-
-function sql_num_rows($res)
-{
-    $db = DbConn::getInstance();
-    $re = $db->num_rows($res);
-
-    return $re;
-}
-
-function sql_fetch_row($res)
-{
-    $db = DbConn::getInstance();
-    $re = $db->fetch_row($res);
-
-    return $re;
-}
-
-function sql_fetch_assoc($res)
-{
-    $db = DbConn::getInstance();
-    $re = $db->fetch_assoc($res);
-
-    return $re;
-}
-
-function sql_fetch_array($res)
-{
-    $db = DbConn::getInstance();
-    $re = $db->fetch_array($res);
-
-    return $re;
-}
-
-function sql_fetch_object($res, $class_name = null, $params = null)
-{
-    $db = DbConn::getInstance();
-    $re = $db->fetch_obj($res, $class_name, $params);
-
-    return $re;
-}
-
-function sql_escape_string($res)
-{
-    $db = DbConn::getInstance();
-    $re = $db->escape_string($res);
-
-    return $re;
-}
-
-function sql_error($link = null)
-{
-    $db = DbConn::getInstance($link);
-    $re = $db->error();
-
-    return $re;
-}
-
-function sql_free_result($res)
-{
-    $db = DbConn::getInstance();
-    $re = $db->free_result($res);
-
-    return $re;
-}
-
-function sql_get_client_info($link = null)
-{
-    $db = DbConn::getInstance($link);
-    $re = $db->get_client_info();
-
-    return $re;
-}
-
-function sql_get_server_info($link = null)
-{
-    $db = DbConn::getInstance($link);
-    $re = $db->get_server_info();
-
-    return $re;
-}
-
-function sql_get_server_version($link = null)
-{
-    $db = DbConn::getInstance($link);
-    $re = $db->query('SELECT VERSION() as version');
-
-    $result = sql_fetch_assoc($re);
-
-    return $result['version'];
-}
-
-function sql_data_seek($result, $row_number)
-{
-    $db = DbConn::getInstance();
-    $re = $db->data_seek($result, $row_number);
-
-    return $re;
-}
-
-function sql_errno($link = null)
-{
-    $db = DbConn::getInstance($link);
-    $re = $db->errno();
-
-    return $re;
-}
-
-function sql_affected_rows($link = null)
-{
-    $db = DbConn::getInstance($link);
-    $re = $db->affected_rows();
-
-    return $re;
-}
-
-function sql_field_seek($result, $fieldnr)
-{
-    $db = DbConn::getInstance();
-    $re = $db->field_seek($result, $fieldnr);
-
-    return $re;
-}
-
-function sql_num_field($res)
-{
-    $db = DbConn::getInstance();
-    $re = $db->num_fields($res);
-
-    return $re;
-}
-
-function sql_fetch_field($result)
-{
-    $db = DbConn::getInstance();
-    $re = $db->fetch_field($result);
-
-    return $re;
-}
-
-function sql_real_escape_string()
-{
-    $db = DbConn::getInstance();
-    $re = $db->real_escape_string();
-
-    return $re;
-}
-
-function sql_connect($db_host, $db_user, $db_pass, $db_name = false)
-{
-    $db = DbConn::getInstance();
-    $re = $db->connect($db_host, $db_user, $db_pass, $db_name);
-
-    return $re;
-}
-
-function sql_select_db($db_name, $link = false)
-{
-    $db = DbConn::getInstance($link);
-    $re = $db->select_db($db_name);
-
-    return $re;
-}
-
-function sql_close()
-{
-    $db = DbConn::getInstance();
-    $re = $db->close();
-
-    return $re;
 }

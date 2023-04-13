@@ -54,7 +54,7 @@ class CourseReportManager
 
     public function &getStudentId()
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $course_man = new Man_Course();
         $course_user = $course_man->getIdUserOfLevel($this->idCourse, 3);
@@ -64,8 +64,8 @@ class CourseReportManager
 
     public function &getTest()
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.orgchart.php');
-        require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.orgchart.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
         $org_man = new OrganizationManagement($this->idCourse);
         $tests = &$org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
@@ -143,7 +143,7 @@ class CourseReportManager
     {
         $query = "SELECT * from %lms_coursereport WHERE id_course=${idCourse} AND id_source=${$idTest} AND source_of='test'";
 
-        $result = DbConn::getInstance()->query($query);
+        $result = \FormaLms\db\DbConn::getInstance()->query($query);
 
         $reports = [];
         foreach ($result as $item) {
@@ -488,7 +488,7 @@ class CourseReportManager
             return false;
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $db->start_transaction();
 

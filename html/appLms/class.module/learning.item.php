@@ -59,7 +59,7 @@ class Learning_Item extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _lms_ . '/modules/item/item.php';
         additem($this);
@@ -76,7 +76,7 @@ class Learning_Item extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _lms_ . '/modules/item/item.php';
         moditem($this);
@@ -90,7 +90,7 @@ class Learning_Item extends Learning_Object
     {
         //checkPerm('view', false, 'storage');
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _base_ . '/lib/lib.upload.php';
 
@@ -106,7 +106,7 @@ class Learning_Item extends Learning_Object
             sl_open_fileoperations();
             if (!sl_unlink($path_to_file . $old_file)) {
                 sl_close_fileoperations();
-                Forma::addError(Lang::t('_OPERATION_FAILURE', 'item'));
+                \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'item'));
 
                 return false;
             }
@@ -121,7 +121,7 @@ class Learning_Item extends Learning_Object
 		WHERE idLesson = '" . $id . "'";
 
         if (!sql_query($delete_query)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'item'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'item'));
 
             return false;
         }
@@ -159,7 +159,7 @@ class Learning_Item extends Learning_Object
         //insert new item
         $insertQuery = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_materials_lesson 
-		SET author = '" . getLogUserId() . "',
+		SET author = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 			title = '" . sql_escape_string($title) . "',
 			description = '" . sql_escape_string($descr) . "',
 			path = '" . sql_escape_string($savefile) . "'";

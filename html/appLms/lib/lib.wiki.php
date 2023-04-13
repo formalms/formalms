@@ -167,7 +167,7 @@ class LmsWikiAdmin extends CoreWikiAdmin
             $tab->setColsStyle($head_type);
             $tab->addHead($head);
 
-            $course_list = Man_CourseUser::getUserCourseList(getLogUserId());
+            $course_list = Man_CourseUser::getUserCourseList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $selectable_wiki = $this->wikiManager->getCourseWikiList($course_list);
 
             $wiki_list = $this->wikiManager->getCourseWikiList($course_id);

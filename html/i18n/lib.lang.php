@@ -14,56 +14,6 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 /**
- * Return the current charset of the page.
- *
- * @return string the charset
- *
- * @deprecated
- */
-function getUnicode()
-{
-    return Lang::charset();
-}
-
-/**
- * Return the current language.
- *
- * @return string
- *
- * @deprecated
- */
-function getLanguage()
-{
-    return Lang::get();
-}
-
-/**
- * Return the default language setted.
- *
- * @return string
- *
- * @deprecated
- */
-function getDefaultLanguage()
-{
-    return Lang::getDefault();
-}
-
-/**
- * Set the current language.
- *
- * @param string $lang_code the language that need to be setted
- *
- * @return string the language setted
- *
- * @deprecated
- */
-function setLanguage($lang_code)
-{
-    return Lang::set($lang_code);
-}
-
-/**
  * This class is a temporary abstractor for the old lang module.
  *
  * @deprecated
@@ -91,21 +41,17 @@ class FormaLanguage
 
     public function def($key, $module = false, $platform = false, $lang_code = false)
     {
-        return Lang::t($key, ($module ? $module : $this->module), false, $lang_code);
+        return Lang::t($key, ($module ?: $this->module), false, $lang_code);
     }
 
     public function getLangText($key, $module = false, $platform = false, $lang_code = false)
     {
-        return Lang::t($key, ($module ? $module : $this->module), false, $lang_code);
+        return Lang::t($key, ($module ?: $this->module), false, $lang_code);
     }
 
     public function isDef($key, $module = false, $platform = false, $lang_code = false)
     {
-        return Lang::isDef($key, ($module ? $module : $this->module), $lang_code);
-    }
-
-    public function setGlobal()
-    {
+        return Lang::isDef($key, ($module ?: $this->module), $lang_code);
     }
 }
 
@@ -191,7 +137,7 @@ class Lang
             self::$lang_code = $lang_code;
         }
         if (!self::$lang_code) {
-            self::$lang_code = getLanguage();
+            self::$lang_code = Lang::get();
         }
 
         return self::$lang_code;
@@ -399,8 +345,6 @@ class Lang
     {
         //retrocompatibilità perchè il domainconfighandler istanzia l'utente di sessione sul clientservice
         /*************************************** */
-        require_once _base_ . '/lib/lib.user.php';
-        require_once _base_ . '/lib/lib.docebo.php';
         /***************************************** */
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $currentLang = $session->get('current_lang');
@@ -410,10 +354,10 @@ class Lang
 
         if (!$currentLang) {
             $currentLang = self::getDefault();
-            // we if (!FormaLms\lib\Get::cfg('demo_mode', false) && !Forma::user()->isAnonymous()) {don't know which language we need
-            if (!FormaLms\lib\Get::cfg('demo_mode', false) && !Forma::user()->isAnonymous()) {
+            // we if (!FormaLms\lib\Get::cfg('demo_mode', false) && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {don't know which language we need
+            if (!FormaLms\lib\Get::cfg('demo_mode', false) && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 // load the language from the user setting
-                $currentLang = Forma::user()->preference->getLanguage();
+                $currentLang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference()->getLanguage();
             } else {
                 // find the user language looking into the browser info
                 $langadm = new LangAdm();
@@ -456,14 +400,14 @@ class Lang
             return false;
         }
 
-        if (Forma::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             // if the user is anonymous we will remember it's forced selection and set up the selected language as
             // it's user preference when he login
             if ($force) {
                 $session->set('forced_lang', true);
             }
         } else {
-            Forma::user()->preference->setLanguage($lang_code);
+            \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->setLanguage($lang_code);
         }
         $session->set('current_lang', $lang_code);
         $session->save();
@@ -737,7 +681,7 @@ class FormaLangManager
      */
     public function getModuleLangTranslations($platform, $module, $lang_code, $trans_contains = '', $attributes = false, $order_by = false, $get_date = false, $text_items = null)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $part = [];
         if (!empty($attributes) && is_array($attributes)) {
             foreach ($attributes as $value) {
@@ -1084,7 +1028,7 @@ class FormaLangManager
     public function findLanguageFromBrowserCode()
     {
         if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            return getDefaultLanguage();
+            return Lang::getDefault();
         }
         $accept_language = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
         $al_arr = explode(',', $accept_language);
@@ -1107,7 +1051,7 @@ class FormaLangManager
             }
         }
 
-        return getDefaultLanguage();
+        return Lang::getDefault();
     }
 
     public function setLanguage($lang_code, $lang_description = false, $lang_charset = false, $lang_brosercode = false, $lang_direction = false)

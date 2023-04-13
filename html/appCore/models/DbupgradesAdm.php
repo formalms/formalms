@@ -21,7 +21,7 @@ class DbupgradesAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->table = $GLOBALS['prefix_fw'] . '_db_upgrades';
         parent::__construct();
     }

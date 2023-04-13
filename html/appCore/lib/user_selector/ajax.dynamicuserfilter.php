@@ -21,7 +21,7 @@ require_once _base_ . '/lib/lib.json.php';
 require_once _adm_ . '/lib/lib.field.php';
 require_once _base_ . '/lib/lib.aclmanager.php';
 
-$db = DbConn::getInstance();
+$db = \FormaLms\db\DbConn::getInstance();
 
 $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM);
 

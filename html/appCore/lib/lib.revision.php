@@ -264,7 +264,7 @@ class RevisionManager
         }
 
         if (count($idst_arr) > 0) {
-            $acl_manager = Forma::user()->getAclManager();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_manager->getUsers($idst_arr);
             foreach ($idst_arr as $idst) {
                 $data_info['user'][$idst] = $user = $acl_manager->getUserName($idst);
@@ -277,7 +277,7 @@ class RevisionManager
     public function addRevision($data, $author = false)
     {
         if ($author === false) {
-            $author = Forma::user()->getIdSt();
+            $author = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         if (!is_array($data)) {
@@ -371,7 +371,7 @@ class RevisionManager
         }
 
         if (count($idst_arr) > 0) {
-            $acl_manager = Forma::user()->getAclManager();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_manager->getUsers($idst_arr);
             foreach ($idst_arr as $idst) {
                 $data_info['user'][$idst] = $acl_manager->relativeId($user_info[$idst][ACL_INFO_USERID]);
@@ -602,7 +602,7 @@ class OldRevisionManager
         }
 
         if (count($idst_arr) > 0) {
-            $acl_manager = Forma::user()->getAclManager();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_manager->getUsers($idst_arr);
             foreach ($idst_arr as $idst) {
                 $data_info['user'][$idst] = $acl_manager->relativeId($user_info[$idst][ACL_INFO_USERID]);
@@ -615,7 +615,7 @@ class OldRevisionManager
     public function addRevision($content, $author = false)
     {
         if ($author === false) {
-            $author = Forma::user()->getIdSt();
+            $author = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $type = $this->getRevisionType();
@@ -691,7 +691,7 @@ class OldRevisionManager
         }
 
         if (count($idst_arr) > 0) {
-            $acl_manager = Forma::user()->getAclManager();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_manager->getUsers($idst_arr);
             foreach ($idst_arr as $idst) {
                 $data_info['user'][$idst] = $acl_manager->relativeId($user_info[$idst][ACL_INFO_USERID]);

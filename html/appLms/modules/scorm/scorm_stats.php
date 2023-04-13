@@ -21,9 +21,9 @@
  **/
 function scorm_userstat($idscorm_organization, $idUser, $idReference = null, $mvc = false)
 {
-    require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/CPManagerDb.php');
-    require_once Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/CPManagerDb.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
 
     // get idscorm_package
     $query = 'SELECT idscorm_package, org_identifier '
@@ -102,7 +102,7 @@ function decodeSessionTime($stime)
 // TODO: sourced from appLms/modules/organization/orgresults.php -- to be reviewed
 function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference)
 {
-    require_once Forma::inc(_lib_ . '/lib.table.php');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
     $lang = FormaLanguage::CreateInstance('organization', 'lms');
@@ -165,7 +165,7 @@ function getTrackingTable($id_user, $id_org, $idscorm_item, $idReference)
 // TODO: sourced from appLms/modules/organization/orgresults.php -- to be reviewed
 function getHistoryTable($id_user, $id_org, $idscorm_item, $idReference)
 {
-    require_once Forma::inc(_lib_ . '/lib.table.php');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.table.php');
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));
 
     $lang = FormaLanguage::CreateInstance('organization', 'lms');
@@ -253,7 +253,7 @@ function render_half_row($deep, $stack, $label, $isLast = false)
 function scorm_stat_getImage($deep, $deepPos, $isLast, $isEnd)
 {
     $imgLabel = '';
-    require_once Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
     if ($deep == $deepPos) {
         // handle REND_TITLE
         $imgLabel = SCORMREND_TITLE;

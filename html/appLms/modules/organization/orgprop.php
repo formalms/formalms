@@ -139,7 +139,7 @@ function organization_property_settings(&$treeView, $idItem, &$form, &$lang)
 
     $isFolder = ($values['objectType'] === '');
     if (!$isFolder) {
-        if (Forma::course()->getValue('course_type') == 'classroom') {
+        if (\FormaLms\lib\Forma::course()->getValue('course_type') == 'classroom') {
             $GLOBALS['page']->add($form->getDropdown($lang->def('_PUBLISH'),
                                                 'publish_for',
                                                 'publish_for',
@@ -396,7 +396,7 @@ function organization_property_catalogation(&$treeView, $idItem, &$form, &$lang)
                                             )
                         );
 
-    $langArray = Forma::langManager()->getAllLangCode();
+    $langArray = \FormaLms\lib\Forma::langManager()->getAllLangCode();
     if (isset($values['language'])) {
         $selLang = $values['language'];
     } else {

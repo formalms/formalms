@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -80,7 +80,7 @@ switch ($op) {
                             $tb->addHead([Lang::t('_USERNAME', 'standard'), Lang::t('_FULLNAME', 'standard')], ['', '']);
                             foreach ($list as $key => $value) {
                                 $tb->addBody([
-                                    Forma::aclm()->relativeId($value->name),
+                                    \FormaLms\lib\Forma::getAclManager()->relativeId($value->name),
                                     trim($value->value1 . ' ' . $value->value2),
                                 ]);
                             }
@@ -95,7 +95,7 @@ switch ($op) {
                             $tb->addHead([Lang::t('_GROUPUSER_groupid', 'organization_chart')], ['']);
                             foreach ($list as $key => $value) {
                                 $tb->addBody([
-                                    Forma::aclm()->relativeId($value->name),
+                                    \FormaLms\lib\Forma::getAclManager()->relativeId($value->name),
                                 ]);
                             }
                             $tables[] = $tb->getTable();
@@ -158,7 +158,7 @@ switch ($op) {
         $report = $session->get('report');
         $query = 'INSERT INTO %lms_report_filter ' .
             '(id_report, author, creation_date, filter_data, filter_name) VALUES ' .
-            '(' . $report['id_report'] . ', ' . Forma::user()->getIdst() . ', NOW(), ' .
+            '(' . $report['id_report'] . ', ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ', NOW(), ' .
             " '" . addslashes(serialize($report)) . "', '$name')";
 
         if (!$output['success'] = sql_query($query)) {

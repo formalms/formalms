@@ -40,8 +40,7 @@ ob_start();
 // load regional setting --------------------------------------------------------------
 
 // load current user from session -----------------------------------------------------
-require_once _base_ . '/lib/lib.user.php';
-$GLOBALS['current_user'] = &FormaUser::createFormaUserFromSession('public_area');
+\FormaLms\lib\FormaUser::loadUserFromSession();
 
 //require_once(_i18n_.'/lib.lang.php');
 require_once _base_ . '/lib/lib.template.php';

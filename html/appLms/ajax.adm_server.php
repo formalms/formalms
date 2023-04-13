@@ -59,7 +59,7 @@ if (!empty($GLOBALS['req'])) {
             $aj_file = $GLOBALS['where_' . $plf] . '/admin/modules/' . $mn . '/ajax.' . $mn . '.php';
         }
     }
-    include Forma::inc($aj_file);
+    include \FormaLms\lib\Forma::inc($aj_file);
 }
 
 

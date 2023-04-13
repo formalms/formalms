@@ -46,7 +46,7 @@
             $query = 'SELECT cc.prerequisites'
                         . ' FROM %lms_coursepath_courses AS cc'
                         . ' JOIN %lms_coursepath_user AS cu ON cc.id_path = cu.id_path'
-                        . ' WHERE cu.idUser = ' . (int) Forma::user()->getIdSt()
+                        . ' WHERE cu.idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()
                         . ' AND cc.id_item = ' . (int) $id_course;
 
             $result = sql_query($query);
@@ -59,7 +59,7 @@
 
                     $query = 'SELECT COUNT(*)'
                                 . ' FROM %lms_courseuser'
-                                . ' WHERE idCourse IN (' . $prerequisites . ') AND idUser = ' . (int) Forma::user()->getIdst() . ' '
+                                . ' WHERE idCourse IN (' . $prerequisites . ') AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ' '
                                 . ' AND status = ' . _CUS_END;
 
                     list($control) = sql_fetch_row(sql_query($query));
@@ -82,7 +82,7 @@
                                             . ' FROM %lms_course AS c '
                                             . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse) '
                                             . ' WHERE c.idCourse = ' . $id_course
-                                            . ' AND idUser = ' . (int) Forma::user()->getIdst();
+                                            . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdst();
 
                 $accesso_control_info = sql_fetch_assoc(sql_query($query_control_info));
 
@@ -108,7 +108,7 @@
             $query = 'SELECT cc.prerequisites'
                         . ' FROM %lms_coursepath_courses AS cc'
                         . ' JOIN %lms_coursepath_user AS cu ON cc.id_path = cu.id_path'
-                        . ' WHERE cu.idUser = ' . (int) Forma::user()->getIdSt()
+                        . ' WHERE cu.idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()
                         . ' AND cc.id_item = ' . (int) $id_course
                         . ' AND cc.id_path = ' . (int) $id_path;
 
@@ -122,7 +122,7 @@
 
                     $query = 'SELECT COUNT(*)'
                                 . ' FROM %lms_courseuser'
-                                . ' WHERE idCourse IN (' . $prerequisites . ') AND idUser = ' . (int) Forma::user()->getIdst() . ' '
+                                . ' WHERE idCourse IN (' . $prerequisites . ') AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ' '
                                 . ' AND status = ' . _CUS_END;
 
                     list($control) = sql_fetch_row(sql_query($query));

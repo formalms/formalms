@@ -20,13 +20,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author	 Claudio Demarinis <claudiodema [at] docebo [dot] com>
  */
-require_once Forma::inc(_lms_ . '/admin/class.module/class.definition.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/class.module/class.definition.php');
 
 class Module_Certificate extends LmsAdminModule
 {
     public function loadBody()
     {
-        require_once Forma::inc(_lms_ . '/admin/modules/' . $this->module_name . '/' . $this->module_name . '.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/' . $this->module_name . '/' . $this->module_name . '.php');
         certificateDispatch($GLOBALS['op']);
     }
 

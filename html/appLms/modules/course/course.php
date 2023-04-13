@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -40,7 +40,7 @@ function mycourses(&$url)
     $onecol = (!$access_career && !$access_news && !$access_user_details_full && !$access_user_details_short);
 
     require_once _adm_ . '/lib/lib.myfriends.php';
-    $friends = new MyFriends(getLogUserId());
+    $friends = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $pendent = count($friends->getPendentRequest());
 
     $GLOBALS['page']->addStart(''
@@ -50,13 +50,13 @@ function mycourses(&$url)
     // user_details_short ------------------------------------------------------------------------
 
     if ($access_user_details_short) {
-        $profile = new UserProfile(getLogUserId());
+        $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $profile->init('profile', 'framework', 'index.php?' . FormaLms\lib\Get::home_page_query(), 'ap');
         $GLOBALS['page']->addStart($profile->userIdMailProfile('normal', false, false), 'content');
     }
     // user_details_full ------------------------------------------------------------------------
     if ($access_user_details_full) {
-        $profile = new UserProfile(getLogUserId());
+        $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $profile->init('profile', 'framework', 'index.php?' . FormaLms\lib\Get::home_page_query(), 'ap');
         $GLOBALS['page']->addStart($profile->homeUserProfile('normal', false, false), 'content');
     }
@@ -100,7 +100,7 @@ function mycourses(&$url)
         $query = 'SELECT c.idAssociation, m.idCertificate'
                     . ' FROM ' . $GLOBALS['prefix_lms'] . $aggrCertLib->table_cert_meta_association_courses . ' as c'
                     . ' JOIN ' . $GLOBALS['prefix_lms'] . $aggrCertLib->table_cert_meta_association . ' AS m ON c.idAssociation = m.idAssociation'
-                    . " WHERE c.idUser = '" . getLogUserId() . "'"
+                    . " WHERE c.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'"
                     . ' GROUP BY c.idAssociation'
                     . ' ORDER BY m.title, m.description';
 
@@ -111,7 +111,7 @@ function mycourses(&$url)
         while (list($id_meta, $id_certificate) = sql_fetch_row($result)) {
             $query_released = 'SELECT on_date'
                                 . ' FROM ' . $GLOBALS['prefix_lms'] . $aggrCertLib->table_assign_agg_cert
-                                . " WHERE idUser = '" . getLogUserId() . "'"
+                                . " WHERE idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'"
                                 . " AND idCertificate = '" . $id_certificate . "'";
 
             $result_released = sql_query($query_released);
@@ -128,12 +128,12 @@ function mycourses(&$url)
             } else {
                 /* $query =	"SELECT idCourse"
                              ." FROM ".$GLOBALS['prefix_lms']."_certificate_meta_course"
-                             ." WHERE idUser = '".getLogUserId()."'"
+                             ." WHERE idUser = '".\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()."'"
                              ." AND idMetaCertificate = '".$id_meta."'";
 
                  $result_int = sql_query($query);*/
 
-                $assocArr = $aggrCertLib->getAssociationLink($id_meta, AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE, getLogUserId());
+                $assocArr = $aggrCertLib->getAssociationLink($id_meta, AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 $control = true;
 
@@ -141,7 +141,7 @@ function mycourses(&$url)
                     $query = 'SELECT COUNT(*)'
                                 . ' FROM %lms_courseuser'
                                 . " WHERE idCourse = '" . $assoc . "'"
-                                . " AND idUser = '" . getLogUserId() . "'"
+                                . " AND idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'"
                                 . " AND status = '" . _CUS_END . "'";
 
                     list($number) = sql_fetch_row(sql_query($query));
@@ -212,14 +212,14 @@ function mycourses(&$url)
             . '<div class="course_news">'
             . '<h2>' . $lang->def('_NEWS') . '</h2>', 'content');
 
-        $user_level = Forma::user()->getUserLevelId();
+        $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
-        $user_assigned = Forma::user()->getArrSt();
+        $user_assigned = \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt();
 
         $query_news = '
 		SELECT idNews, publish_date, title, short_desc, important, viewer
 		FROM ' . $GLOBALS['prefix_lms'] . "_news_internal
-		WHERE language = '" . getLanguage() . "'
+		WHERE language = '" . Lang::get() . "'
 		ORDER BY important DESC, publish_date DESC ";
         $re_news = sql_query($query_news);
 
@@ -271,7 +271,7 @@ function mycourses(&$url)
 
             . '<h1>'
                 . $lang->def('_WELCOME') . ': '
-                . '<span>' . Forma::user()->getUserName() . '</span>'
+                . '<span>' . \FormaLms\lib\FormaUser::getCurrentUser()->getUserName() . '</span>'
             . '</h1>'
 
             . '<ul class="flat_tab">'
@@ -303,7 +303,7 @@ function mycourses(&$url)
             '<div class="lo_tab">'
             . '<h1 class="no_tab">'
                 . $lang->def('_WELCOME') . ': '
-                . '<span>' . Forma::user()->getUserName() . '</span>'
+                . '<span>' . \FormaLms\lib\FormaUser::getCurrentUser()->getUserName() . '</span>'
             . '</h1>'
             . '</div>',
             'content'
@@ -329,7 +329,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     }
 
     require_once _base_ . '/lib/lib.form.php';
-    require_once Forma::inc(_lib_ . '/lib.user_profile.php');
+    require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.user_profile.php');
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _lms_ . '/lib/lib.preassessment.php';
     require_once _lms_ . '/lib/lib.catalogue.php';
@@ -343,7 +343,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $path_man = new CoursePath_Manager();
 
     // search for the coursepath ----------------------------------------------------------
-    $user_coursepath = $path_man->getUserSubscriptionsInfo(getLogUserId(), true);
+    $user_coursepath = $path_man->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
     $coursepath = $path_man->getCoursepathAllInfo(array_keys($user_coursepath));
 
     if (!empty($coursepath)) {
@@ -416,10 +416,10 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         }
     }
 
-    require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
     $cert = new Certificate();
 
-    $released = $cert->certificateReleased(getLogUserId());
+    $released = $cert->certificateReleased(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $available_cert = $cert->certificateForCourses(false, false);
 
     // cahce classroom -----------------------------------------------------------------
@@ -432,7 +432,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $man_course = new Man_Course();
 
     $subcourse_list = sql_query(' SELECT u.idCourse, u.edition_id, u.level, u.date_inscr, u.date_first_access, u.date_complete, u.status AS user_status, u.waiting, u.edition_id  FROM %lms_courseuser AS u'
-        . " WHERE idUser = '" . getLogUserId() . "'");
+        . " WHERE idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'");
 
     $subscription = [];
     foreach ($subcourse_list as $cinfo) {
@@ -455,7 +455,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     . '	 JOIN %lms_courseuser AS u on c.idCourse = u.idCourse';
 
     $where_course = ' c.idCourse = u.idCourse '
-        . " AND u.idUser = '" . getLogUserId() . "' "
+        . " AND u.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' "
         . " AND ( c.status <> '" . CST_PREPARATION . "' OR u.level > 3 )"
         . " AND c.course_type <> 'assessment' ";
 
@@ -498,7 +498,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     }
     // apply search filter --------------------------------------------------------------
 
-    $all_lang = Forma::langManager()->getAllLangCode();
+    $all_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     $query = $select_course
         . $from_course
@@ -513,7 +513,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $select_edition = ' SELECT e.* ';
     $from_edition = ' FROM %lms_course_editions AS e '
         . ' JOIN %lms_courseuser AS cu ON e.id_edition = cu.edition_id';
-    $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' AND cu.idUser ='" . getLogUserId() . "'";
+    $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' AND cu.idUser ='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
     $query = $select_edition
         . $from_edition
@@ -534,7 +534,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     $man_courseuser = new Man_CourseUser();
     $ax_comm = new AjaxComment('course', 'lms');
     $comment_count = $ax_comm->getResourceCommentCount();
-    $user_score = $man_courseuser->getUserCourseScored(getLogUserId());
+    $user_score = $man_courseuser->getUserCourseScored(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     // -----------------------------------------------------------------------------
 
@@ -543,19 +543,19 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         $id_course_list = array_keys($subscription['course']);
         // find last access to the courses ---------------------------------------------------------------------
         require_once _lms_ . '/lib/lib.track_user.php';
-        $last_access_courses = TrackUser::getLastAccessToCourse(getLogUserId());
+        $last_access_courses = TrackUser::getLastAccessToCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         // retrive unreaded advice -----------------------------------------------------------------------------
         require_once _lms_ . '/lib/lib.advice.php';
-        $advices = Man_Advice::getCountUnreaded(getLogUserId(), $id_course_list, $last_access_courses);
+        $advices = Man_Advice::getCountUnreaded(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course_list, $last_access_courses);
 
         // retrive unreaded forum messages ---------------------------------------------------------------------
         require_once _lms_ . '/lib/lib.forum.php';
-        $forums = Man_Forum::getCountUnreaded(getLogUserId(), $id_course_list, $last_access_courses);
+        $forums = Man_Forum::getCountUnreaded(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course_list, $last_access_courses);
 
         // retrive new lesson ----------------------------------------------------------------------------------
         require_once _lms_ . '/lib/lib.orgchart.php';
-        $org_chart = OrganizationManagement::getCountUnreaded(getLogUserId(), $id_course_list, $last_access_courses);
+        $org_chart = OrganizationManagement::getCountUnreaded(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course_list, $last_access_courses);
 
         if (!empty($path_courses['all_items'])) {
             $needed_info_for = array_diff($path_courses['all_items'], $id_course_list);
@@ -569,7 +569,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
             . " AND u.level = '3'"
             . " AND u.status IN ('" . _CUS_CONFIRMED . "', '" . _CUS_SUBSCRIBED . "', '" . _CUS_BEGIN . "', '" . _CUS_END . "', '" . _CUS_SUSPEND . "', '" . _CUS_WAITING_LIST . "')"
             . " AND u.absent = '0'"
-            . " AND u.idUser = '" . getLogUserId() . "'"
+            . " AND u.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'"
             . ' GROUP BY u.idCourse, u.edition_id ');
 
         $enrolled = [];
@@ -592,7 +592,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
     . '	 JOIN %lms_courseuser AS u on c.idCourse = u.idCourse';
 
     $where_assess = ' c.idCourse = u.idCourse '
-        . " AND u.idUser = '" . getLogUserId() . "' "
+        . " AND u.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' "
         . " AND c.course_type = 'assessment' "
         . " AND  ( c.status <> '" . CST_PREPARATION . "' OR u.level > 3 ) "
         . ($filter == 'level' ? " AND level = '" . $filter_level . "'" : '');
@@ -694,7 +694,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         if (isset($available_cert[$cinfo['idCourse']])) {
             foreach ($available_cert[$cinfo['idCourse']] as $id_cert => $certificate) {
                 if (!isset($released[$id_cert]) && $cert->canRelease($certificate[CERT_AV_STATUS], $cinfo['user_status'])) {
-                    if ($cert->certificateAvailableForUser($id_cert, $cinfo['idCourse'], Forma::user()->getIdst())) {
+                    if ($cert->certificateAvailableForUser($id_cert, $cinfo['idCourse'], \FormaLms\lib\FormaUser::getCurrentUser()->getIdst())) {
                         ++$course_stats['cert_relesable'];
                     }
                 }
@@ -1465,7 +1465,7 @@ function dashAcourse($id_course, $h_number)
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
     $lang = FormaLanguage::createInstance('standard', 'framework');
-    $lang->setGlobal();
+    
     $lang = FormaLanguage::createInstance('course', 'lms');
 
     $normal_subs = 1;
@@ -1474,7 +1474,7 @@ function dashAcourse($id_course, $h_number)
     $cinfo = $man_course->getAllInfo();
 
     $man_courseuser = new Man_CourseUser();
-    $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
+    $usercourses = &$man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
 
     $select_edition = ' SELECT * ';
     $from_edition = ' FROM %lms_course_edition';

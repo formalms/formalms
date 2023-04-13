@@ -18,7 +18,7 @@ $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 $session = $request->getSession();
 
 // access granted only if user is logged in
-if (Forma::user()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) { // !isset($_GET['no_redirect']) && !isset($_POST['no_redirect']) XXX: redirection???
     // save requested page in session to call it after login
     $loginRedirect = $_SERVER['REQUEST_URI'];
 
@@ -33,7 +33,7 @@ $query = ' SELECT param_value FROM %adm_setting'
 $maintenance = $db->fetch_row($db->query($query))[0];
 
 // handling maintenece
-if ($maintenance == 'on' && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+if ($maintenance == 'on' && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
     // only god admins can access maintenence - logout the user
     Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _logout_);
 }
@@ -41,8 +41,8 @@ if ($maintenance == 'on' && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODAD
 // handling access from multiple sessions
 if (FormaLms\lib\Get::sett('stop_concurrent_user') == 'on' && $session->has('idCourse')) {
     // two user logged at the same time
-    if (!TrackUser::checkSession(getLogUserId())) {
-        TrackUser::resetUserSession(getLogUserId());
+    if (!TrackUser::checkSession(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
+        TrackUser::resetUserSession(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _stopconcurrency_);
     }
 }

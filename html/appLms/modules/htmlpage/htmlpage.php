@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: addpage
     function addpage($object_page)
     {
@@ -74,9 +74,9 @@ if (!Forma::user()->isAnonymous()) {
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_htmlpage
 	SET title = '" . ((trim(addslashes($_REQUEST['title'])) == '') ? addslashes(Lang::t('_NOTITLE', 'htmlpage', 'lms')) : addslashes($_REQUEST['title'])) . "',
 		textof = '" . addslashes($_REQUEST['textof']) . "',
-		author = '" . (int) getLogUserId() . "'";
+		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($insert_query)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
             Util::jump_to($back_url . '&create_result=0');
         }
         list($idPage) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -189,7 +189,7 @@ if (!Forma::user()->isAnonymous()) {
 		textof = '" . addslashes($_REQUEST['textof']) . "'
 	WHERE idPage = '" . (int) $_REQUEST['idPage'] . "'";
         if (!sql_query($insert_query)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage', 'lms'));
             Util::jump_to($back_url . '&mod_result=0');
         }
 

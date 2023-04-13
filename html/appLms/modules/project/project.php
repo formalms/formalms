@@ -17,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @version 	$Id: project.php 1002 2007-03-24 11:55:51Z fabio $
  */
 
-if ((Forma::user()->isAnonymous()) || (!checkPerm('view', true))) {
+if ((\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) || (!checkPerm('view', true))) {
     exit("You can't access!");
 }
 
@@ -36,7 +36,7 @@ function project()
 
     require_once _base_ . '/lib/lib.table.php';
 
-    $myprj = userProjectsList(Forma::user()->getIdSt());
+    $myprj = userProjectsList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $mod_perm = checkPerm('mod', true);
     $del_perm = checkPerm('del', true);
@@ -126,9 +126,9 @@ function project()
 function getUserGrpArray($userid)
 {
     $user_grp = [];
-    $acl = Forma::user()->getAcl();
+    $acl = \FormaLms\lib\Forma::getAcl();
     $user_grp = $acl->getUserGroupsST($userid);
-    $user_grp[] = getLogUserId();
+    $user_grp[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
     return $user_grp;
 }
@@ -177,12 +177,12 @@ function userProjectsList($userid)
 
 function getGroupsForProject(&$lang)
 {
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     //finding group
     $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $idCourse . '/group/', true);
     $groups = [];
-    $groups[getLogUserId()] = $lang->def('_YOUONLY');
+    $groups[\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()] = $lang->def('_YOUONLY');
     foreach ($db_groups as $idst => $groupid) {
         $groupid = substr($groupid, strlen('/lms/course/' . $idCourse . '/group/'));
         if ($groupid == 'alluser') {
@@ -274,7 +274,7 @@ function addprj_now()
     if ($ptitle == '') {
         $err = $lang->def('_PRJNOTITLE');
     }
-    if (!in_group(Forma::user()->getIdSt(), $pgroup)) {
+    if (!in_group(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $pgroup)) {
         $err = $lang->def('_PRJNOVALIDGROUP');
     }
 
@@ -291,7 +291,7 @@ function addprj_now()
             $row = sql_fetch_array($query);
             $id = $row['id'];
 
-            $query = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_prj_users (pid,userid,flag) VALUES('$id','" . Forma::user()->getIdSt() . "','2');");
+            $query = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_prj_users (pid,userid,flag) VALUES('$id','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "','2');");
             $out->add(sql_error());
 
             //$out->add(getResultUi($lang->def("_OPERATION_SUCCESSFUL")).$goonlink);
@@ -377,7 +377,7 @@ function show_task($id, $row, $modimg)
 
     $readlink = $modlink = '';
     $dellink = '';
-    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+    if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
         $modlink = '<a href="index.php?modname=project&amp;op=editprogtot&amp;id=' . $id . '"><img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /></a>';
         $dellink = '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />';
     }
@@ -399,7 +399,7 @@ function show_task($id, $row, $modimg)
             $out->add('</td><td class="align_right">' . $data['tprog'] . "%</td>\n");
             $readlink = $modlink = '';
             $dellink = '';
-            if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+            if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
                 $modlink = "<a href=\"index.php?modname=project&amp;op=prjedititem&amp;type=task&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/edit.png" alt="" /></a>';
                 $dellink = "<a href=\"index.php?modname=project&amp;op=prjdelitem&amp;type=task&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/delete.png" alt="" /></a>';
             }
@@ -411,7 +411,7 @@ function show_task($id, $row, $modimg)
     }
     $out->add('</table>'
             . '</div>');
-    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+    if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
         $out->add('<div class="actions">'
             . '<a href="index.php?modname=project&amp;op=prjadditem&amp;type=task&amp;id=' . $id . '">'
             . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_NEW') . '" /> ' . $lang->def('_NEW') . '</a>'
@@ -442,7 +442,7 @@ function show_news($id, $row, $modimg)
             $out->add("<td>$ndate</td>\n");
             $readlink = "<a href=\"index.php?modname=project&amp;op=prjreaditem&amp;type=news&amp;id=$id&amp;itemid=" . $data['id'] . '">' . $data['ntitle'] . '</a>';
             $out->add('<td><b>' . $readlink . '</b></td>');
-            if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+            if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
                 $modlink = "<a href=\"index.php?modname=project&amp;op=prjedititem&amp;type=news&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /></a>';
                 $dellink = "<a href=\"index.php?modname=project&amp;op=prjdelitem&amp;type=news&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" /></a>';
             }
@@ -454,7 +454,7 @@ function show_news($id, $row, $modimg)
         $out->add(Lang::t('_NO_DATA', 'standard'));
     }
     $out->add('</div>');
-    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+    if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
         $out->add('<div class="actions">'
             . '<a href="index.php?modname=project&amp;op=prjadditem&amp;type=news&amp;id=' . $id . '">'
             . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_NEW') . '" /> ' . $lang->def('_NEW') . '</a>'
@@ -493,7 +493,7 @@ function show_files($id, $row, $modimg)
             $out->add('</td>'
                 //.
                 . "\n");
-            if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+            if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
                 $modlink = "<a href=\"index.php?modname=project&amp;op=prjedititem&amp;type=file&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /></a>';
                 $dellink = "<a href=\"index.php?modname=project&amp;op=prjdelitem&amp;type=file&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" /></a>';
             }
@@ -505,7 +505,7 @@ function show_files($id, $row, $modimg)
         $out->add(Lang::t('_NO_DATA', 'standard'));
     }
     $out->add('</div>');
-    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+    if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
         $out->add('<div class="actions">'
             . '<a href="index.php?modname=project&amp;op=prjadditem&amp;type=file&amp;id=' . $id . '">'
             . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_NEW') . '" /> ' . $lang->def('_NEW') . '</a>'
@@ -532,7 +532,7 @@ function show_todo($id, $row, $modimg)
             $out->add('<tr><td><b>' . $readlink . '</b>');
             $modlink = '';
             $dellink = '';
-            if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+            if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
                 $modlink = "<a href=\"index.php?modname=project&amp;op=prjedititem&amp;type=todo&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . '" /></a>';
                 $dellink = "<a href=\"index.php?modname=project&amp;op=prjdelitem&amp;type=todo&amp;id=$id&amp;itemid=" . $data['id'] . '"><img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" /></a>';
             }
@@ -545,7 +545,7 @@ function show_todo($id, $row, $modimg)
         $out->add(Lang::t('_NO_DATA', 'standard'));
     }
     $out->add('</div>');
-    if ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id))) {
+    if ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
         $out->add('<div class="actions">'
             . '<a href="index.php?modname=project&amp;op=prjadditem&amp;type=todo&amp;id=' . $id . '">'
             . '<img src="' . getPathImage() . 'standard/add.png" alt="' . $lang->def('_NEW') . '" /> ' . $lang->def('_NEW') . '</a>'
@@ -566,7 +566,7 @@ function show_prj()
     require_once _base_ . '/lib/lib.table.php';
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     if (!in_array($id, $myprj)) {
         exit("You can't access");
@@ -645,7 +645,7 @@ function show_prj()
         $sf = new sys_forum('lms', 'project_message', $id);
         $sf->setPrefix($GLOBALS['prefix_lms']);
         $sf->can_write = true;
-        $sf->can_moderate = (bool) ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)));
+        $sf->can_moderate = (bool) ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)));
         $sf->can_upload = true;
         $sf->use_realname = true;
 
@@ -681,11 +681,11 @@ function manprjadmin()
     }
 
     $id = $_GET['id'];
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Forma::user()->getIdSt(), $id))) {
+    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
         $aclManager = new FormaACLManager();
         $user_select = new UserSelector();
 
@@ -767,11 +767,11 @@ function edit_news($mode = 'edit')
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -907,11 +907,11 @@ function edit_todo($mode = 'edit')
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1028,11 +1028,11 @@ function edit_tasks($mode = 'edit')
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1160,11 +1160,11 @@ function edit_files($mode = 'edit')
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1317,7 +1317,7 @@ function send_msg()
     require_once _base_ . '/lib/lib.upload.php';
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 }
 
 function read_msg()
@@ -1339,11 +1339,11 @@ function mod_prj()
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('mod', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Forma::user()->getIdSt(), $id))) {
+    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1364,7 +1364,7 @@ function mod_prj()
             $qtxt .= "pstasks='$pstasks',psnews='$psnews',pstodo='$pstodo',psmsg='$psmsg' ";
 
             if ($pgroup != $old_pgroup) {
-                if (in_group(getLogUserId(), $pgroup)) {
+                if (in_group(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $pgroup)) {
                     // Removing all admins:
                     $pgroup_qtxt = 'DELETE FROM %lms_prj_users ';
                     $pgroup_qtxt .= "WHERE flag='1' AND pid='" . $id . "'";
@@ -1496,11 +1496,11 @@ function del_prj()
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('del', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(Forma::user()->getIdSt(), $id))) {
+    if (($view_perm) && (in_array($id, $myprj)) && (is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id))) {
         $back_url = 'index.php?modname=project&amp;op=project';
 
         if (isset($_POST['undo'])) {
@@ -1601,11 +1601,11 @@ function del_item()
     $id = (int) importVar('id');
     $itemid = (int) importVar('itemid');
 
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)))) {
         if (!isset($_GET['type'])) {
             return 0;
         }
@@ -1702,7 +1702,7 @@ function read_item()
 
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
@@ -1764,11 +1764,11 @@ function edit_progtot()
     // Controllo che l'utente non cerchi di entrare in progetti a cui non e' iscritto.
     $id = $_GET['id'];
     $itemid = importVar('itemid');
-    $myprj = user_projects(Forma::user()->getIdSt());
+    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $view_perm = checkPerm('view', true);
 
-    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(Forma::user()->getIdSt(), $id)) || (is_admin(Forma::user()->getIdSt(), $id)))) {
+    if (($view_perm) && (in_array($id, $myprj)) && ((is_owner(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)) || (is_admin(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id)))) {
         //area title
         $out->add(getTitleArea($lang->def('_PROJECT_MANAGER'), 'project'));
         $out->add('<div class="std_block">');
@@ -1923,7 +1923,7 @@ function projectDispatch($op)
 					SELECT pid, fname, ftitle
 					FROM ' . $GLOBALS['prefix_lms'] . "_prj_files
 					WHERE id = '$id'"));
-                    $myprj = user_projects(Forma::user()->getIdSt());
+                    $myprj = user_projects(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                     if ($can_view && in_array($pid, $myprj)) {
                         $expFileName = explode('.', $fname);

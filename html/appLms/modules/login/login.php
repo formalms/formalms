@@ -49,7 +49,7 @@ function loadNews()
     $textQuery = '
 	SELECT idNews, publish_date, title, short_desc
 	FROM ' . $GLOBALS['prefix_lms'] . "_news
-	WHERE language = '" . getLanguage() . "'
+	WHERE language = '" . Lang::get() . "'
 	ORDER BY important DESC, publish_date DESC
 	LIMIT 0," . FormaLms\lib\Get::sett('visuNewsHomePage');
 
@@ -83,7 +83,7 @@ function news()
     $textQuery = '
 	SELECT idNews, publish_date, title, short_desc
 	FROM ' . $GLOBALS['prefix_lms'] . "_news
-	WHERE language = '" . getLanguage() . "'
+	WHERE language = '" . Lang::get() . "'
 	ORDER BY important DESC, publish_date DESC";
 
     $lang = FormaLanguage::createInstance('login');
@@ -141,7 +141,7 @@ function readnews()
 // XXX: lostpwd
 function lostpwd()
 {
-    require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
 
     $lang = FormaLanguage::createInstance('login');
     $user_manager = new UserManager();
@@ -163,8 +163,8 @@ function lostpwd()
 
 function register()
 {
-    require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
-    require_once Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $user_manager = new UserManager();
 
@@ -184,8 +184,8 @@ function register()
 
 function register_confirm()
 {
-    require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
-    require_once Forma::inc(_base_ . '/lib/lib.form.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
     $user_manager = new UserManager();
 
@@ -399,7 +399,7 @@ function showprofile()
                                             'id_parent')
             . ' &gt; ' . $course['name']
         . '</p>'
-        . $profile->getProfile(getLogUserId())
+        . $profile->getProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())
         . '</div>', 'content');
 }
 

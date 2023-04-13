@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
 
 class Numerical_Question extends Question
 {

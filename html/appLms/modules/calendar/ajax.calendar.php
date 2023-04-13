@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 

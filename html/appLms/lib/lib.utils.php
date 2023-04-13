@@ -55,7 +55,7 @@ function getLmsLangFlags()
     $blind_link = '<li><a href="#lang_box">' . $lang->def('_LANG_SELECT') . '</a></li>';
     $GLOBALS['page']->add($blind_link, 'blind_navigation');
 
-    $all_lang = Forma::langManager()->getAllLangCode();
+    $all_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     if (!is_array($all_lang)) {
         return '';

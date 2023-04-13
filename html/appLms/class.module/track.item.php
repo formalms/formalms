@@ -56,7 +56,7 @@ class Track_Item extends Track_Object
      */
     public static function getIdTrack($id_reference, $id_user, $id_resource, $createOnFail = false)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $query = 'SELECT idTrack '
                 . 'FROM %lms_materials_track '

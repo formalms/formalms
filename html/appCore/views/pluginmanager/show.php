@@ -9,7 +9,7 @@ echo Form::closeForm();
 ?>
 
 <hr/>
-<?php include Forma::inc(_lib_ . '/formatable/include.php'); ?>
+<?php include \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php'); ?>
 <div class="feedback-<?php echo $res; ?>"><?php echo $feedback; ?></div>
 <table class="table table-striped table-bordered display" style="width:100%" id="plugins"></table>
 <script>

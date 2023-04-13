@@ -234,7 +234,7 @@ class MyFriends
             $arr_id_friends = $this->getFriendsList($limit, false, $waiting, true);
         }
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $users_info = &$acl_man->getUsers($arr_id_friends);
 

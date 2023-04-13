@@ -8,7 +8,7 @@
 
                 $_model = new CoursepathLms();
                 $count = 0;
-                $statusFilters = $_model->getFilterStatusLearningPath(Forma::user()->getIdst());
+                $statusFilters = $_model->getFilterStatusLearningPath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
 
                 $html = '<ul class="nav nav-pills">';
 
@@ -32,7 +32,7 @@
 
                 $inline_filters = $html;
 
-                $_auxiliary = Form::getInputDropdown('', 'coursepath_search_filter_year', 'filter_year', $_model->getFilterYears(Forma::user()->getIdst()), 0, '');
+                $_auxiliary = Form::getInputDropdown('', 'coursepath_search_filter_year', 'filter_year', $_model->getFilterYears(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()), 0, '');
                 $_auxiliary = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_auxiliary);
 
                 $this->widget('tablefilter', [
@@ -59,7 +59,7 @@
 
 <script type="text/javascript">
 
-    var this_user = '<?php echo Forma::user()->idst; ?>';
+    var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>';
     $(function(){
         v = getCookie(this_user+'.my_coursepath.year');
         if (v != '') {$("#coursepath_search_filter_year").selectpicker('val', v);}
@@ -73,14 +73,14 @@
     });
     
     function saveCurrentFilter(){
-        var this_user = '<?php echo Forma::user()->idst; ?>'
+        var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>'
         var cyear = $("#coursepath_search_filter_year").selectpicker().val();
         setCookie(this_user+'.my_coursepath.year',cyear,60,"/")        
         
     }
 
     function clearCurrentFilter(){
-        var this_user = '<?php echo Forma::user()->idst; ?>'
+        var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>'
         setCookie(this_user+'.my_coursepath.year',"",-3650,"/")
     }
     

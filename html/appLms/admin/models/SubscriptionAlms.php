@@ -31,8 +31,8 @@ class SubscriptionAlms extends Model
 
     public function __construct($id_course = false, $id_edition = false, $id_date = false)
     {
-        $this->db = DbConn::getInstance();
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->setCourseData($id_course, $id_edition, $id_date);
         parent::__construct();
     }
@@ -62,17 +62,17 @@ class SubscriptionAlms extends Model
     public function loadUser($start_index = false, $results = false, $sort = false, $dir = false, $filter = false, $adminFilter = true)
     {
         if ($this->id_edition != 0) {
-            require_once Forma::include(_lms_ . '/lib/', 'lib.edition.php');
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.edition.php');
             $edition_man = new EditionManager();
 
             return $edition_man->getCourseEditionSubscription($this->id_course, $this->id_edition, $start_index, $results, $sort, $dir, $filter, $adminFilter);
         } elseif ($this->id_date != 0) {
-            require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
             $date_man = new DateManager();
 
             return $date_man->getCourseEditionSubscription($this->id_course, $this->id_date, $start_index, $results, $sort, $dir, $filter, $adminFilter);
         } else {
-            require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
+            require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
             $subscribe_man = new CourseSubscribe_Manager();
 
             return $subscribe_man->getCourseSubscription($this->id_course, $start_index, $results, $sort, $dir, $filter, $adminFilter);
@@ -316,7 +316,7 @@ class SubscriptionAlms extends Model
                     require_once _lms_ . '/lib/lib.levels.php';
                     require_once _base_ . '/lib/lib.eventmanager.php';
 
-                    $acl_man = Forma::user()->getAclManager();
+                    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
                     $event = $status < 0 ? 'UserCourseInsertModerate' : 'UserCourseInserted';
                     $isEventEnabled = getEnabledEvent($event);
@@ -346,7 +346,7 @@ class SubscriptionAlms extends Model
                         $msg_composer->setBodyLangText('email', $body_key, $array_subst);
                         // message to user that is waiting
 
-                        $acl = &Forma::user()->getAcl();
+                        $acl = \FormaLms\lib\Forma::getAclManager();;
                         $acl_man = &$this->acl_man;
 
                         $recipients = [];
@@ -374,7 +374,7 @@ class SubscriptionAlms extends Model
                             $array_user = &$acl_manager->getAllUsersFromIdst($idst_associated);
                             $array_user = array_unique($array_user);
 
-                            $control_user = array_search(getLogUserId(), $array_user);
+                            $control_user = array_search(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $array_user);
                             if ($control_user === 0) {
                                 $control_user = true;
                             }
@@ -564,10 +564,10 @@ class SubscriptionAlms extends Model
 
         $is_admin = false;
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_query = $adminManager->getAdminUsersQuery(Forma::user()->getIdST(), 'idst');
+            $admin_query = $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST(), 'idst');
             $is_admin = true;
         }
 
@@ -669,9 +669,9 @@ class SubscriptionAlms extends Model
         return $this->delUser($id_user);
 
         /* require_once(_lms_ . '/lib/lib.course.php');
-        $docebo_course = new FormaCourse($id_course);
+        $formaCourse = new FormaCourse($id_course);
 
-        $level_idst = & $docebo_course->getCourseLevel($id_course);
+        $level_idst = & $formaCourse->getCourseLevel($id_course);
         //$level = $this->getUserLevel($id_user);
 
         require_once(_lms_.'/lib/lib.subscribe.php');
@@ -721,8 +721,8 @@ class SubscriptionAlms extends Model
     public function countPendingUnsubscribeRequests()
     {
         $output = 0;
-        $ulevel = Forma::user()->getUserLevelId();
-        $id_admin = Forma::user()->getIdSt();
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        $id_admin = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $filter = false;
         $admin_query_course = '';
@@ -739,7 +739,7 @@ class SubscriptionAlms extends Model
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1116,7 +1116,7 @@ class SubscriptionAlms extends Model
             $msg_composer->setSubjectLangText('sms', '_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS', false);
             $msg_composer->setBodyLangText('sms', '_NEW_USER_UNSUBS_WAITING_TEXT_SMS', $array_subst);
 
-            $acl = &Forma::user()->getAcl();
+            $acl = \FormaLms\lib\Forma::getAclManager();;
             $acl_man = &$this->acl_man;
 
             $recipients = [];
@@ -1140,7 +1140,7 @@ class SubscriptionAlms extends Model
                 $array_user[] = $array_user[0];
                 unset($array_user[0]);
 
-                $control_user = array_search(getLogUserId(), $array_user);
+                $control_user = array_search(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $array_user);
 
                 $query = 'SELECT COUNT(*)'
                             . ' FROM ' . FormaLms\lib\Get::cfg('prefix_fw') . '_admin_course'
@@ -1364,10 +1364,10 @@ class SubscriptionAlms extends Model
             }
         }
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $this->acl_man->getAllUsersFromSelection($admin_tree);
 
             $query .= ' AND s.idUser IN (' . implode(',', $admin_users) . ')';
@@ -1378,7 +1378,7 @@ class SubscriptionAlms extends Model
         ($start_index === false ? '' : $query .= ' LIMIT ' . $start_index . ', ' . $results);
 
         $result = sql_query($query);
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $res = [];
         while ($obj = sql_fetch_object($result)) {
             $res[] = $obj;
@@ -1455,11 +1455,11 @@ class SubscriptionAlms extends Model
             }
         }
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $acl_man = new FormaACLManager();
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(getLogUserId());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_tree);
 
             $query .= ' AND s.idUser IN (' . implode(',', $admin_users) . ')';
@@ -1538,11 +1538,11 @@ class SubscriptionAlms extends Model
             }
         }
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $acl_man = new FormaACLManager();
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(getLogUserId());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_tree);
             $query .= ' AND s.idUser IN (' . implode(',', $admin_users) . ')';
         }

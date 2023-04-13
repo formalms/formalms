@@ -11,8 +11,8 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayInterface.php');
-require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayException.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/Sms/SmsGatewayInterface.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/Sms/SmsGatewayException.php');
 
 class SkebbySmsGateway implements SmsGatewayInterface
 {

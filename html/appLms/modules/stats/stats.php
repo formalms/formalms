@@ -1,6 +1,6 @@
 <?php defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
 require_once _lms_ . '/lib/lib.stats.php';
 
 Util::get_css('lms-scormplayer.css', false, true);
@@ -268,7 +268,7 @@ function statuserfilter()
     $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Forma::user()->getACLManager();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
 
     $out->setWorkingZone('content');
 
@@ -455,11 +455,11 @@ function statuserfilter()
     list($total_user) = sql_fetch_row(sql_query($query));
 
     //apply sub admin filters, if needed
-    if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         foreach ($students as $idst => $user_course_info) {
             if (!in_array($idst, $ctrl_users)) {
                 // Elimino gli studenti non amministrati
@@ -481,15 +481,15 @@ function statuserfilter()
     $tabStat->setColsStyle($type_h);
     $tabStat->addHead($content_h);
 
-    $aclManager = &Forma::user()->getACLManager();
-    $acl = &Forma::user()->getACL();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
     //apply sub admin filters, if needed
-    if ($view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
+    if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         foreach ($students as $idst => $user_course_info) {
             if (!in_array($idst, $ctrl_users)) {
                 // Elimino gli studenti non amministrati
@@ -557,7 +557,7 @@ function statoneuser()
 {
     $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
-    $aclManager = &Forma::user()->getACLManager();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -628,7 +628,7 @@ function statcourse()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
-    $aclManager = &Forma::user()->getACLManager();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
     $form = new Form();
 
     if (isset($_POST['group_filter'])) {
@@ -739,8 +739,8 @@ function statitem()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     $form = new Form();
-    $aclManager = &Forma::user()->getACLManager();
-    $acl = &Forma::user()->getACL();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
     $idItem = (int) $_GET['idItem'];
 
@@ -784,11 +784,11 @@ function statitem()
     list($total_user) = sql_fetch_row(sql_query($query));
 
     //apply sub admin filters, if needed
-    if ($view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
+    if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         foreach ($students as $idst => $user_course_info) {
             if (!in_array($idst, $ctrl_users)) {
                 // Elimino gli studenti non amministrati
@@ -1000,8 +1000,8 @@ function statoneuseroneitem()
     $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Forma::user()->getACLManager();
-    $acl = &Forma::user()->getACL();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
     $idItem = (int) $_GET['idItem'];
     $idst_user = (int) $_GET['idUser'];
@@ -1050,8 +1050,8 @@ function statoneuseroneitemdetails()
     $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Forma::user()->getACLManager();
-    $acl = &Forma::user()->getACL();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
     $backto = $_GET['backto'];
     $idItem = (int) $_GET['idItem'];
@@ -1101,8 +1101,8 @@ function statoneuseroneitemhistory()
     $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Forma::user()->getACLManager();
-    $acl = &Forma::user()->getACL();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
     $backto = $_GET['backto'];
     $idItem = (int) $_GET['idItem'];
@@ -1147,7 +1147,7 @@ function modstatus()
     $lang = &FormaLanguage::createInstance('stats', 'lms');
     $out = &$GLOBALS['page'];
     $form = new Form();
-    $aclManager = &Forma::user()->getACLManager();
+    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
 
     $idUser = (int) $_GET['idUser'];
     //$idItem = (int)$_GET['idItem'];

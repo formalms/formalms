@@ -40,8 +40,8 @@ function createLO($objectType, $id_resource = false, $environment = false)
         return false;
     }
 
-    require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
-    require_once Forma::inc(_lms_ . '/class.module/' . $file_name);
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $file_name);
 
     $lo = new $class_name($id_resource, $environment);
 
@@ -56,8 +56,8 @@ function createLOTrack($idTrack, $objectType, $idResource, $idParams, $back_url)
     if (trim($fileName) == '') {
         return false;
     }
-    require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
-    require_once Forma::inc(_lms_ . '/class.module/' . $fileName);
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $fileName);
     $lo = new $className($idTrack, $idResource, $idParams, $back_url);
 
     return $lo;
@@ -79,8 +79,8 @@ function createLOTrackShort($idReference, $idUser, $back_url)
     if (trim($fileName) == '') {
         return false;
     }
-    require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
-    require_once Forma::inc(_lms_ . '/class.module/' . $fileName);
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $fileName);
     $lo = new $className($idTrack, $idResource, $idParams, $back_url);
 
     return $lo;

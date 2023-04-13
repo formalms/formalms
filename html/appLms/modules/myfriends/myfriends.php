@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * ( editor = Eclipse 3.2.0[phpeclipse,subclipse,GEF,EMF], tabwidth = 4, font = Courier New )
  */
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -33,9 +33,9 @@ function myfriends(&$url)
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &FormaLanguage::createInstance('myfriends', 'lms');
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
-    $my_fr = new MyFriends(getLogUserId());
+    $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $users_info = $my_fr->getFriendsList(false, false, false);
 
@@ -94,9 +94,9 @@ function approveuser(&$url)
     require_once _base_ . '/lib/lib.table.php';
 
     $lang = &FormaLanguage::createInstance('myfriends', 'lms');
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
-    $my_fr = new MyFriends(getLogUserId());
+    $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     if (isset($_GET['id_friend'])) {
         switch ($_GET['action']) {
@@ -154,8 +154,8 @@ function searchUser(&$url)
     require_once _adm_ . '/lib/lib.myfriends.php';
 
     $lang = &FormaLanguage::createInstance('myfriends', 'lms');
-    $my_fr = new MyFriends(getLogUserId());
-    $acl_man = &Forma::user()->getAclManager();
+    $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     $GLOBALS['page']->add(
         getTitleArea([$url->getUrl() => $lang->def('_MY_FRIENDS'), $lang->def('_SEARCH_USER')], 'myfriends')
@@ -212,7 +212,7 @@ function searchUser(&$url)
         } else {
             require_once _base_ . '/lib/lib.user_profile.php';
 
-            if (getLogUserId() != $finded_user[ACL_INFO_IDST]) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() != $finded_user[ACL_INFO_IDST]) {
                 $GLOBALS['page']->add('<p class="confirm_friend">'
                     . '<a href="' . $url->getUrl('op=searchuser&id_friend=' . $finded_user[ACL_INFO_IDST] . '') . '">' . $lang->def('_ADD_TO_MY_FIREND') . '</a>'
                     . '</p>', 'content');
@@ -233,7 +233,7 @@ function delfriend(&$url)
     require_once _adm_ . '/lib/lib.myfriends.php';
 
     $lang = &FormaLanguage::createInstance('myfriends', 'lms');
-    $my_fr = new MyFriends(getLogUserId());
+    $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $id_friend = importVar('id_friend', true, 0);
 
     $GLOBALS['page']->add(
@@ -250,7 +250,7 @@ function delfriend(&$url)
     if ($ui == false) {
         $GLOBALS['page']->add(getErrorUi($lang->def('_INVALID_FRIEND')));
     } else {
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $ui = current($ui);
         $GLOBALS['page']->add(
             getDeleteUi($lang->def('_AREYOUSURE'),

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -34,7 +34,7 @@ function adviceList()
     $nav_bar->setLink('index.php?modname=advice&amp;op=advice&amp;tab=advice');
     $ini = $nav_bar->getSelectedElement();
 
-    $user_idst = Forma::user()->getArrSt(); // $acl->getUserGroupsST(getLogUserId());
+    $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(); // $acl->getUserGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $query_my_advice = 'SELECT DISTINCT idAdvice FROM %lms_adviceuser
 		WHERE ( idUser IN ( ' . implode(',', $user_idst) . " ) AND archivied = '0' )";
@@ -45,7 +45,7 @@ function adviceList()
         $advice_all[$row['idAdvice']] = $row['idAdvice'];
     }
     $query_my_arch_advice = "SELECT DISTINCT idAdvice FROM %lms_adviceuser
-		WHERE idUser = '" . getLogUserId() . "' AND archivied = '1'";
+		WHERE idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND archivied = '1'";
     $re_my_arch_advice = sql_query($query_my_arch_advice);
 
     foreach ($re_my_arch_advice as $row) {
@@ -150,7 +150,7 @@ function archiveList()
     $query_my_arch_advice = '
 		SELECT DISTINCT idAdvice
 		FROM ' . $GLOBALS['prefix_lms'] . "_adviceuser
-		WHERE idUser = '" . getLogUserId() . "' AND archivied = '1'";
+		WHERE idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND archivied = '1'";
     $re_my_arch_advice = sql_query($query_my_arch_advice);
     while (list($id) = sql_fetch_row($re_my_arch_advice)) {
         $advice_arch[] = $id;
@@ -280,7 +280,7 @@ function addadvice()
     $form = new Form();
 
     //finding group
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
     $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $session->get('idCourse') . '/group/', true);
     $groups = [];
     $groups['me'] = $lang->def('_YOUONLY');
@@ -334,7 +334,7 @@ function insadvice()
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_advice
 		( idCourse, author, title, description, posted, important ) VALUES
 		( 	'" . (int) $session->get('idCourse') . "',
-			'" . getLogUserId() . "',
+			'" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 			'" . addslashes($_REQUEST['title']) . "',
 			'" . addslashes($_REQUEST['description']) . "',
 			'" . date('Y-m-d H:i:s') . "',
@@ -345,7 +345,7 @@ function insadvice()
     }
     list($id_advice) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     switch ($_REQUEST['idGroup']) {
         case 'sel_user':
@@ -353,11 +353,11 @@ function insadvice()
 
             break;
         case 'me':
-                $members = [getLogUserId()];
+                $members = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
                 $query_insert = '
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_adviceuser
 				( idUser, idAdvice ) VALUES
-				( '" . getLogUserId() . "', '" . $id_advice . "' )";
+				( '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $id_advice . "' )";
                 if (!sql_query($query_insert)) {
                     Util::jump_to('index.php?modname=advice&op=advice&result=err_user');
                 }
@@ -367,7 +367,7 @@ function insadvice()
                 $query_insert = '
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_adviceuser
 				( idUser, idAdvice ) VALUES
-				( '" . getLogUserId() . "', '" . $id_advice . "' )";
+				( '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $id_advice . "' )";
                 if (!sql_query($query_insert)) {
                     Util::jump_to('index.php?modname=advice&op=advice&result=err_user');
                 }
@@ -384,7 +384,7 @@ function insadvice()
 
             break;
     }
-    $members[] = getLogUserId();
+    $members[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
     require_once _base_ . '/lib/lib.eventmanager.php';
 
     $msg_composer = new EventMessageComposer();
@@ -524,7 +524,7 @@ function modreader()
         $user_select->resetSelection($users);
     }
     $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $session->get('idCourse') . '/subscribed/');
-    $me = [getLogUserId()];
+    $me = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
     $user_select->setUserFilter('exclude', $me);
     $user_select->setUserFilter('group', $arr_idstGroup);
     $arr_idstUser = $aclManager->getAllUsersFromIdst($arr_idstGroup);
@@ -567,7 +567,7 @@ function updreader()
     $old_users = [];
 
     $found = false;
-    $me = getLogUserId();
+    $me = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
     while (list($id_user) = sql_fetch_row($re_reader)) {
         $old_users[] = $id_user;
         if ($id_user == $me) {
@@ -700,9 +700,9 @@ function archiveadvice()
 
     $id_advice = importVar('idAdvice');
 
-    $acl = &Forma::user()->getAcl();
-    $user_idst = $acl->getUserGroupsST(getLogUserId());
-    $iam = getLogUserId();
+    $acl = \FormaLms\lib\Forma::getAclManager();;
+    $user_idst = $acl->getUserGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+    $iam = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
     $user_idst[] = $iam;
 
     $query_my_advice = '

@@ -222,7 +222,7 @@ function codeList()
 
     $code_manager = new CodeManager();
 
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     cout(getTitleArea(['index.php?modname=code&amp;op=list' => $lang->def('_CODE'),
                 $lang->def('_CODE_LIST'), ])
@@ -887,7 +887,7 @@ function export()
 
     //retrieve data to export
     $code_manager = new CodeManager();
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $codeGroupInfo = $code_manager->getCodeGroupInfo($id_code_group);
     $array_code = $code_manager->getCodeList($id_code_group, 0, false);
 

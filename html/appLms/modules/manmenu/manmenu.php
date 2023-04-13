@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -270,8 +270,8 @@ function delmenuvoice()
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_menucourse_main 
 		WHERE idMain = '" . $id_main . "'");
 
-        Forma::user()->loadUserSectionST();
-        Forma::user()->SaveInSession();
+        \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST();
+        \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
 
         Util::jump_to('index.php?modname=manmenu&op=manmenu&result=' . ($re ? 1 : 0));
     } else {
@@ -513,7 +513,7 @@ function editmodule($load = false)
     $out->setWorkingZone('content');
     $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
     $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
     $perm = [];
 
     // Load module info
@@ -614,7 +614,7 @@ function upmodule()
     $id_module = FormaLms\lib\Get::req('id_module', DOTY_INT, 0);
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $lang = &FormaLanguage::createInstance('manmenu', 'framework');
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     if (isset($_POST['undo'])) {
         Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $id_main);
@@ -706,15 +706,15 @@ function upmodule()
 		( idCourse, idMain, idModule, sequence, my_name ) VALUES 
 		( '" . $idCourse . "', '" . $new_id_main . "', '" . $id_module . "', '" . $seq . "', '" . $my_name . "' ) ");
     }
-    Forma::user()->loadUserSectionST();
-    Forma::user()->SaveInSession();
+    \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST();
+    \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
 
     Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $new_id_main . '&result=' . ($re ? 1 : 0));
 }
 
 function removeModule($id_module, $id_main, $id_course)
 {
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     // Load module info
     $query_module = '
@@ -770,8 +770,8 @@ function delmodule()
     if (isset($_POST['confirm']) || isset($_GET['confirm'])) {
         $re = removeModule($id_module, $id_main, $idCourse);
 
-        Forma::user()->loadUserSectionST();
-        Forma::user()->SaveInSession();
+        \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST();
+        \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
 
         Util::jump_to('index.php?modname=manmenu&op=manmodule&id_main=' . $id_main . '&result=' . ($re ? 1 : 0));
     } else {

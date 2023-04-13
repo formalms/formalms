@@ -651,8 +651,8 @@ class AdminCourseManagment
             }
         } else {
             //automatic filter, based on current user
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                $course_array = &$this->getUserAllCourses(getLogUserId());
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                $course_array = &$this->getUserAllCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (empty($course_array)) {
                     if (FormaLms\lib\Get::sett('on_catalogue_empty') == 'on') {
                         return $course_stats;

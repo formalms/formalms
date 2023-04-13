@@ -136,7 +136,7 @@ class Util
             Util::fatal('Error: the file that you are searching for no longer exists on the server.<br/>Please contact the system administrator');
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $db->close();
 
         ob_end_clean();
@@ -277,7 +277,7 @@ class Util
             return;
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $re_sett = $db->query('SELECT param_name, param_value, value_type ' .
         'FROM ' . $from_table . ' ' .
@@ -472,7 +472,7 @@ class Util
      */
     public static function serialize($string)
     {
-        return json_encode($string);
+        return \FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($string,'json');
     }
 
     /**
@@ -641,7 +641,7 @@ function getPLSetting($platform, $param_name, $default = false)
  * @param string $folder
  * @param string $add_start
  *
- * @return nothing
+ * @return void
  */
 function addCss($name, $platform = false, $folder = false, $add_start = false)
 {
@@ -883,11 +883,11 @@ function &getTranslateTable()
  * function translateChr
  *	Do html charset translation.
  *
- *  @param $text the text that will be translated
- *  @param &$translate_tabel the array that contain the charset substitution rule usualy return by getTranslateTable()
- *  @param $reverse if is true flip the translate_table array
+ *  @param $text string text that will be translated
+ *  @param &$translate_tabel string array that contain the charset substitution rule usualy return by getTranslateTable()
+ *  @param $reverse bool is true flip the translate_table array
  *
- *	@return the translated text
+ *	@return string translated text
  **/
 function translateChr(&$text, &$translate_table, $reverse = false)
 {
@@ -895,7 +895,7 @@ function translateChr(&$text, &$translate_table, $reverse = false)
         return $text;
     }
     if (!isset($GLOBALS['is_utf'])) {
-        $GLOBALS['is_utf'] = (strpos(getUnicode(), 'utf-8') === false ? false : true);
+        $GLOBALS['is_utf'] = (strpos(Lang::charset(), 'utf-8') === false ? false : true);
     }
 
     if ($GLOBALS['is_utf'] === false) {
@@ -938,11 +938,11 @@ function guiResultStatus(&$lang, $text)
  * function highlightText
  *	Highlight parts of text strings with HTML tags.
  *
- *  @param $string the text that will be checked for parts to highlight
- *  @param $key the text to be highlighted
- *  @param $classname class of the highlight <span> tag, "highlight" by default
+ *  @param $string string text that will be checked for parts to highlight
+ *  @param $key string text to be highlighted
+ *  @param $classname string of the highlight <span> tag, "highlight" by default
  *
- *	@return the highlighted text
+ *	@return string highlighted text
  **/
 function highlightText($string, $key, $classname = 'highlight')
 {

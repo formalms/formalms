@@ -28,7 +28,7 @@ class HomecatalogueLmsController extends CatalogLmsController
         $this->path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
         $this->model = new HomecatalogueLms();
         $this->_mvc_name = 'catalog';
-        $this->acl_man = &Forma::user()->getAclManager();
+        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
     }
 
     public function isTabActive($tab_name)

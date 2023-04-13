@@ -49,7 +49,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             return EMPTY_USERID;
         }
 
-        if (!$user = &\FormaUser::createFormaUserFromLogin(
+        if (!$user = \FormaLms\lib\FormaUser::createFormaUserFromLogin(
                 $login_data['userid'],
                 $login_data['password'],
                 'public_area', // XXX: ???
@@ -129,7 +129,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
 
     private static function _getLoginData()
     {
-        require_once \Forma::inc(_base_ . '/lib/lib.usermanager.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
 
         $user_manager = new UserManager();
         $login_data = $user_manager->getLoginInfo();

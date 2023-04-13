@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
-require_once Forma::inc(_adm_ . '/modules/field/class.field.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/class.field.php');
 
 class Field_Textfield extends Field
 {
@@ -48,7 +48,7 @@ class Field_Textfield extends Field
         $array_lang = [];
         $std_lang = &FormaLanguage::createInstance('standard');
         $lang = &FormaLanguage::createInstance('field');
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -57,7 +57,7 @@ class Field_Textfield extends Field
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
                 foreach ($_POST['show_on_platform']  as $code) {
@@ -127,7 +127,7 @@ class Field_Textfield extends Field
             . $form->getHidden('type_field', 'type_field', $this->getFieldType())
             . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -167,7 +167,7 @@ class Field_Textfield extends Field
         $array_lang = [];
         $std_lang = &FormaLanguage::createInstance('standard');
         $lang = &FormaLanguage::createInstance('field');
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -176,7 +176,7 @@ class Field_Textfield extends Field
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
 
             //control if all is ok
             if (!isset($_POST['new_textfield'][$mand_lang])) {
@@ -269,7 +269,7 @@ class Field_Textfield extends Field
             . $form->getHidden('id_common', 'id_common', $this->id_common)
             . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -354,7 +354,7 @@ class Field_Textfield extends Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         if ($value !== null) {
@@ -406,7 +406,7 @@ class Field_Textfield extends Field
         require_once _base_ . '/lib/lib.form.php';
 
         $found_in_post = false;
-        $larr = Forma::langManager()->getAllLangCode();
+        $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         foreach ($larr as $lang) {
             if (isset($_POST['field_' . $this->getFieldType()]) &&
                    isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
@@ -434,7 +434,7 @@ class Field_Textfield extends Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         foreach ($larr as $lang) {
@@ -588,7 +588,7 @@ class Field_Textfield extends Field
                 return $res;
             } // (TRUE)
 
-            $larr = Forma::langManager()->getAllLangCode();
+            $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
                     $user_entry = $_POST['field_' . $this->getFieldType()][$this->id_common][$lang];
@@ -620,7 +620,7 @@ class Field_Textfield extends Field
             $qtxt = 'INSERT INTO ' . $this->_getUserEntryTable() . ' ';
             $qtxt .= '(id_user, id_common, id_common_son, language, user_entry) VALUES ';
 
-            $larr = Forma::langManager()->getAllLangCode();
+            $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($_POST['field_' . $this->getFieldType()][$this->id_common][$lang])) {
                     $ins_line = "(	'" . $id_user . "', '" . (int) $this->id_common . "', '0', '" . $lang . "', ";
@@ -775,7 +775,7 @@ class Field_Textfield extends Field
                 return $res;
             } // (TRUE)
 
-            $larr = Forma::langManager()->getAllLangCode();
+            $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($value[$lang])) {
                     $user_entry = $value[$lang];
@@ -808,7 +808,7 @@ class Field_Textfield extends Field
             $qtxt = 'INSERT INTO ' . $this->_getUserEntryTable() . ' ';
             $qtxt .= '(id_user, id_common, id_common_son, language, user_entry) VALUES ';
 
-            $larr = Forma::langManager()->getAllLangCode();
+            $larr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             foreach ($larr as $lang) {
                 if (isset($value[$lang])) {
                     $ins_line = "(	'" . $id_user . "', '" . (int) $this->id_common . "', '0', '" . $lang . "', ";

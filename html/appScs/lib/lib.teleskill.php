@@ -598,7 +598,7 @@ class Teleskill_Management
         $teleskill_room = $this->nextRow($re_room);
         $room_id = $teleskill_room['roomid'];
 
-        if (getLogUserId() == $conference['idSt']) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $conference['idSt']) {
             $role = 2;
         } else {
             $role = 1;
@@ -606,8 +606,8 @@ class Teleskill_Management
 
         $login_info = $this->loginIntoRoom($room_id,
                                         $role,
-                                        getLogUserId(),
-                                        Forma::user()->getUserName());
+                                        \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                                        \FormaLms\lib\FormaUser::getCurrentUser()->getUserName());
 
         if ($login_info['errorcode']) {
             $url = $login_info['errormessage'];

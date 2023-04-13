@@ -37,7 +37,7 @@ $style_h = [
 
 $table->addHead($label_h, $style_h);
 
-$language = getLanguage();
+$language = Lang::get();
 
 $cmodel = new CompetencesAdm();
 $_types = $cmodel->getCompetenceTypes();

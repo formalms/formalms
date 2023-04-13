@@ -15,7 +15,7 @@ if (!defined('IN_FORMA')) {
     exit('You cannot access this file directly');
 }
 
-require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
 $json = new Services_JSON();
 $op = importVar('op', false, '');
@@ -53,7 +53,7 @@ switch ($op) {
             $output['success'] = true;
             $output['printed'] = $id_user;
         } else {
-            $acl_man = &$GLOBALS['current_user']->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUser($id_user, false);
 
             if ($user_info[ACL_INFO_FIRSTNAME] !== '' && $user_info[ACL_INFO_LASTNAME] !== '') {

@@ -32,7 +32,7 @@ class Report_Aggregate extends Report
 
     public function __construct($id_report, $report_name = false)
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
 
         $this->lang = &FormaLanguage::createInstance('report', 'framework');
         $this->_set_columns_category(_RA_CATEGORY_COURSES, Lang::t('_RU_CAT_COURSES', 'report'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
@@ -143,7 +143,7 @@ class Report_Aggregate extends Report
                 //$user_select->show_orgchart_simple_selector = FALSE;
                 //$user_select->multi_choice = TRUE;
 
-                if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $user_select->addFormInfo(
                         ($type == 'users' ? Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'select_all', 'select_all', 1, $reportTempData['rows_filter']['select_all']) : '') .
                         Form::getBreakRow() .
@@ -325,12 +325,12 @@ class Report_Aggregate extends Report
             }
         }
         /*
-                if(Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if(\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
 
                     // if the usre is a subadmin with only few course assigned
                     require_once(_base_.'/lib/lib.preference.php');
                     $adminManager = new AdminPreference();
-                    $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                    $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                     $courses = array_intersect($courses, $admin_tree['courses']);
                 }
         */
@@ -349,27 +349,27 @@ class Report_Aggregate extends Report
         }
         /*
                 //admin users filter
-                $acl_man = Forma::user()->getACLManager();
-                $userlevelid = Forma::user()->getUserLevelId();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();;
+                $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
                 if ( $userlevelid != ADMIN_GROUP_GODADMIN ) {
                     require_once(_base_.'/lib/lib.preference.php');
                     $adminManager = new AdminPreference();
-                    $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                    $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                     $admin_users = $acl_man->getAllUsersFromSelection($admin_tree);
                     $admin_users = array_unique($admin_users);
                 }*/
-        $userlevelid = Forma::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             //filter users
             $alluser = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             //$user_selected = array_intersect($user_selected, $admin_users);
             //unset($admin_users);
 
             //filter courses
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if ($all_courses) {
                 $all_courses = false;
                 $rs = sql_query('SELECT idCourse FROM %lms_course');
@@ -385,7 +385,7 @@ class Report_Aggregate extends Report
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -446,7 +446,7 @@ class Report_Aggregate extends Report
             case 'groups':
                 //retrieve all labels
                 $orgchart_labels = [];
-                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . getLanguage() . "'";
+                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . Lang::get() . "'";
                 $res = sql_query($query);
                 while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
@@ -515,7 +515,7 @@ class Report_Aggregate extends Report
                 //for each group, retrieve label and user statistics
                 foreach ($selection as $dir_id => $group_id) {
                     $group_users = $acl->getGroupAllUser($group_id);
-                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }
                     $users_num = count($group_users);
@@ -682,7 +682,7 @@ class Report_Aggregate extends Report
                     $acl_man = new FormaACLManager();
                     $adminManager = new AdminPreference();
 
-                    $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+                    $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                     $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
                     $users = array_intersect($users, $admin_users);
                     unset($admin_users);
@@ -691,7 +691,7 @@ class Report_Aggregate extends Report
                     $temp = [];
                     // resolve the user selection
                     $users = &$acl->getAllUsersFromIdst($selection);
-                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $users = array_intersect($users, $admin_users);
                     }
                     if (count($users) <= 0) {
@@ -1028,11 +1028,11 @@ class Report_Aggregate extends Report
         $html = '';
 
         //admin users filter
-        $userlevelid = Forma::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
         }
@@ -1048,11 +1048,11 @@ class Report_Aggregate extends Report
         }
 
         $user_courses = false;
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             // if the usre is a subadmin with only few course assigned
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
             if (isset($admin_courses['course'][0])) {
                 $user_course = false;
@@ -1060,7 +1060,7 @@ class Report_Aggregate extends Report
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1234,7 +1234,7 @@ class Report_Aggregate extends Report
 
                 //retrieve all labels
                 $orgchart_labels = [];
-                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . getLanguage() . "'";
+                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . Lang::get() . "'";
                 $res = sql_query($query);
                 while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
@@ -1343,7 +1343,7 @@ class Report_Aggregate extends Report
 
                 foreach ($selection as $dir_id => $group_id) {
                     $group_users = $acl->getGroupAllUser($group_id);
-                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }
                     $users_num = count($group_users);
@@ -1498,11 +1498,11 @@ class Report_Aggregate extends Report
         $acl->include_suspended = true;
 
         //admin users filter
-        $userlevelid = Forma::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
         }
@@ -1527,14 +1527,14 @@ class Report_Aggregate extends Report
 
                 $users_list = ($sel_all ? $acl->getAllUsersIdst() : $acl->getAllUsersFromIdst($selection));
                 $users_list = array_unique($users_list);
-                if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $users_list = array_intersect($users_list, $admin_users);
                 }
 
                 $query = 'SELECT idUser, YEAR(date_complete) as yearComplete '
                     . ' FROM ' . $lms . '_courseuser '
                     . ' WHERE status=2 '
-                    . ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous() ? ' AND idUser IN (' . implode(',', $users_list) . ') ' : '');
+                    . ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() ? ' AND idUser IN (' . implode(',', $users_list) . ') ' : '');
 
                 $res = sql_query($query);
                 while ($row = sql_fetch_assoc($res)) {
@@ -1625,7 +1625,7 @@ class Report_Aggregate extends Report
             case 'groups':
                 //retrieve all labels
                 $orgchart_labels = [];
-                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . getLanguage() . "'";
+                $query = 'SELECT * FROM ' . $fw . "_org_chart WHERE lang_code='" . Lang::get() . "'";
                 $res = sql_query($query);
                 while ($row = sql_fetch_assoc($res)) {
                     $orgchart_labels[$row['id_dir']] = $row['translation'];
@@ -1707,7 +1707,7 @@ class Report_Aggregate extends Report
                 $buffer->openBody();
                 foreach ($selection as $group) {
                     $group_users = $acl->getGroupAllUser($group);
-                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                    if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $group_users = array_intersect($group_users, $admin_users);
                     }
                     $users_num = count($group_users);
@@ -1909,11 +1909,11 @@ class Report_Aggregate extends Report
         }
 
         //admin users filter
-        $userlevelid = Forma::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
             //filter users selection by admin visible users
@@ -2042,7 +2042,7 @@ class Report_Aggregate extends Report
 
         /*
                 //user details buffer
-                $acl_man = Forma::user()->getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $user_details = array();
                 $query = "SELECT idst, userid FROM %adm_user WHERE idst IN (".implode(",", $_all_users).")";
                 $res = $this->db->query($query);
@@ -2247,11 +2247,11 @@ class Report_Aggregate extends Report
         }
 
         //admin users filter
-        $userlevelid = Forma::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
             //filter users selection by admin visible users
@@ -2382,7 +2382,7 @@ class Report_Aggregate extends Report
 
         /*
                 //user details buffer
-                $acl_man = Forma::user()->getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $user_details = array();
                 $query = "SELECT idst, userid FROM %adm_user WHERE idst IN (".implode(",", $_all_users).")";
                 $res = $this->db->query($query);

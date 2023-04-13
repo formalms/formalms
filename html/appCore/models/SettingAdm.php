@@ -26,7 +26,7 @@ class SettingAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->table = '%adm_setting';
         parent::__construct();
     }
@@ -369,7 +369,7 @@ class SettingAdm extends Model
                         break;
                     case 'language':
                             //drop down language
-                            $langs = Forma::langManager()->getAllLangCode();
+                            $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                             echo Form::getDropdown(
                                 Lang::t('_' . strtoupper($var_name), 'configuration'),
                                 $var_name,
@@ -743,7 +743,7 @@ class SettingAdm extends Model
 
                     //if is int cast it
                 case 'language':
-                        $lang = Forma::langManager()->getAllLangCode();
+                        $lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                         $new_value = $lang[$_POST['option'][$var_name]];
                     break;
                 case 'template':

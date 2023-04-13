@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
-require_once Forma::inc(_adm_ . '/modules/field/class.field.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/class.field.php');
 
 class Field_Date extends Field
 {
@@ -48,7 +48,7 @@ class Field_Date extends Field
         $array_lang = [];
         $std_lang = &FormaLanguage::createInstance('standard');
         $lang = &FormaLanguage::createInstance('field');
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -57,7 +57,7 @@ class Field_Date extends Field
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
                 foreach ($_POST['show_on_platform']  as $code) {
@@ -127,7 +127,7 @@ class Field_Date extends Field
                 . $form->getHidden('type_field', 'type_field', $this->getFieldType())
                 . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -168,7 +168,7 @@ class Field_Date extends Field
         $array_lang = [];
         $std_lang = &FormaLanguage::createInstance('standard');
         $lang = &FormaLanguage::createInstance('field');
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -177,7 +177,7 @@ class Field_Date extends Field
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
                 foreach ($_POST['show_on_platform']  as $code) {
@@ -269,7 +269,7 @@ class Field_Date extends Field
                 . $form->getHidden('id_common', 'id_common', $this->id_common)
                 . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -352,7 +352,7 @@ class Field_Date extends Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         if ($value !== null) {

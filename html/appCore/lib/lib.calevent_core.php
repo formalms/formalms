@@ -76,7 +76,7 @@ class FormaCalEvent_core
 
         $this->_owner = importVar('_owner');
         if (!$this->_owner) {
-            $this->_owner == Forma::user()->getIdSt();
+            $this->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $this->category = importVar('category');

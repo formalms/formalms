@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access!');
 }
 
@@ -213,8 +213,8 @@ function doneWikiPerm()
 {
     checkPerm('edit');
 
-    Forma::user()->loadUserSectionST('/lms/course/private/');
-    Forma::user()->SaveInSession();
+    \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST('/lms/course/private/');
+    \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
 
     $cwa = &cwaSetup();
     $um = &UrlManager::getInstance();

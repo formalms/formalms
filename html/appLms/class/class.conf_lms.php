@@ -97,7 +97,7 @@ class Config_Lms extends Config
 
                 case 'language':
                     //drop down language
-                    $langs = Forma::langManager()->getAllLangCode();
+                    $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                     $html .= Form::getDropdown($lang->def('_' . strtoupper($var_name)),
                                                 $var_name,
                                                 'option[' . $var_name . ']',
@@ -266,7 +266,7 @@ class Config_Lms extends Config
             switch ($value_type) {
                 //if is int cast it
                 case 'language':
-                    $lang = Forma::langManager()->getAllLangCode();
+                    $lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                     $new_value = $lang[$_POST['option'][$var_name]];
                  break;
                 case 'template':
@@ -353,8 +353,8 @@ class Config_Lms extends Config
         }
 
         if ($after_reload_perm) {
-            Forma::user()->loadUserSectionST('/');
-            Forma::user()->SaveInSession();
+            \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST('/');
+            \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
         }
 
         return $re;

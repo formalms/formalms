@@ -91,7 +91,7 @@ class FormaConnectorFormaCourses extends FormaConnector
 
     public function __construct($params)
     {
-        $this->default_cols['lang_code'] = getDefaultLanguage();
+        $this->default_cols['lang_code'] = Lang::getDefault();
         if ($params === null) {
             return;
         } else {
@@ -377,11 +377,11 @@ class FormaConnectorFormaCourses extends FormaConnector
 
             // import the menu
 
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $re &= sql_query('
 				INSERT INTO ' . $GLOBALS['prefix_fw'] . "_admin_course 
 				( id_entry, type_of_entry, idst_user ) VALUES 
-				( '" . $id_course . "', 'course', '" . getLogUserId() . "') ");
+				( '" . $id_course . "', 'course', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "') ");
             }
 
             //if the scs exist create a room

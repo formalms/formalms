@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -67,7 +67,7 @@ function subscribe()
 
         $man_course_user = new Man_CourseUser();
 
-        $course_registration_result = $man_course_user->subscribeUserWithCode($code, getLogUserId());
+        $course_registration_result = $man_course_user->subscribeUserWithCode($code, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $out->add(getTitleArea(Lang::t('_AUTOREGISTRATION', 'course_autoregistration'))
                 . '<div class="std_block">');
@@ -120,12 +120,12 @@ function subscribe()
                         $query_control = 'SELECT COUNT(*)'
                                             . ' FROM %lms_courseuser'
                                             . ' WHERE idCourse = ' . $id_course
-                                            . ' AND idUser = ' . getLogUserId();
+                                            . ' AND idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
                         list($control) = sql_fetch_row(sql_query($query_control));
 
                         if ($control == 0) {
-                            $subscribe->subscribeUser(getLogUserId(), $id_course, '3');
+                            $subscribe->subscribeUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, '3');
 
                             $course_info = $man_course->getCourseInfo($id_course);
 
@@ -136,7 +136,7 @@ function subscribe()
                     }
 
                     if ($counter > 0) {
-                        $code_manager->setCodeUsed($code, getLogUserId());
+                        $code_manager->setCodeUsed($code, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                         $courses = implode(', ', $array_course_name);
 

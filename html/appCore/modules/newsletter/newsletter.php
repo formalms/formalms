@@ -47,8 +47,8 @@ function newsletter()
 
     $out->add("<div class=\"std_block\">\n");
 
-    $acl_manager = Forma::user()->getAclManager();
-    $user_info = $acl_manager->getUser(Forma::user()->getIdSt(), false);
+    $acl_manager = \FormaLms\lib\Forma::getAclManager();
+    $user_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
     $myemail = $user_info[ACL_INFO_EMAIL];
 
     if ((isset($err)) && ($err != '')) {
@@ -62,7 +62,7 @@ function newsletter()
     $out->add($form->getTextfield($lang->def('_SUBJECT'), 'sub', 'sub', 255, ''));
     $out->add($form->getTextarea($lang->def('_DESCRIPTION'), 'msg', 'msg', ''));
 
-    $lang_list = Forma::langManager()->getAllLangCode();
+    $lang_list = \FormaLms\lib\Forma::langManager()->getAllLangCode();
     //array_unshift($lang_list, $lang->def("_DEFAULT"), $lang->def("_ALL"));
     $lang_list = [_ANY_LANG_CODE => $lang->def('_ALL')] + $lang_list;
 
@@ -146,7 +146,7 @@ function send_newsletter($send_id)
 
     $limit = $cycle * $ipc . ', ' . $ipc;
     $arr_st = getSendToIdst($send_id, $limit);
-    $acl_manager = Forma::user()->getAclManager();
+    $acl_manager = \FormaLms\lib\Forma::getAclManager();
     if ((!empty($sel_lang)) && ($sel_lang != _ANY_LANG_CODE)) {
         $user_info = $acl_manager->getUsersByLanguage($sel_lang, $arr_st);
     } else { // Send to all languages
@@ -180,7 +180,7 @@ function send_newsletter($send_id)
 
                 require_once _adm_ . '/lib/lib.field.php';
 
-                $acl_man = &Forma::user()->getACLManager();
+                $acl_man = &\FormaLms\lib\Forma::getAclManager();;
                 $field_man = new FieldList();
 
                 $arr_sms_recipients = [];
@@ -334,13 +334,13 @@ function init_send()
         }
     }
 
-    $lang_list = Forma::langManager()->getAllLangCode();
+    $lang_list = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     $sel_lang = importVar('sel_lang');
     if ($sel_lang > 0) {
         $lang_selected = $lang_list[$sel_lang];
     } elseif ($sel_lang === 0) { // Default language
-        $lang_selected = getLanguage();
+        $lang_selected = Lang::get();
     } else {
         $lang_selected = $sel_lang;
     }
@@ -433,11 +433,11 @@ function selSendTo()
         $mdir->show_fncrole_selector = false;
     }
 
-    if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
         require_once _base_ . '/lib/lib.preference.php';
         $adminManager = new AdminPreference();
-        $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
-        $admin_users = Forma::aclm()->getAllUsersFromSelection($admin_tree);
+        $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+        $admin_users = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromSelection($admin_tree);
 
         $mdir->setUserFilter('user', $admin_users);
         $mdir->setUserFilter('group', $admin_tree);
@@ -455,7 +455,7 @@ function selSendTo()
         $send_to_idst = [];
 
         foreach ($arr_selection as $idstMember) {
-            $arr = Forma::aclm()->getGroupAllUser($idstMember);
+            $arr = \FormaLms\lib\Forma::getAclManager()->getGroupAllUser($idstMember);
             if ((is_array($arr)) && (count($arr) > 0)) {
                 $send_to_idst = array_merge($arr, $send_to_idst);
                 $send_to_idst = array_unique($send_to_idst);
@@ -463,7 +463,7 @@ function selSendTo()
                 $send_to_idst[] = $idstMember;
             }
 
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $send_to_idst = array_intersect($send_to_idst, $admin_users);
             }
         }
@@ -480,7 +480,7 @@ function selSendTo()
         list($lang) = sql_fetch_row($q);
 
         if ($lang != _ANY_LANG_CODE) {
-            $tot = count(Forma::aclm()->getUsersIdstByLanguage($lang, $send_to_idst));
+            $tot = count(\FormaLms\lib\Forma::getAclManager()->getUsersIdstByLanguage($lang, $send_to_idst));
         } else {
             $tot = count($send_to_idst);
         }
@@ -518,7 +518,7 @@ function selSendTo()
         $mdir->show_orgchart_selector = true;
         $mdir->show_orgchart_simple_selector = false;
 
-        $acl_manager = &Forma::user()->getAclManager();
+        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
         if (defined('IN_LMS')) {
             $id_course = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');

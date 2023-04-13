@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -108,7 +108,7 @@ function openreport($idrep = false)
     list($class_name, $file_name, $report_name) = sql_fetch_row($re_report);
     //when file name set use old style
     if ($file_name) {
-        require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
 
         $obj_report = new $class_name($id_report);
     } else {
@@ -148,8 +148,8 @@ function get_report_table($url = '')
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $acl_man = &Forma::user()->getACLManager();
-    $level = Forma::user()->getUserLevelId(Forma::user()->getIdst());
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();;
+    $level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
 
     $lang = &FormaLanguage::createInstance('report');
     $output = '';
@@ -197,14 +197,14 @@ function get_report_table($url = '')
 
     //filter by author
     YuiLib::load();
-    $current_user = $acl_man->getUser(Forma::user()->getIdst(), false);
+    $current_user = $acl_man->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), false);
 
     //dropdown data arrays
     $authors = [
         0 => '(' . $lang->def('_ALL') . ')', //recycle text key
         $current_user[ACL_INFO_IDST] => $acl_man->relativeId($current_user[ACL_INFO_USERID]),
     ];
-    $query = 'SELECT u.idst, u.userid FROM %lms_report_filter as r JOIN %adm_user as u ON (r.author=u.idst) WHERE u.idst<>' . Forma::user()->getIdst() . ' ORDER BY u.userid';
+    $query = 'SELECT u.idst, u.userid FROM %lms_report_filter as r JOIN %adm_user as u ON (r.author=u.idst) WHERE u.idst<>' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ' ORDER BY u.userid';
     $res = sql_query($query);
     while ($row = sql_fetch_assoc($res)) {
         $authors[$row['idst']] = $acl_man->relativeId($row['userid']);
@@ -219,7 +219,7 @@ function get_report_table($url = '')
     $reportAdminFilter = $session->get('report_admin_filter');
     if (!isset($reportAdminFilter)) {
         $reportAdminFilter = [
-            'author' => 0, //array_key_exists(Forma::user()->getIdst(), $authors) ? Forma::user()->getIdst() : 0,
+            'author' => 0, //array_key_exists(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), $authors) ? \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() : 0,
             'name' => '',
             'type' => 0,
         ];
@@ -245,7 +245,7 @@ function get_report_table($url = '')
     $output .= Form::getHidden('op', 'op', 'reportlist');
     $output .= Form::getHidden('modname', 'modname', 'report');
 
-    if (Forma::user()->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
         $output .= '<div class="quick_search_form">
 			<div>
 				<div class="simple_search_box" id="report_searchbox_simple_filter_options" style="display: block;">'
@@ -277,7 +277,7 @@ function get_report_table($url = '')
             if ($reportAdminFilter['author'] > 0) {
                 $qconds[] = ' ( t1.author = ' . $reportAdminFilter['author'] . ' AND t1.is_public = 1 ) ';
             } else {
-                $qconds[] = ' ( t1.author = ' . Forma::user()->getIdst() . ' OR t1.is_public = 1 ) ';
+                $qconds[] = ' ( t1.author = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ' OR t1.is_public = 1 ) ';
             }
 
             break;
@@ -361,7 +361,7 @@ function get_report_table($url = '')
                 ' title="' . $lang->def('_DEL') . ' : ' . ($row['author'] == 0 ? $lang->def($row['filter_name']) : $row['filter_name']) . '">' .
                 '<img src="' . getPathImage() . 'standard/delete.png" alt="' . $lang->def('_DEL') . '" />'; //.
 
-            $can_public = ($can_mod ? true : ($level == ADMIN_GROUP_GODADMIN && $row['author'] == Forma::user()->getIdst() ? true : false));
+            $can_public = ($can_mod ? true : ($level == ADMIN_GROUP_GODADMIN && $row['author'] == \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() ? true : false));
             $public = '<image ' . ($can_public ? 'class="handover"' : '') . ' src="' . getPathImage('lms') . 'standard/' .
                 ($row['is_public'] == 1 ? '' : 'un') . 'publish.png' . '" ' .
                 ($level == ADMIN_GROUP_GODADMIN || $can_mod ? 'onclick="public_report(this, ' . $row['id_filter'] . ');" ' : '') . ' />' .
@@ -374,7 +374,7 @@ function get_report_table($url = '')
 
             if (FormaLms\lib\Get::sett('use_immediate_report') == 'on') {
                 //Check if user has already a send mail request for current report
-                $user_id = Forma::User()->getId();
+                $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getId();
                 $qry = "
 				    SELECT * FROM %lms_report_schedule schedules
 				    JOIN %lms_report_schedule_recipient recipients ON recipients.id_report_schedule = schedules.id_report_schedule AND recipients.id_user = $user_id
@@ -427,7 +427,7 @@ function get_report_table($url = '')
             }
 
             if ($level == ADMIN_GROUP_GODADMIN || $can_mod) {
-                if ($row['author'] == Forma::user()->getIdst() || $can_mod) {
+                if ($row['author'] == \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() || $can_mod) {
                     $tb_content[_REP_KEY_MOD] = $mod_link;
                     $tb_content[_REP_KEY_REM] = $rem_link;
                 } else {
@@ -772,7 +772,7 @@ function report_show_results($idrep = false)
         if ($res && (sql_num_rows($res) > 0)) {
             list($class_name, $file_name) = sql_fetch_row($res);
             if ($file_name) {
-                require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
                 $obj_report = new $class_name($idrep);
             } else {
                 $pg = new PluginManager('Report');
@@ -802,7 +802,7 @@ function report_show_results($idrep = false)
         list($class_name, $file_name, $report_name, $filter_name, $filter_data, $author) = sql_fetch_row($re_report);
         //when file name set use old style
         if ($file_name) {
-            require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
             $obj_report = new $class_name($idrep);
         } else {
             $pg = new PluginManager('Report');
@@ -1126,7 +1126,7 @@ function report_modify_columns()
 function send_email($idrep)
 {
     //Verifica se esiste una pianificazione one shot attiva per l'utente
-    $user_id = Forma::User()->getId();
+    $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getId();
     $qry = "	SELECT * FROM %lms_report_schedule schedules
 				JOIN %lms_report_schedule_recipient recipients ON recipients.id_report_schedule = schedules.id_report_schedule AND recipients.id_user = $user_id
 				WHERE schedules.period LIKE '%now%'

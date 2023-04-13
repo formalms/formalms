@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function play($object_link, $id_param)
     {
         //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
@@ -28,7 +28,7 @@ if (!Forma::user()->isAnonymous()) {
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
             require_once _lms_ . '/class.module/track.link.php';
-            list($exist, $idTrack) = Track_Link::getIdTrack($idReference, getLogUserId(), $idCategory, true);
+            list($exist, $idTrack) = Track_Link::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCategory, true);
             if ($exist) {
                 $ti = new Track_Link($idTrack);
                 $ti->setDate(date('Y-m-d H:i:s'));
@@ -36,7 +36,7 @@ if (!Forma::user()->isAnonymous()) {
                 $ti->update();
             } else {
                 $ti = new Track_Link(false);
-                $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'link');
+                $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'link');
             }
         }
 

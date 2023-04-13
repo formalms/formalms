@@ -375,8 +375,8 @@ function get_schedulations_table($idrep = false)
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
     YuiLib::load('selector');
 
-    $acl_man = &Forma::user()->getACLManager();
-    $level = Forma::user()->getUserLevelId(getLogUserId());
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();;
+    $level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $admin_cond = '';
     switch ($level) {
@@ -385,7 +385,7 @@ function get_schedulations_table($idrep = false)
         case ADMIN_GROUP_ADMIN: break;
         case ADMIN_GROUP_USER:;
         // no break
-        default: $admin_cond .= ' AND schedule.id_creator=' . getLogUserId(); break;
+        default: $admin_cond .= ' AND schedule.id_creator=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); break;
     }
 
     $query = 'SELECT schedule.*, user.userid as report_owner, report_filter.filter_name as report_name, ' .

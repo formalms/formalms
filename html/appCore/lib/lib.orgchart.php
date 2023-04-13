@@ -34,7 +34,7 @@ class OrgChartManager
 
     public function getFolderFormIdst(&$arr_idst)
     {
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $groups_id = $acl_man->getGroupsId($arr_idst);
 
         $folder_name = $this->tree_db->getFoldersCurrTranslationDoubleCheck($groups_id);

@@ -34,7 +34,7 @@ if (isset($_REQUEST['notuse_template'])) {
 Boot::init(CHECK_SYSTEM_STATUS);
 
 // connect to the database
-$db = DbConn::getInstance();
+$db = \FormaLms\db\DbConn::getInstance();
 
 // -----------------------------------------------------------------------------
 
@@ -67,13 +67,13 @@ if ($maintenance === 'on') {
 $sso = FormaLms\lib\Get::req('login_user', DOTY_MIXED, false) && FormaLms\lib\Get::req('time', DOTY_MIXED, false) && FormaLms\lib\Get::req('token', DOTY_MIXED, false);
 
 // get required action - default: homepage if not logged in, no action if logged in
-$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (Forma::user()->isAnonymous() ? _homepage_ : false)));
+$req = FormaLms\lib\Get::req('r', DOTY_MIXED, ($sso ? _sso_ : (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() ? _homepage_ : false)));
 
 $req = preg_replace('/[^a-zA-Z0-9\-\_\/]+/', '', $req);
 
 $explodedRequest = (array) explode('/', $req);
 if (count($explodedRequest) < 3) {
-    if (Forma::user()->isLoggedIn()) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn()) {
         Util::jump_to(FormaLms\lib\Get::rel_path('lms'));
     }
     Util::jump_to(FormaLms\lib\Get::rel_path('base'));

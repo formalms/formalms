@@ -13,8 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
 
 class Learning_Test extends Learning_Object
 {
@@ -71,7 +71,7 @@ class Learning_Test extends Learning_Object
 
         $res = sql_query("SELECT fileName, className FROM %lms_lo_types WHERE objectType = '" . $testObj->getObjectType() . "'");
         list($type_file, $type_class) = sql_fetch_row($res);
-        require_once Forma::inc(_lms_ . '/class.module/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $type_file);
 
         return new $type_class($id);
     }
@@ -104,9 +104,9 @@ class Learning_Test extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
-        require_once Forma::inc(_lms_ . '/modules/test/test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/test/test.php');
         addtest($this);
     }
 
@@ -124,9 +124,9 @@ class Learning_Test extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
-        require_once Forma::inc(_lms_ . '/modules/test/test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/test/test.php');
         modtestgui($this);
     }
 
@@ -142,7 +142,7 @@ class Learning_Test extends Learning_Object
     {
         checkPerm('view', false, 'storage');
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         // finding track
         $re_quest_track = sql_query("
@@ -164,18 +164,18 @@ class Learning_Test extends Learning_Object
         }
         //deleting answer
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            Forma::inc(_lms_ . '/modules/question/' . $type_file);
+            \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
 
             $quest_obj = eval("return new $type_class( $idQuest );");
             if (!$quest_obj->del()) {
-                Forma::addError(Lang::t('_OPERATION_FAILURE'));
+                \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
                 return false;
             }
             if (!sql_query("
 			DELETE FROM %lms_testtrack_quest
 			WHERE idQuest = '" . (int) $idQuest . "'")) {
-                Forma::addError(Lang::t('_OPERATION_FAILURE'));
+                \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
                 return false;
             }
@@ -185,24 +185,24 @@ class Learning_Test extends Learning_Object
             if (!sql_query('
 			DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testtrack_page 
 			WHERE idTrack IN ('" . implode(',', $id_tracks) . "') ")) {
-                Forma::addError(Lang::t('_OPERATION_FAILURE'));
+                \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
                 return false;
             }
         }
 
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testtrack WHERE idTest = '" . $id . "'")) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_testquest WHERE idTest = '" . $id . "'")) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
         if (!sql_query('DELETE FROM ' . $GLOBALS['prefix_lms'] . "_test WHERE idTest = '" . $id . "'")) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE'));
 
             return false;
         }
@@ -291,7 +291,7 @@ class Learning_Test extends Learning_Object
             $new_id = $quest_obj->copy($id_new_test);
             if (!$new_id) {
                 $this->del($id_new_test);
-                Forma::addError(Lang::t('_OPERATION_FAILURE') . ' : ' . $type_class . '( ' . $idQuest . ' )');
+                \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE') . ' : ' . $type_class . '( ' . $idQuest . ' )');
 
                 return false;
             }
@@ -330,7 +330,7 @@ class Learning_Test extends Learning_Object
      **/
     public function play($id, $id_param, $back_url)
     {
-        require_once Forma::inc(_lms_ . '/modules/test/do.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/test/do.test.php');
 
         $this->id = $id;
         $this->back_url = $back_url;
@@ -504,7 +504,7 @@ class Learning_Test extends Learning_Object
 
     public function trackDetails($user, $org)
     {
-        require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orgresults.php');
         getCompilationTable($user, $org);
     }
 }

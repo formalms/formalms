@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
 
 function organization(&$treeView)
 {
@@ -21,7 +21,7 @@ function organization(&$treeView)
     /*$orgDb = new OrgDirDb();
     if( !checkPerm('lesson') ) {
         $treeView->tdb->setFilterVisibility( TRUE );
-        $treeView->tdb->setFilterAccess( Forma::user()-> );
+        $treeView->tdb->setFilterAccess( \FormaLms\lib\FormaUser::getCurrentUser()-> );
     }
 $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
     $treeView = new Org_TreeView($orgDb, $idCourse);
@@ -72,12 +72,12 @@ $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->g
         case 'org_properties':
         case 'org_opproperties':
             // organization_rules( $treeView, $treeView->opContextId );
-            require_once Forma::inc(_lms_ . '/modules/organization/orgprop.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orgprop.php');
             organization_property($treeView, $treeView->opContextId);
             break;
         case 'org_opaccess':
         case 'org_access':
-            require_once Forma::inc(_lms_ . '/modules/organization/orgprop.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orgprop.php');
             organization_access($treeView, $treeView->opContextId);
             break;
         case 'save':

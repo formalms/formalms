@@ -29,7 +29,7 @@ function env_play($lobj, $options)
 
     if ($lobj->id_reference != false) {
         require_once _lms_ . '/class.module/track.item.php';
-        $ti = new Track_Item($lobj, Forma::user()->getIdSt()); // need id_resource, id_reference, type and environment
+        $ti = new Track_Item($lobj, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()); // need id_resource, id_reference, type and environment
         $ti->setDate(date('Y-m-d H:i:s'));
         $ti->status = 'completed';
         $ti->update();
@@ -54,15 +54,15 @@ function play($idResource, $idParams, $back_url)
     // NOTE: Track only if $idReference is present
     if ($idReference !== false) {
         require_once _lms_ . '/class.module/track.item.php';
-        list($exist, $idTrack) = Track_Item::getIdTrack($idReference, getLogUserId(), $idResource, true);
+        list($exist, $idTrack) = Track_Item::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idResource, true);
         if ($exist) {
-            $ti = new Track_Item((int) $idTrack, Forma::user()->getIdSt());
+            $ti = new Track_Item((int) $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $ti->setDate(date('Y-m-d H:i:s'));
             $ti->status = 'completed';
             $ti->update();
         } else {
-            $ti = new Track_Item(false, Forma::user()->getIdSt());
-            $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'item');
+            $ti = new Track_Item(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+            $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'item');
         }
     }
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();

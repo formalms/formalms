@@ -22,7 +22,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  */
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -32,7 +32,7 @@ $op = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 switch ($op) {
     case 'getuserprofile':
         $lang = &FormaLanguage::createInstance('standard', 'framework');
-        $lang->setGlobal();
+        
 
         require_once _base_ . '/lib/lib.user_profile.php';
 

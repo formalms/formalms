@@ -694,7 +694,7 @@ class FormaImport
             }
 
             if ($i == 0) {
-                Forma::db()->start_transaction();
+                \FormaLms\lib\Forma::db()->start_transaction();
                 $open_transaction = true;
             }
             /*
@@ -712,7 +712,7 @@ class FormaImport
 
             if ($i == 100) {
                 $i = 0;
-                Forma::db()->commit();
+                \FormaLms\lib\Forma::db()->commit();
                 $open_transaction = false;
             } else {
                 ++$i;
@@ -720,11 +720,11 @@ class FormaImport
             $row = $this->source->get_next_row();
 
             // Increment the counter for users created by this admin:
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                    $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                    $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $user_created_count = (int) $user_pref->getPreference('user_created_count');
                     ++$user_created_count;
                     $user_pref->setPreference('user_created_count', $user_created_count);
@@ -732,7 +732,7 @@ class FormaImport
             }
         }
         if ($open_transaction) {
-            Forma::db()->commit();
+            \FormaLms\lib\Forma::db()->commit();
         }
         $out[0] = ($this->source->first_row_header ? $this->source->get_row_index() - 1 : $this->source->get_row_index());
 

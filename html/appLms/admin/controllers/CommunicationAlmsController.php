@@ -71,7 +71,7 @@ class CommunicationAlmsController extends AlmsController
 
     public function show()
     {
-        require_once Forma::inc(_lib_ . '/formatable/include.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
         if (isset($_GET['error'])) {
             UIFeedback::error(Lang::t('_OPERATION_FAILURE', 'communication'));
         }
@@ -106,8 +106,8 @@ class CommunicationAlmsController extends AlmsController
             $communicationList[$i]['description'] = (strlen(strip_tags($communication['description'])) > 150) ? substr(strip_tags($communication['description']), 0, 150) . '...' : strip_tags($communication['description']);
         }
 
-        $langs = Forma::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $categoryCount = $this->model->getCategoryTotal();
 
@@ -216,8 +216,8 @@ class CommunicationAlmsController extends AlmsController
             return;
         }
 
-        $langs = Forma::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode);
 
@@ -279,7 +279,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($titles)) {
             //prepare langs array
-            $lang_codes = Forma::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -397,8 +397,8 @@ class CommunicationAlmsController extends AlmsController
         $cinfo = $course_model->getCourseModDetails($data['id_course']);
         $courseName = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/ $cinfo['name'];
         YuiLib::load('autocomplete');
-        $langs = Forma::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $langsMapped = array_map(fn ($value): array => [$value['lang_code'] => [
             'title' => $value['title'],
@@ -459,7 +459,7 @@ class CommunicationAlmsController extends AlmsController
         if (is_array($titles)) {
             $data['langs'] = [];
             //prepare langs array
-            $lang_codes = Forma::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -499,7 +499,7 @@ class CommunicationAlmsController extends AlmsController
         if (is_array($titles)) {
             $data['langs'] = [];
             //prepare langs array
-            $lang_codes = Forma::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $data['langs'][$lang_code] = [
                     'title' => (isset($titles[$lang_code]) ? $titles[$lang_code] : ''),
@@ -707,7 +707,7 @@ class CommunicationAlmsController extends AlmsController
                 $param = FormaLms\lib\Get::req('r_param', DOTY_STRING, '');
                 $alt_desc = '';
                 $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-                $lang_arr = Forma::langManager()->getAllLangCode();
+                $lang_arr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                 $lang = $lang_arr[$lang_id];
                 $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
                 $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);
@@ -978,8 +978,8 @@ class CommunicationAlmsController extends AlmsController
         //retrieve category info (name and description
         $info = $this->model->getCategoryInfo($idCategory);
 
-        $langs = Forma::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
 
@@ -1014,7 +1014,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Forma::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -1037,7 +1037,7 @@ class CommunicationAlmsController extends AlmsController
             //return node data to add in the treeview of the page
             $nodedata = [
                 'id' => $res,
-                'label' => $this->model->getCategoryName($res, getLanguage()),
+                'label' => $this->model->getCategoryName($res, Lang::get()),
                 'parentLabel' => $parentLabel,
                 'countObjects' => 0,
                 'filterUrl' => $filterUrl,
@@ -1085,7 +1085,7 @@ class CommunicationAlmsController extends AlmsController
         //validate inputs
         if (is_array($names)) {
             //prepare langs array
-            $lang_codes = Forma::langManager()->getAllLangcode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             foreach ($lang_codes as $lang_code) {
                 $langs[$lang_code] = [
                     'name' => (isset($names[$lang_code]) ? $names[$lang_code] : ''),
@@ -1133,7 +1133,7 @@ class CommunicationAlmsController extends AlmsController
 
     public function showCategories()
     {
-        require_once Forma::inc(_lib_ . '/formatable/include.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
         $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 100));
@@ -1155,8 +1155,8 @@ class CommunicationAlmsController extends AlmsController
             $categoriesList[$i]['deleteUrl'] = 'ajax.adm_server.php?r=alms/communication/deleteCategory';
         }
 
-        $langs = Forma::langManager()->getAllLanguages(true);
-        $langCode = getLanguage();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
+        $langCode = Lang::get();
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode, true);
 

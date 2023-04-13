@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function play($object_glos, $id_param)
     {
         //-kb-play-// if(!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) die("You can't access");
@@ -33,7 +33,7 @@ if (!Forma::user()->isAnonymous()) {
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
             require_once dirname(__FILE__) . '/../../class.module/track.glossary.php';
-            list($exist, $idTrack) = Track_Glossary::getIdTrack($idReference, getLogUserId(), $idGlossary, true);
+            list($exist, $idTrack) = Track_Glossary::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idGlossary, true);
             if ($exist) {
                 $ti = new Track_Glossary($idTrack);
                 $ti->setDate(date('Y-m-d H:i:s'));
@@ -41,7 +41,7 @@ if (!Forma::user()->isAnonymous()) {
                 $ti->update();
             } else {
                 $ti = new Track_Glossary(false);
-                $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'glossary');
+                $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'glossary');
             }
         }
 

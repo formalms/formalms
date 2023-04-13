@@ -152,7 +152,7 @@ function duplicateCourse()
     {
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         // find all the group created for this menu custom for permission management
         foreach ($levels as $lv => $name_level) {
@@ -167,18 +167,18 @@ function duplicateCourse()
     require_once _lms_ . '/lib/lib.manmenu.php';
     require_once _lms_ . '/lib/lib.subscribe.php';
 
-    $docebo_course = new FormaCourse($id_dupcourse);
+    $formaCourse = new FormaCourse($id_dupcourse);
     $subscribe_man = new CourseSubscribe_Manager();
 
-    $group_idst = $docebo_course->createCourseLevel($new_course_dup);
-    $group_of_from = $docebo_course->getCourseLevel($id_dupcourse);
+    $group_idst = $formaCourse->createCourseLevel($new_course_dup);
+    $group_of_from = $formaCourse->getCourseLevel($id_dupcourse);
     $perm_form = createPermForDuplicatedCourse($group_of_from, $new_course_dup, $id_dupcourse);
     $levels = $subscribe_man->getUserLevel();
 
     foreach ($levels as $lv => $name_level) {
         foreach ($perm_form[$lv] as $idrole => $v) {
             if ($group_idst[$lv] != 0 && $idrole != 0) {
-                $acl_man = &Forma::user()->getAclManager();
+                $acl_man = &\FormaLms\lib\Forma::getAclManager();
                 $acl_man->addToRole($idrole, $group_idst[$lv]);
             }
         }
@@ -390,12 +390,12 @@ switch ($op) {
 
         if ($filter != '') {
             $query_filter = '';
-            $userlevelid = Forma::user()->getUserLevelId();
+            $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $acl_man = &Forma::user()->getAclManager();
-                $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+                $acl_man = &\FormaLms\lib\Forma::getAclManager();
+                $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $query_filter .= ' AND idCourse IN (' . implode(',', $admin_courses['course']) . ') ';
             }
 

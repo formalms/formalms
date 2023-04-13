@@ -27,8 +27,8 @@ class LabelAlms extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 
@@ -44,7 +44,7 @@ class LabelAlms extends Model
     {
         $query = 'SELECT id_common_label, lang_code, title, description, file_name, sequence'
                     . ' FROM %lms_label'
-                    . " WHERE lang_code = '" . getLanguage() . "'"
+                    . " WHERE lang_code = '" . Lang::get() . "'"
                     . ' ORDER BY sequence ';
         $result = sql_query($query);
 
@@ -65,7 +65,7 @@ class LabelAlms extends Model
     {
         $query = 'SELECT DISTINCT(id_common_label)'
                     . ' FROM %lms_label'
-                    . " WHERE lang_code = '" . getLanguage() . "'";
+                    . " WHERE lang_code = '" . Lang::get() . "'";
 
         $res = sql_num_rows(sql_query($query));
 
@@ -225,7 +225,7 @@ class LabelAlms extends Model
     {
         $query = 'SELECT id_common_label, title'
                     . ' FROM %lms_label'
-                    . " WHERE lang_code = '" . getLanguage() . "'"
+                    . " WHERE lang_code = '" . Lang::get() . "'"
                     . ' ORDER BY title';
 
         $result = sql_query($query);

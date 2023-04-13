@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function notes()
     {
         checkPerm('view');
@@ -50,13 +50,13 @@ if (!Forma::user()->isAnonymous()) {
         $reNotes = sql_query('
 	SELECT idNotes, data, title 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "' 
+	WHERE owner ='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idCourse='" . $idCourse . "' 
 	ORDER BY $order 
 	LIMIT $ini," . FormaLms\lib\Get::sett('visuItem'));
 
         list($num_notes) = sql_fetch_row(sql_query('SELECT COUNT(*) 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "' "));
+	WHERE owner ='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idCourse='" . $idCourse . "' "));
         $nav_bar->setElementTotal($num_notes);
 
         $img_up = '<img class="valing-middle" src="' . getPathImage() . 'standard/up_arrow.png" alt="' . $lang->def('_UP') . '"/>';
@@ -208,7 +208,7 @@ if (!Forma::user()->isAnonymous()) {
 
         $query_ins = '
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_notes 
-	SET owner = '" . getLogUserId() . "',
+	SET owner = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 		idCourse = '" . (int) $idCourse . "',
 		data = '" . date('Y-m-d H:i:s') . "',
 		title = '" . $_POST['title'] . "',
@@ -227,7 +227,7 @@ if (!Forma::user()->isAnonymous()) {
         list($title, $textof) = sql_fetch_row(sql_query('
 	SELECT title, textof 
 	FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-	WHERE  idNotes = '" . $_GET['idNotes'] . "'  AND owner ='" . getLogUserId() . "' AND idCourse='" . $idCourse . "'"));
+	WHERE  idNotes = '" . $_GET['idNotes'] . "'  AND owner ='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idCourse='" . $idCourse . "'"));
 
         require_once _base_ . '/lib/lib.form.php';
         $lang = &FormaLanguage::createInstance('notes', 'lms');
@@ -275,7 +275,7 @@ if (!Forma::user()->isAnonymous()) {
 	SET data = '" . date('Y-m-d H:i:s') . "',
 		title = '" . $_POST['title'] . "',
 		textof = '" . $_POST['description'] . "'
-	WHERE idNotes = '" . (int) $_POST['idNotes'] . "' AND owner = '" . (int) getLogUserId() . "'";
+	WHERE idNotes = '" . (int) $_POST['idNotes'] . "' AND owner = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
         if (!sql_query($query_ins)) {
             Util::jump_to('index.php?modname=notes&op=notes&amp;result=err');
@@ -291,7 +291,7 @@ if (!Forma::user()->isAnonymous()) {
         if (isset($_GET['confirm'])) {
             $query = '
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_notes
-		WHERE idNotes='" . $_GET['idNotes'] . "' AND owner='" . getLogUserId() . "' AND idCourse='" . $idCourse . "'";
+		WHERE idNotes='" . $_GET['idNotes'] . "' AND owner='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idCourse='" . $idCourse . "'";
             if (!sql_query($query)) {
                 Util::jump_to('index.php?modname=notes&op=notes&amp;result=err');
             }
@@ -300,7 +300,7 @@ if (!Forma::user()->isAnonymous()) {
             list($title) = sql_fetch_row(sql_query('
 		SELECT title
 		FROM ' . $GLOBALS['prefix_lms'] . "_notes 
-		WHERE owner = '" . getLogUserId() . "' AND idNotes = '" . (int) $_GET['idNotes'] . "'"));
+		WHERE owner = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idNotes = '" . (int) $_GET['idNotes'] . "'"));
 
             $title_page = [
             'index.php?modname=notes&amp;op=notes' => $lang->def('_NOTES'),

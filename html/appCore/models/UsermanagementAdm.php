@@ -26,8 +26,8 @@ class UsermanagementAdm extends Model
     public function __construct()
     {
         require_once _base_ . '/lib/lib.json.php';
-        $this->db = DbConn::getInstance();
-        $this->aclManager = Forma::user()->getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->aclManager = \FormaLms\lib\Forma::getAclManager();
         $this->json = new Services_JSON();
         $this->orgUser = false;
         $this->orgCache = false;
@@ -65,7 +65,7 @@ class UsermanagementAdm extends Model
 
             //languages
             $names = [];
-            $query = "SELECT id_dir, translation FROM %adm_org_chart WHERE lang_code='" . getLanguage() . "'";
+            $query = "SELECT id_dir, translation FROM %adm_org_chart WHERE lang_code='" . Lang::get() . "'";
             $res = $this->db->query($query);
             while (list($id_dir, $translation) = $this->db->fetch_row($res)) {
                 $names[$id_dir] = $translation;
@@ -125,7 +125,7 @@ class UsermanagementAdm extends Model
 
     public static function getOrgGroups($idOrg, $descendants)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $output = [];
         if ($descendants) {
             list($left, $right) = self::_getFolderLimits($idOrg);
@@ -173,7 +173,7 @@ class UsermanagementAdm extends Model
     {
         require_once _adm_ . '/lib/lib.field.php';
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $acl_man->include_suspended = true;
 
         //retrieve custom fields definitions data
@@ -257,7 +257,7 @@ class UsermanagementAdm extends Model
             if ($userlevelid !== ADMIN_GROUP_GODADMIN && $userlevelid !== ADMIN_GROUP_USER) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_info = $adminManager->getAdminAllSett(Forma::user()->getIdSt(), 'u.idst');
+                $admin_info = $adminManager->getAdminAllSett(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'u.idst');
                 $is_subadmin = true;
             }
         }
@@ -316,7 +316,7 @@ class UsermanagementAdm extends Model
                     if ($userlevelid !== ADMIN_GROUP_GODADMIN) {
                         require_once _lms_ . '/lib/lib.course.php';
                         $course_man = new Man_Course();
-                        $all_courses = $course_man->getUserCourses(Forma::user()->getIdSt());
+                        $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         $res = [];
                         foreach ($all_courses as $id_course => $name) {
                             $arr_idst_group = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -326,11 +326,11 @@ class UsermanagementAdm extends Model
                 }
 
                 $queryUserFilter_1 .= ($userlevelid !== ADMIN_GROUP_GODADMIN ? ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ' : '')
-                    . " AND u.idst <> '" . Forma::user()->getIdSt() . "' ";
+                    . " AND u.idst <> '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' ";
                 $queryUserFilter_2 .= ($userlevelid !== ADMIN_GROUP_GODADMIN ? ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ' : '')
-                    . " AND u.idst <> '" . Forma::user()->getIdSt() . "' ";
+                    . " AND u.idst <> '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' ";
                 $queryUserFilter_3 .= ($userlevelid !== ADMIN_GROUP_GODADMIN ? ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ' : '')
-                    . " AND u.idst <> '" . Forma::user()->getIdSt() . "' ";
+                    . " AND u.idst <> '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' ";
                 break;
             case 'course':
                 $id_course = $this->session->get('idCourse');
@@ -451,7 +451,7 @@ class UsermanagementAdm extends Model
 
                 $query .= ' FROM (%adm_user as u JOIN %adm_group_members as gm ON ( u.idst = gm.idstMember )) '
                     . ' LEFT JOIN (%adm_field_userentry as f LEFT JOIN %adm_field_son as fs '
-                    . " ON (f.user_entry = fs.id_common_son AND f.id_common = fs.idField AND fs.lang_code='" . getLanguage() . "')) "
+                    . " ON (f.user_entry = fs.id_common_son AND f.id_common = fs.idField AND fs.lang_code='" . Lang::get() . "')) "
                     . ' ON (u.idst=f.id_user AND f.id_common=' . (int)$sort . ') ';
                 if ($idOrg || $is_subadmin) {
                     $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
@@ -607,7 +607,7 @@ class UsermanagementAdm extends Model
                         case 'dropdown':
                             if ($field_sons === false) {
                                 //retrieve translations for dropdowns fields
-                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                                 $res_fields_sons = $this->db->query($query_fields_sons);
                                 $field_sons = [];
                                 while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
@@ -625,7 +625,7 @@ class UsermanagementAdm extends Model
                         case 'copy':
                             if ($field_sons === false) {
                                 //retrieve translations for dropdowns fields
-                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                                 $res_fields_sons = $this->db->query($query_fields_sons);
                                 $field_sons = [];
                                 while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
@@ -723,7 +723,7 @@ class UsermanagementAdm extends Model
         $useSuspended = isset($filter['suspended']) ? (bool)$filter['suspended'] : true;
         $dynFilter = isset($filter['dyn_filter']) ? $filter['dyn_filter'] : false;
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $acl_man->include_suspended = true;
 
         //list of users idst to apply in main query as a filter
@@ -736,7 +736,7 @@ class UsermanagementAdm extends Model
             if ($userlevelid !== ADMIN_GROUP_GODADMIN && $userlevelid !== ADMIN_GROUP_USER) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_info = $adminManager->getAdminAllSett(Forma::user()->getIdSt(), 'u.idst');
+                $admin_info = $adminManager->getAdminAllSett(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'u.idst');
                 $is_subadmin = true;
             }
         }
@@ -818,7 +818,7 @@ class UsermanagementAdm extends Model
                     if ($userlevelid !== ADMIN_GROUP_GODADMIN) {
                         require_once _lms_ . '/lib/lib.course.php';
                         $course_man = new Man_Course();
-                        $all_courses = $course_man->getUserCourses(Forma::user()->getIdSt());
+                        $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         $res = [];
                         foreach ($all_courses as $id_course => $name) {
                             $arr_idst_group = $this->aclManager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -828,7 +828,7 @@ class UsermanagementAdm extends Model
                 }
 
                 $filtered_query .= ($userlevelid !== ADMIN_GROUP_GODADMIN ? ' AND u.idst IN ( SELECT idstMember FROM %adm_group_members as gm WHERE gm.idst IN (' . implode(',', $res) . ') ) ' : '')
-                    . " AND u.idst <> '" . Forma::user()->getIdSt() . "' ";
+                    . " AND u.idst <> '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' ";
                 break;
             case 'course':
                 $id_course = $this->session->get('idCourse');
@@ -865,7 +865,7 @@ class UsermanagementAdm extends Model
         $admin_info = ['users' => []];
         $usersList = [];
 
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $acl_man->include_suspended = true;
 
         //detect admin level, if requested
@@ -876,7 +876,7 @@ class UsermanagementAdm extends Model
                 //retrieve a list of idsts of the users that the sub-admin can view
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_info = $adminManager->getAdminAllSett(Forma::user()->getIdSt(), 'u.idst');
+                $admin_info = $adminManager->getAdminAllSett(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'u.idst');
                 $is_subadmin = true;
             }
         }
@@ -1061,7 +1061,7 @@ class UsermanagementAdm extends Model
         $level = ADMIN_GROUP_USER;
 
         if (is_numeric($idst) && $idst > 0) {
-            $this->aclManager = Forma::user()->getAclManager();
+            $this->aclManager = \FormaLms\lib\Forma::getAclManager();
             $arr_levels_id = array_flip($this->aclManager->getAdminLevels());
             $arr_levels_idst = array_keys($arr_levels_id);
 
@@ -1074,7 +1074,7 @@ class UsermanagementAdm extends Model
                 }
             }
         } else {
-            $level = Forma::user()->getUserLevelId();
+            $level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         }
 
         return $level;
@@ -1144,7 +1144,7 @@ class UsermanagementAdm extends Model
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
             list($user_pass) = $this->db->fetch_row($res);
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $check_pass = $acl_man->encrypt($password);
             $output = ($user_pass == $check_pass);
         }
@@ -1159,7 +1159,7 @@ class UsermanagementAdm extends Model
         $result = false;
 
         if (property_exists($userdata, 'userid') && $userdata->userid != '') {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             if (FormaLms\lib\Get::sett('custom_fields_mandatory_for_admin', 'off') == 'on') {
                 $fields = new FieldList();
                 $filledFieldsForUser = $fields->isFilledFieldsForUser(0);
@@ -1193,7 +1193,7 @@ class UsermanagementAdm extends Model
                 $acl_man->addToGroup($ocd, $user_idst);
 
                 //apply enroll rules
-                $langs = Forma::langManager()->getAllLangCode();
+                $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                 $lang_code = (isset($langs[(isset($_POST['user_preference']['ui.language']) ? $_POST['user_preference']['ui.language'] : 'eng')]) ? $langs[$_POST['user_preference']['ui.language']] : false);
 
                 $enrollrules = new EnrollrulesAlms();
@@ -1209,8 +1209,8 @@ class UsermanagementAdm extends Model
                 }
 
                 if ($folder_count == 0) {
-                    if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                        $subadmin_folder = $this->getAdminFolder(Forma::user()->getIdst(), true);
+                    if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                        $subadmin_folder = $this->getAdminFolder(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), true);
                         if ($subadmin_folder > 0) {
                             if (!is_array($folders)) {
                                 $folders = [];
@@ -1276,7 +1276,7 @@ class UsermanagementAdm extends Model
         $result = 'unable to edit user properties';
 
         if (is_numeric($idst) && $idst > 0) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $res = $acl_man->updateUser(
                 $idst,
                 (property_exists($userdata, 'userid') ? $userdata->userid : false),
@@ -1359,8 +1359,8 @@ class UsermanagementAdm extends Model
             $users = [$users];
         }
         if (is_array($users)) {
-            $acl_man = Forma::user()->getAclManager();
-            $current_user = Forma::user()->getIdSt();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
+            $current_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
             $i = 0;
             $open_transaction = false;
             foreach ($users as $user) {
@@ -1398,8 +1398,8 @@ class UsermanagementAdm extends Model
 
     public function _getAdminOrgTree($idst = false)
     {
-        $acl_man = Forma::user()->getAclManager();
-        $admin_idst = (is_numeric($idst) && $idst > 0 ? $idst : Forma::user()->getIdST());
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $admin_idst = (is_numeric($idst) && $idst > 0 ? $idst : \FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         if ($this->orgCache === false || $this->orgUser != $admin_idst) {
             $this->orgUser = $admin_idst;
             require_once _base_ . '/lib/lib.preference.php';
@@ -1466,7 +1466,7 @@ class UsermanagementAdm extends Model
     {
 
 
-        $langCode = ($language == false ? getLanguage() : $language);
+        $langCode = ($language == false ? Lang::get() : $language);
         $searchQuery = "SELECT	t1.idOrg, t1.path, t2.translation, t1.iLeft, t1.iRight, t1.code
 			FROM %adm_org_chart_tree AS t1 LEFT JOIN %adm_org_chart AS t2
 				ON (t1.idOrg = t2.id_dir AND t2.lang_code = '" . $langCode . "' )
@@ -1490,7 +1490,7 @@ class UsermanagementAdm extends Model
             }
         }
 
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $search_query = "SELECT	t1.idOrg, t1.path, t2.translation, t1.iLeft, t1.iRight, t1.code
 			FROM %adm_org_chart_tree AS t1 LEFT JOIN %adm_org_chart AS t2
 				ON (t1.idOrg = t2.id_dir AND t2.lang_code = '" . $lang_code . "' )
@@ -1684,7 +1684,7 @@ class UsermanagementAdm extends Model
 
     protected static function _getFolderLimits($idOrg)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         if ($idOrg <= 0) {
             $query = 'SELECT MIN(iLeft), MAX(iRight) FROM %adm_org_chart_tree';
             $res = $db->query($query);
@@ -1852,7 +1852,7 @@ class UsermanagementAdm extends Model
         }
 
         if ($language == false) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         if (!is_array($id_groups) || empty($id_groups)) {
             return $folders;
@@ -1887,7 +1887,7 @@ class UsermanagementAdm extends Model
             }
         }
 
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $search_query = "SELECT	t1.idOrg, t1.idParent, t1.path, t1.lev, t1.iLeft, t1.iRight, t2.translation, t1.code
 			FROM %adm_org_chart_tree AS t1 LEFT JOIN	%adm_org_chart AS t2
 			ON (t1.idOrg = t2.id_dir AND t2.lang_code = '" . $lang_code . "' )
@@ -2067,7 +2067,7 @@ class UsermanagementAdm extends Model
     public function getFolderTranslation($idOrg, $lang_code = false)
     {
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
         $query = 'SELECT translation FROM %adm_org_chart WHERE id_dir=' . (int)$idOrg . " AND lang_code='" . $lang_code . "'";
         $res = $this->db->query($query);
@@ -2127,7 +2127,7 @@ class UsermanagementAdm extends Model
             //if node has been correctly inserted then ...
             if ($id) {
                 //create group and descendants
-                $acl = &Forma::user()->getACLManager();
+                $acl = &\FormaLms\lib\Forma::getAclManager();;
                 $idst_oc = $acl->registerGroup('/oc_' . (int)$id, '', true);
                 $idst_ocd = $acl->registerGroup('/ocd_' . (int)$id, '', true);
                 $acl->addToGroup($acl->getGroupST('ocd_' . (int)$id_parent), $idst_ocd); //register the idst of the new branch's descendants into the parent node /ocd_
@@ -2138,7 +2138,7 @@ class UsermanagementAdm extends Model
                 if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                     require_once _base_ . '/lib/lib.preference.php';
                     $adminManager = new AdminPreference();
-                    $adminManager->addAdminTree($idst_oc, Forma::user()->getIdST());
+                    $adminManager->addAdminTree($idst_oc, \FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 }
 
                 // update the node inserted with the oc and ocd founded
@@ -2171,7 +2171,7 @@ class UsermanagementAdm extends Model
      */
     public function deleteFolder($idOrg, $onlyLeaf = false)
     {
-        $acl = &Forma::user()->getACLManager();
+        $acl = &\FormaLms\lib\Forma::getAclManager();;
         $folder = $this->getFolderById($idOrg);
 
         if (!$folder) {
@@ -2472,7 +2472,7 @@ class UsermanagementAdm extends Model
     public function getFolderUsers($idOrg, $descendants = false)
     {
         $output = false;
-        $acl = &Forma::user()->getACLManager();
+        $acl = &\FormaLms\lib\Forma::getAclManager();;
         $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg);
         $query = 'SELECT idstMember FROM %adm_group_members as gm JOIN %adm_user as u '
             . ' ON (gm.idstMember=u.idst) WHERE gm.idst=' . (int)$groupidst . ' ';
@@ -2497,7 +2497,7 @@ class UsermanagementAdm extends Model
      */
     public function assignUsers($idOrg, $users)
     {
-        $acl = &Forma::user()->getACLManager();
+        $acl = &\FormaLms\lib\Forma::getAclManager();;
         $acl->include_suspended = true;
         $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg); //get group idst from group table
         $groupdesc = $acl->getGroupSt('/ocd_' . (int)$idOrg); //get descendants' group idst from group table
@@ -2527,12 +2527,12 @@ class UsermanagementAdm extends Model
 
         $_qfilter = '';
         if ($filter) {
-            $ulevel = Forma::user()->getUserLevelId();
+            $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($ulevel != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                //$admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
-                $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST()); //$this->aclManager->getAllUsersFromIdst($admin_tree);
+                //$admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+                $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST()); //$this->aclManager->getAllUsersFromIdst($admin_tree);
                 $_qfilter .= ' AND idst IN (' . implode(',', $admin_users) . ') ';
             }
         }
@@ -2593,7 +2593,7 @@ class UsermanagementAdm extends Model
             createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
                 [$userid], $msg_composer);
 
-            $uinfo = Forma::aclm()->getUser($userid, false);
+            $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($userid, false);
 
             $array_subst = [
                 '[url]' => FormaLms\lib\Get::site_url(),
@@ -2636,7 +2636,7 @@ class UsermanagementAdm extends Model
         require_once _adm_ . '/lib/lib.field.php';
         $fl = new FieldList();
 
-        return $fl->checkUserMandatoryFields((int)$user_idst > 0 ? (int)$user_idst : Forma::user()->getIdSt());
+        return $fl->checkUserMandatoryFields((int)$user_idst > 0 ? (int)$user_idst : \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     }
 
     public function confirmWaitingUsers($arr_idst)
@@ -2942,13 +2942,13 @@ class UsermanagementAdm extends Model
             list($control) = $this->db->fetch_row($this->db->query($queryRoot));
             if ($control < 0) {
                 $output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
-            } elseif ($control == 0 && Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { //#3725
+            } elseif ($control == 0 && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { //#3725
                 $output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
             }
         }
 
         $org_lang = [];
-        $query = "SELECT * FROM %adm_org_chart WHERE lang_code = '" . getLanguage() . "'";
+        $query = "SELECT * FROM %adm_org_chart WHERE lang_code = '" . Lang::get() . "'";
         $res = $this->db->query($query);
         while ($obj = $this->db->fetch_obj($res)) {
             $org_lang[$obj->id_dir] = $obj->translation;
@@ -3082,7 +3082,7 @@ class UsermanagementAdm extends Model
     public function getUserFolders($id_user, $language = false)
     {
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
 
         $output = [];
@@ -3200,7 +3200,7 @@ class UsermanagementAdm extends Model
 
     public function getAdminTree($id_admin)
     {
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         require_once _base_ . '/lib/lib.preference.php';
         $adminManager = new AdminPreference();
         $admin_tree = $adminManager->getAdminTree($id_admin);
@@ -3247,7 +3247,7 @@ class UsermanagementAdm extends Model
         }
 
         //user levels
-        $levels_idst = Forma::aclm()->getAdminLevels();
+        $levels_idst = \FormaLms\lib\Forma::getAclManager()->getAdminLevels();
         $levels_flip = array_flip($levels_idst);
 
         //retrieve language and level for given users
@@ -3308,7 +3308,7 @@ class UsermanagementAdm extends Model
                 case 'dropdown':
                     if ($field_sons === false) {
                         //retrieve translations for dropdowns fields
-                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                         $res_fields_sons = $this->db->query($query_fields_sons);
                         while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
                             $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
@@ -3326,7 +3326,7 @@ class UsermanagementAdm extends Model
                 case 'copy':
                     if ($field_sons === false) {
                         //retrieve translations for dropdowns fields
-                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                         $res_fields_sons = $this->db->query($query_fields_sons);
                         $field_sons = [];
                         while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
@@ -3387,7 +3387,7 @@ class UsermanagementAdm extends Model
         $query = 'select %adm_customfield_lang.id_field, translation, type_field 
                 from %adm_customfield_lang, %adm_customfield 
                 where %adm_customfield_lang.id_field = %adm_customfield.id_field  and
-                 %adm_customfield_lang.lang_code = \'' . getLanguage() . '\' and area_code="ORG_CHART"';
+                 %adm_customfield_lang.lang_code = \'' . Lang::get() . '\' and area_code="ORG_CHART"';
         $rs = sql_query($query) or
         errorCommunication('getCustomFieldOrg');
         $result = [];
@@ -3497,13 +3497,13 @@ class UsermanagementAdm extends Model
         }
         $query = 'select idField, user_entry, type_field from 
                     %adm_field JOIN %adm_field_userentry ON core_field.id_common = core_field_userentry.id_common where
-                    id_user =' . $user . " and lang_code='" . getLanguage() . "' order by idField";
+                    id_user =' . $user . " and lang_code='" . Lang::get() . "' order by idField";
 
         $res = sql_query($query);
 
         while (list($id_field, $user_entry, $type_field) = sql_fetch_row($res)) {
             if ($type_field == 'dropdown') {
-                $q = sql_query("SELECT translation FROM %adm_field_son WHERE idField = $id_field AND id_common_son = $user_entry AND lang_code = '" . getLanguage() . "'");
+                $q = sql_query("SELECT translation FROM %adm_field_son WHERE idField = $id_field AND id_common_son = $user_entry AND lang_code = '" . Lang::get() . "'");
                 list($translation) = sql_fetch_row($q);
                 $output[$id_field] = $translation;
             } else {

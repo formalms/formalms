@@ -25,7 +25,7 @@ class HomepageAdmController extends AdmController
 
     public function show()
     {
-        if (!Forma::user()->isAnonymous()) {
+        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             self::redirect();
         }
 
@@ -152,7 +152,7 @@ class HomepageAdmController extends AdmController
 
     public function register()
     {
-        if (!Forma::user()->isAnonymous()) {
+        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             self::redirect();
         }
         if (!$this->model->isSelfRegistrationActive()) {
@@ -192,7 +192,7 @@ class HomepageAdmController extends AdmController
 
     public function lostPwd()
     {
-        if (!Forma::user()->isAnonymous()) {
+        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             self::redirect();
         }
 
@@ -368,7 +368,7 @@ class HomepageAdmController extends AdmController
 
     public function signup()
     {
-        if (!Forma::user()->isAnonymous()) {
+        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             self::redirect();
         }
         if (!$this->model->isSelfRegistrationActive()) {
@@ -380,7 +380,7 @@ class HomepageAdmController extends AdmController
 
     public function login()
     {
-        if (!Forma::user()->isAnonymous()) {
+        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             self::redirect();
         }
 
@@ -423,7 +423,7 @@ class HomepageAdmController extends AdmController
     {
         $msg = FormaLms\lib\Get::req('msg', DOTY_MIXED, null);
 
-        if (Forma::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             self::redirect();
         }
 
@@ -459,7 +459,7 @@ class HomepageAdmController extends AdmController
         $id_page = FormaLms\lib\Get::req('page', DOTY_INT, null);
 
         $params = [];
-        list($params['title'], $params['description']) = $this->model->getWebPage($id_page);
+        [$params['title'], $params['description']] = $this->model->getWebPage($id_page);
 
         $external_pages = $this->model->getExternalPages();
         $params['externalPages'] = [];
@@ -490,7 +490,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        if (Forma::user()->isLoggedIn() && $login_user != Forma::user()->getACLManager()->relativeId(Forma::user()->userid)) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn() && $login_user != \FormaLms\lib\Forma::getAclManager()->relativeId(\FormaLms\lib\FormaUser::getCurrentUser()->getUserId())) {
             AuthenticationManager::logout();
             header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
@@ -510,7 +510,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user_manager = &Forma::user()->getAclManager();
+        $user_manager = &\FormaLms\lib\Forma::getAclManager();
 
         if (!$login_idst) {
             $username = '/' . $login_user;
@@ -530,8 +530,8 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user = new FormaUser($username, 'public_area');
-        Lang::set($user->preference->getLanguage());
+        $user = new \FormaLms\lib\FormaUser($username, 'public_area');
+        Lang::set($user->getUserPreference()->getLanguage());
 
         $redirection = [];
         switch ($this->model->saveUser($user)) {

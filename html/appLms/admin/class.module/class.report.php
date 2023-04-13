@@ -24,7 +24,7 @@ class Module_Report extends LmsAdminModule
 {
     public function loadBody()
     {
-        require_once Forma::inc(_base_ . '/' . _folder_lms_ . '/admin/modules/' . $this->module_name . '/' . $this->module_name . '.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/' . _folder_lms_ . '/admin/modules/' . $this->module_name . '/' . $this->module_name . '.php');
 
         reportDispatch($GLOBALS['op']);
     }

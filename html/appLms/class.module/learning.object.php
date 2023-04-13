@@ -47,8 +47,8 @@ class Learning_Object
         $this->idAuthor = '';
         $this->title = '';
 
-        $this->db = DbConn::getInstance();
-        $this->aclManager = Forma::user()->getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->aclManager = \FormaLms\lib\Forma::getAclManager();
         $this->table = '';
 
         $this->plugin_manager = new PluginManager('LearningObject');

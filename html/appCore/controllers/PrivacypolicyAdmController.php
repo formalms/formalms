@@ -25,7 +25,7 @@ class PrivacypolicyAdmController extends AdmController
     {
         parent::init();
         require_once _base_ . '/lib/lib.json.php';
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->model = new PrivacypolicyAdm();
         $this->json = new Services_JSON();
         $this->permissions = [

@@ -13,9 +13,9 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::include(_lms_ . '/lib/', 'lib.course.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.course.php');
 require_once __DIR__ . '/class.report.php';
-require_once Forma::include(_lms_ . '/lib/', 'lib.date.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.date.php');
 
 define('_RCS_CATEGORY_USERS', 'users');
 define('_RCS_CATEGORY_LO', 'LO');
@@ -450,7 +450,7 @@ class Report_Courses extends Report
                 //$user_select->show_orgchart_simple_selector = FALSE;
                 //$user_select->multi_choice = TRUE;
 
-                if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $user_select->addFormInfo(
                         Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, ($reportTempData['columns_filter']['all_users'] ? 1 : 0)) .
                         Form::getBreakRow() .
@@ -688,7 +688,7 @@ class Report_Courses extends Report
             $admin_allcourses = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $course_selected = array_intersect($admin_courses['course'], $course_selected);
 
             $reportTempData['rows_filter']['selected_courses'] = $course_selected;
@@ -724,7 +724,7 @@ class Report_Courses extends Report
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         }
 
         if (empty($question_id)) {
@@ -785,7 +785,7 @@ class Report_Courses extends Report
             $admin_allcourses = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $course_selected = array_intersect($admin_courses['course'], $course_selected);
             $reportTempData['rows_filter']['selected_courses'] = $course_selected;
             $this->session->set(_REPORT_SESSION, $reportTempData);
@@ -817,7 +817,7 @@ class Report_Courses extends Report
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         }
 
         if (empty($question_id)) {
@@ -894,7 +894,7 @@ class Report_Courses extends Report
         $acl_man->include_suspended = true;
         $course_man = new Man_Course();
 
-        $user_level = Forma::user()->getUserLevelId();
+        $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
         if ($alluser == 0) {
             $user_selected = &$acl_man->getAllUsersFromSelection($reportTempData['columns_filter']['users']);
@@ -908,13 +908,13 @@ class Report_Courses extends Report
             $alluser = 0;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $user_selected = array_intersect($user_selected, $admin_users);
             unset($admin_users);
 
             //filter courses
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if ($all_courses) {
                 $all_courses = false;
                 $rs = sql_query('SELECT idCourse FROM %lms_course');
@@ -930,7 +930,7 @@ class Report_Courses extends Report
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -990,9 +990,9 @@ class Report_Courses extends Report
             require_once _adm_ . '/lib/lib.orgchart.php';
             $org_man = new OrgChartManager();
             if ($alluser == 1) {
-                $user_level = Forma::user()->getUserLevelId();
+                $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
-                if ($user_level != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $elem_selected = $user_selected;
                 } else {
                     $elem_selected = $org_man->getAllGroupIdFolder();
@@ -1002,10 +1002,10 @@ class Report_Courses extends Report
             }
             $org_name = $org_man->getFolderFormIdst($elem_selected);
 
-            if ($user_level != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+            if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
                 $org_name_temp = $org_name;
                 $org_name = [];
@@ -1994,7 +1994,7 @@ class Report_Courses extends Report
                 $course_label_id = $label_model->getCourseLabel($course_info['id_course']);
                 if ($course_label_id > 0) {
                     $arr_course_label = $label_model->getLabelInfo($course_label_id);
-                    $trow[] = $arr_course_label[getLanguage()][LABEL_TITLE];
+                    $trow[] = $arr_course_label [Lang::get()][LABEL_TITLE];
                 } else {
                     $trow[] = '';
                 }
@@ -2292,11 +2292,11 @@ class Report_Courses extends Report
     {
         $query = 'select count(*) as c from learning_courseuser where idCourse=' . $idCourse . ' and waiting=1';
 
-        $current_level = Forma::user()->getUserLevelId();
+        $current_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         // get users of admin
         if ($current_level == ADMIN_GROUP_ADMIN) {
             require_once _base_ . '/lib/lib.aclmanager.php';
-            $acl_manager = $aclManager = Forma::user()->getACLManager();
+            $acl_manager = $aclManager = \FormaLms\lib\Forma::getAclManager();;
             $idst_admin = $aclManager->getGroupST(ADMIN_GROUP_ADMIN);
             $users = $aclManager->getGroupUMembersNumber($idst_admin);
             $str_users = implode(',', $users);

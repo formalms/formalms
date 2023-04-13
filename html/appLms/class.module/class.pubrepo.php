@@ -59,19 +59,19 @@ class Module_Pubrepo extends LmsModule
         }
         if (!$ready) {
             // contruct and initialize TreeView to manage public repository
-            $this->repoDb = new RepoDirDb($GLOBALS['prefix_lms'] . '_repo', getLogUserId());
+            $this->repoDb = new RepoDirDb($GLOBALS['prefix_lms'] . '_repo', \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
             /* TODO: ACL
             if( !funAccess('pubrepoedit','MOD', TRUE, 'pubrepo' ) ) {
                 $repoDb->setFilterVisibility( TRUE );
-                $repoDb->setFilterAccess( getLogUserId() );
+                $repoDb->setFilterAccess( \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() );
             }*/
 
             $this->treeView = new RepoTreeView($this->repoDb, 'pubrepo', Lang::t('_PUBREPOROOTNAME', 'storage', 'lms'));
             $this->treeView->mod_name = 'pubrepo';
             require_once _adm_ . '/lib/lib.sessionsave.php';
             $saveObj = new Session_Save();
-            $saveName = 'pubrepo' . getLogUserId();
+            $saveName = 'pubrepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
             if ($saveObj->nameExists($saveName)) {
                 $this->treeView->setState($saveObj->load($saveName));
                 $ready = true;
@@ -199,7 +199,7 @@ class Module_Pubrepo extends LmsModule
                 require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
 
-                $saveName = $saveObj->getName('pubrepo' . getLogUserId(), true);
+                $saveName = $saveObj->getName('pubrepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $GLOBALS['page']->add($this->treeView->LOSelector($modname, 'index.php?r=lms/lomanagerrepo/completeAction&op=display&spr=' . $saveName . '&'
@@ -211,7 +211,7 @@ class Module_Pubrepo extends LmsModule
                 // save state
                 require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('pubrepo' . getLogUserId(), true);
+                $saveName = $saveObj->getName('pubrepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 // start learning object creation
@@ -224,7 +224,7 @@ class Module_Pubrepo extends LmsModule
                 // save state
                 require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('pubrepo' . getLogUserId(), true);
+                $saveName = $saveObj->getName('pubrepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $folder = $this->repoDb->getFolderById($this->treeView->getSelectedFolderId());
@@ -237,7 +237,7 @@ class Module_Pubrepo extends LmsModule
                 // save state
                 require_once _adm_ . '/lib/lib.sessionsave.php';
                 $saveObj = new Session_Save();
-                $saveName = $saveObj->getName('pubrepo' . getLogUserId(), true);
+                $saveName = $saveObj->getName('pubrepo' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 $saveObj->save($saveName, $this->treeView->getState());
 
                 $folder = $this->repoDb->getFolderById($this->treeView->getItemToPlay());

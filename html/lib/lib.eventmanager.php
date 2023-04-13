@@ -201,7 +201,7 @@ class FormaEventManager
         $arr_consumer = FormaEventManager::listConsumerFromClassId($event->getClassId());
 
         foreach ($arr_consumer as $consumer_id => $consumer_param) {
-            require_once Forma::inc($GLOBALS['where_framework'] . $consumer_param[1]);
+            require_once \FormaLms\lib\Forma::inc($GLOBALS['where_framework'] . $consumer_param[1]);
 
             $consumer = eval('return new ' . $consumer_param[0] . '(' . $consumer_id . ');');
             $consumer->actionEvent($event);
@@ -385,8 +385,8 @@ function createNewAlert($class,$module,$section,$priority,$description,
     } else {
         $event->setProperty('recipientid', implode(',', $recipients));
     }
-    $event->setProperty('subject', addslashes($msg_composer->getSubject('email', getLanguage())));
-    $event->setProperty('body', addslashes($msg_composer->getBody('email', getLanguage())));
+    $event->setProperty('subject', addslashes($msg_composer->getSubject('email', Lang::get())));
+    $event->setProperty('body', addslashes($msg_composer->getBody('email', Lang::get())));
     $msg_composer->prepare_serialize(); // __sleep is preferred but i preferr this method
     $event->setProperty('MessageComposer', addslashes(rawurlencode(serialize($msg_composer))));
     $event->setProperty('force_email_send', ($force_email_send === false ? 'false' : 'true'));

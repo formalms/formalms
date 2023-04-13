@@ -74,7 +74,7 @@ class Learning_Htmlpage extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _lms_ . '/modules/htmlpage/htmlpage.php';
         addpage($this);
@@ -94,7 +94,7 @@ class Learning_Htmlpage extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         require_once _lms_ . '/modules/htmlpage/htmlpage.php';
         modpage($this);
@@ -112,13 +112,13 @@ class Learning_Htmlpage extends Learning_Object
     {
         checkPerm('view', false, 'storage');
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
         $delete_query = '
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_htmlpage 
 		WHERE idPage = '" . $id . "'";
         if (!sql_query($delete_query)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage'));
 
             return false;
         }
@@ -126,7 +126,7 @@ class Learning_Htmlpage extends Learning_Object
 		DELETE FROM ' . $GLOBALS['prefix_lms'] . "_htmlpage_attachment
 		WHERE idpage = '" . $id . "'";
         if (!sql_query($delete_query)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'htmlpage'));
 
             return false;
         }
@@ -208,7 +208,7 @@ class Learning_Htmlpage extends Learning_Object
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
             require_once _lms_ . '/class.module/track.htmlpage.php';
-            list($exist, $idTrack) = Track_Htmlpage::getIdTrack($idReference, getLogUserId(), $this->id, true);
+            list($exist, $idTrack) = Track_Htmlpage::getIdTrack($idReference, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $this->id, true);
             if ($exist) {
                 $ti = new Track_Htmlpage($idTrack);
                 $ti->setDate(date('Y-m-d H:i:s'));
@@ -216,7 +216,7 @@ class Learning_Htmlpage extends Learning_Object
                 $ti->update();
             } else {
                 $ti = new Track_Htmlpage(false);
-                $ti->createTrack($idReference, $idTrack, getLogUserId(), date('Y-m-d H:i:s'), 'completed', 'htmlpage');
+                $ti->createTrack($idReference, $idTrack, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), date('Y-m-d H:i:s'), 'completed', 'htmlpage');
             }
         }
 

@@ -344,7 +344,7 @@ class Man_Reservation
         $idst_user = [];
         $idst_user = $this->getSubscribedUserIdst($id_event);
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $user_info = [];
         $user_info = &$acl_man->getUsers($idst_user);

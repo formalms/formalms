@@ -29,13 +29,13 @@ class Admin_Lms extends Admin
     /**
      * class constructor.
      *
-     * @param FormaUser $user the object of the Forma User, for permission control
+     * @param \FormaLms\lib\FormaUser $user the object of the Forma User, for permission control
      *
      * @return nothing
      */
-    public function __construct(&$user)
+    public function __construct($user)
     {
-        $this->user = &$user;
+        $this->user = $user;
         $this->platform = 'lms';
         $this->table_level_one = $GLOBALS['prefix_lms'] . '_menu';
         $this->table_level_two = $GLOBALS['prefix_lms'] . '_menu_under';

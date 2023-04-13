@@ -195,7 +195,7 @@ class EnrollrulesAlmsController extends AlmsController
     protected function add()
     {
         checkPerm('view', true, 'enrollrules', 'lms');
-        $languages = Forma::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($languages, Lang::t('_ALL', 'enrollrules'));
         $types = $this->model->ruleTypes();
         unset($types['base']);
@@ -232,7 +232,7 @@ class EnrollrulesAlmsController extends AlmsController
 
         $id_rule = FormaLms\lib\Get::req('id_rule', DOTY_INT, 0);
         $rule = $this->model->getRule($id_rule);
-        $languages = Forma::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($languages, Lang::t('_ALL', 'enrollrules'));
         $this->render('mod', [
             'model' => $this->model,

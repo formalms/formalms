@@ -67,11 +67,7 @@ class AjaxComment
 
         $this->_comment_table = $GLOBALS['prefix_' . $resource_platform] . '_comment_ajax';
 
-        if (!isset($GLOBALS['current_user'])) {
-            $this->reply_status = false;
-        } else {
-            $this->reply_status = !Forma::user()->isAnonymous();
-        }
+        $this->reply_status = !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous();
     }
 
     // some abstraction function
@@ -236,12 +232,12 @@ class AjaxComment
 			NULL,
 			'" . (isset($comment_data[AJCOMM_RESTYPE]) ? $comment_data[AJCOMM_RESTYPE] : $this->resource_type) . "',
 			'" . $comment_data[AJCOMM_EXTKEY] . "', 
-			" . (int) $comment_data[AJCOMM_AUTHOR] . ", 
+			" . (int)$comment_data[AJCOMM_AUTHOR] . ", 
 			'" . $comment_data[AJCOMM_POSTED] . "', 
 			'" . $comment_data[AJCOMM_TEXTOF] . "', 
 			'" . $comment_data[AJCOMM_TREE] . "', 
-			" . (int) $comment_data[AJCOMM_PARENT] . ', 
-			' . (int) $comment_data[AJCOMM_MODERATED] . '
+			" . (int)$comment_data[AJCOMM_PARENT] . ', 
+			' . (int)$comment_data[AJCOMM_MODERATED] . '
 		)';
 
         return $this->_query($query);
@@ -250,7 +246,7 @@ class AjaxComment
     /**
      * update a comment.
      *
-     * @param array $comment_key  the list of all the value to use as key, use the constans AJCOMM_* as array keys
+     * @param array $comment_key the list of all the value to use as key, use the constans AJCOMM_* as array keys
      * @param array $comment_data the list of all the data to update, use the constans AJCOMM_* as array keys
      *
      * @return bool true if the comments deleted correctly false in case of trouble
@@ -350,7 +346,7 @@ class AjaxCommentRender
         }
         reset($this->_data);
 
-        $this->_acl_man = Forma::user()->getAclManager();
+        $this->_acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->_authors = $this->_acl_man->getUsers($users);
 
         $this->profile = new UserProfile(0);
@@ -382,7 +378,7 @@ class AjaxCommentRender
         if ($this->_with_reply) {
         }
 
-        if (Forma::user()->getUserLevelId() == '/framework/level/godadmin') {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/godadmin') {
             $html .= '<p><a href="javascript:;" onclick="delComment(' . $comment_data[AJCOMM_ID] . ',' . $comment_data[AJCOMM_EXTKEY] . ')">'
                 . '<img src="' . getPathImage() . 'standard/delete.png" alt="' . Lang::t('_DEL', 'standard', 'framework') . '" />'
                 . '</a></p>';
@@ -411,14 +407,14 @@ class AjaxCommentRender
             . '</p>'
             . '<p>'
             . Form::getInputTextarea('ajaxcomment_textof',
-                                    'ajaxcomment_textof',
-                                    '')
+                'ajaxcomment_textof',
+                '')
             . '</p>'
             . '<p>'
             . Form::getButton('ajaxcomment_send',
-                                'ajaxcomment_send',
-                             Lang::t('_SEND', $this->_module, $this->_platform),
-                                '')
+                'ajaxcomment_send',
+                Lang::t('_SEND', $this->_module, $this->_platform),
+                '')
             . '</p>'
 
             . Form::closeForm();

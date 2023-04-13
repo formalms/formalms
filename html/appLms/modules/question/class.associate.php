@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
 
 class Associate_Question extends Question
 {
@@ -612,7 +612,7 @@ class Associate_Question extends Question
 
             $queryValues = 'SELECT * FROM %lms_testquestanswer WHERE idQuest=' . $this->id;
 
-            $queryResult = DbConn::getInstance()->query($queryValues);
+            $queryResult = \FormaLms\db\DbConn::getInstance()->query($queryValues);
 
             $questAnswers = [];
             foreach ($queryResult as $value) {

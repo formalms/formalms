@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
 
 class InlineChoice_Question extends Question
 {
@@ -791,7 +791,7 @@ class InlineChoice_Question extends Question
         list($id_answer_do) = sql_fetch_row(sql_query($recover_answer));
 
         //**  recorver status test ** #11961 - Errata visualizzazione risposte corrette nei test
-        $sql = 'select status from %lms_commontrack where idUser=' . Forma::user()->getIdSt() . ' and idTrack=' . $id_track;
+        $sql = 'select status from %lms_commontrack where idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and idTrack=' . $id_track;
         list($status_test) = sql_fetch_row(sql_query($sql));
 
         $select = (FormaLms\lib\Get::sett('no_answer_in_test') == 'on' ? '<span class="text_bold">' . $lang->def('_NO_ANSWER') . '</span>' : '');

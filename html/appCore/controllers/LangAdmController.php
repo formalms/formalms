@@ -38,7 +38,7 @@ class LangAdmController extends AdmController
 
     public function showTask()
     {
-        require_once Forma::inc(_lib_ . '/formatable/include.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
         $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 100));
@@ -284,7 +284,7 @@ class LangAdmController extends AdmController
         if ($overwrite) {
             $lang_list = $this->model->getLangList(0, 100, '', 'asc');
             if (array_key_exists($langCode, $lang_list)) {
-                require_once Forma::inc(_lib_ . '/formatable/include.php');
+                require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
                 $langList = $this->model->getAllForDiff($filePath, $langCode);
 
@@ -348,7 +348,7 @@ class LangAdmController extends AdmController
     public function listTask()
     {
         // YuiLib::load('table');
-        require_once Forma::inc(_lib_ . '/formatable/include.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
         $lang_code = FormaLms\lib\Get::req('lang_code', DOTY_STRING, Lang::get());
 
         $module_list = $this->model->getModuleList();
@@ -569,7 +569,7 @@ class LangAdmController extends AdmController
 
     public function diffTask()
     {
-        require_once Forma::inc(_lib_ . '/formatable/include.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
         $langCode = urldecode(FormaLms\lib\Get::req('lang_code', DOTY_MIXED, Lang::get()));
         $langFile = FormaLms\lib\Get::req('lang_file', DOTY_MIXED, '');

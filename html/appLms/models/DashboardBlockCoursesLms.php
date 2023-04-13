@@ -98,7 +98,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         $courses = [];
 
         $limit = $this->data['max_courses_number'];
-        $conditions = ['ID_USER' => 'cu.iduser =' . (int) Forma::user()->getId()];
+        $conditions = ['ID_USER' => 'cu.iduser =' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId()];
         $conditions['COURSE_STATUS'] = '(c.status in  (1,2))'; // only available, confirmed
         $conditions['USER_ENROLLMENT_STATUS'] = '(cu.status in (0,1))'; // only enrolled and in progress
 
@@ -223,7 +223,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
         // exclude course belonging to pathcourse in which the user is enrolled as a student
         $exclude_pathcourse = '';
         if (FormaLms\lib\Get::sett('on_path_in_mycourses') == 'off') {
-            $id_user = (int) Forma::user()->getId();
+            $id_user = (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId();
             $learning_path_enroll = $this->getUserCoursePathCourses($id_user);
             if (count($learning_path_enroll) >= 1) {
                 $exclude_path_course = 'select idCourse from learning_courseuser where idUser=' . $id_user . ' and level <= 3 '

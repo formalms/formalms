@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _lms_ . '/class.module/track.object.php';
-require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
 class Track_Test extends Track_Object
 {
@@ -36,7 +36,7 @@ class Track_Test extends Track_Object
         $this->objectType = 'test';
         parent::__construct($idTrack);
 
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         if ($idTrack !== null) {
             $res = $this->db->query("SELECT idTest,idUser,idReference, number_of_attempt FROM %lms_testtrack WHERE idTrack = '" . (int) $idTrack . "'");
             if ($res && $this->db->num_rows($res) > 0) {
@@ -262,7 +262,7 @@ class Track_Test extends Track_Object
      **/
     public function loadReport($idUser = false, $mvc = false)
     {
-        require_once Forma::inc(_lms_ . '/modules/test/do.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/test/do.test.php');
         if ($idUser) {
             $output = user_report($idUser, $this->idResource, $this->idParams, false, $mvc);
             if ($mvc) {

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _adm_ . '/lib/lib.sessionsave.php';
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -42,7 +42,7 @@ function addtest($object_test)
 
     $lang = &FormaLanguage::createInstance('test');
     if (!is_a($object_test, 'Learning_Test')) {
-        Forma::addError($lang->def('_OPERATION_FAILURE'));
+        \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
@@ -75,7 +75,7 @@ function instest()
 {
     checkPerm('view', false, 'storage');
 
-    require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
     $lang = &FormaLanguage::createInstance('test');
 
@@ -87,10 +87,10 @@ function instest()
     INSERT INTO ' . $GLOBALS['prefix_lms'] . "_test
     ( author, title, description, obj_type)
         VALUES 
-    ( '" . (int) getLogUserId() . "', '" . addslashes($_REQUEST['title']) . "', '" . addslashes($_REQUEST['textof']) . "', '" . $_REQUEST['obj_type'] . "' )";
+    ( '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . addslashes($_REQUEST['title']) . "', '" . addslashes($_REQUEST['textof']) . "', '" . $_REQUEST['obj_type'] . "' )";
 
     if (!sql_query($ins_query)) {
-        Forma::addError($lang->def('_OPERATION_FAILURE'));
+        \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . urldecode($_REQUEST['back_url']) . '&create_result=0');
     }
 
@@ -199,7 +199,7 @@ function modtestgui($object_test)
     // ----------------------------------------------------------------------------------------
 
     if (!is_a($object_test, 'Learning_Test')) {
-        Forma::addError($lang->def('_OPERATION_FAILURE'));
+        \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
     }
 
@@ -670,7 +670,7 @@ function &istanceQuest($type_of_quest, $id)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
     $quest_obj = eval("return new $type_class ( $id );");
 
     return $quest_obj;
@@ -826,7 +826,7 @@ function defmodality()
     require_once _base_ . '/lib/lib.json.php';
 
     $idTest = importVar('idTest', true, 0);
-    $db = DbConn::getInstance();
+    $db = \FormaLms\db\DbConn::getInstance();
     $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
     $test_type = $db->fetch_row($res);
     $object_test = createLO($test_type[0], $idTest);
@@ -1664,7 +1664,7 @@ function defpoint()
 
     $max_score = 0;
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         $max_score += $quest_obj->getMaxScore();
@@ -1765,7 +1765,7 @@ function modassignpoint()
             SET difficult = '" . (int) $_REQUEST['new_difficult_quest'][$idQuest] . "'
             WHERE idTest = '" . $idTest . "' AND idQuest = '" . (int) $idQuest . "'");
 
-            require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = eval("return new $type_class( $idQuest );");
             $score_assign[$idQuest] = $quest_obj->setMaxScore($_REQUEST['new_score_quest'][$idQuest]);
         }
@@ -1813,7 +1813,7 @@ function modassignpoint()
     //table body--------------------------------------------------------
 
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
 
         if (isset($_REQUEST['new_score_quest'][$idQuest])) {
@@ -2146,7 +2146,7 @@ function doexportquestqb()
                         WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
         while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-            require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
             $quest_obj = new $type_class($idQuest);
             $new_id = $quest_obj->copy(0);
         }
@@ -2168,7 +2168,7 @@ function _getTestMaxScore($idTest)
 
     $max_score = 0;
     while (list($idQuest, $type_quest, $type_file, $type_class, $title_quest, $difficult) = sql_fetch_row($re_quest)) {
-        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
         $quest_obj = eval("return new $type_class( $idQuest );");
         $max_score += $quest_obj->getMaxScore();
     }
@@ -2482,7 +2482,7 @@ switch ($GLOBALS['op']) {
         break;
     case 'uptest':
             $idTest = importVar('idTest', true, 0);
-            $db = DbConn::getInstance();
+            $db = \FormaLms\db\DbConn::getInstance();
             $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
             $test_type = $db->fetch_row($res);
             $object_test = createLO($test_type[0], $idTest);
@@ -2505,7 +2505,7 @@ switch ($GLOBALS['op']) {
                 $back_url = importVar('back_url');
             }
             $test_type = importVar('test_type', false, 'test');
-            $db = DbConn::getInstance();
+            $db = \FormaLms\db\DbConn::getInstance();
             $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
             $test_type = $db->fetch_row($res);
             $object_test = createLO($test_type[0], $idTest);

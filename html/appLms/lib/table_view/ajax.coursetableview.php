@@ -81,7 +81,7 @@ switch ($command) {
 
         require_once _lms_ . '/lib/lib.permission.php';
 
-        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
             $moderate = checkPerm('moderate', true, 'course', 'lms');
         } else {
             $moderate = true;

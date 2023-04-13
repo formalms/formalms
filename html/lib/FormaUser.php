@@ -10,6 +10,9 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+namespace FormaLms\lib;
+
+use FormaLms\lib\Serializer\FormaSerializer;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -39,15 +42,15 @@ define('USER_QUOTA_UNLIMIT', 0);
 define('_US_EMPTY', 0);
 define('_NOT_DELETED', 0);
 
-class FormaUser implements Serializable
+class FormaUser
 {
-    public $sprefix = '';
-    public $acl = null;
-    public $aclManager = null;
-    public $userid;
-    public $idst;
-    public $arrst = [];
-    public $preference;
+    private static $currentUser = null;
+
+    private $sprefix;
+    private $userid;
+    private $idst;
+    private $arrst = [];
+    private $userPreference;
 
     /* @var string */
     private $firstName;
@@ -66,12 +69,30 @@ class FormaUser implements Serializable
     /* @var string */
     private $googleId;
 
-    public $user_level = false;
+    private $user_level = false;
 
-    private array $userCourses = [];
+    private array $userCourses;
 
-    protected $db = null;
+    public static function getCurrentUser() : FormaUser
+    {
+        if (!self::$currentUser) {
+            self::loadUserFromSession();
+        }
 
+        return self::$currentUser;
+    }
+
+    public static function loadUserFromSession()
+    {
+        $sessionUser = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('user');
+
+        self::$currentUser = $sessionUser ?? self::createFormaUserFromSession('public_area');
+    }
+
+    public static function setCurrentUser($user)
+    {
+        self::$currentUser = $user;
+    }
     /**
      * create a FormaACLUtil for given user
      * and load all ST stored in session.
@@ -80,25 +101,20 @@ class FormaUser implements Serializable
     {
         $this->userid = $userid;
         $this->sprefix = $sprefix;
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-
-        $this->db = DbConn::getInstance();
-
-        $this->acl = new FormaACL();
-        $this->aclManager = $this->acl->getACLManager();
+        $session = Session\SessionManager::getInstance()->getSession();
 
         if ($session->has($sprefix . '_idst')) {
             $this->idst = $session->get($sprefix . '_idst');
         } else {
-            $this->idst = $this->acl->getUserST($userid);
+            $this->idst = \FormaLms\lib\Forma::getAcl()->getUserST($userid);
         }
         if ($session->has($sprefix . '_stlist')) {
-            require_once _base_ . '/lib/lib.json.php';
-            $json = new Services_JSON();
-            $this->arrst = $json->decode($session->get($sprefix . '_stlist'));
+
+            $data = $session->get($sprefix . '_stlist');
+            $this->arrst = FormaSerializer::getInstance()->decode($data,'json');
         }
 
-        $user_manager = new FormaACLManager();
+        $user_manager = new \FormaACLManager();
         $userInfo = $user_manager->getUser($this->idst, false);
 
         if (is_array($userInfo)) {
@@ -112,7 +128,7 @@ class FormaUser implements Serializable
             $this->googleId = $userInfo[ACL_INFO_GOOGLE_ID];
         }
 
-        $this->preference = new UserPreferences($this->idst);
+        $this->userPreference = new \UserPreferences($this->idst);
 
         $this->load_user_role();
 
@@ -125,7 +141,7 @@ class FormaUser implements Serializable
     {
         $arr_levels_idst = [];
         $arr_levels_id  = [];
-        $aclManager = $this->acl->getACLManager();
+        $aclManager = \FormaLms\lib\Forma::getAcl()->getACLManager();
         $adminLevels = $aclManager->getAdminLevels();
         if (count($adminLevels)) {
             $arr_levels_id = array_flip($aclManager->getAdminLevels());
@@ -140,9 +156,9 @@ class FormaUser implements Serializable
         }
 
         $query = 'SELECT idst FROM %adm_group_members WHERE idstMember=' . (int) $idst . ' AND idst IN (' . implode(',', $arr_levels_idst) . ')';
-        $res = $this->db->query($query);
-        if ($res && $this->db->num_rows($res) > 0) {
-            list($lvl) = $this->db->fetch_row($res);
+        $res = sql_query($query);
+        if ($res && sql_num_rows($res) > 0) {
+            [$lvl] = sql_fetch_row($res);
         }
 
         if (isset($arr_levels_id[$lvl])) {
@@ -162,7 +178,7 @@ class FormaUser implements Serializable
         $userCourses = [];
         $userCoursesQuery = 'SELECT idCourse,edition_id as idEdtition,level,date_inscr as subscriptionDate,date_first_access as firstAccess,status,date_complete as completedAt, date_begin_validity as dateBeginValidity, date_expire_validity as dateExpireValidity FROM %lms_courseuser where iduser=' . $this->idst;
 
-        $result = $this->db->query($userCoursesQuery);
+        $result = sql_query($userCoursesQuery);
 
         if (is_countable($result)) {
             foreach ($result as $userCourse) {
@@ -176,31 +192,27 @@ class FormaUser implements Serializable
     public function reloadUserCourses()
     {
         $this->userCourses = $this->loadUserCourses();
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        $session->set('user', $this);
-        $session->save();
+        $this->saveInSession();
     }
 
     public function load_user_role()
     {
         if (!empty($this->arrst)) {
-            $temp = $this->aclManager->getRoleFromArraySt($this->arrst);
+            $temp = \FormaLms\lib\Forma::getAclManager()->getRoleFromArraySt($this->arrst);
             $GLOBALS['user_roles'] = array_flip($temp);
         }
     }
 
-    public function SaveInSession()
+    public function saveInSession()
     {
-        require_once _base_ . '/lib/lib.json.php';
-        $json = new Services_JSON();
         $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
         if (strpos($ip, ',') !== false) {
             $ip = substr($ip, 0, strpos($ip, ','));
         }
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $session = Session\SessionManager::getInstance()->getSession();
         $session->set($this->sprefix . '_idst', $this->idst);
         $session->set($this->sprefix . '_username', $this->userid);
-        $session->set($this->sprefix . '_stlist', $json->encode($this->arrst));
+        $session->set($this->sprefix . '_stlist', FormaSerializer::getInstance()->encode($this->arrst,'json'));
         $session->set($this->sprefix . '_log_ip', $ip);
         $session->set('user', $this);
         $session->save();
@@ -218,7 +230,7 @@ class FormaUser implements Serializable
 
     public function getLogIp()
     {
-        return \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get($this->sprefix . '_log_ip');
+        return Session\SessionManager::getInstance()->getSession()->get($this->sprefix . '_log_ip');
     }
 
     public function getIdSt()
@@ -275,7 +287,7 @@ class FormaUser implements Serializable
      */
     public function getAvatar()
     {
-        return FormaLms\lib\Get::sett('url') . '/' . _folder_files_ . '/appCore/' . FormaLms\lib\Get::sett('pathphoto') . $this->avatar;
+        return Get::sett('url') . '/' . _folder_files_ . '/appCore/' . Get::sett('pathphoto') . $this->avatar;
     }
 
     /**
@@ -311,6 +323,181 @@ class FormaUser implements Serializable
     }
 
     /**
+     * @return mixed|string
+     */
+    public function getSprefix()
+    {
+        return $this->sprefix;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUserLevel(): bool
+    {
+        return $this->user_level;
+    }
+
+    /**
+     * @param mixed|string $sprefix
+     * @return FormaUser
+     */
+    public function setSprefix($sprefix)
+    {
+        $this->sprefix = $sprefix;
+        return $this;
+    }
+
+    /**
+     * @param mixed $userid
+     * @return FormaUser
+     */
+    public function setUserid($userid)
+    {
+        $this->userid = $userid;
+        return $this;
+    }
+
+    /**
+     * @param false|mixed $idst
+     * @return FormaUser
+     */
+    public function setIdst($idst)
+    {
+        $this->idst = $idst;
+        return $this;
+    }
+
+    /**
+     * @param array|mixed $arrst
+     * @return FormaUser
+     */
+    public function setArrst($arrst)
+    {
+        $this->arrst = $arrst;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserPreference()
+    {
+        return $this->userPreference;
+    }
+
+    /**
+     * @param mixed $userPreference
+     * @return FormaUser
+     */
+    public function setUserPreference($userPreference)
+    {
+        $this->userPreference = $userPreference;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $firstName
+     * @return FormaUser
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $lastName
+     * @return FormaUser
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $email
+     * @return FormaUser
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $avatar
+     * @return FormaUser
+     */
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $facebookId
+     * @return FormaUser
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $twitterId
+     * @return FormaUser
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitterId = $twitterId;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $linkedinId
+     * @return FormaUser
+     */
+    public function setLinkedinId($linkedinId)
+    {
+        $this->linkedinId = $linkedinId;
+        return $this;
+    }
+
+    /**
+     * @param mixed|string $googleId
+     * @return FormaUser
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+        return $this;
+    }
+
+    /**
+     * @param bool $user_level
+     * @return FormaUser
+     */
+    public function setUserLevel(bool $user_level): FormaUser
+    {
+        $this->user_level = $user_level;
+        return $this;
+    }
+
+    /**
+     * @param array $userCourses
+     * @return FormaUser
+     */
+    public function setUserCourses(array $userCourses): FormaUser
+    {
+        $this->userCourses = $userCourses;
+        return $this;
+    }
+    
+
+    /**
      * static public function for load user from session.
      *
      * @param string $prefix optional prefix for session publiciables
@@ -320,7 +507,7 @@ class FormaUser implements Serializable
      **/
     public static function &createFormaUserFromSession($prefix = 'base')
     {
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $session = Session\SessionManager::getInstance()->getSession();
         if ($session->has('user_enter_time')) {
             $session->set('user_enter_time', date('Y-m-d H:i:s'));
         }
@@ -342,17 +529,17 @@ class FormaUser implements Serializable
             return $du;
         } else {
             // rest auth
-            if (FormaLms\lib\Get::sett('use_rest_api') != 'off') {
+            if (Get::sett('use_rest_api') != 'off') {
                 require_once _base_ . '/api/lib/lib.rest.php';
 
-                if (FormaLms\lib\Get::sett('rest_auth_method') == _REST_AUTH_TOKEN) {
+                if (Get::sett('rest_auth_method') == _REST_AUTH_TOKEN) {
                     //require_once(_base_.'/lib/lib.utils.php');
-                    $token = FormaLms\lib\Get::req('auth', DOTY_ALPHANUM, '');
+                    $token = Get::req('auth', DOTY_ALPHANUM, '');
 
                     if ($token) {
-                        $id_user = RestAPI::getUserIdByToken($token);
+                        $id_user = \RestAPI::getUserIdByToken($token);
                         if ($id_user) {
-                            $user_manager = new FormaACLManager();
+                            $user_manager = new \FormaACLManager();
                             $user_info = $user_manager->getUser($id_user, false);
 
                             if ($user_info != false) {
@@ -363,7 +550,7 @@ class FormaUser implements Serializable
                                 $du->setLastEnter(date('Y-m-d H:i:s'));
                                 $session->set('user_enter_mark', time());
                                 $du->loadUserSectionST();
-                                $du->SaveInSession();
+                                $du->saveInSession();
                                 $session->save();
 
                                 return $du;
@@ -374,11 +561,11 @@ class FormaUser implements Serializable
             }
 
             // kerberos and similar auth
-            if (FormaLms\lib\Get::sett('auth_kerberos') == 'on') {
+            if (Get::sett('auth_kerberos') == 'on') {
                 if (isset($_SERVER['REMOTE_USER'])) {
                     // extract username
                     $username = addslashes(substr($_SERVER['REMOTE_USER'], 0, strpos($_SERVER['REMOTE_USER'], '@')));
-                    $user_manager = new FormaACLManager();
+                    $user_manager = new \FormaACLManager();
                     $user_info = $user_manager->getUser(false, $username);
                     if ($user_info != false) {
                         $du = new FormaUser($username, $prefix);
@@ -387,7 +574,7 @@ class FormaUser implements Serializable
                         $session->set('user_enter_mark', time());
                         $session->save();
                         $du->loadUserSectionST();
-                        $du->SaveInSession();
+                        $du->saveInSession();
 
                         return $du;
                     }
@@ -417,7 +604,7 @@ class FormaUser implements Serializable
             return $false_public;
         }
 
-        $user_manager = new FormaACLManager();
+        $user_manager = new \FormaACLManager();
         $user_info = $user_manager->getUser(false, $login);
         // first login
 
@@ -429,24 +616,24 @@ class FormaUser implements Serializable
             return false;
         }
 
-        if (FormaLms\lib\Get::sett('ldap_used') == 'on') {
+        if (Get::sett('ldap_used') == 'on') {
             if ($password == '') {
                 $false_public = false;
 
                 return $false_public;
             }
             //connect to ldap server
-            if (!($ldap_conn = @ldap_connect(FormaLms\lib\Get::sett('ldap_server'), FormaLms\lib\Get::sett('ldap_port', '389')))) {
+            if (!($ldap_conn = @ldap_connect(Get::sett('ldap_server'), Get::sett('ldap_port', '389')))) {
                 exit('Could not connect to ldap server');
             }
 
             //bind on server
-            $ldap_user = preg_replace('/\$user/', $login, FormaLms\lib\Get::sett('ldap_user_string'));
+            $ldap_user = preg_replace('/\$user/', $login, Get::sett('ldap_user_string'));
             if (!(@ldap_bind($ldap_conn, $ldap_user, $password))) {
-                ldap_close($ldap_conn);
+                ldap_unbind($ldap_conn);
 
                 // Edited by Claudio Redaelli
-                if (FormaLms\lib\Get::sett('ldap_alternate_check') == 'on') {
+                if (Get::sett('ldap_alternate_check') == 'on') {
                     if (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
                         return false;
                     }
@@ -457,34 +644,34 @@ class FormaUser implements Serializable
                 }
                 // End edit
             }
-            ldap_close($ldap_conn);
+            ldap_unbind($ldap_conn);
         } elseif (!$user_manager->password_verify_update($password, $user_info[ACL_INFO_PASS], $user_info[ACL_INFO_IDST])) {
             return false;
         }
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $session = Session\SessionManager::getInstance()->getSession();
         $session->remove($prefix . '_idst');
         $du = new FormaUser($login, $prefix);
 
-        // language policy
+        // \Language policy
         if (!$new_lang && $session->has('forced_lang')) {
-            $new_lang = Lang::get();
+            $new_lang = \Lang::get();
         }
         if ($new_lang != false) {
-            $du->preference->setLanguage($new_lang);
+            $du->getUserPreference()->setLanguage($new_lang);
         } else {
-            if (!FormaLms\lib\Get::cfg('demo_mode', false)) {
-                Lang::set($du->preference->getLanguage());
+            if (!Get::cfg('demo_mode', false)) {
+                \Lang::set($du->getUserPreference()->getLanguage());
             }
         }
 
-        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->migrate();
+        Session\SessionManager::getInstance()->getSession()->migrate();
 
         return $du;
     }
 
     public static function &createFormaUserFromField($field_name, $field_val, $prefix = 'base')
     {
-        $user_manager = new FormaACLManager();
+        $user_manager = new \FormaACLManager();
         $user_info = $user_manager->getUserInfoByField($field_name, $field_val);
 
         $ret_value = false;
@@ -505,23 +692,25 @@ class FormaUser implements Serializable
     public static function setupUser($user)
     {
         $user->loadUserSectionST();
-        $user->SaveInSession();
+        $user->saveInSession();
 
         resetTemplate();
 
-        $GLOBALS['current_user'] = $user;
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+
+        $session = Session\SessionManager::getInstance()->getSession();
 
         $session->set('last_enter', $user->getLastEnter());
         $session->set('user_enter_mark', time());
         $session->save();
         $user->setLastEnter(date('Y-m-d H:i:s'));
+
+        $session = Session\SessionManager::getInstance()->getSession();
     }
 
     public function setLastEnter($lastenter)
     {
         if (!$this->isAnonymous()) {
-            return $this->aclManager->updateUser(
+            return \FormaLms\lib\Forma::getAclManager()->updateUser(
                 $this->idst,
                 false,
                 false,
@@ -540,7 +729,7 @@ class FormaUser implements Serializable
     public function getLastEnter()
     {
         if (!$this->isAnonymous()) {
-            $user_info = $this->aclManager->getUser($this->getIdSt(), false);
+            $user_info = \FormaLms\lib\Forma::getAclManager()->getUser($this->getIdSt(), false);
 
             return $user_info[ACL_INFO_LASTENTER];
         } else {
@@ -556,7 +745,7 @@ class FormaUser implements Serializable
      **/
     public function loadUserSectionST($section = false)
     {
-        $this->arrst = $this->acl->getUserAllST($this->userid);
+        $this->arrst = \FormaLms\lib\Forma::getAcl()->getUserAllST($this->userid);
         $this->load_user_role();
     }
 
@@ -566,13 +755,13 @@ class FormaUser implements Serializable
     public function isPasswordElapsed()
     {
         //if the password is managed by an external program jump this procedure
-        if (FormaLms\lib\Get::sett('ldap_used') == 'on') {
+        if (Get::sett('ldap_used') == 'on') {
             return 0;
         }
 
         //change password forced from admin or is the first login. When a new user is created
         // and the setting for a change at irst login is active this flag wil be turned on
-        $user_data = $this->aclManager->getUser($this->idst, false);
+        $user_data = \FormaLms\lib\Forma::getAclManager()->getUser($this->idst, false);
         if ($user_data[ACL_INFO_FORCE_CHANGE] == 1) {
             return 2;
         }
@@ -581,7 +770,7 @@ class FormaUser implements Serializable
         if (!$user_data[ACL_INFO_PWD_EXPIRE_AT]) {
             return 0;
         }
-        if (FormaLms\lib\Get::sett('pass_max_time_valid', '0') != '0') {
+        if (Get::sett('pass_max_time_valid', '0') != '0') {
             $pwd_expire = fromDatetimeToTimestamp($user_data[ACL_INFO_PWD_EXPIRE_AT]);
             if (time() > $pwd_expire) {
                 return 1;
@@ -600,10 +789,10 @@ class FormaUser implements Serializable
     public function saveUserSectionSTInSession($section)
     {
         $sprefix = $this->sprefix;
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $session = Session\SessionManager::getInstance()->getSession();
         if ($session->has($sprefix . '_stlist')) {
             $this->loadUserSectionST($section);
-            $this->SaveInSession();
+            $this->saveInSession();
         }
     }
 
@@ -631,7 +820,7 @@ class FormaUser implements Serializable
         if (!isset($GLOBALS['user_roles'])) {
             $this->load_user_role();
         }
-        if ($this->user_level == ADMIN_GROUP_GODADMIN && $this->aclManager->getRole(false, $roleid) === false) {
+        if ($this->user_level == ADMIN_GROUP_GODADMIN && \FormaLms\lib\Forma::getAclManager()->getRole(false, $roleid) === false) {
             return true;
         }
 
@@ -681,26 +870,7 @@ class FormaUser implements Serializable
 
         return true;
     }
-
-    /**
-     * Get refernce to FormaACL.
-     *
-     * @return FormaACL the FormaACL object
-     **/
-    public function getACL()
-    {
-        return $this->acl;
-    }
-
-    /**
-     * Get refernce to FormaACLManager.
-     *
-     * @return FormaACLManager the FormaACLManager object
-     **/
-    public function getACLManager()
-    {
-        return $this->acl->getACLManager();
-    }
+    
 
     public function getUserLevelId()
     {
@@ -710,23 +880,23 @@ class FormaUser implements Serializable
     /** Modifica per inversione cognome nome ... meglio nome cognome **/
     public function getUserName()
     {
-        $user_info = $this->aclManager->getUser(getLogUserId(), false);
+        $user_info = \FormaLms\lib\Forma::getAclManager()->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
 
         return $user_info[ACL_INFO_FIRSTNAME] . $user_info[ACL_INFO_LASTNAME]
             ? $user_info[ACL_INFO_FIRSTNAME] . ' ' . $user_info[ACL_INFO_LASTNAME]
-            : $this->aclManager->relativeId($user_info[ACL_INFO_USERID]);
+            : \FormaLms\lib\Forma::getAclManager()->relativeId($user_info[ACL_INFO_USERID]);
     }
 
     public function getPreference($preference_path)
     {
-        return $this->preference->getPreference($preference_path);
+        return $this->userPreference->getPreference($preference_path);
     }
 
     public function getQuotaLimit()
     {
-        $user_quota = $this->preference->getPreference('user_rules.user_quota');
+        $user_quota = $this->userPreference->getPreference('user_rules.user_quota');
         if ($user_quota == USER_QUOTA_INHERIT) {
-            $user_quota = FormaLms\lib\Get::sett('user_quota');
+            $user_quota = Get::sett('user_quota');
         }
 
         return $user_quota;
@@ -734,7 +904,7 @@ class FormaUser implements Serializable
 
     public function getUsedQuota()
     {
-        $user_quota = $this->preference->getPreference('user_rules.user_quota_used');
+        $user_quota = $this->userPreference->getPreference('user_rules.user_quota_used');
 
         return $user_quota;
     }
@@ -768,7 +938,7 @@ class FormaUser implements Serializable
 			FROM ' . $this->getMyFilesTable() . "
 			WHERE owner = '" . $id_user . "'";
 
-        $myfile_size = sql_fetch_row($this->db->query($query));
+        $myfile_size = sql_fetch_row(sql_query($query));
 
         if ($myfile_size[0]) {
             $used_space = $myfile_size[0];
@@ -779,7 +949,7 @@ class FormaUser implements Serializable
             " WHERE id_user = '" . $id_user . "'" .
             " AND path_name = 'user_rules.user_quota_used'";
 
-        $result = sql_fetch_row($this->db->query($control_query));
+        $result = sql_fetch_row(sql_query($control_query));
 
         if ($result[0]) {
             $update_query = 'UPDATE ' . $this->getSettingUserTable() . '' .
@@ -787,7 +957,7 @@ class FormaUser implements Serializable
                 " WHERE id_user = '" . $id_user . "'" .
                 " AND path_name = 'user_rules.user_quota_used'";
 
-            if ($result = $this->db->query($update_query)) {
+            if ($result = sql_query($update_query)) {
                 return true;
             }
 
@@ -797,27 +967,11 @@ class FormaUser implements Serializable
                 ' (path_name, id_user, value)' .
                 " VALUES ('user_rules.user_quota_used', '" . $id_user . "', '" . $used_space . "')";
 
-            if ($result = $this->db->query($insert_query)) {
+            if ($result = sql_query($insert_query)) {
                 return true;
             }
 
             return false;
         }
     }
-
-    public function serialize()
-    {
-//        return serialize( $this->__serialize() );
-        // TODO: Implement serialize() method.
-    }
-
-    public function unserialize($data)
-    {
-        // TODO: Implement unserialize() method.
-    }
-}
-
-function getLogUserId()
-{
-    return Forma::user()->getIdSt();
 }

@@ -155,12 +155,12 @@ class Selector_CoursePath
         $query_coursepath = '
 		FROM %lms_coursepath
 		WHERE 1 ';
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             }
@@ -842,7 +842,7 @@ class CoursePath_Manager
             $insert_values = [];
             foreach ($users as $id_user) {
                 $course_completed = isset($completed[$id_user]) ? (int) $completed[$id_user] : 0;
-                $insert_values[] = '( ' . (int) $id_path . ', ' . (int) $id_user . ", '" . date('Y-m-d h:i:s') . "', '" . Forma::user()->getIdst() . "', '" . $course_completed . "' )";
+                $insert_values[] = '( ' . (int) $id_path . ', ' . (int) $id_user . ", '" . date('Y-m-d h:i:s') . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . "', '" . $course_completed . "' )";
             }
             $query = 'INSERT INTO %lms_coursepath_user (id_path, idUser, date_assign, subscribed_by, course_completed ) VALUES ' . implode(', ', $insert_values);
             if (!sql_query($query)) {
@@ -913,7 +913,7 @@ class CoursePath_Manager
         }
 
         if (!empty($courseIdsFromPath)) {
-            $man_courseuser = new Man_CourseUser(DbConn::getInstance());
+            $man_courseuser = new Man_CourseUser(\FormaLms\db\DbConn::getInstance());
             $result = $man_courseuser->hasCompletedCourses($id_user, $courseIdsFromPath);
 
             return $result;
@@ -1041,7 +1041,7 @@ class CoursePath_Manager
 
     public function deleteCourseFromCoursePaths($id_course)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         //retrieve all course's coursepaths
         $arr_coursepath = [];

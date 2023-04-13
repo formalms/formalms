@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access!");
 }
 
@@ -29,10 +29,10 @@ class ProfileLmsController extends LmsController
     public function init()
     {
         require_once _base_ . '/lib/lib.json.php';
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->model = new ProfileLms();
         $this->json = new Services_JSON();
-        $this->aclManager = Forma::user()->getAClManager();
+        $this->aclManager = \FormaLms\lib\FormaUser::getCurrentUser()->getAClManager();
         $this->max_dim_avatar = 150;
     }
 
@@ -70,7 +70,7 @@ class ProfileLmsController extends LmsController
 
         require_once _lms_ . '/lib/lib.lms_user_profile.php';
 
-        $id_user = Forma::user()->getIdST();
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdST();
         $profile = new LmsUserProfile($id_user);
         $profile->init('profile', 'framework', 'r=lms/profile/show'/*&id_user'.(int)$id_user*/, 'ap'); //'modname=profile&op=profile&id_user='.$id_user
 
@@ -109,7 +109,7 @@ class ProfileLmsController extends LmsController
 
     public function renewalpwd()
     {
-        require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
         $user_manager = new UserManager();
 
         $_title = '';
@@ -121,7 +121,7 @@ class ProfileLmsController extends LmsController
         if ($user_manager->clickSaveElapsed()) {
             $error = $user_manager->saveElapsedPassword();
             if ($error['error'] == true) {
-                $res = Forma::user()->isPasswordElapsed();
+                $res = \FormaLms\lib\FormaUser::getCurrentUser()->isPasswordElapsed();
 
                 if ($res == 2) {
                     $_title = getTitleArea(Lang::t('_CHANGEPASSWORD', 'profile'));
@@ -135,7 +135,7 @@ class ProfileLmsController extends LmsController
                 $this->session->remove('must_renew_pwd');
                 $this->session->save();
                 //Util::jump_to('index.php?r=lms/profile/show');
-                $user = new FormaUser(Forma::user()->getUserId(), 'public_area');
+                $user = new \FormaLms\lib\FormaUser(\FormaLms\lib\FormaUser::getCurrentUser()->getUserId(), 'public_area');
                 $homepageAdm = new HomepageAdm();
                 switch ($homepageAdm->saveUser($user)) {
                     case MANDATORY_FIELDS:
@@ -151,7 +151,7 @@ class ProfileLmsController extends LmsController
         } else {
             $this->session->set('must_renew_pwd', 1);
             $this->session->save();
-            $res = Forma::user()->isPasswordElapsed();
+            $res = \FormaLms\lib\FormaUser::getCurrentUser()->isPasswordElapsed();
             if ($res == 2) {
                 $_title = getTitleArea(Lang::t('_CHANGEPASSWORD', 'profile'));
             } else {
@@ -202,7 +202,7 @@ class ProfileLmsController extends LmsController
 
         // extract courses which have been completed in the considered period and the credits associated
         $course_type_trans = getCourseTypes();
-        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM %lms_course as c ' . ' JOIN %lms_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int) getLogUserId() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
+        $query = 'SELECT c.idCourse, c.name, c.course_type, c.credits, cu.status ' . ' FROM %lms_course as c ' . ' JOIN %lms_courseuser as cu ' . ' ON (cu.idCourse = c.idCourse) WHERE cu.idUser=' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . " AND c.course_type IN ('" . implode("', '", array_keys($course_type_trans)) . "') " . " AND cu.status = '" . _CUS_END . "' " . ($period_start != '' ? " AND cu.date_complete > '" . $period_start . "' " : '') . ($period_end != '' ? " AND cu.date_complete < '" . $period_end . "' " : '') . ' ORDER BY c.name';
         $res = sql_query($query);
 
         $course_data = [];

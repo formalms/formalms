@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -213,7 +213,7 @@ function savecustom()
 
         list($id_custom) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $levels = CourseLevel::getTranslatedLevels();
         foreach ($levels as $key => $value) {
             $idst = $acl_man->registerGroup('/lms/custom/' . $id_custom . '/' . $key,
@@ -283,7 +283,7 @@ function delcustom()
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
     $lang = &FormaLanguage::createInstance('manmenu');
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     $id_custom = FormaLms\lib\Get::req('id_custom', DOTY_INT, 0);
 
@@ -823,7 +823,7 @@ function editmodule($load = false)
     $out = &$GLOBALS['page'];
     $id_main = importVar('id_main', true, 0);
     $id_module = importVar('id_module', true, 0);
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
     $perm = [];
 
     // Load module info
@@ -938,7 +938,7 @@ function upmodule()
     $id_module = importVar('id_module', true, 0);
 
     $lang = &FormaLanguage::createInstance('manmenu');
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     $id_custom = getIdCustomFromMain($id_main);
 
@@ -1041,7 +1041,7 @@ function upmodule()
 
 function removeModule($id_module, $id_main, $id_custom)
 {
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
     // Load module info
     $query_module = '
 	SELECT module_name, default_name, file_name, class_name 

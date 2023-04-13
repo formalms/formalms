@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once Forma::inc(_lib_ . '/Helpers/Filters/FilterManager.php');
+require_once \FormaLms\lib\Forma::inc(_lib_ . '/Helpers/Filters/FilterManager.php');
 
 class FilterCourseManager extends FilterManager
 {

@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
-require_once Forma::inc(_adm_ . '/modules/field/class.field.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/class.field.php');
 
 class Field_Dropdown extends Field
 {
@@ -51,7 +51,7 @@ class Field_Dropdown extends Field
         $array_lang = [];
         $std_lang = &FormaLanguage::createInstance('standard');
         $lang = &FormaLanguage::createInstance('field');
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -60,7 +60,7 @@ class Field_Dropdown extends Field
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
                 foreach ($_POST['show_on_platform']  as $code) {
@@ -130,7 +130,7 @@ class Field_Dropdown extends Field
             . $form->getHidden('type_field', 'type_field', $this->getFieldType())
             . $form->getHidden('back', 'back', $back_coded)
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -232,7 +232,7 @@ class Field_Dropdown extends Field
         $re_field_element = sql_query('
 		SELECT id_common_son, translation
 		FROM ' . $this->_getElementTable() . "
-		WHERE idField = '" . (int) $this->id_common . "' AND lang_code = '" . getLanguage() . "'
+		WHERE idField = '" . (int) $this->id_common . "' AND lang_code = '" . Lang::get() . "'
 		ORDER BY sequence");
         $option = [];
         $option[0] = '';
@@ -251,7 +251,7 @@ class Field_Dropdown extends Field
 		FROM ' . $this->_getMainTable() . "
 		WHERE id_common = '" . (int) $this->id_common . "' AND
 			type_field = '" . $this->getFieldType() . "' AND
-			lang_code = '" . getLanguage() . "'");
+			lang_code = '" . Lang::get() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         return $translation;
@@ -289,13 +289,13 @@ class Field_Dropdown extends Field
 		FROM ' . $this->_getMainTable() . "
 		WHERE id_common = '" . (int) $this->id_common . "' AND
 			type_field = '" . $this->getFieldType() . "' AND
-			lang_code = '" . getLanguage() . "'");
+			lang_code = '" . Lang::get() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         $re_field_element = sql_query('
 		SELECT id_common_son, translation
 		FROM ' . $this->_getElementTable() . "
-		WHERE idField = '" . (int) $this->id_common . "' AND lang_code = '" . getLanguage() . "'
+		WHERE idField = '" . (int) $this->id_common . "' AND lang_code = '" . Lang::get() . "'
 		ORDER BY sequence");
         $option = [];
         //$option[0] = Lang::t('_DROPDOWN_NOVALUE', 'field', 'framework');
@@ -388,7 +388,7 @@ class Field_Dropdown extends Field
 			SELECT id_common_son, translation
 			FROM ' . Field_Dropdown::_getElementTable() . "
 			WHERE idField = '" . (int) (($field_special !== false) ? $field_special : $id_field) . "'
-				AND lang_code = '" . getLanguage() . "'
+				AND lang_code = '" . Lang::get() . "'
 			ORDER BY sequence");
             while (list($id_common_son, $element) = sql_fetch_row($re_field_element)) {
                 $option[$id_common_son] = $element;
@@ -450,7 +450,7 @@ class Field_Dropdown extends Field
             $re_field = sql_query('
 			SELECT translation
 			FROM ' . $this->_getElementTable() . "
-			WHERE idField = '" . $this->id_common . "' AND lang_code = '" . getLanguage() . "'
+			WHERE idField = '" . $this->id_common . "' AND lang_code = '" . Lang::get() . "'
 				AND id_common_son='" . $grab_from['field_' . $this->getFieldType()][$this->id_common] . "'");
             list($translation) = sql_fetch_row($re_field);
 
@@ -555,7 +555,7 @@ class Field_Dropdown extends Field
 				SELECT idSon, id_common_son, lang_code, translation
 				FROM ' . $this->_getElementTable() . "
 				WHERE idField = '" . $this->id_common . "'
-					 AND lang_code = '" . getLanguage() . "'";
+					 AND lang_code = '" . Lang::get() . "'";
                 $re_values = sql_query($query_value);
                 while (list($id_son, $id_common_son, $lang_code, $value_com) = sql_fetch_row($re_values)) {
                     $value_com = strtolower($value_com);
@@ -654,7 +654,7 @@ class Field_Dropdown extends Field
         $query = 'SELECT sequence, id_common_son'
                     . ' FROM ' . $this->_getElementTable() . ''
                     . " WHERE idField = '" . $this->id_common . "'"
-                    . " AND lang_code = '" . getLanguage() . "'"
+                    . " AND lang_code = '" . Lang::get() . "'"
                     . " AND idSon = '" . $id_son . "'";
 
         list($sequence, $id_common_son) = sql_fetch_row(sql_query($query));
@@ -681,7 +681,7 @@ class Field_Dropdown extends Field
         $query = 'SELECT sequence, id_common_son'
                     . ' FROM ' . $this->_getElementTable() . ''
                     . " WHERE idField = '" . $this->id_common . "'"
-                    . " AND lang_code = '" . getLanguage() . "'"
+                    . " AND lang_code = '" . Lang::get() . "'"
                     . " AND idSon = '" . $id_son . "'";
 
         list($sequence, $id_common_son) = sql_fetch_row(sql_query($query));
@@ -710,7 +710,7 @@ class Field_Dropdown extends Field
         $query = 'SELECT id_common_son'
                     . ' FROM ' . $this->_getElementTable() . ''
                     . " WHERE idField = '" . $this->id_common . "'"
-                    . " AND lang_code = '" . getLanguage() . "'";
+                    . " AND lang_code = '" . Lang::get() . "'";
 
         $result = sql_query($query);
 
@@ -755,12 +755,12 @@ class Field_Dropdown extends Field
         list($total_son) = sql_fetch_row(sql_query('
 		SELECT COUNT(*)
 		FROM ' . $this->_getElementTable() . "
-		WHERE idField = '" . $this->id_common . "' AND lang_code = '" . getLanguage() . "'"));
+		WHERE idField = '" . $this->id_common . "' AND lang_code = '" . Lang::get() . "'"));
 
         $re_main = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE id_common = '" . $this->id_common . "' AND lang_code = '" . getLanguage() . "'
+		WHERE id_common = '" . $this->id_common . "' AND lang_code = '" . Lang::get() . "'
 		ORDER BY sequence");
         list($translation) = sql_fetch_row($re_main);
 
@@ -768,7 +768,7 @@ class Field_Dropdown extends Field
         $re_field = sql_query('
 		SELECT id_common_son, translation
 		FROM ' . $this->_getElementTable() . "
-		WHERE idField = '" . $this->id_common . "' AND lang_code = '" . getLanguage() . "'
+		WHERE idField = '" . $this->id_common . "' AND lang_code = '" . Lang::get() . "'
 		ORDER BY sequence");
 
         $base_path = $this->getUrl() . '&amp;id_common='
@@ -837,7 +837,7 @@ class Field_Dropdown extends Field
         $array_lang = [];
         $std_lang = &FormaLanguage::createInstance('standard');
         $lang = &FormaLanguage::createInstance('field');
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -847,7 +847,7 @@ class Field_Dropdown extends Field
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
             $show_on = '';
             if (isset($_POST['show_on_platform'])) {
                 foreach ($_POST['show_on_platform']  as $code) {
@@ -942,7 +942,7 @@ class Field_Dropdown extends Field
             . $form->getHidden('back', 'back', $this->back_coded)
             . $form->getHidden('iop', 'iop', 'modmain')
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -973,7 +973,7 @@ class Field_Dropdown extends Field
         $array_lang = [];
         $std_lang = &FormaLanguage::createInstance('standard');
         $lang = &FormaLanguage::createInstance('field');
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $out = &$GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
@@ -983,7 +983,7 @@ class Field_Dropdown extends Field
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
 
             //control if all is ok
             if (!isset($_POST['new_dropdown_son'][$mand_lang])) {
@@ -1012,7 +1012,7 @@ class Field_Dropdown extends Field
             list($sequence) = sql_fetch_row(sql_query('
 			SELECT COUNT(*)
 			FROM ' . $this->_getElementTable() . "
-			WHERE idField = '" . $this->id_common . "' AND lang_code = '" . getLanguage() . "'"));
+			WHERE idField = '" . $this->id_common . "' AND lang_code = '" . Lang::get() . "'"));
 
             ++$sequence;
 
@@ -1065,7 +1065,7 @@ class Field_Dropdown extends Field
             . $form->getHidden('back', 'back', $this->back_coded)
             . $form->getHidden('iop', 'iop', 'add')
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -1094,7 +1094,7 @@ class Field_Dropdown extends Field
         $lang = &FormaLanguage::createInstance('field');
         $out = &$GLOBALS['page'];
         $array_lang = [];
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         if (isset($_POST['undo'])) {
             Util::jump_to($this->getUrl() . '&id_common='
@@ -1102,7 +1102,7 @@ class Field_Dropdown extends Field
         }
         if (isset($_POST['save_field_' . $this->getFieldType()])) {
             //insert mandatory translation
-            $mand_lang = getLanguage();
+            $mand_lang = Lang::get();
 
             //control if all is ok
             if (!isset($_POST['mod_dropdown_son'][$mand_lang])) {
@@ -1186,7 +1186,7 @@ class Field_Dropdown extends Field
             . $form->getHidden('back', 'back', $this->back_coded)
             . $form->getHidden('iop', 'iop', 'mod')
         );
-        $mand_lang = getLanguage();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $out->add(
                 $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
@@ -1248,7 +1248,7 @@ class Field_Dropdown extends Field
         $re_main = sql_query('
 		SELECT translation
 		FROM ' . $this->_getElementTable() . "
-		WHERE id_common_son = '" . $idSon . "' AND lang_code = '" . getLanguage() . "'
+		WHERE id_common_son = '" . $idSon . "' AND lang_code = '" . Lang::get() . "'
 		ORDER BY sequence");
         list($translation) = sql_fetch_row($re_main);
 
@@ -1283,7 +1283,7 @@ class Field_Dropdown extends Field
     {
         $lang = &FormaLanguage::createInstance('field');
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
 
         if (!isset($GLOBALS['temp']['dropdown_cache_' . $this->id_common][$language])) {
@@ -1308,7 +1308,7 @@ class Field_Dropdown extends Field
         $re_field = sql_query("
         SELECT idSon, translation
         FROM ".$this->_getElementTable()."
-        WHERE idField = '".$this->id_common."' AND lang_code = '".getLanguage()."'
+        WHERE idField = '".$this->id_common."' AND lang_code = '" .Lang::get()."'
         ORDER BY sequence");
         if(!$re_field) return $sons;
         while(list($id_son, $elem) = sql_fetch_row($re_field)) {
@@ -1328,7 +1328,7 @@ class Field_Dropdown extends Field
         $re_field = sql_query('
 		SELECT idSon, idField, id_common_son, translation
 		FROM ' . $this->_getElementTable() . "
-		WHERE lang_code = '" . getLanguage() . "'
+		WHERE lang_code = '" . Lang::get() . "'
 		ORDER BY sequence");
         if (!$re_field) {
             return $sons;

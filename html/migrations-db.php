@@ -14,7 +14,7 @@ else {
     
 }
 
-DbConn::getInstance(null,$cfg);
+\FormaLms\db\DbConn::getInstance(null,$cfg);
 
 try 
 {

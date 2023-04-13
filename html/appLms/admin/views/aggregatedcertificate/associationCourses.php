@@ -3,7 +3,7 @@
 Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/views/aggregatedcertificate/tabbedcontent.min.js', true, true);
 Util::get_css(FormaLms\lib\Get::rel_path('base') . '/addons/jquery/bootstrap-treeview/bootstrap-treeview.min.css', true, true);
 
-include Forma::inc(_lib_ . '/formatable/include.php');
+include \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 ?>
 
 <style>

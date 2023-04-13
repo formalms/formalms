@@ -27,7 +27,7 @@ require _base_ . '/lib/lib.bootstrap.php';
 Boot::init(CHECK_SYSTEM_STATUS);
 
 // connect to the database
-$db = DbConn::getInstance();
+$db = \FormaLms\db\DbConn::getInstance();
 
 // some specific lib to load
 require_once _base_ . '/lib/lib.platform.php';
@@ -45,7 +45,7 @@ $GLOBALS['op'] = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 // create instance of StdPageWriter
 StdPageWriter::createInstance();
 
-require_once Forma::inc(_adm_ . '/lib/lib.preoperation.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.preoperation.php');
 
 if (empty($GLOBALS['modname']) && empty($GLOBALS['r'])) {
     $GLOBALS['req'] = (checkPerm('view', true, 'dashboard', 'framework') ? 'adm/dashboard/show' : '');

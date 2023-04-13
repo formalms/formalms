@@ -19,7 +19,7 @@ $tb->addHead(
 
 foreach ($data as $obj) {
     $row = [
-        Forma::aclm()->relativeId($obj->userid),
+        \FormaLms\lib\Forma::getAclManager()->relativeId($obj->userid),
         $obj->lastname,
         $obj->firstname,
         $obj->code,

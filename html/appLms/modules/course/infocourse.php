@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     define('_PATH_COURSE', '/appLms/' . FormaLms\lib\Get::sett('pathcourse'));
 
     require_once _lms_ . '/lib/lib.levels.php';
@@ -108,7 +108,7 @@ if (!Forma::user()->isAnonymous()) {
         $mod_perm = checkPerm('mod', true);
         $lang = &FormaLanguage::createInstance('course');
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $course = $GLOBALS['course_descriptor']->getAllInfo();
         $levels = CourseLevel::getTranslatedLevels();
 
@@ -242,7 +242,7 @@ if (!Forma::user()->isAnonymous()) {
         $id_course = $session->get('idCourse');
         $form = new Form();
         $levels = CourseLevel::getTranslatedLevels();
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $difficult_lang = [
             'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
             'easy' => $lang->def('_DIFFICULT_EASY'),
@@ -404,7 +404,7 @@ if (!Forma::user()->isAnonymous()) {
     function upcourseinfo()
     {
         checkPerm('mod');
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $user_status = 0;
         if (isset($_POST['user_status'])) {
@@ -442,7 +442,7 @@ if (!Forma::user()->isAnonymous()) {
             $re = false;
         }
 
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         // send alert
         require_once _base_ . '/lib/lib.eventmanager.php';
 

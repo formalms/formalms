@@ -50,14 +50,12 @@ function getTemplate()
 
         return $plat_templ;
     }
-    require_once('lib.user.php');
-    require_once('lib.docebo.php');
     // search template according to the org_chart_tree option
-    if (!Forma::user()->isAnonymous()) {
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $qtxt = 'SELECT associated_template FROM
 			%adm_org_chart_tree
 			WHERE associated_template IS NOT NULL AND
-			idst_oc IN (' . implode(',', Forma::user()->getArrSt()) . ')
+			idst_oc IN (' . implode(',', \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt()) . ')
 			ORDER BY iLeft DESC
 			LIMIT 0,1';
 
@@ -195,7 +193,7 @@ function checkTemplateVersion($template_name)
     if ($session->has('template_info') && $session->get('template_info') != false) {
         return $session->get('template_info')->getCheckVersion();
     } else {
-        require_once Forma::inc(_lib_ . '/Version/VersionChecker.php');
+        require_once \FormaLms\lib\Forma::inc(_lib_ . '/Version/VersionChecker.php');
         $template_forma_version = readTemplateManifest($template_name, 'forma_version');
         $check = [];
         if ($template_forma_version) {
@@ -210,6 +208,7 @@ function checkTemplateVersion($template_name)
 
 function getTemplateVersion($template_name)
 {
+    require_once \FormaLms\lib\Forma::inc(_adm_ . '/versions.php');
 
     return readTemplateManifest($template_name, 'forma_version');
 }

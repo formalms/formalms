@@ -29,7 +29,7 @@ switch ($op) {
         $platform = FormaLms\lib\Get::req('platform', DOTY_ALPHANUM, '');
 
         $lang = &FormaLanguage::createInstance('standard', 'framework');
-        $lang->setGlobal();
+        
         $lang = &FormaLanguage::createInstance($module_name, $platform);
 
         $value = [
@@ -61,10 +61,10 @@ switch ($op) {
         $message_request = importVar('message_request');
 
         $lang = &FormaLanguage::createInstance('standard', 'framework');
-        $lang->setGlobal();
+        
         $lang = &FormaLanguage::createInstance($module_name, $platform);
 
-        $my_fr = new MyFriends(getLogUserId());
+        $my_fr = new MyFriends(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if ($my_fr->addFriend($id_friend, MF_WAITING, $message_request)) {
             $value = ['re' => true];
         } else {
@@ -87,10 +87,10 @@ switch ($op) {
         $message_text = importVar('message_text');
 
         $lang = &FormaLanguage::createInstance('standard', 'framework');
-        $lang->setGlobal();
+        
         $lang = &FormaLanguage::createInstance($module_name, $platform);
 
-        if (MessageModule::quickSendMessage(getLogUserId(), $recipient, $message_subject, $message_text)) {
+        if (MessageModule::quickSendMessage(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $recipient, $message_subject, $message_text)) {
             $value = ['re' => true];
         } else {
             $value = ['re' => false];

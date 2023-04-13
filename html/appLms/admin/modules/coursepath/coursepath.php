@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function pathlist()
     {
         checkPerm('view');
@@ -27,7 +27,7 @@ if (!Forma::user()->isAnonymous()) {
 
         $out = &$GLOBALS['page'];
         $lang = &FormaLanguage::createInstance('coursepath', 'lms');
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $subscribe_perm = checkPerm('subscribe', true);
         $mod_perm = checkPerm('mod', true);
@@ -41,10 +41,10 @@ if (!Forma::user()->isAnonymous()) {
 	SELECT id_path, path_code, path_name, path_descr
 	FROM %lms_coursepath ';
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -93,10 +93,10 @@ if (!Forma::user()->isAnonymous()) {
 	FROM %lms_coursepath_user
 	GROUP BY id_path';
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
             if (!empty($admin_users)) {
@@ -274,11 +274,11 @@ if (!Forma::user()->isAnonymous()) {
 		  '" . $_POST['path_descr'] . "',
 		  '" . $_POST['subscribe_method'] . "' )";
             $re = sql_query($query_insert);
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 list($id_path) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $adminManager->addAdminCoursepath($id_path, Forma::user()->getIdSt());
+                $adminManager->addAdminCoursepath($id_path, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
         }
         Util::jump_to('index.php?modname=coursepath&op=pathlist&result=' . ($re ? 'ok' : 'err'));
@@ -426,12 +426,12 @@ if (!Forma::user()->isAnonymous()) {
 
                 $all_courses = true;
                 $admin_courses = [];
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $all_courses = false;
 
                     require_once _base_ . '/lib/lib.preference.php';
                     $adminManager = new AdminPreference();
-                    $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+                    $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                     $all_course = false;
                     if (isset($admin_courses['course'][0])) {
                         $all_course = true;
@@ -439,7 +439,7 @@ if (!Forma::user()->isAnonymous()) {
                         require_once _lms_ . '/lib/lib.catalogue.php';
                         $cat_man = new Catalogue_Manager();
 
-                        $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                        $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         if (count($user_catalogue) > 0) {
                             $courses = [0];
 
@@ -873,7 +873,7 @@ if (!Forma::user()->isAnonymous()) {
 
         $id_path = importVar('id_path', true, 0);
         $lang = &FormaLanguage::createInstance('coursepath', 'lms');
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         if (isset($_POST['accept'])) {
             $cpath_man = new CoursePath_Manager();
@@ -994,7 +994,7 @@ if (!Forma::user()->isAnonymous()) {
         $id_path = importVar('id_path', true, 0);
         $lang = &FormaLanguage::createInstance('coursepath', 'lms');
         $out = &$GLOBALS['page'];
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         if (isset($_POST['cancelselector'])) {
             Util::jump_to('index.php?modname=coursepath&amp;op=pathlist');
@@ -1007,10 +1007,10 @@ if (!Forma::user()->isAnonymous()) {
         $user_select->show_orgchart_selector = true;
         $user_select->show_orgchart_simple_selector = true;
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
             $user_select->setUserFilter('user', $admin_users);
@@ -1044,10 +1044,10 @@ if (!Forma::user()->isAnonymous()) {
 
             $user_selected = array_diff($user_selected, $users);
 
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
                 $user_selected = array_intersect($user_selected, $admin_users);
@@ -1135,7 +1135,7 @@ if (!Forma::user()->isAnonymous()) {
                     $text_query = '
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_coursepath_user
 				( id_path, idUser, waiting, subscribed_by ) VALUES
-				( '" . $id_path . "', '" . $id_user . "', '" . $waiting . "', '" . getLogUserId() . "' )";
+				( '" . $id_path . "', '" . $id_user . "', '" . $waiting . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' )";
                     $re_s = sql_query($text_query);
                     if ($re_s == true) {
                         $users_subsc[] = $id_user;
@@ -1229,7 +1229,7 @@ if (!Forma::user()->isAnonymous()) {
             $text_query = '
 		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_coursepath_user
 		( id_path, idUser, waiting, subscribed_by ) VALUES
-		( '" . $id_path . "', '" . $id_user . "', '" . $waiting . "', '" . getLogUserId() . "' )";
+		( '" . $id_path . "', '" . $id_user . "', '" . $waiting . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' )";
             $re_s = sql_query($text_query);
             if ($re_s == true) {
                 $users_subsc[] = $id_user;
@@ -1246,7 +1246,7 @@ if (!Forma::user()->isAnonymous()) {
 
             if (!empty($array_id_date)) {
                 foreach ($array_id_date as $id_date) {
-                    $date_man->addUserToDate($id_date, $id_user, Forma::user()->getIdSt());
+                    $date_man->addUserToDate($id_date, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 }
 
                 reset($array_id_date);
@@ -1254,7 +1254,7 @@ if (!Forma::user()->isAnonymous()) {
 
             if (!empty($array_id_edition)) {
                 foreach ($array_id_edition as $id_edition) {
-                    $edition_man->addUserToEdition($id_edition, $id_user, Forma::user()->getIdSt());
+                    $edition_man->addUserToEdition($id_edition, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 }
 
                 reset($array_id_edition);

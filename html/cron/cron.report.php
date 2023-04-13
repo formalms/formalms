@@ -44,7 +44,7 @@ $GLOBALS['user_roles'][$roleid] = true;
 $roleid = '/admin/view_all';
 $GLOBALS['user_roles'][$roleid] = true;
 
-setLanguage('english');
+Lang::set('english');
 
 function getEmailForSchedule($schedule): array
 {
@@ -57,7 +57,7 @@ function getEmailForSchedule($schedule): array
         $recipients[] = $recipientItem['id_user']; //idst of the recipients
     }
 
-    $recipients = Forma::aclm()->getAllUsersFromSelection($recipients);
+    $recipients = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromSelection($recipients);
 
     if (!empty($recipients)) {
         $queryEmails = "SELECT u.email as email, su.value as lang FROM %adm_user AS u 
@@ -303,7 +303,7 @@ if ($lock_stream) {
                     if (file_exists(_base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name) && FormaLms\lib\Get::cfg('enable_customscripts', false) == true) {
                         require_once _base_ . '/customscripts/' . _folder_lms_ . '/admin/modules/report/' . $file_name;
                     } else {
-                        require_once Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
+                        require_once \FormaLms\lib\Forma::inc(_lms_ . '/admin/modules/report/' . $file_name);
                     }
                     $temp = new $class_name($data['id_report']);
                 } else {

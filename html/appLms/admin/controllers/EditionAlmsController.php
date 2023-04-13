@@ -32,7 +32,7 @@ class EditionAlmsController extends AlmsController
         require_once _base_ . '/lib/lib.json.php';
 
         $this->json = new Services_JSON();
-        $this->acl_man = &Forma::user()->getAclManager();
+        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $this->base_link_course = 'alms/course';
         $this->base_link_edition = 'alms/edition';

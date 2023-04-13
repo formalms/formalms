@@ -43,8 +43,8 @@ class CourseSubscribe_Manager
         $this->subscribe_table = '%lms_courseuser';
         $this->user_table = '%adm_user';
 
-        $this->db = DbConn::getInstance();
-        $this->acl_man = $acl_man = Forma::user()->getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->acl_man = $acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->lang = FormaLanguage::CreateInstance('levels', 'lms');
         $this->lang = FormaLanguage::CreateInstance('subscribe', 'lms');
 
@@ -185,10 +185,10 @@ class CourseSubscribe_Manager
             $query .= ' AND s.level=' . (int)$level;
         }
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'idUser');
         }
 
         list($res) = sql_fetch_row(sql_query($query));
@@ -264,10 +264,10 @@ class CourseSubscribe_Manager
         $query .= " AND s.waiting = '" . ($waiting ? '1' : '0') . "' ";
         $query .= ' AND s.status <> 4 '; // exclude overbooking user
 
-        if ($adminFilter && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($adminFilter && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'idUser');
         }
 
         switch ($sort) {
@@ -337,10 +337,10 @@ class CourseSubscribe_Manager
             . ' JOIN ' . $this->user_table . ' AS u ON u.idst = s.idUser '
             . ' WHERE s.idCourse IN (' . implode(',', $arr) . ') ';
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 's.idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 's.idUser');
         }
 
         if (is_array($filter)) {
@@ -423,7 +423,7 @@ class CourseSubscribe_Manager
             . ($date_expire_validity ? ', date_expire_validity' : '')
             . ($waiting || $overbooking ? ', status' : '')
             . ')'
-            . " VALUES ('" . $id_user . "', '" . $id_course . "', '" . $level . "', '" . (int)$waiting . "', '" . getLogUserId() . "', '" . date('Y-m.d H:i:s') . "'"
+            . " VALUES ('" . $id_user . "', '" . $id_course . "', '" . $level . "', '" . (int)$waiting . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m.d H:i:s') . "'"
             . ($date_begin_validity ? ", '" . substr($date_begin_validity, 0, 10) . "'" : '')
             . ($date_expire_validity ? ", '" . substr($date_expire_validity, 0, 10) . "'" : '')
             . ($waiting || $overbooking ? ',' . $new_status : '')
@@ -481,20 +481,20 @@ class CourseSubscribe_Manager
     private function sendUnsubscriptionNotification($idUser, $idCourse, $idDate = null, $idEdition = null)
     {
         /** dispatch unsubscribe event */
-        require_once Forma::include(_base_ . '/lib/', 'lib.eventmanager.php');
+        require_once \FormaLms\lib\Forma::include(_base_ . '/lib/', 'lib.eventmanager.php');
 
-        $uinfo = Forma::aclm()->getUser($idUser, false);
+        $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($idUser, false);
 
-        $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
-        $doceboCourse = new FormaCourse($idCourse);
+        $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
+        $formaCourse = new FormaCourse($idCourse);
 
         $arraySubst = [
             '[url]' => FormaLms\lib\Get::site_url(),
             '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
             '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
             '[username]' => $userid,
-            '[course]' => $doceboCourse->course_info['name'],
-            '[course_code]' => $doceboCourse->course_info['code'],
+            '[course]' => $formaCourse->course_info['name'],
+            '[course_code]' => $formaCourse->course_info['code'],
         ];
 
         if ($idDate) {
@@ -602,11 +602,11 @@ class CourseSubscribe_Manager
         if ($res) {
             require_once _lms_ . '/lib/lib.course.php';
 
-            $docebo_course = new FormaCourse($id_course);
+            $formaCourse = new FormaCourse($id_course);
 
-            $level_idst = &$docebo_course->getCourseLevel($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$docebo_course->createCourseLevel($id_course);
+                $level_idst = &$formaCourse->createCourseLevel($id_course);
             }
 
             foreach ($id_user as $id_user_t) {
@@ -935,7 +935,7 @@ class CourseSubscribe_Manager
 
             $teachers = Man_Course::getIdUserOfLevel($idCourse, '6');
             $cd = new FormaCourse($idCourse);
-            $acl_man = &Forma::user()->getAclManager();
+            $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
             $array_subst = [
                 '[user]' => $acl_man->getUserName($idUser),
@@ -1016,9 +1016,9 @@ class CourseSubscribe_Management
         require_once _lms_ . '/lib/lib.levels.php';
 
         $this->course_man = new Man_Course();
-        $this->acl = &Forma::user()->getAcl();
-        $this->acl_man = &Forma::user()->getAclManager();
-        $this->db = DbConn::getInstance();
+        $this->acl = \FormaLms\lib\Forma::getAclManager();;
+        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
     }
 
     public function _query($query)
@@ -1086,7 +1086,7 @@ class CourseSubscribe_Management
 
                 $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 				( idUser, idCourse, level, waiting, subscribed_by, date_inscr, rule_log ) VALUES
-				( '" . $id_user . "', '" . $id_course . "', '" . $lv . "', '0', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "', " . ($id_log ? (int)$id_log : 'NULL') . ' )';
+				( '" . $id_user . "', '" . $id_course . "', '" . $lv . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "', " . ($id_log ? (int)$id_log : 'NULL') . ' )';
 
                 $re &= $this->_query($query);
             } elseif ($user_level[$id_user] != $lv) {
@@ -1135,7 +1135,7 @@ class CourseSubscribe_Management
 
                 $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 				( idUser, idCourse, level, waiting, subscribed_by, date_inscr, rule_log ) VALUES
-				( '" . $id_user . "', '" . $id_course . "', '" . $lv . "', '0', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "', " . ($id_log ? (int)$id_log : 'NULL') . ' )';
+				( '" . $id_user . "', '" . $id_course . "', '" . $lv . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "', " . ($id_log ? (int)$id_log : 'NULL') . ' )';
                 $re &= $this->_query($query);
             } else {
                 $old_lv = $user_level[$id_user];
@@ -1325,7 +1325,7 @@ class CourseSubscribe_Management
         }
 
         $re = true;
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $group_levels = &$this->course_man->getCourseIdstGroupLevel($id_course);
         $user_level = $this->course_man->getLevelsOfUsers($id_course, $arr_users);
 
@@ -1341,7 +1341,7 @@ class CourseSubscribe_Management
 
                 $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 				( idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr ) VALUES
-				( '" . $id_user . "', '" . $id_course . "', '" . $id_edition . "', '" . $lv . "', '0', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "' )";
+				( '" . $id_user . "', '" . $id_course . "', '" . $id_edition . "', '" . $lv . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "' )";
 
                 $re &= $this->_query($query);
             } else {
@@ -1390,7 +1390,7 @@ class CourseSubscribe_Management
 
             $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 			( idUser, idCourse, level, waiting, subscribed_by, date_inscr, imported_from_connection ) VALUES
-			( '" . $id_user . "', '" . $id_course . "', '" . $level . "', '0', '" . getLogUserId() . "', '" . ($date ? $date : date('Y-m-d H:i:s')) . "', '" . $connection . "' )";
+			( '" . $id_user . "', '" . $id_course . "', '" . $level . "', '0', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . ($date ? $date : date('Y-m-d H:i:s')) . "', '" . $connection . "' )";
 
             $re &= $this->_query($query);
         } else {
@@ -1534,7 +1534,7 @@ class CourseSubscribe_Management
         require_once _lms_ . '/lib/lib.course.php';
 
         $date_man = new DateManager();
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $query = 'SELECT idCourse'
             . ' FROM %lms_courseuser'
@@ -1565,7 +1565,7 @@ class CourseSubscribe_Management
         if ($id_date != 0) {
             if (array_search($id_course, $courses) !== false) {
                 if (array_search($id_date, $dates) === false) {
-                    if (!$date_man->addUserToDate($id_date, $id_user, getLogUserId())) {
+                    if (!$date_man->addUserToDate($id_date, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                         return false;
                     }
                 }
@@ -1574,12 +1574,12 @@ class CourseSubscribe_Management
 
                 $re = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 									(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
-									VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '" . $waiting . "', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "')");
+									VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '" . $waiting . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "')");
 
                 if ($re) {
                     addUserToTimeTable($id_user, $id_course, 0);
 
-                    if (!$date_man->addUserToDate($id_date, $id_user, getLogUserId())) {
+                    if (!$date_man->addUserToDate($id_date, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                         return false;
                     }
                 }
@@ -1590,7 +1590,7 @@ class CourseSubscribe_Management
 
                 $re = sql_query('INSERT INTO ' . $GLOBALS['prefix_lms'] . "_courseuser
 									(idUser, idCourse, edition_id, level, waiting, subscribed_by, date_inscr)
-									VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '" . $waiting . "', '" . getLogUserId() . "', '" . date('Y-m-d H:i:s') . "')");
+									VALUES ('" . $id_user . "', '" . $id_course . "', '0', '3', '" . $waiting . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . date('Y-m-d H:i:s') . "')");
                 if ($re) {
                     addUserToTimeTable($id_user, $id_course, 0);
                 } else {

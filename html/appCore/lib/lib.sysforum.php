@@ -293,7 +293,7 @@ class sys_forum
 
         $ini = importVar('ini', true, 0);
 
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $path = _files_ . '/appCore/' . FormaLms\lib\Get::sett('pathphoto');
 
@@ -403,7 +403,7 @@ class sys_forum
                 $action .= '</a>';
             }
 
-            if ($author == Forma::user()->getIdSt() && ($write_perm || $mod_perm) && !$locked_m && $author != '1') {
+            if ($author == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() && ($write_perm || $mod_perm) && !$locked_m && $author != '1') {
                 $action .= ' <a href="' . $url . '&amp;sf_op=modmessage' . $pbtxt . '&amp;idMessage=' . $idM . $this->getUrlExtra() . '">'
                         . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $this->lang->def('_MOD') . '" title="' . $this->lang->def('_MOD') . '" /></a>';
             }
@@ -577,7 +577,7 @@ class sys_forum
             $name_file = $this->save_file($_FILES['attach']);
         }
 
-        $author = Forma::user()->getIdSt();
+        $author = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $ins_mess_query = '
 		INSERT INTO ' . $this->prefix . '_sysforum
 		SET ' . get_sql_tk_str($tk, '', ', ') . ",
@@ -623,7 +623,7 @@ class sys_forum
             return;
         }
 
-        if ($author != Forma::user()->getIdSt()) {
+        if ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
             return;
         }
 
@@ -687,7 +687,7 @@ class sys_forum
             exit("You can't access!");
         }
 
-        if ($author != Forma::user()->getIdSt()) {
+        if ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
             return;
         }
 
@@ -728,7 +728,7 @@ class sys_forum
 			textof = '" . $_POST['textof'] . "'
 			" . ($name_file != '' ? ",attach = '" . addslashes($name_file) . "'" : '') . "
 		WHERE idMessage = '" . (int) $_POST['idMessage'] . "' AND
-			author = '" . (int) Forma::user()->getIdSt() . "'";
+			author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
         if (!sql_query($ins_mess_query)) {
             errorCommunication($this->lang->def('_ERRINSFORUM'));

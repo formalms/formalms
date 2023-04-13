@@ -174,7 +174,7 @@ class RoomBooking
 
     public function __construct()
     {
-        $this->dbconn = &DbConn::getInstance();
+        $this->dbconn = \FormaLms\db\DbConn::getInstance();
     }
 
     public function __destruct()

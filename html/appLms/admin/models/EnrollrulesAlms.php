@@ -24,7 +24,7 @@ class EnrollrulesAlms extends Model
     {
         parent::__construct();
         $this->json = new Services_JSON();
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
 
@@ -122,7 +122,7 @@ class EnrollrulesAlms extends Model
 
     public function createRule($data)
     {
-        $languages = Forma::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($languages, 'all');
 
         $query = 'INSERT INTO %adm_rules ( title, lang_code, rule_type, creation_date, rule_active )'
@@ -134,7 +134,7 @@ class EnrollrulesAlms extends Model
 
     public function updateRule($data)
     {
-        $languages = Forma::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($languages, 'all');
 
         $query = 'UPDATE %adm_rules SET '
@@ -193,7 +193,7 @@ class EnrollrulesAlms extends Model
 
     public function getBaseEntityRule($id_rule, $id_entities = false, $only_existing = false)
     {
-        $entities = Forma::langManager()->getAllLangCode();
+        $entities = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         array_unshift($entities, 'all');
 
         $entities_name = [];
@@ -246,7 +246,7 @@ class EnrollrulesAlms extends Model
                 $entities_name = $folders['idst'];
              break;
             case 'group':
-                $aclman = Forma::aclm();
+                $aclman = \FormaLms\lib\Forma::getAclManager();
                 $names = $aclman->getGroups($id_entities);
                 if ($names) {
                     foreach ($names as $group) {
@@ -323,7 +323,7 @@ class EnrollrulesAlms extends Model
         $rules = [];
         $course_list = [];
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         $query = 'SELECT re.id_rule, re.course_list '
             . 'FROM %adm_rules AS r JOIN %adm_rules_entity AS re '
@@ -381,7 +381,7 @@ class EnrollrulesAlms extends Model
         $rules = [];
         $course_list = [];
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         $query = 'SELECT re.id_rule, re.id_entity, re.course_list '
             . 'FROM %adm_rules AS r JOIN %adm_rules_entity AS re '
@@ -438,7 +438,7 @@ class EnrollrulesAlms extends Model
         $ent = [];
 
         if ($id_org != 0) {
-            $acl_manager = Forma::aclm();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $oc_sn = $acl_manager->getGroupST('oc_' . $id_org);
 
             $um_adm = new UsermanagementAdm();
@@ -501,7 +501,7 @@ class EnrollrulesAlms extends Model
     {
         $ent = [];
         if ($id_org != false) {
-            $acl_man = Forma::aclm();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $oc_sn = $acl_man->getGroupST('oc_' . $id_org);
 
             $um_adm = new UsermanagementAdm();
@@ -538,7 +538,7 @@ class EnrollrulesAlms extends Model
 
         $arr_users = [];
         $langs = [];
-        $default_lang = getDefaultLanguage();
+        $default_lang = Lang::getDefault();
         while (list($idst_user, $value) = $this->db->fetch_row($re_query)) {
             if ($value == '') {
                 $value = $default_lang;

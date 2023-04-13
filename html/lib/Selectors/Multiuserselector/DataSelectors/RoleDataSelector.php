@@ -132,7 +132,7 @@ class RoleDataSelector extends DataSelector{
 
         //format models' data
         $list = [];
-        $acl_man = \Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($records as $record) {
                 $_description = strip_tags($record->description);

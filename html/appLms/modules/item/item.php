@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: additem
     function additem($object_item)
     {
@@ -116,7 +116,7 @@ if (!Forma::user()->isAnonymous()) {
                     $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
                 }
 
-                $insert_query = "INSERT INTO %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'";
+                $insert_query = "INSERT INTO %lms_materials_lesson  SET author = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'";
 
                 if (!sql_query($insert_query)) {
                     sl_unlink($path . $savefile);
@@ -220,7 +220,7 @@ if (!Forma::user()->isAnonymous()) {
             $size = FormaLms\lib\Get::file_size(_files_ . $path . $old_file);
             if (!sl_unlink($path . $old_file)) {
                 sl_close_fileoperations();
-                Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
+                \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURE', 'item', 'lms'));
                 Util::jump_to($back_url . '&id_los=' . (int) $idLesson . '&mod_result=0');
             }
 
@@ -281,7 +281,7 @@ if (!Forma::user()->isAnonymous()) {
                         $response['errors']['files'][$fileIndex] = Lang::t('_FILE_ERROR_UPLOAD', 'item');
                     }
 
-                    $update_query = "UPDATE %lms_materials_lesson  SET author = '" . getLogUserId() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'
+                    $update_query = "UPDATE %lms_materials_lesson  SET author = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', title = '" . $fileItem['title'] . "', description = '" . $fileItem['description'] . "', path = '$savefile'
                     WHERE idLesson = '" . (int) $idLesson . "'";
 
                     if (!sql_query($update_query)) {
@@ -294,7 +294,7 @@ if (!Forma::user()->isAnonymous()) {
                 }
             }
         } else {
-            $update_query = 'UPDATE %lms_materials_lesson  SET author = "' . getLogUserId() . '", title = "' . $title . '", description = "' . $description . '"
+            $update_query = 'UPDATE %lms_materials_lesson  SET author = "' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '", title = "' . $title . '", description = "' . $description . '"
             WHERE idLesson = "' . (int) $idLesson . '"';
 
             if (!sql_query($update_query)) {

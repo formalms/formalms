@@ -43,7 +43,7 @@ class HomecatalogueLms extends CatalogLms
                                 CST_CONCLUDED => '_CST_CONCLUDED',
                                 CST_CANCELLED => '_CST_CANCELLED', ];
 
-        $this->acl_man = &Forma::user()->getAclManager();
+        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 
@@ -52,7 +52,7 @@ class HomecatalogueLms extends CatalogLms
         require_once _lms_ . '/lib/lib.catalogue.php';
         $cat_man = new Catalogue_Manager();
 
-        $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+        $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $filter = '';
 
         switch ($type) {

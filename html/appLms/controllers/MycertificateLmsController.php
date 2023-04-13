@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
 class MycertificateLmsController extends LmsController
 {
@@ -31,7 +31,7 @@ class MycertificateLmsController extends LmsController
 
     public function init()
     {
-        $this->id_user = Forma::user()->getIdSt();
+        $this->id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $this->json = new Services_JSON();
         $this->model = new MycertificateLms($this->id_user);
         $this->certificate = new Certificate();

@@ -35,7 +35,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         checkPerm('subscribe', false, 'course', 'lms');
         require_once _base_ . '/lib/lib.json.php';
-        require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
         //Course info
         $this->id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
@@ -43,9 +43,9 @@ class SubscriptionAlmsController extends AlmsController
         $this->id_date = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
 
         $this->model = new SubscriptionAlms($this->id_course, $this->id_edition, $this->id_date);
-        $this->json = new Services_JSON();
-        $this->acl_man = Forma::user()->getAclManager();
-        $this->db = DbConn::getInstance();
+        $this->json = new \Services_JSON();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
 
         $this->permissions = [
             'subscribe_course' => checkPerm('subscribe', true, 'course', 'lms'),
@@ -72,9 +72,9 @@ class SubscriptionAlmsController extends AlmsController
 
         if ($this->reached_max_user_subscribed) {
             $res = false;
-        } elseif (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        } elseif (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $admin_pref = new AdminPreference();
-            $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+            $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             /*
              * Array ( [admin_rules.direct_course_subscribe] => on
              * [admin_rules.direct_user_insert] => on
@@ -85,7 +85,7 @@ class SubscriptionAlmsController extends AlmsController
              */
 
             if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                 if ($subscribed_count >= $pref['admin_rules.max_course_subscribe']) {
                     // $this->permissions['subscribe_course']=false;
@@ -121,7 +121,7 @@ class SubscriptionAlmsController extends AlmsController
 
     protected function _addToCourseGroup($id_group, $id_user)
     {
-        Forma::aclm()->addToGroup($id_group, $id_user);
+        \FormaLms\lib\Forma::getAclManager()->addToGroup($id_group, $id_user);
     }
 
     public function show()
@@ -167,7 +167,7 @@ class SubscriptionAlmsController extends AlmsController
             'language' => Lang::t('_LANGUAGE', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(Forma::user()->getPreference('ui.directory.custom_columns'));
+        $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
         if ($f_selected == false) {
             $f_selected = ['email'];
         }
@@ -246,19 +246,19 @@ class SubscriptionAlmsController extends AlmsController
 
         if (isset($_POST['okselector'])) {
             $_selection = $user_selector->getSelection($_POST);
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_selected = $acl_man->getAllUsersFromSelection($_selection); //$acl_man->getAllUsersFromIdst($_selection);
 
             $user_alredy_subscribed = $model->loadUserSelectorSelection();
             $user_selected = array_diff($user_selected, $user_alredy_subscribed);
 
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $to_subscribe = count($user_selected);
 
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                    $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                    $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                     if ($subscribed_count + $to_subscribe > $pref['admin_rules.max_course_subscribe']) {
                         $this->render('invalid', [
@@ -271,10 +271,10 @@ class SubscriptionAlmsController extends AlmsController
                 }
             }
 
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+                $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $user_selected = array_intersect($user_selected, $admin_users);
             }
 
@@ -298,16 +298,16 @@ class SubscriptionAlmsController extends AlmsController
             switch ($select_level_mode) {
                 case 'students':
                         // subscribe the selection with the students level
-                        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+                        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
                         $course_info = $model->getCourseInfoForSubscription();
 
                         //check if the subscriber is a sub admin and, if true check it's limitation
                         $can_subscribe = true;
                         $subscribe_method = $course_info['subscribe_method'];
-                        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                            $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                            $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                            $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                            $limited_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+                            $max_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+                            $direct_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
                             if ($limited_subscribe == 'on') {
                                 $limited_subscribe = true;
@@ -326,12 +326,12 @@ class SubscriptionAlmsController extends AlmsController
                         }
 
                         if ($can_subscribe) {
-                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                            $docebo_course = new FormaCourse($id_course);
+                            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+                            $formaCourse = new FormaCourse($id_course);
 
-                            $level_idst = &$docebo_course->getCourseLevel($id_course);
+                            $level_idst = $formaCourse->getCourseLevel($id_course);
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = &$docebo_course->createCourseLevel($id_course);
+                                $level_idst = FormaCourse::createCourseLevel($id_course);
                             }
 
                             $waiting = 0;
@@ -361,7 +361,7 @@ class SubscriptionAlmsController extends AlmsController
                             $this->db->commit();
 
                             // Save limit preference for admin
-                            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                                 $to_subscribe = count($user_selected);
 
                                 if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
@@ -456,7 +456,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         //Course info
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
@@ -476,10 +476,10 @@ class SubscriptionAlmsController extends AlmsController
 
         $can_subscribe = true;
         $subscribe_method = $course_info['subscribe_method'];
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-            $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-            $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-            $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            $limited_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+            $max_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+            $direct_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
             if ($limited_subscribe == 'on') {
                 $limited_subscribe = true;
@@ -499,13 +499,13 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         if ($can_subscribe) {
-            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-            $docebo_course = new FormaCourse($id_course);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+            $formaCourse = new FormaCourse($id_course);
 
-            $level_idst = &$docebo_course->getCourseLevel($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
 
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$docebo_course->createCourseLevel($id_course);
+                $level_idst = &$formaCourse->createCourseLevel($id_course);
             }
 
             $waiting = 0;
@@ -557,13 +557,13 @@ class SubscriptionAlmsController extends AlmsController
             $this->db->commit();
 
             // Save limit preference for admin
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $to_subscribe = count($user_selected);
 
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                    $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                    $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                     $user_pref->setPreference('user_subscribed_count', $subscribed_count + $to_subscribe);
                 }
@@ -733,12 +733,12 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
-        $docebo_course = new FormaCourse($this->id_course);
+        $formaCourse = new FormaCourse($this->id_course);
 
-        $level_idst = &$docebo_course->getCourseLevel($this->id_course);
+        $level_idst = &$formaCourse->getCourseLevel($this->id_course);
         $level = $this->model->getUserLevel($id_user);
 
         if ($this->model->delUser($id_user)) {
@@ -763,16 +763,16 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
-        $docebo_course = new FormaCourse($this->id_course);
+        $formaCourse = new FormaCourse($this->id_course);
         $output = [];
 
         if ($users == '') {
             $output = ['success' => true, 'count' => 0, 'total' => 0];
         } else {
-            $level_idst = $docebo_course->getCourseLevel($this->id_course);
+            $level_idst = $formaCourse->getCourseLevel($this->id_course);
             $list_users = explode(',', $users);
             $count = 0;
             $total = count($list_users);
@@ -824,15 +824,15 @@ class SubscriptionAlmsController extends AlmsController
             $user = $userModel->getProfileData($id_user);
 
             require_once _lms_ . '/lib/lib.course.php';
-            $docebo_course = new FormaCourse($this->id_course);
+            $formaCourse = new FormaCourse($this->id_course);
 
             switch ($col) {
                 case 'level':
                         require_once _lms_ . '/lib/lib.course.php';
 
-                        $level_idst = &$docebo_course->getCourseLevel($this->id_course);
+                        $level_idst = &$formaCourse->getCourseLevel($this->id_course);
                         if (count($level_idst) == 0 || $level_idst[1] == '') {
-                            $level_idst = &$docebo_course->createCourseLevel($this->id_course);
+                            $level_idst = &$formaCourse->createCourseLevel($this->id_course);
                         }
 
                         $level = $this->model->getUserLevel($id_user);
@@ -869,18 +869,18 @@ class SubscriptionAlmsController extends AlmsController
 
                             switch ((int) $new_value) {
                                 case _CUS_SUSPEND:
-                                    require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                                    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                                    $uinfo = Forma::aclm()->getUser($id_user, false);
+                                    $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
 
-                                    $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+                                    $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
 
                                     $array_subst = [
                                         '[url]' => FormaLms\lib\Get::site_url(),
                                         '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                                         '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                                         '[username]' => $userid,
-                                        '[course]' => $docebo_course->course_info['name'],
+                                        '[course]' => $formaCourse->course_info['name'],
                                     ];
 
                                     // message to user that is odified
@@ -891,7 +891,7 @@ class SubscriptionAlmsController extends AlmsController
 
                                     $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
-                                    $acl_manager = \Forma::user()->getAclManager();
+                                    $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
                                     $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                                     $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -916,7 +916,7 @@ class SubscriptionAlmsController extends AlmsController
                                 default:
                             }
 
-                            Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $docebo_course->course_info]);
+                            Events::trigger('core.course.subscription.status.updated', ['user' => $user, 'status' => ['id' => $new_value, 'name' => $status[$new_value]], 'course' => $formaCourse->course_info]);
                         } else {
                             echo $this->json->encode(['succes' => false]);
                         }
@@ -997,10 +997,10 @@ class SubscriptionAlmsController extends AlmsController
         $userid = FormaLms\lib\Get::req('userid', DOTY_STRING, ''); //user username
         $result = false;
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $is_admin = true;
         }
 
@@ -1008,7 +1008,7 @@ class SubscriptionAlmsController extends AlmsController
         if ($id_user <= 0) {
             $id_user = false;
             if ($userid != '') {
-                $id_user = Forma::aclm()->getUserST($userid);
+                $id_user = \FormaLms\lib\Forma::getAclManager()->getUserST($userid);
             }
         }
 
@@ -1019,7 +1019,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        if (isset($admin_users) && array_search($id_user, $admin_users, false) === false && Forma::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
+        if (isset($admin_users) && array_search($id_user, $admin_users, false) === false && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
             $output = ['success' => false, 'message' => $this->_getMessage('invalid user')];
             echo $this->json->encode($output);
 
@@ -1030,25 +1030,25 @@ class SubscriptionAlmsController extends AlmsController
             $result = $this->model->subscribeUser($id_user, $level, $waiting);
 
             if ($result) {
-                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                $docebo_course = new FormaCourse($this->id_course);
+                $formaCourse = new FormaCourse($this->id_course);
 
-                $level_idst = $docebo_course->getCourseLevel($this->model->getIdCourse());
+                $level_idst = $formaCourse->getCourseLevel($this->model->getIdCourse());
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = $docebo_course->createCourseLevel($this->id_course);
+                    $level_idst = $formaCourse->createCourseLevel($this->id_course);
                 }
 
                 //$this->acl_man->addToGroup($level_idst[$level], $id_user);
                 $this->_addToCourseGroup($level_idst[$level], $id_user);
 
                 // Save limit preference for admin
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $admin_pref = new AdminPreference();
-                    $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                    $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                        $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                        $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                         $user_pref->setPreference('user_subscribed_count', $subscribed_count + 1);
                     }
@@ -1060,8 +1060,8 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _base_ . '/lib/lib.eventmanager.php';
                 $userModel = new UsermanagementAdm();
 
-                $course_info = $docebo_course->getAllInfo();
-                $uinfo = Forma::aclm()->getUser($id_user, false);
+                $course_info = $formaCourse->getAllInfo();
+                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
 
                 if ($send_alert) {
                     $this->model->sendAlert([$id_user]);         
@@ -1084,7 +1084,7 @@ class SubscriptionAlmsController extends AlmsController
                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                     '[course]' => $course_info['name'],
-                    '[username]' => Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]),
+                    '[username]' => \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]),
                 ];
 
                 // message to user that is odified
@@ -1265,20 +1265,20 @@ class SubscriptionAlmsController extends AlmsController
                         switch ((int) $new_status) {
                             case _CUS_SUSPEND:
                                 require_once _lms_ . '/lib/lib.course.php';
-                                $docebo_course = new FormaCourse($this->id_course);
+                                $formaCourse = new FormaCourse($this->id_course);
 
-                                require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                                $uinfo = Forma::aclm()->getUser($user, false);
+                                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user, false);
 
-                                $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+                                $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
 
                                 $array_subst = [
                                     '[url]' => FormaLms\lib\Get::site_url(),
                                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
                                     '[username]' => $userid,
-                                    '[course]' => $docebo_course->course_info['name'],
+                                    '[course]' => $formaCourse->course_info['name'],
                                 ];
 
                                 // message to user that is odified
@@ -1289,7 +1289,7 @@ class SubscriptionAlmsController extends AlmsController
 
                                 $msg_composer->setBodyLangText('sms', '_EVENT_COURSE_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
-                                $acl_manager = \Forma::user()->getAclManager();
+                                $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
                                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -1382,7 +1382,7 @@ class SubscriptionAlmsController extends AlmsController
 
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.userselector.php';
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $course_selector = new Selector_Course();
         //$user_selector = new Module__Directory();
@@ -1427,10 +1427,10 @@ class SubscriptionAlmsController extends AlmsController
                 $user_selector->show_orgchart_selector = true;
                 $user_selector->show_orgchart_simple_selector = true;
 
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     require_once _base_ . '/lib/lib.preference.php';
                     $adminManager = new AdminPreference();
-                    $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                    $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                     $admin_users = $this->acl_man->getAllUsersFromIdst($admin_tree);
 
                     $user_selector->setUserFilter('user', $admin_users);
@@ -1455,25 +1455,25 @@ class SubscriptionAlmsController extends AlmsController
 
                 if (isset($_POST['okselector'])) {
                     $_selection = $user_selector->getSelection($_POST);
-                    $acl_man = Forma::user()->getAclManager();
+                    $acl_man = \FormaLms\lib\Forma::getAclManager();
                     $user_selected = $acl_man->getAllUsersFromSelection($_selection); //$acl_man->getAllUsersFromIdst($_selection);
                     //$user_selected = $user_selector->getSelection($_POST);
 
-                    if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                    if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                         require_once _base_ . '/lib/lib.preference.php';
                         $adminManager = new AdminPreference();
-                        $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                        $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                         $admin_users = $this->acl_man->getAllUsersFromIdst($admin_tree);
 
                         $user_selected = array_intersect($user_selected, $admin_users);
 
-                        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                             $to_subscribe = count($user_selected);
 
                             $admin_pref = new AdminPreference();
-                            $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                            $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                             if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                                $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                                $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                                 $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                                 if ($subscribed_count + $to_subscribe > $pref['admin_rules.max_course_subscribe']) {
                                     $this->render('invalid', [
@@ -1537,7 +1537,7 @@ class SubscriptionAlmsController extends AlmsController
 
             case '4':
                 //Start case 4
-                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
                 if (isset($_POST['undo'])) {
                     Util::jump_to('index.php?r=' . $this->link . '/show&id_course=' . $id_course . '&id_edition=' . $id_edition . '&id_date=' . $id_date);
@@ -1551,10 +1551,10 @@ class SubscriptionAlmsController extends AlmsController
                 $course_selected = Util::unserialize(urldecode($course_selection));
                 $edition_selected = Util::unserialize(urldecode($edition_selected));
 
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                    $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                    $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                    $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                    $limited_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+                    $max_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+                    $direct_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
                     if ($limited_subscribe == 'on') {
                         $limited_subscribe = true;
@@ -1598,13 +1598,13 @@ class SubscriptionAlmsController extends AlmsController
                         $subscribe_method = $course_info['subscribe_method'];
 
                         if ($can_subscribe) {
-                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+                            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                            $docebo_course = new FormaCourse($id_course);
+                            $formaCourse = new FormaCourse($id_course);
 
-                            $level_idst = &$docebo_course->getCourseLevel($id_course);
+                            $level_idst = &$formaCourse->getCourseLevel($id_course);
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = &$docebo_course->createCourseLevel($id_course);
+                                $level_idst = &$formaCourse->createCourseLevel($id_course);
                             }
 
                             $waiting = 0;
@@ -1644,14 +1644,14 @@ class SubscriptionAlmsController extends AlmsController
                             $subscribe_method = $course_info['subscribe_method'];
 
                             if ($can_subscribe) {
-                                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+                                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                                $docebo_course = new FormaCourse($id_course);
+                                $formaCourse = new FormaCourse($id_course);
 
-                                $level_idst = &$docebo_course->getCourseLevel($id_course);
+                                $level_idst = &$formaCourse->getCourseLevel($id_course);
 
                                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                    $level_idst = &$docebo_course->createCourseLevel($id_course);
+                                    $level_idst = &$formaCourse->createCourseLevel($id_course);
                                 }
 
                                 $waiting = 0;
@@ -1688,14 +1688,14 @@ class SubscriptionAlmsController extends AlmsController
                             $subscribe_method = $course_info['subscribe_method'];
 
                             if ($can_subscribe) {
-                                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+                                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                                $docebo_course = new FormaCourse($id_course);
+                                $formaCourse = new FormaCourse($id_course);
 
-                                $level_idst = &$docebo_course->getCourseLevel($id_course);
+                                $level_idst = &$formaCourse->getCourseLevel($id_course);
 
                                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                    $level_idst = &$docebo_course->createCourseLevel($id_course);
+                                    $level_idst = &$formaCourse->createCourseLevel($id_course);
                                 }
 
                                 $waiting = 0;
@@ -1729,11 +1729,11 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 // Save limit preference for admin
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $admin_pref = new AdminPreference();
-                    $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                    $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     if ($pref['admin_rules.limit_course_subscribe'] == 'on') {
-                        $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                        $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         $subscribed_count = $user_pref->getPreference('user_subscribed_count');
                         $user_pref->setPreference('user_subscribed_count', $subscribed_count + $just_subscribed_count);
                     }
@@ -1795,8 +1795,8 @@ class SubscriptionAlmsController extends AlmsController
                 break;
 
             case '2':
-                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                require_once Forma::inc(_base_ . '/lib/lib.upload.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.upload.php');
                 require_once _adm_ . '/lib/lib.import.php';
 
                 $separator = FormaLms\lib\Get::req('import_separator', DOTY_MIXED, ',');
@@ -1804,12 +1804,12 @@ class SubscriptionAlmsController extends AlmsController
                 $sendAlert = FormaLms\lib\Get::req('send_alert', DOTY_BOOL, false);
                 $import_charset = FormaLms\lib\Get::req('import_charset', DOTY_MIXED, 'UTF-8');
 
-                $docebo_course = new FormaCourse($this->id_course);
+                $formaCourse = new FormaCourse($this->id_course);
 
-                $level_idst = $docebo_course->getCourseLevel($this->id_course);
+                $level_idst = $formaCourse->getCourseLevel($this->id_course);
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$docebo_course->createCourseLevel($this->id_course);
+                    $level_idst = &$formaCourse->createCourseLevel($this->id_course);
                 }
 
                 $back_url = 'index.php?r=' . $this->link . '/show&id_course=' . $this->id_course . '&id_edition=' . $this->id_edition . '&id_date=' . $this->id_date;
@@ -1860,10 +1860,10 @@ class SubscriptionAlmsController extends AlmsController
                 $max_num_subscribe = $course_info['max_num_subscribe'];
                 $subscribe_method = $course_info['subscribe_method'];
 
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                    $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                    $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                    $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                    $limited_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+                    $max_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+                    $direct_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
                     if ($limited_subscribe == 'on') {
                         $limited_subscribe = true;
@@ -1889,13 +1889,13 @@ class SubscriptionAlmsController extends AlmsController
                         $id_user = $user_info[ACL_INFO_IDST];
 
                         if ($can_subscribe) {
-                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                            $docebo_course = new FormaCourse($this->id_course);
+                            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+                            $formaCourse = new FormaCourse($this->id_course);
 
-                            $level_idst = $docebo_course->getCourseLevel($this->id_course);
+                            $level_idst = $formaCourse->getCourseLevel($this->id_course);
 
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = &$docebo_course->createCourseLevel($this->id_course);
+                                $level_idst = &$formaCourse->createCourseLevel($this->id_course);
                             }
 
                             if (!$direct_subscribe) {
@@ -1953,13 +1953,13 @@ class SubscriptionAlmsController extends AlmsController
                         $id_user = $user_info[ACL_INFO_IDST];
 
                         if ($can_subscribe) {
-                            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-                            $docebo_course = new FormaCourse($this->id_course);
+                            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+                            $formaCourse = new FormaCourse($this->id_course);
 
-                            $level_idst = $docebo_course->getCourseLevel($this->id_course);
+                            $level_idst = $formaCourse->getCourseLevel($this->id_course);
 
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = &$docebo_course->createCourseLevel($this->id_course);
+                                $level_idst = &$formaCourse->createCourseLevel($this->id_course);
                             }
 
                             if (!$direct_subscribe) {
@@ -2073,7 +2073,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $course_selector = new Selector_Course();
         $course_selector->parseForState($_POST);
@@ -2089,13 +2089,13 @@ class SubscriptionAlmsController extends AlmsController
                 Util::jump_to('index.php?r=' . $this->link . '/import_course&amp;load=1&amp;id_course=' . $this->model->getIdCourse() . '&err=_no_course_sel');
             }
 
-            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-            $docebo_course = new FormaCourse($this->id_course);
+            $formaCourse = new FormaCourse($this->id_course);
 
-            $level_idst = $docebo_course->getCourseLevel($this->id_course);
+            $level_idst = $formaCourse->getCourseLevel($this->id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = $docebo_course->createCourseLevel($this->id_course);
+                $level_idst = $formaCourse->createCourseLevel($this->id_course);
             }
 
             $query = 'SELECT idUser, MIN(level) AS level'
@@ -2105,10 +2105,10 @@ class SubscriptionAlmsController extends AlmsController
 
             $result = sql_query($query);
 
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                $limited_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+                $max_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+                $direct_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
                 if ($limited_subscribe == 'on') {
                     $limited_subscribe = true;
@@ -2127,14 +2127,14 @@ class SubscriptionAlmsController extends AlmsController
                 $direct_subscribe = true;
             }
 
-            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-            $docebo_course = new FormaCourse($this->id_course);
+            $formaCourse = new FormaCourse($this->id_course);
 
-            $level_idst = $docebo_course->getCourseLevel($this->id_course);
+            $level_idst = $formaCourse->getCourseLevel($this->id_course);
 
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$docebo_course->createCourseLevel($this->id_course);
+                $level_idst = &$formaCourse->createCourseLevel($this->id_course);
             }
 
             $waiting = 0;
@@ -2194,7 +2194,7 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $course_selector = new Selector_Course();
         $course_selector->parseForState($_POST);
@@ -2210,14 +2210,14 @@ class SubscriptionAlmsController extends AlmsController
                 Util::jump_to('index.php?r=' . $this->link . '/copy_course&amp;load=1&amp;id_course=' . $this->model->getIdCourse() . '&err=_no_course_sel');
             }
 
-            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
             foreach ($course_selected as $id_course) {
-                $docebo_course = new FormaCourse($id_course);
+                $formaCourse = new FormaCourse($id_course);
 
-                $level_idst = &$docebo_course->getCourseLevel($id_course);
+                $level_idst = &$formaCourse->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$docebo_course->createCourseLevel($id_course);
+                    $level_idst = &$formaCourse->createCourseLevel($id_course);
                 }
 
                 $query = 'SELECT idUser, MIN(level) AS level'
@@ -2227,10 +2227,10 @@ class SubscriptionAlmsController extends AlmsController
 
                 $result = sql_query($query);
 
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                    $limited_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                    $max_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                    $direct_subscribe = Forma::user()->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                    $limited_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+                    $max_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+                    $direct_subscribe = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
                     if ($limited_subscribe == 'on') {
                         $limited_subscribe = true;
@@ -2249,14 +2249,14 @@ class SubscriptionAlmsController extends AlmsController
                     $direct_subscribe = true;
                 }
 
-                require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-                $docebo_course = new FormaCourse($id_course);
+                $formaCourse = new FormaCourse($id_course);
 
-                $level_idst = $docebo_course->getCourseLevel($id_course);
+                $level_idst = $formaCourse->getCourseLevel($id_course);
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = $docebo_course->createCourseLevel($id_course);
+                    $level_idst = $formaCourse->createCourseLevel($id_course);
                 }
 
                 $waiting = 0;
@@ -2280,7 +2280,7 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 if ($move) {
-                    $db = DbConn::getInstance();
+                    $db = \FormaLms\db\DbConn::getInstance();
                     $arr_users = explode(',', $users);
                     $re = $db->query('DELETE FROM learning_courseuser
 						WHERE idUser IN ( ' . implode(',', $arr_users) . " ) AND idCourse = '" . $old_id_course . "'");
@@ -2325,7 +2325,7 @@ class SubscriptionAlmsController extends AlmsController
     {
         $output = [];
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $entries = [];
         $query = 'SELECT idEntry FROM %lms_catalogue_entry '
             . " WHERE idCatalogue = '" . $id_catalogue . "' AND  type_of_entry = 'course'";
@@ -2355,7 +2355,7 @@ class SubscriptionAlmsController extends AlmsController
         if ((int) $id_catalogue <= 0) {
             return false;
         }
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = "SELECT name, description FROM %lms_catalogue WHERE idCatalogue='" . (int) $id_catalogue . "'";
         $res = $db->query($query);
         list($name, $description) = $db->fetch_row($res);
@@ -2371,7 +2371,7 @@ class SubscriptionAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.edition.php';
         require_once _lms_ . '/lib/lib.date.php';
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $edition_man = new EditionManager();
         $date_man = new DateManager();
 
@@ -2382,10 +2382,10 @@ class SubscriptionAlmsController extends AlmsController
 
         //if we are a subadmin, check which courses/catalogues we can see
         $can_see_catalogue = true;
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -2394,7 +2394,7 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 if (count($admin_courses['catalogue']) == 0 && FormaLms\lib\Get::sett('on_catalogue_empty', 'off') == 'on') {
                     $all_courses = true;
@@ -2613,10 +2613,10 @@ class SubscriptionAlmsController extends AlmsController
             //$user_select->show_orgchart_simple_selector = TRUE;
             //filter selectable user by sub-admin permission
             $user_select->setUserFilter('exclude', [$this->acl_man->getAnonymousId()]);
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $admin_users = $this->acl_man->getAllUsersFromIdst($admin_tree);
                 $user_select->setUserFilter('user', $admin_users);
                 $user_select->setUserFilter('group', $admin_tree);
@@ -2787,10 +2787,10 @@ class SubscriptionAlmsController extends AlmsController
             }
             if ($_u_subscribed) {
                 // user subscribed
-                $docebo_course = new FormaCourse($id_course);
-                $level_idst = &$docebo_course->getCourseLevel($id_course);
+                $formaCourse = new FormaCourse($id_course);
+                $level_idst = &$formaCourse->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$docebo_course->createCourseLevel($id_course);
+                    $level_idst = &$formaCourse->createCourseLevel($id_course);
                 }
                 $this->_addToCourseGroup($level_idst[$lv_user], $id_user);
             }
@@ -2825,9 +2825,9 @@ class SubscriptionAlmsController extends AlmsController
 
     public function fast_subscribe_dialog_action()
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         $man_course = new Man_Course();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $id_course = FormaLms\lib\Get::Req('id_course', DOTY_INT, 0);
@@ -2886,10 +2886,10 @@ class SubscriptionAlmsController extends AlmsController
         //subscribe user
         $res = $_model->subscribeUser($id_user, $level, false);
         if ($res) {
-            $docebo_course = new FormaCourse($id_course);
-            $level_idst = &$docebo_course->getCourseLevel($id_course);
+            $formaCourse = new FormaCourse($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$docebo_course->createCourseLevel($id_course);
+                $level_idst = &$formaCourse->createCourseLevel($id_course);
             }
             //$this->acl_man->addToGroup($level_idst[$level], $id_user);
             $this->_addToCourseGroup($level_idst[$level], $id_user);
@@ -3364,7 +3364,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         //2 - check if there are any editions or classrooms
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         $course_man = new Man_Course();
 
         $classroom = $course_man->getAllCourses(false, 'classroom', $courses);
@@ -3433,13 +3433,13 @@ class SubscriptionAlmsController extends AlmsController
             ]);
         } else {
             $path_man->subscribeUserToCoursePath($id_path, $_to_add);
-            require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
             foreach ($courses as $id_course) {
-                $docebo_course = new FormaCourse($id_course);
-                $level_idst = &$docebo_course->getCourseLevel($id_course);
+                $formaCourse = new FormaCourse($id_course);
+                $level_idst = &$formaCourse->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$docebo_course->createCourseLevel($id_course);
+                    $level_idst = &$formaCourse->createCourseLevel($id_course);
                 }
                 foreach ($_to_add as $id_user) {
                     $level = 3; //student
@@ -3468,16 +3468,16 @@ class SubscriptionAlmsController extends AlmsController
         $editions = FormaLms\lib\Get::req('editions', DOTY_MIXED, []);
 
         require_once _lms_ . '/lib/lib.coursepath.php';
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         $path_man = new CoursePath_Manager();
 
         foreach ($courses as $id_course) {
             $res = true;
 
-            $docebo_course = new FormaCourse($id_course);
-            $level_idst = &$docebo_course->getCourseLevel($id_course);
+            $formaCourse = new FormaCourse($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$docebo_course->createCourseLevel($id_course);
+                $level_idst = &$formaCourse->createCourseLevel($id_course);
             }
 
             foreach ($_to_add as $id_user) {
@@ -3521,7 +3521,7 @@ class SubscriptionAlmsController extends AlmsController
             exit("You can't access");
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
@@ -3539,7 +3539,7 @@ class SubscriptionAlmsController extends AlmsController
         $out = $GLOBALS['page'];
         $lang = FormaLanguage::CreateInstance('course', 'lms');
         $lang = FormaLanguage::CreateInstance('subscribe', 'lms');
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $levels = CourseLevel::getTranslatedLevels();
 
         $waiting_users = $man_course->getWaitingSubscribed($id_course, $edition_id);
@@ -3720,7 +3720,7 @@ class SubscriptionAlmsController extends AlmsController
 
     public function removeSubscription($id_course, $id_user, $lv_group, $edition_id = 0)
     {
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $acl_man->removeFromGroup($lv_group, $id_user);
 
         if ($edition_id > 0) {
@@ -3751,7 +3751,7 @@ class SubscriptionAlmsController extends AlmsController
             exit("You can't access");
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
         require_once _base_ . '/lib/lib.preference.php';
 
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
@@ -3770,11 +3770,11 @@ class SubscriptionAlmsController extends AlmsController
             require_once _lms_ . '/lib/lib.course.php';
             //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
 
-            $docebo_course = new FormaCourse($id_course);
+            $formaCourse = new FormaCourse($id_course);
 
-            $group_levels = $docebo_course->getCourseLevel($id_course);
+            $group_levels = $formaCourse->getCourseLevel($id_course);
             if (count($group_levels) == 0 || $group_levels[1] == '') {
-                $group_levels = &$docebo_course->createCourseLevel($id_course);
+                $group_levels = &$formaCourse->createCourseLevel($id_course);
             }
             foreach ($_POST['waiting_user'] as $id_user => $action) {
                 if ($action == 0) {
@@ -3783,7 +3783,7 @@ class SubscriptionAlmsController extends AlmsController
                     $data = Events::trigger('lms.course_user.approved', [
                         'id_user' => $id_user,
                         'id_course' => $id_course,
-                        'approved_by' => Forma::user()->idst,
+                        'approved_by' => \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                     ]);
 
                     $text_query = '
@@ -3804,7 +3804,7 @@ class SubscriptionAlmsController extends AlmsController
                     $data = Events::trigger('lms.course_user.refused', [
                         'id_user' => $id_user,
                         'id_course' => $id_course,
-                        'refused_by' => Forma::user()->idst,
+                        'refused_by' => \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                     ]);
 
                     $level = $waiting_users['users_info'][$id_user]['level'];
@@ -3857,7 +3857,7 @@ class SubscriptionAlmsController extends AlmsController
             );
 
             if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                $uinfo = Forma::aclm()->getUser($approve_user, false);
+                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($approve_user, false);
                 $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }
@@ -3919,11 +3919,11 @@ class SubscriptionAlmsController extends AlmsController
 
         $courses_filter = false;
 
-        $ulevel = Forma::user()->getUserLevelId();
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $preference = new AdminPreference();
-            $view = $preference->getAdminCourse(Forma::user()->idst);
+            $view = $preference->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $all_courses = false;
             if (isset($view['course'][0])) {
                 $all_courses = true;
@@ -3931,7 +3931,7 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -3973,7 +3973,7 @@ class SubscriptionAlmsController extends AlmsController
             if (!$all_courses) {
                 $courses_filter = $view['course'];
             }
-            $filter['user_q'] = $preference->getAdminUsersQuery(Forma::user()->getIdst(), 'user_id');
+            $filter['user_q'] = $preference->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), 'user_id');
         }
 
         if ($filter_course > 0) {
@@ -4049,11 +4049,11 @@ class SubscriptionAlmsController extends AlmsController
 
         $courses_filter = false;
 
-        $ulevel = Forma::user()->user_level;
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->user_level;
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $preference = new AdminPreference();
-            $view = $preference->getAdminCourse(Forma::user()->idst);
+            $view = $preference->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $all_courses = false;
             if (isset($view['course'][0])) {
                 $all_courses = true;
@@ -4061,7 +4061,7 @@ class SubscriptionAlmsController extends AlmsController
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 

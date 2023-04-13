@@ -107,7 +107,7 @@ class WikiRevisionManager extends RevisionManager
 
                 ++$data_info['data_tot'];
 
-                $acl_manager = Forma::user()->getAclManager();
+                $acl_manager = \FormaLms\lib\Forma::getAclManager();
                 $user_info = $acl_manager->getUser($author);
                 $data_info['user'][$author] = $acl_manager->relativeId($user_info[$author][ACL_INFO_USERID]);
             }

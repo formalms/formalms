@@ -11,10 +11,10 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/scorm_organizations.php');
-require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/RendererBase.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_organizations.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_items.php');
 
 class RendererDb extends RendererAbstract
 {

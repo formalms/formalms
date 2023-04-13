@@ -51,7 +51,7 @@ final class LMSTemplateController extends TemplateController
 
     private function notGeneratedCertificates()
     {
-        $id_user = Forma::user()->getIdSt();
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $model = new MycertificateLms($id_user);
         $availables = 0;
         $certificates = $model->loadMyCertificates(false, false);

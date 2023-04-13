@@ -20,7 +20,7 @@ function GetAdminPanel()
 {
     $ret_str = '
         <li data-sm-reverse="true" style="float:right">
-            <a href="#"><i class="fa fa-user"></i>&nbsp;<b>' . Forma::user()->getUserName() . '</b></a>
+            <a href="#"><i class="fa fa-user"></i>&nbsp;<b>' . \FormaLms\lib\FormaUser::getCurrentUser()->getUserName() . '</b></a>
             <ul> ';
 
     if (FormaLms\lib\Get::sett('profile_modify', 'allow') != 'disallow') {

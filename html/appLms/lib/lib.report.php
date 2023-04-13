@@ -27,7 +27,7 @@ function report_save($report_id, $filter_name, &$filter_data, $is_public = false
     $data = addslashes(serialize($filter_data)); //put serialized data in DB
     $query = 'INSERT INTO %lms_report_filter ' .
         '(id_report, author, creation_date, filter_data, filter_name, is_public) VALUES ' .
-        "($report_id, " . Forma::user()->getIdst() . ", NOW(), '$data', '$filter_name', " . ($is_public ? '1' : '0') . ')';
+        "($report_id, " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ", NOW(), '$data', '$filter_name', " . ($is_public ? '1' : '0') . ')';
 
     if (!sql_query($query)) {
         return false;
@@ -58,7 +58,7 @@ function report_save_schedulation($id_rep, $name, $period, $time, &$recipients)
     //TO DO : try to use transation for this
     $query = 'INSERT INTO %lms_report_schedule ' .
         '(id_report_filter, id_creator, name, period, time, creation_date) VALUES ' .
-        "($id_rep, " . Forma::user()->getIdst() . ",'" . trim($name) . "', '$period', '$time', NOW())";
+        "($id_rep, " . \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() . ",'" . trim($name) . "', '$period', '$time', NOW())";
 
     if (!sql_query($query)) {
         return false;
@@ -280,7 +280,7 @@ function _getLOtranslations()
 {
     $output = [];
     $query = 'SELECT objectType FROM %lms_lo_types';
-    $db = DbConn::getInstance();
+    $db = \FormaLms\db\DbConn::getInstance();
     $res = $db->query($query);
     while (list($objectType) = $db->fetch_row($res)) {
         switch ($objectType) {
@@ -326,7 +326,7 @@ function getCommunicationsTable($selected = false)
             . ' LEFT JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm)'
             . ' GROUP BY c.id_comm'
             . ' ORDER BY c.publish_date DESC, c.title ASC';
-    $db = DbConn::getInstance();
+    $db = \FormaLms\db\DbConn::getInstance();
     $res = $db->query($query);
     while ($obj = $db->fetch_obj($res)) {
         $line = [];
@@ -380,7 +380,7 @@ function getGamesTable($selected = false)
             . ' LEFT JOIN %lms_games_access AS ca ON (c.id_game = ca.id_game)'
             . ' GROUP BY c.id_game'
             . ' ORDER BY c.title';
-    $db = DbConn::getInstance();
+    $db = \FormaLms\db\DbConn::getInstance();
     $res = $db->query($query);
     while ($obj = $db->fetch_obj($res)) {
         $line = [];

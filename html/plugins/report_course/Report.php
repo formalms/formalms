@@ -432,7 +432,7 @@ class Report extends \ReportPlugin
                 //$user_select->show_orgchart_simple_selector = FALSE;
                 //$user_select->multi_choice = TRUE;
 
-                if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $user_select->addFormInfo(
                         Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, ($ref['all_users'] ? 1 : 0)) .
                         Form::getBreakRow() .
@@ -669,7 +669,7 @@ class Report extends \ReportPlugin
             $admin_allcourses = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $course_selected = array_intersect($admin_courses['course'], $course_selected);
         }
 
@@ -699,7 +699,7 @@ class Report extends \ReportPlugin
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         }
 
         if (empty($question_id)) {
@@ -760,7 +760,7 @@ class Report extends \ReportPlugin
             $admin_allcourses = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $course_selected = array_intersect($admin_courses['course'], $course_selected);
         }
 
@@ -788,7 +788,7 @@ class Report extends \ReportPlugin
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         }
 
         if (empty($question_id)) {
@@ -866,7 +866,7 @@ class Report extends \ReportPlugin
         $acl_man->include_suspended = true;
         $course_man = new Man_Course();
 
-        $user_level = Forma::user()->getUserLevelId();
+        $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
         if ($alluser == 0) {
             $user_selected = &$acl_man->getAllUsersFromSelection($ref['columns_filter']['users']);
@@ -880,13 +880,13 @@ class Report extends \ReportPlugin
             $alluser = 0;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $user_selected = array_intersect($user_selected, $admin_users);
             unset($admin_users);
 
             //filter courses
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if ($all_courses) {
                 $all_courses = false;
                 $rs = sql_query('SELECT idCourse FROM %lms_course');
@@ -902,7 +902,7 @@ class Report extends \ReportPlugin
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -962,9 +962,9 @@ class Report extends \ReportPlugin
             require_once _adm_ . '/lib/lib.orgchart.php';
             $org_man = new OrgChartManager();
             if ($alluser == 1) {
-                $user_level = Forma::user()->getUserLevelId();
+                $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
-                if ($user_level != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+                if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $elem_selected = $user_selected;
                 } else {
                     $elem_selected = $org_man->getAllGroupIdFolder();
@@ -974,10 +974,10 @@ class Report extends \ReportPlugin
             }
             $org_name = $org_man->getFolderFormIdst($elem_selected);
 
-            if ($user_level != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+            if ($user_level != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
                 $org_name_temp = $org_name;
                 $org_name = [];
@@ -1858,7 +1858,7 @@ class Report extends \ReportPlugin
                 $course_label_id = $label_model->getCourseLabel($course_info['id_course']);
                 if ($course_label_id > 0) {
                     $arr_course_label = $label_model->getLabelInfo($course_label_id);
-                    $trow[] = $arr_course_label[getLanguage()][LABEL_TITLE];
+                    $trow[] = $arr_course_label [Lang::get()][LABEL_TITLE];
                 } else {
                     $trow[] = '';
                 }

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden');
 
-require_once Forma::inc(_base_ . '/lib/lib.upload.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.upload.php');
 
 class ClassroomAlmsController extends AlmsController
 {
@@ -43,7 +43,7 @@ class ClassroomAlmsController extends AlmsController
         checkPerm('view', false, 'course', 'lms');
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man = &Forma::user()->getAclManager();
+        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
         $this->idCourse = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $this->idDate = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
 
@@ -194,7 +194,7 @@ class ClassroomAlmsController extends AlmsController
                     $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
                     $initial = FormaLms\lib\Get::req('initial', DOTY_INT, 0);
 
-                    $db = DbConn::getInstance();
+                    $db = \FormaLms\db\DbConn::getInstance();
                     $result = [];
                     if ($initial == 1) {
                         $treestatus = $this->_getSessionTreeData('c_category', 0);
@@ -346,7 +346,7 @@ class ClassroomAlmsController extends AlmsController
 
     public function addClassroom()
     {
-        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
         $customFields = [];
         if (isset($_POST['back']) || isset($_POST['undo'])) {
             Util::jump_to('index.php?r=' . $this->baseLinkClassroom . '/classroom&id_course=' . $this->model->getIdCourse());
@@ -402,7 +402,7 @@ class ClassroomAlmsController extends AlmsController
 
     public function updateClassroom()
     {
-        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
         $customFields = [];
 
         if (isset($_POST['back']) || isset($_POST['undo'])) {
@@ -534,7 +534,7 @@ class ClassroomAlmsController extends AlmsController
 
     protected function delclassroom()
     {
-        require_once Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.customfield.php');
         $customFields = [];
 
         if (FormaLms\lib\Get::cfg('demo_mode')) {
@@ -723,7 +723,7 @@ class ClassroomAlmsController extends AlmsController
     // EXPORT EXCEL IN PDF
     public function registro()
     {
-        require_once Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
 
         $query = 'SELECT  name FROM learning_course WHERE idCourse=' . $this->idCourse;
         $res = sql_query($query);
@@ -846,7 +846,7 @@ class ClassroomAlmsController extends AlmsController
     // estrai PDF
     public function getPdf($html, $name, $img = false, $orientation = 'L', $download = true, $facs_simile = false, $for_saving = false)
     {
-        require_once Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
 
         $pdf = new PDF($orientation);
 

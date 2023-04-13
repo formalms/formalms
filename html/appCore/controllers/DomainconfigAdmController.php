@@ -41,8 +41,8 @@ class DomainconfigAdmController extends AdmController
 
 
     public function show() {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
+        if (\FormaLms\lib\Forma::errorsExists()) {
+            UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
         $params = $this->getFieldsParams();
@@ -63,8 +63,8 @@ class DomainconfigAdmController extends AdmController
 
 
     public function insert() {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
+        if (\FormaLms\lib\Forma::errorsExists()) {
+            UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
         $params = $this->getFieldsParams();
         $params['title'] = Lang::t('_INSERT', 'standard');
@@ -77,8 +77,8 @@ class DomainconfigAdmController extends AdmController
     }
 
     public function edit() {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
+        if (\FormaLms\lib\Forma::errorsExists()) {
+            UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
         $params = $this->getFieldsParams();
         $params['title'] = Lang::t('_MOD', 'standard');

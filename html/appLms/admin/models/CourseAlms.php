@@ -42,7 +42,7 @@ class CourseAlms extends Model
         $this->classroom_man = new DateManager();
         $this->edition_man = new EditionManager();
 
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 
@@ -60,15 +60,15 @@ class CourseAlms extends Model
 
     public function getUserInOverbooking($idCourse)
     {
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -103,15 +103,15 @@ class CourseAlms extends Model
 
     public function getUserInWaiting($idCourse)
     {
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -131,15 +131,15 @@ class CourseAlms extends Model
 
     public function getUserInCourse($idCourse)
     {
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -200,11 +200,11 @@ class CourseAlms extends Model
             }
         }
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
 
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -212,7 +212,7 @@ class CourseAlms extends Model
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -294,15 +294,15 @@ class CourseAlms extends Model
 
     public function loadCourse($start_index, $results, $sort, $dir, $filter = false)
     {
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -359,7 +359,7 @@ class CourseAlms extends Model
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -424,7 +424,7 @@ class CourseAlms extends Model
                 'autoregistration_code' => '',
                 'code' => '',
                 'name' => '',
-                'lang_code' => getLanguage(),
+                'lang_code' => Lang::get(),
                 'difficult' => 'medium',
                 'course_type' => 'classroom', //'elearning',
                 'status' => CST_EFFECTIVE,
@@ -498,7 +498,7 @@ class CourseAlms extends Model
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.manmenu.php';
 
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $array_lang[] = 'none';
 
         $id_custom = $data_params['selected_menu'];
@@ -789,10 +789,10 @@ class CourseAlms extends Model
         $label_model->associateLabelToCourse($label, $id_course);
 
         // add this corse to the pool of course visible by the user that have create it -----
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $adminManager->addAdminCourse($id_course, Forma::user()->getIdSt());
+            $adminManager->addAdminCourse($id_course, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         }
 
         //if the scs exist create a room ----------------------------------------------------
@@ -830,7 +830,7 @@ class CourseAlms extends Model
 
             //AUTO SUBSCRIPTION
             if (isset($data_params['auto_subscription']) && $data_params['auto_subscription'] == 1) {
-                $userId = Forma::user()->getIdSt();
+                $userId = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
                 if (!$this->autoUserRegister($userId, $id_course)) {
                     exit('Error during autosubscription');
@@ -862,10 +862,10 @@ class CourseAlms extends Model
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.manmenu.php';
 
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $array_lang[] = 'none';
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         require_once _lms_ . '/admin/models/LabelAlms.php';
         $label_model = new LabelAlms();
@@ -1197,7 +1197,7 @@ class CourseAlms extends Model
         $extra_field->storeFieldsForObj($id_course);
 
         //AUTO SUBSCRIPTION
-        $userId = Forma::user()->getIdSt();
+        $userId = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $userSubscribed = $this->isUserSubscribedInCourse($userId, $id_course);
         if (intval($userSubscribed[0]) <= 0) {
             if (isset($data_params['auto_subscription']) && $data_params['auto_subscription'] == 1) {
@@ -1305,11 +1305,11 @@ class CourseAlms extends Model
 
         $levels = &$course_man->getCourseIdstGroupLevel($id_course);
         foreach ($levels as $lv => $idst) {
-            Forma::aclm()->deleteGroup($idst);
+            \FormaLms\lib\Forma::getAclManager()->deleteGroup($idst);
         }
 
         $alluser = getIDGroupAlluser($id_course);
-        Forma::aclm()->deleteGroup($alluser);
+        \FormaLms\lib\Forma::getAclManager()->deleteGroup($alluser);
         $course_man->removeCourseRole($id_course);
         $course_man->removeCourseMenu($id_course);
 
@@ -1441,7 +1441,7 @@ class CourseAlms extends Model
         //--- end coursepath references --------------------------------------------
 
         //--- clear certificates assignments ---------------------------------------
-        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $cman = new Certificate();
         $cman->deleteCourseCertificateAssignments($id_course);
         //--- end certificates assignments -----------------------------------------
@@ -1682,7 +1682,7 @@ class CourseAlms extends Model
     {
         $usermanagementAdm = new UsermanagementAdm();
         $usersFilterIds = [];
-        $currentUser = Forma::user();
+        $currentUser = \FormaLms\lib\FormaUser::getCurrentUser();
         if (ADMIN_GROUP_ADMIN == $currentUser->getUserLevelId()) {
 
             $nodes = $usermanagementAdm->getAdminFolders($currentUser->getIdSt(), true);
@@ -1699,7 +1699,7 @@ class CourseAlms extends Model
 
     public function getListTototalUserCertificate($id_course, $id_certificate, $cf)
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $regset = Format::instance();
         $usermanagementAdm = new UsermanagementAdm();
         $date_format = $regset->date_token;

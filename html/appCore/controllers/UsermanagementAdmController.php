@@ -53,12 +53,12 @@ class UsermanagementAdmController extends AdmController
         ];
 
         // Check if the user admin has reached the max number of users he can create
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $this->permissions['view_deleted_user'] = false;
             $admin_pref = new AdminPreference();
-            $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+            $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if ($user_pref->getPreference('user_created_count') >= $pref['admin_rules.max_user_insert']) {
                     $this->permissions['add_user'] = false;
                     $this->reached_max_user_created = true;
@@ -127,7 +127,7 @@ class UsermanagementAdmController extends AdmController
             'language' => Lang::t('_LANGUAGE', 'standard'),
         ];
         $f_list = $f_list + $fields;
-        $f_selected = $this->json->decode(Forma::user()->getPreference('ui.directory.custom_columns'));
+        $f_selected = $this->json->decode(\FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.directory.custom_columns'));
         if ($f_selected == false) {
             $f_selected = ['level', 'email', 'lastenter', 'register_date'];
         }
@@ -188,9 +188,9 @@ class UsermanagementAdmController extends AdmController
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
         Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/usermanagement/usermanagement.js', true, true);
 
-        if (!$this->_issetSessionValue('selected_node') && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (!$this->_issetSessionValue('selected_node') && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             //select the first folder of the sub admin
-            $this->_setSessionValue('selected_node', $this->model->getAdminFolder(Forma::user()->getIdst(), true));
+            $this->_setSessionValue('selected_node', $this->model->getAdminFolder(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), true));
         }
         $selected_orgchart = $this->_getSessionValue('selected_node', 0);
 
@@ -292,7 +292,7 @@ class UsermanagementAdmController extends AdmController
         $list = $this->model->getUsersList($idOrg, $descendants, $pagination, $searchFilter, true);
 
         //prepare the data for sending
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         require_once _adm_ . '/lib/lib.field.php';
         $fman = new FieldList();
@@ -300,7 +300,7 @@ class UsermanagementAdmController extends AdmController
 
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
-            $current_user = Forma::user()->getIdSt();
+            $current_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
             $user_entry_data = $fman->getUsersFieldEntryData(array_keys($list));
             foreach ($list as $idst => $record) {
                 $record_row = [
@@ -371,11 +371,11 @@ class UsermanagementAdmController extends AdmController
     protected function _getUserEditMask($idst = false)
     {
         require_once _adm_ . '/lib/lib.field.php';
-        require_once Forma::inc(_base_ . '/lib/lib.platform.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.platform.php');
 
         $mask = '';
         $model = new UsermanagementAdm();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $level = ADMIN_GROUP_USER;
 
         $is_editing = false;
@@ -408,8 +408,8 @@ class UsermanagementAdmController extends AdmController
             }
         }
 
-        $language = getDefaultLanguage();
-        $languages = Forma::langManager()->getAllLanguages();
+        $language = Lang::getDefault();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLanguages();
 
         $pman = &PlatformManager::createInstance(); // = new PlatformManager();
         $platforms = $pman->getPlatformList();
@@ -426,11 +426,11 @@ class UsermanagementAdmController extends AdmController
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $this->session->get('usermanagement_selected_node'));
             $arr_idst[] = $tmp[0];
-            $acl = Forma::user()->getACL();
+            $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }
 
-        $fields_mask = $fman->playFieldsForUser($is_editing ? $idst : -1, $arr_idst, false, true, false, false, !$is_editing ? Forma::user()->getIdst() : false);
+        $fields_mask = $fman->playFieldsForUser($is_editing ? $idst : -1, $arr_idst, false, true, false, false, !$is_editing ? \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() : false);
 
         $info = new stdClass();
         $info->userid = trim($info_userid);
@@ -536,7 +536,7 @@ class UsermanagementAdmController extends AdmController
         $userdata->email = trim(FormaLms\lib\Get::req('email', DOTY_STRING, ''));
         $userdata->password = $password;
         $userdata->force_change = trim(FormaLms\lib\Get::Req('force_changepwd', DOTY_INT, 0));
-        if (Forma::user()->user_level == ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->user_level == ADMIN_GROUP_GODADMIN) {
             $userdata->level = FormaLms\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
         } else {
             $userdata->level = ADMIN_GROUP_USER;
@@ -575,7 +575,7 @@ class UsermanagementAdmController extends AdmController
 
             // Send alert:
             require_once _base_ . '/lib/lib.eventmanager.php';
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             $array_subst = [
                 '[url]' => FormaLms\lib\Get::site_url(),
@@ -607,11 +607,11 @@ class UsermanagementAdmController extends AdmController
             }
 
             // Increment the counter for users created by this admin:
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 $admin_pref = new AdminPreference();
-                $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                    $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                    $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $user_created_count = (int) $user_pref->getPreference('user_created_count');
                     ++$user_created_count;
                     $user_pref->setPreference('user_created_count', $user_created_count);
@@ -700,7 +700,7 @@ class UsermanagementAdmController extends AdmController
         if ($check_pwd && !FormaLms\lib\Get::cfg('demo_mode')) {
             $userdata->password = $new_password;
         }
-        if (Forma::user()->user_level == ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->user_level == ADMIN_GROUP_GODADMIN) {
             $userdata->level = FormaLms\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
         } else {
             $userdata->level = false;
@@ -729,9 +729,9 @@ class UsermanagementAdmController extends AdmController
         //TODO: EVT_LAUNCH (&)
         //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
-        require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-        $uinfo = Forma::aclm()->getUser($idst, false);
+        $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($idst, false);
 
         $array_subst = [
             '[url]' => FormaLms\lib\Get::site_url(),
@@ -748,7 +748,7 @@ class UsermanagementAdmController extends AdmController
 
         $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
-        $acl_manager = \Forma::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
         $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -783,10 +783,10 @@ class UsermanagementAdmController extends AdmController
             exit('Cannot del user during demo mode.');
         }
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $id_user = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_user > 0) {
-            if ($id_user == Forma::user()->getIdSt()) {
+            if ($id_user == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('cannot self delete')];
                 echo $this->json->encode($output);
 
@@ -795,7 +795,7 @@ class UsermanagementAdmController extends AdmController
 
             $userToDelete = $this->retrieveUserWithRoleInfo($id_user);
 
-            if (Forma::user()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
                 $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
                 echo $this->json->encode($output);
 
@@ -808,11 +808,11 @@ class UsermanagementAdmController extends AdmController
                     $output['total_deleted_users'] = $this->model->getDeletedUsersTotal();
                 }
                 // Increment the counter for users created by this admin:
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $admin_pref = new AdminPreference();
-                    $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                    $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                        $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                        $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         $user_created_count = (int) $user_pref->getPreference('user_created_count');
                         $user_created_count = $user_created_count - 1;
                         $user_pref->setPreference('user_created_count', $user_created_count);
@@ -836,7 +836,7 @@ class UsermanagementAdmController extends AdmController
     public function retrieveUserWithRoleInfo($userId)
     {
         require_once _base_ . '/lib/lib.acl.php';
-        $userInfo = new FormaUser($userId);
+        $userInfo = new \FormaLms\lib\FormaUser($userId);
         $acl = new FormaACL();
         $arrst = $acl->getUserAllST(false, '', $userId);
 
@@ -855,12 +855,12 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $output = [];
         $users = FormaLms\lib\Get::req('users', DOTY_STRING, '');
         if ($users != '') {
             //eliminates current user idst from list
-            $users = str_replace(Forma::user()->getIdSt(), '', $users);
+            $users = str_replace(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), '', $users);
             $users = str_replace(',,', ',', $users); //adjust commas
             $users_arr = explode(',', $users);
             $count_users = count($users_arr);
@@ -869,7 +869,7 @@ class UsermanagementAdmController extends AdmController
             foreach ($users_arr as $idst) {
                 $userToDelete = $this->retrieveUserWithRoleInfo($idst);
                 $users[] = $userToDelete;
-                if (Forma::user()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() === ADMIN_GROUP_ADMIN && $userToDelete->getUserLevelId() === ADMIN_GROUP_GODADMIN) {
                     $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
                     echo $this->json->encode($output);
 
@@ -894,11 +894,11 @@ class UsermanagementAdmController extends AdmController
                 }
 
                 // Increment the counter for users created by this admin:
-                if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                     $admin_pref = new AdminPreference();
-                    $pref = $admin_pref->getAdminRules(Forma::user()->getIdSt());
+                    $pref = $admin_pref->getAdminRules(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     if ($pref['admin_rules.limit_user_insert'] == 'on') {
-                        $user_pref = new UserPreferences(Forma::user()->getIdSt());
+                        $user_pref = new UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         $user_created_count = (int) $user_pref->getPreference('user_created_count');
                         $user_created_count = $user_created_count - $count_users;
                         $user_pref->setPreference('user_created_count', $user_created_count);
@@ -937,11 +937,11 @@ class UsermanagementAdmController extends AdmController
                 $output['success'] = $this->model->suspendUsers($idst);
                 $output['message'] = UIFeedback::pinfo(Lang::t('_OPERATION_SUCCESSFUL', 'standard'));
 
-                require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                $uinfo = Forma::aclm()->getUser($idst, false);
+                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($idst, false);
 
-                $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+                $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
 
                 $array_subst = [
                     '[url]' => FormaLms\lib\Get::site_url(),
@@ -958,7 +958,7 @@ class UsermanagementAdmController extends AdmController
 
                 $msg_composer->setBodyLangText('sms', '_EVENT_SUSPENDED_USER_TEXT_SMS', $array_subst);
 
-                $acl_manager = \Forma::user()->getAclManager();
+                $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -1025,7 +1025,7 @@ class UsermanagementAdmController extends AdmController
             if ($action == 0) {
                 $output['success'] = $this->model->suspendUsers($arr_users);
 
-                $acl_manager = \Forma::user()->getAclManager();
+                $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -1034,11 +1034,11 @@ class UsermanagementAdmController extends AdmController
                 $recipients = array_merge($recipients, $acl_manager->getGroupAllUser($permission_admin));
 
                 foreach ($arr_users as $idst) {
-                    require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                    $uinfo = Forma::aclm()->getUser($idst, false);
+                    $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($idst, false);
 
-                    $userid = Forma::aclm()->relativeId($uinfo[ACL_INFO_USERID]);
+                    $userid = \FormaLms\lib\Forma::getAclManager()->relativeId($uinfo[ACL_INFO_USERID]);
 
                     $array_subst = [
                         '[url]' => FormaLms\lib\Get::site_url(),
@@ -1243,8 +1243,8 @@ class UsermanagementAdmController extends AdmController
                             . Form::closeForm();
                     } else {
                         $folder_info = $this->model->getFolderById($id);
-                        $languages = Forma::langManager()->getAllLanguages(true); //getAllLangCode();
-                        $std_lang = getLanguage();
+                        $languages = \FormaLms\lib\Forma::langManager()->getAllLanguages(true); //getAllLangCode();
+                        $std_lang = Lang::get();
 
                         $template = (!empty($folder_info->associated_template) ? $folder_info->associated_template : getDefaultTemplate());
                         $template_arr = getTemplateList();
@@ -1366,7 +1366,7 @@ class UsermanagementAdmController extends AdmController
             $nodedata = $model->getFolderById($node);
             $node = [
                 'id' => $nodedata->idOrg,
-                'label' => $model->getFolderTranslation($nodedata->idOrg, getLanguage()),
+                'label' => $model->getFolderTranslation($nodedata->idOrg, Lang::get()),
                 'is_leaf' => (($nodedata->iRight - $nodedata->iLeft) == 1),
                 'count_content' => (int) (($nodedata->iRight - $nodedata->iLeft - 1) / 2),
             ];
@@ -1505,7 +1505,7 @@ class UsermanagementAdmController extends AdmController
                 $id_parent = 0;
             }
 
-            Events::trigger('core.orgchart.creating', ['node' => ['label' => ($code != '' ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, getLanguage()),
+            Events::trigger('core.orgchart.creating', ['node' => ['label' => ($code != '' ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, Lang::get()),
                 'is_leaf' => true,
                 'count_content' => 0,
             ]]);
@@ -1515,7 +1515,7 @@ class UsermanagementAdmController extends AdmController
                 $output['success'] = true;
                 $nodedata = [
                     'id' => $id,
-                    'label' => ($code != '' ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, getLanguage()),
+                    'label' => ($code != '' ? '[' . $code . '] ' : '') . $this->model->getFolderTranslation($id, Lang::get()),
                     'is_leaf' => true,
                     'count_content' => 0,
                 ];
@@ -1616,8 +1616,8 @@ class UsermanagementAdmController extends AdmController
         }
         if ($res) {
             $output['success'] = true;
-            //$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs[getLanguage()];
-            $output['new_name'] = $this->_formatFolderCode($id, $code) . $langs[getLanguage()];
+            //$output['new_name'] = ($code != "" ? '['.$code.'] ' : '').$langs [Lang::get()];
+            $output['new_name'] = $this->_formatFolderCode($id, $code) . $langs [Lang::get()];
 
             Events::trigger('core.orgchart.edited', ['node' => $this->model->getFolderById($id), 'old_node' => $old_node]);
         } else {
@@ -1668,7 +1668,7 @@ class UsermanagementAdmController extends AdmController
             require_once _adm_ . '/lib/lib.directory.php';
             require_once _adm_ . '/class.module/class.directory.php';
 
-            $aclm = Forma::user()->getAclManager();
+            $aclm = \FormaLms\lib\Forma::getAclManager();
             $selector = new UserSelector();
             $selector->use_suspended = true;
 
@@ -1680,7 +1680,7 @@ class UsermanagementAdmController extends AdmController
             } elseif ($save) {
                 $selection = $selector->getSelection($_POST);
 
-                require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
                 require_once _adm_ . '/modules/org_chart/tree.org_chart.php';
                 $treedborgdb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
@@ -1713,7 +1713,7 @@ class UsermanagementAdmController extends AdmController
                 //TODO: EVT_LAUNCH (&)
                 //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartAssignEditEvent::EVENT_NAME, $event);
 
-                $acl_manager = \Forma::user()->getAclManager();
+                $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
                 $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                 $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -1727,7 +1727,7 @@ class UsermanagementAdmController extends AdmController
                     if (!(count($folder_id) && (count($folder_id) > 1 || $id != reset($folder_id)))) {
                         require_once _base_ . '/lib/lib.eventmanager.php';
 
-                        $uinfo = Forma::aclm()->getUser($idst, false);
+                        $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($idst, false);
 
                         $array_subst = [
                             '[url]' => getCurrentDomain($id) ?: FormaLms\lib\Get::site_url(),
@@ -1820,8 +1820,8 @@ class UsermanagementAdmController extends AdmController
         $table->addHead($cont_h, $type_h);
 
         $fl = new FieldList();
-        $acl = Forma::user()->getACL();
-        $acl_man = Forma::user()->getAclManager();
+        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $body = '';
         $body .= Form::openForm('assignfieldgroup', 'ajax.adm_server.php?r=' . $this->link . '/assignfields_action');
@@ -1912,7 +1912,7 @@ class UsermanagementAdmController extends AdmController
         $nodedata = $this->model->getFolderById($id_org);
 
         $fl = new FieldList();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $count = 0;
         $all_fields = $fl->getAllFields();
@@ -1983,7 +1983,7 @@ class UsermanagementAdmController extends AdmController
         $id_org = FormaLms\lib\Get::req('id_org', DOTY_INT, -1);
         $success = false;
         if ($id_user > 0 && $id_org > 0) { //idst of the user must be valid and the orgbranch must not be the root
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $idst_org = $acl_man->getGroupST('oc_' . $id_org);
             $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
             //add to group
@@ -1993,10 +1993,10 @@ class UsermanagementAdmController extends AdmController
 
             // apply enroll rules
             $lang_code = $acl_man->getSettingValueOfUsers('ui.language', [$id_user]);
-            $lang_code = ($lang_code ? $lang_code : getDefaultLanguage());
+            $lang_code = ($lang_code ?: Lang::getDefault());
 
             $enrollrules = new EnrollrulesAlms();
-            $enrollrules->applyRules([$id_user], $lang_code, $id_org);
+            $enrollrules->applyRules('_USER_ASSIGNED_TO_TREE',[$id_user], $lang_code, $id_org);
             $enrollrules->applyRulesMultiLang('_USER_ASSIGNED_TO_TREE', [$id_user], $id_org);
         }
         $output = ['success' => $success];
@@ -2028,7 +2028,7 @@ class UsermanagementAdmController extends AdmController
             $success = true;
         }
         if ($id_user > 0 && $id_org > 0) { //idst of the user must be valid and the orgbranch must not be the root
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $idst_org = $acl_man->getGroupST('oc_' . $id_org);
             $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
             //cancel from group
@@ -2046,7 +2046,7 @@ class UsermanagementAdmController extends AdmController
 
             require_once _base_ . '/lib/lib.eventmanager.php';
 
-            $uinfo = Forma::aclm()->getUser($id_user, false);
+            $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
 
             $array_subst = [
                 '[url]' => FormaLms\lib\Get::site_url(),
@@ -2063,7 +2063,7 @@ class UsermanagementAdmController extends AdmController
 
             $msg_composer->setBodyLangText('sms', '_EVENT_CHANGE_NODE_USER_SBJ_SMS', $array_subst);
 
-            $acl_manager = \Forma::user()->getAclManager();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
             $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
             $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -2104,7 +2104,7 @@ class UsermanagementAdmController extends AdmController
             $output['list'] = [];
         }
         if ($users != '' && $id_org >= 0) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $idst_org = $acl_man->getGroupST('oc_' . $id_org);
             $idst_orgd = $acl_man->getGroupST('ocd_' . $id_org);
             $arr_users = explode(',', $users);
@@ -2130,7 +2130,7 @@ class UsermanagementAdmController extends AdmController
             //TODO: EVT_LAUNCH (&)
             //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementOrgChartRemoveEvent::EVENT_NAME, $event);
 
-            $acl_manager = \Forma::user()->getAclManager();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
             $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
             $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
 
@@ -2140,7 +2140,7 @@ class UsermanagementAdmController extends AdmController
             foreach ($arr_users as $idst) {
                 require_once _base_ . '/lib/lib.eventmanager.php';
 
-                $uinfo = Forma::aclm()->getUser($idst, false);
+                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($idst, false);
 
                 $array_subst = [
                     '[url]' => FormaLms\lib\Get::site_url(),
@@ -2248,7 +2248,7 @@ class UsermanagementAdmController extends AdmController
         $confirm_password = FormaLms\lib\Get::req('confirm_password', DOTY_STRING, '');
         $force_changepwd = FormaLms\lib\Get::req('force_changepwd', DOTY_INT, 0);
         $output = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if ($new_password == '' || $confirm_password == '') {
             $output['success'] = false;
@@ -2314,7 +2314,7 @@ class UsermanagementAdmController extends AdmController
         $output = ['users' => []];
         if ($query != '') {
             $users = $this->model->searchUsersByUserid($query, $results, true);
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             foreach ($users as $user) {
                 $_userid = $acl_man->relativeId($user->userid);
                 $output['users'][] = [
@@ -2354,9 +2354,9 @@ class UsermanagementAdmController extends AdmController
                 break;
 
             case 2:
-                $params['orgchart_list'] = $this->model->getOrgChartDropdownList(Forma::user()->getIdSt());
+                $params['orgchart_list'] = $this->model->getOrgChartDropdownList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
-                require_once Forma::inc(_base_ . '/lib/lib.upload.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.upload.php');
 
                 // ----------- file upload -----------------------------------------
                 if ($_FILES['file_import']['name'] == '') {
@@ -2546,7 +2546,7 @@ class UsermanagementAdmController extends AdmController
                 $params['table'] = $buffer;
 
                 // remove uploaded file:
-                require_once Forma::inc(_base_ . '/lib/lib.upload.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.upload.php');
                 sl_open_fileoperations();
                 unlink($filename);
                 sl_close_fileoperations();
@@ -2599,7 +2599,7 @@ class UsermanagementAdmController extends AdmController
         $output .= implode($separator, $head) . $line_end;
 
         if ($users != '') {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $arr_users = explode(',', $users);
             $arr_users = array_map(
                 function ($value) {
@@ -2648,14 +2648,14 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
         $id_user = FormaLms\lib\Get::req('id', DOTY_INT, -1);
         if ($id_user <= 0) {
             //no luck with idst? then try with userid
             $userid = FormaLms\lib\Get::req('userid', DOTY_STRING, '');
             if ($userid != '') {
-                $acl_man = Forma::user()->getACLManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();;
                 $id_user = $acl_man->getUserST($userid);
             }
 
@@ -2672,8 +2672,8 @@ class UsermanagementAdmController extends AdmController
 
         $profile = new UserProfile($id_user);
         $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
-        $admin_can_mod = ($this->permissions['mod_user'] && Forma::user()->getUserLevelId() == ADMIN_GROUP_ADMIN);
-        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN || $admin_can_mod) {
+        $admin_can_mod = ($this->permissions['mod_user'] && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_ADMIN);
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN || $admin_can_mod) {
             $profile->enableGodMode();
         }
         //$profile->setEndUrl('index.php?modname=directory&op=org_chart#user_row_'.$id_user);
@@ -2705,13 +2705,13 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
 
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         if ($id_user > 0) {
             $profile = new UserProfile($id_user);
             $profile->init('profile', 'framework', 'r=' . $this->link . '/editprofile&id_user=' . (int) $id_user, 'ap');
-            if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $profile->enableGodMode();
             }
 
@@ -2764,7 +2764,7 @@ class UsermanagementAdmController extends AdmController
         require_once _adm_ . '/lib/lib.field.php';
         $fman = new FieldList();
 
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $userid = $acl_man->relativeId($acl_man->getUserid($id_user));
 
@@ -2813,7 +2813,7 @@ class UsermanagementAdmController extends AdmController
 
         //format models' data
         $records = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_userid = $acl_man->relativeId($record->userid);
@@ -2888,7 +2888,7 @@ class UsermanagementAdmController extends AdmController
 
         //format models' data
         $records = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_userid = $acl_man->relativeId($record->userid);
@@ -3018,7 +3018,7 @@ class UsermanagementAdmController extends AdmController
             return;
         }
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $level = ADMIN_GROUP_USER;
 
         $arr_levels = $acl_man->getAdminLevels(); //index = idst; value = groupid;
@@ -3034,15 +3034,15 @@ class UsermanagementAdmController extends AdmController
             'level' => '',
         ];
 
-        $language = getDefaultLanguage();
-        $languages = Forma::langManager()->getAllLanguages();
+        $language = Lang::getDefault();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLanguages();
 
-        require_once Forma::inc(_base_ . '/lib/lib.platform.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.platform.php');
         $pman = &PlatformManager::createInstance(); // = new PlatformManager();
         $platforms = $pman->getPlatformList();
 
         require_once _adm_ . '/lib/lib.field.php';
-        $fman = new FieldList();
+        $fman = new \FieldList();
         $field_list = $fman->getFlatAllFields(array_keys($platforms));
         $fields_to_exclude = $fman->getFieldsByType('upload');
 
@@ -3136,7 +3136,7 @@ class UsermanagementAdmController extends AdmController
 
         if (!empty($field_properties)) {
             require_once _adm_ . '/lib/lib.field.php';
-            $fields = new FieldList();
+            $fields = new \FieldList();
 
             $selected_fields = array_keys($field_properties);
             $finfo = $fields->getFieldsFromArray($selected_fields);
@@ -3172,13 +3172,13 @@ class UsermanagementAdmController extends AdmController
         //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
         //$users = $event->getUsers();
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         //send email alert
         if (isset($sel_properties['send_alert']) && isset($sel_properties['password']) && !empty($info->password)) {
             $uma = new UsermanagementAdm();
 
-            $acl_manager = \Forma::user()->getAclManager();
+            $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
             $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
             $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -3186,9 +3186,9 @@ class UsermanagementAdmController extends AdmController
             $adminRecipients = $acl_manager->getGroupAllUser($permission_godadmin);
             $adminRecipients = array_merge($adminRecipients, $acl_manager->getGroupAllUser($permission_admin));
 
-            for ($i = 0, $iMax = count($users); $i < $iMax; ++$i) {
+            foreach ($users as $user){
                 $reg_code = null;
-                if ($nodes = $uma->getUserFolders($users[$i])) {
+                if ($nodes = $uma->getUserFolders($user)) {
                     $idst_oc = array_keys($nodes)[0];
 
                     if ($query = sql_query("SELECT idOrg FROM %adm_org_chart_tree WHERE idst_oc = $idst_oc LIMIT 1")) {
@@ -3198,7 +3198,7 @@ class UsermanagementAdmController extends AdmController
 
                 $array_subst = [
                     '[url]' => FormaLms\lib\Get::site_url(),
-                    '[userid]' => $acl_man->getUserid($users[$i]),
+                    '[userid]' => $acl_man->getUserid($user),
                     '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
                     '[password]' => $info->password,
                 ];
@@ -3215,17 +3215,17 @@ class UsermanagementAdmController extends AdmController
                     $msg_composer->setBodyLangText('sms', '_PASSWORD_CHANGED_SMS', ['[password]' => $info->password]);
                 }
 
-                createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $users[$i] . ' was modified',
-                    [$users[$i]], $msg_composer);
+                createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $user . ' was modified',
+                    [$user], $msg_composer);
 
-                $uinfo = Forma::aclm()->getUser($users[$i], false);
+                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user, false);
 
                 $array_subst = [
                     '[url]' => FormaLms\lib\Get::site_url(),
                     '[dynamic_link]' => getCurrentDomain($reg_code) ?: FormaLms\lib\Get::site_url(),
                     '[firstname]' => $uinfo[ACL_INFO_FIRSTNAME],
                     '[lastname]' => $uinfo[ACL_INFO_LASTNAME],
-                    '[username]' => $users[$i],
+                    '[username]' => $user,
                 ];
 
                 // message to user that is odified
@@ -3236,7 +3236,7 @@ class UsermanagementAdmController extends AdmController
 
                 $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
-                createNewAlert('UserModSuperAdmin', 'directory', 'edit', '1', 'User ' . $users[$i] . ' was modified',
+                createNewAlert('UserModSuperAdmin', 'directory', 'edit', '1', 'User ' . $user . ' was modified',
                     $adminRecipients, $msg_composer);
             }
         }
@@ -3245,8 +3245,8 @@ class UsermanagementAdmController extends AdmController
         if (isset($sel_properties['link_reset_password'])) {
             require_once _base_ . '/appCore/models/HomepageAdm.php';
             $homepageAdmModel = new HomepageAdm();
-            for ($i = 0, $iMax = count($users); $i < $iMax; ++$i) {
-                $res = $homepageAdmModel->sendLostPwd($acl_man->getUserid($users[$i]));
+            foreach ($users as $user){
+                $res = $homepageAdmModel->sendLostPwd($acl_man->getUserid($user));
             }
         }
 
@@ -3326,7 +3326,7 @@ class UsermanagementAdmController extends AdmController
      */
     protected function _canUseLevel($level_to_check)
     {
-        $my_level = Forma::user()->getUserLevelId();
+        $my_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($my_level == ADMIN_GROUP_GODADMIN) {
             return true;
         }

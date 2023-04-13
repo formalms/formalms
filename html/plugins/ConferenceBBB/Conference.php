@@ -73,9 +73,9 @@ class Conference extends \PluginConference
 
     public function insertRoom($idConference, $name, $start_date, $end_date, $maxparticipants)
     {
-        $acl_manager = &Forma::user()->getAclManager();
-        $display_name = Forma::user()->getUserName();
-        $u_info = $acl_manager->getUser(getLogUserId(), false);
+        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $display_name = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
+        $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
         $confkey = self::generateConfKey();
         $audiovideosettings = 1;
@@ -173,9 +173,9 @@ class Conference extends \PluginConference
 
         $conference = $conf->roomInfo($idConference);
 
-        $acl_manager = &Forma::user()->getAclManager();
-        $username = Forma::user()->getUserName();
-        $u_info = $acl_manager->getUser(getLogUserId(), false);
+        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $username = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
+        $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
 
         $query2 = 'SELECT * FROM ' . self::_getRoomTable() . " WHERE idConference = '" . $idConference . "'";

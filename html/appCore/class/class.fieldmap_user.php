@@ -55,7 +55,7 @@ class FieldMapUser extends FieldMap
         $res = [];
         $fl = new FieldList();
 
-        $acl_manager = Forma::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $user_groups = [$acl_manager->getGroupRegisteredId()];
 
         $pfx = ($with_prefix ? $this->getPrefix() . 'custom_' : '');
@@ -82,8 +82,8 @@ class FieldMapUser extends FieldMap
         // TODO: at this moment the function works only for user creation;
         // does not update the user if it already exists
 
-        $acl = &Forma::user()->getACL();
-        $acl_manager = &Forma::user()->getAclManager();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
 
         $data = [];
 

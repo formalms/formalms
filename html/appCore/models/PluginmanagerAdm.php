@@ -22,7 +22,7 @@ class PluginmanagerAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->table = '%adm_plugin';
         $this->plugin_core = [
             'FormaAuth',
@@ -381,7 +381,7 @@ class PluginmanagerAdm extends Model
                         $q = sql_query($qtxt);
                         if (!$q) {
                             $res['log'] .= sql_error() . "\n";
-                            Forma::addError(sql_error());
+                            \FormaLms\lib\Forma::addError(sql_error());
                             $res['ok'] = false;
                         }
                     }

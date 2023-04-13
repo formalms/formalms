@@ -391,7 +391,7 @@ class Track_Object
             list($idCourse) = sql_fetch_row(sql_query($query));
             //}
             $useridst = $this->idUser;
-            require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
             $repoDb = new OrgDirDb($idCourse);
             $item = $repoDb->getFolderById($this->idReference);
             $values = $item->otherValues;

@@ -149,18 +149,18 @@ function event_user_view($op)
                 $rs_test = sql_query('SELECT channel'
                                 . '  FROM ' . $GLOBALS['prefix_fw'] . '_event_user '
                                 . " WHERE idEventMgr = '" . $idEventMgr . "'"
-                                . "   AND idst = '" . Forma::user()->getIdSt() . "'");
+                                . "   AND idst = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'");
 
                 $channels = isset($arr_channel[$idEventMgr]) ? (implode(',', $arr_channel[$idEventMgr])) : '';
                 if (sql_num_rows($rs_test) == 1) {
                     $query = 'UPDATE ' . $GLOBALS['prefix_fw'] . '_event_user '
                             . " SET channel='" . $channels . "'"
                             . " WHERE idEventMgr = '" . (int) $idEventMgr . "'"
-                            . "   AND idst = '" . Forma::user()->getIdSt() . "'";
+                            . "   AND idst = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
                 } else {
                     $query = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event_user '
                             . ' (idEventMgr,idst,channel) VALUES'
-                            . " ('" . (int) $idEventMgr . "','" . Forma::user()->getIdSt() . "','" . $channels . "' )";
+                            . " ('" . (int) $idEventMgr . "','" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "','" . $channels . "' )";
                 }
                 $result = sql_query($query);
                 sql_free_result($rs_test);
@@ -230,7 +230,7 @@ function event_user_view($op)
                 $query = 'SELECT channel '
                         . ' FROM ' . $GLOBALS['prefix_fw'] . '_event_user'
                         . " WHERE idEventMgr='" . $idEventMgr . "'"
-                        . "   AND idst='" . Forma::user()->getIdSt() . "'";
+                        . "   AND idst='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
                 $rs_user = sql_query($query);
                 if (sql_num_rows($rs_user) == 1) {
                     list($user_channel) = sql_fetch_row($rs_user);

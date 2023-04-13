@@ -267,9 +267,8 @@ class MyFile
 
     public function insertFile($id_file, $area, $title, $description, $file_descriptor, $file_policy)
     {
-        require_once _base_ . '/lib/lib.user.php';
         require_once _base_ . '/lib/lib.user_profile.php';
-        $user_data = new FormaUser(getLogUserId());
+        $user_data = \FormaLms\lib\FormaUser::getCurrentUser();
         $user_profile_data = new UserProfileData();
 
         $file_name = '';
@@ -281,8 +280,8 @@ class MyFile
         if (!$file_size) {
             $file_size = 0;
         }
-        $total_used_quota = $file_size + $user_profile_data->getUsedQuota(getLogUserId());
-        $max_quota = ($user_profile_data->getQuotaLimit(getLogUserId())) * 1024 * 1024;
+        $total_used_quota = $file_size + $user_profile_data->getUsedQuota(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $max_quota = ($user_profile_data->getQuotaLimit(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) * 1024 * 1024;
         if ($total_used_quota <= $max_quota) {
             if (!$id_file) {
                 if ($file_name == '') {
@@ -335,8 +334,8 @@ class MyFile
     public function deleteFile($id_file)
     {
         require_once _base_ . '/lib/lib.upload.php';
-        require_once _base_ . '/lib/lib.user.php';
-        $user_data = new FormaUser();
+
+        $user_data = new \FormaLms\lib\FormaUser();
 
         $file_info = $this->getFileInfo($id_file);
         sl_open_fileoperations();
@@ -637,7 +636,7 @@ class MyFileSelector
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
 
-        $file_man = new MyFile(getLogUserId());
+        $file_man = new MyFile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $tab_man = new TabView('myfiles', '');
 
         $lang = &FormaLanguage::createInstance('myfiles');

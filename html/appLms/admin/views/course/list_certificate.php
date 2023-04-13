@@ -14,8 +14,8 @@ thead input {
 
 <?php
 
-require_once Forma::inc(_lms_ . '/lib/lib.subscribe.php');
-require_once Forma::inc(_lib_ . '/formatable/include.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.subscribe.php');
+require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
 Util::get_js('../addons/jquery/datatables/Buttons-1.5.4/js/buttons.colVis.min.js', true, true);
 Util::get_js('../appLms/admin/modules/certificate/certificate.js', true, true);

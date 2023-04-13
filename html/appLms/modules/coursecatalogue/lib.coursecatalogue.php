@@ -47,7 +47,7 @@ function displayCourseList(&$url, $order_type)
     $nav_bar->setLink($nav_url);
     $ini = $nav_bar->getSelectedElement();
 
-    $profile = new UserProfile(getLogUserId());
+    $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $profile->init('profile', 'framework', '', 'ap');
     $profile->addStyleSheet('lms');
 
@@ -81,7 +81,7 @@ function displayCourseList(&$url, $order_type)
     $limit_course = ' LIMIT ' . $ini . ', ' . FormaLms\lib\Get::sett('visuItem');
     $where_course .= " AND c.course_type <> 'assessment'";
 
-    if (Forma::user()->isAnonymous()) {
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $where_course .= ' AND c.show_rules = 0';
     } else {
         $where_course .= ' AND c.show_rules  <> 2';
@@ -89,11 +89,11 @@ function displayCourseList(&$url, $order_type)
 
     // maybe a must apply some filter to remove from the list some courses --------------
     $cat_man = new Catalogue_Manager();
-    $catalogues = &$cat_man->getUserAllCatalogueId(getLogUserId());
+    $catalogues = &$cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     // at least one catalogue is assigned to this user
     if (!empty($catalogues)) {
-        $cat_courses = $cat_man->getAllCourseOfUser(getLogUserId());
+        $cat_courses = $cat_man->getAllCourseOfUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if (empty($cat_courses)) {
             $where_course .= ' AND 0 ';
         } else {
@@ -104,14 +104,14 @@ function displayCourseList(&$url, $order_type)
     }
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    if (!Forma::user()->isAnonymous()) {
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
-            $arr_assessment = $pa_man->getUserAssessmentSubsription(Forma::user()->getArrSt());
+            $arr_assessment = $pa_man->getUserAssessmentSubsription(\FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
 
             $report = new CourseReportManager();
-            $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
+            $user_result = $report->getAllUserFinalScore(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arr_assessment['course_list']);
 
             $rule_man = new AssessmentRule();
             $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
@@ -140,7 +140,7 @@ function displayCourseList(&$url, $order_type)
         $filter_date_end = Format::dateDb($filter_date_end, 'date') . ' 00:00:00';
     }
 
-    $all_lang = Forma::langManager()->getAllLangCode();
+    $all_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     if (must_search_filter()) {
         if (trim($s_searched) != '') {
@@ -220,8 +220,8 @@ function displayCourseList(&$url, $order_type)
 
     // retrive course subscription -----------------------------------------------------
     $man_courseuser = new Man_CourseUser();
-    $usercourses = $man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
-    $user_score = $man_courseuser->getUserCourseScored(getLogUserId());
+    $usercourses = $man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
+    $user_score = $man_courseuser->getUserCourseScored(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     require_once _lms_ . '/lib/lib.orgchart.php';
     $first_is_scorm = OrganizationManagement::objectFilter(array_keys($usercourses), 'scormorg');
@@ -367,15 +367,15 @@ function displayCoursePathList(&$url, $selected_tab)
     $cat_man = new Catalogue_Manager();
     $man_courseuser = new Man_CourseUser();
 
-    $profile = new UserProfile(getLogUserId());
+    $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $profile->init('profile', 'framework', '', 'ap');
     $profile->addStyleSheet('lms');
 
-    $catalogues = &$cat_man->getUserAllCatalogueId(getLogUserId());
+    $catalogues = &$cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     if (!empty($catalogues)) {
         // at least one catalogue is assigned to this user
-        $cat_path = &$cat_man->getAllCoursepathOfUser(getLogUserId());
+        $cat_path = &$cat_man->getAllCoursepathOfUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if (!empty($cat_path)) {
             $path_man->filterInPath($cat_path);
         }
@@ -383,13 +383,13 @@ function displayCoursePathList(&$url, $selected_tab)
         $path_man->filterInPath([0]);
     }
 
-    if (!Forma::user()->isAnonymous()) {
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         if (!$session->has('cp_assessment_effect')) {
             $pa_man = new AssessmentList();
-            $arr_assessment = $pa_man->getUserAssessmentSubsription(Forma::user()->getArrSt());
+            $arr_assessment = $pa_man->getUserAssessmentSubsription(\FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
 
             $report = new CourseReportManager();
-            $user_result = $report->getAllUserFinalScore(getLogUserId(), $arr_assessment['course_list']);
+            $user_result = $report->getAllUserFinalScore(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arr_assessment['course_list']);
 
             $rule_man = new AssessmentRule();
             $ass_elem = $rule_man->getCompleteEffectListForAssessmentWithUserResult($arr_assessment['course_list'], $user_result);
@@ -418,8 +418,8 @@ function displayCoursePathList(&$url, $selected_tab)
     $path_slot = $path_man->getPathSlot(array_keys($coursepath));
 
     // fin user subscription needed ---------------------------------------------------
-    $user_paths = &$path_man->getUserSubscriptionsInfo(getLogUserId(), false);
-    $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
+    $user_paths = &$path_man->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
+    $usercourses = &$man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
 
     // find course basilar information ------------------------------------------------
     $course_info = $course_man->getAllCourses(false, false, $courses['all_items'], true);
@@ -796,7 +796,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
         if ($has_edition) {
             list($edition_for_enter) = sql_fetch_row(sql_query('SELECT edition_id'
                                                                     . ' FROM %lms_courseuser'
-                                                                    . " WHERE idUser = '" . getLogUserId() . "'"
+                                                                    . " WHERE idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'"
                                                                     . " AND idCourse = '" . $cinfo['idCourse'] . "'"
                                                                     . ' ORDER BY edition_id DESC'
                                                                     . ' LIMIT 0,1'));
@@ -919,7 +919,7 @@ function searchForm(&$url, &$lang)
 {
     //$filter_type = get_searched('filter_type', array('free'=>1, 'editions'=>1, 'sale'=>1));
 
-    $langs = Forma::langManager()->getAllLangCode();
+    $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
     $all_lang = ['all' => $lang->def('_ALL_LANGUAGE')];
     $all_lang = array_merge($all_lang, $langs);
 
@@ -988,7 +988,7 @@ function relationWithCourse($id_course, &$course, $uc_details, $edition_id = fal
 
     $course['enrolled'] = $enrolled;
 
-    $base_link = 'index.php?modname=' . (Forma::user()->isAnonymous() ? 'login' : 'coursecatalogue') . '&op=';
+    $base_link = 'index.php?modname=' . (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() ? 'login' : 'coursecatalogue') . '&op=';
 
     $bought_items = &getEcomItems();
     $product_type = ($edition_id !== false ? 'course_edition' : 'course');
@@ -1270,7 +1270,7 @@ function getSubscribeActionLink($id_course, $course, &$lang, $edition_id = false
     $product_type = ($edition_id !== false ? 'course_edition' : 'course');
     $search_item = ($edition_id !== false ? $product_type . '_' . $edition_id : $product_type . '_' . $id_course);
 
-    if (isUserCourseSubcribed(getLogUserId(), $id_course, $edition_id)) {
+    if (isUserCourseSubcribed(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, $edition_id)) {
         $res .= $lang->def('_SUBSCRIBED_T');
     } elseif ($course['subscribe_method'] == 1 || $course['subscribe_method'] == 2 || $course['subscribe_method'] == 3) {
         $ecom_type = getPLSetting('ecom', 'ecom_type', 'none');
@@ -1324,7 +1324,7 @@ function loadEcomItems()
         require_once $GLOBALS['where_ecom'] . '/admin/modules/reservation/lib.reservation.php';
 
         $res = [];
-        $user_id = getLogUserId();
+        $user_id = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         // --- Transactions:  ------------------------------------
 

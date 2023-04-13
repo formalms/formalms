@@ -31,7 +31,7 @@ class DashboardLms extends Model
     public function __construct()
     {
         parent::__construct();
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->dashboardSettingsModel = new DashboardsettingsAdm();
         $this->layouts = $this->dashboardSettingsModel->getLayouts();
     }

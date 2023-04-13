@@ -40,8 +40,8 @@ class DashboardBlockWelcomeLms extends DashboardBlockLms
     public function getViewData()
     {
         $data = $this->getCommonViewData();
-        $acl_man = Forma::user()->getAclManager();
-        $user = $acl_man->getUser(Forma::user()->idst, null);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $user = $acl_man->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), null);
         $data['data'] = [
             'firstname' => $user[2],
             'lastname' => $user[3],

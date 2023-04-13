@@ -36,7 +36,7 @@ class FormaOrgchartNotifier extends FormaEventConsumer
             case 'UserDel':
                 $id_user = $event->getProperty('userdeleted');
                 // remove user from associated
-                $acl_man = &Forma::user()->getAclmanager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $acl_man->removeFromAllGroup($id_user);
              break;
         }

@@ -21,7 +21,7 @@ class CoursestatsLms extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->tables = [
             'organization' => '%lms_organization',
             'commontrack' => '%lms_commontrack',
@@ -280,7 +280,7 @@ class CoursestatsLms extends Model
         if ($res) {
             $scores = $this->getLOScores($id_course, $id_user); //actually only tests can be scored
 
-            require_once Forma::inc(_lms_ . '/class.module/track.object.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
 
             foreach ($res as $obj) {
                 if (((bool) $obj['visible'] === false) && $export) {
@@ -639,7 +639,7 @@ class CoursestatsLms extends Model
             list($type) = $this->db->fetch_row($res);
         }
         if (is_array($types) && isset($types[$type])) {
-            require_once Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileName);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileName);
             $classname = $types[$type]->className;
             $output = new $classname($id_lo);
         }
@@ -667,7 +667,7 @@ class CoursestatsLms extends Model
             list($type) = $this->db->fetch_row($res);
         }
         if (is_array($types) && isset($types[$type])) {
-            require_once Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileNameTrack);
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $types[$type]->fileNameTrack);
             $classname = $types[$type]->classNameTrack;
             $output = new $classname($id_track);
         }

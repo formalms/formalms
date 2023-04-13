@@ -11,7 +11,6 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 
 
 require_once _base_ . '/lib/lib.json.php';
-require_once _base_ . '/lib/lib.docebo.php';
 require_once _base_ . '/i18n/lib.format.php';
 require_once _base_ . '/i18n/lib.lang.php';
 require_once _base_ . '/lib/layout/lib.layout.php';

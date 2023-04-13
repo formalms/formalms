@@ -73,8 +73,8 @@ class GamesLmsController extends LmsController
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new GamesAlms();
-        $games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Forma::user()->getId(), [
-                    'viewer' => Forma::user()->getArrSt(),
+        $games = $model->findAllUnread(0, 0, 'start_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), [
+                    'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
         ]);
         foreach ($games as $id => $games) {
             $game['start_date'] = Format::date($game['start_date'], 'date');
@@ -112,8 +112,8 @@ class GamesLmsController extends LmsController
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'asc');
 
         $model = new GamesAlms();
-        $games = $model->findAllReaded(0, 0, 'start_date', 'DESC', Forma::user()->getId(), [
-                    'viewer' => Forma::user()->getArrSt(),
+        $games = $model->findAllReaded(0, 0, 'start_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), [
+                    'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
         ]);
         $result = [
             'totalRecords' => count($games),
@@ -135,8 +135,8 @@ class GamesLmsController extends LmsController
     public function newTask()
     {
         $model = new GamesAlms();
-        $games = $model->findAllUnread(0, 0, 'start_date', 'DESC', Forma::user()->getId(), [
-                    'viewer' => Forma::user()->getArrSt(),
+        $games = $model->findAllUnread(0, 0, 'start_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), [
+                    'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
         ]);
         $this->render('games', [
             'games' => $games,
@@ -146,8 +146,8 @@ class GamesLmsController extends LmsController
     public function historyTask()
     {
         $model = new GamesAlms();
-        $games = $model->findAllReaded(0, 0, 'start_date', 'DESC', Forma::user()->getId(), [
-                    'viewer' => Forma::user()->getArrSt(),
+        $games = $model->findAllReaded(0, 0, 'start_date', 'DESC', \FormaLms\lib\FormaUser::getCurrentUser()->getId(), [
+                    'viewer' => \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt(),
         ]);
         $this->render('games', [
             'games' => $games,
@@ -158,7 +158,7 @@ class GamesLmsController extends LmsController
     {
         $id_game = FormaLms\lib\Get::req('id_game', DOTY_INT, 0);
         $model = new GamesAlms();
-        $game = $model->findByPk($id_game, Forma::user()->getArrSt());
+        $game = $model->findByPk($id_game, \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
 
         if ($game != false) {
             switch ($game['type_of']) {
@@ -178,13 +178,13 @@ class GamesLmsController extends LmsController
     {
         $id_game = FormaLms\lib\Get::req('id_game', DOTY_INT, 0);
         $model = new GamesAlms();
-        $game = $model->findByPk($id_game, Forma::user()->getArrSt());
+        $game = $model->findByPk($id_game, \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt());
 
         YuiLib::load('base,charts');
 
         $this->render('standings', [
             'game' => $game,
-            'track' => $model->getUserStandings($game['id_game'], getLogUserId()),
+            'track' => $model->getUserStandings($game['id_game'], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()),
             'standings' => $model->getStandings($game['id_game'], 0, 30),
             'chart_data' => $this->json->encode($model->getStandingsChartData($game['id_game'])),
         ]);

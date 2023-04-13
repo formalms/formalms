@@ -42,8 +42,8 @@ class MailconfigAdmController extends AdmController
 
 
     public function show() {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
+        if (\FormaLms\lib\Forma::errorsExists()) {
+            UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
         $params['title'] = $this->title;
@@ -55,8 +55,8 @@ class MailconfigAdmController extends AdmController
 
 
     public function insert() {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
+        if (\FormaLms\lib\Forma::errorsExists()) {
+            UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
         $params['title'] = Lang::t('_INSERT', 'standard');
@@ -67,8 +67,8 @@ class MailconfigAdmController extends AdmController
     }
 
     public function edit() {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
+        if (\FormaLms\lib\Forma::errorsExists()) {
+            UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
         $params['title'] = Lang::t('_MOD', 'standard');

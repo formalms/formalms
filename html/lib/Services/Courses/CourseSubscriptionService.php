@@ -5,6 +5,8 @@ namespace FormaLms\lib\Services\Courses;
 
 
 require_once _lms_.'/lib/lib.course.php';
+
+use FormaLms\lib\Forma;
 use FormaLms\lib\Get;
 
 class CourseSubscriptionService
@@ -18,7 +20,7 @@ class CourseSubscriptionService
 
     protected $reachedMaxUserSubscribed = false;
 
-    protected $doceboUser;
+    protected $formaUser;
 
     protected $session;
 
@@ -27,7 +29,7 @@ class CourseSubscriptionService
     public function __construct() {
 
         $this->baseModel = new \SubscriptionAlms();
-        $this->doceboUser = \Forma::user();
+        $this->doceboUser = \FormaLms\lib\FormaUser::getCurrentUser();
         $this->permissions = [
             'subscribe_course' => checkPerm('subscribe', true, 'course', 'lms'),
             'subscribe_coursepath' => checkPerm('subscribe', true, 'coursepath', 'lms'),
@@ -52,7 +54,7 @@ class CourseSubscriptionService
         } elseif (!$this->checkAdminLimit()) {
 
             $this->setResponse('error',
-                Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'),
+                \Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'),
                 'index.php?r=' . self::LINK_COURSE . '/show',
                 'invalid'
             );
@@ -79,7 +81,7 @@ class CourseSubscriptionService
         }
         
        
-        $userSelected = $this->baseModel->getAclManager()->getAllUsersFromSelection($selection);
+        $userSelected = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromSelection($selection);
         $userAlredySubscribed = $this->baseModel->loadUserSelectorSelection();
         $userSelected = array_diff($userSelected, $userAlredySubscribed);
 
@@ -94,7 +96,7 @@ class CourseSubscriptionService
                 if ($subscribedCount + $toSubscribe > $preference['admin_rules.max_course_subscribe']) {
                   
                     $this->setResponse('error',
-                        Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'),
+                        \Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'),
                         'index.php?r=' . self::LINK_COURSE . '/show',
                         'invalid'
                     );
@@ -111,7 +113,7 @@ class CourseSubscriptionService
             $userSelected = array_intersect($userSelected, $adminUsers);
         }
 
-        $userSelected = $this->baseModel->getAclManager()->getUsersFromMixedIdst($userSelected);
+        $userSelected = \FormaLms\lib\Forma::getAclManager()->getUsersFromMixedIdst($userSelected);
         if (count($userSelected) == 0) {
 
             $this->setResponse('error',
@@ -127,10 +129,10 @@ class CourseSubscriptionService
         $dateBeginValidity = $selDateBeginValidity ? $params['set_date_begin_validity'] : false;
         $dateExpireValidity = $selDateExpireValidity ? $params['set_date_expire_validity'] : false;
         if ($dateBeginValidity) {
-            $dateBeginValidity = Format::dateDb($dateBeginValidity, 'date');
+            $dateBeginValidity = \Format::dateDb($dateBeginValidity, 'date');
         }
         if ($dateExpireValidity) {
-            $dateExpireValidity = Format::dateDb($dateExpireValidity, 'date');
+            $dateExpireValidity = \Format::dateDb($dateExpireValidity, 'date');
         }
 
         $selectLevelMode = $params['select_level_mode'] ?? '';
@@ -143,9 +145,9 @@ class CourseSubscriptionService
                     $canSubscribe = true;
                     $subscribeMethod = $courseInfo['subscribe_method'];
                     if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                        $limitedSubscribe = $this->doceboUser->preference->getAdminPreference('admin_rules.limit_course_subscribe');
-                        $maxSubscribe = $this->doceboUser->preference->getAdminPreference('admin_rules.max_course_subscribe');
-                        $directSubscribe = $this->doceboUser->preference->getAdminPreference('admin_rules.direct_course_subscribe');
+                        $limitedSubscribe = $this->doceboUser->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+                        $maxSubscribe = $this->doceboUser->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+                        $directSubscribe = $this->doceboUser->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
                         if ($limitedSubscribe == 'on') {
                             $limitedSubscribe = true;
@@ -165,11 +167,11 @@ class CourseSubscriptionService
 
                     if ($canSubscribe) {
                    
-                        $doceboCourse = new \FormaCourse($idCourse);
+                        $formaCourse = new \FormaCourse($courseId);
 
-                        $levelIdst = $doceboCourse->getCourseLevel($idCourse);
+                        $levelIdst = $formaCourse->getCourseLevel($courseId);
                         if (count($levelIdst) == 0 || $levelIdst[1] == '') {
-                            $levelIdst = $doceboCourse->createCourseLevel($idCourse);
+                            $levelIdst = \FormaCourse::createCourseLevel($courseId);
                         }
 
                         $waiting = 0;
@@ -191,7 +193,7 @@ class CourseSubscriptionService
                                 if ($this->baseModel->subscribeUser($idUser, 3, $waiting, $dateBeginValidity, $dateExpireValidity)) {
                                     --$maxSubscribe;
                                 } else {
-                                    $this->baseModel->getAclManager()->removeFromGroup($levelIdst[3], $idUser);
+                                    \FormaLms\lib\Forma::getAclManager()->removeFromGroup($levelIdst[3], $idUser);
                                     $result = false;
                                 }
                             }
@@ -243,7 +245,7 @@ class CourseSubscriptionService
                                 createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$userId], $msgComposer, $sendAlert);
 
                                 if ($courseInfo['sendCalendar'] && $courseInfo['course_type'] == 'classroom') {
-                                    $uinfo = \Forma::aclm()->getUser($userId, false);
+                                    $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($userId, false);
                                     $idDate = 0;
                                     
                                     switch($courseType) {
@@ -392,7 +394,7 @@ class CourseSubscriptionService
 
     protected function _addToCourseGroup($idGroup, $idUser)
     {
-        \Forma::aclm()->addToGroup($idGroup, $idUser);
+        \FormaLms\lib\Forma::getAclManager()->addToGroup($idGroup, $idUser);
     }
 
     public function getSubscribed($courseId, $courseType) {
@@ -418,25 +420,25 @@ class CourseSubscriptionService
     public function checkSelection($selection, $params=[]) {
         
 
-        $userSelected = $this->baseModel->getAclManager()->getAllUsersFromSelection($selection); //$acl_man->getAllUsersFromIdst($_selection);
+        $userSelected = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromSelection($selection); //$acl_man->getAllUsersFromIdst($_selection);
     
 
         if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new \AdminPreference();
             $adminTree = $adminManager->getAdminTree($this->doceboUser->getIdST());
-            $adminUsers = $this->acl_man->getAllUsersFromIdst($adminTree);
+            $adminUsers = Forma::getAclManager()->getAllUsersFromIdst($adminTree);
 
             $userSelected = array_intersect($userSelected, $adminUsers);
 
             $toSubscribe = count($userSelected);
 
             if ($adminTree['admin_rules.limit_course_subscribe'] == 'on') {
-                $userPref = new \UserPreferences(Forma::user()->getIdSt());
+                $userPref = new \UserPreferences(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 $subscribedCount = $userPref->getPreference('user_subscribed_count');
                 if ($subscribedCount + $toSubscribe > $adminTree['admin_rules.max_course_subscribe']) {
                     $this->setResponse('error',
-                        Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'),
+                        \Lang::t('_SUBSCRIBE_LIMIT_REACHED', 'subscribe'),
                         'index.php?r=' . self::LINK_COURSE . '/show',
                         'invalid'
                     );
@@ -448,7 +450,7 @@ class CourseSubscriptionService
         }
 
         if (count($userSelected) == 0) {
-            Util::jump_to('index.php?r=adm/userselector/show&instance=multiplecoursesubscription');
+            \Util::jump_to('index.php?r=adm/userselector/show&instance=multiplecoursesubscription');
         }
 
         return $userSelected;

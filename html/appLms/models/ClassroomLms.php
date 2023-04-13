@@ -89,7 +89,7 @@ class ClassroomLms extends Model
         $conditions[] = ' c.course_type = ":course_type" ';
         $params[':course_type'] = 'classroom';
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = $db->query(
             'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.lang_code, c.difficult, '
             . '	c.subscribe_method, c.date_begin, c.date_end, c.max_num_subscribe, c.create_date, '
@@ -220,7 +220,7 @@ class ClassroomLms extends Model
     public function getFilterYears($id_user)
     {
         $output = [0 => Lang::t('_ALL', 'standard')];
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = 'SELECT DISTINCT YEAR(dd.date_begin) AS inscr_year '
             . ' FROM %lms_course_date_user AS du JOIN %lms_course_date_day AS dd '
             . ' ON (du.id_date = dd.id_date) '
@@ -242,7 +242,7 @@ class ClassroomLms extends Model
             return false;
         }
         $output = [];
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $date_1 = $year . '-01-01 00:00:00';
         $date_2 = $year . '-12-31 23:59:59';
         $query = 'SELECT DISTINCT d.id_course '

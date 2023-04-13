@@ -10,6 +10,10 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+namespace FormaLms\lib;
+
+use FormaLms\db\DbConn;
+use FormaLms\Exceptions\PathNotFoundException;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -18,10 +22,99 @@ if (!class_exists('Model')) {
 }
 
 require_once _lib_ . '/lib.pluginmanager.php';
-require_once _base_ . '/Exceptions/PathNotFoundException.php';
 
 class Forma
 {
+    private static ?Forma $instance = null;
+
+    private \FormaACL $acl;
+
+    private \FormaACLManager $aclManager;
+
+    public static function getInstance(): Forma
+    {
+        if (self::$instance === null) {
+            $c = __CLASS__;
+            self::$instance = new $c();
+        }
+
+        return self::$instance;
+    }
+
+    public function __construct()
+    {
+        $this->acl = new \FormaACL();
+        $this->aclManager = $this->acl->getACLManager();
+    }
+
+    /**
+     * @return\FormaACL
+     */
+    public function acl():\FormaACL
+    {
+        return $this->acl;
+    }
+
+    /**
+     * @return\FormaACLManager
+     */
+    public function aclManager():\FormaACLManager
+    {
+        return $this->aclManager;
+    }
+
+    public static function getAcl()
+    {
+        return self::getInstance()->acl();
+    }
+
+    /**
+     * Return an object that describe the current aclmanager.
+     *
+     * @return\FormaACLManager
+     */
+    public static function getAclManager()
+    {
+        return self::getInstance()->aclManager();
+    }
+
+    public static function setCourse($id_course)
+    {
+        require_once _lms_ . '/lib/lib.course.php';
+        $GLOBALS['course_descriptor'] = new \FormaCourse($id_course);
+    }
+
+    /**
+     * Return an object that describe the current user logged in.
+     *
+     * @return bool|\FormaCourse
+     */
+    public static function course()
+    {
+        return $GLOBALS['course_descriptor'] ?? false;
+    }
+
+    /**
+     * Return the current database connector handler.
+     *
+     * @return DbConn
+     */
+    public static function db()
+    {
+        return \FormaLms\db\DbConn::getInstance();
+    }
+
+    /**
+     * Return an object that describe the system languages.
+     *
+     * @return \FormaLangManager
+     */
+    public static function langManager()
+    {
+        return \FormaLangManager::getInstance();
+    }
+
+
     public static function usePlugins()
     {
         return empty($GLOBALS['notuse_plugin']) && empty(\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('notuse_plugin'));
@@ -29,7 +122,7 @@ class Forma
 
     public static function useCustomScripts()
     {
-        return FormaLms\lib\Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty(\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('notuse_customscript'));
+        return Get::cfg('enable_customscripts', false) && empty($GLOBALS['notuse_customscript']) && empty(Session\SessionManager::getInstance()->getSession()->get('notuse_customscript'));
     }
 
     /**
@@ -81,7 +174,7 @@ class Forma
         }
 
         if (self::usePlugins()) {
-            $plugins = PluginManager::get_all_plugins();
+            $plugins = \PluginManager::get_all_plugins();
             foreach ($plugins as $plugin) {
                 if(isset($plugin['name'])) {
                     $plugin_folder = _plugins_ . '/' . $plugin['name'];
@@ -107,24 +200,24 @@ class Forma
     public static function addError(string $error): string
     {
 
-        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error', $error);
+        Session\SessionManager::getInstance()->getSession()->getFlashBag()->add('error', $error);
 
         return $error;
     }
 
     public static function removeErrors(): void
     {
-        \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->set('error', []);
+        Session\SessionManager::getInstance()->getSession()->getFlashBag()->set('error', []);
     }
 
     public static function errorsExists(): bool
     {
-        return \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->has('error');
+        return Session\SessionManager::getInstance()->getSession()->getFlashBag()->has('error');
     }
 
     public static function getErrors(): array
     {
-        $errors = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
+        $errors = Session\SessionManager::getInstance()->getSession()->getFlashBag()->get('error');
         return $errors;
     }
 

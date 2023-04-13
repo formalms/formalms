@@ -20,8 +20,8 @@ class PrivacypolicyAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->acl_man = Forma::user()->getACLManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();;
         parent::__construct();
     }
 
@@ -144,7 +144,7 @@ class PrivacypolicyAdm extends Model
 
         //initialize output and variables
         $output = false;
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         $query = "INSERT INTO %adm_privacypolicy (name) VALUES ('" . $name . "')";
         $res = $this->db->query($query);
@@ -181,7 +181,7 @@ class PrivacypolicyAdm extends Model
 
         //initialize output and variables
         $output = false;
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         $query = "UPDATE %adm_privacypolicy SET name = '" . $name . "', lastedit_date = '" . date('Y-m-d H:i:s') . "' WHERE id_policy = " . (int) $id_policy;
         $res = $this->db->query($query);
@@ -243,7 +243,7 @@ class PrivacypolicyAdm extends Model
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
             //initialize output
-            $lang_codes = Forma::langManager()->getAllLangCode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             $output = [];
             foreach ($lang_codes as $lang_code) {
                 $output[$lang_code] = '';

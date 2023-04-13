@@ -1,6 +1,6 @@
 <?php
 
-include Forma::inc(_lib_ . '/formatable/include.php');
+include \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/views/coursestats/coursestats.js', true, true);
 
 echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));

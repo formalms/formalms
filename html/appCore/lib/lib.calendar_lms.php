@@ -62,7 +62,7 @@ class FormaCal_lms extends FormaCal_core
             $where .= "start_date>='" . $start_date . "' AND start_date<='" . $end_date . "'";
         }
 
-        $query = 'SELECT a.* FROM ' . $GLOBALS['prefix_fw'] . '_calendar AS a,' . $GLOBALS['prefix_lms'] . "_calendar AS b WHERE a.id=b.id AND (a.private<>'on' OR (a.private='on' AND a._owner='" . Forma::user()->getIdSt() . "')) AND b.idCourse='" . $session->get('idCourse') . "' AND " . $where . ' ORDER BY start_date';
+        $query = 'SELECT a.* FROM ' . $GLOBALS['prefix_fw'] . '_calendar AS a,' . $GLOBALS['prefix_lms'] . "_calendar AS b WHERE a.id=b.id AND (a.private<>'on' OR (a.private='on' AND a._owner='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "')) AND b.idCourse='" . $session->get('idCourse') . "' AND " . $where . ' ORDER BY start_date';
 
         $result = sql_query($query);
         //return sql_num_rows($result);

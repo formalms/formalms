@@ -13,9 +13,9 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_base_ . '/lib/lib.json.php');
-require_once Forma::inc(_base_ . '/lib/lib.user_profile.php');
-require_once Forma::inc(_adm_ . '/lib/lib.myfiles.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.user_profile.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.myfiles.php');
 
 class CourseLmsController extends LmsController
 {
@@ -53,7 +53,7 @@ class CourseLmsController extends LmsController
 
         $this->userProfileDataManager = new UserProfileData();
 
-        if (!Forma::user()->isAnonymous()) {
+        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             define('_PATH_COURSE', '/appLms/' . FormaLms\lib\Get::sett('pathcourse'));
 
             require_once _lms_ . '/lib/lib.levels.php';
@@ -69,7 +69,7 @@ class CourseLmsController extends LmsController
         checkPerm('view_info', false, 'course');
         $mod_perm = checkPerm('mod', true);
         try {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $lang = &FormaLanguage::createInstance('course');
             $course = $GLOBALS['course_descriptor']->getAllInfo();
             $levels = CourseLevel::getLevels();
@@ -188,7 +188,7 @@ class CourseLmsController extends LmsController
         $data['id_course'] = $session->get('idCourse');
 
         $data['levels'] = CourseLevel::getTranslatedLevels();
-        $data['array_lang'] = Forma::langManager()->getAllLangCode();
+        $data['array_lang'] = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $data['difficult_lang'] = [
             'veryeasy' => $lang->def('_DIFFICULT_VERYEASY'),
             'easy' => $lang->def('_DIFFICULT_EASY'),
@@ -215,7 +215,7 @@ class CourseLmsController extends LmsController
     {
         checkPerm('mod');
 
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $user_status = 0;
         if ($this->request->request->has('user_status')) {
@@ -253,7 +253,7 @@ class CourseLmsController extends LmsController
             $re = false;
         }
 
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         // send alert
         require_once _base_ . '/lib/lib.eventmanager.php';
 
@@ -292,7 +292,7 @@ class CourseLmsController extends LmsController
     {
         $idUser = FormaLms\lib\Get::gReq('id_user');
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $user = $acl_man->getUser($idUser, false);
 

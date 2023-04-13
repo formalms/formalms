@@ -25,7 +25,7 @@ class Admin_Scs extends Admin
     /**
      * class constructor.
      *
-     * @param FormaUser $user the object of the Forma User, for permission control
+     * @param \FormaLms\lib\FormaUser $user the object of the Forma User, for permission control
      *
      * @return nothing
      */
@@ -161,7 +161,7 @@ class Admin_Managment_Scs extends Admin_Managment
     public function savePreferences(&$source_array, $base_path, $adminidst, $all_admin_permission)
     {
         require_once _adm_ . '/lib/lib.adminmanager.php';
-        $aclManager = &Forma::user()->getAclManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();
         $admin_manager = new AdminManager();
 
         // Retriving main menu
@@ -217,7 +217,7 @@ class Admin_Managment_Scs extends Admin_Managment
         $lang = &FormaLanguage::createInstance('menu', 'lms');
         $out = &$GLOBALS['page'];
 
-        $aclManager = &Forma::user()->getAclManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();
         $admin_manager = new AdminManager();
 
         // Retriving main menu

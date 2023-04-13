@@ -19,7 +19,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author Marco Valloni
  */
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     require_once _lms_ . '/lib/lib.reservation.php';
 
     function viewEvent()
@@ -38,8 +38,8 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = Forma::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
@@ -681,8 +681,8 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = Forma::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
@@ -789,11 +789,11 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = Forma::user()->getAcl();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $user_idst = getLogUserId();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $user_subscribed = [];
 
@@ -885,7 +885,7 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $user_subscribed = [];
 
@@ -963,7 +963,7 @@ if (!Forma::user()->isAnonymous()) {
             $user_select->resetSelection($subscribed);
         }
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_select->setUserFilter('exclude', [$acl_man->getAnonymousId()]);
 
         $user_select->loadSelector('index.php?modname=reservation&amp;op=add_registration&amp;id_course=' . $id_course . '&amp;id_event=' . $id_event,
@@ -1108,7 +1108,7 @@ function setRoomViewPerm()
             }
         }
 
-        $acl_manager = Forma::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $url = 'index.php?modname=reservation&amp;op=set_room_view_perm&amp;id_event=' . $id_event;
         //$mdir->setNFields(0);
@@ -1118,7 +1118,7 @@ function setRoomViewPerm()
         list($id_course) = sql_fetch_row(sql_query('SELECT idCourse FROM ' . $GLOBALS['prefix_lms'] . "_reservation_events WHERE idEvent = '" . $id_event . "'"));
 
         $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
-        $me = [getLogUserId()];
+        $me = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
         $mdir->setUserFilter('exclude', $me);
         $mdir->setUserFilter('group', $arr_idstGroup);
 

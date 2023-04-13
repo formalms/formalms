@@ -16,7 +16,7 @@
     ?>
 </div>
 
-<?php if ($smodel->isUserWaitingForSelfUnsubscribe(Forma::user()->idst, $id_course, false, $ed['id_date'])) { ?>
+<?php if ($smodel->isUserWaitingForSelfUnsubscribe(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course, false, $ed['id_date'])) { ?>
 
 <p style="padding:0.4em"><?php echo Lang::t('_UNSUBSCRIBE_REQUEST_WAITING_FOR_MODERATION', 'course'); ?></p>
 

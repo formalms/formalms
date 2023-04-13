@@ -94,9 +94,9 @@ function conference_list(&$url)
         $tb->setColsStyle($type_h);
         $tb->addHead($cont_h);
 
-        $acl_manager = &Forma::user()->getAclManager();
-        $display_name = Forma::user()->getUserName();
-        $u_info = $acl_manager->getUser(getLogUserId(), false);
+        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $display_name = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
+        $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
 
         while ($room = $conference->nextRow($re_room)) {
@@ -112,8 +112,8 @@ function conference_list(&$url)
 
             /*$booking = new RoomBooking();
 
-            $user_booked = $booking->userIsBooked(getLogUserId(), $room["id"]);
-            $user_valid = $booking->userIsValid(getLogUserId(), $room["id"]);
+            $user_booked = $booking->userIsBooked(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $room["id"]);
+            $user_valid = $booking->userIsValid(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $room["id"]);
             $room_full = $booking->roomIsFull($room["id"]);
 
             if ($room["endtime"]>=$now && $room["starttime"]<=$now && $user_booked && $user_valid)
@@ -134,14 +134,14 @@ function conference_list(&$url)
 
             $cont[] = $conference->getUrl($room['id'], $room['room_type']);
             if (checkPerm('mod', true)) {
-                if (getLogUserId() == $room['idSt'] || Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $room['idSt'] || \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                     $cont[] = '<a href="index.php?modname=conference&amp;op=modconf&amp;id=' . $room['id'] . '">'
                                 . '<img src="' . getPathImage() . '/standard/edit.png' . '" /></a>';
                 } else {
                     $cont[] = '';
                 }
 
-                if (getLogUserId() == $room['idSt'] || Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $room['idSt'] || \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                     $cont[] = '<a href="index.php?modname=conference&amp;op=delconf&id=' . $room['id'] . '" '
                             . '"><img src="' . getPathImage() . '/standard/delete.png' . '" /></a>';
                 } else {
@@ -169,7 +169,7 @@ function conference_list(&$url)
           or
           (FormaLms\lib\Get::sett('ConferenceBBB_server') and FormaLms\lib\Get::sett('ConferenceBBB_user') and FormaLms\lib\Get::sett('ConferenceBBB_salt') and FormaLms\lib\Get::sett('ConferenceBBB_password_moderator') and FormaLms\lib\Get::sett('ConferenceBBB_password_viewer'))
           ) {
-            if ($conference->can_create_user_limit(getLogUserId(), $idCourse, time())) {
+            if ($conference->can_create_user_limit(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, time())) {
                 cout('<a class="ico-wt-sprite subs_add" href="' . $url->getUrl('op=startnewconf') . '"><span>' . $lang->def('_CREATE') . '</span></a>', 'content');
             } else {
                 cout('<b>' . $lang->def('_NO_MORE_ROOM'), 'content');
@@ -216,9 +216,9 @@ function conference_startnewconf($url)
         $idCourse = $session->get('idCourse');
         $room_type = $_POST['room_type'];
 
-        if ($conference->can_create_room_limit(getLogUserId(), $idCourse, $room_type, $start_timestamp, $end_timestamp) &&
-                $conference->can_create_user_limit(getLogUserId(), $idCourse, $start_timestamp)) {
-            $conference->insert_room($idCourse, getLogUserId(), $conference_name, $room_type, $start_timestamp, $end_timestamp, $meetinghours, $maxparticipants, (isset($_POST['bookable']) ? 1 : 0),
+        if ($conference->can_create_room_limit(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, $room_type, $start_timestamp, $end_timestamp) &&
+                $conference->can_create_user_limit(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, $start_timestamp)) {
+            $conference->insert_room($idCourse, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $conference_name, $room_type, $start_timestamp, $end_timestamp, $meetinghours, $maxparticipants, (isset($_POST['bookable']) ? 1 : 0),
                 $start_date,
                 (int) $_POST['start_time']['hour'],
                 (int) $_POST['start_time']['minute']
@@ -508,7 +508,7 @@ function booking()
 
     $booking = new RoomBooking();
 
-    $result = $booking->bookRoom(getLogUserId(), $room_id);
+    $result = $booking->bookRoom(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $room_id);
 
     Util::jump_to('index.php?modname=conference&op=list&result=' . ($result ? 'ok' : 'err'));
 }
@@ -527,7 +527,7 @@ function modBooking()
 
     $booking = new RoomBooking();
 
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     $user_booked = $booking->getRoomSubscriptions($room_id);
 
@@ -751,7 +751,7 @@ function showLog()
 
     $room_info = $conference->roomInfo($id);
 
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     cout(getTitleArea('')
             . '<div class="std_block">', 'content');

@@ -36,25 +36,25 @@ class LomanagerLms extends Model
     public function setTdb($type = self::ORGDIRDB, $idCourse = false, $idUser = false)
     {
         if ($idUser === false) {
-            $idUser = getLogUserId();
+            $idUser = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         switch ($type) {
             case self::ORGDIRDB:
-                require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
-                require_once Forma::inc(_lms_ . '/class.module/class.organization.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/class.organization.php');
                 $this->tdb = new OrgDirDb($idCourse);
                 $this->module = new Module_Organization();
                 break;
             case self::REPODIRDB:
-                require_once Forma::inc(_lms_ . '/lib/lib.repo.php');
-                require_once Forma::inc(_lms_ . '/class.module/class.pubrepo.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.repo.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/class.pubrepo.php');
                 $this->tdb = new RepoDirDb($GLOBALS['prefix_lms'] . '_repo', $idUser);
                 $this->module = new Module_Pubrepo();
                 break;
             case self::HOMEREPODIRDB:
-                require_once Forma::inc(_lms_ . '/modules/homerepo/homerepo.php');
-                require_once Forma::inc(_lms_ . '/class.module/class.homerepo.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/homerepo/homerepo.php');
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/class.homerepo.php');
                 $this->tdb = new HomerepoDirDb($GLOBALS['prefix_lms'] . '_homerepo', $idUser);
                 $this->module = new Module_Homerepo();
                 break;
@@ -86,7 +86,7 @@ class LomanagerLms extends Model
     public function getFolders($collection_id, $id = 0)
     {
         $learning_objects = $this->getLearningObjects($id);
-        if (!isUserCourseSubcribed(getLogUserId(), $collection_id)) {
+        if (!isUserCourseSubcribed(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $collection_id)) {
             foreach ($learning_objects as $index => $lo) {
                 if (!$lo['isPublic']) {
                     $learning_objects[$index]['isPrerequisitesSatisfied'] = false;
@@ -210,7 +210,7 @@ class LomanagerLms extends Model
                         $idResource,
                         0, /* idCategory */
                         0, /* idUser */
-                        getLogUserId(), /* idAuthor */
+                        \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), /* idAuthor */
                         '1.0' /* version */,
                         '_DIFFICULT_MEDIUM', /* difficult */
                         '', /* description */

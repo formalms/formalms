@@ -343,7 +343,7 @@ class PeopleListView extends ListView
         $this->mod_perm = checkPerm('edituser_org_chart', true, 'directory', 'framework');
         $this->del_perm = checkPerm('deluser_org_chart', true, 'directory', 'framework');
 
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $this->anonymous_idst = $acl_man->getAnonymousId();
 
         $this->_loadAdminIdst();
@@ -365,14 +365,14 @@ class PeopleListView extends ListView
             . ' name="' . DIRECTORY_ID . '[' . DIRECTORY_ID_PRINTEDITEM . ']"'
             . ' value="' . urlencode(Util::serialize($this->printedItems)) . '" />' . "\n";
         // save state of custom columns
-        Forma::user()->preference->setPreference(
+        \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->setPreference(
                         'ui.directory.custom_columns',
                         urlencode(Util::serialize($this->cFields)));
-        Forma::user()->preference->setPreference(
+        \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->setPreference(
                         'ui.directory.order_columns',
                         urlencode(Util::serialize($this->arr_fields_order)));
         // save state of filter
-        Forma::user()->preference->setPreference(
+        \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->setPreference(
                         'ui.directory.filters.current',
                         urlencode(Util::serialize($this->arr_fields_filter)));
 
@@ -637,9 +637,9 @@ class PeopleListView extends ListView
             }
         } else {
             // default initializations
-            $this->cFields = Util::unserialize(urldecode(Forma::user()->preference->getPreference('ui.directory.custom_columns')));
-            $this->arr_fields_order = Util::unserialize(urldecode(Forma::user()->preference->getPreference('ui.directory.order_columns')));
-            $this->arr_fields_filter = Util::unserialize(urldecode(Forma::user()->preference->getPreference('ui.directory.filters.current')));
+            $this->cFields = Util::unserialize(urldecode(\FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getPreference('ui.directory.custom_columns')));
+            $this->arr_fields_order = Util::unserialize(urldecode(\FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getPreference('ui.directory.order_columns')));
+            $this->arr_fields_filter = Util::unserialize(urldecode(\FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getPreference('ui.directory.filters.current')));
         }
 
         // remove anonymous ================================================
@@ -659,7 +659,7 @@ class PeopleListView extends ListView
                     : '');
 
                 if ($fvalue != false) {
-                    $acl_man = &Forma::user()->getAclManager();
+                    $acl_man = &\FormaLms\lib\Forma::getAclManager();
                     $members = $acl_man->getGroupAllUser($fvalue);
                     if ($members && !empty($members)) {
                         $this->data->addCustomFilter('', 'idst IN (' . implode(',', $members) . ') ');
@@ -667,7 +667,7 @@ class PeopleListView extends ListView
                 } else {
                     $ed_list = [];
                     if ($this->editions == false) {
-                        $this->editions = $GLOBALS['course_descriptor']->getEditionsSimpleList(getLogUserId(), true);
+                        $this->editions = $GLOBALS['course_descriptor']->getEditionsSimpleList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                     }
 
                     $this->data->intersectGroupFilter(array_keys($this->editions));
@@ -750,7 +750,7 @@ class PeopleListView extends ListView
                 : '');
 
             if ($fvalue != false) {
-                $acl_man = &Forma::user()->getAclManager();
+                $acl_man = &\FormaLms\lib\Forma::getAclManager();
                 $members = $acl_man->getGroupAllUser($fvalue);
                 if ($members && !empty($members)) {
                     $this->data->addCustomFilter('', 'idst IN (' . implode(',', $members) . ') ');
@@ -826,7 +826,7 @@ class PeopleListView extends ListView
     {
         $this->admins_user = [];
 
-        $aclManager = &Forma::user()->getAclManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();
         $arr_levels_id = $aclManager->getAdminLevels();
 
         $arr_groups_godadmin = $aclManager->getGroupUMembers($arr_levels_id[ADMIN_GROUP_GODADMIN]);
@@ -884,7 +884,7 @@ class PeopleListView extends ListView
             }
         }
         if (!$this->selector_mode) { // Normal mode
-            $lev_current_user = Forma::user()->getUserLevelId();
+            $lev_current_user = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
             if (($lev_current_user == ADMIN_GROUP_GODADMIN) || !isset($this->admins_user[$arrResult['idst']])) {
                 $arrResult['edit'] = '<a href="index.php?modname=directory&op=org_manageuser&id_user=' . $arrResult['idst'] . '&ap=mod_profile" '
@@ -984,7 +984,7 @@ class PeopleListView extends ListView
 
         require_once _base_ . '/lib/lib.user_profile.php';
 
-        $profile = new UserProfile(getLogUserId());
+        $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $profile->init('profile', 'framework', 'modname=directory&op=org_chart', 'ap');
         $profile->addStyleSheet('lms');
 
@@ -1027,12 +1027,12 @@ class PeopleListView extends ListView
                 // add editions filter ============================================================
                 $ed_list = [];
                 if ($this->editions == false) {
-                    $this->editions = $GLOBALS['course_descriptor']->getEditionsSimpleList(getLogUserId(), true);
+                    $this->editions = $GLOBALS['course_descriptor']->getEditionsSimpleList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
                 }
 
                 $sel = (isset($_POST[$this->id]['edition_filter'])
                     ? (int) $_POST[$this->id]['edition_filter']
-                    : $GLOBALS['course_descriptor']->getActualEditionsForUser(getLogUserId())
+                    : $GLOBALS['course_descriptor']->getActualEditionsForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())
                 );
                 if (!empty($this->editions)) {
                     $out .= $filter->getDropdown($this->lang->def('_FILTER_BY_EDITION'),
@@ -1895,7 +1895,7 @@ class GroupMembersListView extends ListView
         $pos = strpos($groupid, '_');
         $arr_translations = $repoDb->getFolderTranslations(substr($groupid, $pos + 1));
 
-        return $arr_translations[getLanguage()];
+        return $arr_translations[Lang::get()];
     }
 
     public function extendedParsing($arrayState)
@@ -1994,7 +1994,7 @@ class GroupMembersListView extends ListView
 
     public function printOut()
     {
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $out = $this->rend->OpenTable($this->_getTitle());
 

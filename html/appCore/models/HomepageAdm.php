@@ -107,7 +107,7 @@ class HomepageAdm extends Model
                 . ' FROM %lms_webpages'
                 . " WHERE publish = '1'"
                 . "     AND in_home='0'"
-                . "     AND language = '" . getLanguage() . "'"
+                . "     AND language = '" . Lang::get() . "'"
                 . ' ORDER BY sequence ';
         $r = sql_query($query);
 
@@ -121,7 +121,7 @@ class HomepageAdm extends Model
 
     public function sendLostUserId($email)
     {
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUserByEmail($email);
 
         if (!$user_info) {
@@ -161,7 +161,7 @@ class HomepageAdm extends Model
 
     public function sendLostPwd($userid)
     {
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser(false, $acl_man->absoluteId($userid));
 
         if (!$user_info) {
@@ -219,7 +219,7 @@ class HomepageAdm extends Model
     public function checkCode($code)
     {
         if ($user = $this->user_manager->getPwdRandomCode(false, $code)) {
-            $acl_man = &Forma::user()->getAclManager();
+            $acl_man = &\FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUser($user['idst_user'], false);
 
             return $user_info;
@@ -253,7 +253,7 @@ class HomepageAdm extends Model
 
     public function setNewPwd($pwd, $user, $code)
     {
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         if (!$this->user_manager->deletePwdRandomCode($user, $code)) {
             return false;
@@ -282,7 +282,7 @@ class HomepageAdm extends Model
         $query = ' SELECT title, description'
                 . ' FROM %lms_webpages'
                 . " WHERE publish = '1'"
-                . "     AND language = '" . getLanguage() . "'"
+                . "     AND language = '" . Lang::get() . "'"
                 . '     AND ' . ($id_page ? 'idPages = ' . $id_page : "in_home = '1'");
 
         return sql_fetch_row(sql_query($query));

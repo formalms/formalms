@@ -41,7 +41,7 @@ class Tags
         $this->_use_tag = (FormaLms\lib\Get::sett('use_tag', 'off') == 'on');
 
         if ($viewer == false) {
-            $viewer = getLogUserId();
+            $viewer = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $this->_private_tag_enabled = false;
@@ -74,7 +74,7 @@ class Tags
 			query:"' . $tags_id . '",
 			private_query:"' . $private_tags . '",
 			popular_tags: "' . addslashes(implode(', ', $this->getPopularTag())) . '",
-			user_tags: "' . addslashes(implode(', ', $this->getUserPopularTag(getLogUserId()))) . '", 
+			user_tags: "' . addslashes(implode(', ', $this->getUserPopularTag(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()))) . '", 
 			lang: { tags: "' . addslashes($lang->def('_TAGS')) . '",
 				tips: "' . addslashes($lang->def('_TAGS_TIPS')) . '",
 				popular_tags: "' . addslashes($lang->def('_POPULAR')) . '",
@@ -303,7 +303,7 @@ class Tags
             $arr_resources = [$arr_resources];
         }
         if ($id_user == false) {
-            $id_user = getLogUserId();
+            $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         // find all the resource's tags with the occurences

@@ -36,7 +36,7 @@ class FormaUserNotifier extends FormaEventConsumer
         // initializing
         require_once _adm_ . '/lib/lib.field.php';
 
-        $acl_man = &Forma::user()->getACLManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();;
         $field_man = new FieldList();
         $send_to_field = FormaLms\lib\Get::sett('sms_cell_num_field');
 
@@ -79,7 +79,7 @@ class FormaUserNotifier extends FormaEventConsumer
 
                 $lang = (isset($users_lang[$idst_user]) && $users_lang[$idst_user] !== null
                     ? $users_lang[$idst_user]
-                    : getDefaultLanguage());
+                    : Lang::getDefault());
 
                 if (in_array('email', $media) || $force_email_send == 'true') {
                     if ($user_dett[ACL_INFO_EMAIL] != '') {
@@ -126,7 +126,7 @@ class FormaUserNotifier extends FormaEventConsumer
     public function _sendMail($subject, $body, $attachments, &$mail_recipients, &$users_info = false)
     {
         $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         foreach ($mail_recipients as $id => $mail) {
             $base_body = $body;
@@ -154,7 +154,7 @@ class FormaUserNotifier extends FormaEventConsumer
 
     public function _sendSms($body, &$sms_recipients, &$users_info = false)
     {
-        require_once Forma::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/Sms/SmsGatewayManager.php');
         SmsGatewayManager::send($sms_recipients, strip_tags($body));
     }
 }

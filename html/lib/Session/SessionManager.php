@@ -39,7 +39,10 @@ class SessionManager
 
     private $sessionHandler;
 
-    public static function getInstance()
+    /**
+     * @return SessionManager
+     */
+    public static function getInstance() : SessionManager
     {
         if (self::$instance === null) {
             $c = __CLASS__;
@@ -113,7 +116,7 @@ class SessionManager
     /**
      * @return Session
      */
-    public function getSession()
+    public function getSession() : Session
     {
         return $this->session;
     }

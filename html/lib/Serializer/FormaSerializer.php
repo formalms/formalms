@@ -27,7 +27,7 @@ class FormaSerializer extends Serializer
 {
     private static ?FormaSerializer $instance = null;
 
-    public static function getInstance()
+    public static function getInstance() : FormaSerializer
     {
         if (self::$instance === null) {
             $c = __CLASS__;

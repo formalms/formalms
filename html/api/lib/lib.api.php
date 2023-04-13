@@ -51,8 +51,8 @@ class API
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->aclManager = Forma::user()->getAclManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->aclManager = \FormaLms\lib\Forma::getAclManager();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $this->request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
     }
@@ -87,7 +87,7 @@ class API
 
     public function authenticateUser($username, $password)
     {
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $query = 'SELECT * FROM %adm_user '
             . "WHERE userid='" . $this->aclManager->absoluteId($username) . "' AND pass='" . $this->aclManager->encrypt($password) . "'";
         $res = $this->db->query($query);
@@ -229,7 +229,7 @@ class API
     {
         $result = ['success' => true, 'message' => ''];
         $class_name = $module . '_API';
-        $file_name = Forma::inc(_base_ . '/api/lib/api.' . $module . '.php');
+        $file_name = \FormaLms\lib\Forma::inc(_base_ . '/api/lib/api.' . $module . '.php');
 
         if (!file_exists($file_name)) {
             $result['success'] = false;

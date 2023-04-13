@@ -132,7 +132,7 @@ class JQueryLib
     // if locale does not exist or http header fails, default to en-us
     public static function loadCalenderLocal()
     {
-        $_lang = Forma::user()->getPreference('ui.lang_code');
+        $_lang = \FormaLms\lib\FormaUser::getCurrentUser()->getPreference('ui.lang_code');
         $locale_calender_path = '/addons/' . self::_path . '/datepicker/locales/';
         if (!is_null($_lang)) {
             $local_js = $locale_calender_path . 'bootstrap-datepicker.' . $_lang . '.min.js';

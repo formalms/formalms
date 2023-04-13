@@ -227,10 +227,10 @@ class Report_User extends Report
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_adm_ . '/lib/lib.directory.php');
-        require_once Forma::inc(_base_ . '/lib/lib.userselector.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.directory.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.userselector.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
@@ -265,12 +265,12 @@ class Report_User extends Report
             //$user_select->show_orgchart_simple_selector = FALSE;
             //$user_select->multi_choice = TRUE;
 
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $acl_man = new FormaACLManager();
 
-                require_once Forma::inc(_base_ . '/lib/lib.preference.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
                 $user_select->setUserFilter('user', $admin_users);
@@ -286,7 +286,7 @@ class Report_User extends Report
                 $user_select->resetSelection($reportTempData['rows_filter']['users']);
             }
 
-            if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $user_select->addFormInfo(
                     Form::getCheckbox($lang->def('_REPORT_FOR_ALL'), 'all_users', 'all_users', 1, $reportTempData['rows_filter']['all_users']) .
                     Form::getBreakRow() .
@@ -314,8 +314,8 @@ class Report_User extends Report
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $lang = &FormaLanguage::createInstance('report', 'framework');
 
@@ -340,7 +340,7 @@ class Report_User extends Report
             //...
         }
 
-        require_once Forma::inc(_adm_ . '/lib/lib.field.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();
         $fields = $fman->getFlatAllFields();
         $custom = [];
@@ -570,7 +570,7 @@ class Report_User extends Report
 
         //example selection options
 
-        require_once Forma::inc(_base_ . '/lib/lib.json.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
         $seldata = $this->courses_filter_definition;
 
@@ -873,7 +873,7 @@ class Report_User extends Report
         $jump_url = $this->jump_url;
         $next_url = $this->next_url;
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $cmodel = new CompetencesAdm();
         $lang = &FormaLanguage::createInstance('report', 'framework');
@@ -1032,7 +1032,7 @@ class Report_User extends Report
                 break;
 
             case 'send_mail':
-                require_once Forma::inc(_base_ . '/lib/lib.form.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
                 $mail_recipients = FormaLms\lib\Get::req('mail_recipients', DOTY_MIXED, []);
                 cout(''//Form::openForm('course_selection', Util::str_replace_once('&', '&amp;', $jump_url))
                     . Form::openElementSpace()
@@ -1068,7 +1068,7 @@ class Report_User extends Report
         checkPerm('view');
         $view_all_perm = checkPerm('view_all', true);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $output = '';
         $jump_url = '';
@@ -1126,14 +1126,14 @@ class Report_User extends Report
             $alluser = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $user_selected = array_intersect($user_selected, $admin_users);
             unset($admin_users);
 
             //filter courses
             $admin_allcourses = false;
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (!$filter_allcourses) {
                 $rs = sql_query('SELECT idCourse FROM %lms_course');
                 $course_selected = [];
@@ -1149,7 +1149,7 @@ class Report_User extends Report
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1256,10 +1256,10 @@ class Report_User extends Report
 
             $org_name = $org_man->getFolderFormIdst($elem_selected);
 
-            if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+            if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
 
                 $org_name_temp = $org_name;
                 $org_name = [];
@@ -1880,7 +1880,7 @@ class Report_User extends Report
                 require_once _adm_ . '/lib/lib.customfield.php';
                 $fman = new CustomFieldList();
                 $row = [];
-                $row[] = Forma::aclm()->relativeId($userid);
+                $row[] = \FormaLms\lib\Forma::getAclManager()->relativeId($userid);
                 if (in_array('_TH_LASTNAME', $cols)) {
                     $row[] = $lastname;
                 }
@@ -1953,7 +1953,7 @@ class Report_User extends Report
                     $course_label_id = $label_model->getCourseLabel($id_course);
                     if ($course_label_id > 0) {
                         $arr_course_label = $label_model->getLabelInfo($course_label_id);
-                        $row[] = $arr_course_label[getLanguage()][LABEL_TITLE];
+                        $row[] = $arr_course_label [Lang::get()][LABEL_TITLE];
                     } else {
                         $row[] = '';
                     }
@@ -2242,7 +2242,7 @@ class Report_User extends Report
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                    . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
                 $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                 //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
                 $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
@@ -2310,11 +2310,11 @@ class Report_User extends Report
         $users_selection = $reportTempData['rows_filter']['users'];
 
         //check admin permissions
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
-            $admin_users = Forma::aclm()->getAllUsersFromIdst($admin_tree);
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+            $admin_users = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromIdst($admin_tree);
             $all_users = false;
             $users_selection = array_intersect($users_selection, $admin_users);
             unset($admin_users); //free some memory
@@ -2342,8 +2342,8 @@ class Report_User extends Report
         $arr_data = [];
         $arr_userids = [];
         $arr_competences = [];
-        $language = getLanguage();
-        $acl_man = Forma::user()->getACLManager();
+        $language = Lang::get();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $query = 'SELECT t1.id_competence, t2.name, t3.id_user, t4.userid, t3.score_got '
             . ' FROM (' . $table1 . ' as t1 LEFT JOIN ' . $table2 . ' as t2 ON (t1.id_competence = t2.id_competence '
             . " AND t2.lang_code='" . $language . "')) JOIN " . $table3 . ' as t3 ON (t1.id_competence = t3.id_competence) '
@@ -2527,7 +2527,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         //back to columns category selection
         if (isset($_POST['undo_filter'])) {
@@ -2745,7 +2745,7 @@ class Report_User extends Report
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                    . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
                 $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                 //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
                 $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
@@ -2831,12 +2831,12 @@ class Report_User extends Report
         }
 
         //apply sub admin filters, if needed
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             //filter users
             $alluser = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $user_selected = array_intersect($user_selected, $admin_users);
             unset($admin_users);
@@ -3013,7 +3013,7 @@ class Report_User extends Report
                             'idCourseEdition' => $id_e,
                             'status' => $status,
                             'level' => $level,
-                            'userid' => Forma::aclm()->relativeId($u_userid),
+                            'userid' => \FormaLms\lib\Forma::getAclManager()->relativeId($u_userid),
                             'firstname' => $u_firstname,
                             'lastname' => $u_lastname,
                             'mail' => $u_email,
@@ -3181,7 +3181,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
@@ -3439,7 +3439,7 @@ class Report_User extends Report
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                    . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
                 $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                 //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
                 $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
@@ -3536,7 +3536,7 @@ class Report_User extends Report
             $all_users = false;
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromSelection($admin_users);
             $users = array_intersect($users, $admin_users);
             unset($admin_users);
@@ -4072,11 +4072,11 @@ class Report_User extends Report
         }
 
         //admin users filter
-        $userlevelid = Forma::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
             //filter users selection by admin visible users
@@ -4337,11 +4337,11 @@ class Report_User extends Report
         }
 
         //admin users filter
-        $userlevelid = Forma::user()->getUserLevelId();
-        if ($userlevelid != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
             $admin_users = array_unique($admin_users);
             //filter users selection by admin visible users
@@ -4467,7 +4467,7 @@ class Report_User extends Report
         $next_url = $this->next_url;
 
         require_once _base_ . '/lib/lib.form.php';
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $reportTempData = $this->session->get(self::_REPORT_SESSION);
 
@@ -4700,7 +4700,7 @@ class Report_User extends Report
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
-                    . 'Content-type: text/html; charset=' . getUnicode() . $GLOBALS['mail_br'];
+                    . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
                 $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
                 //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
                 $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];

@@ -94,7 +94,7 @@ function field_list()
 	FROM ' . $GLOBALS['prefix_fw'] . '_customfield AS c, ' . $GLOBALS['prefix_fw'] . '_customfield_lang AS cl,' . $GLOBALS['prefix_fw'] . "_customfield_area AS ca
 	WHERE c.area_code = ca.area_code
         AND c.id_field = cl.id_field
-        AND cl.lang_code = '" . getLanguage() . "'
+        AND cl.lang_code = '" . Lang::get() . "'
 		" . (isset($_POST['filter_type_field']) && $_POST['filter_type_field'] != 'all_field' ?
             " AND c.type_field = '" . $field_av[$_POST['filter_type_field']] . "' " :
             '') . '

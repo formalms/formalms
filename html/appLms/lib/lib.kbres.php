@@ -22,7 +22,7 @@ class KbRes
      */
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
     }
 
     public function getResource($res_id, $with_tags = false, $with_folders = false)
@@ -194,7 +194,7 @@ class KbRes
     {
         $res = true;
         $r_type = $this->getResourceTypeName($type);
-        $lang = (empty($lang) ? getLanguage() : $lang);
+        $lang = (empty($lang) ? Lang::get() : $lang);
 
         // we quit if the resource doesn't have to be categorized
         if (in_array($type, $this->getNotToCategorizeArr())) {
@@ -233,7 +233,7 @@ class KbRes
     public function saveUncategorizedScoResource($idscorm_org, $env, $env_parent_id, $lang = false)
     {
         $res = true;
-        $lang = (empty($lang) ? getLanguage() : $lang);
+        $lang = (empty($lang) ? Lang::get() : $lang);
 
         $qtxt = "SELECT idscorm_item, title, item_identifier FROM %lms_scorm_items
 			WHERE idscorm_organization='" . (int) $idscorm_org . "' AND idscorm_resource <> 0 ";
@@ -649,7 +649,7 @@ class KbRes
         $qtxt = "SELECT rel.parent_id,info.node_title FROM %lms_kb_rel as rel
 			JOIN %lms_kb_tree_info as info ON (rel.parent_id = info.id_dir) WHERE
 			rel.res_id='" . (int) $res_id . "' AND rel.rel_type='folder'
-			AND info.lang_code='" . getLanguage() . "'";
+			AND info.lang_code='" . Lang::get() . "'";
 
         $q = $this->db->query($qtxt);
 
@@ -884,7 +884,7 @@ class KbRes
         $fields = 'node_id, tree.parent_id, lev, node_title, COUNT(rel.res_id) as r_count';
         $qtxt = 'SELECT ' . $fields . " FROM %lms_kb_tree as tree
 			LEFT JOIN %lms_kb_tree_info AS info
-			ON (tree.node_id=info.id_dir AND info.lang_code='" . getLanguage() . "')
+			ON (tree.node_id=info.id_dir AND info.lang_code='" . Lang::get() . "')
 			LEFT JOIN %lms_kb_rel AS rel
 			ON (rel.parent_id=tree.node_id AND rel.rel_type='folder')
 			WHERE tree.iLeft > '" . $folder['iLeft'] . "' AND tree.iRight < '" . $folder['iRight'] . "'

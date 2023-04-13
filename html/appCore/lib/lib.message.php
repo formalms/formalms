@@ -28,7 +28,7 @@ class MessageModule
 
     public function __construct($mvc = false)
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->mvc_urls = (bool) $mvc;
     }
 
@@ -81,7 +81,7 @@ class MessageModule
         $file = '';
         sl_open_fileoperations();
         if (isset($attach['tmp_name']['attach']) && $attach['tmp_name']['attach'] != '') {
-            $file = getLogUserId() . '_' . mt_rand(0, 100) . '_' . time() . '_' . $attach['name']['attach'];
+            $file = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '_' . mt_rand(0, 100) . '_' . time() . '_' . $attach['name']['attach'];
             if (!sl_upload($attach['tmp_name']['attach'], $path . $file)) {
                 $error = 1;
                 $file = '';
@@ -130,7 +130,7 @@ class MessageModule
 
         $course_man = new Man_Course();
         $all_value = [0 => Lang::t('_ALL_COURSES')];
-        $all_courses = $course_man->getUserCourses(getLogUserId());
+        $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $all_value = $all_value + $all_courses;
 
         $_filter_inbox = FormaLms\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
@@ -272,28 +272,28 @@ class MessageModule
         $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $query = "
 		SELECT m.idMessage, m.idCourse, m.sender, m.posted, m.attach, m.title, m.priority, user.read
 		FROM %adm_message AS m JOIN
 			%adm_message_user AS user
 		WHERE m.idMessage = user.idMessage AND
-			m.sender <> '" . getLogUserId() . "' AND
-			user.idUser = '" . getLogUserId() . "' AND
+			m.sender <> '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND
+			user.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND
 			user.deleted = '" . _MESSAGE_VALID . "'";
         $_filter = FormaLms\lib\Get::req('msg_course_filter_inbox', DOTY_INT, 0);
 
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
             $res = $acl_man->getAllUsersFromIdst($res);
-            $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Forma::user()->getIdSt() . ') ';
+            $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ') ';
         } else {
             if (isset($idCourse) && $_filter == '') {
                 $_filter = $idCourse;
                 $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
                 $res = $acl_man->getAllUsersFromIdst($res);
-                $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Forma::user()->getIdSt() . ') ';
+                $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ') ';
             }
         }
 
@@ -316,8 +316,8 @@ class MessageModule
 		FROM %adm_message AS m JOIN
 			%adm_message_user AS user
 		WHERE m.idMessage = user.idMessage AND
-			user.idUser = '" . getLogUserId() . "' AND
-			m.sender <> '" . getLogUserId() . "'";
+			user.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND
+			m.sender <> '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (($_filter != '') && ($_filter != '0')) {
             $query .= " AND m.idCourse = '" . $_filter . "'";
         }
@@ -470,19 +470,19 @@ class MessageModule
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-sent');
         $tb->initNavBar('iniout', 'button');
         $ini = $tb->getSelectedElement('iniout');
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $query = "
 		SELECT m.idMessage, m.posted, m.attach, m.title, m.priority
 		FROM %adm_message AS m JOIN
 			%adm_message_user AS user
 		WHERE m.idMessage = user.idMessage AND
-			user.idUser = '" . getLogUserId() . "' AND
-			m.sender = '" . getLogUserId() . "' AND
+			user.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND
+			m.sender = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND
 			user.deleted = '" . _MESSAGE_VALID . "'";
         /*if(isset($_POST['msg_course_filter']) && ($_POST['msg_course_filter'] != false)) {
             $query .= " AND m.idCourse = '".$_POST['msg_course_filter']."'";
@@ -492,13 +492,13 @@ class MessageModule
         if (($_filter != '') && ($_filter != 0)) {
             $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
             $res = $acl_man->getAllUsersFromIdst($res);
-            $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Forma::user()->getIdSt() . ') ';
+            $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ') ';
         } else {
             if (isset($idCourse) && $_filter == '') {
                 $_filter = $idCourse;
                 $res = $acl_man->getGroupsIdstFromBasePath('/lms/course/' . $_filter . '/subscribed/');
                 $res = $acl_man->getAllUsersFromIdst($res);
-                $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) Forma::user()->getIdSt() . ') ';
+                $query .= ' AND user.idMessage IN ( SELECT idMessage FROM %adm_message_user as user WHERE user.idUser IN (' . implode(',', $res) . ') AND user.idUser <> ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ') ';
             }
         }
         $query .= '	ORDER BY ';
@@ -518,8 +518,8 @@ class MessageModule
 		FROM %adm_message AS m JOIN
 			%adm_message_user AS user
 		WHERE m.idMessage = user.idMessage AND
-			user.idUser = '" . getLogUserId() . "' AND
-			m.sender = '" . getLogUserId() . "' AND
+			user.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND
+			m.sender = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND
 			user.deleted = '" . _MESSAGE_VALID . "'";
         if (($_filter != '') && ($_filter != false)) {
             $query .= " AND m.idCourse = '" . $_filter . "'";
@@ -582,7 +582,7 @@ class MessageModule
 				SELECT user.idUser
 				FROM %adm_message_user AS user
 				WHERE user.idMessage = '" . $id_mess . "' AND
-					user.idUser != '" . getLogUserId() . "'";
+					user.idUser != '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
             $result_receiver = $this->db->query($sql_receiver);
             $counter_receiver = 0;
@@ -691,11 +691,11 @@ class MessageModule
             $user_select->resetSelection($recipients);
         }
 
-        $me = [getLogUserId()];
+        $me = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
 
         $course_man = new Man_Course();
         $all_value = [0 => Lang::t('_ALL_COURSES')];
-        $all_courses = $course_man->getUserCourses(getLogUserId());
+        $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $all_value = $all_value + $all_courses;
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         if (count($all_value) > 0) {
@@ -776,7 +776,7 @@ class MessageModule
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $from = importVar('out');
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $um = &UrlManager::getInstance('message');
 
         if (!isset($_POST['message']['recipients'])) {
@@ -818,7 +818,7 @@ class MessageModule
 				( idCourse, sender, posted, title, textof, attach, priority ) VALUES
 				(
 					'" . $_POST['msg_course_filter'] . "',
-					'" . getLogUserId() . "',
+					'" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 					'" . date('Y-m-d H:i:s') . "',
 					'" . $_POST['message']['subject'] . "',
 					'" . $_POST['message_textof'] . "',
@@ -838,15 +838,15 @@ class MessageModule
                 }
                 list($id_message) = $this->db->fetch_row($this->db->query('SELECT LAST_INSERT_ID()'));
 
-                if (!in_array(getLogUserId(), $user_selected)) {
-                    $user_selected[] = getLogUserId();
+                if (!in_array(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $user_selected)) {
+                    $user_selected[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
                 }
                 $send_to_idst = &$acl_man->getAllUsersFromIdst($user_selected);
 
                 $re = true;
                 $recip_alert = [];
                 if (is_array($send_to_idst)) {
-                    $logged_user = getLogUserId();
+                    $logged_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
                     foreach ($send_to_idst as $id_recipient) {
                         $query_recipients = "
 						INSERT INTO %adm_message_user
@@ -891,19 +891,19 @@ class MessageModule
                         if (!$is_course) {
                             $msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT', ['[url]' => _MESSAGE_PL_URL,
                                                                                                     '[course]' => $course_name,
-                                                                                                    '[from]' => Forma::user()->getUsername(), ]);
+                                                                                                    '[from]' => \FormaLms\lib\FormaUser::getCurrentUser()->getUsername(), ]);
 
                             $msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS', ['[url]' => _MESSAGE_PL_URL,
                                                                                                      '[course]' => $course_name,
-                                                                                                     '[from]' => Forma::user()->getUsername(), ]);
+                                                                                                     '[from]' => \FormaLms\lib\FormaUser::getCurrentUser()->getUsername(), ]);
                         } else {
                             $msg_composer->setBodyLangText('email', '_YOU_RECIVE_MSG_TEXT_COURSE', ['[url]' => _MESSAGE_PL_URL,
                                                                                                             '[course]' => $course_name,
-                                                                                                            '[from]' => Forma::user()->getUsername(), ]);
+                                                                                                            '[from]' => \FormaLms\lib\FormaUser::getCurrentUser()->getUsername(), ]);
 
                             $msg_composer->setBodyLangText('sms', '_YOU_RECIVE_MSG_TEXT_SMS_COURSE', ['[url]' => _MESSAGE_PL_URL,
                                                                                                             '[course]' => $course_name,
-                                                                                                            '[from]' => Forma::user()->getUsername(), ]);
+                                                                                                            '[from]' => \FormaLms\lib\FormaUser::getCurrentUser()->getUsername(), ]);
                         }
 
                         createNewAlert('MsgNewReceived', 'directory', 'moderate', '1', 'User group subscription to moderate',
@@ -1058,7 +1058,7 @@ class MessageModule
             $del_query = "
 			UPDATE %adm_message_user
 			SET deleted = '" . _OPERATION_SUCCESSFUL . "'
-			WHERE idUser='" . getLogUserId() . "' AND idMessage = '" . (int) $_GET['id_message'] . "'";
+			WHERE idUser='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idMessage = '" . (int) $_GET['id_message'] . "'";
             if (!$this->db->query($del_query)) {
                 if ($from === 'out') {
                     Util::jump_to($um->getUrl('&active_tab=outbox&result=err'));
@@ -1161,14 +1161,14 @@ class MessageModule
         $out->setWorkingZone('content');
         $um = &UrlManager::getInstance('message');
 
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $from = importVar('out');
 
         // check the viewer rights
         $re_viewer = $this->db->query("
 		SELECT *
 		FROM %adm_message_user
-		WHERE idMessage = '" . $_GET['id_message'] . "' AND idUser = '" . getLogUserId() . "' ");
+		WHERE idMessage = '" . $_GET['id_message'] . "' AND idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' ");
         if (!$this->db->num_rows($re_viewer)) {
             self::message();
 
@@ -1178,7 +1178,7 @@ class MessageModule
         $re_user = $this->db->query("
 		UPDATE %adm_message_user AS user
 		SET user.read = '" . _MESSAGE_READED . "'
-		WHERE user.idMessage = '" . $_GET['id_message'] . "' AND user.idUser = '" . getLogUserId() . "' AND user.read = '" . _MESSAGE_UNREADED . "' ");
+		WHERE user.idMessage = '" . $_GET['id_message'] . "' AND user.idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND user.read = '" . _MESSAGE_UNREADED . "' ");
 
         list($sender, $posted, $title, $textof, $attach, $priority) = $this->db->fetch_row($this->db->query("
 		SELECT sender, posted, title, textof, attach, priority
@@ -1222,7 +1222,7 @@ class MessageModule
                     . '<img src="' . getPathImage('fw') . mimeDetect($attach) . '" alt="' . Lang::t('_MIME') . '" />' . preg_replace('/^\d*_\d*_\d*_(.*)/is', '$1', $attach) . '</a></div>'
                 : '');
         $sender_arr[$sender_info[ACL_INFO_IDST]] = $sender_info[ACL_INFO_IDST];
-        if ($sender == getLogUserId()) {
+        if ($sender == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
             $reply_url = $this->mvc_urls
                     ? 'index.php?r=message/add&id_forward=' . $_GET['id_message'] . ''
                     : $um->getUrl('op=addmessage&id_forward=' . $_GET['id_message'] . '');
@@ -1292,8 +1292,8 @@ class MessageModule
         list($id_message) = self::$db->fetch_row(self::$db->query('SELECT LAST_INSERT_ID()'));
 
         $re = true;
-        $recipients[] = getLogUserId();
-        $logged_user = getLogUserId();
+        $recipients[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+        $logged_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         foreach ($recipients as $id_recipient) {
             $query_recipients = "
 			INSERT INTO %adm_message_user
@@ -1358,7 +1358,7 @@ class Man_Message
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
     }
 
     public function getCountUnreaded($id_user, $courses, $last_access, $return_sum = false)

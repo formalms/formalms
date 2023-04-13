@@ -67,7 +67,7 @@ class TreeDb_OrgDb extends TreeDb
     public function getFolderLang()
     {
         if ($this->folder_lang === false) {
-            return getLanguage();
+            return Lang::get();
         } else {
             return $this->folder_lang;
         }
@@ -210,7 +210,7 @@ class TreeDb_OrgDb extends TreeDb
     {
         $this->withOtherFields = false;
         $id = parent::addFolderById($idParent, addslashes($folderName));
-        $aclManager = &Forma::user()->getACLManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
         $idST = $aclManager->registerGroup($this->getGroupId($id), '', true);
         $idST = $aclManager->registerGroup($this->getGroupDescendantsId($id), '', true);
         $aclManager->addToGroup($this->getGroupDescendantsST($idParent), $idST);
@@ -346,7 +346,7 @@ class TreeDb_OrgDb extends TreeDb
             $this->_executeQuery($query);
         }
 
-        $aclManager = &Forma::user()->getACLManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
         $idST = $this->getGroupDescendantsST($folder->id);
         // detach this descendant group from parent descendant group
         $aclManager->removeFromGroup($this->getGroupDescendantsST($folder->idParent), $idST);
@@ -360,7 +360,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function moveFolder(&$folder, &$parentFolder, $newfoldername = false)
     {
-        $aclManager = &Forma::user()->getACLManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
         $idST = $this->getGroupDescendantsST($folder->id);
         $aclManager->removeFromGroup($this->getGroupDescendantsST($folder->idParent), $idST);
         $this->withOtherFields = false;
@@ -372,7 +372,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function getDescendantsSTFromST($arr_idst)
     {
-        $aclManager = &Forma::user()->getACLManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
         $arr_groupid = $aclManager->getGroupsId($arr_idst);
         foreach ($arr_groupid as $key => $val) {
             $arr_groupid[$key] = substr_replace($val, '/ocd', 0, 3);
@@ -389,7 +389,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function getFoldersIdFromIdst($arr_idst)
     {
-        $aclManager = &Forma::user()->getACLManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
         $arr_groupid = $aclManager->getGroupsId($arr_idst);
         foreach ($arr_groupid as $key => $val) {
             $arr_groupid[$key] = substr($val, 4);
@@ -422,7 +422,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function getGroupST($idFolder)
     {
-        $acl = &Forma::user()->getACL();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
         return $acl->getGroupST($this->getGroupId($idFolder));
     }
@@ -432,7 +432,7 @@ class TreeDb_OrgDb extends TreeDb
         $rootFolder = &$this->getRootFolder();
         $arrId = $this->getDescendantsId($rootFolder);
         $arrResult = [];
-        $acl = &Forma::user()->getACL();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
         foreach ($arrId as $groupId) {
             $arrResult[] = $acl->getGroupST($this->getGroupId($groupId));
         }
@@ -442,7 +442,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function getGroupDescendantsST($idFolder)
     {
-        $acl = &Forma::user()->getACL();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
         return $acl->getGroupST($this->getGroupDescendantsId($idFolder));
     }
@@ -455,7 +455,7 @@ class TreeDb_OrgDb extends TreeDb
      **/
     public function removeDescentants($arr_idst)
     {
-        $aclManager = &Forma::user()->getACLManager();
+        $aclManager = &\FormaLms\lib\Forma::getAclManager();;
 
         // get array of groupid
         $arr_id = $aclManager->getGroupsId($arr_idst);
@@ -883,7 +883,7 @@ class TreeView_OrgView extends TreeView
                         createNewAlert('UserMod', 'directory', 'edit', '1', 'User ' . $userid . ' was modified',
                             [$userid], $msg_composer);
 
-                        $uinfo = Forma::aclm()->getUser($idst, false);
+                        $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($idst, false);
 
                         $array_subst = [
                             '[url]' => FormaLms\lib\Get::site_url(),
@@ -912,9 +912,9 @@ class TreeView_OrgView extends TreeView
                     }
 
                     if ($userlevel !== $olduserlevel) {
-                        require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                        $uinfo = Forma::aclm()->getUser($idst, false);
+                        $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($idst, false);
 
                         $array_subst = [
                             '[url]' => FormaLms\lib\Get::site_url(),
@@ -949,7 +949,7 @@ class TreeView_OrgView extends TreeView
             } else {
                 if (isset($_POST['arr_idst_groups'])) {
                     $arr_idst_groups = Util::unserialize(urldecode($_POST['arr_idst_groups']));
-                    $acl = &Forma::user()->getACL();
+                    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
                     $arr_idst_all = $acl->getArrSTGroupsST($arr_idst_groups);
                 } else {
                     $arr_idst_groups = false;
@@ -967,14 +967,14 @@ class TreeView_OrgView extends TreeView
                     //$re_filled = $fields->isFilledFieldsForUser(0, $arr_idst_all);
                     if ($arr_idst_groups != false && $userid != '') {
                         $idst = false;
-                        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                            $limit_insert = Forma::user()->preference->getAdminPreference('admin_rules.limit_user_insert');
-                            $max_insert = Forma::user()->preference->getAdminPreference('admin_rules.max_user_insert');
-                            $direct_insert = Forma::user()->preference->getAdminPreference('admin_rules.direct_user_insert');
+                        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                            $limit_insert = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.limit_user_insert');
+                            $max_insert = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.max_user_insert');
+                            $direct_insert = \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->getAdminPreference('admin_rules.direct_user_insert');
 
                             if (($limit_insert == 'off') || ($limit_insert == 'on' && $max_insert > 0)) {
                                 if ($direct_insert == 'on') {
-                                    Forma::user()->preference->setPreference('admin_rules.max_user_insert', $max_insert - 1);
+                                    \FormaLms\lib\FormaUser::getCurrentUser()->getUserPreference()->setPreference('admin_rules.max_user_insert', $max_insert - 1);
                                     $idst = $this->aclManager->registerUser($userid, $firstname, $lastname,
                                         $pass, $email, '',
                                         '');
@@ -1013,10 +1013,10 @@ class TreeView_OrgView extends TreeView
                                         [$userid], $msg_composer);
                                     $GLOBALS['page']->add(getResultUi($this->lang->def('_INSERTED_NEW_USER')));
                                 } else {
-                                    $acl = Forma::user()->getAcl();
+                                    $acl = \FormaLms\lib\Forma::getAcl();
 
                                     $idst = $this->aclManager->registerTempUser($userid, $firstname, $lastname,
-                                        $pass, $email, 0, getLogUserId());
+                                        $pass, $email, 0, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                                     require_once _base_ . '/lib/lib.eventmanager.php';
                                     $pl_man = &PlatformManager::createInstance();
@@ -1121,8 +1121,8 @@ class TreeView_OrgView extends TreeView
 
                 $event = &FormaEventManager::newEvent('UserDel', 'directory', 'edit', '1', 'User ' . addslashes($userid) . ' deleted');
                 $event->setProperty('recipientid', implode(',', [$idst]));
-                $event->setProperty('subject', $msg_composer->getSubject('email', getLanguage()));
-                $event->setProperty('body', $msg_composer->getBody('email', getLanguage()));
+                $event->setProperty('subject', $msg_composer->getSubject('email', Lang::get()));
+                $event->setProperty('body', $msg_composer->getBody('email', Lang::get()));
                 $msg_composer->prepare_serialize();
                 $event->setProperty('MessageComposer', addslashes(rawurlencode(serialize($msg_composer))));
                 $event->setProperty('userdeleted', $idst);
@@ -1138,8 +1138,8 @@ class TreeView_OrgView extends TreeView
         }
         foreach ($arrayState[$this->id] as $key => $action) {
             if ($key === 'save_newfolder') {
-                $array_lang = Forma::langManager()->getAllLangCode();
-                $mand_lang = getLanguage();
+                $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
+                $mand_lang = Lang::get();
                 if (!isset($action[$mand_lang])) {
                     $this->op = 'newfolder';
                 } else {
@@ -1151,12 +1151,12 @@ class TreeView_OrgView extends TreeView
                     $this->refresh = true;
                 }
             } elseif ($key === 'save_renamefolder') {
-                $array_lang = Forma::langManager()->getAllLangCode();
+                $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
                 if ($this->getSelectedFolderId() == '0') {
                     $mand_lang = 'root';
                 } else {
-                    $mand_lang = getLanguage();
+                    $mand_lang = Lang::get();
                 }
 
                 if (!isset($action[$mand_lang]) || $action[$mand_lang] == '') {
@@ -1164,7 +1164,7 @@ class TreeView_OrgView extends TreeView
                 } else {
                     $folder_id = $this->getSelectedFolderId();
 
-                    $acl = &Forma::user()->getACL();
+                    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
                     //-extra field check mandatory -----------------------------
                     require_once _adm_ . '/lib/lib.field.php';
@@ -1527,8 +1527,8 @@ class TreeView_OrgView extends TreeView
         $tree .= $form->openElementSpace();
         $tree .= $this->printState();
 
-        $array_lang = Forma::langManager()->getAllLangCode();
-        $mand_lang = getLanguage();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
+        $mand_lang = Lang::get();
         foreach ($array_lang as $k => $lang_code) {
             $tree .= $form->getTextfield((($mand_lang == $lang_code) ? '<span class="mandatory">*</span>' : '') . $lang_code,
                 'new_folder_' . $lang_code,
@@ -1552,7 +1552,7 @@ class TreeView_OrgView extends TreeView
         $tdb = &$this->tdb;
         $folder = $tdb->getFolderById($this->getSelectedFolderId());
         $folder_idst = $tdb->getGroupST($this->getSelectedFolderId());
-        $acl = &Forma::user()->getACL();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
         //$idst_field_group = $aclManager->getGroupST(ORG_CHART_FOLDER_FIELD_GROUP);
 
         require_once _base_ . '/lib/lib.form.php';
@@ -1561,8 +1561,8 @@ class TreeView_OrgView extends TreeView
         $tree = $form->openElementSpace();
         $tree .= $this->printState();
 
-        $array_lang = Forma::langManager()->getAllLangCode();
-        $mand_lang = getLanguage();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
+        $mand_lang = Lang::get();
         $array_translations = $tdb->getFolderTranslations($this->getSelectedFolderId());
 
         if ($this->getSelectedFolderId() == '0') {
@@ -1619,13 +1619,13 @@ class TreeView_OrgView extends TreeView
         $form = new Form();
         $fl = new FieldList();
         $fl->setGroupFieldsTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDTABLE);
-        //$acl =& Forma::user()->getACL();
+        //$acl =& \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
         //$aclManager =& $acl->getACLManager();
         $arr_all_fields = $fl->getAllFields();
         $id_folder = $this->getSelectedFolderId();
         $id_folder_desc = $this->tdb->getFolderTranslations($id_folder);
-        if (isset($id_folder_desc[getLanguage()])) {
-            $id_folder_desc = $id_folder_desc[getLanguage()];
+        if (isset($id_folder_desc [Lang::get()])) {
+            $id_folder_desc = $id_folder_desc [Lang::get()];
         } else {
             $id_folder_desc = '';
         }
@@ -1736,7 +1736,7 @@ class TreeView_OrgView extends TreeView
         $tree .= $form->openElementSpace();
         $tree .= $this->printState();
 
-        $acl = &Forma::user()->getACL();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
         $arr_all_fields = $fl->getAllFields();
         $idst_group = $tdb->getGroupST($this->getSelectedFolderId());

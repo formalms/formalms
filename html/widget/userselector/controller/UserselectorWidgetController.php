@@ -138,7 +138,7 @@ class UserselectorWidgetController extends Controller
         $fman = new FieldList();
         $date_fields = $fman->getFieldsByType('date');
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $idst_org = $acl_man->getGroupST('/oc_' . (int) $idOrg);
         $output_results = [];
         if (is_array($list) && count($list) > 0) {
@@ -243,7 +243,7 @@ class UserselectorWidgetController extends Controller
 
         //format models' data
         $records = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_groupid = $acl_man->relativeId($record->groupid);
@@ -312,7 +312,7 @@ class UserselectorWidgetController extends Controller
             return 0;
         }
         $arr = explode('_', $node_id);
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $groupid = $acl_man->getGroupId((int) $arr[0]);
 
         return (int) str_replace('/oc_', '', $groupid);
@@ -415,7 +415,7 @@ class UserselectorWidgetController extends Controller
 
         //format models' data
         $records = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $_description = strip_tags($record->description);

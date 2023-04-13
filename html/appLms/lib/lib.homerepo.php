@@ -508,7 +508,7 @@ class HomeDirDb extends TreeDb
         $this->table = $GLOBALS['prefix_lms'] . '_homerepo_dir';
         $this->fields = ['id' => 'id', 'idParent' => 'idParent', 'path' => 'path', 'lev' => 'lev'];
         if ($idUser === null) {
-            $this->hd_idUser = getLogUserId();
+            $this->hd_idUser = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         } else {
             $this->hd_idUser = $idUser;
         }
@@ -679,8 +679,8 @@ function manHomerepo_saveIdResource($idFolder, $idResource, $objectType, $title,
             . " VALUES ( '"
             . (int) $idFolder . "','" . (int) $idResource . "','"
             . (int) (isset($arrParam['idCategory']) ? ($arrParam['idCategory']) : '') . "','"
-            . (int) (isset($arrParam['idUser']) ? ($arrParam['idUser']) : (getLogUserId())) . "','"
-            . (int) (isset($arrParam['idAuthor']) ? ($arrParam['idAuthor']) : (getLogUserId())) . "','"
+            . (int) (isset($arrParam['idUser']) ? ($arrParam['idUser']) : (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) . "','"
+            . (int) (isset($arrParam['idAuthor']) ? ($arrParam['idAuthor']) : (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) . "','"
             . $objectType . "','"
             . addslashes($title) . "','"
             . (isset($arrParam['version']) ? (addslashes($arrParam['version'])) : '') . "','"
@@ -700,7 +700,7 @@ function manHomerepo_update($idFolder, $idObject, &$arrParam)
     $query = 'UPDATE %lms_homerepo'
             . " SET `idFolder` = '" . (int) $idFolder . "',"
             . " `idCategory` = '" . (int) (isset($arrParam['idCategory']) ? ($arrParam['idCategory']) : '') . "',"
-            . " `idAuthor` = '" . (int) (isset($arrParam['idAuthor']) ? ($arrParam['idAuthor']) : (getLogUserId())) . "',"
+            . " `idAuthor` = '" . (int) (isset($arrParam['idAuthor']) ? ($arrParam['idAuthor']) : (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) . "',"
             . " `version` = '" . (isset($arrParam['version']) ? (addslashes($arrParam['version'])) : '') . "',"
             . " `difficult` = '" . (isset($arrParam['difficult']) ? ($arrParam['difficult']) : '') . "',"
             . " `description` = '" . (isset($arrParam['description']) ? (addslashes($arrParam['description'])) : '') . "',"
@@ -848,7 +848,7 @@ function &manHomerepo_CreateTreeView($withContents = true, $multiSelect = false,
         //$listView->cancel = $treeView->cancel;
 
         $dataRetriever->setFilterTypes($lotypes);
-        $dataRetriever->setUser(getLogUserId());
+        $dataRetriever->setUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $dataRetriever->setFolder($treeView->selectedFolder);
         $dataRetriever->setOpShowId($listView->_getOpShowItemId());
         $dataRetriever->setOpPlayId($listView->_getOpPlayItemId());

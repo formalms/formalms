@@ -13,8 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
 class CoursereportLms extends Model
 {

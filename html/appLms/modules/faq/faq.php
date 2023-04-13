@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: modfaqgui
     function modfaqgui($object_faq)
     {
@@ -140,9 +140,9 @@ if (!Forma::user()->isAnonymous()) {
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_faq_cat
 	SET title = '" . (addslashes(trim($_REQUEST['title'])) == '' ? addslashes(Lang::t('_NOTITLE', 'faq', 'lms')) : addslashes($_REQUEST['title'])) . "',
 		description = '" . addslashes($_REQUEST['description']) . "',
-		author = '" . (int) getLogUserId() . "'";
+		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($query_ins)) {
-            Forma::addError(Lang::t('_OPERATION_FAILURECAT', 'faq', 'lms'));
+            \FormaLms\lib\Forma::addError(Lang::t('_OPERATION_FAILURECAT', 'faq', 'lms'));
             Util::jump_to($back_url . '&create_result=0');
         }
 

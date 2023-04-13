@@ -62,7 +62,7 @@ class Man_Advice
             return false;
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $db->start_transaction();
 

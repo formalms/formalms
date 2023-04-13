@@ -436,7 +436,7 @@ class OrgDirDb extends RepoDirDb
         if ($lo) { // Add object to the uncategorized resources
             require_once _lms_ . '/lib/lib.kbres.php';
             $kbres = new KbRes();
-            $lang = (isset($this->org_idCourse) && defined('LMS') ? Forma::course()->getValue('lang_code') : false);
+            $lang = (isset($this->org_idCourse) && defined('LMS') ? \FormaLms\lib\Forma::course()->getValue('lang_code') : false);
             $kbres->saveUncategorizedResource($title, $idResource, $objectType, 'course_lo', $this->org_idCourse, false, $lang);
         }
 
@@ -1036,7 +1036,7 @@ class OrgDirDb extends RepoDirDb
 
     public function __setAccess($idOrgAccess, $selection, $relation = '')
     {
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $id_groups = $acl_man->getAllGroupsFromSelection($selection);
 
@@ -1091,7 +1091,7 @@ class OrgDirDb extends RepoDirDb
 
     public function __deleteAccess($idOrgAccess)
     {
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . "_organization SET access='' WHERE idOrg='" . $idOrgAccess . "'";
 
         return $res = $db->query($query);
@@ -1476,7 +1476,7 @@ class Org_TreeView extends RepoTreeView
                                 require_once _lms_ . '/class.module/track.object.php';
                                 if (Track_Object::isPrerequisitesSatisfied(
                                     $folder->otherValues[ORGFIELDPREREQUISITES],
-                                    getLogUserId())) {
+                                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                                     $this->op = 'playitem';
                                     $this->itemToPlay = $id;
                                 }
@@ -1495,7 +1495,7 @@ class Org_TreeView extends RepoTreeView
                         require_once _lms_ . '/class.module/track.object.php';
                         if (Track_Object::isPrerequisitesSatisfied(
                             $folder->otherValues[ORGFIELDPREREQUISITES],
-                            getLogUserId())) {
+                            \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                             $this->op = 'playitem';
                             $this->itemToPlay = $id;
                         }
@@ -1573,8 +1573,8 @@ class Org_TreeView extends RepoTreeView
 
         //check for void selection
         if (is_array($arrData) && isset($arrData[ORGFIELD_ACCESS]) && $this->playOnly) {
-            //if (!$this->userSelector->isUserInSelection(getLogUserId(), $arrData[ORGFIELD_ACCESS])) return false;
-            if (!empty($arrData[ORGFIELD_ACCESS]) && !in_array(Forma::user()->getIdst(), $arrData[ORGFIELD_ACCESS])) {
+            //if (!$this->userSelector->isUserInSelection(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $arrData[ORGFIELD_ACCESS])) return false;
+            if (!empty($arrData[ORGFIELD_ACCESS]) && !in_array(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), $arrData[ORGFIELD_ACCESS])) {
                 return false;
             } //?!?
         }
@@ -1602,7 +1602,7 @@ class Org_TreeView extends RepoTreeView
         } else {
             $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(
                 $stack[$level]['folder']->otherValues[ORGFIELDPREREQUISITES],
-                getLogUserId());
+                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $levelCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('levelCourse');
             if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                 return false;
@@ -1746,7 +1746,7 @@ class Org_TreeView extends RepoTreeView
 
                                 $status = Track_Object::getStatusFromId(
                                     $stack[$level]['folder']->id,
-                                    getLogUserId());
+                                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                                 if ($arrData[ORGFIELD_PUBLISHFOR] == PF_TEACHER && $levelCourse <= 3) {
                                     return false;
@@ -1762,7 +1762,7 @@ class Org_TreeView extends RepoTreeView
                                         $out .= '<a class="tree_view_image" '
                                             . 'id="' . $this->id . '_' . $this->_getShowResultsId() . '_' . $stack[$level]['folder']->id . '" '
                                             . 'name="' . $this->id . '[' . $this->_getShowResultsId() . '][' . $stack[$level]['folder']->id . ']" '
-                                            . 'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user=' . getLogUserId() . '&amp;id_org=' . $arrData[REPOFIELDIDRESOURCE] . '" '
+                                            . 'href="index.php?modname=organization&amp;op=track_details&amp;type=' . $arrData[REPOFIELDOBJECTTYPE] . '&amp;id_user=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '&amp;id_org=' . $arrData[REPOFIELDIDRESOURCE] . '" '
                                             . 'title="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '">'
                                             . '<img src="' . $this->_getShowResultsImg() . '"'
                                             . ' alt="' . $this->_getShowResultsTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />'
@@ -1923,7 +1923,7 @@ class Org_TreeView extends RepoTreeView
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';
             $man_date = new DateManager();
-            $this->user_presence = $man_date->checkUserPresence(getLogUserId(), $idCourse);
+            $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
         }
 
         $idLoList = (array) $idLoList;
@@ -1973,7 +1973,7 @@ class Org_TreeView extends RepoTreeView
             $node['courseTypeTranslation'] = Lang::t($course->getValue('course_type'), 's4b');
 
             $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(isset($folder->otherValues[ORGFIELDPREREQUISITES]) ? $folder->otherValues[ORGFIELDPREREQUISITES] : null,
-                                                                                        getLogUserId());
+                                                                                        \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
             $node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
 
@@ -2019,7 +2019,7 @@ class Org_TreeView extends RepoTreeView
                 }
             }
 
-            $status = Track_Object::getStatusFromId($folder->id, getLogUserId());
+            $status = Track_Object::getStatusFromId($folder->id, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
             if ($orgFieldPublishFor == PF_TEACHER && $levelCourse <= 3) {
                 continue;
@@ -2093,7 +2093,7 @@ class Org_TreeView extends RepoTreeView
                     if (is_object($lo_class) && method_exists($lo_class, 'trackDetails')) {
                         $node['track_detail'] = [
                             'type' => $arrData[REPOFIELDOBJECTTYPE],
-                            'is_user' => getLogUserId(),
+                            'is_user' => \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                             'id_org' => $arrData[REPOFIELDIDRESOURCE],
                         ];
                     }
@@ -2118,7 +2118,7 @@ class Org_TreeView extends RepoTreeView
         if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';
             $man_date = new DateManager();
-            $this->user_presence = $man_date->checkUserPresence(getLogUserId(), $idCourse);
+            $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);
         }
 
         $tree = $this->printState();

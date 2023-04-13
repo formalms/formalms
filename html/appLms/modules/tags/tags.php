@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit("You can't access this file directly");
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You must login first.');
 }
 

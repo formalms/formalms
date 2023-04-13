@@ -81,8 +81,8 @@ class LomanagerLmsController extends LmsController
 
     public function show()
     {
-        if (Forma::errorsExists()) {
-            UIFeedback::error(Forma::getFormattedErrors(true));
+        if (\FormaLms\lib\Forma::errorsExists()) {
+            UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
         $lo_types = $this->model->getLoTypes();
@@ -202,7 +202,7 @@ class LomanagerLmsController extends LmsController
     {
         $id = FormaLms\lib\Get::req('id', DOTY_INT, false);
 
-        require_once Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.sessionsave.php');
         $saveObj = new Session_Save();
         $saveName = $saveObj->getName('organization' . $this->idCourse, true);
         $saveObj->save($saveName, $this->model->getTreeView()->getState());
@@ -256,9 +256,9 @@ class LomanagerLmsController extends LmsController
     {
         switch ($learningObject['type']) {
             case 'item':
-                $resource = DbConn::getInstance()->query('SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = ' . (int) $learningObject['resource']);
+                $resource = \FormaLms\db\DbConn::getInstance()->query('SELECT  title, path FROM %lms_materials_lesson WHERE idLesson = ' . (int) $learningObject['resource']);
 
-                $result = DbConn::getInstance()->fetch_assoc($resource);
+                $result = \FormaLms\db\DbConn::getInstance()->fetch_assoc($resource);
                 $fileTypeArray = explode('.', $result['path']);
 
                 return strtolower(end($fileTypeArray));

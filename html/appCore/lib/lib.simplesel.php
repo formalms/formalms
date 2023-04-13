@@ -192,7 +192,7 @@ class SimpleSelector
         $query = 'SELECT t.idOrg, t.lev, o.translation' .
                 ' FROM ' . $GLOBALS['prefix_fw'] . '_org_chart_tree AS t' .
                 ' JOIN ' . $GLOBALS['prefix_fw'] . '_org_chart AS o ON o.id_dir = t.idOrg' .
-                " WHERE o.lang_code = '" . getLanguage() . "'" .
+                " WHERE o.lang_code = '" . Lang::get() . "'" .
                 ' ORDER BY t.path ASC';
 
         $result = sql_query($query);
@@ -250,7 +250,7 @@ class SimpleSelector
         $lang = &FormaLanguage::createInstance('simplesel', 'framework');
         $form = new Form();
 
-        $acl_manger = Forma::user()->getAclManager();
+        $acl_manger = \FormaLms\lib\Forma::getAclManager();
         $anonymous_idst = $acl_manger->getAnonymousId();
 
         $res .= getBackUi($this->getLink('back'), $lang->def('_BACK'));
@@ -329,7 +329,7 @@ class SimpleSelector
 
     public function getSimpleUserList()
     {
-        $acl_manger = Forma::user()->getAclManager();
+        $acl_manger = \FormaLms\lib\Forma::getAclManager();
         $anonymous_idst = $acl_manger->getAnonymousId();
         $regusers_idst = $acl_manger->getGroupRegisteredId();
 
@@ -363,7 +363,7 @@ class SimpleSelector
     {
         $this->initManualSelector();
 
-        $acl_manger = Forma::user()->getAclManager();
+        $acl_manger = \FormaLms\lib\Forma::getAclManager();
         $regusers_idst = $acl_manger->getGroupRegisteredId();
         $this->mdir->setUserFilter('group', [$regusers_idst]);
 
@@ -425,7 +425,7 @@ class SimpleSelector
         $query = 'SELECT t.idOrg, o.translation' .
                 ' FROM ' . $GLOBALS['prefix_fw'] . '_org_chart_tree AS t' .
                 ' JOIN ' . $GLOBALS['prefix_fw'] . '_org_chart AS o ON o.id_dir = t.idOrg' .
-                " WHERE o.lang_code = '" . getLanguage() . "'" .
+                " WHERE o.lang_code = '" . Lang::get() . "'" .
                 ' ORDER BY t.path ASC';
 
         $result = sql_query($query);

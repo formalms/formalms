@@ -17,6 +17,7 @@ class AlertService
 {
 
     private static $instance = null;
+    
     public static function getInstance()
     {
         if (self::$instance == null) {
@@ -30,7 +31,6 @@ class AlertService
     public function send($user_selected) {
 
         require_once _base_ . '/lib/lib.eventmanager.php';
-        require_once _base_ . '/lib/lib.docebo.php';
         require_once _base_ . '/lib/calendar/CalendarManager.php';
         require_once _base_ . '/appCore/models/UsermanagementAdm.php';
 
@@ -65,7 +65,7 @@ class AlertService
             createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
 
             if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                $uinfo = \Forma::aclm()->getUser($user_id, false);
+                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user_id, false);
                 $calendar = \CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }

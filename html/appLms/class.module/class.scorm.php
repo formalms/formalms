@@ -23,6 +23,6 @@ class Module_Scorm extends LmsModule
 
     public function loadBody()
     {
-        include Forma::inc(_lms_ . '/modules/scorm/scorm.php');
+        include \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
     }
 }

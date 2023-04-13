@@ -581,7 +581,7 @@ class UserPreferences
     public function setTemplate($new_template)
     {
         $this->setPreference('ui.template', $new_template);
-        if ($this->id_user == getLogUserId() || FormaLms\lib\Get::sett('templ_use_field') == 0) {
+        if ($this->id_user == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() || FormaLms\lib\Get::sett('templ_use_field') == 0) {
             setTemplate($new_template);
         }
 
@@ -733,7 +733,7 @@ class UserPreferences
                     //drop down language
                     $lang_sel = $this->getLanguage();
 
-                    $langs_var = Forma::langManager()->getAllLangCode();
+                    $langs_var = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                     $langs = [];
                     foreach ($langs_var as $k => $v) {
                         $langs[$k] = $v;
@@ -828,7 +828,7 @@ class UserPreferences
             }
             switch ($pref['type']) {
                 case 'language':
-                    $langs = Forma::langManager()->getAllLangCode();
+                    $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
                     $re &= $this->setLanguage($langs[$new_value]);
                     break;
                 case 'template':
@@ -1024,7 +1024,7 @@ class AdminPreference
     public function getLangModifyMask($idst)
     {
         $old_rules = $this->getProfileRules($idst);
-        $all_languages = Forma::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         $res = '';
         if (isset($old_rules[_RULES_LANG])) {
@@ -1203,7 +1203,7 @@ class AdminPreference
 
     public function getAdminUsers($id_admin)
     {
-        $acl_man = Forma::aclm();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $admin_tree = $this->getAdminTree($id_admin);
         // separate the users and the groups
         $admin_users = $acl_man->getUsersFromMixedIdst($admin_tree);
@@ -1216,7 +1216,7 @@ class AdminPreference
 
     public function getAdminUsersQuery($id_admin, $idst_field_name)
     {
-        $acl_man = Forma::aclm();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $admin_tree = $this->getAdminTree($id_admin);
         // separate the users and the groups
         $admin_users = $acl_man->getUsersFromMixedIdst($admin_tree);
@@ -1248,7 +1248,7 @@ class AdminPreference
 
     public function getAdminAllSett($id_admin, $idst_field_name)
     {
-        $acl_man = Forma::aclm();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $admin_tree = $this->getAdminTree($id_admin);
         // separate the users and the groups
         $admin_users = $acl_man->getUsersFromMixedIdst($admin_tree);

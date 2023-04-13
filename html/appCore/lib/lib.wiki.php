@@ -216,7 +216,7 @@ class CoreWikiAdmin
             $public = false;
             $title = '';
             $description = '';
-            $sel_lang = getLanguage();
+            $sel_lang = Lang::get();
             $other_lang = [];
         } elseif ($id > 0) {
             $todo = 'edit';
@@ -920,7 +920,7 @@ class CoreWikiPublic
         if ((isset($_GET['lang'])) && (!empty($_GET['lang']))) {
             $res = substr($_GET['lang'], 0, 50);
         } else {
-            $res = getLanguage();
+            $res = Lang::get();
         }
 
         // Check for valid language; else the main language will be loaded..
@@ -1231,7 +1231,7 @@ class CoreWikiPublic
     {
         $res = false;
 
-        $user = &$GLOBALS['current_user'];
+        $user = \FormaLms\lib\FormaUser::getCurrentUser();
         $acl = new FormaACL();
         $role_id = '/framework/wiki/' . $wiki_id . '/' . $perm;
 
@@ -1980,7 +1980,7 @@ class CoreWikiManager
 
         // Delete wiki roles
         $role_id = '/framework/wiki/' . (int) $wiki_id . '/';
-        $acl_manager = Forma::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         $acl_manager->deleteRoleFromPath($role_id);
     }
 
@@ -1993,7 +1993,7 @@ class CoreWikiManager
     {
         $res = [];
         $pl = $this->getWikiPermList();
-        $acl_manager = &Forma::user()->getACLManager();
+        $acl_manager = &\FormaLms\lib\Forma::getAclManager();;
 
         foreach ($pl as $key => $val) {
             $role_id = '/framework/wiki/' . $wiki_id . '/' . $val;
@@ -2013,7 +2013,7 @@ class CoreWikiManager
     public function saveWikiPerm($wiki_id, $selected_items, $database_items)
     {
         $pl = $this->getWikiPermList();
-        $acl_manager = &Forma::user()->getACLManager();
+        $acl_manager = &\FormaLms\lib\Forma::getAclManager();;
         foreach ($pl as $key => $val) {
             if ((isset($selected_items[$val])) && (is_array($selected_items[$val]))) {
                 $role_id = '/framework/wiki/' . $wiki_id . '/' . $val;
@@ -2460,7 +2460,7 @@ class CoreWikiManager
     {
         $res = [];
 
-        $lang_arr = Forma::langManager()->getAllLangCode();
+        $lang_arr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         if ($include_other) {
             $res['other'] = Lang::t('_OTHER_LANGUAGE', 'wiki');

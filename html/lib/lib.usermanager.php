@@ -121,7 +121,7 @@ class UserManager
     public function _getLoginResult()
     {
         if (UserManagerRenderer::loginAttempt()) {
-            if (Forma::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 return false;
             } else {
                 return true;
@@ -516,7 +516,7 @@ class UserManager
             }
         }
 
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($exist_code['idst_user'], false);
         if (isset($_POST['send'])) {
             if ($_POST['new_password'] === $_POST['retype_new_password']) {
@@ -605,7 +605,7 @@ class UserManager
                 exit("This isn't a good email address !");
             }
 
-            $acl_man = &Forma::user()->getAclManager();
+            $acl_man = &\FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUserByEmail($mail);
 
             if ($user_info !== false) {
@@ -627,7 +627,7 @@ class UserManager
 
                 /*$from = "From: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione  = "MIME-Version: 1.0".$GLOBALS['mail_br'];
-            $intestazione .= "Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
+            $intestazione .= "Content-type: text/html; charset=".Lang::charset().$GLOBALS['mail_br'];
 
             $intestazione .= "Return-Path: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione .= "Reply-To: ".$mail_sender.$GLOBALS['mail_br'];
@@ -664,7 +664,7 @@ class UserManager
         if ($this->_render->haveToLostpwdAction()) {
             $userid = $this->_render->getLostPwdParam();
 
-            $acl_man = &Forma::user()->getAclManager();
+            $acl_man = &\FormaLms\lib\Forma::getAclManager();
             $user_info = $acl_man->getUser(false, $acl_man->absoluteId($userid));
 
             if ($user_info !== false) {
@@ -674,7 +674,7 @@ class UserManager
 
                 /*$from = "From: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione  = "MIME-Version: 1.0".$GLOBALS['mail_br'];
-            $intestazione .= "Content-type: text/html; charset=".getUnicode().$GLOBALS['mail_br'];
+            $intestazione .= "Content-type: text/html; charset=".Lang::charset().$GLOBALS['mail_br'];
 
             $intestazione .= "Return-Path: ".$mail_sender.$GLOBALS['mail_br'];
             $intestazione .= "Reply-To: ".$mail_sender.$GLOBALS['mail_br'];
@@ -825,7 +825,7 @@ class UserManager
 
     public function getProfile($id_user = false, $userid = false)
     {
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $user_info = &$acl_man->getUser($id_user, $userid);
         $user_info[ACL_INFO_USERID] = $acl_man->relativeId($user_info[ACL_INFO_USERID]);
@@ -911,7 +911,7 @@ class UserManager
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
                         . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                        . " AND lang_code = '" . getLanguage() . "'";
+                        . " AND lang_code = '" . Lang::get() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
                     $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
@@ -1031,7 +1031,7 @@ class UserManagerRenderer
                 if ($_POST['login_lang'] == 'default') {
                     return '';
                 }
-                $all_languages = Forma::langManager()->getAllLangCode();
+                $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
                 return $all_languages[$_POST['login_lang']];
 
@@ -1055,7 +1055,7 @@ class UserManagerRenderer
             'password' => FormaLms\lib\Get::req('login_pwd', DOTY_STRING),
         ];
 
-        $all_languages = Forma::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         $info['lang'] = FormaLms\lib\Get::req('login_lang', DOTY_STRING, false);
         if ($info['lang'] === 'default') {
@@ -1227,7 +1227,7 @@ class UserManagerRenderer
             $GLOBALS['login_tabindex'] = 1;
         }
 
-        $all_languages = Forma::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
 
         if ($this->_style_to_use != false) {
@@ -1346,7 +1346,7 @@ class UserManagerRenderer
             $GLOBALS['login_tabindex'] = 1;
         }
 
-        $all_languages = Forma::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $all_languages = array_merge(['default' => $lang->def('_LANGUAGE')], $all_languages);
 
         $out = '';
@@ -1619,7 +1619,7 @@ class UserManagerRenderer
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
                         . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                        . " AND lang_code = '" . getLanguage() . "'";
+                        . " AND lang_code = '" . Lang::get() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
                     $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
@@ -1682,7 +1682,7 @@ class UserManagerRenderer
         // Insert temporary
         $random_code = md5($_POST['register']['userid'] . mt_rand() . mt_rand() . mt_rand());
         // register as temporary user and send mail
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $iduser = '';
 
         $iduser = $acl_man->registerTempUser(
@@ -1876,7 +1876,7 @@ class UserManagerRenderer
                     $query = 'SELECT `translation`'
                         . ' FROM core_field_son'
                         . ' WHERE id_common_son = ' . (int) $_POST['field_dropdown'][$id_common_filed_1]
-                        . " AND lang_code = '" . getLanguage() . "'";
+                        . " AND lang_code = '" . Lang::get() . "'";
                     list($filed_1_translation) = sql_fetch_row(sql_query($query));
                     $code_part = substr($filed_1_translation, 1, 1);
                     $reg_code = strtoupper($code_part . '_' . $_POST['field_textfield'][$id_common_filed_2]);
@@ -1893,7 +1893,7 @@ class UserManagerRenderer
                 $folder_group = [];
             }
             foreach ($array_folder as $id_org_folder) {
-                $folder_group[] = Forma::aclm()->getGroupST('/oc_' . $id_org_folder);
+                $folder_group[] = \FormaLms\lib\Forma::getAclManager()->getGroupST('/oc_' . $id_org_folder);
             }
         }
 
@@ -1992,9 +1992,9 @@ class UserManagerRenderer
 	                <p>' . $lang->def('_REG_NOTE') . '</p>
                 </div>';
 
-        $lang_sel = getLanguage();
+        $lang_sel = Lang::get();
         $full_langs = [];
-        $langs = Forma::langManager()->getAllLangCode();
+        $langs = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $full_langs = [];
         foreach ($langs as $v) {
             $full_langs[$v] = $v;
@@ -2220,7 +2220,7 @@ class UserManagerRenderer
 
             $out .= $extraFiledsOut;
         } elseif ($options['use_advanced_form'] == 'on') {
-            $acl_man = &Forma::user()->getAclManager();
+            $acl_man = &\FormaLms\lib\Forma::getAclManager();
             $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);
 
             if (!empty($groups)) {
@@ -2297,8 +2297,8 @@ class UserManagerRenderer
     public function confirmRegister($platform, $options)
     {
         $lang = &FormaLanguage::createInstance('register', $platform);
-        $acl_man = &Forma::user()->getAclManager();
-        $acl = &Forma::user()->getAcl();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl = \FormaLms\lib\Forma::getAclManager();;
 
         if (!isset($_GET['random_code'])) {
         }
@@ -2533,7 +2533,7 @@ class UserManagerRenderer
         }
 
         // control mail is correct
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $source['register']['email'] = strtolower($source['register']['email']);
 
         if ($source['register']['email'] === '') {
@@ -2796,7 +2796,7 @@ class UserManagerRenderer
 
         $lang = &FormaLanguage::createInstance('register', $platform);
 
-        $res = Forma::user()->isPasswordElapsed();
+        $res = \FormaLms\lib\FormaUser::getCurrentUser()->isPasswordElapsed();
 
         $html = '<ul class="instruction_list">';
 
@@ -2845,8 +2845,8 @@ class UserManagerRenderer
 
         $html = '';
 
-        $idst = getLogUserId();
-        $acl_man = &Forma::user()->getAclManager();
+        $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($idst, false);
 
         $password = new Password($_POST['oldpwd']);

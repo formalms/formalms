@@ -114,7 +114,7 @@ abstract class FormaPlugin
      */
     public static function addRole($role)
     {
-        $am = Forma::user()->getACLManager();
+        $am = \FormaLms\lib\Forma::getAclManager();;
         if ($role_info = $am->getRole($role, false)) {
             $idst = $role_info[ACL_INFO_IDST];
         } else {

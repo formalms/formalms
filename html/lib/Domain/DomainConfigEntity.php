@@ -13,7 +13,6 @@ namespace FormaLms\lib\Domain;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once _base_ . '/db/lib.docebodb.php';
 class DomainConfigEntity
 {
     protected $table = '%adm_domain_configs';
@@ -32,7 +31,7 @@ class DomainConfigEntity
 
     public function __construct($host) {
         
-        $this->db = \DbConn::getInstance();
+        $this->db =\FormaLms\db\DbConn::getInstance();
 
         return $this->getDomainConfigs($host);
     }

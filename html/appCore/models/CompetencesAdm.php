@@ -21,7 +21,7 @@ class CompetencesAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
 
@@ -128,7 +128,7 @@ class CompetencesAdm extends Model
      */
     public function getCategories($id_parent, $language = false)
     {
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $query = 'SELECT	t1.id_category, t2.name, t1.level, t1.iLeft, t1.iRight '
             . ' FROM ' . $this->_getCategoriesTable() . ' AS t1 LEFT JOIN ' . $this->_getCategoriesLangTable() . ' AS t2 '
             . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) "
@@ -169,7 +169,7 @@ class CompetencesAdm extends Model
     {
         $folders = [0];
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         if ($node_id <= 0) {
             return $folders;
@@ -231,7 +231,7 @@ class CompetencesAdm extends Model
 
     public function getCompetences($id_category)
     {
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $query = 'SELECT	t1.* '
             . ' FROM ' . $this->_getCompetencesTable() . ' AS t1 LEFT JOIN ' . $this->_getCompetencesLangTable() . ' AS t2 '
             . " ON (t1.id_competence = t2.id_competence AND t2.lang_code = '" . $lang_code . "' ) "
@@ -389,7 +389,7 @@ class CompetencesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT t1.id_competence, t1.id_category, t1.typology, t1.type, '
@@ -461,7 +461,7 @@ class CompetencesAdm extends Model
         //$_filter .= " AND t2.name LIKE '%".$filter['text']."%' ";
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -484,7 +484,7 @@ class CompetencesAdm extends Model
     public function getAllCategories($language = false, $keys = false)
     {
         $output = [];
-        $_language = (!$language ? getLanguage() : $language);
+        $_language = (!$language ? Lang::get() : $language);
         $query = 'SELECT c.id_category, c.id_parent, c.level, c.iLeft, c.iRight, cl.name, cl.description, cl.lang_code '
             . ' FROM ' . $this->_getCategoriesTable() . ' as c '
             . ' LEFT JOIN ' . $this->_getCategoriesLangTable() . ' as cl '
@@ -510,7 +510,7 @@ class CompetencesAdm extends Model
     public function getAllCompetences($language = false, $keys = false)
     {
         $output = [];
-        $_language = (!$language ? getLanguage() : $language);
+        $_language = (!$language ? Lang::get() : $language);
         $query = 'SELECT c.id_competence, c.id_category, c.typology, c.type, cl.name, cl.description '
             . ' FROM ' . $this->_getCompetencesTable() . ' as c '
             . ' LEFT JOIN ' . $this->_getCompetencesLangTable() . ' as cl '
@@ -539,7 +539,7 @@ class CompetencesAdm extends Model
         $output = $this->db->fetch_obj($res);
 
         //initialize languages array
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -566,7 +566,7 @@ class CompetencesAdm extends Model
 
     public function getCategoryName($id_category, $language = false)
     {
-        $lang_code = (!$language ? getLanguage() : $language);
+        $lang_code = (!$language ? Lang::get() : $language);
         $output = '';
         $query = 'SELECT name FROM ' . $this->_getCategoriesLangTable() . ' '
             . ' WHERE id_category = ' . (int) $id_category . " AND lang_code = '" . $lang_code . "'";
@@ -588,7 +588,7 @@ class CompetencesAdm extends Model
         $output = $this->db->fetch_obj($res);
 
         //initialize languages array
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -642,7 +642,7 @@ class CompetencesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $_void_lang_arr = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_void_lang_arr[$lang_codes[$i]] = [
@@ -927,7 +927,7 @@ class CompetencesAdm extends Model
         if ($output) {
             //insert languages in database
             if (property_exists($params, 'langs')) {
-                $langs = Forma::langManager()->getAllLangcode();
+                $langs = \FormaLms\lib\Forma::langManager()->getAllLangcode();
                 $arr_langs = [];
                 foreach ($langs as $lang_code) {
                     if (isset($params->langs[$lang_code])) {
@@ -1000,7 +1000,7 @@ class CompetencesAdm extends Model
 
     public function getCompetenceName($id_competence, $language = false)
     {
-        $lang_code = (!$language ? getLanguage() : $language);
+        $lang_code = (!$language ? Lang::get() : $language);
         $output = '';
         $query = 'SELECT name FROM ' . $this->_getCompetencesLangTable() . ' '
             . ' WHERE id_competence = ' . (int) $id_competence . " AND lang_code = '" . $lang_code . "'";
@@ -1046,7 +1046,7 @@ class CompetencesAdm extends Model
 
         //retrive users list from idst list
         if (count($list) > 0) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $output = $acl_man->getAllUsersFromIdst($list);
         }
 
@@ -1205,7 +1205,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_assign'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Forma::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = $score; //the score assigned
             $params->score_total = $score;
@@ -1251,7 +1251,7 @@ class CompetencesAdm extends Model
             $_params = new stdClass();
             $_params->operation = 'manual_update'; //the type of operation (manual, course etc.)
             $_params->id_course = 0; //the id of the course which has assigned the score
-            $_params->assigned_by = Forma::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $_params->assigned_by = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //user/administrator who has assigned the score to the user
             $_params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $_params->score_assigned = $params->score_got; //the score assigned
             $_params->score_total = $params->score_got;
@@ -1284,7 +1284,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_remove'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Forma::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = 0; //the score assigned
             $params->score_total = 0;
@@ -1345,7 +1345,7 @@ class CompetencesAdm extends Model
             $params = new stdClass();
             $params->operation = 'manual_addscore'; //the type of operation (manual, course etc.)
             $params->id_course = 0; //the id of the course which has assigned the score
-            $params->assigned_by = Forma::user()->getIdSt(); //user/administrator who has assigned the score to the user
+            $params->assigned_by = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); //user/administrator who has assigned the score to the user
             $params->date_assignment = date('Y-m-d H:i:s'); //the date of the operation
             $params->score_assigned = $score; //the score assigned
             $params->score_total = 0;
@@ -1393,7 +1393,7 @@ class CompetencesAdm extends Model
             }
         }
 
-        $_language = getLanguage();
+        $_language = Lang::get();
 
         //mount query
         $query = 'SELECT c.id_competence, cl.name, cl.description, c.typology, c.type, cc.score '
@@ -1431,7 +1431,7 @@ class CompetencesAdm extends Model
             }
         }
 
-        $_language = getLanguage();
+        $_language = Lang::get();
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -1634,7 +1634,7 @@ class CompetencesAdm extends Model
     {
         //initialize output
         $output = [];
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $_langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_langs[$lang_codes[$i]] = [
@@ -1677,7 +1677,7 @@ class CompetencesAdm extends Model
 
         $query = 'SELECT c.id_competence, cl.name, c.type, c.typology '
             . ' FROM ' . $this->_getCompetencesTable() . ' as c LEFT JOIN ' . $this->_getCompetencesLangTable() . ' as cl '
-            . " ON (c.id_competence = cl.id_competence AND cl.lang_code='" . getLanguage() . "') "
+            . " ON (c.id_competence = cl.id_competence AND cl.lang_code='" . Lang::get() . "') "
             . " WHERE cl.name LIKE '%" . $query . "%' ORDER BY cl.name "
             . ((int) $limit > 0 ? ' LIMIT 0, ' . (int) $limit : '');
         $res = $this->db->query($query);
@@ -1810,7 +1810,7 @@ class CompetencesAdm extends Model
             return false;
         }
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
 
         $query = 'UPDATE ' . $this->_getCompetencesLangTable() . ' '
@@ -1827,7 +1827,7 @@ class CompetencesAdm extends Model
             return false;
         }
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
 
         $query = 'UPDATE ' . $this->_getCompetencesLangTable() . ' '

@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-require_once Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
+require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.subscribe.php');
 /**
  * Class DashboardBlockAnnouncementsLms.
  */
@@ -88,7 +88,7 @@ class DashboardBlockCourseAttendanceGraphLms extends DashboardBlockLms
 
         $query = 'SELECT cu.status, count(cu.idUser) as cnt'
             . ' FROM ' . $this->subscribeManager->getSubscribeUserTable() . ' cu'
-            . ' WHERE cu.iduser = ' . Forma::user()->getId() . ' '
+            . ' WHERE cu.iduser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getId() . ' '
             . ' GROUP BY cu.status';
 
         $resultQuery = $this->db->query($query);

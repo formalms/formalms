@@ -39,7 +39,7 @@ class DynamicUserFilter
     public function __construct($id)
     {
         $this->id = $id;
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
     }
 
@@ -110,7 +110,7 @@ class DynamicUserFilter
 
         $temp = [];
         foreach ($types as $key => $val) {
-            require_once Forma::inc(_adm_ . '/modules/field/' . $val['type_file']);
+            require_once \FormaLms\lib\Forma::inc(_adm_ . '/modules/field/' . $val['type_file']);
             $quest_obj = eval('return new ' . $val['type_class'] . '( NULL );');
             $temp[] = $quest_obj->getClientClassObject();
         }
@@ -218,7 +218,7 @@ class DynamicUserFilter
             return $output;
         }
 
-        $a_obj = Forma::user()->getAclManager();
+        $a_obj = \FormaLms\lib\Forma::getAclManager();
         $fman = new FieldList();
 
         $filter = $this->json->decode(stripslashes($f_arr));

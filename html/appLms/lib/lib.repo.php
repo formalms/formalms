@@ -898,7 +898,7 @@ class RepoTreeView extends TreeView
                             $idResource,
                             0, /* idCategory */
                             0, /* idUser */
-                            getLogUserId(), /* idAuthor */
+                            \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), /* idAuthor */
                             '1.0' /* version */,
                             '_DIFFICULT_MEDIUM', /* difficult */
                             '', /* description */
@@ -919,7 +919,7 @@ class RepoTreeView extends TreeView
                                 $idResource,
                                 0, /* idCategory */
                                 0, /* idUser */
-                                getLogUserId(), /* idAuthor */
+                                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), /* idAuthor */
                                 '1.0' /* version */,
                                 '_DIFFICULT_MEDIUM', /* difficult */
                                 '', /* description */
@@ -941,7 +941,7 @@ class RepoTreeView extends TreeView
                                 $idResource,
                                 0, /* idCategory */
                                 0, /* idUser */
-                                getLogUserId(), /* idAuthor */
+                                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), /* idAuthor */
                                 '1.0' /* version */,
                                 '_DIFFICULT_MEDIUM', /* difficult */
                                 '', /* description */
@@ -984,7 +984,7 @@ class RepoTreeView extends TreeView
                         $idResource,
                         0, /* idCategory */
                         0, /* idUser */
-                        getLogUserId(), /* idAuthor */
+                        \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), /* idAuthor */
                         '1.0' /* version */,
                         '_DIFFICULT_MEDIUM', /* difficult */
                         '', /* description */
@@ -1085,7 +1085,7 @@ class RepoTreeView extends TreeView
                         . ' title="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" '
                         . ' alt="' . $this->_getOpCopyTitle() . ': ' . $this->getFolderPrintName($stack[$level]['folder']) . '" />';
                     if ($stack[1]['folder']->otherValues[5] == $this->session->get('public_area_idst') ||
-                        Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+                        \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                         $elem .= '<input type="image" class="tree_view_image" '
                             . ' src="' . $this->_getEditImage() . '"'
                             . ' id="' . $this->id . '_' . $this->_getOpEditLOId() . '_' . $stack[$level]['folder']->id . '" '

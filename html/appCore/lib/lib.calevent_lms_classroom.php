@@ -52,7 +52,7 @@ class FormaCalEvent_lms_classroom extends FormaCalEvent_core
 
         $this->_owner = importVar('_owner');
         if (!$this->_owner) {
-            $this->_owner == Forma::user()->getIdSt();
+            $this->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $this->category = importVar('category');
@@ -160,7 +160,7 @@ class FormaCalEvent_lms_classroom extends FormaCalEvent_core
                 $old_start_date = $start_date;
                 $old_end_date = $end_date;
 
-                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_classroom_calendar SET owner='" . Forma::user()->getIdSt() . "',";
+                $query = 'INSERT INTO ' . $GLOBALS['prefix_lms'] . "_classroom_calendar SET owner='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',";
             }
 
             $query .= "start_date='" . $start_date . "',";
@@ -246,7 +246,7 @@ class FormaCalEvent_lms_classroom extends FormaCalEvent_core
         if ($permissions == 2) {
             return 1;
         }
-        if ($permissions == 1 and Forma::user()->getIdSt() == $this->_owner) {
+        if ($permissions == 1 and \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $this->_owner) {
             return 1;
         }
 

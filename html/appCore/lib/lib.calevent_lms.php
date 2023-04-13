@@ -49,7 +49,7 @@ class FormaCalEvent_lms extends FormaCalEvent_core
 
         $this->_owner = importVar('_owner');
         if (!$this->_owner) {
-            $this->_owner == Forma::user()->getIdSt();
+            $this->_owner == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         }
 
         $this->category = importVar('category');
@@ -217,7 +217,7 @@ class FormaCalEvent_lms extends FormaCalEvent_core
         if ($permissions == 2) {
             return 1;
         }
-        if ($permissions == 1 and Forma::user()->getIdSt() == $this->_owner) {
+        if ($permissions == 1 and \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() == $this->_owner) {
             return 1;
         }
 

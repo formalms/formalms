@@ -10,10 +10,13 @@
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+namespace FormaLms\db\drivers;
+
+use FormaLms\db\DbConn;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class mysqli_DbConn extends DbConn
+class Mysqli extends DbConn
 {
     protected $conn = null;
 
@@ -80,7 +83,7 @@ class mysqli_DbConn extends DbConn
 
         // change charset for utf8 (or other if user config in another way)
         // connection with the server
-        $charset = FormaLms\lib\Get::cfg('db_charset', 'utf8');
+        $charset = \FormaLms\lib\Get::cfg('db_charset', 'utf8');
         $this->query("SET NAMES '" . $charset . "'", $this->conn);
         $this->query("SET CHARACTER SET '" . $charset . "'", $this->conn);
         //TODO NO_Strict_MODE: to be confirmed
@@ -93,8 +96,8 @@ class mysqli_DbConn extends DbConn
     {
         // set connection timezone according to php settings
 
-        if (FormaLms\lib\Get::cfg('set_mysql_tz', false)) {
-            $dt = new DateTime();
+        if (\FormaLms\lib\Get::cfg('set_mysql_tz', false)) {
+            $dt = new \DateTime();
             $offset = $dt->format('P');        // get current timezone offeset
             $this->query("SET time_zone='" . $offset . "'", $this->conn);
             $this->log('mysql set connection timezone offset to : ' . $offset);
@@ -232,7 +235,7 @@ class mysqli_DbConn extends DbConn
         }
         $return = mysqli_num_rows($result);
 
-        return $return ? $return : false;
+        return $return ?: false;
     }
 
     public function affected_rows()

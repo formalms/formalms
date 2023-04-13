@@ -19,7 +19,7 @@ class MessageLms extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
 
@@ -41,7 +41,7 @@ class MessageLms extends Model
         $file = '';
         sl_open_fileoperations();
         if (isset($attach['tmp_name']['attach']) && $attach['tmp_name']['attach'] != '') {
-            $file = getLogUserId() . '_' . mt_rand(0, 100) . '_' . time() . '_' . $attach['name']['attach'];
+            $file = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . '_' . mt_rand(0, 100) . '_' . time() . '_' . $attach['name']['attach'];
             if (!sl_upload($attach['tmp_name']['attach'], $path . $file)) {
                 $error = 1;
                 $file = '';
@@ -59,7 +59,7 @@ class MessageLms extends Model
     {
         require_once _adm_ . '/lib/lib.message.php';
 
-        $del_query = "UPDATE %adm_message_user SET deleted = '" . _OPERATION_SUCCESSFUL . "' WHERE idUser='" . getLogUserId() . "' AND idMessage = '" . (int) $id . "'";
+        $del_query = "UPDATE %adm_message_user SET deleted = '" . _OPERATION_SUCCESSFUL . "' WHERE idUser='" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND idMessage = '" . (int) $id . "'";
         if (!$this->db->query($del_query)) {
             return false;
         }

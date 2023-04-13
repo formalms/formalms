@@ -185,9 +185,9 @@ class DimDim_Manager
 
         $conference = $conf->roomInfo($idConference);
 
-        $acl_manager = &Forma::user()->getAclManager();
-        $display_name = Forma::user()->getUserName();
-        $u_info = $acl_manager->getUser(getLogUserId(), false);
+        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $display_name = \FormaLms\lib\FormaUser::getCurrentUser()->getUserName();
+        $u_info = $acl_manager->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
         $user_email = $u_info[ACL_INFO_EMAIL];
 
         $query2 = 'SELECT * FROM ' . $this->_getRoomTable() . " WHERE idConference = '" . $idConference . "'";
@@ -203,7 +203,7 @@ class DimDim_Manager
 
         /*
                 $error = false;
-                if (getLogUserId()==$conference["idSt"]) {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()==$conference["idSt"]) {
 
                     $url='<a onclick="window.open(this.href, \'\', \'\');return false;" href="http://'.$this->server.'/dimdim/html/envcheck/connect.action'
                                         .'?action=host'

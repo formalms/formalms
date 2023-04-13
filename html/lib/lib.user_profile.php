@@ -115,7 +115,7 @@ class UserProfile
         $this->_std_query = $std_query;
         $this->_varname_action = $varname_action;
 
-        $this->_id_viewer = getLogUserId();
+        $this->_id_viewer = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $this->_varname_action = $varname_action;
 
@@ -234,7 +234,7 @@ class UserProfile
      */
     public function setViewer($id_viewer)
     {
-        return $id_viewer === false ? $this->_id_viewer = getLogUserId() : $this->_id_viewer = $id_viewer;
+        return $id_viewer === false ? $this->_id_viewer = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() : $this->_id_viewer = $id_viewer;
     }
 
     /**
@@ -483,7 +483,7 @@ class UserProfile
                         require_once _lms_ . '/lib/lib.reservation.php';
                         $id_event = FormaLms\lib\Get::req('id_event', DOTY_INT, 0);
                         $man_res = new Man_Reservation();
-                        $result = $man_res->addSubscription(getLogUserId(), $id_event);
+                        $result = $man_res->addSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event);
                         Util::jump_to('index.php?modname=reservation&op=reservation');
                     } else {
                         //TODO: EVT_OBJECT (§)
@@ -495,9 +495,9 @@ class UserProfile
                         //TODO: EVT_LAUNCH (&)
                         //\appCore\Events\DispatcherManager::dispatch(\appCore\Events\Core\User\UsersManagementEditEvent::EVENT_NAME, $event);
 
-                        require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
 
-                        $uinfo = Forma::aclm()->getUser($this->_id_user, false);
+                        $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($this->_id_user, false);
 
                         $reg_code = null;
                         $uma = new UsermanagementAdm();
@@ -525,7 +525,7 @@ class UserProfile
 
                         $msg_composer->setBodyLangText('sms', '_EVENT_MOD_USER_TEXT_SMS', $array_subst);
 
-                        $acl_manager = \Forma::user()->getAclManager();
+                        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
                         $permission_godadmin = $acl_manager->getGroupST(ADMIN_GROUP_GODADMIN);
                         $permission_admin = $acl_manager->getGroupST(ADMIN_GROUP_ADMIN);
@@ -652,12 +652,12 @@ class UserProfile
                 break;
             // display the profile ------------------------------------
             case 'view_files':
-                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, getLogUserId());
+                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 return $this->_up_viewer->getViewUserFiles();
                 break;
             case 'file_details':
-                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, getLogUserId());
+                $this->_id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 return $this->_up_viewer->getViewUserFileDetail();
                 break;
@@ -703,12 +703,12 @@ class UserProfile
 
         // save the users view of the profile
         if ($this->_id_viewer != $this->_id_user) {
-            if ($this->_id_viewer == getLogUserId()) {
-                if (!Forma::user()->isAnonymous()) {
+            if ($this->_id_viewer == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
+                if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
                 }
             } else {
-                $acl_man = Forma::user()->getAclManager();
+                $acl_man = \FormaLms\lib\Forma::getAclManager();
                 $id_anonymous = $acl_man->getAnonymousId();
                 if ($this->_id_viewer !== $id_anonymous) {
                     $this->_up_data_man->addView($this->_id_user, $this->_id_viewer);
@@ -1028,7 +1028,7 @@ class UserProfileViewer
     public function __construct(&$user_profile, $varname_action = 'ap')
     {
         $this->_user_profile = &$user_profile;
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $this->_lang = &$this->_user_profile->getLang();
 
@@ -1272,7 +1272,7 @@ class UserProfileViewer
 
     public function getAvailablePhotoAvatar($dimension = 'medium')
     {
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($dimension);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($dimension);
 
         // avatar ------------------------------------------------------------------------------
         if ($this->user_info[ACL_INFO_AVATAR] != '') {
@@ -1489,7 +1489,7 @@ class UserProfileViewer
         $lv_lang = FormaLanguage::createInstance('admin_directory', 'framework');
         if ($this->_user_profile->godMode()) {
             // show user level
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             switch ($acl_man->getUserLevelId($this->_user_profile->getIdUser())) {
                 case ADMIN_GROUP_GODADMIN:
                     $user_level_string = $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN);
@@ -1523,7 +1523,7 @@ class UserProfileViewer
 
         // Grifo: ticket #19467
         // view only admin profile CR: #19813
-        $level_current_user = Forma::user()->user_level;
+        $level_current_user = \FormaLms\lib\FormaUser::getCurrentUser()->user_level;
         if (
             $level_current_user == ADMIN_GROUP_GODADMIN ||
             $level_current_user == ADMIN_GROUP_ADMIN
@@ -2086,7 +2086,7 @@ class UserProfileViewer
 
         $edit_mode = $this->_user_profile->editMode();
 
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
 
         // main container ---------------------------------------------------------------------
         $html = '<div class="up_user_info">';
@@ -2143,7 +2143,7 @@ class UserProfileViewer
             : ($is_online ? $this->_lang->def('_USERONLINE') : $this->_lang->def('_USEROFFLINE'))
         );
 
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
 
         // main container ---------------------------------------------------------------------
         $html = '<div style="width:95%;">';
@@ -2177,7 +2177,7 @@ class UserProfileViewer
                 ? '<a href="mailto:' . $this->user_info[ACL_INFO_EMAIL] . '">' . $this->user_info[ACL_INFO_EMAIL] . '</a>'
                 : $this->_lang->def('_HIDDEN')));
         if ($this->getViewer() != $this->_id_user) {
-            if ($this->_up_data_man->isFriend($this->_id_user, getLogUserId())) {
+            if ($this->_up_data_man->isFriend($this->_id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                 $html .= $this->getUIRowCode($this->_lang->def('_IS_FRIEND'), $this->_lang->def('_YES'));
             } else {
                 $html .= $this->getUIRowCode($this->_lang->def('_IS_FRIEND'), $this->_lang->def('_NO'));
@@ -2204,8 +2204,8 @@ class UserProfileViewer
     public function homePhotoProfile($picture = false, $viewer = false, $intest = false)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = Forma::user()->getAclManager();
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
 
         $html = '';
 
@@ -2223,7 +2223,7 @@ class UserProfileViewer
         $this->loadUserData($this->getViewer());
         $unread_num = 0;
         $perm_message = false;
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
         $pendent = 0;
         //$html = ' <div class="container-fluid"> <div class="row">';
         $html = '<div class="row profile">';
@@ -2233,7 +2233,7 @@ class UserProfileViewer
             $perm_message = true;
             require_once _adm_ . '/lib/lib.message.php';
             $msg = new Man_Message();
-            $unread_num = $msg->getCountUnreaded(getLogUserId(), [], '', true);
+            $unread_num = $msg->getCountUnreaded(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), [], '', true);
         }
 
         if ($ma->currentCanAccessObj('mo_7')) {
@@ -2342,7 +2342,7 @@ class UserProfileViewer
                 } //end foreach
             }
 
-            require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
             $cert = new Certificate();
 
             $filter['id_user'] = $this->_id_user;
@@ -2376,7 +2376,7 @@ class UserProfileViewer
     {
         $this->loadUserData($this->getViewer());
 
-        list($class_picture, $this->max_dim_avatar) = $this->getPhotoLimit($picture);
+        [$class_picture, $this->max_dim_avatar] = $this->getPhotoLimit($picture);
 
         // main container ---------------------------------------------------------------------
         $data = [];
@@ -2396,7 +2396,7 @@ class UserProfileViewer
     public function userIdMailProfile($picture = false, $viewer = false, $intest = true)
     {
         $this->loadUserData($this->getViewer());
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $html = '<div class="user_presentation">' . "\n"
 
@@ -2466,7 +2466,7 @@ class UserProfileViewer
         $html .= $preference->getModifyMask('ui.');
 
         if ($this->_user_profile->godMode()) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             $html .= Form::getPassword(Lang::t('_NEW_PASSWORD', 'register'),
                 'up_new_pwd',
@@ -2478,12 +2478,12 @@ class UserProfileViewer
                 'up_repeat_pwd',
                 '255');
 
-            if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN && FormaLms\lib\Get::cur_plat() === 'framework') {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && FormaLms\lib\Get::cur_plat() === 'framework') {
                 $html .= Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, $this->user_info[ACL_INFO_FORCE_CHANGE]);
             }
 
             $lv_lang = FormaLanguage::createInstance('admin_directory', 'framework');
-            if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
                 $level_list = [
                     ADMIN_GROUP_GODADMIN => $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_GODADMIN),
                     ADMIN_GROUP_ADMIN => $lv_lang->def('_DIRECTORY_' . ADMIN_GROUP_ADMIN),
@@ -2586,7 +2586,7 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
 
         $html = '<div class="up_user_info">'
-            . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
+            . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
         // user standard info -----------------------------------------------------------------
         $html .= Form::openForm('mod_pwd', $this->_url_man->getUrl($this->_varname_action . '=savepwd'));
 
@@ -2625,15 +2625,15 @@ class UserProfileViewer
      */
     public function checkUserPwd()
     {
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $this->loadUserData(getLogUserId());
+        $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         if (!$this->_user_profile->godMode()) {
-            if (!$acl_man->password_verify_update($_POST['up_old_pwd'], $this->user_info[ACL_INFO_PASS], getLogUserId())) {
+            if (!$acl_man->password_verify_update($_POST['up_old_pwd'], $this->user_info[ACL_INFO_PASS], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                 return $this->_lang->def('_OLDPASSWRONG');
             }
             // control password
-            require_once \Forma::inc(_base_ . '/lib/lib.usermanager.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
             $options = new UserManagerOption();
             $l_pass_min_char = $options->getOption('pass_min_char');
             if (strlen($_POST['up_new_pwd']) < $l_pass_min_char) {
@@ -2653,15 +2653,15 @@ class UserProfileViewer
                 }
                 $re_pwd = sql_query('SELECT passw '
                     . ' FROM ' . $GLOBALS['prefix_fw'] . '_password_history'
-                    . ' WHERE idst_user = ' . getLogUserId() . ''
+                    . ' WHERE idst_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ''
                     . ' ORDER BY pwd_date DESC');
 
-                list($pwd_history) = sql_fetch_row($re_pwd);
+                [$pwd_history] = sql_fetch_row($re_pwd);
                 for ($i = 0; $pwd_history && $i < FormaLms\lib\Get::sett('user_pwd_history_length'); ++$i) {
                     if ($pwd_history == $new_pwd) {
                         return str_replace('[diff_pwd]', FormaLms\lib\Get::sett('user_pwd_history_length'), Lang::t('_REG_PASS_MUST_DIFF', 'profile'));
                     }
-                    list($pwd_history) = sql_fetch_row($re_pwd);
+                    [$pwd_history] = sql_fetch_row($re_pwd);
                 }
             }
         }
@@ -2687,10 +2687,10 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.preference.php';
 
-        $this->loadUserData(getLogUserId());
+        $this->loadUserData(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $html = '<div class="up_user_info">'
-            . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
+            . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
 
         // user standard info -----------------------------------------------------------------
         $html .= getInfoUi(str_replace('[max_px]', $this->max_dim_avatar, $this->_lang->def('_AVATAR_PHOTO_INSTRUCTION')));
@@ -2880,7 +2880,7 @@ class UserProfileViewer
         $last_view = $this->_up_data_man->getUserProfileViewList($this->_user_profile->getIdUser(), 15);
         $user_stat = $this->_up_data_man->getUserStats($this->_user_profile->getIdUser());
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $html = '<h2 class="up_type1">' . $this->_lang->def('_COMMUNITY') . '</h2>';
 
@@ -3204,7 +3204,7 @@ class UserProfileViewer
         $query = 'SELECT COUNT(*)' .
             ' FROM %lms_courseuser' .
             " WHERE idCourse = '" . $id_course . "'" .
-            " AND idUser = '" . getLogUserId() . "'";
+            " AND idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
         $result = sql_fetch_row(sql_query($query));
 
@@ -3216,7 +3216,7 @@ class UserProfileViewer
         if (isset($_GET['confirm'])) {
             $query = 'UPDATE %lms_teacher_profile' .
                 " SET curriculum = ''" .
-                " WHERE id_user = '" . getLogUserId() . "'";
+                " WHERE id_user = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
 
             $result = sql_query($query);
 
@@ -3275,7 +3275,7 @@ class UserProfileViewer
         require_once _base_ . '/lib/lib.form.php';
 
         $html = '<div class="up_user_info">'
-            . '<div class="up_name">' . $this->resolveUsername(false, getLogUserId()) . '</div>';
+            . '<div class="up_name">' . $this->resolveUsername(false, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) . '</div>';
 
         // user standard info -----------------------------------------------------------------
         $html .= Form::openForm('mod_publications', $this->_url_man->getUrl($this->_varname_action . '=save_teach_publ'));
@@ -3376,7 +3376,7 @@ class UserProfileViewer
         $_types = $cmodel->getCompetenceTypes();
         $_typologies = $cmodel->getCompetenceTypologies();
         $_categories = $cmodel->getCategoriesLangs();
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         if (count($comp_data) > 0) {
             foreach ($comp_data as $id_competence => $value) {
@@ -3609,15 +3609,14 @@ class UserProfileData
      */
     public function __construct($db_conn = null)
     {
-        require_once _base_ . '/lib/lib.user.php';
         require_once _base_ . '/lib/lib.preference.php';
         require_once _adm_ . '/lib/lib.myfriends.php';
         require_once _lms_ . '/lib/lib.course.php';
 
         $this->_db_conn = $db_conn;
 
-        $this->acl = Forma::user()->getAcl();
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->acl = \FormaLms\lib\Forma::getAcl();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     public function _query($query)
@@ -4047,7 +4046,7 @@ class UserProfileData
                         'value' => $value[1],];
                 }
             } else {
-                if ($id_user === Forma::user()->getIdSt()) {
+                if ($id_user === \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()) {
                     $field[$field_id] = ['name' => $value[0],
                         'value' => $value[1],];
                 }
@@ -4179,7 +4178,7 @@ class UserProfileData
             return false;
         }
         if (isset($data['level'])) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $current_level = $acl_man->getUserLevelId($id_user);
             if ($data['level'] != $current_level) {
                 $arr_levels = $acl_man->getAdminLevels();
@@ -4437,7 +4436,7 @@ class UserProfileData
 
             return;
         }
-        list($this->_teacher_data[$id_user]['curriculum'], $this->_teacher_data[$id_user]['pubblications']) = sql_fetch_row($re);
+        [$this->_teacher_data[$id_user]['curriculum'], $this->_teacher_data[$id_user]['pubblications']] = sql_fetch_row($re);
     }
 
     /**
@@ -4480,7 +4479,7 @@ class UserProfileData
 		FROM ' . $GLOBALS['prefix_lms'] . "_teacher_profile
 		WHERE id_user = '" . $id_user . "'";
         $re = $this->_query($query);
-        list($num_of) = sql_fetch_row($re);
+        [$num_of] = sql_fetch_row($re);
         if ($num_of) {
             $query = '
 			UPDATE %lms_teacher_profile
@@ -4616,7 +4615,7 @@ class UserProfileData
             $info = [];
         }
         $output = [];
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         foreach ($info as $id_competence => $cdata) {
             $obj = new stdClass();
@@ -4648,7 +4647,7 @@ class UserProfileData
             $info = [];
         }
         $output = [];
-        $lang_code = getLanguage();
+        $lang_code = Lang::get();
 
         foreach ($info as $id_fncrole => $fdata) {
             $obj = new stdClass();

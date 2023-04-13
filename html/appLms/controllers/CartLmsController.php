@@ -40,7 +40,7 @@ class CartLmsController extends LmsController
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
 
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
 
         Util::get_css(FormaLms\lib\Get::rel_path(_base_) . '/appLms/views/cart/cart.css', true, true);
     }
@@ -298,25 +298,25 @@ class CartLmsController extends LmsController
             $total_price = 0;
 
             foreach ($cart as $id_course => $extra) {
-                $docebo_course = new FormaCourse($id_course);
+                $formaCourse = new FormaCourse($id_course);
 
                 require_once _lms_ . '/admin/models/SubscriptionAlms.php';
 
-                $level_idst = &$docebo_course->getCourseLevel($id_course);
+                $level_idst = &$formaCourse->getCourseLevel($id_course);
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$docebo_course->createCourseLevel($id_course);
+                    $level_idst = &$formaCourse->createCourseLevel($id_course);
                 }
 
                 $waiting = 1;
 
-                $this->acl_man->addToGroup($level_idst[3], Forma::user()->getIdSt());
+                $this->acl_man->addToGroup($level_idst[3], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 if (isset($extra['classroom'])) {
                     foreach ($extra['classroom'] as $id_date) {
                         $model = new SubscriptionAlms($id_course, 0, $id_date);
-                        if (!$model->subscribeUser(Forma::user()->getIdSt(), 3, $waiting)) {
-                            $this->acl_man->removeFromGroup($level_idst[3], Forma::user()->getIdSt());
+                        if (!$model->subscribeUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 3, $waiting)) {
+                            $this->acl_man->removeFromGroup($level_idst[3], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         } elseif ($this->model->addTransactionCourse($id_trans, $id_course, $id_date, 0, $course_info[$id_course . '_' . $id_date . '_0'])) {
                             $currentCart = $this->session->get('lms_cart');
                             unset($currentCart[$id_course]['classroom'][$id_date]);
@@ -325,7 +325,7 @@ class CartLmsController extends LmsController
 
                             $query = 'UPDATE %lms_courseuser'
                                 . " SET status = '-2'"
-                                . ' WHERE idUser = ' . Forma::user()->getIdSt()
+                                . ' WHERE idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()
                                 . ' AND idCourse = ' . $id_course;
 
                             sql_query($query);
@@ -336,8 +336,8 @@ class CartLmsController extends LmsController
                 } elseif (isset($extra['edition'])) {
                     foreach ($extra['edition'] as $id_edition) {
                         $model = new SubscriptionAlms($id_course, $id_edition, 0);
-                        if (!$model->subscribeUser(Forma::user()->getIdSt(), 3, $waiting)) {
-                            $this->acl_man->removeFromGroup($level_idst[3], Forma::user()->getIdSt());
+                        if (!$model->subscribeUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 3, $waiting)) {
+                            $this->acl_man->removeFromGroup($level_idst[3], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         } elseif ($this->model->addTransactionCourse($id_trans, $id_course, 0, $id_edition, $course_info[$id_course . '_0_' . $id_edition])) {
                             $currentCart = $this->session->get('lms_cart');
                             unset($currentCart[$id_course]['edition'][$id_edition]);
@@ -346,7 +346,7 @@ class CartLmsController extends LmsController
 
                             $query = 'UPDATE %lms_courseuser'
                                 . " SET status = '-2'"
-                                . ' WHERE idUser = ' . Forma::user()->getIdSt()
+                                . ' WHERE idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()
                                 . ' AND idCourse = ' . $id_course;
 
                             sql_query($query);
@@ -356,8 +356,8 @@ class CartLmsController extends LmsController
                     }
                 } else {
                     $model = new SubscriptionAlms($id_course, 0, 0);
-                    if (!$model->subscribeUser(Forma::user()->getIdSt(), 3, $waiting)) {
-                        $this->acl_man->removeFromGroup($level_idst[3], Forma::user()->getIdSt());
+                    if (!$model->subscribeUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 3, $waiting)) {
+                        $this->acl_man->removeFromGroup($level_idst[3], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     } elseif ($this->model->addTransactionCourse($id_trans, $id_course, 0, 0, $course_info[$id_course . '_0_0'])) {
                         $currentCart = $this->session->get('lms_cart');
                         unset($currentCart[$id_course]);
@@ -366,7 +366,7 @@ class CartLmsController extends LmsController
 
                         $query = 'UPDATE %lms_courseuser'
                             . " SET status = '-2'"
-                            . ' WHERE idUser = ' . Forma::user()->getIdSt()
+                            . ' WHERE idUser = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()
                             . ' AND idCourse = ' . $id_course;
 
                         sql_query($query);
@@ -412,7 +412,7 @@ class CartLmsController extends LmsController
             // Send Message
             require_once _base_ . '/lib/lib.eventmanager.php';
 
-            $user_data = $this->acl_man->getUser(Forma::user()->getIdSt(), false);
+            $user_data = $this->acl_man->getUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
             $t = new TransactionAlms();
             $transaction_info = $t->getTransactionInfo($id_trans);
             $date = null;
@@ -422,13 +422,13 @@ class CartLmsController extends LmsController
 
             $username = str_replace('/', '', $user_data[1]);
 
-            require_once Forma::inc(_adm_ . '/lib/lib.field.php');
+            require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
             $extra_field = new FieldList();
             $fields_arr = $extra_field->getUserFieldEntryData($user_data[0]);
 
             $fields = '<ul>';
             foreach ($fields_arr as $k => $f) {
-                list($name) = sql_fetch_row(sql_query("SELECT `translation` FROM core_field WHERE idField = $k AND lang_code = '" . getLanguage() . "'"));
+                list($name) = sql_fetch_row(sql_query("SELECT `translation` FROM core_field WHERE idField = $k AND lang_code = '" . Lang::get() . "'"));
                 $fields .= "<li>$name: <strong>$f</strong></li>";
             }
             $fields .= '</ul>';

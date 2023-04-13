@@ -64,7 +64,7 @@ class DbupgradesAdmController extends AdmController
 
         //format models' data
         $records = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $records[] = [

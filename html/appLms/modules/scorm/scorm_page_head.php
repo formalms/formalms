@@ -17,16 +17,16 @@ ob_start();
 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 $idCourse = $session->get('idCourse');
 
-if (!Forma::user()->isLoggedIn() || !$idCourse) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn() || !$idCourse) {
     exit('Malformed request');
 }
 
-require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
 
 @sql_query("SET NAMES '" . $GLOBALS['db_conn_names'] . "'", $dbconn);
 @sql_query("SET CHARACTER SET '" . $GLOBALS['db_conn_char_set'] . "'", $dbconn);
 
-require_once Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm_items_track.php');
 
 $idscorm_organization = (int) $_GET['idscorm_organization'];
 $idReference = (int) $_GET['idReference'];

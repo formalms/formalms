@@ -11,7 +11,9 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 require_once _base_ . '/vendor/autoload.php';
+
 use FormaLms\lib\Domain\DomainHandler;
+
 use FormaLms\Exceptions\FormaStatusException;
 
 use function GuzzleHttp\default_ca_bundle;
@@ -32,7 +34,6 @@ class Boot
     private static bool $prettyRedirect;
 
     private static $_boot_seq = [
-        BOOT_COMPOSER => 'composer',
         BOOT_PHP => 'checkPhpVersion',
         BOOT_CONFIG => 'config',
         BOOT_UTILITY => 'utility',
@@ -54,12 +55,6 @@ class Boot
     ];
 
     public static $log_array = [];
-
-    public static function composer()
-    {
-        // composer autoload
-        self::log('Load composer autoload.');
-    }
 
     /**
      * Load all the step requested.
@@ -104,10 +99,10 @@ class Boot
      */
     public static function finalize()
     {
-        if (isset($GLOBALS['current_user']) && Forma::user()->isLoggedIn()) {
-            Forma::user()->SaveInSession();
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn()) {
+            \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
         }
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $db->close();
     }
 
@@ -383,14 +378,14 @@ class Boot
 
 
         self::log('Load database funtion management library.');
-        require_once _base_ . '/db/lib.docebodb.php';
+        
 
         // utf8 support
         self::log('Connect to database.');
-        DbConn::getInstance(null, $cfg);
+        \FormaLms\db\DbConn::getInstance(null, $cfg);
 
         $dbIsEmpty = true;
-        if (DbConn::$connected) {
+        if (\FormaLms\db\DbConn::$connected) {
             try {
                 $dbIsEmpty = !(bool)sql_query("SELECT * FROM `core_setting`");
             } catch (\Exception $exception) {
@@ -464,7 +459,6 @@ class Boot
      */
     private static function user()
     {
-        require_once _base_ . '/lib/lib.user.php';
         $session = FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         self::log("Load user from session '" . $session->getName() . "'");
 
@@ -478,10 +472,10 @@ class Boot
             if (strpos($ip, ',') !== false) {
                 $ip = substr($ip, 0, strpos($ip, ','));
             }
-            if (Forma::user()->isLoggedIn() && (Forma::user()->getLogIp() != $ip)) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn() && (\FormaLms\lib\FormaUser::getCurrentUser()->getLogIp() != $ip)) {
                 \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->invalidate();
                 Util::jump_to(FormaLms\lib\Get::rel_path('base') . '/index.php?msg=104');
-                //Util::fatal("logip: ".Forma::user()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
+                //Util::fatal("logip: ".\FormaLms\lib\FormaUser::getCurrentUser()->getLogIp()."<br/>"."addr: ".$_SERVER['REMOTE_ADDR']."<br/>".'Ip incoherent!');
                 //unlog the user
                 exit();
             }
@@ -530,7 +524,7 @@ class Boot
         // Convert ' and " (quote or unquote)
         self::log('Sanitize the input.');
 
-        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
             $filter_input = new FilterInput();
             $filter_input->tool = 'none';
             $filter_input->sanitize();
@@ -572,7 +566,7 @@ class Boot
     {
         self::log('Loading session language functions');
 
-        require_once Forma::inc(_i18n_ . '/lib.lang.php');
+        require_once \FormaLms\lib\Forma::inc(_i18n_ . '/lib.lang.php');
         $sop = FormaLms\lib\Get::req('sop', DOTY_ALPHANUM, false);
         if (!$sop) {
             $sop = FormaLms\lib\Get::req('special', DOTY_ALPHANUM, false);

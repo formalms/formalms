@@ -37,8 +37,8 @@ $idCourse = $session->get('idCourse');
 
 // here all the specific code ==========================================================
 
-require_once Forma::inc(_lms_ . '/lib/lib.track_user.php');
-TrackUser::setActionTrack(getLogUserId(), $idCourse, 'scorm', 'close');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.track_user.php');
+TrackUser::setActionTrack(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, 'scorm', 'close');
 
 // update the tracking
 

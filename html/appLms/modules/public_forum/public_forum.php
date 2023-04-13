@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -36,7 +36,7 @@ function loadUnreaded()
         $no_entry = false;
         $reLast = sql_query('SELECT UNIX_TIMESTAMP(lastenter)' .
             ' FROM core_user' .
-            " WHERE idst = '" . getLogUserId() . "'");
+            " WHERE idst = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'");
         if (sql_num_rows($reLast)) {
             list($last_forum_access_time) = sql_fetch_row($reLast);
         } else {
@@ -47,7 +47,7 @@ function loadUnreaded()
         $reUnreaded = sql_query('
 		SELECT t.idThread, t.idForum, m.generator, COUNT(m.idMessage)
 		FROM %lms_forumthread AS t JOIN ' . $GLOBALS['prefix_lms'] . "_forummessage AS m
-		WHERE t.idThread = m.idThread AND m.author <> '" . getLogUserId() . "' AND UNIX_TIMESTAMP(m.posted) >= '" . $last_forum_access_time . "'
+		WHERE t.idThread = m.idThread AND m.author <> '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' AND UNIX_TIMESTAMP(m.posted) >= '" . $last_forum_access_time . "'
 		GROUP BY t.idThread, t.idForum, m.generator");
 
         while (list($id_thread, $id_forum, $is_generator, $how_much_mess) = sql_fetch_row($reUnreaded)) {
@@ -73,13 +73,13 @@ function loadUnreaded()
             sql_query('
 			INSERT INTO  ' . $GLOBALS['prefix_lms'] . "_forum_timing
 			SET last_access = NOW(),
-				idUser = '" . getLogUserId() . "',
+				idUser = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 				idCourse = '" . PUBLIC_FORUM_COURSE_ID . "'");
         } else {
             sql_query('
 			UPDATE %lms_forum_timing
 			SET  last_access = NOW()
-			WHERE idUser = ' . (int) getLogUserId() . " AND idCourse = '" . PUBLIC_FORUM_COURSE_ID . "'");
+			WHERE idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . " AND idCourse = '" . PUBLIC_FORUM_COURSE_ID . "'");
         }
     }
 }
@@ -94,7 +94,7 @@ function forum()
     $moderate = checkPerm('moderate', true);
     $add_perm = checkPerm('add', true);
     $base_link = 'index.php?modname=public_forum&amp;op=forum';
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     // Find and set unreaded message
     loadUnreaded();
@@ -118,9 +118,9 @@ function forum()
 		SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . "_forum AS f
 		WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "'";
     } else {
-        $acl = &Forma::user()->getAcl();
-        $all_user_idst = $acl->getSTGroupsST(getLogUserId());
-        $all_user_idst[] = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $all_user_idst = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $all_user_idst[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $query_view_forum = '
 		SELECT DISTINCT f.idForum, f.title, f.description, f.num_thread, f.num_post, f.locked, f.emoticons
@@ -542,8 +542,8 @@ function insforum()
     }
     list($idForum) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-    if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-        $id_user = getLogUserId();
+    if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $perm = [];
 
         $perm['view'] = [$id_user];
@@ -553,8 +553,8 @@ function insforum()
 
         saveForumPerm($idForum, $perm, []);
 
-        Forma::user()->loadUserSectionST();
-        Forma::user()->SaveInSession();
+        \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST();
+        \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
     }
     $recipients = '';
     if (!empty($recipients)) {
@@ -585,12 +585,12 @@ function insforum()
     if (!empty($recipients)) {
         require_once _adm_ . '/lib/lib.usernotifier.php';
 
-        $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewResponse');
+        $can_notify = usernotifier_getUserEventStatus(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'ForumNewResponse');
 
         if ($can_notify) {
             /* Abilito di default le notifiche per l'utente che sta inserendo il forum */
-            if (!issetNotify('forum', $idForum, getLogUserId())) {
-                setNotify('forum', $idForum, getLogUserId());
+            if (!issetNotify('forum', $idForum, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
+                setNotify('forum', $idForum, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
 
             /* Abilito di default le notifiche per gli utenti del corso*/
@@ -1049,7 +1049,7 @@ function modforumaccess_old()
 function saveForumPerm($idForum, $selected_items, $database_items)
 {
     $pl = getForumPermList();
-    $acl_manager = &Forma::user()->getACLManager();
+    $acl_manager = &\FormaLms\lib\Forma::getAclManager();;
     foreach ($pl as $key => $val) {
         if ((isset($selected_items[$val])) && (is_array($selected_items[$val]))) {
             $role_id = '/lms/course/public/public_forum/' . $idForum . '/' . $val;
@@ -1093,7 +1093,7 @@ function loadForumSavedPerm($idForum)
 {
     $res = [];
     $pl = getForumPermList();
-    $acl_manager = &Forma::user()->getACLManager();
+    $acl_manager = &\FormaLms\lib\Forma::getAclManager();;
 
     foreach ($pl as $key => $val) {
         $role_id = '/lms/course/public/public_forum/' . $idForum . '/' . $val;
@@ -1129,7 +1129,7 @@ function thread()
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum
 	WHERE idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "' AND idForum = '" . $idForum . "'"));
 
-        $authorId = Forma::user()->getId();
+        $authorId = \FormaLms\lib\FormaUser::getCurrentUser()->getId();
         $query = 'SELECT COUNT(*) AS numThread FROM %lms_forumthread WHERE `author`=' . $authorId . ' AND `idForum`= ' . $idForum;
 
         list($numThread) = sql_fetch_row(sql_query($query));
@@ -1165,7 +1165,7 @@ function thread()
 
     $ord = importVar('ord');
     $jump_url = 'index.php?modname=public_forum&amp;op=thread&amp;idForum=' . $id_forum;
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
     $all_read = importVar('allread', true, 0);
 
     if ($all_read) {
@@ -1288,7 +1288,7 @@ function thread()
     $tb->setColsStyle($type_h);
     $tb->addHead($cont_h);
 
-    $currentUserId = Forma::user()->getId();
+    $currentUserId = \FormaLms\lib\FormaUser::getCurrentUser()->getId();
 
     while (list($idT, $t_author, $posted, $title, $num_post, $num_view, $locked, $erased, $important, $isPrivate) = sql_fetch_row($re_thread)) {
         $arr_levels_id = array_flip($acl_man->getAdminLevels());
@@ -1428,14 +1428,14 @@ function thread()
     // NOTE: If notify request register it
     require_once _adm_ . '/lib/lib.usernotifier.php';
 
-    $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewThread');
+    $can_notify = usernotifier_getUserEventStatus(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'ForumNewThread');
 
     if (isset($_GET['notify']) && $can_notify) {
-        if (issetNotify('forum', $id_forum, getLogUserId())) {
-            $re = unsetNotify('forum', $id_forum, getLogUserId());
+        if (issetNotify('forum', $id_forum, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
+            $re = unsetNotify('forum', $id_forum, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $is_notify = !$re;
         } else {
-            $re = setNotify('forum', $id_forum, getLogUserId());
+            $re = setNotify('forum', $id_forum, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $is_notify = $re;
         }
         if ($re) {
@@ -1444,7 +1444,7 @@ function thread()
             $GLOBALS['page']->add(getErrorUi($lang->def('_NOTIFY_CHANGE_STATUS_FAILED')), 'content');
         }
     } elseif ($can_notify) {
-        $is_notify = issetNotify('forum', $id_forum, getLogUserId());
+        $is_notify = issetNotify('forum', $id_forum, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     }
 
     $text_inner = '';
@@ -1514,7 +1514,7 @@ function addthread()
 
     $canInsert = true;
     if ($moderate === false) {
-        $authorId = Forma::user()->getId();
+        $authorId = \FormaLms\lib\FormaUser::getCurrentUser()->getId();
         $query = 'SELECT COUNT(*) AS numThread FROM %lms_forumthread WHERE `author`=' . $authorId . ' AND `idForum`= ' . $idForum;
 
         list($numThread) = sql_fetch_row(sql_query($query));
@@ -1650,9 +1650,9 @@ function insthread()
     if (!isset($members)) {
         $continue = true;
     } else {
-        $acl = &Forma::user()->getAcl();
-        $all_user_idst = $acl->getSTGroupsST(getLogUserId());
-        $all_user_idst[] = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $all_user_idst = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $all_user_idst[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $can_access = [];
         $can_access = array_intersect($members, $all_user_idst);
@@ -1683,7 +1683,7 @@ function insthread()
 		'" . $id_forum . "',
 		'" . PUBLIC_FORUM_EDITION_ID . "',
 		'" . $_POST['title'] . "',
-		'" . getLogUserId() . "',
+		'" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 		 0,
 		 0,
 		 '" . $now . "',
@@ -1707,7 +1707,7 @@ function insthread()
 		'" . (int) PUBLIC_FORUM_COURSE_ID . "',
 		'" . $_POST['title'] . "',
 		'" . $_POST['textof'] . "',
-		'" . getLogUserId() . "',
+		'" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 		'" . $now . "',
 		'/" . $now . "',
 		'" . addslashes($name_file) . "',
@@ -1767,7 +1767,7 @@ function modthread()
     $ini = importVar('ini');
 
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     // retrive info about message
     $mess_query = '
@@ -1785,7 +1785,7 @@ function modthread()
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
 
-    if (!$moderate && !$mod_perm && ($author != getLogUserId())) {
+    if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
         exit("You can't access");
     }
 
@@ -1863,7 +1863,7 @@ function upthread()
         }
     }
 
-    if (!$moderate && !$mod_perm && ($author != getLogUserId())) {
+    if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
         exit("You can't access");
     }
 
@@ -1896,7 +1896,7 @@ function upthread()
 	SET title = '" . $_POST['title'] . "',
 		textof = '" . $_POST['textof'] . "',
 		attach = '" . $name_file . "',
-		modified_by = '" . getLogUserId() . "',
+		modified_by = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 		modified_by_on = '" . $now . "'
 	WHERE idMessage = '" . $id_message . "' AND idCourse = '" . PUBLIC_FORUM_COURSE_ID . "'";
     if (!sql_query($upd_mess_query)) {
@@ -2110,7 +2110,7 @@ function message()
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
     $write_perm = checkPublicForumPerm('view', $id_forum);
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     $profile_man = new UserProfile(0);
     $profile_man->init('profile', 'framework', 'index.php?modname=public_forum&op=forum');
@@ -2350,7 +2350,7 @@ function message()
                 . '<img src="' . getPathImage() . 'standard/reply.png" alt="' . $lang->def('_REPLY') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_QUOTE') . '</a></li>';
         }
-        if ($moderate || $mod_perm || ($m_author == getLogUserId())) {
+        if ($moderate || $mod_perm || ($m_author == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
             $action .= '<li><a href="index.php?modname=public_forum&amp;op=modmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_MOD_MESSAGE') . ' : ' . strip_tags($message_info['title']) . '">'
                 . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '" /> '
@@ -2385,14 +2385,14 @@ function message()
     // NOTE: If notify request register it
     require_once _adm_ . '/lib/lib.usernotifier.php';
 
-    $can_notify = usernotifier_getUserEventStatus(getLogUserId(), 'ForumNewResponse');
+    $can_notify = usernotifier_getUserEventStatus(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'ForumNewResponse');
 
     if (isset($_GET['notify']) && $can_notify) {
-        if (issetNotify('thread', $id_thread, getLogUserId())) {
-            $re = unsetNotify('thread', $id_thread, getLogUserId());
+        if (issetNotify('thread', $id_thread, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
+            $re = unsetNotify('thread', $id_thread, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $is_notify = !$re;
         } else {
-            $re = setNotify('thread', $id_thread, getLogUserId());
+            $re = setNotify('thread', $id_thread, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $is_notify = $re;
         }
         if ($re) {
@@ -2401,7 +2401,7 @@ function message()
             $GLOBALS['page']->add(getErrorUi($lang->def('_NOTIFY_CHANGE_STATUS_FAILED')), 'content');
         }
     } elseif ($can_notify) {
-        $is_notify = issetNotify('thread', $id_thread, getLogUserId());
+        $is_notify = issetNotify('thread', $id_thread, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     }
 
     $text_inner = '';
@@ -2559,7 +2559,7 @@ function showMessageForAdd($id_thread, $how_much)
     require_once _base_ . '/lib/lib.table.php';
     $lang = &FormaLanguage::createInstance('forum', 'lms');
 
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'), $lang->def('_CAPTION_FORUM_MESSAGE_ADD'));
 
@@ -2687,7 +2687,7 @@ function addmessage()
         $moderate = checkPublicForumPerm('moderate', $id_forum);
     }
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     // Some info about forum and thread
     $thread_query = '
@@ -2811,9 +2811,9 @@ function insmessage()
     if (!isset($members)) {
         $continue = true;
     } else {
-        $acl = &Forma::user()->getAcl();
-        $all_user_idst = $acl->getSTGroupsST(getLogUserId());
-        $all_user_idst[] = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $all_user_idst = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $all_user_idst[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $can_access = [];
         $can_access = array_intersect($members, $all_user_idst);
@@ -2859,7 +2859,7 @@ function insmessage()
 		'" . (int) PUBLIC_FORUM_COURSE_ID . "',
 		'" . $_POST['title'] . "',
 		'" . $_POST['textof'] . "',
-		'" . getLogUserId() . "',
+		'" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 		'" . $now . "',
 		'" . $answer_tree . "',
 		'" . addslashes($name_file) . "' )";
@@ -2911,7 +2911,7 @@ function modmessage()
     $id_message = importVar('idMessage', true, 0);
     $ini = importVar('ini');
 
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     // retrive info about message
     $mess_query = '
@@ -2933,7 +2933,7 @@ function modmessage()
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
-    if (!$moderate && !$mod_perm && ($author != getLogUserId())) {
+    if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
         exit("You can't access");
     }
 
@@ -3024,7 +3024,7 @@ function upmessage()
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
-    if (!$moderate && !$mod_perm && ($author != getLogUserId())) {
+    if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
         exit("You can't access");
     }
 
@@ -3048,7 +3048,7 @@ function upmessage()
 	SET title = '" . $_POST['title'] . "',
 		textof = '" . $_POST['textof'] . "',
 		attach = '" . $name_file . "',
-		modified_by = '" . getLogUserId() . "',
+		modified_by = '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "',
 		modified_by_on = '" . $now . "'
 	WHERE idMessage = '" . $id_message . "' AND idCourse = '" . PUBLIC_FORUM_COURSE_ID . "'";
     if (!sql_query($upd_mess_query)) {
@@ -3094,7 +3094,7 @@ function delmessage()
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
 
-    if (!$moderate && !$mod_perm && ($author != getLogUserId())) {
+    if (!$moderate && !$mod_perm && ($author != \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
         exit("You can't access");
     }
 
@@ -3198,7 +3198,7 @@ function viewprofile()
 {
     //checkPerm('view');
 
-    require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+    require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
     $lang = &FormaLanguage::createInstance('forum');
 
     $id_message = importVar('idMessage');
@@ -3283,7 +3283,7 @@ function forumsearch()
 
     $lang = &FormaLanguage::createInstance('forum');
 
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     if ($mod_perm) {
         $query_view_forum = '
@@ -3291,9 +3291,9 @@ function forumsearch()
 		FROM ' . $GLOBALS['prefix_lms'] . "_forum
 		WHERE idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "'";
     } else {
-        $acl = &Forma::user()->getAcl();
-        $all_user_idst = $acl->getSTGroupsST(getLogUserId());
-        $all_user_idst[] = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $all_user_idst = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $all_user_idst[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $query_view_forum = '
 		SELECT DISTINCT f.idForum
@@ -3523,7 +3523,7 @@ function forumsearchmessage()
 
     $moderate = checkPublicForumPerm('moderate', $id_forum);
     $mod_perm = checkPerm('mod', true);
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
     $tb = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_CAPTION_FORUM_MESSAGE'), $lang->def('_CAPTION_FORUM_MESSAGE'));
     $tb->initNavBar('ini', 'link');
@@ -3734,7 +3734,7 @@ function forumsearchmessage()
                 . '<img src="' . getPathImage() . 'standard/reply.png" alt="' . $lang->def('_REPLY') . ' : ' . strip_tags($message_info['title']) . '" /> '
                 . $lang->def('_QUOTE') . '</a>';
         }
-        if ($moderate || $mod_perm || ($m_author == getLogUserId())) {
+        if ($moderate || $mod_perm || ($m_author == \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
             $action .= '<a href="index.php?modname=public_forum&amp;op=modmessage&amp;idMessage=' . $id_message . '&amp;ini=' . $ini_page . '" '
                 . 'title="' . $lang->def('_MOD_MESSAGE') . ' : ' . strip_tags($message_info['title']) . '">'
                 . '<img src="' . getPathImage() . 'standard/edit.png" alt="' . $lang->def('_MOD') . ' : ' . strip_tags($message_info['title']) . '" /> '
@@ -3909,7 +3909,7 @@ function launchNotify($notify_is_a, $id_notify, $description, &$msg_composer)
 	FROM ' . $GLOBALS['prefix_lms'] . "_forum_notifier
 	WHERE id_notify = '" . $id_notify . "' AND
 		notify_is_a = '" . ($notify_is_a == 'forum' ? 'forum' : 'thread') . "' AND
-		id_user <> '" . getLogUserId() . "'";
+		id_user <> '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
     if ($notify_is_a !== false) {
         $query_notify .= " AND notify_is_a = '" . ($notify_is_a == 'forum' ? 'forum' : 'thread') . "'";
     }
@@ -4095,7 +4095,7 @@ function export()
     require_once _base_ . '/lib/lib.download.php';
     require_once _adm_ . '/lib/lib.tags.php';
 
-    $acl_man = &Forma::user()->getAclManager();
+    $acl_man = &\FormaLms\lib\Forma::getAclManager();
     $tags = new Tags('lms_forum');
     $id_forum = FormaLms\lib\Get::req('idForum', DOTY_INT, 0);
     $csv_string = '';
@@ -4306,7 +4306,7 @@ function checkPublicForumPerm_old($role, $id_forum)
 
     $res = false;
     $role_id = '';
-    $user = &$GLOBALS['current_user'];
+    $user = \FormaLms\lib\FormaUser::getCurrentUser();
     $acl = new FormaACL();
 
     $role_id = '/lms/course/public/public_forum/' . $id_forum . '/' . $role;

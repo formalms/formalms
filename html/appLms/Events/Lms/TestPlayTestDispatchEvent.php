@@ -35,7 +35,7 @@ class TestPlayTestDispatchEvent extends Event
 
     protected $idParam;
     /**
-     * @var \FormaUser
+     * @var \FormaLms\lib\FormaUser
      */
     protected $user;
 
@@ -80,7 +80,7 @@ class TestPlayTestDispatchEvent extends Event
     }
 
     /**
-     * @return \FormaUser
+     * @return \FormaLms\lib\FormaUser
      */
     public function getUser()
     {

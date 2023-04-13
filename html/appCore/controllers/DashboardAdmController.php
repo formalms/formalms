@@ -184,7 +184,7 @@ class DashboardAdmController extends AdmController
 
         require_once _lms_ . '/lib/lib.course.php';
         $man_course = new Man_Course();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if ($id_user <= 0) {
             $id_user = $acl_man->getUserST($c_userid);
@@ -206,7 +206,7 @@ class DashboardAdmController extends AdmController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $cert = new Certificate();
         $released = $cert->certificateStatus($id_user, $id_course);
         $print = [];

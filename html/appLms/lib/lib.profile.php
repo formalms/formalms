@@ -18,7 +18,7 @@ function getprofile($id_user)
     require_once _base_ . '/lib/lib.form.php';
     require_once _adm_ . '/lib/lib.field.php';
 
-    $acl_man = &Forma::user()->getAClManager();
+    $acl_man = &\FormaLms\lib\FormaUser::getCurrentUser()->getAClManager();
 
     $user_info = $acl_man->getUser($id_user, false);
 

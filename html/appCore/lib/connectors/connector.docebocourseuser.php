@@ -275,7 +275,7 @@ class FormaConnector_FormaCourseUser extends FormaConnector
     {
         $search_query = "SELECT translation, code, type_field 
                         FROM %adm_customfield cf , %adm_customfield_lang cfl
-                        where area_code like 'COURSE' and cfl.id_field=cf.id_field and lang_code like '" . getLanguage() . "'";
+                        where area_code like 'COURSE' and cfl.id_field=cf.id_field and lang_code like '" . Lang::get() . "'";
 
         $re_course = sql_query($search_query);
         if (!$re_course) {
@@ -294,7 +294,7 @@ class FormaConnector_FormaCourseUser extends FormaConnector
     {
         $search_query = "SELECT translation, lang_code, type_field 
                         FROM  %adm_field
-                        where   lang_code like '" . getLanguage() . "'";
+                        where   lang_code like '" . Lang::get() . "'";
 
         $re_course = sql_query($search_query);
         if (!$re_course) {
@@ -313,7 +313,7 @@ class FormaConnector_FormaCourseUser extends FormaConnector
     {
         $search_query = "SELECT translation, code, type_field , cfl.id_field
                         FROM %adm_customfield cf , %adm_customfield_lang cfl
-                        where area_code like 'COURSE' and cfl.id_field=cf.id_field and lang_code like '" . getLanguage() . "'";
+                        where area_code like 'COURSE' and cfl.id_field=cf.id_field and lang_code like '" . Lang::get() . "'";
 
         $re_course = sql_query($search_query);
         if (!$re_course) {
@@ -332,7 +332,7 @@ class FormaConnector_FormaCourseUser extends FormaConnector
     {
         $search_query = "SELECT translation, type_field , idField
                         FROM %adm_field
-                        where lang_code like '" . getLanguage() . "'";
+                        where lang_code like '" . Lang::get() . "'";
 
         $re_course = sql_query($search_query);
         if (!$re_course) {
@@ -391,7 +391,7 @@ class FormaConnector_FormaCourseUser extends FormaConnector
         $sql = 'select translation from %adm_customfield_son_lang, %adm_customfield_son 
              where %adm_customfield_son.id_field=' . $id_field . "
              and %adm_customfield_son.id_field_son=%adm_customfield_son_lang.id_field_son
-             and lang_code like '" . getLanguage() . "' 
+             and lang_code like '" . Lang::get() . "' 
              and %adm_customfield_son.id_field_son=" . $value;
 
         $re_course = sql_query($sql);

@@ -116,7 +116,7 @@ class FormaConnectorFormaOrgChart extends FormaConnector
         //$this->tree_view = $this->directory->getTreeView_OrgView();
         $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
         $this->tree_view = new TreeView_OrgView($orgDb, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
-        $this->tree_view->aclManager = Forma::aclm();
+        $this->tree_view->aclManager = \FormaLms\lib\Forma::getAclManager();
 
         list($this->tree_desc) = $this->tree_view->tdb->getDescendantsSTFromST([$this->tree]);
 
@@ -302,7 +302,7 @@ class FormaConnectorFormaOrgChart extends FormaConnector
         }
 
         // ---- Extract extra languages title
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         if (isset($row['lang_titles'])) {
             $folderName = addslashes($row['lang_titles']);
         } else {
@@ -315,7 +315,7 @@ class FormaConnectorFormaOrgChart extends FormaConnector
         }
 
         if ($arr_folder === false) {
-            require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
             $umodel = new UsermanagementAdm();
             $id = $umodel->addFolder($parent_id, $folderName, $row['code']);
 
@@ -617,7 +617,7 @@ class FormaConnectorFormaOrgChartUI extends FormaConnectorUI
                                                     $this->lang->def('_DEL') => '2', ],
                                             $this->post_params['canceled']);
         // ---- default lang ----
-        $languages = Forma::langManager()->getAllLangCode();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $lang_key = [];
         for ($index = 0; $index < count($languages); ++$index) {
             $lang_key[$languages[$index]] = $languages[$index];

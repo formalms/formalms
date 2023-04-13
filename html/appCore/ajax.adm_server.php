@@ -60,7 +60,7 @@ if (!empty($GLOBALS['req'])) {
         }
     }
 
-    include Forma::inc($aj_file);
+    include \FormaLms\lib\Forma::inc($aj_file);
 }
 
 // finalize

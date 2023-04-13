@@ -51,7 +51,7 @@ class CatalogLmsController extends LmsController
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
         $this->_mvc_name = 'catalog';
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
     }
 
     protected function getBaseData()
@@ -68,7 +68,7 @@ class CatalogLmsController extends LmsController
     public function show()
     {
         $id_catalogue = FormaLms\lib\Get::req('id_catalogue', DOTY_INT, 0);
-        $user_catalogue = $this->model->getUserCatalogue(Forma::user()->getIdSt());
+        $user_catalogue = $this->model->getUserCatalogue(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $onCatalogueEmptySetting = FormaLms\lib\Get::sett('on_catalogue_empty') == 'on';
 
         $show_general_catalogue_tab = ($onCatalogueEmptySetting && count($user_catalogue) === 0);
@@ -144,8 +144,8 @@ class CatalogLmsController extends LmsController
         $nav_bar->setLink('index.php?r=catalog/newCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
         $html = $this->model->getCourseList($active_tab, $page);
-        $user_catalogue = $this->model->getUserCatalogue(Forma::user()->getIdSt());
-        $user_coursepath = $this->model->getUserCoursepath(Forma::user()->getIdSt());
+        $user_catalogue = $this->model->getUserCatalogue(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $user_coursepath = $this->model->getUserCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         echo '<div class="middlearea_container">';
 
@@ -187,8 +187,8 @@ class CatalogLmsController extends LmsController
         $nav_bar->setLink('index.php?r=catalog/elearningCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
         $html = $this->model->getCourseList($active_tab, $page);
-        $user_catalogue = $this->model->getUserCatalogue(Forma::user()->getIdSt());
-        $user_coursepath = $this->model->getUserCoursepath(Forma::user()->getIdSt());
+        $user_catalogue = $this->model->getUserCatalogue(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $user_coursepath = $this->model->getUserCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         echo '<div class="middlearea_container">';
 
@@ -230,8 +230,8 @@ class CatalogLmsController extends LmsController
         $nav_bar->setLink('index.php?r=catalog/classroomCourse' . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
         $html = $this->model->getCourseList($active_tab, $page);
-        $user_catalogue = $this->model->getUserCatalogue(Forma::user()->getIdSt());
-        $user_coursepath = $this->model->getUserCoursepath(Forma::user()->getIdSt());
+        $user_catalogue = $this->model->getUserCatalogue(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $user_coursepath = $this->model->getUserCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         echo '<div class="middlearea_container">';
 
@@ -274,8 +274,8 @@ class CatalogLmsController extends LmsController
         $nav_bar->setLink('index.php?r=catalog/catalogueCourse&amp;id_catalogue=' . $id_catalogue . ($id_cat > 1 ? '&amp;id_cat=' . $id_cat : ''));
 
         $html = $this->model->getCourseList($active_tab, $page);
-        $user_catalogue = $this->model->getUserCatalogue(Forma::user()->getIdSt());
-        $user_coursepath = $this->model->getUserCoursepath(Forma::user()->getIdSt());
+        $user_catalogue = $this->model->getUserCatalogue(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $user_coursepath = $this->model->getUserCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         echo '<div class="middlearea_container">';
 
@@ -309,15 +309,15 @@ class CatalogLmsController extends LmsController
         require_once _base_ . '/lib/lib.navbar.php';
         $active_tab = 'coursepath';
 
-        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), count($this->model->getUserCoursepath(Forma::user()->getIdSt())), 'link');
+        $nav_bar = new NavBar('page', FormaLms\lib\Get::sett('visuItem'), count($this->model->getUserCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())), 'link');
 
         $nav_bar->setLink('index.php?r=catalog/coursepathCourse');
 
         $page = FormaLms\lib\Get::req('page', DOTY_INT, 1);
 
-        $html = $this->model->getCoursepathList(Forma::user()->getIdSt(), $page);
-        $user_catalogue = $this->model->getUserCatalogue(Forma::user()->getIdSt());
-        $user_coursepath = $this->model->getUserCoursepath(Forma::user()->getIdSt());
+        $html = $this->model->getCoursepathList(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $page);
+        $user_catalogue = $this->model->getUserCatalogue(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $user_coursepath = $this->model->getUserCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         echo '<div class="layout_colum_container">';
 
@@ -344,8 +344,8 @@ class CatalogLmsController extends LmsController
     public function calendarCourse()
     {
         $active_tab = 'calendar';
-        $user_catalogue = $this->model->getUserCatalogue(Forma::user()->getIdSt());
-        $user_coursepath = $this->model->getUserCoursepath(Forma::user()->getIdSt());
+        $user_catalogue = $this->model->getUserCatalogue(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+        $user_coursepath = $this->model->getUserCoursepath(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         echo '<div class="layout_colum_container">';
 
@@ -412,9 +412,9 @@ class CatalogLmsController extends LmsController
         $id_edition = FormaLms\lib\Get::req('id_edition', DOTY_INT, 0);
         $overbooking = (FormaLms\lib\Get::req('overbooking', DOTY_INT, 0) == 1);
 
-        $id_user = Forma::user()->getIdSt();
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
-        $docebo_course = new FormaCourse($id_course);
+        $formaCourse = new FormaCourse($id_course);
 
         require_once _lms_ . '/admin/models/SubscriptionAlms.php';
         $model = new SubscriptionAlms($id_course, $id_edition, $id_date);
@@ -422,10 +422,10 @@ class CatalogLmsController extends LmsController
         $course_info = $model->getCourseInfoForSubscription();
         $userinfo = $this->acl_man->getUser($id_user, false);
 
-        $level_idst = &$docebo_course->getCourseLevel($id_course);
+        $level_idst = &$formaCourse->getCourseLevel($id_course);
 
         if (count($level_idst) == 0 || $level_idst[1] == '') {
-            $level_idst = &$docebo_course->createCourseLevel($id_course);
+            $level_idst = &$formaCourse->createCourseLevel($id_course);
         }
 
         $waiting = $course_info['subscribe_method'] == 1; // need approval
@@ -458,7 +458,7 @@ class CatalogLmsController extends LmsController
             // message to user that is waiting
             require_once _base_ . '/lib/lib.eventmanager.php';
 
-            $acl = Forma::user()->getAcl();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $acl_man = &$this->acl_man;
 
             $recipients = [];
@@ -487,7 +487,7 @@ class CatalogLmsController extends LmsController
 
                 $array_user = array_unique($array_user);
 
-                $control_user = array_search(getLogUserId(), $array_user);
+                $control_user = array_search(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $array_user);
                 if ($control_user === 0) {
                     $control_user = true;
                 }
@@ -588,7 +588,7 @@ class CatalogLmsController extends LmsController
     {
         $id_path = FormaLms\lib\Get::req('id_path', DOTY_INT, 0);
 
-        $id_user = Forma::user()->getIdSt();
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $query_pathlist = '
         SELECT path_name, subscribe_method
@@ -605,7 +605,7 @@ class CatalogLmsController extends LmsController
         $text_query = '
             INSERT INTO ' . $GLOBALS['prefix_lms'] . "_coursepath_user
             ( id_path, idUser, waiting, subscribed_by ) VALUES
-            ( '" . $id_path . "', '" . $id_user . "', '" . $waiting . "', '" . getLogUserId() . "' )";
+            ( '" . $id_path . "', '" . $id_user . "', '" . $waiting . "', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "' )";
         $re_s = sql_query($text_query);
 
         /////////////////////////
@@ -683,7 +683,7 @@ class CatalogLmsController extends LmsController
         require_once _base_ . '/lib/lib.download.php';
 
         $id = FormaLms\lib\Get::gReq('course_id', DOTY_INT);
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $qtxt = 'SELECT course_demo FROM %lms_course WHERE idCourse=' . $id;
 
@@ -700,7 +700,7 @@ class CatalogLmsController extends LmsController
 
     public function self_unsubscribe()
     {
-        $id_user = Forma::user()->idst;
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
 
         $cmodel = new CourseAlms();

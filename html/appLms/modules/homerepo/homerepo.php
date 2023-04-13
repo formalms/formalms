@@ -219,7 +219,7 @@ function homerepo_itemproperties(&$treeView, &$arrayData, $idItem)
         }
     closedir($langl->handle);
     sort($langArray);*/
-    $langArray = Forma::langManager()->getAllLangCode();
+    $langArray = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     if (!isset($_POST['idItem'])) {
         if ($idItem !== null) {

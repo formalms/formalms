@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
 class MycertificateLms extends Model
 {

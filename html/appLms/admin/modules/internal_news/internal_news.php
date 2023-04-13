@@ -19,7 +19,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author     Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -161,7 +161,7 @@ function editnews($load = false)
 
     $id_news = importVar('id_news', true, 0);
     $all_languages = ['-1' => Lang::t('_ALL', 'standard')];
-    $all_languages += Forma::langManager()->getAllLangCode();
+    $all_languages += \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     if ($load) {
         $query_news = '
@@ -174,7 +174,7 @@ function editnews($load = false)
         $short_desc = '';
         $long_desc = '';
         $impo = 0;
-        $lang_sel = getLanguage();
+        $lang_sel = Lang::get();
     }
 
     $page_title = [
@@ -282,7 +282,7 @@ function savenews()
 
     $id_news = importVar('id_news', true, 0);
     $load = importVar('load', true, 0);
-    $all_languages = Forma::langManager()->getAllLangCode();
+    $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
     $lang = &FormaLanguage::createInstance('admin_news', 'lms');
 
     if ($_POST['title'] == '') {

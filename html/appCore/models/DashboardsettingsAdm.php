@@ -28,7 +28,7 @@ class DashboardsettingsAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->loadLayouts();
         $this->loadInstalledBlocks();
         $this->loadEnabledBlocks();
@@ -98,7 +98,7 @@ class DashboardsettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         foreach ($result as $block) {
-            if (file_exists(Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
+            if (file_exists(\FormaLms\lib\Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']($block['block_config']);
                 $blockObj->setOrder($block['position']);
@@ -115,8 +115,8 @@ class DashboardsettingsAdm extends Model
         $result = $this->db->query($query_blocks);
 
         foreach ($result as $block) {
-            if (file_exists(Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
-                require_once Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
+            if (file_exists(\FormaLms\lib\Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php'))) {
+                require_once \FormaLms\lib\Forma::inc(_lms_ . '/models/' . $block['block_class'] . '.php');
                 /** @var DashboardBlockLms $blockObj */
                 $blockObj = new $block['block_class']('');
 

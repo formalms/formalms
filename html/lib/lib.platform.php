@@ -236,7 +236,8 @@ class PlatformManager
             if ($GLOBALS['where_' . $platform_code] !== false && $pl_info['is_active'] == 'true') {
                 require_once $GLOBALS['where_' . $platform_code] . '/class/' . $pl_info['class_file_menu'];
 
-                $menu = eval(' return new ' . $pl_info['class_name_menu'] . "( \$GLOBALS['current_user']); ");
+                $className = $pl_info['class_name_menu'];
+                $menu = new $className(\FormaLms\lib\FormaUser::getCurrentUser());
                 $main_voice = $menu->getLevelOne();
 
                 $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -270,7 +271,8 @@ class PlatformManager
         }
 
         require_once $GLOBALS['where_' . $platform] . '/class/' . $this->platform[$platform]['class_file_menu'];
-        $menu = eval(' return new ' . $this->platform[$platform]['class_name_menu'] . "( \$GLOBALS['current_user']); ");
+        $className = $this->platform[$platform]['class_name_menu'];
+        $menu = new $className(\FormaLms\lib\FormaUser::getCurrentUser());
 
         return $menu;
     }
@@ -290,8 +292,8 @@ class PlatformManager
         }
 
         require_once _adm_ . '/class/' . $this->platform[$platform]['class_file_menu'];
-        $menu = eval(' return new ' . $this->platform[$platform]['class_name_menu'] . "( \$GLOBALS['current_user']); ");
-
+        $className = $this->platform[$platform]['class_name_menu'];
+        $menu = new $className(\FormaLms\lib\FormaUser::getCurrentUser());
         return $menu;
     }
 

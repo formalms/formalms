@@ -56,21 +56,21 @@ function &createModule($module_name, $class_name = null)
     if ($module_name == 'item' || $module_name == 'scorm') {
         $def_class_name = 'Module';
         $where = _lms_;
-        require_once Forma::inc($where . '/class.module/class.definition.php');
+        require_once \FormaLms\lib\Forma::inc($where . '/class.module/class.definition.php');
     }
 
     if (file_exists($where . '/class.module/class.' . $module_name . '.php')) {
-        require_once Forma::inc($where . '/class.module/class.' . $module_name . '.php');
+        require_once \FormaLms\lib\Forma::inc($where . '/class.module/class.' . $module_name . '.php');
         if ($class_name === null) {
             $class_name = $def_class_name . '_' . ucfirst($module_name);
         }
     } elseif (file_exists(_adm_ . '/class.module/class.' . $module_name . '.php')) {
-        require_once Forma::inc(_adm_ . '/class.module/class.' . $module_name . '.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/class.module/class.' . $module_name . '.php');
         if ($class_name === null) {
             $class_name = $def_class_name . '_' . ucfirst($module_name);
         }
     } else {
-        require_once Forma::inc($where . '/class.module/class.definition.php');
+        require_once \FormaLms\lib\Forma::inc($where . '/class.module/class.definition.php');
         $class_name = $def_class_name;
     }
 

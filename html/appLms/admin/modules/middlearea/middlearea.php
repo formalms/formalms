@@ -354,7 +354,7 @@ function select_menu_permission() //DEPRECATED FOR MULTIUSERSELECTOR
     //$user_select->multi_choice = TRUE;
 
     $menu = CoreMenu::get($id);
-    $am = Forma::user()->getACLManager();
+    $am = \FormaLms\lib\Forma::getAclManager();;
     $role_idst = $am->getRole(false, $menu->role)[0];
 
     $members = $am->getRoleMembers($role_idst);

@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -44,7 +44,7 @@ function addpoll($object_poll)
 
     $lang = FormaLanguage::createInstance('poll');
     if (!is_a($object_poll, 'Learning_Poll')) {
-        Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
+        \FormaLms\lib\Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
         Util::jump_to('' . $object_poll->back_url . '&amp;create_result=0');
     }
 
@@ -87,10 +87,10 @@ function inspoll()
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_poll 
 	( author, title, description )
 		VALUES 
-	( '" . (int) getLogUserId() . "', '" . $_POST['title'] . "', '" . $_POST['textof'] . "' )";
+	( '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $_POST['title'] . "', '" . $_POST['textof'] . "' )";
 
     if (!sql_query($ins_query)) {
-        Forma::addError($lang->def('_POLL_ERR_INSERT'));
+        \FormaLms\lib\Forma::addError($lang->def('_POLL_ERR_INSERT'));
         Util::jump_to('' . urldecode($_POST['back_url']) . '&create_result=0');
     }
 
@@ -181,7 +181,7 @@ function modpollgui($object_poll)
     $lang = FormaLanguage::createInstance('poll');
 
     if (!is_a($object_poll, 'Learning_Poll')) {
-        Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
+        \FormaLms\lib\Forma::addError($lang->def('_POLL_INCORRECTOBJECT'));
         Util::jump_to('' . $object_poll->back_url . '&amp;create_result=0');
     }
 

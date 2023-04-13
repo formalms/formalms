@@ -803,7 +803,7 @@ class InstallAdm extends Model
     {
         $result = 'err_connect';
 
-        $GLOBALS['db_link'] = DbConn::getConnection(
+        $GLOBALS['db_link'] = \FormaLms\db\DbConn::getConnection(
             'mysqli',
             $db_host,
             $db_user,
@@ -1243,7 +1243,7 @@ class InstallAdm extends Model
      */
     public static function checkDbInstallation(): bool
     {
-        DbConn::getInstance();
+        \FormaLms\db\DbConn::getInstance();
 
         return (bool)sql_query("SELECT * FROM `core_setting`");
     }
@@ -1430,13 +1430,11 @@ class InstallAdm extends Model
         $qtxt = "SELECT * FROM core_user WHERE userid='/" . $values['adminUser'] . "'";
         $q = sql_query($qtxt);
 
-        $doceboAclManager = new FormaACLManager();
-
         if (($q) && (sql_num_rows($q) > 0)) { // Did the user refreshed the page?
             // You never know..
             $qtxt = "UPDATE core_user SET firstname='" . $values['adminName'] . "',
                 lastname='" . $values['adminLastname'] . "',
-                pass='" . $doceboAclManager->encrypt($values['adminPassword']) . "' ";
+                pass='" . \FormaLms\lib\Forma::getAclManager()->encrypt($values['adminPassword']) . "' ";
             $qtxt .= "WHERE userid='/" . $values['adminUser'] . "'";
             $q = sql_query($qtxt);
         } else { // Let's create the admin user..
@@ -1467,7 +1465,7 @@ class InstallAdm extends Model
             $qtxt = 'INSERT INTO core_user (idst, userid, firstname, lastname, pass, email) ';
             $qtxt .= "VALUES ('" . $user_idst . "', '/" . $values['adminUser'] . "',
                 '" . $values['adminName'] . "', '" . $values['adminLastname'] . "',
-                '" . $doceboAclManager->encrypt($values['adminPassword']) . "', '" . $values['adminEmail'] . "')";
+                '" . \FormaLms\lib\Forma::getAclManager()->encrypt($values['adminPassword']) . "', '" . $values['adminEmail'] . "')";
             $q = sql_query($qtxt);
         }
 
@@ -1484,7 +1482,7 @@ class InstallAdm extends Model
     {
 
         $values = $this->session->get('setValues');
-        DbConn::getInstance(
+        \FormaLms\db\DbConn::getInstance(
             false,
             [
                 'db_type' => 'mysqli',
@@ -1586,7 +1584,7 @@ class InstallAdm extends Model
 
         $values = $this->session->get('setValues');
         if ($values['useSmtpDatabase'] == 'on') {
-            DbConn::getInstance(
+            \FormaLms\db\DbConn::getInstance(
                 false,
                 [
                     'db_type' => 'mysqli',
@@ -1656,7 +1654,7 @@ class InstallAdm extends Model
     {
 
         $migrationSettings = FormaLms\lib\Database\FormaMigrator::getInstance()->getMigrationTableSettings();
-        $connection = DbConn::getInstance();
+        $connection = \FormaLms\db\DbConn::getInstance();
         $createQuery = "CREATE TABLE IF NOT EXISTS " . $migrationSettings->getTableName() . "  ("
             . $migrationSettings->getVersionColumnName() ." varchar(" . $migrationSettings->getVersionColumnLength() .") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,"
             . $migrationSettings->getExecutedAtColumnName() . " datetime(0) NULL DEFAULT NULL,"

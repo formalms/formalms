@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 function organization_categorize(&$treeView, $idItem)
 {
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $language = (isset($idCourse) && defined('LMS') ? Forma::course()->getValue('lang_code') : false);
+    $language = (isset($idCourse) && defined('LMS') ? \FormaLms\lib\Forma::course()->getValue('lang_code') : false);
 
     $folder = $treeView->tdb->getFolderById($idItem);
     $data = $folder->otherValues;
@@ -50,7 +50,7 @@ function organization_categorize(&$treeView, $idItem)
 function organization_categorize_sco()
 {
     $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-    $language = (isset($idCourse) && defined('LMS') ? Forma::course()->getValue('lang_code') : false);
+    $language = (isset($idCourse) && defined('LMS') ? \FormaLms\lib\Forma::course()->getValue('lang_code') : false);
 
     $idResource = FormaLms\lib\Get::req('idResource', DOTY_INT, 0);
     $sco_id = FormaLms\lib\Get::req('sco_id', DOTY_INT, 0);
@@ -106,7 +106,7 @@ function organization_categorize_save(&$treeView, $idItem)
     $param = ''; //FormaLms\lib\Get::req('', DOTY_STRING, "");
     $alt_desc = '';
     $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-    $lang_arr = Forma::langManager()->getAllLangCode();
+    $lang_arr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
     $lang = $lang_arr[$lang_id];
     $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
     $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);

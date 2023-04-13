@@ -23,8 +23,8 @@ class FunctionalrolesAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->acl_man = Forma::user()->getACLManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();;
         $this->_ugroups_cache = false;
         parent::__construct();
     }
@@ -126,7 +126,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT g.idst as id_fncrole, f.id_group, fl.name, fl.description, fgl.name as group_name '
@@ -211,7 +211,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -258,7 +258,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT f.id_fncrole '
@@ -292,7 +292,7 @@ class FunctionalrolesAdm extends Model
 
     public function getRoleInfoById($ids = []) {
            //validate language for name and description
-           $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+           $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
          //mount query
          $query = 'SELECT g.idst as id_fncrole, f.id_group, fl.name, fl.description, fgl.name as group_name '
@@ -380,7 +380,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT fg.id_group, fgl.name, fgl.description '
@@ -416,7 +416,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //validate language for name and description
-        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : getLanguage());
+        $_language = (!empty($filter) && isset($filter['language']) ? $filter['language'] : Lang::get());
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -452,7 +452,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -496,7 +496,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -527,7 +527,7 @@ class FunctionalrolesAdm extends Model
         if ($id_fncrole <= 0) {
             return false;
         }
-        $_language = ($language ? $language : getLanguage());
+        $_language = ($language ? $language : Lang::get());
 
         $output = false;
         $query = 'SELECT name FROM ' . $this->_getRolesLangTable() . ' '
@@ -548,7 +548,7 @@ class FunctionalrolesAdm extends Model
     public function getGroupsDropdownList($language = false)
     {
         //validate language for name and description
-        $_language = ($language ? $language : getLanguage());
+        $_language = ($language ? $language : Lang::get());
 
         //initialize output
         $output = ['0' => Lang::t('_NONE', 'fncroles')];
@@ -690,7 +690,7 @@ class FunctionalrolesAdm extends Model
         if ($output) {
             //insert languages in database
             if (is_array($langs)) {
-                $_langs = Forma::langManager()->getAllLangcode();
+                $_langs = \FormaLms\lib\Forma::langManager()->getAllLangcode();
                 $arr_langs = [];
                 foreach ($_langs as $lang_code) {
                     if (isset($langs[$lang_code])) {
@@ -743,7 +743,7 @@ class FunctionalrolesAdm extends Model
         }
 
         if (is_array($langs)) {
-            $langcodes = Forma::langManager()->getAllLangcode();
+            $langcodes = \FormaLms\lib\Forma::langManager()->getAllLangcode();
             $arr_langs = [];
             foreach ($langcodes as $lang_code) {
                 if (isset($langs[$lang_code])) {
@@ -1158,7 +1158,7 @@ class FunctionalrolesAdm extends Model
         }
 
         $_cmodel = new CompetencesAdm();
-        $_language = getLanguage();
+        $_language = Lang::get();
 
         //mount query
         $query = 'SELECT c.id_competence, cl.name, cl.description, ctl.name as category, c.typology, c.type, fc.score, fc.expiration '
@@ -1198,7 +1198,7 @@ class FunctionalrolesAdm extends Model
         }
 
         $_cmodel = new CompetencesAdm();
-        $_language = getLanguage();
+        $_language = Lang::get();
 
         //mount query
         $query = 'SELECT COUNT(*) '
@@ -1361,7 +1361,7 @@ class FunctionalrolesAdm extends Model
             }
         }
 
-        $language = getLanguage();
+        $language = Lang::get();
 
         $comps_table = '%lms_competence';										//cmp
         $clang_table = '%lms_competence_lang';							//cml
@@ -1456,7 +1456,7 @@ class FunctionalrolesAdm extends Model
         //					case "dropdown": {
         //						if ($field_sons === false) {
         //							//retrieve translations for dropdowns fields
-        //							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".getLanguage()."' ORDER BY idField, sequence";
+        //							$query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '".Lang::get()."' ORDER BY idField, sequence";
         //							$res_fields_sons = $this->db->query($query_fields_sons);
         //							$field_sons = array();
         //							while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
@@ -1564,7 +1564,7 @@ class FunctionalrolesAdm extends Model
             }
         }
 
-        $language = getLanguage();
+        $language = Lang::get();
 
         $comps_table = '%lms_competence';										//cmp
         $clang_table = '%lms_competence_lang';							//cml
@@ -1628,7 +1628,7 @@ class FunctionalrolesAdm extends Model
             . " ON (g.idst = f.id_fncrole) WHERE groupid LIKE '/fncroles/%'";
         $res = $this->db->query($query);
         if ($res) {
-            $lang_codes = Forma::langManager()->getAllLangCode();
+            $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             while ($obj = $this->db->fetch_obj($res)) {
                 $t_obj = new stdClass();
                 $t_obj->id_fncrole = $obj->idst;
@@ -1683,7 +1683,7 @@ class FunctionalrolesAdm extends Model
             . ' FROM %adm_group as r '
             . ' LEFT JOIN ' . $this->_getRolesLangTable() . ' as rl '
             . "	ON ( r.idst = rl.id_fncrole AND r.groupid LIKE '/fncroles/%') "
-            . " WHERE rl.lang_code = '" . getLanguage() . "' AND r.idst IN (" . implode(',', $arr_fncroles) . ')';
+            . " WHERE rl.lang_code = '" . Lang::get() . "' AND r.idst IN (" . implode(',', $arr_fncroles) . ')';
         $res = $this->db->query($query);
         if (!$res) {
             return $output;
@@ -1730,7 +1730,7 @@ class FunctionalrolesAdm extends Model
         }
 
         //initialize languages array
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $_void_lang_arr = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $_void_lang_arr[$lang_codes[$i]] = [
@@ -1776,7 +1776,7 @@ class FunctionalrolesAdm extends Model
 
         //extract roles
         $roles = $this->getAllFunctionalRoles(true);
-        $language = getLanguage();
+        $language = Lang::get();
 
         //for each role:
         foreach ($roles as $id_fncrole => $rdata) {
@@ -1863,16 +1863,16 @@ class FunctionalrolesAdm extends Model
 
         $_qfilter = '';
         if ($filter) {
-            $ulevel = Forma::user()->getUserLevelId();
+            $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($ulevel != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 $_qfilter .= ' AND g.idst IN (' . implode(',', $admin_tree) . ') ';
             }
         }
 
-        $lang_code = $language ? $language : getLanguage();
+        $lang_code = $language ? $language : Lang::get();
         $query = 'SELECT g.idst as id_fncrole, l.name FROM %adm_group as g '
             . ' JOIN ' . $this->_getRolesLangTable() . " as l ON (g.idst = l.id_fncrole AND l.lang_code='" . $lang_code . "')"
             . " WHERE l.name LIKE '%" . $query . "%' " . $_qfilter . ' ORDER BY l.name '

@@ -424,7 +424,7 @@ class Module_Directory extends Module
         $lang = &FormaLanguage::createInstance('profile', 'framework');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $max_row = 10;
         $tb = new Table($max_row);
@@ -746,11 +746,11 @@ class Module_Directory extends Module
                     $data->setGroupFilter($idstGroup);
                 }
             } else {
-                $userlevelid = Forma::user()->getUserLevelId();
+                $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
                 if ($userlevelid != ADMIN_GROUP_GODADMIN) {
                     require_once _adm_ . '/lib/lib.adminmanager.php';
                     $adminManager = new AdminManager();
-                    $data->intersectGroupFilter($adminManager->getAdminTree(Forma::user()->getIdSt()));
+                    $data->intersectGroupFilter($adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
                 }
             }
             // print out the listview
@@ -809,7 +809,7 @@ class Module_Directory extends Module
         $arr_levels_id = array_flip($arr_levels_id);
         $arr_levels_translation = [];
         foreach ($arr_levels_id as $lev_idst => $lev_id) {
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 if ($lev_id == ADMIN_GROUP_USER) {
                     $arr_levels_translation[$lev_idst] = $this->lang->def('_DIRECTORY_' . $lev_id);
                 }
@@ -917,7 +917,7 @@ class Module_Directory extends Module
         require_once _adm_ . '/lib/lib.field.php';
         $fields = new FieldList();
         if ($arr_idst_groups != false) {
-            $acl = &Forma::user()->getACL();
+            $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
             $arr_idst_all = $acl->getArrSTGroupsST(array_values($arr_idst_groups));
         } else {
             $arr_idst_all = false;
@@ -1115,7 +1115,7 @@ class Module_Directory extends Module
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
         require_once _adm_ . '/lib/lib.field.php';
-        $acl = &Forma::user()->getAcl();
+        $acl = \FormaLms\lib\Forma::getAclManager();;
         $groupLabel = $groupid;
         if ($groupid != '') {
             $arrGroup = $this->aclManager->getGroup(false, $groupid);
@@ -1495,7 +1495,7 @@ class Module_Directory extends Module
     {
         require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
         $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
@@ -1506,7 +1506,7 @@ class Module_Directory extends Module
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
-            $treeView->setFilterNodes($adminManager->getAdminTree(Forma::user()->getIdSt()));
+            $treeView->setFilterNodes($adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
         }
 
         $treeView->loadState();
@@ -1724,11 +1724,11 @@ class Module_Directory extends Module
         if ($groupid != '') {
             $data->setGroupFilter($idst, $lv->flat_mode);
         }
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _adm_ . '/lib/lib.adminmanager.php';
             $adminManager = new AdminManager();
-            $data->intersectGroupFilter($adminManager->getAdminTree(Forma::user()->getIdSt()));
+            $data->intersectGroupFilter($adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
         }
         $GLOBALS['page']->add($lv->printOut(), 'content');
     }
@@ -1770,7 +1770,7 @@ class Module_Directory extends Module
             $this->show_orgchart_selector = false;
             $this->hide_suspend = false;
             $this->loadSelector('index.php?modname=directory&amp;op=addtotree&amp;treeid=' . $treeid . '&amp;stayon=1',
-                $this->lang->def('_ADD') . ' ' . $arr_translations[getLanguage()],
+                $this->lang->def('_ADD') . ' ' . $arr_translations [Lang::get()],
                 $this->lang->def('_ADD'),
                 true);
         }
@@ -1850,12 +1850,12 @@ class Module_Directory extends Module
                     $this->show_orgchart_selector = false;
                 }
 
-                if (Forma::user()->getUserLevelId() === '/framework/level/admin') {
+                if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() === '/framework/level/admin') {
                     require_once _adm_ . '/lib/lib.adminmanager.php';
 
                     $adminManager = new AdminManager();
 
-                    $this->setGroupFilter('group', $adminManager->getAdminTree(getLogUserId()));
+                    $this->setGroupFilter('group', $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
                 }
 
                 $this->loadSelector('index.php?modname=directory&amp;op=org_createuser&amp;stayon=1',
@@ -1877,7 +1877,7 @@ class Module_Directory extends Module
         require_once _base_ . '/lib/lib.form.php';
         require_once _adm_ . '/lib/lib.field.php';
         require_once _base_ . '/lib/lib.table.php';
-        require_once Forma::inc(_base_ . '/lib/lib.usermanager.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.usermanager.php');
 
         if (isset($_POST['ok_waiting'])) {
             $user_man = new UserManager();
@@ -2131,7 +2131,7 @@ class Module_Directory extends Module
 
         $form = new Form();
         $fl = new FieldList();
-        $acl = &Forma::user()->getACL();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
 
         $GLOBALS['page']->setWorkingZone('content');
         $GLOBALS['page']->add(getTitleArea($this->lang->def('_GROUPS')

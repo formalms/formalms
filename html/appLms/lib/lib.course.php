@@ -195,12 +195,12 @@ class Selector_Course
 		FROM %lms_course AS c
 		WHERE ' . ($with_assesment ? '1' : "c.course_type <> 'assessment'") .
             ' AND c.idCategory IN ( ' . (!$this->filter['course_flat'] ? $category_selected : implode(',', $id_categories)) . ' )';
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -208,7 +208,7 @@ class Selector_Course
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -601,14 +601,14 @@ class Man_Course
      */
     public function &getWaitingSubscribed($idCourse, $edition_id = 0)
     {
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             // BUG FIX 2469: GETTING THE USERS OF THE ADMIN
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Forma::user()->getAclManager();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
         }
 
@@ -681,7 +681,7 @@ class Man_Course
     {
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         // find all the group created for this menu custom for permission management
         foreach ($levels as $lv => $name_level) {
@@ -815,10 +815,10 @@ class Man_Course
      */
     public function addModuleToCourse($idCourse, $level_idst, $id_main, $id_m = false, $m_name = false, $d_op = false, $level_token_to_assign = false)
     {
-        require_once Forma::include(_lms_ . '/lib/', 'lib.manmenu.php');
-        require_once Forma::include(_adm_ . '/lib/', 'lib.istance.php');
+        require_once \FormaLms\lib\Forma::include(_lms_ . '/lib/', 'lib.manmenu.php');
+        require_once \FormaLms\lib\Forma::include(_adm_ . '/lib/', 'lib.istance.php');
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $re = true;
         $query_menu = '
@@ -861,7 +861,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
     public function removeCourseRole($idCourse)
     {
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $base_path = '/lms/course/private/' . $idCourse . '/';
         $acl_man->deleteRoleFromPath($base_path);
     }
@@ -896,8 +896,8 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
     public static function canEnterCourse($course, $id_path = 0)
     {
         $now = time();
-        $userLevel = Forma::user()->getUserLevelId();
-        $userCourses = Forma::user()->getUserCourses();
+        $userLevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        $userCourses = \FormaLms\lib\FormaUser::getCurrentUser()->getUserCourses();
 
         $expiring = false;
 
@@ -1056,7 +1056,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 $query = 'SELECT cc.prerequisites '
                     . ' FROM %lms_coursepath_courses AS cc '
                     . ' JOIN %lms_coursepath_user AS cu ON cc.id_path = cu.id_path '
-                    . ' WHERE cu.idUser = ' . (int) Forma::user()->getIdSt() . ' '
+                    . ' WHERE cu.idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' '
                     . ' AND cc.id_item = ' . (int) $course['idCourse'] . ' '
                     . (($id_path != 0) ? (' AND cc.id_path = ' . (int) $id_path) : '');
 
@@ -1075,7 +1075,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                         $query = 'SELECT COUNT(*) as count'
                             . ' FROM %lms_courseuser '
                             . ' WHERE idCourse IN (' . $prerequisites . ') '
-                            . ' AND idUser = ' . (int) Forma::user()->getIdSt() . ' '
+                            . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' '
                             . ' AND status = ' . _CUS_END;
 
                         $countResult = sql_fetch_assoc(sql_query($query));
@@ -1169,7 +1169,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
         $query_cat = "
 		SELECT idCategory, COUNT(*)
 		FROM %lms_course
-		WHERE show_rules = '0' " . (!Forma::user()->isAnonymous() ? " OR show_rules = '1' " : '') . '
+		WHERE show_rules = '0' " . (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() ? " OR show_rules = '1' " : '') . '
 		GROUP BY idCategory';
         $re_category = sql_query($query_cat);
         while (list($id, $num) = sql_fetch_array($re_category)) {
@@ -1359,15 +1359,15 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
         }
 
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $is_subadmin = false;
         $all_courses = false;
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -1375,7 +1375,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1422,7 +1422,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             . ' LEFT JOIN %lms_courseuser as cu ON (c.idCourse=cu.idCourse) '
             . " WHERE c.course_type = 'elearning' " . $filter_conds
             . (($is_subadmin && !$all_courses) ? (!empty($admin_courses['course']) ? (' AND c.idCourse IN (' . implode(',', $admin_courses['course']) . ')') : ' AND c.idCourse = 0') : '')
-            . ($is_subadmin ? (' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'cu.idUser')) : '')
+            . ($is_subadmin ? (' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'cu.idUser')) : '')
             . ' GROUP BY c.idCourse '
             . ($sort ? (' ORDER BY ' . $sort . ' ' . $dir . ' ') : '')
             . ' LIMIT ' . $startIndex . ', ' . $records;
@@ -1483,13 +1483,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
         }
 
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $is_subadmin = false;
         $all_courses = false;
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -1497,7 +1497,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1579,13 +1579,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 . ' )';
         }
 
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $is_subadmin = false;
         $all_courses = false;
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -1593,7 +1593,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -1683,13 +1683,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 . ' )';
         }
 
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         $is_subadmin = false;
         $all_courses = false;
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $all_courses = false;
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
@@ -1697,7 +1697,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -2096,7 +2096,7 @@ class Man_CourseUser
 
         $subscriber = new CourseSubscribe_Management();
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $query_course = 'SELECT idCourse' .
             ' FROM %lms_course' .
@@ -2276,7 +2276,7 @@ class FormaCourse
      */
     public function getSubscribed()
     {
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         /*
         $group_info = $acl_man->getGroup(FALSE, '/lms/course/'.$this->id_course.'/subscribed/alluser');
         $idst_group = $group_info[ACL_INFO_IDST];
@@ -2350,7 +2350,7 @@ class FormaCourse
 
         $map = [];
         $levels = $subscribe_man->getUserLevel(); //CourseLevel::getTranslatedLevels();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         // find all the group created for this menu custom for permission management
         $arr_groupid = [];
@@ -2358,7 +2358,7 @@ class FormaCourse
             $arr_groupid[$lv] = '/lms/course/' . $idCourse . '/subscribed/' . $lv;
         }
 
-        $arr_idst = Forma::aclm()->getArrGroupST($arr_groupid);
+        $arr_idst = \FormaLms\lib\Forma::getAclManager()->getArrGroupST($arr_groupid);
 
         $map = [];
         $flip = array_flip($arr_groupid);
@@ -2383,7 +2383,7 @@ class FormaCourse
 
         $map = [];
         $levels = CourseLevel::getTranslatedLevels();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $idst_main = $acl_man->registerGroup('/lms/course/' . $idCourse . '/group/alluser',
             'all the user of a course',
@@ -2415,7 +2415,7 @@ class FormaCourse
  */
 function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $edition_id = 0)
 {
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $id_users = [];
 
     $query_courseuser = "
@@ -2455,7 +2455,7 @@ function getSubscribed($idCourse, $subdived_for_level = false, $id_level = false
  */
 function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = false, $exclude_waiting = false, $status = false, $edition_id = false, $sort = false, $user_filter = '', $group_all_members = false, $limit = false, $date_id = false)
 {
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $id_users = [];
 
     $query_courseuser = '
@@ -2544,7 +2544,7 @@ function getSubscribedInfo($idCourse, $subdived_for_level = false, $id_level = f
  */
 function getSubscribedLevel($idCourse, $subdived_for_level = false, $id_level = false, $edition_id = 0)
 {
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $id_users = [];
 
     $query_courseuser = "
@@ -2572,7 +2572,7 @@ function getSubscribedLevel($idCourse, $subdived_for_level = false, $id_level = 
 
 function getIDGroupAlluser($idCourse)
 {
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $info = $acl_man->getGroup(false, '/lms/course/' . $idCourse . '/group/alluser');
 
     return $info[ACL_INFO_IDST];
@@ -2590,7 +2590,7 @@ function fromIdstToUser($id_user)
         return $users;
     }
 
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     foreach ($id_user as $id_u) {
         $user_info = $acl_man->getUser($id_u, false);
         if ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME] == '') {
@@ -2666,19 +2666,19 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     require_once _lms_ . '/lib/lib.track_user.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     // Reset previous opened track session if any
-    if (!Forma::user()->isAnonymous() && $session->has('idCourse')) {
-        TrackUser::setActionTrack(getLogUserId(), $session->get('idCourse'), '', '');
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() && $session->has('idCourse')) {
+        TrackUser::setActionTrack(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $session->get('idCourse'), '', '');
     }
     $session->remove('direct_play');
 
     $re_course = sql_query('
 	SELECT level, status, waiting
 	FROM %lms_courseuser
-	WHERE idCourse = ' . (int) $idCourse . ' AND idUser = ' . (int) Forma::user()->getId() . '');
+	WHERE idCourse = ' . (int) $idCourse . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId() . '');
     list($level_c, $status_user, $waiting_user) = sql_fetch_row($re_course);
 
-    Forma::setCourse($idCourse);
-    $course_info = Forma::course()->getAllInfo();
+    \FormaLms\lib\Forma::setCourse($idCourse);
+    $course_info = \FormaLms\lib\Forma::course()->getAllInfo();
     $course_info['course_status'] = $course_info['status'];
     $course_info['user_status'] = $status_user;
     $course_info['waiting'] = $waiting_user;
@@ -2695,7 +2695,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
     // If it's the first time we need to change the course status
     if ($course_info['user_status'] == _CUS_SUBSCRIBED) {
         require_once _lms_ . '/lib/lib.stats.php';
-        saveTrackStatusChange(getLogUserId(), $idCourse, _CUS_BEGIN);
+        saveTrackStatusChange(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse, _CUS_BEGIN);
     }
     // Setup some session data
     $session->set('timeEnter', date('Y-m-d H:i:s'));
@@ -2704,8 +2704,8 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
 
     //we need to redo this
 
-    Forma::user()->loadUserSectionST('/lms/course/private/' . $course_info['level'] . '/');
-    Forma::user()->SaveInSession();
+    \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST('/lms/course/private/' . $course_info['level'] . '/');
+    \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
 
     // Initialize the session into the course
     TrackUser::createSessionCourseTrack();
@@ -2760,7 +2760,7 @@ function logIntoCourse($idCourse, $gotofirst_page = true)
             } elseif (count($first_lo) >= 2) {
                 $obj = array_shift($first_lo);
                 // if we have more than an object we need to play the first one until it's completed
-                $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) Forma::user()->getId();
+                $query = 'SELECT status FROM %lms_commontrack WHERE idReference = ' . (int) $obj['id_org'] . ' AND idUser = ' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId();
                 list($status) = sql_fetch_row(sql_query($query));
 
                 if ((($status == 'completed') || ($status == 'passed')) && $gotofirst_page) {

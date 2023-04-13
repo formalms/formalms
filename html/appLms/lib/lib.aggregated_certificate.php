@@ -38,7 +38,7 @@ class AggregatedCertificate
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->table_cert = $GLOBALS['prefix_lms'] . '_certificate';  // TODO: remove, inserting appropriate libraries
         $this->table_cert_tags = $GLOBALS['prefix_lms'] . '_certificate_tags';
 
@@ -1059,7 +1059,7 @@ class AggregatedCertificate
     public function releaseNewAggrCertCourses($params)
     {
         require_once _lms_ . '/lib/lib.course.php';
-        $man_courseuser = new Man_CourseUser(DbConn::getInstance());
+        $man_courseuser = new Man_CourseUser(\FormaLms\db\DbConn::getInstance());
         $associated_aggr_cert_courses = $this->getIdAssocForUserCourse($params['id_user'], $params['id_course']);
 
         foreach ($associated_aggr_cert_courses as $idcert => $associations) {

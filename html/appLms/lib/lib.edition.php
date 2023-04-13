@@ -32,7 +32,7 @@ class EditionManager
         require_once _lms_ . '/lib/lib.subscribe.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
 
         $this->edition_table = $GLOBALS['prefix_lms'] . '_course_editions';
         $this->edition_user = $GLOBALS['prefix_lms'] . '_course_editions_user';
@@ -41,7 +41,7 @@ class EditionManager
         $this->courseuser_table = $GLOBALS['prefix_lms'] . '_courseuser';
         $this->user_table = $GLOBALS['prefix_fw'] . '_user';
 
-        $this->acl_man = $acl_man = Forma::user()->getAclManager();
+        $this->acl_man = $acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
 
         $this->status_list = [CST_PREPARATION => Lang::t('_CST_PREPARATION', 'course'),
@@ -314,10 +314,10 @@ class EditionManager
                 . ' JOIN ' . $this->user_table . ' AS u ON u.idst = eu.id_user'
                 . ' WHERE eu.id_edition IN (' . implode(',', $id_edition) . ')';
 
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'eu.id_user');
+                $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'eu.id_user');
             }
 
             if (is_array($filter)) {
@@ -467,10 +467,10 @@ class EditionManager
             }
         }
 
-        if ($adminFilter && Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($adminFilter && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'idUser');
         }
 
         switch ($sort) {
@@ -716,7 +716,7 @@ class EditionManager
             $subscribe_man->updateForNewDateSubscribe($id_user, $id_course, $waiting);
         }
 
-        return $this->addUserToEdition($id_edition, $id_user, getLogUserId());
+        return $this->addUserToEdition($id_edition, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     }
 
     private function controlUserSubscriptions($id_user, $id_course)
@@ -763,8 +763,8 @@ class EditionManager
             $subscribe_man = new CourseSubscribe_Manager();
             $subscribe_man->delUserFromCourse($id_user, $id_course, null, $id_edition);
 
-            $docebo_course = new FormaCourse($id_course);
-            $level_idst = &$docebo_course->getCourseLevel($id_course);
+            $formaCourse = new FormaCourse($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
             $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
         }
 

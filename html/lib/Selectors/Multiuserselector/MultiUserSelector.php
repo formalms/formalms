@@ -21,7 +21,7 @@ use FormaLms\lib\Services\Courses\CourseSubscriptionService;
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-require_once _base_ . '/db/lib.docebodb.php';
+
 class MultiUserSelector
 {
     protected $dataSelectors = array();
@@ -69,7 +69,7 @@ class MultiUserSelector
 
     public function __construct()
     {
-        $this->db = \DbConn::getInstance();
+        $this->db =\FormaLms\db\DbConn::getInstance();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 

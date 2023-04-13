@@ -33,7 +33,7 @@ class FormaCourseNotifier extends FormaEventConsumer
 
         parent::actionEvent($event);
 
-        $acl_man = &Forma::user()->getACLManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();;
 
         // recover event information
         $id_user = $event->getProperty('userdeleted');

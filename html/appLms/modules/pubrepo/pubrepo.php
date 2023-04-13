@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     require_once _lms_ . '/lib/lib.repo.php';
 
     function pubrepo(&$treeView)
@@ -155,7 +155,7 @@ if (!Forma::user()->isAnonymous()) {
             }
         closedir($langl->handle);
         sort($langArray);*/
-        $langArray = Forma::langManager()->getAllLangCode();
+        $langArray = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         if (!isset($_POST['idItem'])) {
             if ($idItem !== null) {

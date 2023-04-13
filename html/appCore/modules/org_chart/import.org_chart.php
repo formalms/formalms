@@ -99,8 +99,8 @@ class ImportUser extends FormaImport_Destination
 
         // Load language for fields names
         $lang_dir = &FormaLanguage::createInstance('admin_directory', 'framework');
-        $acl = &Forma::user()->getACL();
-        $acl_manager = Forma::user()->getAclManager();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $this->fl = new FieldList();
         $this->idst_group = $acl_manager->getGroupST('oc_' . (int) $this->tree);
@@ -234,8 +234,8 @@ class ImportUser extends FormaImport_Destination
      **/
     public function add_row($row, $tocompare)
     {
-        $acl = &Forma::user()->getACL();
-        $acl_manager = Forma::aclm();
+        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         foreach ($row as $k => $v) {
             if ($v !== false) {
@@ -686,7 +686,7 @@ class ImportGroupUser extends FormaImport_Destination
     public function __construct($params)
     {
         $this->dbconn = $params['dbconn'];
-        $this->acl_man = &Forma::user()->getAclManager();
+        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
     }
 
     public function connect()

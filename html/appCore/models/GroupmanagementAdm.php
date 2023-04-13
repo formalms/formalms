@@ -22,8 +22,8 @@ class GroupmanagementAdm extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->acl_man = Forma::user()->getACLManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();;
         parent::__construct();
     }
 
@@ -83,11 +83,11 @@ class GroupmanagementAdm extends Model
             . ' FROM %adm_group as g LEFT JOIN (%adm_group_members AS gm ) ON (gm.idst = g.idst) '
             . " WHERE g.hidden = 'false' " . ($learning_filter === 'none' ? "AND g.type <> 'course' " : '');
 
-        $ulevel = Forma::user()->getUserLevelId();
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $query .= ' AND g.idst IN (' . implode(',', $admin_tree) . ') ';
         }
 
@@ -114,7 +114,7 @@ class GroupmanagementAdm extends Model
                 } else {
                     require_once _lms_ . '/lib/lib.course.php';
                     $course_man = new Man_Course();
-                    $all_courses = $course_man->getUserCourses(Forma::user()->getIdSt());
+                    $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $res = [];
                     foreach ($all_courses as $id_course => $name) {
                         $arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
@@ -185,7 +185,7 @@ class GroupmanagementAdm extends Model
                 } else {
                     require_once _lms_ . '/lib/lib.course.php';
                     $course_man = new Man_Course();
-                    $all_courses = $course_man->getUserCourses(Forma::user()->getIdSt());
+                    $all_courses = $course_man->getUserCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     $res = [];
                     foreach ($all_courses as $id_course => $name) {
                         $arr_idst_group = $this->acl_man->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/group/');
@@ -356,7 +356,7 @@ class GroupmanagementAdm extends Model
         if ($idst > 0 && (is_array($info) || is_object($info))) {
             $output = true;
             $conditions = [];
-            $acl = Forma::user()->getAclManager();
+            $acl = \FormaLms\lib\Forma::getAclManager();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {
@@ -430,7 +430,7 @@ class GroupmanagementAdm extends Model
             $output = true;
             $fields = ['idst'];
             $values = [$idst];
-            $acl = Forma::user()->getAclManager();
+            $acl = \FormaLms\lib\Forma::getAclManager();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {
@@ -475,7 +475,7 @@ class GroupmanagementAdm extends Model
                 $output = $this->db->query($query);
             }
 
-            $ulevel = Forma::user()->getUserLevelId();
+            $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($ulevel == ADMIN_GROUP_ADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $preference = new AdminPreference();
@@ -590,11 +590,11 @@ class GroupmanagementAdm extends Model
 
         $_qfilter = '';
         if ($filter) {
-            $ulevel = Forma::user()->getUserLevelId();
+            $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
             if ($ulevel != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+                $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
                 //$admin_groups = $this->_extractGroupsFromMixedIdst($admin_tree);
                 $_qfilter .= ' AND idst IN (' . implode(',', $admin_tree) . ') ';
             }

@@ -142,7 +142,7 @@ class UserDataSelector extends DataSelector{
         $date_fields = $this->fieldList->getFieldsByType('date');
         $idOrg = 0;
         $var_fields = [];
-        $acl_man = \Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $idst_org = $acl_man->getGroupST('/oc_' . (int) $idOrg);
         $output_results = [];
         if (is_array($records) && count($records) > 0) {

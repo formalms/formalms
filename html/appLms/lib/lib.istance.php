@@ -33,12 +33,12 @@ function createModule($module_name, $class_name = null)
 {
     $module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
     if (file_exists(dirname(__FILE__) . '/../class.module/class.' . $module_name . '.php')) {
-        include_once Forma::inc(dirname(__FILE__) . '/../class.module/class.' . $module_name . '.php');
+        include_once \FormaLms\lib\Forma::inc(dirname(__FILE__) . '/../class.module/class.' . $module_name . '.php');
         if ($class_name === null) {
             $class_name = 'Module_' . ucfirst($module_name);
         }
     } else {
-        include_once Forma::inc(dirname(__FILE__) . '/../class.module/class.definition.php');
+        include_once \FormaLms\lib\Forma::inc(dirname(__FILE__) . '/../class.module/class.definition.php');
         $class_name = 'LmsModule';
     }
 

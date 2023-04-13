@@ -30,7 +30,7 @@ class PluginmanagerAdmController extends AdmController
         $feedback = '';
         switch ($res = FormaLms\lib\Get::req('result', DOTY_ALPHANUM, '')) {
             case 'ok': $feedback = Lang::t('_OPERATION_SUCCESSFUL', 'standard'); break;
-            case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard') . PHP_EOL . Forma::getFormattedErrors(true); break;
+            case 'err': $feedback = Lang::t('_OPERATION_FAILURE', 'standard') . PHP_EOL . \FormaLms\lib\Forma::getFormattedErrors(true); break;
             default:
         }
         $this->render('show', [

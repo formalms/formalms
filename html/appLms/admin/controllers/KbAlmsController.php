@@ -131,7 +131,7 @@ class KbAlmsController extends AlmsController
             $param = ''; //FormaLms\lib\Get::req('', DOTY_STRING, "");
             $alt_desc = '';
             $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-            $lang_arr = Forma::langManager()->getAllLangCode();
+            $lang_arr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             $lang = $lang_arr[$lang_id];
             $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
             $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);
@@ -189,7 +189,7 @@ class KbAlmsController extends AlmsController
             $param = ''; //FormaLms\lib\Get::req('', DOTY_STRING, "");
             $alt_desc = '';
             $lang_id = FormaLms\lib\Get::req('r_lang', DOTY_INT, '');
-            $lang_arr = Forma::langManager()->getAllLangCode();
+            $lang_arr = \FormaLms\lib\Forma::langManager()->getAllLangCode();
             $lang = $lang_arr[$lang_id];
             $force_visible = FormaLms\lib\Get::req('force_visible', DOTY_INT, 0);
             $is_mobile = FormaLms\lib\Get::req('is_mobile', DOTY_INT, 0);
@@ -353,7 +353,7 @@ class KbAlmsController extends AlmsController
             $nodedata = $this->model->getFolderById($node);
             $node = [
                 'id' => $nodedata->node_id,
-                'label' => $this->model->getFolderTranslation($nodedata->node_id, getLanguage()),
+                'label' => $this->model->getFolderTranslation($nodedata->node_id, Lang::get()),
                 'is_leaf' => (($nodedata->iRight - $nodedata->iLeft) == 1),
                 'count_content' => (int) (($nodedata->iRight - $nodedata->iLeft - 1) / 2),
             ];
@@ -543,8 +543,8 @@ class KbAlmsController extends AlmsController
                             . Form::getTextfield(Lang::t('_ROOT_RENAME', 'organization_chart'), 'modfolder_root', 'modfolder_root', 50, $root_name)
                             . Form::closeForm();
                     } else {
-                        $languages = Forma::langManager()->getAllLanguages(true); //getAllLangCode();
-                        $std_lang = getLanguage();
+                        $languages = \FormaLms\lib\Forma::langManager()->getAllLanguages(true); //getAllLangCode();
+                        $std_lang = Lang::get();
 
                         $form_content = Form::getHidden('modfolder_id', 'node_id', $id);
 
@@ -586,8 +586,8 @@ class KbAlmsController extends AlmsController
 
     protected function _getAddFolderDialogContent($id_parent)
     {
-        $languages = Forma::langManager()->getAllLanguages(true); //getAllLangCode();
-        $std_lang = getLanguage();
+        $languages = \FormaLms\lib\Forma::langManager()->getAllLanguages(true); //getAllLangCode();
+        $std_lang = Lang::get();
 
         $form_content = Form::getHidden('addfolder_id_parent', 'id_parent', $id_parent);
         //$form_content .= Form::getBreakRow();
@@ -670,7 +670,7 @@ class KbAlmsController extends AlmsController
                 $output['success'] = true;
                 $nodedata = [
                     'id' => $id,
-                    'label' => $this->model->getFolderTranslation($id, getLanguage()),
+                    'label' => $this->model->getFolderTranslation($id, Lang::get()),
                     'is_leaf' => true,
                     'count_content' => 0,
                 ];
@@ -704,7 +704,7 @@ class KbAlmsController extends AlmsController
         $res = $this->model->renameFolder($id, $langs);
         if ($res) {
             $output['success'] = true;
-            $output['new_name'] = $langs[getLanguage()];
+            $output['new_name'] = $langs [Lang::get()];
         } else {
             $output['success'] = false;
             $output['message'] = Lang::t('_CONNECTION_ERROR');

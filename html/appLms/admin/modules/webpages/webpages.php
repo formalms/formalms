@@ -19,7 +19,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
  */
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
@@ -148,7 +148,7 @@ function editpages($load = false)
     $lang = &FormaLanguage::createInstance('admin_webpages', 'lms');
     $out = &$GLOBALS['page'];
     $out->setWorkingZone('content');
-    $all_languages = Forma::langManager()->getAllLangCode();
+    $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     $id_page = importVar('id_page', true, 0);
 
@@ -161,7 +161,7 @@ function editpages($load = false)
     } else {
         $title = $lang->def('_NOTITLE');
         $description = '';
-        $language = getLanguage();
+        $language = Lang::get();
         $publish = 0;
         $in_home = 0;
     }
@@ -204,7 +204,7 @@ function savepages()
     checkPerm('mod');
 
     $lang = &FormaLanguage::createInstance('admin_webpages', 'lms');
-    $all_languages = Forma::langManager()->getAllLangCode();
+    $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
     $id_page = importVar('id_page', true, 0);
 

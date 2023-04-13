@@ -56,7 +56,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         $this->controller_name = strtolower(str_replace('AlmsController', '', get_class($this)));
         $this->json = new Services_JSON();
-        require_once Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
         $this->aggCertLib = new AggregatedCertificate();
 
         $this->model = new AggregatedcertificateAlms();
@@ -227,7 +227,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         checkPerm('mod');
 
-        $all_languages = Forma::langManager()->getAllLanguages();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLanguages();
         $languages = [];
 
         foreach ($all_languages as $k => $v) {
@@ -734,7 +734,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         // Users after editing (there may be the same users, new users added, or user to delete)
 
         $user_selection = new UserSelector();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $aclManager = new FormaACLManager();
         $userSelectionArr = array_map('intval', $user_selection->getSelection($_POST));
         $userSelectionArr = $aclManager->getAllUsersFromIdst($userSelectionArr);
@@ -852,7 +852,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         // Users after editing (there may be the same users, new users added, or user to delete)
 
         $user_selection = new UserSelector();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $aclManager = new FormaACLManager();
         $userSelectionArr = array_map('intval', $user_selection->getSelection($_POST));
         $userSelectionArr = $aclManager->getAllUsersFromIdst($userSelectionArr);
@@ -997,7 +997,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $acl_man = ocebo::user()->getAclManager();
+        $acl_man = ocebo::user()\FormaLms\lib\Forma::getAclManager();
 
         $id_association = FormaLms\lib\Get::req('id_association', DOTY_INT, 0);
 
@@ -1015,7 +1015,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         $cont_h = [Lang::t('_FULLNAME'), Lang::t('_USERNAME')];
         $type_h[] = 'align_center';
 
-        $man_courseuser = new Man_CourseUser(DbConn::getInstance());
+        $man_courseuser = new Man_CourseUser(\FormaLms\db\DbConn::getInstance());
         $coursePath_man = new CoursePath_Manager();
         if ($type_assoc === AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE) {
             $course_man = new Man_Course();
@@ -1201,7 +1201,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     {
         checkPerm('view');
 
-        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
 
         $id_user = FormaLms\lib\Get::req('id_user', DOTY_INT, 0);
         $cert = new Certificate();

@@ -33,7 +33,7 @@ class DateManager
         require_once _lms_ . '/lib/lib.subscribe.php';
 
         $this->lang = FormaLanguage::CreateInstance('admin_date', 'lms');
-        $this->acl_man =  Forma::user()->getAclManager();
+        $this->acl_man =  \FormaLms\lib\Forma::getAclManager();
         $this->subscribe_man = new CourseSubscribe_Manager();
     }
 
@@ -124,10 +124,10 @@ class DateManager
             . ' FROM %lms_class_location as loc JOIN %lms_classroom AS cl '
             . ' ON (loc.location_id = cl.location_id) ';
 
-        if (Forma::user()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() !== ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $arr_locations = $adminManager->getAdminClasslocation(Forma::user()->getIdst());
+            $arr_locations = $adminManager->getAdminClasslocation(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
             if (!empty($arr_locations)) {
                 $query .= ' WHERE loc.location_id IN (' . implode(',', $arr_locations) . ') ';
             } else {
@@ -216,11 +216,11 @@ class DateManager
         foreach ($arrayDays as $dayInfo) {
             if (empty($dayInfo['calendarId'])) {
                 $query = "UPDATE %lms_course_date_day SET `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "' WHERE `id_date` = " . $idDate . ' AND `id` =' . $dayInfo['day_id'];
-                DbConn::getInstance()->query($query);
+                \FormaLms\db\DbConn::getInstance()->query($query);
             }
 
             $query = 'UPDATE %lms_course_date_day SET `deleted` = 1 WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['day_id'];
-            $res = DbConn::getInstance()->query($query);
+            $res = \FormaLms\db\DbConn::getInstance()->query($query);
 
             if ($res === false) {
                 $result = $res;
@@ -280,7 +280,7 @@ class DateManager
                 }
                 $query .= ' WHERE `id_date` = ' . $idDate . ' AND `id` =' . $dayInfo['id'];
             }
-            $result = DbConn::getInstance()->query($query);
+            $result = \FormaLms\db\DbConn::getInstance()->query($query);
             $walkedDates[] = $dayInfo['date'];
             if ($result === false) {
                 return $res;
@@ -598,7 +598,7 @@ class DateManager
                 //require_once (_lms_.'/admin/modules/subscribe/subscribe.php');
                 require_once _lms_ . '/lib/lib.course.php';
 
-                $docebo_course = new FormaCourse($id_course);
+                $formaCourse = new FormaCourse($id_course);
 
                 $course_man = new Man_Course();
 
@@ -607,7 +607,7 @@ class DateManager
                 $date_begin = $course_info['date_begin'];
                 $date_end = $course_info['date_end'];
 
-                $group_levels = $docebo_course->getCourseLevel($id_course);
+                $group_levels = $formaCourse->getCourseLevel($id_course);
                 $user_levels = getSubscribedLevel($id_course, false, false, 0);
 
                 if (!$this->controlUserSubscriptions($id_user, $id_course)) {
@@ -760,10 +760,10 @@ class DateManager
             . ' JOIN %adm_user  AS u ON u.idst = ud.id_user'
             . ' WHERE ud.id_date = ' . $id_date;
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), ' ud.id_user');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), ' ud.id_user');
         }
 
         if (is_array($filter)) {
@@ -814,10 +814,10 @@ class DateManager
             . ' JOIN %adm_user  AS u ON u.idst = ud.id_user '
             . ' WHERE ud.id_date IN (' . implode(',', $arr_id_date) . ')';
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), ' ud.id_user');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), ' ud.id_user');
         }
 
         if (is_array($filter)) {
@@ -1009,11 +1009,11 @@ class DateManager
 
     public function getUserForPresence($id_date, $id_course = null)
     {
-        $acl_man = &Forma::user()->getAclManager();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
         $is_admin = false;
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN && Forma::user()->getUserLevelId() != ADMIN_GROUP_USER) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_USER) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $is_admin = true;
@@ -1031,8 +1031,8 @@ class DateManager
             $query .= ' AND idCourse = ' . $id_course;
         }
 
-        if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
-            $query .= ($is_admin ? ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'd.id_user') : '');
+        if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
+            $query .= ($is_admin ? ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'd.id_user') : '');
         }
         $query .= ' ORDER BY u.lastname, u.firstname, u.userid';
 
@@ -1063,10 +1063,10 @@ class DateManager
         $query = 'SELECT *'
             . ' FROM %lms_course_date_presence WHERE id_date = ' . $id_date;
 
-        if (Forma::user()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_ADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'id_user');
+            $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'id_user');
         }
 
         $result = sql_query($query);
@@ -1174,7 +1174,7 @@ class DateManager
 
     public function getUserDates($id_user)
     {
-        $acl_manager = Forma::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         if ($id_user == $acl_manager->getAnonymousId()) {
             return [];
@@ -1300,7 +1300,7 @@ class DateManager
     public function getUserDateForCourse($id_user, $id_course)
     {
         $res = [];
-        $aclManager = Forma::user()->getAclManager();
+        $aclManager = \FormaLms\lib\Forma::getAclManager();
 
         if ($id_user !== $aclManager->getAnonymousId()) {
             $query = 'SELECT id_date  FROM %lms_course_date_user   WHERE id_user = ' . $id_user
@@ -1546,20 +1546,20 @@ class DateManager
         $res = [];
 
         while (list($id_date, $code, $name, $status, $date_begin, $date_end, $num_day, $user_subscribed, $unsubscribe_date_limit) = sql_fetch_row($result)) {
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
                 $query = 'SELECT COUNT(*)'
                     . ' FROM %lms_course_date_user '
                     . " WHERE id_date = '" . $id_date . "'"
-                    . ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'id_user');
+                    . ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'id_user');
 
                 list($user_subscribed) = sql_fetch_row(sql_query($query));
 
                 $query = 'SELECT COUNT(*) FROM %lms_courseuser AS cu JOIN %lms_course_date AS cd JOIN %lms_course_date_user AS cdu '
                     . ' ON (cd.id_date = cdu.id_date AND cd.id_course = cu.idCourse AND cu.idUser = cdu.id_user) '
                     . ' WHERE cd.id_date = ' . (int) $id_date . ' AND cu.level = 3'
-                    . ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'cdu.id_user');
+                    . ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'cdu.id_user');
 
                 list($num_student) = sql_fetch_row(sql_query($query));
             } else {
@@ -1831,7 +1831,7 @@ class DateManager
             $subscribe_man->updateForNewDateSubscribe($id_user, $id_course, $waiting);
         }
 
-        return $this->addUserToDate($id_date, $id_user, Forma::user()->getIdst(), $is_overbooking);
+        return $this->addUserToDate($id_date, $id_user, \FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), $is_overbooking);
     }
 
     public function delUserFromDate($id_user, $id_course, $id_date)
@@ -1845,8 +1845,8 @@ class DateManager
             $level = $this->subscribe_man->getUserLeveInCourse($id_user, $id_course);
             $subscribe_man->delUserFromCourse($id_user, $id_course, null,$id_date);
 
-            $docebo_course = new FormaCourse($id_course);
-            $level_idst = &$docebo_course->getCourseLevel($id_course);
+            $formaCourse = new FormaCourse($id_course);
+            $level_idst = &$formaCourse->getCourseLevel($id_course);
             $this->acl_man->removeFromGroup($level_idst[$level], $id_user);
 
             //check if there are overbooked users

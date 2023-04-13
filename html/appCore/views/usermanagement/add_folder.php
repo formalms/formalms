@@ -12,8 +12,8 @@
  */
 
 $body = '';
-$languages = Forma::langManager()->getAllLanguages(true); //getAllLangCode();
-$std_lang = getLanguage();
+$languages = \FormaLms\lib\Forma::langManager()->getAllLanguages(true); //getAllLangCode();
+$std_lang = Lang::get();
 
 $body .= Form::openForm('addfolder_form', 'ajax.adm_server.php?r=' . $this->link . '/createfolder');
 

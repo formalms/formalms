@@ -143,7 +143,7 @@ class Util
             Util::fatal('Error: the file that you are searching for no longer exists on the server.<br/>Please contact the system administrator');
         }
 
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $db->close();
 
         ob_end_clean();
@@ -282,7 +282,7 @@ class Util
             return;
         }
 
-        $db = &DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $re_sett = $db->query('SELECT param_name, param_value, value_type ' .
         'FROM ' . $from_table . ' ' .
@@ -855,7 +855,7 @@ function translateChr(&$text, &$translate_table, $reverse = false)
         return $text;
     }
     if (!isset($GLOBALS['is_utf'])) {
-        $GLOBALS['is_utf'] = (strpos(getUnicode(), 'utf-8') === false ? false : true);
+        $GLOBALS['is_utf'] = (strpos(Lang::charset(), 'utf-8') === false ? false : true);
     }
 
     if ($GLOBALS['is_utf'] === false) {

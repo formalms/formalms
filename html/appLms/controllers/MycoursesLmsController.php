@@ -12,7 +12,7 @@
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
-require_once Forma::inc(_lib_ . '/Helpers/Filters/Course/FilterCourseManager.php');
+require_once \FormaLms\lib\Forma::inc(_lib_ . '/Helpers/Filters/Course/FilterCourseManager.php');
 
 class MycoursesLmsController extends LmsController
 {
@@ -36,7 +36,7 @@ class MycoursesLmsController extends LmsController
 
         if (count($filters = FormaLms\lib\Get::getRegexUrlMatches('filterCourse'))) {
             foreach ($filters as $filter) {
-                $this->filterManager->setFilterByCookie($this->filterManager->getCookieIndex($filter, Forma::user()->idst), FormaLms\lib\Get::req($filter));
+                $this->filterManager->setFilterByCookie($this->filterManager->getCookieIndex($filter, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()), FormaLms\lib\Get::req($filter));
             }
         }
 

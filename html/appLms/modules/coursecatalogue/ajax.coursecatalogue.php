@@ -19,11 +19,11 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @category ajax server
  */
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     require_once _lms_ . '/lib/lib.course.php';
     require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
     $lang = &FormaLanguage::createInstance('standard', 'framework');
-    $lang->setGlobal();
+    
 
     $lang = &FormaLanguage::createInstance('catalogue', 'lms');
     $lang = &FormaLanguage::createInstance('course', 'lms');
@@ -51,12 +51,12 @@ if (Forma::user()->isAnonymous()) {
     switch ($op) {
         case 'getLang':
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('cart', 'ecom');
 
-            $idst = getLogUserId();
-            $acl_man = &Forma::user()->getAclManager();
-            $userid = Forma::user()->getUserId();
+            $idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
+            $acl_man = &\FormaLms\lib\Forma::getAclManager();
+            $userid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserId();
             $user_info = $acl_man->getUser($idst, false);
 
             $user_email = $user_info[ACL_INFO_EMAIL];
@@ -72,7 +72,7 @@ if (Forma::user()->isAnonymous()) {
 
         case 'getCartSummary':
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('cart', 'ecom');
 
             require_once $GLOBALS['where_ecom'] . '/lib/lib.cart.php';
@@ -106,7 +106,7 @@ if (Forma::user()->isAnonymous()) {
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('course', 'lms');
 
             $id_course = importVar('id_course', true, 0);
@@ -123,7 +123,7 @@ if (Forma::user()->isAnonymous()) {
             $cinfo['classrooms'] = (isset($classrooms[$cinfo['classrooms']]) ? $classrooms[$cinfo['classrooms']] : false);
 
             $man_courseuser = new Man_CourseUser();
-            $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
+            $usercourses = &$man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
 
             $select_edition = ' SELECT * ';
             $from_edition = ' FROM %lms_course_edition';
@@ -185,7 +185,7 @@ if (Forma::user()->isAnonymous()) {
             $man_course = new FormaCourse($id_course);
             $man_courseuser = new Man_CourseUser();
 
-            $user_score = $man_courseuser->getUserCourseScored(getLogUserId());
+            $user_score = $man_courseuser->getUserCourseScored(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
             $score = 0;
             switch ($evaluation) {
@@ -213,7 +213,7 @@ if (Forma::user()->isAnonymous()) {
                  break;
             }
 
-            $new_score = $man_course->voteCourse(getLogUserId(), $score, $userscore_to_save);
+            $new_score = $man_course->voteCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $score, $userscore_to_save);
 
             $value = ['id_course' => importVar('id_course', true, 0),
                         'evaluation' => $evaluation,
@@ -233,9 +233,9 @@ if (Forma::user()->isAnonymous()) {
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
 
-            if (Forma::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $lang = &FormaLanguage::createInstance('catalogue', 'lms');
                 $lang = &FormaLanguage::createInstance('course', 'lms');
 
@@ -266,7 +266,7 @@ if (Forma::user()->isAnonymous()) {
                 $cinfo = $man_course->getAllInfo();
 
                 $man_courseuser = new Man_CourseUser();
-                $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), false);
+                $usercourses = &$man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), false);
 
                 // retrive subscribed -----------------------------------------------------
                 $select_count = 'SELECT COUNT(*) as user_count ';
@@ -315,9 +315,9 @@ if (Forma::user()->isAnonymous()) {
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/modules/coursecatalogue/lib.coursecatalogue.php';
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
 
-            if (Forma::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $lang = &FormaLanguage::createInstance('catalogue', 'lms');
                 $lang = &FormaLanguage::createInstance('course', 'lms');
 
@@ -362,7 +362,7 @@ if (Forma::user()->isAnonymous()) {
 
             $comment_data = [
                 AJCOMM_EXTKEY => $id_course,
-                AJCOMM_AUTHOR => getLogUserId(),
+                AJCOMM_AUTHOR => \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                 AJCOMM_POSTED => date('Y-m-d H:i:s'),
                 AJCOMM_TEXTOF => importVar('text_of'),
                 AJCOMM_TREE => '',
@@ -373,15 +373,15 @@ if (Forma::user()->isAnonymous()) {
             $ax_comm->addComment($comment_data);
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('catalogue', 'lms');
 
             $ax_rend = new AjaxCommentRender('catalogue', 'lms');
 
             $man_courseuser = new Man_CourseUser();
-            $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), true);
+            $usercourses = &$man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
 
-            if (Forma::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $ax_comm->canReply(false);
             } else {
                 $ax_comm->canReply(isset($usercourses[$id_course]));
@@ -418,7 +418,7 @@ if (Forma::user()->isAnonymous()) {
             require_once _lms_ . '/lib/lib.course.php';
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('catalogue', 'lms');
 
             $comment_id = importVar('comment_id', true, 0);
@@ -429,9 +429,9 @@ if (Forma::user()->isAnonymous()) {
             $ax_rend = new AjaxCommentRender('catalogue', 'lms');
 
             $man_courseuser = new Man_CourseUser();
-            $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), true);
+            $usercourses = &$man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
 
-            if (Forma::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $ax_comm->canReply(false);
             } else {
                 $ax_comm->canReply(isset($usercourses[$id_course]));
@@ -468,7 +468,7 @@ if (Forma::user()->isAnonymous()) {
             require_once _lms_ . '/lib/lib.course.php';
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('catalogue', 'lms');
 
             $id_course = importVar('id_course', true, 0);
@@ -476,9 +476,9 @@ if (Forma::user()->isAnonymous()) {
             $ax_rend = new AjaxCommentRender('catalogue', 'lms');
 
             $man_courseuser = new Man_CourseUser();
-            $usercourses = &$man_courseuser->getUserSubscriptionsInfo(getLogUserId(), true);
+            $usercourses = &$man_courseuser->getUserSubscriptionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
 
-            if (Forma::user()->isAnonymous()) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 $ax_comm->canReply(false);
             } else {
                 $ax_comm->canReply(isset($usercourses[$id_course]));
@@ -511,7 +511,7 @@ if (Forma::user()->isAnonymous()) {
         case 'course_materials':
             require_once _lms_ . '/lib/lib.course.php';
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('course', 'lms');
 
             $id_course = importVar('id_course', true);
@@ -522,7 +522,7 @@ if (Forma::user()->isAnonymous()) {
             if ($course_mat != '') {
                 $html .= '<li><b>[' . $course_man->getValue('code') . '] ' . $course_man->getValue('name') . ' ' . $course_mat . '</b>'
                     . '<div class="align_right">'
-                    . '<a href="index.php?modname=' . (Forma::user()->isAnonymous()
+                    . '<a href="index.php?modname=' . (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()
                                 ? 'login'
                                 : 'coursecatalogue') . '&amp;op=donwloadmaterials'
                             . '&amp;id_course=' . $id_course . '">'
@@ -549,7 +549,7 @@ if (Forma::user()->isAnonymous()) {
                                                 $lang->def('_EDTION_TIME'));
                     }
                     $html .= '<div class="popup_materials">'
-                            . '<a href="index.php?modname=' . (Forma::user()->isAnonymous()
+                            . '<a href="index.php?modname=' . (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()
                                 ? 'login'
                                 : 'coursecatalogue') . '&amp;op=donwloadmaterials'
                                 . '&amp;id_course=' . $ed_info['idCourse'] . '&amp;edition_id=' . $ed_info['idCourseEdition'] . '">'
@@ -579,7 +579,7 @@ if (Forma::user()->isAnonymous()) {
             require_once _base_ . '/lib/lib.multimedia.php';
 
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('course', 'lms');
 
             $id_course = importVar('id_course', true);
@@ -602,7 +602,7 @@ if (Forma::user()->isAnonymous()) {
          break;
         default:
             $lang = &FormaLanguage::createInstance('standard', 'framework');
-            $lang->setGlobal();
+            
             $lang = &FormaLanguage::createInstance('catalogue', 'framework');
 
             $value = [

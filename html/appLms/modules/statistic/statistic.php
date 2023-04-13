@@ -13,11 +13,11 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit("You can't access");
 }
 
-require_once Forma::inc(_lib_ . '/formatable/include.php');
+require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
 function outPageView($link)
 {
@@ -111,18 +111,18 @@ function outPageView($link)
     $course_user = $course_man->getIdUserOfLevel($idCourse);
 
     //apply sub admin filters, if needed
-    if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
     $query_stat = 'SELECT ' . $select . ', COUNT(*) as count 
 	FROM %lms_trackingeneral 
 	WHERE idCourse="' . $idCourse . '"';
-    if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         $query_stat .= ' AND idUser IN (' . implode(',', $course_user) . ') ';
     }
     if ($_REQUEST['op'] == 'userdetails' && isset($_REQUEST['id'])) {
@@ -219,16 +219,16 @@ function statistic()
     $view_all_perm = checkPerm('view_all', true);
 
     $lang = &FormaLanguage::createInstance('statistic', 'lms');
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $course_man = new Man_Course();
     $course_user = $course_man->getIdUserOfLevel($idCourse);
 
     //apply sub admin filters, if needed
-    if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
+    if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
         //filter users
         require_once _base_ . '/lib/lib.preference.php';
         $ctrlManager = new ControllerPreference();
-        $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+        $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
@@ -334,7 +334,7 @@ function userdetails()
     $link = 'index.php?modname=statistic&amp;op=userdetails&amp;id=' . $idst_user . '';
 
     $lang = &FormaLanguage::createInstance('statistic', 'lms');
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $user_info = &$acl_man->getUser($idst_user, false);
 
     $page_title = [
@@ -483,7 +483,7 @@ function sessiondetails()
     $ini = $nav_bar->getSelectedElement();
 
     $lang = &FormaLanguage::createInstance('statistic', 'lms');
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $user_info = &$acl_man->getUser($idst_user, false);
 
     $query_track = '

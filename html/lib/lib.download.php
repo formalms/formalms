@@ -79,7 +79,7 @@ function sendFileFromFS($path, $filename, $ext, $sendname)
             $sendname .= '.' . $ext;
         }
 
-        @DbConn::getInstance()->close();
+        \FormaLms\db\DbConn::getInstance()->close();
 
         ob_end_clean();
         ob_start();
@@ -140,7 +140,7 @@ function sendStrAsFile($string, $filename, $charset = false)
 
     //empty and close buffer
 
-    @DbConn::getInstance()->close();
+    \FormaLms\db\DbConn::getInstance()->close();
 
     ob_end_clean();
     session_write_close();

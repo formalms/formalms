@@ -19,7 +19,7 @@ class CommunicationAlms extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
 
@@ -38,7 +38,7 @@ class CommunicationAlms extends Model
     {
         $sortable = ['title', 'description', 'type_of', 'publish_date'];
         $sortable = array_flip($sortable);
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
 
         $records = [];
         $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cs.name,"--") as courseName, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle '
@@ -76,7 +76,7 @@ class CommunicationAlms extends Model
        
         $sortable = ['title', 'description', 'type_of', 'publish_date'];
         $sortable = array_flip($sortable);
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $records = [];
         $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cs.name,"--") as courseName, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle  '
             . ' FROM ( %lms_communication AS c '
@@ -115,7 +115,7 @@ class CommunicationAlms extends Model
     {
         $sortable = ['title', 'description', 'type_of', 'publish_date'];
         $sortable = array_flip($sortable);
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
 
         $records = [];
         $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cs.name,"--") as courseName, coalesce(cl.description, c.description) as description, publish_date, type_of, id_resource, COUNT(ca.id_comm) as access_entity, coalesce(ccl.translation,"") as categoryTitle  '
@@ -393,7 +393,7 @@ class CommunicationAlms extends Model
 
     public function getCategory($id, $language = false)
     {
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $query = 'SELECT	t1.id_category, t2.translation, t1.level, t1.iLeft, t1.iRight '
             . ' FROM %lms_communication_category AS t1 LEFT JOIN %lms_communication_category_lang AS t2 '
             . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) "
@@ -408,7 +408,7 @@ class CommunicationAlms extends Model
 
     public function getCategories($id_parent, $language = false)
     {
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $query = 'SELECT	t1.id_category, t2.translation, t1.level, t1.iLeft, t1.iRight '
             . ' FROM %lms_communication_category AS t1 LEFT JOIN %lms_communication_category_lang AS t2 '
             . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) "
@@ -444,7 +444,7 @@ class CommunicationAlms extends Model
 
     public function getCategoryList($startIndex, $results, $sort = false, $dir = 'DESC', $language = false)
     {
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $sort = ($sort == false ? 't2.translation' : $sort);
         $query = 'SELECT t1.id_category as id, t2.translation as label, COALESCE(t3.translation, "--") as parentLabel '
             . ' FROM %lms_communication_category AS t1 
@@ -483,7 +483,7 @@ class CommunicationAlms extends Model
     {
         $tree = [];
         $output = [];
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
 
         if ($addRoot) {
             $objOut = new stdClass();
@@ -521,7 +521,7 @@ class CommunicationAlms extends Model
 
     public function getCategoryTotal($language = false)
     {
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $query = 'SELECT count(t1.id_category) as cnt'
             . ' FROM %lms_communication_category AS t1 LEFT JOIN %lms_communication_category_lang AS t2 '
             . " ON (t1.id_category = t2.id_category AND t2.lang_code = '" . $lang_code . "' ) limit 1 ";
@@ -541,7 +541,7 @@ class CommunicationAlms extends Model
     {
         $folders = [0];
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         if ($node_id <= 0) {
             return $folders;
@@ -661,7 +661,7 @@ class CommunicationAlms extends Model
         $output = $this->db->fetch_obj($res);
 
         //initialize languages array
-        $lang_codes = Forma::langManager()->getAllLangCode();
+        $lang_codes = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $langs = [];
         for ($i = 0; $i < count($lang_codes); ++$i) {
             $langs[$lang_codes[$i]] = [
@@ -895,7 +895,7 @@ class CommunicationAlms extends Model
 
     public function getCategoryName($id_category, $language = false)
     {
-        $lang_code = (!$language ? getLanguage() : $language);
+        $lang_code = (!$language ? Lang::get() : $language);
         $output = '';
         $query = 'SELECT translation FROM %lms_communication_category_lang '
             . ' WHERE id_category = ' . (int) $id_category . " AND lang_code = '" . $lang_code . "'";

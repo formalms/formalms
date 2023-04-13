@@ -27,7 +27,7 @@ class LocationAlms extends Model
 
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         parent::__construct();
     }
 
@@ -109,13 +109,13 @@ class LocationAlms extends Model
             return false;
         }
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $id_entry = sql_insert_id();
 
             $re = sql_query('
 				INSERT INTO ' . $GLOBALS['prefix_fw'] . "_admin_course 
 				( id_entry, type_of_entry, idst_user ) VALUES 
-				( '" . $id_entry . "', 'classlocation', '" . getLogUserId() . "') ");
+				( '" . $id_entry . "', 'classlocation', '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "') ");
         }
 
         return true;

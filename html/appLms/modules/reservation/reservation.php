@@ -19,7 +19,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author Marco Valloni
  */
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     require_once _lms_ . '/lib/lib.reservation.php';
     require_once _lms_ . '/lib/lib.classroom.php';
 
@@ -129,8 +129,8 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = Forma::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
@@ -199,14 +199,14 @@ if (!Forma::user()->isAnonymous()) {
                         $count[] = '0';
                     }
                     $count[] = Format::date($event[EVENT_DEADLINE], 'date');
-                    if ($man_res->controlUserSubscription(getLogUserId(), $event[EVENT_ID])) {
+                    if ($man_res->controlUserSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $event[EVENT_ID])) {
                         $count[] = '<a href="index.php?modname=reservation&amp;op=del_subscription&amp;id_event=' . $event[EVENT_ID] . '">' . $lang->def('_CANCEL_REGISTRATION') . '</a>';
                     } else {
                         if ($event[EVENT_AVAILABLE_PLACES] > 0) {
-                            if ($man_res->controlMaxSubscriptionForCategory($event[EVENT_ID_CATEGORY], getLogUserId())) {
+                            if ($man_res->controlMaxSubscriptionForCategory($event[EVENT_ID_CATEGORY], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                                 $count[] = '<a href="index.php?modname=reservation&amp;op=add_subscription&amp;id_event=' . $event[EVENT_ID] . '&amp;confirm=1&amp;ap=mod_profile&amp;from=2">' . $lang->def('_REGISTER') . '</a>';
                             } else {
-                                if ($man_res->controlSwitchPossibility($event[EVENT_ID_COURSE], $event[EVENT_ID_CATEGORY], getLogUserId())) {
+                                if ($man_res->controlSwitchPossibility($event[EVENT_ID_COURSE], $event[EVENT_ID_CATEGORY], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
                                     $count[] = '<a href="index.php?modname=reservation&amp;op=switch_subscription&amp;id_event=' . $event[EVENT_ID] . '&amp;id_course=' . $id_course . '&amp;id_category=' . $event[EVENT_ID_CATEGORY] . '">' . $lang->def('_SWITCH_REGISTRATION') . '</a>';
                                 } else {
                                     $count[] = $lang->def('_ROOM_FULL');
@@ -252,12 +252,12 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = Forma::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
-        $events = $man_res->viewMyEvents($id_course, getLogUserId(), $order_by);
+        $events = $man_res->viewMyEvents($id_course, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $order_by);
 
         if ($events) {
             $cont_h =
@@ -358,12 +358,12 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = Forma::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
-        $events = $man_res->viewPastEvents($id_course, getLogUserId(), $order_by);
+        $events = $man_res->viewPastEvents($id_course, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $order_by);
 
         if ($events) {
             $cont_h =
@@ -449,8 +449,8 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = Forma::user()->getAcl();
-        $user_idst = getLogUserId();
+        $acl = \FormaLms\lib\Forma::getAcl();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $events = [];
 
@@ -571,11 +571,11 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl = Forma::user()->getAcl();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
-        $user_idst = getLogUserId();
+        $user_idst = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $user_subscribed = [];
         $user_sunscribed = $man_res->getSubscribedUserIdst($id_event);
@@ -693,7 +693,7 @@ if (!Forma::user()->isAnonymous()) {
 
         $man_res = new Man_Reservation();
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         if (isset($_POST['send_mail'])) {
             $recipients = $man_res->getEventUserMail($id_event);
@@ -750,7 +750,7 @@ if (!Forma::user()->isAnonymous()) {
         $man_res = new Man_Reservation();
         $field_man = new FieldList();
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $user_subscribed = [];
 
@@ -821,7 +821,7 @@ if (!Forma::user()->isAnonymous()) {
                                         ." FROM core_field_son"
                                         ." WHERE idField = '".$field_id."'"
                                         ." AND idSon = '".$res."'"
-                                        ." AND lang_code = '".getLanguage()."'";
+                                        ." AND lang_code = '" .Lang::get()."'";
 
                             list($value) = sql_fetch_row(sql_query($query_value));
 
@@ -901,8 +901,8 @@ if (!Forma::user()->isAnonymous()) {
 
                 $out->add(getTitleArea('_RESERVATION_PROFILE_MODIFY') . '<div class="std_block">', 'content');
 
-                $profile = new LmsUserProfile(getLogUserId(), true);
-                $profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event=' . $id_event . '&confirm=1&from=2&id_user=' . getLogUserId(), 'ap');
+                $profile = new LmsUserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
+                $profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event=' . $id_event . '&confirm=1&from=2&id_user=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'ap');
                 $out->add(
                     $profile->getTitleArea()
                     . $profile->getHead()
@@ -921,8 +921,8 @@ if (!Forma::user()->isAnonymous()) {
 
                 $out->add($lang->def('_CONFIRM_DATA') . '<br/>');
 
-                $profile = new LmsUserProfile(getLogUserId(), true);
-                $profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event=' . $id_event . '&confirm=1&from=2&id_user=' . getLogUserId(), 'ap');
+                $profile = new LmsUserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), true);
+                $profile->init('subscription', 'lms', 'modname=reservation&op=add_subscription&id_event=' . $id_event . '&confirm=1&from=2&id_user=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'ap');
                 //$profile->enableEditMode();
 
                 $out->add(
@@ -967,7 +967,7 @@ if (!Forma::user()->isAnonymous()) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm) {
-                $result = $man_res->delSubscription(getLogUserId(), $id_event);
+                $result = $man_res->delSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event);
                 // invia mail agli amministratori
 
                 $query = 'SELECT u.email FROM core_user as u, learning_courseuser as cu, learning_reservation_events as re WHERE re.idEvent = "' . $id_event . '" AND cu. idCOurse = re.idCourse AND cu.idUser = u.idst AND cu.level > 3';
@@ -981,7 +981,7 @@ if (!Forma::user()->isAnonymous()) {
                 $subject = $lang->def('_SUBJECT_DELSUBSCRIPTION');
                 $body = $lang->def('_BODY_DELSUBSCRIPTION');
 
-                $acl_man = &Forma::user()->getAclManager();
+                $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
                 $sender = FormaLms\lib\Get::sett('sender_event');
 
@@ -1030,7 +1030,7 @@ if (!Forma::user()->isAnonymous()) {
             $confirm = importVar('confirm', true, 0);
 
             if ($confirm && $id_event_del) {
-                $result = $man_res->switchSubscription(getLogUserId(), $id_event_del, $id_event);
+                $result = $man_res->switchSubscription(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_event_del, $id_event);
                 Util::jump_to('index.php?modname=reservation&op=reservation');
             }
             Util::jump_to('index.php?modname=reservation&op=reservation');
@@ -1046,7 +1046,7 @@ if (!Forma::user()->isAnonymous()) {
         $out->add(
             Form::openForm('form_switch_subscription', 'index.php?modname=reservation&amp;op=switch_subscription&amp;confirm=1')
             . Form::openElementSpace()
-            . Form::getDropdown($lang->def('_DEL_EVENT_REGISTRATION'), 'id_event_del', 'id_event_del', $man_res->getEventDropDown($id_course, $id_category, getLogUserId()))
+            . Form::getDropdown($lang->def('_DEL_EVENT_REGISTRATION'), 'id_event_del', 'id_event_del', $man_res->getEventDropDown($id_course, $id_category, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()))
             . Form::getHidden('id_category', 'id_category', $id_category)
             . Form::getHidden('id_course', 'id_course', $id_course)
             . Form::getHidden('id_event', 'id_event', $id_event)
@@ -1101,10 +1101,10 @@ if (!Forma::user()->isAnonymous()) {
             $user_select->resetSelection($subscribed_empty);
         }
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $arr_idstGroup = $aclManager->getGroupsIdstFromBasePath('/lms/course/' . (int) $id_course . '/subscribed/');
-        $me = [getLogUserId()];
+        $me = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
         $user_select->setUserFilter('group', $arr_idstGroup);
         $user_select->setGroupFilter('path', '/lms/course/' . $id_course . '/group');
 
@@ -1799,7 +1799,7 @@ if (!Forma::user()->isAnonymous()) {
         $out->setWorkingZone('content');
 
         $idClassroom = importVar('idClassroom', true, 0);
-        $all_languages = Forma::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
 
         if ($load) {
             $query_classroom = '
@@ -1813,7 +1813,7 @@ if (!Forma::user()->isAnonymous()) {
             $name = $lang->def('_NO_NAME');
             $descr = '';
             $impo = 0;
-            $lang_sel = getLanguage();
+            $lang_sel = Lang::get();
 
             $location_id = false;
             $room = '';
@@ -1881,7 +1881,7 @@ if (!Forma::user()->isAnonymous()) {
 
         $idClassroom = importVar('idClassroom', true, 0);
         $load = importVar('load', true, 0);
-        $all_languages = Forma::langManager()->getAllLangCode();
+        $all_languages = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $lang = FormaLanguage::createInstance('classroom', 'lms');
 
         if ($_POST['title'] == '') {
@@ -2027,7 +2027,7 @@ function setRoomViewPerm()
             }
         }
 
-        $acl_manager = Forma::user()->getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $url = 'index.php?modname=reservation&amp;op=set_room_view_perm&amp;id_event=' . $id_event;
         $mdir->setNFields(0);
@@ -2038,7 +2038,7 @@ function setRoomViewPerm()
         $id_course = $session->get('idCourse');
 
         $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . (int) $id_course . '/subscribed/');
-        $me = [getLogUserId()];
+        $me = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
         $mdir->setUserFilter('exclude', $me);
         $mdir->setUserFilter('group', $arr_idstGroup);
         $mdir->setGroupFilter('path', '/lms/course/' . $id_course . '/group');
@@ -2065,7 +2065,7 @@ function reservationSendMail()
 
     $man_res = new Man_Reservation();
 
-    $acl_man = Forma::user()->getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     if (isset($_POST['send_mail'])) {
         $recipients = $man_res->getEventUserMail($id_event);

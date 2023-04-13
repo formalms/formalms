@@ -1996,7 +1996,7 @@ class EpfShowPresentation
         $tb->addHead([$lang->def('_POST_DATE'), $lang->def('_ANSWER')]);
 
         while ($row = sql_fetch_row($re_pdp)) {
-            $re_pdp_answer = $this->man_epf->getQueryPdpUserAnswer($row[PDP_ID], getLogUserId());
+            $re_pdp_answer = $this->man_epf->getQueryPdpUserAnswer($row[PDP_ID], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $num_answer = sql_num_rows($re_pdp_answer);
 
             $html .= '<div class="pdp_question_display">';

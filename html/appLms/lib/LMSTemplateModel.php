@@ -19,7 +19,7 @@ class LMSTemplateModel
 
     public function __construct()
     {
-        $this->user = Forma::user();
+        $this->user = \FormaLms\lib\FormaUser::getCurrentUser();
     }
 
     public function selectLayout()
@@ -53,7 +53,7 @@ class LMSTemplateModel
 
     public function getUserDetails()
     {
-        return $this->user->getAclManager()->getUser($this->user->getIdst(), false);
+        return \FormaLms\lib\Forma::getAclManager()->getUser($this->user->getIdst(), false);
     }
 
     public function getLogoutUrl()
@@ -79,8 +79,8 @@ class LMSTemplateModel
 
         $profile = null;
         if ($ma->currentCanAccessObj('user_details_full')) {
-            require_once Forma::inc(_lib_ . '/lib.user_profile.php');
-            $profile = new UserProfile(getLogUserId());
+            require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.user_profile.php');
+            $profile = new UserProfile(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $profile->init('profile', 'framework', 'index.php?' . FormaLms\lib\Get::home_page_query(), 'ap');
         }
 

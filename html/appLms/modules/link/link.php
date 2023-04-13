@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     // XXX: modlinkgui
     function modlinkgui($object_link)
     {
@@ -133,9 +133,9 @@ if (!Forma::user()->isAnonymous()) {
 	INSERT INTO ' . $GLOBALS['prefix_lms'] . "_link_cat
 	SET title = '" . ((trim($_POST['title']) == '') ? $lang->def('_NOTITLE') : $_POST['title']) . "',
 		description = '" . $_POST['description'] . "',
-		author = '" . (int) getLogUserId() . "'";
+		author = '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "'";
         if (!sql_query($query_ins)) {
-            Forma::addError($lang->def('_OPERATION_FAILURE'));
+            \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
             Util::jump_to('' . $back_url . '&create_result=0');
         }
         list($idLink) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));

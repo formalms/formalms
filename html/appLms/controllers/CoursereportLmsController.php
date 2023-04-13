@@ -13,8 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_base_ . '/lib/lib.json.php');
-require_once Forma::inc(_adm_ . '/lib/lib.field.php');
+require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
+require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
 
 class CoursereportLmsController extends LmsController
 {
@@ -60,8 +60,8 @@ class CoursereportLmsController extends LmsController
     public function coursereport()
     {
         checkPerm('view', true, $this->_mvc_name);
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
         $view_perm = checkPerm('view', true, $this->_mvc_name);
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
@@ -69,7 +69,7 @@ class CoursereportLmsController extends LmsController
         $this->model = new CoursereportLms($this->idCourse);
 
         // XXX: Instance management
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -88,9 +88,9 @@ class CoursereportLmsController extends LmsController
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
             //filter users
-            require_once Forma::inc(_base_ . '/lib/lib.preference.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             foreach ($students as $idst => $user_course_info) {
                 if (!in_array($idst, $ctrl_users)) {
                     // Elimino gli studenti non amministrati
@@ -503,8 +503,8 @@ class CoursereportLmsController extends LmsController
 
     public function getDetailCourseReport() //ajax json
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.course.php');
-        require_once Forma::inc(_adm_ . '/lib/lib.field.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
 
 
         $redo_final = FormaLms\lib\Get::pReq('redo_final', DOTY_MIXED, false);
@@ -535,7 +535,7 @@ class CoursereportLmsController extends LmsController
 
         $this->model = new CoursereportLms($this->idCourse);
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -560,9 +560,9 @@ class CoursereportLmsController extends LmsController
 
         if (!$view_all_perm) {
             //filter users
-            require_once Forma::inc(_base_ . '/lib/lib.preference.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             foreach ($students as $idst => $user_course_info) {
                 if (!in_array($idst, $ctrl_users)) {
                     // Elimino gli studenti non amministrati
@@ -653,7 +653,7 @@ class CoursereportLmsController extends LmsController
         $students_array = [];
 
         if (!empty($students_info)) {
-            require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
             foreach ($students_info as $idst_user => $user_info) {
                 $user_name = ($user_info[ACL_INFO_LASTNAME] . $user_info[ACL_INFO_FIRSTNAME]
@@ -1191,8 +1191,8 @@ class CoursereportLmsController extends LmsController
 
     public function testreport()
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
         $idTrack = FormaLms\lib\Get::gReq('idTrack');
         $idTest = FormaLms\lib\Get::gReq('idTest');
@@ -1261,8 +1261,8 @@ class CoursereportLmsController extends LmsController
     {
         $idTest = FormaLms\lib\Get::gReq('idTest');
         checkPerm('view', true, $this->_mvc_name);
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
         $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
@@ -1337,11 +1337,11 @@ class CoursereportLmsController extends LmsController
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
-        require_once Forma::inc(_base_ . '/lib/lib.json.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.json.php');
 
         // XXX: Initializaing
         $id_test = importVar('id_test', true, 0);
@@ -1350,7 +1350,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -1629,8 +1629,8 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
         $lang = &FormaLanguage::createInstance('coursereport', 'lms');
 
@@ -1640,7 +1640,7 @@ class CoursereportLmsController extends LmsController
         $id_test = importVar('id_test', true, 0);
 
         $test_man = new GroupTestManagement();
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $quests = [];
         $answers = [];
@@ -1717,9 +1717,9 @@ class CoursereportLmsController extends LmsController
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/testvote&id_test=' . $id_test);
         }
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
         // XXX: Initializaing
         $id_track = importVar('idTrack', true, 0);
@@ -1731,7 +1731,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -1842,9 +1842,9 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
 
         // XXX: Initializaing
         $id_test = importVar('id_test', true, 0);
@@ -1862,7 +1862,7 @@ class CoursereportLmsController extends LmsController
 
             $test_man->deleteReview($id_test, $id_user, $id_track, $number_time);
 
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             $test_man = new GroupTestManagement();
 
@@ -1881,9 +1881,9 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
@@ -1892,7 +1892,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $report_man = new CourseReportManager();
 
         // XXX: Find students
@@ -2055,10 +2055,10 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
         //$id_test = importVar('id_test', true, 0);
@@ -2067,7 +2067,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -2081,10 +2081,10 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Instance management
         $report_man = new CourseReportManager();
@@ -2111,16 +2111,16 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
         $lang = &FormaLanguage::createInstance('coursereport', 'lms');
 
         // XXX: Instance management
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -2240,9 +2240,9 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
         $id_report = FormaLms\lib\Get::req('id_report', DOTY_INT, 0);
@@ -2462,9 +2462,9 @@ class CoursereportLmsController extends LmsController
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
@@ -2587,9 +2587,9 @@ class CoursereportLmsController extends LmsController
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
@@ -2598,7 +2598,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $report_man = new CourseReportManager();
 
         // XXX: Find users
@@ -2824,9 +2824,9 @@ class CoursereportLmsController extends LmsController
         if ($undo) {
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
         $id_report = FormaLms\lib\Get::gReq('id_report', DOTY_MIXED, 0);
@@ -2836,7 +2836,7 @@ class CoursereportLmsController extends LmsController
         $out->setWorkingZone('content');
 
         // XXX: Instance management
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $report_man = new CourseReportManager();
 
         if (isset($_POST['confirm'])) {
@@ -2885,7 +2885,7 @@ class CoursereportLmsController extends LmsController
     {
         checkPerm('mod', true, $this->_mvc_name);
 
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
@@ -2926,10 +2926,10 @@ class CoursereportLmsController extends LmsController
     public function export()
     {
         checkPerm('view', true, $this->_mvc_name);
-        require_once Forma::inc(_lms_ . '/lib/lib.coursereport.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once Forma::inc(_base_ . '/lib/lib.form.php');
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         $lang = &FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
@@ -2939,7 +2939,7 @@ class CoursereportLmsController extends LmsController
         $view_all_perm = checkPerm('view_all', true, $this->_mvc_name);
         $csv = '';
 
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $test_man = new GroupTestManagement();
         $report_man = new CourseReportManager();
 
@@ -2966,9 +2966,9 @@ class CoursereportLmsController extends LmsController
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
             //filter users
-            require_once Forma::inc(_base_ . '/lib/lib.preference.php');
+            require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.preference.php');
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             foreach ($students as $idst => $user_course_info) {
                 if (!in_array($idst, $ctrl_users)) {
                     // Elimino gli studenti non amministrati
@@ -3383,7 +3383,7 @@ class CoursereportLmsController extends LmsController
 
         $file_name = date('YmdHis') . '_report_export.csv';
 
-        require_once Forma::inc(_base_ . '/lib/lib.download.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.download.php');
         sendStrAsFile($csv, $file_name);
     }
 
@@ -3397,9 +3397,9 @@ class CoursereportLmsController extends LmsController
             Util::jump_to('index.php?r=coursereport/coursereport');
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
-        require_once Forma::inc(_lms_ . '/modules/question/class.question.php');
-        require_once Forma::inc(_lms_ . '/class.module/track.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.question.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.test.php');
 
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(FormaLms\lib\Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
@@ -3586,7 +3586,7 @@ class CoursereportLmsController extends LmsController
 
     public function extendedQuestDetails()
     {
-        require_once Forma::inc(_lms_ . '/class.module/track.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.test.php');
         $idTest = FormaLms\lib\Get::pReq('id_test', DOTY_MIXED, 0);
         $idQuest = FormaLms\lib\Get::pReq('id_quest', DOTY_MIXED, 0);
 
@@ -3606,7 +3606,7 @@ class CoursereportLmsController extends LmsController
 
     public function fileUploadQuestDetails()
     {
-        require_once Forma::inc(_lms_ . '/class.module/track.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.test.php');
         $idTest = FormaLms\lib\Get::pReq('id_test', DOTY_MIXED, 0);
         $idQuest = FormaLms\lib\Get::pReq('id_quest', DOTY_MIXED, 0);
 
@@ -3633,8 +3633,8 @@ class CoursereportLmsController extends LmsController
         YuiLib::load(['animation' => 'my_animation.js']);
         addJs($GLOBALS['where_lms_relative'] . '/modules/coursereport/', 'ajax.coursereport.js');
 
-        require_once Forma::inc(_base_ . '/lib/lib.table.php');
-        require_once Forma::inc(_lms_ . '/lib/lib.test.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
         $lang = &FormaLanguage::createInstance('coursereport', 'lms');
 
@@ -3914,14 +3914,14 @@ class CoursereportLmsController extends LmsController
 
     public function showchart()
     {
-        require_once Forma::inc(_lms_ . '/modules/test/charts.test.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/test/charts.test.php');
 
         $idTest = FormaLms\lib\Get::req('id_test', DOTY_INT, -1);
         $idUser = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         $chartType = FormaLms\lib\Get::req('chart_type', DOTY_STRING, 'column');
 
         $lang = &FormaLanguage::createInstance('coursereport', 'lms');
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($idUser, false);
         list($title) = sql_fetch_row(sql_query('SELECT title FROM %lms_test WHERE idTest=' . (int) $idTest));
         $backUrl = 'index.php?r=lms/coursereport/testvote&id_test=' . (int) $idTest;

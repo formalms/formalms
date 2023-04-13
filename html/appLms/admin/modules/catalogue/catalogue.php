@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     /**
      * @version  $Id: catalogue.php 573 2006-08-23 09:38:54Z fabio $
      *
@@ -34,12 +34,12 @@ if (!Forma::user()->isAnonymous()) {
         $title_area = [$lang->def('_CATALOGUE')];
 
         // Retriving data
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             }
@@ -47,7 +47,7 @@ if (!Forma::user()->isAnonymous()) {
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $admin_courses['catalogue'] = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
 
             if ($all_courses) {
@@ -263,11 +263,11 @@ if (!Forma::user()->isAnonymous()) {
 		( name, description ) VALUES
 		( '" . $_POST['name'] . "', '" . $_POST['description'] . "' )";
             $re = sql_query($query_catalogue);
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 list($id_cat) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $adminManager->addAdminCatalogue($id_cat, Forma::user()->getIdSt());
+                $adminManager->addAdminCatalogue($id_cat, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
         }
         Util::jump_to('index.php?modname=catalogue&op=catlist&result=' . ($re ? 'ok' : 'err'));
@@ -386,19 +386,19 @@ if (!Forma::user()->isAnonymous()) {
 
         $all_courses = true;
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $all_courses = false;
 
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_courses = $adminManager->getAdminCourse(Forma::user()->getIdST());
+            $admin_courses = $adminManager->getAdminCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             if (isset($admin_courses['course'][0])) {
                 $all_courses = true;
             } elseif (isset($admin_courses['course'][-1])) {
                 require_once _lms_ . '/lib/lib.catalogue.php';
                 $cat_man = new Catalogue_Manager();
 
-                $user_catalogue = $cat_man->getUserAllCatalogueId(Forma::user()->getIdSt());
+                $user_catalogue = $cat_man->getUserAllCatalogueId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 if (count($user_catalogue) > 0) {
                     $courses = [0];
 
@@ -669,7 +669,7 @@ if (!Forma::user()->isAnonymous()) {
         checkPerm('mod');
 
         $lang = FormaLanguage::createInstance('catalogue', 'lms');
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         require_once _lms_ . '/lib/lib.course.php';
         require_once _base_ . '/lib/lib.form.php';
@@ -685,10 +685,10 @@ if (!Forma::user()->isAnonymous()) {
         $user_select->show_orgchart_simple_selector = false;
         $user_select->multi_choice = true;
 
-        if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_tree = $adminManager->getAdminTree(Forma::user()->getIdST());
+            $admin_tree = $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $admin_users = $acl_man->getAllUsersFromIdst($admin_tree);
 
             $user_select->setUserFilter('user', $admin_users);

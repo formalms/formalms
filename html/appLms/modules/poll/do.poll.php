@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (Forma::user()->isAnonymous()) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     exit('You can\'t access');
 }
 
@@ -48,10 +48,10 @@ function intro($object_poll, $id_param)
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
-    $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
+    $id_track = retriveTrack($id_reference, $id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $poll_man = new PollManagement($id_poll);
-    $play_man = new PlayPollManagement($id_poll, getLogUserId(), $id_track, $poll_man);
+    $play_man = new PlayPollManagement($id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_track, $poll_man);
     $poll_info = $poll_man->getPollAllInfo();
 
     $page_title = [
@@ -103,7 +103,7 @@ function playPollDispatch($object_poll, $id_param)
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
-    $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
+    $id_track = retriveTrack($id_reference, $id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     if (isset($_POST['show_result'])) {
         // continue a poll completed, show the result
@@ -127,10 +127,10 @@ function play($object_poll, $id_param)
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
-    $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
+    $id_track = retriveTrack($id_reference, $id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $poll_man = new PollManagement($id_poll);
-    $play_man = new PlayPollManagement($id_poll, getLogUserId(), $id_track, $poll_man);
+    $play_man = new PlayPollManagement($id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_track, $poll_man);
     $poll_info = $poll_man->getPollAllInfo();
     $track_info = $play_man->getTrackAllInfo();
 
@@ -231,18 +231,18 @@ function showResult($object_poll, $id_param)
     $id_poll = $object_poll->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_poll->back_url));
-    $id_track = retriveTrack($id_reference, $id_poll, getLogUserId());
+    $id_track = retriveTrack($id_reference, $id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $trackPoll = new Track_Poll($id_track,$id_poll);
     $trackPoll->createTrack($id_reference,
                                 $id_track,
-                                getLogUserId(),
+                                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                                 date('Y-m-d H:i:s'),
                                 'completed',
                                 'poll');
 
     $poll_man = new PollManagement($id_poll);
-    $play_man = new PlayPollManagement($id_poll, getLogUserId(), $id_track, $poll_man);
+    $play_man = new PlayPollManagement($id_poll, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_track, $poll_man);
     $poll_info = $poll_man->getPollAllInfo();
     $track_info = $play_man->getTrackAllInfo();
 

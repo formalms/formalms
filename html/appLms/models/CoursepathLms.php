@@ -95,7 +95,7 @@ class CoursepathLms extends Model
     {
         $query = 'SELECT c.idCourse, c.name, c.course_type, c.course_edition, cu.status, cpc.prerequisites, cpc.id_path, cpc.sequence'
                     . ' FROM %lms_course AS c'
-                    . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse AND cu.idUser = ' . (!$id_user ? Forma::user()->getIdst() : (int) $id_user) . ')'
+                    . ' JOIN %lms_courseuser AS cu ON (c.idCourse = cu.idCourse AND cu.idUser = ' . (!$id_user ? \FormaLms\lib\FormaUser::getCurrentUser()->getIdst() : (int) $id_user) . ')'
                     . ' JOIN %lms_coursepath_courses AS cpc ON c.idCourse = cpc.id_item'
                     . (is_array($array_coursepath) && !empty($array_coursepath) ? ' WHERE cpc.id_path IN (' . implode(',', $array_coursepath) . ')' : ' WHERE 0')
                     . ' GROUP BY cpc.id_path, c.idCourse'
@@ -127,7 +127,7 @@ class CoursepathLms extends Model
     public function getFilterYears($id_user)
     {
         $output = [0 => Lang::t('_ALL_YEARS', 'course')];
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
 
         $query = 'SELECT DISTINCT YEAR(date_assign) AS inscr_year '
             . ' FROM %lms_coursepath_user AS cu '

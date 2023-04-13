@@ -36,7 +36,7 @@ class CourseAlmsController extends AlmsController
         parent::init();
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->model = new CourseAlms();
 
         $this->base_link_course = 'alms/course';
@@ -281,7 +281,7 @@ class CourseAlmsController extends AlmsController
                 $node_id = FormaLms\lib\Get::req('node_id', DOTY_INT, 0);
                 $initial = FormaLms\lib\Get::req('initial', DOTY_INT, 0);
 
-                $db = DbConn::getInstance();
+                $db = \FormaLms\db\DbConn::getInstance();
                 $result = [];
                 if ($initial == 1) {
                     $treestatus = $this->_getSessionTreeData('id_category', 0);
@@ -597,7 +597,7 @@ class CourseAlmsController extends AlmsController
             return null;
         }
         list($className, $fileName) = $this->lo_types_cache[$objectType];
-        require_once Forma::inc(_lms_ . '/class.module/' . $fileName);
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $fileName);
         $lo = new $className($idResource);
 
         return $lo;
@@ -768,18 +768,18 @@ class CourseAlmsController extends AlmsController
             require_once _lms_ . '/lib/lib.manmenu.php';
             require_once _lms_ . '/lib/lib.subscribe.php';
 
-            $doceboCourse = new FormaCourse($idCourseToDulicate);
+            $formaCourse = new FormaCourse($idCourseToDulicate);
             $subscribeManager = new CourseSubscribe_Manager();
 
-            $newCourseGroupLevels = $doceboCourse->createCourseLevel($newCourseId);
-            $oldCourseGroupLevels = $doceboCourse->getCourseLevel($idCourseToDulicate);
+            $newCourseGroupLevels = FormaCourse::createCourseLevel($newCourseId);
+            $oldCourseGroupLevels = $formaCourse->getCourseLevel($idCourseToDulicate);
             $newCoursePermissions = createPermForDuplicatedCourse($oldCourseGroupLevels, $newCourseId, $idCourseToDulicate);
             $levels = $subscribeManager->getUserLevel();
 
             foreach ($levels as $level => $levelName) {
                 foreach ($newCoursePermissions[$level] as $idrole => $value) {
                     if ($newCourseGroupLevels[$level] !== 0 && $idrole !== 0) {
-                        Forma::aclm()->addToRole($idrole, $newCourseGroupLevels[$level]);
+                        \FormaLms\lib\Forma::getAclManager()->addToRole($idrole, $newCourseGroupLevels[$level]);
                     }
                 }
             }
@@ -806,10 +806,10 @@ class CourseAlmsController extends AlmsController
                 }
             }
 
-            require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
-            require_once Forma::inc(_lms_ . '/lib/lib.param.php');
-            require_once Forma::inc(_lms_ . '/class.module/track.object.php');
-            require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/track.object.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');
 
             $duplicateLearningObjects = $this->request->get('lo', null);
             if (!empty($duplicateLearningObjects)) {
@@ -1132,7 +1132,7 @@ class CourseAlmsController extends AlmsController
             Util::jump_to('index.php?r=' . $this->base_link_course . '/show');
         }
 
-        require_once Forma::inc(_lms_ . '/lib/lib.certificate.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.certificate.php');
         $cert = new Certificate();
 
         $id_course = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
@@ -1150,7 +1150,7 @@ class CourseAlmsController extends AlmsController
         } else {
             require_once _base_ . '/lib/lib.table.php';
 
-            $all_languages = Forma::langManager()->getAllLanguages(true);
+            $all_languages = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
             $languages = [];
             foreach ($all_languages as $k => $v) {
                 $languages[$v['code']] = $v['description'];
@@ -1187,7 +1187,7 @@ class CourseAlmsController extends AlmsController
             $tb->addHead($cont_h);
 
             $view_cert = false;
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 if (checkPerm('view', true, 'certificate', 'lms')) {
                     $view_cert = true;
                 }
@@ -1261,7 +1261,7 @@ class CourseAlmsController extends AlmsController
             require_once _lms_ . '/lib/lib.manmenu.php';
             require_once _lms_ . '/lib/lib.course.php';
 
-            $acl_man = &Forma::user()->getAclManager();
+            $acl_man = &\FormaLms\lib\Forma::getAclManager();
             $course_man = new Man_Course();
 
             $levels = &$course_man->getCourseIdstGroupLevel($id_course);
@@ -1293,8 +1293,8 @@ class CourseAlmsController extends AlmsController
                 $this->session->save();
 
                 //loading related ST
-                Forma::user()->loadUserSectionST('/lms/course/public/');
-                Forma::user()->SaveInSession();
+                \FormaLms\lib\FormaUser::getCurrentUser()->loadUserSectionST('/lms/course/public/');
+                \FormaLms\lib\FormaUser::getCurrentUser()->saveInSession();
             }
 
             if ($result) {
@@ -1438,7 +1438,7 @@ class CourseAlmsController extends AlmsController
         $levels = CourseLevel::getTranslatedLevels();
         $label_model = new LabelAlms();
 
-        $array_lang = Forma::langManager()->getAllLangCode();
+        $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
         $array_lang[] = 'none';
 
         //status of course -----------------------------------------------------
@@ -1543,7 +1543,7 @@ class CourseAlmsController extends AlmsController
         $from = FormaLms\lib\Get::req('from');
         $op = FormaLms\lib\Get::req('op');
 
-        require_once Forma::inc(_adm_ . '/lib/lib.field.php');
+        require_once \FormaLms\lib\Forma::inc(_adm_ . '/lib/lib.field.php');
         $fman = new FieldList();
         $custom_field_array = $fman->getFlatAllFields();
 

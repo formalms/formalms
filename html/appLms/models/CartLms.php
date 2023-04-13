@@ -32,7 +32,7 @@ class CartLms extends Model
         $this->edition_man = new EditionManager();
         $this->classroom_man = new DateManager();
 
-        $this->acl_man = Forma::user()->getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 
@@ -206,7 +206,7 @@ class CartLms extends Model
     public function createTransaction()
     {
         $query = 'INSERT INTO %adm_transaction (id_trans, id_user, location, date_creation)'
-                    . " VALUES (NULL, '" . Forma::user()->getIdSt() . "', 'lms', '" . date('Y-m-d H:i:s') . "')";
+                    . " VALUES (NULL, '" . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', 'lms', '" . date('Y-m-d H:i:s') . "')";
 
         $res = sql_query($query);
 

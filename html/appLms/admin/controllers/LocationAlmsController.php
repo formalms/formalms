@@ -90,7 +90,7 @@ class LocationAlmsController extends AlmsController
 
         //check if the user is a sub admin and has limited visibility on class locations
         $admin_locations = [];
-        $ulevel = Forma::user()->user_level;
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->user_level;
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             $amodel = false;
             switch ($ulevel) {
@@ -98,7 +98,7 @@ class LocationAlmsController extends AlmsController
                     break;
             }
             if ($amodel !== false) {
-                $admin_locations = $amodel->loadClasslocationsSelection(Forma::user()->idst);
+                $admin_locations = $amodel->loadClasslocationsSelection(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             }
         }
 
@@ -129,7 +129,7 @@ class LocationAlmsController extends AlmsController
     protected function _canAdminLocation($id_user, $id_location)
     {
         //check if the user is a sub admin and has limited visibility on class locations
-        $ulevel = Forma::user()->user_level;
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->user_level;
         if ($ulevel == ADMIN_GROUP_GODADMIN) {
             return true;
         }
@@ -140,7 +140,7 @@ class LocationAlmsController extends AlmsController
                 break;
         }
         if ($amodel !== false) {
-            $list = $amodel->loadClasslocationsSelection(Forma::user()->idst);
+            $list = $amodel->loadClasslocationsSelection(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
             return in_array($id_location, $list);
         }
@@ -152,7 +152,7 @@ class LocationAlmsController extends AlmsController
     {
         $location = FormaLms\lib\Get::req('location', DOTY_STRING, '');
 
-        if ($location <= 0 || !$this->_canAdminLocation(Forma::user()->idst, $location)) {
+        if ($location <= 0 || !$this->_canAdminLocation(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $location)) {
             $params = ['success' => false];
             echo $this->json->encode($params);
 
@@ -211,7 +211,7 @@ class LocationAlmsController extends AlmsController
     {
         $location = FormaLms\lib\Get::req('location', DOTY_STRING, '');
 
-        if ($location <= 0 || !$this->_canAdminLocation(Forma::user()->idst, $location)) {
+        if ($location <= 0 || !$this->_canAdminLocation(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $location)) {
             $params = ['success' => false];
             echo $this->json->encode($params);
 

@@ -56,7 +56,7 @@ class ReportPlugin
             $this->report_descr = $lang->def($report_name);
         }
 
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
@@ -200,12 +200,12 @@ class ReportPlugin
     {
         $p_dr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
 
-        $userlevelid = Forma::user()->getUserLevelId();
+        $userlevelid = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($userlevelid != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
             $p_dr->intersectGroupFilter(
-                $adminManager->getAdminTree(Forma::user()->getIdSt())
+                $adminManager->getAdminTree(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())
             );
         }
 

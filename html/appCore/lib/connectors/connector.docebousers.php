@@ -205,7 +205,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         require_once _base_ . '/lib/lib.userselector.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $aclManager = Forma::user()->getACLManager();
+        $aclManager = \FormaLms\lib\Forma::getAclManager();;
 
         $this->directory = new UserSelector();
         $this->groupFilter_idst = $aclManager->getGroupST($this->groupFilter);
@@ -353,7 +353,7 @@ class FormaConnectorFormaUsers extends FormaConnector
         } else {
             $query = ' SELECT id_dir, translation '
                 . ' FROM ' . $GLOBALS['prefix_fw'] . '_org_chart'
-                . " WHERE lang_code = '" . getLanguage() . "'";
+                . " WHERE lang_code = '" . Lang::get() . "'";
             $result = sql_query($query);
             while (list($id_dir, $dir_name) = sql_fetch_row($result)) {
                 if ($id_dir == $this->org_chart_destination) {
@@ -625,7 +625,7 @@ class FormaConnectorFormaUsers extends FormaConnector
                 $email = $this->default_cols['email'];
             }
 
-            $idst = Forma::aclm()->registerUser(
+            $idst = \FormaLms\lib\Forma::getAclManager()->registerUser(
                 $userid,
                 $firstname,
                 $lastname,
@@ -666,7 +666,7 @@ class FormaConnectorFormaUsers extends FormaConnector
             if ($email === null || $email === '') {
                 $email = false;
             }
-            $result = Forma::aclm()->updateUser(
+            $result = \FormaLms\lib\Forma::getAclManager()->updateUser(
                 $idst,
                 $userid,
                 $firstname,
@@ -716,12 +716,12 @@ class FormaConnectorFormaUsers extends FormaConnector
         if ($idst !== false) {
             //destination folder
             if ($this->org_chart_destination > 0) {
-                $res = DbConn::getInstance()->query('SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE idOrg = ' . (int)$this->org_chart_destination);
-                if ($res && DbConn::getInstance()->num_rows($res) > 0) {
-                    list($oc, $ocd) = DbConn::getInstance()->fetch_row($res);
+                $res = \FormaLms\db\DbConn::getInstance()->query('SELECT idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE idOrg = ' . (int)$this->org_chart_destination);
+                if ($res && \FormaLms\db\DbConn::getInstance()->num_rows($res) > 0) {
+                    list($oc, $ocd) = \FormaLms\db\DbConn::getInstance()->fetch_row($res);
                     if ($oc && $ocd) {
-                        Forma::aclm()->addToGroup($oc, $idst);
-                        Forma::aclm()->addToGroup($ocd, $idst);
+                        \FormaLms\lib\Forma::getAclManager()->addToGroup($oc, $idst);
+                        \FormaLms\lib\Forma::getAclManager()->addToGroup($ocd, $idst);
                     }
                 }
             }
@@ -731,7 +731,7 @@ class FormaConnectorFormaUsers extends FormaConnector
             }
             if ($this->sendnotify == 1) {
                 // - Send alert ----------------------------------------------------
-                require_once Forma::inc(_base_ . '/lib/lib.eventmanager.php');
+                require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.eventmanager.php');
                 $reg_code = null;
                 $uma = new UsermanagementAdm();
                 $nodes = $uma->getUserFolders($idst);
@@ -787,7 +787,7 @@ class FormaConnectorFormaUsers extends FormaConnector
                     }
                 }
 
-                //Forma::aclm()->removeFromAllGroup($idst);
+                //\FormaLms\lib\Forma::getAclManager()->removeFromAllGroup($idst);
                 $query = 'select %adm_group.idst as idst from %adm_group join %adm_group_members on %adm_group.idst = %adm_group_members.idst where %adm_group_members.idstMember = ' . $idst . ' AND %adm_group.groupid like "/oc%"';
                 $result = sql_query($query);
                 $idstMembers = [];
@@ -795,7 +795,7 @@ class FormaConnectorFormaUsers extends FormaConnector
                     $idstMembers[] = $item['idst'];
                 }
 
-                Forma::aclm()->removeFromGroup($idst, $idstMembers);
+                \FormaLms\lib\Forma::getAclManager()->removeFromGroup($idst, $idstMembers);
 
                 require_once _lms_ . '/lib/lib.course.php';
 
@@ -804,10 +804,10 @@ class FormaConnectorFormaUsers extends FormaConnector
                 $result = sql_query($query);
 
                 foreach ($result as $item) {
-                    $docebo_course = new FormaCourse($item['idCourse']);
-                    $level_idst = &$docebo_course->getCourseLevel($item['idCourse']);
+                    $formaCourse = new FormaCourse($item['idCourse']);
+                    $level_idst = &$formaCourse->getCourseLevel($item['idCourse']);
 
-                    Forma::aclm()->addToGroup($level_idst[3], $idst);
+                    \FormaLms\lib\Forma::getAclManager()->addToGroup($level_idst[3], $idst);
 
                     $model = new SubscriptionAlms($item['idCourse'], false, false);
                     $model->subscribeUser($idst, 3, 0);
@@ -817,8 +817,8 @@ class FormaConnectorFormaUsers extends FormaConnector
                     $idst_oc_folder = $this->org_chart_group['/oc_' . $id_dir];
                     $idst_ocd_folder = $this->org_chart_group['/ocd_' . $id_dir];
 
-                    Forma::aclm()->addToGroup($idst_oc_folder, $idst);
-                    Forma::aclm()->addToGroup($idst_ocd_folder, $idst);
+                    \FormaLms\lib\Forma::getAclManager()->addToGroup($idst_oc_folder, $idst);
+                    \FormaLms\lib\Forma::getAclManager()->addToGroup($idst_ocd_folder, $idst);
 
                     // adding to enrollment rules for org, if any
                     $enrollrules = new EnrollrulesAlms();
@@ -833,17 +833,17 @@ class FormaConnectorFormaUsers extends FormaConnector
 
             //  -------------------------------------------------------------------
             $result = true;
-            Forma::aclm()->addToGroup($this->tree_oc, $idst);
-            Forma::aclm()->addToGroup($this->tree_ocd, $idst);
+            \FormaLms\lib\Forma::getAclManager()->addToGroup($this->tree_oc, $idst);
+            \FormaLms\lib\Forma::getAclManager()->addToGroup($this->tree_ocd, $idst);
 
             if ($this->tree != $this->tree_oc) {
-                Forma::aclm()->addToGroup($this->tree, $idst);
-                Forma::aclm()->addToGroup($this->tree_desc, $idst);
+                \FormaLms\lib\Forma::getAclManager()->addToGroup($this->tree, $idst);
+                \FormaLms\lib\Forma::getAclManager()->addToGroup($this->tree_desc, $idst);
             }
 
             // add to group level
-            $userlevel = Forma::aclm()->getGroupST(ADMIN_GROUP_USER);
-            Forma::aclm()->addToGroup($userlevel, $idst);
+            $userlevel = \FormaLms\lib\Forma::getAclManager()->getGroupST(ADMIN_GROUP_USER);
+            \FormaLms\lib\Forma::getAclManager()->addToGroup($userlevel, $idst);
 
             //-save extra field------------------------------------------
 
@@ -958,9 +958,9 @@ class FormaConnectorFormaUsers extends FormaConnector
             return false;
         } else {
             if ($this->canceled == '1') {
-                Forma::aclm()->suspendUser($arr_people['idst']);
+                \FormaLms\lib\Forma::getAclManager()->suspendUser($arr_people['idst']);
             } else {
-                Forma::aclm()->deleteUser($arr_people['idst']);
+                \FormaLms\lib\Forma::getAclManager()->deleteUser($arr_people['idst']);
             }
         }
     }
@@ -979,9 +979,9 @@ class FormaConnectorFormaUsers extends FormaConnector
         $arr_idst_todelete = $this->people_view->data->getAllRowsIdst();
         foreach ($arr_idst_todelete as $id_st) {
             if ($this->canceled == '1') {
-                Forma::aclm()->suspendUser($id_st);
+                \FormaLms\lib\Forma::getAclManager()->suspendUser($id_st);
             } else {
-                Forma::aclm()->deleteUser($id_st);
+                \FormaLms\lib\Forma::getAclManager()->deleteUser($id_st);
             }
         }
     }
@@ -993,14 +993,14 @@ class FormaConnectorFormaUsers extends FormaConnector
         $this->people_view->addFieldFilters([['fieldname' => 'valid', 'value' => '1', 'field_type' => 'text']]);
         $this->people_view->data->addNotFilter($this->arr_idst_inserted);
 
-        $idst_org = Forma::user()->getAclManager()->getGroupST('oc_' . $this->org_chart_destination);
-        $idst_orgd = Forma::user()->getAclManager()->getGroupST('ocd_' . $this->org_chart_destination);
+        $idst_org = \FormaLms\lib\Forma::getAclManager()->getGroupST('oc_' . $this->org_chart_destination);
+        $idst_orgd = \FormaLms\lib\Forma::getAclManager()->getGroupST('ocd_' . $this->org_chart_destination);
 
         $id_groups = UsermanagementAdm::getOrgGroups($this->org_chart_destination, true);
 
         $id_groups[] = $idst_org;
         $id_groups[] = $idst_orgd;
-        $arr_members = Forma::aclm()->getGroupUMembers($id_groups);
+        $arr_members = \FormaLms\lib\Forma::getAclManager()->getGroupUMembers($id_groups);
         $this->people_view->data->setUserFilter($arr_members);
 
         $idst_rs = $this->people_view->data->getAllRowsIdst();
@@ -1008,9 +1008,9 @@ class FormaConnectorFormaUsers extends FormaConnector
         if ($idst_rs !== false) {
             while (list($id_st) = sql_fetch_row($idst_rs)) {
                 if ($this->canceled == '1') {
-                    Forma::aclm()->suspendUser($id_st);
+                    \FormaLms\lib\Forma::getAclManager()->suspendUser($id_st);
                 } else {
-                    Forma::aclm()->deleteUser($id_st);
+                    \FormaLms\lib\Forma::getAclManager()->deleteUser($id_st);
                 }
                 ++$counter;
             }

@@ -23,16 +23,16 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @author    Fabio Pirovano (fabio@docebo.com)
  * @abstract
  */
-require_once Forma::inc(_lms_ . '/modules/question/class.associate.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.break_page.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.choice.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.choice_multiple.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.extended_text.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.inline_choice.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.numerical.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.text_entry.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.title.php');
-require_once Forma::inc(_lms_ . '/modules/question/class.upload.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.associate.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.break_page.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.choice.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.choice_multiple.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.extended_text.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.inline_choice.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.numerical.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.text_entry.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.title.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/class.upload.php');
 
 class Question
 {
@@ -66,7 +66,7 @@ class Question
      */
     public function __construct($id)
     {
-        $this->db = DbConn::getInstance();
+        $this->db = \FormaLms\db\DbConn::getInstance();
         if ($id !== null) {
             $this->id = $id;
             $res = $this->db->query("SELECT idTest, idCategory, type_quest, title_quest, difficult FROM %lms_testquest WHERE idQuest = '" . (int)$id . "'");
@@ -874,7 +874,7 @@ class QuestionRaw
     {
         $qtxt = 'SELECT idCategory '
             . 'FROM %lms_quest_category '
-            . "WHERE name = '" . $category_name . "' AND ( author = 0 OR author = " . (int)getLogUserId() . ' ) ';
+            . "WHERE name = '" . $category_name . "' AND ( author = 0 OR author = " . (int)\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' ) ';
         $re = sql_query($qtxt);
         if (!$re || !sql_num_rows($re)) {
             if ($autocreate_categories && $category_name) {

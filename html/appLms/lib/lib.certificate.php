@@ -71,11 +71,11 @@ class Certificate
         }
 
         //apply sub admin filters, if needed
-        $userLevelId = Forma::user()->getUserLevelId();
-        if ($userLevelId != ADMIN_GROUP_GODADMIN && !Forma::user()->isAnonymous()) {
+        $userLevelId = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
+        if ($userLevelId != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new AdminPreference();
-            $admin_users = $adminManager->getAdminUsers(Forma::user()->getIdST());
+            $admin_users = $adminManager->getAdminUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $whereConditions .= ' AND cu.idUser IN (' . implode(',', $admin_users) . ')';
         }
 
@@ -235,10 +235,10 @@ class Certificate
             $query .= ' )';
         }
         if (!isset($filter['id_user'])) {
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
+                $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'idUser');
             }
         }
 
@@ -316,10 +316,10 @@ class Certificate
             $query .= ' )';
         }
         if (!isset($filter['id_user'])) {
-            if (Forma::user()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                 require_once _base_ . '/lib/lib.preference.php';
                 $adminManager = new AdminPreference();
-                $query .= ' AND ' . $adminManager->getAdminUsersQuery(Forma::user()->getIdSt(), 'idUser');
+                $query .= ' AND ' . $adminManager->getAdminUsersQuery(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), 'idUser');
             }
         }
 
@@ -807,7 +807,7 @@ class Certificate
 
     public function getPdf($html, $name, $img = false, $orientation = 'P', $download = true, $facs_simile = false, $for_saving = false)
     {
-        require_once Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
+        require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/pdf/lib.pdf.php');
 
         $pdf = new PDF($orientation);
         $pdf->setEncrypted(FormaLms\lib\Get::cfg('certificate_encryption', true));
@@ -843,7 +843,7 @@ class Certificate
     {
         $isAggregatedCert = FormaLms\lib\Get::req('aggCert', DOTY_INT, 0);
         if ($isAggregatedCert) {
-            require_once Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
+            require_once \FormaLms\lib\Forma::inc(_lms_ . '/' . _folder_lib_ . '/lib.aggregated_certificate.php');
             $aggCertLib = new AggregatedCertificate();
         }
 

@@ -157,7 +157,7 @@ class CoursestatsLmsController extends LmsController
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $idx = 0;
             foreach ($list as $record) {
                 if (!in_array($record->idst, $ctrl_users)) {
@@ -251,14 +251,14 @@ class CoursestatsLmsController extends LmsController
 
         //format models' data
         $records = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $idx = 0;
             foreach ($list as $record) {
                 if (!in_array($record->idst, $ctrl_users)) {
@@ -334,7 +334,7 @@ class CoursestatsLmsController extends LmsController
         $smodel = new SubscriptionAlms();
         $arr_status = $smodel->getUserStatusList();
 
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $user_info = $acl_man->getUser($id_user, false);
         $course_info = $this->model->getUserCourseInfo($this->idCourse, $id_user);
         $info = new stdClass();
@@ -384,7 +384,7 @@ class CoursestatsLmsController extends LmsController
 
         //format models' data
         $records = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             $lo_list = $this->model->getCourseLOs($this->idCourse);
             foreach ($list as $record) {
@@ -515,7 +515,7 @@ class CoursestatsLmsController extends LmsController
                 break;
         }
 
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $user_info = $acl_man->getUser($id_user, false);
         $lo_info = $this->model->getLOInfo($id_lo);
         $course_info = $this->model->getUserCourseInfo($this->idCourse, $id_user);
@@ -725,7 +725,7 @@ class CoursestatsLmsController extends LmsController
             return;
         }
 
-        require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
         require_once _lms_ . '/lib/lib.param.php';
 
         $repoDb = new OrgDirDb($this->idCourse);
@@ -776,7 +776,7 @@ class CoursestatsLmsController extends LmsController
                 $res = sql_query($query);
                 if ($row = sql_fetch_row($res)) {
                     list($classNameTrack, $fileNameTrack) = $row;
-                    require_once Forma::inc(_lms_ . "/class.module/$fileNameTrack");
+                    require_once \FormaLms\lib\Forma::inc(_lms_ . "/class.module/$fileNameTrack");
                     $itemtrack = new $classNameTrack(null);
                 }
                 break;
@@ -891,7 +891,7 @@ class CoursestatsLmsController extends LmsController
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $idx = 0;
             foreach ($records as $record) {
                 if (!in_array($record->idst, $ctrl_users)) {
@@ -903,7 +903,7 @@ class CoursestatsLmsController extends LmsController
         }
 
         if (!empty($records)) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             require_once _lms_ . '/lib/lib.subscribe.php';
             $cman = new CourseSubscribe_Manager();
@@ -965,7 +965,7 @@ class CoursestatsLmsController extends LmsController
 
         $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             require_once _lms_ . '/lib/lib.subscribe.php';
             $cman = new CourseSubscribe_Manager();
@@ -1108,7 +1108,7 @@ class CoursestatsLmsController extends LmsController
         $output = '<table border="1">';
         $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             require_once _lms_ . '/lib/lib.subscribe.php';
             $cman = new CourseSubscribe_Manager();
@@ -1185,7 +1185,7 @@ class CoursestatsLmsController extends LmsController
         $smodel = new SubscriptionAlms();
         $arr_status = $smodel->getUserStatusList();
 
-        $acl_man = Forma::user()->getACLManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $user_info = $acl_man->getUser($id_user, false);
         $course_info = $this->model->getUserCourseInfo($id_course, $id_user);
         $info = new stdClass();
@@ -1271,7 +1271,7 @@ class CoursestatsLmsController extends LmsController
 
         $records = $this->model->getCourseStatsList(false, $this->idCourse, false);
         if (!empty($records)) {
-            $acl_man = Forma::user()->getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
 
             require_once _lms_ . '/lib/lib.subscribe.php';
             $cman = new CourseSubscribe_Manager();
@@ -1435,7 +1435,7 @@ class CoursestatsLmsController extends LmsController
         $list = $this->model->getCourseUserStatsList2csv($pagination, $this->idCourse, $id_user);
 
         $records = [];
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         if (is_array($list)) {
             foreach ($list as $record) {
                 $row = [
@@ -1505,16 +1505,16 @@ class CoursestatsLmsController extends LmsController
 
     public function exportUsageStatistics()
     {
-        $acl_man = Forma::user()->getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $course_man = new Man_Course();
         $course_user = $course_man->getIdUserOfLevel($this->idCourse);
 
         //apply sub admin filters, if needed
-        if (!$view_all_perm && Forma::user()->getUserLevelId() == '/framework/level/admin') {
+        if (!$view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
             //filter users
             require_once _base_ . '/lib/lib.preference.php';
             $ctrlManager = new ControllerPreference();
-            $ctrl_users = $ctrlManager->getUsers(Forma::user()->getIdST());
+            $ctrl_users = $ctrlManager->getUsers(\FormaLms\lib\FormaUser::getCurrentUser()->getIdST());
             $course_user = array_intersect($course_user, $ctrl_users);
         }
 

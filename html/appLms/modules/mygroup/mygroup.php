@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-if (!Forma::user()->isAnonymous()) {
+if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
     function group()
     {
         checkPerm('view');
@@ -28,16 +28,16 @@ if (!Forma::user()->isAnonymous()) {
             $search = false;
         }
 
-        $acl_man = &Forma::user()->getAclManager();
-        $acl = &Forma::user()->getAcl();
+        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl = \FormaLms\lib\Forma::getAclManager();;
         $groups = &$acl_man->getAllGroupsId(['free', 'moderate', 'private'],
                                                 $search);
 
-        $user_group_wait = &$acl_man->getPendingGroupOfUser(getLogUserId());
+        $user_group_wait = &$acl_man->getPendingGroupOfUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $hidden_group = [];
         if (!isset($_POST['working'])) {
-            $user_group = $acl->getSTGroupsST(getLogUserId());
+            $user_group = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
             $user_group = array_flip($user_group);
         } else {
             if (isset($_POST['group_sel'])) {
@@ -137,24 +137,24 @@ if (!Forma::user()->isAnonymous()) {
             $selected = explode(',', $_POST['group_sel_implode']);
         }
 
-        $play_field = $extra_field->playFieldsForUser(getLogUserId(),
+        $play_field = $extra_field->playFieldsForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                                             $selected,
                                             false,
                                             false,
                                             ['readonly']);
 
         if (isset($_POST['save_field']) || $play_field === false || $play_field == '') {
-            $re_filled = $extra_field->isFilledFieldsForUser(getLogUserId(),
+            $re_filled = $extra_field->isFilledFieldsForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                                                             $selected);
             if (!$re_filled) {
                 $GLOBALS['page']->add(getErrorUi($lang->def('_SOME_MANDATORY_EMPTY')), 'content');
             } else {
-                $acl = &Forma::user()->getAcl();
-                $acl_man = &Forma::user()->getAclManager();
+                $acl = \FormaLms\lib\Forma::getAclManager();;
+                $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
                 $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);
                 $groups_id = array_keys($groups);
-                $user_group = $acl->getSTGroupsST(getLogUserId());
+                $user_group = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
                 $add_groups = array_diff($selected, $user_group);
                 $del_groups = array_diff($groups_id, $selected);
@@ -163,9 +163,9 @@ if (!Forma::user()->isAnonymous()) {
                 if (!empty($add_groups)) {
                     foreach ($add_groups as $idst) {
                         if ($groups[$idst]['type'] == 'free') {
-                            $acl_man->addToGroup($idst, getLogUserId());
+                            $acl_man->addToGroup($idst, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                         } elseif ($groups[$idst]['type'] == 'moderate') {
-                            $acl_man->addToWaitingGroup($idst, getLogUserId());
+                            $acl_man->addToWaitingGroup($idst, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                             $moderate_add = true;
                         }
                     }
@@ -188,12 +188,12 @@ if (!Forma::user()->isAnonymous()) {
                 }
                 if (!empty($del_groups)) {
                     foreach ($del_groups as $idst_group) {
-                        $extra_field->removeUserEntry(getLogUserId(), $idst_group);
-                        $acl_man->removeFromGroup($idst_group, getLogUserId());
+                        $extra_field->removeUserEntry(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idst_group);
+                        $acl_man->removeFromGroup($idst_group, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                     }
                 }
                 // Save fields
-                $extra_field->storeFieldsForUser(getLogUserId());
+                $extra_field->storeFieldsForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
                 Util::jump_to('index.php?modname=mygroup&amp;op=group');
             }
         }

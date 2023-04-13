@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
+require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');
 
 define('_scorm_basepath', $GLOBALS['where_lms'] . '/modules/scorm/');
 
@@ -123,9 +123,9 @@ class Learning_ScormOrg extends Learning_Object
     {
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
-        require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
         additem($this);
     }
 
@@ -143,9 +143,9 @@ class Learning_ScormOrg extends Learning_Object
         $this->id = $id;
         $this->back_url = $back_url;
 
-        Forma::removeErrors();
+        \FormaLms\lib\Forma::removeErrors();
 
-        require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
         moditem($this);
     }
 
@@ -160,8 +160,8 @@ class Learning_ScormOrg extends Learning_Object
      **/
     public function play($id, $id_param, $back_url)
     {
-        require_once Forma::inc(_lms_ . '/lib/lib.param.php');
-        require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.param.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
         $idReference = getLOParam($id_param, 'idReference');
         $autoplay = getLOParam($id_param, 'autoplay');
         $playertemplate = getLOParam($id_param, 'playertemplate');
@@ -172,7 +172,7 @@ class Learning_ScormOrg extends Learning_Object
 
     public function env_play($id_reference, $back_url, $options = [])
     {
-        require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
         $this->id_reference = $id_reference;
         $this->back_url = $back_url;
         play($this->id, $id_reference, $back_url, true, 'default', $this->environment);
@@ -188,7 +188,7 @@ class Learning_ScormOrg extends Learning_Object
      **/
     public function del($id, $back_url = null)
     {
-        require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
 
         list($idscorm_package) = sql_fetch_row(sql_query('
 		SELECT idscorm_package 
@@ -210,7 +210,7 @@ class Learning_ScormOrg extends Learning_Object
      **/
     public function copy($id, $back_url = null)
     {
-        require_once Forma::inc(_lms_ . '/modules/scorm/scorm.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/scorm/scorm.php');
 
         list($idscorm_package) = sql_fetch_row(sql_query('
 		SELECT idscorm_package 
@@ -284,7 +284,7 @@ class Learning_ScormOrg extends Learning_Object
 
     public function trackDetails($user, $org)
     {
-        require_once Forma::inc(_lms_ . '/modules/organization/orgresults.php');
+        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orgresults.php');
         getTrackingTable($user, $org);
     }
 }

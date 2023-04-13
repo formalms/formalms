@@ -585,7 +585,7 @@ class Field
         $re_field = sql_query('
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
-		WHERE lang_code = '" . getLanguage() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
+		WHERE lang_code = '" . Lang::get() . "' AND id_common = '" . (int) $this->id_common . "' AND type_field = '" . $this->getFieldType() . "'");
         list($translation) = sql_fetch_row($re_field);
 
         return $translation;

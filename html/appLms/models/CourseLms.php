@@ -100,7 +100,7 @@ class CourseLms extends Model
     public function findAll($conditions, $params)
     {
         $commonLabel = $this->session->get('id_common_label');
-        $db = DbConn::getInstance();
+        $db = \FormaLms\db\DbConn::getInstance();
         $queryResult = $db->query(
             'SELECT c.idCourse, c.course_type, c.idCategory, c.code, c.name, c.description, c.difficult, c.status AS course_status, c.course_edition, '
             . '	c.max_num_subscribe, c.create_date, '
@@ -159,7 +159,7 @@ class CourseLms extends Model
     {
         $path_course = $GLOBALS['where_files_relative'] . '/appLms/' . FormaLms\lib\Get::sett('pathcourse') . '/';
         $levels = CourseLevel::getTranslatedLevels();
-        $infoEnroll = self::getInfoEnroll($course['idCourse'], Forma::user()->getIdSt());
+        $infoEnroll = self::getInfoEnroll($course['idCourse'], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
         $parsedData = $course;
 
@@ -183,7 +183,7 @@ class CourseLms extends Model
         }
         
         //LRZ:  if validity day is setting
-        //$date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], Forma::user()->getIdSt()));
+        //$date_first_access = fromDatetimeToTimestamp(self::getDateFirstAccess($course['idCourse'], \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()));
         //if ($parsedData['valid_time'] > 0 && $date_first_access > 0) {
         //    $time_expired = $date_first_access + ($parsedData['valid_time'] * 24 * 3600);
         //    $parsedData['dateClosing_year'] = date('Y', $time_expired);
@@ -349,7 +349,7 @@ class CourseLms extends Model
         require_once _lms_ . '/lib/lib.date.php';
         $dm = new DateManager();
         $cl = new ClassroomLms();
-        $course_editions = $cl->getUserEditionsInfo(Forma::user()->idst, $id_course);
+        $course_editions = $cl->getUserEditionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $id_course);
         $out = [];
         $course_array['next_lesson'] = '-';
         $next_lesson_array = [];
@@ -439,10 +439,10 @@ class CourseLms extends Model
             . ' FROM %lms_courseuser'
             . ' WHERE idCourse = ' . $idCourse
             . ' AND idUser = ' . $idUser;
-        $result = Forma::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
-        if (Forma::db()->affected_rows() > 0) {
-            $responseData = Forma::db()->fetch_assoc($result);
+        if (\FormaLms\lib\Forma::db()->affected_rows() > 0) {
+            $responseData = \FormaLms\lib\Forma::db()->fetch_assoc($result);
         }
 
         return $responseData;
@@ -454,10 +454,10 @@ class CourseLms extends Model
 
         $query = "SELECT idOrg, idCourse, objectType FROM learning_organization WHERE objectType != '' AND idCourse  = $idCourse ORDER BY path limit 1";
 
-        $result = Forma::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
-        if (Forma::db()->affected_rows() > 0) {
-            $responseData = Forma::db()->fetch_assoc($result);
+        if (\FormaLms\lib\Forma::db()->affected_rows() > 0) {
+            $responseData = \FormaLms\lib\Forma::db()->fetch_assoc($result);
         }
 
         return $responseData;
@@ -535,9 +535,9 @@ class CourseLms extends Model
         $this->checkIdCourseOrThrow();
 
         $query = "SELECT textof FROM %lms_htmlfront WHERE id_course = '$this->idCourse'";
-        $result = Forma::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
-        foreach (Forma::db()->fetch_assoc($result) as $item) {
+        foreach (\FormaLms\lib\Forma::db()->fetch_assoc($result) as $item) {
             return (string) $item['textof'];
         }
 
@@ -559,7 +559,7 @@ class CourseLms extends Model
             $query = "INSERT INTO %lms_htmlfront ( id_course, textof) VALUES ($this->idCourse,'" . addslashes($html) . "')";
         }
 
-        $result = Forma::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
         if ($result === false) {
             return false;
@@ -574,7 +574,7 @@ class CourseLms extends Model
 
         $query = "DELETE FROM %lms_htmlfront WHERE id_course = $this->idCourse";
 
-        $result = Forma::db()->query($query);
+        $result = \FormaLms\lib\Forma::db()->query($query);
 
         if ($result === false) {
             return false;
@@ -591,7 +591,7 @@ class CourseLms extends Model
         $query = 'select course_type, level from 
             learning_course lc, learning_courseuser lcu
             where lc.idCourse=lcu.idCourse
-            and lc.idCourse=' . $idCourse . ' and idUser=' . Forma::user()->idst;
+            and lc.idCourse=' . $idCourse . ' and idUser=' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         list($course_type, $level) = sql_fetch_row(sql_query($query));
 
@@ -646,7 +646,7 @@ class CourseLms extends Model
         $query = 'select lcd.id_date from %lms_course_date lcd, %lms_course_date_user lcdu
             where 
             lcd.id_date = lcdu.id_date
-            and id_user = ' . Forma::user()->idst . ' and lcd.id_course=' . $idCourse;
+            and id_user = ' . \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . ' and lcd.id_course=' . $idCourse;
 
         list($id_date) = sql_fetch_row(sql_query($query));
 

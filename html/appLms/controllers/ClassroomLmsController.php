@@ -93,10 +93,10 @@ class ClassroomLmsController extends LmsController
             ];
 
             $params_t = [
-                ':id_user' => (int) Forma::user()->getId(),
+                ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ];
 
-            $cp_courses = $model->getUserCoursePathCourses(Forma::user()->getIdst());
+            $cp_courses = $model->getUserCoursePathCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
             if (!empty($cp_courses)) {
                 $conditions_t[] = 'cu.idCourse NOT IN (' . implode(',', $cp_courses) . ')';
             }
@@ -143,7 +143,7 @@ class ClassroomLmsController extends LmsController
             require_once _lms_ . '/admin/models/LabelAlms.php';
             $label_model = new LabelAlms();
 
-            $user_label = $label_model->getLabelForUser(Forma::user()->getId());
+            $user_label = $label_model->getLabelForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getId());
 
             $this->render('_labels', ['block_list' => $block_list,
                                             'label' => $user_label, ]);
@@ -166,7 +166,7 @@ class ClassroomLmsController extends LmsController
     protected function _getClassDisplayInfo($courses)
     {
         $model = new ClassroomLms();
-        $class_info = $model->getUserEditionsInfo(Forma::user()->getIdst(), $courses);
+        $class_info = $model->getUserEditionsInfo(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), $courses);
         if (empty($class_info)) {
             return [];
         }
@@ -227,7 +227,7 @@ class ClassroomLmsController extends LmsController
         ];
 
         $params = [
-            ':id_user' => (int) Forma::user()->getId(),
+            ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ':status' => _CUS_END,
         ];
 
@@ -237,13 +237,13 @@ class ClassroomLmsController extends LmsController
         }
 
         if (!empty($filter_year)) {
-            $clist = $model->getUserCoursesByYear(Forma::user()->getId(), $filter_year);
+            $clist = $model->getUserCoursesByYear(\FormaLms\lib\FormaUser::getCurrentUser()->getId(), $filter_year);
             if ($clist !== false) {
                 $conditions[] = 'cu.idCourse IN (' . implode(',', $clist) . ')';
             }
         }
 
-        $cp_courses = $model->getUserCoursePathCourses(Forma::user()->getIdst());
+        $cp_courses = $model->getUserCoursePathCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
         if (!empty($cp_courses)) {
             $conditions[] = 'cu.idCourse NOT IN (' . implode(',', $cp_courses) . ')';
         }
@@ -281,7 +281,7 @@ class ClassroomLmsController extends LmsController
         ];
 
         $params = [
-            ':id_user' => (int) Forma::user()->getId(),
+            ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ':status' => _CUS_SUBSCRIBED,
         ];
 
@@ -291,13 +291,13 @@ class ClassroomLmsController extends LmsController
         }
 
         if (!empty($filter_year)) {
-            $clist = $model->getUserCoursesByYear(Forma::user()->getId(), $filter_year);
+            $clist = $model->getUserCoursesByYear(\FormaLms\lib\FormaUser::getCurrentUser()->getId(), $filter_year);
             if ($clist !== false) {
                 $conditions[] = 'cu.idCourse IN (' . implode(',', $clist) . ')';
             }
         }
 
-        $cp_courses = $model->getUserCoursePathCourses(Forma::user()->getIdst());
+        $cp_courses = $model->getUserCoursePathCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
         if (!empty($cp_courses)) {
             $conditions[] = 'cu.idCourse NOT IN (' . implode(',', $cp_courses) . ')';
         }
@@ -334,7 +334,7 @@ class ClassroomLmsController extends LmsController
         ];
 
         $params = [
-            ':id_user' => (int) Forma::user()->getId(),
+            ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ':status' => _CUS_BEGIN,
         ];
 
@@ -344,13 +344,13 @@ class ClassroomLmsController extends LmsController
         }
 
         if (!empty($filter_year)) {
-            $clist = $model->getUserCoursesByYear(Forma::user()->getId(), $filter_year);
+            $clist = $model->getUserCoursesByYear(\FormaLms\lib\FormaUser::getCurrentUser()->getId(), $filter_year);
             if ($clist !== false) {
                 $conditions[] = 'cu.idCourse IN (' . implode(',', $clist) . ')';
             }
         }
 
-        $cp_courses = $model->getUserCoursePathCourses(Forma::user()->getIdst());
+        $cp_courses = $model->getUserCoursePathCourses(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
         if (!empty($cp_courses)) {
             $conditions[] = 'cu.idCourse NOT IN (' . implode(',', $cp_courses) . ')';
         }
@@ -387,7 +387,7 @@ class ClassroomLmsController extends LmsController
         ];
 
         $params = [
-            ':id_user' => (int) Forma::user()->getId(),
+            ':id_user' => (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ':status' => _CUS_END,
         ];
 
@@ -397,7 +397,7 @@ class ClassroomLmsController extends LmsController
         }
 
         if (!empty($filter_year)) {
-            $clist = $model->getUserCoursesByYear(Forma::user()->getId(), $filter_year);
+            $clist = $model->getUserCoursesByYear(\FormaLms\lib\FormaUser::getCurrentUser()->getId(), $filter_year);
             if ($clist !== false) {
                 $conditions[] = 'cu.idCourse IN (' . implode(',', $clist) . ')';
             }
@@ -429,14 +429,14 @@ class ClassroomLmsController extends LmsController
      */
     public function suggested()
     {
-        $competence_needed = Forma::user()->requiredCompetences();
+        $competence_needed = \FormaLms\lib\FormaUser::getCurrentUser()->requiredCompetences();
 
         $model = new ClassroomLms();
         $courselist = $model->findAll([
             'cu.iduser = :id_user',
             'comp.id_competence IN (:competence_list)',
         ], [
-            ':id_user' => Forma::user()->getId(),
+            ':id_user' => \FormaLms\lib\FormaUser::getCurrentUser()->getId(),
             ':competence_list' => $competence_needed,
         ], ['LEFT JOIN %lms_competence AS comp ON ( .... ) ']);
 
@@ -451,7 +451,7 @@ class ClassroomLmsController extends LmsController
     {
         $dm = new DateManager();
         $id_course = FormaLms\lib\Get::gReq('id_course', DOTY_INT);
-        $id_user = Forma::user()->getIdSt();
+        $id_user = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
         $edition_arr = $dm->getUserDateForCourse($id_user, $id_course);
 

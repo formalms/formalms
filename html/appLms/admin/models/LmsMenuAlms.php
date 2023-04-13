@@ -20,8 +20,8 @@ class LmsMenuAlms extends Model
     protected $aclManager;
     public function __construct()
     {
-        $this->db = DbConn::getInstance();
-        $this->aclManager = Forma::user()->getACLManager();
+        $this->db = \FormaLms\db\DbConn::getInstance();
+        $this->aclManager = \FormaLms\lib\Forma::getAclManager();;
         parent::__construct();
     }
 

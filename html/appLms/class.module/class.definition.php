@@ -127,7 +127,7 @@ class LmsModule
     {
         //EFFECTS: include module language and module main file
 
-        include Forma::inc(_lms_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php');
+        include \FormaLms\lib\Forma::inc(_lms_ . '/modules/' . $this->module_name . '/' . $this->module_name . '.php');
     }
 
     public function loadFooter()

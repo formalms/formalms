@@ -303,7 +303,7 @@ function exportquest(&$url)
 
                 cout('</div>', 'content');
             } else {
-                Forma::addError($lang->def('_EMPTY_SELECTION'));
+                \FormaLms\lib\Forma::addError($lang->def('_EMPTY_SELECTION'));
                 questbank($url);
             }
         }
@@ -329,10 +329,10 @@ function exportquest(&$url)
 				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_test
 				( author, title, description )
 					VALUES
-				( '" . (int) getLogUserId() . "', '" . $title . "', '" . $_POST['textof'] . "' )";
+				( '" . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt() . "', '" . $title . "', '" . $_POST['textof'] . "' )";
                 //TODO:
                 if (!sql_query($ins_query)) {
-                    Forma::addError($lang->def('_OPERATION_FAILURE'));
+                    \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
                 }
 
                 list($id_test) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -346,18 +346,18 @@ function exportquest(&$url)
 					WHERE q.idQuest IN (' . implode(',', $quest_selection) . ') AND q.type_quest = t.type_quest');
 
                     while (list($idQuest, $type_quest, $type_file, $type_class) = sql_fetch_row($reQuest)) {
-                        require_once Forma::inc(_lms_ . '/modules/question/' . $type_file);
+                        require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/question/' . $type_file);
                         $quest_obj = new $type_class($idQuest);
                         $new_id = $quest_obj->copy($id_test);
                     }
 
                     //Adding the item to the tree
 
-                    require_once Forma::inc(_lms_ . '/modules/organization/orglib.php');
+                    require_once \FormaLms\lib\Forma::inc(_lms_ . '/modules/organization/orglib.php');
 
                     $odb = new OrgDirDb($idCourse);
 
-                    $odb->addItem(0, $title, 'test', $id_test, '0', '0', getLogUserId(), '1.0', '_DIFFICULT_MEDIUM', '', '', '', '', date('Y-m-d H:i:s'));
+                    $odb->addItem(0, $title, 'test', $id_test, '0', '0', \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), '1.0', '_DIFFICULT_MEDIUM', '', '', '', '', date('Y-m-d H:i:s'));
                 }
             }
 
@@ -391,7 +391,7 @@ function exportquest(&$url)
 
                 cout('</div>', 'content');
             } else {
-                Forma::addError($lang->def('_EMPTY_SELECTION'));
+                \FormaLms\lib\Forma::addError($lang->def('_EMPTY_SELECTION'));
                 questbank($url);
             }
         }

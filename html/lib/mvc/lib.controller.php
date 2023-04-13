@@ -148,10 +148,10 @@ class Controller
 
         switch ($tplkey) {
             case 'php':
-                include Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension);
+                include \FormaLms\lib\Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension);
                 break;
             case 'twig':
-                $path = Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension);
+                $path = \FormaLms\lib\Forma::inc($path . '/' . $this->_mvc_name . '/' . $view_name . $extension);
                 $view_path = dirname($path);
 
                 foreach ($paths as $path) {
@@ -161,7 +161,7 @@ class Controller
                 break;
             default:
                 //die( 'FILENOTFOUND');
-                include Forma::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension);
+                include \FormaLms\lib\Forma::inc($this->viewPath() . '/' . $this->_mvc_name . '/' . $view_name . $extension);
                 break;
         }
 
