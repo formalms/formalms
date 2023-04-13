@@ -78,7 +78,7 @@ class TinyMce {
       forced_root_block: false,
       force_p_newlines: false,
       force_br_newlines: true,
-      relative_urls: true,
+      relative_urls: false,
       remove_script_host: false,
       removed_menuitems: 'newdocument',
       plugins: [
@@ -117,13 +117,17 @@ class TinyMce {
   initSimple(editor_selector) {
     const obj = this;
 
+ 
     window.addEventListener('message', function (event) {
       var data = event.data;
-
+    
       // Do something with the data received here
       if (data.mceAction == 'setUrl') {
+      
         var inputUrl = $('.tox-form input[type=url]');
+    
         inputUrl.val(data.value);
+  
         tinymce.activeEditor.windowManager.close();
       }
     });
@@ -135,7 +139,7 @@ class TinyMce {
       forced_root_block : false,
       force_p_newlines : false,
       force_br_newlines : true,
-      relative_urls : true,
+      relative_urls : false,
       remove_script_host: false,
       plugins: [
         'advlist autolink lists link image charmap print preview hr anchor pagebreak',

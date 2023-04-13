@@ -189,8 +189,8 @@ class MediagalleryAdmController extends AdmController
     {
         $type = FormaLms\lib\Get::req('type', DOTY_STRING, null);
 
-        define('_USER_FPATH_INTERNAL', '/common/users/');
-        define('_USER_FPATH', $GLOBALS['where_files_relative'] . _USER_FPATH_INTERNAL);
+        define('_USER_FPATH_INTERNAL', '/files/common/users/');
+        //define('_USER_FPATH', $GLOBALS['where_files_relative'] . _USER_FPATH_INTERNAL);
 
         require_once _base_ . '/lib/lib.mimetype.php';
         require_once _base_ . '/lib/lib.multimedia.php';
@@ -214,7 +214,8 @@ class MediagalleryAdmController extends AdmController
             $site_url = $baseUrl . $path . '/common/users/';
             foreach ($queryResults as $queryResult) {
                 if (empty($queryResult['media_url'])) {
-                    $file = _USER_FPATH . rawurlencode($queryResult['real_fname']);
+                    $file = _USER_FPATH_INTERNAL . rawurlencode($queryResult['real_fname']);
+                    $fileUrl = $baseUrl . _USER_FPATH_INTERNAL . rawurlencode($queryResult['real_fname']);
                 }
 
                 if (!empty($queryResult['media_url'])) {
@@ -232,8 +233,8 @@ class MediagalleryAdmController extends AdmController
                     'real_fname' => $queryResult['real_fname'],
                     'size' => str_replace('.', ',', round($queryResult['size'] / 1024, 2)) . ' Kb',
                     'uldate' => $queryResult['uldate'],
-                    'file' => $file,
-                    'url' => $site_url . $queryResult['real_fname'],
+                    'file' => 'xxx',
+                    'url' => $fileUrl,
                 ];
             }
             $results['recordsFiltered'] = sql_num_rows($queryResults);
