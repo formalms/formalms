@@ -489,10 +489,11 @@ class CoursestatsLms extends Model
 
     public function getUserScormHistoryTrackInfo($id_user, $id_lo)
     {
+        $output = [];
         if ($id_lo <= 0 || $id_user <= 0) {
-            return false;
+            $output;
         }
-        $output = false;
+
         $query = "SELECT t1.date_action, t1.score_raw, t1.score_max, SEC_TO_TIME( TIME_TO_SEC( t1.session_time ) ) as session_total_time, t1.lesson_status, t1.session_time FROM %lms_organization AS t3 JOIN %lms_scorm_tracking AS t2 ON ( t3.objectType = 'scormorg' AND t3.idOrg = t2.idReference ) JOIN  " . $this->tables['scorm_tracking_history'] . ' as t1 ON (t1.idscorm_tracking=t2.idscorm_tracking) WHERE t3.idOrg =' . $id_lo . ' AND t2.idUser=' . $id_user .
             ' ORDER BY t1.date_action ASC ';
 

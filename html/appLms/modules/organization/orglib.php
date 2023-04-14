@@ -1919,7 +1919,6 @@ class Org_TreeView extends RepoTreeView
         }
 
         $idLoList = (array) $idLoList;
-        include_once _base_ . '/customscripts/appLms/Events/Lms/OrgPropertiesPrintEvent.php';
         require_once _lms_ . '/lib/lib.kbres.php';
         require_once _lms_ . '/class.module/track.object.php';
         require_once _lms_ . '/lib/lib.course.php';
