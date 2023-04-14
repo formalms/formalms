@@ -606,7 +606,7 @@ class CourseSubscribe_Manager
 
             $level_idst = &$formaCourse->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$formaCourse->createCourseLevel($id_course);
+                $level_idst = FormaCourse::createCourseLevel($id_course);
             }
 
             foreach ($id_user as $id_user_t) {

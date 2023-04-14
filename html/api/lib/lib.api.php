@@ -70,7 +70,7 @@ class API
     /**
      * Writes in the buffer.
      *
-     * @param <string> $string
+     * @param string $string
      */
     protected function _write($string)
     {

@@ -18,7 +18,7 @@ class LoginLayout
     /**
      * Return the menu for the pre-login pages.
      *
-     * @return <string>
+     * @return string
      */
     public static function external_page()
     {

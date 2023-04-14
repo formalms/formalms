@@ -388,7 +388,7 @@ class CoursePath_Manager
     }
 
     /**
-     * @param int $arr_id the id_path of a coursepath
+     * @param array $arr_id the id_path of a coursepath
      *
      * @return array an array with id => array( [id_path] [path_code] [path_name] [path_descr] [subscribe_method] )
      */

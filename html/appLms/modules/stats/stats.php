@@ -482,7 +482,7 @@ function statuserfilter()
     $tabStat->addHead($content_h);
 
     $aclManager = &\FormaLms\lib\Forma::getAclManager();;
-    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+    $acl = \FormaLms\lib\Forma::getAcl();
 
     //apply sub admin filters, if needed
     if ($view_all_perm && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == '/framework/level/admin') {
@@ -740,7 +740,7 @@ function statitem()
     $idCourse = $session->get('idCourse');
     $form = new Form();
     $aclManager = &\FormaLms\lib\Forma::getAclManager();;
-    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+    $acl = \FormaLms\lib\Forma::getAcl();
 
     $idItem = (int) $_GET['idItem'];
 
@@ -1001,7 +1001,7 @@ function statoneuseroneitem()
     $out = &$GLOBALS['page'];
     $form = new Form();
     $aclManager = &\FormaLms\lib\Forma::getAclManager();;
-    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+    $acl = \FormaLms\lib\Forma::getAcl();
 
     $idItem = (int) $_GET['idItem'];
     $idst_user = (int) $_GET['idUser'];
@@ -1051,7 +1051,7 @@ function statoneuseroneitemdetails()
     $out = &$GLOBALS['page'];
     $form = new Form();
     $aclManager = &\FormaLms\lib\Forma::getAclManager();;
-    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+    $acl = \FormaLms\lib\Forma::getAcl();
 
     $backto = $_GET['backto'];
     $idItem = (int) $_GET['idItem'];
@@ -1102,7 +1102,7 @@ function statoneuseroneitemhistory()
     $out = &$GLOBALS['page'];
     $form = new Form();
     $aclManager = &\FormaLms\lib\Forma::getAclManager();;
-    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+    $acl = \FormaLms\lib\Forma::getAcl();
 
     $backto = $_GET['backto'];
     $idItem = (int) $_GET['idItem'];

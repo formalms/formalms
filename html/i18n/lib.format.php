@@ -43,10 +43,10 @@ class Format
     /**
      * Convert a date from the iso format to the current regional format.
      *
-     * @param <string> $date the date to convert
-     * @param <string> $type 'date' or 'datetime'
+     * @param string $date the date to convert
+     * @param string $type 'date' or 'datetime'
      *
-     * @return <string> the date in the current format
+     * @return string the date in the current format
      */
     public static function date($date, $type = false, $seconds = false)
     {
@@ -60,10 +60,10 @@ class Format
     /**
      * Convert a date from the current regional format to a iso format.
      *
-     * @param <string> $date the date to convert
-     * @param <string> $type 'date' or 'datetime'
+     * @param string $date the date to convert
+     * @param string $type 'date' or 'datetime'
      *
-     * @return <string> the date in iso
+     * @return string the date in iso
      */
     public static function dateDb($date, $type = false)
     {
@@ -77,9 +77,9 @@ class Format
     /**
      * Convert a date from the ISO format into timestamp.
      *
-     * @param <string> $date the date to convert
+     * @param string $date the date to convert
      *
-     * @return <string> the timestamp
+     * @return string the timestamp
      */
     public static function toTimestamp($date)
     {

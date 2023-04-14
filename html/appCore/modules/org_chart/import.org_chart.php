@@ -99,7 +99,7 @@ class ImportUser extends FormaImport_Destination
 
         // Load language for fields names
         $lang_dir = &FormaLanguage::createInstance('admin_directory', 'framework');
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         $this->fl = new FieldList();
@@ -234,7 +234,7 @@ class ImportUser extends FormaImport_Destination
      **/
     public function add_row($row, $tocompare)
     {
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
         foreach ($row as $k => $v) {

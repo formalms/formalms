@@ -787,10 +787,10 @@ class CustomFieldList
      **/
     public function showAllFieldForUser($idst_user, $arr_field = false)
     {
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $arr_idst = $acl->getUserGroupsST($idst_user);
 
-        $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $tmp = $acl_man->getGroup(false, '/oc_0');
         $arr_idst[] = $tmp[0];
         $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1131,7 +1131,7 @@ class CustomFieldList
         }
 
         if ($add_root) {
-            $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $tmp = $acl_man->getGroup(false, '/oc_0');
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1197,7 +1197,7 @@ class CustomFieldList
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
-        $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $tmp = $acl_man->getGroup(false, '/oc_0');
         $arr_idst[] = $tmp[0];
         $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1679,7 +1679,7 @@ class CustomFieldList
         if ($arr_field !== false) {
             $to_remove = &$arr_field;
         } elseif ($id_group !== false) {
-            $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $allgroup_idst = $acl->getUserGroupsST($idst_user);
             // Leave the passed group
             $inc_group = array_search($id_group, $allgroup_idst);

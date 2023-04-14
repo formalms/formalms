@@ -56,7 +56,7 @@ class UsermanagementAdm extends Model
         $output = '';
         $query = 'SELECT idOrg, idParent, path FROM %adm_org_chart_tree WHERE idOrg=' . (int)$idOrg;
         $res = $this->db->query($query);
-        list($idOrg, $idParent, $path) = $this->db->fetch_row($res);
+        [$idOrg, $idParent, $path] = $this->db->fetch_row($res);
         if ($path != '') {
             $list = explode('/', str_replace('/root/', '', $path));
             for ($i = 0; $i < count($list); ++$i) {
@@ -95,7 +95,7 @@ class UsermanagementAdm extends Model
     {
         $output = [];
         if ($descendants) {
-            list($left, $right) = $this->getFolderLimits($idOrg);
+            [$left, $right] = $this->getFolderLimits($idOrg);
             $query = 'SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft>=' . $left . ' AND iRight<=' . $right;
             $res = $this->db->query($query);
             $arr_org = [];
@@ -128,7 +128,7 @@ class UsermanagementAdm extends Model
         $db = \FormaLms\db\DbConn::getInstance();
         $output = [];
         if ($descendants) {
-            list($left, $right) = self::_getFolderLimits($idOrg);
+            [$left, $right] = self::_getFolderLimits($idOrg);
             $query = 'SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft>=' . $left . ' AND iRight<=' . $right;
             $res = $db->query($query);
             $arr_org = [];
@@ -1069,7 +1069,7 @@ class UsermanagementAdm extends Model
             $res = $this->db->query($query);
             if ($res) {
                 if ($this->db->num_rows($res) > 0) {
-                    list($idst_level) = $this->db->fetch_row($res);
+                    [$idst_level] = $this->db->fetch_row($res);
                     $level = $arr_levels_id[$idst_level];
                 }
             }
@@ -1091,7 +1091,7 @@ class UsermanagementAdm extends Model
     {
         $query = "SELECT COUNT(*) FROM %adm_user WHERE userid <> '/Anonymous'";
         $res = $this->db->query($query);
-        list($total) = $this->db->fetch_row($res);
+        [$total] = $this->db->fetch_row($res);
 
         return $total;
     }
@@ -1143,7 +1143,7 @@ class UsermanagementAdm extends Model
         $query = 'SELECT pass FROM %adm_user WHERE idst=' . (int)$idst;
         $res = $this->db->query($query);
         if ($res && $this->db->num_rows($res) > 0) {
-            list($user_pass) = $this->db->fetch_row($res);
+            [$user_pass] = $this->db->fetch_row($res);
             $acl_man = \FormaLms\lib\Forma::getAclManager();
             $check_pass = $acl_man->encrypt($password);
             $output = ($user_pass == $check_pass);
@@ -1576,7 +1576,7 @@ class UsermanagementAdm extends Model
             $children = $this->getSubFolders($folder, false, false);
             for ($i = 0; $i < count($children); ++$i) {
                 $is_node_visible = true;
-                list($id_org, $id_parent, $path, $lev, $left, $right, $translation, $code) = $children[$i];
+                [$id_org, $id_parent, $path, $lev, $left, $right, $translation, $code] = $children[$i];
 
                 $code_label = $this->_formatFolderCode($id_org, $code);
                 if ($is_subadmin) {
@@ -1711,7 +1711,7 @@ class UsermanagementAdm extends Model
         if ($idOrg <= 0) {
             return $folders;
         }
-        list($ileft, $iright) = $this->getFolderLimits($idOrg);
+        [$ileft, $iright] = $this->getFolderLimits($idOrg);
         $query = 'SELECT idOrg FROM %adm_org_chart_tree WHERE iLeft<=' . (int)$ileft . ' AND iRight>=' . (int)$iright . ' AND idOrg>0 ORDER BY iLeft';
         $res = $this->db->query($query);
         if ($res) {
@@ -1742,7 +1742,7 @@ class UsermanagementAdm extends Model
         if ($idOrg <= 0) {
             return $folders;
         }
-        list($ileft, $iright) = $this->getFolderLimits($idOrg);
+        [$ileft, $iright] = $this->getFolderLimits($idOrg);
         $query = 'SELECT idOrg, idst_oc, idst_ocd FROM %adm_org_chart_tree WHERE iLeft<=' . (int)$ileft . ' AND iRight>=' . (int)$iright . ' AND idOrg>0 ORDER BY iLeft';
         $res = $this->db->query($query);
         if ($res) {
@@ -1808,7 +1808,7 @@ class UsermanagementAdm extends Model
             $result = $this->db->query('SELECT iLeft, iRight '
                 . 'FROM %adm_org_chart_tree '
                 . 'WHERE idOrg = ' . (int)$descendantof);
-            list($iLeft, $iRight) = $this->db->fetch_row($result);
+            [$iLeft, $iRight] = $this->db->fetch_row($result);
         }
 
         $result = $this->db->query('SELECT ot.idOrg, ot.code, oc.translation, ot.idst_oc, ot.idst_ocd '
@@ -1932,7 +1932,7 @@ class UsermanagementAdm extends Model
     public function getFolderById($idOrg, $array = false)
     {
         if ($idOrg <= 0) { //root node, not present in DB, but it's "virtual"
-            list($left, $right) = $this->getFolderLimits(0);
+            [$left, $right] = $this->getFolderLimits(0);
             if ($array) {
                 return [
                     'idOrg' => 0,
@@ -1978,7 +1978,7 @@ class UsermanagementAdm extends Model
         $res = $this->db->query($query);
         $output = false;
         if ($res && $this->db->num_rows($res) > 0) {
-            list($output) = $this->db->fetch_row($res);
+            [$output] = $this->db->fetch_row($res);
         }
 
         return $output;
@@ -2073,7 +2073,7 @@ class UsermanagementAdm extends Model
         $res = $this->db->query($query);
         $output = false;
         if ($res && ($this->db->num_rows($res) > 0)) {
-            list($output) = $this->db->fetch_row($res);
+            [$output] = $this->db->fetch_row($res);
         }
 
         return $output;
@@ -2091,7 +2091,7 @@ class UsermanagementAdm extends Model
             $query = 'SELECT MAX(path) FROM %adm_org_chart_tree WHERE idParent=' . (int)$id_parent;
             $res = $this->db->query($query);
             if ($this->db->num_rows($res) > 0) { //check if there are any subfolder
-                list($path) = $this->db->fetch_row($res);
+                [$path] = $this->db->fetch_row($res);
                 $folder_index = ((int)end(explode('/', $path)) + 1); //get next index
             } else {
                 $folder_index = 1; //start with first folder index
@@ -2181,7 +2181,7 @@ class UsermanagementAdm extends Model
             return false;
         }
 
-        list($left, $right) = $this->getFolderLimits($idOrg);
+        [$left, $right] = $this->getFolderLimits($idOrg);
         $limits = ['iLeft' => $left, 'iRight' => $right];
         if ($onlyLeaf) {
             if (((int)$limits['iRight'] - (int)$limits['iLeft']) > 1) {
@@ -2245,7 +2245,7 @@ class UsermanagementAdm extends Model
             . ' FROM %adm_org_chart_tree'
             . " WHERE idOrg = '" . $src_folder . "'";
 
-        list($id_parent) = sql_fetch_row(sql_query($query));
+        [$id_parent] = sql_fetch_row(sql_query($query));
 
         //todo: back compatibility
         /*
@@ -2266,8 +2266,8 @@ class UsermanagementAdm extends Model
         $this->_propagateChange( $oldFolder, $folder);
         */
 
-        list($src_left, $src_right, $lvl_src) = $this->getFolderLimits($src_folder);
-        list($dest_left, $dest_right, $lvl_dest) = $this->getFolderLimits($dest_folder);
+        [$src_left, $src_right, $lvl_src] = $this->getFolderLimits($src_folder);
+        [$dest_left, $dest_right, $lvl_dest] = $this->getFolderLimits($dest_folder);
 
         //dest folder is a son of the src ?
         if ($src_left < $dest_left && $src_right > $dest_right) {
@@ -2281,7 +2281,7 @@ class UsermanagementAdm extends Model
             . ' ORDER BY path DESC'
             . ' LIMIT 0, 1';
 
-        list($path_max_new_folder) = sql_fetch_row(sql_query($query));
+        [$path_max_new_folder] = sql_fetch_row(sql_query($query));
 
         $dest_left = $dest_left + 1;
         $gap = $src_right - $src_left + 1;
@@ -2305,13 +2305,13 @@ class UsermanagementAdm extends Model
             . ' FROM %adm_org_chart_tree'
             . ' WHERE idOrg = ' . (int)$src_folder;
 
-        list($src_path) = sql_fetch_row(sql_query($query));
+        [$src_path] = sql_fetch_row(sql_query($query));
 
         $query = 'SELECT path'
             . ' FROM %adm_org_chart_tree'
             . ' WHERE idOrg = ' . (int)$dest_folder;
 
-        list($dest_path) = sql_fetch_row(sql_query($query));
+        [$dest_path] = sql_fetch_row(sql_query($query));
 
         $path_max = (int)str_replace($dest_path . '/', '', $path_max_new_folder);
         ++$path_max;
@@ -2346,19 +2346,19 @@ class UsermanagementAdm extends Model
                 . ' FROM %adm_group'
                 . " WHERE groupid = '/ocd_" . $src_folder . "'";
 
-            list($ocd_src) = sql_fetch_row(sql_query($query));
+            [$ocd_src] = sql_fetch_row(sql_query($query));
 
             $query = 'SELECT idst'
                 . ' FROM %adm_group'
                 . " WHERE groupid = '/ocd_" . $dest_folder . "'";
 
-            list($ocs_dest) = sql_fetch_row(sql_query($query));
+            [$ocs_dest] = sql_fetch_row(sql_query($query));
 
             $query = 'SELECT idst'
                 . ' FROM %adm_group'
                 . " WHERE groupid = '/ocd_" . $id_parent . "'";
 
-            list($ocd_parent) = sql_fetch_row(sql_query($query));
+            [$ocd_parent] = sql_fetch_row(sql_query($query));
 
             //Update groups
             $query = 'DELETE FROM %adm_group_members'
@@ -2752,7 +2752,7 @@ class UsermanagementAdm extends Model
 
         $output = false;
         if ($res) {
-            list($total) = $this->db->fetch_row($res);
+            [$total] = $this->db->fetch_row($res);
             $output = (int)$total;
         }
 
@@ -2850,7 +2850,7 @@ class UsermanagementAdm extends Model
 
         $output = false;
         if ($res) {
-            list($total) = $this->db->fetch_row($res);
+            [$total] = $this->db->fetch_row($res);
             $output = $total;
         }
 
@@ -2939,7 +2939,7 @@ class UsermanagementAdm extends Model
             $output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
         } else {
             $queryRoot = 'SELECT count(G.idst) FROM %adm_admin_tree T JOIN %adm_group G WHERE T.idst = G.idst AND idstAdmin =' . $idstUser . " AND G.groupid = '/ocd_0'";
-            list($control) = $this->db->fetch_row($this->db->query($queryRoot));
+            [$control] = $this->db->fetch_row($this->db->query($queryRoot));
             if ($control < 0) {
                 $output = ['0' => '(' . Lang::t('_ROOT', 'standard') . ')'];
             } elseif ($control == 0 && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) { //#3725
@@ -3164,7 +3164,7 @@ class UsermanagementAdm extends Model
                 . ' ORDER BY oct.iLeft ASC LIMIT 1';
             $res = $this->db->query($query);
             if ($res && $this->db->num_rows($res) > 0) {
-                list($id_org, $idst_oc) = $this->db->fetch_row($res);
+                [$id_org, $idst_oc] = $this->db->fetch_row($res);
                 if ($return_org) {
                     $output = (int)$id_org;
                 } else {
@@ -3231,7 +3231,7 @@ class UsermanagementAdm extends Model
             $users = [(int)$users];
         }
         if (!is_array($users)) {
-            return false;
+            return [];
         }
 
         $query_std = 'SELECT u.idst, u.email, u.register_date, u.lastenter '
@@ -3372,7 +3372,7 @@ class UsermanagementAdm extends Model
         $query = 'SELECT COUNT(*)'
             . ' FROM %adm_user'
             . " WHERE userid like '" . ($userid[0] === '/' ? '' : '/') . $userid . "'";
-        list($control) = $this->db->fetch_row($this->db->query($query));
+        [$control] = $this->db->fetch_row($this->db->query($query));
         if ($control > 0) {
             return false;
         }
@@ -3473,7 +3473,7 @@ class UsermanagementAdm extends Model
         $rs = sql_query($query) or
         errorCommunication('getValueCustom');
         if (sql_num_rows($rs) == 1) {
-            list($obj_entry) = sql_fetch_row($rs);
+            [$obj_entry] = sql_fetch_row($rs);
 
             return $obj_entry;
         } else {
@@ -3504,7 +3504,7 @@ class UsermanagementAdm extends Model
         while (list($id_field, $user_entry, $type_field) = sql_fetch_row($res)) {
             if ($type_field == 'dropdown') {
                 $q = sql_query("SELECT translation FROM %adm_field_son WHERE idField = $id_field AND id_common_son = $user_entry AND lang_code = '" . Lang::get() . "'");
-                list($translation) = sql_fetch_row($q);
+                [$translation] = sql_fetch_row($q);
                 $output[$id_field] = $translation;
             } else {
                 $output[$id_field] = $user_entry;

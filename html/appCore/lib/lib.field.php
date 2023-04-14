@@ -168,7 +168,7 @@ class FieldList
             return $false_var;
         }
 
-        list($id_common, $type_file, $type_class) = sql_fetch_row($rs);
+        [$id_common, $type_file, $type_class] = sql_fetch_row($rs);
         require_once \FormaLms\lib\Forma::include(_adm_ . '/modules/field/', $type_file);
         $quest_obj = new $type_class($id_common);
 
@@ -698,11 +698,11 @@ class FieldList
      **/
     public function showAllFieldForUser($idst_user, $arr_field = false)
     {
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $arr_idst = $acl->getUserGroupsST($idst_user);
         $index = count($arr_idst);
 
-        $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $tmp = $acl_man->getGroup(false, '/oc_0');
         $arr_idst[] = $tmp[0];
         $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -948,7 +948,7 @@ class FieldList
      **/
     public function playFieldsForUser($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false, $separate_output = false, $check_precompiled = false, $registrationLayout = false, $registrationErrors = false)
     {
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $index = 0;
         if ($arr_idst === false) {
             $arr_idst = $acl->getArrSTGroupsST($acl->getUserGroupsST($idst_user));
@@ -956,7 +956,7 @@ class FieldList
         }
 
         if ($add_root) {
-            $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $tmp = $acl_man->getGroup(false, '/oc_0');
             $arr_idst[] = (int) $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1060,14 +1060,14 @@ class FieldList
     public function hiddenFieldForUserArr($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false)
     {
         $index = 0;
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
             $index = count($arr_idst);
         }
 
         if ($add_root) {
-            $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $tmp = $acl_man->getGroup(false, '/oc_0');
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1145,7 +1145,7 @@ class FieldList
      **/
     public function isFilledFieldsForUser($idst_user, $arr_idst = false)
     {
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $error_message = [];
 
         // #BUG - 19799
@@ -1160,7 +1160,7 @@ class FieldList
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $selectedNode);
             $arr_idst[] = $tmp[0];
-            $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }
 
@@ -1170,7 +1170,7 @@ class FieldList
             $index += count($arr_idst);
         }
 
-        $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $tmp = $acl_man->getGroup(false, '/oc_0');
         $arr_idst[] = $tmp[0];
         $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1251,12 +1251,12 @@ class FieldList
     public function isFilledFieldsForUserInRegistration($idst_user, $arr_idst = false)
     {
         $index = 0;
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
             $index = count($arr_idst);
         }
-        $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $tmp = $acl_man->getGroup(false, '/oc_0');
         $arr_idst[] = $tmp[0];
         $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1350,14 +1350,14 @@ class FieldList
     public function storeFieldsForUser($idst_user, $arr_idst = false, $add_root = true, $int_userid = true)
     {
         $index = 0;
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
             $index = count($arr_idst);
         }
 
         if ($add_root) {
-            $acl_man = &$acl\FormaLms\lib\Forma::getAclManager();
+            $acl_man = \FormaLms\lib\Forma::getAclManager();
             $tmp = $acl_man->getGroup(false, '/oc_0');
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_0');
@@ -1483,7 +1483,7 @@ class FieldList
             return true;
         }
 
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1530,7 +1530,7 @@ class FieldList
      **/
     public function playSpecFields($arr_field, $custom_mandatory = false, $user_id = false)
     {
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1807,7 +1807,7 @@ class FieldList
         if ($arr_field !== false) {
             $to_remove = &$arr_field;
         } elseif ($id_group !== false) {
-            $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $allgroup_idst = $acl->getUserGroupsST($idst_user);
             // Leave the passed group
             $inc_group = array_search($id_group, $allgroup_idst);

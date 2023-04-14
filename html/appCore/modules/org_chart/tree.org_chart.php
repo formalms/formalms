@@ -422,7 +422,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function getGroupST($idFolder)
     {
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         return $acl->getGroupST($this->getGroupId($idFolder));
     }
@@ -432,7 +432,7 @@ class TreeDb_OrgDb extends TreeDb
         $rootFolder = &$this->getRootFolder();
         $arrId = $this->getDescendantsId($rootFolder);
         $arrResult = [];
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         foreach ($arrId as $groupId) {
             $arrResult[] = $acl->getGroupST($this->getGroupId($groupId));
         }
@@ -442,7 +442,7 @@ class TreeDb_OrgDb extends TreeDb
 
     public function getGroupDescendantsST($idFolder)
     {
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         return $acl->getGroupST($this->getGroupDescendantsId($idFolder));
     }
@@ -949,7 +949,7 @@ class TreeView_OrgView extends TreeView
             } else {
                 if (isset($_POST['arr_idst_groups'])) {
                     $arr_idst_groups = Util::unserialize(urldecode($_POST['arr_idst_groups']));
-                    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+                    $acl = \FormaLms\lib\Forma::getAcl();
                     $arr_idst_all = $acl->getArrSTGroupsST($arr_idst_groups);
                 } else {
                     $arr_idst_groups = false;
@@ -1164,7 +1164,7 @@ class TreeView_OrgView extends TreeView
                 } else {
                     $folder_id = $this->getSelectedFolderId();
 
-                    $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+                    $acl = \FormaLms\lib\Forma::getAcl();
 
                     //-extra field check mandatory -----------------------------
                     require_once _adm_ . '/lib/lib.field.php';
@@ -1552,7 +1552,7 @@ class TreeView_OrgView extends TreeView
         $tdb = &$this->tdb;
         $folder = $tdb->getFolderById($this->getSelectedFolderId());
         $folder_idst = $tdb->getGroupST($this->getSelectedFolderId());
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         //$idst_field_group = $aclManager->getGroupST(ORG_CHART_FOLDER_FIELD_GROUP);
 
         require_once _base_ . '/lib/lib.form.php';
@@ -1736,7 +1736,7 @@ class TreeView_OrgView extends TreeView
         $tree .= $form->openElementSpace();
         $tree .= $this->printState();
 
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $arr_all_fields = $fl->getAllFields();
         $idst_group = $tdb->getGroupST($this->getSelectedFolderId());

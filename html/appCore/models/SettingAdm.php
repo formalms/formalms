@@ -144,7 +144,7 @@ class SettingAdm extends Model
     /**
      * Draw the mask for the template manager, i hope to remove it from here.
      *
-     * @return <string>
+     * @return string
      */
     public function _maskSuiteManager()
     {
@@ -194,7 +194,7 @@ class SettingAdm extends Model
     /**
      * Draw the mask for the template manager, i hope to remove it from here.
      *
-     * @return <string>
+     * @return string
      */
     public function _saveSuiteManager()
     {

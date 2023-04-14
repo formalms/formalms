@@ -505,7 +505,7 @@ class SubscriptionAlmsController extends AlmsController
             $level_idst = &$formaCourse->getCourseLevel($id_course);
 
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$formaCourse->createCourseLevel($id_course);
+                $level_idst = FormaCourse::createCourseLevel($id_course);
             }
 
             $waiting = 0;
@@ -518,10 +518,9 @@ class SubscriptionAlmsController extends AlmsController
 
             $user_selected = [];
             if ($_POST['subs']) {
-                $subs = $_POST['subs'];
                 $subs = explode(',', $_POST['subs']);
                 foreach ($subs as $sub) {
-                    list($user, $level) = explode(':', $sub);
+                    [$user, $level] = explode(':', $sub);
                     $user_selected[$user] = $level;
                 }
             }
@@ -578,10 +577,9 @@ class SubscriptionAlmsController extends AlmsController
 
             $user_selected = [];
             if ($_POST['subs']) {
-                $subs = $_POST['subs'];
                 $subs = explode(',', $_POST['subs']);
                 foreach ($subs as $sub) {
-                    list($user_id, $level) = explode(':', $sub);
+                    [$user_id, $level] = explode(':', $sub);
                     $user_selected[$user] = $level;
 
                     // Moderator notification
@@ -832,7 +830,7 @@ class SubscriptionAlmsController extends AlmsController
 
                         $level_idst = &$formaCourse->getCourseLevel($this->id_course);
                         if (count($level_idst) == 0 || $level_idst[1] == '') {
-                            $level_idst = &$formaCourse->createCourseLevel($this->id_course);
+                            $level_idst = FormaCourse::createCourseLevel($this->id_course);
                         }
 
                         $level = $this->model->getUserLevel($id_user);
@@ -1037,7 +1035,7 @@ class SubscriptionAlmsController extends AlmsController
                 $level_idst = $formaCourse->getCourseLevel($this->model->getIdCourse());
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = $formaCourse->createCourseLevel($this->id_course);
+                    $level_idst = FormaCourse::createCourseLevel($this->id_course);
                 }
 
                 //$this->acl_man->addToGroup($level_idst[$level], $id_user);
@@ -1604,7 +1602,7 @@ class SubscriptionAlmsController extends AlmsController
 
                             $level_idst = &$formaCourse->getCourseLevel($id_course);
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = &$formaCourse->createCourseLevel($id_course);
+                                $level_idst = FormaCourse::createCourseLevel($id_course);
                             }
 
                             $waiting = 0;
@@ -1651,7 +1649,7 @@ class SubscriptionAlmsController extends AlmsController
                                 $level_idst = &$formaCourse->getCourseLevel($id_course);
 
                                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                    $level_idst = &$formaCourse->createCourseLevel($id_course);
+                                    $level_idst = FormaCourse::createCourseLevel($id_course);
                                 }
 
                                 $waiting = 0;
@@ -1695,7 +1693,7 @@ class SubscriptionAlmsController extends AlmsController
                                 $level_idst = &$formaCourse->getCourseLevel($id_course);
 
                                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                    $level_idst = &$formaCourse->createCourseLevel($id_course);
+                                    $level_idst = FormaCourse::createCourseLevel($id_course);
                                 }
 
                                 $waiting = 0;
@@ -1809,7 +1807,7 @@ class SubscriptionAlmsController extends AlmsController
                 $level_idst = $formaCourse->getCourseLevel($this->id_course);
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$formaCourse->createCourseLevel($this->id_course);
+                    $level_idst = FormaCourse::createCourseLevel($this->id_course);
                 }
 
                 $back_url = 'index.php?r=' . $this->link . '/show&id_course=' . $this->id_course . '&id_edition=' . $this->id_edition . '&id_date=' . $this->id_date;
@@ -1895,7 +1893,7 @@ class SubscriptionAlmsController extends AlmsController
                             $level_idst = $formaCourse->getCourseLevel($this->id_course);
 
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = &$formaCourse->createCourseLevel($this->id_course);
+                                $level_idst = FormaCourse::createCourseLevel($this->id_course);
                             }
 
                             if (!$direct_subscribe) {
@@ -1959,7 +1957,7 @@ class SubscriptionAlmsController extends AlmsController
                             $level_idst = $formaCourse->getCourseLevel($this->id_course);
 
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                                $level_idst = &$formaCourse->createCourseLevel($this->id_course);
+                                $level_idst = FormaCourse::createCourseLevel($this->id_course);
                             }
 
                             if (!$direct_subscribe) {
@@ -2095,7 +2093,7 @@ class SubscriptionAlmsController extends AlmsController
 
             $level_idst = $formaCourse->getCourseLevel($this->id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = $formaCourse->createCourseLevel($this->id_course);
+                $level_idst = FormaCourse::createCourseLevel($this->id_course);
             }
 
             $query = 'SELECT idUser, MIN(level) AS level'
@@ -2134,7 +2132,7 @@ class SubscriptionAlmsController extends AlmsController
             $level_idst = $formaCourse->getCourseLevel($this->id_course);
 
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$formaCourse->createCourseLevel($this->id_course);
+                $level_idst = FormaCourse::createCourseLevel($this->id_course);
             }
 
             $waiting = 0;
@@ -2217,7 +2215,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 $level_idst = &$formaCourse->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$formaCourse->createCourseLevel($id_course);
+                    $level_idst = FormaCourse::createCourseLevel($id_course);
                 }
 
                 $query = 'SELECT idUser, MIN(level) AS level'
@@ -2256,7 +2254,7 @@ class SubscriptionAlmsController extends AlmsController
                 $level_idst = $formaCourse->getCourseLevel($id_course);
 
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = $formaCourse->createCourseLevel($id_course);
+                    $level_idst = FormaCourse::createCourseLevel($id_course);
                 }
 
                 $waiting = 0;
@@ -2790,7 +2788,7 @@ class SubscriptionAlmsController extends AlmsController
                 $formaCourse = new FormaCourse($id_course);
                 $level_idst = &$formaCourse->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$formaCourse->createCourseLevel($id_course);
+                    $level_idst = FormaCourse::createCourseLevel($id_course);
                 }
                 $this->_addToCourseGroup($level_idst[$lv_user], $id_user);
             }
@@ -2889,7 +2887,7 @@ class SubscriptionAlmsController extends AlmsController
             $formaCourse = new FormaCourse($id_course);
             $level_idst = &$formaCourse->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$formaCourse->createCourseLevel($id_course);
+                $level_idst = FormaCourse::createCourseLevel($id_course);
             }
             //$this->acl_man->addToGroup($level_idst[$level], $id_user);
             $this->_addToCourseGroup($level_idst[$level], $id_user);
@@ -3439,7 +3437,7 @@ class SubscriptionAlmsController extends AlmsController
                 $formaCourse = new FormaCourse($id_course);
                 $level_idst = &$formaCourse->getCourseLevel($id_course);
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
-                    $level_idst = &$formaCourse->createCourseLevel($id_course);
+                    $level_idst = FormaCourse::createCourseLevel($id_course);
                 }
                 foreach ($_to_add as $id_user) {
                     $level = 3; //student
@@ -3477,7 +3475,7 @@ class SubscriptionAlmsController extends AlmsController
             $formaCourse = new FormaCourse($id_course);
             $level_idst = &$formaCourse->getCourseLevel($id_course);
             if (count($level_idst) == 0 || $level_idst[1] == '') {
-                $level_idst = &$formaCourse->createCourseLevel($id_course);
+                $level_idst = FormaCourse::createCourseLevel($id_course);
             }
 
             foreach ($_to_add as $id_user) {
@@ -3774,7 +3772,7 @@ class SubscriptionAlmsController extends AlmsController
 
             $group_levels = $formaCourse->getCourseLevel($id_course);
             if (count($group_levels) == 0 || $group_levels[1] == '') {
-                $group_levels = &$formaCourse->createCourseLevel($id_course);
+                $group_levels = FormaCourse::createCourseLevel($id_course);
             }
             foreach ($_POST['waiting_user'] as $id_user => $action) {
                 if ($action == 0) {

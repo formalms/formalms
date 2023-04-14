@@ -313,7 +313,7 @@ class AssessmentList
 
         $level_idst = $formaCourse->getCourseLevel($id_assessment);
         if (count($level_idst) == 0 || $level_idst[1] == '') {
-            $level_idst = $formaCourse->createCourseLevel($id_assessment);
+            $level_idst = FormaCourse::createCourseLevel($id_assessment);
         }
 
         $level = 3;

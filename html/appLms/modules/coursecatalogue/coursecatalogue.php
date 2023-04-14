@@ -413,7 +413,7 @@ function subscribeToCourse($id_user, $id_course, $id_date = 0)
     $level_idst = &$formaCourse->getCourseLevel($id_course);
 
     if (count($level_idst) == 0) {
-        $level_idst = &$formaCourse->createCourseLevel($id_course);
+        $level_idst = FormaCourse::createCourseLevel($id_course);
     }
 
     $waiting = 0;

@@ -46,8 +46,8 @@ class Auth_API extends API
     /**
      * Log user and generate a token.
      *
-     * @param <string> $username username of the user that we want to authenticate
-     * @param <string> $password password of the user that we want to authenticate
+     * @param string $username username of the user that we want to authenticate
+     * @param string $password password of the user that we want to authenticate
      *
      * @return <array> the auth token for the session
      */

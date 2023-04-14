@@ -233,7 +233,7 @@ class Get
     /**
      * Return the current platform code.
      *
-     * @return <string> the platform path
+     * @return string the platform path
      */
     public static function cur_plat()
     {
@@ -312,9 +312,9 @@ class Get
     /**
      * Return the calculated relative path form the current zone (platform) to the requested one.
      *
-     * @param <string> $item (base, lms, ...)
+     * @param string $item (base, lms, ...)
      *
-     * @return <string> the relative path
+     * @return string the relative path
      */
     public static function rel_path($to = false)
     {
@@ -338,9 +338,9 @@ class Get
     /**
      * Return the absolute path of the platform.
      *
-     * @param <string> $item (base, lms, ...)
+     * @param string $item (base, lms, ...)
      *
-     * @return <string> the absolute path
+     * @return string the absolute path
      */
     public static function abs_path($to = false)
     {
@@ -375,9 +375,9 @@ class Get
     /**
      * Return the calculated relative path form the current zone (platform) to the requested one.
      *
-     * @param <string> $item (base, lms, ...)
+     * @param string $item (base, lms, ...)
      *
-     * @return <string> the relative path
+     * @return string the relative path
      */
     public static function tmpl_path($item = false)
     {
@@ -394,13 +394,13 @@ class Get
     /**
      * Return html code and resolved path for an image.
      *
-     * @param <string> $src the img[src] attribute, the path can be absolute or relative to the images/ folder of the current template
-     * @param <string> $alt the img[alt] attribute
-     * @param <string> $class_name the img[class] attribute
-     * @param <string> $extra some extra code that you need to add into the image
-     * @param <bool> $is_abspath if true the src is assumed absolute, if false the relative path is added to the src attr
+     * @param string $src the img[src] attribute, the path can be absolute or relative to the images/ folder of the current template
+     * @param string $alt the img[alt] attribute
+     * @param string $class_name the img[class] attribute
+     * @param string $extra some extra code that you need to add into the image
+     * @param bool $is_abspath if true the src is assumed absolute, if false the relative path is added to the src attr
      *
-     * @return <string> the html code (sample <img ... />)
+     * @return string the html code (sample <img ... />)
      */
     public static function img($src, $alt = false, $class_name = false, $extra = false, $is_abspath = false)
     {
@@ -446,13 +446,13 @@ class Get
     /**
      * Build an html for an image encapsulated into a link.
      *
-     * @param <string> $url the url for the a[href]
-     * @param <string> $title the title for the a[title]
-     * @param <string> $src the img[src]
-     * @param <string> $alt the img[alt]
+     * @param string $url the url for the a[href]
+     * @param string $title the title for the a[title]
+     * @param string $src the img[src]
+     * @param string $alt the img[alt]
      * @param <array> $extra the content of the 'link' key is used as extra in the a element if specified, the 'img' key content is used into the img element
      *
-     * @return <string> html code (sample: <a ...><img ...></a> )
+     * @return string html code (sample: <a ...><img ...></a> )
      */
     public static function link_img($url, $title, $src, $alt, $extra = false)
     {
@@ -474,7 +474,7 @@ class Get
     /**
      * This function try to evaluate the current site address.
      *
-     * @return <string> (i.e. http://localhost)
+     * @return string (i.e. http://localhost)
      */
     public static function site_url($disableUrlSetting = false)
     {
@@ -668,7 +668,7 @@ class Get
     /**
      * Return the user ip, also check for proxy http header.
      *
-     * @return <string> ip (i.e. 127.0.0.1)
+     * @return string ip (i.e. 127.0.0.1)
      */
     public static function user_ip()
     {
@@ -685,7 +685,7 @@ class Get
     /**
      * This funciont try to find the user SO and return it, if the so isn't in the internal list return 'unknown'.
      *
-     * @return <string> (ie. windows)
+     * @return string (ie. windows)
      */
     public static function user_os()
     {
@@ -703,7 +703,7 @@ class Get
     /**
      * This funciont try to find the user browser and return it, if the browser isn't in the internal list return 'unknown'.
      *
-     * @return <string> (ie. firefox)
+     * @return string (ie. firefox)
      */
     public static function user_agent()
     {
@@ -750,7 +750,7 @@ class Get
     /**
      * Parse the HTTP_ACCEPT_LANGUAGE in order to have a more usable language selction.
      *
-     * @param <bool> $main_only true if you want only the main language from the browser, false if you wnat the entire list
+     * @param bool $main_only true if you want only the main language from the browser, false if you wnat the entire list
      *
      * @return <mixed> string if $main_only = true (ie. en-EN), array if $main_only = false
      */
@@ -815,7 +815,7 @@ class Get
     /**
      * Return the size in bytes of the specified file.
      *
-     * @param <string> $file_path The target file
+     * @param string $file_path The target file
      *
      * @return <int> The size of the file in bytes
      */
@@ -827,7 +827,7 @@ class Get
     /**
      * Return the size in bytes of the specified directory.
      *
-     * @param <string> $path The target dir
+     * @param string $path The target dir
      *
      * @return <int> The size of the dir in bytes
      */

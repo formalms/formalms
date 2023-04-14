@@ -31,7 +31,7 @@ class RestAPI
     /**
      * Error handling.
      *
-     * @param <string> $error error message to print
+     * @param string $error error message to print
      * @param <type> $type error output type
      *
      * @return <type>
@@ -58,10 +58,10 @@ class RestAPI
     /**
      * Debug information handling, it's used only in developement context.
      *
-     * @param <string> $message debug message
-     * @param <string> $type output type to use
+     * @param string $message debug message
+     * @param string $type output type to use
      *
-     * @return <string> formatted error message
+     * @return string formatted error message
      */
     public static function HandleDebugInfo($message, $type = _REST_OUTPUT_XML)
     {

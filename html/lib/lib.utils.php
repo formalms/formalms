@@ -180,7 +180,7 @@ class Util
     /**
      * Return if the page was requested in POST by the client.
      *
-     * @return <bool>
+     * @return bool
      */
     public static function requestIsPost()
     {
@@ -247,7 +247,7 @@ class Util
     /**
      * Display a fatal app message.
      *
-     * @param <string> $msg  the errore message
+     * @param string $msg  the errore message
      */
     public static function fatal($msg)
     {

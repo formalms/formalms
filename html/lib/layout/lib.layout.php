@@ -168,7 +168,7 @@ class Layout
     /**
      * Return the complete code for the lms cart.
      *
-     * @return <string>
+     * @return string
      */
     public static function cart()
     {
@@ -185,7 +185,7 @@ class Layout
     /**
      * Build the restyled layout for lang selection.
      *
-     * @return <string>
+     * @return string
      */
     public static function buildLanguages()
     {
@@ -224,7 +224,7 @@ class Layout
     /**
      * Return the complete code for change lang dropdown.
      *
-     * @return <string>
+     * @return string
      */
     public static function change_lang()
     {
@@ -278,7 +278,7 @@ class Layout
     /**
      * Return the code for the catalogue link.
      *
-     * @return <string>
+     * @return string
      */
     public static function get_catalogue()
     {

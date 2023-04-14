@@ -170,7 +170,7 @@ function duplicateCourse()
     $formaCourse = new FormaCourse($id_dupcourse);
     $subscribe_man = new CourseSubscribe_Manager();
 
-    $group_idst = $formaCourse->createCourseLevel($new_course_dup);
+    $group_idst = FormaCourse::createCourseLevel($new_course_dup);
     $group_of_from = $formaCourse->getCourseLevel($id_dupcourse);
     $perm_form = createPermForDuplicatedCourse($group_of_from, $new_course_dup, $id_dupcourse);
     $levels = $subscribe_man->getUserLevel();

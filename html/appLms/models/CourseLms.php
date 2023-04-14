@@ -43,7 +43,7 @@ class CourseLms extends Model
      *                            we need a prefix for the course user rows and a prefix for the course table
      *                            array('u', 'c')
      *
-     * @return <string> the order to use in a ORDER BY clausole
+     * @return string the order to use in a ORDER BY clausole
      */
     protected function _resolveOrder($t_name = ['', ''])
     {

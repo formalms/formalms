@@ -23,7 +23,7 @@ class Lms_BlockWidget_menu extends Widget
     /**
      * Constructor.
      *
-     * @param <string> $config
+     * @param string $config
      *        	the properties of the table
      */
     public function __construct()

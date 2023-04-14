@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * Definition of php magic __autoload() method.
  *
- * @param <string> $classname the classname that php are tring to istanciate
+ * @param string $classname the classname that php are tring to istanciate
  *
  * @return void used
  */
@@ -45,6 +45,8 @@ function forma_autoload($classname)
         // db
         'DbHelper' => _base_ . '/db/DbHelper.php',
 
+        'Services_JSON' => _lib_ . '/lib.json.php',
+
         // i18n
         'Lang' => _i18n_ . '/lib.lang.php',
         'FormaLanguage' => _i18n_ . '/lib.lang.php',
@@ -64,7 +66,7 @@ function forma_autoload($classname)
         //aws
         'Plugin' => _lib_ . '/lib.plugin.php',
         'PluginManager' => _lib_ . '/lib.pluginmanager.php',
-         // lib jquery
+        // lib jquery
         'JQueryLib' => _lib_ . '/lib.jquerylib.php',
     ];
 

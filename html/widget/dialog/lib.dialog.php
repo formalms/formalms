@@ -55,7 +55,7 @@ class DialogWidget extends Widget
     /**
      * Constructor.
      *
-     * @param <string> $config the properties of the table
+     * @param string $config the properties of the table
      */
     public function __construct()
     {

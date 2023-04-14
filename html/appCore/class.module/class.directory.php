@@ -917,7 +917,7 @@ class Module_Directory extends Module
         require_once _adm_ . '/lib/lib.field.php';
         $fields = new FieldList();
         if ($arr_idst_groups != false) {
-            $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $arr_idst_all = $acl->getArrSTGroupsST(array_values($arr_idst_groups));
         } else {
             $arr_idst_all = false;
@@ -2131,7 +2131,7 @@ class Module_Directory extends Module
 
         $form = new Form();
         $fl = new FieldList();
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $GLOBALS['page']->setWorkingZone('content');
         $GLOBALS['page']->add(getTitleArea($this->lang->def('_GROUPS')

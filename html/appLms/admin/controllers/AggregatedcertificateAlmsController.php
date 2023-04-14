@@ -46,6 +46,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         'delmetacert' => 'delcertificate',
     ];
 
+    public int $id_certificate;
     public int $id_association;
     public string $back_url;
     public string $association_name;
@@ -790,7 +791,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc, (int) $id_user);
             foreach ($idsCP_array as $id_coursepath) {
                 $checked = in_array($id_coursepath, $check_assoc);
-                $cont[] = $form->getCheckbox('', '_' . $id_user . '_' . $id_coursepath . '_', '_' . $id_user . '_' . $id_coursepath . '_', 1, $checked);
+                $cont[] = Form::getCheckbox('', '_' . $id_user . '_' . $id_coursepath . '_', '_' . $id_user . '_' . $id_coursepath . '_', 1, $checked);
             }
             $cont[] = '<a href="javascript:;" onclick="checkall_fromback_meta(\'' . $form_name . '\', \'' . $id_user . '\', true); return false;">'
                 . Lang::t('_SELECT_ALL')
@@ -872,7 +873,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         $course_man = new Man_Course();
         foreach ($selected_course as $id_course) {
             $type_h[] = 'align_center';
-            $course_info = $course_man->getCourseInfo($id_course);
+            $course_info = Man_Course::getCourseInfo($id_course);
             $cont_h[] = $course_info['code'] . ' - ' . $course_info['name'];
             $cont_footer[] = '<a href="javascript:;" onclick="checkall_meta(\'' . $form_name . '\', \'' . $id_course . '\', true); return false;">'
                 . Lang::t('_SELECT_ALL')
@@ -897,7 +898,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             $check_assoc = $this->aggCertLib->getAssociationLink($this->id_association, $type_assoc, (int) $id_user);
             foreach ($selected_course as $id_course) {
                 $checked = in_array($id_course, $check_assoc);
-                $cont[] = $form->getCheckbox('', '_' . $id_user . '_' . $id_course . '_', '_' . $id_user . '_' . $id_course . '_', 1, $checked);
+                $cont[] = Form::getCheckbox('', '_' . $id_user . '_' . $id_course . '_', '_' . $id_user . '_' . $id_course . '_', 1, $checked);
             }
             $cont[] = '<a href="javascript:;" onclick="checkall_fromback_meta(\'' . $form_name . '\', \'' . $id_user . '\', true); return false;">'
                 . Lang::t('_SELECT_ALL')
@@ -997,7 +998,7 @@ class AggregatedcertificateAlmsController extends AlmsController
         require_once _lms_ . '/lib/lib.coursepath.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $acl_man = ocebo::user()\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $id_association = FormaLms\lib\Get::req('id_association', DOTY_INT, 0);
 
@@ -1307,7 +1308,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         if (!empty($arr_new_file)) {
             // if present load the new file --------------------------------------------------------
-            $filename = $new_file_id . '_' . mt_rand(0, 100) . '_' . time() . '_' . $arr_new_file['name'];
+            $filename = $new_file_id . '_' . random_int(0, 100) . '_' . time() . '_' . $arr_new_file['name'];
 
             if (!sl_upload($arr_new_file['tmp_name'], $path . $filename)) {
                 return false;

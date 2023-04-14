@@ -524,7 +524,7 @@ class Course_API extends API
         $formaCourse = new FormaCourse($courseId);
         $level_idst = $formaCourse->getCourseLevel($courseId);
         if (count($level_idst) == 0 || $level_idst[1] == '') {
-            $level_idst = $formaCourse->createCourseLevel($courseId);
+            $level_idst = FormaCourse::createCourseLevel($courseId);
         }
         $waiting = 0;
 
@@ -621,7 +621,7 @@ class Course_API extends API
         $formaCourse = new FormaCourse($courseId);
         $level_idst = $formaCourse->getCourseLevel($courseId);
         if (count($level_idst) == 0 || $level_idst[1] == '') {
-            $level_idst = $formaCourse->createCourseLevel($courseId);
+            $level_idst = FormaCourse::createCourseLevel($courseId);
         }
 
         $update_ok = true;
@@ -2569,7 +2569,7 @@ class Course_API extends API
         $formaCourse = new FormaCourse($id_dupcourse);
         $subscribe_man = new CourseSubscribe_Manager();
 
-        $group_idst = $formaCourse->createCourseLevel($new_course_dup);
+        $group_idst = FormaCourse::createCourseLevel($new_course_dup);
         $group_of_from = $formaCourse->getCourseLevel($id_dupcourse);
         $perm_form = createPermForDuplicatedCourse($group_of_from, $new_course_dup, $id_dupcourse);
         $levels = $subscribe_man->getUserLevel();

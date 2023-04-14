@@ -741,8 +741,8 @@ class emptyPageWriter extends PageWriter
 /**
  * Quick alias of $GLOBALS['page']->add() static method.
  *
- * @param <string> $text the text to add in the page
- * @param <string> $zone the identifier of the platform (content selected by default)
+ * @param string $text the text to add in the page
+ * @param string $zone the identifier of the platform (content selected by default)
  */
 function cout($text, $zone = false)
 {

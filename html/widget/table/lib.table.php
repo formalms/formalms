@@ -74,7 +74,7 @@ class TableWidget extends Widget
     /**
      * View that you want to use.
      *
-     * @var <string>
+     * @var string
      */
     public $show = 'static';
 
@@ -83,7 +83,7 @@ class TableWidget extends Widget
     /**
      * Constructor.
      *
-     * @param <string> $config the properties of the table
+     * @param string $config the properties of the table
      */
     public function __construct()
     {
@@ -314,7 +314,7 @@ class TableWidget extends Widget
      * Compile the js configuration for the yui datatable colum definition
      * based on the php array populated by the __construct.
      *
-     * @return <string>
+     * @return string
      */
     protected function _getColumns()
     {

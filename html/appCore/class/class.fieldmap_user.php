@@ -82,7 +82,7 @@ class FieldMapUser extends FieldMap
         // TODO: at this moment the function works only for user creation;
         // does not update the user if it already exists
 
-        $acl = &\FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $acl_manager = &\FormaLms\lib\Forma::getAclManager();
 
         $data = [];
