@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -93,7 +93,7 @@ class LoLmsController extends LmsController
                     'icon' => 'icon-play',
                     'label' => 'Play',
                 ];
-                if (array_key_exists('track_detail',$lo)) {
+                if (array_key_exists('track_detail', $lo) && $lo['track_detail']) {
                     $lo['visible_actions'][] = [
                         'name' => 'tracking',
                         'active' => true,

@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -1927,10 +1927,6 @@ class Org_TreeView extends RepoTreeView
         }
 
         $idLoList = (array) $idLoList;
-        if(file_exists(_base_ . '/customscripts/appLms/Events/Lms/OrgPropertiesPrintEvent.php')) {
-            include_once _base_ . '/customscripts/appLms/Events/Lms/OrgPropertiesPrintEvent.php';
-        }
-        
         require_once _lms_ . '/lib/lib.kbres.php';
         require_once _lms_ . '/class.module/track.object.php';
         require_once _lms_ . '/lib/lib.course.php';
@@ -1942,7 +1938,7 @@ class Org_TreeView extends RepoTreeView
             $folder = $this->tdb->getFolderById($idLo);
             $kbres = new KbRes();
             $type = isset($folder->otherValues[REPOFIELDOBJECTTYPE]) ? $folder->otherValues[REPOFIELDOBJECTTYPE] : null;
-       
+
             if ($type === 'scormorg') {
                 $type = 'scorm';
             }
@@ -1976,7 +1972,7 @@ class Org_TreeView extends RepoTreeView
             $node['courseType'] = $course->getValue('course_type');
             $node['courseTypeTranslation'] = Lang::t($course->getValue('course_type'), 's4b');
 
-            $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(isset($folder->otherValues[ORGFIELDPREREQUISITES]) ? $folder->otherValues[ORGFIELDPREREQUISITES] : null, 
+            $isPrerequisitesSatisfied = Track_Object::isPrerequisitesSatisfied(isset($folder->otherValues[ORGFIELDPREREQUISITES]) ? $folder->otherValues[ORGFIELDPREREQUISITES] : null,
                                                                                         getLogUserId());
 
             $node['isPrerequisitesSatisfied'] = $isPrerequisitesSatisfied; // && $event->getAccessible();
@@ -2008,7 +2004,7 @@ class Org_TreeView extends RepoTreeView
             }
 
             $orgFieldPublishFrom = isset($folder->otherValues[ORGFIELD_PUBLISHFROM]) ? $folder->otherValues[ORGFIELD_PUBLISHFROM] : null;
-           
+
             if (($orgFieldPublishFrom != '' && $orgFieldPublishFrom != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
                 if ($orgFieldPublishFrom > date('Y-m-d H:i:s')) {
                     continue;
@@ -2016,7 +2012,7 @@ class Org_TreeView extends RepoTreeView
             }
 
             $orgFieldPublishTo = isset($folder->otherValues[ORGFIELD_PUBLISHTO]) ? $folder->otherValues[ORGFIELD_PUBLISHTO] : null;
-           
+
             if (($orgFieldPublishTo != '' && $orgFieldPublishTo != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
                 if ($orgFieldPublishTo < date('Y-m-d H:i:s')) {
                     continue;
