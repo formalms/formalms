@@ -2,6 +2,43 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.5
+---------------------------------------------------------------------------------------
+Release date: 2023 january
+
+- #      - fix countable - remove old event
+- #      - try relative false in newsletter
+- #      - Fix frontend presence
+- #      - fix classroom presence - fix classroom date day save
+- #      - add setter and getter to docebo user
+- #      - feat: add alert on import csv on course
+- #      - fix api course updateDay
+- #      - fix(lo): tracking item correctly set
+- #      - fix id day to solve API addDay and updateDay
+- #      - fix installer
+- #      - #19842 - User Object grid - Pagination with many objects
+- #      - fix save user in session
+- #      - Fix typo in lib.catalogue.php
+- #      - fix constructs old style
+- #      - add test question score show in report management
+- #      - add remapping events from test360
+- #      - add event remapping
+- #      - Revert "exclude former closing date logic"
+- #      - Fix Get functions to read env variables if is defined
+- #      - fix dashboard permission
+- #      - exclude former closing date logic
+- #      - fix dashboard menu
+- #      - fix menu load
+- #      - fixes welcome block and add node
+- #      - fix dashboard settings and response
+- #      - fix plugin manager
+- #      - fix error dashboard layout
+- #      - upgrade version file
+- #      - fix dashboard
+- #      - fix save setting when param_type is button - code reindent
+- #      - fix report custom field translation when selected lang is different from default lang
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.3
 ---------------------------------------------------------------------------------------
 Release date: 2023 january
