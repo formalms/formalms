@@ -1050,6 +1050,7 @@ class InstallAdm extends Model
 
                 case 2:
                     //lancio migrate
+                    $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
                     $messagesMigration =  $migrator->migrate($params['debug']);
 
             

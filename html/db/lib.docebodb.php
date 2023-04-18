@@ -49,7 +49,8 @@ class DbConn
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
         $cfg = [];
-        if ($session && $session->has('setValues')) {
+        if ($session && $session->has('setValues') && count($session->get('setValues'))) {
+
             $values = $session->get('setValues');
 
             $cfg['db_type'] = 'mysqli';
