@@ -15,110 +15,120 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class SystemAdmController extends AdmController
 {
-
     protected InstallAdm $installModel;
 
     protected SystemAdm $systemModel;
-  
+
     public function init()
     {
         $debug =  $this->request->query->has('debug') ? (int) $this->request->query->get('debug') : 0;
         $lang = substr($this->request->server->get('HTTP_ACCEPT_LANGUAGE'), 0, 2);
-       
+
         $this->installModel = new InstallAdm($debug);
         $this->systemModel = new SystemAdm($lang);
+    
     }
 
     public function install()
     {
-      
+
         $params = $this->installModel->getData($this->request);
 
         $params['steps'] = $this->installModel->getSteps();
         $params['languages'] = Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
 
-      
+
         $this->render('install', $params);
 
     }
 
-    public function set() {
+    public function set()
+    {
 
         $result = json_encode(array('success' => $this->installModel->setValue($this->request)));
         echo $result;
-      
+
         exit;
     }
 
-    public function checkDbData() {
+    public function checkDbData()
+    {
 
         echo $this->installModel->checkDbData($this->request);
         exit;
     }
 
-    public function testMigrations() {
+    public function testMigrations()
+    {
 
         $params = $this->request->request->all();
 
         echo $this->installModel->testMigrate($params, true);
-        
+
 
         exit;
-      
+
     }
 
-    public function getErrorMessages() {
+    public function getErrorMessages()
+    {
 
         $result = json_encode(array('messages' =>  $this->installModel->getErrorMessages($this->request)));
         echo $result;
         exit;
-       
+
     }
 
-    public function checkFtp() {
+    public function checkFtp()
+    {
 
         echo $this->installModel->checkFtp($this->request);
-       
+
         exit;
-       
+
     }
 
 
-    public function checkAdminData() {
+    public function checkAdminData()
+    {
         echo $this->installModel->checkAdminData($this->request);
-       
+
         exit;
     }
 
-    public function checkSmtpData() {
+    public function checkSmtpData()
+    {
         echo $this->installModel->checkSmtpData($this->request);
-       
+
         exit;
     }
 
-    public function finalize() {
+    public function finalize()
+    {
         echo $this->installModel->finalize($this->request);
-       
+
         exit;
     }
 
-    public function formSave() {
+    public function formSave()
+    {
         echo $this->installModel->saveFields($this->request);
-       
+
         exit;
     }
 
-    public function generateLock() {
+    public function generateLock()
+    {
         echo $this->installModel->generateLock();
-       
+
         exit;
     }
 
 
     public function checkSystemStatus()
     {
-       
+
         $params['checks'] = $this->systemModel->getChecks();
         $errorStatus = $this->request->get('errorStatus');
 
@@ -130,15 +140,18 @@ class SystemAdmController extends AdmController
 
     }
 
-    public function downloadConfigFile() {
-         $this->installModel->downlodConfigFile();
-       
+    public function downloadConfigFile()
+    {
+        $this->installModel->downlodConfigFile();
+
     }
 
-    public function downloadLockFile() {
+    public function downloadLockFile()
+    {
         $this->installModel->downloadLockFile();
-      
-   }
+
+    }
 
  
+
 }

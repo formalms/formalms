@@ -132,7 +132,6 @@ class InstallAdm extends Model
         $labels['serverInfo'] = _SERVERINFO;
         $labels['serverSw'] = _SERVER_SOFTWARE;
         $labels['phpVersion'] = _PHPVERSION;
-        $labels['phpCliVersion'] = _PHPCLIVERSION;
         $labels['mysqlClientVersion'] = _MYSQLCLIENT_VERSION;
         $labels['mysqlServerVersion'] = _MYSQLSERVER_VERSION;
         $labels['mbstringLabel'] = _MBSTRING;
@@ -140,7 +139,6 @@ class InstallAdm extends Model
         $labels['fileInfoLabel'] = _FILEINFO;
         $labels['ldapLabel'] = _LDAP;
         $labels['openSslLabel'] = _OPENSSL;
-        $labels['disableFunctionsLabel'] = _DISABLE_FUNCTIONS;
         $labels['phpTimezone'] = _PHP_TIMEZONE;
         $labels['phpInfo'] = _PHPINFO;
         $labels['allowUrlFopenLabel'] = _ALLOW_URL_FOPEN;
@@ -283,14 +281,13 @@ class InstallAdm extends Model
             $params = array_merge($params, $this->compareVersions());
         }
 
-        $phpCli = $this->getPhpCliVersion();
+     
         $params['setLang'] = Lang::getSelLang();
         $params['upgrade'] = (bool)$this->upgrade;
         $params['currentVersion'] = $this->upgrade;
         $params['fileVersion'] = _file_version_;
         $params['serverSwInfo'] = $request->server->get('SERVER_SOFTWARE');
         $params['phpVersionInfo'] = phpversion();
-        $params['phpCliVersionInfo'] = array_key_exists('error', $phpCli) ? _PHP_NOT_FOUND : $phpCli['version'];
         preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $sqlClientVersion);
         $params['sqlClientVersion'] = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1];
         try {
@@ -304,7 +301,6 @@ class InstallAdm extends Model
         $params['fileInfoData'] = extension_loaded('fileinfo') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_FILEINFO;
         $params['ldapData'] = extension_loaded('ldap') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_IT;
         $params['openSslData'] = extension_loaded('openssl') ? _ON : _OFF . ' ' . _WARINNG_SOCIAL;
-        $params['disableFunctionsData'] = $params['disableFunctions'] != 'err' ? _OFF : _ON;
         $params['phpTimezoneData'] = @date_default_timezone_get();
         $params['allowUrlFopenData'] = $params['allowUrlFopen'] != 'err' ? _ON : _OFF . ' ' . _WARNING_SOCIAL;
         $params['allowUrlIncludeData'] = $params['allowUrlInclude'] != 'err' ? _ON : _OFF;
@@ -328,7 +324,7 @@ class InstallAdm extends Model
 
         $checkRequirements = 1;
 
-        $phpCli = $this->getPhpCliVersion();
+  
         //TODO PHP7x: set const for Minimum PHP required version: 7.4
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
         if (version_compare(PHP_VERSION, _php_min_version_, '<')) {
@@ -337,18 +333,6 @@ class InstallAdm extends Model
             $res['mandatory']['php'] = 'warn';
         } else {
             $res['mandatory']['php'] = 'ok';
-        }
-
-        if (array_key_exists('error', $phpCli)) {
-            $res['mandatory']['phpcli'] = 'err';
-        } else {
-            if (version_compare($phpCli['version'], _php_min_version_, '<')) {
-                $res['mandatory']['phpcli'] = 'err';
-            } elseif (version_compare($phpCli['version'], _php_max_version_, '>')) {
-                $res['mandatory']['phpcli'] = 'warn';
-            } else {
-                $res['mandatory']['phpcli'] = 'ok';
-            }
         }
 
 
@@ -394,7 +378,7 @@ class InstallAdm extends Model
         $res['requirements']['allowUrlFopen'] = ((bool) ini_get('allow_url_fopen') ? 'ok' : 'err');
         $res['requirements']['allowUrlInclude'] = ((bool) ini_get('allow_url_include') ? 'err' : 'ok');
         $res['mandatory']['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
-        $res['mandatory']['disableFunctions'] = in_array('shell_exec', explode(',', ini_get('disable_functions'))) ? 'err' : 'ok';
+        //$res['mandatory']['disableFunctions'] = in_array('shell_exec', explode(',', ini_get('disable_functions'))) ? 'err' : 'ok';
 
         if (in_array('err', $res['mandatory'])) {
             $checkRequirements = 0;
@@ -1047,6 +1031,7 @@ class InstallAdm extends Model
         $params = $request->request->all();
         $messages = [];
         $type = 'standard';
+   
 
         if ($params['upgrade']) {
             switch ($params['check']) {
@@ -1065,7 +1050,7 @@ class InstallAdm extends Model
 
                 case 2:
                     //lancio migrate
-                    $messagesMigration = $this->migrate($params['debug']);
+                    $messagesMigration =  $migrator->migrate($params['debug']);
 
             
                     if (!preg_match('/finished/', $messagesMigration)) {
@@ -1130,8 +1115,8 @@ class InstallAdm extends Model
                 break;
 
             case 2:
-
-                $messagesMigration = $this->migrate($params['debug']);
+                $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
+                $messagesMigration = $migrator->migrate($params['debug']);
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation($this->session->get('setValues'));
@@ -1217,7 +1202,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    public function migrate($debug = false, $testLine = '')
+    public function migrateByCli($debug = false, $testLine = '')
     {
         $migrationFile = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
         $mainPath = dirname(__DIR__, 2);
@@ -1227,7 +1212,9 @@ class InstallAdm extends Model
             $debugString = '2>&1';
         }
 
-        return shell_exec("php " . $migrationFile . " migrate ". $testLine ." --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
+        # return shell_exec("php " . $migrationFile . " migrate ". $testLine ." --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
+ 
+        return true;    
     }
 
     /**
@@ -1798,25 +1785,7 @@ class InstallAdm extends Model
         return $this->setResponse($response, [])->wrapResponse();
     }
 
-    /**
-     * Method to retrieve php cli version
-     *
-     * @return string
-     */
-    public function getPhpCliVersion()
-    {
-        $matches = [];
-        $result['version'] = '';
-        //preg_match('/(php:\snot\sfound)/', shell_exec("php -v 2>&1"), $matches);
-        preg_match('/(?<= )\d+\.\d+\.\d+/', shell_exec("php -v"), $matches);
-        if (!count($matches)) {
-            $result['error'] = true;
-        } else {
-            $result['version'] = $matches[0];
-        }
 
-        return $result;
-    }
 
    /**
      * Method to download config file
@@ -1898,22 +1867,17 @@ class InstallAdm extends Model
      */
     public function testMigrate($params = [], $save = false)
     {
-        if (array_key_exists('upgrade', $params) && (int) $params['upgrade']) {
-            $this->installMigrationsTable();
-        }
-        $writeSqlFile = dirname(__DIR__, 2) . "/files/logs/migration" . floor(microtime(true) * 1000) .".sql";
-
-        $testLine = '--dry-run --write-sql=' . $writeSqlFile;
-
         if ($save) {
             $this->saveTmpConfig();
         }
 
-        $messages[] = $this->migrate((bool) array_key_exists('debug', $params), $testLine);
+        $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
+        if (array_key_exists('upgrade', $params) && (int) $params['upgrade']) {
+            $this->installMigrationsTable();
+        }
 
-
-        $messages[] = 'CHECK: ' . $writeSqlFile;
-
+        $resultMigration = $migrator->migrate((bool) array_key_exists('debug', $params), true);
+        $messages[] = 'CHECK: ' . $resultMigration;
         return $this->setResponse(true, $messages)->wrapResponse();
     }
 }
