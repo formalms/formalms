@@ -4,8 +4,9 @@ RELEASE CHANGELOG
 ---------------------------------------------------------------------------------------
 forma.lms 3.3.5
 ---------------------------------------------------------------------------------------
-Release date: 2023 january
+Release date: 2023 april
 
+- #      - fix dashboard permission
 - #      - fix countable - remove old event
 - #      - try relative false in newsletter
 - #      - Fix frontend presence
