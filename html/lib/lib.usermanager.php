@@ -1848,8 +1848,8 @@ class UserManagerRenderer
                 case 'tree_man':
                     // resolving the tree_man
                     $uma = new UsermanagementAdm();
-                    $reg_code = $this->getRegCodeFromNode($reg_code);
-                    $array_folder = $uma->getFolderGroups($reg_code);
+                    $reg_codeId = $this->getRegCodeFromNode($reg_code);
+                    $array_folder = $uma->getFolderGroups($reg_codeId);
 
                     break;
                 case 'code_module':
