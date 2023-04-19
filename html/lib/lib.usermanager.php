@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -1847,8 +1847,8 @@ class UserManagerRenderer
                 case 'tree_man':
                     // resolving the tree_man
                     $uma = new UsermanagementAdm();
-                    $reg_code = $this->getRegCodeFromNode($reg_code);
-                    $array_folder = $uma->getFolderGroups($reg_code);
+                    $reg_codeId = $this->getRegCodeFromNode($reg_code);
+                    $array_folder = $uma->getFolderGroups($reg_codeId);
 
                     break;
                 case 'code_module':
