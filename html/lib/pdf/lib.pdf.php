@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -55,8 +55,8 @@ class PDF extends TCPDF
 
         //		$this->encrypted=false;
         //		$this->last_rc4_key='';
-                /*$this->padding="\x28\xBF\x4E\x5E\x4E\x75\x8A\x41\x64\x00\x4E\x56\xFF\xFA\x01\x08".
-                "\x2E\x2E\x00\xB6\xD0\x68\x3E\x80\x2F\x0C\xA9\xFE\x64\x53\x69\x7A";*/
+        /*$this->padding="\x28\xBF\x4E\x5E\x4E\x75\x8A\x41\x64\x00\x4E\x56\xFF\xFA\x01\x08".
+        "\x2E\x2E\x00\xB6\xD0\x68\x3E\x80\x2F\x0C\xA9\xFE\x64\x53\x69\x7A";*/
         //$this->SetFont('freeserif','',12);
     }
 
@@ -120,6 +120,11 @@ class PDF extends TCPDF
         foreach ($nodelist as $node) {
             $value = $node->attributes->getNamedItem('src')->nodeValue;
             $value = str_replace(' ', '%20', $value);
+
+            $pathExplode = explode('/files/', $value);
+            if ($pathExplode) {
+                $value = str_replace($pathExplode[0], '', $value);
+            }
             $node->attributes->getNamedItem('src')->nodeValue = $value;
         }
 
