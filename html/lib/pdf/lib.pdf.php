@@ -122,7 +122,7 @@ class PDF extends TCPDF
             $value = str_replace(' ', '%20', $value);
 
             $pathExplode = explode('/files/', $value);
-            if ($pathExplode) {
+            if ($pathExplode && count($pathExplode) > 1) {
                 $value = str_replace($pathExplode[0], '', $value);
             }
             $node->attributes->getNamedItem('src')->nodeValue = $value;
