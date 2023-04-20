@@ -506,6 +506,7 @@ class CoursereportLmsController extends LmsController
         require_once Forma::inc(_lms_ . '/lib/lib.course.php');
         require_once Forma::inc(_adm_ . '/lib/lib.field.php');
 
+     
         $redo_final = FormaLms\lib\Get::pReq('redo_final', DOTY_MIXED, false);
         $round_report = FormaLms\lib\Get::pReq('round_report', DOTY_MIXED, false);
         $round_test = FormaLms\lib\Get::pReq('round_test', DOTY_MIXED, false);
@@ -542,7 +543,7 @@ class CoursereportLmsController extends LmsController
         $type_filter = FormaLms\lib\Get::pReq('type_filter', DOTY_MIXED, false);
         $edition_filter = FormaLms\lib\Get::pReq('edition_filter', DOTY_MIXED, false);
 
-        $org_tests = &$report_man->getTest();
+        $org_tests = $report_man->getTest();
         $tests_info = $test_man->getTestInfo($org_tests);
 
         if ($type_filter == 'false') {
@@ -550,7 +551,7 @@ class CoursereportLmsController extends LmsController
         }
 
         if ($edition_filter == 'false') {
-            $type_filter = false;
+            $edition_filter = false;
         }
 
         $reportsArray = $this->model->getCourseReportsVisibleInDetail();
@@ -584,7 +585,7 @@ class CoursereportLmsController extends LmsController
         }
 
         $id_students = array_keys($students);
-        $students_info = &$acl_man->getUsers($id_students);
+        $students_info = $acl_man->getUsers($id_students);
 
         $reportsArrayTest = $this->model->getReportsFilteredBySourceOf(CoursereportLms::SOURCE_OF_TEST);
 
@@ -1200,8 +1201,8 @@ class CoursereportLmsController extends LmsController
 
         $studentName = FormaLms\lib\Get::gReq('studentName');
 
-        $lang = &DoceboLanguage::createInstance('coursereport', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = DoceboLanguage::createInstance('coursereport', 'lms');
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $query_testreport = "
         SELECT DATE_FORMAT(tt.date_attempt, '%d/%m/%Y %H:%i'), tt.score, tt.idTest, t.idUser, tt.number_time
@@ -1211,7 +1212,7 @@ class CoursereportLmsController extends LmsController
         $re_testreport = sql_query($query_testreport);
 
         $test_man = new GroupTestManagement();
-        $test_info = &current($test_man->getTestInfo([$idTest]));
+        $test_info = current($test_man->getTestInfo([$idTest]));
         $retainAnswersHistory = (bool) $test_info['retain_answers_history'];
 
         $page_title = [

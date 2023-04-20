@@ -321,7 +321,7 @@ class CatalogLms extends Model
                     $courses = [];
 
                     foreach ($user_catalogue as $id_cat) {
-                        $catalogue_course = &$cat_man->getCatalogueCourse($id_cat);
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat);
 
                         $courses = array_merge($courses, $catalogue_course);
                     }
