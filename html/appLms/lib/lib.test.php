@@ -378,7 +378,7 @@ class GroupTestManagement
         if (!$rs) {
             return false;
         }
-        [$id_track] = sql_fetch_row($rs);
+        $id_track = sql_fetch_row($rs);
 
         if (!$id_track) {
             return false;

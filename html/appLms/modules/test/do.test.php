@@ -2065,8 +2065,12 @@ function editUserReport($id_user, $id_test, $id_track, $number_time = null, $edi
         }
     }
 
-    $total_time = 0;
-    $total_time = fromDatetimeToTimestamp($date_end_attempt) - fromDatetimeToTimestamp($date_attempt);
+
+    if (!empty($date_end_attempt) ) {
+        $total_time = fromDatetimeToTimestamp($date_end_attempt) - fromDatetimeToTimestamp($date_attempt);
+    } else {
+        $total_time = 0;
+    }
     if ($total_time > 0) {
         $seconds = $total_time % 60;
         $total_time -= $seconds;
