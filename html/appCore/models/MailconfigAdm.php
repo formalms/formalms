@@ -126,7 +126,7 @@ class MailconfigAdm extends Model {
             Forma::addError($errorMessage);
             $output['error'] = true;
         }
-
+        $blankKeys = [];
         foreach($params as $key=>$param) {
             if(in_array($key, array_keys($this->getSettings()))) {
                
