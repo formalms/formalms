@@ -35,7 +35,7 @@ class SystemAdmController extends AdmController
         $params = $this->installModel->getData($this->request);
 
         $params['steps'] = $this->installModel->getSteps();
-        $params['languages'] = Lang::getFileSystemCoreLanguages('language');
+        $params['languages'] = ['english' => 'English']; //Lang::getFileSystemCoreLanguages('language');
         $params['setLang'] = Lang::getSelLang();
 
 
