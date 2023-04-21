@@ -223,6 +223,7 @@ class InstallAdm extends Model
         $this->errorLabels['db_not_empty'] = _DB_NOT_EMPTY;
         $this->errorLabels['cant_connect_db'] = _CANT_CONNECT_WITH_DB;
         $this->errorLabels['cant_select_db'] = _CANT_SELECT_DB;
+        $this->errorLabels['unsuitable_sql_version'] = _UNSUITABLE_SQL_VERSION;
         $this->errorLabels['not_matching_password'] = _NOT_MATCHING_PASSWORD;
         $this->errorLabels['email_not_valid'] = _NOT_VALID_EMAIL;
         $this->errorLabels['smtp_failed'] = _SMTP_FAILED;
@@ -290,11 +291,9 @@ class InstallAdm extends Model
         $params['phpVersionInfo'] = phpversion();
         preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $sqlClientVersion);
         $params['sqlClientVersion'] = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1];
-        try {
-            preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_server_info(), $sqlServerVersion);
-        } catch (\Exception $exception) {
-            $sqlServerVersion = '';
-        }
+
+        $sqlServerVersion = $this->checkSqlVersion();
+        
         $params['sqlServerVersion'] = empty($sqlServerVersion[1]) ? 'unknown' : $sqlServerVersion[1];
         $params['mbstringData'] = extension_loaded('mbstring') ? _ON : _OFF;
         $params['mimeCtData'] = $params['mimeCt'] == 'ok' ? _ON : _OFF;
@@ -302,7 +301,7 @@ class InstallAdm extends Model
         $params['ldapData'] = extension_loaded('ldap') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_IT;
         $params['openSslData'] = extension_loaded('openssl') ? _ON : _OFF . ' ' . _WARINNG_SOCIAL;
         $params['phpTimezoneData'] = @date_default_timezone_get();
-        $params['allowUrlFopenData'] = $params['allowUrlFopen'] != 'err' ? _ON : _OFF . ' ' . _WARNING_SOCIAL;
+        $params['allowUrlFopenData'] = $params['allowUrlFopen'] != 'err' ? _ON : _OFF . ' ' . _WARINNG_SOCIAL;
         $params['allowUrlIncludeData'] = $params['allowUrlInclude'] != 'err' ? _ON : _OFF;
         $params['uploadMaxFilesizeData'] = ini_get('upload_max_filesize');
         $params['postMaxSizeData'] = ini_get('post_max_size');
@@ -323,7 +322,7 @@ class InstallAdm extends Model
         $res = [];
 
         $checkRequirements = 1;
-
+  
   
         //TODO PHP7x: set const for Minimum PHP required version: 7.4
         //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
@@ -353,16 +352,17 @@ class InstallAdm extends Model
         }
         if (array_filter($driver)) {
             // mysql version, in easyphp the version number is ina string regcut it
-            preg_match('/([\.0-9][\.0-9]+\.[\.0-9]+)/', sql_get_server_version(), $mysqlVersion);
+           
+            $mysqlVersion = $this->checkSqlVersion();
 
             if (empty($mysqlVersion[1])) {
                 $res['mandatory']['mysql'] = 'ok';
             } else {
-                $checkMysql = version_compare($mysqlVersion[1], '5.6') >= 0 && version_compare($mysqlVersion[1], '8.1') < 0;
-                $checkMariaDB = version_compare($mysqlVersion[1], '10.0') >= 0 && version_compare($mysqlVersion[1], '11.0') < 0;
 
-                if ($checkMysql || $checkMariaDB) {
+
+                if ($this->compareSqlVersion($mysqlVersion[1])) {
                     $res['mandatory']['mysql'] = 'ok';
+                  
                 } else {
                     $res['mandatory']['mysql'] = 'err';
                 }
@@ -387,7 +387,7 @@ class InstallAdm extends Model
 
         $resultArray = array_merge($res['mandatory'], $res['requirements']);
         $resultArray['checkRequirements'] = $checkRequirements;
-
+   
         return $resultArray;
     }
 
@@ -942,50 +942,64 @@ class InstallAdm extends Model
         $success = false;
         $messages = [];
         $removeCreateDb = false;
-        switch ($connectionResult) {
-            case 'create_db':
-                //mi salvo in sessione che devo creare il db
-                $this->session->set('creationDb', $dbName);
-                $this->session->save();
-                $success = true;
+        $sqlVersionCheck = false;
 
-                break;
-            case 'ok':
-                $removeCreateDb = true;
-                if ($this->checkDBEmpty($dbName)) {
-                    if ($this->checkDBCharset()) {
-                        $success = true;
+        $checkSqlVersion = $this->checkSqlVersion($this->getSqlVersionByQuery());
+
+        if(!empty($checkSqlVersion[1])) {
+            $sqlVersionCheck = $this->compareSqlVersion($checkSqlVersion[1]);
+        }
+
+        if($sqlVersionCheck) {
+            switch ($connectionResult) {
+                case 'create_db':
+                    //mi salvo in sessione che devo creare il db
+                    $this->session->set('creationDb', $dbName);
+                    $this->session->save();
+                    $success = true;
+    
+                    break;
+                case 'ok':
+                    $removeCreateDb = true;
+                    if ($this->checkDBEmpty($dbName)) {
+                        if ($this->checkDBCharset()) {
+                            $success = true;
+                        } else {
+                            $success = false;
+                            $messages[] = $this->errorLabels['db_not_utf8'];
+                        }
                     } else {
                         $success = false;
-                        $messages[] = $this->errorLabels['db_not_utf8'];
+                        $messages[] = $this->errorLabels['db_not_empty'];
                     }
-                } else {
+    
+                    break;
+                case 'err_connect':
+                    $removeCreateDb = true;
                     $success = false;
-                    $messages[] = $this->errorLabels['db_not_empty'];
-                }
+                    $messages[] = $this->errorLabels['cant_connect_db'];
+    
+                    break;
+                case 'err_db_sel':
+                    $removeCreateDb = true;
+                    $success = false;
+                    $messages[] = $this->errorLabels['cant_select_db'];
+    
+                    break;
+                default:
+            }
 
-                break;
-            case 'err_connect':
-                $removeCreateDb = true;
-                $success = false;
-                $messages[] = $this->errorLabels['cant_connect_db'];
+            if ($removeCreateDb && $this->session->has('creationDb')) {
+                //rimuovo dalla sessione il valore di creazione db
+                $this->session->remove('creationDb');
+                $this->session->save();
+            }
+        } else {
 
-                break;
-            case 'err_db_sel':
-                $removeCreateDb = true;
-                $success = false;
-                $messages[] = $this->errorLabels['cant_select_db'];
+            $messages[] = $this->errorLabels['unsuitable_sql_version'];;
 
-                break;
-            default:
         }
-
-        if ($removeCreateDb && $this->session->has('creationDb')) {
-            //rimuovo dalla sessione il valore di creazione db
-            $this->session->remove('creationDb');
-            $this->session->save();
-        }
-
+        
         return $this->setResponse($success, $messages)->wrapResponse();
     }
 
@@ -1002,6 +1016,19 @@ class InstallAdm extends Model
         list($count) = sql_fetch_row($row);
 
         return $count == 0 ? true : false;
+    }
+
+    /**
+     * Method to check if sql version in the host is suitable
+     *
+     *
+     * @return string
+     */
+    public function getSqlVersionByQuery(): string
+    {
+        $row = sql_query("SELECT version()");
+        list($version) = sql_fetch_row($row);
+        return $version;
     }
 
     /**
@@ -1624,7 +1651,7 @@ class InstallAdm extends Model
 
         foreach ($params as $key => $value) {
             if ('lang_install' === $key) {
-                foreach ($values as $lang) {
+                foreach ($value as $lang) {
                     $this->setLangs($lang);
                 }
             } else {
@@ -1880,5 +1907,52 @@ class InstallAdm extends Model
         $resultMigration = $migrator->migrate((bool) array_key_exists('debug', $params), true);
         $messages[] = 'CHECK: ' . $resultMigration;
         return $this->setResponse(true, $messages)->wrapResponse();
+    }
+
+    /**
+     * Method to check the sql version
+     *
+     * @param $external check if sql is installed in other host
+     *
+     * @return array
+     */
+    public function checkSqlVersion($external = false) : array{
+
+        $sqlServerVersion = [];
+
+        $check = sql_get_server_info();
+
+        if($external) {
+            $check = $external;
+        }
+        try {
+        
+            preg_match('/([0-9]+\.[\.0-9]+)/', $check, $sqlServerVersion);
+        } catch (\Exception $exception) {
+            $sqlServerVersion = [];
+        }
+
+        return $sqlServerVersion;
+    }
+
+    /**
+     * Method to compare the sql version
+     *
+     * @param $sqlVersion sql version
+     *
+     * @return bool
+     */
+    public function compareSqlVersion(string $sqlVersion) : bool{
+
+        $result = false;
+        $checkMysql = version_compare($sqlVersion, '5.7') >= 0 && version_compare($sqlVersion, '8.1') < 0;
+        $checkMariaDB = version_compare($sqlVersion, '10.0') >= 0 && version_compare($sqlVersion, '11.0') < 0;
+
+        if($checkMysql || $checkMariaDB) {
+            $result = true;
+        }
+
+        return $result;
+
     }
 }

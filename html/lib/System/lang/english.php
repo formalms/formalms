@@ -117,6 +117,7 @@ define('_CANT_CONNECT_WITH_DB', "Can't connect to DB, please check inserted data
 define('_DB_NOT_EMPTY', 'The specified database is not empty');
 define('_DB_NOT_UTF8', 'The specified database is not utf8 charset');
 define('_CANT_SELECT_DB', "Can't select DB, please check inserted data");
+define('_UNSUITABLE_SQL_VERSION', "Sql Server Version unsuitable to requirements");
 define('_CANT_CONNECT_WITH_FTP', "Can't connect in ftp to the specified server, please check inserted parameters");
 define('_SQL_STRICT_MODE_WARN', "You have MySQL <a href=\"http://dev.mysql.com/doc/en/server-sql-mode.html\" target=\"_blank\">strict mode</a> enabled; forma.lms doesn't support it, so please turn it off");
 define('_SQL_STRICT_MODE', 'MySQL <a href="http://dev.mysql.com/doc/en/server-sql-mode.html" target="_blank">strict mode</a>');
