@@ -35,13 +35,13 @@ function createLO($objectType, $id_resource = false, $environment = false)
 {
     $query = "SELECT className, fileName FROM %lms_lo_types WHERE objectType='" . $objectType . "'";
     $rs = sql_query($query);
-    list($class_name, $file_name) = sql_fetch_row($rs);
-    if ($file_name && trim($file_name) == '') {
+    [$class_name, $fileName] = sql_fetch_row($rs);
+    if (empty($fileName) || (!empty($fileName) && trim($fileName) == '')) {
         return false;
     }
 
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');
-    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $file_name);
+    require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/' . $fileName);
 
     $lo = new $class_name($id_resource, $environment);
 
@@ -52,8 +52,8 @@ function createLOTrack($idTrack, $objectType, $idResource, $idParams, $back_url)
 {
     $query = "SELECT classNameTrack, fileNameTrack FROM %lms_lo_types WHERE objectType='" . $objectType . "'";
     $rs = sql_query($query);
-    list($className, $fileName) = sql_fetch_row($rs);
-    if ($fileName && trim($fileName) == '') {
+    [$className, $fileName] = sql_fetch_row($rs);
+    if (empty($fileName) || (!empty($fileName) && trim($fileName) == '')) {
         return false;
     }
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');
@@ -75,7 +75,7 @@ function createLOTrackShort($idReference, $idUser, $back_url)
             . "   AND (o.idOrg = '" . (int) $idReference . "')"
             . "   AND (ct.idUser = '" . (int) $idUser . "')";
     $rs = sql_query($query);
-    list($idParams, $objectType, $idResource, $idTrack, $className, $fileName) = sql_fetch_row($rs);
+    [$idParams, $objectType, $idResource, $idTrack, $className, $fileName] = sql_fetch_row($rs);
     if (trim($fileName) == '') {
         return false;
     }

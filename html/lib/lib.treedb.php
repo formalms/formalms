@@ -484,7 +484,7 @@ class TreeDb
      *
      * @return Folder object or NULL if not found
      **/
-    public function &getFolderById($id)
+    public function getFolderById($id)
     {
         if ($id == 0) {
             $folder = &$this->getRootFolder();
@@ -498,9 +498,8 @@ class TreeDb
             $rs = $this->_executeQuery($query)
                     or $this->_printSQLError('getFolderById');
             if (sql_num_rows($rs) == 0) {
-                $false_var = null;
 
-                return $false_var;
+                return null;
             }
             $folder = new Folder($this, sql_fetch_row($rs));
         }
