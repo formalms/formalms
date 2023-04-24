@@ -426,7 +426,7 @@ class UsermanagementAdmController extends AdmController
             $arr_idst[] = $tmp[0];
             $tmp = $acl_man->getGroup(false, '/ocd_' . $this->session->get('usermanagement_selected_node'));
             $arr_idst[] = $tmp[0];
-            $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }
 
@@ -1820,7 +1820,7 @@ class UsermanagementAdmController extends AdmController
         $table->addHead($cont_h, $type_h);
 
         $fl = new FieldList();
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $body = '';

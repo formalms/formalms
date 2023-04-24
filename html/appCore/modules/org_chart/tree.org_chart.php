@@ -1619,7 +1619,7 @@ class TreeView_OrgView extends TreeView
         $form = new Form();
         $fl = new FieldList();
         $fl->setGroupFieldsTable($GLOBALS['prefix_fw'] . ORGCHAR_FIELDTABLE);
-        //$acl =& \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        //$acl =& \FormaLms\lib\Forma::getAcl();
         //$aclManager =& $acl->getACLManager();
         $arr_all_fields = $fl->getAllFields();
         $id_folder = $this->getSelectedFolderId();

@@ -1015,7 +1015,7 @@ class CustomFieldList
      **/
     public function playFields($idst_obj = -1, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false, $separate_output = false, $check_precompiled = false)
     {
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = "SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class, 'false' as mandatory"
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1071,7 +1071,7 @@ class CustomFieldList
      **/
     public function playFieldsFlat($idst_obj = -1)
     {
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         $check_precompiled = 0;
         $query = 'SELECT ft.id_field, ft.code, ft.type_field, tft.type_file, tft.type_class, flt.translation as name'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1125,7 +1125,7 @@ class CustomFieldList
      **/
     public function hiddenFieldForUserArr($idst_user, $arr_idst = false, $freeze = false, $add_root = true, $useraccess = false)
     {
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
@@ -1193,7 +1193,7 @@ class CustomFieldList
      **/
     public function isFilledFieldsForUser($idst_user, $arr_idst = false)
     {
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($arr_idst === false) {
             $arr_idst = $acl->getUserGroupsST($idst_user);
         }
@@ -1327,7 +1327,7 @@ class CustomFieldList
     {
         //return is_numeric($idst_user) && (int)$idst_user > 0 ? $this->storeDirectFieldsForUsers((int)$idst_user, $arr_fields, $is_id, $int_userid) : FALSE;
 
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1382,7 +1382,7 @@ class CustomFieldList
             return true;
         }
 
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
@@ -1424,7 +1424,7 @@ class CustomFieldList
      **/
     public function playSpecFields($arr_field, $custom_mandatory = false, $user_id = false)
     {
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_field, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'

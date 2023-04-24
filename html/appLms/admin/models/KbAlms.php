@@ -871,7 +871,7 @@ class KbAlms extends Model
         if (empty($user_id)) {
             $arr_st = \FormaLms\lib\FormaUser::getCurrentUser()->getArrst();
         } else {
-            $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $arr_st = $acl->getUserAllST($user_id);
         }
         if (empty($arr_st)) {
@@ -898,7 +898,7 @@ class KbAlms extends Model
         if (empty($user_id)) {
             $arr_st = \FormaLms\lib\FormaUser::getCurrentUser()->getArrst();
         } else {
-            $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $arr_st = $acl->getUserAllST($user_id);
         }
         $arr_st = \FormaLms\lib\FormaUser::getCurrentUser()->getArrst();

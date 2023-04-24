@@ -1423,7 +1423,7 @@ class FieldList
     {
         //return is_numeric($idst_user) && (int)$idst_user > 0 ? $this->storeDirectFieldsForUsers((int)$idst_user, $arr_fields, $is_id, $int_userid) : FALSE;
 
-        $acl = \FormaLms\lib\FormaUser::getCurrentUser()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         $query = 'SELECT ft.id_common, ft.type_field, tft.type_file, tft.type_class'
             . '  FROM ( ' . $this->getFieldTable() . ' AS ft'
