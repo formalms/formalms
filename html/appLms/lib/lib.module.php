@@ -36,7 +36,7 @@ function createLO($objectType, $id_resource = false, $environment = false)
     $query = "SELECT className, fileName FROM %lms_lo_types WHERE objectType='" . $objectType . "'";
     $rs = sql_query($query);
     list($class_name, $file_name) = sql_fetch_row($rs);
-    if (trim($file_name) == '') {
+    if ($file_name && trim($file_name) == '') {
         return false;
     }
 
@@ -53,7 +53,7 @@ function createLOTrack($idTrack, $objectType, $idResource, $idParams, $back_url)
     $query = "SELECT classNameTrack, fileNameTrack FROM %lms_lo_types WHERE objectType='" . $objectType . "'";
     $rs = sql_query($query);
     list($className, $fileName) = sql_fetch_row($rs);
-    if (trim($fileName) == '') {
+    if ($fileName && trim($fileName) == '') {
         return false;
     }
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.object.php');

@@ -2016,7 +2016,7 @@ class Man_CourseUser
      * Return the complete user list that have the requested level.
      *
      * @param int $id_user the idst of the user
-     * @param int $level   the level number
+     * @param int|array $level   the level number
      *
      * @return array the list of the course with the carachteristic of it array( id_course => array(
      *               idCourse, code, name, description

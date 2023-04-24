@@ -3325,7 +3325,6 @@ class UserProfileViewer
         ]);
 
 
-
         foreach ($stats_data as $id_c => $info) {
 
             $tb->addBody([
@@ -3845,18 +3844,21 @@ class UserProfileData
             $preference = new UserPreferences($id_user);
             $this->_field_access_list[$id_user] = unserialize(stripslashes($preference->getPreference('user_rules.field_policy')));
         }
-        // add default value to list if needed
-        if (!isset($this->_field_access_list[$id_user]['email'])) {
-            $this->_field_access_list[$id_user]['email'] = PFL_POLICY_NOONE;
-        }
-        if (!isset($this->_field_access_list[$id_user]['online_satus'])) {
-            $this->_field_access_list[$id_user]['online_satus'] = PFL_POLICY_TEACHER_AND_FRIENDS;
-        }
-        if (!isset($this->_field_access_list[$id_user]['message_recipients'])) {
-            $this->_field_access_list[$id_user]['message_recipients'] = PFL_POLICY_TEACHER_AND_FRIENDS;
-        }
+        if (is_array($this->_field_access_list)) {
+            // add default value to list if needed
+            if (!isset($this->_field_access_list[$id_user]['email'])) {
+                $this->_field_access_list[$id_user]['email'] = PFL_POLICY_NOONE;
+            }
+            if (!isset($this->_field_access_list[$id_user]['online_satus'])) {
+                $this->_field_access_list[$id_user]['online_satus'] = PFL_POLICY_TEACHER_AND_FRIENDS;
+            }
+            if (!isset($this->_field_access_list[$id_user]['message_recipients'])) {
+                $this->_field_access_list[$id_user]['message_recipients'] = PFL_POLICY_TEACHER_AND_FRIENDS;
+            }
 
-        return $this->_field_access_list[$id_user];
+            return $this->_field_access_list[$id_user];
+        }
+        return [];
     }
 
     /**

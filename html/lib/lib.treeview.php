@@ -103,7 +103,6 @@ class TreeView
 
     public function setLanguage(&$lang)
     {
-        $this->lang->setGlobal();
         $this->lang = &$lang;
     }
 
