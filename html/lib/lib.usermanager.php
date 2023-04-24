@@ -1519,7 +1519,7 @@ class UserManagerRenderer
      *
      * @return array 'success'=>boolean, 'msg'=>string
      */
-    public function processRegistrationCode(&$acl_man, &$uma, $iduser, $reg_code, $registration_code_type)
+    public function processRegistrationCode($acl_man, $uma, $iduser, $reg_code, $registration_code_type)
     {
         $res = ['success' => true, 'msg' => ''];
 
@@ -1636,12 +1636,6 @@ class UserManagerRenderer
 
                     break;
             }
-        } elseif ($code_is_mandatory) {
-            //invalid code
-            $res['success'] = false;
-            $res['msg'] = $lang->def('_INVALID_CODE');
-
-            return $res;
         }
 
         // now in array_folder we have the associated folder for the users
@@ -1902,11 +1896,9 @@ class UserManagerRenderer
 
         $play_field = $extra_field->playFieldsForUser(
             0,
-            (isset($_POST['group_sel'])
-                ? $_POST['group_sel']
-                : (isset($_POST['group_sel_implode'])
-                    ? explode(',', $_POST['group_sel_implode'])
-                    : $array_folder)),
+            ($_POST['group_sel'] ?? (isset($_POST['group_sel_implode'])
+                ? explode(',', $_POST['group_sel_implode'])
+                : $array_folder)),
             false,
             true,
             false,
@@ -2298,7 +2290,7 @@ class UserManagerRenderer
     {
         $lang = &FormaLanguage::createInstance('register', $platform);
         $acl_man = &\FormaLms\lib\Forma::getAclManager();
-        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAcl();
 
         if (!isset($_GET['random_code'])) {
         }
@@ -2519,7 +2511,7 @@ class UserManagerRenderer
         $regCode = FormaLms\lib\Get::req('reg_code', DOTY_MIXED, '');
         $registrationCodeType = FormaLms\lib\Get::sett('registration_code_type', '0');
 
-        if ($codeIsMandatory) {
+        if ($codeIsMandatory && $registrationCodeType !== "0") {
             $codeIsValid = (new UserManager())->checkRegistrationCode($regCode, $registrationCodeType);
 
             if (!$codeIsValid) {

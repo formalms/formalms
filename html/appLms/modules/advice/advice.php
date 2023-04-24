@@ -700,7 +700,7 @@ function archiveadvice()
 
     $id_advice = importVar('idAdvice');
 
-    $acl = \FormaLms\lib\Forma::getAclManager();;
+    $acl = \FormaLms\lib\Forma::getAcl();;
     $user_idst = $acl->getUserGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
     $iam = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
     $user_idst[] = $iam;

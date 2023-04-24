@@ -346,7 +346,7 @@ class SubscriptionAlms extends Model
                         $msg_composer->setBodyLangText('email', $body_key, $array_subst);
                         // message to user that is waiting
 
-                        $acl = \FormaLms\lib\Forma::getAclManager();;
+                        $acl = \FormaLms\lib\Forma::getAcl();;
                         $acl_man = &$this->acl_man;
 
                         $recipients = [];
@@ -1116,7 +1116,7 @@ class SubscriptionAlms extends Model
             $msg_composer->setSubjectLangText('sms', '_NEW_USER_UNSUBS_WAITING_SUBJECT_SMS', false);
             $msg_composer->setBodyLangText('sms', '_NEW_USER_UNSUBS_WAITING_TEXT_SMS', $array_subst);
 
-            $acl = \FormaLms\lib\Forma::getAclManager();;
+            $acl = \FormaLms\lib\Forma::getAcl();;
             $acl_man = &$this->acl_man;
 
             $recipients = [];

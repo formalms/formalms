@@ -263,7 +263,7 @@ class GroupmanagementAdmController extends AdmController
         }
 
         if ($id > 0) {
-            $acl = \FormaLms\lib\Forma::getAclManager();
+            $acl = \FormaLms\lib\Forma::getAcl();
             $selector = new UserSelector();
 
             $cancel = FormaLms\lib\Get::req('cancelselector', DOTY_MIXED, false);
@@ -315,7 +315,7 @@ class GroupmanagementAdmController extends AdmController
     {
         require_once _base_ . '/lib/lib.form.php';
         $group_types = $this->model->getGroupTypes(true);
-        $acl = \FormaLms\lib\Forma::getAclManager();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($idst > 0) {
             $group_info = $this->model->getGroupInfo($idst);
             $action = 'ajax.adm_server.php?r=adm/groupmanagement/moddata&id=' . $idst;

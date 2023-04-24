@@ -52,10 +52,10 @@ class FormaEventClass
     {
         if (is_int($class_ref)) {
             $this->class_id = $class_ref;
-            $this->class_name = $this->getClassName($class_ref);
+            $this->class_name = self::getClassName($class_ref);
         } else {
             $this->class_name = $class_ref;
-            $this->class_id = $this->getClassId($class_ref);
+            $this->class_id = self::getClassId($class_ref);
         }
     }
 
@@ -66,7 +66,7 @@ class FormaEventClass
      * @param mixed the id of the class or FALSE if it's was not found
      * @static
      **/
-    public function getClassId($class_name)
+    public static function getClassId($class_name)
     {
         $query = 'SELECT idClass FROM ' . $GLOBALS['prefix_fw'] . '_event_class'
                 . " WHERE class = '" . $class_name . "'";
@@ -110,7 +110,7 @@ class FormaEventClass
      *
      * @return FormaEvent $event the event object
      **/
-    public function &createEvent($module, $section, $priority, $description)
+    public function createEvent($module, $section, $priority, $description)
     {
         $query = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event'
                 . ' (idClass,module,section,priority,description)'
@@ -328,7 +328,7 @@ class FormaEvent
 
     public function deleteOldProperty($force = false)
     {
-        if (mt_rand(1, PROPERTY_CASUALTIES) == 1 || $force === true) {
+        if (random_int(1, PROPERTY_CASUALTIES) == 1 || $force === true) {
             $query = 'DELETE FROM ' . $GLOBALS['prefix_fw'] . '_event_property ' .
                     "WHERE property_date < '" . date('Y-m-d', time() - PROPERTY_LIFETIME * 3600) . "'";
             sql_query($query);

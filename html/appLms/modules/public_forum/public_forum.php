@@ -118,7 +118,7 @@ function forum()
 		SELECT COUNT(*) FROM ' . $GLOBALS['prefix_lms'] . "_forum AS f
 		WHERE f.idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "'";
     } else {
-        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAcl();;
         $all_user_idst = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $all_user_idst[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
@@ -1650,7 +1650,7 @@ function insthread()
     if (!isset($members)) {
         $continue = true;
     } else {
-        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAcl();;
         $all_user_idst = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $all_user_idst[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
@@ -2811,7 +2811,7 @@ function insmessage()
     if (!isset($members)) {
         $continue = true;
     } else {
-        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAcl();;
         $all_user_idst = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $all_user_idst[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 
@@ -3291,7 +3291,7 @@ function forumsearch()
 		FROM ' . $GLOBALS['prefix_lms'] . "_forum
 		WHERE idCourse = '" . (int) PUBLIC_FORUM_COURSE_ID . "'";
     } else {
-        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAcl();;
         $all_user_idst = $acl->getSTGroupsST(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
         $all_user_idst[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
 

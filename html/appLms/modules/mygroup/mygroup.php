@@ -29,7 +29,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         }
 
         $acl_man = &\FormaLms\lib\Forma::getAclManager();
-        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAcl();;
         $groups = &$acl_man->getAllGroupsId(['free', 'moderate', 'private'],
                                                 $search);
 
@@ -149,7 +149,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             if (!$re_filled) {
                 $GLOBALS['page']->add(getErrorUi($lang->def('_SOME_MANDATORY_EMPTY')), 'content');
             } else {
-                $acl = \FormaLms\lib\Forma::getAclManager();;
+                $acl = \FormaLms\lib\Forma::getAcl();;
                 $acl_man = &\FormaLms\lib\Forma::getAclManager();
 
                 $groups = &$acl_man->getAllGroupsId(['free', 'moderate']);

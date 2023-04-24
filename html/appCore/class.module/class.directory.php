@@ -1115,7 +1115,7 @@ class Module_Directory extends Module
         require_once _base_ . '/lib/lib.form.php';
         require_once _base_ . '/lib/lib.table.php';
         require_once _adm_ . '/lib/lib.field.php';
-        $acl = \FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAcl();;
         $groupLabel = $groupid;
         if ($groupid != '') {
             $arrGroup = $this->aclManager->getGroup(false, $groupid);

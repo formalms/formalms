@@ -58,7 +58,7 @@ class Field_Dropdown extends Field
             //undo action
             Util::jump_to($back . '&result=undo');
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . self::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
             $show_on = '';
@@ -72,7 +72,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -82,7 +82,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -93,7 +93,7 @@ class Field_Dropdown extends Field
             if (!sql_query('
 			INSERT INTO ' . $this->_getMainTable() . "
 			(type_field, lang_code, translation, show_on_platform, use_multilang) VALUES
-			('" . $this->getFieldType() . "', '" . $mand_lang . "', '" . $_POST['new_dropdown'][$mand_lang] . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
+			('" . self::getFieldType() . "', '" . $mand_lang . "', '" . $_POST['new_dropdown'][$mand_lang] . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
                 Util::jump_to($back . '&result=fail');
             }
             list($id_common) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -110,7 +110,7 @@ class Field_Dropdown extends Field
                     $re_ins = sql_query('
 					INSERT INTO ' . $this->_getMainTable() . "
 					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang) VALUES
-					('" . $this->getFieldType() . "', '" . (int) $id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ");
+					('" . self::getFieldType() . "', '" . (int) $id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ");
                     $re = $re && $re_ins;
                 }
             }
@@ -125,9 +125,9 @@ class Field_Dropdown extends Field
         $out->add('<div class="std_block">');
         $out->add(
             $form->getFormHeader($lang->def('_NEW_DROPDOWN'))
-            . $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+            . $form->openForm('create_' . self::getFieldType(), $this->getUrl())
             . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('back', 'back', $back_coded)
         );
         $mand_lang = Lang::get();
@@ -148,7 +148,7 @@ class Field_Dropdown extends Field
         $out->add(
             $form->closeElementSpace()
             . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
+            . $form->getButton('save_field', 'save_field_' . self::getFieldType(), $std_lang->def('_CREATE', 'standard'))
             . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
             . $form->closeButtonSpace()
             . $form->closeForm()
@@ -250,7 +250,7 @@ class Field_Dropdown extends Field
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
 		WHERE id_common = '" . (int) $this->id_common . "' AND
-			type_field = '" . $this->getFieldType() . "' AND
+			type_field = '" . self::getFieldType() . "' AND
 			lang_code = '" . Lang::get() . "'");
         list($translation) = sql_fetch_row($re_field);
 
@@ -271,9 +271,9 @@ class Field_Dropdown extends Field
     {
         require_once _base_ . '/lib/lib.form.php';
 
-        if (isset($_POST['field_' . $this->getFieldType()])
-            && isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
-            $user_entry = $_POST['field_' . $this->getFieldType()][$this->id_common];
+        if (isset($_POST['field_' . self::getFieldType()])
+            && isset($_POST['field_' . self::getFieldType()][$this->id_common])) {
+            $user_entry = $_POST['field_' . self::getFieldType()][$this->id_common];
         } else {
             list($user_entry) = sql_fetch_row(sql_query('
 			SELECT user_entry
@@ -288,7 +288,7 @@ class Field_Dropdown extends Field
 		SELECT translation
 		FROM ' . $this->_getMainTable() . "
 		WHERE id_common = '" . (int) $this->id_common . "' AND
-			type_field = '" . $this->getFieldType() . "' AND
+			type_field = '" . self::getFieldType() . "' AND
 			lang_code = '" . Lang::get() . "'");
         list($translation) = sql_fetch_row($re_field);
 
@@ -318,8 +318,8 @@ class Field_Dropdown extends Field
 
             $formField .= Form::getInputDropdown(
                     'form-control ' . ($error ? 'has-error' : ''),
-                    'field_' . $this->getFieldType() . '_' . $this->id_common,
-                    'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                    'field_' . self::getFieldType() . '_' . $this->id_common,
+                    'field_' . self::getFieldType() . '[' . $this->id_common . ']',
                     $option,
                     (int) $user_entry,
                     '',
@@ -340,8 +340,8 @@ class Field_Dropdown extends Field
         }
 
         return Form::getDropdown($translation . ($mandatory ? ' <span class="mandatory">*</span>' : ''),
-                                'field_' . $this->getFieldType() . '_' . $this->id_common,
-                                'field_' . $this->getFieldType() . '[' . $this->id_common . ']',
+                                'field_' . self::getFieldType() . '_' . $this->id_common,
+                                'field_' . self::getFieldType() . '[' . $this->id_common . ']',
                                 $option,
                                 (int) $user_entry,
                                 '',
@@ -420,9 +420,9 @@ class Field_Dropdown extends Field
      */
     public function isFilled($id_user)
     {
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
+        if (!isset($_POST['field_' . self::getFieldType()][$this->id_common])) {
             return false;
-        } elseif ($_POST['field_' . $this->getFieldType()][$this->id_common] == '0') {
+        } elseif ($_POST['field_' . self::getFieldType()][$this->id_common] == '0') {
             return false;
         } else {
             return true;
@@ -444,14 +444,14 @@ class Field_Dropdown extends Field
             $grab_from = $_POST;
         }
 
-        if ((!$dropdown_val) && (isset($grab_from['field_' . $this->getFieldType()][$this->id_common]))) {
-            return $grab_from['field_' . $this->getFieldType()][$this->id_common];
-        } elseif (($dropdown_val) && (isset($grab_from['field_' . $this->getFieldType()][$this->id_common]))) {
+        if ((!$dropdown_val) && (isset($grab_from['field_' . self::getFieldType()][$this->id_common]))) {
+            return $grab_from['field_' . self::getFieldType()][$this->id_common];
+        } elseif (($dropdown_val) && (isset($grab_from['field_' . self::getFieldType()][$this->id_common]))) {
             $re_field = sql_query('
 			SELECT translation
 			FROM ' . $this->_getElementTable() . "
 			WHERE idField = '" . $this->id_common . "' AND lang_code = '" . Lang::get() . "'
-				AND id_common_son='" . $grab_from['field_' . $this->getFieldType()][$this->id_common] . "'");
+				AND id_common_son='" . $grab_from['field_' . self::getFieldType()][$this->id_common] . "'");
             list($translation) = sql_fetch_row($re_field);
 
             return $translation;
@@ -474,7 +474,7 @@ class Field_Dropdown extends Field
             $id_user = (int) $id_user;
         }
 
-        if (!isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
+        if (!isset($_POST['field_' . self::getFieldType()][$this->id_common])) {
             return true;
         }
         $re_entry = sql_query('
@@ -490,7 +490,7 @@ class Field_Dropdown extends Field
             }
             if (!sql_query('
 			UPDATE ' . $this->_getUserEntryTable() . "
-			SET user_entry = '" . $_POST['field_' . $this->getFieldType()][$this->id_common] . "'
+			SET user_entry = '" . $_POST['field_' . self::getFieldType()][$this->id_common] . "'
 			WHERE id_user = '" . $id_user . "' AND
 			id_common = '" . (int) $this->id_common . "' AND
 			id_common_son = '0'")) {
@@ -503,7 +503,7 @@ class Field_Dropdown extends Field
 			(	'" . $id_user . "',
 				'" . (int) $this->id_common . "',
 				'0',
-				'" . $_POST['field_' . $this->getFieldType()][$this->id_common] . "')")) {
+				'" . $_POST['field_' . self::getFieldType()][$this->id_common] . "')")) {
                 return false;
             }
         }
@@ -772,7 +772,7 @@ class Field_Dropdown extends Field
 		ORDER BY sequence");
 
         $base_path = $this->getUrl() . '&amp;id_common='
-                . $this->id_common . '&amp;type_field=' . $this->getFieldType() . '&amp;back=' . $this->back_coded;
+                . $this->id_common . '&amp;type_field=' . self::getFieldType() . '&amp;back=' . $this->back_coded;
 
         $out->add('<div class="std_block">'
             . getBackUi($this->back, $std_lang->def('_BACK'))
@@ -820,7 +820,7 @@ class Field_Dropdown extends Field
         $tb_son->addActionAdd(
             '<a class="ico-wt-sprite subs_add" href="' . $this->getUrl()
                 . '&amp;id_common=' . $this->id_common
-                . '&amp;type_field=' . $this->getFieldType()
+                . '&amp;type_field=' . self::getFieldType()
                 . '&amp;back=' . $this->back_coded
                 . '&amp;iop=add"><span>'
             . $lang->def('_DROPDOWN_SON_ADD') . '</span></a>'
@@ -843,9 +843,9 @@ class Field_Dropdown extends Field
         if (isset($_POST['undo'])) {
             //undo action
             Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded);
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded);
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . self::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
             $show_on = '';
@@ -859,7 +859,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -869,7 +869,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -903,13 +903,13 @@ class Field_Dropdown extends Field
                     if (!sql_query('
 					INSERT INTO ' . $this->_getMainTable() . "
 					(type_field, id_common, lang_code, translation, show_on_platform, use_multilang) VALUES
-					('" . $this->getFieldType() . "', '" . (int) $this->id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
+					('" . self::getFieldType() . "', '" . (int) $this->id_common . "', '" . $lang_code . "', '" . $translation . "', '" . $show_on . "', '" . $use_multilang . "') ")) {
                         $re = false;
                     }
                 }
             }
             Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded
                 . '&result=' . ($re ? 'success' : 'fail'));
         }
 
@@ -935,9 +935,9 @@ class Field_Dropdown extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+            $form->openForm('create_' . self::getFieldType(), $this->getUrl())
             . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('id_common', 'id_common', $this->id_common)
             . $form->getHidden('back', 'back', $this->back_coded)
             . $form->getHidden('iop', 'iop', 'modmain')
@@ -960,7 +960,7 @@ class Field_Dropdown extends Field
         $out->add(
             $form->closeElementSpace()
             . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
+            . $form->getButton('save_field', 'save_field_' . self::getFieldType(), $std_lang->def('_SAVE', 'standard'))
             . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
             . $form->closeButtonSpace()
             . $form->closeForm()
@@ -979,9 +979,9 @@ class Field_Dropdown extends Field
         if (isset($_POST['undo'])) {
             //undo action
             Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded);
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded);
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . self::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
 
@@ -990,7 +990,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;id_common='
-                        . $this->id_common . '&amp;type_field=' . $this->getFieldType() . '&amp;back=' . $this->back_coded,
+                        . $this->id_common . '&amp;type_field=' . self::getFieldType() . '&amp;back=' . $this->back_coded,
                         $std_lang->def('_BACK')),
                     'content'
                 );
@@ -1001,7 +1001,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;id_common='
-                        . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded,
+                        . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded,
                         $std_lang->def('_BACK')),
                     'content'
                 );
@@ -1022,7 +1022,7 @@ class Field_Dropdown extends Field
 			(idField, lang_code, translation, sequence) VALUES
 			('" . $this->id_common . "', '" . $mand_lang . "', '" . $_POST['new_dropdown_son'][$mand_lang] . "', '" . $sequence . "') ")) {
                 Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded
                 . '&result=fail');
             }
             list($id_common_son) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
@@ -1031,7 +1031,7 @@ class Field_Dropdown extends Field
 			SET id_common_son = '" . (int) $id_common_son . "'
 			WHERE idSon = '" . (int) $id_common_son . "'")) {
                 Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded
                 . '&result=fail');
             }
             $re = true;
@@ -1046,7 +1046,7 @@ class Field_Dropdown extends Field
                 }
             }
             Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded
                 . '&result=' . ($re ? 'success' : 'fail'));
         }
 
@@ -1058,9 +1058,9 @@ class Field_Dropdown extends Field
         $out->add('<div class="std_block">');
         $out->add(
             $form->getFormHeader($lang->def('_DROPDOWN_SON_NEW'))
-            . $form->openForm('create_' . $this->getFieldType(), $this->getUrl())
+            . $form->openForm('create_' . self::getFieldType(), $this->getUrl())
             . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('id_common', 'id_common', $this->id_common)
             . $form->getHidden('back', 'back', $this->back_coded)
             . $form->getHidden('iop', 'iop', 'add')
@@ -1079,7 +1079,7 @@ class Field_Dropdown extends Field
         $out->add(
             $form->closeElementSpace()
             . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_CREATE', 'standard'))
+            . $form->getButton('save_field', 'save_field_' . self::getFieldType(), $std_lang->def('_CREATE', 'standard'))
             . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
             . $form->closeButtonSpace()
             . $form->closeForm()
@@ -1098,9 +1098,9 @@ class Field_Dropdown extends Field
 
         if (isset($_POST['undo'])) {
             Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded);
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded);
         }
-        if (isset($_POST['save_field_' . $this->getFieldType()])) {
+        if (isset($_POST['save_field_' . self::getFieldType()])) {
             //insert mandatory translation
             $mand_lang = Lang::get();
 
@@ -1109,7 +1109,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -1119,7 +1119,7 @@ class Field_Dropdown extends Field
                 $out->add(
                     getErrorUi($lang->def('_ERR_MUST_DEF_MANADATORY_TRANSLATION'))
                     . getBackUi($this->getUrl() . '&amp;type_field='
-                        . $this->getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
+                        . self::getFieldType() . '&amp;back=' . $this->back_coded, $std_lang->def('_BACK')),
                     'content'
                 );
 
@@ -1158,7 +1158,7 @@ class Field_Dropdown extends Field
                 }
             }
             Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded
                 . '&result=' . ($re ? 'success' : 'fail'));
         }
 
@@ -1178,9 +1178,9 @@ class Field_Dropdown extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('del_' . $this->getFieldType(), $this->getUrl())
+            $form->openForm('del_' . self::getFieldType(), $this->getUrl())
             . $form->openElementSpace()
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('id_common', 'id_common', $this->id_common)
             . $form->getHidden('idSon', 'idSon', $idSon)
             . $form->getHidden('back', 'back', $this->back_coded)
@@ -1200,7 +1200,7 @@ class Field_Dropdown extends Field
         $out->add(
             $form->closeElementSpace()
             . $form->openButtonSpace()
-            . $form->getButton('save_field', 'save_field_' . $this->getFieldType(), $std_lang->def('_SAVE', 'standard'))
+            . $form->getButton('save_field', 'save_field_' . self::getFieldType(), $std_lang->def('_SAVE', 'standard'))
             . $form->getButton('undo', 'undo', $std_lang->def('_UNDO', 'standard'))
             . $form->closeButtonSpace()
             . $form->closeForm()
@@ -1221,7 +1221,7 @@ class Field_Dropdown extends Field
 
         if (isset($_POST['undo'])) {
             Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded);
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded);
         }
         if (isset($_POST['confirm'])) {
             $query_del = '
@@ -1231,7 +1231,7 @@ class Field_Dropdown extends Field
             $re = sql_query($query_del);
             if (!$re) {
                 Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded . '&amp;result=fail');
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded . '&amp;result=fail');
             }
 
             $query_del = '
@@ -1241,7 +1241,7 @@ class Field_Dropdown extends Field
             $re = sql_query($query_del);
 
             Util::jump_to($this->getUrl() . '&id_common='
-                . $this->id_common . '&type_field=' . $this->getFieldType() . '&back=' . $this->back_coded
+                . $this->id_common . '&type_field=' . self::getFieldType() . '&back=' . $this->back_coded
                 . '&amp;result=' . ($re ? 'success' : 'fail'));
         }
 
@@ -1255,8 +1255,8 @@ class Field_Dropdown extends Field
         $out->setWorkingZone('content');
         $out->add('<div class="std_block">');
         $out->add(
-            $form->openForm('del_' . $this->getFieldType(), $this->getUrl())
-            . $form->getHidden('type_field', 'type_field', $this->getFieldType())
+            $form->openForm('del_' . self::getFieldType(), $this->getUrl())
+            . $form->getHidden('type_field', 'type_field', self::getFieldType())
             . $form->getHidden('id_common', 'id_common', $this->id_common)
             . $form->getHidden('idSon', 'idSon', $idSon)
             . $form->getHidden('back', 'back', $this->back_coded)
@@ -1353,11 +1353,11 @@ class Field_Dropdown extends Field
         }
         $js_sons = '{' . implode(',', $temp) . '}';
 
-        return 'YAHOO.dynamicFilter.renderTypes.get("' . $this->getFieldType() . '", ' . $js_sons . ')';
+        return 'YAHOO.dynamicFilter.renderTypes.get("' . self::getFieldType() . '", ' . $js_sons . ')';
         /*
     return '
       {
-        type: "'.$this->getFieldType().'",
+        type: "'.self::getFieldType().'",
 
         getValue: function(id_sel, id_filter) {
           return YAHOO.util.Dom.get("dropdown_"+id_filter+"_"+id_sel).value;

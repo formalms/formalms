@@ -1146,7 +1146,7 @@ class FormaACLManager
      *
      * @return true if success, FALSE otherwise
      */
-    public function deleteTempUser($idst_single = false, $random_code = false, $time = false, $del_field = true, $reset_code = trued)
+    public function deleteTempUser($idst_single = false, $random_code = false, $time = false, $del_field = true, $reset_code = true)
     {
         require_once _adm_ . '/lib/lib.field.php';
 

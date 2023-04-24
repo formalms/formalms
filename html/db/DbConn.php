@@ -44,12 +44,12 @@ class DbConn
      * This function return the current instance for the class, if it's the first
      * time that is called it will instance the class.
      *
-     * @param bool $link
+     * @param $link
      * @param array $connection_parameters
      *
-     * @return bool|DbConn
+     * @return DbConn
      */
-    public static function getInstance($link = false, $connection_parameters = [])
+    public static function getInstance($link = false, $connection_parameters = []): DbConn
     {
 
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();

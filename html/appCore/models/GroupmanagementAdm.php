@@ -356,7 +356,7 @@ class GroupmanagementAdm extends Model
         if ($idst > 0 && (is_array($info) || is_object($info))) {
             $output = true;
             $conditions = [];
-            $acl = \FormaLms\lib\Forma::getAclManager();
+            $acl = \FormaLms\lib\Forma::getAcl();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {
@@ -430,7 +430,7 @@ class GroupmanagementAdm extends Model
             $output = true;
             $fields = ['idst'];
             $values = [$idst];
-            $acl = \FormaLms\lib\Forma::getAclManager();
+            $acl = \FormaLms\lib\Forma::getAcl();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {
