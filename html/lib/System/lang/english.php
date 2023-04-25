@@ -181,7 +181,6 @@ define('_REVEAL_PASSWORD', 'Reveal password');
 define('_COMMUNITY', 'Community');
 define('_COMMERCIAL_SERVICES', 'Commercial Services');
 define('_CONFIG_FILE_NOT_SAVED', 'The installer was unable to save the config.php file, download it and overwrite it online.');
-define('_DOWNLOAD_CONFIG', 'Download config');
 define('_CHECKED_DIRECTORIES', 'Some directory where files are stored does not exist or does not have correct permission');
 define('_CHECKED_FILES', 'Certain files does not have adequate permission');
 // -----------------------------------------

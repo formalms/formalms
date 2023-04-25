@@ -195,13 +195,13 @@ function checkTemplateVersion($template_name)
     if ($session->has('template_info') && $session->get('template_info') != false) {
         return $session->get('template_info')->getCheckVersion();
     } else {
-        require_once Forma::inc(_adm_ . '/versions.php');
+        require_once Forma::inc(_lib_ . '/Version/VersionChecker.php');
         $template_forma_version = readTemplateManifest($template_name, 'forma_version');
         $check = [];
         if ($template_forma_version) {
-            if (version_compare(_template_min_version_, $template_forma_version) <= 0) {
-                return true;
-            }
+
+            return VersionChecker::checkTemplateVersion($template_forma_version);
+       
         }
 
         return false;
@@ -210,7 +210,6 @@ function checkTemplateVersion($template_name)
 
 function getTemplateVersion($template_name)
 {
-    require_once Forma::inc(_adm_ . '/versions.php');
 
     return readTemplateManifest($template_name, 'forma_version');
 }

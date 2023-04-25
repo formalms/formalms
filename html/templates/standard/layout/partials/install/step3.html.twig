@@ -15,7 +15,7 @@
 
         <h1>{{ langInstallLabel }}</h1>
         <ul class="lang_to_install_list">
-                {% set languages = languages|slice(start + 1, length) %}
+                {% set languages = languagesToInstall|slice(start + 1, length) %}
                 {% for code, language in languages %}
                     <li> {{ Form_getCheckbox(language, 'lang_' ~ code, 'lang_install['~  code ~ ']', code , (setLang == code or code in setLangs)  ? '1' : '0' ) }} </li>
                 {% endfor %}

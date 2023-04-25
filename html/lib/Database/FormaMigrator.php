@@ -29,6 +29,8 @@ class FormaMigrator
 
     protected $dependencyFactory;
 
+    protected YamlFile $configFile;
+
     public static function getInstance()
     {
         if (self::$instance === null) {
@@ -58,10 +60,10 @@ class FormaMigrator
             'driver' => 'pdo_mysql',
         ]);
 
-        $config = new YamlFile(_base_.'/migrations.yaml');
+        $this->configFile = new YamlFile(_base_.'/migrations.yaml');
 
         $this->dependencyFactory = DependencyFactory::fromConnection(
-            $config,
+            $this->configFile,
             new ExistingConnection($this->connection)
         );
        
@@ -99,6 +101,17 @@ class FormaMigrator
         return $result;
     }
 
+
+    public function getConfiguration() {
+
+        return $this->configFile->getConfiguration();
+    }
+
+
+    public function getMigrationTableSettings()  {
+
+        return $this->configFile->getConfiguration()->getMetaDataStorageConfiguration();
+    }
 
 }
 

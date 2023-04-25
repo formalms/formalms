@@ -22,6 +22,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @since 4.0
  */
 require_once(_lib_ . '/Helpers/HelperTool.php');
+require_once(_lib_ . '/Version/VersionChecker.php');
 
 class InstallAdm extends Model
 {
@@ -37,10 +38,7 @@ class InstallAdm extends Model
     protected $response;
     /** @var bool * */
     protected $upgrade;
-
-    /** @var string * */
-    protected $minSupportedVersion = '3.3.3';
-    protected $minUpgradeVersion = '4.0.0';
+  
 
     public const CHECK_REQUIREMENTS = '1';
     public const CHECK_DATABASE = '2';
@@ -61,14 +59,15 @@ class InstallAdm extends Model
     public function __construct($debug = false)
     {
         //TODO: refactoring using namespace and improvements
-        $cur_error_rep = error_reporting();
-        error_reporting(0);
         require_once(_lib_ . '/System/lang/' . Lang::getSelLang() . '.php');
         require_once(_lib_ . '/System/lang/' . 'english' . '.php');
-        error_reporting($cur_error_rep);
 
         $this->upgrade = $this->isUpgrade();
         $this->debug = $debug;
+
+        if(!$debug) {
+            ini_set("display_errors", false);
+        }
         $this->fillSteps();
         $this->fillLabels();
         $this->fillErrorLabels();
@@ -286,15 +285,11 @@ class InstallAdm extends Model
         $params['setLang'] = Lang::getSelLang();
         $params['upgrade'] = (bool)$this->upgrade;
         $params['currentVersion'] = $this->upgrade;
-        $params['fileVersion'] = _file_version_;
         $params['serverSwInfo'] = $request->server->get('SERVER_SOFTWARE');
-        $params['phpVersionInfo'] = phpversion();
-        preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $sqlClientVersion);
-        $params['sqlClientVersion'] = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1];
-
-        $sqlServerVersion = $this->checkSqlVersion();
-        
-        $params['sqlServerVersion'] = empty($sqlServerVersion[1]) ? 'unknown' : $sqlServerVersion[1];
+        $params['fileVersion'] = VersionChecker::getFileVersion();
+        $params['phpVersionInfo'] = VersionChecker::getPhpVersion();
+        $params['sqlClientVersion'] = VersionChecker::getSqlClientVersion();
+        $params['sqlServerVersion'] = VersionChecker::getSqlVersion();
         $params['mbstringData'] = extension_loaded('mbstring') ? _ON : _OFF;
         $params['mimeCtData'] = $params['mimeCt'] == 'ok' ? _ON : _OFF;
         $params['fileInfoData'] = extension_loaded('fileinfo') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_FILEINFO;
@@ -323,29 +318,19 @@ class InstallAdm extends Model
 
         $checkRequirements = 1;
   
-  
-        //TODO PHP7x: set const for Minimum PHP required version: 7.4
-        //TODO PHP7x: set const for Maximum PHP suggested version: 7.4.x
-        if (version_compare(PHP_VERSION, _php_min_version_, '<')) {
-            $res['mandatory']['php'] = 'err';
-        } elseif (version_compare(PHP_VERSION, _php_max_version_, '>')) {
-            $res['mandatory']['php'] = 'warn';
-        } else {
-            $res['mandatory']['php'] = 'ok';
-        }
-
-
+        $res['mandatory']['php'] = VersionChecker::matchPhpVersion()['message'];
+      
         $driver = [
             'mysqli' => extension_loaded('mysqli'),
         ];
         if (array_filter($driver)) {
             // mysql client version, in php the version number is a string regcut it
-            preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $version);
+            $sqlClientVersion = VersionChecker::getSqlClientVersion();
 
-            if (empty($version[1])) {
+            if ('unknown' === $sqlClientVersion) {
                 $res['requirements']['mysqlClient'] = 'ok';
             } else {
-                $res['requirements']['mysqlClient'] = (version_compare($version[1], PHP_VERSION) >= 0 ? 'ok' : 'err');
+                $res['requirements']['mysqlClient'] = (VersionChecker::compareSqlClientVersion($sqlClientVersion) ? 'ok' : 'err');
             }
         } else {
             $res['mysqlClient'] = 'err';
@@ -353,14 +338,13 @@ class InstallAdm extends Model
         if (array_filter($driver)) {
             // mysql version, in easyphp the version number is ina string regcut it
            
-            $mysqlVersion = $this->checkSqlVersion();
+            $mysqlVersion = VersionChecker::getSqlVersion();
 
-            if (empty($mysqlVersion[1])) {
+            if ('unknown' === $mysqlVersion) {
                 $res['mandatory']['mysql'] = 'ok';
             } else {
 
-
-                if ($this->compareSqlVersion($mysqlVersion[1])) {
+                if (VersionChecker::compareSqlVersion($mysqlVersion)) {
                     $res['mandatory']['mysql'] = 'ok';
                   
                 } else {
@@ -383,7 +367,6 @@ class InstallAdm extends Model
         if (in_array('err', $res['mandatory'])) {
             $checkRequirements = 0;
         }
-
 
         $resultArray = array_merge($res['mandatory'], $res['requirements']);
         $resultArray['checkRequirements'] = $checkRequirements;
@@ -944,10 +927,10 @@ class InstallAdm extends Model
         $removeCreateDb = false;
         $sqlVersionCheck = false;
 
-        $checkSqlVersion = $this->checkSqlVersion($this->getSqlVersionByQuery());
+        $checkSqlVersion = VersionChecker::getSqlVersionArray($this->getSqlVersionByQuery());
 
         if(!empty($checkSqlVersion[1])) {
-            $sqlVersionCheck = $this->compareSqlVersion($checkSqlVersion[1]);
+            $sqlVersionCheck = VersionChecker::compareSqlVersion($checkSqlVersion[1]);
         }
 
         if($sqlVersionCheck) {
@@ -1064,7 +1047,7 @@ class InstallAdm extends Model
             switch ($params['check']) {
                 case 1:
                     //se c'è da installare metto la tabella doctrine migrations
-                    if (version_compare($this->upgrade, $this->minSupportedVersion) == 0 && version_compare(_file_version_, $this->minUpgradeVersion) >= 0) {
+                    if (VersionChecker::compareUpgradeVersion($this->upgrade)) {
                         $success = $this->installMigrationsTable();
 
                         if ($success) {
@@ -1107,12 +1090,12 @@ class InstallAdm extends Model
                         $messages[] = _UPGRADE_STEP_ERROR;
                     }
 
-                    $success = $this->setDefaultTemplate();
-                    if ($success) {
-                        $messages[] = _TEMPLATE_STEP_SUCCESS;
-                    } else {
-                        $messages[] = _TEMPLATE_STEP_ERROR;
-                    }
+                    //$success = $this->setDefaultTemplate();
+                    //if ($success) {
+                    //    $messages[] = _TEMPLATE_STEP_SUCCESS;
+                    //} else {
+                    //    $messages[] = _TEMPLATE_STEP_ERROR;
+                    //}
                     recursiveRmdir(FormaLms\appCore\Template\TwigManager::getCacheDir());
                     $messages[] = _CLEARTWIG_CACHE_OK;
 
@@ -1218,8 +1201,6 @@ class InstallAdm extends Model
                 break;
         }
 
-
-
         //cancello il file tmp del config se tutto è andato in porto e cancello il resto
 
         return $this->setResponse($success, $messages, $type)->wrapResponse();
@@ -1240,6 +1221,7 @@ class InstallAdm extends Model
             $debugString = '2>&1';
         }
 
+        //DO NOT UNCOOMENT - it could give error in environment without shell_exec enabled
         # return shell_exec("php " . $migrationFile . " migrate ". $testLine ." --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
  
         return true;    
@@ -1502,7 +1484,7 @@ class InstallAdm extends Model
      */
     private function storeSettings()
     {
-        require_once _adm_ . '/versions.php';
+
         $values = $this->session->get('setValues');
         DbConn::getInstance(
             false,
@@ -1522,7 +1504,7 @@ class InstallAdm extends Model
         $qtxt = 'INSERT INTO `core_setting` ';
         $qtxt .= ' (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) ';
         $qtxt .= ' VALUES ';
-        $qtxt .= " ('core_version', '" . _file_version_ . "', 'string', 255, '0', 1, 0, 1, 1, '') ";
+        $qtxt .= " ('core_version', '" . VersionChecker::getDbVersion() . "', 'string', 255, '0', 1, 0, 1, 1, '') ";
         $q = sql_query($qtxt);
 
         return $q;
@@ -1694,7 +1676,7 @@ class InstallAdm extends Model
     {
         $result = [];
 
-        $compareMinVersion = version_compare($this->upgrade, $this->minSupportedVersion);
+        $compareMinVersion = VersionChecker::getUpgradeSupportedVersion($this->upgrade); 
 
         if (0 > $compareMinVersion) {
             //not supported
@@ -1702,7 +1684,7 @@ class InstallAdm extends Model
             $result['upgradeClass'] = 'err';
             $result['upgradeResult'] = _NOT_SUPPORTED_VERSION;
         } else {
-            $compareResult = version_compare($this->upgrade, _file_version_);
+            $compareResult = VersionChecker::getUpgradeFileVersion($this->upgrade);
 
             if (0 > $compareResult) {
                 //ok the upgrade is possible
@@ -1733,12 +1715,14 @@ class InstallAdm extends Model
      */
     public function installMigrationsTable()
     {
+
+        $migrationSettings = FormaLms\lib\Database\FormaMigrator::getInstance()->getMigrationTableSettings();
         $connection = DbConn::getInstance();
-        $createQuery = "CREATE TABLE IF NOT EXISTS `core_migration_versions`  (
-            `version` varchar(767) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-            `executed_at` datetime(0) NULL DEFAULT NULL,
-            `execution_time` int(11) NULL DEFAULT NULL,
-            PRIMARY KEY (`version`) USING BTREE
+        $createQuery = "CREATE TABLE IF NOT EXISTS " . $migrationSettings->getTableName() . "  ("
+            . $migrationSettings->getVersionColumnName() ." varchar(" . $migrationSettings->getVersionColumnLength() .") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,"
+            . $migrationSettings->getExecutedAtColumnName() . " datetime(0) NULL DEFAULT NULL,"
+            . $migrationSettings->getExecutionTimeColumnName() . " int(11) NULL DEFAULT NULL,
+            PRIMARY KEY (" . $migrationSettings->getVersionColumnName() .") USING BTREE
           ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic";
 
         $creationTable = sql_query($createQuery);
@@ -1760,7 +1744,7 @@ class InstallAdm extends Model
      */
     private function saveUpgradeVersion()
     {
-        $qtxt = "UPDATE core_setting SET param_value='" . _file_version_ . "' WHERE param_name='core_version'";
+        $qtxt = "UPDATE core_setting SET param_value='" . VersionChecker::getDbVersion() . "' WHERE param_name='core_version'";
         return sql_query($qtxt);
     }
 
@@ -1909,50 +1893,4 @@ class InstallAdm extends Model
         return $this->setResponse(true, $messages)->wrapResponse();
     }
 
-    /**
-     * Method to check the sql version
-     *
-     * @param $external check if sql is installed in other host
-     *
-     * @return array
-     */
-    public function checkSqlVersion($external = false) : array{
-
-        $sqlServerVersion = [];
-
-        $check = sql_get_server_info();
-
-        if($external) {
-            $check = $external;
-        }
-        try {
-        
-            preg_match('/([0-9]+\.[\.0-9]+)/', $check, $sqlServerVersion);
-        } catch (\Exception $exception) {
-            $sqlServerVersion = [];
-        }
-
-        return $sqlServerVersion;
-    }
-
-    /**
-     * Method to compare the sql version
-     *
-     * @param $sqlVersion sql version
-     *
-     * @return bool
-     */
-    public function compareSqlVersion(string $sqlVersion) : bool{
-
-        $result = false;
-        $checkMysql = version_compare($sqlVersion, '5.7') >= 0 && version_compare($sqlVersion, '8.1') < 0;
-        $checkMariaDB = version_compare($sqlVersion, '10.0') >= 0 && version_compare($sqlVersion, '11.0') < 0;
-
-        if($checkMysql || $checkMariaDB) {
-            $result = true;
-        }
-
-        return $result;
-
-    }
 }

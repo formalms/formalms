@@ -765,9 +765,10 @@ class Boot
 
     public static function checkPhpVersion()
     {
-        require_once _adm_ . '/versions.php';
+        require_once _lib_ . '/Version/VersionChecker.php';
 
-        if (version_compare(PHP_VERSION, _php_min_version_, '<') || version_compare(PHP_VERSION, _php_max_version_, '>')) {
+    
+        if (VersionChecker::comparePhpVersion()) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
     }

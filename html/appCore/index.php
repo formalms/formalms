@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -15,8 +16,8 @@ const CORE = true;
 const IN_FORMA = true;
 const _deeppath_ = '../';
 require __DIR__ . '/../base.php';
+require_once _lib_ . '/Version/VersionChecker.php';
 
-require_once _adm_ . '/versions.php';
 
 // start buffer
 ob_start();
@@ -53,7 +54,7 @@ if (empty($GLOBALS['modname']) && empty($GLOBALS['r'])) {
 }
 
 if ($GLOBALS['modname'] != '') {
-    $module_cfg = &createModule($GLOBALS['modname']);
+    $module_cfg = createModule($GLOBALS['modname']);
 }
 
 // yui base lib loading

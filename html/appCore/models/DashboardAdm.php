@@ -13,6 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+require_once(_lib_ . '/Version/VersionChecker.php');
+
 class DashboardAdm extends Model
 {
     protected $db;
@@ -163,12 +165,12 @@ class DashboardAdm extends Model
     {
         $version = [
             'db_version' => FormaLms\lib\Get::sett('core_version'),
-            'file_version' => _file_version_,
+            'file_version' => VersionChecker::getFileVersion(),
             'online_version' => '',
         ];
 
         // check for differences beetween files and database version
-        if (version_compare($version['file_version'], $version['db_version']) == 1) {
+        if (VersionChecker::compareDbVersions($version['db_version']) == 1) {
             switch ($version['db_version']) {
                 // handling old docebo ce version
                 case '3.6.0.3':
