@@ -16,7 +16,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 class MailconfigAdmController extends AdmController
 {
-
+    /** @var MailconfigAdm */
     protected $model;
 
     protected $mailer;
