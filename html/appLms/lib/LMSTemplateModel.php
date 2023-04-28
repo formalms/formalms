@@ -142,7 +142,9 @@ class LMSTemplateModel
 
     public function getHelpDeskEmail()
     {
-        return trim(FormaLms\lib\Get::sett('customer_help_email', ''));
+
+
+        return trim(\FormaLms\lib\Mailer\FormaMailer::getInstance()->getHandler()->getHelperDeskMail());
     }
 
     public function getCurrentPage()

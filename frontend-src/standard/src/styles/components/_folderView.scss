@@ -182,14 +182,18 @@ input.folderView__action {
 }
 
 .folderView__status {
+  -webkit-mask-size: contain;
+  -webkit-mask-position-y: center;
   width: 48px;
   height: 48px;
+  border-radius: 50%;
+  background-color: rgba(0,0,0,0);
+  border: 1px solid var(--color-primary);
   margin: 0 4px;
-  background: {
-    repeat: no-repeat;
-    position: center;
-    size: 24px;
-  };
+  transition: all .2s ease-in-out;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 18px;
 }
 
 .folderView__buttons {
@@ -287,7 +291,7 @@ input.folderView__action {
 .fv-is-incomplete:after,
 .fv-is-not-attempted:after,
 .fv-is-ab-initio:after {
-  -webkit-mask-image: url('images/folderView/icon-attempted.svg');
+  -webkit-mask-image: url('images/folderView/icon-chart.svg');
 }
 
 .fv-is-completed:after,

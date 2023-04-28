@@ -1819,10 +1819,6 @@ class Org_TreeView extends RepoTreeView
             $kbres = new KbRes();
             $type = $folder->otherValues[REPOFIELDOBJECTTYPE] ?? null;
 
-            if ($type === 'scormorg') {
-                $type = 'scorm';
-            }
-
             $repoFieldIdResource = $folder->otherValues[REPOFIELDIDRESOURCE] ?? null;
             $kbres_information = $kbres->getResourceFromItem($repoFieldIdResource, $type, 'course_lo');
             if (isset($kbres_information) && is_array($kbres_information)) {
@@ -1926,7 +1922,7 @@ class Org_TreeView extends RepoTreeView
                 }
             }
 
-            $node['status'] = $status;
+            $node['status'] = str_replace(' ','-',$status);
 
             switch ($status) {
                 case 'not attempted':

@@ -1,17 +1,21 @@
 var Twig = require('twig');
 import Lang from './Lang';
-
+const axios = require('axios');
 
 Twig.extendFunction('Lang_translate', function(translationKey, moduleKey, paramsObj) {
     return Lang.Translation(translationKey, moduleKey, paramsObj);
 });
   
 Twig.extendFunction('Utils_getImage', function(path, iconName, defaultIcon) {
-    var http = new XMLHttpRequest();
-    const image_url = `${window.frontend.config.url.template}/static/images/${path}/${iconName}`;
-    http.open('HEAD', image_url, false);
-    http.send();
-    return http.status === 404 ? `${window.frontend.config.url.template}/static/images/${path}/${defaultIcon}` : image_url;
+    try {
+        var http = new XMLHttpRequest();
+        const image_url = `${window.frontend.config.url.template}/static/images/${path}/${iconName}`;
+        http.open('HEAD', image_url, false);
+        http.send();
+        return http.status === 404 ? `${window.frontend.config.url.template}/static/images/${path}/${defaultIcon}` : image_url;
+    } catch (e) {
+        return `${window.frontend.config.url.template}/static/images/${path}/${defaultIcon}`;
+    }
 });
 
 Twig.extendFunction('arrayContains', (array, idString, value) => {
