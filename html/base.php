@@ -47,6 +47,7 @@ const _folder_files_app_ = 'appCore';
 const _folder_files_com_ = 'common';
 const _folder_plugins_ = 'plugins';
 const _folder_templates_ = 'templates';
+const _folder_legacy_ = 'UpgradeLegacy';
 
 /* absolute address to the addons folder */
 const _addons_ = _base_ . '/' . _folder_addons_;
@@ -61,6 +62,8 @@ const _files_lms_ = _files_ . '/' . _folder_files_lms_;
 const _files_app_ = _files_ . '/' . _folder_files_app_;
 const _files_com_ = _files_ . '/' . _folder_files_com_;
 const _templates_ = _base_ . '/' . _folder_templates_;
+const _legacy_ = _base_ . '/' . _folder_legacy_;
+const _legacy_adm_ = _legacy_ . '/' . _folder_adm_;
 
 const _plugins_ = _base_ . '/' . _folder_plugins_;
 

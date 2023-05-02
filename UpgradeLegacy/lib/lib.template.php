@@ -186,7 +186,7 @@ function readTemplateManifest($template_name, $key = false)
  */
 function checkTemplateVersion($template_name)
 {
-    require_once Forma::inc(_adm_ . '/versions.php');
+    require_once Forma::inc(_legacy_adm_ . '/versions.php');
     $template_forma_version = readTemplateManifest($template_name, 'forma_version');
     $check = [];
     if ($template_forma_version) {
@@ -200,7 +200,7 @@ function checkTemplateVersion($template_name)
 
 function getTemplateVersion($template_name)
 {
-    require_once Forma::inc(_adm_ . '/versions.php');
+    require_once Forma::inc(_legacy_adm_ . '/versions.php');
 
     return readTemplateManifest($template_name, 'forma_version');
 }

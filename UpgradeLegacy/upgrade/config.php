@@ -14,7 +14,7 @@
 //  4xxx : docebo ce versions series 4.x.x
 // 1xxxx : forma     versions series 1.x  (formely 1.xx.xx )
 // 2xxxx : forma     versions series 2.x  (formely 2.xx.xx )
-require_once _adm_ . '/versions.php';
+require_once _legacy_adm_ . '/versions.php';
 
 function versionSort($a, $b)
 {
