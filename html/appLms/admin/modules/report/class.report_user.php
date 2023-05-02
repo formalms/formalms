@@ -66,7 +66,7 @@ class Report_User extends Report
     public function __construct($id_report, $report_name = false)
     {
         parent::__construct($id_report, $report_name);
-        $this->lang = &FormaLanguage::createInstance('report', 'framework');
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
         $this->usestandardtitle_rows = false;
 
         $this->_set_columns_category(_RU_CATEGORY_COURSES, $this->lang->def('_RU_CAT_COURSES'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
@@ -232,7 +232,7 @@ class Report_User extends Report
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.userselector.php');
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
 
         $aclManager = new FormaACLManager();
@@ -307,7 +307,7 @@ class Report_User extends Report
     //filter functions
     public function get_courses_filter()
     {
-        $out = &$GLOBALS['page'];
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
 
         $back_url = $this->back_url;
@@ -317,7 +317,7 @@ class Report_User extends Report
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         YuiLib::load('datasource');
         Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/modules/report/courses_filter.js', true, true);
@@ -490,8 +490,8 @@ class Report_User extends Report
                         'id' => $val['id'],
                         'label' => $val['label'],
                         'selected' => $is_selected,
-                        'translation' => $val['translation'],
-                        'type_field' => $val['type_field'],
+                        'translation' => array_key_exists('translation' , $val) ? $val['translation'] : '',
+                        'type_field' => array_key_exists('type_field' , $val) ? $val['type_field'] : '',
                     ];
                 }
                 $reportTempData['columns_filter']['custom_fields_org'] = $t_arr;
@@ -876,7 +876,7 @@ class Report_User extends Report
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
 
         $cmodel = new CompetencesAdm();
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         YuiLib::load();
         Util::get_js(FormaLms\lib\Get::rel_path('lms') . '/admin/modules/report/competences_filter.js', true, true);
@@ -996,7 +996,7 @@ class Report_User extends Report
 
         checkPerm('view');
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['send_mail_confirm'])) {
             $op = 'send_mail_confirm';
@@ -1075,7 +1075,7 @@ class Report_User extends Report
         $org_chart_subdivision = 0; // not implemented
         $elem_selected = [];
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $acl_man = new FormaACLManager();
         $acl_man->include_suspended = true;
         $course_man = new Man_Course();
@@ -1114,10 +1114,10 @@ class Report_User extends Report
         // retrive the user selected
         if ($alluser > 0) {
             // all the user selected (we can avoid this ? no we need to hide the suspended users)
-            $user_selected = &$acl_man->getAllUsersIdst();
+            $user_selected = $acl_man->getAllUsersIdst();
         } else {
             // resolve the user selection
-            $user_selected = &$acl_man->getAllUsersFromSelection($filter_userselection);
+            $user_selected = $acl_man->getAllUsersFromSelection($filter_userselection);
         }
 
         //apply sub admin filters, if needed
@@ -1154,7 +1154,7 @@ class Report_User extends Report
                     $courses = [0];
 
                     foreach ($user_catalogue as $id_cat) {
-                        $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat, true);
 
                         $courses = array_merge($courses, $catalogue_course);
                     }
@@ -1186,14 +1186,14 @@ class Report_User extends Report
                 if (!empty($admin_courses['coursepath'])) {
                     require_once _lms_ . '/lib/lib.coursepath.php';
                     $path_man = new CoursePath_Manager();
-                    $coursepath_course = &$path_man->getAllCourses($admin_courses['coursepath']);
+                    $coursepath_course = $path_man->getAllCourses($admin_courses['coursepath']);
                     $array_courses = array_merge($array_courses, $coursepath_course);
                 }
                 if (!empty($admin_courses['catalogue'])) {
                     require_once _lms_ . '/lib/lib.catalogue.php';
                     $cat_man = new Catalogue_Manager();
                     foreach ($admin_courses['catalogue'] as $id_cat) {
-                        $catalogue_course = &$cat_man->getCatalogueCourse($id_cat, true);
+                        $catalogue_course = $cat_man->getCatalogueCourse($id_cat, true);
                         $array_courses = array_merge($array_courses, $catalogue_course);
                     }
                 }
@@ -1559,7 +1559,7 @@ class Report_User extends Report
         }
         $buffer = new ReportTablePrinter($type);
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $cols = $filter_columns['showed_columns'];
         $output = '';
 
@@ -1610,7 +1610,7 @@ class Report_User extends Report
 
         // custom field for user
         $field_values = [];
-        $customcols = &$filter_columns['custom_fields'];
+        $customcols = $filter_columns['custom_fields'];
         $custom_list = [];
         foreach ($customcols as $val) {
             if ($val['selected']) {
@@ -1628,7 +1628,7 @@ class Report_User extends Report
             ++$colspanuser;
             // org-chart custom fields
             $field_values_org = [];
-            $customcols_org = &$filter_columns['custom_fields_org'];
+            $customcols_org = $filter_columns['custom_fields_org'];
             foreach ($customcols_org as $val) {
                 if ($val['selected']) {
                     $th2[] = $val['label'];
@@ -1673,15 +1673,18 @@ class Report_User extends Report
         }
         //LRZ: custom field for course
         $field_values_course = [];
-        $customcols_course = &$filter_columns['custom_fields_course'];
+        $customcols_course = array_key_exists('custom_fields_course' , $filter_columns) ? $filter_columns['custom_fields_course'] : '';
         $custom_list_course = [];
 
-        foreach ($customcols_course as $val) {
-            if ($val['selected']) {
-                $th2[] = $val['label'];
-                ++$colspan1;
-            }
+        if(is_array($customcols_course)) {
+           foreach ($customcols_course as $val) {
+                if ($val['selected']) {
+                    $th2[] = $val['label'];
+                    ++$colspan1;
+                }
+            } 
         }
+        
         $colspan_classrooms_editions = 0;
         if ($show_classrooms_editions) {
             if (in_array('_TH_CLASSROOM_CODE', $cols)) {
@@ -1754,12 +1757,12 @@ class Report_User extends Report
         // Luca
         if (in_array('_TH_PERC_LO', $cols)) {
             $th2[] = $lang->def('_PERCENTAGE');
-            ++$colspanLO;
+            isset($colspanLO) ? ++$colspanLO : 1;
         }
 
         if (in_array('_TH_PERC_LO_GRAPH', $cols)) {
             $th2[] = $lang->def('_GRAPHIC_REPORT') . '&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ';
-            ++$colspanLO;
+            isset($colspanLO) ? ++$colspanLO : 1;
         }
 
         //checkbox for mail
@@ -1778,7 +1781,7 @@ class Report_User extends Report
         }
 
         // Luca
-        $th1[] = ['colspan' => $colspanLO, 'value' => $lang->def('_PROGRESS')];
+        $th1[] = ['colspan' => $colspanLO ?? null, 'value' => $lang->def('_PROGRESS')];
 
         $buffer->openHeader();
         $buffer->addHeader($th1);
@@ -1968,11 +1971,14 @@ class Report_User extends Report
                     $row[] = $credits;
                 }
 
-                foreach ($customcols_course as $val) {
-                    if ($val['selected']) {
-                        $row[] = '<i></i>' . $fman->getValueCustomCourse($id_course, $val['id']);
+                if(is_array($customcols_course)) {
+                    foreach ($customcols_course as $val) {
+                        if ($val['selected']) {
+                            $row[] = '<i></i>' . $fman->getValueCustomCourse($id_course, $val['id']);
+                        }
                     }
                 }
+                
                 if ($show_classrooms_editions) {
                     $e_code = $e_name = $date_1 = $date_2 = '';
                     if (isset($classrooms_editions_info['classrooms'][$id_date])) {
@@ -2050,20 +2056,18 @@ class Report_User extends Report
 
                 // Luca
                 if (in_array('_TH_PERC_LO', $cols)) {
-                    $tot_lo = $this->getTotLO($id_user, $id_course);
-                    $tot_compl_sup = $this->getPercLO($id_user, $id_course);
-                    $per_compl = round(($tot_compl_sup / $tot_lo) * 100);
 
-                    $row[] = $per_compl . '%';
+                    $courseAlms = new CourseAlms();
+                    $courseStats = $courseAlms->getCourseCompletedPercentage($id_course, $id_user);
+
+                    $row[] = $courseStats['complete_percentage'] . '%';
                 }
 
                 if (in_array('_TH_PERC_LO_GRAPH', $cols)) {
-                    $tot_lo = $this->getTotLO($id_user, $id_course);
-                    $tot_compl_sup = $this->getPercLO($id_user, $id_course);
-                    $per_compl = round(($tot_compl_sup / $tot_lo) * 100);
-
+                    $courseAlms = new CourseAlms();
+                    $courseStats = $courseAlms->getCourseCompletedPercentage($id_course, $id_user);
                     $str_color_bar = 'warning';
-                    if ($per_compl == 100) {
+                    if ($courseStats['complete_percentage'] == 100) {
                         $str_color_bar = 'success';
                     }
 
@@ -2074,10 +2078,10 @@ class Report_User extends Report
                                  <div class="progress" style=" cursor: pointer;">
                                       <div class="progress-bar progress-bar-' . $str_color_bar . '"
                                            role="progressbar" 
-                                           aria-valuenow="' . $per_compl . '" 
+                                           aria-valuenow="' . $courseStats['complete_percentage'] . '" 
                                            aria-valuemin="0" 
                                            aria-valuemax="100" 
-                                           style="width: ' . $per_compl . '%;"                        
+                                           style="width: ' . $courseStats['complete_percentage'] . '%;"                        
                                             >
                                         <span class="sr-only" >&nbsp;</span>
                                       </div>
@@ -2132,7 +2136,7 @@ class Report_User extends Report
 
         //if ($this->use_mail) { $this->_loadEmailActions(); }
         if ($this->use_mail) {
-            $mlang = &FormaLanguage::createInstance('report', 'framework');
+            $mlang = FormaLanguage::createInstance('report', 'framework');
             //$output .= Form::getHidden('no_show_repdownload', 'no_show_repdownload', 1);
             $output .= Form::openButtonSpace()
                 . Form::getHidden('no_show_repdownload', 'no_show_repdownload', 1)

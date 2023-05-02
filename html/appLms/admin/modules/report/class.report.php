@@ -52,7 +52,7 @@ class Report
         if ($report_name == false) {
             $this->_load();
         } else {
-            $this->lang = &FormaLanguage::createInstance('report', 'framework');
+            $this->lang = FormaLanguage::createInstance('report', 'framework');
             $this->report_name = $this->lang->def($report_name);
             $this->report_descr = $this->lang->def($report_name);
         }
@@ -182,12 +182,12 @@ class Report
      */
     public function _load()
     {
-        $this->lang = &FormaLanguage::createInstance('report', 'framework');
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
 
         $query_report = '
 		SELECT report_name
-		FROM ' . $GLOBALS['prefix_lms'] . "_report
-		WHERE id_report = '" . $this->id_report . "'";
+		FROM %lms_report
+		WHERE id_report = "' . $this->id_report . '"';
         $re_report = sql_query($query_report);
         list($report_name) = sql_fetch_row($re_report);
 
@@ -199,7 +199,7 @@ class Report
     {
     }
 
-    public function &getAllUserIdst()
+    public function getAllUserIdst()
     {
         $p_dr = new PeopleDataRetriever($GLOBALS['dbConn'], $GLOBALS['prefix_fw']);
 
@@ -330,7 +330,7 @@ class ReportSessionManager
         return $this->data[self::_RS_ID];
     }
 
-    public function setRowsFilter(&$data)
+    public function setRowsFilter($data)
     {
         $this->data[self::_RS_ROWS_FILTER] = $data;
     }
@@ -340,7 +340,7 @@ class ReportSessionManager
         return $this->data[self::_RS_ROWS_FILTER];
     }
 
-    public function setColsFilter(&$data)
+    public function setColsFilter($data)
     {
         $this->data[self::_RS_COLS_FILTER] = $data;
     }

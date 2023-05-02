@@ -25,7 +25,7 @@ function adviceList()
     require_once _base_ . '/lib/lib.navbar.php';
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &FormaLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -232,7 +232,7 @@ function advice()
 
     $active_tab = FormaLms\lib\Get::req('tab', DOTY_ALPHANUM, 'advice');
 
-    $lang = &FormaLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');

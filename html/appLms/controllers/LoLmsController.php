@@ -65,6 +65,7 @@ class LoLmsController extends LmsController
             UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }
 
+
         $this->render('show', [
             'data' => [
                 'edit' => false,

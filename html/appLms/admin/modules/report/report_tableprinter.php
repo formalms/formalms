@@ -69,7 +69,7 @@ class ReportTablePrinter
 
     public function addReportHeader()
     {
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $date = date('d/m/Y h:i:s');
         $temp = $lang->def('_CREATION_DATE');
         $content_html = '<b>' . $temp . '</b>: ' . $date;

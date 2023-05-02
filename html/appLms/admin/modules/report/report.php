@@ -27,11 +27,11 @@ define('_RS_ROWS_FILTER', 'rows_filter');
 define('_RS_COLS_FILTER', 'columns_filter');
 define('_RS_COLS_CATEGORY', 'columns_filter_category');
 
-function _encode(&$data)
+function _encode($data)
 {
     return serialize($data);
 } //{ return urlencode(Util::serialize($data)); }
-function _decode(&$data)
+function _decode($data)
 {
     return unserialize($data);
 } //{ return Util::unserialize(urldecode($data)); }
@@ -82,7 +82,7 @@ function load_filter($id, $tempdata = false, $update = false)
 
 function openreport($idrep = false)
 {
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
 
     if ($idrep != false && $idrep > 0) {
         $id_report = $idrep;
@@ -128,7 +128,7 @@ function get_update_info()
 
 //******************************************************************************
 
-$lang = &FormaLanguage::createInstance('report');
+$lang = FormaLanguage::createInstance('report');
 
 define('_REP_KEY_NAME', 'name');
 define('_REP_KEY_CREATOR', 'creator');
@@ -148,10 +148,10 @@ function get_report_table($url = '')
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();;
+    $acl_man = \FormaLms\lib\Forma::getAclManager();;
     $level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
     $output = '';
 
     $is_admin = (($level == ADMIN_GROUP_GODADMIN || $level == ADMIN_GROUP_ADMIN) ? true : false);
@@ -523,7 +523,7 @@ function report_category()
     //require_once('report_categories.php');
     load_categories();
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
 
     $step_index = 0;
     cout(getTitleArea([
@@ -571,7 +571,7 @@ function report_rows_filter()
         Util::jump_to('index.php?modname=report&op=reportlist');
     }
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $reportTempData = $session->get(_REPORT_SESSION);
 
@@ -617,7 +617,7 @@ function report_sel_columns()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
     $obj_report = openreport();
     $temp = $obj_report->get_columns_categories();
 
@@ -653,7 +653,7 @@ function report_columns_filter()
         $session->save();
     }
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
 
     $obj_report = openreport();
     $obj_report->back_url = 'index.php?modname=report&op=report_sel_columns';
@@ -751,7 +751,7 @@ function report_show_results($idrep = false)
     //import yui pop-up stuff
     setup_report_js();
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
     $start_url = 'index.php?modname=report&op=reportlist';
     $download = FormaLms\lib\Get::req('dl', DOTY_STRING, false);
     $no_download = FormaLms\lib\Get::req('no_show_repdownload', DOTY_INT, 0);
@@ -942,7 +942,7 @@ function schedulelist()
     $session->save();
 
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
 
     $idrep = FormaLms\lib\Get::req('idrep', DOTY_INT, false);
     cout(getTitleArea([
@@ -967,7 +967,7 @@ function report_modify_name()
     //require_once('report_categories.php');
     load_categories();
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
 
     $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
     //if (!idrep) Util::jump_to(initial page ... )
@@ -1012,7 +1012,7 @@ function report_modify_rows()
 {
     checkPerm('mod');
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
     $reportTempData = $session->get(_REPORT_SESSION);
@@ -1074,7 +1074,7 @@ function report_modify_columns()
     }
 
     $idrep = FormaLms\lib\Get::req('modid', DOTY_INT, false);
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
 
     $obj_report = openreport();
 

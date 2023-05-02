@@ -484,31 +484,9 @@ class Layout
                 $dropdown_menu[0]['selected'] = true;
             }
             // horizontal menu
-            require_once _lms_ . '/lib/lib.stats.php';
-            $total = getNumCourseItems(
-                $sessionIdCourse,
-                false,
-                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
-                false
-            );
-            $tot_complete = getStatStatusCount(
-                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
-                $sessionIdCourse,
-                ['completed', 'passed']
-            );
-            $tot_failed = getStatStatusCount(
-                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
-                $sessionIdCourse,
-                ['failed']
-            );
-
-            $perc_complete = 0;
-            $perc_failed = 0;
-            if ( $total > 0 ) {
-                $perc_complete = round(($tot_complete / $total) * 100, 2);
-                $perc_failed = round(($tot_failed / $total) * 100, 2);
-            }
-
+            $courseAlms = new CourseAlms();
+            $courseStats = $courseAlms->getCourseCompletedPercentage($sessionIdCourse, \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
+      
             $stats = [];
             if (SessionManager::getInstance()->getSession()->has('is_ghost') || SessionManager::getInstance()->getSession()->get('is_ghost') !== true) {
                 if (\FormaLms\lib\Forma::course()->getValue('show_time') == 1) {
@@ -597,8 +575,8 @@ class Layout
                     'total' => $total,
                     'total_complete' => $tot_complete,
                     'total_failed' => $tot_failed,
-                    'perc_completed' => $perc_complete,
-                    'perc_failed' => $perc_failed,
+                    'perc_completed' => $courseStats['complete_percentage'],
+                    'perc_failed' => $courseStats['failed_percentage'],
                 ],
                 'modal_stats' => $stats,
             ];

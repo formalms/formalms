@@ -1786,4 +1786,37 @@ class CourseAlms extends Model
 
         return sql_fetch_row(sql_query($query)) ?: '';
     }
+
+
+    public function getCourseCompletedPercentage($idCourse, $idUser) : array{
+
+        require_once _lms_ . '/lib/lib.stats.php';
+        
+        $total = getNumCourseItems(
+            $idCourse,
+            false,
+            $idUser,
+            false
+        );
+        $tot_complete = getStatStatusCount(
+            $idUser,
+            $idCourse,
+            ['completed', 'passed']
+        );
+        
+        $tot_failed = getStatStatusCount(
+            $idUser,
+            $idCourse,
+            ['failed']
+        );
+
+        $result['complete_percentage'] = 0;
+        $result['failed_percentage'] = 0;
+        if ( $total > 0 ) {
+            $result['complete_percentage'] = round(($tot_complete / $total) * 100, 2);
+            $result['failed_percentage'] = round(($tot_failed / $total) * 100, 2);
+        }
+
+        return $result;
+    }
 }

@@ -19,17 +19,17 @@ define('CUSTOMFIELDTYPETABLE', '_customfield_type');
 define('CUSTOMFIELDENTRYTABLE', '_customfield_entry');
 define('CUSTOMFIELDAREATABLE', '_customfield_area');
 
-define('FIELD_INFO_ID', 0);
-define('FIELD_INFO_TYPE', 1);
-define('FIELD_INFO_TRANSLATION', 2);
-define('FIELD_INFO_GROUPIDST', 3);
-define('FIELD_INFO_GROUPID', 4);
-define('FIELD_INFO_MANDATORY', 5);
-define('FIELD_INFO_USERACCESS', 6);
-define('FIELD_INFO_USERINHERIT', 7);
-
-define('FIELD_BASEINFO_FILE', 0);
-define('FIELD_BASEINFO_CLASS', 1);
+#define('FIELD_INFO_ID', 0);
+#define('FIELD_INFO_TYPE', 1);
+#define('FIELD_INFO_TRANSLATION', 2);
+#define('FIELD_INFO_GROUPIDST', 3);
+#define('FIELD_INFO_GROUPID', 4);
+#define('FIELD_INFO_MANDATORY', 5);
+#define('FIELD_INFO_USERACCESS', 6);
+#define('FIELD_INFO_USERINHERIT', 7);
+#
+#define('FIELD_BASEINFO_FILE', 0);
+#define('FIELD_BASEINFO_CLASS', 1);
 
 class CustomFieldList
 {

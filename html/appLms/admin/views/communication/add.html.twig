@@ -73,7 +73,7 @@
          data: function (params) {
             var result = {
                 query: params.term,
-                authentic_request: $("#authentic_request_add_comm").val()
+                authentic_request: '{{ authentic_request }}'
             }
 
         return result;

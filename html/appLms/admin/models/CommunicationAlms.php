@@ -147,19 +147,22 @@ class CommunicationAlms extends Model
         return $records;
     }
 
-    public function findByPk($id_comm, $viewer = [])
+    public function findByPk($id_comm, $viewer = [], $language = false)
     {
+        $lang_code = ($language == false ? Lang::get() : $language);
         if (count($viewer)) {
-            $qtxt = 'SELECT c.id_comm, title, description, publish_date, type_of, id_resource, c.id_category, c.id_course '
+            $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cl.description, c.description) as description, c.publish_date, c.type_of, c.id_resource, c.id_category, c.id_course '
                 . ' FROM %lms_communication AS c '
                 . ' LEFT JOIN %lms_communication_access AS ca ON (c.id_comm = ca.id_comm)'
+                . ' LEFT JOIN %lms_communication_lang AS cl ON (c.id_comm = cl.id_comm) AND cl.lang_code = "' . $lang_code . '"'
                 . ' WHERE c.id_comm = ' . (int) $id_comm . ' '
                 . ' AND ca.idst IN ( ' . implode(',', $viewer) . ' ) '
                 . ' GROUP BY c.id_comm';
         } else {
-            $qtxt = 'SELECT id_comm, title, description, publish_date, type_of, id_resource, id_category, id_course '
-                . ' FROM %lms_communication '
-                . ' WHERE id_comm = ' . (int) $id_comm . ' ';
+            $qtxt = 'SELECT c.id_comm, c.title, c.description, c.publish_date, c.type_of, c.id_resource, c.id_category, c.id_course, cl.lang_code '
+                . ' FROM %lms_communication AS c'
+                . ' LEFT JOIN %lms_communication_lang AS cl ON (c.id_comm = cl.id_comm) AND cl.lang_code = "' . $lang_code . '"'
+                . ' WHERE c.id_comm = ' . (int) $id_comm . ' ';
         }
         $re = $this->db->query($qtxt);
 

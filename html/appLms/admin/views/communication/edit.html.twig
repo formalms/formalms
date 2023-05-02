@@ -65,7 +65,7 @@
      selectedCourse.id = {{ idCourse | json_encode(constant('JSON_HEX_APOS')) | raw }};
      selectedCourse.text = {{ courseName | json_encode(constant('JSON_HEX_APOS')) | raw }};
 
-     console.log(selectedCourse);
+   
   const courseDropdown = new window.frontend.modules.Select2($("#idCourse"),{
     data: [selectedCourse],
     width:"100%",
@@ -78,7 +78,7 @@
          data: function (params) {
             var result = {
                 query: params.term,
-                authentic_request: $("#authentic_request_add_comm").val()
+                authentic_request: '{{ authentic_request }}'
             }
 
         return result;

@@ -239,11 +239,13 @@ class CommunicationAlmsController extends AlmsController
             Lang::t('_LONAME_scormorg', 'storage') => 'scorm',
         ];
 
+        $authentic_request = Util::getSignature();
         $this->render('add', [
             'data' => $data,
             'langs' => array_keys($langs),
             'langCode' => $langCode,
             'course_name' => '',
+            'authentic_request' => $authentic_request,
             'categoriesDropdownData' => $categoriesDropdownData,
             'types' => $types,
         ]);
@@ -391,6 +393,7 @@ class CommunicationAlmsController extends AlmsController
         $idComm = FormaLms\lib\Get::req('idComm', DOTY_INT, 0);
         $data = $this->model->findByPk($idComm);
 
+  
         $data['publish_date'] = Format::date($data['publish_date'], 'date');
 
         $course_model = new CourseAlms();
@@ -400,11 +403,12 @@ class CommunicationAlmsController extends AlmsController
         $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
         $langCode = Lang::get();
 
+
         $langsMapped = array_map(fn ($value): array => [$value['lang_code'] => [
             'title' => $value['title'],
             'description' => $value['description'],
         ]], $data['langs']);
-
+ 
         $data['langs'] = array_merge(...$langsMapped);
         //controllo che ci siano almeno un tile e una descrizione di fallback
         if (!count($data['langs']) || !in_array($langCode, array_keys($data['langs']))) {
@@ -414,7 +418,7 @@ class CommunicationAlmsController extends AlmsController
         }
 
         $categoriesDropdownData = $this->model->getCategoryDropdown($langCode);
-
+        $authentic_request = Util::getSignature();
         $this->render('edit', [
             'data' => $data,
             'idCourse' => $data['id_course'],
@@ -423,6 +427,7 @@ class CommunicationAlmsController extends AlmsController
             'formUrl' => $data['type_of'] == 'none' ? 'index.php?r=alms/communication/update' : 'index.php?r=alms/communication/mod_obj&id_comm=' . $data['id_comm'],
             'langs' => array_keys($langs),
             'langCode' => $langCode,
+            'authentic_request' => $authentic_request,
             'categoriesDropdownData' => $categoriesDropdownData,
         ]);
     }
@@ -840,7 +845,7 @@ class CommunicationAlmsController extends AlmsController
 
         //delete action
         if ($can_del) {
-            if ($node['is_leaf'] && $node['count_objects'] <= 0 && !$is_root) {
+            if (isset($node['is_leaf']) && $node['count_objects'] <= 0 && !$is_root) {
                 $actions[] = [
                     'id' => 'del_' . $id_action,
                     'command' => 'delete',
@@ -1138,6 +1143,7 @@ class CommunicationAlmsController extends AlmsController
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
         $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 100));
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+        $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, 'id');
 
         switch ($dir) {
             case 'desc':
