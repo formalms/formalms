@@ -1,7 +1,7 @@
 
-{% set showTitle = upgrade ? upgraderTitle : installerTitle %}
-{% set path = upgrade ? 'upgrade' : 'install' %}
-{% set startStep = upgrade ? 0 : setValues.step %}
+{% set showTitle = install ? upgraderTitle : installerTitle %}
+{% set path = install ? 'upgrade' : 'install' %}
+{% set startStep = install ? 0 : setValues.step %}
   <div class="installer-container">
       <div class="installer-title">
           {{ Get_title({

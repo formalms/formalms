@@ -38,6 +38,8 @@ class InstallAdm extends Model
     protected $response;
     /** @var bool * */
     protected $upgrade;
+     /** @var bool * */
+     protected $installFlag;
   
 
     public const CHECK_REQUIREMENTS = '1';
@@ -62,7 +64,9 @@ class InstallAdm extends Model
         require_once(_lib_ . '/System/lang/' . Lang::getSelLang() . '.php');
         require_once(_lib_ . '/System/lang/' . 'english' . '.php');
 
-        $this->upgrade = $this->isUpgrade();
+        $this->installFlag = $this->checkDbInstallation();
+        $this->upgrade = $this->installFlag ? VersionChecker::needsUpgrade() : false;
+        
         $this->debug = $debug;
 
         if(!$debug) {
@@ -83,7 +87,7 @@ class InstallAdm extends Model
      */
     public function fillSteps(): self
     {
-        if ($this->upgrade) {
+        if ($this->installFlag) {
             $this->steps = [self::CHECK_REQUIREMENTS => _TITLE_STEP1,
                 self::CHECK_UPGRADE => _TITLE_STEP5
             ];
@@ -267,7 +271,7 @@ class InstallAdm extends Model
             $this->checkRequirements(),
             ini_get_all()
         );
-        if (!$this->upgrade) {
+        if (!$this->installFlag) {
             $params = array_merge(
                 $params,
                 $this->getLicense(),
@@ -277,16 +281,18 @@ class InstallAdm extends Model
                 ['setLangs' => $this->getSetLangs()],
                 ['smtpFieldsRequired' => $this->getSmtpFieldsRequired()]
             );
-        } else {
-            $params = array_merge($params, $this->compareVersions());
         }
 
-     
+        $params = array_merge($params, VersionChecker::compareVersions());
+        
+            
         $params['setLang'] = Lang::getSelLang();
         $params['upgrade'] = (bool)$this->upgrade;
-        $params['currentVersion'] = $this->upgrade;
+        $params['install'] = $this->installFlag;
         $params['serverSwInfo'] = $request->server->get('SERVER_SOFTWARE');
-        $params['fileVersion'] = VersionChecker::getFileVersion();
+        $params['currentVersion'] = $this->installFlag ? VersionChecker::getInstalledVersion() : false;
+        $params['fileVersion'] = $this->installFlag ? VersionChecker::getCurrentVersion() : false;
+    
         $params['phpVersionInfo'] = VersionChecker::getPhpVersion();
         $params['sqlClientVersion'] = VersionChecker::getSqlClientVersion();
         $params['sqlServerVersion'] = VersionChecker::getSqlVersion();
@@ -1047,7 +1053,8 @@ class InstallAdm extends Model
             switch ($params['check']) {
                 case 1:
                     //se c'è da installare metto la tabella doctrine migrations
-                    if (VersionChecker::compareUpgradeVersion($this->upgrade)) {
+            
+                    if (VersionChecker::compareUpgradeVersion()) {
                         $success = $this->installMigrationsTable();
 
                         if ($success) {
@@ -1061,7 +1068,7 @@ class InstallAdm extends Model
                 case 2:
                     //lancio migrate
                     $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
-                    $messagesMigration =  $migrator->migrate($params['debug']);
+                    $messagesMigration =  $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
 
             
                     if (!preg_match('/finished/', $messagesMigration)) {
@@ -1127,10 +1134,10 @@ class InstallAdm extends Model
 
             case 2:
                 $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
-                $messagesMigration = $migrator->migrate($params['debug']);
+                $messagesMigration = $migrator->executeCommand('migrate',['debug' => $params['debug']]);
 
                 //controllo che le tabelle siano effettivamente presenti
-                $success = static::checkDbInstallation($this->session->get('setValues'));
+                $success = static::checkDbInstallation();
         
                 if (!$success || !preg_match('/finished/', $messagesMigration)) {
                     $type = 'database';
@@ -1230,22 +1237,12 @@ class InstallAdm extends Model
     /**
      * Method to check the integrity of installation
      *
-     * @param array $values parameters for connection db
      *
      * @return bool
      */
-    public static function checkDbInstallation($values): bool
+    public static function checkDbInstallation(): bool
     {
-        DbConn::getInstance(
-            false,
-            [
-                'db_type' => 'mysqli',
-                'db_host' => $values['dbHost'],
-                'db_user' => $values['dbUser'],
-                'db_pass' => $values['dbPass'],
-                'db_name' => $values['dbName'],
-            ]
-        );
+        DbConn::getInstance();
 
         return (bool)sql_query("SELECT * FROM `core_setting`");
     }
@@ -1501,10 +1498,10 @@ class InstallAdm extends Model
         $qtxt .= "WHERE param_name='default_language'";
         $q = sql_query($qtxt);
 
-        $qtxt = 'INSERT INTO `core_setting` ';
+        $qtxt = 'INSERT IGNORE INTO `core_setting` ';
         $qtxt .= ' (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) ';
         $qtxt .= ' VALUES ';
-        $qtxt .= " ('core_version', '" . VersionChecker::getDbVersion() . "', 'string', 255, '0', 1, 0, 1, 1, '') ";
+        $qtxt .= " ('core_version', '" . VersionChecker::getFileVersion() . "', 'string', 255, '0', 1, 0, 1, 1, '') ";
         $q = sql_query($qtxt);
 
         return $q;
@@ -1645,67 +1642,8 @@ class InstallAdm extends Model
     }
 
 
-    /**
-     * Method to determine if installation or upgrade
-     *
-     *
-     * @return boolean
-     */
-    public function isUpgrade()
-    {
-        $connection = DbConn::getInstance();
 
-        if ($connection::$connected) {
-            list($currentVerion) = sql_fetch_row(sql_query("SELECT param_value FROM core_setting WHERE param_name = 'core_version' "));
-
-            if ($currentVerion) {
-                return $currentVerion;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Method to compare version file and db version
-     *
-     *
-     * @return array
-     */
-    public function compareVersions()
-    {
-        $result = [];
-
-        $compareMinVersion = VersionChecker::getUpgradeSupportedVersion($this->upgrade); 
-
-        if (0 > $compareMinVersion) {
-            //not supported
-            $result['upgradeTrigger'] = 0;
-            $result['upgradeClass'] = 'err';
-            $result['upgradeResult'] = _NOT_SUPPORTED_VERSION;
-        } else {
-            $compareResult = VersionChecker::getUpgradeFileVersion($this->upgrade);
-
-            if (0 > $compareResult) {
-                //ok the upgrade is possible
-                $result['upgradeTrigger'] = 1;
-                $result['upgradeClass'] = 'ok';
-                $result['upgradeResult'] = _OK_UPGRADE;
-            } elseif (0 < $compareResult) {
-                //installed version is major than detected
-                $result['upgradeTrigger'] = 0;
-                $result['upgradeClass'] = 'err';
-                $result['upgradeResult'] = _NO_DOWNGRADE;
-            } else {
-                //nothing to do
-                $result['upgradeTrigger'] = 0;
-                $result['upgradeClass'] = 'none';
-                $result['upgradeResult'] = _NO_UPGRADE;
-            }
-        }
-
-        return $result;
-    }
+   
 
     /**
      * Method to install migration table if database already ecists
@@ -1744,7 +1682,7 @@ class InstallAdm extends Model
      */
     private function saveUpgradeVersion()
     {
-        $qtxt = "UPDATE core_setting SET param_value='" . VersionChecker::getDbVersion() . "' WHERE param_name='core_version'";
+        $qtxt = "UPDATE core_setting SET param_value='" . VersionChecker::getFileVersion() . "' WHERE param_name='core_version'";
         return sql_query($qtxt);
     }
 
@@ -1888,7 +1826,7 @@ class InstallAdm extends Model
             $this->installMigrationsTable();
         }
 
-        $resultMigration = $migrator->migrate((bool) array_key_exists('debug', $params), true);
+        $resultMigration = $migrator->executeCommand('migrate', ['debug' => (bool) array_key_exists('debug', $params), 'test' => true]);
         $messages[] = 'CHECK: ' . $resultMigration;
         return $this->setResponse(true, $messages)->wrapResponse();
     }

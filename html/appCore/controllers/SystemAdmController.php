@@ -40,6 +40,8 @@ class SystemAdmController extends AdmController
         $params['setLang'] = Lang::getSelLang();
 
 
+      
+
         $this->render('install', $params);
 
     }

@@ -204,9 +204,10 @@ class VersionChecker
      *
      * @return bool
      */
-    public static function compareUpgradeVersion($upgradeVersion) : bool {
+    public static function compareUpgradeVersion() : bool {
 
-        return (bool) static::getUpgradeSupportedVersion($upgradeVersion) == 0 && static::getUpgradeFileVersion($upgradeVersion) >= 0;
+       
+        return (bool) static::getUpgradeSupportedVersion() == 0 && static::getUpgradeFileVersion() <= 0;
    
     }
 
@@ -215,9 +216,9 @@ class VersionChecker
      *
      * @return int
      */
-    public static function getUpgradeFileVersion($upgradeVersion) : int {
+    public static function getUpgradeFileVersion() : int {
 
-        return version_compare($upgradeVersion, static::getFileVersion());
+        return version_compare(static::getInstalledVersionArray()['coreVersion'], static::getFileVersion());
    
     }
 
@@ -226,9 +227,9 @@ class VersionChecker
      *
      * @return int
      */
-    public static function getUpgradeSupportedVersion($upgradeVersion) : int {
+    public static function getUpgradeSupportedVersion() : int {
 
-        return version_compare($upgradeVersion, self::MIN_SUPPORTED_VERSION);
+        return version_compare(static::getInstalledVersionArray()['coreVersion'], self::MIN_SUPPORTED_VERSION);
    
     }
 
@@ -273,6 +274,148 @@ class VersionChecker
     public static function getMinimumTemplateVersion() : string {
 
         return self::TEMPLATE_MIN_VERSION;
+    }
+
+
+     /**
+     * Method to get installed version of Forma in array
+     *
+     * @return string
+     */
+    public static function getInstalledVersionArray() :array{
+
+        DbConn::getInstance();
+        $row = sql_query("SELECT param_value FROM `core_setting` WHERE param_name='core_version'");
+        list($version) = sql_fetch_row($row);
+      
+        $result['coreVersion'] = (string) $version;
+        $lastMigration = trim(FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('current'));
+        $arrayLastMigration = explode('\\',$lastMigration);
+      
+        $result['subVersion'] = null;
+        $result['maturity'] = static::getMaturity();
+ 
+        $versionCompare = version_compare($version, self::MIN_SUPPORTED_VERSION);
+
+        if( count($arrayLastMigration) > 1 && $versionCompare > 0) {
+             $nameLastMigration = end($arrayLastMigration);
+             $subVersion = static::getVersionFromFilename($nameLastMigration);
+             $result['coreVersion'] = static::getFileVersion();
+             $result['subVersion'] = $subVersion;
+        }
+
+        return $result;
+        
+    }
+
+      /**
+     * Method to get installed version of Forma
+     *
+     * @return string
+     */
+    public static function getInstalledVersion() :string{
+
+        $parts = static::getInstalledVersionArray();
+       
+        if($parts['subVersion']) {
+            return implode(' - ', static::getInstalledVersionArray());
+        } else {
+            return $parts['coreVersion'];
+        }
+        
+    }
+
+
+    
+     /**
+     * Method to get file migration version of Forma
+     *
+     * @return string
+     */
+    public static function getCurrentVersion() :string{
+
+        //the last line in folder
+        $migrationDirectory = array_pop(FormaLms\lib\Database\FormaMigrator::getInstance()->getConfiguration()->getMigrationDirectories());
+       
+        $migrations = scandir($migrationDirectory, SCANDIR_SORT_DESCENDING);
+        $lastMigration = $migrations[0];
+
+
+        $version = static::getVersionFromFilename($lastMigration);
+      
+        return static::getFileVersion() . ' - ' . $version . ' - ' .self::getMaturity();
+        
+    }
+
+     /**
+     * Parse sub-versioning from migration file
+     *
+     * @return string
+     */
+
+    public static function getVersionFromFilename(string $filename) :string{
+
+        return substr($filename, 9, 2) .'.'.substr($filename, 11, 2).'.'.substr($filename, 13, 2);
+    }
+
+     /**
+     * Cehck if system must be updated
+     *
+     * @return bool
+     */
+     public static function needsUpgrade() :bool{
+
+        $response = trim(FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('uptodate'));
+
+        if(preg_match('/[OK]/', $response )) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+     /**
+     * Method to compare version file and db version
+     *
+     *
+     * @return array
+     */
+    public static function compareVersions()
+    {
+        $result = [];
+
+        //devo capire se la versione è supportata 
+        $compareMinVersion = static::getUpgradeSupportedVersion(); 
+
+     
+        if (0 > $compareMinVersion) {
+            //not supported
+            $result['upgradeTrigger'] = 0;
+            $result['upgradeClass'] = 'err';
+            $result['upgradeResult'] = _NOT_SUPPORTED_VERSION;
+        } else {
+            $compareResult = VersionChecker::getUpgradeFileVersion();
+          
+            if (0 > $compareResult) {
+                //ok the upgrade is possible
+                $result['upgradeTrigger'] = 1;
+                $result['upgradeClass'] = 'ok';
+                $result['upgradeResult'] = _OK_UPGRADE;
+            } elseif (0 < $compareResult) {
+                //installed version is major than detected
+                $result['upgradeTrigger'] = 0;
+                $result['upgradeClass'] = 'err';
+                $result['upgradeResult'] = _NO_DOWNGRADE;
+            } else {
+                //nothing to do
+                $result['upgradeTrigger'] = 0;
+                $result['upgradeClass'] = 'none';
+                $result['upgradeResult'] = _NO_UPGRADE;
+            }
+        }
+
+        return $result;
     }
 
 }
