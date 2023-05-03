@@ -311,13 +311,13 @@ class Layout
 
     public static function render($layout, $dataForView = [])
     {
-        require_once(_lib_ . '/Version/VersionChecker.php');
+
         $session = SessionManager::getInstance()->getSession();
 
         if ($session->has('template') && $session->get('template') !== getTemplate() && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN && CORE === true) {
             $msgChangeTemplate = Lang::t('_MSG_CHANGE_TEMPLATE', 'standard');
             $msgChangeTemplate = str_replace('[template_name]', $session->get('template'), $msgChangeTemplate);
-            $msgChangeTemplate = str_replace('[template_min_version]', VersionChecker::getMinimumTemplateVersion(), $msgChangeTemplate);
+            $msgChangeTemplate = str_replace('[template_min_version]', \FormaLms\lib\Version\VersionChecker::getMinimumTemplateVersion(), $msgChangeTemplate);
 
             UIFeedback::notice($msgChangeTemplate);
         }

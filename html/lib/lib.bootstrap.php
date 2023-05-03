@@ -759,9 +759,8 @@ class Boot
 
     public static function checkPhpVersion()
     {
-        require_once _lib_ . '/Version/VersionChecker.php';
 
-        if (\VersionChecker::comparePhpVersion()) {
+        if (\FormaLms\lib\Version\VersionChecker::comparePhpVersion()) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
     }

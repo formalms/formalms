@@ -11,6 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+namespace FormaLms\lib\Version;
 
 class VersionChecker
 {
@@ -284,12 +285,12 @@ class VersionChecker
      */
     public static function getInstalledVersionArray() :array{
 
-        DbConn::getInstance();
+        \FormaLms\db\DbConn::getInstance();
         $row = sql_query("SELECT param_value FROM `core_setting` WHERE param_name='core_version'");
         list($version) = sql_fetch_row($row);
       
         $result['coreVersion'] = (string) $version;
-        $lastMigration = trim(FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('current'));
+        $lastMigration = trim(\FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('current'));
         $arrayLastMigration = explode('\\',$lastMigration);
       
         $result['subVersion'] = null;
@@ -322,7 +323,6 @@ class VersionChecker
         } else {
             return $parts['coreVersion'];
         }
-        
     }
 
 
@@ -335,7 +335,7 @@ class VersionChecker
     public static function getCurrentVersion() :string{
 
         //the last line in folder
-        $migrationDirectory = array_pop(FormaLms\lib\Database\FormaMigrator::getInstance()->getConfiguration()->getMigrationDirectories());
+        $migrationDirectory = array_pop(\FormaLms\lib\Database\FormaMigrator::getInstance()->getConfiguration()->getMigrationDirectories());
        
         $migrations = scandir($migrationDirectory, SCANDIR_SORT_DESCENDING);
         $lastMigration = $migrations[0];
@@ -365,7 +365,7 @@ class VersionChecker
      */
      public static function needsUpgrade() :bool{
 
-        $response = trim(FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('uptodate'));
+        $response = trim(\FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('uptodate'));
 
         if(preg_match('/[OK]/', $response )) {
             return false;
