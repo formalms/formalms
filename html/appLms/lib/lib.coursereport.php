@@ -21,9 +21,9 @@ class CourseReportManager
     public function __construct($idCourse = null)
     {
         if ($idCourse === null) {
-            $this->idCourse = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+            $this->idCourse = (int)\FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         } else {
-            $this->idCourse = (int) $idCourse;
+            $this->idCourse = (int)$idCourse;
         }
     }
 
@@ -62,13 +62,13 @@ class CourseReportManager
         return $course_user;
     }
 
-    public function &getTest()
+    public function getTest()
     {
         require_once Forma::inc(_lms_ . '/lib/lib.orgchart.php');
         require_once Forma::inc(_lms_ . '/class.module/learning.test.php');
 
         $org_man = new OrganizationManagement($this->idCourse);
-        $tests = &$org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
+        $tests = $org_man->getAllLoAbsoluteIdWhereType(Learning_Test::getTestTypes());
 
         return $tests;
     }
@@ -121,16 +121,27 @@ class CourseReportManager
 				'test',
 				'" . $id_test . "',
 				'" . $from_sequence++ . "'
-			)";
+			) ON DUPLICATE KEY UPDATE id_course=VALUES(id_course), id_source=VALUES(id_source)";
             sql_query($query_test);
         }
     }
 
-    public function removeDuplicatedReports($idCourse)
+    public function removeDuplicatedReports()
     {
-        $report_man = new CourseReportManager($idCourse);
-        $org_tests = &$report_man->getTest();
+        $org_tests = $this->getTest();
+        $reportsToDelete = [];
         foreach ($org_tests as $org_test) {
+            $reports = $this->getTestReports($this->idCourse, $org_test);
+            if (count($reports) > 1) {
+                array_shift($reports);
+                $idReports = array_map(function ($report) {
+                    return $report['id_report'];
+                }, $reports);
+                $reportsToDelete = array_merge($reportsToDelete, $idReports);
+            }
+        }
+        if (count($reportsToDelete) > 0) {
+            $this->delTestToReport($reportsToDelete);
         }
     }
 
@@ -141,7 +152,7 @@ class CourseReportManager
 
     public function getTestReports($idCourse, $idTest)
     {
-        $query = "SELECT * from %lms_coursereport WHERE id_course=${idCourse} AND id_source=${$idTest} AND source_of='test'";
+        $query = "SELECT * from %lms_coursereport WHERE id_course=${idCourse} AND id_source=${idTest} AND source_of='test' ORDER BY sequence";
 
         $result = DbConn::getInstance()->query($query);
 
@@ -211,8 +222,8 @@ class CourseReportManager
     }
 
     /**
-     * @param int   $reports_id the id of the reports for which you need to recover the users scores
-     * @param array $id_user    if != false filter result to this users
+     * @param int $reports_id the id of the reports for which you need to recover the users scores
+     * @param array $id_user if != false filter result to this users
      *
      * @return array an array with this structure ( id_report => ( id_user => (id_report, id_user, date_attempt, score, score_status, comment)), ...)
      */
@@ -280,8 +291,8 @@ class CourseReportManager
     }
 
     /**
-     * @param int   $id_report the id of the report to manage
-     * @param array $id_user   filter for user
+     * @param int $id_report the id of the report to manage
+     * @param array $id_user filter for user
      *
      * @return bool true if success false otherwise
      */
@@ -334,7 +345,7 @@ class CourseReportManager
     {
         if ($source['required_score'] > $source['max_score']) {
             return ['error' => true,
-                'message' => Lang::t('_REQUIRED_MUST_BE_LESS_THEN_MAX', 'coursereport', 'lms'), ];
+                'message' => Lang::t('_REQUIRED_MUST_BE_LESS_THEN_MAX', 'coursereport', 'lms'),];
         }
 
         return ['error' => false, 'message' => ''];
@@ -484,7 +495,7 @@ class CourseReportManager
     public function deleteAllReports($id_course)
     {
         //validate input
-        if ((int) $id_course <= 0) {
+        if ((int)$id_course <= 0) {
             return false;
         }
 
@@ -494,7 +505,7 @@ class CourseReportManager
 
         //get all existing report for the course
         $arr_id_report = [];
-        $query = 'SELECT id_report FROM %lms_coursereport_score WHERE id_course = ' . (int) $id_course;
+        $query = 'SELECT id_report FROM %lms_coursereport_score WHERE id_course = ' . (int)$id_course;
         $res = $db->query($query);
         while (list($id_report) = $db->fetch_row($res)) {
             $arr_id_report[] = $id_report;
@@ -512,7 +523,7 @@ class CourseReportManager
         }
 
         //delete course reports
-        $query = "DELETE FROM %lms_coursereport WHERE id_course = '" . (int) $id_course . "'";
+        $query = "DELETE FROM %lms_coursereport WHERE id_course = '" . (int)$id_course . "'";
         $res = $db->query($query);
         if (!$res) {
             $db->rollback();

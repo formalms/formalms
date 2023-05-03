@@ -82,7 +82,7 @@ class ReportLms extends Model
 
             $res = sql_query($query_report);
             if ($res) {
-                list(
+                [
                     $this->idReport,
                     $this->idCourse,
                     $this->title,
@@ -94,7 +94,7 @@ class ReportLms extends Model
                     $this->sourceOf,
                     $this->idSource,
                     $showInDetail
-                    ) = sql_fetch_row($res);
+                ] = sql_fetch_row($res);
 
                 $this->showToUser = $showToUser === 'true' ? true : false;
                 $this->useForFinal = $useForFinal === 'true' ? true : false;

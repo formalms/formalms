@@ -1352,7 +1352,7 @@ class Course_API extends API
             //unset($arrayDays[$idDay]);
             $result = $model->classroom_man->removeDateDay($idDate, [
                 [
-                    'id_day' => $idDay,
+                    'id' => $idDay,
                 ],
             ]);
 
