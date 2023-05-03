@@ -38,8 +38,8 @@ class Boot
         BOOT_UTILITY => 'utility',
         BOOT_REQUEST => 'request',
         BOOT_PLATFORM => 'checkPlatform',
-        BOOT_DOMAIN_AND_TEMPLATE => 'domainAndTemplate',
         BOOT_SETTING => 'loadSetting',
+        BOOT_DOMAIN_AND_TEMPLATE => 'domainAndTemplate',
         BOOT_PLUGINS => 'plugins',
         BOOT_USER => 'user',
         BOOT_SESSION_CHECK => 'sessionCheck',
@@ -767,8 +767,7 @@ class Boot
     {
         require_once _lib_ . '/Version/VersionChecker.php';
 
-    
-        if (VersionChecker::comparePhpVersion()) {
+        if (\VersionChecker::comparePhpVersion()) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
     }

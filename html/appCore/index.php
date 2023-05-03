@@ -16,7 +16,7 @@ const CORE = true;
 const IN_FORMA = true;
 const _deeppath_ = '../';
 require __DIR__ . '/../base.php';
-require_once _lib_ . '/Version/VersionChecker.php';
+
 
 
 // start buffer

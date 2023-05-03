@@ -1,4 +1,5 @@
 <?php
+
 namespace FormaLms\lib\Database;
 /*
  * FORMA - The E-Learning Suite
@@ -12,6 +13,7 @@ namespace FormaLms\lib\Database;
  */
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
+
 use Doctrine\DBAL\DriverManager;
 
 
@@ -40,9 +42,12 @@ class FormaMigrator
 
     protected YamlFile $configFile;
 
-    public const ADMITTABLE_COMMANDS = ['list','migrate','status','current','uptodate'];
+    public const ADMITTABLE_COMMANDS = ['list', 'migrate', 'status', 'current', 'uptodate'];
 
-    public static function getInstance()
+    /**
+     * @return FormaMigrator
+     */
+    public static function getInstance(): FormaMigrator
     {
         if (self::$instance === null) {
             $c = __CLASS__;
@@ -52,69 +57,70 @@ class FormaMigrator
         return self::$instance;
     }
 
-    public function __construct() {
+    public function __construct()
+    {
 
-        $this->configFile = new YamlFile(_base_.'/migrations.yaml');
+        $this->configFile = new YamlFile(_base_ . '/migrations.yaml');
 
     }
 
-    public function setup() {
+    public function setup()
+    {
 
         $cfg = [];
         if (file_exists(_base_ . '/config.php')) {
-            require _base_. '/config.php';
-        }
-        else {
-            if(file_exists(sys_get_temp_dir(). '/config.php')) {
-                require sys_get_temp_dir(). '/config.php';
+            require _base_ . '/config.php';
+        } else {
+            if (file_exists(sys_get_temp_dir() . '/config.php')) {
+                require sys_get_temp_dir() . '/config.php';
             }
 
         }
-        
-        try 
-        {
-          $this->connection = DriverManager::getConnection([
-              'user' => $cfg['db_user'],
-              'password' => $cfg['db_pass'],
-              'dbname' => $cfg['db_name'],
-              'host' => $cfg['db_host'],
-              'driver' => 'pdo_mysql',
-          ]);
-           $this->dependencyFactory = DependencyFactory::fromConnection(
-              $this->configFile,
-              new ExistingConnection($this->connection)
-           );
-        } catch(PDOException $pdoException) {
-    
-        }
-        catch (Exception $e) {
-          
+
+        try {
+            $this->connection = DriverManager::getConnection([
+                'user' => $cfg['db_user'],
+                'password' => $cfg['db_pass'],
+                'dbname' => $cfg['db_name'],
+                'host' => $cfg['db_host'],
+                'driver' => 'pdo_mysql',
+            ]);
+            $this->dependencyFactory = DependencyFactory::fromConnection(
+                $this->configFile,
+                new ExistingConnection($this->connection)
+            );
+        } catch (PDOException $pdoException) {
+
+        } catch (Exception $e) {
+
         }
 
         $this->syncMetadata();
-        
+
     }
 
-    public function executeCommand(string $command, array $args = []) {
+    public function executeCommand(string $command, array $args = [])
+    {
         $this->setup();
-        if(!in_array($command, self::ADMITTABLE_COMMANDS)) {
+        if (!in_array($command, self::ADMITTABLE_COMMANDS)) {
             throw new Exception("Not Implement Command");
         }
         return $this->$command(...$args);
     }
 
-    private function migrate($debug = false, $test = false) {
-    
-        $writeSqlFile = _base_. "/files/logs/migration" . floor(microtime(true) * 1000) .".sql";
+    private function migrate($debug = false, $test = false)
+    {
+
+        $writeSqlFile = _base_ . "/files/logs/migration" . floor(microtime(true) * 1000) . ".sql";
         $arguments = [];
-        if($debug) {
+        if ($debug) {
             $arguments['--write-sql'] = $writeSqlFile;
         }
 
-        if($test) {
+        if ($test) {
             $arguments['--dry-run'] = true;
         }
-   
+
         $command = new MigrateCommand($this->dependencyFactory);
 
         $input = new ArrayInput($arguments);
@@ -122,42 +128,44 @@ class FormaMigrator
 
         $output = new BufferedOutput();
 
-       
+
         $exitcode = $command->run($input, $output);
-        
-    
+
+
         if ($exitcode > 0) {
             throw new Exception($output->fetch());
         }
 
         $result = $output->fetch();
-        if($test) {
+        if ($test) {
             $result = $writeSqlFile;
         }
-        
+
         return $result;
     }
 
-    private function syncMetadata() {
+    private function syncMetadata()
+    {
 
-        $command = new SyncMetadataCommand($this->dependencyFactory); 
+        $command = new SyncMetadataCommand($this->dependencyFactory);
 
         $input = new ArrayInput([]);
         $input->setInteractive(false);
 
         $output = new BufferedOutput();
 
- 
+
         $exitcode = $command->run($input, $output);
-      
+
 
         return $output->fetch();
     }
 
-    private function uptodate() {
+    private function uptodate()
+    {
 
-       
-        $command = new UpToDateCommand($this->dependencyFactory); 
+
+        $command = new UpToDateCommand($this->dependencyFactory);
 
         $input = new ArrayInput([]);
         $input->setInteractive(false);
@@ -166,8 +174,8 @@ class FormaMigrator
 
         try {
             $exitcode = $command->run($input, $output);
-        } catch(MetadataStorageError $e) {
-        
+        } catch (MetadataStorageError $e) {
+
             return '[ERROR]';
         }
         //if ($exitcode > 0) {
@@ -175,11 +183,12 @@ class FormaMigrator
         //}
 
         return $output->fetch();
-        
+
     }
 
 
-    private function list() {
+    private function list()
+    {
 
         $command = new ListCommand($this->dependencyFactory);
 
@@ -194,10 +203,11 @@ class FormaMigrator
         }
 
         return $output->fetch();
-        
+
     }
 
-    private function current() {
+    private function current()
+    {
 
         $command = new CurrentCommand($this->dependencyFactory);
 
@@ -212,10 +222,11 @@ class FormaMigrator
         }
 
         return $output->fetch();
-        
+
     }
 
-    private function status() {
+    private function status()
+    {
 
         $command = new StatusCommand($this->dependencyFactory);
         $arguments['--show-versions'] = true;
@@ -230,18 +241,21 @@ class FormaMigrator
         }
 
         return $output->fetch();
-        
+
     }
 
-
-
-    public function getConfiguration() {
+    /**
+     * @return \Doctrine\Migrations\Configuration\Configuration
+     */
+    public function getConfiguration()
+    {
 
         return $this->configFile->getConfiguration();
     }
 
 
-    public function getMigrationTableSettings()  {
+    public function getMigrationTableSettings()
+    {
 
         return $this->configFile->getConfiguration()->getMetaDataStorageConfiguration();
     }

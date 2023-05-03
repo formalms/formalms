@@ -74,7 +74,7 @@ function getTemplate()
     }
 
     // search for the default template
-    $session->set('template', getDefaultTemplate());
+    setTemplate(getDefaultTemplate());
 
     return $session->get('template');
 }
@@ -200,8 +200,8 @@ function checkTemplateVersion($template_name)
         $check = [];
         if ($template_forma_version) {
 
-            return VersionChecker::checkTemplateVersion($template_forma_version);
-       
+            return \VersionChecker::checkTemplateVersion($template_forma_version);
+
         }
 
         return false;

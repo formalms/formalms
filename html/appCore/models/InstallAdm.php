@@ -40,7 +40,7 @@ class InstallAdm extends Model
     protected $upgrade;
      /** @var bool * */
      protected $installFlag;
-  
+
 
     public const CHECK_REQUIREMENTS = '1';
     public const CHECK_DATABASE = '2';
@@ -65,8 +65,8 @@ class InstallAdm extends Model
         require_once(_lib_ . '/System/lang/' . 'english' . '.php');
 
         $this->installFlag = $this->checkDbInstallation();
-        $this->upgrade = $this->installFlag ? VersionChecker::needsUpgrade() : false;
-        
+        $this->upgrade = $this->installFlag ? \VersionChecker::needsUpgrade() : false;
+
         $this->debug = $debug;
 
         if(!$debug) {
@@ -283,19 +283,19 @@ class InstallAdm extends Model
             );
         }
 
-        $params = array_merge($params, VersionChecker::compareVersions());
-        
-            
+        $params = array_merge($params, \VersionChecker::compareVersions());
+
+
         $params['setLang'] = Lang::getSelLang();
         $params['upgrade'] = (bool)$this->upgrade;
         $params['install'] = $this->installFlag;
         $params['serverSwInfo'] = $request->server->get('SERVER_SOFTWARE');
-        $params['currentVersion'] = $this->installFlag ? VersionChecker::getInstalledVersion() : false;
-        $params['fileVersion'] = $this->installFlag ? VersionChecker::getCurrentVersion() : false;
-    
-        $params['phpVersionInfo'] = VersionChecker::getPhpVersion();
-        $params['sqlClientVersion'] = VersionChecker::getSqlClientVersion();
-        $params['sqlServerVersion'] = VersionChecker::getSqlVersion();
+        $params['currentVersion'] = $this->installFlag ? \VersionChecker::getInstalledVersion() : false;
+        $params['fileVersion'] = $this->installFlag ? \VersionChecker::getCurrentVersion() : false;
+
+        $params['phpVersionInfo'] = \VersionChecker::getPhpVersion();
+        $params['sqlClientVersion'] = \VersionChecker::getSqlClientVersion();
+        $params['sqlServerVersion'] = \VersionChecker::getSqlVersion();
         $params['mbstringData'] = extension_loaded('mbstring') ? _ON : _OFF;
         $params['mimeCtData'] = $params['mimeCt'] == 'ok' ? _ON : _OFF;
         $params['fileInfoData'] = extension_loaded('fileinfo') ? _ON : _OFF . ' ' . _ONLY_IF_YU_WANT_TO_USE_FILEINFO;
@@ -324,19 +324,19 @@ class InstallAdm extends Model
 
         $checkRequirements = 1;
   
-        $res['mandatory']['php'] = VersionChecker::matchPhpVersion()['message'];
-      
+        $res['mandatory']['php'] = \VersionChecker::matchPhpVersion()['message'];
+
         $driver = [
             'mysqli' => extension_loaded('mysqli'),
         ];
         if (array_filter($driver)) {
             // mysql client version, in php the version number is a string regcut it
-            $sqlClientVersion = VersionChecker::getSqlClientVersion();
+            $sqlClientVersion = \VersionChecker::getSqlClientVersion();
 
             if ('unknown' === $sqlClientVersion) {
                 $res['requirements']['mysqlClient'] = 'ok';
             } else {
-                $res['requirements']['mysqlClient'] = (VersionChecker::compareSqlClientVersion($sqlClientVersion) ? 'ok' : 'err');
+                $res['requirements']['mysqlClient'] = (\VersionChecker::compareSqlClientVersion($sqlClientVersion) ? 'ok' : 'err');
             }
         } else {
             $res['mysqlClient'] = 'err';
@@ -344,13 +344,13 @@ class InstallAdm extends Model
         if (array_filter($driver)) {
             // mysql version, in easyphp the version number is ina string regcut it
            
-            $mysqlVersion = VersionChecker::getSqlVersion();
+            $mysqlVersion = \VersionChecker::getSqlVersion();
 
             if ('unknown' === $mysqlVersion) {
                 $res['mandatory']['mysql'] = 'ok';
             } else {
 
-                if (VersionChecker::compareSqlVersion($mysqlVersion)) {
+                if (\VersionChecker::compareSqlVersion($mysqlVersion)) {
                     $res['mandatory']['mysql'] = 'ok';
                   
                 } else {
@@ -933,10 +933,10 @@ class InstallAdm extends Model
         $removeCreateDb = false;
         $sqlVersionCheck = false;
 
-        $checkSqlVersion = VersionChecker::getSqlVersionArray($this->getSqlVersionByQuery());
+        $checkSqlVersion = \VersionChecker::getSqlVersionArray($this->getSqlVersionByQuery());
 
         if(!empty($checkSqlVersion[1])) {
-            $sqlVersionCheck = VersionChecker::compareSqlVersion($checkSqlVersion[1]);
+            $sqlVersionCheck = \VersionChecker::compareSqlVersion($checkSqlVersion[1]);
         }
 
         if($sqlVersionCheck) {
@@ -1046,6 +1046,7 @@ class InstallAdm extends Model
     {
         $params = $request->request->all();
         $messages = [];
+        $success = false;
         $type = 'standard';
    
 
@@ -1053,8 +1054,8 @@ class InstallAdm extends Model
             switch ($params['check']) {
                 case 1:
                     //se c'è da installare metto la tabella doctrine migrations
-            
-                    if (VersionChecker::compareUpgradeVersion()) {
+
+                    if (\VersionChecker::compareUpgradeVersion()) {
                         $success = $this->installMigrationsTable();
 
                         if ($success) {
@@ -1501,7 +1502,7 @@ class InstallAdm extends Model
         $qtxt = 'INSERT IGNORE INTO `core_setting` ';
         $qtxt .= ' (`param_name`, `param_value`, `value_type`, `max_size`, `pack`, `regroup`, `sequence`, `param_load`, `hide_in_modify`, `extra_info`) ';
         $qtxt .= ' VALUES ';
-        $qtxt .= " ('core_version', '" . VersionChecker::getFileVersion() . "', 'string', 255, '0', 1, 0, 1, 1, '') ";
+        $qtxt .= " ('core_version', '" . \VersionChecker::getFileVersion() . "', 'string', 255, '0', 1, 0, 1, 1, '') ";
         $q = sql_query($qtxt);
 
         return $q;
@@ -1643,7 +1644,7 @@ class InstallAdm extends Model
 
 
 
-   
+
 
     /**
      * Method to install migration table if database already ecists
@@ -1682,7 +1683,7 @@ class InstallAdm extends Model
      */
     private function saveUpgradeVersion()
     {
-        $qtxt = "UPDATE core_setting SET param_value='" . VersionChecker::getFileVersion() . "' WHERE param_name='core_version'";
+        $qtxt = "UPDATE core_setting SET param_value='" . \VersionChecker::getFileVersion() . "' WHERE param_name='core_version'";
         return sql_query($qtxt);
     }
 

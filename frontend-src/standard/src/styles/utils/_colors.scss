@@ -9,8 +9,8 @@
   --color-grey-03: hsla(0, 0%, 60%, 1.0);
   --color-grey-04: hsla(0, 0%, 25%, 1.0);
   --color-black: hsla(0, 0%, 0%, 1.0);
-  --color-disabled: rgb(220, 220, 220); // FISSO
-  --color-disabled-text: rgb(173, 173, 173); // FISSO
+  --color-disabled: hsla(0, 1%, 87%, 1); // FISSO
+  --color-disabled-text: hsla(0, 1%, 68%, 1); // FISSO
 
   // Dynamics
   --color-navbtn-bg: hsla(27, 96%, 80%, 1.0);
@@ -19,8 +19,8 @@
   --color-navbtn-text-inter: hsla(0, 0%, 100%, 1.0);
 
   --color-wrapper-bg: var(--color-grey); // rgb(242, 242, 242)
-  --color-wrapper-text: rgb(60, 60, 60); // automatico
-  --color-wrapper-text-50: rgba(47, 47, 47, 0.057); // calcolato automaticamente, è una variante luminosità di --color-wrapper-text
+  --color-wrapper-text: hsla(0%, 0%, 24%, 1); // automatico
+  --color-wrapper-text-50: hsla(0%, 0%, 18%, 0.057); // calcolato automaticamente, è una variante luminosità di --color-wrapper-text
 
   --color-icon-bg:hsla(27, 96%, 80%, 1.0);
   --color-icon-text: rgb(51, 51, 51); // calcolato automaticamente
