@@ -15,7 +15,7 @@
 class VersionChecker
 {
     public const FILE_VERSION = '4.0.0';
-    public const TEMPLATE_MIN_VERSION = '4.0.0';
+    public const MIN_TEMPLATE_VERSION = '4.0.0';
     public const PHP_MIN_VERSION = '7.4.0';
     public const PHP_MAX_VERSION = '8.1.99';
     public const DB_VERSION = '4.0.0';

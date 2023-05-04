@@ -528,7 +528,7 @@ class PluginmanagerAdm extends Model
     public function installPlugin($plugin_name, $priority = 0, $update = false, $core = 0)
     {
         $plugin_info = self::readPluginManifest($plugin_name);
-        if ($plugin_info['core'] == 'true') {
+        if (array_key_exists('core',$plugin_info) && $plugin_info['core'] == 'true') {
             $core = 1;
         }
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
@@ -536,7 +536,7 @@ class PluginmanagerAdm extends Model
                 (plugin_id, name, title, category, version, author, link, priority, description, regroup, active, core, created_at, updated_at) 
 				values(null,'" . addslashes($plugin_name) . "', '" . addslashes($plugin_info['title']) . "', '" . addslashes($plugin_info['category']) . "',
 					'" . addslashes($plugin_info['version']) . "', '" . addslashes($plugin_info['author']) . "', '" . addslashes($plugin_info['link']) . "', $priority,
-					'" . addslashes($plugin_info['description']) . "'," . time() . ' ,0,' . (int)$core . ', now(), now() )';
+					'" . (is_array($plugin_info['description']) ? 'Description' : addslashes($plugin_info['description'])) . "'," . time() . ' ,0,' . (int)$core . ', now(), now() )';
         if ($plugin_info) {
             $result = sql_query($query);
             if ($result) {
