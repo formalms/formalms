@@ -172,6 +172,7 @@ class Layout
      */
     public static function cart()
     {
+        
         require_once _lms_ . '/lib/lib.cart.php';
         Learning_Cart::init();
 

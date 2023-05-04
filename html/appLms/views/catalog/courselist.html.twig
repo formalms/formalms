@@ -57,8 +57,12 @@
                 }
             )
                 .done(function (responseText) {
-                    if (op == '{{ data.endpoint }}/addToCart') {
+                    if ('lms/' + op == '{{ data.endpoint }}/addToCart') {
                         $('#menu_over').load(document.URL + '  #menu_over');
+                        if($('#cart_element').parent('li').hasClass('hidden')) {
+                            $('#cart_element').parent('li').removeClass('hidden');
+                        }
+                        
                     }
 
                     $("#div_course").html(responseText);

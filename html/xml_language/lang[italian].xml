@@ -697,6 +697,7 @@ http://server/path/index.php?modname=login) \]]></key>
         <key id="configuration&amp;_USE_SENDER_ACLNAME" attributes="" save_date="2022-03-10 11:47:19"><![CDATA[Nome mittente delle mail di notifica]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2017-04-10 16:17:08"><![CDATA[Attiva l'uso dei tag nei forum]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Attenzione senza questi settaggi la login social non funzioner&agrave;]]></key>
+        <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Utente notifiche acquisti (Username o idst)]]></key>
       </module>
       <module id="course">
         <key id="course&amp;_ADDFILE" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Aggiungi un file]]></key>
@@ -1223,6 +1224,16 @@ sei stato disiscritto dall'edizione ([edition_code]) - [edition]]]></key>
         <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Sei stato disiscritto dal corso]]></key>
         <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Gentile [firstname] [lastname],
 sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
+        <key id="email&amp;_PURCHASE_COURSE_MAIL_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Un utente ha acquistato un corso]]></key>
+        <key id="email&amp;_PURCHASE_COURSE_MAIL_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[L'utente [firstname] [lastname] ([username] - [email])<br>
+          ha acquistato il corso [course] sulla piattaforma [url]<br><br>
+
+          [fields]
+
+          ORDINE #[id_transaction]<br>
+          effettuato in data: [date_transaction]<br>
+          Totale: [price] €<br>
+          Metodo: [method]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2018-04-23 12:26:20"><![CDATA[Applica politica di iscrizione]]></key>
@@ -1248,6 +1259,7 @@ sei stato disiscritto dal corso ([course_code]) - [course]]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertedModerators" attributes="" save_date="2020-09-24 11:53:20"><![CDATA[ Iscrizione di un utente ad un corso, viene inviata ai moderatori]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertModerate" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente da moderare in corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseInsertOverbooking" attributes="" save_date="2021-08-02 13:19:09"><![CDATA[Utente overbooking in attesa di approvazione]]></key>
+        <key id="event_manager&amp;_EVENT_CLASS_PurchaseCourse" attributes="" save_date="2021-08-02 13:19:09"><![CDATA[Notifica acquisto corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseLevelChanged" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente cambia livello in corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemoved" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente disiscritto da un corso]]></key>
         <key id="event_manager&amp;_EVENT_CLASS_UserCourseRemovedModerate" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Utente in attesa di rimozione dal corso]]></key>

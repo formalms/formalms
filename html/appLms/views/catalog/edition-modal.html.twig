@@ -27,6 +27,7 @@ function enrollClassroom(id_date, overbooking) {
 
 function addToCart(id_date) {
             event.preventDefault(); 
+   
             var posting = $.get(
                 'ajax.server.php',
                     {
@@ -41,6 +42,10 @@ function addToCart(id_date) {
                 posting.done(function (responseText) {
                     $('#menu_over').load(document.URL +  '  #menu_over');                                                    
                     $("#div_course").html(responseText);
+                    if($('#cart_element').parent('li').hasClass('hidden')) {
+                        $('#cart_element').parent('li').removeClass('hidden');
+                    }
+                        
                 });
                 posting.fail(function () {
                     alert('unsubscribe failed')
