@@ -510,7 +510,8 @@ final class Version20220815000001 extends AbstractMigration
             (44, 'UserCourseInsertedModerators', 'lms-a', ''),
             (45, 'UserCourseSuspendedSuperAdmin', 'framework', ''),
             (46, 'UserRegistrationSuperadmins', 'lms-a', ''),
-            (50, 'UserCourseInsertOverbooking', 'lms-a', '')");
+            (50, 'UserCourseInsertOverbooking', 'lms-a', ''),
+            (51, 'PurchaseCourse', 'lms', '')");
 
 
             $this->addSql("CREATE TABLE IF NOT EXISTS `core_event_consumer` (
@@ -569,7 +570,8 @@ final class Version20220815000001 extends AbstractMigration
                 (1, 44),
                 (1, 45),
                 (1, 46),
-                (1, 50)");
+                (1, 50),
+                (1, 51)");
 
 
             $this->addSql("CREATE TABLE IF NOT EXISTS `core_event_manager` (
@@ -613,7 +615,8 @@ final class Version20220815000001 extends AbstractMigration
                 (44, 44, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER', 'admin'),
                 (45, 45, 'not_used', 'email', '_EVENT_RECIPIENTS_TEACHER_GOD', 'godadmin,admin,user'),
                 (46, 46, 'not_used', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin'),
-                (50, 50, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin')");
+                (50, 50, 'mandatory', 'email', '_EVENT_RECIPIENTS_MODERATORS_GOD', 'admin'),
+                (51, 51, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user')");
 
 
             $this->addSql("CREATE TABLE IF NOT EXISTS `core_event_property` (

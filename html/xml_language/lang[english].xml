@@ -694,6 +694,7 @@
         <key id="configuration&amp;_USE_SENDER_ACLNAME" attributes="" save_date="2022-03-10 11:47:16"><![CDATA[Sender name from for alert messages]]></key>
         <key id="configuration&amp;_USE_TAG" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Enable tags feature inside forums]]></key>
         <key id="configuration&amp;_WARINNG_SOCIAL" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Attention without these settings the social login will not work]]></key>
+        <key id="configuration&amp;_PURCHASE_USER" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Purchase User (Username or idst)]]></key>
       </module>
       <module id="course">
         <key id="course&amp;_ADDFILE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Add file]]></key>
@@ -1224,6 +1225,16 @@ you have been unsubscribed from the edition ([edition_code]) - [edition]]]></key
         <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[You have been unsubscribed from the course]]></key>
         <key id="email&amp;_EVENT_COURSE_EVENT_UNSUBSCRIBE_USER_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[Dear [firstname] [lastname],
 you have been unsubscribed from the course ([course_code]) - [course]]]></key>
+<key id="email&amp;_PURCHASE_COURSE_MAIL_SBJ" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[A user purchased a course]]></key>
+        <key id="email&amp;_PURCHASE_COURSE_MAIL_TEXT" attributes="" save_date="2015-09-30 15:32:39"><![CDATA[The user [firstname] [lastname] ([username] - [email])<br>
+          purchased the course [course] on platform [url]<br><br>
+
+          [fields]
+
+          ORDER #[id_transaction]<br>
+          on: [date_transaction]<br>
+          Total: [price] €<br>
+          Method: [method]]]></key>
       </module>
       <module id="enrollrules">
         <key id="enrollrules&amp;_APPLY_RULE" attributes="" save_date="2020-09-15 14:47:12"><![CDATA[Apply rule]]></key>
