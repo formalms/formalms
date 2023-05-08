@@ -3,16 +3,16 @@ VALUES
 	('purchase_user', '', 'string', 255, 'ecommerce', 4, 18, 1, 0, '');
 
 
-INSERT IGNORE INTO `core_event_class` (`idClass`, `class`, `platform`, `description`) 
+INSERT IGNORE INTO `core_event_class` (`class`, `platform`, `description`) 
 VALUES
-	(51, 'PurchaseCourse', 'lms', NULL);
+	('PurchaseCourse', 'lms', NULL);
 
-INSERT IGNORE INTO `core_event_manager` (`idEventMgr`, `idClass`, `permission`, `channel`, `recipients`, `show_level`) 
+INSERT IGNORE INTO `core_event_manager` ( `idClass`, `permission`, `channel`, `recipients`, `show_level`) 
 VALUES
-    ( 51, 51, 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
+    (  (SELECT `idClass` FROM `core_event_class` WHERE `class` = 'PurchaseCourse'), 'mandatory', 'email', '_EVENT_RECIPIENTS_USER', 'godadmin,admin,user');
 
 INSERT IGNORE INTO `core_event_consumer_class` (`idConsumer`, `idClass`) 
 VALUES
-	(1,51);
+	(1,(SELECT `idClass` FROM `core_event_class` WHERE `class` = 'PurchaseCourse'));
 
 
