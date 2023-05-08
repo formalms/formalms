@@ -1792,22 +1792,26 @@ class CourseAlms extends Model
 
         require_once _lms_ . '/lib/lib.stats.php';
         
-        $total = getNumCourseItems(
+        $totalArray = getCountableCourseItems(
             $idCourse,
             false,
             $idUser,
             false
         );
+
+        $total = count($totalArray);
         $tot_complete = getStatStatusCount(
             $idUser,
             $idCourse,
-            ['completed', 'passed']
+            ['completed', 'passed'],
+            $totalArray
         );
         
         $tot_failed = getStatStatusCount(
             $idUser,
             $idCourse,
-            ['failed']
+            ['failed'],
+            $totalArray
         );
 
         $result['complete_percentage'] = 0;

@@ -132,7 +132,23 @@ function renderCoursepathProgress($complete, $total)
  **/
 function getNumCourseItems($idCourse, $countHidden = true, $idUser = false, $countNotAccessible = true)
 {
-    $query = 'SELECT count(idOrg) FROM %lms_organization';
+    return count(getCountableCourseItems($idCourse, $countHidden, $idUser, $countNotAccessible));
+}
+
+/**
+ * Return total number of items in a course.
+ *
+ * @param int  $idCourse           id of course
+ * @param bool $countHidden        count hidden elements
+ * @param int  $idUser             id of user to filter accessibility
+ * @param bool $countNotAccessible count not accessible elements to user
+ *                                 this parameter require $idUser to be a valid user
+ *
+ * @return int number of items in course
+ **/
+function getCountableCourseItems($idCourse, $countHidden = true, $idUser = false, $countNotAccessible = true) : array
+{
+    $query = 'SELECT GROUP_CONCAT(idOrg) as list FROM %lms_organization';
     if (!$countNotAccessible) {
         $query .= ' LEFT JOIN %lms_organization_access'
                  . ' ON ( %lms_organization.idOrg = %lms_organization_access.idOrgAccess )';
@@ -144,8 +160,10 @@ function getNumCourseItems($idCourse, $countHidden = true, $idUser = false, $cou
     }
 
     if (!$countNotAccessible) {
-        $query .= ' AND ( (' . $GLOBALS['prefix_lms'] . "_organization_access.kind = 'user'"
-                 . ' 	AND ' . $GLOBALS['prefix_lms'] . "_organization_access.value = '" . (int) $idUser . "')"
+        $query .= ' AND ( ( %lms_organization_access.kind = "user"'
+                 . ' 	AND %lms_organization_access.value = "' . (int) $idUser . '")'
+                 . ' OR ( %lms_organization_access.kind = "group"'
+                 . ' 	AND %lms_organization_access.value IN (SELECT GROUP_CONCAT(idst) as idsts FROM %adm_group_members WHERE idstMember = "' . (int) $idUser .'" GROUP BY idstMember))'
                  . '	    OR %lms_organization_access.idOrgAccess IS NULL'
                  . ')';
     }
@@ -153,12 +171,12 @@ function getNumCourseItems($idCourse, $countHidden = true, $idUser = false, $cou
     $rs = sql_query($query);
 
     if ($rs === false) {
-        return false;
+        return [];
     } else {
-        list($count) = sql_fetch_row($rs);
+        list($list) = sql_fetch_row($rs);
         sql_free_result($rs);
 
-        return $count;
+        return explode("," , $list);
     }
 }
 
@@ -168,10 +186,11 @@ function getNumCourseItems($idCourse, $countHidden = true, $idUser = false, $cou
  * @param int   $stat_idUser   id of user
  * @param int   $stat_idCourse id of the course
  * @param mixed $arrStatus     array of status to search
+ * @param mixed $arrayFilter     array of ids filtered
  *
  * @return int number of items in requested status
  **/
-function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts)
+function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts, $arrayFilter = [])
 {
     $query = 'SELECT count(ct.idreference)'
         . ' FROM %lms_commontrack ct, %lms_organization org'
@@ -179,6 +198,10 @@ function getStatStatusCount($stat_idUser, $stat_idCourse, $arrStauts)
         . "   AND (ct.idUser = '" . (int) $stat_idUser . "')"
         . "   AND (idCourse = '" . (int) $stat_idCourse . "')"
         . "   AND (status IN ('" . implode("','", $arrStauts) . "'))";
+
+    if(count($arrayFilter)) {
+        $query .= "   AND (ct.idReference IN ('" . implode("','", $arrayFilter) . "'))";
+    }
     if (($rsItems = sql_query($query)) === false) {
         echo $query;
         errorCommunication('Error on query to get user count based on status');

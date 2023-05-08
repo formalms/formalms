@@ -526,36 +526,39 @@ class Layout
             $stats['user_stats']['who_is_online']['type'] = \FormaLms\lib\Forma::course()->getValue('show_who_online');
             $stats['user_stats']['who_is_online']['user_online'] = TrackUser::getWhoIsOnline($sessionIdCourse);
 
+            $total = getNumCourseItems(
+                $sessionIdCourse,
+                false,
+                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                false
+            );
+            $tot_complete = getStatStatusCount(
+                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                $sessionIdCourse,
+                ['completed', 'passed']
+            );
+
+            $tot_incomplete = $total - $tot_complete;
+
+            $tot_failed = getStatStatusCount(
+                \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
+                $sessionIdCourse,
+                ['failed']
+            );
             // print first pannel
 
             // print progress bar -------------------------------------------------
             if (\FormaLms\lib\Forma::course()->getValue('show_progress') == 1) {
                 $show_progress = true;
                 require_once _lms_ . '/lib/lib.stats.php';
-                $total = getNumCourseItems(
-                    $sessionIdCourse,
-                    false,
-                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
-                    false
-                );
-                $tot_complete = getStatStatusCount(
-                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
-                    $sessionIdCourse,
-                    ['completed', 'passed']
-                );
-
-                $tot_incomplete = $total - $tot_complete;
+          
 
                 $tot_passed = getStatStatusCount(
                     \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
                     $sessionIdCourse,
                     ['passed']
                 );
-                $tot_failed = getStatStatusCount(
-                    \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(),
-                    $sessionIdCourse,
-                    ['failed']
-                );
+             
 
                 $stats['course_stats']['materials'] = $total;
                 $stats['course_stats']['materials_complete'] = $tot_complete;
