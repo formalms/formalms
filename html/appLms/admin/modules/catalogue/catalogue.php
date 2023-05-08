@@ -329,7 +329,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
 
         $output = sql_fetch_row($re_entry);
 
-        return (int) $output[0];
+        return is_array($output) ? (int) $output[0] : 0;
     }
 
     function entrylist()

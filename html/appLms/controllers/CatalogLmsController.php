@@ -77,6 +77,7 @@ class CatalogLmsController extends LmsController
 
         $catalogue = '';
         $total_category = 0;
+        $starting_catalogue = 0;
 
         if (!$show_empty_catalogue_tab) {
             if ($show_general_catalogue_tab) {
