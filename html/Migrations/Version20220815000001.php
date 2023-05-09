@@ -525,10 +525,10 @@ final class Version20220815000001 extends AbstractMigration
 
 
             $this->addSql("INSERT INTO `core_event_consumer` (`idConsumer`, `consumer_class`, `consumer_file`) VALUES
-                (1, 'DoceboUserNotifier', '/lib/lib.usernotifier.php'),
-                (2, 'DoceboCourseNotifier', '/lib/lib.coursenotifier.php'),
-                (3, 'DoceboOrgchartNotifier', '/lib/lib.orgchartnotifier.php'),
-                (5, 'DoceboSettingNotifier', '/lib/lib.settingnotifier.php')");
+                (1, 'FormaUserNotifier', '/lib/lib.usernotifier.php'),
+                (2, 'FormaCourseNotifier', '/lib/lib.coursenotifier.php'),
+                (3, 'FormaOrgchartNotifier', '/lib/lib.orgchartnotifier.php'),
+                (5, 'FormaSettingNotifier', '/lib/lib.settingnotifier.php')");
 
 
 

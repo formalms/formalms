@@ -1,9 +1,9 @@
-{% include '/partials/testbutton.html.twig' %}
+{% include '/partials/buttons.html.twig' %}
 <div id="progress">
   <div class="progress-bar" style="height:30px"></div>
 </div>
 <span id="loading" style="display:none;">{{loadingLabel}}</span>
-<textarea disabled class="debug"></textarea>
+<textarea disabled class="debug">{{installExplain}}</textarea>
 <span id="success" style="display:none;">{{successLabel}}</span>
 <span id="failure" style="display:none;">{{errorLabel}}</span>
 <div id="finalButtons" class="wizard" style="display:none;">

@@ -65,3 +65,7 @@ form {
 
 
 textarea.debug {width:100%; min-height:300px;}
+
+a[href="#finish"] {
+	display:none !important;
+  }

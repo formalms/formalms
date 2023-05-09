@@ -168,6 +168,8 @@ class InstallAdm extends Model
 
         $labels['loadingLabel'] = _LOADING . '...';
         $labels['successLabel'] = _INSTALLATION_COMPLETED;
+        $labels['installExplain'] = _INSTALL_EXPLAIN;
+        $labels['upgradeExplain'] = _UPGRADE_EXPLAIN;
         $labels['errorLabel'] = _INSTALLATION_ERROR;
         $labels['goToLogin'] = _SITE_HOMEPAGE;
         $labels['downloadLock'] = _DOWNLOAD_LOCK;
@@ -721,9 +723,9 @@ class InstallAdm extends Model
     {
         $messages = [];
         $params = $request->request->all();
-
+        $optinalFields = ['adminName', 'adminLastname'];
         foreach ($params as $key => $param) {
-            if ('' == $param) {
+            if ('' == $param && !in_array($key, $optinalFields)) {
                 $messages[] = $this->errorLabels['missing_field'] . ":" . $this->labels[$key . 'Label'];
             }
         }

@@ -15,7 +15,7 @@ define('_INSTALLER_TITLE', 'forma.lms - Installation');
 define('_UPGRADER_TITLE', 'forma.lms - Upgrade');
 define('_INSTALLED_VERSION', 'Installed Version');
 define('_DETECTED_VERSION', 'Detected Version');
-define('_TEST_INSTALL', 'Test Installation');
+define('_TEST_INSTALL', 'Generate Debug Query');
 define('_TEST_UPGRADE', 'Test Upgrade');
 define('_GENERATE_LOCK', 'Generate lock file');
 define('_OK_UPGRADE', 'You can proceed with Upgrade');
@@ -34,7 +34,7 @@ define('_FINISH', 'Install');
 define('_UPGRADE_FINISH', 'Upgrade');
 //--------------------------------------
 define('_INTRODUCTION', 'Introduction');
-define('_TITLE_STEP1', 'Step 1: Getting Started');
+define('_TITLE_STEP1', 'Getting Started');
 define('_LANGUAGE', 'Language');
 define('_INSTALLER_INTRO_TEXT', '
 forma.lms is a free open source Learning Management System mantained by an italian group of companies, already used by hundreds of companies and universities all over the world.
@@ -57,7 +57,7 @@ forma.lms is a free open source Learning Management System mantained by an itali
 define('_WARNINGS', 'Warnings');
 define('WARNING_PUB_ADMIN_DELETED', 'All public admins willl be deleted');
 // ---------------------------------------
-define('_TITLE_STEP2', 'Step 2: Database and FTP Settings');
+define('_TITLE_STEP2', 'Database and FTP Settings');
 define('_SERVERINFO', 'Server information');
 define('_SERVER_SOFTWARE', 'Server software : ');
 define('_PHPVERSION', 'PHP Version : ');
@@ -91,10 +91,10 @@ define('_YES', 'YES');
 define('_NO', 'NO');
 
 // -----------------------------------------
-define('_TITLE_STEP3', 'Step 3: Admin and Language Settings');
+define('_TITLE_STEP3', 'Admin and Language Settings');
 define('_AGREE_LICENSE', 'I agree with the term of the license');
 // -----------------------------------------
-define('_TITLE_STEP4', 'Step 4: SMTP Configuration');
+define('_TITLE_STEP4', 'SMTP Configuration');
 define('_SITE_BASE_URL', 'Base url of the website');
 define('_DATABASE_INFO', 'Database information');
 define('_DB_TYPE', 'Type');
@@ -123,7 +123,7 @@ define('_SQL_STRICT_MODE_WARN', "You have MySQL <a href=\"http://dev.mysql.com/d
 define('_SQL_STRICT_MODE', 'MySQL <a href="http://dev.mysql.com/doc/en/server-sql-mode.html" target="_blank">strict mode</a>');
 define('_DB_WILL_BE_CREATED', 'Db will be created');
 // -----------------------------------------
-define('_TITLE_STEP5', 'Step 5: Finalization');
+define('_TITLE_STEP5', 'Finalization');
 define('_ADMIN_USER_INFO', 'Information regarding the administrator user (first login)');
 define('_ADMIN_USERNAME', 'Username');
 define('_ADMIN_FIRSTNAME', 'Firstname');
@@ -138,12 +138,12 @@ define('_ADMIN_PASS_DOESNT_MATCH', "Password does'nt match");
 define('_NO_LANG_SELECTED', 'No languages selected');
 
 // -----------------------------------------
-define('_TITLE_STEP6', 'Step 6: Database data setup');
+
 define('_DATABASE', 'Database');
 define('_DB_IMPORTING', 'Importing database');
 define('_LANGUAGES', 'Languages');
 // -----------------------------------------
-define('_TITLE_STEP7', 'Step 7: Configurazione SMTP');
+
 define('_SMTP_INFO', "Sarà possibile impostare la configurazione dell'SMTP da backoffice o da config.");
 define('_USE_SMTP_DATABASE', 'Impostazioni SMTP su Database');
 define('_USE_SMTP', 'Usa SMTP');
@@ -242,3 +242,6 @@ define('_CLEARTWIG_CACHE_OK', 'Twig Cache Cleared');
 define('_DATABASE_OK', 'Database connected correctly');
 define('_CONFIG_OK', 'Configuration file found');
 define('_PHPVERSION_OK', 'Suitable PHP Version');
+
+define('_INSTALL_EXPLAIN', 'You are going to install Forma LMS in your system, clicking on the button above a colored bar will show you the progress of the installation, in case of failure you can check the files/logs to find a SQL file which contains all commands to launch after the failure, to debug your environment, or you can click on Generate Debug Query to execute the routine');
+define('_UPGRADE_EXPLAIN', 'You are going to upgrade Forma LMS in your system, please it\'s recommended to save a backup of your database before any operation, clicking on the button above a colored bar will show you the progress of the upgrade, in case of failure you can check the files/logs to find a SQL file which contains all commands to launch after the failure, to debug your environment, or you can click on Generate Debug Query to execute the routine');

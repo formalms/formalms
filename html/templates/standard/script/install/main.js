@@ -169,10 +169,11 @@ function process() {
         if(errors.length > 0){
       
           errors.forEach(function(error) {
-            console.log($("li."+ error).html());
+  
               $("li."+ error).show();
           });
           $("#failure").show();
+          $("#testinstall").show();
           $("#errorSection").show();
 
           
@@ -539,4 +540,10 @@ function generateLockFile() {
         return false;
     },
   });
+}
+
+
+/***********************************/
+function runInstall() {
+  $("a[href='#finish']").trigger('click');
 }

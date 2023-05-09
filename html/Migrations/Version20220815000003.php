@@ -33,30 +33,6 @@ final class Version20220815000003 extends AbstractMigration
           `approved` tinyint(1) NOT NULL DEFAULT '0',
           PRIMARY KEY (`booking_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1") ;
-  
-        
-        $this->addSql("CREATE TABLE IF NOT EXISTS `conference_chatperm` (
-          `room_id` int(11) NOT NULL DEFAULT '0',
-          `module` varchar(50) NOT NULL DEFAULT '',
-          `user_idst` int(11) NOT NULL DEFAULT '0',
-          `perm` varchar(50) NOT NULL DEFAULT '',
-          PRIMARY KEY (`room_id`,`module`,`user_idst`,`perm`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
-        
-     
-        
-        $this->addSql("CREATE TABLE IF NOT EXISTS `conference_chat_msg` (
-          `msg_id` int(11) NOT NULL AUTO_INCREMENT,
-          `id_user` int(11) NOT NULL DEFAULT '0',
-          `id_room` int(11) NOT NULL DEFAULT '0',
-          `userid` varchar(255) NOT NULL DEFAULT '',
-          `send_to` int(11) DEFAULT NULL,
-          `sent_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-          `text` text NOT NULL,
-          PRIMARY KEY (`msg_id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1");
-        
-      
         
         $this->addSql("CREATE TABLE IF NOT EXISTS `conference_dimdim` (
           `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -224,41 +200,7 @@ final class Version20220815000003 extends AbstractMigration
           PRIMARY KEY (`id_user`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1");
         
- 
-        
-        $this->addSql("CREATE TABLE IF NOT EXISTS `conference_teleskill` (
-          `id` bigint(20) NOT NULL AUTO_INCREMENT,
-          `idConference` bigint(20) NOT NULL DEFAULT '0',
-          `roomid` bigint(20) NOT NULL DEFAULT '0',
-          PRIMARY KEY (`id`),
-          KEY `idConference` (`idConference`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1");
-        
-  
-        
-        $this->addSql("CREATE TABLE IF NOT EXISTS `conference_teleskill_log` (
-          `roomid` int(11) NOT NULL DEFAULT '0',
-          `idUser` int(11) NOT NULL DEFAULT '0',
-          `role` int(11) NOT NULL DEFAULT '0',
-          `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-          `duration` int(11) NOT NULL DEFAULT '0',
-          `access` int(11) NOT NULL DEFAULT '0',
-          PRIMARY KEY (`roomid`,`idUser`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
-        
-    
-        
-        $this->addSql("CREATE TABLE IF NOT EXISTS `conference_teleskill_room` (
-          `roomid` int(11) NOT NULL DEFAULT '0',
-          `uid` int(11) NOT NULL DEFAULT '0',
-          `zone` varchar(255) NOT NULL DEFAULT '',
-          `title` varchar(255) NOT NULL DEFAULT '',
-          `start_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-          `end_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-          `bookable` tinyint(1) NOT NULL DEFAULT '0',
-          `capacity` int(11) DEFAULT NULL,
-          PRIMARY KEY (`roomid`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
  
       
     }

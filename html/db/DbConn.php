@@ -59,10 +59,10 @@ class DbConn
             $values = $session->get('setValues');
 
             $cfg['db_type'] = 'mysqli';
-            $cfg['db_user'] = $values['dbUser'];
-            $cfg['db_pass'] = $values['dbPass'];
-            $cfg['db_name'] = $values['dbName'];
-            $cfg['db_host'] = $values['dbHost'];
+            $cfg['db_user'] = array_key_exists('dbUser', $values) ? $values['dbUser'] : false;
+            $cfg['db_pass'] = array_key_exists('dbPass', $values) ? $values['dbPass'] : false;
+            $cfg['db_name'] = array_key_exists('dbName', $values) ? $values['dbName'] : false;
+            $cfg['db_host'] = array_key_exists('dbHost', $values) ? $values['dbHost'] : false;
         }
         $db_type = \FormaLms\lib\Get::cfg('db_type') ?: ($cfg['db_type'] ?? false);
         $host = \FormaLms\lib\Get::cfg('db_host') ?: ($cfg['db_host'] ?? false);

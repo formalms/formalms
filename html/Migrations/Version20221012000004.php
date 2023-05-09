@@ -25,6 +25,12 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta`');
         $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_assign`');
         $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_course`');
+        $this->addSql('DROP TABLE IF EXISTS `conference_teleskill`');
+        $this->addSql('DROP TABLE IF EXISTS `conference_teleskill_log`');
+        $this->addSql('DROP TABLE IF EXISTS `conference_teleskill_room`');
+        $this->addSql('DROP TABLE IF EXISTS `conference_chat_msg`');
+        $this->addSql('DROP TABLE IF EXISTS `conference_chatperm`');
+        $this->addSql('DROP TABLE IF EXISTS `conference_dimdim`');
 
         /** FOREIGN KEYS **/
         $this->addSql('ALTER TABLE `core_lang_translation`
@@ -64,14 +70,6 @@ final class Version20221012000004 extends AbstractMigration
             )ENGINE=InnoDB DEFAULT CHARSET=utf8");
         //////////$this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE conference_booking ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE room_id room_id INT NOT NULL, CHANGE platform platform VARCHAR(255) NOT NULL, CHANGE module module VARCHAR(100) NOT NULL, CHANGE user_idst user_idst INT NOT NULL, CHANGE approved approved TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE conference_chat_msg ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_user id_user INT NOT NULL, CHANGE id_room id_room INT NOT NULL, CHANGE userid userid VARCHAR(255) NOT NULL');
-        $this->addSql('ALTER TABLE conference_chatperm DROP INDEX `PRIMARY`');
-        $this->addSql('ALTER TABLE conference_chatperm ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE room_id room_id INT NOT NULL, CHANGE module module VARCHAR(50) NOT NULL, CHANGE user_idst user_idst INT NOT NULL, CHANGE perm perm VARCHAR(50) NOT NULL');
-        $this->addSql('CREATE INDEX room_id_idx ON conference_chatperm (room_id)');
-        $this->addSql('CREATE INDEX module_idx ON conference_chatperm (module)');
-        $this->addSql('CREATE INDEX user_idst_idx ON conference_chatperm (user_idst)');
-        $this->addSql('CREATE INDEX perm_idx ON conference_chatperm (perm)');
-        $this->addSql('ALTER TABLE conference_dimdim ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idConference idConference BIGINT NOT NULL');
         $this->addSql('ALTER TABLE conference_menu ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE name name VARCHAR(255) NOT NULL, CHANGE image image VARCHAR(255) NOT NULL, CHANGE sequence sequence INT NOT NULL');
         $this->addSql('ALTER TABLE conference_menu_under ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idMenu idMenu INT NOT NULL, CHANGE module_name module_name VARCHAR(255) NOT NULL, CHANGE default_name default_name VARCHAR(255) NOT NULL, CHANGE default_op default_op VARCHAR(255) NOT NULL, CHANGE associated_token associated_token VARCHAR(255) NOT NULL, CHANGE sequence sequence INT NOT NULL, CHANGE class_file class_file VARCHAR(255) NOT NULL, CHANGE class_name class_name VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE conference_room ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idCal idCal BIGINT NOT NULL, CHANGE idCourse idCourse BIGINT NOT NULL, CHANGE idSt idSt BIGINT NOT NULL, CHANGE bookable bookable TINYINT(1) NOT NULL');
@@ -83,14 +81,6 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE conference_rules_root ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE max_user_at_time max_user_at_time INT UNSIGNED NOT NULL, CHANGE max_room_at_time max_room_at_time INT UNSIGNED NOT NULL, CHANGE max_subroom_for_room max_subroom_for_room INT UNSIGNED NOT NULL');
         $this->addSql('CREATE INDEX system_type_idx ON conference_rules_root (system_type)');
         $this->addSql('ALTER TABLE conference_rules_user ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE last_hit last_hit INT NOT NULL, CHANGE id_room id_room INT NOT NULL, CHANGE userid userid VARCHAR(255) NOT NULL, CHANGE user_ip user_ip VARCHAR(15) NOT NULL, CHANGE first_name first_name VARCHAR(255) NOT NULL, CHANGE last_name last_name VARCHAR(255) NOT NULL, CHANGE level level INT NOT NULL, CHANGE auto_reload auto_reload TINYINT(1) NOT NULL');
-        $this->addSql('ALTER TABLE conference_teleskill ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idConference idConference BIGINT NOT NULL, CHANGE roomid roomid BIGINT NOT NULL');
-        $this->addSql('ALTER TABLE conference_teleskill_log DROP INDEX `PRIMARY`');
-        $this->addSql('ALTER TABLE conference_teleskill_log ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE roomid roomid INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE role role INT NOT NULL, CHANGE duration duration INT NOT NULL, CHANGE access access INT NOT NULL');
-        $this->addSql('CREATE INDEX room_id_idx ON conference_teleskill_log (roomid)');
-        $this->addSql('CREATE INDEX id_user_idx ON conference_teleskill_log (idUser)');
-        $this->addSql('ALTER TABLE conference_teleskill_room DROP INDEX `PRIMARY`');
-        $this->addSql('ALTER TABLE conference_teleskill_room ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE roomid roomid INT NOT NULL, CHANGE uid uid INT NOT NULL, CHANGE zone zone VARCHAR(255) NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE bookable bookable TINYINT(1) NOT NULL');
-        $this->addSql('CREATE INDEX room_id_idx ON conference_teleskill_room (roomId)');
         $this->addSql('ALTER TABLE core_admin_course DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE core_admin_course ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idst_user idst_user INT NOT NULL, CHANGE type_of_entry type_of_entry VARCHAR(50) NOT NULL, CHANGE id_entry id_entry INT NOT NULL');
         $this->addSql('CREATE INDEX idst_user_idx ON core_admin_course (idst_user)');
