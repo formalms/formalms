@@ -67,7 +67,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     require_once _lms_ . '/lib/lib.test.php';
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $test_type = $object_test->getObjectType();
     $id_reference = getLoParam($id_param, 'idReference');
@@ -561,6 +561,8 @@ function play($object_test, $id_param)
         exit("You can't access");
     }
 
+    $idQuest = null;
+
     require_once _base_ . '/lib/lib.form.php';
     require_once _lms_ . '/class.module/track.test.php';
     require_once _lms_ . '/lib/lib.param.php';
@@ -572,7 +574,7 @@ function play($object_test, $id_param)
         $session->save();
     }
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_test->back_url));
@@ -917,9 +919,12 @@ function play($object_test, $id_param)
                 $query = 'SELECT idAnswer, is_correct'
                     . ' FROM %lms_testquestanswer'
                     . ' WHERE idQuest = ' . (int) $idQuest;
-                $result = sql_query($query);
-                while (list($id_answer, $is_correct) = sql_fetch_assoc($result)) {
-                    $array_answer[$idQuest][$id_answer] = $is_correct;
+                $results = sql_query($query);
+          
+                if(is_countable($results)) {
+                    foreach ($results as $result) {
+                        $array_answer[$idQuest][$result['idAnswer']] = $result['is_correct'];
+                    }
                 }
                 $array_answer[$idQuest]['type'] = $type_quest;
                 ++$tot_question;
@@ -1138,7 +1143,7 @@ function showResult($object_test, $id_param)
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
     $url_coded = urlencode(Util::serialize($object_test->back_url));
@@ -1263,7 +1268,7 @@ function showResult($object_test, $id_param)
             $score_status = 'not_passed';
         }
     }
-    if (!$test_info['']) {
+    if (array_key_exists('', $test_info) && !$test_info['']) {
         if ($num_manual != 0) {
             $score_status = 'not_checked';
         } else {

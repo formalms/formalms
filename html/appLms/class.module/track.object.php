@@ -279,7 +279,7 @@ class Track_Object
                 . " AND dateAttempt ='" . $data['dateAttempt'] . "'"
                 . " AND status = '" . $data['status'] . "'";
         $res = sql_query($query);
-        $sql_affected_rows =  sql_num_rows($res);
+        $sql_affected_rows =  (int) sql_num_rows($res);
 
         if (!$resSql || $sql_affected_rows === 0) {
             $query = 'INSERT INTO ' . $this->_table . ' '

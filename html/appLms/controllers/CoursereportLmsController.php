@@ -359,8 +359,11 @@ class CoursereportLmsController extends LmsController
                                         $test_details[$info_report->getIdSource()]['not_passed'] = 0;
                                     }
 
+                                    if(!isset($test_details[$id_test]['varianza'])) {
+                                        $test_details[$id_test]['varianza'] = 0;
+                                    }
                                     $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']);
-                                    $test_details[$id_test]['varianza'] = sqrt($test_details[$id_test]['varianza']);
+                                    $test_details[$id_test]['varianza'] = array_key_exists('varianza', $test_details[$id_test]) ? sqrt($test_details[$id_test]['varianza']) : 0;
                                 }
 
                                 $passed = (isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED]) ? round($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED], 2) : '-');

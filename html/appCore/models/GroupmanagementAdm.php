@@ -622,7 +622,8 @@ class GroupmanagementAdm extends Model
         $res = $this->db->query($query);
         if ($res) {
             while ($obj = $this->db->fetch_obj($res)) {
-                $output[$obj->idst] = end(explode('/', $obj->groupid));
+                $arrayObj = explode('/', $obj->groupid);
+                $output[$obj->idst] = end($arrayObj);
             }
         }
 

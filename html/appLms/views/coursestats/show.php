@@ -40,7 +40,7 @@ echo getTitleArea(Lang::t('_COURSESTATS', 'menu_course'));
     foreach ($lo_list as $lo) {
         $fields[] = 'lo_' . $lo->id;
     }
-    $a = $a;
+    $a = isset($a) ? $a : null;
     $rel_actions = '
 	<a href="index.php?r=coursestats/export_csv" class="ico-wt-sprite subs_csv" title="' . Lang::t('_EXPORT_CSV', 'report') . '">
 		<span>' . Lang::t('_EXPORT_CSV', 'report') . '</span>

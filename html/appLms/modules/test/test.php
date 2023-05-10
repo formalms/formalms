@@ -28,7 +28,7 @@ function saveTestStatus($save_this)
     return $save_name;
 }
 
-function &loadTestStatus($save_name)
+function loadTestStatus($save_name)
 {
     $save = new Session_Save();
 
