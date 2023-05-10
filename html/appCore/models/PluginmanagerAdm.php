@@ -19,6 +19,7 @@ class PluginmanagerAdm extends Model
     protected $table;
     protected $plugin_core;
     public static $plugins_active;
+    protected $systemManager;
 
     public function __construct()
     {
@@ -27,6 +28,7 @@ class PluginmanagerAdm extends Model
         $this->plugin_core = [
             'FormaAuth',
         ];
+        $this->systemManager = \FormaLms\lib\System\SystemManager::getInstance();
         parent::__construct();
     }
 
@@ -230,6 +232,10 @@ class PluginmanagerAdm extends Model
     {
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
+        if($this->systemManager->checkSystemRoutes()) {
+            self::$plugins_active = [];
+            return self::$plugins_active;
+        }
         if (!isset(self::$plugins_active)) {
 
             if ($session && $session->has('notuse_plugin') && $session->get('notuse_plugin') === true) {

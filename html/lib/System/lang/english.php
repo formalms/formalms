@@ -101,6 +101,7 @@ define('_DB_TYPE', 'Type');
 define('_DB_HOST', 'Address');
 define('_DB_NAME', 'Database name');
 define('_DB_USERNAME', 'Database user');
+define('_MIGRATION_COMPLETED', 'Migrations completed successfully');
 define('_DB_PASS', 'Password');
 define('_UPLOAD_METHOD', 'Upload file method (suggested FTP, if you are on windows at home use HTTP');
 define('_HTTP_UPLOAD', 'Classic method (HTTP)');

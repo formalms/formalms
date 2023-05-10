@@ -111,6 +111,7 @@ class FormaMigrator
     private function migrate($debug = false, $test = false)
     {
 
+        $response['success'] = true;
         $writeSqlFile = _base_ . "/files/logs/migration" . floor(microtime(true) * 1000) . ".sql";
         $arguments = [];
         if ($debug) {
@@ -133,15 +134,17 @@ class FormaMigrator
 
 
         if ($exitcode > 0) {
-            throw new Exception($output->fetch());
+            $response['success'] = false;
+            $response['message'] = $output->fetch();
+            //throw new Exception($output->fetch());
         }
 
-        $result = $output->fetch();
+        $response['message'] = $output->fetch();
         if ($test) {
-            $result = $writeSqlFile;
+            $response['message'] = $writeSqlFile;
         }
 
-        return $result;
+        return $response;
     }
 
     private function syncMetadata()

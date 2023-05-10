@@ -13,7 +13,7 @@
 require_once _base_ . '/vendor/autoload.php';
 
 use FormaLms\lib\Domain\DomainHandler;
-
+use FormaLms\lib\System\SystemManager;
 use FormaLms\Exceptions\FormaStatusException;
 
 use function GuzzleHttp\default_ca_bundle;
@@ -56,6 +56,8 @@ class Boot
 
     public static $log_array = [];
 
+    public static SystemManager $systemManager;
+
     /**
      * Load all the step requested.
      *
@@ -69,7 +71,8 @@ class Boot
         //inizializzazione
         self::$checkStatusFlags = [];
 
-        self::checkWebServer();
+        self::$systemManager = SystemManager::getInstance();
+        self::$prettyRedirect = self::$systemManager->checkWebServer();
 
         if (is_array($load_option)) {
             $last_step = CHECK_SYSTEM_STATUS;
@@ -128,10 +131,10 @@ class Boot
         if (!isset($cfg) || !is_array($cfg)) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
-        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = static::checkSystemRoutes($request);
+       
+        $checkRoute = self::$systemManager->checkSystemRoutes();
 
-        if (!$checkRoute && !static::fileLockExistence()) {
+        if (!$checkRoute && !self::$systemManager->fileLockExistence()) {
             static::customRedirect('install');
         }
 
@@ -393,13 +396,12 @@ class Boot
         }
 
         //controllare request
-        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-        $checkRoute = static::checkSystemRoutes($request);
+        $checkRoute = self::$systemManager->checkSystemRoutes();
 
         if ($dbIsEmpty) {
             self::$checkStatusFlags[] = array_search(__FUNCTION__, self::$_boot_seq);
         }
-        if (!$checkRoute && !static::fileLockExistence()) {
+        if (!$checkRoute && !self::$systemManager->fileLockExistence()) {
             static::customRedirect('install');
         }
     }
@@ -550,7 +552,7 @@ class Boot
         }
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 
-        if ((!defined('IS_API') && !defined('IS_PAYPAL') && ($request->isMethod('post') || defined('IS_AJAX'))) && !static::checkSystemRoutes($request)) {
+        if ((!defined('IS_API') && !defined('IS_PAYPAL') && ($request->isMethod('post') || defined('IS_AJAX'))) && !self::$systemManager->checkSystemRoutes()) {
             // If this is a post or a ajax request then we must have a signature attached
             Util::checkSignature();
         }
@@ -706,37 +708,17 @@ class Boot
         }
     }
 
-    public static function checkSystemRoutes(\Symfony\Component\HttpFoundation\Request $request, $check = false)
-    {
-        $route = '/^(adm\/system\/)(\w+)+$/';
-        if ($check) {
-            $route = '/^(adm\/system\/checkSystemStatus)+$/';
-        }
-        return $request->query->get('r') && (bool)preg_match($route, $request->query->get('r'));
-    }
 
     public static function checkSystemStatus()
     {
         $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
 
-        if (count(self::$checkStatusFlags) && static::fileLockExistence() && !static::checkSystemRoutes($request, true) && !defined('IS_AJAX')) {
+        if (count(self::$checkStatusFlags) && self::$systemManager->fileLockExistence() && !self::$systemManager->checkSystemRoutes(true) && !defined('IS_AJAX')) {
             $params['errorStatus'] = base64_encode(implode("_", array_unique(self::$checkStatusFlags)));
             static::customRedirect('checkSystemStatus', $params);
         }
     }
 
-    public static function fileLockExistence()
-    {
-        return (bool) file_exists(_base_ . '/forma.lock');
-    }
-
-    //Disabled - htacces use not used at moment
-    public static function checkWebServer()
-    {
-        $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
-
-        self::$prettyRedirect = (bool)preg_match('/^(Apache)/', $request->server->get('SERVER_SOFTWARE')??'');
-    }
 
     public static function customRedirect($route, $params = [])
     {

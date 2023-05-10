@@ -1070,16 +1070,16 @@ class InstallAdm extends Model
                 case 2:
                     //lancio migrate
                     $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
-                    $messagesMigration =  $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
+                    $responseMigration =  $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
 
             
-                    if (!preg_match('/finished/', $messagesMigration)) {
+                    if (!$responseMigration['success']) {
                         $type = 'database';
                         $this->setErrors($type);
-                        
+                        $messages[] = $responseMigration['message'];
+                    } else {
+                        $messages[] = _MIGRATION_COMPLETED;
                     }
-
-                    $messages[] = $messagesMigration;
 
                     $overWrittenLangs = $this->importLangs($this->getInstalledLanguages());
                     if (count($overWrittenLangs)) {
@@ -1136,19 +1136,20 @@ class InstallAdm extends Model
 
             case 2:
                 $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
-                $messagesMigration = $migrator->executeCommand('migrate',['debug' => $params['debug']]);
+                $responseMigration = $migrator->executeCommand('migrate',['debug' => $params['debug']]);
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation();
         
-                if (!$success || !preg_match('/finished/', $messagesMigration)) {
+                if (!$success || !$responseMigration['success']) {
                     $type = 'database';
                     $this->setErrors($type);
-                    
+                    $messages[] = $responseMigration['message'];
+                } else {
+                    $messages[] = _MIGRATION_COMPLETED;
                 }
 
-                $messages[] = $messagesMigration;
-
+    
                 break;
             case 3:
 
@@ -1827,7 +1828,7 @@ class InstallAdm extends Model
         }
 
         $resultMigration = $migrator->executeCommand('migrate', ['debug' => (bool) array_key_exists('debug', $params), 'test' => true]);
-        $messages[] = 'CHECK: ' . $resultMigration;
+        $messages[] = 'CHECK: ' . $resultMigration['message'];
         return $this->setResponse(true, $messages)->wrapResponse();
     }
 
