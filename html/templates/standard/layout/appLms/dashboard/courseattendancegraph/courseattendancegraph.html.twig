@@ -13,38 +13,51 @@
     {% endif %}
     <div class="d-col d-col--12 {{ class }}">
         <div class="d-courseattendancegraph d-widget">
-                    <h3 class="d-title">
-                        {% if block.data.title is empty %}
-                            {{ Lang_translate('_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS','dashboard') }}
-                        {% else %}
-                            {{ block.data.title }}
-                        {% endif %}
-                    </h3>
+            <h3 class="d-title">
+                {% if block.data.title is empty %}
+                    {{ Lang_translate('_DASHBOARDBLOCKCOURSEATTENDANCEGRAPHLMS','dashboard') }}
+                {% else %}
+                    {{ block.data.title }}
+                {% endif %}
+            </h3>
 
-                      <canvas id="course-pie"></canvas>
+            <canvas id="course-pie"></canvas>
         </div>
     </div>
 
-           <script>
-                    $(document).ready(function () {
+    <script>
+        $(document).ready(function () {
+            var backgroundColors = [
+
+                {% for colorName in block.coursesInfo.colors %}
+                    getComputedStyle(document.documentElement).getPropertyValue('{{ colorName }}'),
+                {% endfor %}
+        ];
 
 
-                       var chartDataSet = [
-                           {
-                               label: 'Course Attendance',
-                               data: {{ block.coursesInfo.data|json_encode|raw }},
-                               backgroundColor: {{ block.coursesInfo.colors|json_encode|raw }},
-                               hoverOffset: 4,
-                           }
-                       ]
-                       const chart = new window.frontend.modules.Chart($("#course-pie"), {
-                           type: 'doughnut',
-                           data: {
-                               labels: {{ block.coursesInfo.labels|json_encode|raw }},
-                               datasets: chartDataSet
-                           }
-                       });
-                    });
-                </script>
- 
+            var chartDataSet = [
+                {
+                    label: 'Course Attendance',
+                    data: {{ block.coursesInfo.data|json_encode|raw }},
+                    backgroundColor: backgroundColors,
+                    hoverOffset: 4,
+                }
+            ]
+            const chart = new window.frontend.modules.Chart($("#course-pie"), {
+                type: 'doughnut',
+                data: {
+                    labels: {{ block.coursesInfo.labels|json_encode|raw }},
+                    datasets: chartDataSet
+                }
+            });
+        });
+    </script>
+    <style>
+        :root {
+
+        {% for colorName,colorValue in block.coursesInfo.var_colors %}{{ colorName }}:{{ colorValue }};
+        {% endfor %}
+
+        }
+    </style>
 {% endblock %}

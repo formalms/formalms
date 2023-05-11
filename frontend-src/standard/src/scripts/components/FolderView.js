@@ -136,7 +136,7 @@ class FolderView extends LearningView {
                 dataIdAttr: 'data-id',
                 multiDrag: true, // Enable the plugin
                 // multiDragKey: 'Meta', // Fix 'ctrl' or 'Meta' button pressed
-                selectedClass: 'fv-is-selectedx',
+                selectedClass: 'fv-is-selected',
                 animation: 150,
                 easing: 'cubic-bezier(1, 0, 0, 1)',
                 fallbackOnBody: true,

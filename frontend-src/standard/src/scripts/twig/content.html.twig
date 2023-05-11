@@ -19,16 +19,16 @@
                                        id="{{ action.content }}"
                                        name="{{ action.content }}"
                                        class="folderView__action fv-is-{{ action.name }} js-fv-action"
-                                       title="{{ action.label }}"
+                                       title="{{ Lang_translate(action.label,'course') }}"
                                        value=""/>
                             {% elseif (action.type == 'link') %}
-                                <a href="{{ action.content }}" class="folderView__action {% if action.directPlay %}direct-play{% endif %} fv-is-{{ action.name }}" title="{{ action.label }}">
+                                <a href="{{ action.content }}" class="folderView__action {% if action.directPlay %}direct-play{% endif %} fv-is-{{ action.name }}" title="{{ Lang_translate(action.label,'course') }}">
                                 </a>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
                     {% if el.status %}
-                        <div class="folderView__status fv-is-{{ el.status }}" title="{{ el.status_label }}"></div>
+                        <div class="folderView__status fv-is-{{ el.status }}" title="{{ Lang_translate(el.status_label,'course') }}"></div>
                     {% endif %}
                 </div>
                 </div>
@@ -43,23 +43,23 @@
                         {% for action in el.actions %}
                             {% if not isStudent %}
                                 {% if action.name == 'copy' %}
-                                    <button type="button" class="folderView__button fv-is-{{ action.name }} js-fv-open-overlay" title="{{ action.label }}"></button>
+                                    <button type="button" class="folderView__button fv-is-{{ action.name }} js-fv-open-overlay" title="{{ Lang_translate(action.label,'course') }}"></button>
                                 {% else %}
                                     {% if action.type == 'submit' %}
                                         <input type="submit"
                                             id="{{ action.content }}"
                                             name="{{ action.content }}"
                                             class="folderView__action fv-is-{{ action.name }} js-fv-action"
-                                            title="{{ action.label }}"
+                                            title="{{ Lang_translate(action.label,'course') }}"
                                             value=""/>
                                     {% elseif (action.type == 'link') %}
-                                        <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}">
+                                        <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ Lang_translate(action.label,'course') }}">
                                         </a>
                                     {% endif %}
                                 {% endif %}
                             {% else %}
                                 {% if action.name == 'play' and isStudent %}
-                                    <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ action.label }}"></a>
+                                    <a href="{{ action.content }}" class="folderView__action fv-is-{{ action.name }}" title="{{ Lang_translate(action.label,'course') }}"></a>
                                 {% endif %}
                             {% endif %}
                         {% endfor %}
