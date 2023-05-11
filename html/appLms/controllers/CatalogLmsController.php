@@ -423,7 +423,7 @@ class CatalogLmsController extends LmsController
         $course_info = $model->getCourseInfoForSubscription();
         $userinfo = $this->acl_man->getUser($id_user, false);
 
-        $level_idst = &$formaCourse->getCourseLevel($id_course);
+        $level_idst = $formaCourse->getCourseLevel($id_course);
 
         if (count($level_idst) == 0 || $level_idst[1] == '') {
             $level_idst = FormaCourse::createCourseLevel($id_course);
@@ -484,7 +484,7 @@ class CatalogLmsController extends LmsController
                 // st = organization, get all orgs related to the user
                 $idst_associated = $adminManager->getAdminTree($id_user);
 
-                $array_user = &$acl_manager->getAllUsersFromIdst($idst_associated);
+                $array_user = $acl_manager->getAllUsersFromIdst($idst_associated);
 
                 $array_user = array_unique($array_user);
 

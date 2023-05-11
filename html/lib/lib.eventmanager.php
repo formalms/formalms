@@ -374,14 +374,21 @@ function createNewAlert($class,$module,$section,$priority,$description,
         return;
     }
 
-    $event = &FormaEventManager::newEvent($class, $module, $section, $priority, $description);
+    $event = FormaEventManager::newEvent($class, $module, $section, $priority, $description);
 
     $event->deleteOldProperty();
 
-    if (is_array($recipients['to']) && is_array($recipients['cc']) && is_array($recipients['bcc'])) {
-        $event->setProperty('recipientid', implode(',', $recipients['to']));
-        $event->setProperty('recipientcc', implode(',', $recipients['cc']));
-        $event->setProperty('recipientbcc', implode(',', $recipients['bcc']));
+
+    if (is_array($recipients)) {
+        if(array_key_exists('to', $recipients) && is_array($recipients['to'])) {
+           $event->setProperty('recipientid', implode(',', $recipients['to'])); 
+        }
+        if(array_key_exists('cc', $recipients) && is_array($recipients['cc'])) {
+            $event->setProperty('recipientcc', implode(',', $recipients['cc']));
+        }
+        if(array_key_exists('bcc', $recipients) && is_array($recipients['bcc'])) {
+            $event->setProperty('recipientcc', implode(',', $recipients['bcc']));
+        }
     } else {
         $event->setProperty('recipientid', implode(',', $recipients));
     }

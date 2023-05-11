@@ -289,7 +289,7 @@ class UserselectorWidgetController extends Controller
         if (!is_array($nodes)) {
             return;
         }
-        for ($i = 0; $i < count($nodes); ++$i) {
+        for ($i = 0; $i <= count($nodes); ++$i) {
             $index = $nodes[$i]['node']['id'];
             $nodes[$i]['node']['id'] = $conversion_table[0][$index] . '_' . $conversion_table[1][$index];
             $nodes[$i]['node']['options'] = $this->_getNodeActions($nodes[$i]['node']);

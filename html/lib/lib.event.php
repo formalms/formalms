@@ -317,6 +317,7 @@ class FormaEvent
                     . " WHERE property_name = '" . $prop_name . "'"
                     . "   AND idEvent = '" . (int) $this->event_id . "'";
         } else {
+
             $query = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event_property'
                     . ' (idEvent, property_name, property_value, property_date) VALUES ('
                     . "'" . (int) $this->event_id . "','" . $prop_name . "','" . $prop_value . "', '" . date('Y-m-d') . "')";

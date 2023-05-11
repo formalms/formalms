@@ -585,7 +585,7 @@ class FormaImport
     {
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &FormaLanguage::createInstance('organization_chart', 'framework');
+        $lang = FormaLanguage::createInstance('organization_chart', 'framework');
         $form = new Form();
         $table = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_IMPORT_MAP'), $lang->def('_IMPORT_MAP'));
 

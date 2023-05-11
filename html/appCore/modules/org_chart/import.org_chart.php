@@ -98,7 +98,7 @@ class ImportUser extends FormaImport_Destination
         require_once _base_ . '/lib/lib.eventmanager.php';
 
         // Load language for fields names
-        $lang_dir = &FormaLanguage::createInstance('admin_directory', 'framework');
+        $lang_dir = FormaLanguage::createInstance('admin_directory', 'framework');
         $acl = \FormaLms\lib\Forma::getAcl();
         $acl_manager = \FormaLms\lib\Forma::getAclManager();
 
@@ -232,7 +232,7 @@ class ImportUser extends FormaImport_Destination
      *
      * @return true if the row was succesfully inserted, FALSE otherwise
      **/
-    public function add_row($row, $tocompare)
+    public function add_row($row, $tocompare = false)
     {
         $acl = \FormaLms\lib\Forma::getAcl();
         $acl_manager = \FormaLms\lib\Forma::getAclManager();
@@ -753,7 +753,7 @@ class ImportGroupUser extends FormaImport_Destination
      *
      * @return true if the row was succesfully inserted, FALSE otherwise
      **/
-    public function add_row($row, $tocompare)
+    public function add_row($row, $tocompare = false)
     {
         foreach ($row as $k => $v) {
             $row[$k] = sql_escape_string($v);
