@@ -20,8 +20,8 @@ import ModalElement from './../components/Modal';
 import Axios from 'axios';
 import Select2 from 'select2';
 // import Chart from 'chart.js';
-import { Chart as ChartJS, LinearScale } from 'chart.js';
-ChartJS.register(LinearScale);
+import { Chart as ChartJS, registerables  } from 'chart.js';
+ChartJS.register(...registerables);
 import FolderTree from '../components/FolderTree';
 import FolderTreeMultiUser from '../components/FolderTreeMultiUser';
 

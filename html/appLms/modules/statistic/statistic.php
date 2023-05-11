@@ -21,7 +21,7 @@ require_once \FormaLms\lib\Forma::inc(_lib_ . '/formatable/include.php');
 
 function outPageView($link)
 {
-    $lang = &FormaLanguage::createInstance('statistic', 'lms');
+    $lang = FormaLanguage::createInstance('statistic', 'lms');
     $for = importVar('for', false, 'week');
     $times = ['day', 'week', 'month', 'year'];
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -166,8 +166,8 @@ function outPageView($link)
     $chartString = '<script type="text/javascript">$(document).ready(function () {';
     $chartString .= '
     var dataset = ' . \FormaLms\lib\Serializer\FormaSerializer::getInstance()->encode($dataset, 'json') . ";
-    var backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-2');
-    var borderColor = getComputedStyle(document.documentElement).getPropertyValue('--color-2-600');
+    var backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary');
+    var borderColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary');
         
         dataset.data.forEach(function(number) {
            dataset.backgroundColor.push(backgroundColor);
@@ -218,7 +218,7 @@ function statistic()
 
     $view_all_perm = checkPerm('view_all', true);
 
-    $lang = &FormaLanguage::createInstance('statistic', 'lms');
+    $lang = FormaLanguage::createInstance('statistic', 'lms');
     $acl_man = \FormaLms\lib\Forma::getAclManager();
     $course_man = new Man_Course();
     $course_user = $course_man->getIdUserOfLevel($idCourse);
@@ -232,7 +232,7 @@ function statistic()
         $course_user = array_intersect($course_user, $ctrl_users);
     }
 
-    $users_list = &$acl_man->getUsers($course_user);
+    $users_list = $acl_man->getUsers($course_user);
     $GLOBALS['page']->add(getTitleArea(lang::t('_STAT', 'menu_course')), 'content');
 
     $GLOBALS['page']->add(
