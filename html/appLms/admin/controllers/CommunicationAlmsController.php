@@ -393,12 +393,11 @@ class CommunicationAlmsController extends AlmsController
         $idComm = FormaLms\lib\Get::req('idComm', DOTY_INT, 0);
         $data = $this->model->findByPk($idComm);
 
-  
         $data['publish_date'] = Format::date($data['publish_date'], 'date');
 
         $course_model = new CourseAlms();
         $cinfo = $course_model->getCourseModDetails($data['id_course']);
-        $courseName = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/ $cinfo['name'];
+        $courseName = /*($cinfo['code'] ? "[".$cinfo['code']."] " : "").*/ is_array($cinfo) ? $cinfo['name'] : '';
         YuiLib::load('autocomplete');
         $langs = \FormaLms\lib\Forma::langManager()->getAllLanguages(true);
         $langCode = Lang::get();

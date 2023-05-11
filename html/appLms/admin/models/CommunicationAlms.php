@@ -150,6 +150,7 @@ class CommunicationAlms extends Model
     public function findByPk($id_comm, $viewer = [], $language = false)
     {
         $lang_code = ($language == false ? Lang::get() : $language);
+        $result['langs'] = [];
         if (count($viewer)) {
             $qtxt = 'SELECT c.id_comm, coalesce(cl.title, c.title) as title, coalesce(cl.description, c.description) as description, c.publish_date, c.type_of, c.id_resource, c.id_category, c.id_course '
                 . ' FROM %lms_communication AS c '
@@ -167,14 +168,17 @@ class CommunicationAlms extends Model
         $re = $this->db->query($qtxt);
 
         if (!$re) {
-            return false;
+            return $result;
         }
         $qtxt = 'SELECT * '
         . ' FROM %lms_communication_lang'
         . ' WHERE id_comm = ' . (int) $id_comm;
 
+      
         $langs = $this->db->query($qtxt);
         $comm = $this->db->fetch_assoc($re);
+      
+        $comm['langs'] = [];
         foreach ($langs as $lang) {
             $comm['langs'][] = $lang;
         }
