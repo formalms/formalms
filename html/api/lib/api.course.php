@@ -48,13 +48,13 @@ class Course_API extends API
      */
     private function getAndValidateIdDayFromParams($params)
     {
-        $idDay = is_numeric($params['id_day']) ? $params['id_day'] : '';
+        $idDay = is_numeric($params['id']) ? $params['id'] : '';
 
         $response['success'] = true;
         $response['data'] = $idDay;
         if (!is_numeric($idDay)) {
             $response['success'] = false;
-            $response['message'] = 'Missing or Wrong ID Day: ' . $params['id_day'];
+            $response['message'] = 'Missing or Wrong ID Day: ' . $params['id'];
         }
 
         return $response;
@@ -1347,7 +1347,7 @@ class Course_API extends API
 
         $arrayDays = $model->classroom_man->getDateDay($idDate);
 
-        $dayExists = array_search($idDay, array_column($arrayDays, 'id'));
+        $dayExists = array_key_exists($idDay, $arrayDays);
         if ($dayExists) {
             //unset($arrayDays[$idDay]);
             $result = $model->classroom_man->removeDateDay($idDate, [
