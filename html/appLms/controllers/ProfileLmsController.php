@@ -32,7 +32,7 @@ class ProfileLmsController extends LmsController
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->model = new ProfileLms();
         $this->json = new Services_JSON();
-        $this->aclManager = \FormaLms\lib\FormaUser::getCurrentUser()->getAClManager();
+        $this->aclManager = \FormaLms\lib\Forma::getAcl()->getACLManager();
         $this->max_dim_avatar = 150;
     }
 

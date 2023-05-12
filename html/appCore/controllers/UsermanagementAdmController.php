@@ -536,7 +536,7 @@ class UsermanagementAdmController extends AdmController
         $userdata->email = trim(FormaLms\lib\Get::req('email', DOTY_STRING, ''));
         $userdata->password = $password;
         $userdata->force_change = trim(FormaLms\lib\Get::Req('force_changepwd', DOTY_INT, 0));
-        if (\FormaLms\lib\FormaUser::getCurrentUser()->user_level == ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
             $userdata->level = FormaLms\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
         } else {
             $userdata->level = ADMIN_GROUP_USER;
@@ -700,7 +700,7 @@ class UsermanagementAdmController extends AdmController
         if ($check_pwd && !FormaLms\lib\Get::cfg('demo_mode')) {
             $userdata->password = $new_password;
         }
-        if (\FormaLms\lib\FormaUser::getCurrentUser()->user_level == ADMIN_GROUP_GODADMIN) {
+        if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
             $userdata->level = FormaLms\lib\Get::req('level', DOTY_STRING, ADMIN_GROUP_USER);
         } else {
             $userdata->level = false;

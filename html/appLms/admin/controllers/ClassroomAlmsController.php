@@ -43,7 +43,7 @@ class ClassroomAlmsController extends AlmsController
         checkPerm('view', false, 'course', 'lms');
         require_once _base_ . '/lib/lib.json.php';
         $this->json = new Services_JSON();
-        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->idCourse = FormaLms\lib\Get::req('id_course', DOTY_INT, 0);
         $this->idDate = FormaLms\lib\Get::req('id_date', DOTY_INT, 0);
 
@@ -201,14 +201,14 @@ class ClassroomAlmsController extends AlmsController
                         $folders = $treecat->getOpenedFolders($treestatus);
                         $result = [];
 
-                        $ref = &$result;
+                        $ref = $result;
                         foreach ($folders as $folder) {
                             $countRef = count($ref);
                             if ($folder > 0) {
                                 for ($i = 0; $i < $countRef; ++$i) {
                                     if ($ref[$i]['node']['id'] == $folder) {
                                         $ref[$i]['children'] = [];
-                                        $ref = &$ref[$i]['children'];
+                                        $ref = $ref[$i]['children'];
                                         break;
                                     }
                                 }

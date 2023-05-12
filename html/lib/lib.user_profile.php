@@ -1523,7 +1523,7 @@ class UserProfileViewer
 
         // Grifo: ticket #19467
         // view only admin profile CR: #19813
-        $level_current_user = \FormaLms\lib\FormaUser::getCurrentUser()->user_level;
+        $level_current_user = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if (
             $level_current_user == ADMIN_GROUP_GODADMIN ||
             $level_current_user == ADMIN_GROUP_ADMIN
@@ -2876,7 +2876,7 @@ class UserProfileViewer
      */
     public function getCommunityInfo()
     {
-        $friend_list = &$this->_up_data_man->getUserFriend($this->_user_profile->getIdUser());
+        $friend_list = $this->_up_data_man->getUserFriend($this->_user_profile->getIdUser());
         $last_view = $this->_up_data_man->getUserProfileViewList($this->_user_profile->getIdUser(), 15);
         $user_stat = $this->_up_data_man->getUserStats($this->_user_profile->getIdUser());
 

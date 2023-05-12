@@ -443,7 +443,7 @@ class DateManager
 
         $res = sql_fetch_assoc(sql_query($query));
 
-        if ($res['user_subscribed'] > 1) {
+        if (is_array ($res) && $res['user_subscribed'] > 1) {
             $res['num_day'] = $res['num_day'] / $res['user_subscribed'];
         }
 
@@ -1009,7 +1009,7 @@ class DateManager
 
     public function getUserForPresence($id_date, $id_course = null)
     {
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $is_admin = false;
 

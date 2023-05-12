@@ -4047,7 +4047,7 @@ class SubscriptionAlmsController extends AlmsController
 
         $courses_filter = false;
 
-        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->user_level;
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $preference = new AdminPreference();

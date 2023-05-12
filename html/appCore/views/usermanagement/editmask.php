@@ -41,7 +41,7 @@ if ($is_editing) {
     echo Form::getCheckBox(Lang::t('_FORCE_PASSWORD_CHANGE', 'admin_directory'), 'force_changepwd', 'force_changepwd', 1, false);
 }
 
-if (\FormaLms\lib\FormaUser::getCurrentUser()->user_level == ADMIN_GROUP_GODADMIN) {
+if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() == ADMIN_GROUP_GODADMIN) {
     echo Form::getDropdown(Lang::t('_LEVEL', 'admin_directory'), 'level', 'level', $levels, $info->level);
 }
 

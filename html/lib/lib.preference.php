@@ -720,7 +720,7 @@ class UserPreferences
     public function getModifyMask($base_path = false, $only_visible = true, $separate_output = false)
     {
         require_once _base_ . '/lib/lib.form.php';
-        $lang = &FormaLanguage::createInstance('preferences', 'framework');
+        $lang = FormaLanguage::createInstance('preferences', 'framework');
 
         $preferences = $this->_up_db->getFullPreferences($this->id_user, $only_visible, false, $base_path);
 

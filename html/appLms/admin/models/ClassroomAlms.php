@@ -34,7 +34,7 @@ class ClassroomAlms extends Model
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->classroom_man = new DateManager();
         $this->course_man = new Man_Course();
-        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         parent::__construct();
     }
 

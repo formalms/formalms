@@ -23,7 +23,7 @@ define('_OPERATION_SUCCESSFUL', 1);
 
 class MessageModule
 {
-    protected static $db;
+    protected $db;
     protected $mvc_urls;
 
     public function __construct($mvc = false)
@@ -118,7 +118,7 @@ class MessageModule
 
         $output = '';
 
-        $um = &UrlManager::getInstance('message');
+        $um = UrlManager::getInstance('message');
 
         $active_tab = FormaLms\lib\Get::req('active_tab', DOTY_STRING, 'inbox');
         if ($active_tab != 'inbox' && $active_tab != 'outbox') {
@@ -262,17 +262,17 @@ class MessageModule
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &FormaLanguage::createInstance('message', 'lms');
+        $lang = FormaLanguage::createInstance('message', 'lms');
         $send_perm = true; //checkPerm('send_all', true) || checkPerm('send_upper', true);
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
-        $um = &UrlManager::getInstance('message');
+        $um = UrlManager::getInstance('message');
 
         // $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
         $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-recv');
         $tb->initNavBar('ini', 'button');
         $ini = $tb->getSelectedElement();
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
         $query = "
 		SELECT m.idMessage, m.idCourse, m.sender, m.posted, m.attach, m.title, m.priority, user.read
@@ -466,15 +466,15 @@ class MessageModule
 
         //if(!checkPerm('send_all', true) && !checkPerm('send_upper', true)) die("You can't access");
 
-        $lang = &FormaLanguage::createInstance('message', 'lms');
+        $lang = FormaLanguage::createInstance('message', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
-        $um = &UrlManager::getInstance('message');
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $um = UrlManager::getInstance('message');
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $tb = new Table(FormaLms\lib\Get::sett('visuItem', 25), '', '', 'messages-sent');
         $tb->initNavBar('iniout', 'button');
         $ini = $tb->getSelectedElement('iniout');
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $query = "
 		SELECT m.idMessage, m.posted, m.attach, m.title, m.priority
@@ -670,11 +670,11 @@ class MessageModule
 
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &FormaLanguage::createInstance('message', 'lms');
+        $lang = FormaLanguage::createInstance('message', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $from = importVar('out');
-        $um = &UrlManager::getInstance('message');
+        $um = UrlManager::getInstance('message');
 
         $aclManager = new FormaACLManager();
         $user_select = new UserSelector();
@@ -776,8 +776,8 @@ class MessageModule
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $from = importVar('out');
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
-        $um = &UrlManager::getInstance('message');
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $um = UrlManager::getInstance('message');
 
         if (!isset($_POST['message']['recipients'])) {
             if (isset($_GET['reply_recipients'])) {
@@ -841,7 +841,7 @@ class MessageModule
                 if (!in_array(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $user_selected)) {
                     $user_selected[] = \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt();
                 }
-                $send_to_idst = &$acl_man->getAllUsersFromIdst($user_selected);
+                $send_to_idst = $acl_man->getAllUsersFromIdst($user_selected);
 
                 $re = true;
                 $recip_alert = [];
@@ -967,7 +967,7 @@ class MessageModule
 
                 // find user of group
                 $members = $acl_man->getGroupAllUser($group_info[ACL_INFO_IDST]);
-                $group_users = &$acl_man->getUsers($members);
+                $group_users = $acl_man->getUsers($members);
                 $output .= ' <span class="message_group_members">( ';
                 $m_first = true;
                 foreach ($group_users as $user_info) {
@@ -1046,10 +1046,10 @@ class MessageModule
     {
         //checkPerm('view');
 
-        $lang = &FormaLanguage::createInstance('message', 'lms');
+        $lang = FormaLanguage::createInstance('message', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
-        $um = &UrlManager::getInstance('message');
+        $um = UrlManager::getInstance('message');
 
         $from = importVar('out');
 
@@ -1159,9 +1159,9 @@ class MessageModule
 
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
-        $um = &UrlManager::getInstance('message');
+        $um = UrlManager::getInstance('message');
 
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $from = importVar('out');
 
         // check the viewer rights

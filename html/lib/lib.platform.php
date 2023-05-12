@@ -122,7 +122,7 @@ class PlatformManager
 
     public function getPlatformList($exclude_framework = false, $also_inactive = false)
     {
-        $lang = &FormaLanguage::createInstance('platform', 'framework');
+        $lang = FormaLanguage::createInstance('platform', 'framework');
 
         $platform_list = [];
         foreach ($this->platform as $platform_code => $platform_info) {

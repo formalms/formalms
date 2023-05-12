@@ -1199,12 +1199,14 @@ class UsermanagementAdm extends Model
                 $enrollrules = new EnrollrulesAlms();
 
                 $folder_count = 0;
-                foreach ($folders as $folder) {
-                    if ((int)$folder > 0) {
-                        ++$folder_count;
-                    }
-                }
+          
+                
                 if (is_array($folders)) {
+                    foreach ($folders as $folder) {
+                        if ((int)$folder > 0) {
+                            ++$folder_count;
+                        }
+                    }
                     reset($folders);
                 }
 
@@ -2472,7 +2474,7 @@ class UsermanagementAdm extends Model
     public function getFolderUsers($idOrg, $descendants = false)
     {
         $output = false;
-        $acl = &\FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAclManager();;
         $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg);
         $query = 'SELECT idstMember FROM %adm_group_members as gm JOIN %adm_user as u '
             . ' ON (gm.idstMember=u.idst) WHERE gm.idst=' . (int)$groupidst . ' ';

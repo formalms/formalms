@@ -90,7 +90,7 @@ class LocationAlmsController extends AlmsController
 
         //check if the user is a sub admin and has limited visibility on class locations
         $admin_locations = [];
-        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->user_level;
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($ulevel != ADMIN_GROUP_GODADMIN) {
             $amodel = false;
             switch ($ulevel) {
@@ -129,7 +129,7 @@ class LocationAlmsController extends AlmsController
     protected function _canAdminLocation($id_user, $id_location)
     {
         //check if the user is a sub admin and has limited visibility on class locations
-        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->user_level;
+        $ulevel = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
         if ($ulevel == ADMIN_GROUP_GODADMIN) {
             return true;
         }
