@@ -388,11 +388,11 @@ class LangAdm extends Model
 
         $data = [];
         $result = $this->db->query($qtxt);
-        while ($obj = $this->db->fetch_obj($result)) {
+        foreach ($result as $obj){
             //if($text != false) $obj->translation_text = Util::highlight($obj->translation_text, $text);
             //if($main_dir == 'rtl') $obj->translation_text = '<div style="direction:rtl;">'.$obj->translation_text.'</div>';
             //if($lang_code_diff != false && $diff_dir == 'rtl') $obj->translation_text_diff = '<div style="direction:rtl;">'.$obj->translation_text_diff.'</div>';
-            $obj->delete = 'ajax.adm_server.php?r=adm/lang/deleteKey&id_text=' . $obj->id;
+            $obj['delete'] = 'ajax.adm_server.php?r=adm/lang/deleteKey&id_text=' . $obj['id'];
             $data[] = $obj;
         }
 

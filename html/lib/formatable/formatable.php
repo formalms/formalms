@@ -261,7 +261,7 @@ $date_picker_param = 'data-provide="datepicker" data-date-autoclose=true data-da
                                 });
                                 edit_form.append('<input type="hidden" name="' + (options.edit.id || options.rowId || 'id') + '" value="' + datatable.row(cell.index().row).id() + '" />');
                                 edit_form.append('<input type="hidden" name="col" value="' + _thisColumn.name + '" />');
-                                edit_form.append('<input type="hidden" name="old_value" value="' + cell.data() + '" />');
+                                edit_form.append('<input type="hidden" name="old_value" value="' + jQuery('').html(cell.data()).text() + '" />');
                                 if (_thisColumn.edit.type === 'select') {
                                     var edit_form_select = $('<select name="new_value" value="' + cell.data() + '"></select>');
                                     $.each(_thisColumn.edit.options, function(value, label) {
