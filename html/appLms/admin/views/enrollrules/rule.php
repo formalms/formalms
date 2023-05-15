@@ -30,11 +30,11 @@ $this->widget('table', [
     'fields' => $keys,
     'show' => 'table',
     'rel_actions' => [
-        '<a id="rule_entity_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addentity&amp;id_rule=' . $id_rule . '"><span>' . $rule->rule_type_text . '</span></a>' .
+        $tab == 'base' ? '' : '<a id="rule_entity_over" class="ico-wt-sprite subs_add" href="index.php?r=adm/userselector/show&id='.$id_rule.'&instance=rule&load=1&tab_filters[]='. $tab .'"><span>' . $rule->rule_type_text . '</span></a>' .
         '<a id="rule_course_over" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule=' . $id_rule . '&amp;load=1"><span>' . Lang::t('_COURSES', 'standard') . '</span></a>' .
         '<a id="rule_apply_over"  class="ico-wt-sprite subs_mod" href="index.php?r=alms/enrollrules/applyrule&amp;id_rule=' . $id_rule . '"><span>' . Lang::t('_APPLY_RULE', 'enrollrules') . '</span></a>',
 
-        '<a id="rule_entity_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addentity&amp;id_rule=' . $id_rule . '"><span>' . $rule->rule_type_text . '</span></a>' .
+        $tab == 'base' ? '' : '<a id="rule_entity_below" class="ico-wt-sprite subs_add" href="index.php?r=adm/userselector/show&id='.$id_rule.'&instance=rule&load=1&tab_filters[]='. $tab .'"><span>' . $rule->rule_type_text . '</span></a>' .
         '<a id="rule_course_below" class="ico-wt-sprite subs_add" href="index.php?r=alms/enrollrules/addcourses&amp;id_rule=' . $id_rule . '&amp;load=1"><span>' . Lang::t('_COURSES', 'standard') . '</span></a>' .
         '<a id="rule_apply_below"  class="ico-wt-sprite subs_mod" href="index.php?r=alms/enrollrules/applyrule&amp;id_rule=' . $id_rule . '"><span>' . Lang::t('_APPLY_RULE', 'enrollrules') . '</span></a>',
     ],

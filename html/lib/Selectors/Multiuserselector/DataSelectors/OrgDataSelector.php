@@ -56,6 +56,9 @@ class OrgDataSelector extends DataSelector{
         foreach($results as $result) {
             
             $index = $result['idOrg'];
+            if(!array_key_exists($index, $_conversion_table[0]) || !array_key_exists($index, $_conversion_table[1])) {
+                continue;
+            }
             $id = $_conversion_table[0][$index] . '_' . $_conversion_table[1][$index];
             $isNodeVisible = true;
             $codeLabel = $result['code'] ? "[" . $result['code'] . "] " : "";

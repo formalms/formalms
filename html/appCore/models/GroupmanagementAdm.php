@@ -430,7 +430,7 @@ class GroupmanagementAdm extends Model
             $output = true;
             $fields = ['idst'];
             $values = [$idst];
-            $acl = \FormaLms\lib\Forma::getAcl();
+            $acl = \FormaLms\lib\Forma::getAcl()->getAclManager();
 
             if (is_array($info)) {
                 if (isset($info['groupid'])) {

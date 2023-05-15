@@ -658,4 +658,20 @@ class EnrollrulesAlms extends Model
 
         return true;
     }
+
+    public function getTab(string $ruleType) : string
+    {
+        $result = $ruleType;
+
+        if('orgchart' === $ruleType) {
+            $result = 'org';
+        }
+
+        if('fc_roles' === $ruleType) {
+            $result = 'role';
+        }
+
+        return $result;
+
+    }
 }

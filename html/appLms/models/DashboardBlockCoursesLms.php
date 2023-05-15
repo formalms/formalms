@@ -97,7 +97,7 @@ class DashboardBlockCoursesLms extends DashboardBlockLms
     {
         $courses = [];
 
-        $limit = $this->data['max_courses_number'];
+        $limit = array_key_exists('max_courses_number', $this->data) ? $this->data['max_courses_number'] : 0;
         $conditions = ['ID_USER' => 'cu.iduser =' . (int) \FormaLms\lib\FormaUser::getCurrentUser()->getId()];
         $conditions['COURSE_STATUS'] = '(c.status in  (1,2))'; // only available, confirmed
         $conditions['USER_ENROLLMENT_STATUS'] = '(cu.status in (0,1))'; // only enrolled and in progress

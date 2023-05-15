@@ -505,7 +505,7 @@ class AggregatedcertificateAlmsController extends AlmsController
 
         $params = [
             'id_certificate' => $this->id_certificate,
-            'countAssociations' => count($this->aggCertLib->getAssociationsMetadata($this->id_certificate)),
+            'countAssociations' => is_array($this->aggCertLib->getAssociationsMetadata($this->id_certificate)) ? count($this->aggCertLib->getAssociationsMetadata($this->id_certificate)) : 0,
             'ini' => $ini,
             'cert_name' => $this->cert_name,
             'arrOps' => $this->op,

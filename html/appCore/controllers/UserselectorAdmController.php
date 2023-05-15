@@ -40,17 +40,23 @@ class UserselectorAdmController extends AdmController
 
         $tabs = ($this->requestObj->has('tab_filters')) ? $this->requestObj->get('tab_filters') : array_keys($this->tabs);
 
-        foreach ($tabs as $tabFilter) {
-            if (!in_array($tabFilter, array_keys($this->tabs))) {
-                //non è un filtro accettato lo skippo
-                continue;
+    
+        if(count($tabs)) {
+            foreach ($tabs as $tabFilter) {
+                if (!in_array($tabFilter, array_keys($this->tabs))) {
+                    //non è un filtro accettato lo skippo
+                    continue;
+                }
+                $this->tabs[$tabFilter] = true;
+                $dataSelectorName = ucfirst($tabFilter) . 'DataSelector';
+    
+    
+                $this->multiUserSelector->setDataSelectors($dataSelectorName, $tabFilter);
             }
-            $this->tabs[$tabFilter] = true;
-            $dataSelectorName = ucfirst($tabFilter) . 'DataSelector';
 
-
-            $this->multiUserSelector->setDataSelectors($dataSelectorName, $tabFilter);
+            $this->selection = $tabs[0];
         }
+        
 
         if ($this->requestObj->has('instance') && $this->requestObj->has('id')) {
             $instanceType = $this->requestObj->get('instance');
@@ -97,6 +103,10 @@ class UserselectorAdmController extends AdmController
         }
 
         foreach ($this->tabs as $tabKey => $tab) {
+
+            if(!$tab) {
+                continue;
+            }
             $multiUserSelectorTab = $this->multiUserSelector->retrieveDataSelector($tabKey);
 
             $columns[$tabKey] = $multiUserSelectorTab->getColumns();

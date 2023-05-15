@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\FormaUser;
+
 /*
  * FORMA - The E-Learning Suite
  *

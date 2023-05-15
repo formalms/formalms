@@ -63,6 +63,8 @@ class MultiUserSelector
                     'className' => 'Man_MiddleArea', 'returnType' => 'redirect'],
         'dashboardsetting' => ['includes' => _adm_.'/models/DashboardsettingsAdm.php',
                     'className' => 'DashboardsettingsAdm','returnType' => 'redirect'],
+        'rule' => ['includes' => _lms_ . '/admin/models/EnrollrulesAlms.php',
+                    'className' => 'EnrollRulesAlms', 'returnType' => 'redirect'],
     ];
 
 
@@ -93,6 +95,7 @@ class MultiUserSelector
 
     public function injectAccessModel(string $type): self
     {
+     
         if (self::ACCESS_MODELS[$type]['use_namespace']) {
             $className = self::ACCESS_MODELS[$type]['includes'].self::ACCESS_MODELS[$type]['className'];
         } else {
@@ -189,6 +192,23 @@ class MultiUserSelector
                $return['redirect'] = 'index.php?modname=middlearea&amp;op=view_area&amp;of_platform=lms&amp;result=' . ($result ? 'ok' : 'err');
 
                break;
+            case 'rule':
+
+                $oldSelection = array_keys($this->accessModel->getEntityRule($instanceId));
+
+                $toAdds = array_diff($selection, $oldSelection);
+                $toDeletes = array_diff($oldSelection, $selection);
+    
+                foreach ($toAdds as $i => $id_entity) {
+                    $result = $this->accessModel->insertEntityRule($instanceId, $id_entity, []);
+                }
+                foreach ($toDeletes as $i => $id_entity) {
+                    $result = $this->accessModel->deleteEntityRule($instanceId, $id_entity);
+                }
+
+                $return['redirect'] = 'index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $instanceId . '&amp;result=' . ($result ? 'true' : 'false');
+ 
+                break;
        }
 
        return $return;
@@ -241,6 +261,15 @@ class MultiUserSelector
                $selection = $this->accessModel->getObjIdstList($instanceId);
 
                break;
+
+            case 'rule':
+
+             
+                $selection = array_keys($this->accessModel->getEntityRule($instanceId));
+          
+                break;
+            
+            
        }
 
 
@@ -271,6 +300,7 @@ class MultiUserSelector
     public function parseSelection($selectedIds)
     {
         $selection = [];
+
         $selectString = implode(",", $selectedIds);
         $query = 'SELECT
                     GROUP_CONCAT( DISTINCT(coretables.idst) ) AS ids,
