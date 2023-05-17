@@ -110,7 +110,6 @@ if ($req) {
     // execute requested task
     $controller = new $mvcClass($mvcName);
     $controller->request($task);
-
     // add content to page
     $GLOBALS['page']->add(ob_get_contents(), 'content');
     ob_clean();
@@ -135,7 +134,7 @@ if (array_key_exists($requestedRoute, $templatesToRender)) {
     $render = 'home';
 }
 
-Layout::render($render);
+Layout::render($render, ['PageName'=>getPageName($req)]);
 // layout
 
 //// finalize TEST_COMPATIBILITA_PHP54
