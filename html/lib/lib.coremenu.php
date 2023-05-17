@@ -182,7 +182,7 @@ WHERE 1 = 1
     AND mu.mvc_path = '$mvc_path'
 SQL;
 
-        $menu = sql_fetch_object(sql_query($query));
+        $menu = (object) sql_fetch_object(sql_query($query));
         $menu->role = self::role($menu->of_platform, $menu->module_name, $menu->associated_token);
         $menu->url = self::url($menu->of_platform, $menu->mvc_path, $menu->module_name, $menu->default_op);
 
