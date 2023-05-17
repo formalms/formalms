@@ -29,6 +29,8 @@ class MultiUserSelector
     protected $db;
     protected $session;
 
+    protected $requestParams = [];
+
 
     public const SESSION_KEY = 'selectedUsers';
 
@@ -65,14 +67,22 @@ class MultiUserSelector
                     'className' => 'DashboardsettingsAdm','returnType' => 'redirect'],
         'rule' => ['includes' => _lms_ . '/admin/models/EnrollrulesAlms.php',
                     'className' => 'EnrollRulesAlms', 'returnType' => 'redirect'],
+        'aggregated_certificate' => ['includes' => _lms_ . '/lib/lib.aggregated_certificate.php',
+                                        'className' => 'AggregatedCertificate', 
+                                        'returnType' => 'render', 
+                                        'returnView' => 'associationCreate',
+                                        'subFolderView' => 'aggregatedcertificate',
+                                        'additionalPaths' => [_lms_.'/admin/views']
+                                    ],
     ];
 
 
 
-    public function __construct()
+    public function __construct(array $requestParams)
     {
         $this->db =\FormaLms\db\DbConn::getInstance();
         $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
+        $this->requestParams = $requestParams;
     }
 
     public function setDataSelectors(string $dataSelector, string $key): self
@@ -168,7 +178,7 @@ class MultiUserSelector
 
                $this->setSessionData($instanceType, $filteredSelection);
                $return['params'] =  $this->accessModel->multipleAdd($filteredSelection, $moreParams);
-               ;
+               
                $return['subFolderView'] = self::ACCESS_MODELS[$instanceType]['subFolderView'] ?? '';
                $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
                $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
@@ -209,6 +219,20 @@ class MultiUserSelector
                 $return['redirect'] = 'index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $instanceId . '&amp;result=' . ($result ? 'true' : 'false');
  
                 break;
+
+            case 'aggregated_certificate':
+
+                $moreParams['viewParams'] = true;
+                
+                $args = $this->getSessionMultiParam($instanceType);
+                $args['selection'] = $selection;
+                $return['params'] =  $this->accessModel->getAssociationView($args);
+                
+                $return['subFolderView'] = self::ACCESS_MODELS[$instanceType]['subFolderView'] ?? '';
+                $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
+                $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
+    
+                break;
        }
 
        return $return;
@@ -217,6 +241,8 @@ class MultiUserSelector
 
    public function getAccessList($instanceType, $instanceId, $parsing = false)
    {
+
+    $selection = [];
        switch($instanceType) {
            case 'communication':
 
@@ -267,6 +293,16 @@ class MultiUserSelector
              
                 $selection = array_keys($this->accessModel->getEntityRule($instanceId));
           
+                break;
+
+            case 'aggregated_certificate':
+
+                $arrayInstanceId = explode('_', $instanceId);
+                $idAssociation = $arrayInstanceId[0];
+                $typeAssoc = $arrayInstanceId[1];
+                $selection = $this->accessModel->getAllUsersFromIdAssoc($idAssociation, $typeAssoc);
+                $this->requestParams['selection'] = $selection;
+                $this->setSessionMultiParam($this->requestParams, $instanceType);
                 break;
             
             
@@ -387,5 +423,19 @@ class MultiUserSelector
         $this->session->save();
 
         return true;
+    }
+
+    public function setSessionMultiParam(array $params, string $prefix = 'tempData'): bool
+    {
+        $this->session->set($prefix, $params);
+        $this->session->save();
+
+        return true;
+    }
+
+    public function getSessionMultiParam(string $prefix = 'tempData'): array
+    {
+        return $this->session->get($prefix);
+ 
     }
 }

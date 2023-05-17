@@ -778,6 +778,7 @@ class MessageModule
         $from = importVar('out');
         $acl_man = \FormaLms\lib\Forma::getAclManager();
         $um = UrlManager::getInstance('message');
+        $user_selected = [];
 
         if (!isset($_POST['message']['recipients'])) {
             if (isset($_GET['reply_recipients'])) {
@@ -946,7 +947,7 @@ class MessageModule
             return;
         }
 
-        $only_users = &$acl_man->getUsers($user_selected);
+        $only_users = $acl_man->getUsers($user_selected);
         $only_groups = $acl_man->getGroups($user_selected);
 
         $output .=

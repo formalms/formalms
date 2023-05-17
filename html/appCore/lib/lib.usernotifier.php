@@ -56,11 +56,11 @@ class FormaUserNotifier extends FormaEventConsumer
 
         // recover user info and convert to idst if required
         if (is_numeric($arr_recipients[0])) {
-            $idst_users = &$arr_recipients;
+            $idst_users = $arr_recipients;
         } else {
             $idst_users = $acl_man->fromUseridToIdst($arr_recipients);
         }
-        $users_info = &$acl_man->getUsers($idst_users);
+        $users_info = $acl_man->getUsers($idst_users);
 
         // recove setting
         $users_lang = $acl_man->getSettingValueOfUsers('ui.language', false, true);

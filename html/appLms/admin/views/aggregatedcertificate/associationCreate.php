@@ -4,13 +4,13 @@
 
      cout(getTitleArea($cert_name . ':&nbsp;' . Lang::t('_CERTIFICATE_AGGREGATE_ASSOCIATION', 'certificate'))
                     . '<div class="std_block">'
-                    . $form->openForm('new_assign_step_3', 'index.php?r=alms/' . $this->controller_name . '/' . $opsArr['saveAssignment'])
+                    . $form->openForm('new_assign_step_3', 'index.php?r=alms/' . $controllerName . '/' . $opsArr['saveAssignment'])
                     . $form->getHidden('id_certificate', 'id_certificate', $id_certificate)
                     . $form->getHidden('id_assoc', 'id_assoc', $id_association)
                     . $form->getHidden('type_assoc', 'type_assoc', $type_assoc)
                     . $form->getHidden('selected_courses', 'selected_courses', $selected_courses)
                     . $form->getHidden('selected_users', 'selected_users', $selected_users)
-                    . $form->getHidden('selected_users', 'selected_idsCoursePath', isset($selected_idsCoursePath) ? $associationCreate : 0 )
+                    . $form->getHidden('selected_users', 'selected_idsCoursePath', isset($selected_idsCoursePath) ? $selected_idsCoursePath : 0 )
                     . $form->getHidden('title', 'title', $title)
                     . $form->getHidden('description', 'description', $description)
      );

@@ -379,7 +379,7 @@ function createNewAlert($class,$module,$section,$priority,$description,
     $event->deleteOldProperty();
 
 
-    if (is_array($recipients)) {
+    if (is_array($recipients) && count(array_intersect_key(array_flip(['to', 'cc', 'bcc']), $recipients)) > 0) {
         if(array_key_exists('to', $recipients) && is_array($recipients['to'])) {
            $event->setProperty('recipientid', implode(',', $recipients['to'])); 
         }

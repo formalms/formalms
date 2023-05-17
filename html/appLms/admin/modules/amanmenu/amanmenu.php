@@ -36,8 +36,8 @@ function mancustom()
 
     require_once _base_ . '/lib/lib.table.php';
 
-    $out = &$GLOBALS['page'];
-    $lang = &FormaLanguage::createInstance('manmenu');
+    $out = $GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('manmenu');
 
     $mod_perm = checkPerm('mod', true);
 
@@ -130,8 +130,8 @@ function editcustom($load = false)
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $out = &$GLOBALS['page'];
-    $lang = &FormaLanguage::createInstance('manmenu');
+    $out = $GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('manmenu');
     $mod_perm = checkPerm('mod', true);
 
     $page_title = [
@@ -261,8 +261,8 @@ function savecustom()
             }
 
             //copy module permission
-            $group_of_from = &getCustomLevelSt($id_custom_from);
-            $perm_form = &getAllModulesPermissionSt($group_of_from);
+            $group_of_from = getCustomLevelSt($id_custom_from);
+            $perm_form = getAllModulesPermissionSt($group_of_from);
             $levels = CourseLevel::getTranslatedLevels();
             foreach ($levels as $lv => $name_level) {
                 foreach ($perm_form[$lv] as $idrole => $v) {
@@ -280,10 +280,10 @@ function delcustom()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &FormaLanguage::createInstance('manmenu');
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $lang = FormaLanguage::createInstance('manmenu');
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     $id_custom = FormaLms\lib\Get::req('id_custom', DOTY_INT, 0);
 
@@ -313,7 +313,7 @@ function delcustom()
         }
 
         // Remove group
-        $groups = &getCustomLevelSt($_POST['id_custom']);
+        $groups = getCustomLevelSt($_POST['id_custom']);
         foreach ($groups as $lv => $idst) {
             $acl_man->deleteGroup($idst);
         }
@@ -331,9 +331,9 @@ function manmenu()
 
     require_once _base_ . '/lib/lib.table.php';
 
-    $out = &$GLOBALS['page'];
-    $lang = &FormaLanguage::createInstance('manmenu');
-    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
+    $out = $GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('manmenu');
+    $mo_lang = FormaLanguage::createInstance('menu', 'lms');
 
     if (isset($_GET['id_custom'])) {
         $id_custom = importVar('id_custom', true, 0);
@@ -447,9 +447,9 @@ function editmenuvoice($load = false)
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $out = &$GLOBALS['page'];
-    $lang = &FormaLanguage::createInstance('manmenu');
-    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
+    $out = $GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('manmenu');
+    $mo_lang = FormaLanguage::createInstance('menu', 'lms');
 
     // Find images
     $all_images = [];
@@ -553,10 +553,10 @@ function delmenuvoice()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &FormaLanguage::createInstance('manmenu');
-    $mo_lang = &FormaLanguage::createInstance('menu', 'lms');
+    $lang = FormaLanguage::createInstance('manmenu');
+    $mo_lang = FormaLanguage::createInstance('menu', 'lms');
 
     $id_main = FormaLms\lib\Get::req('id_main', DOTY_INT, 0);
 
@@ -573,7 +573,7 @@ function delmenuvoice()
 		FROM ' . $GLOBALS['prefix_lms'] . "_menucustom_under 
 		WHERE idMain = '" . $id_main . "'");
         while (list($id_module) = sql_fetch_row($re_modules)) {
-            $re &= removeModule($id_module, $id_main, $id_custom);
+            $re = removeModule($id_module, $id_main, $id_custom);
         }
         if (!$re) {
             Util::jump_to('index.php?modname=amanmenu&op=manmenu&id_custom=' . $id_custom . '&result=0');
@@ -808,31 +808,28 @@ function manmodule()
 
 function editmodule($load = false)
 {
-    if ($load) {
-        checkPerm('mod');
-    } else {
-        checkPerm('mod');
-    }
+  
 
+    checkPerm('mod');
     require_once _base_ . '/lib/lib.form.php';
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/js_utils.js', true, true);
 
-    $lang = &FormaLanguage::createInstance('manmenu');
-    $menu_lang = &FormaLanguage::createInstance('menu_course', 'lms');
+    $lang = FormaLanguage::createInstance('manmenu');
+    $menu_lang = FormaLanguage::createInstance('menu_course', 'lms');
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $id_main = importVar('id_main', true, 0);
     $id_module = importVar('id_module', true, 0);
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $perm = [];
 
     // Load module info
     $query_module = '
 	SELECT module_name, default_name, file_name, class_name 
-	FROM ' . $GLOBALS['prefix_lms'] . "_module 
-	WHERE idModule = '" . $id_module . "'";
+	FROM %lms_module 
+	WHERE idModule = "' . $id_module . '"';
     list($module_name, $name_db, $file_name, $class_name) = sql_fetch_row(sql_query($query_module));
-    $module_obj = &createLmsModule($module_name);
+    $module_obj = createLmsModule($module_name);
 
     // Standard name
     //$name = ( Lang::isDef($name_db, 'menu_course') ? Lang::t($name_db, 'menu_course') : $name_db );
@@ -841,16 +838,16 @@ function editmodule($load = false)
     // Load info
     $query_module = '
 	SELECT default_op 
-	FROM ' . $GLOBALS['prefix_lms'] . "_module 
-	WHERE idModule = '" . $id_module . "'";
+	FROM %lms_module 
+	WHERE idModule = "' . $id_module . '"';
     list($module_op) = sql_fetch_row(sql_query($query_module));
 
     if ($load) {
         // Find personalized name
         $query_seq = '
 		SELECT idCustom, my_name
-		FROM ' . $GLOBALS['prefix_lms'] . "_menucustom_under 
-		WHERE idMain = '" . $id_main . "' AND idModule = '" . $id_module . "'";
+		FROM %lms_menucustom_under 
+		WHERE idMain = "' . $id_main . '" AND idModule = "' . $id_module . '"';
         list($id_custom, $my_name) = sql_fetch_row(sql_query($query_seq));
 
         // Load actual module permission
@@ -858,10 +855,10 @@ function editmodule($load = false)
         $levels = CourseLevel::getTranslatedLevels();
         $tokens = $module_obj->getAllToken($module_op);
 
-        $map_level_idst = &getCustomLevelSt($id_custom);
-        $map_all_role = &getModuleRoleSt($module_name, $tokens, true);
-        $group_idst_roles = &getAllModulesPermissionSt($map_level_idst, $map_all_role);
-        $perm = &fromStToToken($group_idst_roles, $map_all_role);
+        $map_level_idst = getCustomLevelSt($id_custom);
+        $map_all_role = getModuleRoleSt($module_name, $tokens, true);
+        $group_idst_roles = getAllModulesPermissionSt($map_level_idst, $map_all_role);
+        $perm = fromStToToken($group_idst_roles, $map_all_role);
     } else {
         if (method_exists($module_obj, 'getPermissionsForMenu')) {
             $perm = $module_obj->getPermissionsForMenu($module_op);
@@ -873,15 +870,15 @@ function editmodule($load = false)
 
     $query_custom = '
 	SELECT title 
-	FROM ' . $GLOBALS['prefix_lms'] . "_menucustom 
-	WHERE idCustom = '" . $id_custom . "'";
+	FROM %lms_menucustom 
+	WHERE idCustom = "' . $id_custom . '"';
     list($custom_name) = sql_fetch_row(sql_query($query_custom));
 
     $query_mains = '
 	SELECT idMain, name 
-	FROM ' . $GLOBALS['prefix_lms'] . "_menucustom_main 
-	WHERE idCustom = '" . $id_custom . "'
-	ORDER BY sequence";
+	FROM %lms_menucustom_main 
+	WHERE idCustom = "' . $id_custom . '"
+	ORDER BY sequence';
     $re_mains = sql_query($query_mains);
     while (list($id_db_main, $main_name) = sql_fetch_row($re_mains)) {
         $mains[$id_db_main] = $main_name;
@@ -896,6 +893,8 @@ function editmodule($load = false)
         'index.php?modname=amanmenu&amp;op=manmodule&amp;id_main=' . $id_main => $title_main,
         ($load ? $lang->def('_YOURE_WORKING_ON_MODULE') : $lang->def('_YOURE_IMPORTING')) . ' : ' . $name,
     ];
+
+ 
     // Form
     $out->add(
         getTitleArea($page_title, 'manmenu')

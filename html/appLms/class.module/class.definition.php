@@ -51,8 +51,8 @@ class LmsModule
         $this->authors = ['Pirovano Fabio (gishell@tiscali.it)', 'Sandri Emanuele (emanuele@sandri.it)'];
         $this->mantainers = ['Pirovano Fabio (gishell@tiscali.it)', 'Sandri Emanuele (emanuele@sandri.it)'];
 
-        $this->descr_short = 'General module ' . $modname;
-        $this->descr_long = 'General module ' . $modname;
+        $this->descr_short = 'General module ' . $this->module_name;
+        $this->descr_long = 'General module ' . $this->module_name;
     }
 
     public function getName()
@@ -185,10 +185,10 @@ class LmsModule
     {
         require_once _base_ . '/lib/lib.table.php';
 
-        $lang = &FormaLanguage::createInstance('manmenu', 'framework');
-        $lang_perm = &FormaLanguage::createInstance('permission', 'framework');
+        $lang = FormaLanguage::createInstance('manmenu', 'framework');
+        $lang_perm = FormaLanguage::createInstance('permission', 'framework');
 
-        $tokens = self::getAllToken($module_op);
+        $tokens = static::getAllToken($module_op);
         $levels = CourseLevel::getTranslatedLevels();
         $tb = new Table(0, $lang->def('_VIEW_PERMISSION'), $lang->def('_EDIT_SETTINGS'));
 

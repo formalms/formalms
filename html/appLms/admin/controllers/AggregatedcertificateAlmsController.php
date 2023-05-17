@@ -35,16 +35,8 @@ class AggregatedcertificateAlmsController extends AlmsController
      *
      *   "key" => "link"
      */
-    protected $op = [
-        'del_released' => 'delReleased',
-        'del_association' => 'delAssociations',
-        'associationusers' => 'associationUsers',
-        'associationCourses' => 'associationCourses',
-        'saveAssignment' => 'saveAssignment',
-        'saveAssignmentUsers' => 'saveAssignmentUsers',
-        'view_details' => 'viewdetails',
-        'delmetacert' => 'delcertificate',
-    ];
+
+     protected $op = [];
 
     public int $id_certificate;
     public int $id_association;
@@ -71,6 +63,8 @@ class AggregatedcertificateAlmsController extends AlmsController
         } else {
             $this->association_name = '';
         }
+
+        $this->op = $this->aggCertLib->getOps();
         $this->back_url = 'index.php?r=alms/' . $this->controller_name . '/associationsManagement&id_certificate=' . $this->id_certificate;
     }
 
@@ -536,6 +530,11 @@ class AggregatedcertificateAlmsController extends AlmsController
      */
     public function modAssoc()
     {
+            
+        $assoc_types = [
+            AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE => Lang::t('_COURSE'),
+            AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH => Lang::t('_COURSEPATH'),
+        ];
         $params = [];
 
         // necessary for passing additional parameters to the form (ex. disabled to type selector)
@@ -549,10 +548,7 @@ class AggregatedcertificateAlmsController extends AlmsController
             $params['id_association'] = $this->id_association;
         }
 
-        $assoc_types = [
-            AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE => Lang::t('_COURSE'),
-            AggregatedCertificate::AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH => Lang::t('_COURSEPATH'),
-        ];
+  
 
         $params['cert_name'] = $this->cert_name;
         $params['id_certificate'] = $this->id_certificate;

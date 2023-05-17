@@ -79,7 +79,7 @@ function &createModule($module_name, $class_name = null)
     return $module_cfg;
 }
 
-function &createLmsModule($module_name)
+function createLmsModule($module_name)
 {
     $module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
     include_once _lms_ . '/class.module/class.definition.php';
@@ -96,7 +96,7 @@ function &createLmsModule($module_name)
         $class_name = 'Module_' . ucfirst($module_name);
     }
 
-    $module_cfg = new $class_name();
+    $module_cfg = new $class_name($module_name);
 
     return $module_cfg;
 }

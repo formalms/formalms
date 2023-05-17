@@ -60,6 +60,7 @@ class CoursereportLmsController extends LmsController
     public function coursereport()
     {
         checkPerm('view', true, $this->_mvc_name);
+        
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
@@ -84,7 +85,7 @@ class CoursereportLmsController extends LmsController
         }
 
         $students = getSubscribedInfo((int) $this->idCourse, false, $type_filter, true, false, false, true);
-
+        $score = 0;
         //apply sub admin filters, if needed
         if (!$view_all_perm) {
             //filter users
@@ -100,15 +101,15 @@ class CoursereportLmsController extends LmsController
         }
 
         $id_students = array_keys($students);
-        $students_info = &$acl_man->getUsers($id_students);
+        $students_info = $acl_man->getUsers($id_students);
 
         $included_test = $this->model->getSourcesId(CoursereportLms::SOURCE_OF_TEST);
         $reports_id = $this->model->getReportsId();
         $included_test_report_id = $this->model->getReportsId(CoursereportLms::SOURCE_OF_TEST);
 
-        $tests_score = &$test_man->getTestsScores($included_test, $id_students);
+        $tests_score = $test_man->getTestsScores($included_test, $id_students);
 
-        $reports_scores = &$report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
+        $reports_scores = $report_man->getReportsScores((isset($included_test_report_id) && is_array($included_test_report_id) ? array_diff($reports_id, $included_test_report_id) : $reports_id), $id_students);
 
         // XXX: Calculate statistic
         $test_details = [];

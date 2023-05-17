@@ -24,6 +24,8 @@ class UserselectorAdmController extends AdmController
 
     protected $requestObj;
 
+    protected $requestArray = [];
+
     protected $selection = 'user';
 
 
@@ -34,13 +36,15 @@ class UserselectorAdmController extends AdmController
 
     public function init()
     {
-        $this->multiUserSelector = new MultiUserSelector();
+       
         $this->_mvc_name = 'multiuserselector';
         $this->requestObj = $this->request->getMethod() == 'POST' ? $this->request->request : $this->request->query;
+        $this->requestArray = array_merge($this->request->request->all(), $this->request->query->all());
+        $this->multiUserSelector = new MultiUserSelector($this->requestArray);
 
-        $tabs = ($this->requestObj->has('tab_filters')) ? $this->requestObj->get('tab_filters') : array_keys($this->tabs);
+        $tabs = array_key_exists('tab_filters', $this->requestArray) ? $this->requestArray['tab_filters'] : array_keys($this->tabs);
 
-    
+
         if(count($tabs)) {
             foreach ($tabs as $tabFilter) {
                 if (!in_array($tabFilter, array_keys($this->tabs))) {
@@ -58,9 +62,9 @@ class UserselectorAdmController extends AdmController
         }
         
 
-        if ($this->requestObj->has('instance') && $this->requestObj->has('id')) {
-            $instanceType = $this->requestObj->get('instance');
-            $instanceId = (int) $this->requestObj->get('id');
+        if (array_key_exists('instance', $this->requestArray) && array_key_exists('id', $this->requestArray)) {
+            $instanceType = $this->requestArray['instance'];
+            $instanceId = (int) $this->requestArray['id'];
 
 
             $this->multiUserSelector->injectAccessModel($instanceType);
@@ -79,12 +83,13 @@ class UserselectorAdmController extends AdmController
         $accessSelection = [];
 
 
-        $disableAjax = $this->requestObj->has('disable_ajax') ? true : false;
-        $instanceValue = $this->requestObj->get('instance');
-        $instanceId = $this->requestObj->get('id');
-        $showSelectAll = $this->requestObj->get('showSelectAll') ?? false;
-        $showUserAlert = $this->requestObj->get('showUserAlert') ?? false;
-        $clearSelection = $this->requestObj->get('clearSelection') ?? false;
+
+        $disableAjax = array_key_exists('disable_ajax', $this->requestArray) ? true : false;
+        $instanceValue = $this->requestArray['instance']; 
+        $instanceId = $this->requestArray['id']; 
+        $showSelectAll = array_key_exists('showSelectAll', $this->requestArray) ? $this->requestArray['showSelectAll'] : false;
+        $showUserAlert = array_key_exists('showUserAlert', $this->requestArray) ? $this->requestArray['showUserAlert'] : false;
+        $clearSelection = array_key_exists('clearSelection', $this->requestArray) ? $this->requestArray['clearSelection'] : false;
         $selectAllValue = 0;
 
         if ($instanceValue) {
@@ -98,8 +103,8 @@ class UserselectorAdmController extends AdmController
         }
 
 
-        if ($this->requestObj->has('selected_tab') && in_array($this->requestObj->get('selected_tab'), array_keys($this->tabs))) {
-            $this->selection = $this->requestObj->get('selected_tab');
+        if (array_key_exists('selected_tab', $this->requestArray) && in_array($this->requestArray['selected_tab'], array_keys($this->tabs))) {
+            $this->selection = $this->requestArray['selected_tab'];
         }
 
         foreach ($this->tabs as $tabKey => $tab) {
@@ -138,15 +143,15 @@ class UserselectorAdmController extends AdmController
                             'showSelectAll' => $showSelectAll,
                             'showUserAlert' => $showUserAlert,
                             'selectAllValue' => $selectAllValue,
-                            'debug' => $this->requestObj->has('debug') ? $this->requestObj->get('debug') : false
+                            'debug' => array_key_exists('debug', $this->requestArray) ? $this->requestArray['debug'] : false
                         ]);
     }
 
 
     public function getDataTask()
     {
-        $dataType = $this->requestObj->get('dataType');
-        $params = array_merge($this->requestObj->all(), ['json_format' => true]);
+        $dataType = $this->requestArray['dataType'];
+        $params = array_merge($this->requestArray, ['json_format' => true]);
 
         switch($dataType) {
             case 'user':
@@ -156,9 +161,9 @@ class UserselectorAdmController extends AdmController
 
                 break;
             default:
-                $params = $this->request->query->all();
+              
 
-                $response = $this->multiUserSelector->retrieveDataselector('org')->getData($params);
+                $response = $this->multiUserSelector->retrieveDataselector('org')->getData($this->requestArray);
                 break;
         }
 
@@ -168,13 +173,13 @@ class UserselectorAdmController extends AdmController
 
     public function associate()
     {
-        $instanceType = $this->requestObj->get('instance');
-        $instanceId = $this->requestObj->get('id');
+        $instanceType = $this->requestArray['instance'];
+        $instanceId = $this->requestArray['id'];
 
-        $selection =  explode(',', $this->requestObj->get('selected'));
-        $exclusion =  explode(',', $this->requestObj->get('excluded'));
-        $allSelections =  explode(',', $this->requestObj->get('allselection'));
-        $allIdst =  (int) $this->requestObj->get('all_idst');
+        $selection =  explode(',', $this->requestArray['selected']);
+        $exclusion =  explode(',', $this->requestArray['excluded']);
+        $allSelections =  explode(',', $this->requestArray['allselection']);
+        $allIdst =  array_key_exists('all_idst', $this->requestArray) ? (int) $this->requestArray['all_idst'] : 0;
 
         //if allidst is checked empty all selections
 
@@ -214,15 +219,15 @@ class UserselectorAdmController extends AdmController
     public function getOrgChartData()
     {
         $accessSelection = [];
-        $params = $this->requestObj->all();
-        $instanceValue = $this->requestObj->get('instance');
-        $instanceId = $this->requestObj->get('id');
+       
+        $instanceValue = $this->requestArray['instance'];
+        $instanceId = $this->requestArray['id'];
 
         if ($instanceValue && $instanceId) {
             $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId);
         }
 
         $params['selected_nodes'] = $accessSelection;
-        echo $this->multiUserSelector->retrieveDataselector('org')->getData($params);
+        echo $this->multiUserSelector->retrieveDataselector('org')->getData($this->requestArray);
     }
 }

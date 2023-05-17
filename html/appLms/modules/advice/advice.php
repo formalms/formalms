@@ -276,11 +276,11 @@ function addadvice()
     checkPerm('mod');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.form.php';
-    $lang = &FormaLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $form = new Form();
 
     //finding group
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $db_groups = $acl_man->getBasePathGroupST('/lms/course/' . $session->get('idCourse') . '/group/', true);
     $groups = [];
     $groups['me'] = $lang->def('_YOUONLY');
@@ -482,8 +482,8 @@ function modreader()
     checkPerm('mod');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
-    $lang = &FormaLanguage::createInstance('advice', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('advice', 'lms');
+    $out = $GLOBALS['page'];
     $id_advice = importVar('id_advice', true, 0);
 
     $aclManager = new FormaACLManager();

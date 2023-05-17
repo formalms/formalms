@@ -31,8 +31,8 @@ function event_manager_view($op)
     //require_once(_i18n_.'/lib.lang.php');
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &FormaLanguage::createInstance('event_manager', 'framework');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('event_manager', 'framework');
+    $out = $GLOBALS['page'];
     $form = new Form();
 
     $out->setWorkingZone('content');

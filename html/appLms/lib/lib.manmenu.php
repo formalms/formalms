@@ -178,7 +178,7 @@ function &getCustomLevelSt($id_custom)
 {
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // find all the group created for this menu custom for permission management
     foreach ($levels as $level => $levelName) {
@@ -203,7 +203,7 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false)
 {
     $map = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // find the idst of all the role of the selected module
     foreach ($all_token as $token) {
@@ -227,7 +227,7 @@ function &getModuleRoleSt($module_name, $all_token, $flip = false)
     return $map;
 }
 
-function &createPermForCourse($group_idst, $id_course)
+function createPermForCourse($group_idst, $id_course)
 {
     $basePerm = '/lms/course/private/';
     $map = [];
@@ -296,11 +296,11 @@ function createModuleRoleForCourse($id_course, $module_name, $tokens)
  *
  * @return array [lv] => ( [idst] => 1, [idst] => 2, ...)
  */
-function &getAllModulesPermissionSt($group_idst, $idst_cast = false)
+function getAllModulesPermissionSt($group_idst, $idst_cast = false)
 {
     $old_perm = [];
     $levels = CourseLevel::getTranslatedLevels();
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     // find all the roles associated to the main groups
     foreach ($levels as $level => $levelName) {
