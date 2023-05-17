@@ -63,7 +63,7 @@ function getTemplate()
 
         $re = sql_query($qtxt);
         if (sql_num_rows($re) > 0) {
-            [$template_code] = sql_fetch_row($re);
+            list($template_code) = sql_fetch_row($re);
             setTemplate($template_code);
             if (!checkTemplateVersion($session->get('template'))) {
                 return 'standard';
@@ -378,6 +378,10 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
 
             $GLOBALS['page']->add('<li><a href="#main_area_title">' . Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
 
+            if ($title) {
+                $GLOBALS['page_title'] = FormaLms\lib\Get::sett('page_title', '') . ' &rsaquo; ' . $title;
+            }
+
             // Init navigation
             if (count($text) > 1) {
                 // $html .= '<ul class="navigation">';
@@ -497,8 +501,7 @@ function getDeleteUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-)
-{
+) {
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
@@ -547,8 +550,7 @@ function getModifyUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-)
-{
+) {
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
@@ -646,41 +648,7 @@ function getAccessibilityStatus()
 
 function getTemplateFromIdOrg(int $id_org)
 {
-    [$template_name] = sql_fetch_row(sql_query("select associated_template from core_org_chart_tree where idOrg=$id_org"));
+    list($template_name) = sql_fetch_row(sql_query("select associated_template from core_org_chart_tree where idOrg=$id_org"));
 
     return $template_name;
-}
-
-/*
- * return the specific name for the current page for adding into the title html tag.
- * Required for accessibility. Eache page have to describe the context
- *
- * @param string $page_ref e referring to the page
- * @return string the page title
- *
- * */
-function getPageName()
-{
-    $pageRef = '';
-
-    $request = FormaLms\lib\Get::req('r', DOTY_MIXED, '');
-    $modName = FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '');
-    $tab = FormaLms\lib\Get::req('mycourses_tab', DOTY_STRING, '');
-    if (!empty($request)) {
-        $pageRef = str_replace('/', '_', $request);
-    } elseif (!empty($modName)) {
-        $operation = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
-
-        $pageRef = sprintf('%s_%s', $modName, $operation);
-    }
-
-    if (!empty($tab)) {
-        $pageRef = $tab;
-    }
-
-    if (empty($pageRef)) {
-        $pageRef = 'adm/homepage/show';
-    }
-
-    return Lang::t(strtoupper('_' . $pageRef), 'page_title');
 }
