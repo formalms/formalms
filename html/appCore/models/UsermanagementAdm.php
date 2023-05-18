@@ -1199,8 +1199,8 @@ class UsermanagementAdm extends Model
                 $enrollrules = new EnrollrulesAlms();
 
                 $folder_count = 0;
-          
-                
+
+
                 if (is_array($folders)) {
                     foreach ($folders as $folder) {
                         if ((int)$folder > 0) {
@@ -1918,11 +1918,11 @@ class UsermanagementAdm extends Model
         $search_query = 'SELECT	idOrg, idst_oc, idst_ocd
 			FROM %adm_org_chart_tree
 			WHERE idOrg IN (' . implode(',', $org_list) . ') ';
-        $re = $this->db->query($search_query);
+        $res = $this->db->query($search_query);
 
         $output = [];
-        while (list($id, $oc, $ocd) = $this->db->fetch_row($re)) {
-            $output[$id] = [$oc, $ocd];
+        foreach ($res as $row){
+            $output[$row['idOrg']] = [$row['idst_oc'], $row['idst_ocd']];
         }
 
         return $output;
@@ -2001,8 +2001,8 @@ class UsermanagementAdm extends Model
         if (!$res = $this->db->query($query)) {
             return $tree_codes;
         }
-        while (list($id, $code, $name) = $this->db->fetch_row($res)) {
-            $tree_codes[$id] = $name;
+        foreach ($res as $row){
+            $tree_codes[$row['idOrg']] = $row['translation'];
         }
 
         return $tree_codes;
@@ -2015,8 +2015,8 @@ class UsermanagementAdm extends Model
         if (!$res = $this->db->query($query)) {
             return $tree_codes;
         }
-        while (list($id, $code) = $this->db->fetch_row($res)) {
-            $tree_codes[$id] = $code;
+        foreach ($res as $row){
+            $tree_codes[$row['idOrg']] = $row['code'];
         }
 
         return $tree_codes;
@@ -2032,8 +2032,8 @@ class UsermanagementAdm extends Model
         if (!$res = $this->db->query($query)) {
             return $tree_folders;
         }
-        while (list($id) = $this->db->fetch_row($res)) {
-            $tree_folders[$id] = $id;
+        foreach ($res as $row){
+            $tree_folders[$row['idOrg']] = $row['idOrg'];
         }
 
         return $tree_folders;

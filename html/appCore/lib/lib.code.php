@@ -58,7 +58,7 @@ class CodeManager
         $query = 'SELECT COUNT(*)'
                     . ' FROM ' . $this->_getCodeGroupsTable();
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -70,7 +70,7 @@ class CodeManager
                     . " WHERE idCodeGroup = '" . $id_code_group . "'"
                     . " AND used = '1'";
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -81,7 +81,7 @@ class CodeManager
                     . ' FROM ' . $this->_getCodeTable()
                     . " WHERE idCodeGroup = '" . $id_code_group . "'";
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -123,7 +123,7 @@ class CodeManager
                     . ' FROM ' . $this->_getCodeGroupsTable()
                     . " WHERE idCodeGroup = '" . $id_code_group . "'";
 
-        list($title, $description) = sql_fetch_row(sql_query($query));
+        [$title, $description] = sql_fetch_row(sql_query($query));
 
         $res = ['title' => stripslashes($title),
                         'description' => stripslashes($description), ];
@@ -183,7 +183,7 @@ class CodeManager
                         ? " AND code LIKE '%" . $_POST['code_filter'] . "%'"
                         : ''));
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -226,7 +226,7 @@ class CodeManager
                     . ' FROM ' . $this->_getCodeTable()
                     . " WHERE `code` = '" . $code . "'";
 
-        list($control) = sql_fetch_row(sql_query($query));
+        [$control] = sql_fetch_row(sql_query($query));
 
         if ($control == 1) {
             return 'dup';
@@ -256,7 +256,7 @@ class CodeManager
                     . ' FROM ' . $this->_getCodeTable()
                     . " WHERE `code` = '" . $code . "'";
 
-        list($result) = sql_fetch_row(sql_query($query));
+        [$result] = sql_fetch_row(sql_query($query));
 
         if ($result == '1') {
             return true;
@@ -429,7 +429,7 @@ class CodeManager
                     . " AND (used = '0'"
                     . " OR unlimitedUse = '1')";
 
-        list($control) = sql_fetch_row(sql_query($query));
+        [$control] = sql_fetch_row(sql_query($query));
 
         if ($control == 1) {
             return 1;
@@ -439,7 +439,7 @@ class CodeManager
                     . ' FROM ' . $this->_getCodeTable()
                     . " WHERE `code` = '" . $code . "'";
 
-        list($control) = sql_fetch_row(sql_query($query));
+        [$control] = sql_fetch_row(sql_query($query));
 
         if ($control == 1) {
             return 0;
@@ -454,7 +454,7 @@ class CodeManager
                     . ' FROM ' . $this->_getCodeTable()
                     . " WHERE `code` = '" . $code . "'";
 
-        list($id_code_group) = sql_fetch_row(sql_query($query));
+        [$id_code_group] = sql_fetch_row(sql_query($query));
 
         return $id_code_group;
     }
@@ -514,7 +514,7 @@ class CodeManager
         $result = sql_query($query);
 
         if (sql_num_rows($result)) {
-            list($code) = sql_fetch_row($result);
+            [$code] = sql_fetch_row($result);
 
             return $code;
         }
@@ -526,7 +526,7 @@ class CodeManager
         $result = sql_query($query);
 
         if (sql_num_rows($result)) {
-            list($code) = sql_fetch_row($result);
+            [$code] = sql_fetch_row($result);
 
             return $code;
         }
@@ -570,7 +570,7 @@ class CodeManager
         $query = 'SELECT COUNT(*)'
                 . ' FROM ' . $this->_getCodeTable();
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return $res;
     }
@@ -604,7 +604,7 @@ class CodeManager
                 . " AND code NOT LIKE '%z%'"
                 . ' ORDER BY code DESC';
 
-        list($res) = sql_fetch_row(sql_query($query));
+        [$res] = sql_fetch_row(sql_query($query));
 
         return (int) $res;
     }
