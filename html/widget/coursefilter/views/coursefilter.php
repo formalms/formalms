@@ -24,15 +24,10 @@ $str_all = Lang::t('_ALL_COURSE_TYPE', 'course');
 
                 <div class="filterBar__mainsearch navbar-form form-group">
 
-                    <?php echo $list_category ? $list_category : ''; ?>
-                    <select id="course_search_filter_type" name="filter_type" class="selectpicker" data-width=""
-                            data-selected-text-format="count > 1" data-actions-box="true">
-                        <option value="all"><?php echo $str_all; ?></option>
-                        <option value="elearning"><?php echo $str_elearning; ?></option>
-                        <option value="classroom"><?php echo $str_classroom; ?></option>
-                    </select>
+                    <?php echo $select_category ? $select_category : ''; ?>
+                    <?php echo $select_course_type ? $select_course_type : ''; ?>
+                    <?php echo $select_year ? $select_year : ''; ?>
 
-                    <?php echo $auxiliary_filter ? $auxiliary_filter : ''; ?>
                     <?php echo isset($_label_list) ? $_label_list : ''; ?>
                     
                     <script>

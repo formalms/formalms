@@ -278,4 +278,8 @@ class ElearningLms extends Model
 
         return $path;
     }
+    static public function getFilterCourseType(): array
+    {
+        return [Lang::t('_ALL_COURSE_TYPE', 'course'), Lang::t('_COURSE_TYPE_ELEARNING', 'course'),  Lang::t('_CLASSROOM_COURSE', 'cart') ];
+    }
 }

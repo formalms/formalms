@@ -17,8 +17,9 @@ class CoursefilterWidget extends Widget
 {
     public $id = '';
     public $filter_text = '';
-    public $auxiliary_filter = '';
-    public $list_category = '';
+    public $select_category = '';
+    public $select_year = '';
+    public $select_course_type = '';
     public $common_options = '';
     public $advanced_filter_content = false;
     public $advanced_filter_active = false;
@@ -53,8 +54,9 @@ class CoursefilterWidget extends Widget
         $this->render('coursefilter', [
             'id' => $this->id,
             'filter_text' => (string) $this->filter_text,
-            'list_category' => $this->list_category,
-            'auxiliary_filter' => $this->auxiliary_filter,
+            'select_category' => $this->select_category,
+            'select_course_type' => $this->select_course_type,
+            'select_year' => $this->select_year,
             'inline_filters' => $this->inline_filters,
             'common_options' => $this->common_options,
             'advanced_filter_content' => $this->advanced_filter_content,
