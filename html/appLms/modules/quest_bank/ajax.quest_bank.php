@@ -14,7 +14,7 @@
 if (!defined('IN_FORMA') && !defined('IN_AJAX')) {
     exit('You can\'t access directly');
 }
-if ($GLOBALS['current_user']->isAnonymous()) {
+if (Docebo::user()->isAnonymous()) {
     exit('You can\'t access');
 }
 
