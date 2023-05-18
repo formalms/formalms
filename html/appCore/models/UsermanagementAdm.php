@@ -66,7 +66,7 @@ class UsermanagementAdm extends Model
 
             //languages
             $names = [];
-            $query = "SELECT id_dir, translation FROM %adm_org_chart WHERE lang_code='" . getLanguage() . "'";
+            $query = "SELECT id_dir, translation FROM %adm_org_chart WHERE lang_code='" . Lang::get() . "'";
             $res = $this->db->query($query);
             while (list($id_dir, $translation) = $this->db->fetch_row($res)) {
                 $names[$id_dir] = $translation;
@@ -432,7 +432,7 @@ class UsermanagementAdm extends Model
 
                 $query .= ' FROM (%adm_user as u JOIN %adm_group_members as gm ON ( u.idst = gm.idstMember )) '
                     . ' LEFT JOIN (%adm_field_userentry as f LEFT JOIN %adm_field_son as fs '
-                    . " ON (f.user_entry = fs.id_common_son AND f.id_common = fs.idField AND fs.lang_code='" . getLanguage() . "')) "
+                    . " ON (f.user_entry = fs.id_common_son AND f.id_common = fs.idField AND fs.lang_code='" . Lang::get() . "')) "
                     . ' ON (u.idst=f.id_user AND f.id_common=' . (int) $sort . ') ';
                 if ($idOrg || $is_subadmin) {
                     $query .= ' JOIN (SELECT idstMember FROM %adm_group_members AS gm WHERE 1 AND gm.idst IN ( ' . implode(',', $id_groups) . ' ))'
@@ -561,7 +561,7 @@ class UsermanagementAdm extends Model
                         case 'dropdown':
                             if ($field_sons === false) {
                                 //retrieve translations for dropdowns fields
-                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                                 $res_fields_sons = $this->db->query($query_fields_sons);
                                 $field_sons = [];
                                 while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
@@ -579,7 +579,7 @@ class UsermanagementAdm extends Model
                         case 'copy':
                             if ($field_sons === false) {
                                 //retrieve translations for dropdowns fields
-                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                                $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                                 $res_fields_sons = $this->db->query($query_fields_sons);
                                 $field_sons = [];
                                 while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
@@ -1407,7 +1407,7 @@ class UsermanagementAdm extends Model
             }
         }
 
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $search_query = "SELECT	t1.idOrg, t1.path, t2.translation, t1.iLeft, t1.iRight, t1.code
 			FROM %adm_org_chart_tree AS t1 LEFT JOIN %adm_org_chart AS t2
 				ON (t1.idOrg = t2.id_dir AND t2.lang_code = '" . $lang_code . "' )
@@ -1769,7 +1769,7 @@ class UsermanagementAdm extends Model
         }
 
         if ($language == false) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
         if (!is_array($id_groups) || empty($id_groups)) {
             return $folders;
@@ -1804,7 +1804,7 @@ class UsermanagementAdm extends Model
             }
         }
 
-        $lang_code = ($language == false ? getLanguage() : $language);
+        $lang_code = ($language == false ? Lang::get() : $language);
         $search_query = "SELECT	t1.idOrg, t1.idParent, t1.path, t1.lev, t1.iLeft, t1.iRight, t2.translation, t1.code
 			FROM %adm_org_chart_tree AS t1 LEFT JOIN	%adm_org_chart AS t2
 			ON (t1.idOrg = t2.id_dir AND t2.lang_code = '" . $lang_code . "' )
@@ -1833,13 +1833,13 @@ class UsermanagementAdm extends Model
         $search_query = 'SELECT	idOrg, idst_oc, idst_ocd
 			FROM %adm_org_chart_tree
 			WHERE idOrg IN (' . implode(',', $org_list) . ') ';
-        $re = $this->db->query($search_query);
+        $res = $this->db->query($search_query);
 
         $output = [];
-        while (list($id, $oc, $ocd) = $this->db->fetch_row($re)) {
-            $output[$id] = [$oc, $ocd];
+        foreach ($res as $row){
+            $output[$row['idOrg']] = [$row['idst_oc'], $row['idst_ocd']];
         }
-
+        
         return $output;
     }
 
@@ -1916,8 +1916,8 @@ class UsermanagementAdm extends Model
         if (!$res = $this->db->query($query)) {
             return $tree_codes;
         }
-        while (list($id, $code, $name) = $this->db->fetch_row($res)) {
-            $tree_codes[$id] = $name;
+        foreach ($res as $row){
+            $tree_codes[$row['idOrg']] = $row['translation'];
         }
 
         return $tree_codes;
@@ -1930,8 +1930,8 @@ class UsermanagementAdm extends Model
         if (!$res = $this->db->query($query)) {
             return $tree_codes;
         }
-        while (list($id, $code) = $this->db->fetch_row($res)) {
-            $tree_codes[$id] = $code;
+        foreach ($res as $row){
+            $tree_codes[$row['idOrg']] = $row['code'];
         }
 
         return $tree_codes;
@@ -1947,8 +1947,8 @@ class UsermanagementAdm extends Model
         if (!$res = $this->db->query($query)) {
             return $tree_folders;
         }
-        while (list($id) = $this->db->fetch_row($res)) {
-            $tree_folders[$id] = $id;
+        foreach ($res as $row){
+            $tree_folders[$row['idOrg']] = $row['idOrg'];
         }
 
         return $tree_folders;
@@ -1984,13 +1984,13 @@ class UsermanagementAdm extends Model
     public function getFolderTranslation($idOrg, $lang_code = false)
     {
         if (!$lang_code) {
-            $lang_code = getLanguage();
+            $lang_code = Lang::get();
         }
         $query = 'SELECT translation FROM %adm_org_chart WHERE id_dir=' . (int) $idOrg . " AND lang_code='" . $lang_code . "'";
         $res = $this->db->query($query);
         $output = false;
         if ($res && ($this->db->num_rows($res) > 0)) {
-            list($output) = $this->db->fetch_row($res);
+            [$output] = $this->db->fetch_row($res);
         }
 
         return $output;
@@ -2008,7 +2008,7 @@ class UsermanagementAdm extends Model
             $query = 'SELECT MAX(path) FROM %adm_org_chart_tree WHERE idParent=' . (int) $id_parent;
             $res = $this->db->query($query);
             if ($this->db->num_rows($res) > 0) { //check if there are any subfolder
-                list($path) = $this->db->fetch_row($res);
+                [$path] = $this->db->fetch_row($res);
                 $folder_index = ((int) end(explode('/', $path)) + 1); //get next index
             } else {
                 $folder_index = 1; //start with first folder index
@@ -2865,7 +2865,7 @@ class UsermanagementAdm extends Model
         }
 
         $org_lang = [];
-        $query = "SELECT * FROM %adm_org_chart WHERE lang_code = '" . getLanguage() . "'";
+        $query = "SELECT * FROM %adm_org_chart WHERE lang_code = '" . Lang::get() . "'";
         $res = $this->db->query($query);
         while ($obj = $this->db->fetch_obj($res)) {
             $org_lang[$obj->id_dir] = $obj->translation;
@@ -2999,7 +2999,7 @@ class UsermanagementAdm extends Model
     public function getUserFolders($id_user, $language = false)
     {
         if (!$language) {
-            $language = getLanguage();
+            $language = Lang::get();
         }
 
         $output = [];
@@ -3226,7 +3226,7 @@ class UsermanagementAdm extends Model
                 case 'dropdown':
                     if ($field_sons === false) {
                         //retrieve translations for dropdowns fields
-                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                         $res_fields_sons = $this->db->query($query_fields_sons);
                         while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
                             $field_sons[$fsrow->idField][$fsrow->id_common_son] = $fsrow->translation;
@@ -3244,7 +3244,7 @@ class UsermanagementAdm extends Model
                 case 'copy':
                     if ($field_sons === false) {
                         //retrieve translations for dropdowns fields
-                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . getLanguage() . "' ORDER BY idField, sequence";
+                        $query_fields_sons = "SELECT idField, id_common_son, translation FROM %adm_field_son WHERE lang_code = '" . Lang::get() . "' ORDER BY idField, sequence";
                         $res_fields_sons = $this->db->query($query_fields_sons);
                         $field_sons = [];
                         while ($fsrow = $this->db->fetch_obj($res_fields_sons)) {
@@ -3305,7 +3305,7 @@ class UsermanagementAdm extends Model
         $query = 'select %adm_customfield_lang.id_field, translation, type_field 
                 from %adm_customfield_lang, %adm_customfield 
                 where %adm_customfield_lang.id_field = %adm_customfield.id_field  and
-                 %adm_customfield_lang.lang_code = \'' . getLanguage() . '\' and area_code="ORG_CHART"';
+                 %adm_customfield_lang.lang_code = \'' . Lang::get() . '\' and area_code="ORG_CHART"';
         $rs = sql_query($query) or
         errorCommunication('getCustomFieldOrg');
         $result = [];
@@ -3415,13 +3415,13 @@ class UsermanagementAdm extends Model
         }
         $query = 'select idField, user_entry, type_field from 
                     %adm_field JOIN %adm_field_userentry ON core_field.id_common = core_field_userentry.id_common where
-                    id_user =' . $user . " and lang_code='" . getLanguage() . "' order by idField";
+                    id_user =' . $user . " and lang_code='" . Lang::get() . "' order by idField";
 
         $res = sql_query($query);
 
         while (list($id_field, $user_entry, $type_field) = sql_fetch_row($res)) {
             if ($type_field == 'dropdown') {
-                $q = sql_query("SELECT translation FROM %adm_field_son WHERE idField = $id_field AND id_common_son = $user_entry AND lang_code = '" . getLanguage() . "'");
+                $q = sql_query("SELECT translation FROM %adm_field_son WHERE idField = $id_field AND id_common_son = $user_entry AND lang_code = '" . Lang::get() . "'");
                 list($translation) = sql_fetch_row($q);
                 $output[$id_field] = $translation;
             } else {
