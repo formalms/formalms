@@ -75,8 +75,9 @@
     <!-- content -->
     <main class="homepage__content content-margin">
         <div class="homepage__row homepage__row--header">
+            <h1><span class="screenreader">{{ Lang_translate('_LOGIN_LEGEND', 'login') }}</span></h1>
             <a href="index.php">
-                <img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="Left logo"/>
+                <img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="{{ Lang_translate('_COMPANY_LOGO', 'standard') }}"/>
             </a>
             <div class="pull-right">
                 {% if lang_number > 1 %}
