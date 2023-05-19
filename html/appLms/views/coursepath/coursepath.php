@@ -28,7 +28,7 @@
                     . renderCoursepathProgress($path_info['course_completed'], $path_info['coursepath_courses'])
                     . '</div>'
                     . '<div class="yui-u">'
-                    . '<br /><br /> <span class="coursepath_percentage">' . $path_info['percentage'] . ' %</span>'
+                    . '<br /><br /> <span class="coursepath_percentage"><STRONG>' . $path_info['percentage'] . ' %</STRONG></span>'
                     . '</div>'
                     . '</div>'
                 . '</div>'
@@ -36,7 +36,7 @@
 
                 . '<div id="courses_link_' . $type . '_' . $id_path . '" class="coursepath_action">'
                 . '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' . $id_path . '\',\'' . $type . '\');">'
-                . '<span class="expand_path_info">' . Lang::t('_EXPAND', 'coursepath') . '</span> '
+                . '<span class="expand_path_info"><strong>' . Lang::t('_EXPAND', 'coursepath') . '</strong></span> '
                 . FormaLms\lib\Get::img('course/expand.png', Lang::t('_EXPAND', 'course'))
                 . '</a>'
                 . '</div>';
@@ -88,7 +88,7 @@
 
                 $course_access = Man_Course::canEnterCourse($accesso_control_info);
 
-                echo '<div class="coursepath_action"><span class="expand_path_info">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;' . Lang::t('_CURRENT_ACTIVITY', 'coursepath') . ' : </span>'
+                echo '<div class="coursepath_action"><span class="expand_path_info">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<strong>' . Lang::t('_CURRENT_ACTIVITY', 'coursepath') . ' :</strong></span>'
                             . ($course_access['can'] ? '<a class="std_link" href="index.php?modname=course&amp;op=aula&amp;idCourse=' . $course_info['idCourse'] . '">' : '')
                             . $course_info['name']
                             . ($course_access['can'] ? '</a>' : '')

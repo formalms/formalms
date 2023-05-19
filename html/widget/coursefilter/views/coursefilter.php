@@ -1,35 +1,39 @@
-<?php $str_search = Lang::t('_SEARCH', 'standard');
-$str_elearning = Lang::t('_COURSE_TYPE_ELEARNING', 'course');
-$str_classroom = Lang::t('_CLASSROOM_COURSE', 'cart');
-$str_all = Lang::t('_ALL_COURSE_TYPE', 'course');
+<?php
+$str_search = Lang::t("_SEARCH", 'standard');
+$str_elearning = Lang::t("_COURSE_TYPE_ELEARNING", 'course');
+$str_classroom = Lang::t("_CLASSROOM_COURSE", 'cart');
+$str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
+
+
+
 
 ?>
 
-<nav class="forma-quick-search-form filterBar quick_search_form navbar<?php echo isset($css_class) && $css_class != '' ? ' ' . $css_class : ''; ?>">
-    <?php //if ($common_options):?>
-        <div>
-            <?php echo $common_options; ?>
-        </div>
-    <?php //endif;?>
-
+<nav class="forma-quick-search-form filterBar quick_search_form navbar<?php echo isset($css_class) && $css_class != '' ? ' ' . $css_class : ''; ?>" aria-label="<?php Lang::t('_COURSE_SEARCH_BAR', 'menu_course') ?>">
+    <div>
+        <?php echo $common_options; ?>
+    </div>
     <div class="filterBar__legacyContainer">
-
-
-
-
-
         <div class="filterBar__advanced collapse navbar-collapse" id="filter-container">
             <div class="simple_search_box" id="<?php echo $id; ?>_simple_filter_options" style="display: block;">
 
 
                 <div class="filterBar__mainsearch navbar-form form-group">
+                    <fieldset>
+                        <legend for="course_search_filter_cat" class="screenreader"><?php echo Lang::t('_CATEGORY_SELECTED', 'course') ?></legend>
+                        <label class="screenreader" for="course_search_filter_cat"><?php echo Lang::t('_CATEGORY_SELECTED', 'course') ?></label>
+                        <?php echo $select_category ? $select_category : ''; ?>
 
-                    <?php echo $select_category ? $select_category : ''; ?>
-                    <?php echo $select_course_type ? $select_course_type : ''; ?>
-                    <?php echo $select_year ? $select_year : ''; ?>
+                        <legend for="course_search_filter_type" class="screenreader"><?php echo Lang::t('_COURSE_TYPE_SELECTION', 'course') ?></legend>
+                        <label class="screenreader" for="course_search_filter_type"><?php echo Lang::t('_COURSE_TYPE_SELECTION', 'course') ?></label>
+                        <?php echo $select_course_type ? $select_course_type : ''; ?>
 
-                    <?php echo isset($_label_list) ? $_label_list : ''; ?>
-                    
+                        <legend for="course_search_filter_year" class="screenreader"><?php echo Lang::t('_YEAR_SELECTION', 'course') ?></legend>
+                        <label class="screenreader" for="course_search_filter_year"><?php echo Lang::t('_YEAR_SELECTION', 'course') ?></label>
+                        <?php echo $select_year ? $select_year : ''; ?>
+
+                        <?php echo isset($_label_list) ? $_label_list : ''; ?>
+                    </fieldset>
                     <script>
                         var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>';
                         $(function(){
@@ -82,6 +86,9 @@ $str_all = Lang::t('_ALL_COURSE_TYPE', 'course');
 
 
                     <div class="filterBar__searchInput input-group">
+                        <label for="course_search_filter_text">
+                            <span class="screenreader"><?php echo Lang::t('_SEARCH_COURSE', 'menu_course'); ?></span>
+                        </label>
                         <?php echo Form::getInputTextfield('form-control', $id . '_filter_text', 'filter_text', $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . ' ' . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-default" id="<?php echo $id . '_filter_set2'; ?>"

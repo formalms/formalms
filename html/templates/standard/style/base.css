@@ -1824,7 +1824,6 @@ ul.tabs li.current{
 }
 
 /* FIX POPUP USER AREA */
-
 .container-feedback .container-feedback {
     position: initial;
     width: 100%;
@@ -1836,4 +1835,21 @@ ul.tabs li.current{
 #form_tabs{
     margin-top:-3%;
 }
+
+/* ADDED FOR SCREEN READER */
+.screenreader {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    width: 1px;
+    overflow: hidden;
+    position: absolute !important;
+    word-wrap: normal !important;
+    color: #000000;
+    background-color:#ffffff !important;
+}
+
+
 

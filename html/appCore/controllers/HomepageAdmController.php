@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2023 (Forma)
+ * Copyright (c) 2013-2022 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -25,7 +25,7 @@ class HomepageAdmController extends AdmController
 
     public function show()
     {
-        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+        if (!Docebo::user()->isAnonymous()) {
             self::redirect();
         }
 
@@ -152,7 +152,7 @@ class HomepageAdmController extends AdmController
 
     public function register()
     {
-        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+        if (!Docebo::user()->isAnonymous()) {
             self::redirect();
         }
         if (!$this->model->isSelfRegistrationActive()) {
@@ -192,7 +192,7 @@ class HomepageAdmController extends AdmController
 
     public function lostPwd()
     {
-        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+        if (!Docebo::user()->isAnonymous()) {
             self::redirect();
         }
 
@@ -269,7 +269,7 @@ class HomepageAdmController extends AdmController
         }
         $lostUsernameForm .= '</div>'
             . '<div class="col-xs-12 col-sm-2">'
-            . Form::getButton('lost_user_send', 'send', Lang::t('_SEND', 'register'), 'forma-button thin')
+            . Form::getButton('lost_user_send', 'send', Lang::t('_LOST_USERID_TITLE', 'register'), 'forma-button forma-button--info thin')
             . '</div>'
             . Form::closeForm();
 
@@ -291,7 +291,7 @@ class HomepageAdmController extends AdmController
         }
         $lostPwdForm .= '</div>'
             . '<div class="col-xs-12 col-sm-2">'
-            . Form::getButton('lost_pwd_send', 'send', Lang::t('_SEND', 'register'), 'forma-button thin')
+            . Form::getButton('lost_pwd_send', 'send', Lang::t('_SEND_LINK_RESET_PASSWORD', 'register'), 'forma-button forma-button--info thin')
             . '</div>'
             . Form::closeForm() .
             '</div>';
@@ -368,7 +368,7 @@ class HomepageAdmController extends AdmController
 
     public function signup()
     {
-        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+        if (!Docebo::user()->isAnonymous()) {
             self::redirect();
         }
         if (!$this->model->isSelfRegistrationActive()) {
@@ -380,7 +380,7 @@ class HomepageAdmController extends AdmController
 
     public function login()
     {
-        if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+        if (!Docebo::user()->isAnonymous()) {
             self::redirect();
         }
 
@@ -423,7 +423,7 @@ class HomepageAdmController extends AdmController
     {
         $msg = FormaLms\lib\Get::req('msg', DOTY_MIXED, null);
 
-        if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
+        if (Docebo::user()->isAnonymous()) {
             self::redirect();
         }
 
@@ -459,7 +459,7 @@ class HomepageAdmController extends AdmController
         $id_page = FormaLms\lib\Get::req('page', DOTY_INT, null);
 
         $params = [];
-        [$params['title'], $params['description']] = $this->model->getWebPage($id_page);
+        list($params['title'], $params['description']) = $this->model->getWebPage($id_page);
 
         $external_pages = $this->model->getExternalPages();
         $params['externalPages'] = [];
@@ -490,7 +490,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        if (\FormaLms\lib\FormaUser::getCurrentUser()->isLoggedIn() && $login_user != \FormaLms\lib\Forma::getAclManager()->relativeId(\FormaLms\lib\FormaUser::getCurrentUser()->getUserId())) {
+        if (Docebo::user()->isLoggedIn() && $login_user != Docebo::user()->getACLManager()->relativeId(Docebo::user()->userid)) {
             AuthenticationManager::logout();
             header('Location: ' . $_SERVER['REQUEST_URI']);
             exit;
@@ -510,7 +510,7 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user_manager = &\FormaLms\lib\Forma::getAclManager();
+        $user_manager = &Docebo::user()->getAclManager();
 
         if (!$login_idst) {
             $username = '/' . $login_user;
@@ -530,8 +530,8 @@ class HomepageAdmController extends AdmController
             self::redirect($redirection);
         }
 
-        $user = new \FormaLms\lib\FormaUser($username, 'public_area');
-        Lang::set($user->getUserPreference()->getLanguage());
+        $user = new DoceboUser($username, 'public_area');
+        Lang::set($user->preference->getLanguage());
 
         $redirection = [];
         switch ($this->model->saveUser($user)) {
