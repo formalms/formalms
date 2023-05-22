@@ -134,7 +134,7 @@ if (array_key_exists($requestedRoute, $templatesToRender)) {
     $render = 'home';
 }
 
-Layout::render($render, ['PageName'=>getPageName($req)]);
+Layout::render($render);
 // layout
 
 //// finalize TEST_COMPATIBILITA_PHP54
