@@ -29,52 +29,63 @@ class VersionChecker
     public const MIN_MARIADB_VERSION = '10.0';
     public const MAX_MARIADB_VERSION = '11.0';
 
-     /**
+
+    public static function configExists()
+    {
+        return $GLOBALS['configExists'] ?? false;
+    }
+
+    /**
      * Method to retrieve file version
      *
      * @return string
      */
-    public static function getFileVersion() : string {
+    public static function getFileVersion(): string
+    {
 
         return self::FILE_VERSION;
     }
 
-     /**
+    /**
      * Method to retrieve maturity
      *
      * @return string
      */
-    public static function getMaturity() : string {
+    public static function getMaturity(): string
+    {
 
         return self::MATURITY;
     }
 
-     /**
+    /**
      * Method to retrieve DB version
      *
      * @return string
      */
-    public static function getDbVersion() : string {
+    public static function getDbVersion(): string
+    {
 
         return self::DB_VERSION;
     }
 
-     /**
+    /**
      * Method to retrieve complete Froma version
      *
      * @return string
      */
-    public static function getCompleteVersion() : string {
+    public static function getCompleteVersion(): string
+    {
 
         return static::getDbVersion() . ' - ' . static::getMaturity();
     }
 
-     /**
+    /**
      * Method to retrieve php version
      *
      * @return string
      */
-    public static function getPhpVersion() : string {
+    public static function getPhpVersion(): string
+    {
 
         return phpversion();
     }
@@ -84,7 +95,8 @@ class VersionChecker
      *
      * @return array
      */
-    public static function matchPhpVersion() : array {
+    public static function matchPhpVersion(): array
+    {
 
         $result['match'] = true;
 
@@ -105,7 +117,8 @@ class VersionChecker
      *
      * @return string
      */
-    public static function getSqlClientVersionArray() : array {
+    public static function getSqlClientVersionArray(): array
+    {
         $sqlClientVersion = [];
         preg_match('/([0-9]+\.[\.0-9]+)/', sql_get_client_info(), $sqlClientVersion);
 
@@ -113,11 +126,12 @@ class VersionChecker
     }
 
     /**
-     * Method to get the sql client version 
+     * Method to get the sql client version
      *
      * @return string
      */
-    public static function getSqlClientVersion() : string {
+    public static function getSqlClientVersion(): string
+    {
 
         $sqlClientVersion = static::getSqlClientVersionArray();
         $version = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1];
@@ -125,24 +139,25 @@ class VersionChecker
         return $version;
     }
 
-     /**
+    /**
      * Method to get the sql server version in array
      *
      * @param ?string $external sql server version
      *
      * @return array
      */
-    public static function getSqlVersionArray(?string $external = null) : array {
-        
+    public static function getSqlVersionArray(?string $external = null): array
+    {
+
         $sqlServerVersion = [];
         $check = sql_get_server_info();
 
-        if($external) {
+        if ($external) {
             $check = $external;
         }
 
         try {
-        
+
             preg_match('/([0-9]+\.[\.0-9]+)/', $check, $sqlServerVersion);
         } catch (\Exception $exception) {
             $sqlServerVersion = [];
@@ -152,14 +167,15 @@ class VersionChecker
 
     }
 
-      /**
+    /**
      * Method to get the sql server version
      *
      * @param ?string $external sql server version
      *
      * @return bool
      */
-    public static function getSqlVersion(?string $external = null) : string {
+    public static function getSqlVersion(?string $external = null): string
+    {
 
         $sqlClientVersion = static::getSqlVersionArray($external);
         $version = empty($sqlClientVersion[1]) ? 'unknown' : $sqlClientVersion[1];
@@ -167,37 +183,39 @@ class VersionChecker
         return $version;
     }
 
-     /**
+    /**
      * Method to compare the sql server version
      *
      * @param string $sqlVersion sql server version
      *
      * @return bool
      */
-    public static function compareSqlVersion(string $sqlVersion) : bool {
+    public static function compareSqlVersion(string $sqlVersion): bool
+    {
 
         $result = false;
         $checkMysql = version_compare($sqlVersion, self::MIN_MYSQL_VERSION) >= 0 && version_compare($sqlVersion, self::MAX_MYSQL_VERSION) < 0;
         $checkMariaDB = version_compare($sqlVersion, self::MIN_MARIADB_VERSION) >= 0 && version_compare($sqlVersion, self::MAX_MARIADB_VERSION) < 0;
 
-        if($checkMysql || $checkMariaDB) {
+        if ($checkMysql || $checkMariaDB) {
             $result = true;
         }
 
         return $result;
     }
 
-     /**
+    /**
      * Method to compare the sql clientversion
      *
      * @param string $sqlClientVersion sql client version
      *
      * @return bool
      */
-    public static function compareSqlClientVersion(string $sqlClientVersion) : bool {
+    public static function compareSqlClientVersion(string $sqlClientVersion): bool
+    {
 
-        return (bool) (version_compare($sqlClientVersion, PHP_VERSION) >= 0);
-   
+        return (bool)(version_compare($sqlClientVersion, PHP_VERSION) >= 0);
+
     }
 
     /**
@@ -205,11 +223,12 @@ class VersionChecker
      *
      * @return bool
      */
-    public static function compareUpgradeVersion() : bool {
+    public static function compareUpgradeVersion(): bool
+    {
 
-       
-        return (bool) static::getUpgradeSupportedVersion() == 0 && static::getUpgradeFileVersion() <= 0;
-   
+
+        return (bool)static::getUpgradeSupportedVersion() == 0 && static::getUpgradeFileVersion() <= 0;
+
     }
 
     /**
@@ -217,10 +236,11 @@ class VersionChecker
      *
      * @return int
      */
-    public static function getUpgradeFileVersion() : int {
+    public static function getUpgradeFileVersion(): int
+    {
 
         return version_compare(static::getInstalledVersionArray()['coreVersion'], static::getFileVersion());
-   
+
     }
 
     /**
@@ -228,10 +248,11 @@ class VersionChecker
      *
      * @return int
      */
-    public static function getUpgradeSupportedVersion() : int {
+    public static function getUpgradeSupportedVersion(): int
+    {
 
         return version_compare(static::getInstalledVersionArray()['coreVersion'], self::MIN_SUPPORTED_VERSION);
-   
+
     }
 
     /**
@@ -239,10 +260,11 @@ class VersionChecker
      *
      * @return bool
      */
-    public static function comparePhpVersion() : bool {
+    public static function comparePhpVersion(): bool
+    {
 
-        return (bool) version_compare(PHP_VERSION, self::PHP_MIN_VERSION, '<') || version_compare(PHP_VERSION, self::PHP_MAX_VERSION, '>');
-   
+        return (bool)version_compare(PHP_VERSION, self::PHP_MIN_VERSION, '<') || version_compare(PHP_VERSION, self::PHP_MAX_VERSION, '>');
+
     }
 
     /**
@@ -250,75 +272,80 @@ class VersionChecker
      *
      * @return bool
      */
-    public static function checkTemplateversion($templateVersion) : bool {
+    public static function checkTemplateversion($templateVersion): bool
+    {
 
-        return (bool) (version_compare(self::MIN_TEMPLATE_VERSION, $templateVersion) <= 0);
+        return (bool)(version_compare(self::MIN_TEMPLATE_VERSION, $templateVersion) <= 0);
 
     }
 
-      /**
+    /**
      * Method to compare version installed with the one to install
      *
      * @return int
      */
-    public static function compareDbVersions($dbVersion) : int {
+    public static function compareDbVersions($dbVersion): int
+    {
 
         return version_compare(static::getDbVersion(), $dbVersion);
 
     }
 
-     /**
+    /**
      * Method to get minimum template version
      *
      * @return string
      */
-    public static function getMinimumTemplateVersion() : string {
+    public static function getMinimumTemplateVersion(): string
+    {
 
         return self::TEMPLATE_MIN_VERSION;
     }
 
 
-     /**
+    /**
      * Method to get installed version of Forma in array
      *
      * @return string
      */
-    public static function getInstalledVersionArray() :array{
+    public static function getInstalledVersionArray(): array
+    {
 
         \FormaLms\db\DbConn::getInstance();
         $row = sql_query("SELECT param_value FROM `core_setting` WHERE param_name='core_version'");
         list($version) = sql_fetch_row($row);
-      
-        $result['coreVersion'] = (string) $version;
+
+        $result['coreVersion'] = (string)$version;
         $lastMigration = trim(\FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('current'));
-        $arrayLastMigration = explode('\\',$lastMigration);
-      
+        $arrayLastMigration = explode('\\', $lastMigration);
+
         $result['subVersion'] = null;
         $result['maturity'] = static::getMaturity();
- 
+
         $versionCompare = version_compare($version, self::MIN_SUPPORTED_VERSION);
 
-        if( count($arrayLastMigration) > 1 && $versionCompare > 0) {
-             $nameLastMigration = end($arrayLastMigration);
-             $subVersion = static::getVersionFromFilename($nameLastMigration);
-             $result['coreVersion'] = static::getFileVersion();
-             $result['subVersion'] = $subVersion;
+        if (count($arrayLastMigration) > 1 && $versionCompare > 0) {
+            $nameLastMigration = end($arrayLastMigration);
+            $subVersion = static::getVersionFromFilename($nameLastMigration);
+            $result['coreVersion'] = static::getFileVersion();
+            $result['subVersion'] = $subVersion;
         }
 
         return $result;
-        
+
     }
 
-      /**
+    /**
      * Method to get installed version of Forma
      *
      * @return string
      */
-    public static function getInstalledVersion() :string{
+    public static function getInstalledVersion(): string
+    {
 
         $parts = static::getInstalledVersionArray();
-       
-        if($parts['subVersion']) {
+
+        if ($parts['subVersion']) {
             return implode(' - ', static::getInstalledVersionArray());
         } else {
             return $parts['coreVersion'];
@@ -326,48 +353,50 @@ class VersionChecker
     }
 
 
-    
-     /**
+    /**
      * Method to get file migration version of Forma
      *
      * @return string
      */
-    public static function getCurrentVersion() :string{
+    public static function getCurrentVersion(): string
+    {
 
         //the last line in folder
         $migrationDirectory = array_pop(\FormaLms\lib\Database\FormaMigrator::getInstance()->getConfiguration()->getMigrationDirectories());
-       
+
         $migrations = scandir($migrationDirectory, SCANDIR_SORT_DESCENDING);
         $lastMigration = $migrations[0];
 
 
         $version = static::getVersionFromFilename($lastMigration);
-      
-        return static::getFileVersion() . ' - ' . $version . ' - ' .self::getMaturity();
-        
+
+        return static::getFileVersion() . ' - ' . $version . ' - ' . self::getMaturity();
+
     }
 
-     /**
+    /**
      * Parse sub-versioning from migration file
      *
      * @return string
      */
 
-    public static function getVersionFromFilename(string $filename) :string{
+    public static function getVersionFromFilename(string $filename): string
+    {
 
-        return substr($filename, 9, 2) .'.'.substr($filename, 11, 2).'.'.substr($filename, 13, 2);
+        return substr($filename, 9, 2) . '.' . substr($filename, 11, 2) . '.' . substr($filename, 13, 2);
     }
 
-     /**
+    /**
      * Cehck if system must be updated
      *
      * @return bool
      */
-     public static function needsUpgrade() :bool{
+    public static function needsUpgrade(): bool
+    {
 
         $response = trim(\FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('uptodate'));
 
-        if(preg_match('/[OK]/', $response )) {
+        if (preg_match('/[OK]/', $response)) {
             return false;
         } else {
             return true;
@@ -375,7 +404,7 @@ class VersionChecker
 
     }
 
-     /**
+    /**
      * Method to compare version file and db version
      *
      *
@@ -383,36 +412,45 @@ class VersionChecker
      */
     public static function compareVersions()
     {
+
         $result = [];
 
-        //devo capire se la versione è supportata 
-        $compareMinVersion = static::getUpgradeSupportedVersion(); 
+        if (self::configExists()) {
 
-     
-        if (0 > $compareMinVersion) {
-            //not supported
-            $result['upgradeTrigger'] = 0;
-            $result['upgradeClass'] = 'err';
-            $result['upgradeResult'] = _NOT_SUPPORTED_VERSION;
-        } else {
-            $compareResult = VersionChecker::getUpgradeFileVersion();
-          
-            if (0 > $compareResult) {
-                //ok the upgrade is possible
-                $result['upgradeTrigger'] = 1;
-                $result['upgradeClass'] = 'ok';
-                $result['upgradeResult'] = _OK_UPGRADE;
-            } elseif (0 < $compareResult) {
-                //installed version is major than detected
+            //devo capire se la versione è supportata
+            $compareMinVersion = static::getUpgradeSupportedVersion();
+
+
+            if (0 > $compareMinVersion) {
+                //not supported
                 $result['upgradeTrigger'] = 0;
                 $result['upgradeClass'] = 'err';
-                $result['upgradeResult'] = _NO_DOWNGRADE;
+                $result['upgradeResult'] = _NOT_SUPPORTED_VERSION;
             } else {
-                //nothing to do
-                $result['upgradeTrigger'] = 0;
-                $result['upgradeClass'] = 'none';
-                $result['upgradeResult'] = _NO_UPGRADE;
+                $compareResult = VersionChecker::getUpgradeFileVersion();
+
+                if (0 > $compareResult) {
+                    //ok the upgrade is possible
+                    $result['upgradeTrigger'] = 1;
+                    $result['upgradeClass'] = 'ok';
+                    $result['upgradeResult'] = _OK_UPGRADE;
+                } elseif (0 < $compareResult) {
+                    //installed version is major than detected
+                    $result['upgradeTrigger'] = 0;
+                    $result['upgradeClass'] = 'err';
+                    $result['upgradeResult'] = _NO_DOWNGRADE;
+                } else {
+                    //nothing to do
+                    $result['upgradeTrigger'] = 0;
+                    $result['upgradeClass'] = 'none';
+                    $result['upgradeResult'] = _NO_UPGRADE;
+                }
             }
+        }
+        else {
+            $result['upgradeTrigger'] = 0;
+            $result['upgradeClass'] = 'none';
+            $result['upgradeResult'] = _NO_UPGRADE;
         }
 
         return $result;

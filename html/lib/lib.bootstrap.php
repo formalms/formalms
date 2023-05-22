@@ -170,6 +170,10 @@ class Boot
         $cfg = [];
         if (file_exists(dirname(__DIR__, 1). '/config.php')) {
             require dirname(__DIR__, 1). '/config.php';
+            $cfg['configExists'] = true;
+        }
+        else {
+            $cfg['configExists'] = false;
         }
 
         $GLOBALS['cfg'] = $cfg;
