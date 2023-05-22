@@ -71,7 +71,6 @@ if (!empty($GLOBALS['modname'])) {
 if (!empty($GLOBALS['req'])) {
     $requesthandler = new RequestHandler($GLOBALS['req'], 'lms');
     $requesthandler->run();
-    $GLOBALS['page_title'] = FormaLms\lib\Get::sett('page_title', '') . ' &rsaquo; ' . getPageName($GLOBALS['req']);
 } else {
     // load module body
     if (!empty($GLOBALS['modname'])) {

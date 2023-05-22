@@ -63,13 +63,16 @@ class Layout
         return $browser_code;
     }
 
-    public static function title()
+    public static function title($customTitle = null)
     {
-        if (isset($GLOBALS['page_title'])) {
-            return $GLOBALS['page_title'];
+        if (!empty($customTitle)){
+            $pageName = $customTitle;
+        }
+        else {
+            $pageName = getPageName();
         }
 
-        return FormaLms\lib\Get::sett('page_title', 'No title');
+        return FormaLms\lib\Get::sett('page_title', 'No title') . ' > ' . $pageName;
     }
 
     public static function description()
@@ -200,8 +203,7 @@ class Layout
             if ($pos == 0) {
                 $pos = 1;
             }
-            if ($server_query_string[
-                $pos - 1] === '&') {
+            if ($server_query_string[$pos - 1] === '&') {
                 $pos = $pos - 1;
             }
             $server_query_string = substr($server_query_string, 0, $pos);
@@ -495,9 +497,9 @@ class Layout
                     $partial_time_sec = TrackUser::getUserCurrentSessionCourseTime($sessionIdCourse);
                     $tot_time_sec += $partial_time_sec;
 
-                    $hours = (int) ($partial_time_sec / 3600);
-                    $minutes = (int) (($partial_time_sec % 3600) / 60);
-                    $seconds = (int) ($partial_time_sec % 60);
+                    $hours = (int)($partial_time_sec / 3600);
+                    $minutes = (int)(($partial_time_sec % 3600) / 60);
+                    $seconds = (int)($partial_time_sec % 60);
                     if ($minutes < 10) {
                         $minutes = '0' . $minutes;
                     }
@@ -506,9 +508,9 @@ class Layout
                     }
                     $partial_time = ($hours != 0 ? $hours . 'h ' : '') . $minutes . 'm '; //.$seconds.'s ';
 
-                    $hours = (int) ($tot_time_sec / 3600);
-                    $minutes = (int) (($tot_time_sec % 3600) / 60);
-                    $seconds = (int) ($tot_time_sec % 60);
+                    $hours = (int)($tot_time_sec / 3600);
+                    $minutes = (int)(($tot_time_sec % 3600) / 60);
+                    $seconds = (int)($tot_time_sec % 60);
                     if ($minutes < 10) {
                         $minutes = '0' . $minutes;
                     }
@@ -564,7 +566,7 @@ class Layout
                 $stats['course_stats']['materials'] = $total;
                 $stats['course_stats']['materials_complete'] = $tot_complete;
                 $stats['course_stats']['materials_incomplete'] = $tot_incomplete;
-            //$stats['course_stats']['materials_passed'] = $tot_passed;
+                //$stats['course_stats']['materials_passed'] = $tot_passed;
                 //$stats['course_stats']['materials_failed'] = $tot_failed;
             } else {
                 $show_progress = false;

@@ -114,7 +114,7 @@ class LmsModule
     public function getTitle()
     {
         //EFFECTS: return a string with the title for the current page
-        return $GLOBALS['page_title'] . ' - ' . $this->module_name;
+        return Layout::title() . ' > ' . $this->module_name;
     }
 
     public function loadHeader()

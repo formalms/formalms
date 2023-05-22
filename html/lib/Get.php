@@ -689,12 +689,6 @@ class Get
                     $GLOBALS['page']->add('<li><a href="#main_area_title">' . \Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
                 }
 
-                if ($title) {
-                    if (!defined('IS_AJAX')) {
-                        $GLOBALS['page_title'] = self::sett('page_title', '') . ' &rsaquo; ' . $title;
-                    }
-                }
-
                 // Init navigation
                 if (count($text_array) > 1) {
                     $html .= '<ul class="navigation">';
