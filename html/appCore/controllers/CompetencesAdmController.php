@@ -1014,7 +1014,7 @@ class CompetencesAdmController extends AdmController
             $acl_man = \FormaLms\lib\Forma::getAclManager();
             $user_selector = new UserSelector();
             $selection = $user_selector->getSelection($_POST);
-            $users_selected = &$acl_man->getAllUsersFromIdst($selection);
+            $users_selected = $acl_man->getAllUsersFromIdst($selection);
             $competence_users = $this->model->getCompetenceUsers($id_competence, true);
             $users_existent = array_keys($competence_users);
 

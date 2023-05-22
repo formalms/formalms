@@ -35,5 +35,4 @@ Events::listen('platform.upgrade', function ($event) {
     }
 
 
-    dd($event['upgrade_class']);
 });

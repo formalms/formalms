@@ -23,17 +23,19 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
       },
+           /*
       {
         test: /\.js$/,
         enforce: 'pre',
-        exclude: [/(node_modules)/, __dirname + '/' + 'src/scripts/vendors'],
-        use: [{
+        use: {
           loader: 'eslint-webpack-plugin',
           options: {
             configFile: './.eslintrc'
           }
-        }]
+        },
+        exclude: [/node_modules/, __dirname + '/' + 'src/scripts/vendors'],
       },
+      */
       {
         test: /\.js$/,
         exclude: [/node_modules/],

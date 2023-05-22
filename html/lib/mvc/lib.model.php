@@ -91,9 +91,9 @@ class Model
     }
 
 
-    public function sendAlert(array $users) : void{
+    public function sendAlert(array $users, array $courseInfo) : void{
 
-        $this->alertService->send($users);
+        $this->alertService->send($users, $courseInfo);
 
     }
 }

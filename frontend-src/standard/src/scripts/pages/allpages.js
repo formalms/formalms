@@ -19,6 +19,7 @@ import FormaTable from './../components/FormaTable';
 import ModalElement from './../components/Modal';
 import Axios from 'axios';
 import Select2 from 'select2';
+import Moment from 'moment';
 // import Chart from 'chart.js';
 import { Chart as ChartJS, registerables  } from 'chart.js';
 ChartJS.register(...registerables);
@@ -41,8 +42,10 @@ var Page = (function () {
     window.frontend.modules.Select2 = Select2;
     window.frontend.modules.Chart = ChartJS;
     window.frontend.modules.FormaTable = FormaTable;
-    window.frontend.modules.Modal = ModalElement;
+    window.frontend.modules.Modal = ModalElement; 
+    window.frontend.modules.Moment = Moment;
     window.frontend.helpers.Lang = Lang;
+   
     window.frontend.helpers.Axios = Axios;
 
     function setScroll(elem, action) {

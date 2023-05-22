@@ -509,6 +509,29 @@ class Util
 
         return $array;
     }
+
+
+    public static function config($path) : mixed{
+
+        if(!preg_match("/^[a-z0-9_.]+$/i", $path)) {
+            dd("error string");
+        }
+        
+        $pathParts = explode(".", $path);
+
+        $configFile = _base_."/config/" . array_shift($pathParts) . ".php";
+       
+        if(!file_exists($configFile)) {
+            dd("errorexists");
+        }
+        $configResult = include $configFile;
+     
+        foreach($pathParts as $index) {
+            $configResult = (is_array($configResult) && array_key_exists($index, $configResult)) ? $configResult[$index] : null;
+        }
+
+        return $configResult;
+    }
 }
 
 class UIFeedback

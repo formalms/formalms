@@ -207,6 +207,8 @@ class Lms_BlockWidget_menu extends Widget
 
     public function credits()
     {
+
+        require_once _lms_.'/lib/lib.course.php';
         //		$str = '<h2 class="heading">' . Lang::t ( '_CREDITS', 'catalogue' ) . '</h2>' . '<div class="content">';
         $str = '';
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/appLms/views/menu/js/lms_block_menu.js', true, true);

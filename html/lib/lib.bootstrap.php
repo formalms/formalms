@@ -34,9 +34,9 @@ class Boot
     private static bool $prettyRedirect;
 
     private static $_boot_seq = [
+        BOOT_UTILITY => 'utility',
         BOOT_PHP => 'checkPhpVersion',
         BOOT_CONFIG => 'config',
-        BOOT_UTILITY => 'utility',
         BOOT_REQUEST => 'request',
         BOOT_PLATFORM => 'checkPlatform',
         BOOT_SETTING => 'loadSetting',

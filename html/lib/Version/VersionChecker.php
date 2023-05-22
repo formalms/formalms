@@ -13,21 +13,40 @@
 
 namespace FormaLms\lib\Version;
 
+use FormaLms\lib\Helpers\HelperTool;
+
 class VersionChecker
 {
-    public const FILE_VERSION = '4.0.0';
-    public const MIN_TEMPLATE_VERSION = '4.0.0';
-    public const PHP_MIN_VERSION = '7.4.0';
-    public const PHP_MAX_VERSION = '8.1.99';
-    public const DB_VERSION = '4.0.0';
-    public const MATURITY = 'LTS';
-    public const MIN_SUPPORTED_VERSION = '3.3.3';
-    public const MIN_UPGRADE_VERSION = '4.0.0';
 
-    public const MIN_MYSQL_VERSION = '5.7';
-    public const MAX_MYSQL_VERSION = '8.1';
-    public const MIN_MARIADB_VERSION = '10.0';
-    public const MAX_MARIADB_VERSION = '11.0';
+    protected $fileVersion;
+    protected $maturity;
+    protected $dbVersion;
+    protected $phpMinVersion;
+    protected $phpMaxVersion;
+    protected $minMysqlVersion;
+    protected $maxMysqlVersion;
+    protected $minMariadbVersion;
+    protected $maxMariadbVersion;
+    protected $minSupportedVersion;
+    protected $minTemplateVersion;
+    protected $templateMinVersion;
+    protected $minUpgradeVersion;
+
+     /**
+     * Method to retrieve file version
+     *
+     * @return string
+     */
+    public function __construct() {
+
+        $versionConfigs = \Util::config('version');
+        foreach($versionConfigs as $configParam => $configValue) {
+            $property = HelperTool::snakeToCamelCase($configParam);
+            $this->$property = $configValue;
+        }
+        
+        
+    }
 
 
     public static function configExists()
@@ -43,7 +62,7 @@ class VersionChecker
     public static function getFileVersion(): string
     {
 
-        return self::FILE_VERSION;
+        return (new self)->fileVersion;
     }
 
     /**
@@ -54,7 +73,7 @@ class VersionChecker
     public static function getMaturity(): string
     {
 
-        return self::MATURITY;
+        return (new self)->maturity;
     }
 
     /**
@@ -65,7 +84,7 @@ class VersionChecker
     public static function getDbVersion(): string
     {
 
-        return self::DB_VERSION;
+        return (new self)->dbVersion;
     }
 
     /**
@@ -99,11 +118,11 @@ class VersionChecker
     {
 
         $result['match'] = true;
-
-        if (version_compare(PHP_VERSION, self::PHP_MIN_VERSION, '<')) {
+        $istance = new self;
+        if (version_compare(PHP_VERSION, $istance->phpMinVersion, '<')) {
             $result['message'] = 'err';
             $result['match'] = false;
-        } elseif (version_compare(PHP_VERSION, self::PHP_MAX_VERSION, '>')) {
+        } elseif (version_compare(PHP_VERSION, $istance->phpMaxVersion, '>')) {
             $result['message'] = 'warn';
         } else {
             $result['message'] = 'ok';
@@ -194,8 +213,9 @@ class VersionChecker
     {
 
         $result = false;
-        $checkMysql = version_compare($sqlVersion, self::MIN_MYSQL_VERSION) >= 0 && version_compare($sqlVersion, self::MAX_MYSQL_VERSION) < 0;
-        $checkMariaDB = version_compare($sqlVersion, self::MIN_MARIADB_VERSION) >= 0 && version_compare($sqlVersion, self::MAX_MARIADB_VERSION) < 0;
+        $istance = new self;
+        $checkMysql = version_compare($sqlVersion, $istance->minMysqlVersion) >= 0 && version_compare($sqlVersion, $istance->maxMysqlVersion) < 0;
+        $checkMariaDB = version_compare($sqlVersion, $istance->minMariadbVersion) >= 0 && version_compare($sqlVersion, $istance->maxMariadbVersion) < 0;
 
         if ($checkMysql || $checkMariaDB) {
             $result = true;
@@ -239,8 +259,8 @@ class VersionChecker
     public static function getUpgradeFileVersion(): int
     {
 
-        return version_compare(static::getInstalledVersionArray()['coreVersion'], static::getFileVersion());
-
+        return version_compare(static::getInstalledVersionArray()['subVersion'], static::getCurrentVersionArray()['subVersion']);
+   
     }
 
     /**
@@ -251,8 +271,8 @@ class VersionChecker
     public static function getUpgradeSupportedVersion(): int
     {
 
-        return version_compare(static::getInstalledVersionArray()['coreVersion'], self::MIN_SUPPORTED_VERSION);
-
+        return version_compare(static::getInstalledVersionArray()['coreVersion'], (new self)->minSupportedVersion);
+   
     }
 
     /**
@@ -265,6 +285,9 @@ class VersionChecker
 
         return (bool)version_compare(PHP_VERSION, self::PHP_MIN_VERSION, '<') || version_compare(PHP_VERSION, self::PHP_MAX_VERSION, '>');
 
+        $istance = new self;
+        return (bool) version_compare(PHP_VERSION, $istance->phpMinVersion, '<') || version_compare(PHP_VERSION, $istance->phpMaxVersion, '>');
+   
     }
 
     /**
@@ -275,7 +298,7 @@ class VersionChecker
     public static function checkTemplateversion($templateVersion): bool
     {
 
-        return (bool)(version_compare(self::MIN_TEMPLATE_VERSION, $templateVersion) <= 0);
+        return (bool) (version_compare((new self)->minTemplateVersion, $templateVersion) <= 0);
 
     }
 
@@ -299,7 +322,7 @@ class VersionChecker
     public static function getMinimumTemplateVersion(): string
     {
 
-        return self::TEMPLATE_MIN_VERSION;
+        return (new self)->templateMinVersion;
     }
 
 
@@ -308,21 +331,21 @@ class VersionChecker
      *
      * @return string
      */
-    public static function getInstalledVersionArray(): array
-    {
+    public static function getInstalledVersionArray() : array{
 
         \FormaLms\db\DbConn::getInstance();
         $row = sql_query("SELECT param_value FROM `core_setting` WHERE param_name='core_version'");
         list($version) = sql_fetch_row($row);
-
-        $result['coreVersion'] = (string)$version;
+        $result = [];
+      
+        $result['coreVersion'] = (string) $version;
         $lastMigration = trim(\FormaLms\lib\Database\FormaMigrator::getInstance()->executeCommand('current'));
         $arrayLastMigration = explode('\\', $lastMigration);
 
         $result['subVersion'] = null;
         $result['maturity'] = static::getMaturity();
-
-        $versionCompare = version_compare($version, self::MIN_SUPPORTED_VERSION);
+ 
+        $versionCompare = version_compare($version, (new self)->minSupportedVersion);
 
         if (count($arrayLastMigration) > 1 && $versionCompare > 0) {
             $nameLastMigration = end($arrayLastMigration);
@@ -340,13 +363,13 @@ class VersionChecker
      *
      * @return string
      */
-    public static function getInstalledVersion(): string
-    {
+    public static function getInstalledVersion() : string{
 
+        
         $parts = static::getInstalledVersionArray();
 
-        if ($parts['subVersion']) {
-            return implode(' - ', static::getInstalledVersionArray());
+        if($parts['subVersion']) {
+            return implode(' - ', $parts);
         } else {
             return $parts['coreVersion'];
         }
@@ -361,6 +384,24 @@ class VersionChecker
     public static function getCurrentVersion(): string
     {
 
+         
+        $parts = static::getCurrentVersionArray();
+    
+        if($parts['subVersion']) {
+            return implode(' - ', $parts);
+        } else {
+            return $parts['coreVersion'];
+        }
+        
+    }
+
+     /**
+     * Method to get file migration version of Forma array
+     *
+     * @return string
+     */
+    public static function getCurrentVersionArray() : array{
+
         //the last line in folder
         $migrationDirectory = array_pop(\FormaLms\lib\Database\FormaMigrator::getInstance()->getConfiguration()->getMigrationDirectories());
 
@@ -369,9 +410,9 @@ class VersionChecker
 
 
         $version = static::getVersionFromFilename($lastMigration);
-
-        return static::getFileVersion() . ' - ' . $version . ' - ' . self::getMaturity();
-
+      
+        return ['coreVersion' => static::getFileVersion() , 'subVersion' => $version , 'maturity' => self::getMaturity()];
+        
     }
 
     /**

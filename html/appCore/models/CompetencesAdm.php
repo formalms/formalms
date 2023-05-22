@@ -1943,4 +1943,67 @@ class CompetencesAdm extends Model
 
         return $output;
     }
+
+
+    public function getassociationView($id_competence, array $_new_users) : array{
+
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $name = $this->getCompetenceName($id_competence);
+        $back_url = 'index.php?r=' . $this->base_link_competence . '/show_users&id=' . (int) $id_competence;
+        //page_title
+        $page_title_arr = [
+            $back_url => Lang::t('_COMPETENCES', 'competences'),
+            $name,
+            Lang::t('_ASSIGN_USERS', 'competences'),
+        ];
+
+        require_once _base_ . '/lib/lib.table.php';
+        $table = new Table();
+
+        $head_label = [];
+        $head_style = [];
+
+        $head_label[] = Lang::t('_USERNAME', 'standard');
+        $head_label[] = Lang::t('_NAME');
+        $head_label[] = Lang::t('_SCORE', 'competences');
+
+        $head_style[] = '';
+        $head_style[] = '';
+        $head_style[] = 'img-cell';
+
+        $table->addHead($head_label, $head_style);
+
+        $user_model = new UsermanagementAdm();
+        $_user_data = $user_model->getUsersDetails($_new_users, true, true);
+
+        $_std_score = 0;
+        foreach ($_new_users as $id_user) {
+            if (isset($_user_data[$id_user]) && is_object($_user_data[$id_user])) {
+                $line = [];
+
+                $line[] = $acl_man->relativeId($_user_data[$id_user]->userid);
+                $line[] = $_user_data[$id_user]->lastname . ' ' . $_user_data[$id_user]->firstname;
+                $line[] = Form::getInputTextfield('textfield', 'assign_score_' . $id_user, 'assign_score[' . $id_user . ']', $_std_score, '', 255, '');
+
+                $table->addBody($line);
+            }
+        }
+
+        $foot = [];
+        $foot[] = ['label' => '<b>' . Lang::t('_TOTAL', 'standard') . ': ' . count($_new_users) . '</b>', 'colspan' => 2];
+        $foot[] = Form::getInputTextfield('textfield', '_score_', '_score_', $_std_score, '', 255, '') . '<br />'
+            . Form::getButton('set_score', false, Lang::t('_SET', 'standard'))
+            . Form::getButton('reset_score', false, Lang::t('_RESET', 'standard'));
+
+        $table->addFoot($foot);
+
+        return  [
+            'id_competence' => $id_competence,
+            'title' => $page_title_arr,
+            'table' => $table,
+            'score_std_value' => $_std_score,
+       
+        ];
+        
+    }
 }

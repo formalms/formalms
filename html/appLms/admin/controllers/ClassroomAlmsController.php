@@ -464,6 +464,7 @@ class ClassroomAlmsController extends AlmsController
 
     public function classroomDateDays()
     {
+      
         $postData = FormaLms\lib\Get::pReq('data', DOTY_MIXED, []);
         $removedDays = FormaLms\lib\Get::pReq('removedDays', DOTY_MIXED, []);
         $sendCalendar = (bool) FormaLms\lib\Get::pReq('sendCalendar', DOTY_BOOL, false);
@@ -489,6 +490,7 @@ class ClassroomAlmsController extends AlmsController
             return;
         }
 
+     
         $this->render('classroom-dates',
             [
                 'actions' => [

@@ -29,7 +29,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @return mixed the class istance
  */
-function &createModule($module_name, $class_name = null)
+function createModule($module_name, $class_name = null)
 {
     $module_name = preg_replace('/[^a-zA-Z0-9\-\_]+/', '', $module_name);
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -109,3 +109,5 @@ function checkIfPlugin($module_name)
 
     return $module_info;
 }
+
+

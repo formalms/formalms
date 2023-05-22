@@ -28,7 +28,7 @@ class AlertService
         return self::$instance;
     }
 
-    public function send($user_selected) {
+    public function send($user_selected, $course_info = []) {
 
         require_once _base_ . '/lib/lib.eventmanager.php';
         require_once _base_ . '/lib/calendar/CalendarManager.php';
@@ -60,15 +60,15 @@ class AlertService
             $msg_composer->setSubjectLangText('email', '_NEW_USER_SUBSCRIBED_SUBJECT', false);
             $msg_composer->setBodyLangText('email', '_NEW_USER_SUBSCRIBED_TEXT', $array_subst);
             $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
-
+            if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
+                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user_id, false);
+                $calendar = \CalendarManager::getCalendarDataContainerForDateDays((int) $course_info['id'], (int) $course_info['id_date'], (int) $uinfo[ACL_INFO_IDST]);
+                $msg_composer->setAttachments([$calendar->getFile()]);
+            }
             // send message to the user subscribed
             createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
 
-            if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
-                $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user_id, false);
-                $calendar = \CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $uinfo[ACL_INFO_IDST]);
-                $msg_composer->setAttachments([$calendar->getFile()]);
-            }
+           
         }
     }
 

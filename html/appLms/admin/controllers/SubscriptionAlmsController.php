@@ -243,7 +243,7 @@ class SubscriptionAlmsController extends AlmsController
         }
 
         $model = new SubscriptionAlms($id_course, $id_edition, $id_date);
-
+        $course_info = [];
         if (isset($_POST['okselector'])) {
             $_selection = $user_selector->getSelection($_POST);
             $acl_man = \FormaLms\lib\Forma::getAclManager();
@@ -373,8 +373,8 @@ class SubscriptionAlmsController extends AlmsController
                             $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
                             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
                             if (!empty($user_selected) && $send_alert) {
-
-                                $this->model->sendAlert(array_keys($user_selected));
+                                $course_info['id_date'] = $this->id_date;
+                                $this->model->sendAlert(array_keys($user_selected), $course_info);
                                
                                 
                             }
@@ -572,7 +572,8 @@ class SubscriptionAlmsController extends AlmsController
             $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
             if (!empty($user_selected) && $send_alert) {
-                $this->model->sendAlert(array_keys($user_selected));
+                $course_info['id_date'] = $this->id_date;
+                $this->model->sendAlert(array_keys($user_selected), $course_info);
             }
 
             $user_selected = [];
@@ -1062,7 +1063,8 @@ class SubscriptionAlmsController extends AlmsController
                 $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($id_user, false);
 
                 if ($send_alert) {
-                    $this->model->sendAlert([$id_user]);         
+                    $course_info['id_date'] = $this->id_date;
+                    $this->model->sendAlert([$id_user],$course_info);         
                 }
 
                 // Moderator notification
@@ -2036,14 +2038,16 @@ class SubscriptionAlmsController extends AlmsController
                 sl_unlink(_files_ . $path . $savefile);
 
                 sl_close_fileoperations();
-
-                if($sendAlert) {
-                    $this->model->sendAlert($user_subscribed);
-                }
-
+                
                 $course_info = $this->model->getCourseInfoForSubscription();
                 $course_name = ($course_info['code'] !== '' ? '[' . $course_info['code'] . '] ' : '') . $course_info['name'];
 
+                if($sendAlert) {
+                    $course_info['id_date'] = $this->id_date;
+                    $this->model->sendAlert($user_subscribed, $course_info);
+                }
+
+              
                 $params = [
                     'table' => $tb,
                     'id_course' => $this->id_course,

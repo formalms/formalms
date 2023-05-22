@@ -1,5 +1,8 @@
 <?php
 
+namespace FormaLms\lib\Helpers;
+
+use ReflectionClass;
 /*
  * FORMA - The E-Learning Suite
  *
@@ -51,4 +54,6 @@ class HelperTool
             return [$prop->getName() => $prop->getValue($obj)];
         }, $refl->getProperties()));
     }
+
+
 }
