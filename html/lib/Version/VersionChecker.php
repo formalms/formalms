@@ -51,7 +51,7 @@ class VersionChecker
 
     public static function configExists()
     {
-        return $GLOBALS['configExists'] ?? false;
+        return $GLOBALS['cfg']['configExists'] ?? false;
     }
 
     /**
@@ -282,8 +282,6 @@ class VersionChecker
      */
     public static function comparePhpVersion(): bool
     {
-
-        return (bool)version_compare(PHP_VERSION, self::PHP_MIN_VERSION, '<') || version_compare(PHP_VERSION, self::PHP_MAX_VERSION, '>');
 
         $istance = new self;
         return (bool) version_compare(PHP_VERSION, $istance->phpMinVersion, '<') || version_compare(PHP_VERSION, $istance->phpMaxVersion, '>');
