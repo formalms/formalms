@@ -369,7 +369,8 @@ class SubscriptionAlmsController extends AlmsController
                             $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
                             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
                             if (!empty($user_selected) && $send_alert) {
-                               $this->model->sendAlert(array_keys($user_selected));
+                                $course_info['id_date'] = $this->id_date;
+                                $this->model->sendAlert(array_keys($user_selected), $course_info,$send_alert);
                             }
                         }
 
@@ -566,15 +567,16 @@ class SubscriptionAlmsController extends AlmsController
             $send_alert = FormaLms\lib\Get::req('send_alert', DOTY_INT, 0);
             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
             if (!empty($user_selected) && $send_alert) {
-              $this->model->sendAlert(array_keys($user_selected));
+
+                $course_info['id_date'] = $this->id_date;
+                $this->model->sendAlert(array_keys($user_selected), $course_info,$send_alert);
             }
 
             $user_selected = [];
             if ($_POST['subs']) {
-                $subs = $_POST['subs'];
                 $subs = explode(',', $_POST['subs']);
                 foreach ($subs as $sub) {
-                    list($user_id, $level) = explode(':', $sub);
+                    [$user_id, $level] = explode(':', $sub);
                     $user_selected[$user] = $level;
 
                     // Moderator notification
@@ -1058,7 +1060,8 @@ class SubscriptionAlmsController extends AlmsController
 
                 if ($send_alert) {
 
-                    $this->model->sendAlert([$id_user]);
+                    $course_info['id_date'] = $this->id_date;
+                    $this->model->sendAlert([$id_user], $course_info,$send_alert);
                 }
 
                 // Moderator notification
@@ -2025,7 +2028,8 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 if($sendAlert) {
-                    $this->model->sendAlert($user_subscribed);
+                    $course_info['id_date'] = $this->id_date;
+                    $this->model->sendAlert($user_subscribed, $course_info,$sendAlert);
                 }
 
                 sl_open_fileoperations();
