@@ -17,7 +17,7 @@ class AlertService
 {
 
     private static $instance = null;
-    
+
     public static function getInstance()
     {
         if (self::$instance == null) {
@@ -28,8 +28,8 @@ class AlertService
         return self::$instance;
     }
 
-    public function send($user_selected, $course_info = []) {
-
+    public function send($user_selected, $course_info = [], $forceSendAlert = false)
+    {
         require_once _base_ . '/lib/lib.eventmanager.php';
         require_once _base_ . '/lib/calendar/CalendarManager.php';
         require_once _base_ . '/appCore/models/UsermanagementAdm.php';
@@ -62,13 +62,11 @@ class AlertService
             $msg_composer->setBodyLangText('sms', '_NEW_USER_SUBSCRIBED_TEXT_SMS', $array_subst);
             if ($course_info['sendCalendar'] && $course_info['course_type'] == 'classroom') {
                 $uinfo = \FormaLms\lib\Forma::getAclManager()->getUser($user_id, false);
-                $calendar = \CalendarManager::getCalendarDataContainerForDateDays((int) $course_info['id'], (int) $course_info['id_date'], (int) $uinfo[ACL_INFO_IDST]);
+                $calendar = \CalendarManager::getCalendarDataContainerForDateDays((int)$course_info['id'], (int)$course_info['id_date'], (int)$uinfo[ACL_INFO_IDST]);
                 $msg_composer->setAttachments([$calendar->getFile()]);
             }
             // send message to the user subscribed
-            createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $send_alert);
-
-           
+            createNewAlert('UserCourseInserted', 'subscribe', 'insert', '1', 'User subscribed', [$user_id], $msg_composer, $forceSendAlert);
         }
     }
 

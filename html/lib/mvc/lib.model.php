@@ -20,7 +20,7 @@ class Model
 
     protected \Symfony\Component\HttpFoundation\Session\Session $session;
 
-    protected \FormaLms\lib\Alert\AlertService $alertService; 
+    protected \FormaLms\lib\Alert\AlertService $alertService;
 
     public function __construct()
     {
@@ -56,13 +56,13 @@ class Model
             case 'DESC' :
             case 'yui-dt-desc' :
                 $dir = 'desc';
-             break;
+                break;
             case 'asc' :
             case 'ASC' :
             case 'yui-dt-asc' :
             default:
                 $dir = 'asc';
-             break;
+                break;
         }
 
         return $dir;
@@ -72,9 +72,9 @@ class Model
      * This method will check if the sort recived from the ajax request is valid checking it's value with a whitelist of possibile value.
      * If a dirty value is passed the default value will be returned or the first sortable_list if the default value is missing.
      *
-     * @param string $sort          the sort column
-     * @param array  $sortable_list the sort values whitelist
-     * @param string $default       the default sort direction
+     * @param string $sort the sort column
+     * @param array $sortable_list the sort values whitelist
+     * @param string $default the default sort direction
      *
      * @return string the cleaned sort value
      */
@@ -91,9 +91,8 @@ class Model
     }
 
 
-    public function sendAlert(array $users, array $courseInfo) : void{
-
-        $this->alertService->send($users, $courseInfo);
-
+    public function sendAlert(array $users, array $courseInfo, $forceSendAlert = false): void
+    {
+        $this->alertService->send($users, $courseInfo, $forceSendAlert);
     }
 }

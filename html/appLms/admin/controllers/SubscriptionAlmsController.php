@@ -374,9 +374,7 @@ class SubscriptionAlmsController extends AlmsController
                             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
                             if (!empty($user_selected) && $send_alert) {
                                 $course_info['id_date'] = $this->id_date;
-                                $this->model->sendAlert(array_keys($user_selected), $course_info);
-                               
-                                
+                                $this->model->sendAlert(array_keys($user_selected), $course_info,$send_alert);
                             }
                         }
 
@@ -573,7 +571,7 @@ class SubscriptionAlmsController extends AlmsController
             //basically we will consider the alert as a checkbox, the initial state of the checkbox will be setted according to the alert status
             if (!empty($user_selected) && $send_alert) {
                 $course_info['id_date'] = $this->id_date;
-                $this->model->sendAlert(array_keys($user_selected), $course_info);
+                $this->model->sendAlert(array_keys($user_selected), $course_info,$send_alert);
             }
 
             $user_selected = [];
@@ -1064,7 +1062,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 if ($send_alert) {
                     $course_info['id_date'] = $this->id_date;
-                    $this->model->sendAlert([$id_user],$course_info);         
+                    $this->model->sendAlert([$id_user],$course_info,$send_alert);
                 }
 
                 // Moderator notification
@@ -2044,7 +2042,7 @@ class SubscriptionAlmsController extends AlmsController
 
                 if($sendAlert) {
                     $course_info['id_date'] = $this->id_date;
-                    $this->model->sendAlert($user_subscribed, $course_info);
+                    $this->model->sendAlert($user_subscribed, $course_info,$sendAlert);
                 }
 
               
