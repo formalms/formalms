@@ -81,6 +81,14 @@ class MultiUserSelector
                                 'subFolderView' => 'competences',
                                 'additionalPaths' => [_adm_.'/views']
                                 ],
+        'role' => ['includes' => _adm_.'/models/FunctionalrolesAdm.php',
+                                'className' => 'FunctionalrolesAdm', 
+                                'returnType' => 'redirect'
+                                ],
+        'group' => ['includes' => _adm_.'/models/GroupmanagementAdm.php',
+                                'className' => 'GroupmanagementAdm', 
+                                'returnType' => 'redirect'
+                                ],
     ];
 
 
@@ -291,9 +299,40 @@ class MultiUserSelector
                     }
                 }
     
-                
-    
                 break;
+
+
+                case "role":
+                    $acl_man = \FormaLms\lib\Forma::getAclManager();
+
+        
+                    $members_existent = $this->accessModel->getMembers($instanceId);
+        
+                    //retrieve newly selected users
+                    $_common_members = array_intersect($members_existent, $selection);
+                    $_new_members = array_diff($selection, $_common_members); //new users to add
+                    $_old_members = array_diff($members_existent, $_common_members); //old users to delete
+                    unset($_common_members); //free some memory
+        
+                    //insert newly selected users in database
+                    $res1 = $this->accessModel->assignMembers($instanceId, $_new_members);
+                    $res2 = $this->accessModel->deleteMembers($instanceId, $_old_members);
+        
+                    $this->accessModel->enrole($instanceId, $_new_members);
+                
+                    //go back to main page, with result message
+                    $return['redirect'] = 'index.php?r=adm/functionalroles/man_users&id=' . $instanceId .'&res=' . ($res1 && $res2 ? 'ok_users' : 'err_users');
+
+                    break;
+
+                case 'group':
+        
+                    $res = $this->accessModel->saveGroupMembers($instanceId, $selection);
+                    $this->accessModel->enrole($instanceId, $selection);
+    
+                    $return['redirect'] = 'index.php?r=adm/groupmanagement/show_users&id='.$instanceId . ($res ? '&res=ok_assignuser' : '&res=err_assignuser');
+    
+                    break;
        }
 
        return $return;
@@ -370,6 +409,18 @@ class MultiUserSelector
 
                 $selection = $this->accessModel->getCompetenceUsers($instanceId);
     
+                break;
+
+            case 'role':
+                
+                $selection = $this->accessModel->getMembers($instanceId);
+
+                break;
+
+            case 'group':
+            
+                $selection = $this->accessModel->getGroupMembers($instanceId);
+
                 break;
             
             

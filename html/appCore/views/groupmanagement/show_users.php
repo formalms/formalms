@@ -50,12 +50,12 @@ $params = [
 
 if ($permissions['associate_user']) {
     $rel_action_over = '<a id="sel_users_over" class="ico-wt-sprite subs_add" '
-        . 'href="index.php?r=' . $this->link . '/assignmembers&id_group=' . (int) $id_group . '" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '">'
+        . 'href="index.php?r=adm/userselector/show&instance=group&id=' . (int) $id_group . '" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '">'
         . '<span>' . Lang::t('_ASSIGN_USERS', 'standard') . '</span></a>';
     $rel_action_over .= '<a id="import_group_link_2" class="ico-wt-sprite subs_import" href="index.php?r=adm/groupmanagement/importusers_step1&amp;id_group=' . (int) $id_group . '" title="' . Lang::t('_IMPORT', 'admin_directory') . '"><span>' . Lang::t('_IMPORT', 'admin_directory') . '</span></a>';
 
     $rel_action_bottom = '<a id="sel_users_bottom" class="ico-wt-sprite subs_add" '
-        . 'href="index.php?r=' . $this->link . '/assignmembers&id_group=' . (int) $id_group . '" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '">'
+        . 'href="index.php?r=adm/userselector/show&instance=group&id=' . (int) $id_group . '" title="' . Lang::t('_ASSIGN_USERS', 'standard') . '">'
         . '<span>' . Lang::t('_ASSIGN_USERS', 'standard') . '</span></a>';
     $rel_action_bottom .= '<a id="import_group_link_2" class="ico-wt-sprite subs_import" href="index.php?r=adm/groupmanagement/importusers_step1&amp;id_group=' . (int) $id_group . '" title="' . Lang::t('_IMPORT', 'admin_directory') . '"><span>' . Lang::t('_IMPORT', 'admin_directory') . '</span></a>';
 

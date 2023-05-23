@@ -1886,4 +1886,14 @@ class FunctionalrolesAdm extends Model
 
         return $output;
     }
+
+
+    public function enrole($roleId, $members) : bool{
+            // apply enroll rules
+            $enrollrules = new EnrollrulesAlms();
+            $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_FNCROLE', $members, false, $roleId);
+
+            return true;
+
+    }
 }

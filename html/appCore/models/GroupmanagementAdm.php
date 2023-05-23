@@ -543,7 +543,7 @@ class GroupmanagementAdm extends Model
         //write new members
         if (count($members) > 0) {
             $insert_list = [];
-            foreach ($members as $member) {
+            foreach (array_unique($members) as $member) {
                 if (is_numeric($member) && $member > 0 && $member != $idst) {
                     $insert_list[] = '(' . (int) $idst . ', ' . (int) $member . ')';
                 }
@@ -944,5 +944,14 @@ class GroupmanagementAdm extends Model
         Events::trigger('core.group_member.unassigned', ['id_group' => $id_group, 'users' => $users]);
 
         return $output;
+    }
+
+
+    public function enrole($id, $members) : bool {
+        // apply rules
+        $enrollrules = new EnrollrulesAlms();
+        $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', $members, false, $id);
+
+        return true;
     }
 }
