@@ -511,7 +511,7 @@ class Util
     }
 
 
-    public static function config($path) : mixed{
+    public static function config($path) {
 
         if(!preg_match("/^[a-z0-9_.]+$/i", $path)) {
             dd("error string");
