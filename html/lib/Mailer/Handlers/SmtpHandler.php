@@ -1,4 +1,5 @@
 <?php
+
 namespace FormaLms\lib\Mailer\Handlers;
 /*
  * FORMA - The E-Learning Suite
@@ -11,16 +12,18 @@ namespace FormaLms\lib\Mailer\Handlers;
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Helpers\HelperTool;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class SmtpHandler 
+class SmtpHandler
 {
     /**
      * @var string
      */
     protected $senderMailNotification;
 
-     /**
+    /**
      * @var string
      */
     protected $senderNameNotification;
@@ -30,12 +33,12 @@ class SmtpHandler
      */
     protected $senderMailSystem;
 
-     /**
+    /**
      * @var string
      */
     protected $senderNameSystem;
 
-     /**
+    /**
      * @var string
      */
     protected $helperDeskMail;
@@ -113,8 +116,8 @@ class SmtpHandler
 
     public function __construct($mailConfigId = null)
     {
-    
-        $this->mailConfigId = (int) $mailConfigId;
+
+        $this->mailConfigId = (int)$mailConfigId;
         $this->fetchData($mailConfigId);
     }
 
@@ -271,8 +274,8 @@ class SmtpHandler
      */
     public function getDebug()
     {
-     
-        return (int) $this->debug;
+
+        return (int)$this->debug;
     }
 
     public static function isEnabledDatabase()
@@ -296,25 +299,22 @@ class SmtpHandler
 
     private function fetchData(?int $mailConfigId)
     {
-        
+
         if (self::isEnabledDatabase()) {
 
-            
-            if($mailConfigId) {
-                $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId ="' . $mailConfigId .'"');
+
+            if ($mailConfigId) {
+                $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId ="' . $mailConfigId . '"');
             } else {
                 $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId = (SELECT id FROM %adm_mail_configs WHERE system = "1")');
             }
-            
-            $rows = sql_num_rows($query_res);
 
-            for ($i = 0; $i < $rows; ++$i) {
-            
-                    $row = sql_fetch_assoc($query_res);
-                    $property = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $row['type']))));
+            foreach ($query_res as $row) {
 
-                    $this->$property = $row['value'];
-                
+                $property = HelperTool::snakeToCamelCase($row['type']);
+
+                $this->$property = $row['value'];
+
             }
         } else {
             $this->useSmtp = \FormaLms\lib\Get::cfg('use_smtp');

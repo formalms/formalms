@@ -670,6 +670,13 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('UPDATE `core_reg_setting` SET `value` = "-" WHERE `region_id` = "england" AND `val_name` = "date_sep"');
 
 
+        $this->addSql("INSERT INTO `core_menu` ( `name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform`) VALUES('_MAIL_CONFIG', '', '1', TRUE, TRUE, 52, NULL, 'framework')");
+        $this->addSql("INSERT INTO `core_menu_under` (`idUnder`,`idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path` ) VALUES((select max(idMenu) FROM core_menu where name= '_MAIL_CONFIG'), (select max(idMenu) FROM core_menu where name= '_MAIL_CONFIG') ,'mailconfig','_MAIL_CONFIG',NULL,'view','framework',1,NULL,NULL,'adm/mailconfig/show')");
+
+
+        $this->addSql("INSERT INTO `core_menu` (`name`, `image`, `sequence`, `is_active`, `collapse`, `idParent`, `idPlugin`, `of_platform` ) VALUES('_DOMAIN_CONFIG', '', '1', TRUE, TRUE, 52, NULL, 'framework')");
+        $this->addSql("INSERT INTO `core_menu_under` (`idUnder`,`idMenu`, `module_name`, `default_name`, `default_op`, `associated_token`, `of_platform`, `sequence`, `class_file`, `class_name`, `mvc_path` ) VALUES((select max(idMenu) FROM core_menu where name= '_DOMAIN_CONFIG'),(select max(idMenu) FROM core_menu where name= '_DOMAIN_CONFIG'), 'domainconfig','_DOMAIN_CONFIG',NULL,'view','framework',1,NULL,NULL,'adm/domainconfig/show')");
+
         /** EX FOREIGN KEYS NOW INDEXES **/
     
         $this->addSql('CREATE INDEX dashboard_id_idx ON dashboard_block_config (dashboard_id)');
