@@ -3560,6 +3560,7 @@ VALUES
     'alms/communication/showCategories' 
     );
 ALTER TABLE `learning_communication_category_lang` ADD COLUMN `description` TEXT AFTER `translation`;
+
 CREATE TABLE IF NOT EXISTS learning_communication_lang (
     id_comm int,
     lang_code varchar(255),
@@ -3567,6 +3568,7 @@ CREATE TABLE IF NOT EXISTS learning_communication_lang (
     description text
 );
 
+ALTER TABLE `learning_courseuser` ADD INDEX `courseuser_course_idx` (`idCourse`);
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

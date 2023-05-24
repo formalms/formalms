@@ -1,0 +1,1 @@
+ALTER TABLE `learning_courseuser` ADD INDEX `courseuser_course_idx` (`idCourse`);
