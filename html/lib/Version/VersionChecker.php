@@ -29,7 +29,6 @@ class VersionChecker
     protected $maxMariadbVersion;
     protected $minSupportedVersion;
     protected $minTemplateVersion;
-    protected $templateMinVersion;
     protected $minUpgradeVersion;
 
      /**
@@ -320,7 +319,7 @@ class VersionChecker
     public static function getMinimumTemplateVersion(): string
     {
 
-        return (new self)->templateMinVersion;
+        return (new self)->minTemplateVersion;
     }
 
 
@@ -333,7 +332,7 @@ class VersionChecker
 
         \FormaLms\db\DbConn::getInstance();
         $row = sql_query("SELECT param_value FROM `core_setting` WHERE param_name='core_version'");
-        list($version) = sql_fetch_row($row);
+        [$version] = sql_fetch_row($row);
         $result = [];
       
         $result['coreVersion'] = (string) $version;
