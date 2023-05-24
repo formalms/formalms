@@ -667,7 +667,7 @@ function getPageName()
     $modName = FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '');
     $tab = FormaLms\lib\Get::req('mycourses_tab', DOTY_STRING, '');
     if (!empty($request)) {
-        $pageRef = str_replace('/', '_', $pageRef);
+        $pageRef = str_replace('/', '_', $request);
     } elseif (!empty($modName)) {
         $operation = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
 
@@ -676,6 +676,10 @@ function getPageName()
 
     if (!empty($tab)) {
         $pageRef = $tab;
+    }
+
+    if (empty($pageRef)) {
+        $pageRef = 'adm/homepage/show';
     }
 
     return Lang::t(strtoupper('_' . $pageRef), 'page_title');
