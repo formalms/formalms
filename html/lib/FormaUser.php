@@ -29,8 +29,6 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 require_once _base_ . '/lib/lib.acl.php';
 
-require_once _base_ . '/lib/Helpers/HelperTool.php';
-
 
 require_once _base_ . '/lib/lib.preference.php';
 

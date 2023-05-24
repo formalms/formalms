@@ -21,7 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @since 4.0
  */
-require_once(_lib_ . '/Helpers/HelperTool.php');
+use \FormaLms\lib\Helpers\HelperTool;
 
 class InstallAdm extends Model
 {
@@ -528,7 +528,7 @@ class InstallAdm extends Model
             include _base_ . '/config.php';
 
             foreach ($localCfg['dbConfig'] as $key => $value) {
-                $localCfg['dbConfig'][$key] = $cfg[HelperTool::camelCaseToSnake($key)];
+                $localCfg['dbConfig'][$key] = $cfg[HelperTool ::camelCaseToSnake($key)];
             }
         }
 
