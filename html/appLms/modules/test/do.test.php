@@ -31,7 +31,7 @@ function retriveTrack($id_reference, $id_test, $id_user, $do_not_create = false)
         } elseif ($do_not_create == false) {
             $id_track = Track_Test::createNewTrack($id_user, $id_test, $id_reference);
             if ($id_track) {
-                Track_Test::createTrack(
+                (new Track_Object($id_track))->createTrack(
                     $id_reference,
                     $id_track,
                     $id_user,
@@ -88,7 +88,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
     $prerequisite = $test_man->getPrerequisite();
 
     $group_test_man = new GroupTestManagement();
-    $tests_score = &$group_test_man->getTestsScores([$id_test], [\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()]);
+    $tests_score = $group_test_man->getTestsScores([$id_test], [\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()]);
 
     if ($test_info['time_dependent'] && $test_info['time_assigned']) {
         $minute_assigned = (int) ($test_info['time_assigned'] / 60);
@@ -933,12 +933,16 @@ function play($object_test, $id_param)
                 break;
         }
 
-        // Save question visualization sequence
-        sql_query('
-		INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_quest
+        $query = '
+		INSERT INTO %lms_testtrack_quest
 		(idTrack, idQuest, page) VALUES 
-		('" . (int) $id_track . "', '" . (int) $idQuest . "', '" . $page_to_display . "')");
+		("' . (int) $id_track . '", "' . (int) $idQuest . '", "' . $page_to_display . '")
+        ON DUPLICATE KEY UPDATE page = "' . $page_to_display . '"';
+    
+        // Save question visualization sequence
+        sql_query($query);
 
+   
         if (($type_quest != 'break_page') && ($type_quest != 'title')) {
             ++$quest_sequence_number;
         }
@@ -1142,7 +1146,8 @@ function showResult($object_test, $id_param)
     require_once _lms_ . '/lib/lib.test.php';
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-
+    $tests_score = [];
+    $score_status = '';
     $lang = FormaLanguage::createInstance('test');
     $id_test = $object_test->getId();
     $id_reference = getLoParam($id_param, 'idReference');
@@ -1314,7 +1319,7 @@ function showResult($object_test, $id_param)
             'idst' => \FormaLms\lib\FormaUser::getCurrentUser()->getIdst (),
             'acl' => \FormaLms\lib\Forma::getAclManager (),
             'lang' => $lang,
-            'test_score' => $tests_score[ $id_test ][ \FormaLms\lib\FormaUser::getCurrentUser()->getIdst () ][ 'comment' ],
+            'test_score' => count($tests_score) ? $tests_score[ $id_test ][ \FormaLms\lib\FormaUser::getCurrentUser()->getIdst () ][ 'comment' ] : 0,
             'date' => date ('Y-m-d H:i:s')
         ];
         Events::trigger('lms.test.complete', $event);  }

@@ -40,7 +40,7 @@ function addtest($object_test)
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
     if (!is_a($object_test, 'Learning_Test')) {
         \FormaLms\lib\Forma::addError($lang->def('_OPERATION_FAILURE'));
         Util::jump_to('' . $object_test->back_url . '&amp;create_result=0');
@@ -77,7 +77,7 @@ function instest()
 
     require_once \FormaLms\lib\Forma::inc(_lms_ . '/class.module/learning.test.php');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     if (trim($_REQUEST['title']) == '') {
         $_REQUEST['title'] = $lang->def('_NOTITLE');
@@ -111,7 +111,7 @@ function instest()
 function modtest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
     $id_test = importVar('idTest', true, 0);
@@ -150,7 +150,7 @@ function modtest()
 function uptest(Learning_Test $obj_test = null)
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $back_url = urldecode(importVar('back_url'));
     $url_encode = htmlentities(urlencode($back_url));
@@ -191,7 +191,7 @@ function uptest(Learning_Test $obj_test = null)
 function modtestgui($object_test)
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     YuiLib::load('table');
     Util::get_js(_lms_ . '/modules/quest_bank/ajax.quest_bank.js', true, true);
@@ -307,9 +307,12 @@ function modtestgui($object_test)
             $arrHead = [];
             array_push($arrHead, $lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_CATEGORY'), $lang->def('_QUESTION'));
             // Customfields head
+           
             foreach ($fields_mask as $field) {
                 array_push($arrHead, $field['name']);
-            }
+            } 
+          
+            
             array_push(
                 $arrHead,
                 $lang->def('_TEST_QUEST_ORDER'),
@@ -519,7 +522,7 @@ function modtestgui($object_test)
 function movequestion($direction)
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -558,7 +561,7 @@ function movequestion($direction)
 function movequest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -624,7 +627,7 @@ function fixQuestSequence()
 function fixPageSequence($id_test)
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     list($tot_quest) = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
@@ -656,10 +659,10 @@ function fixPageSequence($id_test)
         sequence > '" . (int) $ini_seq . "' AND sequence <= '" . (int) $tot_quest . "'");
 }
 
-function &istanceQuest($type_of_quest, $id)
+function istanceQuest($type_of_quest, $id)
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $re_quest = sql_query('
     SELECT type_file, type_class 
@@ -680,7 +683,7 @@ function &istanceQuest($type_of_quest, $id)
 function addquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
 
@@ -719,7 +722,7 @@ function addquest()
 function modquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
 
@@ -764,7 +767,7 @@ function delquest()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idQuest = importVar('idQuest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -820,7 +823,7 @@ function defmodality()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.json.php';
@@ -1177,7 +1180,7 @@ function updatemodality()
 
     require_once _base_ . '/lib/lib.json.php';
     $json = new Services_JSON();
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1257,7 +1260,7 @@ function deftime()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
 
@@ -1417,7 +1420,7 @@ function deftime()
 // XXX: updatetime
 function updatetime()
 {
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1453,7 +1456,7 @@ function modassigntime()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
@@ -1605,7 +1608,7 @@ function defpoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
 
@@ -1708,7 +1711,7 @@ function updatepoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1735,7 +1738,7 @@ function modassignpoint()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.table.php';
     require_once _base_ . '/lib/lib.form.php';
@@ -1940,7 +1943,7 @@ function modassignpoint()
 function importquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -1985,7 +1988,7 @@ function importquest()
 function doimportquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -2033,7 +2036,7 @@ function doimportquest()
 function exportquest()
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -2064,7 +2067,7 @@ function exportquest()
 function exportquestqb()
 {
     checkPerm('view', false, 'storage');
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -2119,7 +2122,7 @@ function doexportquestqb()
 {
     require_once _lms_ . '/lib/lib.quest_bank.php';
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
     $back_url = urldecode(importVar('back_url'));
     $back_coded = htmlentities(urlencode($back_url));
     $qb_man = new QuestBankMan();
@@ -2289,7 +2292,7 @@ function coursereportMan()
 {
     checkPerm('view', false, 'storage');
 
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.json.php';
@@ -2329,7 +2332,7 @@ function coursereportMan()
 
 function updatecoursereport()
 {
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     $idTest = importVar('idTest', true, 0);
     $back_url = urldecode(importVar('back_url'));
@@ -2466,7 +2469,7 @@ if (isset($_REQUEST['import_quest'])) {
 if (isset($_REQUEST['export_quest'])) {
     $GLOBALS['op'] = 'exportquest';
 }
-if ($_REQUEST['export_quest_select'] == 5) {
+if (array_key_exists('export_quest_select', $_REQUEST) && $_REQUEST['export_quest_select'] == 5) {
     $GLOBALS['op'] = 'exportquestqb';
 }
 

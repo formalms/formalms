@@ -669,15 +669,15 @@ class InlineChoice_Question extends Question
             if (isset($source['quest'][$this->id]) && ($source['quest'][$this->id] == $id_answer)) {
                 //answer checked by the user
                 $track_query = '
-				INSERT INTO ' . $GLOBALS['prefix_lms'] . "_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
+				INSERT INTO %lms_testtrack_answer ( idTrack, idQuest, idAnswer, score_assigned, more_info, user_answer, number_time )
 				VALUES (
-					'" . (int) $trackTest->idTrack . "',
-					'" . (int) $this->id . "', 
-					'" . (int) $id_answer . "', 
-					'" . ($is_correct ? $score_corr : -$score_incorr) . "', 
-					'',
+					"' . (int) $trackTest->idTrack . '",
+					"' . (int) $this->id . '", 
+					"' . (int) $id_answer . '", 
+					"' . ($is_correct ? $score_corr : -$score_incorr) . '", 
+					"",
 					1,
-					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
+					"' . (int) ($trackTest->getNumberOfAttempt() + 1) . '")';
             } elseif ($is_correct && ($score_incorr != 0)) {
                 //answer correct with penality but not checked by the user
                 $track_query = '

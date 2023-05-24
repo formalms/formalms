@@ -27,7 +27,7 @@ function additem($object_item)
 {
     //checkPerm( 'view', FALSE, 'storage' );
 
-    $lang = &FormaLanguage::createInstance('scorm', 'lms');
+    $lang = FormaLanguage::createInstance('scorm', 'lms');
     require_once \FormaLms\lib\Forma::inc(_lib_ . '/lib.form.php');
     $form = new Form();
 

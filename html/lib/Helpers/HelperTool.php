@@ -56,4 +56,27 @@ class HelperTool
     }
 
 
+    
+    public static function dropForeignKeyIfExistsQueryBuilder(string $foreignKey, string $table) : string{
+
+        return 'SET @dbname = DATABASE();
+        SET @index = "' . $foreignKey . '";
+        
+        SET @preparedStatement = (SELECT IF(
+          (
+            SELECT count(*) FROM information_schema.TABLE_CONSTRAINTS 
+          WHERE table_schema = @dbname AND CONSTRAINT_TYPE = "FOREIGN KEY"
+            AND constraint_name = @index
+          ) > 0,
+          "ALTER TABLE `' . $table . '`
+                DROP FOREIGN KEY `' . $foreignKey . '`",
+          "SELECT 1"
+            )
+        );
+        PREPARE dropForeignKeyIfExists FROM @preparedStatement;
+        EXECUTE dropForeignKeyIfExists;
+        DEALLOCATE PREPARE dropForeignKeyIfExists;';
+    }
+
+
 }

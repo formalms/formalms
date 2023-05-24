@@ -245,8 +245,7 @@ class VersionChecker
     public static function compareUpgradeVersion(): bool
     {
 
-
-        return (bool)static::getUpgradeSupportedVersion() == 0 && static::getUpgradeFileVersion() <= 0;
+        return (bool)static::getUpgradeSupportedVersion() >= 0 && static::getUpgradeFileVersion() <= 0;
 
     }
 
@@ -399,8 +398,9 @@ class VersionChecker
      */
     public static function getCurrentVersionArray() : array{
 
+        $directories = \FormaLms\lib\Database\FormaMigrator::getInstance()->getConfiguration()->getMigrationDirectories();
         //the last line in folder
-        $migrationDirectory = array_pop(\FormaLms\lib\Database\FormaMigrator::getInstance()->getConfiguration()->getMigrationDirectories());
+        $migrationDirectory = array_pop($directories);
 
         $migrations = scandir($migrationDirectory, SCANDIR_SORT_DESCENDING);
         $lastMigration = $migrations[0];
@@ -448,7 +448,7 @@ class VersionChecker
      *
      * @return array
      */
-    public static function compareVersions()
+    public static function compareVersions($install = true)
     {
 
         $result = [];
@@ -463,7 +463,10 @@ class VersionChecker
                 //not supported
                 $result['upgradeTrigger'] = 0;
                 $result['upgradeClass'] = 'err';
-                $result['upgradeResult'] = _NOT_SUPPORTED_VERSION;
+                if($install) {
+                    $result['upgradeResult'] = _NOT_SUPPORTED_VERSION;
+                }
+                
             } else {
                 $compareResult = VersionChecker::getUpgradeFileVersion();
 
@@ -471,24 +474,32 @@ class VersionChecker
                     //ok the upgrade is possible
                     $result['upgradeTrigger'] = 1;
                     $result['upgradeClass'] = 'ok';
-                    $result['upgradeResult'] = _OK_UPGRADE;
+                    if($install) {
+                        $result['upgradeResult'] = _OK_UPGRADE;
+                    }
                 } elseif (0 < $compareResult) {
                     //installed version is major than detected
                     $result['upgradeTrigger'] = 0;
                     $result['upgradeClass'] = 'err';
-                    $result['upgradeResult'] = _NO_DOWNGRADE;
+                    if($install) {
+                        $result['upgradeResult'] = _NO_DOWNGRADE;
+                    }
                 } else {
                     //nothing to do
                     $result['upgradeTrigger'] = 0;
                     $result['upgradeClass'] = 'none';
-                    $result['upgradeResult'] = _NO_UPGRADE;
+                    if($install) {
+                        $result['upgradeResult'] = _NO_UPGRADE;
+                    }
                 }
             }
         }
         else {
             $result['upgradeTrigger'] = 0;
             $result['upgradeClass'] = 'none';
-            $result['upgradeResult'] = _NO_UPGRADE;
+            if($install) {
+                $result['upgradeResult'] = _NO_UPGRADE;
+            }
         }
 
         return $result;

@@ -1118,7 +1118,7 @@ class CoursereportLmsController extends LmsController
 
         //is there more any edition ?
         if (sql_num_rows($res) > 0) {
-            $lang = &FormaLanguage::createInstance('stats', 'lms');
+            $lang = FormaLanguage::createInstance('stats', 'lms');
             $arr_editions[] = $lang->def('_FILTEREDITIONSELECTONEOPTION');
 
             //list of editions for the dropdown, in the format: "[code] name (date_begin - date_end)"
@@ -1205,7 +1205,7 @@ class CoursereportLmsController extends LmsController
 
         $studentName = FormaLms\lib\Get::gReq('studentName');
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $query_testreport = "
@@ -1268,7 +1268,7 @@ class CoursereportLmsController extends LmsController
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.coursereport.php');
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
         $query_testreport = "
@@ -1349,7 +1349,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_test = importVar('id_test', true, 0);
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
@@ -1636,7 +1636,7 @@ class CoursereportLmsController extends LmsController
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
 
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -1730,7 +1730,7 @@ class CoursereportLmsController extends LmsController
         $number_time = importVar('number_time', true, null);
         $delete = importVar('delete_track', false, null);
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
@@ -1857,7 +1857,7 @@ class CoursereportLmsController extends LmsController
         $delete = importVar('delete_track', false, null);
         $id_user = importVar('id_user', true, 0);
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
@@ -1891,7 +1891,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
 
@@ -2066,8 +2066,8 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         //$id_test = importVar('id_test', true, 0);
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
@@ -2121,7 +2121,7 @@ class CoursereportLmsController extends LmsController
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
         // XXX: Initializaing
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
 
         // XXX: Instance management
         $acl_man = \FormaLms\lib\Forma::getAclManager();
@@ -2250,8 +2250,8 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = FormaLms\lib\Get::req('id_report', DOTY_INT, 0);
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: undo
@@ -2472,8 +2472,8 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: undo
@@ -2597,8 +2597,8 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
@@ -2835,8 +2835,8 @@ class CoursereportLmsController extends LmsController
         // XXX: Initializaing
         $id_report = FormaLms\lib\Get::gReq('id_report', DOTY_MIXED, 0);
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
 
         // XXX: Instance management
@@ -2893,7 +2893,7 @@ class CoursereportLmsController extends LmsController
 
         // XXX: Initializaing
         $id_report = importVar('id_report', true, 0);
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
 
         // XXX: Instance management
         $report_man = new CourseReportManager();
@@ -2935,8 +2935,8 @@ class CoursereportLmsController extends LmsController
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.form.php');
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
-        $out = &$GLOBALS['page'];
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
+        $out = $GLOBALS['page'];
         $out->setWorkingZone('content');
         $included_test = [];
         $mod_perm = checkPerm('mod', true);
@@ -3408,7 +3408,7 @@ class CoursereportLmsController extends LmsController
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/appLms/views/coursereport/js/testquestion.js', true, true);
         Util::get_css(FormaLms\lib\Get::rel_path('base') . '/appLms/views/coursereport/css/testquestion.css', true, true);
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
 
         $idTest = importVar('id_test', true, 0);
 
@@ -3426,7 +3426,7 @@ class CoursereportLmsController extends LmsController
 
         $test_info = $test_man->getTestInfo([$idTest]);
 
-        $responseValue['title'] = $test_info[$idTest]['title'];
+        $responseValue['title'] = array_key_exists($idTest, $test_info) ? $test_info[$idTest]['title'] : '';
 
         $answersNew = [];
         $tracks = [];
@@ -3640,7 +3640,7 @@ class CoursereportLmsController extends LmsController
         require_once \FormaLms\lib\Forma::inc(_base_ . '/lib/lib.table.php');
         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.test.php');
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
 
         $out = &$GLOBALS['page'];
         $out->setWorkingZone('content');
@@ -3924,7 +3924,7 @@ class CoursereportLmsController extends LmsController
         $idUser = FormaLms\lib\Get::req('id_user', DOTY_INT, -1);
         $chartType = FormaLms\lib\Get::req('chart_type', DOTY_STRING, 'column');
 
-        $lang = &FormaLanguage::createInstance('coursereport', 'lms');
+        $lang = FormaLanguage::createInstance('coursereport', 'lms');
         $acl_man = \FormaLms\lib\Forma::getAclManager();
         $user_info = $acl_man->getUser($idUser, false);
         list($title) = sql_fetch_row(sql_query('SELECT title FROM %lms_test WHERE idTest=' . (int) $idTest));

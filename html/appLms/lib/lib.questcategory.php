@@ -35,7 +35,7 @@ class Questcategory
         return $categories;
     }
 
-    public function getTestQuestionsCategories($id_test)
+    public static function getTestQuestionsCategories($id_test)
     {
         if (!$id_test) {
             return false;

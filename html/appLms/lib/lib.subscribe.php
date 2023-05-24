@@ -1017,7 +1017,7 @@ class CourseSubscribe_Management
 
         $this->course_man = new Man_Course();
         $this->acl = \FormaLms\lib\Forma::getAclManager();;
-        $this->acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $this->acl_man = \FormaLms\lib\Forma::getAclManager();
         $this->db = \FormaLms\db\DbConn::getInstance();
     }
 

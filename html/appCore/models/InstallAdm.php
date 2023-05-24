@@ -69,7 +69,7 @@ class InstallAdm extends Model
         $this->debug = $debug;
 
         if(!$debug) {
-            ini_set("display_errors", false);
+           // ini_set("display_errors", false);
         }
         $this->fillSteps();
         $this->fillLabels();

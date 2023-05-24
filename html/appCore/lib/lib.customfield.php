@@ -1093,7 +1093,7 @@ class CustomFieldList
         }
 
         if (!sql_num_rows($re_fields)) {
-            return '';
+            return [];
         }
 
         $ret = [];

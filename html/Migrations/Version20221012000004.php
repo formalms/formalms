@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Formalms\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
+use FormaLms\lib\Helpers\HelperTool;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
@@ -33,16 +34,11 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('DROP TABLE IF EXISTS `conference_dimdim`');
 
         /** FOREIGN KEYS **/
-        $this->addSql('ALTER TABLE `core_lang_translation`
-                        DROP FOREIGN KEY `core_lang_translation_ibfk_1`');
-        $this->addSql('ALTER TABLE `core_lang_translation`
-                        DROP FOREIGN KEY `core_lang_translation_ibfk_2`');
-        $this->addSql('ALTER TABLE `core_role`
-                        DROP FOREIGN KEY `core_role_ibfk_1`');
-        $this->addSql('ALTER TABLE `core_role_members`
-                        DROP FOREIGN KEY `core_role_members_ibfk_1`');
-        $this->addSql('ALTER TABLE `dashboard_block_config`
-                        DROP FOREIGN KEY `config_layout_fk`');
+        $this->addSql(HelperTool::dropForeignKeyIfExistsQueryBuilder('core_lang_translation_ibfk_1', 'core_lang_translation'));
+        $this->addSql(HelperTool::dropForeignKeyIfExistsQueryBuilder('core_lang_translation_ibfk_2', 'core_lang_translation'));
+        $this->addSql(HelperTool::dropForeignKeyIfExistsQueryBuilder('core_role_ibfk_1', 'core_role'));
+        $this->addSql(HelperTool::dropForeignKeyIfExistsQueryBuilder('core_role_members_ibfk_1', 'core_role_members'));
+        $this->addSql(HelperTool::dropForeignKeyIfExistsQueryBuilder('config_layout_fk', 'dashboard_block_config'));
         /** FOREIGN KEYS **/                  
 
         $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
@@ -68,6 +64,7 @@ final class Version20221012000004 extends AbstractMigration
             type varchar(255),
             value varchar(255)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
         //////////$this up() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE conference_booking ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE room_id room_id INT NOT NULL, CHANGE platform platform VARCHAR(255) NOT NULL, CHANGE module module VARCHAR(100) NOT NULL, CHANGE user_idst user_idst INT NOT NULL, CHANGE approved approved TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE conference_menu ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE name name VARCHAR(255) NOT NULL, CHANGE image image VARCHAR(255) NOT NULL, CHANGE sequence sequence INT NOT NULL');
@@ -335,6 +332,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE dashboard_block_config CHANGE dashboard_id dashboard_id BIGINT DEFAULT NULL, CHANGE created_at created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE updated_at updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE dashboard_blocks CHANGE created_at created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE updated_at updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE dashboard_layouts CHANGE `default` `default` TINYINT(1) NOT NULL, CHANGE created_at created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE updated_at updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE dashboard_permission ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE learning_advice ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idCourse idCourse INT NOT NULL, CHANGE author author INT NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE important important TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE learning_adviceuser DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE learning_adviceuser ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idAdvice idAdvice INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE archivied archivied TINYINT(1) NOT NULL');
@@ -678,7 +676,7 @@ final class Version20221012000004 extends AbstractMigration
  
         /** FOREIGN KEYS **/    
         $this->addSql($this->convertCollation());
-       
+     
         $this->addSql('SET FOREIGN_KEY_CHECKS=1');
 
 

@@ -227,12 +227,12 @@
                         <ul class="link_list">
                             <li>
                                 <?php
-                                echo Lang::t('_VERSION', 'dashboard') . ': <b>' . $version['db_version'] . '</b>';
+                                echo Lang::t('_VERSION', 'dashboard') . ': <b>' . $installed_version . '</b>';
 
                                 // check for differences beetween files and database version
-                                if (version_compare($version['file_version'], $version['db_version']) != 0) {
+                                if ($upgrade_trigger) {
                                     echo '<br/>'
-                                        . 'Different from core file version:' . '<span class="red"><b>' . $version['file_version'] . '</b></span>'
+                                        . 'Different from core file version:' . '<br /><span class="red"><b>' . $current_version . '</b></span>'
                                         . '<br/>'
                                         . '<a href="../upgrade" class="red"><b>' . 'You need database upgrade' . '</b></a>';
                                 }
@@ -240,7 +240,7 @@
                                 if (FormaLms\lib\Get::sett('welcome_use_feed') == 'on') {
                                     if (!$version['online_version']) {
                                         $version = ['string' => '<b class="red">' . Lang::t('_UNKNOWN_RELEASE', 'dashboard') . '</b>'];
-                                    } elseif (version_compare($version['online_version'], $version['file_version']) == 1) {
+                                    } elseif (version_compare($version['online_version'], $file_version) == 1) {
                                         echo '<br/>'
                                             . '<a href="http://www.formalms.org/downloads/?versions" class="red">' . Lang::t('_NEW_RELEASE_AVAILABLE', 'dashboard') . ': <b>' . $version['online_version'] . '</b></a>';
                                     }
@@ -248,9 +248,7 @@
                                 ?>
                             </li>
                             <li><a href="../changelog.txt" target="_blank">Changelog</a></li>
-                            <li>
-                                <a href="index.php?r=adm/dbupgrades/show"><?php echo Lang::t('_DB_UPGRADES', 'dashboard'); ?></a>
-                            </li>
+                    
                             <li>
                                 <a id="quicklinks_diagnostic"
                                    href="ajax.adm_server.php?r=adm/dashboard/diagnostic_dialog">

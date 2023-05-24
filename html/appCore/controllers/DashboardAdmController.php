@@ -56,7 +56,6 @@ class DashboardAdmController extends AdmController
 
     public function show()
     {
-        //if (!checkPerm('view', true)) return;
 
         //YuiLib::load('tabview,charts');
         Util::get_js(FormaLms\lib\Get::rel_path('adm') . '/views/dashboard/dashboard.js', true, true);
@@ -85,7 +84,8 @@ class DashboardAdmController extends AdmController
 
         //load date script for user creation and editing mask
         Form::loadDatefieldScript();
-
+     
+   
         //render view
         $this->render('show', [
             'diagnostic_problem' => $problem,
@@ -93,7 +93,10 @@ class DashboardAdmController extends AdmController
 
             'can_approve' => checkPerm('approve_waiting_user', true, 'directory', 'framework'),
             'version' => $this->model->getVersionExternalInfo(),
-
+            'file_version' => \FormaLms\lib\Version\VersionChecker::getFileVersion(),
+            'current_version' => \FormaLms\lib\Version\VersionChecker::getCurrentVersion(),
+            'installed_version' => \FormaLms\lib\Version\VersionChecker::getInstalledVersion(),
+            'upgrade_trigger' => (bool) \FormaLms\lib\Version\VersionChecker::compareVersions(false)['upgradeTrigger'],
             'user_stats' => $this->model->getUsersStats(),
 
             'course_stats' => $this->model->getCoursesStats(),
