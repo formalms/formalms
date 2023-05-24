@@ -1105,6 +1105,8 @@ class InstallAdm extends Model
                     //} else {
                     //    $messages[] = _TEMPLATE_STEP_ERROR;
                     //}
+
+                    $this->generateLock();
                     recursiveRmdir(FormaLms\appCore\Template\TwigManager::getCacheDir());
                     $messages[] = _CLEARTWIG_CACHE_OK;
 

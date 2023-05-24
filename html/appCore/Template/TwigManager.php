@@ -129,6 +129,6 @@ class TwigManager
 
     public static function getCacheDir()
     {
-        return _files_ . '/cache/twig';
+        return _files_ . '/cache/twig/';
     }
 }
