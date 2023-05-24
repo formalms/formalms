@@ -128,7 +128,7 @@
     function collapseCourses(id_path, type){
         $("#courses_"+id_path).css("display", "none");
 
-        a = '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><strong><?php echo Lang::t('_EXPAND', 'coursepath'); ?></strong></span> <?php echo Get::img('course/expand.png', Lang::t('_EXPAND', 'coursepath')); ?></a>';
+        a = '<a class="no_decoration" href="javascript:;" onclick="expandCourses(\'' + id_path + '\',\'' + type + '\');"><span class="expand_path_info"><strong><?php echo Lang::t('_EXPAND', 'coursepath'); ?></strong></span> <?php echo FormaLms\lib\Get::img('course/expand.png', Lang::t('_EXPAND', 'coursepath')); ?></a>';
         
         $("#courses_link_" + type + "_" + id_path).html(a)
         
