@@ -42,9 +42,8 @@
                 $_select_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Docebo::user()->getIdst(), false), 0, 'title="'.Lang::t('_CATEGORY_SELECTED', 'course').'"');
                 $_select_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_select_category);
 
-                $_select_course_type = Form::getInputDropdown('', 'course_search_filter_type', 'filter_type', $_model->getFilterCourseType(), 0, 'title="'.Lang::t('_COURSE_TYPE_SELECTION', 'course').'"');
+                $_select_course_type = Form::getInputDropdown('', 'course_search_filter_type', 'filter_type', $_model->getFilterCourseType(), 'all', 'title="'.Lang::t('_COURSE_TYPE_SELECTION', 'course').'"');
                 $_select_course_type = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_select_course_type);
-
 
                 $_select_year = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, 'title="'.Lang::t('_YEAR_SELECTION', 'simplesel').'"');
                 $_select_year = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_select_year);

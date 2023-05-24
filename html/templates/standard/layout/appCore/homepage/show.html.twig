@@ -81,13 +81,13 @@
     </div>
 </div>
 <div class="homepage__row homepage__row--footer">
-    <nav class="homepage__links">
+    <div class="homepage__links">
         {% if externalPages is defined %}
             {% for externalPage in externalPages %}
                 <a href="{{ externalPage.link }}">{{ externalPage.title }}</a>
             {% endfor %}
         {% endif %}
-    </nav>
+    </div>
     <footer class="homepage__footer">
         {{ Layout_getZone('footer') }}
         {{ Layout_getCopyright() }}
