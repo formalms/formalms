@@ -749,6 +749,7 @@ class Choice_Question extends Question
     {
         $result = true;
 
+        $track_query = null;
         if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
             if (!$can_overwrite) {
                 return true;
@@ -777,7 +778,7 @@ class Choice_Question extends Question
 					'',
 					1,
 					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-                $result &= sql_query($track_query);
+             
             } elseif ($is_correct && ($score_incorr != 0)) {
                 //answer correct with penality but not checked by the user
                 $track_query = '
@@ -790,7 +791,7 @@ class Choice_Question extends Question
 					'',
 					0,
 					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-                $result &= sql_query($track_query);
+             
             } elseif (!$is_correct && ($score_corr != 0)) {
                 //answer correct with penality but not checked by the user
                 $track_query = '
@@ -803,7 +804,11 @@ class Choice_Question extends Question
 					'',
 					0,
 					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
-                $result &= sql_query($track_query);
+          
+            }
+
+            if($track_query) {
+                $result = sql_query($track_query);
             }
         }
 

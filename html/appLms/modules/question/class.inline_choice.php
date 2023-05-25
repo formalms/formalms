@@ -650,6 +650,7 @@ class InlineChoice_Question extends Question
     {
         $result = true;
 
+        $track_query = null;
         if ($this->userDoAnswer($trackTest->idTrack) && !$trackTest->getTestObj()->isRetainAnswersHistory()) {
             if (!$can_overwrite) {
                 return true;
@@ -704,7 +705,10 @@ class InlineChoice_Question extends Question
 					'" . (int) ($trackTest->getNumberOfAttempt() + 1) . "')";
             }
 
-            $result &= sql_query($track_query);
+            if($track_query) {
+                $result = sql_query($track_query);
+            }
+            
         }
 
         return $result;

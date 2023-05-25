@@ -65,6 +65,7 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         }
         if (isset($idCourse) && defined('LMS')) {
             $quota = $GLOBALS['course_descriptor']->getQuotaLimit();
+        
             $used = $GLOBALS['course_descriptor']->getUsedSpace();
 
             $totalSize = 0;

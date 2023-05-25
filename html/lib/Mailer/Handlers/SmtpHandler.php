@@ -309,13 +309,16 @@ class SmtpHandler
                 $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId = (SELECT id FROM %adm_mail_configs WHERE system = "1")');
             }
 
-            foreach ($query_res as $row) {
+            if(is_array($query_res)) {
+                foreach ($query_res as $row) {
 
-                $property = HelperTool::snakeToCamelCase($row['type']);
-
-                $this->$property = $row['value'];
-
+                    $property = HelperTool::snakeToCamelCase($row['type']);
+    
+                    $this->$property = $row['value'];
+    
+                }
             }
+            
         } else {
             $this->useSmtp = \FormaLms\lib\Get::cfg('use_smtp');
             $this->host = \FormaLms\lib\Get::cfg('smtp_host');

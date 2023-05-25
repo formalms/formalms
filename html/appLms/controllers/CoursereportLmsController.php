@@ -3496,11 +3496,7 @@ class CoursereportLmsController extends LmsController
                                 $answer_given += ($total_play - $i);
                             }
 
-                            if ($total_play > 0) {
-                                $percentage = ($answer_given / $total_play) * 100;
-                            } else {
-                                $percentage = 0;
-                            }
+                            $percentage = $total_play ? ($answer_given / $total_play) * 100 : 0;
 
                             $percentage = number_format($percentage, 2);
 
@@ -3534,7 +3530,7 @@ class CoursereportLmsController extends LmsController
                                 }
                             }
 
-                            $percentage = ($answer_correct / $total_play) * 100;
+                            $percentage = $total_play ? ($answer_correct / $total_play) * 100 : 0;
 
                             $percentage = number_format($percentage, 2);
 
@@ -3563,7 +3559,7 @@ class CoursereportLmsController extends LmsController
                                 }
                             }
 
-                            $percentage = ($answer_correct / $total_play) * 100;
+                            $percentage = $total_play ? ($answer_correct / $total_play) * 100 : 0;
                             //echo "risp corrette: " . $answer_correct . " totale: " . $total_play;
 
                             $percentage = number_format($percentage, 2);

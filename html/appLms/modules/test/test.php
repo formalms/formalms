@@ -1468,16 +1468,17 @@ function modassigntime()
     //save new time -------------------------------------------------
     if (isset($_REQUEST['saveandexit'])) {
         $re = sql_query('
-        UPDATE ' . $GLOBALS['prefix_lms'] . "_test
-        SET display_type = '1'
-        WHERE idTest = '$idTest'");
+        UPDATE %lms_test
+        SET display_type = "1"
+        WHERE idTest = "'.$idTest.'"');
         if ($re) {
-            while (list($idQuest, $difficult) = each($_REQUEST['new_difficult_quest'])) {
-                $re &= sql_query('
-                UPDATE ' . $GLOBALS['prefix_lms'] . "_testquest
-                SET difficult = '" . $difficult . "', 
-                    time_assigned = '" . $_REQUEST['new_time_quest'][$idQuest] . "'
-                WHERE idTest = '$idTest' AND idQuest = '" . (int) $idQuest . "'");
+
+            foreach($_REQUEST['new_difficult_quest'] as $idQuest => $difficult) {
+                $re = sql_query('
+                UPDATE %lms_testquest
+                SET difficult = "' . $difficult . '", 
+                    time_assigned = "' . $_REQUEST['new_time_quest'][$idQuest] . '"
+                WHERE idTest = "' . $idTest. '" AND idQuest = "' . (int) $idQuest  . '"');
             }
         }
         Util::jump_to('index.php?modname=test&op=modtestgui&idTest=' . $idTest . '&back_url=' . $url_coded . '&mod_operation=' . ($re ? 1 : 0));
