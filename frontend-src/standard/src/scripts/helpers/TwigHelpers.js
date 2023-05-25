@@ -19,9 +19,22 @@ Twig.extendFunction('Utils_getImage', function(path, iconName, defaultIcon) {
 });
 
 Twig.extendFunction('arrayContains', (array, idString, value) => {
-    const spliced = idString.split('_');
-    const found = array.filter((item) => spliced.indexOf(item) !== -1 && spliced.indexOf(item)+1 === Number(value) ? true : false );
-    return found.length ? true : false;
+
+    const find = (array, idString, value) => {
+        const spliced = idString.split('_');
+        const found = array.filter((item) => spliced.indexOf(item) !== -1 && spliced.indexOf(item)+1 === Number(value) ? true : false );
+        return found.length ? true : false;
+    }
+
+    if(Array.isArray(value)) {
+        let isFound = false;
+        value.forEach((valueItem) => {
+            if(!isFound)
+                isFound = find(array, idString, valueItem.value);
+        })
+        return isFound;
+    }
+    return find(array, idString, value);
 })
   
 Twig.extendFunction('getId', (str, position) => {

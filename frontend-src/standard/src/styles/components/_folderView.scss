@@ -235,6 +235,15 @@ input.folderView__action {
   -webkit-mask-image: url('images/folderView/icon-categorize.svg');
 }
 
+/*
+a.fv-is-delete {
+    display: inline-block;
+    margin-left: -1px;
+    border: none;
+    margin: 0;
+}
+*/
+
 .fv-is-delete:after {
   -webkit-mask-image: url('images/folderView/icon-delete.svg');
 }

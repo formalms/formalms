@@ -23,22 +23,22 @@
   --color-wrapper-text-50: hsla(0%, 0%, 18%, 0.057); // calcolato automaticamente, è una variante luminosità di --color-wrapper-text
 
   --color-icon-bg:hsla(27, 96%, 80%, 1.0);
-  --color-icon-text: rgb(51, 51, 51); // calcolato automaticamente
+  --color-icon-text: hsla(0, 0%, 20%, 1.0); // calcolato automaticamente
 
-  --color-heading: rgb(51, 51, 51); // calcolato automaticamente
+  --color-heading: hsla(0, 0%, 20%, 1.0); // calcolato automaticamente
 
-  --color-primary: #E73E1B ;
+  --color-primary: hsla(10, 81%, 51%, 1.0);
   --color-primary-text: hsla(0, 0%, 100%, 1.0); // automatico
-  --color-secondary: #ED6D05;
+  --color-secondary: hsla(27, 96%, 47%, 1.0);
   --color-secondary-text: hsla(0, 0%, 100%, 1.0); // automatico
-  --color-info: #3CAAD1;
-  --color-info-text: rgb(42, 42, 42); // automatico
-  --color-warning: rgb(245, 170, 49);
-  --color-warning-text: rgb(57, 57, 57); // automatico
-  --color-error: #E73E1B;
+  --color-info: hsla(196, 62%, 53%, 1.0);
+  --color-info-text: hsla(0, 0%, 16.5%, 1.0);// automatico
+  --color-warning: hsla(0, 0%, 16.5%, 1.0);
+  --color-warning-text: hsla(37, 90.7%, 57.6); // automatico
+  --color-error: 	hsla(10, 81%, 51%, 1.0);
   --color-error-text: hsla(0, 0%, 100%, 1.0); // automatico
-  --color-success: #1be73d;
+  --color-success: hsla(130, 81%, 51%, 1.0);
   --color-success-text: hsla(0, 0%, 100%, 1.0); // automatico
-  --color-action-button: #B2CE4F;
+  --color-action-button: 	hsla(73, 56%, 56%, 1.0);
   --color-action-button-text: hsla(0, 0%, 100%, 1.0); // automatico
 }

@@ -1,4 +1,3 @@
-
 <div data-comp="forma-plugin-ftmu" class="{% if not options.activeStatus %}no-active-gui{% endif %}">
     {% import _self as macros %}
     {% macro tree_links(data, dataB, disabled) %}
@@ -34,7 +33,9 @@
                                             data-opt="{{ el.id }}"
                                             id="{{ option.name }}"
                                             {% if arrayContains(dataB.extraData.formData, el.id, option.value) %} checked {% endif %}
-                                            {% if not arrayContains(dataB.extraData.formData, el.id, option.value) and not getId(el.id, option.value)%} checked {% endif %}
+                                            {% if 
+                                                not arrayContains(dataB.extraData.formData, el.id, action.options) 
+                                                and not getId(el.id, option.value) %} checked {% endif %}
                                             type="radio"
                                             value="{{ getId(el.id, option.value) }}">
                                         <label for="{{ option.name }}">{{ option.label }}</label>

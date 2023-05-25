@@ -262,7 +262,7 @@ class FolderTreeBase {
     if (this.currentElsIds) {
       const parentId = parseInt(target.getAttribute('data-id'));
       if (!this.currentElsIds.includes(parentId) && target.classList.contains('is-dropzone')) {
-        // this.reorderData(this.getApiUrl('move', { ids: this.currentElsIds, newParent: parentId }));
+        this.reorderData(this.getApiUrl('move', { ids: this.currentElsIds, newParent: parentId }));
       }
     }
   }
