@@ -66,4 +66,18 @@ class LmsMenuAlms extends Model
         return true;
     }
 
+
+    public function getAccessList(int $resourceId) : array {
+
+        return $this->getRoleMembers($resourceId);
+    }
+
+    public function setAccessList(int $resourceId, array $selection) : bool {
+
+        $oldSelection = $this->getRoleMembers((int) $resourceId);
+      
+        return $this->saveMembersAssociation($resourceId, $selection, $oldSelection);
+    }
+
+
 }

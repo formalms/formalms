@@ -62,14 +62,10 @@ class UserselectorAdmController extends AdmController
         }
         
 
-        if (array_key_exists('instance', $this->requestArray) && array_key_exists('id', $this->requestArray)) {
+        if (array_key_exists('instance', $this->requestArray)) {
             $instanceType = $this->requestArray['instance'];
-            $instanceId = (int) $this->requestArray['id'];
 
-
-            $this->multiUserSelector->injectAccessModel($instanceType);
-
-            $this->multiUserSelector->getAccessModel();
+            $this->multiUserSelector->setAccessProcessor($instanceType);
         }
 
         return $this;
@@ -82,11 +78,9 @@ class UserselectorAdmController extends AdmController
         $selectedData = [];
         $accessSelection = [];
 
-
-
         $disableAjax = array_key_exists('disable_ajax', $this->requestArray) ? true : false;
         $instanceValue = $this->requestArray['instance']; 
-        $instanceId = $this->requestArray['id']; 
+        $instanceId = array_key_exists('id', $this->requestArray) ?  $this->requestArray['id'] : 0;
         $showSelectAll = array_key_exists('showSelectAll', $this->requestArray) ? $this->requestArray['showSelectAll'] : false;
         $showUserAlert = array_key_exists('showUserAlert', $this->requestArray) ? $this->requestArray['showUserAlert'] : false;
         $clearSelection = array_key_exists('clearSelection', $this->requestArray) ? $this->requestArray['clearSelection'] : false;
@@ -94,9 +88,9 @@ class UserselectorAdmController extends AdmController
 
         if ($instanceValue) {
             if ($clearSelection) {
-                $this->multiUserSelector->setSessionData($instanceValue, []);
+                $this->multiUserSelector->getAccessProcessor()->setSessionData($instanceValue, []);
             }
-            $accessSelection = $this->multiUserSelector->getSessionData($instanceValue);
+            $accessSelection = $this->multiUserSelector->getAccessProcessor()->getSessionData($instanceValue);
             if ($instanceId) {
                 $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
             }
@@ -199,7 +193,7 @@ class UserselectorAdmController extends AdmController
             }
         }
 
-        $result = $this->multiUserSelector->associate($instanceType, $instanceId, $selection);
+        $result = $this->multiUserSelector->associate($instanceId, $selection);
 
         switch($result['type']) {
             case "redirect":

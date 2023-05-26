@@ -11,9 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class AdminmanagerAdm extends Model
+class AdminmanagerAdm extends Model implements Accessible
 {
     //TO DO: change these in 'protected' and update the controller
     public $idst_admin_group;
@@ -196,5 +198,15 @@ class AdminmanagerAdm extends Model
     public function saveClasslocationsAssociation($id_user, $classlocations_selected)
     {
         return $this->preference->saveAdminClasslocation($id_user, $classlocations_selected);
+    }
+
+    public function getAccessList(int $resourceId) : array{
+
+        return  $this->loadUserSelectorSelection($resourceId);
+    }
+
+    public function setAccessList(int $resourceId, array $selection) : bool{
+
+        return $this->saveUsersAssociation((int) $resourceId, $selection);
     }
 }

@@ -1,0 +1,97 @@
+<?php
+
+/*
+ * FORMA - The E-Learning Suite
+ *
+ * Copyright (c) 2013-2022 (Forma)
+ * https://www.formalms.org
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ *
+ * from docebo 4.0.5 CE 2008-2012 (c) docebo
+ * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
+ */
+
+return [
+    'processors' => [
+        'communication' => [
+            'includes' => _lms_ . '/admin/models/CommunicationAlms.php',
+            'className' => 'CommunicationAlms', 
+            'returnType' => 'redirect'
+        ],
+        'adminmanager' => [
+            'includes' => _adm_.'/models/AdminmanagerAdm.php',
+            'className' => 'AdminmanagerAdm',
+            'returnType' => 'redirect'
+        ],
+        'lmsmenu' => [
+            'includes' => _lms_ . '/admin/models/LmsMenuAlms.php',
+            'className' => 'LmsMenuAlms', 
+            'returnType' => 'redirect'
+        ],
+        'coursesubscription' => [
+            'includes' => 'FormaLms\lib\Services\Courses\\' ,
+            'className' => 'CourseSubscriptionService',
+            'returnType' => 'render',
+            'returnView' => 'level',
+            'subFolderView' => 'subscription',
+            'additionalPaths' => [_lms_.'/admin/views'],
+            'useNamespace' =>  true
+        ],
+        'multiplecoursesubscription' => [
+            'includes' => 'FormaLms\lib\Services\Courses\\' ,
+            'className' => 'CourseSubscriptionService',
+            'returnType' => 'render',
+            'returnView' => 'multiple_subscription_2',
+            'subFolderView' => 'subscription',
+            'additionalPaths' => [_lms_.'/admin/views'],
+            'useNamespace' =>  true
+        ],
+        'lmstab' => [
+            'includes' => _lms_ . '/lib/lib.middlearea.php',
+            'className' => 'Man_MiddleArea', 
+            'returnType' => 'redirect'
+        ],
+        'lmsblock' => [
+            'includes' => _lms_ . '/lib/lib.middlearea.php',
+            'className' => 'Man_MiddleArea', 
+            'returnType' => 'redirect'
+        ],
+        'dashboardsetting' => [
+            'includes' => _adm_.'/models/DashboardsettingsAdm.php',
+            'className' => 'DashboardsettingsAdm',
+            'returnType' => 'redirect'
+        ],
+        'rule' => [
+            'includes' => _lms_ . '/admin/models/EnrollrulesAlms.php',
+            'className' => 'EnrollRulesAlms', 
+            'returnType' => 'redirect'
+        ],
+        'aggregated_certificate' => [
+            'includes' => _lms_ . '/lib/lib.aggregated_certificate.php',
+            'className' => 'AggregatedCertificate', 
+            'returnType' => 'render', 
+            'returnView' => 'associationCreate',
+            'subFolderView' => 'aggregatedcertificate',
+            'additionalPaths' => [_lms_.'/admin/views']
+        ],
+        'competence' => [
+            'includes' => _adm_.'/models/CompetencesAdm.php',
+            'className' => 'CompetencesAdm', 
+            'returnType' => 'render', 
+            'returnView' => 'users_assign',
+            'subFolderView' => 'competences',
+            'additionalPaths' => [_adm_.'/views']
+        ],
+        'role' => [
+            'includes' => _adm_.'/models/FunctionalrolesAdm.php',
+            'className' => 'FunctionalrolesAdm', 
+            'returnType' => 'redirect'
+            ],
+        'group' => [
+            'includes' => _adm_.'/models/GroupmanagementAdm.php',
+            'className' => 'GroupmanagementAdm', 
+            'returnType' => 'redirect'
+            ],
+    ]
+    
+];

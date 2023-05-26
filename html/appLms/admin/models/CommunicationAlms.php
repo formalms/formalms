@@ -11,9 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class CommunicationAlms extends Model
+class CommunicationAlms extends Model implements Accessible
 {
     protected $db;
 
@@ -913,5 +915,16 @@ class CommunicationAlms extends Model
         }
 
         return $output;
+    }
+
+    public function getAccessList(int $resourceId) : array {
+
+        return $this->accessList($resourceId);
+    }
+
+    public function setAccessList(int $resourceId, array $selection) : bool {
+
+        $oldSelection = $this->getAccessList($resourceId);
+        return $this->updateAccessList($resourceId, $oldSelection, $selection);
     }
 }

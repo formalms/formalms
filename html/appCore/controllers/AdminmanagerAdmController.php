@@ -113,7 +113,8 @@ class AdminmanagerAdmController extends AdmController
         foreach ($array_group as $value) {
             $id_user = $value['id_user'];
 
-            $has_users = (is_array($users_info[$id_user]) && count($users_info[$id_user]) > 0);
+  
+            $has_users = (is_array($users_info) && array_key_exists($id_user, $users_info) && $users_info[$id_user]);
             $has_courses = (is_array($courses_info[$id_user]) && (
                 count($courses_info[$id_user]['course']) > 0 ||
                 count($courses_info[$id_user]['coursepath']) > 0 ||

@@ -1,8 +1,8 @@
 <?php
-namespace FormaLms\lib\Selectors;
+namespace FormaLms\lib\Interfaces;
 
 // Declare the interface 'DataSelector'
-interface DataSelectorInterface
+interface DataSelectable
 {
 
     public function getName();

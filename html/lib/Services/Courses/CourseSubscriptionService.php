@@ -6,10 +6,11 @@ namespace FormaLms\lib\Services\Courses;
 
 require_once _lms_.'/lib/lib.course.php';
 
-use FormaLms\lib\Forma;
 use FormaLms\lib\Get;
+use FormaLms\lib\Forma;
+use FormaLms\lib\Interfaces\Accessible;
 
-class CourseSubscriptionService
+class CourseSubscriptionService implements Accessible
 {
 
     protected $baseModel;
@@ -29,7 +30,7 @@ class CourseSubscriptionService
     public function __construct() {
 
         $this->baseModel = new \SubscriptionAlms();
-        $this->doceboUser = \FormaLms\lib\FormaUser::getCurrentUser();
+        $this->formaUser = \FormaLms\lib\FormaUser::getCurrentUser();
         $this->permissions = [
             'subscribe_course' => checkPerm('subscribe', true, 'course', 'lms'),
             'subscribe_coursepath' => checkPerm('subscribe', true, 'coursepath', 'lms'),
@@ -85,13 +86,13 @@ class CourseSubscriptionService
         $userAlredySubscribed = $this->baseModel->loadUserSelectorSelection();
         $userSelected = array_diff($userSelected, $userAlredySubscribed);
 
-        if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($this->formaUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $toSubscribe = count($userSelected);
 
             $adminPreference = new \AdminPreference();
-            $preference = $adminPreference->getAdminRules($this->doceboUser->getIdSt());
+            $preference = $adminPreference->getAdminRules($this->formaUser->getIdSt());
             if ($preference['admin_rules.limit_course_subscribe'] == 'on') {
-                $userPreference = new \UserPreferences($this->doceboUser->getIdSt());
+                $userPreference = new \UserPreferences($this->formaUser->getIdSt());
                 $subscribedCount = $userPreference->getPreference('user_subscribed_count');
                 if ($subscribedCount + $toSubscribe > $preference['admin_rules.max_course_subscribe']) {
                   
@@ -106,10 +107,10 @@ class CourseSubscriptionService
             }
         }
 
-        if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($this->formaUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             #require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new \AdminPreference();
-            $adminUsers = $adminManager->getAdminUsers($this->doceboUser->getIdST());
+            $adminUsers = $adminManager->getAdminUsers($this->formaUser->getIdST());
             $userSelected = array_intersect($userSelected, $adminUsers);
         }
 
@@ -144,10 +145,10 @@ class CourseSubscriptionService
                     //check if the subscriber is a sub admin and, if true check it's limitation
                     $canSubscribe = true;
                     $subscribeMethod = $courseInfo['subscribe_method'];
-                    if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                        $limitedSubscribe = $this->doceboUser->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
-                        $maxSubscribe = $this->doceboUser->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
-                        $directSubscribe = $this->doceboUser->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
+                    if ($this->formaUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                        $limitedSubscribe = $this->formaUser->getUserPreference()->getAdminPreference('admin_rules.limit_course_subscribe');
+                        $maxSubscribe = $this->formaUser->getUserPreference()->getAdminPreference('admin_rules.max_course_subscribe');
+                        $directSubscribe = $this->formaUser->getUserPreference()->getAdminPreference('admin_rules.direct_course_subscribe');
 
                         if ($limitedSubscribe == 'on') {
                             $limitedSubscribe = true;
@@ -201,7 +202,7 @@ class CourseSubscriptionService
                         $this->baseModel->db->commit();
 
                         // Save limit preference for admin
-                        if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+                        if ($this->formaUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
                             $toSubscribe = count($userSelected);
 
                             if ($preference['admin_rules.limit_course_subscribe'] == 'on') {
@@ -335,12 +336,12 @@ class CourseSubscriptionService
 
         if ($this->reachedMaxUserSubscribed) {
             $res = false;
-        } elseif ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        } elseif ($this->formaUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             $adminPreference = new \AdminPreference();
-            $preference = $adminPreference->getAdminRules($this->doceboUser->getIdSt());
+            $preference = $adminPreference->getAdminRules($this->formaUser->getIdSt());
      
             if ($preference['admin_rules.limit_course_subscribe'] == 'on') {
-                $userPreference = new \UserPreferences($this->doceboUser->getIdSt());
+                $userPreference = new \UserPreferences($this->formaUser->getIdSt());
                 $subscribedCount = $userPreference->getPreference('user_subscribed_count');
                 if ($subscribedCount >= $preference['admin_rules.max_course_subscribe']) {
                     // $this->permissions['subscribe_course']=false;
@@ -417,16 +418,16 @@ class CourseSubscriptionService
     }
 
 
-    public function checkSelection($selection, $params=[]) {
+    public function checkSelection($selection) {
         
 
         $userSelected = \FormaLms\lib\Forma::getAclManager()->getAllUsersFromSelection($selection); //$acl_man->getAllUsersFromIdst($_selection);
     
 
-        if ($this->doceboUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
+        if ($this->formaUser->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
             require_once _base_ . '/lib/lib.preference.php';
             $adminManager = new \AdminPreference();
-            $adminTree = $adminManager->getAdminTree($this->doceboUser->getIdST());
+            $adminTree = $adminManager->getAdminTree($this->formaUser->getIdST());
             $adminUsers = Forma::getAclManager()->getAllUsersFromIdst($adminTree);
 
             $userSelected = array_intersect($userSelected, $adminUsers);
@@ -475,6 +476,33 @@ class CourseSubscriptionService
             }
        
         return [];
+    }
+
+    public function getMultipleAccessList(int $resourceId) : array {
+
+        //handled by session
+        return [];
+    }
+
+    public function setMultipleAccessList($selection, $moreParams) : array {
+    
+        return ['params' =>  $this->multipleAdd($selection, $moreParams)];
+
+    }
+
+
+    public function getAccessList(int $resourceId) : array {
+
+        return [];
+    }
+
+    public function setAccessList(int $resourceId, array $selection) : bool {
+
+       // $oldSelection = $this->getRoleMembers((int) $resourceId);
+      //
+       // return $this->saveMembersAssociation($resourceId, $selection, $oldSelection);
+
+       return true;
     }
 
 }

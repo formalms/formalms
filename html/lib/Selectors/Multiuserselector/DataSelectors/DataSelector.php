@@ -1,7 +1,7 @@
 <?php
 namespace FormaLms\lib\Selectors\Multiuserselector\DataSelectors;
 
-use FormaLms\lib\Selectors\DataSelectorInterface;
+use FormaLms\lib\Interfaces\DataSelectable;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -14,7 +14,7 @@ require_once _base_ . '/lib/lib.json.php';
 require_once _base_ . '/i18n/lib.format.php';
 require_once _base_ . '/i18n/lib.lang.php';
 require_once _base_ . '/lib/layout/lib.layout.php';
-abstract class DataSelector implements DataSelectorInterface { 
+abstract class DataSelector implements DataSelectable { 
 
     protected $name;
 
