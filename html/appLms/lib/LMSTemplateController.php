@@ -92,7 +92,7 @@ final class LMSTemplateController extends TemplateController
     {
         // Temporary solution before helpdesk refactoring.
         $this->render('helpdesk_modal', 'helpdesk', [
-            'user' => $this->model->getUser(), 'userDetails' => $this->model->getUserDetails(), 'email' => $this->model->getHelpDeskEmail(), 'currentPage' => $this->model->getCurrentPage(), 'helpDeskEmail' => $this->model->getUserDetails()[ACL_INFO_EMAIL],
+            'user' => $this->model->getUser(), 'userDetails' => $this->model->getUserDetails(), 'email' => 'pippo@pippo.com'/*$this->model->getHelpDeskEmail()*/, 'currentPage' => $this->model->getCurrentPage(), 'helpDeskEmail' => $this->model->getUserDetails()[ACL_INFO_EMAIL],
         ]);
     }
 }

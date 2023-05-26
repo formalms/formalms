@@ -1,152 +1,137 @@
-<div id="inline">
-    <form id="contact" name="contact" action="#" method="post" enctype="multipart/form-data" tabindex="0">
-
-        <fieldset>
-            <legend>{{ Lang_translate('_CUSTOMER_HELP', 'customer_help') }}</legend>
-            <input type="hidden" id="sendto" name="sendto" class="txt" value="{{ Get_getSetting('customer_help_email') }}" readonly>
-            <input type="hidden" id="authentic_request_newsletter" name="authentic_request" value="{{ Util_getSignature() }}" />
-            <input type="hidden" id="username_2" name="username" class="txt" value="{{ user.getIdst() }}">
-            <input type="hidden" id="msg_ok" name="msg_ok" class="txt" value="Grazie. La tua richiesta di assistenza sar&agrave presa in carico.">
-            <input type="hidden" id="help_req_resolution" name="help_req_resolution">
-            <input type="hidden" id="help_req_flash_installed" name="help_req_flash_installed">
-            <div class="container container_helpdesk">
-                <div class="row mb-3">
-                    <div class="col-md-3" >
-                        <label for="username">{{ Lang_translate('_USER', 'standard') }}</label>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            <input class="form-control txt" type="text" title="{{ Lang_translate('_USER', 'standard') }}" id="username" name="username" value="{{ user.getUserid() }}" readonly>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="oggetto">{{ Lang_translate('_HELPDESK_SUBJ', 'configuration') }} *</label>
-                        <div id="div_err_obj"></div>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-file"></span></span>
-                            <input class="form-control txt" type="oggetto" id="oggetto" name="oggetto" placeholder="{{ Lang_translate('_HELPDESK_SUBJ_PLACEHOLDER', 'configuration') }}" title="{{ Lang_translate('_HELPDESK_SUBJ', 'configuration') }}" autofocus>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="email">{{ Lang_translate('_EMAIL', 'menu') }}</label>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input class="form-control" type="email" id="email" name="email"  value="{{ user.getEmail() }}" placeholder="" title="{{ Lang_translate('_EMAIL', 'menu') }}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="telefono">{{ Lang_translate('_PHONE', 'classroom') }}</label>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="input-group">
-                            <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
-                            <input class="form-control" type="text" id="telefono" name="telefono"  placeholder="" title="{{ Lang_translate('_PHONE', 'classroom') }}">
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="msg">{{ Lang_translate('_TEXTOF', 'menu') }} *</label>
-                        <div id="div_err_txt"></div>
-                    </div>
-                    <div class="col-md-9">
-                        <textarea id="msg" title="{{ Lang_translate('_TEXTOF', 'menu') }}" name="msg" class="textarea" cols='74' rows='7' placeholder="{{ Lang_translate('_WRITE_ASK_A_FRIEND', 'profile') }}"></textarea>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="send_cc">{{ Lang_translate('_SEND_CC', 'standard') }}</label>
-                    </div>
-                    <div class="col-md-9">
-                        <input id="send_cc" name="send_cc" checked data-toggle="toggle" data-on="{{ Lang_translate('_GROUP_FIELD_NORMAL', 'admin_directory') }}"
-                               data-size="small" data-off="{{ Lang_translate('_NO', 'standard') }}" data-onstyle="success"
-                               data-offstyle="danger" type="checkbox">
-
-                    </div>
-                </div>
-
-
-
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="priority">{{ Lang_translate('_PRIORITY', 'message') }}</label>
-                    </div>
-                    <div class="col-md-9">
-
-                        <input id="priorita" name="priorita" data-size="small" checked data-toggle="toggle" data-on="{{ Lang_translate('_NORMAL', 'message') }}"
-                               data-off="{{ Lang_translate('_HIGH', 'message') }}" data-onstyle="success" data-offstyle="danger"
-                               type="checkbox">
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <label for="disclaimer">{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}</label>
-                    </div>
-                    <div class="col-md-9">
-
-                        <input id="disclaimer" name="disclaimer"   type="checkbox" title="{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}">
-
-                        <p>{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER', 'customer_help') }}</p>
-
-                    </div>
-                </div>
-                <div class="row mb-3 row_helpdesk">
-                    <div class="col-md-6">
-                        <button id="close">{{ Lang_translate('_CANCEL') }}</button>
-
-                    </div>
-                    <div class="col-md-5" id="div_confirm">
-
-                        <button id="send"  disabled=true class="btn btn-primary" title="{{ Lang_translate('_CONFIRM') }}" >
-                            {{ Lang_translate('_CONFIRM') }}
+<div class="modal" tabindex="-1" role="dialog" id="modal_helpdesk">
+    <div class="modal-dialog" role="document">
+        <form id="contact" name="contact" action="#" method="post" tabindex="0">
+            <fieldset>
+                <legend class="screenreader">{{ Lang_translate('_CUSTOMER_HELP', 'customer_help') }}</legend>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ Lang_translate('_CUSTOMER_HELP', 'customer_help') }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
-
-
                     </div>
-                    <div class="col-md-1"><button id="return_on_focus"><span class="screenreader">Torna al primo input</span></button></div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12">
-                        <div  role="alert" id='warning_attach'></div>
+                    <div class="modal-body">
+                        {% if email %}
+                            <div class="container container_helpdesk ">
+                                <input type="hidden" id="sendto" name="sendto" class="txt" value="{{ Get_getSetting('customer_help_email') }}" readonly>
+                                <input type="hidden" id="authentic_request_helpdesk" name="authentic_request" value="{{ Util_getSignature() }}" />
+                                <input type="hidden" id="username_2" name="username" class="txt" value="{{ user.getIdst() }}">
+                                <input type="hidden" id="help_req_resolution" name="help_req_resolution">
+                                <div class="container container_helpdesk">
+                                    <div class="row mb-3">
+                                        <div class="col-md-3" >
+                                            <label for="username">{{ Lang_translate('_USER', 'standard') }}</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                                                <input class="form-control txt" type="text" title="{{ Lang_translate('_USER', 'standard') }}" id="username" name="username" value="{{ user.getUserid() }}" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="oggetto">{{ Lang_translate('_HELPDESK_SUBJ', 'configuration') }} *</label>
+                                            <div id="div_err_obj"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-file"></span></span>
+                                                <input class="form-control txt" type="oggetto" id="oggetto" name="oggetto" placeholder="{{ Lang_translate('_CUSTOMER_HELP_SUBJ_PLACEHOLDER', 'configuration') }}" title="{{ Lang_translate('_HELPDESK_SUBJ', 'configuration') }}" autofocus>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="email">{{ Lang_translate('_EMAIL', 'menu') }}</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                                                <input class="form-control" type="email" id="email" name="email"  value="{{ user.getEmail() }}" placeholder="" title="{{ Lang_translate('_EMAIL', 'menu') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="telefono">{{ Lang_translate('_PHONE', 'classroom') }}</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
+                                                <input class="form-control" type="text" id="telefono" name="telefono"  placeholder="" title="{{ Lang_translate('_PHONE', 'classroom') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="msg">{{ Lang_translate('_TEXTOF', 'menu') }} *</label>
+                                            <div id="div_err_msg"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <textarea class="form-control" id="msg" title="{{ Lang_translate('_TEXTOF', 'menu') }}" name="msg"  cols='74' rows='5' placeholder="{{ Lang_translate('_WRITE_ASK_A_FRIEND', 'profile') }}"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="send_cc">{{ Lang_translate('_SEND_CC', 'standard') }}</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input class="form-control" id="send_cc" name="send_cc" checked data-toggle="toggle" data-on="{{ Lang_translate('_GROUP_FIELD_NORMAL', 'admin_directory') }}"
+                                                   data-size="small" data-off="{{ Lang_translate('_NO', 'standard') }}" data-onstyle="success"
+                                                   data-offstyle="danger" type="checkbox">
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="priority">{{ Lang_translate('_PRIORITY', 'message') }}</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input class="form-control" id="priorita" name="priorita" data-size="small" checked data-toggle="toggle" data-on="{{ Lang_translate('_NORMAL', 'message') }}"
+                                                   data-off="{{ Lang_translate('_HIGH', 'message') }}" data-onstyle="success" data-offstyle="danger"
+                                                   type="checkbox">
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-3">
+                                            <label for="disclaimer">{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}</label>
+                                        </div>
+                                        <div class="col-md-6">
+
+                                            <input class="form-control" id="disclaimer" name="disclaimer"   type="checkbox" title="{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}">
+
+                                            <p>{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER', 'customer_help') }}</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div id="no_helpdesk">{{ Lang_translate('_NO_HELP_DESK', 'customer_help') }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row mb-3 row_helpdesk">
+                            <div class="col-md-5">
+                                <button class="form-control" id="close_request" data-dismiss="modal">
+                                    {{ Lang_translate('_CANCEL') }}
+                                </button>
+                            </div>
+                            <div class="col-md-5">
+                                <button class="form-control" id="send_request" >
+                                    {{ Lang_translate('_CONFIRM') }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-        </fieldset>
-
-    </form>
-
+            </fieldset>
+        </form>
+    </div>
 </div>
-<div id="inline_no_help">No Help Desk</div>
 
-<style>
-#inline_no_help {
-    display: none;
-    width: 100px;
-    height: 100px;
-}
-</style>
-
-<script>
-$('#navbar a[href*="modname=helpdesk&op=popup"]').fancybox({
-    href: '#{% if email %}inline{% else %}inline_no_help{% endif %}',
-    'autoSize': false,
-    'autowidth' : true,
-    'height' : 500,
-});
-$("#disclaimer").change(function() {
-    $("#send").attr("disabled", !$("#disclaimer").is(":checked"));
-});
-</script>

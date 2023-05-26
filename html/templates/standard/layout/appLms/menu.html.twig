@@ -17,7 +17,7 @@
             </li>
         {% else %}
             <li{% if ((currentPage.isMVC == true and item.mvc_path == currentPage.MVC) or (currentPage.isMVC == false and item.module_name == currentPage.modname and item.default_op == currentPage.op)) %} class="active"{% endif %}>
-                <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}"
+                <a href="{{ item.url }}" title="{{ Lang_translate(item.name, 'menu_over') }}" id="{{ item.name }}" name="{{ item.name }}"
                         {% if item.image %}role="button" aria-label="{{ Lang_translate('_HELPDESK', 'menu_over')}}" {% endif %}>
                         {% if item.image %}{{ item.image|raw }}{% else %}{{ Lang_translate(item.name, 'menu_over') }}{% endif %}
                 </a>
