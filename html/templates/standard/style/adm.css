@@ -28,6 +28,14 @@ html, body {}
   color: var(--color-primary) !important;
 }
 
+.reset_b:after {
+
+}
+
+.search_ b {
+
+}
+
 /*
  * SmartMenus jQuery v1.0.1
  * http://www.smartmenus.org/

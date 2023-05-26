@@ -115,16 +115,17 @@
   }
 
   a {
+    color: black;
     font-family: $font;
     transition: $transition-base;
     &:hover {
-      color: var(--color-navbtn-bg-inter);
+      color: var(--color-primary);
     }
   }
 
   &.is-selected {
     a {
-      color: var(--color-navbtn-bg-inter);
+      color: var(--color-primary);
       // background-color: var(--color-wrapper-text-50);
       font-weight: bold;
     }

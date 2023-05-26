@@ -179,6 +179,7 @@
 
 .section-coourse__progress {
   margin-bottom: 0;
+  position: relative;
   height: 25px;
   background: transparent;
   box-shadow: none;
@@ -203,6 +204,8 @@
   .glyphicon {
     margin: 5px 8px 0 0;
     cursor: pointer;
+    position: absolute;
+    right: 0;
   }
 }
 

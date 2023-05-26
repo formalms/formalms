@@ -72,10 +72,10 @@
                 <span class="forma-button__label">{{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
             </a>
         {% else %}
-            <a class="forma-button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
-                        <span class="forma-button__label">
-                            {{ Lang_translate('_NO_AVAILABLE_EDITIONS', 'catalogue') }}
-                        </span>
+            <a class="forma-button course-box__cta__button forma-button--disabled" href="javascript:void(0);" title="{{ course.name }}">
+                <span class="forma-button__label">
+                    {{ Lang_translate('_NO_AVAILABLE_EDITIONS', 'catalogue') }}
+                </span>
             </a>
         {% endif %}
     {% endif %}
