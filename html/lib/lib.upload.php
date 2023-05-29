@@ -348,7 +348,7 @@ function sl_fopen_ftp($file, $mode)
     $ftppath = FormaLms\lib\Get::cfg('ftppath') . _folder_files_;
     $ftpConn = $GLOBALS['ftpConn'];
     if (!file_exists(_files_ . $file)) {
-        if (!ftp_put($ftpConn, $ftppath . $file, dirname(__FILE__) . '/nullfile', FTP_BINARY)) {
+        if (!ftp_put($ftpConn, $ftppath . $file, __DIR__ . '/nullfile', FTP_BINARY)) {
             return false;
         } else {
             if (ftp_site($ftpConn, "CHMOD 0666 $ftppath" . "$file") === false) {

@@ -25,14 +25,14 @@ if (!Docebo::user()->isAnonymous()) {
         $back_coded = htmlentities(urlencode($object_glos->back_url));
         $search = urldecode(importVar('search'));
 
-        require_once dirname(__FILE__) . '/../../lib/lib.param.php';
+        require_once dirname(__DIR__,2) . '/lib/lib.param.php';
 
         require_once _base_ . '/lib/lib.form.php';
 
         $idReference = getLOParam($id_param, 'idReference');
         // NOTE: Track only if $idReference is present
         if ($idReference !== false) {
-            require_once dirname(__FILE__) . '/../../class.module/track.glossary.php';
+            require_once dirname(__DIR__,2) . '/class.module/track.glossary.php';
             list($exist, $idTrack) = Track_Glossary::getIdTrack($idReference, getLogUserId(), $idGlossary, true);
             if ($exist) {
                 $ti = new Track_Glossary($idTrack);

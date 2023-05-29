@@ -674,7 +674,7 @@ class CourseSubscribe_Manager
                 if (!empty($new_date_complete)) {
                     $this->updateUserDateCompleteInCourse($id_user, $id_course, $new_date_complete);
                 }
-                //require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
+                //require_once(_lms_.'/lib/lib.competences.php');
                 //$cman = new Competences_Manager();
                 $cmodel = new CompetencesAdm();
                 $list = is_array($id_user) ? $id_user : [(int) $id_user];
@@ -925,7 +925,7 @@ class CourseSubscribe_Manager
             if (!sql_num_rows($re)) {
                 /*
                 //add course's competences scores to user
-                require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
+                require_once(_lms_.'/lib/lib.competences.php');
                 $competences_man = new Competences_Manager();
                 $competences_man->AssignCourseCompetencesToUser($idCourse, $idUser);
                  */
@@ -961,7 +961,7 @@ class CourseSubscribe_Manager
 
             //add course's competences scores to user
             /*
-            require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
+            require_once(_lms_.'/lib/lib.competences.php');
             $competences_man = new Competences_Manager();
             $competences_man->AssignCourseCompetencesToUser($idCourse, $idUser);
             */

@@ -18,7 +18,7 @@ if ($_SERVER['REMOTE_ADDR'] != '127.0.0.1') {
 define('CORE', true);
 define('IN_FORMA', true);
 define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+require dirname(__DIR__) . '/base.php';
 
 // start buffer
 ob_start();

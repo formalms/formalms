@@ -14,7 +14,7 @@
 define('CORE', true);
 define('IN_FORMA', true);
 define('_deeppath_', '../');
-require dirname(__DIR__, 1) . '/base.php';
+require dirname(__DIR__) . '/base.php';
 
 // start buffer
 ob_start();

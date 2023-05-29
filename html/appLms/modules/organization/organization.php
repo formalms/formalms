@@ -43,7 +43,7 @@ $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->g
         FormaLms\lib\Get::req('op', DOTY_STRING, '') == 'org_categorize_sco'
     ) {
         $treeView->op = FormaLms\lib\Get::req('op', DOTY_STRING, '');
-        require_once dirname(__FILE__) . '/orgcategorize.php';
+        require_once __DIR__ . '/orgcategorize.php';
     }
 
     //echo $treeView->op;
@@ -60,7 +60,7 @@ $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->g
         case 'org_categorize':
         case 'org_opcategorize':
             // organization_rules( $treeView, $treeView->opContextId );
-            require_once dirname(__FILE__) . '/orgcategorize.php';
+            require_once __DIR__ . '/orgcategorize.php';
             organization_categorize($treeView, $treeView->opContextId);
             break;
         case 'org_select_sco':

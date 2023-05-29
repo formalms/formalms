@@ -14,7 +14,7 @@
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once _lms_ . '/lib/lib.course.php';
-require_once dirname(__FILE__) . '/class.report.php';
+require_once __DIR__ . '/class.report.php';
 
 define('_RA_CATEGORY_COURSES', 'courses');
 define('_RA_CATEGORY_COURSECATS', 'coursecategories');
@@ -1000,7 +1000,7 @@ class Report_Aggregate extends Report
     public function _get_coursecategories_query($type = 'html', $report_data = null, $other = '')
     {
         require_once _lms_ . '/lib/lib.course.php';
-        require_once dirname(__FILE__) . '/report_tableprinter.php';
+        require_once __DIR__ . '/report_tableprinter.php';
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);
@@ -1470,7 +1470,7 @@ class Report_Aggregate extends Report
     public function _get_time_query($type = 'html', $report_data = null, $other = '')
     {
         require_once _lms_ . '/lib/lib.course.php';
-        require_once dirname(__FILE__) . '/report_tableprinter.php';
+        require_once __DIR__ . '/report_tableprinter.php';
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);

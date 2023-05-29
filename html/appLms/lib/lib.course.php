@@ -316,7 +316,7 @@ class Man_Course
     public function saveCourseStatus()
     {/*
         require_once(_lms_.'/admin/modules/category/tree.category.php');
-        require_once($GLOBALS['where_framework'].'/lib/lib.sessionsave.php');
+        require_once(_adm_.'/lib/lib.sessionsave.php');
 
         $categoryDb = new TreeDb_CatDb($GLOBALS['prefix_lms'].'_category');
         $treeView = new TreeView_CatView($categoryDb, 'course_category', Lang::t('_CATEGORY', 'course', 'lms'));

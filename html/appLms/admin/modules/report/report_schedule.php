@@ -34,7 +34,7 @@ function schedule_recipients($idrep)
     require_once _adm_ . '/lib/lib.directory.php';
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _lms_ . '/lib/lib.report.php';
-    //require_once($GLOBALS['where_lms'].'/lib/lib.course.php');
+    //require_once(_lms_.'/lib/lib.course.php');
 
     $aclManager = new DoceboACLManager();
     $user_select = new UserSelector();

@@ -100,7 +100,7 @@ class ScsAdminModule
     {
         //global $op, $modname, $prefix;
 
-        include dirname(__FILE__) . '/../modules/' . $this->module_name . '/' . $this->module_name . '.php';
+        include dirname(__DIR__) . '/modules/' . $this->module_name . '/' . $this->module_name . '.php';
     }
 
     public function loadFooter()

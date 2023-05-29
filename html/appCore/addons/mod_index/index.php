@@ -17,7 +17,7 @@ define('CORE', true);
 define('POPUP', true);
 define('IN_FORMA', true);
 define('_deeppath_', '../../../');
-require dirname(__FILE__) . '/' . _deeppath_ . 'base.php';
+require __DIR__ . '/' . _deeppath_ . 'base.php';
 
 // Initialize
 require _base_ . '/lib/lib.bootstrap.php';

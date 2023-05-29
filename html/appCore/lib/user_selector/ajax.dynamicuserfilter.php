@@ -84,8 +84,8 @@ switch($op) {
                     switch ($id_type) {
                         // stadard core_user fields
                         case _STANDARD_FIELDS_PREFIX: {
-                            require_once($GLOBALS['where_framework'].'/modules/field/class.field.php');
-                            require_once($GLOBALS['where_framework'].'/modules/field/class.date.php');
+                            require_once(_adm_.'/modules/field/class.field.php');
+                            require_once(_adm_.'/modules/field/class.date.php');
 
                             switch ($id) {
                                 case 0: { //userid
@@ -175,8 +175,8 @@ switch($op) {
             switch ($id_type) {
 
                 case _STANDARD_FIELDS_PREFIX: {
-                    require_once($GLOBALS['where_framework'].'/modules/field/class.field.php');
-                    require_once($GLOBALS['where_framework'].'/modules/field/class.date.php');
+                    require_once(_adm_.'/modules/field/class.field.php');
+                    require_once(_adm_.'/modules/field/class.date.php');
 
                     switch ($id) {
                         case 0: { //userid

@@ -17,7 +17,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 define("LMS", true);
 define("IN_FORMA", true);
 define("_deeppath_", '../../../');
-//require(dirname(__FILE__).'/../base.php');
+//require(__DIR__.'/../base.php');
 
 // start buffer
 ob_start();

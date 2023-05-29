@@ -1369,7 +1369,7 @@ class AggregatedcertificateAlmsController extends AlmsController
     public function getCoursePathListTask()
     {
         echo $this->json->encode($this->aggCertLib->getCoursePathList());
-        /*  require_once($GLOBALS['where_lms'].'/lib/lib.coursepath.php');
+        /*  require_once(_lms_.'/lib/lib.coursepath.php');
 
           $coursepathMan = new CoursePath_Manager();
           echo $this->json->encode($coursepathMan->getCoursepathList());

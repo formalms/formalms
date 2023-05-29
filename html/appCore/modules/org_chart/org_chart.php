@@ -68,7 +68,7 @@ function assign_field($id_folder)
 function loadFormAction(&$tree, $op)
 {
     require_once _base_ . '/lib/lib.form.php';
-    require_once dirname(__FILE__) . '/tree.org_chart.php';
+    require_once __DIR__ . '/tree.org_chart.php';
 
     $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
 

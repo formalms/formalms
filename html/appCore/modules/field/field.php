@@ -34,7 +34,7 @@ function field_create($type_field, $back)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+    require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
 
     $quest_obj = new $type_class(0);
     $quest_obj->setUrl('index.php?modname=field&amp;op=manage&amp;fo=create');
@@ -54,7 +54,7 @@ function field_edit($type_field, $id_common, $back)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+    require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
 
     $quest_obj = new $type_class($id_common);
     $quest_obj->setUrl('index.php?modname=field&amp;op=manage&amp;fo=edit');
@@ -75,7 +75,7 @@ function field_del($type_field, $id_common, $back)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+    require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
 
     $quest_obj = new $type_class($id_common);
     $quest_obj->setUrl('index.php?modname=field&amp;op=manage&amp;fo=del');
@@ -93,7 +93,7 @@ function field_specialop($type_field, $id_common, $back)
     }
     list($type_file, $type_class) = sql_fetch_row($re_quest);
 
-    require_once Forma::inc($GLOBALS['where_framework'] . '/modules/field/' . $type_file);
+    require_once Forma::inc(_adm_ . '/modules/field/' . $type_file);
 
     $quest_obj = new $type_class($id_common);
     $quest_obj->setUrl('index.php?modname=field&amp;op=manage&amp;fo=special');

@@ -32,7 +32,8 @@ class Widget
         } else {
             $data_for_view = $data_for_view;
         }
-        include dirname(__FILE__) . '/' . $this->_widget . '/views/' . $view_name . '.php';
+        $filePath = __DIR__ . '/' . $this->_widget . '/views/' . $view_name . '.php';
+        include $filePath;
     }
 
     public function beginWidget()

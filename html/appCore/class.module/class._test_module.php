@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/class.definition.php';
+require_once __DIR__ . '/class.definition.php';
 
 class Module__Test_Module extends Module
 {

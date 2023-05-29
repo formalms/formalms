@@ -312,7 +312,7 @@ class DoceboConnectionManager
     public function add_connector($file)
     {
         require_once _adm_ . '/lib/connectors/lib.connector.php';
-        $directory = $GLOBALS['where_framework'] . '/lib/connectors';
+        $directory = _adm_ . '/lib/connectors';
         $scanned_directory = array_diff(scandir($directory), ['..', '.', 'index.htm', 'lib.connector.php']);
         if (!in_array($file, $scanned_directory)) {
             echo "Specified connector doesn't exist";
@@ -361,7 +361,7 @@ class DoceboConnectionManager
             return false;
         }
         require_once _adm_ . '/lib/connectors/lib.connector.php';
-        require_once Forma::inc($GLOBALS['where_framework'] . '/lib/connectors/' . $arr_conn[CONNMGR_CONNTYPE_FILE]);
+        require_once Forma::inc(_adm_ . '/lib/connectors/' . $arr_conn[CONNMGR_CONNTYPE_FILE]);
 
         return eval('return new ' . $arr_conn[CONNMGR_CONNTYPE_CLASS] . '(NULL);');
     }

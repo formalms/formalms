@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/certificate.base.php';
+require_once __DIR__ . '/certificate.base.php';
 
 class CertificateSubs_UserStat extends CertificateSubstitution
 {

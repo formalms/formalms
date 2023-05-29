@@ -2704,7 +2704,7 @@ class UserProfileViewer
     {
         return;
         /*
-        require_once($GLOBALS['where_framework'].'/lib/lib.myfiles.php');
+        require_once(_adm_.'/lib/lib.myfiles.php');
 
         $user_file = new MyFilesPolicy(	$this->_user_profile->getIdUser(),
                                         $this->getViewer(),

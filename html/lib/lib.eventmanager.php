@@ -201,7 +201,7 @@ class DoceboEventManager
         $arr_consumer = DoceboEventManager::listConsumerFromClassId($event->getClassId());
 
         foreach ($arr_consumer as $consumer_id => $consumer_param) {
-            require_once Forma::inc($GLOBALS['where_framework'] . $consumer_param[1]);
+            require_once Forma::inc(_adm_ . $consumer_param[1]);
 
             $consumer = eval('return new ' . $consumer_param[0] . '(' . $consumer_id . ');');
             $consumer->actionEvent($event);

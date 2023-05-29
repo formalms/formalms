@@ -237,7 +237,7 @@ class Scorm_Tracking
     }
 
     /*function readScormXMLTemplate( ) {
-        $filename = dirname(__FILE__) . '/scormItemTrackData-'.$this->scormVersion.'.xml';
+        $filename = __DIR__ . '/scormItemTrackData-'.$this->scormVersion.'.xml';
         $handle = @fopen($filename, 'r');
         if( $handle === FALSE ) {
             $this->setError( SPSCORM_E_FILENOTFOND, $filename );

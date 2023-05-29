@@ -61,7 +61,7 @@ switch ($op) {
         aout($output);
      break;
     case 'delquest':
-        //require_once($GLOBALS['where_framework'].'/lib/lib.json.php');
+        //require_once(_adm_.'/lib/lib.json.php');
 
         $id_quest = FormaLms\lib\Get::pReq('id_quest', DOTY_INT);
         $row_quest = FormaLms\lib\Get::pReq('row_quest', DOTY_ALPHANUM);
@@ -142,7 +142,7 @@ switch ($op) {
             ];
         }
 
-        //require_once($GLOBALS['where_framework'].'/lib/lib.json.php');
+        //require_once(_adm_.'/lib/lib.json.php');
 
         $json = new Services_JSON();
         $output = $json->encode($value);

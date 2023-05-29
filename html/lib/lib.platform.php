@@ -277,13 +277,13 @@ class PlatformManager
 
     public function &getPlatofmMenuInstanceFramework($platform)
     {
-        if ($GLOBALS['where_framework'] === false) {
+        if (_adm_ === false) {
             $false_var = false;
 
             return $false_var;
         }
 
-        if (!file_exists($GLOBALS['where_framework'] . '/class/' . $this->platform[$platform]['class_file_menu'])) {
+        if (!file_exists(_adm_ . '/class/' . $this->platform[$platform]['class_file_menu'])) {
             $false_var = false;
 
             return $false_var;

@@ -92,7 +92,7 @@ class FieldMapManager
             if ((is_array($val)) && (isset($val['class_path']))) {
                 $class_path = $val['class_path'];
             } else {
-                $class_path = $GLOBALS['where_framework'] . '/class/';
+                $class_path = _adm_ . '/class/';
             }
 
             if ((is_array($val)) && (isset($val['class_file']))) {

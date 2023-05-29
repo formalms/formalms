@@ -16,9 +16,9 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 require_once _lms_ . '/class.module/track.object.php';
 
 //if( version_compare(phpversion(), "5.0.0") == -1 ) {
-    define('_track_scorm_basepath', $GLOBALS['where_lms'] . '/modules/scorm/');
+    define('_track_scorm_basepath', _lms_ . '/modules/scorm/');
 //} else {
-//	define('_track_scorm_basepath',$GLOBALS['where_lms'].'/modules/scorm5/');
+//	define('_track_scorm_basepath',_lms_.'/modules/scorm5/');
 //}
 class Track_ScormOrg extends Track_Object
 {

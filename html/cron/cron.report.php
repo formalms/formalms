@@ -16,7 +16,7 @@ ob_start();
 const CORE = true;
 const IN_FORMA = true;
 const _deeppath_ = '../';
-require dirname(__DIR__, 1) . '/base.php';
+require dirname(__DIR__) . '/base.php';
 
 // start buffer
 use FormaLms\appCore\Template\Services\ClientService;

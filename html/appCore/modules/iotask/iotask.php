@@ -151,7 +151,7 @@ function ioTask_UIConnectorNew(&$module)
     $out->add($form->openElementSpace());
 
     // list all files in connectos directory
-    $dir = dir($GLOBALS['where_framework'] . '/lib/connectors');
+    $dir = dir(_adm_ . '/lib/connectors');
     while (false !== ($entry = $dir->read())) {
         if (substr($entry, 0, 10) == 'connector.') {
             if ($connMgr->get_connector_byfile($entry) == false) {

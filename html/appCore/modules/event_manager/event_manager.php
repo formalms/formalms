@@ -25,7 +25,7 @@ require_once _base_ . '/lib/lib.eventmanager.php';
 function event_manager_view($op)
 {
     checkPerm('view_event_manager');
-    //DoceboEventManager::registerEventConsumer(array('UserNew','UserMod'), 'DoceboUserNotifier', $GLOBALS['where_framework'].'/lib/lib.usernotifier.php');
+    //DoceboEventManager::registerEventConsumer(array('UserNew','UserMod'), 'DoceboUserNotifier', _adm_.'/lib/lib.usernotifier.php');
 
     require_once _base_ . '/lib/lib.table.php';
     //require_once(_i18n_.'/lib.lang.php');
@@ -307,7 +307,7 @@ function event_special_view($op)
                         break;
                     }
                     $idClass = sql_insert_id();
-                    DoceboEventManager::registerEventConsumer([$arr_class[$key]], 'DoceboUserNotifier', $GLOBALS['where_framework'] . '/lib/lib.usernotifier.php');
+                    DoceboEventManager::registerEventConsumer([$arr_class[$key]], 'DoceboUserNotifier', _adm_ . '/lib/lib.usernotifier.php');
 
                     $result1 = sql_query('INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event_manager '
                                             . ' (idClass,recipients,show_level) VALUES '

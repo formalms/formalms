@@ -22,7 +22,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  * @copyright 2004
  **/
 
-//include_once( $GLOBALS['where_lms'] . '/config.php' );
+//include_once( _lms_ . '/config.php' );
 require_once Forma::inc(_lms_ . '/modules/scorm/config.scorm.php');
 
 /*

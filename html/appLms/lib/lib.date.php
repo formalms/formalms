@@ -1087,7 +1087,7 @@ class DateManager
         if ($clear) {
             require_once _lms_ . '/lib/lib.course.php';
             require_once _lms_ . '/lib/lib.stats.php';
-            //require_once($GLOBALS['where_lms'].'/lib/lib.competences.php');
+            //require_once(_lms_.'/lib/lib.competences.php');
 
             //$cman = new Competences_Manager();
             $cmodel = new CompetencesAdm();

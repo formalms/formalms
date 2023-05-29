@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-include_once dirname(__FILE__) . '/PluginmanagerAdm.php';
+include_once __DIR__ . '/PluginmanagerAdm.php';
 
 class PluginConferenceAdm extends PluginManagerAdm
 {

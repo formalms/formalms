@@ -1883,7 +1883,7 @@ class GroupMembersListView extends ListView
 
     public function getTreeTranslation($groupid)
     {
-        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
         $pos = strpos($groupid, '_');
         $arr_translations = $repoDb->getFolderTranslations(substr($groupid, $pos + 1));

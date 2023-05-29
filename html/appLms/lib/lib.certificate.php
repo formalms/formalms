@@ -790,7 +790,7 @@ class Certificate
 		WHERE id_certificate = '" . $id_certificate . "'";
         list($name, $cert_structure, $base_language, $orientation, $bgimage) = sql_fetch_row(sql_query($query_certificate));
 
-        //require_once($GLOBALS['where_framework'].'/addons/html2pdf/html2fpdf.php');
+        //require_once(_adm_.'/addons/html2pdf/html2fpdf.php');
 
         if ($array_substituton !== false) {
             $cert_structure = str_replace(array_keys($array_substituton), $array_substituton, $cert_structure);

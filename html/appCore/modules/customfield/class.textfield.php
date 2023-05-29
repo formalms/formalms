@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author   Fabio Pirovano <fabio@docebo.com>
  */
-require_once dirname(__FILE__) . '/class.field.php';
+require_once __DIR__ . '/class.field.php';
 
 class Field_Textfield extends Field
 {

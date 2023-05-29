@@ -304,7 +304,7 @@ if (!Docebo::user()->isAnonymous()) {
         }
 
         if (isset($idCourse) && defined('LMS')) {
-            require_once $GLOBALS['where_lms'] . '/class.module/track.object.php';
+            require_once _lms_ . '/class.module/track.object.php';
             Track_Object::updateObjectTitle($_POST['id_comm'], 'item', $_POST['title']);
         }
 

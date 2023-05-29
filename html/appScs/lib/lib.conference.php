@@ -16,4 +16,4 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @author Davide Anceschi
  */
-require_once $GLOBALS['where_scs'] . '/lib/lib.conference.1.3.plugins.php';
+require_once _scs_ . '/lib/lib.conference.1.3.plugins.php';

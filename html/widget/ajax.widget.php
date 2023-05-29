@@ -14,7 +14,7 @@
 define('IN_FORMA', true);
 define('IS_AJAX', true);
 define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+require dirname(__DIR__) . '/base.php';
 
 // start buffer
 ob_start();

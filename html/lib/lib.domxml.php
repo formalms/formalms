@@ -26,7 +26,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 **/
 
 if (version_compare(phpversion(), '5.0.0') == -1) {
-    require_once dirname(__FILE__) . '/lib.domxml4.php';
+    require_once __DIR__ . '/lib.domxml4.php';
 } else {
-    require_once dirname(__FILE__) . '/lib.domxml5.php';
+    require_once __DIR__ . '/lib.domxml5.php';
 }

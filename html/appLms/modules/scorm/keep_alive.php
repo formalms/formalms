@@ -14,7 +14,7 @@
 define('LMS', true);
 define('IN_FORMA', true);
 define('_deeppath_', '../../../');
-require dirname(__FILE__) . '/' . _deeppath_ . 'base.php';
+require __DIR__ . '/' . _deeppath_ . 'base.php';
 
 // start buffer
 ob_start();

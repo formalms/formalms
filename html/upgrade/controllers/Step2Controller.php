@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once dirname(__FILE__) . '/StepController.php';
+require_once __DIR__ . '/StepController.php';
 
 // docebo ce versions series 3.x.x ( 03xxx formely 3xxx )
 // docebo ce versions series 4.x.x ( 04xxx formely 4xxx )

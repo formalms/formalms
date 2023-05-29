@@ -94,7 +94,7 @@ if (!Docebo::user()->isAnonymous()) {
     function newroom()
     {
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_scs'] . '/lib/lib.room.php';
+        require_once _scs_ . '/lib/lib.room.php';
         $lang = &DoceboLanguage::createInstance('admin_config', 'scs');
         $out = &$GLOBALS['page'];
 
@@ -133,7 +133,7 @@ if (!Docebo::user()->isAnonymous()) {
 
     function insroom()
     {
-        require_once $GLOBALS['where_scs'] . '/lib/lib.room.php';
+        require_once _scs_ . '/lib/lib.room.php';
 
         $re = insertRoom($_POST['rules']);
 
@@ -143,7 +143,7 @@ if (!Docebo::user()->isAnonymous()) {
     function modroom()
     {
         require_once _base_ . '/lib/lib.form.php';
-        require_once $GLOBALS['where_scs'] . '/lib/lib.room.php';
+        require_once _scs_ . '/lib/lib.room.php';
         $lang = &DoceboLanguage::createInstance('admin_config', 'scs');
         $out = &$GLOBALS['page'];
         $id_room = importVar('id_room', true, 0);
@@ -186,7 +186,7 @@ if (!Docebo::user()->isAnonymous()) {
 
     function updroom()
     {
-        require_once $GLOBALS['where_scs'] . '/lib/lib.room.php';
+        require_once _scs_ . '/lib/lib.room.php';
         $id_room = importVar('id_room', true, 0);
         $re = updateRoom($id_room, $_POST['rules']);
 
@@ -195,7 +195,7 @@ if (!Docebo::user()->isAnonymous()) {
 
     function delroom()
     {
-        require_once $GLOBALS['where_scs'] . '/lib/lib.room.php';
+        require_once _scs_ . '/lib/lib.room.php';
 
         $re = deleteRoom(importVar('id_room', true, 0));
 

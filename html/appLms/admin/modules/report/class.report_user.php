@@ -4262,7 +4262,7 @@ class Report_User extends Report
 
     public function _get_games_query($type = 'html', $report_data = null, $other = '')
     {
-        require_once dirname(__FILE__) . '/report_tableprinter.php';
+        require_once __DIR__ . '/report_tableprinter.php';
 
         if ($report_data == null) {
             $reportTempData = $this->session->get(self::_REPORT_SESSION);

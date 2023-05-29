@@ -13,8 +13,8 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/class.definition.php';
-require_once dirname(__FILE__) . '/../lib/lib.directory.php';
+require_once __DIR__ . '/class.definition.php';
+require_once dirname(__DIR__) . '/lib/lib.directory.php';
 
 define('FILTER_FOLD', 'FILTER_FOLD');
 
@@ -1255,7 +1255,7 @@ class Module_Directory extends Module
         }
         if (isset($_POST['okselector'])) {
             // aggiungere i selezionati al gruppo
-            require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+            require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
             $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
             $arrGroup = $this->aclManager->getGroup(false, $groupid);
             if ($arrGroup !== false) {
@@ -1474,7 +1474,7 @@ class Module_Directory extends Module
 
     public function &getTreeView_OrgView()
     {
-        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
         $orgDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
         $treeView = new TreeView_OrgView($orgDb, 'organization_chart', FormaLms\lib\Get::sett('title_organigram_chart'));
         $treeView->aclManager = &$this->aclManager;
@@ -1494,7 +1494,7 @@ class Module_Directory extends Module
 
     public function loadOrgChartView()
     {
-        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
         $lang = &DoceboLanguage::createInstance('organization_chart', 'framework');
         $userlevelid = Docebo::user()->getUserLevelId();
 
@@ -1742,7 +1742,7 @@ class Module_Directory extends Module
             return;
         }
 
-        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
         if (isset($_POST['okselector'])) {
@@ -1811,7 +1811,7 @@ class Module_Directory extends Module
         if ($control_view && (FormaLms\lib\Get::sett('use_org_chart') == '1' || $GLOBALS['use_groups'] == '1')) {
             if (isset($_POST['okselector'])) {
                 // go to user creation with folders selected
-                require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+                require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
                 $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
 
                 $arr_selection = $this->getSelection($_POST);
@@ -1829,7 +1829,7 @@ class Module_Directory extends Module
                         $treeid = (int) $_GET['treeid'];
                     }
                     if ($treeid != 0) {
-                        require_once dirname(__FILE__) . '/../modules/org_chart/tree.org_chart.php';
+                        require_once dirname(__DIR__) . '/modules/org_chart/tree.org_chart.php';
                         $repoDb = new TreeDb_OrgDb($GLOBALS['prefix_fw'] . '_org_chart_tree');
                         $idst = $repoDb->getGroupST($treeid);
                         $this->resetSelection([$idst]);

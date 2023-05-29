@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/learning.object.php';
+require_once __DIR__ . '/learning.object.php';
 
 class Learning_Htmlpage extends Learning_Object
 {

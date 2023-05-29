@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/lib.connector.php';
+require_once __DIR__ . '/lib.connector.php';
 require_once _lms_ . '/lib/lib.course.php';
 
 /**
@@ -385,8 +385,8 @@ class DoceboConnectorDoceboCourses extends DoceboConnector
             }
 
             //if the scs exist create a room
-            if ($GLOBALS['where_scs'] !== false) {
-                require_once $GLOBALS['where_scs'] . '/lib/lib.room.php';
+            if (_scs_ !== false) {
+                require_once _scs_ . '/lib/lib.room.php';
 
                 $rules = [
                             'room_name' => $row['name'],

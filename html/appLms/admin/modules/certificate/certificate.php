@@ -246,7 +246,7 @@ function list_element_certificate()
     FROM %lms_certificate_tags ';
     $re_certificate_tags = sql_query($query_format_tag);
     while (list($file_name, $class_name) = sql_fetch_row($re_certificate_tags)) {
-        if (file_exists($GLOBALS['where_lms'] . '/lib/certificate/' . $file_name)) {
+        if (file_exists(_lms_ . '/lib/certificate/' . $file_name)) {
             require_once _lms_ . '/lib/certificate/' . $file_name;
             $instance = new $class_name(0, 0);
             $this_subs = $instance->getSubstitutionTags();

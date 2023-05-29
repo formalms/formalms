@@ -24,7 +24,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * ( editor = Eclipse 3.2.0[phpeclipse,subclipse,WTP], tabwidth = 4 )
  */
-require_once $GLOBALS['where_scs'] . '/lib/lib.conference.php';
+require_once Forma::inc(_scs_. '/lib/lib.conference.php');
 
 function conference_list(&$url)
 {
@@ -34,7 +34,7 @@ function conference_list(&$url)
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
 
     require_once _base_ . '/lib/lib.table.php';
-    require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
+    require_once Forma::inc(_scs_. '/lib/lib.booking.php');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
@@ -358,7 +358,7 @@ function conference_delconf()
     if (FormaLms\lib\Get::req('confirm', DOTY_INT, 0)) {
         $conference->deleteRoom($id);
 
-        require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
+        require_once _scs_ . '/lib/lib.booking.php';
 
         $booking = new RoomBooking();
 
@@ -500,7 +500,7 @@ function conference_modconf($url = null)
 
 function booking()
 {
-    require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
+    require_once _scs_ . '/lib/lib.booking.php';
 
     $lang = &DoceboLanguage::createInstance('conference', 'lms');
 
@@ -515,7 +515,7 @@ function booking()
 
 function modBooking()
 {
-    require_once $GLOBALS['where_scs'] . '/lib/lib.booking.php';
+    require_once _scs_ . '/lib/lib.booking.php';
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
@@ -760,7 +760,7 @@ function showLog()
 
     switch ($room_info['room_type']) {
         case 'teleskill':
-            require_once $GLOBALS['where_scs'] . '/lib/lib.teleskill.php';
+            require_once _scs_ . '/lib/lib.teleskill.php';
 
             $teleskill = new Teleskill_Management();
 

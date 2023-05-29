@@ -797,7 +797,7 @@ class CourseAlms extends Model
 
         //if the scs exist create a room ----------------------------------------------------
         if ($GLOBALS['where_scs'] !== false) {
-            require_once $GLOBALS['where_scs'] . '/lib/lib.room.php';
+            require_once _scs_ . '/lib/lib.room.php';
 
             $rules = [
                 'room_name' => $data_params['course_name'],
@@ -1352,7 +1352,7 @@ class CourseAlms extends Model
         sl_close_fileoperations();
 
         //if the scs exist delete course rooms
-        if ($GLOBALS['where_scs'] !== false) {
+        if (_scs_ !== false) {
             require_once _scs_ . '/lib/lib.room.php';
             $re = deleteRoom(false, 'course', $id_course);
         }

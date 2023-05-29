@@ -62,7 +62,7 @@ function sal_wrapper()
 }
 
 /************************ SpaghettiLearning custom abstraction layer *************/
-//require_once(dirname(__FILE__) . '/../../config.php' );
+//require_once(dirname(__DIR__,2) . '/config.php' );
 //require_once($GLOBALS['where_config'].'/config.php');
 require_once Forma::inc(_lms_ . '/modules/scorm/xmlwrapper.php');
 

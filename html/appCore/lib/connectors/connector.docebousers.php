@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-require_once dirname(__FILE__) . '/lib.connector.php';
+require_once __DIR__ . '/lib.connector.php';
 
 // Constant definition for language
 

@@ -147,7 +147,7 @@ class JQueryLib
 
     private static function select_file($which_path, $which_extension)
     {
-        $dircontents = scandir(dirname(__FILE__) . '/..' . $which_path);
+        $dircontents = scandir(dirname(__DIR__)  . $which_path);
         $ret_array = [];
         foreach ($dircontents as $file) {
             if (strpos($which_extension, 'min.') && strpos($file, 'min.')) {

@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author    Emanuele Sandri <emanuele[AT@AT]docebo[dot.dot]com>
  */
-require_once dirname(__FILE__) . '/class.definition.php';
+require_once __DIR__ . '/class.definition.php';
 
 class Module_IOTask extends Module
 {

@@ -15,7 +15,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 
 require_once Forma::inc(_lms_ . '/class.module/learning.object.php');
 
-define('_scorm_basepath', $GLOBALS['where_lms'] . '/modules/scorm/');
+define('_scorm_basepath', _lms_ . '/modules/scorm/');
 
 class Learning_ScormOrg extends Learning_Object
 {

@@ -441,7 +441,7 @@ if (!Docebo::user()->isAnonymous()) {
      break;
 
     case 'play':
-        require_once dirname(__FILE__) . '/do.glossary.php';
+        require_once __DIR__ . '/do.glossary.php';
 
         $idGlossary = importVar('idGlossary', true, 0);
         $idParams = importVar('idParams', true, 0);

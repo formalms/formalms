@@ -20,13 +20,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author	 Fabio Pirovano <fabio [at] docebo [dot] com>
  */
-require_once dirname(__FILE__) . '/class.definition.php';
+require_once __DIR__ . '/class.definition.php';
 
 class Module_AManmenu extends LmsAdminModule
 {
     public function loadBody()
     {
-        include dirname(__FILE__) . '/../modules/amanmenu/amanmenu.php';
+        include dirname(__DIR__) . '/modules/amanmenu/amanmenu.php';
         manmenuDispatch($GLOBALS['op']);
     }
 

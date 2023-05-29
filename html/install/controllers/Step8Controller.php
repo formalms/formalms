@@ -11,7 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-require_once dirname(__FILE__) . '/StepController.php';
+require_once __DIR__ . '/StepController.php';
 
 class Step8Controller extends StepController
 {

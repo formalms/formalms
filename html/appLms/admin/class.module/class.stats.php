@@ -18,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @category Category
  */
-require_once dirname(__FILE__) . '/class.definition.php';
+require_once __DIR__ . '/class.definition.php';
 
 class Module_Stats extends LmsAdminModule
 {

@@ -1396,12 +1396,12 @@ class Org_TreeView extends RepoTreeView
             $this->op = 'display';
         }
         if (isset($arrayState['org_categorize_save'])) {
-            require_once dirname(__FILE__) . '/orgcategorize.php';
+            require_once __DIR__ . '/orgcategorize.php';
             organization_categorize_save($this, $arrayState['idItem']);
             $this->op = 'display';
         }
         if (isset($arrayState['org_categorize_switch_subcat'])) {
-            require_once dirname(__FILE__) . '/orgcategorize.php';
+            require_once __DIR__ . '/orgcategorize.php';
             organization_categorize_switch_subcat($this, $arrayState['idItem']);
             $this->op = 'org_categorize';
             $this->opContextId = $arrayState['idItem'];

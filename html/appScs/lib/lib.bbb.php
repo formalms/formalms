@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-include_once dirname(__FILE__) . '/lib.bbb.api.php';
+include_once __DIR__ . '/lib.bbb.api.php';
 
 // TODO : support for BBB is experimental - must be refined
 

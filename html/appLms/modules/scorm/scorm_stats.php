@@ -221,7 +221,7 @@ function scorm_userstat_detail($idscorm_organization, $idUser, $idItem, $idRefer
     /*** disabled ****  // XML SCORM results
 
         require_once(_base_.'/lib/lib.domxml.php');
-        require_once(dirname(__FILE__) . '/scorm_tracking.php');
+        require_once(__DIR__ . '/scorm_tracking.php');
 
         // get idscorm_package
         $query = "SELECT idscorm_package"

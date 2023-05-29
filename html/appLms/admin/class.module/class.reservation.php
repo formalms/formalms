@@ -16,13 +16,13 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * @author Marco Valloni
  */
-require_once dirname(__FILE__) . '/class.definition.php';
+require_once __DIR__ . '/class.definition.php';
 
 class Module_Reservation extends LmsAdminModule
 {
     public function loadBody()
     {
-        require_once dirname(__FILE__) . '/../modules/reservation/reservation.php';
+        require_once dirname(__DIR__) . '/modules/reservation/reservation.php';
         reservationDispatch($GLOBALS['op']);
     }
 

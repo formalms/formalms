@@ -20,7 +20,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @author		Pirovano Fabio <fabio (@) docebo (.) com>
  **/
-require_once dirname(__FILE__) . '/lib.connector.php';
+require_once __DIR__ . '/lib.connector.php';
 
 /**
  * class for define user report connection.
