@@ -1,8 +1,8 @@
 <?php
 $_subs_url = '&id_course=' . (int) $id_course . ($id_edition ? '&id_edition=' . (int) $id_edition : '') . ($id_date ? '&id_date=' . (int) $id_date : '');
 echo getTitleArea([
-    'index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSES', 'admin_course_managment'),
-    'index.php?r=' . $this->link . '/show' . $_subs_url => Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
+    'index.php?r=' . $link_course . '/show' => Lang::t('_COURSES', 'admin_course_managment'),
+    'index.php?r=' . $link . '/show' . $_subs_url => Lang::t('_SUBSCRIBE', 'subscribe') . ' : ' . $course_name,
     Lang::t('_SUBSCRIBE', 'subscribe') . ': ' . Lang::t('_LEVELS', 'subscribe'),
 ]);
 ?>
@@ -40,7 +40,7 @@ echo getTitleArea([
 
     $array_content = [];
 
-    echo Form::openForm('choose_level', 'index.php?r=' . ($post_url ?? $this->link) . '/ins&amp;id_course=' . $model->getIdCourse() . '&amp;id_edition=' . $model->getIdEdition() . '&amp;id_date=' . $model->getIdDate());
+    echo Form::openForm('choose_level', 'index.php?r=' . ($post_url ?? $link) . '/ins&amp;id_course=' . $model->getIdCourse() . '&amp;id_edition=' . $model->getIdEdition() . '&amp;id_date=' . $model->getIdDate());
 
     if($send_alert) {
         echo Form::getHidden('send_alert', 'send_alert', $send_alert);

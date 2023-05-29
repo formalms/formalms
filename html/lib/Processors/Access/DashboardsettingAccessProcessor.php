@@ -13,10 +13,10 @@ namespace FormaLms\lib\Processors\Access;
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-class LmsmenuAccessProcessor extends AccessProcessor
+class DashboardsettingAccessProcessor extends AccessProcessor
 {
 
-    public const NAME = 'lmsmenu';
+    public const NAME = 'dashboardsetting';
 
     public function getAccessList($resourceId) : array {
 
@@ -26,9 +26,9 @@ class LmsmenuAccessProcessor extends AccessProcessor
     public function setAccessList($resourceId, array $selection) : self {
 
         if ($this->accessModel->setAccessList($resourceId, $selection)) {
-            $url  = 'index.php?modname=middlearea&amp;op=view_area&amp;result=ok&amp;of_platform=lms';
+            $url  = 'index.php?r=adm/dashboardsettings/show&result=ok';
         } else {
-            $url  = 'index.php?modname=middlearea&amp;op=view_area&amp;result=err&amp;of_platform=lms';
+            $url  = 'index.php?r=adm/dashboardsettings/show&result=err';
         }
 
         $this->setRedirect($url);
@@ -36,4 +36,3 @@ class LmsmenuAccessProcessor extends AccessProcessor
         
     }
 }
-

@@ -18,12 +18,12 @@ class AdminmanagerAccessProcessor extends AccessProcessor
 
     public const NAME = 'adminmanager';
 
-    public function getAccessList(int $resourceId) : array {
+    public function getAccessList($resourceId) : array {
 
         return $this->accessModel->getAccessList($resourceId);
     }
 
-    public function setAccessList(int $resourceId, array $selection) : array {
+    public function setAccessList($resourceId, array $selection) : self {
 
         if ($this->accessModel->setAccessList($resourceId, $selection)) {
             $url = 'index.php?r=adm/adminmanager/show&res=ok_ins';
@@ -31,8 +31,8 @@ class AdminmanagerAccessProcessor extends AccessProcessor
             $url  = 'index.php?r=adm/adminmanager/show&res=err_ins';
         }
 
-
-        return $this->response($url);
+        $this->setRedirect($url);
+        return $this;
         
     }
 }

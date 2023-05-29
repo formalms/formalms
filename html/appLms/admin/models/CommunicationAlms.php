@@ -917,13 +917,14 @@ class CommunicationAlms extends Model implements Accessible
         return $output;
     }
 
-    public function getAccessList(int $resourceId) : array {
+    public function getAccessList( $resourceId) : array {
 
         return $this->accessList($resourceId);
     }
 
-    public function setAccessList(int $resourceId, array $selection) : bool {
+    public function setAccessList( $resourceId, array $selection) : bool {
 
+        
         $oldSelection = $this->getAccessList($resourceId);
         return $this->updateAccessList($resourceId, $oldSelection, $selection);
     }

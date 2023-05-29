@@ -1,5 +1,5 @@
 <?php
-
+require_once _lib_.'/Interfaces/Accessible.php';
 /*
  * FORMA - The E-Learning Suite
  *
@@ -13,7 +13,7 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class Man_MiddleArea
+class Man_MiddleArea implements \FormaLms\lib\Interfaces\Accessible
 {
     public $_cache = null;
 
@@ -213,5 +213,16 @@ class Man_MiddleArea
         }
 
         return !empty($intersect);
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->getObjIdstList($resourceId);
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+        
+        return (bool) $this->setObjIdstList($resourceId, $selection);
+     
     }
 }

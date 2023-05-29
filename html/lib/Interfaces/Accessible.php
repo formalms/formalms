@@ -5,7 +5,7 @@ namespace FormaLms\lib\Interfaces;
 interface Accessible
 {
 
-    public function getAccessList(int $resourceId) : array;
+    public function getAccessList($resourceId) : array;
 
-    public function setAccessList(int $resourceId, array $selection) : bool;
+    public function setAccessList($resourceId, array $selection) : bool;
 }

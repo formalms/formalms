@@ -90,7 +90,7 @@ class UserselectorAdmController extends AdmController
             if ($clearSelection) {
                 $this->multiUserSelector->getAccessProcessor()->setSessionData($instanceValue, []);
             }
-            $accessSelection = $this->multiUserSelector->getAccessProcessor()->getSessionData($instanceValue);
+            $accessSelection = $this->multiUserSelector->getAccessProcessor()->getSessionData($instanceValue, true);
             if ($instanceId) {
                 $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
             }

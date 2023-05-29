@@ -30,18 +30,22 @@ namespace FormaLms\lib\Processors\Access;
 
     protected bool $useNamespace = false;
 
+    protected string $redirect = '';
+
     protected $accessModel;
 
-    protected array $params;
+    protected array $params = [];
 
     protected $session;
 
+    public $requestParams;
+
     public const NAME = 'default';
 
-    public const SESSION_KEY = 'selectedUsers';
+    public const SESSION_KEY = 'tempData';
+    public const USER_KEY = 'selectedUsers';
 
-
-    public function __construct() {
+    public function __construct(array $requestParams = []) {
 
         //dd('userselector.processors.'.static::NAME);
         $attributes = \Util::config('multiuserselector.processors.'.static::NAME);
@@ -49,6 +53,7 @@ namespace FormaLms\lib\Processors\Access;
         foreach($attributes as $attributeKey => $attribute) {
             $this->$attributeKey = $attribute;
         }
+        $this->requestParams = $requestParams;
 
         $this->injectAccessModel();
     }
@@ -84,14 +89,14 @@ namespace FormaLms\lib\Processors\Access;
 
     }
 
-    protected function response(?string $url = null) : array{
+    protected function response() : array{
         $response['type'] = $this->getReturnType();
 
         if($response['type'] == 'redirect') {
-            $response['redirect'] = $url;
+            $response['redirect'] = $this->getRedirect();
         } else {
             $response['view'] = $this->getReturnView();
-            $response['subFolderview'] = $this->getSubFolderView();
+            $response['subFolderView'] = $this->getSubFolderView();
             $response['additionalPaths'] = $this->getAdditionalPaths();
             $response['params'] = $this->getParams();
         }
@@ -110,45 +115,49 @@ namespace FormaLms\lib\Processors\Access;
 
     }
 
+    private function getRedirect() : string {
+        return $this->redirect;
+
+    }
+
+
+    public function setRedirect(string $redirect) : self {
+        $this->redirect = $redirect;
+        return $this;
+
+    }
 
     private function getSubFolderView() : string {
         return $this->subFolderView;
 
     }
 
-    private function getAdditionalPaths() : string {
+    private function getAdditionalPaths() : array {
         return $this->additionalPaths;
 
     }
 
     
-    public function getSessionData(string $instance): array
+    public function getSessionData(string $instance, bool $users = false): array
     {
-        return $this->session->get($instance . '_' . self::SESSION_KEY) ? $this->parseSelection($this->session->get($instance . '_' . self::SESSION_KEY)) : [];
+        $sessionData = $this->session->get($instance . '_' . self::SESSION_KEY) ?? [];
+       
+        if($users) {
+            $sessionData = array_key_exists(self::USER_KEY, $sessionData) ? $sessionData[self::USER_KEY] : [];
+        }
+        
+        return $sessionData;
     }
 
 
-    public function setSessionData(string $instance, array $selection): bool
+    public function setSessionData(string $instance, array $params): bool
     {
-        $this->session->set($instance . '_' . self::SESSION_KEY, $selection);
+        $this->session->set($instance . '_' . self::SESSION_KEY, $params);
         $this->session->save();
 
         return true;
     }
 
-    public function setSessionMultiParam(array $params, string $prefix = 'tempData'): bool
-    {
-        $this->session->set($prefix, $params);
-        $this->session->save();
-
-        return true;
-    }
-
-    public function getSessionMultiParam(string $prefix = 'tempData'): array
-    {
-        return $this->session->get($prefix);
- 
-    }
 
     public function setParams(array $params): self
     {
@@ -157,15 +166,22 @@ namespace FormaLms\lib\Processors\Access;
  
     }
 
-    public function getParams(array $params): array
+    public function getParams(): array
     {
         return $this->params;
  
     }
 
-    abstract public function getAccessList(int $resourceId) : array;
+    public function applyAssociation($resourceId, array $selection) : array {
 
-    abstract public function setAccessList(int $resourceId, array $selection) : array;
+        $this->setaccessList($resourceId, $selection);
+
+        return $this->response();
+    }
+
+    abstract public function getAccessList($resourceId) : array;
+
+    abstract public function setAccessList($resourceId, array $selection) : self;
 
  }
 

@@ -252,6 +252,7 @@ class DashboardsettingsAdmController extends AdmController
             $errors['default'] = Lang::t('_VALUE_IS_NOT_VALID', 'dashboardsetting');
         }
 
+        
         if ($errors) {
             $status = 400;
             $response['errors'] = $errors;
@@ -369,7 +370,7 @@ class DashboardsettingsAdmController extends AdmController
     private function json_response($code = 200, $message = null)
     {
         header_remove();
-        http_response_code($code);
+        http_response_code((int) $code);
         header('Cache-Control: no-transform,public,max-age=300,s-maxage=900');
         header('Content-Type: application/json');
 
@@ -388,7 +389,7 @@ class DashboardsettingsAdmController extends AdmController
     public function save()
     {
         $dashboard = $this->request->query->get('dashboard');
-        $requestSettings = $this->request->request->get('settings');
+        $requestSettings = $this->request->request->get('settings') ?? [];
 
         $response = ['status' => 200];
         foreach ($requestSettings as $data) {

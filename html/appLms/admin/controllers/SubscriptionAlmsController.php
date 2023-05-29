@@ -1600,7 +1600,7 @@ class SubscriptionAlmsController extends AlmsController
 
                             $formaCourse = new FormaCourse($id_course);
 
-                            $level_idst = &$formaCourse->getCourseLevel($id_course);
+                            $level_idst = $formaCourse->getCourseLevel($id_course);
                             if (count($level_idst) == 0 || $level_idst[1] == '') {
                                 $level_idst = FormaCourse::createCourseLevel($id_course);
                             }
@@ -1628,8 +1628,8 @@ class SubscriptionAlmsController extends AlmsController
                                     }
                                 }
                             } //End While
-
-                            reset($_POST['user_level_sel']);
+                            $userLevels = array_key_exists('user_level_sel', $_POST) ? $_POST['user_level_sel'] : [];
+                            reset($userLevels);
                         }
                     } elseif (isset($edition_selected[$id_course])) {
                         if ($course_info['course_type'] === 'classroom') {

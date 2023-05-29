@@ -200,12 +200,12 @@ class AdminmanagerAdm extends Model implements Accessible
         return $this->preference->saveAdminClasslocation($id_user, $classlocations_selected);
     }
 
-    public function getAccessList(int $resourceId) : array{
+    public function getAccessList( $resourceId) : array{
 
         return  $this->loadUserSelectorSelection($resourceId);
     }
 
-    public function setAccessList(int $resourceId, array $selection) : bool{
+    public function setAccessList( $resourceId, array $selection) : bool{
 
         return $this->saveUsersAssociation((int) $resourceId, $selection);
     }

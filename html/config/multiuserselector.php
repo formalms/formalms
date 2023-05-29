@@ -66,7 +66,7 @@ return [
             'className' => 'EnrollRulesAlms', 
             'returnType' => 'redirect'
         ],
-        'aggregated_certificate' => [
+        'aggregatedcertificate' => [
             'includes' => _lms_ . '/lib/lib.aggregated_certificate.php',
             'className' => 'AggregatedCertificate', 
             'returnType' => 'render', 

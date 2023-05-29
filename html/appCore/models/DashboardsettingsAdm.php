@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Interfaces\Accessible;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -16,7 +18,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
 /**
  * Class DashboardsettingsAdm.
  */
-class DashboardsettingsAdm extends Model
+class DashboardsettingsAdm extends Model implements Accessible
 {
     protected $db;
 
@@ -24,7 +26,7 @@ class DashboardsettingsAdm extends Model
 
     protected $installedBlocks;
 
-    protected $layouts;
+    protected $layouts = [];
 
     public function __construct()
     {
@@ -37,10 +39,12 @@ class DashboardsettingsAdm extends Model
 
     public function loadLayouts()
     {
-        $query = 'SELECT `dashboard_layouts`.`id`, `name`, `caption`, `status`, `default`, `idst_list` FROM `dashboard_layouts` LEFT JOIN `dashboard_permission` ON `dashboard_layouts`.`id` =`dashboard_permission`.`id_dashboard` ORDER BY `default` DESC, `created_at` ASC';
+        $query = 'SELECT `dashboard_layouts`.`id`, `name`, `caption`, `status`, `default`, `idst_list` 
+                    FROM `dashboard_layouts` 
+                    LEFT JOIN `dashboard_permission` ON `dashboard_layouts`.`id` =`dashboard_permission`.`id_dashboard` 
+                    ORDER BY  `dashboard_layouts`.`default` DESC,  `dashboard_layouts`.`created_at` ASC';
 
-        $result = sql_query($query);
-        $this->layouts = [];
+        $result = sql_query($query) ?: [];
 
         foreach ($result as $layout) {
 
@@ -174,6 +178,7 @@ class DashboardsettingsAdm extends Model
 
     public function saveLayout($layout)
     {
+     
         $name = $layout['name'];
         $caption = $layout['caption'] ?: ' ';
         $status = $layout['status'];
@@ -287,6 +292,17 @@ class DashboardsettingsAdm extends Model
             }
         }
         return 0;
+    }
+
+    public function getAccessList( $resourceId) : array {
+
+        return $this->getObjIdstList($resourceId);
+    }
+
+    public function setAccessList( $resourceId, array $selection) : bool {
+        
+        return (bool) $this->setObjIdstList((int) $resourceId, $selection);
+     
     }
 
 }

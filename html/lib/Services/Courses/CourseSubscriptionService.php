@@ -27,6 +27,8 @@ class CourseSubscriptionService implements Accessible
 
     const LINK_COURSE = 'alms/course';
 
+    const LINK_SUBSCRIPTION = 'alms/subscription';
+
     public function __construct() {
 
         $this->baseModel = new \SubscriptionAlms();
@@ -44,6 +46,7 @@ class CourseSubscriptionService implements Accessible
     public function add($selection, $courseType, $courseId, $params = []) : array {
 
        
+        $sendAlert = false;
         if (!$this->permissions['subscribe_course']) {
             $this->setResponse('error',
                 $this->_getErrorMessage('no permission'),
@@ -125,8 +128,8 @@ class CourseSubscriptionService implements Accessible
             return $this->response;
          }
 
-        $selDateBeginValidity = (bool) $params['sel_date_begin_validity'];
-        $selDateExpireValidity = (bool) $params['sel_date_expire_validity'];
+        $selDateBeginValidity = (bool) array_key_exists('sel_date_begin_validity', $params) ? $params['sel_date_begin_validity'] : 0;
+        $selDateExpireValidity = (bool) array_key_exists('sel_date_expire_validity', $params) ? $params['sel_date_expire_validity'] : 0;
         $dateBeginValidity = $selDateBeginValidity ? $params['set_date_begin_validity'] : false;
         $dateExpireValidity = $selDateExpireValidity ? $params['set_date_expire_validity'] : false;
         if ($dateBeginValidity) {
@@ -318,6 +321,11 @@ class CourseSubscriptionService implements Accessible
                 'post_url' => 'alms/subscription',
                 'user_alredy_subscribed' => $userAlredySubscribed,
                 'course_name' => $courseName,
+                'link_course' => self::LINK_COURSE,
+                'link' => self::LINK_SUBSCRIPTION,
+                'send_alert' => $sendAlert,
+                'date_begin_validity' => $selDateBeginValidity,
+                'date_expire_validity' => $selDateExpireValidity
             ];
         }
 
@@ -460,7 +468,8 @@ class CourseSubscriptionService implements Accessible
 
 
     public function multipleAdd($selection, $params=[]) {
-        $idCat = $params['id_cat'];
+    
+        $idCat = array_key_exists('id_cat', $params) ?  $params['id_cat'] : 0;
 
 
         $this->baseModel->setUserData(urlencode(\Util::serialize($selection)));
@@ -470,7 +479,9 @@ class CourseSubscriptionService implements Accessible
                     'model' => $this->baseModel,
                     'id_cat' => $idCat,
                     'course_selector' => new \Selector_Course(),
-                    'user_selection' => $this->baseModel->getUserData()
+                    'user_selection' => $this->baseModel->getUserData(),
+                    'link_course' => self::LINK_COURSE,
+                    'link' => self::LINK_SUBSCRIPTION
                 ];
 
             }
@@ -486,21 +497,19 @@ class CourseSubscriptionService implements Accessible
 
     public function setMultipleAccessList($selection, $moreParams) : array {
     
-        return ['params' =>  $this->multipleAdd($selection, $moreParams)];
+        return $this->multipleAdd($selection, $moreParams);
 
     }
 
 
-    public function getAccessList(int $resourceId) : array {
+    public function getAccessList($resourceId) : array {
 
         return [];
     }
 
-    public function setAccessList(int $resourceId, array $selection) : bool {
+    public function setAccessList($resourceId, array $selection) : bool {
 
-       // $oldSelection = $this->getRoleMembers((int) $resourceId);
-      //
-       // return $this->saveMembersAssociation($resourceId, $selection, $oldSelection);
+       // handled by session
 
        return true;
     }

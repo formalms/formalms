@@ -13,27 +13,23 @@ namespace FormaLms\lib\Processors\Access;
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-class LmsmenuAccessProcessor extends AccessProcessor
+class CoursesubscriptionAccessProcessor extends AccessProcessor
 {
 
-    public const NAME = 'lmsmenu';
+    public const NAME = 'coursesubscription';
+
+    public const TYPE = 'course';
 
     public function getAccessList($resourceId) : array {
 
-        return $this->accessModel->getAccessList($resourceId);
+        return $this->accessModel->getSubscribed($resourceId, static::TYPE);
     }
 
     public function setAccessList($resourceId, array $selection) : self {
 
-        if ($this->accessModel->setAccessList($resourceId, $selection)) {
-            $url  = 'index.php?modname=middlearea&amp;op=view_area&amp;result=ok&amp;of_platform=lms';
-        } else {
-            $url  = 'index.php?modname=middlearea&amp;op=view_area&amp;result=err&amp;of_platform=lms';
-        }
+        $this->setParams($this->accessModel->add($selection, static::TYPE, (int) $resourceId, ['viewParams' => true]));
 
-        $this->setRedirect($url);
         return $this;
         
     }
 }
-

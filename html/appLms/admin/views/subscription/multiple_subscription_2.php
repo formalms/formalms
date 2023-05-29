@@ -11,12 +11,12 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
-    $title = ['index.php?r=' . $this->link_course . '/show' => Lang::t('_COURSE', 'course'),
+    $title = ['index.php?r=' . $link_course . '/show' => Lang::t('_COURSE', 'course'),
                 Lang::t('_MULTIPLE_SUBSCRIPTION', 'course'), ];
 
     echo getTitleArea($title)
             . '<div class="std_block">'
-            . Form::openForm('course_selection_form', 'index.php?r=' . $this->link . '/multiplesubscription')
+            . Form::openForm('course_selection_form', 'index.php?r=' . $link . '/multiplesubscription')
             . Form::getHidden('id_cat', 'id_cat', $id_cat)
             . Form::getHidden('step', 'step', '2')
             . Form::getHidden('user_selection', 'user_selection', $user_selection)

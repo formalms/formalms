@@ -11,9 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class EnrollrulesAlms extends Model
+class EnrollrulesAlms extends Model implements Accessible
 {
     protected $sortable = ['title', 'lang_code', 'creation_date'];
 
@@ -673,5 +675,28 @@ class EnrollrulesAlms extends Model
 
         return $result;
 
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return array_keys($this->getEntityRule($resourceId));
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+        
+        $oldSelection = array_keys($this->getEntityRule($resourceId));
+
+        $toAdds = array_diff($selection, $oldSelection);
+        $toDeletes = array_diff($oldSelection, $selection);
+   
+        foreach ($toAdds as $id_entity) {
+            $result = $this->insertEntityRule($resourceId, $id_entity, []);
+        }
+        foreach ($toDeletes as $id_entity) {
+            $result = $this->deleteEntityRule($resourceId, $id_entity);
+        }
+
+        return (bool) $result;
+     
     }
 }

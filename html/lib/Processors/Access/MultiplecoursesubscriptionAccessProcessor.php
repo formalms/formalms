@@ -18,19 +18,19 @@ class MultiplecoursesubscriptionAccessProcessor extends AccessProcessor
 
     public const NAME = 'multiplecoursesubscription';
 
-    public function getAccessList(int $resourceId) : array {
+    public function getAccessList($resourceId) : array {
 
         return $this->accessModel->getMulitpleAccessList($resourceId);
     }
 
-    public function setAccessList(int $resourceId, array $selection) : array {
+    public function setAccessList($resourceId, array $selection) : self {
         $filteredSelection = $this->accessModel->checkSelection($selection);
 
-        $this->setSessionData(static::NAME, $filteredSelection);
+        $this->setSessionData(static::NAME, [self::USER_KEY => $filteredSelection]);
 
-        $this->setParams($this->accessModel->setMultipleAccessList($selection, ['viewParams' => true]));
+        $this->setParams($this->accessModel->setMultipleAccessList($filteredSelection, ['viewParams' => true]));
 
-        return $this->response();
+        return $this;
         
     }
 }

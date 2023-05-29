@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Interfaces\Accessible;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -16,7 +18,8 @@ defined('IN_FORMA') or exit('Direct access is forbidden');
 //define('COURSE', 0);
 //define('COURSE_PATH', 1);
 
-class AggregatedCertificate
+class AggregatedCertificate implements Accessible
+
 {
     public const AGGREGATE_CERTIFICATE_TYPE_COURSE = 0;
     public const AGGREGATE_CERTIFICATE_TYPE_COURSE_PATH = 1;
@@ -1245,5 +1248,35 @@ class AggregatedCertificate
 
     public function getOps() :array{
         return $this->op;
+    }
+
+
+    public function getAccessList($resourceId) : array {
+
+        
+        $arrayInstanceId = explode('_', $resourceId);
+        $idAssociation = $arrayInstanceId[0];
+        $typeAssoc = $arrayInstanceId[1];
+        $selection = $this->getAllUsersFromIdAssoc($idAssociation, $typeAssoc);
+
+        return $selection;
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+        
+        $oldSelection = array_keys($this->getEntityRule($resourceId));
+
+        $toAdds = array_diff($selection, $oldSelection);
+        $toDeletes = array_diff($oldSelection, $selection);
+   
+        foreach ($toAdds as $id_entity) {
+            $result = $this->insertEntityRule($resourceId, $id_entity, []);
+        }
+        foreach ($toDeletes as $id_entity) {
+            $result = $this->deleteEntityRule($resourceId, $id_entity);
+        }
+
+        return (bool) $result;
+     
     }
 }

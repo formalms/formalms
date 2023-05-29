@@ -26,7 +26,7 @@ cout(
 
 <?php cout(
         Form::openForm('new_assign_step_2',
-                    'index.php?r=adm/userselector/show&id=' . $id_association .'_' . $type_assoc . '&instance=aggregated_certificate&load=1&tab_filters[]=user&tab_filters[]=group&tab_filters[]=org')
+                    'index.php?r=adm/userselector/show&id=' . $id_association .'_' . $type_assoc . '&instance=aggregatedcertificate&load=1&tab_filters[]=user&tab_filters[]=group&tab_filters[]=org')
 ); ?>
 
     <script>

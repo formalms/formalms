@@ -65,7 +65,7 @@ class MultiUserSelector
         $className = self::PROCESSOR_NAMESPACE . ucfirst($type) . self::PROCESSOR_SUFFIX;
 
         try {
-            $this->accessProcessor = new $className();
+            $this->accessProcessor = new $className($this->requestParams);
         } catch(\Exception $e) {
             dd($e);
         }
@@ -79,82 +79,11 @@ class MultiUserSelector
         return $this->dataSelectors;
     }
 
-
-
-
    public function associate($instanceId, $selection)
    {
 
-    $return  =  $this->accessProcessor->setAccessList($instanceId, $selection);
-    //   $return['type'] = self::ACCESS_MODELS[$instanceType]['returnType'];
-    //   $moreParams = [];
+        $return = $this->accessProcessor->applyAssociation($instanceId, $selection);
 
-   
-//
-//
-    //       case 'coursesubscription':
-//
-    //           $moreParams['viewParams'] = true;
-//
-    //           $return['params'] = $this->accessModel->add($selection, 'course', (int) $instanceId, $moreParams);
-    //           $return['subFolderView'] = self::ACCESS_MODELS[$instanceType]['subFolderView'] ?? '';
-    //           $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
-    //           $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
-//
-//
-    //           break;
-//
-
-//
-    //           break;
-//
-    //       case 'dashboardsetting':
-//
-    //           $result = $this->accessModel->setObjIdstList((int) $instanceId, $selection);
-//
-    //           $return['redirect'] = 'index.php?r=adm/dashboardsettings/show&result=' . ($result ? 'ok' : 'err');
-//
-    //           break;
-//
-    //       case 'lmsblock':
-    //       case 'lmstab':
-//
-    //           $result = $this->accessModel->setObjIdstList($instanceId, $selection);
-//
-    //           $return['redirect'] = 'index.php?modname=middlearea&amp;op=view_area&amp;of_platform=lms&amp;result=' . ($result ? 'ok' : 'err');
-//
-    //           break;
-    //        case 'rule':
-//
-    //            $oldSelection = array_keys($this->accessModel->getEntityRule($instanceId));
-//
-    //            $toAdds = array_diff($selection, $oldSelection);
-    //            $toDeletes = array_diff($oldSelection, $selection);
-    //
-    //            foreach ($toAdds as $i => $id_entity) {
-    //                $result = $this->accessModel->insertEntityRule($instanceId, $id_entity, []);
-    //            }
-    //            foreach ($toDeletes as $i => $id_entity) {
-    //                $result = $this->accessModel->deleteEntityRule($instanceId, $id_entity);
-    //            }
-//
-    //            $return['redirect'] = 'index.php?r=alms/enrollrules/modelem&amp;id_rule=' . $instanceId . '&amp;result=' . ($result ? 'true' : 'false');
- //
-    //            break;
-//
-    //        case 'aggregated_certificate':
-//
-    //            $moreParams['viewParams'] = true;
-    //            
-    //            $args = $this->getSessionMultiParam($instanceType);
-    //            $args['selection'] = $selection;
-    //            $return['params'] =  $this->accessModel->getAssociationView($args);
-    //            
-    //            $return['subFolderView'] = self::ACCESS_MODELS[$instanceType]['subFolderView'] ?? '';
-    //            $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
-    //            $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
-    //
-    //            break;
 //
     //        case 'competence':
 //
@@ -248,45 +177,9 @@ class MultiUserSelector
    public function getAccessList($instanceType, $instanceId, $parsing = false)
    {
 
-        $selection = $selection = $this->accessProcessor->getAccessList($instanceId);
+        $selection = $this->accessProcessor->getAccessList($instanceId);
 
-//
-    //       case 'coursesubscription':
-//
-    //           $selection = $this->accessModel->getSubscribed($instanceId, 'course');
-//
-    //           break;
-//
-    //       case 'dashboardsetting':
-//
-    //           $selection = $this->accessModel->getObjIdstList($instanceId);
-//
-    //           break;
-//
-    //       case 'lmsblock':
-    //       case 'lmstab':
-//
-    //           $selection = $this->accessModel->getObjIdstList($instanceId);
-//
-    //           break;
-//
-    //        case 'rule':
-//
-    //         
-    //            $selection = array_keys($this->accessModel->getEntityRule($instanceId));
-    //      
-    //            break;
-//
-    //        case 'aggregated_certificate':
-//
-    //            $arrayInstanceId = explode('_', $instanceId);
-    //            $idAssociation = $arrayInstanceId[0];
-    //            $typeAssoc = $arrayInstanceId[1];
-    //            $selection = $this->accessModel->getAllUsersFromIdAssoc($idAssociation, $typeAssoc);
-    //            $this->requestParams['selection'] = $selection;
-    //            $this->setSessionMultiParam($this->requestParams, $instanceType);
-    //            break;
-//
+
     //        case 'competence':
 //
     //            $selection = $this->accessModel->getCompetenceUsers($instanceId);
@@ -399,7 +292,7 @@ class MultiUserSelector
                             GROUP BY
                                 nametables.table_name';
 
-        $results = $this->db->query($query);
+        $results = $this->db->query($query) ?? [];
 
         if ($results) {
             foreach ($results as $result) {

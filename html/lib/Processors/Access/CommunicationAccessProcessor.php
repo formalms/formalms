@@ -18,12 +18,12 @@ class CommunicationAccessProcessor extends AccessProcessor
 
     public const NAME = 'communication';
 
-    public function getAccessList(int $resourceId) : array {
+    public function getAccessList($resourceId) : array {
 
         return $this->accessModel->getAccessList($resourceId);
     }
 
-    public function setAccessList(int $resourceId, array $selection) : array {
+    public function setAccessList($resourceId, array $selection) : self {
 
         if ($this->accessModel->setAccessList($resourceId, $selection)) {
             $url  = 'index.php?r=alms/communication/show&success=1';
@@ -31,7 +31,8 @@ class CommunicationAccessProcessor extends AccessProcessor
             $url  = 'index.php?r=alms/communication/show&error=1';
         }
 
-        return $this->response($url);
+        $this->setRedirect($url);
+        return $this;
         
     }
 }
