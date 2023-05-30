@@ -15,7 +15,7 @@ define('CORE', true);
 define('IN_FORMA', true);
 define('IS_API', true);
 define('_deeppath_', '../');
-require dirname(__FILE__) . '/../base.php';
+require dirname(__DIR__, 1) . '/base.php';
 
 // start buffer
 ob_start();
@@ -103,11 +103,13 @@ switch ($_SERVER['HTTP_ACCEPT']) {
 //set MIME type
 $content_type = '';
 switch ($GLOBALS['REST_API_ACCEPT']) {
-    case _REST_OUTPUT_JSON:  $content_type = _MIME_TYPE_JSON; break;
+    case _REST_OUTPUT_JSON:
+        $content_type = _MIME_TYPE_JSON;
+        break;
     case _REST_OUTPUT_XML:
     default:
         $content_type = _MIME_TYPE_XML;
-     break;
+        break;
 }
 header('Content-type:' . $content_type . '; charset=utf-8');
 

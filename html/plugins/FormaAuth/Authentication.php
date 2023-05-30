@@ -36,7 +36,7 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
                 . (isset($_REQUEST['notuse_plugin']) ? Form::getHidden('notuse_plugin', 'notuse_plugin', 'true') : '')
                 . (isset($_REQUEST['notuse_customscript']) ? Form::getHidden('notuse_customscript', 'notuse_customscript', 'true') : '')
                 . (isset($_REQUEST['notuse_template']) ? Form::getHidden('notuse_template', 'notuse_template', 'true') : '')
-                . Form::getButton('login', 'login', Lang::t('_LOGIN', 'login'), 'forma-button forma-button--info')
+                . Form::getButton('login', 'login', Lang::t('_LOGIN', 'login'), 'forma-button')
                 . Form::closeForm(),
         ];
     }
