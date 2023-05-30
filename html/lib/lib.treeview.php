@@ -459,11 +459,14 @@ class TreeView
     //return the folder print name
     public function getFolderPrintName(&$folder)
     {
-        if ($folder->id == 0) {
-            return $this->rootname;
-        } else {
-            return str_replace('"', '&quot;', strip_tags($folder->getFolderName()));
-        }
+       
+            if ($folder && $folder->id == 0) {
+                return $this->rootname;
+            } else {
+                return str_replace('"', '&quot;', strip_tags($folder ? $folder->getFolderName() : ''));
+            }
+     
+        
     }
 
     public function getFolderPrintOther(&$folder)
@@ -916,10 +919,12 @@ class TreeView
 
     public function printElement(&$stack, $level)
     {
+       
         // $tree = '<div class="TreeViewRowBase">';
         $tree = '<td>';
-        $id = ($stack[$level]['isExpanded']) ? ($this->_getCompressActionId()) : ($this->_getExpandActionId());
-        $id .= $stack[$level]['folder']->id;
+        $id = (array_key_exists($level, $stack) && $stack[$level]['isExpanded']) ? ($this->_getCompressActionId()) : ($this->_getExpandActionId());
+        $id .= array_key_exists($level, $stack) ? $stack[$level]['folder']->id : 0;
+       
         for ($i = 0; $i <= $level; ++$i) {
             list($classImg, $imgFileName, $imgAlt) = $this->getImage($stack, $i, $level);
             if ($i != ($level - 1) || $stack[$level]['isLeaf']) {
@@ -931,18 +936,19 @@ class TreeView
                     . '" name="' . $id . '" id="seq_' . $stack[$level]['idSeq'] . 'img" />';
             }
         }
-        if ($stack[$level]['folder']->id == $this->selectedFolder) {
+        if (array_key_exists($level, $stack) && $stack[$level]['folder']->id == $this->selectedFolder) {
             $this->selectedFolderData = $stack[$level];
             $classStyle = 'TreeItemSelected';
         } else {
             $classStyle = 'TreeItem';
         }
+
         $tree .= $this->getPreFolderName($stack[$level]['folder']);
         $tree .= '<input type="submit" class="' . $classStyle . '" value="'
             . $this->getFolderPrintName($stack[$level]['folder'])
             . '" name="'
-            . $this->_getSelectedId() . $stack[$level]['folder']->id
-            . '" id="seq_' . $stack[$level]['idSeq'] . '" '
+            . $this->_getSelectedId() . ($stack[$level]['folder']->id ?? '')
+            . '" id="seq_' . ((array_key_exists($level, $stack) && array_key_exists('idSeq', $stack[$level])) ? $stack[$level]['idSeq'] : '') . '" '
             . $this->getFolderPrintOther($stack[$level]['folder'])
             . ' />';
         // $tree .= '</div>';

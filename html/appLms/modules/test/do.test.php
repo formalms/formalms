@@ -1728,7 +1728,7 @@ function user_report($idUser, $idTest, $id_param = false, $id_track = false, $mv
     if (!checkPerm('view', true, 'organization') && !checkPerm('view', true, 'storage')) {
         exit("You can't access");
     }
-    $lang = &FormaLanguage::createInstance('test');
+    $lang = FormaLanguage::createInstance('test');
 
     if ($id_param !== false) {
         require_once _lms_ . '/lib/lib.param.php';

@@ -21,7 +21,7 @@ class Track_Test extends Track_Object
     protected $idTest;
 
     protected $number_of_attempt;
-    public array $back_url;
+    public $back_url;
     public int $idParams;
     public $idResource;
     private $db;

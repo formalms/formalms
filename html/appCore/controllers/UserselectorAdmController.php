@@ -92,7 +92,7 @@ class UserselectorAdmController extends AdmController
             }
             $accessSelection = $this->multiUserSelector->getAccessProcessor()->getSessionData($instanceValue, true);
             if ($instanceId) {
-                $accessSelection = $this->multiUserSelector->getAccessList($instanceValue, $instanceId, true);
+                $accessSelection = $this->multiUserSelector->getAccessList($instanceId, true);
             }
         }
 
@@ -167,7 +167,7 @@ class UserselectorAdmController extends AdmController
 
     public function associate()
     {
-        $instanceType = $this->requestArray['instance'];
+      
         $instanceId = $this->requestArray['id'];
 
         $selection =  explode(',', $this->requestArray['selected']);

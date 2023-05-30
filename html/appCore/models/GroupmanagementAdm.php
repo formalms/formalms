@@ -13,9 +13,10 @@
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
+use FormaLms\lib\Interfaces\Accessible;
 use FormaLms\lib\Session\SessionManager;
 
-class GroupmanagementAdm extends Model
+class GroupmanagementAdm extends Model implements Accessible
 {
     protected $db;
     protected $acl_man;
@@ -953,5 +954,18 @@ class GroupmanagementAdm extends Model
         $enrollrules->applyRulesMultiLang('_LOG_USERS_TO_GROUP', $members, false, $id);
 
         return true;
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->getGroupMembers($resourceId);
+        
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+
+        $res = $this->saveGroupMembers($resourceId, $selection);
+        $this->enrole($resourceId, $selection);
+        return $res;
     }
 }

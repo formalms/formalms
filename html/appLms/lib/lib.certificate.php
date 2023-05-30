@@ -253,7 +253,7 @@ class Certificate
 
     public function getAssignable($filter)
     {
-        $query = '	SELECT ce.id_certificate, co.idCourse AS id_course, co.permCloseLO as perm_close_lo'
+        $query = '	SELECT ce.id_certificate, co.idCourse AS id_course, co.permCloseLO as perm_close_lo,'
             . '	u.idst AS id_user, SUBSTRING(u.userid, 2) AS username,'
             . '	u.lastname, u.firstname, co.code, cc.available_for_status,'
             . '  co.name AS course_name, cc.point_required, ce.name AS cert_name,'
@@ -325,7 +325,7 @@ class Certificate
 
         $assignable = [];
         $res = sql_query($query);
-        if(is_array($res)) {
+        if($res) {
             foreach ($res as $row) {
                 if (
                     $this->certificateAvailableForUser($row['id_certificate'], $row['id_course'], $row['id_user'])

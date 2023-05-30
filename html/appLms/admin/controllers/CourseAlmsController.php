@@ -1210,7 +1210,7 @@ class CourseAlmsController extends AlmsController
                     . Form::getInputTextfield('dropdown_nowh',
                         'certificate_assign_minutes_' . $id_cert,
                         'certificate_assign_minutes[' . $id_cert . ']',
-                        $course_cert[$id_cert]['minutes_required'],
+                        array_key_exists($id_cert, $course_cert) ? $course_cert[$id_cert]['minutes_required'] : 0,
                         '',
                         6,
                         'style="width: 40px; text-align: right;"');

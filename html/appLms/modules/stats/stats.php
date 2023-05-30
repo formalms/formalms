@@ -265,10 +265,10 @@ function statuserfilter()
 
     $view_all_perm = checkPerm('view_all_statuser', true);
 
-    $lang = &FormaLanguage::createInstance('stats', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('stats', 'lms');
+    $out = $GLOBALS['page'];
     $form = new Form();
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
 
     $out->setWorkingZone('content');
 
@@ -481,7 +481,7 @@ function statuserfilter()
     $tabStat->setColsStyle($type_h);
     $tabStat->addHead($content_h);
 
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
     $acl = \FormaLms\lib\Forma::getAcl();
 
     //apply sub admin filters, if needed
@@ -555,9 +555,9 @@ function statuserfilter()
 
 function statoneuser()
 {
-    $lang = &FormaLanguage::createInstance('stats', 'lms');
-    $out = &$GLOBALS['page'];
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $lang = FormaLanguage::createInstance('stats', 'lms');
+    $out = $GLOBALS['page'];
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
@@ -622,13 +622,13 @@ function statcourse()
 {
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &FormaLanguage::createInstance('stats', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('stats', 'lms');
+    $out = $GLOBALS['page'];
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
     $form = new Form();
 
     if (isset($_POST['group_filter'])) {
@@ -733,13 +733,13 @@ function statitem()
 
     $cs = new CourseSubscribe_Manager();
 
-    $lang = &FormaLanguage::createInstance('stats', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('stats', 'lms');
+    $out = $GLOBALS['page'];
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
     $form = new Form();
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
     $acl = \FormaLms\lib\Forma::getAcl();
 
     $idItem = (int) $_GET['idItem'];
@@ -747,14 +747,16 @@ function statitem()
     $group_filter = FormaLms\lib\Get::req('group_filter', DOTY_INT, -1);
     $status_filter = FormaLms\lib\Get::req('status_filter', DOTY_INT, -1);
     $user_filter = FormaLms\lib\Get::req('user_filter', DOTY_MIXED, '');
-
-    $tabStat = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_STATSITEM') . $titleLO, $lang->def('_STATSITEM') . $titleLO);
-    $tabStat->initNavBar('ini', 'button');
-    $limit = $tabStat->getSelectedElement();
+    $editions_filter = 0;
+   
 
     list($titleLO, $objectType) = sql_fetch_row(sql_query('SELECT title, objectType FROM '
                                                                 . $GLOBALS['prefix_lms'] . '_organization'
                                                                 . " WHERE idOrg='" . $idItem . "'"));
+
+    $tabStat = new Table(FormaLms\lib\Get::sett('visuItem'), $lang->def('_STATSITEM') . $titleLO, $lang->def('_STATSITEM') . $titleLO);
+    $tabStat->initNavBar('ini', 'button');
+    $limit = $tabStat->getSelectedElement();
 
     $lev = false;
     $group_all_members = false;
@@ -997,10 +999,10 @@ function statoneuseroneitem()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &FormaLanguage::createInstance('stats', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('stats', 'lms');
+    $out = $GLOBALS['page'];
     $form = new Form();
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
     $acl = \FormaLms\lib\Forma::getAcl();
 
     $idItem = (int) $_GET['idItem'];
@@ -1047,10 +1049,10 @@ function statoneuseroneitemdetails()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &FormaLanguage::createInstance('stats', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('stats', 'lms');
+    $out = $GLOBALS['page'];
     $form = new Form();
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
     $acl = \FormaLms\lib\Forma::getAcl();
 
     $backto = $_GET['backto'];
@@ -1098,10 +1100,10 @@ function statoneuseroneitemhistory()
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.table.php';
 
-    $lang = &FormaLanguage::createInstance('stats', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('stats', 'lms');
+    $out = $GLOBALS['page'];
     $form = new Form();
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
     $acl = \FormaLms\lib\Forma::getAcl();
 
     $backto = $_GET['backto'];
@@ -1144,10 +1146,10 @@ function modstatus()
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     $idCourse = $session->get('idCourse');
 
-    $lang = &FormaLanguage::createInstance('stats', 'lms');
-    $out = &$GLOBALS['page'];
+    $lang = FormaLanguage::createInstance('stats', 'lms');
+    $out = $GLOBALS['page'];
     $form = new Form();
-    $aclManager = &\FormaLms\lib\Forma::getAclManager();;
+    $aclManager = \FormaLms\lib\Forma::getAclManager();;
 
     $idUser = (int) $_GET['idUser'];
     //$idItem = (int)$_GET['idItem'];

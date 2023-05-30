@@ -127,6 +127,12 @@ namespace FormaLms\lib\Processors\Access;
 
     }
 
+    public function setReturnType(string $returnType) : self {
+        $this->returnType = $returnType;
+        return $this;
+
+    }
+
     private function getSubFolderView() : string {
         return $this->subFolderView;
 

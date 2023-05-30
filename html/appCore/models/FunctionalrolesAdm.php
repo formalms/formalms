@@ -11,9 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class FunctionalrolesAdm extends Model
+class FunctionalrolesAdm extends Model implements Accessible
 {
     protected $db;
     protected $acl_man;
@@ -1895,5 +1897,28 @@ class FunctionalrolesAdm extends Model
 
             return true;
 
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->getMembers($resourceId);
+        
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+
+        $members_existent = $this->getMembers($resourceId);
+
+        //retrieve newly selected users
+        $_common_members = array_intersect($members_existent, $selection);
+        $_new_members = array_diff($selection, $_common_members); //new users to add
+        $_old_members = array_diff($members_existent, $_common_members); //old users to delete
+
+        //insert newly selected users in database
+        $res1 = $this->assignMembers($resourceId, $_new_members);
+        $res2 = $this->deleteMembers($resourceId, $_old_members);
+
+        $this->enrole($resourceId, $_new_members);
+        return $res1 && $res2;
     }
 }

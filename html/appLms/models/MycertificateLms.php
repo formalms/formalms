@@ -34,7 +34,7 @@ class MycertificateLms extends Model
     {
         $startIndex = FormaLms\lib\Get::req('startIndex', DOTY_INT, 0);
         $results = FormaLms\lib\Get::req('results', DOTY_INT, FormaLms\lib\Get::sett('visuItem', 25));
-        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'year');
+        $sort = FormaLms\lib\Get::req('sort', DOTY_MIXED, 'on_date');
         $dir = FormaLms\lib\Get::req('dir', DOTY_MIXED, 'desc');
 
         $filter = ['id_user' => $this->id_user];
@@ -67,7 +67,7 @@ class MycertificateLms extends Model
             $sort_index = $order[0]['column'];
 
             $fields = [
-                'year',
+                'on_date',
                 'code',
                 'course_name',
                 'cert_name',
@@ -76,9 +76,10 @@ class MycertificateLms extends Model
                 'download',
             ];
 
-            $sort = $fields[$sort_index];
+            $sort = in_array($sort_index, $fields) ? $fields[$sort_index] : $fields[0];
             $dir = $order[0]['dir'];
         }
+
 
         usort($data, function ($a, $b) use ($sort, $dir) {
             return $dir == 'desc' ? strcmp($b[$sort], $a[$sort]) : strcmp($a[$sort], $b[$sort]);

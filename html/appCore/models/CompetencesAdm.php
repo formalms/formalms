@@ -11,11 +11,21 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class CompetencesAdm extends Model
+class CompetencesAdm extends Model implements Accessible
 {
     protected $db;
+
+    protected string $responseAccessor = 'ok_assign';
+
+    protected string $infoType = '';
+
+    protected array $oldUsers = [];
+
+    protected array $newUsers = [];
 
     //--- init functions ---------------------------------------------------------
 
@@ -2005,5 +2015,91 @@ class CompetencesAdm extends Model
        
         ];
         
+    }
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->accessModel->getCompetenceUsers($resourceId);
+        
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+        
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
+        $_new_users = [];
+        $result = true;
+        $users_selected = $acl_man->getAllUsersFromIdst($selection);
+        $competence_users = $this->getCompetenceUsers($resourceId, true);
+        $users_existent = array_keys($competence_users);
+        //retrieve newly selected users
+        $_common_users = array_intersect($users_existent, $users_selected);
+        $_new_users = array_diff($users_selected, $_common_users);
+        $_old_users = array_diff($users_existent, $_common_users);
+              
+        if(empty($_new_users)) {
+            $res = $this->removeCompetenceUsers($resourceId, $_old_users, true);
+            $this->setResponseForAccessor($res);
+            $result = false;
+        } else {
+            $result = true;
+            $this->setNewUsers($_new_users);
+            $this->setOldUsers($_old_users);
+            if ($this->getInfoType() != 'score') {
+                $data = [];
+                foreach ($_new_users as $id_user) {
+                    $data[$id_user] = 1;
+                }
+                $res1 = $this->assignCompetenceUsers($resourceId, $data, true);
+                $res2 = $this->removeCompetenceUsers($resourceId, $_old_users, true);
+
+                $response = $res1 && $res2 ? 'ok_assign' : 'err_assign';
+
+                $this->setResponseforAccessor($response);
+            }
+
+        }
+        
+        return $result;
+     
+    }
+
+    protected function setResponseforAccessor(string $response) {
+
+        $this->responseAccessor = $response;
+        return $this;
+    }
+
+    public function getResponseForAccessor() : string {
+        return $this->responseAccessor;
+    }
+
+    public function getInfoType() : string{
+        return $this->infoType;
+    }
+
+    public function setInfoType(string $infoType) {
+
+        $this->infoType = $infoType;
+        return $this;
+    }
+
+    public function getNewUsers() : array{
+        return $this->newUsers;
+    }
+
+    public function setNewUsers(array $newUsers) {
+
+        $this->newUsers = $newUsers;
+        return $this;
+    }
+
+    public function getOldUsers() : array{
+        return $this->oldUsers;
+    }
+
+    public function setOldUsers(array $oldUsers) {
+
+        $this->oldUsers = $oldUsers;
+        return $this;
     }
 }

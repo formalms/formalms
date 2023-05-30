@@ -2,13 +2,8 @@
 
 namespace FormaLms\lib\Selectors\Multiuserselector;
 
-use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\UserDataSelector;
-use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\RoleDataSelector;
-use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\GroupDataSelector;
-use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\OrgDataSelector;
 use FormaLms\lib\Selectors\Multiuserselector\DataSelectors\DataSelector;
-use FormaLms\lib\Processors\Access\CommunicationAccessProcessor;
-use FormaLms\lib\Services\Courses\CourseSubscriptionService;
+
 
 /*
  * FORMA - The E-Learning Suite
@@ -84,122 +79,14 @@ class MultiUserSelector
 
         $return = $this->accessProcessor->applyAssociation($instanceId, $selection);
 
-//
-    //        case 'competence':
-//
-    //            $acl_man = \FormaLms\lib\Forma::getAclManager();
-    //            $_new_users = [];
-    //            $users_selected = $acl_man->getAllUsersFromIdst($selection);
-    //            $competence_users = $this->accessModel->getCompetenceUsers($instanceId, true);
-    //            $users_existent = array_keys($competence_users);
-    //            $info = $this->accessModel->getCompetenceInfo($instanceId);
-    //            //retrieve newly selected users
-    //            $_common_users = array_intersect($users_existent, $users_selected);
-    //            $_new_users = array_diff($users_selected, $_common_users);
-    //            $_old_users = array_diff($users_existent, $_common_users);
-    //            unset($_common_users); //free some memory
-    //
-    //            //if no users to add: check removed users (if any) then go back
-    //            if (empty($_new_users)) {
-    //                $res = $this->accessModel->removeCompetenceUsers($instanceId, $_old_users, true);
-    //                $return['type'] = 'redirect';
-    //                $message = $res ? 'ok_assign' : 'err_assign';
-    //                $return['redirect'] = 'index.php?r=adm/competences/show_users&id=' . (int) $instanceId . '&res=' . $message;
- //
-    //            } else {
-//
-    //                if ($info->type == 'score') {
-    //                    $moreParams['viewParams'] = true;
-    //                    $viewParams = $this->accessModel->getAssociationView($instanceId,$_new_users);
-    //                    $return['params'] =  array_merge($viewParams, [
-    //                                                            'type' => $info->type,
-    //                                                            'form_url' => 'index.php?r=adm/competences/assign_users_action',
-    //                                                            'del_selection' => implode(',', $_old_users),
-    //                                                            ]);
-    //                    
-    //                    $return['subFolderView'] = self::ACCESS_MODELS[$instanceType]['subFolderView'] ?? '';
-    //                    $return['additionalPaths'] = self::ACCESS_MODELS[$instanceType]['additionalPaths'] ?? [];
-    //                    $return['view'] = self::ACCESS_MODELS[$instanceType]['returnView'];
-    //                } else {
-    //                    $return['type'] = 'redirect';
-    //                    $data = [];
-    //                    foreach ($_new_users as $id_user) {
-    //                        $data[$id_user] = 1;
-    //                    }
-    //                    $res1 = $this->accessModel->assignCompetenceUsers($instanceId, $data, true);
-    //                    $res2 = $this->accessModel->removeCompetenceUsers($instanceId, $_old_users, true);
-    //                    $message = $res1 && $res2 ? 'ok_assign' : 'err_assign';
-    //                    $return['redirect'] = ' index.php?r=adm/competences/show_users&id=' . (int) $instanceId . '&res=' . $message;
-    //           
-    //                }
-    //            }
-    //
-    //            break;
-//
-//
-    //            case "role":
-    //                $acl_man = \FormaLms\lib\Forma::getAclManager();
-//
-    //    
-    //                $members_existent = $this->accessModel->getMembers($instanceId);
-    //    
-    //                //retrieve newly selected users
-    //                $_common_members = array_intersect($members_existent, $selection);
-    //                $_new_members = array_diff($selection, $_common_members); //new users to add
-    //                $_old_members = array_diff($members_existent, $_common_members); //old users to delete
-    //                unset($_common_members); //free some memory
-    //    
-    //                //insert newly selected users in database
-    //                $res1 = $this->accessModel->assignMembers($instanceId, $_new_members);
-    //                $res2 = $this->accessModel->deleteMembers($instanceId, $_old_members);
-    //    
-    //                $this->accessModel->enrole($instanceId, $_new_members);
-    //            
-    //                //go back to main page, with result message
-    //                $return['redirect'] = 'index.php?r=adm/functionalroles/man_users&id=' . $instanceId .'&res=' . ($res1 && $res2 ? 'ok_users' : 'err_users');
-//
-    //                break;
-//
-    //            case 'group':
-    //    
-    //                $res = $this->accessModel->saveGroupMembers($instanceId, $selection);
-    //                $this->accessModel->enrole($instanceId, $selection);
-    //
-    //                $return['redirect'] = 'index.php?r=adm/groupmanagement/show_users&id='.$instanceId . ($res ? '&res=ok_assignuser' : '&res=err_assignuser');
-    //
-    //                break;
-    //   }
-
-       return $return;
+        return $return;
    }
 
 
-   public function getAccessList($instanceType, $instanceId, $parsing = false)
+   public function getAccessList($instanceId, $parsing = false)
    {
 
         $selection = $this->accessProcessor->getAccessList($instanceId);
-
-
-    //        case 'competence':
-//
-    //            $selection = $this->accessModel->getCompetenceUsers($instanceId);
-    //
-    //            break;
-//
-    //        case 'role':
-    //            
-    //            $selection = $this->accessModel->getMembers($instanceId);
-//
-    //            break;
-//
-    //        case 'group':
-    //        
-    //            $selection = $this->accessModel->getGroupMembers($instanceId);
-//
-    //            break;
-    //        
-    //        
-    //   }
 
 
        if ($parsing) {
