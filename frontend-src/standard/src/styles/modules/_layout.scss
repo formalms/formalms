@@ -36,6 +36,10 @@ body {
   }
 }
 
+div.row > a:first-child {
+  margin: 15px;
+}
+
 .clear {
   clear: both;
 }
