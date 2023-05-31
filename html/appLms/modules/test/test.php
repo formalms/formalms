@@ -307,12 +307,12 @@ function modtestgui($object_test)
             $arrHead = [];
             array_push($arrHead, $lang->def('_QUEST'), $lang->def('_TYPE'), $lang->def('_CATEGORY'), $lang->def('_QUESTION'));
             // Customfields head
-           
+
             foreach ($fields_mask as $field) {
                 array_push($arrHead, $field['name']);
-            } 
-          
-            
+            }
+
+
             array_push(
                 $arrHead,
                 $lang->def('_TEST_QUEST_ORDER'),
@@ -831,19 +831,13 @@ function defmodality()
     $idTest = importVar('idTest', true, 0);
     $db = \FormaLms\db\DbConn::getInstance();
     $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
-    $test_type = $db->fetch_row($res);
-    $object_test = createLO($test_type[0], $idTest);
+    $test_type = sql_fetch_assoc($res);
+    $object_test = createLO($test_type['obj_type'], $idTest);
 
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    list(
-        $title, $description, $display_type, $order_type, $shuffle_answer, $question_random_number,
-        $save_keep, $mod_doanswer, $can_travel,
-        $show_score, $show_score_cat, $show_doanswer, $show_solution,
-        $max_attempt, $hide_info,
-        $order_info, $cf_info, $use_suspension, $suspension_num_attempts, $suspension_num_hours, $suspension_prerequisites, $mandatory_answer, $retain_answers_history
-    ) = sql_fetch_row(sql_query("
+    $result = sql_fetch_assoc(sql_query("
     SELECT title, description, display_type, order_type, shuffle_answer, question_random_number, 
         save_keep, mod_doanswer, can_travel, 
         show_score, show_score_cat, show_doanswer, show_solution, 
@@ -852,7 +846,9 @@ function defmodality()
     FROM %lms_test
     WHERE idTest = '" . $idTest . "'"));
 
-    list($tot_quest) = sql_fetch_row(sql_query('
+    extract($result);
+
+    [$tot_quest] = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
     FROM ' . $GLOBALS['prefix_lms'] . "_testquest
     WHERE idTest = '" . (int) $idTest . "' AND type_quest <> 'title' AND type_quest <> 'break_page'"));
