@@ -1499,6 +1499,7 @@ class CourseAlmsController extends AlmsController
         }
 
         $params['course'] = $this->model->getCourseModDetails($id_course);
+
         //resolve edition flag into type
         if ($params['course']['course_edition'] == 1) {
             $params['course']['course_type'] = 'edition';
@@ -1532,6 +1533,14 @@ class CourseAlmsController extends AlmsController
         $params['unsubscribe_date_limit'] = $params['course']['unsubscribe_date_limit'] != '' && $params['course']['unsubscribe_date_limit'] != '0000-00-00 00:00:00'
             ? Format::date($params['course']['unsubscribe_date_limit'], 'date')
             : '';
+
+        $subsModel = new SubscriptionAlms($id_course, ($params['course']['course_edition']  > 0 ?? false), $params['has_editions_or_classrooms'] ?? false);
+
+        $params['subscribed'] = false;
+        //check if user is already subscribed
+        if ($subsModel->isUserSubscribed(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt())) {
+            $params['subscribed']  = true;
+        }
 
         $this->render('maskcourse', $params);
     }

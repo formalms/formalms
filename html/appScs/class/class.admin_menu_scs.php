@@ -182,13 +182,13 @@ class Admin_Managment_Scs extends Admin_Managment
                     $module = eval("return new $class_name();");
 
                     // Retriving all token for this module
-                    $all_module_token = &$module->getAllToken($op);
+                    $all_module_token = $module->getAllToken($op);
 
                     // Retriving appropiated idst
-                    $all_module_idst = &$admin_manager->fromRolePathToIdst($base_path . '/' . $modname, $all_module_token);
+                    $all_module_idst = $admin_manager->fromRolePathToIdst($base_path . '/' . $modname, $all_module_token);
 
                     // Match with the real user permission
-                    $module_perm = &$admin_manager->modulePermissionAsToken($all_admin_permission, $all_module_idst);
+                    $module_perm = $admin_manager->modulePermissionAsToken($all_admin_permission, $all_module_idst);
 
                     // Retrive new permission
                     $selected_token = $module->getSelectedPermission($source_array, $modname, $op);

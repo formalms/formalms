@@ -194,7 +194,7 @@ $htmlData = '';
 
     $htmlData .= (Form::closeElementSpace()
         . Form::openButtonSpace()
-        . ((($_REQUEST['r'] == 'alms/course/newcourse') || ($_REQUEST['r'] == 'alms/course/modcourse' && (isset($row) && $row[0] == 0))) ? Form::getCheckbox(Lang::t('_AUTO_SUBSCRIPTION'), 'auto_subscription', 'auto_subscription', '1', true) : '')
+        . ((($_REQUEST['r'] == 'alms/course/newcourse') || ($_REQUEST['r'] == 'alms/course/modcourse' && !$subscribed)) ? Form::getCheckbox(Lang::t('_AUTO_SUBSCRIPTION'), 'auto_subscription', 'auto_subscription', '1', true) : '')
         . Form::getButton('save', 'save', Lang::t('_SAVE'))
         . Form::getButton('undo', 'undo', Lang::t('_UNDO'))
         . Form::closeButtonSpace());

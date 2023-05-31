@@ -1273,7 +1273,7 @@ function showResult($object_test, $id_param)
             $score_status = 'not_passed';
         }
     }
-    if (array_key_exists('', $test_info) && !$test_info['']) {
+    if (array_key_exists('show_only_status', $test_info) && !$test_info['show_only_status']) {
         if ($num_manual != 0) {
             $score_status = 'not_checked';
         } else {

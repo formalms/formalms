@@ -25,6 +25,13 @@ class CoursereportLmsController extends LmsController
     /** @var int */
     protected $idCourse;
 
+    protected $json;
+
+    protected $permissions;
+
+
+    protected $model;
+
     public function init()
     {
         $this->idCourse = (int) $this->session->get('idCourse');
@@ -363,8 +370,11 @@ class CoursereportLmsController extends LmsController
                                     if(!isset($test_details[$id_test]['varianza'])) {
                                         $test_details[$id_test]['varianza'] = 0;
                                     }
-                                    $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']);
-                                    $test_details[$id_test]['varianza'] = array_key_exists('varianza', $test_details[$id_test]) ? sqrt($test_details[$id_test]['varianza']) : 0;
+                                    if(array_key_exists('passed', $test_details[$id_test]) && array_key_exists('not_passed', $test_details[$id_test])) {
+                                        ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']) > 0 ? $test_details[$id_test]['varianza'] /= ($test_details[$id_test]['passed'] + $test_details[$id_test]['not_passed']) : $test_details[$id_test]['varianza'] = 0;
+                                        $test_details[$id_test]['varianza'] = array_key_exists('varianza', $test_details[$id_test]) ? sqrt($test_details[$id_test]['varianza']) : 0;
+                                
+                                    }
                                 }
 
                                 $passed = (isset($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED]) ? round($test_details[$info_report->getIdSource()][CoursereportLms::TEST_STATUS_PASSED], 2) : '-');
