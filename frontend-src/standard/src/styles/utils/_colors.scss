@@ -19,8 +19,8 @@
   --color-navbtn-text-inter: hsla(0, 0%, 100%, 1.0);
 
   --color-wrapper-bg: var(--color-grey); // rgb(242, 242, 242)
-  --color-wrapper-text: hsla(0%, 0%, 24%, 1); // automatico
-  --color-wrapper-text-50: hsla(0%, 0%, 18%, 0.057); // calcolato automaticamente, è una variante luminosità di --color-wrapper-text
+  --color-wrapper-text: rgb(60, 60, 60); // automatico
+  --color-wrapper-text-50: rgba(47, 47, 47, 0.057); // calcolato automaticamente, è una variante luminosità di --color-wrapper-text
 
   --color-icon-bg:hsla(27, 96%, 80%, 1.0);
   --color-icon-text: hsla(0, 0%, 20%, 1.0); // calcolato automaticamente
