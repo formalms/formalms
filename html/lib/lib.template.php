@@ -50,14 +50,12 @@ function getTemplate()
 
         return $plat_templ;
     }
-    require_once('lib.user.php');
-    require_once('lib.docebo.php');
     // search template according to the org_chart_tree option
-    if (!Docebo::user()->isAnonymous()) {
+    if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
         $qtxt = 'SELECT associated_template FROM
 			%adm_org_chart_tree
 			WHERE associated_template IS NOT NULL AND
-			idst_oc IN (' . implode(',', Docebo::user()->getArrSt()) . ')
+			idst_oc IN (' . implode(',', \FormaLms\lib\FormaUser::getCurrentUser()->getArrSt()) . ')
 			ORDER BY iLeft DESC
 			LIMIT 0,1';
 
@@ -74,7 +72,7 @@ function getTemplate()
     }
 
     // search for the default template
-    $session->set('template', getDefaultTemplate());
+    setTemplate(getDefaultTemplate());
 
     return $session->get('template');
 }
@@ -195,13 +193,12 @@ function checkTemplateVersion($template_name)
     if ($session->has('template_info') && $session->get('template_info') != false) {
         return $session->get('template_info')->getCheckVersion();
     } else {
-        require_once Forma::inc(_adm_ . '/versions.php');
         $template_forma_version = readTemplateManifest($template_name, 'forma_version');
         $check = [];
         if ($template_forma_version) {
-            if (version_compare(_template_min_version_, $template_forma_version) <= 0) {
-                return true;
-            }
+
+            return \FormaLms\lib\Version\VersionChecker::checkTemplateVersion($template_forma_version);
+
         }
 
         return false;
@@ -210,8 +207,6 @@ function checkTemplateVersion($template_name)
 
 function getTemplateVersion($template_name)
 {
-    require_once Forma::inc(_adm_ . '/versions.php');
-
     return readTemplateManifest($template_name, 'forma_version');
 }
 
@@ -378,10 +373,6 @@ function getTitleArea($text, $image = '', $alt_image = '', $ignore_glob = false)
 
             $GLOBALS['page']->add('<li><a href="#main_area_title">' . Lang::t('_JUMP_TO', 'standard') . ' ' . $title . '</a></li>', 'blind_navigation');
 
-            if ($title) {
-                $GLOBALS['page_title'] = FormaLms\lib\Get::sett('page_title', '') . ' &rsaquo; ' . $title;
-            }
-
             // Init navigation
             if (count($text) > 1) {
                 // $html .= '<ul class="navigation">';
@@ -501,7 +492,8 @@ function getDeleteUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-) {
+)
+{
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
@@ -550,7 +542,8 @@ function getModifyUi(
     $undo_ref,
     $confirm_text = false,
     $undo_text = false
-) {
+)
+{
     require_once _base_ . '/lib/lib.form.php';
 
     $txt = '<h2>' . $are_you_sure . '</h2>'
@@ -648,7 +641,37 @@ function getAccessibilityStatus()
 
 function getTemplateFromIdOrg(int $id_org)
 {
-    list($template_name) = sql_fetch_row(sql_query("select associated_template from core_org_chart_tree where idOrg=$id_org"));
+    [$template_name] = sql_fetch_row(sql_query("select associated_template from core_org_chart_tree where idOrg=$id_org"));
 
     return $template_name;
+}
+
+/*
+ * return the specific name for the current page for adding into the title html tag.
+ * Required for accessibility. Eache page have to describe the context
+ *
+ * @param string $page_ref e referring to the page
+ * @return string the page title
+ *
+ * */
+function getPageName()
+{
+    $pageRef = str_replace('/', '_','adm/homepage/show');
+
+    $request = FormaLms\lib\Get::req('r', DOTY_MIXED, '');
+    $modName = FormaLms\lib\Get::req('modname', DOTY_ALPHANUM, '');
+    $tab = FormaLms\lib\Get::req('mycourses_tab', DOTY_STRING, '');
+    if (!empty($request)) {
+        $pageRef = str_replace('/', '_', $request);
+    } elseif (!empty($modName)) {
+        $operation = FormaLms\lib\Get::req('op', DOTY_ALPHANUM, '');
+        $pageRef = sprintf('%s_%s', $modName, $operation);
+    }
+
+    if (!empty($tab)) {
+        $pageRef = $tab;
+    }
+    $a = Lang::t(strtoupper('_' . $pageRef), 'page_title');
+
+    return Lang::t(strtoupper('_' . $pageRef), 'page_title');
 }

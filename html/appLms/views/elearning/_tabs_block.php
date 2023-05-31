@@ -9,7 +9,7 @@
 
                 $_model = new ElearningLms();
                 $count = 0;
-                $statusFilters = $_model->getFilterStatusCourse(Docebo::user()->getIdst());
+                $statusFilters = $_model->getFilterStatusCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
 
                 $html = '<ul class="filterBar nav nav-pills">';
 
@@ -39,15 +39,14 @@
 
                 // select status course
                 $_model = new ElearningLms();
-                $_select_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(Docebo::user()->getIdst(), false), 0, 'title="'.Lang::t('_CATEGORY_SELECTED', 'course').'"');
+                $_select_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $_model->getListCategory(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), false), 0, 'title="'.Lang::t('_CATEGORY_SELECTED', 'course').'"');
                 $_select_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_select_category);
 
                 $_select_course_type = Form::getInputDropdown('', 'course_search_filter_type', 'filter_type', $_model->getFilterCourseType(), 'all', 'title="'.Lang::t('_COURSE_TYPE_SELECTION', 'course').'"');
                 $_select_course_type = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_select_course_type);
 
-                $_select_year = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(Docebo::user()->getIdst()), 0, 'title="'.Lang::t('_YEAR_SELECTION', 'simplesel').'"');
+                $_select_year = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $_model->getFilterYears(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()), 0, 'title="'.Lang::t('_YEAR_SELECTION', 'simplesel').'"');
                 $_select_year = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_select_year);
-
 
                 $this->widget('coursefilter', [
                     'id' => 'course_search',
@@ -100,7 +99,7 @@
     });
     
     function saveCurrentFilter(){
-        var this_user = '<?php echo Docebo::user()->idst; ?>'
+        var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>'
         var ctype = $('#course_search_filter_type').selectpicker().val();
         setCookie(this_user+'.my_course.type',ctype,60,"/")
         var category = $('#course_search_filter_cat').selectpicker().val();
@@ -111,7 +110,7 @@
     }
 
     function clearCurrentFilter(){
-        var this_user = '<?php echo Docebo::user()->idst; ?>'
+        var this_user = '<?php echo \FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(); ?>'
         prev = ["0"];
         setCookie(this_user+'.my_course.type',"",3650,"/")
         setCookie(this_user+'.my_course.category',"",-3650,"/")

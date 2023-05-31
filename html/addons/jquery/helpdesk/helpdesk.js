@@ -1,5 +1,3 @@
-
-
 $(document).ready(function() {
 
     $('#_HELPDESK').click(function() {
