@@ -828,19 +828,13 @@ function defmodality()
     $idTest = importVar('idTest', true, 0);
     $db = DbConn::getInstance();
     $res = $db->query("SELECT obj_type FROM %lms_test WHERE idTest = '" . (int) $idTest . "'");
-    $test_type = $db->fetch_row($res);
-    $object_test = createLO($test_type[0], $idTest);
+    $test_type = sql_fetch_assoc($res);
+    $object_test = createLO($test_type['obj_type'], $idTest);
 
     $back_url = urldecode(importVar('back_url'));
     $url_coded = htmlentities(urlencode($back_url));
 
-    [
-        $title, $description, $display_type, $order_type, $shuffle_answer, $question_random_number,
-        $save_keep, $mod_doanswer, $can_travel,
-        $show_score, $show_score_cat, $show_doanswer, $show_solution, $show_quest_score,
-        $max_attempt, $hide_info,
-        $order_info, $cf_info, $use_suspension, $suspension_num_attempts, $suspension_num_hours, $suspension_prerequisites, $mandatory_answer, $retain_answers_history
-    ] = sql_fetch_row(sql_query("
+    $result = sql_fetch_assoc(sql_query("
     SELECT title, description, display_type, order_type, shuffle_answer, question_random_number, 
         save_keep, mod_doanswer, can_travel, 
         show_score, show_score_cat, show_doanswer, show_solution, show_quest_score
@@ -848,6 +842,8 @@ function defmodality()
         order_info, cf_info, use_suspension, suspension_num_attempts, suspension_num_hours, suspension_prerequisites, mandatory_answer, retain_answers_history
     FROM %lms_test
     WHERE idTest = '" . $idTest . "'"));
+
+    extract($result);
 
     [$tot_quest] = sql_fetch_row(sql_query('
     SELECT COUNT(*) 
