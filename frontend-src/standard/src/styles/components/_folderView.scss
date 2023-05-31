@@ -7,6 +7,18 @@
   }
 }
 
+@mixin status-icon {
+  content: "";
+  width: 30px;
+  height: 30px;
+  display: block;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  top: 50%;
+  position: relative;
+  -webkit-mask-size: contain;
+}
+
 .folderView {
   padding: 16px;
 }
@@ -296,21 +308,44 @@ a.fv-is-delete {
   -webkit-mask-image: url('images/folderView/icon-scorm.svg');
 }
 
+.fv-is-attempted,
+.fv-is-incomplete,
+.fv-is-not-attempted,
+.fv-is-ab-initio,
+.fv-is-completed, 
+.fv-is-failed,
+.fv-is-passed {
+  border: none;
+}
+
 .fv-is-attempted:after,
 .fv-is-incomplete:after,
 .fv-is-not-attempted:after,
 .fv-is-ab-initio:after {
-  -webkit-mask-image: url('images/folderView/icon-chart.svg');
-}
-
-.fv-is-completed:after,
-.fv-is-passed:after {
-  -webkit-mask-image: url('images/folderView/icon-completed.svg');
+  -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
+  @include status-icon;
+  background-color: var(--color-error);
 }
 
 .fv-is-failed:after {
-  -webkit-mask-image: url('images/folderView/icon-failed.svg');
+  @include status-icon;
+  background-color: var(--color-error);
+  -webkit-mask-image: url("#{$assets}images/folderView/icon-delete.svg");
 }
+
+
+.fv-is-completed:after,
+.fv-is-passed:after {
+  @include status-icon;
+  background-color: var(--color-success);
+  -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
+}
+
+.fv-is-completed:after {
+  -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
+  background-color: var(--color-warning);
+  @include status-icon;
+} 
 
 .fv-is-tracking:after {
   -webkit-mask-image: url('images/folderView/icon-chart.svg');
