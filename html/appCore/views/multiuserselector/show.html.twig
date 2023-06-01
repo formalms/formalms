@@ -166,12 +166,18 @@ $(document).ready(function() {
         options.data = data[rel];
     }
 
-    
-    
-
     DTable[rel] = new window.frontend.modules.FormaTable(domId, options);
 
-               // Setup - add a text input to each header cell
+    $(`[rel=${rel}]`).find('.select-checkbox').addClass('no-pseudo-forma-table-first').append('<input class="select-all-ck" type="checkbox"/>');
+    $(`[rel=${rel}]`).find('.select-all-ck').change(function() {
+        if(this.checked) {
+            DTable[rel].DataTable.rows().select()
+        } else {
+            DTable[rel].DataTable.rows().deselect()
+        }   
+    });
+
+    // Setup - add a text input to each header cell
     columns[rel].forEach(function(item, i) {
         if ( item.searchable === true) {
             

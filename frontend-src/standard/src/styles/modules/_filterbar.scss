@@ -333,7 +333,7 @@
     // box-shadow: var(--color-0-350) 2px 2px 0 0;
     text-decoration: none;
     background-color: var(--color-wrapper-text);
-    color: var(--color-wrapper-bg);
+    color: var(--color-wrapper-bg) !important;
   }
   &:active {
     transform: scale(0.95,0.95);

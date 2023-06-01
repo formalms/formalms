@@ -60,6 +60,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         this.setOptions(options, this.eventsListeners, idOrClassOrElement);
 
         this.setCallbacks();
+
         this.DataTable = new dt(idOrClassOrElement,this._options);
 
         this.setActions();

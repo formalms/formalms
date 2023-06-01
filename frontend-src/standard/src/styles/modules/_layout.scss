@@ -40,6 +40,17 @@ div.row > a:first-child {
   margin: 15px;
 }
 
+.no-pseudo-forma-table-first {
+  &:after {
+    content:none !important;
+  }
+  &:before {
+    content:none !important;
+  }
+  padding-right: 17px;
+  padding-left: 17px;
+}
+
 .clear {
   clear: both;
 }
