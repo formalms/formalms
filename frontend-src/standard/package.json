@@ -75,6 +75,7 @@
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "clean-css-cli": "^5.6.2",
+    "copy-webpack-plugin": "^11.0.0",
     "copyfiles": "^2.4.1",
     "css-loader": "^6.7.3",
     "eslint": "^8.33.0",

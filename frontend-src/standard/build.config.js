@@ -1,6 +1,7 @@
 
 const path = require('path');
 // const ESLintPlugin = require('eslint-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -99,6 +100,12 @@ module.exports = {
  //   }
  // },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/images/', to: __dirname + '/../../html/templates/standard/static/images' },
+        { from: 'src/fonts/', to: __dirname + '/../../html/templates/standard/static/fonts' }
+      ]
+    })
   ],
 
 };
