@@ -148,6 +148,8 @@ $(document).ready(function() {
                 type: 'GET',
                 data: function (d) {
                     d.dataType = rel;
+                    d.learning_filter = '{{ learningFilter }}'
+                    d.id_org = '{{ idOrg }}'
                     
                     d.active_search =   $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search');
                    

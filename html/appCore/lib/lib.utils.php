@@ -96,13 +96,13 @@ class Util
         }
     }
 
-    public static function jump_to($relative_url, $anchor = '')
+    public static function jump_to($relative_url, $anchor = '', $folder = false)
     {
         $relative_url = trim(str_replace('&amp;', '&', $relative_url));
 
         session_write_close();
 
-        $url = FormaLms\lib\Get::abs_path() . $relative_url . $anchor;
+        $url = FormaLms\lib\Get::abs_path($folder) . $relative_url . $anchor;
         header("Location: $url");
 
         ob_clean();

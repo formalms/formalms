@@ -29,7 +29,7 @@ class UserselectorAdmController extends AdmController
     protected $selection = 'user';
 
 
-    protected $tabs = ['user' => false,
+    public $tabs = ['user' => false,
                         'group' => false,
                         'org' => false,
                         'role' => false];
@@ -41,6 +41,16 @@ class UserselectorAdmController extends AdmController
         $this->requestObj = $this->request->getMethod() == 'POST' ? $this->request->request : $this->request->query;
         $this->requestArray = array_merge($this->request->request->all(), $this->request->query->all());
         $this->multiUserSelector = new MultiUserSelector($this->requestArray);
+
+        if (array_key_exists('instance', $this->requestArray)) {
+            $instanceType = $this->requestArray['instance'];
+
+            $this->multiUserSelector->setAccessProcessor($instanceType);
+
+            if(\Util::config('multiuserselector.use_filter.' . $instanceType)) {
+                $this->tabs = array_diff_key($this->tabs, array_flip(['org', 'role']));
+            }
+        }
 
         $tabs = array_key_exists('tab_filters', $this->requestArray) ? $this->requestArray['tab_filters'] : array_keys($this->tabs);
 
@@ -60,14 +70,6 @@ class UserselectorAdmController extends AdmController
 
             $this->selection = $tabs[0];
         }
-        
-
-        if (array_key_exists('instance', $this->requestArray)) {
-            $instanceType = $this->requestArray['instance'];
-
-            $this->multiUserSelector->setAccessProcessor($instanceType);
-        }
-
         return $this;
     }
 
@@ -77,7 +79,8 @@ class UserselectorAdmController extends AdmController
     {
         $selectedData = [];
         $accessSelection = [];
-
+        $learningFilter = 'none';
+        $idOrg = 0;
         $disableAjax = array_key_exists('disable_ajax', $this->requestArray) ? true : false;
         $instanceValue = $this->requestArray['instance']; 
         $instanceId = array_key_exists('id', $this->requestArray) ?  $this->requestArray['id'] : 0;
@@ -126,6 +129,12 @@ class UserselectorAdmController extends AdmController
             }
         }
 
+        if(\Util::config('multiuserselector.use_filter.' . $instanceValue)) {
+            $learningFilter = \Util::config('multiuserselector.use_filter.' . $instanceValue);
+            $idOrg =  $instanceId;
+        }
+      
+
         $this->render('show', ['tabs' => $this->tabs,
                             'selection'=> $this->selection,
                             'columns' => $columns,
@@ -137,6 +146,8 @@ class UserselectorAdmController extends AdmController
                             'showSelectAll' => $showSelectAll,
                             'showUserAlert' => $showUserAlert,
                             'selectAllValue' => $selectAllValue,
+                            'learningFilter' => $learningFilter,
+                            'idOrg' => $idOrg,
                             'debug' => array_key_exists('debug', $this->requestArray) ? $this->requestArray['debug'] : false
                         ]);
     }
@@ -144,6 +155,7 @@ class UserselectorAdmController extends AdmController
 
     public function getDataTask()
     {
+      
         $dataType = $this->requestArray['dataType'];
         $params = array_merge($this->requestArray, ['json_format' => true]);
 
@@ -197,9 +209,10 @@ class UserselectorAdmController extends AdmController
 
         switch($result['type']) {
             case "redirect":
-                return Util::jump_to($result['redirect']);
+                return Util::jump_to($result['redirect'],'', $result['folder']);
 
                 break;
+
 
             case "render":
                 $this->_mvc_name = $result['subFolderView'];

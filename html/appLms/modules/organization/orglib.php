@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Interfaces\Accessible;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -40,7 +42,7 @@ define('PF_TEACHER', '-2');
 define('PF_ATTENDANCE', '-1');
 
 // organization customization of TreeDb class
-class OrgDirDb extends RepoDirDb
+class OrgDirDb extends RepoDirDb implements Accessible
 {
     // these 3 variales are set in overloaded addFolderById
     // before call to parent addFolderById.
@@ -995,7 +997,7 @@ class OrgDirDb extends RepoDirDb
 
     public function __setAccess($idOrgAccess, $selection, $relation = '')
     {
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
 
         $id_groups = $acl_man->getAllGroupsFromSelection($selection);
 
@@ -1054,6 +1056,17 @@ class OrgDirDb extends RepoDirDb
         $query = 'UPDATE ' . $GLOBALS['prefix_lms'] . "_organization SET access='' WHERE idOrg='" . $idOrgAccess . "'";
 
         return $res = $db->query($query);
+    }
+
+    public function getAccessList( $resourceId) : array {
+
+        return $this->__getAccess($resourceId);
+    }
+
+    public function setAccessList( $resourceId, array $selection) : bool {
+
+        $this->__setAccess($resourceId, $selection);
+        return true;
     }
 }
 
@@ -2111,4 +2124,8 @@ class Org_TreeView extends RepoTreeView
     {
         return $this->user_presence;
     }
+
+
+
+ 
 }

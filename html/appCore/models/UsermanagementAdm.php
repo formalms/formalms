@@ -562,7 +562,8 @@ class UsermanagementAdm extends Model
         // Retrive all the user selected
         $users_rows = [];
 
-        $res = $this->db->query($query);
+        $res = $this->db->query($query) ?: [];
+      
         foreach ($res as $row) {
             $users_rows[$row['idst']] = $row;
         } //end while
@@ -576,7 +577,7 @@ class UsermanagementAdm extends Model
                 $query_fields = 'SELECT f.id_common, f.type_field, fu.id_user, fu.user_entry ' .
                     ' FROM %adm_field_userentry AS fu JOIN %adm_field AS f ON (fu.id_common=f.id_common) ' .
                     ' WHERE id_user IN (' . implode(',', array_keys($users_rows)) . ') AND fu.id_common IN (' . implode(',', $custom_fields) . ') ';
-                $res_fields = $this->db->query($query_fields);
+                $res_fields = $this->db->query($query_fields) ?? [];
 
                 $field_sons = false;
                 $countries = false;
@@ -847,9 +848,10 @@ class UsermanagementAdm extends Model
             }
 
         }
-        $res = $this->db->query($filtered_query);
+        $res = $this->db->query($filtered_query) ?? [];
         $row = $this->db->fetch_row($res);
-        $output = $row[0];
+       
+        $output = is_array($row) ? $row[0] : [];
 
         return $output;
     }

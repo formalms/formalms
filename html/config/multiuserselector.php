@@ -92,6 +92,19 @@ return [
             'className' => 'GroupmanagementAdm', 
             'returnType' => 'redirect'
             ],
-    ]
+        'coursepath' => [
+            'includes' => _lms_ . '/admin/models/SubscriptionAlms.php',
+            'className' => 'SubscriptionAlms', 
+            'returnType' => 'redirect'
+            ],
+        'organization' => [
+            'includes' => _lms_ . '/modules/organization/orglib.php',
+            'className' => 'OrgDirDb', 
+            'returnType' => 'redirect'
+            ],
+        ],
+        "use_filter" => [
+            "organization" => "course",
+        ],
     
 ];

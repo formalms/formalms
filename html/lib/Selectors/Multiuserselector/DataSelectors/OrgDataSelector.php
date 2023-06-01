@@ -11,9 +11,6 @@ class OrgDataSelector extends DataSelector{
 
     const ADDITIONAL_COLS = [];
 
-    private $widgetBuilder;
-
- 
 
     public function __construct() {
      

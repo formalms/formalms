@@ -309,14 +309,24 @@ class LomanagerLms extends Model
                 ];
 
                 $lo['actions'][] = [
-                    'name' => 'access',
-                    'active' => true,
-                    'type' => 'submit',
-                    'content' => "${type}[org_opaccess][$id]",
-                    'showIcon' => true,
-                    'icon' => 'icon-access',
-                    'label' => 'Access',
-                ];
+                     'name' => 'access',
+                     'active' => true,
+                     'type' => 'link',
+                     'content' => "/appCore/index.php?r=adm/userselector/show&id=$id&instance=$type",
+                     'showIcon' => true,
+                     'icon' => 'icon-access',
+                     'label' => 'Access',
+                 ];
+
+               // $lo['actions'][] = [
+               //     'name' => 'access',
+               //     'active' => true,
+               //     'type' => 'submit',
+               //     'content' => "${type}[org_opaccess][$id]",
+               //     'showIcon' => true,
+               //     'icon' => 'icon-access',
+               //     'label' => 'Access',
+               // ];
 
                 if ($lo['canBeCategorized']) {
                     $lo['actions'][] = [

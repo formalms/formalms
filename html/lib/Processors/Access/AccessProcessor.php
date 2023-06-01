@@ -32,6 +32,8 @@ namespace FormaLms\lib\Processors\Access;
 
     protected string $redirect = '';
 
+    protected ?string $folder = null;
+
     protected $accessModel;
 
     protected array $params = [];
@@ -74,19 +76,15 @@ namespace FormaLms\lib\Processors\Access;
     }
 
     private function getClassName() : string {
-
         return $this->className;
-
     }
 
     private function useNamespace() : bool{
-
         return $this->useNamespace;
     }
 
     private function includes() : string {
         return $this->includes;
-
     }
 
     protected function response() : array{
@@ -94,6 +92,8 @@ namespace FormaLms\lib\Processors\Access;
 
         if($response['type'] == 'redirect') {
             $response['redirect'] = $this->getRedirect();
+            $response['folder'] = $this->getFolder() ?? false;
+
         } else {
             $response['view'] = $this->getReturnView();
             $response['subFolderView'] = $this->getSubFolderView();
@@ -102,48 +102,62 @@ namespace FormaLms\lib\Processors\Access;
         }
 
         return $response;
-
     }
 
     private function getReturnType() : string {
         return $this->returnType;
+    }
 
+    public function setReturnView(string $view) : self {
+        $this->returnView = $view;
+        return $this;
     }
 
     private function getReturnView() : string {
         return $this->returnView;
-
     }
 
     private function getRedirect() : string {
         return $this->redirect;
-
     }
-
 
     public function setRedirect(string $redirect) : self {
         $this->redirect = $redirect;
         return $this;
+    }
 
+    public function setFolder(string $folder) : self {
+        $this->folder = $folder;
+        return $this;
+    }
+
+    public function getFolder() : ?string {
+        return $this->folder;
     }
 
     public function setReturnType(string $returnType) : self {
         $this->returnType = $returnType;
         return $this;
+    }
 
+    public function setSubFolderView(string $subFolderView) : self {
+        $this->subFolderView = $subFolderView;
+        return $this;
     }
 
     private function getSubFolderView() : string {
         return $this->subFolderView;
+    }
 
+    public function setAdditionalPaths(array $additionalPaths) : self {
+        $this->additionalPaths = $additionalPaths;
+        return $this;
     }
 
     private function getAdditionalPaths() : array {
         return $this->additionalPaths;
-
     }
 
-    
     public function getSessionData(string $instance, bool $users = false): array
     {
         $sessionData = $this->session->get($instance . '_' . self::SESSION_KEY) ?? [];
@@ -175,7 +189,6 @@ namespace FormaLms\lib\Processors\Access;
     public function getParams(): array
     {
         return $this->params;
- 
     }
 
     public function applyAssociation($resourceId, array $selection) : array {

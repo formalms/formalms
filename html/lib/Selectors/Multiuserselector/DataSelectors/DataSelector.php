@@ -37,11 +37,18 @@ abstract class DataSelector implements DataSelectable {
                 new ReflectionExtractor()
             )];
         $this->serializer = new Serializer($normalizers, $encoders);
+
+  
+
     }
+
+  
 
     public function getName() : string  {
         return $this->name;
     }
+
+  
 
     public function getData($params = []){
     }

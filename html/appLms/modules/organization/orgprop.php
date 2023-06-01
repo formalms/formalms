@@ -506,7 +506,7 @@ function organization_access(&$treeView, $idItem)
     require_once _base_ . '/lib/lib.form.php';
     require_once _base_ . '/lib/lib.userselector.php';
     require_once _lms_ . '/lib/lib.repo.php';
-    $lang = &FormaLanguage::createInstance('organization', 'lms');
+    $lang = FormaLanguage::createInstance('organization', 'lms');
     $folder = $treeView->tdb->getFolderById($idItem);
 
     $user_select = new UserSelector();

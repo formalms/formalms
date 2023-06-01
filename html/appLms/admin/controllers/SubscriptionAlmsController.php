@@ -119,10 +119,7 @@ class SubscriptionAlmsController extends AlmsController
         return $message;
     }
 
-    protected function _addToCourseGroup($id_group, $id_user)
-    {
-        \FormaLms\lib\Forma::getAclManager()->addToGroup($id_group, $id_user);
-    }
+
 
     public function show()
     {
@@ -348,7 +345,7 @@ class SubscriptionAlmsController extends AlmsController
                             foreach ($user_selected as $id_user) {
                                 if (!$limited_subscribe || $max_subscribe) {
                                     //$this->acl_man->addToGroup($level_idst[3], $id_user);
-                                    $this->_addToCourseGroup($level_idst[3], $id_user);
+                                    $this->model->_addToCourseGroup($level_idst[3], $id_user);
 
                                     if ($model->subscribeUser($id_user, 3, $waiting, $date_begin_validity, $date_expire_validity)) {
                                         --$max_subscribe;
@@ -532,7 +529,7 @@ class SubscriptionAlmsController extends AlmsController
                 if (!$limited_subscribe || $max_subscribe) {
                     if ($lv_sel != 0) {
                         //$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
-                        $this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
+                        $this->model->_addToCourseGroup($level_idst[$lv_sel], $id_user);
 
                         if ($model->subscribeUser($id_user, $lv_sel, $waiting, $date_begin_validity, $date_expire_validity)) {
                             --$max_subscribe;
@@ -1038,7 +1035,7 @@ class SubscriptionAlmsController extends AlmsController
                 }
 
                 //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-                $this->_addToCourseGroup($level_idst[$level], $id_user);
+                $this->model->_addToCourseGroup($level_idst[$level], $id_user);
 
                 // Save limit preference for admin
                 if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
@@ -1617,7 +1614,7 @@ class SubscriptionAlmsController extends AlmsController
                                 if (!$limited_subscribe || $max_subscribe) {
                                     if ($lv_sel != 0) {
                                         //$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
-                                        $this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
+                                        $this->model->_addToCourseGroup($level_idst[$lv_sel], $id_user);
 
                                         if ($model->subscribeUser($id_user, $lv_sel, $waiting)) {
                                             --$max_subscribe;
@@ -1663,7 +1660,7 @@ class SubscriptionAlmsController extends AlmsController
                                     if (!$limited_subscribe || $max_subscribe) {
                                         if ($lv_sel != 0) {
                                             //$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
-                                            $this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
+                                            $this->model->_addToCourseGroup($level_idst[$lv_sel], $id_user);
 
                                             if ($model_t->subscribeUser($id_user, $lv_sel, $waiting)) {
                                                 --$max_subscribe;
@@ -1708,7 +1705,7 @@ class SubscriptionAlmsController extends AlmsController
                                     if (!$limited_subscribe || $max_subscribe) {
                                         if ($lv_sel != 0) {
                                             //$this->acl_man->addToGroup($level_idst[$lv_sel], $id_user);
-                                            $this->_addToCourseGroup($level_idst[$lv_sel], $id_user);
+                                            $this->model->_addToCourseGroup($level_idst[$lv_sel], $id_user);
 
                                             if ($model_t->subscribeUser($id_user, $lv_sel, $waiting)) {
                                                 --$max_subscribe;
@@ -1904,7 +1901,7 @@ class SubscriptionAlmsController extends AlmsController
 
                             if (!$limited_subscribe || $max_subscribe) {
                                 //$this->acl_man->addToGroup($level_idst['3'], $id_user);
-                                $this->_addToCourseGroup($level_idst['3'], $id_user);
+                                $this->model->_addToCourseGroup($level_idst['3'], $id_user);
 
                                 if ($this->model->subscribeUser($id_user, '3', $waiting)) {
                                     ++$user_added;
@@ -1968,7 +1965,7 @@ class SubscriptionAlmsController extends AlmsController
 
                             if (!$limited_subscribe || $max_subscribe) {
                                 //$this->acl_man->addToGroup($level_idst['3'], $id_user);
-                                $this->_addToCourseGroup($level_idst['3'], $id_user);
+                                $this->model->_addToCourseGroup($level_idst['3'], $id_user);
 
                                 if ($this->model->subscribeUser($id_user, '3', $waiting)) {
                                     ++$user_added;
@@ -2147,7 +2144,7 @@ class SubscriptionAlmsController extends AlmsController
                 if (!$limited_subscribe || $max_subscribe) {
                     if ($this->model->subscribeUser($id_user, $level, $waiting)) {
                         //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-                        $this->_addToCourseGroup($level_idst[$level], $id_user);
+                        $this->model->_addToCourseGroup($level_idst[$level], $id_user);
                         --$max_subscribe;
                     }
                 }
@@ -2267,13 +2264,13 @@ class SubscriptionAlmsController extends AlmsController
 
                 $old_id_course = $_GET['id_course'];
                 $_GET['id_course'] = $id_course;
-                $course = new self();
+               
 
                 while (list($id_user, $level) = sql_fetch_row($result)) {
                     if (!$limited_subscribe || $max_subscribe) {
-                        if ($course->model->subscribeUser($id_user, $level, $waiting)) {
+                        if ($this->model->subscribeUser($id_user, $level, $waiting)) {
                             //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-                            $course->_addToCourseGroup($level_idst[$level], $id_user);
+                            $this->model->_addToCourseGroup($level_idst[$level], $id_user);
                             --$max_subscribe;
                         }
                     }
@@ -2792,7 +2789,7 @@ class SubscriptionAlmsController extends AlmsController
                 if (count($level_idst) == 0 || $level_idst[1] == '') {
                     $level_idst = FormaCourse::createCourseLevel($id_course);
                 }
-                $this->_addToCourseGroup($level_idst[$lv_user], $id_user);
+                $this->model->_addToCourseGroup($level_idst[$lv_user], $id_user);
             }
         }
 
@@ -2892,7 +2889,7 @@ class SubscriptionAlmsController extends AlmsController
                 $level_idst = FormaCourse::createCourseLevel($id_course);
             }
             //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-            $this->_addToCourseGroup($level_idst[$level], $id_user);
+            $this->model->_addToCourseGroup($level_idst[$level], $id_user);
         }
 
         $output['success'] = $res ? true : false;
@@ -3196,7 +3193,7 @@ class SubscriptionAlmsController extends AlmsController
         $output['header'] = Lang::t('_MOD', 'subscribe') . '&nbsp;';
         $output['body'] = $body;
 
-        $output['__date_inputs'] = $GLOBALS['date_inputs'];
+        $output['__date_inputs'] = $GLOBALS['date_inputs'] ?? '';
 
         echo $this->json->encode($output);
     }
@@ -3445,7 +3442,7 @@ class SubscriptionAlmsController extends AlmsController
                     $level = 3; //student
                     $waiting = false;
                     //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-                    $this->_addToCourseGroup($level_idst[$level], $id_user);
+                    $this->model->_addToCourseGroup($level_idst[$level], $id_user);
                     $this->model->id_course = $id_course;
                     $this->model->subscribeUser($id_user, $level, $waiting);
                 }
@@ -3484,7 +3481,7 @@ class SubscriptionAlmsController extends AlmsController
                 $level = 3; //student
                 $waiting = false;
                 //$this->acl_man->addToGroup($level_idst[$level], $id_user);
-                $this->_addToCourseGroup($level_idst[$level], $id_user);
+                $this->model->_addToCourseGroup($level_idst[$level], $id_user);
                 $this->model->id_course = $id_course;
                 if (isset($classrooms[$id_course])) {
                     $this->model->id_date = $classrooms[$id_course];

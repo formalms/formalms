@@ -58,9 +58,7 @@ class UserDataSelector extends DataSelector{
         $searchValue = array_key_exists('search', $params) ? (string) $params['search']['value'] : false;
         $learning_filter = array_key_exists('learning_filter', $params) ? (string) $params['learning_filter'] : 'none'; 
 
-      
-       
-        
+    
         $var_fields = array_key_exists('_dyn_field', $params) ? (array) $params['_dyn_field'] : [];
         if (stristr($sort, '_dyn_field_') !== false) {
             $index = str_replace('_dyn_field_', '', $sort);
@@ -101,10 +99,13 @@ class UserDataSelector extends DataSelector{
             'rowsPerPage' => $rowsPerPage,
         ];
 
-    
+        if($learning_filter === 'course') {
+            $idOrg = 0;
+        }
 
         $list = $this->builder->getUsersList($idOrg, $descendants, $pagination, $searchFilter, true, $learning_filter, $columnsFilter);
 
+     
         $records = $this->mapData($list, $searchValue);
 
         $pagination['data'] = $records;

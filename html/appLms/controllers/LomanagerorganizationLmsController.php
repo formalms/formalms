@@ -106,12 +106,22 @@ class LomanagerorganizationLmsController extends LomanagerLmsController
                 $lo['actions'][] = [
                     'name' => 'access',
                     'active' => true,
-                    'type' => 'submit',
-                    'content' => "${type}[org_opaccess][$id]",
+                    'type' => 'link',
+                    'content' => "/appCore/index.php?r=adm/userselector/show&id=$id&instance=$type",
                     'showIcon' => true,
                     'icon' => 'icon-access',
                     'label' => 'Access',
                 ];
+
+                //$lo['actions'][] = [
+                //    'name' => 'access',
+                //    'active' => true,
+                //    'type' => 'submit',
+                //    'content' => "${type}[org_opaccess][$id]",
+                //    'showIcon' => true,
+                //    'icon' => 'icon-access',
+                //    'label' => 'Access',
+                //];
 
                 if (isset($lo['canBeCategorized'])) {
                     $lo['actions'][] = [

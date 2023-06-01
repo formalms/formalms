@@ -147,7 +147,7 @@ class Module_Storage extends LmsModule
         return $tb->getTable();
     }
 
-    public function getSelectedPermission()
+    public function getSelectedPermission($op = '')
     {
         $tokens = $this->getAllToken();
         $levels = CourseLevel::getTranslatedLevels();

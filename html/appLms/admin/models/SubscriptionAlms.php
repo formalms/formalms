@@ -11,9 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden');
 
-class SubscriptionAlms extends Model
+class SubscriptionAlms extends Model implements Accessible
 {
     protected $db;
     protected $acl_man;
@@ -28,6 +30,10 @@ class SubscriptionAlms extends Model
     public $status;
     public $user_data;
     public $course_data;
+
+    protected $responseAccessor;
+
+    protected $accessUsers;
 
     public function __construct($id_course = false, $id_edition = false, $id_date = false)
     {
@@ -1622,4 +1628,98 @@ class SubscriptionAlms extends Model
     }
 
     //--- end coursepaths --------------------------------------------------------
+
+    public function getAccessList($resourceId) : array {
+
+        return $this->getCoursePathSubscriptionsList($resourceId);
+        
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+
+        require_once _lms_ . '/lib/lib.coursepath.php';
+        $old_selection = $this->getCoursePathSubscriptionsList($resourceId);
+
+      
+        $new_selection = $this->acl_man->getAllUsersFromSelection($selection);
+        $_common = array_intersect($new_selection, $old_selection);
+        
+        $_to_add = array_diff($new_selection, $_common);
+        $_to_del = array_diff($old_selection, $_common);
+        $this->setAccessUsers(['to_add' => $_to_add, 'to_del' => $_to_del]);
+        $path_man = new CoursePath_Manager();
+
+        //1 - get list of the courses of the coursepath
+     
+        $courses = $path_man->getAllCourses([$resourceId]);
+        if (empty($courses)) {
+            return false;
+        }
+
+         //2 - check if there are any editions or classrooms
+         require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+         $course_man = new Man_Course();
+ 
+         $classroom = $course_man->getAllCourses(false, 'classroom', $courses);
+         $edition = $course_man->getAllCourses(false, 'edition', $courses);
+ 
+         if(empty($classroom) && empty($edition)) {
+
+            $result = 'ok_subcribe';
+       
+             $path_man->subscribeUserToCoursePath($resourceId, $_to_add);
+             require_once \FormaLms\lib\Forma::inc(_lms_ . '/lib/lib.course.php');
+ 
+             foreach ($courses as $id_course) {
+                 $formaCourse = new FormaCourse($id_course);
+                 $level_idst = $formaCourse->getCourseLevel($id_course);
+                 if (count($level_idst) == 0 || $level_idst[1] == '') {
+                     $level_idst = FormaCourse::createCourseLevel($id_course);
+                 }
+                 foreach ($_to_add as $id_user) {
+                     $level = 3; //student
+                     $waiting = false;
+                     //$this->acl_man->addToGroup($level_idst[$level], $id_user);
+                     $this->_addToCourseGroup($level_idst[$level], $id_user);
+                     $this->id_course = $id_course;
+                     $res = $this->subscribeUser($id_user, $level, $waiting);
+
+                     if(!$res) {
+                        $result = 'err_subcribe';
+                     }
+                 }
+
+                 $this->setResponseforAccessor($result);
+             }
+         }
+
+        return true;
+    }
+
+    protected function setResponseforAccessor(string $response) {
+
+        $this->responseAccessor = $response;
+        return $this;
+    }
+
+    public function getAccessUsers() : array {
+        return $this->accessUsers;
+    }
+
+    protected function setAccessUsers(array $users) {
+
+        $this->accessUsers = $users;
+        return $this;
+    }
+
+    public function getResponseForAccessor() : string {
+        return $this->responseAccessor;
+    }
+
+    public function _addToCourseGroup($id_group, $id_user)
+    {
+        \FormaLms\lib\Forma::getAclManager()->addToGroup($id_group, $id_user);
+    }
+
+
 }
