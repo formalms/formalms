@@ -24,14 +24,12 @@
                     <h3>{{ Lang_translate('_ACCESS_LOCK', 'login') }}</h3>
                     <p>{{ block_attempts }}</p>
                 {% endif %}
-                {% if socialLogin is not defined %}
                     <nav class="homepage__links">
                         {% if isSelfRegistrationActive != false %}
                             <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_register_') }}">{{ Lang_translate('_REGISTER', 'login') }}</a>
                         {% endif %}
                         <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_lostpwd_') }}">{{ Lang_translate('_LOG_LOSTPWD', 'login') }}</a>
                     </nav>
-                {% endif %}
             </div>
         {% endif %}
         {% if socialLogin is defined %}
@@ -46,12 +44,6 @@
                         {% endfor %}
                     </div>
                 </div>
-                <nav class="homepage__links">
-                    {% if isSelfRegistrationActive != false %}
-                        <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_register_') }}">{{ Lang_translate('_REGISTER', 'login') }}</a>
-                    {% endif %}
-                    <a href="{{ Get_relPath('base') }}/index.php?r={{ constant('_lostpwd_') }}">{{ Lang_translate('_LOG_LOSTPWD', 'login') }}</a>
-                </nav>
             </div>
         {% endif %}
     {% else %}
