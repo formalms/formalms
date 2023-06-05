@@ -45,7 +45,6 @@ class Boot
         BOOT_USER => 'user',
         BOOT_SESSION_CHECK => 'sessionCheck',
         BOOT_INPUT => 'filteringInput',
-        BOOT_INPUT_ALT => 'anonFilteringInput',
         BOOT_LANGUAGE => 'language',
         BOOT_HOOKS => 'hooks',
         BOOT_DATETIME => 'dateTime',
@@ -491,31 +490,6 @@ class Boot
         // Generate a session signature or regenerate it if needed
         self::log('Generating session signature');
         Util::generateSignature();
-    }
-
-    private static function anonFilteringInput()
-    {
-        $step_report = [];
-
-        // Convert ' and " (quote or unquote)
-        self::log('Sanitize the input.');
-
-        $filter_input = new FilterInput();
-        $filter_input->tool = FormaLms\lib\Get::cfg('filter_tool', 'htmlpurifier');
-
-        $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        // Whitelist some tags if we're a teacher in a course:
-        if ($session->has('idCourse') && $session->get('levelCourse') >= 6) {
-            $filter_input->appendToWhitelist([
-                'tag' => ['object', 'param'],
-                'attrib' => [
-                    'object.data', 'object.type', 'object.width',
-                    'object.height', 'param.name', 'param.value',
-                ],
-            ]);
-        }
-
-        $filter_input->sanitize();
     }
 
     private static function filteringInput()
