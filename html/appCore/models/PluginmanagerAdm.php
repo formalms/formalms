@@ -541,8 +541,8 @@ class PluginmanagerAdm extends Model
         }
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
         $query = 'insert into ' . $this->table . "
-                (plugin_id, name, title, category, version, author, link, priority, description, regroup, active, core, created_at, updated_at) 
-				values(null,'" . addslashes($plugin_name) . "', '" . addslashes($plugin_info['title']) . "', '" . addslashes($plugin_info['category']) . "',
+                ( name, title, category, version, author, link, priority, description, regroup, active, core, created_at, updated_at) 
+				values('" . addslashes($plugin_name) . "', '" . addslashes($plugin_info['title']) . "', '" . addslashes($plugin_info['category']) . "',
 					'" . addslashes($plugin_info['version']) . "', '" . addslashes($plugin_info['author']) . "', '" . addslashes($plugin_info['link']) . "', $priority,
 					'" . (is_array($plugin_info['description']) ? 'Description' : addslashes($plugin_info['description'])) . "'," . time() . ' ,0,' . (int)$core . ', now(), now() )';
         if ($plugin_info) {
