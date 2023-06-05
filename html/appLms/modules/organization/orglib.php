@@ -1813,7 +1813,7 @@ class Org_TreeView extends RepoTreeView
     public function getLoData($idLoList)
     {
         $idCourse = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
-        if ($GLOBALS['course_descriptor']->getValue('course_type') == 'classroom') {
+        if (array_key_exists('course_descriptor',$GLOBALS) && $GLOBALS['course_descriptor']->getValue('course_type') === 'classroom') {
             require_once _lms_ . '/lib/lib.date.php';
             $man_date = new DateManager();
             $this->user_presence = $man_date->checkUserPresence(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt(), $idCourse);

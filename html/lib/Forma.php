@@ -134,7 +134,7 @@ class Forma
      * @throws PathNotFoundException
      *
      */
-    public static function include($path, $file, $pattern = '/[a-zA-Z0-9.]+\.php/')
+    public static function include($path, $file, $pattern = '/[a-zA-Z0-9._]+\.php/')
     {
         //clean file from injection in protocol xxxxxx.php
         preg_match($pattern, $file, $matches);
