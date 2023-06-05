@@ -320,7 +320,6 @@ a.fv-is-delete {
 
 .fv-is-attempted:after,
 .fv-is-incomplete:after,
-.fv-is-not-attempted:after,
 .fv-is-ab-initio:after {
   -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
   @include status-icon;
