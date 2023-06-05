@@ -170,10 +170,10 @@ class Boot
         $cfg = [];
         if (file_exists(dirname(__DIR__, 1). '/config.php')) {
             require dirname(__DIR__, 1). '/config.php';
-            $cfg['configExists'] = true;
+            $configExists = true;
         }
         else {
-            $cfg['configExists'] = false;
+            $configExists = false;
         }
 
         $GLOBALS['cfg'] = $cfg;
@@ -185,6 +185,8 @@ class Boot
             $cfg['prefix_ecom'] = 'ecom';
             $cfg['prefix_crm'] = 'crm';
         }
+
+        $cfg['configExists'] = $configExists;
 
         $GLOBALS['prefix_fw'] = $cfg['prefix_fw'];
         $GLOBALS['prefix_lms'] = $cfg['prefix_lms'];

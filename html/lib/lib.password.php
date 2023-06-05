@@ -41,7 +41,7 @@ class Password
     {
         $this->policies = PasswordPolicies::check($password);
         $this->password = $password;
-        $this->algorithm_default = (int) FormaLms\lib\Get::sett('pass_algorithm', PASSWORD_MD5);
+        $this->algorithm_default = (int) FormaLms\lib\Get::sett('pass_algorithm', PASSWORD_BCRYPT);
         $this->algorithm_options = [
             PASSWORD_BCRYPT => [
                 'cost' => 10,

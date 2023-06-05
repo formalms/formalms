@@ -332,6 +332,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('ALTER TABLE dashboard_block_config CHANGE dashboard_id dashboard_id BIGINT DEFAULT NULL, CHANGE created_at created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE updated_at updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE dashboard_blocks CHANGE created_at created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE updated_at updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE dashboard_layouts CHANGE `default` `default` TINYINT(1) NOT NULL, CHANGE created_at created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, CHANGE updated_at updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
+        $this->addSql('ALTER TABLE dashboard_permission DROP INDEX `PRIMARY`');
         $this->addSql('ALTER TABLE dashboard_permission ADD id BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL, ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP');
         $this->addSql('ALTER TABLE learning_advice ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idCourse idCourse INT NOT NULL, CHANGE author author INT NOT NULL, CHANGE title title VARCHAR(255) NOT NULL, CHANGE important important TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE learning_adviceuser DROP INDEX `PRIMARY`');
@@ -735,6 +736,4 @@ final class Version20221012000004 extends AbstractMigration
         CALL convertcollation();
         DROP PROCEDURE IF EXISTS `convertcollation`';
     }
-
-  
 }

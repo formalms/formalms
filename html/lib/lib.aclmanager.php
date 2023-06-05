@@ -208,7 +208,7 @@ class FormaACLManager
      */
     public function __construct($dbconn = false, $prefix = false)
     {
-        $this->dbconn = ($dbconn === false) ? $GLOBALS['dbConn'] : $dbconn;
+        $this->dbconn = ($dbconn === false) ? \FormaLms\db\DbConn::getInstance() : $dbconn;
         $this->prefix = ($prefix === false) ? $GLOBALS['prefix_fw'] : $prefix;
         $this->context = ACL_SEPARATOR;
     }
