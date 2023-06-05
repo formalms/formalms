@@ -399,6 +399,7 @@ div.yui-ac-container div.yui-ac-content li{
 /* Filers and advanced filters */
 .advanced_search{display:inline-block;display:-moz-inline-box;margin:0 0 4px;font-size:83%;}
 .simple_search_box{display:block;}
+.simple_search_box .form-control { padding: unset !important; height: unset;} 
 .advanced_search_box{display:none;text-align:left;}
 .advanced_search_box, .simple_search_box{margin-top:6px;}
 .advanced_search_options{padding:8px;background:#efefef;border-top:1px solid #cccccc;border-bottom:1px solid #cccccc;text-align:left;}
