@@ -47,9 +47,9 @@ class DashboardBlockCommunicationLms extends DashboardBlockLms
     public function getViewData()
     {
         $data = $this->getCommonViewData();
-        $limit = array_key_exists('max_last_records', $this->data) ? (int) $this->data['max_last_records'] : self::DEFAULT_RECORDS;
+        $limit = !empty($this->data) && array_key_exists('max_last_records', $this->data) ? (int) $this->data['max_last_records'] : self::DEFAULT_RECORDS;
 
-        $onlyToRead = array_key_exists('showread', $this->data) ? (int) $this->data['showread'] : false;
+        $onlyToRead = !empty($this->data) &&  array_key_exists('showread', $this->data) ? (int) $this->data['showread'] : false;
 
         $data['communication'] = $this->getCommunication($limit, $onlyToRead);
 

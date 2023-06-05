@@ -56,7 +56,9 @@ class DashboardsettingsAdm extends Model implements Accessible
             $layoutObj->setStatus($layout['status']);
             $layoutObj->setDefault($layout['default']);
 
-            $permissionList = unserialize($layout['idst_list'], ['allowed_classes' => ['array']]);
+            if (!empty($layout['idst_list'])) {
+                $permissionList = unserialize($layout['idst_list'], ['allowed_classes' => ['array']]);
+            }
             if (is_array($permissionList)) {
                 $layoutObj->setPermissionList($permissionList);
             }
@@ -178,7 +180,7 @@ class DashboardsettingsAdm extends Model implements Accessible
 
     public function saveLayout($layout)
     {
-     
+
         $name = $layout['name'];
         $caption = $layout['caption'] ?: ' ';
         $status = $layout['status'];
@@ -235,8 +237,8 @@ class DashboardsettingsAdm extends Model implements Accessible
             'data' => $setting['data'],
         ];
         $insertQuery = sprintf("INSERT INTO `dashboard_block_config` ( `block_class`, `block_config`, `position`, `dashboard_id`, `created_at`) VALUES ( '%s' , '%s', '%s', '%s', CURRENT_TIMESTAMP)", $block, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_APOS), $setting['position'], $dashboard);
-  
-      
+
+
         $this->db->query($insertQuery);
     }
 
@@ -285,8 +287,9 @@ class DashboardsettingsAdm extends Model implements Accessible
         return [];
     }
 
-    public function getDefaultLayout(){
-        foreach ($this->layouts as $layout ) {
+    public function getDefaultLayout()
+    {
+        foreach ($this->layouts as $layout) {
             if ($layout->isDefault()) {
                 return $layout->getId();
             }
@@ -294,15 +297,17 @@ class DashboardsettingsAdm extends Model implements Accessible
         return 0;
     }
 
-    public function getAccessList( $resourceId) : array {
+    public function getAccessList($resourceId): array
+    {
 
         return $this->getObjIdstList($resourceId);
     }
 
-    public function setAccessList( $resourceId, array $selection) : bool {
-        
-        return (bool) $this->setObjIdstList((int) $resourceId, $selection);
-     
+    public function setAccessList($resourceId, array $selection): bool
+    {
+
+        return (bool)$this->setObjIdstList((int)$resourceId, $selection);
+
     }
 
 }

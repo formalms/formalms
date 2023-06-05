@@ -59,7 +59,7 @@ class Learning_Object
     {
         $res = false;
 
-        $env = ($env ? $env : $this->environment);
+        $env = ($env ?: $this->environment);
         switch ($env) {
             case 'communication' :
                 return 0;
@@ -75,7 +75,7 @@ class Learning_Object
 
         if (!empty($qtxt)) {
             $re = $this->db->query($qtxt);
-            list($id_param) = $this->db->fetch_row($re);
+            [$id_param] = $this->db->fetch_row($re);
             $res = $id_param;
         }
 

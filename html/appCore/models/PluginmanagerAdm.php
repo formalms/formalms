@@ -146,7 +146,7 @@ class PluginmanagerAdm extends Model
         $forma_version = FormaLms\lib\Get::sett('core_version');
         $check['dependencies'] = [];
         $check['forma_version'] = [];
-        
+
         if (array_key_exists('forma_version', $manifest)) {
             if (is_array($manifest['forma_version']) && array_key_exists('min', $manifest['forma_version'])) {
                 if (version_compare($forma_version, $manifest['forma_version']['min']) < 0) {
@@ -232,7 +232,7 @@ class PluginmanagerAdm extends Model
     {
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
 
-        if($this->systemManager->checkSystemRoutes()) {
+        if ($this->systemManager->checkSystemRoutes()) {
             self::$plugins_active = [];
             return self::$plugins_active;
         }
@@ -289,7 +289,7 @@ class PluginmanagerAdm extends Model
                 $tmpDependencies = [];
                 $manifest = self::readPluginManifest($file);
                 //accept only plugins where manifest name is the folder name
-                
+
                 if ($manifest && $manifest['name'] == $file) {
                     $info = $this->getPluginFromDB($file, 'name');
                     //if plugin is installed
@@ -370,25 +370,27 @@ class PluginmanagerAdm extends Model
     {
         $res = ['ok' => true, 'log' => ''];
 
-        $handle = fopen($fn, 'rb');
-        if ($handle == false) {
-            $res = ['ok' => false, 'log' => 'error opening file'];
-        } else {
-            $fileSz = filesize($fn);
-            if ($fileSz > 0) {
-                $content = fread($handle, $fileSz);
-                fclose($handle);
-                // This two regexp works fine; don't edit them! :)
-                $content = preg_replace('/--(.*)[^$]/', '', $content);
-                $sql_arr = preg_split("/;([\s]*)[\n\r]/", $content);
-                foreach ($sql_arr as $sql) {
-                    $qtxt = trim($sql);
-                    if (!empty($qtxt)) {
-                        $q = sql_query($qtxt);
-                        if (!$q) {
-                            $res['log'] .= sql_error() . "\n";
-                            \FormaLms\lib\Forma::addError(sql_error());
-                            $res['ok'] = false;
+        if (file_exists($fn)) {
+            $handle = fopen($fn, 'rb');
+            if ($handle == false) {
+                $res = ['ok' => false, 'log' => 'error opening file'];
+            } else {
+                $fileSz = filesize($fn);
+                if ($fileSz > 0) {
+                    $content = fread($handle, $fileSz);
+                    fclose($handle);
+                    // This two regexp works fine; don't edit them! :)
+                    $content = preg_replace('/--(.*)[^$]/', '', $content);
+                    $sql_arr = preg_split("/;([\s]*)[\n\r]/", $content);
+                    foreach ($sql_arr as $sql) {
+                        $qtxt = trim($sql);
+                        if (!empty($qtxt)) {
+                            $q = sql_query($qtxt);
+                            if (!$q) {
+                                $res['log'] .= sql_error() . "\n";
+                                \FormaLms\lib\Forma::addError(sql_error());
+                                $res['ok'] = false;
+                            }
                         }
                     }
                 }
@@ -534,7 +536,7 @@ class PluginmanagerAdm extends Model
     public function installPlugin($plugin_name, $priority = 0, $update = false, $core = 0)
     {
         $plugin_info = self::readPluginManifest($plugin_name);
-        if (array_key_exists('core',$plugin_info) && $plugin_info['core'] == 'true') {
+        if (array_key_exists('core', $plugin_info) && $plugin_info['core'] == 'true') {
             $core = 1;
         }
         //FORMA_PLUGIN: QUI AGGIUNGERE IL CONTROLLO DELLA VERSIONE
