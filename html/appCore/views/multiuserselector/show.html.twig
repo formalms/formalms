@@ -150,7 +150,7 @@ $(document).ready(function() {
                     d.dataType = rel;
                     d.learning_filter = '{{ learningFilter }}'
                     d.id_org = '{{ idOrg }}'
-                    
+                    d.resource = '{{ instanceValue }}'
                     d.active_search =   $('#' + rel + 'Content_wrapper .dataTables_scrollHeadInner .dataTable').attr('active_search');
                    
                     if(parseInt(d.active_search) === 0 && DTable[rel] !== undefined) {

@@ -41,7 +41,7 @@ class Module_Homerepo extends LmsModule
     {
         require_once _lms_ . '/modules/homerepo/homerepo.php';
         $ready = false;
-        $this->lang = &FormaLanguage::createInstance('homerepo', 'lms');
+        $this->lang = FormaLanguage::createInstance('homerepo', 'lms');
         if (isset($_GET['shr']) && false) {
             // reload from previously saved session
             require_once _adm_ . '/lib/lib.sessionsave.php';

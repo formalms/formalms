@@ -207,19 +207,13 @@ class UserselectorAdmController extends AdmController
 
         $result = $this->multiUserSelector->associate($instanceId, $selection);
 
-        switch($result['type']) {
-            case "redirect":
-                return Util::jump_to($result['redirect'],'', $result['folder']);
-
-                break;
-
-
-            case "render":
-                $this->_mvc_name = $result['subFolderView'];
-
-                return $this->render($result['view'], $result['params'], false, $result['additionalPaths']);
-                break;
+        $responseMethod = 'response' . ucfirst($result['type']);
+        if(method_exists($this, $responseMethod)) {
+            $this->$responseMethod($result);
+        } else {
+            throw new Exception('$responseMethod not implemented');
         }
+        
     }
 
 
@@ -236,5 +230,18 @@ class UserselectorAdmController extends AdmController
 
         $params['selected_nodes'] = $accessSelection;
         echo $this->multiUserSelector->retrieveDataselector('org')->getData($this->requestArray);
+    }
+
+
+    public function responseRedirect(array $params)
+    {
+        return Util::jump_to($params['redirect'],'', $params['folder']);
+    }
+
+    public function responseRender(array $params)
+    {
+        $this->_mvc_name = $params['subFolderView'];
+
+        return $this->render($params['view'], $params['params'], false, $params['additionalPaths']);
     }
 }
