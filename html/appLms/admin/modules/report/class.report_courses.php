@@ -30,6 +30,8 @@ class Report_Courses extends Report
     public $status_u = [];
     public $status_c = [];
 
+    public $page_title;
+
     public function __construct($id_report, $report_name = false)
     {
         $this->Report_Courses();
@@ -38,12 +40,12 @@ class Report_Courses extends Report
 
     public function Report_Courses()
     {
-        $this->lang = &FormaLanguage::createInstance('report', 'framework');
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
 
         $this->usestandardtitle_rows = true;
         //$this->usestandardtitle_cols = false;
 
-        $lang = &FormaLanguage::CreateInstance('course', 'lms');
+        $lang = FormaLanguage::CreateInstance('course', 'lms');
 
         $this->_set_columns_category(_RCS_CATEGORY_USERS, $this->lang->def('_RCS_CAT_USER'), 'get_user_filter', 'show_report_user', '_get_users_query', false);
         $this->_set_columns_category(_RCS_CATEGORY_DOC_VAL, $this->lang->def('_RCS_CAT_DOC_VAL'), 'get_doc_val_filter', 'show_report_doc_val', '_get_doc_val_query', false);
@@ -57,7 +59,7 @@ class Report_Courses extends Report
             CST_CANCELLED => $lang->def('_CST_CANCELLED'), //, 'course', 'lms')
         ];
 
-        $lang = &FormaLanguage::CreateInstance('course', 'lms');
+        $lang = FormaLanguage::CreateInstance('course', 'lms');
         $this->status_u = [
             _CUS_CONFIRMED => $lang->def('_USER_STATUS_CONFIRMED'), //, 'subscribe', 'lms'),
 
@@ -127,7 +129,7 @@ class Report_Courses extends Report
         $box->title = $this->lang->def('_COURSES_SELECTION_TITLE');
         $box->description = false;
 
-        $boxlang = &FormaLanguage::createInstance('report', 'framework');
+        $boxlang = FormaLanguage::createInstance('report', 'framework');
         $box->body .= '<div class="fc_filter_line filter_corr">';
         $box->body .= '<input id="all_courses" name="all_courses" type="radio" value="1" ' . ($reportTempData['rows_filter']['all_courses'] ? 'checked="checked"' : '') . ' />';
         $box->body .= ' <label for="all_courses">' . $boxlang->def('_ALL_COURSES') . '</label>';
@@ -182,7 +184,7 @@ class Report_Courses extends Report
         }
         //****
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
 
         //detect the step in which we are
@@ -486,8 +488,8 @@ class Report_Courses extends Report
         require_once _adm_ . '/class.module/class.directory.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
-        $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
+        $lang = FormaLanguage::createInstance('report', 'framework');
+        $glang = FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $reportTempData = $this->session->get(_REPORT_SESSION);
         if (!isset($reportTempData['columns_filter'])) {
@@ -562,8 +564,8 @@ class Report_Courses extends Report
         require_once _adm_ . '/class.module/class.directory.php';
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
-        $glang = &FormaLanguage::createInstance('admin_course_managment', 'lms');
+        $lang = FormaLanguage::createInstance('report', 'framework');
+        $glang = FormaLanguage::createInstance('admin_course_managment', 'lms');
 
         $reportTempData = $this->session->get(_REPORT_SESSION);
 
@@ -874,7 +876,8 @@ class Report_Courses extends Report
 
         $show_classrooms_editions = (isset($reportTempData['columns_filter']['show_classrooms_editions']) ? (bool) $reportTempData['columns_filter']['show_classrooms_editions'] : false);
 
-        if ($time_range != 0) {
+ 
+        if ((int) $time_range != 0) {
             $start_time = date('Y-m-d H:i:s', time() - $time_range * 24 * 3600);
             $end_time = date('Y-m-d H:i:s');
         } else {
@@ -885,7 +888,7 @@ class Report_Courses extends Report
 
         $output = '';
 
-        $lang = &FormaLanguage::createInstance('course', 'framework');
+        $lang = FormaLanguage::createInstance('course', 'framework');
 
         require_once _adm_ . '/lib/lib.directory.php';
         require_once _base_ . '/lib/lib.userselector.php';
@@ -897,9 +900,9 @@ class Report_Courses extends Report
         $user_level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId();
 
         if ($alluser == 0) {
-            $user_selected = &$acl_man->getAllUsersFromSelection($reportTempData['columns_filter']['users']);
+            $user_selected = $acl_man->getAllUsersFromSelection($reportTempData['columns_filter']['users']);
         } else {
-            $user_selected = &$acl_man->getAllUsersIdst();
+            $user_selected = $acl_man->getAllUsersIdst();
         }
 
         //apply filters for sub-admins
@@ -1610,9 +1613,9 @@ class Report_Courses extends Report
 
         require_once _lms_ . '/lib/lib.course.php';
 
-        $lang = &FormaLanguage::createInstance('course', 'lms');
-        $course_lang = &FormaLanguage::createInstance('course', 'lms');
-        $rg_lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('course', 'lms');
+        $course_lang = FormaLanguage::createInstance('course', 'lms');
+        $rg_lang = FormaLanguage::createInstance('report', 'framework');
 
         $colspan_course = 0;
         if (in_array('_CODE_COURSE', $filter_cols)) {

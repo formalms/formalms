@@ -23,9 +23,9 @@ function newsletter()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     YuiLib::load();
     addJs($GLOBALS['where_framework_relative'] . '/modules/newsletter/', 'newsletter.js');
@@ -104,9 +104,9 @@ function send_newsletter($send_id)
 
     //@set_time_limit(60*15); // 15 minutes!
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $out->add(getTitleArea($lang->def('_NEWSLETTER'), 'newsletter'));
 
@@ -354,26 +354,27 @@ function init_send()
     $send_type = $_POST['send_type'];
 
     // ..who said spring cleanings have to be done in spring??
-    $qtxt = 'DELETE FROM ' . $GLOBALS['prefix_fw'] . '_newsletter WHERE stime < (DATE_SUB(NOW(), INTERVAL 1 DAY))';
+    $qtxt = 'DELETE FROM %adm_newsletter WHERE stime < (DATE_SUB(NOW(), INTERVAL 1 DAY))';
     $q = sql_query($qtxt);
 
-    $qtxt = 'DELETE FROM ' . $GLOBALS['prefix_fw'] . '_newsletter_sendto WHERE stime < (DATE_SUB(NOW(), INTERVAL 1 DAY))';
+    $qtxt = 'DELETE FROM %adm_newsletter_sendto WHERE stime < (DATE_SUB(NOW(), INTERVAL 1 DAY))';
     $q = sql_query($qtxt);
 
-    $qtxt = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_newsletter (sub, msg, fromemail, language, send_type, stime, file) ';
+    $qtxt = 'INSERT INTO %adm_newsletter (sub, msg, fromemail, language, send_type, stime, file) ';
     $qtxt .= "VALUES ('" . $sub . "', '" . $msg . "', '" . $fromemail . "', '" . $lang_selected . "', '" . $send_type . "', NOW(), '" . str_replace("'", "\'", $json->encode($savefile)) . "')";
     $q = sql_query($qtxt); //echo sql_error();
 
-    $qtxt = 'SELECT LAST_INSERT_ID() as last_id FROM ' . $GLOBALS['prefix_fw'] . '_newsletter';
+    $qtxt = 'SELECT LAST_INSERT_ID() as last_id FROM %adm_newsletter';
     $q = sql_query($qtxt);
 
     $row = sql_fetch_array($q);
     $last_id = $row['last_id'];
 
-    $qtxt = 'UPDATE ' . $GLOBALS['prefix_fw'] . "_newsletter SET id_send='" . $last_id . "' WHERE id='$last_id'";
+    $qtxt = 'UPDATE %adm_newsletter SET id_send="' . $last_id . '" WHERE id="' . $last_id . '"';
     $q = sql_query($qtxt);
 
-    $url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $last_id . '&load=1';
+    //$url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $last_id . '&load=1';
+    $url = 'index.php?r=adm/userselector/show&amp;instance=newsletter&amp;id=' . $last_id . '&load=1';
     Util::jump_to($url);
 }
 
@@ -443,53 +444,21 @@ function selSendTo()
         $mdir->setUserFilter('group', $admin_tree);
     }
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $back_url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $id_send;
 
     if (isset($_POST['okselector'])) {
         $arr_selection = $mdir->getSelection($_POST);
 
-        $send_to_idst = [];
+    
 
-        foreach ($arr_selection as $idstMember) {
-            $arr = \FormaLms\lib\Forma::getAclManager()->getGroupAllUser($idstMember);
-            if ((is_array($arr)) && (count($arr) > 0)) {
-                $send_to_idst = array_merge($arr, $send_to_idst);
-                $send_to_idst = array_unique($send_to_idst);
-            } else {
-                $send_to_idst[] = $idstMember;
-            }
+        $newsletterService = new \FormaLms\lib\Services\Newsletters\NewsletterService(); 
 
-            if (\FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {
-                $send_to_idst = array_intersect($send_to_idst, $admin_users);
-            }
-        }
+        $newsletterService->setaccessList($id_send, $arr_selection);
 
-        foreach ($send_to_idst as $key => $val) {
-            $qtxt = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_newsletter_sendto (id_send, idst, stime) ';
-            $qtxt .= "VALUES ('" . (int) $id_send . "', '" . (int) $val . "', NOW())";
-            $q = sql_query($qtxt);
-        }
-
-        $qtxt = 'SELECT language FROM ' . $GLOBALS['prefix_fw'] . "_newsletter WHERE id='" . $id_send . "'";
-        $q = sql_query($qtxt);
-
-        list($lang) = sql_fetch_row($q);
-
-        if ($lang != _ANY_LANG_CODE) {
-            $tot = count(\FormaLms\lib\Forma::getAclManager()->getUsersIdstByLanguage($lang, $send_to_idst));
-        } else {
-            $tot = count($send_to_idst);
-        }
-
-        $qtxt = 'UPDATE ' . $GLOBALS['prefix_fw'] . "_newsletter SET tot='" . $tot . "' WHERE id='$id_send'";
-        $q = sql_query($qtxt);
-
-        $back_url = 'index.php?modname=newsletter&amp;op=summary&amp;tot=' . $tot . '&amp;id_send=' . $id_send;
-        Util::jump_to(str_replace('&amp;', '&', $back_url));
     } elseif (isset($_POST['cancelselector'])) {
         $info = get_send_info($id_send);
 
@@ -518,7 +487,7 @@ function selSendTo()
         $mdir->show_orgchart_selector = true;
         $mdir->show_orgchart_simple_selector = false;
 
-        $acl_manager = &\FormaLms\lib\Forma::getAclManager();
+        $acl_manager = \FormaLms\lib\Forma::getAclManager();
         if (defined('IN_LMS')) {
             $id_course = (int) \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
             $arr_idstGroup = $acl_manager->getGroupsIdstFromBasePath('/lms/course/' . $id_course . '/subscribed/');
@@ -541,9 +510,9 @@ function newsletterSummary($id_send)
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $tot = (int) $_GET['tot'];
     $form = new Form();

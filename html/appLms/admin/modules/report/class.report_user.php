@@ -1,5 +1,6 @@
 <?php
 
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -235,15 +236,13 @@ class Report_User extends Report
         $lang = FormaLanguage::createInstance('report', 'framework');
         $org_chart_subdivision = importVar('org_chart_subdivision', true, 0);
 
-        $aclManager = new FormaACLManager();
         $user_select = new UserSelector();
         $user_select->use_suspended = true;
 
         if (isset($_POST['cancelselector'])) {
             Util::jump_to($back_url);
         } elseif (isset($_POST['okselector'])) {
-            $aclManager = new FormaACLManager();
-
+         
             $temp = $user_select->getSelection($_POST);
 
             $reportTempData['rows_filter']['users'] = $temp;
@@ -517,8 +516,8 @@ class Report_User extends Report
                         'id' => $val['id'],
                         'label' => $val['label'],
                         'selected' => $is_selected,
-                        'translation' => $val['translation'],
-                        'type_field' => $val['type_field'],
+                        'translation' => array_key_exists('translation', $val) ? $val['translation'] : '',
+                        'type_field' => array_key_exists('type_field', $val) ? $val['type_field'] : '',
                     ];
                 }
                 $reportTempData['columns_filter']['custom_fields_course'] = $t_arr;
@@ -5103,4 +5102,9 @@ class Report_User extends Report
 
         return $output;
     }
+
+
+
+
+  
 }

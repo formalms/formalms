@@ -34,7 +34,7 @@ class Report_Aggregate extends Report
     {
         $this->db = \FormaLms\db\DbConn::getInstance();
 
-        $this->lang = &FormaLanguage::createInstance('report', 'framework');
+        $this->lang = FormaLanguage::createInstance('report', 'framework');
         $this->_set_columns_category(_RA_CATEGORY_COURSES, Lang::t('_RU_CAT_COURSES', 'report'), 'get_courses_filter', 'show_report_courses', '_get_courses_query');
         $this->_set_columns_category(_RA_CATEGORY_COURSECATS, Lang::t('_RA_CAT_COURSECATS', 'report'), 'get_coursecategories_filter', 'show_report_coursecategories', '_get_coursecategories_query');
         $this->_set_columns_category(_RA_CATEGORY_TIME, Lang::t('_RA_CAT_TIME', 'report'), 'get_time_filter', 'show_report_time', '_get_time_query');
@@ -57,7 +57,7 @@ class Report_Aggregate extends Report
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.course_managment.php';
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         //update session
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
@@ -175,7 +175,7 @@ class Report_Aggregate extends Report
         require_once _lms_ . '/lib/lib.course.php';
         require_once _lms_ . '/lib/lib.course_managment.php';
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         //$sel = new Course_Manager();
         //$sel->setLink('index.php?modname=report&op=report_rows_filter');
@@ -233,7 +233,7 @@ class Report_Aggregate extends Report
         $box->title = $this->lang->def('_COURSES_SELECTION_TITLE');
         $box->description = false;
 
-        $boxlang = &FormaLanguage::createInstance('report', 'framework');
+        $boxlang = FormaLanguage::createInstance('report', 'framework');
         $box->body .= '<div class="fc_filter_line filter_corr">';
         $box->body .= '<input id="all_courses" name="all_courses" type="radio" value="1" ' . ($reportTempData['columns_filter']['all_courses'] ? 'checked="checked"' : '') . ' />';
         $box->body .= ' <label for="all_courses">' . $boxlang->def('_ALL_COURSES') . '</label>';

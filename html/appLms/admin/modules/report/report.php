@@ -477,7 +477,7 @@ function reportlist()
 
     unload_filter(true);
 
-    $lang = &FormaLanguage::createInstance('report');
+    $lang = FormaLanguage::createInstance('report');
 
     $error = FormaLms\lib\Get::req('err', DOTY_STRING, false);
     switch ($error) {
@@ -583,12 +583,32 @@ function report_rows_filter()
         $reportTempData['report_name'] = FormaLms\lib\Get::req('report_name', DOTY_STRING, false);
         $session->set(_REPORT_SESSION, $reportTempData);
         $session->save();
-    }
+    }   
 
+    $selectionType = (isset($_POST) && array_key_exists('selection_type', $_POST)) ? $_POST['selection_type'] : null;
+    
     $obj_report = openreport();
     $obj_report->back_url = 'index.php?modname=report&op=report_category';
     $obj_report->jump_url = 'index.php?modname=report&op=report_rows_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_sel_columns';
+
+    if((int) $obj_report->id_report === 2) {
+        ob_end_clean();
+        return Util::jump_to('index.php?r=adm/userselector/show&showSelectAll=true&instance=reportuser&id='.$obj_report->id_report);
+    }
+
+    if((int) $obj_report->id_report === 5 && $selectionType) {
+
+        if($selectionType == 'users') {
+            $tabFilters = '&tab_filters[]=user';
+        }
+
+        if($selectionType == 'groups') {
+            $tabFilters = '&tab_filters[]=group&tab_filters[]=org&tab_filters[]=role';
+        }
+        ob_end_clean();
+        return Util::jump_to('index.php?r=adm/userselector/show&instance=reportuser&id='.$obj_report->id_report.$tabFilters);
+    }
 
     $page_title = getTitleArea([
             'index.php?modname=report&amp;op=reportlist' => $lang->def('_REPORT'),
@@ -659,6 +679,12 @@ function report_columns_filter()
     $obj_report->back_url = 'index.php?modname=report&op=report_sel_columns';
     $obj_report->jump_url = 'index.php?modname=report&op=report_columns_filter';
     $obj_report->next_url = 'index.php?modname=report&op=report_save';
+    $obj_report->get_columns_filter($reportTempData['columns_filter_category']);
+
+    if((int) $obj_report->id_report === 4 && $reportTempData['columns_filter_category'] == 'users') {
+        ob_end_clean();
+        return Util::jump_to('index.php?r=adm/userselector/show&showSelectAll=true&instance=reportuser&id='.$obj_report->id_report);
+    }
 
     //page title
     $page_title = getTitleArea([
@@ -679,7 +705,7 @@ function report_columns_filter()
         $obj_report->page_title = $page_title;
     }
 
-    $obj_report->get_columns_filter($reportTempData['columns_filter_category']);
+
 
     if ($obj_report->useStandardTitle_Columns()) {
         cout(

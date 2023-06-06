@@ -18,7 +18,7 @@ class Module_Homerepo extends LmsModule
     public $treeView = null;
     public $repoDb = null;
     public $select_destination = false;
-
+    public $lang = false;
     //class constructor
     public $select_destionation;
 

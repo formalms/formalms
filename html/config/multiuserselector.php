@@ -102,9 +102,21 @@ return [
             'className' => 'OrgDirDb', 
             'returnType' => 'redirect'
             ],
+        'newsletter' => [
+            'includes' => 'FormaLms\lib\Services\Newsletters\\' ,
+            'className' => 'NewsletterService',
+            'returnType' => 'redirect',
+            'useNamespace' =>  true
         ],
-        "use_filter" => [
-            "organization" => "course",
+        'reportuser' => [
+            'includes' => 'FormaLms\lib\Services\Reports\\' ,
+            'className' => 'ReportService',
+            'returnType' => 'redirect',
+            'useNamespace' =>  true
+            ],
+    ],
+    "use_filter" => [
+        "organization" => "course",
         ],
     
 ];

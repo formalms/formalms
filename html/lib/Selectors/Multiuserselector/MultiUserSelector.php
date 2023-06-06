@@ -117,7 +117,7 @@ class MultiUserSelector
     {
         $selection = [];
 
-        $selectString = implode(",", $selectedIds);
+        $selectString = count($selectedIds) ? implode(",", $selectedIds) : 0;
         $query = 'SELECT
                     GROUP_CONCAT( DISTINCT(coretables.idst) ) AS ids,
                     nametables.table_name AS selector
