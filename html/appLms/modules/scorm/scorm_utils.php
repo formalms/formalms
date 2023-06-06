@@ -393,7 +393,7 @@ function sumScormTime($t1, $t2)
             $t2_s[9] = 0;
         }
 
-        $tot['cent'] = $t1_s[15] + $t2_s[15];
+        $tot['cent'] = (int)$t1_s[15] + (int)$t2_s[15];
         if ($tot['cent'] >= 100) {
             $remainder = floor($tot['cent'] / 100);
             $tot['cent'] = floor($tot['cent'] % 100);
@@ -401,7 +401,7 @@ function sumScormTime($t1, $t2)
             $remainder = 0;
         }
 
-        $tot['second'] = $t1_s[13] + $t2_s[13] + $remainder;
+        $tot['second'] = (int)$t1_s[13] + (int)$t2_s[13] + (int)$remainder;
         if ($tot['second'] >= 60) {
             $remainder = floor($tot['second'] / 60);
             $tot['second'] = floor($tot['second'] % 60);
@@ -409,7 +409,7 @@ function sumScormTime($t1, $t2)
             $remainder = 0;
         }
 
-        $tot['minute'] = $t1_s[11] + $t2_s[11] + $remainder;
+        $tot['minute'] = (int)$t1_s[11] + (int)$t2_s[11] + (int)$remainder;
         if ($tot['minute'] >= 60) {
             $remainder = floor($tot['minute'] / 60);
             $tot['minute'] = floor($tot['minute'] % 60);
@@ -417,7 +417,7 @@ function sumScormTime($t1, $t2)
             $remainder = 0;
         }
 
-        $tot['hour'] = $t1_s[9] + $t2_s[9] + $remainder;
+        $tot['hour'] = (int)$t1_s[9] + (int)$t2_s[9] + (int)$remainder;
 
         return sprintf('PT%04uH%02uM%02uS', $tot['hour'], $tot['minute'], $tot['second']);
     }

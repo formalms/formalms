@@ -323,7 +323,7 @@ a.fv-is-delete {
 .fv-is-ab-initio:after {
   -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
   @include status-icon;
-  background-color: var(--color-error);
+  background-color: var(--color-warning);
 }
 
 .fv-is-failed:after {
@@ -339,12 +339,6 @@ a.fv-is-delete {
   background-color: var(--color-success);
   -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
 }
-
-.fv-is-completed:after {
-  -webkit-mask-image: url("#{$assets}images/folderView/icon-completed.svg");
-  background-color: var(--color-warning);
-  @include status-icon;
-} 
 
 .fv-is-tracking:after {
   -webkit-mask-image: url('images/folderView/icon-chart.svg');

@@ -25,13 +25,15 @@ export const DashBoardCalendar = () => {
 
           window.location = url;
         },
-        eventRender: function(item) {
+        eventDidMount: function(item) {
           if (item.event.extendedProps.status) {
             item.el.classList.add('is-open');
           } else {
             item.el.classList.add('is-closed');
           }
-          renderPopup(item);
+
+          appendPopup(item);
+          return item;
         }
       });
 
@@ -48,7 +50,8 @@ export const DashBoardCalendar = () => {
             var startDate = dateSt.getFullYear()+'-' + ('0' + (dateSt.getMonth()+1)).slice(-2) + '-' + ('0'+dateSt.getDate()).slice(-2);
             var dateEnd = new Date(fetchInfo.endStr);
             var endDate = dateEnd.getFullYear() +'-' + ('0' + (dateEnd.getMonth()+1)).slice(-2) + '-' + ('0'+dateEnd.getDate()).slice(-2);
-         
+
+
             $.ajax({
               type: 'post',
               url: window.dashboardCalendarAjaxUrl,
@@ -95,7 +98,7 @@ export const DashBoardCalendar = () => {
 
 }
 
-const renderPopup = (item) => {
+const appendPopup = (item) => {
   let el = '';
   const type = item.event.extendedProps.type === 'classroom' ? 'classroom' : 'elearning';
   const desc = item.event.extendedProps.description;

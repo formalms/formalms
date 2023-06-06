@@ -42,7 +42,8 @@
 
   .fc-event {
     width: 65.48%;
-    height: 7px;
+    min-height: 20px;
+    height: auto;
     margin-left: auto!important;
     position: relative;
     cursor: pointer;

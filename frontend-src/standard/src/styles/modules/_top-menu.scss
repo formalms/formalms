@@ -290,6 +290,7 @@ header.header {
         &.active {
           a {
             color: var(--color-primary);
+            font-weight: bold;
           }
         }
 
