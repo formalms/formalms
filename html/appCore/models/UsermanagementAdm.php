@@ -3409,20 +3409,26 @@ class UsermanagementAdm extends Model
     public function getCustomFieldUserValues($user)
     {
         $output = [];
+        $currentLanguage = Lang::get();
 
         if (is_null($user)) {
             return $output;
         }
         $query = 'select idField, user_entry, type_field from 
                     %adm_field JOIN %adm_field_userentry ON core_field.id_common = core_field_userentry.id_common where
-                    id_user =' . $user . " and lang_code='" . Lang::get() . "' order by idField";
+                    id_user =' . $user . " and lang_code='" . $currentLanguage . "' order by idField";
 
         $res = sql_query($query);
 
-        while (list($id_field, $user_entry, $type_field) = sql_fetch_row($res)) {
+        foreach ($res as $row) {
+
+            $id_field = $row['idField'];
+            $user_entry = $row['user_entry'];
+            $type_field = $row['type_field'];
             if ($type_field == 'dropdown') {
-                $q = sql_query("SELECT translation FROM %adm_field_son WHERE idField = $id_field AND id_common_son = $user_entry AND lang_code = '" . Lang::get() . "'");
-                list($translation) = sql_fetch_row($q);
+                $q = sprintf("SELECT translation FROM %%adm_field_son WHERE idField = %s AND id_common_son = %s AND lang_code = '%s'", $id_field, $user_entry, $currentLanguage);
+                $res = sql_query($q);
+                [$translation] = sql_fetch_row($q);
                 $output[$id_field] = $translation;
             } else {
                 $output[$id_field] = $user_entry;
