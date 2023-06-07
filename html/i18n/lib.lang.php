@@ -421,11 +421,10 @@ class Lang
                     } // end foreach
                 } // end foreach
             }
+            $session->set('current_lang', $currentLang);
+            $session->save();
         }
-
-        $session->set('current_lang', $currentLang);
-        $session->save();
-
+        
         return $currentLang;
     }
 
