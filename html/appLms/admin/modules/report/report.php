@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -599,6 +599,10 @@ function report_rows_filter()
 
     if((int) $obj_report->id_report === 5 && $selectionType) {
 
+        $reportTempData = $session->get(_REPORT_SESSION);
+        $reportTempData['rows_filter']['selection_type'] = $selectionType;
+        $session->set(_REPORT_SESSION, $reportTempData);
+        $session->save();
         if($selectionType == 'users') {
             $tabFilters = '&tab_filters[]=user';
         }
@@ -776,7 +780,7 @@ function report_show_results($idrep = false)
 
     //import yui pop-up stuff
     setup_report_js();
-
+    $filter_data = '';
     $lang = FormaLanguage::createInstance('report');
     $start_url = 'index.php?modname=report&op=reportlist';
     $download = FormaLms\lib\Get::req('dl', DOTY_STRING, false);
@@ -884,8 +888,9 @@ function report_show_results($idrep = false)
     $query_update = "UPDATE %lms_report_filter SET views = views+1 WHERE id_filter = '" . $idrep . "'";
     $re_update = sql_query($query_update);
 
+    
     cout(Form::openForm('user_report_columns_courses', $obj_report->jump_url));
-    cout($obj_report->show_results($data['columns_filter_category'], $data));
+    cout($obj_report->show_results(is_array($data) ? $data['columns_filter_category'] : null, $data));
     cout(Form::closeForm() . '</div>');
 }
 

@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -18,7 +18,7 @@ function schedule_recipients($idrep)
 {
     checkPerm('mod');
 
-    $lang = &FormaLanguage::createInstance('report', 'framework');
+    $lang = FormaLanguage::createInstance('report', 'framework');
 
     if (FormaLms\lib\Get::req('schedule_undo', DOTY_MIXED, false)) {
         //$back_op = FormaLms\lib\Get::req()
@@ -39,7 +39,7 @@ function schedule_recipients($idrep)
     $aclManager = new FormaACLManager();
     $user_select = new UserSelector();
 
-    $lang = &FormaLanguage::createInstance('report', 'framework');
+    $lang = FormaLanguage::createInstance('report', 'framework');
 
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     if (!isset($_POST['is_updating'])) {
@@ -51,7 +51,8 @@ function schedule_recipients($idrep)
             $session->save();
         }
 
-        switch ($_POST['cron_radio']) {
+        if(array_key_exists('cron_radio', $_POST)) {
+            switch ($_POST['cron_radio']) {
                 case 'day':
                     $sched_info = '';
                     $sched_time = $_POST['cron_daily_time'];
@@ -74,17 +75,20 @@ function schedule_recipients($idrep)
                     break;
             }
 
-        $scheduleTempData = $session->get('schedule_tempdata', []);
+            $scheduleTempData = $session->get('schedule_tempdata', []);
 
-        $scheduleTempData['name'] = $_POST['sched_name'];
-        $scheduleTempData['period'] = $_POST['cron_radio'];
-        $scheduleTempData['period_info'] = $sched_info;
-        $scheduleTempData['time'] = $sched_time;
-        $session->set('schedule_tempdata', $scheduleTempData);
-        $session->save();
+            $scheduleTempData['name'] = $_POST['sched_name'];
+            $scheduleTempData['period'] = $_POST['cron_radio'];
+            $scheduleTempData['period_info'] = $sched_info;
+            $scheduleTempData['time'] = $sched_time;
+            $session->set('schedule_tempdata', $scheduleTempData);
+            $session->save();
 
-        $user_select->resetSelection($scheduleTempData['recipients']);
+            $user_select->resetSelection($scheduleTempData['recipients']);
+        }
     }
+
+    Util::jump_to('index.php?r=adm/userselector/show&instance=reportschedule&id='.$idrep);
 
     $save_schedule_failed = false;
 
@@ -152,7 +156,8 @@ function schedule_set($idrep, $checkperm = 'mod')
         checkPerm($checkperm);
     }
 
-    $lang = &FormaLanguage::createInstance('report', 'framework');
+    $ref = [];
+    $lang = FormaLanguage::createInstance('report', 'framework');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     //initialize session data for schedulation, if not updating
     $scheduleTempData = $session->get('schedule_tempdata');
@@ -180,7 +185,7 @@ function schedule_set($idrep, $checkperm = 'mod')
                 $lang->def('_SAVE_SCHED_NAME'), //$label_name,
                 'sched_name',
                 'sched_name',
-                '200', $ref['name']) .
+                '200', array_key_exists('name',$ref) ? $ref['name']: '') .
             Form::getHidden('next_step', 'next_step', 'sched_setrecipients');
 
     //create selections for crontab specification
@@ -194,7 +199,7 @@ function schedule_set($idrep, $checkperm = 'mod')
         $year_months[$i] = $i; //TO DO : format with 2 digits filling with 0
     }
 
-    $lang_days = &FormaLanguage::createInstance('calendar', 'lms');
+    $lang_days = FormaLanguage::createInstance('calendar', 'lms');
     $week_days = [
             '0' => $lang_days->def('_SUNDAY'),
             '1' => $lang_days->def('_MONDAY'),
@@ -211,36 +216,36 @@ function schedule_set($idrep, $checkperm = 'mod')
             Form::getInputRadio('cron_radio_1',
                 'cron_radio',
                 'day',
-                ($ref['period'] == 'day' ? true : false),
+                (array_key_exists('period',$ref) && $ref['period'] == 'day' ? true : false),
                 '') .
             ' <label class="label_normal" for="cron_radio_1">' . $lang->def('_REPORT_DAILY') . ', ' . $lang->def('_AT_HOUR') . '</label> ' .
-            Form::getInputTimeSelectorField('', 'cron_daily_time', 'cron_daily_time', $ref['period'] == 'day' ? $ref['time'] : '00:00', '') .
+            Form::getInputTimeSelectorField('', 'cron_daily_time', 'cron_daily_time', (array_key_exists('period',$ref) && $ref['period'] == 'day') ? $ref['time'] : '00:00', '') .
             '</div>' .
 
-            Form::getRadio($lang->def('_REPORT_NOW'), 'cron_radio_4', 'cron_radio', 'now', ($ref['period'] == 'now' ? true : false)) .
+            Form::getRadio($lang->def('_REPORT_NOW'), 'cron_radio_4', 'cron_radio', 'now', (array_key_exists('period',$ref) && $ref['period'] == 'now' ? true : false)) .
 
             '<div class="form_line_l">' .
             Form::getInputRadio('cron_radio_2',
                 'cron_radio',
                 'week',
-                ($ref['period'] == 'week' ? true : false),
+                (array_key_exists('period',$ref) && $ref['period'] == 'week' ? true : false),
                 '') .
             ' <label class="label_normal" for="cron_radio_2">' . $lang->def('_REPORT_WEEKLY') . '</label> ' .
-            Form::getInputDropdown('', 'cron_weekly', 'cron_weekly', $week_days, ($ref['period'] == 'week' ? $ref['period_info'] : ''), '') .
+            Form::getInputDropdown('', 'cron_weekly', 'cron_weekly', $week_days, (array_key_exists('period',$ref) && $ref['period'] == 'week' ? $ref['period_info'] : ''), '') .
             ' <label class="label_normal" for="cron_weekly_time">, ' . $lang->def('_AT_HOUR') . '</label> ' .
-            Form::getInputTimeSelectorField('', 'cron_weekly_time', 'cron_weekly_time', $ref['period'] == 'week' ? $ref['time'] : '00:00', '') .
+            Form::getInputTimeSelectorField('', 'cron_weekly_time', 'cron_weekly_time', (array_key_exists('period',$ref) && array_key_exists('time',$ref) && $ref['period'] == 'week') ? $ref['time'] : '00:00', '') .
             '</div>' .
 
             '<div class="form_line_l">' .
             Form::getInputRadio('cron_radio_3',
                 'cron_radio',
                 'month',
-                ($ref['period'] == 'month' ? true : false),
+                (array_key_exists('period',$ref) && $ref['period'] == 'month' ? true : false),
                 '') .
             ' <label class="label_normal" for="cron_radio_3">' . $lang->def('_REPORT_MONTHLY') . '</label> ' .
-            Form::getInputDropdown('', 'cron_monthly', 'cron_monthly', $month_days, ($ref['period'] == 'month' ? $ref['period_info'] : ''), '') .
+            Form::getInputDropdown('', 'cron_monthly', 'cron_monthly', $month_days, (array_key_exists('period',$ref) && $ref['period'] == 'month' ? $ref['period_info'] : ''), '') .
             ' <label class="label_normal" for="cron_monthly_time">, ' . $lang->def('_AT_HOUR') . '</label> ' .
-            Form::getInputTimeSelectorField('', 'cron_monthly_time', 'cron_monthly_time', $ref['period'] == 'month' ? $ref['time'] : '00:00', '') .
+            Form::getInputTimeSelectorField('', 'cron_monthly_time', 'cron_monthly_time', array_key_exists('period',$ref) && $ref['period'] == 'month' && array_key_exists('time',$ref) ? $ref['time'] : '00:00', '') .
             '</div>' .
 
             Form::getHidden('idrep', 'idrep', $idrep);
@@ -329,7 +334,7 @@ function get_period_text($period, $time)
 {
     $output = '';
 
-    $lang = &FormaLanguage::createInstance('report', 'framework');
+    $lang = FormaLanguage::createInstance('report', 'framework');
     $texts = [
         'day' => $lang->def('_REPORT_DAILY'),
         'now' => $lang->def('_REPORT_NOW'),
@@ -337,7 +342,7 @@ function get_period_text($period, $time)
         'month' => $lang->def('_REPORT_MONTHLY'),
     ];
 
-    $lang_days = &FormaLanguage::createInstance('calendar', 'lms');
+    $lang_days = FormaLanguage::createInstance('calendar', 'lms');
     $week_days = [
         '0' => $lang_days->def('_SUNDAY'),
         '1' => $lang_days->def('_MONDAY'),
@@ -375,7 +380,7 @@ function get_schedulations_table($idrep = false)
     Util::get_js(FormaLms\lib\Get::rel_path('base') . '/widget/dialog/dialog.js', true, true);
     YuiLib::load('selector');
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();;
+    $acl_man = \FormaLms\lib\Forma::getAclManager();;
     $level = \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId(\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt());
 
     $admin_cond = '';
@@ -398,7 +403,7 @@ function get_schedulations_table($idrep = false)
         ($idrep ? "AND schedule.id_report_filter=$idrep " : '') .
         'GROUP BY schedule.id_report_schedule';
 
-    $lang = &FormaLanguage::createInstance('report', 'framework');
+    $lang = FormaLanguage::createInstance('report', 'framework');
     $output = '';
 
     $tb = new Table(FormaLms\lib\Get::sett('visu_course'));

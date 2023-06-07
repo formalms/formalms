@@ -3,13 +3,15 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
  * from docebo 4.0.5 CE 2008-2012 (c) docebo
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
+
+use FormaLms\lib\Interfaces\Accessible;
 
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
@@ -21,15 +23,17 @@ define('_OPERATION_SUCCESSFUL', 1);
 
 // ----------------------------------------------------------------------------
 
-class MessageModule
+class MessageModule implements Accessible
 {
     protected $db;
     protected $mvc_urls;
+    protected $session;
 
     public function __construct($mvc = false)
     {
         $this->db = \FormaLms\db\DbConn::getInstance();
         $this->mvc_urls = (bool) $mvc;
+        $this->session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     }
 
     // private functions
@@ -424,7 +428,7 @@ class MessageModule
         }
         //if(checkPerm('send_all', true) || checkPerm('send_upper', true)) {
         $add_url = $this->mvc_urls
-                ? 'index.php?r=message/add&from=out'
+                ? 'index.php?r=adm/userselector/show&instance=message&tab_filters[]=user'//'index.php?r=message/add&from=out'
                 : $um->getUrl('op=addmessage&from=out');
 
         // $tb->addActionAdd('<a class="ico-wt-sprite subs_add" href="'.$add_url.'" title="'.Lang::t('_SEND').'">'
@@ -790,10 +794,21 @@ class MessageModule
                 $recipients = urlencode(Util::serialize($user_selected));
             }
         } else {
-            $user_selected = Util::unserialize(urldecode($_POST['message']['recipients']));
-            $recipients = urlencode($_POST['message']['recipients']);
+
+           
+                $user_selected = Util::unserialize(urldecode($_POST['message']['recipients']));
+                $recipients = urlencode($_POST['message']['recipients']);
+            
+        
         }
 
+        if($this->session->has('message_recipients')) {
+            $user_selected = $this->session->get('message_recipients');
+            $recipients = urlencode(Util::serialize($this->session->get('message_recipients')));
+          
+        }
+
+   
         $title_url = $this->mvc_urls
             ? 'index.php?r=message/show' . ($from == 'out' ? '&active_tab=outbox' : '')
             : $um->getUrl(($from == 'out' ? '&active_tab=outbox' : ''));
@@ -911,6 +926,9 @@ class MessageModule
                                     $recip_alert, $msg_composer);
                     }
                 }
+
+                $this->session->remove('message_recipients');
+                $this->session->save();
                 $jump_url = $this->mvc_urls
                          ? 'index.php?r=message/show&result=' . ($re ? 'ok' : 'err')
                          : $um->getUrl('result=' . ($re ? 'ok' : 'err'));
@@ -1310,6 +1328,20 @@ class MessageModule
 
         return $re;
     }
+
+    public function getAccessList($resourceId) : array {
+
+            
+        return [];
+    }
+
+    public function setAccessList($resourceId, array $selection) : bool {
+
+        $this->session->set('message_recipients', $selection);
+        $this->session->save();
+        return true;
+    }
+
 }
 
 function messageDispatch($op, $mvc = false)

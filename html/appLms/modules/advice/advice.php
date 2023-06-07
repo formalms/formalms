@@ -139,7 +139,7 @@ function archiveList()
 {
     require_once _base_ . '/lib/lib.table.php';
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-    $lang = &FormaLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $mod_perm = checkPerm('mod', true);
     $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
@@ -345,12 +345,11 @@ function insadvice()
     }
     list($id_advice) = sql_fetch_row(sql_query('SELECT LAST_INSERT_ID()'));
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
 
     switch ($_REQUEST['idGroup']) {
         case 'sel_user':
                 Util::jump_to('index.php?modname=advice&op=modreader&id_advice=' . $id_advice . '&load=1');
-
             break;
         case 'me':
                 $members = [\FormaLms\lib\FormaUser::getCurrentUser()->getIdSt()];
@@ -486,6 +485,8 @@ function modreader()
     $out = $GLOBALS['page'];
     $id_advice = importVar('id_advice', true, 0);
 
+    Util::jump_to('index.php?r=adm/userselector/show&instance=advicecourse&id=' . $id_advice . '&load=1');
+    //*DEPRECATED AFTER NEW USERSELECTOR /** */
     $aclManager = new FormaACLManager();
     $user_select = new UserSelector();
 
@@ -551,8 +552,6 @@ function updreader()
     checkPerm('mod');
     $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
     require_once _base_ . '/lib/lib.userselector.php';
-
-    $lang = &FormaLanguage::createInstance('advice', 'lms');
 
     $id_advice = importVar('id_advice', true, 0);
 
@@ -646,7 +645,7 @@ function deladvice()
 
     require_once _base_ . '/lib/lib.form.php';
 
-    $lang = &FormaLanguage::createInstance('advice');
+    $lang = FormaLanguage::createInstance('advice');
     $id_advice = importVar('idAdvice', true, 0);
 
     if (isset($_POST['undo'])) {

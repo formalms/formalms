@@ -34,7 +34,12 @@ class ReportService implements Accessible
 
         $reportTempData = $this->session->has(self::_REPORT_SESSION) ? $this->session->get(self::_REPORT_SESSION) : [];
 
+        $keyUsers = 'users';
+        $keyAll = 'all_users';
         switch((int) $resourceId) {
+            case 5:
+                $keyUsers = 'selection';
+                $keyAll = 'select_all';
             case 2:
                 $filter = 'rows_filter';
             break;
@@ -43,8 +48,8 @@ class ReportService implements Accessible
                 $filter = 'columns_filter';
             break;
         }
-        $reportTempData[$filter]['users'] = $selection;
-        $reportTempData[$filter]['all_users'] = (\FormaLms\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
+        $reportTempData[$filter][$keyUsers] = $selection;
+        $reportTempData[$filter][$keyAll] = (\FormaLms\lib\Get::req('all_users', DOTY_INT, 0) > 0 ? true : false);
         //non utilizzato la selezione viene inviata per intero
         $reportTempData['id_report'] = $resourceId;
         $this->session->set(self::_REPORT_SESSION, $reportTempData);

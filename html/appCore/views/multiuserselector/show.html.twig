@@ -27,7 +27,7 @@
                 {% if tab %}
                 <div class="tab-pane {% if selection == tabValue %} active {% endif %}" id="multiuser_tab_{{ tabValue }}">
                     {% if tabValue != 'org' %}
-                   <table class="table table-bordered display" rel="{{ tabValue }}" active_search ="0" style="width:100%" id="{{ tabValue }}Content">
+                   <table class="table multiuserselector table-bordered display" rel="{{ tabValue }}" active_search ="0" style="width:100%" id="{{ tabValue }}Content">
                       
                     </table> 
                     {% else %}
@@ -101,7 +101,7 @@ var options = {
 $(document).ready(function() {
 
 
-    $('table').each(function(e) {
+    $('table.multiuserselector').each(function(e) {
 
     var rel = $(this).attr('rel');
   

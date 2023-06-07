@@ -5,7 +5,7 @@ use FormaLms\lib\Selectors\Multiuserselector\MultiUserSelector;
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -134,6 +134,7 @@ class UserselectorAdmController extends AdmController
             $idOrg =  $instanceId;
         }
       
+
 
         $this->render('show', ['tabs' => $this->tabs,
                             'selection'=> $this->selection,

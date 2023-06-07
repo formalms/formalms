@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -113,10 +113,36 @@ return [
             'className' => 'ReportService',
             'returnType' => 'redirect',
             'useNamespace' =>  true
-            ],
+        ],
+        'reportschedule' => [
+            'includes' => 'FormaLms\lib\Services\Reports\\' ,
+            'className' => 'ReportScheduleService',
+            'returnType' => 'redirect',
+            'useNamespace' =>  true
+        ],
+        'newslettercourse' => [
+            'includes' => 'FormaLms\lib\Services\Newsletters\\' ,
+            'className' => 'NewsletterService',
+            'returnType' => 'redirect',
+            'useNamespace' =>  true
+        ],
+        'advicecourse' => [
+            'includes' => 'FormaLms\lib\Services\Advices\\' ,
+            'className' => 'AdviceService',
+            'returnType' => 'redirect',
+            'useNamespace' =>  true
+        ],
+        'message' => [
+            'includes' => _adm_.'/lib/lib.message.php' ,
+            'className' => 'MessageModule',
+            'returnType' => 'redirect',
+        ],
     ],
     "use_filter" => [
         "organization" => "course",
+        "newslettercourse" => "course",
+        "advicecourse" => "course",
+        "message" => "message"
         ],
     
 ];

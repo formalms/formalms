@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -690,7 +690,7 @@ class Report_Aggregate extends Report
                 } else {
                     $temp = [];
                     // resolve the user selection
-                    $users = &$acl->getAllUsersFromIdst($selection);
+                    $users = $acl->getAllUsersFromIdst($selection);
                     if ($userlevelid != ADMIN_GROUP_GODADMIN && !\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                         $users = array_intersect($users, $admin_users);
                     }
@@ -1485,8 +1485,8 @@ class Report_Aggregate extends Report
         $sel_type = $reportTempData['rows_filter']['selection_type'];
         $selection = $reportTempData['rows_filter']['selection'];
 
-        $timetype = $reportTempData['columns_filter']['timetype'];
-        $years = $reportTempData['columns_filter']['years'];
+        $timetype = array_key_exists('timetype', $reportTempData['columns_filter']) ? $reportTempData['columns_filter']['timetype'] : '';
+        $years = array_key_exists('years', $reportTempData['columns_filter']) ? $reportTempData['columns_filter']['years'] : 0;
 
         if (!$sel_all && count($selection) <= 0) {
             cout('<p>' . $this->lang->def('_EMPTY_SELECTION') . '</p>');

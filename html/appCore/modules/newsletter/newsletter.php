@@ -3,7 +3,7 @@
 /*
  * FORMA - The E-Learning Suite
  *
- * Copyright (c) 2013-2022 (Forma)
+ * Copyright (c) 2013-2023 (Forma)
  * https://www.formalms.org
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  *
@@ -20,7 +20,18 @@ function newsletter()
     //access control
     //-TP// funAdminAccess('OP');
     checkPerm('view');
+    $linkAdd = '';
+    $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+    $course = null;
+    $idMainMenu = $request->query->has('id_main_sel') ? (int) $request->query->get('id_main_sel') : 0;
 
+    if($idMainMenu) {
+        $courseService = new \FormaLms\lib\Services\Courses\CourseService();
+
+        $course = $courseService->getCourseFromMenu($idMainMenu);
+    }
+    
+    
     require_once _base_ . '/lib/lib.form.php';
 
     $out = $GLOBALS['page'];
@@ -55,7 +66,11 @@ function newsletter()
         $out->add("<b><span class=\"fontRed\">$err</span><br />\n");
     }
 
-    $out->add($form->openForm('newsletter_form', 'index.php?modname=newsletter&amp;op=initsend', false, false, 'multipart/form-data'));
+    if(is_array($course)) {
+        $linkAdd = '&amp;id_course='.$course['idCourse'];
+    }
+
+    $out->add($form->openForm('newsletter_form', 'index.php?modname=newsletter&amp;op=initsend'.$linkAdd, false, false, 'multipart/form-data'));
     $out->add($form->openElementSpace());
 
     $out->add($form->getTextfield($lang->def('_SENDER'), 'fromemail', 'fromemail', 255, $myemail));
@@ -312,7 +327,8 @@ function init_send()
 
     require_once _base_ . '/lib/lib.upload.php';
     require_once _base_ . '/lib/lib.json.php';
-
+    $request = \FormaLms\lib\Request\RequestManager::getInstance()->getRequest();
+    $instance = 'newsletter';
     $json = new Services_JSON();
 
     $savefile = '';
@@ -373,8 +389,15 @@ function init_send()
     $qtxt = 'UPDATE %adm_newsletter SET id_send="' . $last_id . '" WHERE id="' . $last_id . '"';
     $q = sql_query($qtxt);
 
+    $idCourse = $request->query->has('id_course') ? (int) $request->query->get('id_course') : 0;
+
+
+    if($idCourse) {
+        $instance = 'newslettercourse';
+    }
+
     //$url = 'index.php?modname=newsletter&amp;op=selsendto&amp;id_send=' . $last_id . '&load=1';
-    $url = 'index.php?r=adm/userselector/show&amp;instance=newsletter&amp;id=' . $last_id . '&load=1';
+    $url = 'index.php?r=adm/userselector/show&amp;instance='.  $instance . '&amp;id=' . $last_id . '&load=1';
     Util::jump_to($url);
 }
 
