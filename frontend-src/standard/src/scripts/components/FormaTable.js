@@ -14,7 +14,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
  */
  class FormaTable {
 
-    constructor(idOrClassOrElement = null, options =  {}) {
+    constructor(idOrClassOrElement = null, options =  {}, drawCallback = null) {
      
         // Properties
         this.Name = 'FormaTable';
@@ -60,6 +60,26 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         this.setOptions(options, this.eventsListeners, idOrClassOrElement);
 
         this.setCallbacks();
+
+        if(drawCallback) {
+            this._options.drawCallback = drawCallback;
+        }
+
+
+        /*
+        OPTIONS to enable the "select all" checkbox
+        this._options.columnDefs =  [{
+            orderable: false,
+            className: 'select-checkbox select-all-ck',
+            targets: 0
+        }];
+        this._options.select = {
+            style: 'os',
+            selector: 'td:first-child'
+        };
+        this._options.order = [
+            [1, 'asc']
+        ];*/
 
         this.DataTable = new dt(idOrClassOrElement,this._options);
 

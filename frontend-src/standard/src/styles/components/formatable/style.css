@@ -562,3 +562,32 @@ table.dataTable tbody td.selected a {
   background-color:white
  }
  
+
+ .table.dataTable .select-checkbox {
+  position: relative;
+ }
+
+ table.dataTable th.select-checkbox:before, table.dataTable th.select-checkbox:before {
+  content: ' ';
+  margin-top: -6px;
+  margin-left: -6px;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+table.dataTable th.select-checkbox:before, table.dataTable th.select-checkbox:after, table.dataTable th.select-checkbox:before, table.dataTable th.select-checkbox:after {
+  display: block;
+  position: absolute;
+  top: 1.2em;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+}
+
+table.dataTable tr th.select-checkbox.selected::after {
+  content: "✔";
+  margin-top: -11px;
+  margin-left: -4px;
+  text-align: center;
+  text-shadow: rgb(176, 190, 217) 1px 1px, rgb(176, 190, 217) -1px -1px, rgb(176, 190, 217) 1px -1px, rgb(176, 190, 217) -1px 1px;
+}

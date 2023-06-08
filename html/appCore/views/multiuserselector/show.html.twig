@@ -85,17 +85,24 @@ var options = {
                 {
                     'targets': 0,
                     'checkboxes': {
-                    'selectRow': true,
+                        'selectRow': true,
+                        orderable: false,
+                        className: 'select-checkbox select-all-ck',
+                        targets: 0
                     }
                 }
             ],
             'select': {
                 'all': true,
                 'style': 'multi',
+                selector: 'td:first-child'
             },
             orderCellsTop: true,
             fixedHeader: true,
             //buttons: buttons
+            order: [
+                [1, 'asc']
+            ]
             };
 
 $(document).ready(function() {
@@ -168,15 +175,20 @@ $(document).ready(function() {
         options.data = data[rel];
     }
 
-    DTable[rel] = new window.frontend.modules.FormaTable(domId, options);
+    DTable[rel] = new window.frontend.modules.FormaTable(domId, options, () => {
+        $(`[rel=${rel}]`).find('.select-all-ck').removeClass("selected");
+        DTable[rel].DataTable.rows().deselect();
+    });
 
-    $(`[rel=${rel}]`).find('.select-checkbox').addClass('no-pseudo-forma-table-first').append('<input class="select-all-ck" type="checkbox"/>');
-    $(`[rel=${rel}]`).find('.select-all-ck').change(function() {
-        if(this.checked) {
+
+    $(`[rel=${rel}]`).on("click", "th.select-checkbox", function() {
+        if(!$(this).hasClass("selected")) {
+            $(this).addClass("selected");
             DTable[rel].DataTable.rows().select()
         } else {
+            $(this).removeClass("selected");
             DTable[rel].DataTable.rows().deselect()
-        }   
+        }
     });
 
     // Setup - add a text input to each header cell
