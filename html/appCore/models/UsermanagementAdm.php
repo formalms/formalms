@@ -394,7 +394,7 @@ class UsermanagementAdm extends Model
 					)";
                 }
 
-                if (count($columnsFilter)) {
+                if (count($columnsFilter) && !$searchFilter) {
                     foreach ($columnsFilter as $columnName => $columnValue) {
                         $query .= ' AND (
                                 u.' . $columnName . ' LIKE "%' . $columnValue . '%" 
@@ -840,7 +840,7 @@ class UsermanagementAdm extends Model
                 break;
         }
 
-        if (count($columnsFilter)) {
+        if (count($columnsFilter) && !$searchFilter) {
             foreach ($columnsFilter as $columnName => $columnValue) {
                 $filtered_query .= ' AND (
                     u.' . $columnName . ' LIKE "%' . $columnValue . '%" 

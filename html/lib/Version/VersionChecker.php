@@ -13,6 +13,7 @@
 
 namespace FormaLms\lib\Version;
 
+use Exception;
 use FormaLms\lib\Helpers\HelperTool;
 
 class VersionChecker
@@ -41,6 +42,9 @@ class VersionChecker
         $versionConfigs = \Util::config('version');
         foreach($versionConfigs as $configParam => $configValue) {
             $property = HelperTool::snakeToCamelCase($configParam);
+            if(!property_exists($this, $property)) {
+                throw new Exception('$property not existing in Version Checker');
+            }
             $this->$property = $configValue;
         }
         

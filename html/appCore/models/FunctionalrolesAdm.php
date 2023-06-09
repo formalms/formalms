@@ -143,7 +143,7 @@ class FunctionalrolesAdm extends Model implements Accessible
             $query .= $_filter;
         }
 
-        if(count($columnsFilter)) {
+        if(count($columnsFilter) && !$_filter) {
             foreach($columnsFilter as $columnName => $columnValue) {
                 $query .= ' AND (
                     fl.' .$columnName . ' LIKE "%' . $columnValue . '%" 
@@ -224,7 +224,7 @@ class FunctionalrolesAdm extends Model implements Accessible
             . " ON (f.id_group = fgl.id_group AND fgl.lang_code = '" . $_language . "')"
             . " WHERE g.groupid LIKE '/fncroles/%' " . ($_filter != '' ? $_filter . ' ' : '');
 
-        if(count($columnsFilter)) {
+        if(count($columnsFilter) && !$filter) {
             foreach($columnsFilter as $columnName => $columnValue) {
                 $query .= ' AND (
                     fl.' .$columnName . ' LIKE "%' . $columnValue . '%" 

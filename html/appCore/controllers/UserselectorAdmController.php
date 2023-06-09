@@ -135,7 +135,6 @@ class UserselectorAdmController extends AdmController
         }
       
 
-
         $this->render('show', ['tabs' => $this->tabs,
                             'selection'=> $this->selection,
                             'columns' => $columns,

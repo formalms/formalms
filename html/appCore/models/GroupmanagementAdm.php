@@ -96,7 +96,7 @@ class GroupmanagementAdm extends Model implements Accessible
             $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
         }
 
-        if(count($columnsFilter)) {
+        if(count($columnsFilter) && !$filter) {
             foreach($columnsFilter as $columnName => $columnValue) {
                 $query .= ' AND (
                     g.' .$columnName . ' LIKE "%' . $columnValue . '%" 
@@ -211,7 +211,7 @@ class GroupmanagementAdm extends Model implements Accessible
             $query .= " AND (g.groupid LIKE '%" . $filter . "%' OR g.description LIKE '%" . $filter . "%') ";
         }
 
-        if(count($columnsFilter)) {
+        if(count($columnsFilter) && !$filter) {
             foreach($columnsFilter as $columnName => $columnValue) {
                 $query .= ' AND (
                     g.' .$columnName . ' LIKE "%' . $columnValue . '%" 

@@ -1833,3 +1833,7 @@ ul.tabs li.current{
     border: none;
 }
 
+#form_tabs{
+    margin-top:-3%;
+}
+

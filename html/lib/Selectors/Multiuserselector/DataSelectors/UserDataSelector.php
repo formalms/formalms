@@ -47,7 +47,7 @@ class UserDataSelector extends DataSelector{
 
           
             $order = $params['order'][0];
-            $sort = array_key_exists('column', $order) ? (string) $columns[(int) $order['column']]['data'] != ''? (string) $columns[$order['column']]['data'] : '0' : '0';
+            $sort = array_key_exists('column', $order) ? ((string) $columns[(int) $order['column']]['data'] != ''? (string) $columns[$order['column']]['data'] : '0') : '0';
             $dir = array_key_exists('dir', $order) ? (string) $order['dir'] : 'asc'; 
         } else {
             $sort = '0';
@@ -83,6 +83,7 @@ class UserDataSelector extends DataSelector{
                 $startIndex = $total - $results;
             }
         }
+
 
         if($activeSearch) {
             $results = $total;

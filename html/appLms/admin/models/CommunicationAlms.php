@@ -359,7 +359,7 @@ class CommunicationAlms extends Model implements Accessible
                     . ' ' . (int) $id_comm . ', '
                     . ' ' . (int) $idst . ' '
                     . ') ';
-                $re &= $this->db->query($query_insert);
+                $re = $this->db->query($query_insert);
             }
         }
         if (is_array($del_reader)) {
@@ -367,7 +367,7 @@ class CommunicationAlms extends Model implements Accessible
                 $query_delete = '
 				DELETE FROM %lms_communication_access
 				WHERE idst = ' . (int) $idst . ' AND id_comm = ' . (int) $id_comm . ' ';
-                $re &= $this->db->query($query_delete);
+                $re = $this->db->query($query_delete);
             }
         }
 

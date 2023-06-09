@@ -514,7 +514,7 @@ class Util
     public static function config($path) {
 
         if(!preg_match("/^[a-z0-9_.]+$/i", $path)) {
-            dd("error string");
+            throw new Exception('Config path not regularly expressed:use only chars and dots');
         }
         
         $pathParts = explode(".", $path);
@@ -522,7 +522,7 @@ class Util
         $configFile = _base_."/config/" . array_shift($pathParts) . ".php";
        
         if(!file_exists($configFile)) {
-            dd("errorexists");
+            throw new Exception('Config file $configFile not existing');
         }
         $configResult = include $configFile;
      
