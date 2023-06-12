@@ -42,28 +42,28 @@ final class Version20221012000004 extends AbstractMigration
         /** FOREIGN KEYS **/                  
 
         $this->addSql("CREATE TABLE IF NOT EXISTS core_domain_configs (
-            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            title varchar(255),
-            domain varchar(255),
-            parentId int NULL DEFAULT NULL,
-            template varchar(255),
-            orgId int NULL DEFAULT NULL,
-            mailConfigId int NULL DEFAULT NULL,
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
-            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            `title` varchar(255),
+            `domain` varchar(255),
+            `parentId` int NULL DEFAULT NULL,
+            `template` varchar(255),
+            `orgId` int NULL DEFAULT NULL,
+            `mailConfigId` int NULL DEFAULT NULL,
+            `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ,
+            `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
         $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs (
-            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            title varchar(255),
-            flag_system boolean not null default 0
+            `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            `title` varchar(255),
+            `system` boolean not null default 0
             )ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
         $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs_fields (
-            id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            mailConfigId int,
-            type varchar(255),
-            value varchar(255)
+            `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            `mailConfigId` int,
+            `type` varchar(255),
+            `value` varchar(255)
             )ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
         //////////$this up() migration is auto-generated, please modify it to your needs
@@ -656,7 +656,7 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql('CREATE INDEX id_track_idx ON learning_testtrack_times (idTrack)');
         $this->addSql('CREATE INDEX id_test_idx ON learning_testtrack_times (idTest)');
         $this->addSql('ALTER TABLE learning_time_period ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE title title VARCHAR(255) NOT NULL, CHANGE label label VARCHAR(255) NOT NULL');
-        $this->addSql('ALTER TABLE learning_trackingeneral ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idEnter idEnter INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE idCourse idCourse INT NOT NULL, CHANGE session_id session_id VARCHAR(255) NOT NULL, CHANGE function function VARCHAR(250) NOT NULL, CHANGE type type VARCHAR(255) NOT NULL, CHANGE ip ip VARCHAR(30) NOT NULL');
+        $this->addSql('ALTER TABLE learning_trackingeneral ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idEnter idEnter INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE idCourse idCourse INT NOT NULL, CHANGE session_id session_id VARCHAR(255) NOT NULL, CHANGE `function` `function` VARCHAR(250) NOT NULL, CHANGE type type VARCHAR(255) NOT NULL, CHANGE ip ip VARCHAR(30) NOT NULL');
         $this->addSql('ALTER TABLE learning_tracksession ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE idCourse idCourse INT NOT NULL, CHANGE idUser idUser INT NOT NULL, CHANGE session_id session_id VARCHAR(255) NOT NULL, CHANGE numOp numOp INT NOT NULL, CHANGE lastFunction lastFunction VARCHAR(50) NOT NULL, CHANGE lastOp lastOp VARCHAR(5) NOT NULL, CHANGE ip_address ip_address VARCHAR(40) NOT NULL, CHANGE active active TINYINT(1) NOT NULL');
         $this->addSql('ALTER TABLE learning_transaction ADD created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL, ADD updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP, CHANGE id_user id_user INT NOT NULL, CHANGE price price INT NOT NULL, CHANGE payment_status payment_status TINYINT(1) NOT NULL, CHANGE course_status course_status TINYINT(1) NOT NULL, CHANGE method method VARCHAR(255) NOT NULL');
         $this->addSql('ALTER TABLE learning_transaction_info DROP INDEX `PRIMARY`');

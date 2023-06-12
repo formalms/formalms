@@ -306,7 +306,7 @@ class SmtpHandler
             if ($mailConfigId) {
                 $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId ="' . $mailConfigId . '"');
             } else {
-                $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId = (SELECT id FROM %adm_mail_configs WHERE flag_system = "1")');
+                $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId = (SELECT id FROM %adm_mail_configs WHERE `system` = "1")');
             }
 
             if(is_array($query_res)) {
