@@ -105,6 +105,10 @@ class FormaMigrator
         if (!in_array($command, self::ADMITTABLE_COMMANDS)) {
             throw new Exception("Not Implement Command");
         }
+
+        if (PHP_VERSION_ID < 80000) {
+            return $this->$command(extract($args));
+        }
         return $this->$command(...$args);
     }
 

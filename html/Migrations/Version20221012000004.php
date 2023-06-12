@@ -56,8 +56,9 @@ final class Version20221012000004 extends AbstractMigration
         $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs (
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
             title varchar(255),
-            system boolean not null default 0
+            flag_system boolean not null default 0
             )ENGINE=InnoDB DEFAULT CHARSET=utf8");
+
         $this->addSql("CREATE TABLE IF NOT EXISTS core_mail_configs_fields (
             id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
             mailConfigId int,
