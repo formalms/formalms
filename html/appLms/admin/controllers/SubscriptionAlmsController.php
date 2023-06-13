@@ -3052,6 +3052,8 @@ class SubscriptionAlmsController extends AlmsController
             return;
         }
 
+
+
         Util::get_js(FormaLms\lib\Get::rel_path('base') . '/lib/lib.elem_selector.js', true, true);
 
         $res = FormaLms\lib\Get::req('res', DOTY_STRING, '');
@@ -3329,6 +3331,10 @@ class SubscriptionAlmsController extends AlmsController
         if ($id_path <= 0) {
             //...
             return;
+        }
+
+        if (FormaLms\lib\Get::Req('cancelselector', DOTY_STRING, '') == Lang::t('_CANCEL')) {
+            Util::jump_to('index.php?r=' . $this->link . '/show_coursepath&id_path=' . (int) $id_path . '&res=ok_subscribe');
         }
 
         $selection = FormaLms\lib\Get::req('userselector_input', DOTY_MIXED, true);
