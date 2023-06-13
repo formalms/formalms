@@ -52,7 +52,7 @@ class Learning_Test extends Learning_Object
                     $this->title,
                     $this->obj_type,
                     $this->retain_answers_history
-                    ) = $this->db->fetch_row($res);
+                ) = $this->db->fetch_row($res);
                 $this->isPhysicalObject = true;
             }
             $res = $this->db->query("SELECT idOrg, idCourse FROM %lms_organization WHERE objectType='" . $this->obj_type . "' AND idResource = '" . (int) $id . "'");
@@ -142,7 +142,35 @@ class Learning_Test extends Learning_Object
     {
         checkPerm('view', false, 'storage');
 
+        $deleteFinalVote = 0;
+        $deleteCourseReportIds = [];
         \FormaLms\lib\Forma::removeErrors();
+
+        //cancello registro valutazioni
+        //seleziono i record da course report attenzionando l'id del corso e il campo use for final
+        $learningCourseReportRecords = sql_query('
+		SELECT *
+		FROM %lms_coursereport
+		WHERE id_source = "' . $id . '" AND source_of = "test"');
+        foreach($learningCourseReportRecords as $learningCourseReportRecord) {
+            if($learningCourseReportRecord['use_for_final'] === 'true') {
+                $deleteFinalVote = (int) $learningCourseReportRecord['id_course'];
+            }
+
+            $deleteCourseReportIds[] = $learningCourseReportRecord['id_report'];
+        }
+
+        if(count($deleteCourseReportIds)) {
+            $deleteCourseReportQuery = '
+			DELETE FROM %lms_coursereport
+			WHERE id_report IN ("' . implode(',', $deleteCourseReportIds) . '") ';
+
+            if($deleteFinalVote) {
+                $deleteCourseReportQuery .= 'OR (id_course="'.$deleteFinalVote.'" AND source_of="final_vote")'; 
+            }
+
+            $responsecourseReportQuery = sql_query($deleteCourseReportQuery);
+        }
 
         // finding track
         $re_quest_track = sql_query("
@@ -206,6 +234,8 @@ class Learning_Test extends Learning_Object
 
             return false;
         }
+
+ 
 
         return $id;
     }
@@ -339,13 +369,13 @@ class Learning_Test extends Learning_Object
         switch ($step) {
             case 'test_review':
                 review($this, $id_param);
-             break;
+                break;
             case 'play':
                 playTestDispatch($this, $id_param);
-             break;
+                break;
             default:
                 intro($this, $id_param);
-             break;
+                break;
         }
     }
 
