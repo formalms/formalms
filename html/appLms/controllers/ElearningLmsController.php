@@ -114,13 +114,26 @@ class ElearningLmsController extends LmsController
             $block_list['labels'] = true;
         }
 
+
+        $statusFilters = $model->getFilterStatusCourse(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst());
+        $_select_category = Form::getInputDropdown('', 'course_search_filter_cat', 'filter_cat', $model->getListCategory(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst(), false), 0, 'title="'.Lang::t('_CATEGORY_SELECTED', 'course').'"');
+        $_select_category = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_select_category);
+
+        $_select_course_type = Form::getInputDropdown('', 'course_search_filter_type', 'filter_type', $model->getFilterCourseType(), 'all', 'title="'.Lang::t('_COURSE_TYPE_SELECTION', 'course').'"');
+        $_select_course_type = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width="" multiple data-actions-box="true"', $_select_course_type);
+
+        $_select_year = Form::getInputDropdown('', 'course_search_filter_year', 'filter_year', $model->getFilterYears(\FormaLms\lib\FormaUser::getCurrentUser()->getIdst()), 0, 'title="'.Lang::t('_YEAR_SELECTION', 'simplesel').'"');
+        $_select_year = str_replace('class="form-control "', 'class="selectpicker"  data-selected-text-format="count > 1" data-width=""  data-actions-box="true"', $_select_year);
+
+
         if ($tb_label) {
             require_once _lms_ . '/admin/models/LabelAlms.php';
             $label_model = new LabelAlms();
             $user_label = $label_model->getLabelForUser(\FormaLms\lib\FormaUser::getCurrentUser()->getId());
             $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'label' => $user_label, 'current_label' => $id_common_label]);
         } else {
-            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label]);
+            $this->render('_tabs_block', ['block_list' => $block_list, 'use_label' => $tb_label, 'statusFilters' => $statusFilters,
+                                                    '_select_category' => $_select_category, '_select_course_type' => $_select_course_type, '_select_year' => $_select_year]);
         }
 
         // add feedback:
