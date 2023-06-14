@@ -4,7 +4,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "unminified-css": "node-sass src/styles/main.scss ../../html/templates/standard/static/main.min.css",
+    "unminified-css": "sass src/styles/main.scss:../../html/templates/standard/static/main.min.css",
     "post-css": "./node_modules/postcss-cli/bin/postcss --use autoprefixer --autoprefixer.browsers 'last 12 versions' -o ../../html/templates/standard/static//main.min.css ../../html/templates/standard/static//main.min.css",
     "dev": "webpack --watch --config dev.config.js",
     "js": "webpack --config build.config.js --progress",
