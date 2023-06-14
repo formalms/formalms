@@ -14,7 +14,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
  */
  class FormaTable {
 
-    constructor(idOrClassOrElement = null, options =  {}, drawCallback = null) {
+    constructor(idOrClassOrElement = null, options =  {}) {
      
         // Properties
         this.Name = 'FormaTable';
@@ -61,27 +61,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
 
         this.setCallbacks();
 
-        if(drawCallback) {
-            this._options.drawCallback = drawCallback;
-        }
-
-
-        /*
-        OPTIONS to enable the "select all" checkbox
-        this._options.columnDefs =  [{
-            orderable: false,
-            className: 'select-checkbox select-all-ck',
-            targets: 0
-        }];
-        this._options.select = {
-            style: 'os',
-            selector: 'td:first-child'
-        };
-        this._options.order = [
-            [1, 'asc']
-        ];*/
-
-        this.DataTable = new dt(idOrClassOrElement,this._options);
+        this.DataTable = new dt(idOrClassOrElement, this._options);
 
         this.setActions();
 
@@ -466,6 +446,11 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
               
           }
 
+
+          if(this._options.select.allPage === false) {
+            $(this.Element).parent().parent().find("th.select-checkbox").removeClass("select-checkbox");
+          }
+
          
         }
 
@@ -629,13 +614,44 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         /**
          * Automatic selection for paginated table.
          */
-       
-
 
         this.DataTable.on('click', '.formatable-action', function(e) {
             e.preventDefault();
             this.callAjax($(this).attr('href'), $(this).data('ajaxdata'));
         });
+
+        const updateGlobalSelector = () => {
+            if(dtable.rows({"selected":true, page: "current"}).count() === dtable.rows({page: "current"}).count()) {
+                $(_thisobj.Element).parent().parent().find("th.select-checkbox").addClass("selected");
+            } else {
+                $(_thisobj.Element).parent().parent().find("th.select-checkbox").removeClass("selected");
+            }
+        }
+
+        // Selecting/deselecting all
+        this.DataTable
+        .on('draw', function () {
+            if(dtable.selectionDirty) {
+                $(_thisobj.Element).parent().parent().find('th.select-checkbox').removeClass("selected");
+                dtable.DataTable.rows().deselect();
+                dtable.selectionDirty = false;
+            }
+            updateGlobalSelector();
+        }).on('deselect', function() {
+            updateGlobalSelector();
+        });
+
+        $(_thisobj.Element).parent().parent().on("click", "th.select-checkbox", function() {
+            if(!$(this).hasClass("selected")) {
+                dtable.rows().select();
+                _thisobj.selectionDirty = true;
+            } else {
+                dtable.rows().deselect()
+                _thisobj.selectionDirty = false;
+            }
+            updateGlobalSelector();
+        });
+
         /**
          * Handle paginated selection.
          */
@@ -654,7 +670,7 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
                     
                 }
             }
-            
+            updateGlobalSelector();
         });
 
         
@@ -757,7 +773,6 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
         this.searchBar = {
 
             init: function() {
-                console.log('inizializzo', dt);
                 this.instance = dt;
                 this.searchBar = '.dataTables_scrollHeadInner tr:eq(1)';
                 this.initSearchBar()
@@ -801,7 +816,6 @@ require('bootstrap-js-buttons/dist/bootstrap-js-buttons.min.js');
                     $(this.searchBar).hide()
                 } else {
                     $(this.searchBar).show()
-                    console.log(this, this.instance);
                     this.instance.columns.adjust().draw('page');
                 }
             },

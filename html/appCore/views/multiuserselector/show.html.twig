@@ -87,19 +87,20 @@ var options = {
             deferRender: true,
             'columnDefs': [
                 {
-                    'targets': 0,
+                    'targets': 1,
                     'checkboxes': {
                         'selectRow': true,
                         orderable: false,
-                        className: 'select-checkbox select-all-ck',
-                        targets: 0
+                        className: 'select-checkbox',
+                        targets: 1
                     }
                 }
             ],
             'select': {
                 'all': true,
                 'style': 'multi',
-                selector: 'td:first-child'
+                selector: 'td:first-child',
+                allPage: true
             },
             orderCellsTop: true,
             fixedHeader: true,
@@ -181,34 +182,6 @@ $(document).ready(function() {
 
 
     DTable[rel] = new window.frontend.modules.FormaTable(domId, options);
-    
-    // Selecting/deselecting all
-    DTable[rel].DataTable
-        .on('page', function () {
-            if(DTable[rel].selectionDirty) {
-                $(`[rel=${rel}]`).find('th.select-checkbox').removeClass("selected");
-                DTable[rel].DataTable.rows().deselect();
-                DTable[rel].selectionDirty = false;
-            }
-        }).on('select', function () {
-            // Selezione "uno ad uno"
-            if(!DTable[rel].selectionDirty) {
-               // DTable[rel].selectionDirty = true;
-            }
-        });
-
-    $(`[rel=${rel}]`).on("click", "th.select-checkbox", function() {
-        if(!$(this).hasClass("selected")) {
-            $(this).addClass("selected");
-            DTable[rel].DataTable.rows().select();
-            DTable[rel].selectionDirty = true;
-        } else {
-            $(this).removeClass("selected");
-            DTable[rel].DataTable.rows().deselect()
-            DTable[rel].selectionDirty = false;
-        }
-    });
-    // # Selecting/deselecting all
 
     // Setup - add a text input to each header cell
     columns[rel].forEach(function(item, i) {
