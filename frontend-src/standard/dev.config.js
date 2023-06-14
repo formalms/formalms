@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -9,6 +10,10 @@ module.exports = {
     publicPath: './static/',
     filename: '[name].js',
     chunkFilename: '[name].js'
+  },
+  devtool: 'source-map',
+  optimization: {
+    minimize: false
   },
   module: {
     rules: [
@@ -78,5 +83,11 @@ module.exports = {
     }
   },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/images/', to: __dirname + '/../../html/templates/standard/static/images' },
+        { from: 'src/fonts/', to: __dirname + '/../../html/templates/standard/static/fonts' }
+      ]
+    })
   ]
 };

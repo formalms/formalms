@@ -6,8 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "unminified-css": "sass src/styles/main.scss:../../html/templates/standard/static/main.min.css",
     "post-css": "./node_modules/postcss-cli/bin/postcss --use autoprefixer --autoprefixer.browsers 'last 12 versions' -o ../../html/templates/standard/static//main.min.css ../../html/templates/standard/static//main.min.css",
-    "dev": "webpack --watch --config dev.config.js",
-    "js": "webpack --config build.config.js --progress",
+    "dev": "webpack --mode=development --watch --config dev.config.js",
+    "js": "webpack --mode=production --config build.config.js --progress",
     "build": "npm run js && npm run css",
     "build-unminified": "npm run js && npm run unminified-css",
     "jsonize": "./node_modules/.bin/ciffi-jsonize",
@@ -90,6 +90,7 @@
     "sass-loader": "^13.2.0",
     "sassdoc": "^2.7.4",
     "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.9",
     "twig-loader": "^0.5.5",
     "webpack": "^5.75.0",
     "webpack-cli": "^5.0.1"

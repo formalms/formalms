@@ -55,3 +55,4 @@ html/forma.lock
 # doctrine
 bin/doctrine
 bin/doctrine-dbal
+html/templates/standard/static/main.js.map

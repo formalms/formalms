@@ -3,6 +3,8 @@ const path = require('path');
 // const ESLintPlugin = require('eslint-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const TerserPlugin = require("terser-webpack-plugin");
+
 module.exports = {
   entry: {
     main: './src/scripts/main.js'
@@ -12,6 +14,12 @@ module.exports = {
     publicPath: './static/',
     filename: '[name].js',
     chunkFilename: '[name].js'
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({ parallel: true })
+    ],
   },
   cache: {
     type: 'filesystem',
