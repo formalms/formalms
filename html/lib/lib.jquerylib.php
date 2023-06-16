@@ -26,7 +26,6 @@ class JQueryLib
     public static $array_js_addons = [
         'html5support',  //  HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
         'helpdesk',
-        'fancybox',
         'swipe',
         'select',
         'datepicker',
@@ -40,7 +39,6 @@ class JQueryLib
 
     public static $array_css_addons = ['table',    //  media query for table formatting
         'helpdesk',
-        'fancybox',
         'swipe',
         'select',
         'datepicker',

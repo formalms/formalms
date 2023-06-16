@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ Layout_getLangCode() }}">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ Layout_getLangCode() }}" lang="{{ Layout_getLangCode() }}" >
 <head>
     <!--Fix funzionamento scorm su IE9-->
     <meta http-equiv="x-ua-compatible" content="IE=11"/>
@@ -107,6 +107,19 @@
 <!-- end scripts -->
 {{ Layout_getZone('debug') }}
 {{ Layout_getAnalytics() }}
+
+<script>
+       window.addEventListener('DOMContentLoaded', function() {
+           var elements = document.querySelectorAll('a, button, input');
+
+           var tabIndex = 1;
+
+           elements.forEach(function(element) {
+               element.setAttribute('tabindex', tabIndex);
+               tabIndex++;
+            });
+        });
+</script>
 
 </body>
 </html>

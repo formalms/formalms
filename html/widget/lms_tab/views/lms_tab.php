@@ -31,7 +31,7 @@
     $re_tablist = sql_query($query_menu);
 
     $tablist_items = '';
-    $tabIndex = 100;
+    $buttonIndex = 1;
     while (list($obj_index) = sql_fetch_row($re_tablist)) {
         $id = $obj_index;
 
@@ -43,9 +43,8 @@
         if ($this->isActive($cid)) {
             $tablist_items .= '<li ' . $this->selected($cid) . '>';
             if (!strpos($_GET['r'], 'catalog') && !isset($_GET['id_cat'])) {
-                $tablist_items .= '<a id="myCourseButton'.$tabIndex.'" href="index.php?r=lms/mycourses/show&mycourses_tab=' . $obj_index . '&sop=unregistercourse" tabIndex="'.$tabIndex++.'">';
+                $tablist_items .= '<a id="myCourseButton'.($buttonIndex++).'" href="index.php?r=lms/mycourses/show&mycourses_tab=' . $obj_index . '&sop=unregistercourse">';
                 $tablist_items .= '<em>' . $name . '</em>';
-                // $tablist_items .= ( isset(${$name}) ? '<b>'.${$name}.'</b>' : '' );
                 $tablist_items .= '</a>';
             }
             $tablist_items .= '</li>';

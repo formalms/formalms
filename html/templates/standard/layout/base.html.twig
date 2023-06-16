@@ -79,7 +79,36 @@
     <script type="text/javascript" src="{{ Layout_getPath() }}script/tabnav.js?v={{ Template_getVersion() }}"></script>
     <script type="text/javascript" src="{{ Layout_getPath() }}static/main.js?v={{ Template_getVersion() }}"></script>
 
-  {% block javascript %}
+    {% block javascript %}
+    {% endblock %}
+
+    {% block tabNavigation %}
+        <script>
+            window.addEventListener('DOMContentLoaded', function() {
+                var elements = document.querySelectorAll('a, button, input');
+
+                var tabIndex = 1;
+
+                elements.forEach(function(element) {
+                    if (element.closest('#c-menu--slide-right')){
+                            element.setAttribute('tabindex', tabIndex+100);
+                    } else {
+                        element.setAttribute('tabindex', tabIndex);
+                    }
+                    tabIndex++;
+
+                });
+
+                document.addEventListener('keydown', function(event) {
+                    if (event.key === 'Tab') {
+                        const currentFocusedElement = document.activeElement;
+                        console.log('Element with focus:', currentFocusedElement);
+                    }
+                });
+
+            });
+        </script>
+
     {% endblock %}
 
     <!-- Restyling -->
