@@ -28,10 +28,11 @@ class Authentication extends \PluginAuthentication implements \PluginAuthenticat
             'name' => 'FormaAuth',
             'type' => self::AUTH_TYPE_BASE,
             'form' => Form::openForm('login_confirm', \FormaLms\lib\Get::rel_path('base') . '/index.php?r=' . _login_ . '&plugin=' . Plugin::getName() . $redirect)
-                //  . Form::getHidden("plugin", "plugin", "FormaAuth")
-                //  . Form::getTextfield(Lang::t("_USERNAME", "login"), "login_userid", "login_userid", 255)
-                . Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t('_USERNAME', 'login') . '"')
-                //  . Form::getPassword(Lang::t("_PASSWORD", "login"), "login_pwd", "login_pwd", 255)
+                    . Form::getLineTextfield('form_line_l','floating', Lang::t("_USERNAME", "login"),'form-control textfield','login_userid','login_userid', '',
+                                    '', 255, 'placeholder="' . Lang::t('_USERNAME', 'login') . '"', '','')
+/*                . Form::getLabel('login_userid', Lang::t("_USERNAME", "login"),'')
+                . Form::getInputTextfield('', 'login_userid', 'login_userid', '', '', 255, 'placeholder="' . Lang::t('_USERNAME', 'login') . '"')*/
+                . Form::getLabel('login_userid', Lang::t("_PASSWORD", "login"),'')
                 . Form::getInputPassword('', 'login_pwd', 'login_pwd', '', 255, 'placeholder="' . Lang::t('_PASSWORD', 'login') . '"')
                 . (isset($_REQUEST['notuse_plugin']) ? Form::getHidden('notuse_plugin', 'notuse_plugin', 'true') : '')
                 . (isset($_REQUEST['notuse_customscript']) ? Form::getHidden('notuse_customscript', 'notuse_customscript', 'true') : '')
