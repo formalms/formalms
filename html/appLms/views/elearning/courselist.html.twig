@@ -63,6 +63,7 @@
     function closeAllDatesPopup($id) {
         $('*[data-overlay="course-' + $id + '"]').fadeOut();
     }
+
 </script>
 
 
@@ -79,12 +80,25 @@
        {% endif %}
 
         {% for course in courselist %}
-
             <div class="col-xs-12 col-md-4 col-lg-3 mycourses-list">
-
                 {% include 'partials/elearning-course-box.html.twig' with { 'course': course } %}
             </div>
-       {% endfor%}
-            </div>
+        {% endfor%}
     </div>
 </div>
+
+<script>
+        var elements = document.querySelectorAll('a, button, input');
+        var tabIndex = 200;
+        elements.forEach(function(element) {
+            element.setAttribute('tabindex', tabIndex);
+            tabIndex++;
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Tab') {
+                const currentFocusedElement = document.activeElement;
+                console.log('Element with focus:', currentFocusedElement);
+            }
+        });
+</script>
