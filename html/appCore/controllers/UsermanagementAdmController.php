@@ -1389,7 +1389,7 @@ class UsermanagementAdmController extends AdmController
                     'id' => 'moduser_' . $id_action,
                     'command' => 'moduser',
                     'icon' => 'standard/moduser.png',
-                    'href' => 'index.php?r=' . $this->link . '/assignuser&id=' . $id_action,
+                    'href' => 'index.php?r=adm/userselector/show&instance=orgnode&tab_filters[]=user&id=' . $id_action,
                     'alt' => Lang::t('_ASSIGN_USERS', 'organization_chart'),
                 ];
             } else {

@@ -11,9 +11,11 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Interfaces\Accessible;
+
 defined('IN_FORMA') or exit('Direct access is forbidden.');
 
-class UsermanagementAdm extends Model
+class UsermanagementAdm extends Model implements Accessible
 {
     protected $db;
     protected $aclManager;
@@ -2501,7 +2503,7 @@ class UsermanagementAdm extends Model
      */
     public function assignUsers($idOrg, $users)
     {
-        $acl = &\FormaLms\lib\Forma::getAclManager();;
+        $acl = \FormaLms\lib\Forma::getAclManager();;
         $acl->include_suspended = true;
         $groupidst = $acl->getGroupSt('/oc_' . (int)$idOrg); //get group idst from group table
         $groupdesc = $acl->getGroupSt('/ocd_' . (int)$idOrg); //get descendants' group idst from group table
@@ -3522,5 +3524,16 @@ class UsermanagementAdm extends Model
         }
 
         return $output;
+    }
+
+
+    public function getAccessList( $resourceId) : array{
+
+        return  $this->getFolderUsers($resourceId);
+    }
+
+    public function setAccessList( $resourceId, array $selection) : bool{
+
+        return $this->assignUsers($resourceId, $selection);
     }
 }

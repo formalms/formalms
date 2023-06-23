@@ -145,10 +145,9 @@ class PluginManager
     }
 
     public static function is_plugin_active($plugin)
-    {
-        $active_plugins = array_map(function ($element) {return $element['name']; }, self::get_all_plugins(true));
+    { 
 
-        return in_array($plugin, $active_plugins);
+        return in_array($plugin, array_keys(self::get_all_plugins(true)));
     }
 
     private static function include_plugin_file($plugin, $file)

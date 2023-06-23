@@ -777,7 +777,7 @@ class InstallAdm extends Model
         $params = $request->request->all();
 
         foreach ($params as $key => $param) {
-            if ('' == $param) {
+            if ('' == $param && $key != 'dbPass') { //in lcolae potresti non avere password
                 $messages[] = $this->errorLabels['missing_field'] . ":" . $this->labels[$key . 'Label'];
             }
         }
@@ -986,7 +986,11 @@ class InstallAdm extends Model
             }
         } else {
 
-            $messages[] = $this->errorLabels['unsuitable_sql_version'];;
+            if($connectionResult == 'err_connect'){
+                 $messages[] = $this->errorLabels['cant_connect_db'];
+            } else {
+                $messages[] = $this->errorLabels['unsuitable_sql_version'];
+            }
 
         }
         
@@ -1014,7 +1018,7 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    public function getSqlVersionByQuery(): string
+    public function getSqlVersionByQuery(): ?string
     {
         $row = sql_query("SELECT version()");
         list($version) = sql_fetch_row($row);

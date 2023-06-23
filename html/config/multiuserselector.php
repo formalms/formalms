@@ -137,6 +137,11 @@ return [
             'className' => 'MessageModule',
             'returnType' => 'redirect',
         ],
+        'orgnode' => [
+            'includes' => _adm_.'/models/UsermanagementAdm.php',
+            'className' => 'UsermanagementAdm', 
+            'returnType' => 'redirect'
+            ],
     ],
     "use_filter" => [
         "organization" => "course",
