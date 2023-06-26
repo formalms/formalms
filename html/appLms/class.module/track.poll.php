@@ -18,9 +18,9 @@ require_once _lms_ . '/class.module/track.object.php';
 class Track_Poll extends Track_Object
 {
     /**
-     * @var string
+     * @var string|null
      */
-    public array $back_url;
+    public $back_url;
     /**
      * @var int|null
      */
