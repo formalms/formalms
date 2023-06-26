@@ -142,9 +142,16 @@ return [
             'className' => 'UsermanagementAdm', 
             'returnType' => 'redirect'
             ],
+        'learninggroup' => [
+            'includes' => 'FormaLms\lib\Services\Courses\\',
+            'className' => 'LearningGroupService', 
+            'returnType' => 'redirect',
+            'useNamespace' =>  true
+            ],
     ],
     "use_filter" => [
         "organization" => "course",
+        "learninggroup" => "course",
         "newslettercourse" => "course",
         "advicecourse" => "course",
         "message" => "message"
