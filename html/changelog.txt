@@ -2,6 +2,38 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 3.3.9
+---------------------------------------------------------------------------------------
+Release date: 2023 june
+
+- #      - fix getUsersFieldEntryData in lib.field.php for Country custom field
+- #      - #20153: fixed http protocol setting
+- #      - #20152: managed "Cancel" button
+- #      - fix lang
+- #      - fix performance exception
+- #      - fix test update modality
+- #      - Fix require path with static /../ in string.
+- #      - create 3.3.8 to insert in install ad upgrade lost query index
+- #      - Fix send Alert in subscription
+- #      - functions refactor
+- #      - fix question bank
+- #      - fix forma table rows when text is HTML
+- #      - add translation in folder view learning object status and action
+- #      - add color management in dashboardblock attendancegraph
+- #      - fix api deleteDay
+- #      - fix api updateDay
+- #      - fix upgrade sql
+- #      - #20146: added missing SQL instructions
+- #      - fix purchase user logic
+- #      - first commit for versioning
+- #      - fix course report duplicates
+- #      - fix remove dates
+- #      - fix certificate image
+- #      - fix certificate image
+- #      - fix registration with code
+- #      - fix dashboard permission
+
+---------------------------------------------------------------------------------------
 forma.lms 3.3.5
 ---------------------------------------------------------------------------------------
 Release date: 2023 april
