@@ -91,7 +91,7 @@ $str_all = Lang::t("_ALL_COURSE_TYPE", 'course');
                         </label>
                         <?php echo Form::getInputTextfield('form-control', $id . '_filter_text', 'filter_text', $filter_text, '', 255, 'equired data-toggle="popover" data-content="' . Lang::t('_INSERT', 'standard') . ' ' . strtolower(Lang::t('_COURSE_NAME', 'standard')) . '" placeholder=' . $str_search); ?>
                         <div class="input-group-btn">
-                            <button type="submit" class="btn btn-default" id="<?php echo $id . '_filter_set2'; ?>"
+                            <button type="submit" class="btn btn-default course-icon-position" id="<?php echo $id . '_filter_set2'; ?>"
                                     name="filter_set" title="<?php echo Lang::t('_SEARCH', 'standard'); ?>">
                                 <span class="glyphicon glyphicon-search"></span>
                             </button>

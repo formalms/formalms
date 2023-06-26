@@ -1858,9 +1858,41 @@ ul.tabs li.current{
     background: #a94442 !important;
 }
 
-:focus {
-    outline:none;
-    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.1);
+:focus, input:focus-visible {
+    outline: 3px solid rgba(232, 63, 29, 0.5)!important;
+    background-color: #FFFFFF!important;
 }
 
+.input_label {
+    margin: 0;
+}
 
+.input_label_margin {
+    margin-top: 25px;
+}
+
+.no_margin_padding {
+    margin: 0!important;
+    padding: 0!important;
+}
+
+.auto_margin {
+    margin: 0 auto!important;
+}
+
+.pull-left {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.pull-right-size {
+    width: 70%;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.course-icon-position {
+    top: -20px!important;
+}

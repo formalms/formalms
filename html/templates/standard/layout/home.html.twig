@@ -75,19 +75,21 @@
     <!-- content -->
     <main class="homepage__content content-margin">
         <div class="homepage__row homepage__row--header">
-            <h1><span class="screenreader">{{ Lang_translate('_LOGIN_LEGEND', 'login') }}</span></h1>
-            <a href="index.php">
-                <img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="{{ Lang_translate('_COMPANY_LOGO', 'standard') }}"/>
-            </a>
-            <div class="pull-right">
+            <div class="pull-left">
+                <h1 class="no_margin_padding"><span class="screenreader">{{ Lang_translate('_LOGIN_LEGEND', 'login') }}</span></h1>
+                <a href="index.php" class="image-link">
+                    <img class="left_logo" src="{{ Layout_getPath() }}images/company_logo.png" alt="{{ Lang_translate('_COMPANY_LOGO', 'standard') }}"/>
+                </a>
+            </div>
+            <div class="pull-right pull-right-size no_margin_padding">
+                <div class="hidden-xs">
+                    {{ Layout_getCatalogue() }}
+                </div>
                 {% if lang_number > 1 %}
                     <div class="select-language">
                         <span class="hidden-xs">{{ Lang_translate('_CHANGELANG', 'register') }}: </span>{{ Layout_getChangeLang() }}
                     </div>
                 {% endif %}
-                <div class="hidden-xs">
-                    {{ Layout_getCatalogue() }}
-                </div>
             </div>
         </div>
         {{ Layout_getZone('content') }}
