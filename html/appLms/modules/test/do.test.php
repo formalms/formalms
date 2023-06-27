@@ -1253,7 +1253,7 @@ function showResult($object_test, $id_param)
     if ($test_info['point_type'] == '1') { // percentage score (%)
         // x:100=$point_do:$max_score
         //#2093: calcolo effettivo solo se ho tutte le risposte
-        if ($tot_questions == $tot_answers) {
+        if ($tot_questions == $tot_answers && $max_score) {
             $point_do = round(100 * $point_do / $max_score); //$max_score$test_info['point_required']
         } else {
             $point_do = round(100 * $tot_rightanswers / $tot_questions); //$max_score$test_info['point_required']
@@ -1291,14 +1291,16 @@ function showResult($object_test, $id_param)
     require_once _lms_ . '/lib/lib.assessment_rule.php';
     $score_arr = [];
     $i = 0;
-    foreach ($point_do_cat as $cat_id => $score) {
-        $score_arr[$i]['score'] = $score;
-        $score_arr[$i]['category_id'] = $cat_id;
-        ++$i;
+    if ($test_info['point_type'] == '1') {
+        $score_arr[$i]['score'] = $point_do;
+        $score_arr[$i]['category_id'] = 0;
+    } else {
+        foreach ($point_do_cat as $cat_id => $score) {
+            $score_arr[$i]['score'] = $score;
+            $score_arr[$i]['category_id'] = $cat_id;
+            ++$i;
+        }
     }
-    // final score:
-    $score_arr[$i]['score'] = $point_do;
-    $score_arr[$i]['category_id'] = 0;
     $asrule = new AssessmentRuleManager($id_test);
     $feedback_txt = $asrule->setRulesFromScore($score_arr);
     $asrule->loadJs();

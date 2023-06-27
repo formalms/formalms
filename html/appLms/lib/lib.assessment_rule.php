@@ -19,6 +19,7 @@ class AssessmentRuleManager
     public function __construct($test_id)
     {
         $this->test_id = (int) $test_id;
+
         $this->db = \FormaLms\db\DbConn::getInstance();
     }
 

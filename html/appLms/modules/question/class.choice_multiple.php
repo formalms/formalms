@@ -101,7 +101,7 @@ class ChoiceMultiple_Question extends Question
      */
     public function _lineModAnswer($i)
     {
-        $lang = &FormaLanguage::createInstance('test');
+        $lang = FormaLanguage::createInstance('test');
         $GLOBALS['page']->add('<tr class="line_answer">'
             . '<td rowspan="2" class=" valign_top align_center">'
             . '<label for="is_correct_' . $i . '">' . $lang->def('_TEST_CORRECT') . '</label><br /><br />', 'content');
