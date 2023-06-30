@@ -87,18 +87,3 @@
     </div>
 </div>
 
-<script>
-        var elements = document.querySelectorAll('a, button, input');
-        var tabIndex = 200;
-        elements.forEach(function(element) {
-            element.setAttribute('tabindex', tabIndex);
-            tabIndex++;
-        });
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Tab') {
-                const currentFocusedElement = document.activeElement;
-                console.log('Element with focus:', currentFocusedElement);
-            }
-        });
-</script>
