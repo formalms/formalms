@@ -66,7 +66,7 @@
      selectedCourse.text = {{ courseName | json_encode(constant('JSON_HEX_APOS')) | raw }};
 
      console.log(selectedCourse);
-  const courseDropdown = new window.frontend.modules.Select2($("#idCourse"),{
+    const courseDropdown = new window.frontend.modules.Select2($("#idCourse"),{
     data: [selectedCourse],
     width:"100%",
     ajax: {
