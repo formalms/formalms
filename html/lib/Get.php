@@ -220,10 +220,9 @@ class Get
      *
      * @return mixed the value of the setting or the default value
      */
-    public static function sett($sett_name, $default = false)
+    public static function sett($sett_name, $fallback = false)
     {
-
-        $result = false;
+        $result = $fallback;
 
         $platform = 'framework';
         if (array_key_exists($sett_name, $GLOBALS[$platform] ?? [])) {
