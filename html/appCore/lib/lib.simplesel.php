@@ -247,7 +247,7 @@ class SimpleSelector
         require_once _base_ . '/lib/lib.table.php';
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &FormaLanguage::createInstance('simplesel', 'framework');
+        $lang = FormaLanguage::createInstance('simplesel', 'framework');
         $form = new Form();
 
         $acl_manger = \FormaLms\lib\Forma::getAclManager();

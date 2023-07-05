@@ -27,6 +27,8 @@ class DomainConfigEntity
 
     protected $orgId = null;
 
+    protected $id = null;
+
     protected $db;
 
     public function __construct($host) {
@@ -38,9 +40,9 @@ class DomainConfigEntity
 
     private function getDomainConfigs($host) {
 
-        
+       
         //fa la query
-        $query = 'SELECT title,domain,orgId,mailConfigId,template FROM ' . $this->table . ' WHERE domain = "' . $host . '" LIMIT 1' ;
+        $query = 'SELECT id,title,domain,orgId,mailConfigId,template FROM ' . $this->table . ' WHERE domain = "' . $host . '" LIMIT 1' ;
         $res = $this->db->query($query);
         
         if($res) {
@@ -48,7 +50,7 @@ class DomainConfigEntity
             
             if($domainConfigs) {
                 
-                foreach($domainConfigs as $key => $domainConfig) {
+                foreach($domainConfigs ?? [] as $key => $domainConfig) {
                  
                     $this->set($key, $domainConfig);
                 }
@@ -86,5 +88,15 @@ class DomainConfigEntity
 
     public function getMailConfigId() {
         return $this->mailConfigId;
+    }
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+
+        return $this;
     }
 }

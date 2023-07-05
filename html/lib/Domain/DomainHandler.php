@@ -110,5 +110,10 @@ class DomainHandler
         return $this;
     }
 
+    public function getConfiguration() {
+        return $this->entity;
+
+    }
+
 
 }

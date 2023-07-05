@@ -36,7 +36,7 @@ class DomainconfigAdm extends Model {
             $query .= ' WHERE ac.parentId IS NULL';
         }
         $query .= ' GROUP BY ac.id';
-        $queryResult = $this->db->query($query);
+        $queryResult = $this->db->query($query) ?? [];
         
         foreach($queryResult as $result) {
             if($mailConfigs) {
@@ -57,7 +57,7 @@ class DomainconfigAdm extends Model {
         $query = 'SELECT * FROM %adm_domain_configs WHERE id = "'.$domainConfigId.'"';
         
 
-        $queryResult = $this->db->query($query);
+        $queryResult = $this->db->query($query) ?? [];
         
         foreach($queryResult as $result) {
             $output[] = $result;
@@ -121,7 +121,7 @@ class DomainconfigAdm extends Model {
        
         //controllo che non abbia sottonodi
         $query = 'SELECT * FROM %adm_domain_configs WHERE parentId = "' . $id . '"';
-        $queryResult = $this->db->query($query);
+        $queryResult = $this->db->query($query) ?? [];
         foreach($queryResult as $result) {
             $output[] = $result;
         }

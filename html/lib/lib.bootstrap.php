@@ -175,6 +175,8 @@ class Boot
             $configExists = false;
         }
 
+        $cfg['configExists'] = $configExists;
+
         $GLOBALS['cfg'] = $cfg;
         if (empty($cfg)) {
             $cfg['prefix_fw'] = 'core';
@@ -185,7 +187,6 @@ class Boot
             $cfg['prefix_crm'] = 'crm';
         }
 
-        $cfg['configExists'] = $configExists;
 
         $GLOBALS['prefix_fw'] = $cfg['prefix_fw'];
         $GLOBALS['prefix_lms'] = $cfg['prefix_lms'];
@@ -315,7 +316,6 @@ class Boot
     {
         //create the handler who will fix values in session
         $domainHandler = DomainHandler::getInstance();
-
 
         // template
         self::log('Load template library.');

@@ -48,10 +48,11 @@ class DomainconfigAdmController extends AdmController
         $params = $this->getFieldsParams();
         $params['title'] = $this->title;
 
+        $domainConfigId = array_key_exists('domainConfigId', $this->queryString) ? $this->queryString['domainConfigId'] : null;
        
-        $params['domains'] = $this->model->get($this->queryString['domainConfigId'], $params['mailConfigs'], $params['orgs']);
+        $params['domains'] = $this->model->get($domainConfigId, $params['mailConfigs'], $params['orgs']);
         $params['insertUrl'] = 'index.php?r=adm/domainconfig/insert';
-        if($this->queryString['domainConfigId']) {
+        if($domainConfigId) {
             $params['item'] = $this->model->read($this->queryString['domainConfigId']);
             $params['insertUrl'] .= '&parentId='.$this->queryString['domainConfigId'];
         }

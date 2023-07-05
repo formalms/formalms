@@ -222,12 +222,20 @@ class Get
      */
     public static function sett($sett_name, $default = false)
     {
-        $platform = 'framework';
-        if (!isset($GLOBALS[$platform][$sett_name])) {
-            return $default;
-        }
 
-        return $GLOBALS[$platform][$sett_name];
+        $result = false;
+
+        $platform = 'framework';
+        if (array_key_exists($sett_name, $GLOBALS[$platform] ?? [])) {
+            $result = $GLOBALS[$platform][$sett_name];
+        }
+        $eventData = \Events::trigger('core.settings.read', ['key' => $sett_name]);
+
+        if(array_key_exists('value', $eventData)) {
+            $result = $eventData['value'];
+        }
+   
+        return  $result;
     }
 
     /**
