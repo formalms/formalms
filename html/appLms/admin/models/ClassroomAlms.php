@@ -98,7 +98,7 @@ class ClassroomAlms extends Model
         $output = [];
 
         if ($id_category != 0) {
-            $query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . (int) $id_category;
+            $query = 'SELECT iLeft, iRight FROM %lms_category WHERE idCategory=' . (int)$id_category;
             $res = $this->db->query($query);
             list($left, $right) = $this->db->fetch_row($res);
 
@@ -202,7 +202,7 @@ class ClassroomAlms extends Model
             Lang::t('_PAUSE_BEGIN', 'course'),
             Lang::t('_PAUSE_END', 'course'),
             Lang::t('_HOUR_END', 'course'),
-            Lang::t('_CLASSROOM', 'course'), ];
+            Lang::t('_CLASSROOM', 'course'),];
 
         $type_h = ['align_center', 'align_center', 'align_center', 'align_center'];
 
@@ -212,7 +212,7 @@ class ClassroomAlms extends Model
         $tb->addHead($cont_h);
 
         $days = [];
-        if ((int) $id_date > 0) {
+        if ((int)$id_date > 0) {
             $days = $this->classroom_man->getDateDayForControl($id_date);
         }
 
@@ -307,7 +307,7 @@ class ClassroomAlms extends Model
         $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '0000-00-00') . ' 00:00:00';
 
         $id_date = $this->classroom_man->insDate($this->id_course, $date_info['code'], $date_info['name'], $date_info['description'], $date_info['mediumTime'], $date_info['max_par'], $date_info['price'], $date_info['overbooking'], $date_info['status'], $date_info['test'],
-        $sub_start_date, $sub_end_date, $unsubscribe_date_limit);
+            $sub_start_date, $sub_end_date, $unsubscribe_date_limit);
 
         if (isset($date_info['customFields'])) {
             foreach ($date_info['customFields'] as $idField => $customEntry) {
@@ -455,7 +455,7 @@ class ClassroomAlms extends Model
         $tb = new Table(0, Lang::t('_ATTENDANCE', 'course'), Lang::t('_ATTENDANCE', 'course'));
 
         $cont_h = [Lang::t('_USERNAME', 'course'),
-            Lang::t('_FULLNAME', 'course'), ];
+            Lang::t('_FULLNAME', 'course'),];
 
         $type_h = ['', ''];
 
@@ -533,7 +533,7 @@ class ClassroomAlms extends Model
         $score_min = FormaLms\lib\Get::req('score_min', DOTY_INT, 0);
 
         $user = $this->classroom_man->getUserForPresence($this->id_date);
-        $day = $this->getDateDay($this->id_date);
+        $days = $this->getDateDay($this->id_date);
         $test_type = $this->classroom_man->getTestType($this->id_date);
 
         foreach ($user as $id_user => $user_info) {
@@ -541,12 +541,15 @@ class ClassroomAlms extends Model
             $user[$id_user]['note'] = FormaLms\lib\Get::req('note_' . $id_user, DOTY_MIXED, '');
             $user[$id_user]['day_presence'] = [];
 
-            for ($i = 0; $i < count($day); ++$i) {
-                $user[$id_user]['day_presence'][$day[$i]['id_day']] = FormaLms\lib\Get::req('date_' . $day[$i]['id_day'] . '_' . $id_user, DOTY_INT, 0);
+
+            foreach ($days as $index => $day) {
+                $requestString = 'date_' . $day['id'] . '_' . $id_user;
+
+                $user[$id_user]['day_presence'][$day['id']] = FormaLms\lib\Get::req($requestString, DOTY_INT, 0);
             }
         }
 
-        return $this->classroom_man->insDatePresence($this->id_course, $this->id_date, $user, $day, $score_min);
+        return $this->classroom_man->insDatePresence($this->id_course, $this->id_date, $user, $days, $score_min);
     }
 
     /**
@@ -617,7 +620,7 @@ class ClassroomAlms extends Model
         foreach ($users as $user) {
             $user = \FormaLms\lib\Forma::getAclManager()->getUserMappedData(\FormaLms\lib\Forma::getAclManager()->getUser($user['id_user'], false));
 
-            $calendar = CalendarManager::getCalendarDataContainerForDateDays((int) $this->id_course, (int) $this->id_date, (int) $user['idst']);
+            $calendar = CalendarManager::getCalendarDataContainerForDateDays((int)$this->id_course, (int)$this->id_date, (int)$user['idst']);
 
             $calendarMailer->sendCalendarToUser($calendar, $user);
         }
