@@ -9,23 +9,59 @@
     </div>
 {% endif %}
 
-{{ Form_openForm('upsert_settings', 'index.php?r=adm/domainconfig/save', false, 'post', 'multipart/form-data') }}
+<div class="std_block">
+ 
+	<div id="global_conf" class="tabs-wrapper">
+    {{ Form_openForm('upsert_settings', 'index.php?r=adm/domainconfig/save', false, 'post', 'multipart/form-data') }}
 
-{% if id %}
-     {{ Form_getHidden('id', 'id', id) }}
-{% endif %}
-    {{ Form_getTextfield( Lang_translate('_TITLE', 'domainconfig') , 'title', 'title', 255, item.title) }}
-    {{ Form_getTextfield( Lang_translate('_DOMAIN', 'domainconfig') , 'domain', 'domain', 255, item.domain) }}  
-    {{ Form_getDropdown(Lang_translate('_TEMPLATE', 'domainconfig'), 'template', 'template', templates, item.template) }}</td>
-    {{ Form_getDropdown(Lang_translate('_ORG', 'domainconfig'), 'orgId', 'orgId', orgs, item.orgId) }}</td>
-    {{ Form_getDropdown(Lang_translate('_MAIL_CONFIG', 'domainconfig'), 'mailConfigId', 'mailConfigId', mailConfigs, item.mailConfigId) }}</td>
-
-{% if parentId %}
+    {% if id %}
+        {{ Form_getHidden('id', 'id', id) }}
+    {% endif %}
+    {% if parentId %}
         {{ Form_getHidden('parentId', 'parentId', parentId) }}
-{% endif %}
+    {% endif %}
+       
+		<ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab_g_0" class="nav-link">
+                    <em>{{ Lang_translate('_DOMAIN_CONFIG', 'menu') }}</em>
+                </a>
+            </li>
+            
+           {% for additionalTab in additionalTabs %}
+                 {% include additionalTab.tab with { tags : additionalTab.tabParams.tags } %}
+            {% endfor %}
+		</ul>
+       {% if id %}
+            {{ Form_getHidden('id', 'id', id) }}
+        {% endif %}
+        {% if parentId %}
+            {{ Form_getHidden('parentId', 'parentId', parentId) }}
+        {% endif %}
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_g_0">
+                <h2>{{ Lang_translate('_DOMAIN_CONFIG', 'menu') }}</h2>
 
-    {{ Form_openButtonSpace() }}
-        {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
-        {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
-    {{ Form_closeButtonSpace() }}
-{{ Form_closeForm() }}
+                {{ Form_getTextfield( Lang_translate('_TITLE', 'domainconfig') , 'title', 'title', 255, item.title) }}
+                {{ Form_getTextfield( Lang_translate('_DOMAIN', 'domainconfig') , 'domain', 'domain', 255, item.domain) }}  
+                {{ Form_getDropdown(Lang_translate('_TEMPLATE', 'domainconfig'), 'template', 'template', templates, item.template) }}</td>
+                {{ Form_getDropdown(Lang_translate('_ORG', 'domainconfig'), 'orgId', 'orgId', orgs, item.orgId) }}</td>
+                {{ Form_getDropdown(Lang_translate('_MAIL_CONFIG', 'domainconfig'), 'mailConfigId', 'mailConfigId', mailConfigs, item.mailConfigId) }}</td>
+            </div>
+
+            {% for additionalTab in additionalTabs %}
+                 {% include additionalTab.tabContent with { rows : additionalTab.tabContentParams.rows, tabs :  additionalTab.tabContentParams.tabs} %}
+            {% endfor %}
+
+	</div>
+    	<div class="nofloat">&nbsp;</div>
+        {{ Form_openButtonSpace() }}
+            {{ Form_getButton('save', 'save', Lang_translate('_SAVE', 'admin_lang')) }}
+            {{ Form_getButton('undo', 'undo', Lang_translate('_UNDO', 'admin_lang')) }}
+        {{ Form_closeButtonSpace() }}
+    {{ Form_closeForm() }}
+</div>
+
+
+
+

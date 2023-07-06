@@ -98,9 +98,11 @@ class DomainconfigAdm extends Model {
        
        
         
-
+        
                                                       
         $queryResult = $this->db->query($query);
+
+        \Events::trigger('core.domainconfig.save', $params);
 
         return $queryResult;
     }

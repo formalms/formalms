@@ -70,9 +70,13 @@ class DomainconfigAdmController extends AdmController
         $params = $this->getFieldsParams();
         $params['title'] = Lang::t('_INSERT', 'standard');
 
-        if($this->queryString['parentId']) {
+        if(array_key_exists('parentId', $this->queryString)) {
             $params['parentId'] = $this->queryString['parentId'];
         }
+
+        $eventData = \Events::trigger('core.domainconfig.mask', $params);
+        
+        $params['additionalTabs'] = $eventData['additionalTabs'];
         
         $this->render('view', $params);
     }
@@ -88,7 +92,10 @@ class DomainconfigAdmController extends AdmController
             $params['item'] = $this->model->read($this->queryString['id']);
             $params['id'] = $this->queryString['id'];
         }
+
+        $eventData = \Events::trigger('core.domainconfig.edit', $params);
         
+        $params['additionalTabs'] = $eventData['additionalTabs'];
         $this->render('view', $params);
     }
 
@@ -120,6 +127,7 @@ class DomainconfigAdmController extends AdmController
         $templates = getTemplateList();
         $params['templates'] = array_combine($templates, $templates);
         $params['mailConfigs'] = $this->mailModel->getList();
+        $params['additionalTabs'] = [];
         $tree_names = $this->userModel->getAllFolders(false);
         
         $nodes = [];
