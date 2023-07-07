@@ -27,10 +27,8 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) { // !isset($_GET[
 }
 
 // get maintenence setting
-$query = ' SELECT param_value FROM %adm_setting'
-        . " WHERE param_name = 'maintenance'"
-        . ' ORDER BY pack, sequence';
-$maintenance = $db->fetch_row($db->query($query))[0];
+
+$maintenance = \FormaLms\lib\Get::sett('maintenance');
 
 // handling maintenece
 if ($maintenance == 'on' && \FormaLms\lib\FormaUser::getCurrentUser()->getUserLevelId() != ADMIN_GROUP_GODADMIN) {

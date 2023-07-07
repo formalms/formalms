@@ -2987,6 +2987,8 @@ class UserManagerOption
     }
 
     /**
+     * @deprecated
+     *  
      * get all the available option.
      *
      * @return array array(ption_name => option_value)
@@ -3012,6 +3014,8 @@ class UserManagerOption
         if (empty($this->_options)) {
             $this->_loadOption();
         }
+
+        $this->_options[$option_name] = \FormaLms\lib\Get::sett($option_name);
 
         return isset($this->_options[$option_name]) ? $this->_options[$option_name] : false;
     }
@@ -3043,7 +3047,7 @@ class UserManagerOption
 
         require_once _base_ . '/lib/lib.form.php';
 
-        $lang = &FormaLanguage::createInstance('user_managment', 'framework');
+        $lang = FormaLanguage::createInstance('user_managment', 'framework');
 
         $reSetting = sql_query('
 		SELECT param_name, param_value, value_type, max_size

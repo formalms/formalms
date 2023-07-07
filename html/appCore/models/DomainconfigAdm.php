@@ -71,7 +71,7 @@ class DomainconfigAdm extends Model {
       
         $parentId = $params['parentId'] ?? 'NULL';
 
-        if($params['id']) {
+        if(array_key_exists('id', $params)) {
             $query = 'UPDATE %adm_domain_configs SET
                                 title = "'.$params['title'].'",
                                 domain = "'.$params['domain'].'",
@@ -102,6 +102,11 @@ class DomainconfigAdm extends Model {
                                                       
         $queryResult = $this->db->query($query);
 
+        if(!array_key_exists('id', $params)) {
+            $params['id'] = $this->db->insert_id();
+        }
+
+  
         \Events::trigger('core.domainconfig.save', $params);
 
         return $queryResult;

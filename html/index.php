@@ -39,19 +39,13 @@ $db = \FormaLms\db\DbConn::getInstance();
 // -----------------------------------------------------------------------------
 
 // get maintenence setting
-$query = ' SELECT param_value FROM %adm_setting'
-    . " WHERE param_name = 'maintenance'"
-    . ' ORDER BY pack, sequence';
-
-$maintenance = $db->fetch_row($db->query($query))[0];
+$maintenance = \FormaLms\lib\Get::sett('maintenance');
 
 if ($maintenance === 'on') {
     // get maintenence password
-    $query = ' SELECT param_value FROM %adm_setting'
-        . " WHERE param_name = 'maintenance_pw'"
-        . ' ORDER BY pack, sequence';
+   
 
-    $maintenancePassword = $db->fetch_row($db->query($query))[0];
+    $maintenancePassword = \FormaLms\lib\Get::sett('maintenance_pw');
 
     $password = FormaLms\lib\Get::req('passwd', DOTY_STRING, '');
 

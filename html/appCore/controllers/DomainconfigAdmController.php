@@ -93,8 +93,9 @@ class DomainconfigAdmController extends AdmController
             $params['id'] = $this->queryString['id'];
         }
 
-        $eventData = \Events::trigger('core.domainconfig.edit', $params);
-        
+
+        $eventData = \Events::trigger('core.domainconfig.mask', $params);
+      
         $params['additionalTabs'] = $eventData['additionalTabs'];
         $this->render('view', $params);
     }
@@ -103,6 +104,7 @@ class DomainconfigAdmController extends AdmController
 
     public function save() {
         
+     
         if(!$this->model->save($this->requestObj)) {
             $view = 'view';
         } else {
