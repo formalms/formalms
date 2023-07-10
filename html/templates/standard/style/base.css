@@ -1860,7 +1860,7 @@ ul.tabs li.current{
 
 :focus, input:focus-visible {
     outline: 3px solid rgba(232, 63, 29, 0.5)!important;
-    background-color: #FFFFFF!important;
+    background-color: transparent!important;
 }
 
 .input_label {
