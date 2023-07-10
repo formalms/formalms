@@ -336,9 +336,10 @@ class Layout
 
     public static function PrepareInclude($whichLayout)
     {
-        $minimized = ($GLOBALS['cfg']['do_debug'] ? '' : '.min');
+        $debug = $GLOBALS['cfg']['do_debug'] ?? false;
+        $minimized = ($debug ? '' : '.min');
         $retArray = [
-            'debug' => $GLOBALS['cfg']['do_debug'],
+            'debug' => $debug,
         ];
         // base.html.twig
         $retArray['jqueryLib'] = JQueryLib::loadJQuery($minimized);

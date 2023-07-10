@@ -519,7 +519,7 @@ class InstallAdm extends Model
     {
         $localCfg['dbConfig'] = [
             'dbType' => '',
-            'dbHost' => 'localhost',
+            'dbHost' => '',
             'dbName' => '',
             'dbUser' => '',
             'dbPass' => '',
@@ -1007,7 +1007,7 @@ class InstallAdm extends Model
     public function checkDBEmpty($dbName): bool
     {
         $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $dbName . "'", $GLOBALS['db_link']);
-        list($count) = sql_fetch_row($row);
+        [$count] = sql_fetch_row($row);
 
         return $count == 0 ? true : false;
     }
@@ -1021,7 +1021,7 @@ class InstallAdm extends Model
     public function getSqlVersionByQuery(): ?string
     {
         $row = sql_query("SELECT version()");
-        list($version) = sql_fetch_row($row);
+        [$version] = sql_fetch_row($row);
         return $version;
     }
 
@@ -1034,7 +1034,7 @@ class InstallAdm extends Model
     public function checkDBCharset(): bool
     {
         $row = sql_query("show variables like 'character_set_database'", $GLOBALS['db_link']);
-        list(, $charset) = sql_fetch_row($row);
+        [, $charset] = sql_fetch_row($row);
 
         return $charset === 'utf8' || $charset === 'utf8mb4' ? true : false;
     }
@@ -1055,11 +1055,10 @@ class InstallAdm extends Model
         $type = 'standard';
    
 
-        if ($params['upgrade']) {
+        if (array_key_exists('upgrade',$params) && $params['upgrade']) {
             switch ($params['check']) {
                 case 1:
                     //se c'è da installare metto la tabella doctrine migrations
-
                     if (\FormaLms\lib\Version\VersionChecker::compareUpgradeVersion()) {
                         $success = $this->installMigrationsTable();
 

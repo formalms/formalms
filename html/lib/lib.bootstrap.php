@@ -14,7 +14,6 @@ require_once _base_ . '/vendor/autoload.php';
 
 use FormaLms\lib\Domain\DomainHandler;
 use FormaLms\lib\System\SystemManager;
-use FormaLms\Exceptions\FormaStatusException;
 
 use function GuzzleHttp\default_ca_bundle;
 
@@ -175,9 +174,6 @@ class Boot
             $configExists = false;
         }
 
-        $cfg['configExists'] = $configExists;
-
-        $GLOBALS['cfg'] = $cfg;
         if (empty($cfg)) {
             $cfg['prefix_fw'] = 'core';
             $cfg['prefix_lms'] = 'learning';
@@ -186,6 +182,8 @@ class Boot
             $cfg['prefix_ecom'] = 'ecom';
             $cfg['prefix_crm'] = 'crm';
         }
+        $cfg['configExists'] = $configExists;
+        $GLOBALS['cfg'] = $cfg;
 
 
         $GLOBALS['prefix_fw'] = $cfg['prefix_fw'];

@@ -92,8 +92,8 @@ class DomainHandler
     public function attachDefaultMailer() {
         $templateName = $this->templateInfo ? $this->templateInfo->getName() : null;
         $this->mailHandler = new FormaMailer($this->entity->getMailConfigId(), $templateName);
-        $this->session->set('mailer_info', $this->mailHandler);
-        $this->session->save();
+        //$this->session->set('mailer_info', $this->mailHandler);
+        //$this->session->save();
         return $this;
     }
 

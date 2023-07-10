@@ -449,12 +449,10 @@ $("#agree").on("click", function(e) {
 
 $("input[type=text]").on("focusout", function(e) {
     setData($(this).attr('name'), $(this).val());
-
 });
 
 $("input[type=password]").on("focusout", function(e) {
     setData($(this).attr('name'), $(this).val());
-
 });
 
 
