@@ -1,3 +1,15 @@
 .form-control {
     border-radius: $border-radius;
+
+    label {
+        background-color: red;
+        margin: 0!important;
+        padding: 0;
+    }
+
+    input {
+        margin: 0;
+        padding: 0;
+    }
 }
+

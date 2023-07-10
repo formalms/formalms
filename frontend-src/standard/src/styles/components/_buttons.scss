@@ -31,7 +31,6 @@
   font-family: $font;
   font-size: 12px;
   border-radius: $border-radius;
-  outline: none;
   box-shadow: none;
   cursor: pointer;
   transition: all 0.4s ease 0s;
@@ -55,6 +54,7 @@
     text-decoration: none;
     color: var(--color-primary);
     background: var(--color-primary-text);
+    border: 3px solid var(--color-primary-text);
   }
 
   &:focus {
@@ -452,7 +452,6 @@ a.btn.btn-default {
   background: transparent;
   border: none;
   border-radius: 0;
-  outline: 0;
   box-shadow: none;
   font-size: 0;
   cursor: pointer;

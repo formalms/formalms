@@ -15,14 +15,16 @@
   }
 
   @include breakpoint($tablet) {
-    padding-top: 30px;
+    //padding-top: 30px;
+    display: flex;
+    align-items: center;
   }
 }
 
 .homepage__footer {
   padding: 0;
-  margin: 30px auto 0 auto;
-  padding-bottom: 30px;
+  margin: 25px auto 0 auto;
+  padding-bottom: 10px;
   text-align: center;
   color: var(--color-white);
 
@@ -88,26 +90,30 @@ p {
 
 .homepage__row--header {
   height: auto;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  //padding-top: 15px;
+  //padding-bottom: 15px;
+  width: 100%;
+  height: 10rem;
   overflow: visible;
   background-color: var(--color-white);
   border-bottom: solid 3px var(--color-primary);
-  position: relative;
   text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   @include breakpoint($tablet) {
-    padding-top: 38px;
-    padding-bottom: 34px;
+    //padding-top: 38px;
+    // padding-bottom: 34px;
     // margin-bottom: 12px;
     border: none;
   }
 }
 .pull-right {
   display: flex;
-  flex-direction: row-reverse;
+  // flex-direction: row-reverse;
   align-items: center;
-  margin-top: 1rem;
+  // margin-top: 1rem;
 }
 .select-language > .hidden-xs {
   visibility: hidden;
@@ -115,7 +121,7 @@ p {
 
 .homepage__row--login {
   padding-top: 14px;
-  padding-bottom: 47px;
+  padding-bottom: 25px;
   position: relative;
   backdrop-filter: blur(5px);
 
@@ -284,7 +290,7 @@ p {
   }
 
   .homepage__row--footer & {
-    padding: 10px 0 20px;
+    padding: 5px 0 20px;
     border-top: solid 2px var(--color-primary);
   }
 }
@@ -301,7 +307,7 @@ p {
 
     @include breakpoint($tablet) {
       height: 54px;
-    }
+    } 
   }
 }
 
@@ -341,12 +347,12 @@ p {
   }
 
   .homepage__row--login & {
-    margin-bottom: 15px;
+    margin-bottom: 26px;
   }
 
   &[type='submit'] {
     .homepage__row & {
-      margin-top: 15px;
+      margin-top: 26px;
     }
 
     .homepage__form--lost-pwd & {
@@ -368,7 +374,6 @@ p {
 a.forma-button {
   .homepage__row & {
     width: auto;
-    margin-top: 15px;
   }
 }
 .homepage__row--header {
@@ -392,7 +397,6 @@ a.forma-button {
 .login_failed {
   .homepage__row--login & {
     display: block;
-    margin-top: 15px;
   }
 }
 
@@ -526,6 +530,9 @@ a.forma-button {
 .collapse-wrapper {
   .homepage__collapsed-text + & {
     height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     .icon {
       display: none;
