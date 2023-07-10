@@ -264,16 +264,17 @@ class DateManager
             }
 
             if ((int) $dayInfo['id'] < 0 || !array_key_exists('id', $dayInfo)) {
-                $query = 'INSERT INTO %lms_course_date_day (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end, calendarId)  VALUES 
-                (' . $index . ', ' . $idDate . ', ' . $dayInfo['classroom'] . ", '" . $dayInfo['date_begin'] . "', '" . $dayInfo['date_end'] . "', '" . $dayInfo['pause_begin'] . "', '" . $dayInfo['pause_end'] . "','" . CalendarManager::generateUniqueCalendarId() . "')";
+                $query = 'INSERT INTO %lms_course_date_day (id_day, id_date, classroom, date_begin, date_end, pause_begin, pause_end, calendarId, deleted)  VALUES 
+                (' . $index . ', ' . $idDate . ', ' . $dayInfo['classroom'] . ", '" . $dayInfo['date_begin'] . "', '" . $dayInfo['date_end'] . "', '" . $dayInfo['pause_begin'] . "', '" . $dayInfo['pause_end'] . "','" . CalendarManager::generateUniqueCalendarId() . "','0')";
             } else {
                 $query = 'UPDATE %lms_course_date_day ' .
                     ' SET `id_day` = ' . $index . ',' .
-                    " `classroom` = '" . $dayInfo['classroom'] . "'," .
-                    " `date_begin` = '" . $dayInfo['date_begin'] . "'," .
-                    " `date_end` = '" . $dayInfo['date_end'] . "'," .
-                    " `pause_begin` = '" . $dayInfo['pause_begin'] . "'," .
-                    " `pause_end` = '" . $dayInfo['pause_end'] . "'";
+                    ' `classroom` = "' . $dayInfo['classroom'] . '",'.
+                    ' `date_begin` = "' . $dayInfo['date_begin'] . '",' .
+                    ' `date_end` = "' . $dayInfo['date_end'] . '",' .
+                    ' `pause_begin` = "' . $dayInfo['pause_begin'] . '",' .
+                    ' `pause_end` = "' . $dayInfo['pause_end'] . '",'.
+                    ' `deleted` = "0"';
 
                 if (empty($dayInfo['calendarId'])) {
                     $query .= ", `calendarId` = '" . CalendarManager::generateUniqueCalendarId() . "'";

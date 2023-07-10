@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -142,11 +144,11 @@ class FormaUserNotifier extends FormaEventConsumer
                 [$mail],
                 $subject,
                 $base_body,
-                FormaLms\lib\Get::sett('sender_event'),
+                DomainHandler::getInstance()->getMailerField('sender_mail_system'),
                 $attachments,
                 [
-                    MAIL_REPLYTO => FormaLms\lib\Get::sett('sender_event'),
-                    MAIL_SENDER_ACLNAME => FormaLms\lib\Get::sett('use_sender_aclname'),
+                    MAIL_REPLYTO => DomainHandler::getInstance()->getMailerField('replyto_mail'),
+                    MAIL_SENDER_ACLNAME => DomainHandler::getInstance()->getMailerField('sender_name_system'),
                 ]
             );
         }

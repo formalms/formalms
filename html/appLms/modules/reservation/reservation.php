@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -707,14 +709,11 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             $subject = importVar('mail_object', false, '[Nessun Oggetto]');
             $body = importVar('mail_body', false, '');
 
-            $sender = FormaLms\lib\Get::sett('sender_event');
-
-            //sendMail($recipients, $subject, $body, $sender);
+            $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
 
             $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
             $mailer->SendMail($re, $subject, $body, $sender, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
 
-            //Util::jump_to('index.php?modname=reservation&op=reservation&active_tab=events');
             Util::jump_to('index.php?modname=reservation&op=view_user_event&id_event=' . $id_event);
         } else {
             require_once _base_ . '/lib/lib.form.php';
@@ -976,14 +975,11 @@ if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
                 while (list($subscribed) = sql_fetch_row($result)) {
                     $re[] = $subscribed;
                 }
-                $lang = &FormaLanguage::createInstance('reservation');
+                $lang = FormaLanguage::createInstance('reservation');
 
                 $subject = $lang->def('_SUBJECT_DELSUBSCRIPTION');
                 $body = $lang->def('_BODY_DELSUBSCRIPTION');
-
-                $acl_man = &\FormaLms\lib\Forma::getAclManager();
-
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
 
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
                 $mailer->SendMail($re, $subject, $body, $sender, [], [MAIL_REPLYTO => $sender, MAIL_SENDER_ACLNAME => false]);
@@ -2073,7 +2069,7 @@ function reservationSendMail()
         $subject = importVar('mail_object', false, '[Nessun Oggetto]');
         $body = importVar('mail_body', false, '');
 
-        $sender = FormaLms\lib\Get::sett('sender_event');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
 
         //sendMail($recipients, $subject, $body, $sender);
 

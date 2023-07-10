@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 
 /*
  * FORMA - The E-Learning Suite
@@ -1010,7 +1012,7 @@ class Report_User extends Report
                 $subject = FormaLms\lib\Get::req('mail_object', DOTY_STRING, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = $_REQUEST['mail_body'] ?? '';
                 $acl_man = new FormaACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // send mail
@@ -1021,7 +1023,7 @@ class Report_User extends Report
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event'));
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail'));
                 $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -2236,19 +2238,21 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
+
+                $senderMailSystem = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
                 $acl_man = new FormaACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $sender = $senderMailSystem;
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                     . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . $senderMailSystem . $GLOBALS['mail_br'];
+   
+                $header .= 'X-Sender: ' . $senderMailSystem . $GLOBALS['mail_br'];
                 $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
@@ -2259,7 +2263,7 @@ class Report_User extends Report
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
                 $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -2727,7 +2731,7 @@ class Report_User extends Report
 
         checkPerm('view');
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['send_mail_confirm'])) {
             $op = 'send_mail_confirm';
@@ -2739,19 +2743,19 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
+                $senderMailSystem = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
                 $acl_man = new FormaACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $sender = $senderMailSystem;
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                     . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . $senderMailSystem . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' . $senderMailSystem . $GLOBALS['mail_br'];
                 $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
@@ -2762,7 +2766,7 @@ class Report_User extends Report
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
                 $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -3433,19 +3437,19 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
+                $senderMailSystem = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
                 $acl_man = new FormaACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $sender = $senderMailSystem;
                 $mail_recipients = Util::unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                     . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' .   $senderMailSystem . $GLOBALS['mail_br'];
+                $header .= 'X-Sender: ' .   $senderMailSystem  . $GLOBALS['mail_br'];
                 $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
@@ -3456,7 +3460,7 @@ class Report_User extends Report
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
                 $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));
@@ -4678,11 +4682,10 @@ class Report_User extends Report
 
     public function show_report_TESTSTAT($report_data = null, $other = '')
     {
-        $jump_url = ''; //show_report
 
         checkPerm('view');
 
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
 
         if (isset($_POST['send_mail_confirm'])) {
             $op = 'send_mail_confirm';
@@ -4694,19 +4697,20 @@ class Report_User extends Report
 
         switch ($op) {
             case 'send_mail_confirm':
+          
                 $subject = importVar('mail_object', false, '[' . $lang->def('_SUBJECT') . ']'); //'[No subject]');
                 $body = importVar('mail_body', false, '');
                 $acl_man = new FormaACLManager();
-                $sender = FormaLms\lib\Get::sett('sender_event');
+                $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
                 $mail_recipients = unserialize(urldecode(FormaLms\lib\Get::req('mail_recipients', DOTY_STRING, '')));
 
                 // prepare intestation for email
                 $from = 'From: ' . $sender . $GLOBALS['mail_br'];
                 $header = 'MIME-Version: 1.0' . $GLOBALS['mail_br']
                     . 'Content-type: text/html; charset=' . Lang::charset() . $GLOBALS['mail_br'];
-                $header .= 'Return-Path: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
-                //$header .= "Reply-To: ".FormaLms\lib\Get::sett('sender_event').$GLOBALS['mail_br'];
-                $header .= 'X-Sender: ' . FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br'];
+                $header .= 'Return-Path: ' . $sender . $GLOBALS['mail_br'];
+          
+                $header .= 'X-Sender: ' . $sender . $GLOBALS['mail_br'];
                 $header .= 'X-Mailer: PHP/' . PHP_VERSION . $GLOBALS['mail_br'];
 
                 // send mail
@@ -4717,7 +4721,7 @@ class Report_User extends Report
                     $arr_recipients[] = $rec_data[ACL_INFO_EMAIL];
                 }
                 $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
-                $mailer->addReplyTo(FormaLms\lib\Get::sett('sender_event') . $GLOBALS['mail_br']);
+                $mailer->addReplyTo(DomainHandler::getInstance()->getMailerField('replyto_mail') . $GLOBALS['mail_br']);
                 $mailer->SendMail($arr_recipients, $subject, $body, $sender);
 
                 $result = getResultUi($lang->def('_OPERATION_SUCCESSFUL'));

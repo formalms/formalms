@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -385,7 +387,7 @@ if ($lock_stream) {
                         $response = $mailer->SendMail([$recipient['email']], //sender
                             $subject, //recipients
                             $body, //subject
-                            FormaLms\lib\Get::sett('sender_event') //body
+                            DomainHandler::getInstance()->getMailerField('sender_mail_system') //body
                         );
 
                         if (!$response[$recipient['email']]) {
@@ -408,7 +410,7 @@ if ($lock_stream) {
                         $response = $mailer->SendMail([$recipient['email']], //sender
                             $subject, //recipients
                             $body, //subject
-                            FormaLms\lib\Get::sett('sender_event'), //body
+                            DomainHandler::getInstance()->getMailerField('sender_mail_system'), //body
                             [$path . $tmpfile, $row['filter_name'] . '.xls'],
                             []    //params
                         );

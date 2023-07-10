@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -19,7 +21,7 @@ class HelpdeskLmsController extends LmsController
 {
     public function show()
     {
-        $sender = FormaLms\lib\Get::sett('sender_event', '');
+        $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
         $sender_name = FormaLms\lib\Get::sett('customer_help_name_from', false);
         $prefix_subj = FormaLms\lib\Get::sett('customer_help_subj_pfx');
         $ccn = FormaLms\lib\Get::sett('send_ccn_for_system_emails');

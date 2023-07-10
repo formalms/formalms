@@ -309,14 +309,14 @@ class SmtpHandler
                 $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId = (SELECT id FROM %adm_mail_configs WHERE `system` = "1")');
             }
 
-            if(is_array($query_res)) {
-                foreach ($query_res as $row) {
+         
+            $results = $query_res ?: [];
+            foreach ($results as $row) {
 
-                    $property = HelperTool::snakeToCamelCase($row['type']);
+                $property = HelperTool::snakeToCamelCase($row['type']);
+
+                $this->$property = $row['value'];
     
-                    $this->$property = $row['value'];
-    
-                }
             }
             
         } else {

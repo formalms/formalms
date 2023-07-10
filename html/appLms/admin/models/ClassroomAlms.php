@@ -616,7 +616,7 @@ class ClassroomAlms extends Model
 
         $users = $subscriptionModel->loadUser();
 
-        $calendarMailer = new CalendarMailer();
+        $calendarMailer = new \FormaLms\lib\Calendar\CalendarMailer();
         foreach ($users as $user) {
             $user = \FormaLms\lib\Forma::getAclManager()->getUserMappedData(\FormaLms\lib\Forma::getAclManager()->getUser($user['id_user'], false));
 

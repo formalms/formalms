@@ -630,12 +630,12 @@
 
     function dateToString(date = new Date, format = 'DD-MM-YYYY') {
 
-        return moment(date).format(format);
+        return new window.frontend.modules.Moment(date).format(format);
     }
 
     function stringToDate(_date, _format) {
 
-        return moment(_date, _format).toDate();
+        return new window.frontend.modules.Moment(_date, _format).toDate();
     }
 
     function showError(text) {

@@ -11,6 +11,7 @@ namespace FormaLms\lib\Mailer;
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Helpers\HelperTool;
 use \PHPMailer\PHPMailer\PHPMailer;
 use FormaLms\lib\Mailer\Handlers\SmtpHandler;
 
@@ -96,6 +97,20 @@ class FormaMailer extends PHPMailer
         }
 
         return self::$instance;
+    }
+
+
+    public function getFieldByKey($key)
+    {
+        $this->handler = new SmtpHandler($this->mailConfigId);
+
+        $method = 'get'. ucfirst(HelperTool::snakeToCamelCase($key));
+        if(method_exists($this->handler, ucfirst($method))) {
+            return $this->handler->$method();
+        }
+        
+        throw new \Exception("Undefined Mailer field");
+        
     }
 
     public function setMailTemplate(string $mailTemplate): void

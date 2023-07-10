@@ -112,8 +112,15 @@ class DomainHandler
 
     public function getConfiguration() {
         return $this->entity;
-
     }
+
+
+    public static function getMailerField($key) {
+
+        return (new self)->session->get('mailer_info')->getFieldByKey($key);
+    }
+
+
 
 
 }

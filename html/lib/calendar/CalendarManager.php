@@ -11,6 +11,7 @@
  * License https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt
  */
 
+use FormaLms\lib\Domain\DomainHandler;
 use Symfony\Component\Uid\Uuid;
 
 class CalendarManager
@@ -83,8 +84,8 @@ class CalendarManager
             }
 
             $event->setOrganizer(new \Eluceo\iCal\Domain\ValueObject\Organizer(
-                new \Eluceo\iCal\Domain\ValueObject\EmailAddress(FormaLms\lib\Get::sett('sender_event')),
-                FormaLms\lib\Get::sett('use_sender_aclname', '')
+                new \Eluceo\iCal\Domain\ValueObject\EmailAddress(DomainHandler::getInstance()->getMailerField('sender_mail_system')),
+                DomainHandler::getInstance()->getMailerField('sender_name_system')
             ));
 
             if (array_key_exists((int) $row['classroom'], $classrooms)) {

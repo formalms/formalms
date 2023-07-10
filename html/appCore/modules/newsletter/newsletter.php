@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -139,7 +141,7 @@ function send_newsletter($send_id)
     $msg = str_replace('{site_base_url}', getSiteBaseUrl(), $msg);
 
     $fromemail = $info['fromemail'];
-    $sender = FormaLms\lib\Get::sett('sender_event');
+    $sender = DomainHandler::getInstance()->getMailerField('sender_mail_system');
     $file_array = $json->decode($info['file']);
 
     $attach = [];
