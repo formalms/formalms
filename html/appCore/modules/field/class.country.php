@@ -431,11 +431,11 @@ class Field_Country extends Field
             && isset($_POST['field_' . $this->getFieldType()][$this->id_common])) {
             $user_entry = $_POST['field_' . $this->getFieldType()][$this->id_common];
         } else {
-            list($user_entry) = sql_fetch_row(sql_query('
+            [$user_entry] = sql_fetch_row(sql_query('
 			SELECT user_entry
 			FROM ' . $this->_getUserEntryTable() . "
-			WHERE id_user = '" . (int) $id_user . "' AND
-				id_common = '" . (int) $this->id_common . "' AND
+			WHERE id_user = '" . (int)$id_user . "' AND
+				id_common = '" . (int)$this->id_common . "' AND
 				id_common_son = '0'"));
         }
         $user_entry = (int) $user_entry;
