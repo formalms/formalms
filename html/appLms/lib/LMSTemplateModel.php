@@ -1,5 +1,7 @@
 <?php
 
+use FormaLms\lib\Domain\DomainHandler;
+
 /*
  * FORMA - The E-Learning Suite
  *
@@ -144,7 +146,7 @@ class LMSTemplateModel
     {
 
 
-        return trim(\FormaLms\lib\Mailer\FormaMailer::getInstance()->getHandler()->getHelperDeskMail());
+        return trim(DomainHandler::getInstance()->getMailerField('helper_desk_mail'));
     }
 
     public function getCurrentPage()

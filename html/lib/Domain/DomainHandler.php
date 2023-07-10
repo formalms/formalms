@@ -117,7 +117,16 @@ class DomainHandler
 
     public static function getMailerField($key) {
 
-        return (new self)->session->get('mailer_info')->getFieldByKey($key);
+        $_this = (new self);
+        if($_this->session->has('mailer_info')) {
+            return $_this->session->get('mailer_info')->getFieldByKey($key);
+        } else {
+            if(!$_this->mailHandler) {
+                $_this->attachDefaultMailer();
+            }
+            return $_this->mailHandler->getFieldByKey($key);
+        }
+        
     }
 
 
