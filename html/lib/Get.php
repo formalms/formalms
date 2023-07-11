@@ -213,7 +213,7 @@ class Get
     }
 
     /**
-     * Return the value of a platform setting.
+     * Return the value of a pl atform setting.
      *
      * @param string $sett_name
      * @param string $default
@@ -225,9 +225,14 @@ class Get
         $result = $fallback;
 
         $platform = 'framework';
-        if (array_key_exists($sett_name, $GLOBALS[$platform] ?? [])) {
+
+        if (array_key_exists($sett_name, $GLOBALS[$platform]) ?? []) {
             $result = $GLOBALS[$platform][$sett_name];
+        } else {
+            $notLoadedParams = static::_loadOption($GLOBALS[$platform] ?? []);
+            $result = array_key_exists($sett_name , $notLoadedParams) ? $notLoadedParams[$sett_name] : false;
         }
+
         $eventData = \Events::trigger('core.settings.read', ['key' => $sett_name]);
 
         if(array_key_exists('value', $eventData)) {
@@ -235,6 +240,50 @@ class Get
         }
    
         return  $result;
+    }
+
+       /**
+     * load option form database.
+     *
+     * @return nothing
+     */
+    public static function _loadOption($exclusions = []) : array
+    {
+        $result = [];
+        $basequery = '
+		SELECT param_name, param_value, value_type, max_size
+		FROM `core_setting` WHERE 1 ';
+
+        if(count($exclusions)) {
+            $basequery .= ' AND param_name NOT IN ('.sprintf("'%s'", implode("','", $exclusions)).') ';
+        }
+
+        $basequery .= 'ORDER BY sequence';
+        $reSetting = sql_query($basequery);
+	
+        while (list($var_name, $var_value, $value_type) = sql_fetch_row($reSetting)) {
+            switch ($value_type) {
+                //if is int cast it
+                case 'int':
+                    $result[$var_name] = (int) $var_value;
+
+                    break;
+                //if is enum switch value to on or off
+                case 'enum':
+                    if ($var_value == 'on') {
+                        $result[$var_name] = 'on';
+                    } else {
+                        $result[$var_name] = 'off';
+                    }
+
+                    break;
+                //else simple assignament
+                default:
+                $result[$var_name] = $var_value;
+            }
+        }
+
+        return $result;
     }
 
     /**

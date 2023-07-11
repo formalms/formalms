@@ -40,11 +40,11 @@ class DomainconfigAdm extends Model {
         
         foreach($queryResult as $result) {
             if($mailConfigs) {
-                $result['mailConfigName'] = $mailConfigs[$result['mailConfigId']];
+                $result['mailConfigName'] = array_key_exists($result['mailConfigId'], $mailConfigs) ? $mailConfigs[$result['mailConfigId']] : null;
             }
 
             if($orgs) {
-                $result['orgName'] = $orgs[$result['orgId']];
+                $result['orgName'] = array_key_exists($result['orgId'], $orgs) ?  $orgs[$result['orgId']] : null;
             }
             $output[] = $result;
         }

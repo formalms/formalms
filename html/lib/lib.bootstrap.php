@@ -35,10 +35,10 @@ class Boot
     private static $_boot_seq = [
         BOOT_UTILITY => 'utility',
         BOOT_PHP => 'checkPhpVersion',
-        BOOT_CONFIG => 'config',
+        BOOT_CONFIG => 'config',  
+        BOOT_SETTING => 'loadSetting',
         BOOT_REQUEST => 'request',
         BOOT_PLATFORM => 'checkPlatform',
-        BOOT_SETTING => 'loadSetting',
         BOOT_DOMAIN_AND_TEMPLATE => 'domainAndTemplate',
         BOOT_PLUGINS => 'plugins',
         BOOT_USER => 'user',
@@ -416,12 +416,14 @@ class Boot
      */
     private static function loadSetting()
     {
+      
         self::log(' Load settings from database.');
         Util::load_setting(FormaLms\lib\Get::cfg('prefix_fw') . '_setting', 'framework');
 
         if (FormaLms\lib\Get::sett('do_debug') === 'on') {
             @error_reporting(E_ALL);
         }
+
     }
 
     private static function request()

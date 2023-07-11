@@ -273,6 +273,7 @@ class Util
 
     public static function load_setting($from_table, $into_globals)
     {
+     
         if (isset($GLOBALS[$into_globals])) {
             return;
         }

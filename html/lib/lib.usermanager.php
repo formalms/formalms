@@ -326,6 +326,8 @@ class UserManager
             }
         }
 
+     
+
         return $this->_render->getLoginMask($this->_platform, $advice, $extra, $disable, $this->_option->getOption('register_type'), $jump_url);
     }
 
@@ -352,6 +354,8 @@ class UserManager
      */
     public function getRegister($opt_link)
     {
+
+      
         $options = [
             'lastfirst_mandatory' => $this->_option->getOption('lastfirst_mandatory'),
             'register_type' => $this->_option->getOption('register_type'),
@@ -2952,55 +2956,8 @@ class UserManagerOption
         $this->_options = [];
     }
 
-    /**
-     * load option form database.
-     *
-     * @return nothing
-     */
-    public function _loadOption()
-    {
-        $reSetting = sql_query('
-		SELECT param_name, param_value, value_type, max_size
-		FROM ' . $this->_table . '
-		ORDER BY sequence');
-        while (list($var_name, $var_value, $value_type) = sql_fetch_row($reSetting)) {
-            switch ($value_type) {
-                //if is int cast it
-                case 'int':
-                    $this->_options[$var_name] = (int) $var_value;
+ 
 
-                    break;
-                //if is enum switch value to on or off
-                case 'enum':
-                    if ($var_value == 'on') {
-                        $this->_options[$var_name] = 'on';
-                    } else {
-                        $this->_options[$var_name] = 'off';
-                    }
-
-                    break;
-                //else simple assignament
-                default:
-                    $this->_options[$var_name] = $var_value;
-            }
-        }
-    }
-
-    /**
-     * @deprecated
-     *  
-     * get all the available option.
-     *
-     * @return array array(ption_name => option_value)
-     */
-    public function getAllOption()
-    {
-        if (empty($this->_options)) {
-            $this->_loadOption();
-        }
-
-        return $this->_options;
-    }
 
     /**
      * get the value of a aspecific option.
@@ -3011,13 +2968,7 @@ class UserManagerOption
      */
     public function getOption($option_name)
     {
-        if (empty($this->_options)) {
-            $this->_loadOption();
-        }
-
-        $this->_options[$option_name] = \FormaLms\lib\Get::sett($option_name);
-
-        return isset($this->_options[$option_name]) ? $this->_options[$option_name] : false;
+        return  \FormaLms\lib\Get::sett($option_name);
     }
 
     /**

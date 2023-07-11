@@ -114,9 +114,9 @@ class SessionManager
     }
 
     /**
-     * @return Session
+     * @return null|Session
      */
-    public function getSession() : Session
+    public function getSession() : ?Session
     {
         return $this->session;
     }

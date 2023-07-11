@@ -86,6 +86,7 @@ class HomepageAdm extends Model
     public function isSelfRegistrationActive()
     {
         $registration_type = $this->options->getOption('register_type');
+     
         $active_types = ['self', 'self_optin', 'moderate'];
 
         return in_array($registration_type, $active_types);

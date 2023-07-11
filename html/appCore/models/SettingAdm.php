@@ -265,10 +265,10 @@ class SettingAdm extends Model
                 switch ($value_type) {
                     case 'register_type':
                             $layout = [
-                                'self' => Lang::t('_REGISTER_TYPE_SELF'),
-                                'self_optin' => Lang::t('_REGISTER_TYPE_SELF_OPTIN'),
-                                'moderate' => Lang::t('_REGISTER_TYPE_MODERATE'),
-                                'admin' => Lang::t('_REGISTER_TYPE_ADMIN'),
+                                'self' => Lang::t('_REGISTER_TYPE_SELF','configuration'),
+                                'self_optin' => Lang::t('_REGISTER_TYPE_SELF_OPTIN','configuration'),
+                                'moderate' => Lang::t('_REGISTER_TYPE_MODERATE','configuration'),
+                                'admin' => Lang::t('_REGISTER_TYPE_ADMIN','configuration'),
                             ];
                             echo Form::getDropdown(
                                 Lang::t('_' . strtoupper($var_name), 'configuration'),
@@ -281,10 +281,10 @@ class SettingAdm extends Model
                     case 'registration_code_type':
                             $layout = [
                                 '0' => Lang::t('_NONE'),
-                                'tree_man' => Lang::t('_ASK_FOR_MANUAL_TREE_CODE'),
-                                'tree_drop' => Lang::t('_ASK_FOR_DROPDOWN_TREE_CODE'),
+                                'tree_man' => Lang::t('_ASK_FOR_MANUAL_TREE_CODE', 'configuration'),
+                                'tree_drop' => Lang::t('_ASK_FOR_DROPDOWN_TREE_CODE', 'configuration'),
                                 // "tree_course" => Lang::t('_ASK_FOR_TREE_COURSE_CODE'),
-                                'code_module' => Lang::t('_ASK_FOR_CODE_MODULE'),
+                                'code_module' => Lang::t('_ASK_FOR_CODE_MODULE', 'configuration'),
                             ];
                             echo Form::getDropdown(
                                 Lang::t('_' . strtoupper($var_name), 'configuration'),

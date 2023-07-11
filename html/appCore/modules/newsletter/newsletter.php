@@ -197,7 +197,7 @@ function send_newsletter($send_id)
 
                 require_once _adm_ . '/lib/lib.field.php';
 
-                $acl_man = &\FormaLms\lib\Forma::getAclManager();;
+                $acl_man = \FormaLms\lib\Forma::getAclManager();;
                 $field_man = new FieldList();
 
                 $arr_sms_recipients = [];
@@ -303,9 +303,9 @@ function nl_sendcomplete()
 
     //-TP// funAdminAccess('OP');
 
-    $out = &$GLOBALS['page'];
+    $out = $GLOBALS['page'];
     $out->setWorkingZone('content');
-    $lang = &FormaLanguage::createInstance('admin_newsletter', 'framework');
+    $lang = FormaLanguage::createInstance('admin_newsletter', 'framework');
 
     $out->add(getTitleArea($lang->def('_NEWSLETTER'), 'newsletter'));
 
