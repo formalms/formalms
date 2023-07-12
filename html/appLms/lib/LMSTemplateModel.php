@@ -26,14 +26,18 @@ class LMSTemplateModel
 
     public function selectLayout()
     {
+
         $session = \FormaLms\lib\Session\SessionManager::getInstance()->getSession();
-        if ($session->has('layoutToRender') && !empty($session->get('layoutToRender'))) {
-            return $session->get('layoutToRender');
-        } elseif ($session->has('idCourse') && !empty($session->get('idCourse'))) {
-            return 'lms';
-        } else {
-            return 'lms_user';
-        }
+        $layout = 'lms_user';
+        $result = [];
+
+        if ($session->has('idCourse') && !empty($session->get('idCourse'))) {
+            $layout = 'lms';
+        } 
+
+        $result = Events::trigger('lms.layout.selecting', ['layout' => $layout]);
+
+        return array_key_exists('layout', $result) ? $result['layout'] : $layout;
     }
 
     public function getLogo()

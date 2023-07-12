@@ -77,6 +77,7 @@ class DialogWidget extends Widget
 
         //validate parameters
 
+
         if ($this->dynamicContent) {
             $params['dynamicContent'] = true;
             $params['ajaxUrl'] = (is_string($this->ajaxUrl) ? $this->ajaxUrl : '');
@@ -143,6 +144,7 @@ class DialogWidget extends Widget
         }
         $params['callEvents'] = $callEvents;
 
+    
         //choose a view by parameters specification
         if ($this->dynamicContent) {
             $view = 'dynamic';
@@ -150,6 +152,7 @@ class DialogWidget extends Widget
             $view = 'static';
         }
 
+      
         //render the view
         $this->render($view, $params);
     }

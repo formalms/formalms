@@ -38,6 +38,7 @@ class CourseMenuLmsController extends LmsController
 
     public function show()
     {
+        
         // url accesso al corso http://forma/appLms/index.php?r=course/show&course_id=1
 
         if (!\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous() && $this->idCourse) {

@@ -61,6 +61,7 @@ class LoLmsController extends LmsController
 
     public function show()
     {
+     
         if (\FormaLms\lib\Forma::errorsExists()) {
             UIFeedback::error(\FormaLms\lib\Forma::getFormattedErrors(true));
         }

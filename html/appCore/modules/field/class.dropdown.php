@@ -1321,7 +1321,7 @@ class Field_Dropdown extends Field
 
     public function getFlatAllSon()
     {
-        $lang = &FormaLanguage::createInstance('field');
+        $lang = FormaLanguage::createInstance('field');
 
         $sons = [];
         //find available son

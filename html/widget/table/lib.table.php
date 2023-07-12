@@ -129,7 +129,7 @@ class TableWidget extends Widget
         }
 
         if (!is_numeric($this->rowsPerPage) || $this->rowsPerPage <= 0) {
-            $this->rowsPerPage = FormaLms\lib\Get::sett('visu_item', 25);
+            $this->rowsPerPage = FormaLms\lib\Get::sett('visuitem', 25);
         }
 
         if (!is_numeric($this->startIndex)) {

@@ -75,10 +75,10 @@ class Field_Country extends Field
         $back_coded = htmlentities(urlencode($back));
 
         $array_lang = [];
-        $std_lang = &FormaLanguage::createInstance('standard');
-        $lang = &FormaLanguage::createInstance('field');
+        $std_lang = FormaLanguage::createInstance('standard');
+        $lang = FormaLanguage::createInstance('field');
         $array_lang = \FormaLms\lib\Forma::langManager()->getAllLangCode();
-        $out = &$GLOBALS['page'];
+        $out = $GLOBALS['page'];
 
         if (isset($_POST['undo'])) {
             //undo action
@@ -813,7 +813,7 @@ class Field_Country extends Field
 
     public function getAllSon()
     {
-        $lang = &FormaLanguage::createInstance('field');
+        $lang = FormaLanguage::createInstance('field');
 
         $sons = [];
         //find available son

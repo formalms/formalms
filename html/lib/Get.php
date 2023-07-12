@@ -230,7 +230,7 @@ class Get
             $result = $GLOBALS[$platform][$sett_name];
         } else {
             $notLoadedParams = static::_loadOption($GLOBALS[$platform] ?? []);
-            $result = array_key_exists($sett_name , $notLoadedParams) ? $notLoadedParams[$sett_name] : false;
+            $result = array_key_exists($sett_name , (array) $notLoadedParams) ? $notLoadedParams[$sett_name] : $fallback;
         }
 
         $eventData = \Events::trigger('core.settings.read', ['key' => $sett_name]);

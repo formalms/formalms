@@ -34,6 +34,14 @@ class ProfileLmsController extends LmsController
         $this->json = new Services_JSON();
         $this->aclManager = \FormaLms\lib\Forma::getAcl()->getACLManager();
         $this->max_dim_avatar = 150;
+
+        Events::listen('lms.layout.selecting', function($event) {
+
+            $layout = $event['layout'];
+            $layout = 'lms_user';
+            $event['layout'] = $layout;
+        }); 
+    
     }
 
     protected function _profileBackUrl()
@@ -64,9 +72,7 @@ class ProfileLmsController extends LmsController
             checkPerm('view', false, 'profile', 'lms');
         }
 
-        /* Force show lms_user template */
-        $this->session->set('layoutToRender', Layout::LAYOUT_LMS_USER);
-        $this->session->save();
+     
 
         require_once _lms_ . '/lib/lib.lms_user_profile.php';
 

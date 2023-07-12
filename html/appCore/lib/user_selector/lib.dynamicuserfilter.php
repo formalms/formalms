@@ -55,7 +55,7 @@ class DynamicUserFilter
 
     private function getStandardFieldsList()
     {
-        $lang = &FormaLanguage::createInstance('standard', 'framework');
+        $lang = FormaLanguage::createInstance('standard', 'framework');
 
         $fields = [
             ['id' => _STANDARD_FIELDS_PREFIX . '_0', 'name' => addslashes(Lang::t('_USERNAME', 'standard')),         'type' => _FIELD_TYPE_TEXT, 'standard' => true],
@@ -152,7 +152,7 @@ class DynamicUserFilter
 
     public function get($domready = true, $tags = true)
     {
-        $lang = &FormaLanguage::createInstance('report', 'framework');
+        $lang = FormaLanguage::createInstance('report', 'framework');
         $output = [];
 
         $js_initsel = '';
