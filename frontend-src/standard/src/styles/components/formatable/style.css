@@ -3,14 +3,16 @@ table.dataTable tbody > tr > .selected,
 table.dataTable.order-column tbody > tr.selected > .sorting_1, 
 table.dataTable.order-column tbody > tr.selected > .sorting_2, 
 table.dataTable.order-column tbody > tr.selected > .sorting_3, 
-table.dataTable tbody tr.selected>*,
 table.dataTable.order-column tbody > tr > .selected, table.dataTable.display tbody > tr.selected > .sorting_1, 
 table.dataTable.display tbody > tr.selected > .sorting_2, table.dataTable.display tbody > tr.selected > .sorting_3, table.dataTable.display tbody > tr > .selected {
   background-color: var(--color-navbtn-bg) !important;
 }
 
-table.dataTable.stripe>tbody>tr.odd.selected>*, table.dataTable.display>tbody>tr.odd.selected>*,
-table.dataTable.stripe>tbody>tr.odd.selected>*, table.dataTable.display>tbody>tr.even.selected>* {
+table.dataTable.stripe>tbody>tr.odd.selected>*, 
+table.dataTable.display>tbody>tr.odd.selected>*,
+table.dataTable.stripe>tbody>tr.odd.selected>*, 
+table.dataTable.display>tbody>tr.even.selected>*,
+table.dataTable tbody tr.selected>* {
   box-shadow: none !important;
 }
 
