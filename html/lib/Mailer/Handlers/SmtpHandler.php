@@ -63,6 +63,16 @@ class SmtpHandler
      */
     protected $noreplyMail;
 
+       /**
+     * @var string
+     */
+    protected $replytoName;
+
+    /**
+     * @var string
+     */
+    protected $replytoMail;
+
     /**
      * @var string
      */
@@ -101,7 +111,7 @@ class SmtpHandler
     /**
      * @var string
      */
-    protected $pwd;
+    protected $password;
 
     /**
      * @var string
@@ -205,6 +215,22 @@ class SmtpHandler
         return $this->noreplyMail;
     }
 
+     /**
+     * @return string
+     */
+    public function getReplytoName()
+    {
+        return $this->replytoName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReplytoMail()
+    {
+        return $this->replytoMail;
+    }
+
     /**
      * @return bool
      */
@@ -306,7 +332,7 @@ class SmtpHandler
             if ($mailConfigId) {
                 $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId ="' . $mailConfigId . '"');
             } else {
-                $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId = (SELECT id FROM %adm_mail_configs WHERE `system` = "1")');
+                $query_res = sql_query('SELECT * FROM %adm_mail_configs_fields WHERE mailConfigId = (SELECT id FROM %adm_mail_configs WHERE `system` = "1" LIMIT 1)');
             }
 
          

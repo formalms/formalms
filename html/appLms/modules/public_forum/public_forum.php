@@ -4095,7 +4095,7 @@ function export()
     require_once _base_ . '/lib/lib.download.php';
     require_once _adm_ . '/lib/lib.tags.php';
 
-    $acl_man = &\FormaLms\lib\Forma::getAclManager();
+    $acl_man = \FormaLms\lib\Forma::getAclManager();
     $tags = new Tags('lms_forum');
     $id_forum = FormaLms\lib\Get::req('idForum', DOTY_INT, 0);
     $csv_string = '';
@@ -4321,7 +4321,7 @@ function checkPublicForumPerm_old($role, $id_forum)
 function forumDispatch($op)
 {
     require_once _base_ . '/lib/lib.urlmanager.php';
-    $url_man = &UrlManager::getInstance('forum');
+    $url_man = UrlManager::getInstance('forum');
     $url_man->setStdQuery('index.php?modname=public_forum&op=forum');
 
     switch ($op) {

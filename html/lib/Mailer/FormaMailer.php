@@ -431,8 +431,9 @@ class FormaMailer extends PHPMailer
     public function testMail(array $recipients)
     {
 
+        $sender = null;
         $subject = \Lang::t('_TESTMAIL_SUBJECT', 'mailconfig');
-        $body = \Lang::t('_TESTMAIL_BODY', 'mailconfig');;
+        $body = \Lang::t('_TESTMAIL_BODY', 'mailconfig');
         return $this->SendMail($recipients, $subject, $body, $sender);
 
     }

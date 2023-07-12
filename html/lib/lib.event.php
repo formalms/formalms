@@ -311,16 +311,18 @@ class FormaEvent
      **/
     public function setProperty($prop_name, $prop_value)
     {
+
+        $propValues = is_array($prop_value) ? json_encode($prop_value) : $prop_value;
         if ($this->existProperty($prop_name)) {
-            $query = 'UPDATE ' . $GLOBALS['prefix_fw'] . '_event_property'
-                    . "   SET property_value = '" . $prop_value . "'"
+            $query = 'UPDATE %adm_event_property'
+                    . "   SET property_value = '" . $propValues . "'"
                     . " WHERE property_name = '" . $prop_name . "'"
                     . "   AND idEvent = '" . (int) $this->event_id . "'";
         } else {
 
-            $query = 'INSERT INTO ' . $GLOBALS['prefix_fw'] . '_event_property'
+            $query = 'INSERT INTO %adm_event_property'
                     . ' (idEvent, property_name, property_value, property_date) VALUES ('
-                    . "'" . (int) $this->event_id . "','" . $prop_name . "','" . $prop_value . "', '" . date('Y-m-d') . "')";
+                    . "'" . (int) $this->event_id . "','" . $prop_name . "','" . $propValues . "', '" . date('Y-m-d') . "')";
         }
         $result = sql_query($query);
 

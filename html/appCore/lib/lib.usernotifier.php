@@ -38,7 +38,7 @@ class FormaUserNotifier extends FormaEventConsumer
         // initializing
         require_once _adm_ . '/lib/lib.field.php';
 
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();;
+        $acl_man = \FormaLms\lib\Forma::getAclManager();;
         $field_man = new FieldList();
         $send_to_field = FormaLms\lib\Get::sett('sms_cell_num_field');
 

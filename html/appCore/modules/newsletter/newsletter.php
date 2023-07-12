@@ -185,7 +185,7 @@ function send_newsletter($send_id)
                     // ----------------------------------------------
                 }
 
-                $mailer = FormaLms\lib\Mailer\FormaMailer::getInstance();
+                $mailer = DomainHandler::getInstance()->getMailer();
 
                 $mailer->SendMail($tempemail, $sub, $msg, $sender, $attach,
                     [MAIL_REPLYTO => $fromemail, MAIL_SENDER_ACLNAME => false]);

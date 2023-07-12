@@ -36,7 +36,7 @@ class Tags
         $this->_tag_t = $GLOBALS['prefix_fw'] . '_tag';
         $this->_tagrel_t = $GLOBALS['prefix_fw'] . '_tag_relation';
         $this->_resource_t = $GLOBALS['prefix_fw'] . '_tag_resource';
-        $this->_id_course = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse');
+        $this->_id_course = \FormaLms\lib\Session\SessionManager::getInstance()->getSession()->get('idCourse') ?? 0;
 
         $this->_use_tag = (FormaLms\lib\Get::sett('use_tag', 'off') == 'on');
 

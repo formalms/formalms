@@ -1036,7 +1036,7 @@ class MessageModule implements Accessible
             '</div><br />'
             . Form::openForm('message', $write_url, false, false, 'multipart/form-data')
             . Form::getHidden('out', 'out', $from)
-            . Form::getHidden('msg_course_filter', 'msg_course_filter', $_POST['msg_course_filter'])
+            . Form::getHidden('msg_course_filter', 'msg_course_filter', array_key_exists('msg_course_filter', $_POST) ? $_POST['msg_course_filter'] : 0)
             . Form::getHidden('message_recipients', 'message[recipients]', $recipients)
 
             . Form::getTextfield(Lang::t('_SUBJECT'), 'message_subject', 'message[subject]', 255,
