@@ -3570,6 +3570,7 @@ CREATE TABLE IF NOT EXISTS learning_communication_lang (
 
 ALTER TABLE `learning_courseuser` ADD INDEX `courseuser_course_idx` (`idCourse`);
 
+UPDATE `core_reg_setting` SET `value` = '-' WHERE `val_name` = 'date_sep';
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

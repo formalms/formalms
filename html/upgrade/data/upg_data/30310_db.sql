@@ -4,3 +4,5 @@ CREATE TABLE IF NOT EXISTS learning_communication_lang (
     title varchar(255),
     description text
 );
+
+UPDATE `core_reg_setting` SET `value` = '-' WHERE `val_name` = 'date_sep';
