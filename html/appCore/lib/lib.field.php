@@ -547,6 +547,20 @@ class FieldList
             foreach ($yn_rs as $row) {
                 $yesno_fields[] = $row['id_common'];
             }
+
+            
+            $countryFields = [];
+
+
+            $country_query = "SELECT id_country, name_country FROM %adm_country WHERE id_zone = '0' ";
+            if (!empty($fields)) {
+                $country_query .= ' AND id_country IN ( ' . implode(',', $fields) . ' )';
+            }
+            $country_res = sql_query($country_query);
+
+            foreach ($country_res as $row) {
+                $countryFields[$row['id_country']] = $row['name_country'];
+            }
         }
 
         $query = 'SELECT id_user, id_common, user_entry '
@@ -566,6 +580,8 @@ class FieldList
             if ($translate) {
                 if (array_key_exists((int)$id_field, $sons_arr)) {
                     $result[$id_user][$id_field] = $sons_arr[(int)$id_field][(int)$value] ?? '';
+                } elseif (is_numeric($value) && array_key_exists((int) $id_field, $countryFields)) {
+                    $result[$id_user][$id_field] = $countryFields[(int) $value] ?? '';
                 } elseif (in_array($id_field, $yesno_fields)) {
                     $yntrans = Lang::t('_NOT_ASSIGNED', 'field');
                     switch ($value) {

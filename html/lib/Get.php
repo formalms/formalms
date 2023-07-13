@@ -255,7 +255,7 @@ class Get
 		FROM `core_setting` WHERE 1 ';
 
         if(count($exclusions)) {
-            $basequery .= ' AND param_name NOT IN ('.sprintf("'%s'", implode("','", $exclusions)).') ';
+            $basequery .= ' AND param_name NOT IN ('.sprintf("'%s'", implode("','", array_keys($exclusions))).') ';
         }
 
         $basequery .= 'ORDER BY sequence';
