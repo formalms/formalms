@@ -1250,7 +1250,7 @@ class FieldList
      **/
     public function isFilledFieldsForUserInRegistration($idst_user, $arr_idst = false)
     {
-        $acl = Docebo::user()->getACL();
+        $acl = \FormaLms\lib\Forma::getAcl();
         if ($arr_idst === false) {
             if (!empty($acl)) {
                 $arr_idst = $acl->getUserGroupsST($idst_user);
