@@ -209,8 +209,8 @@ html, body {}
     border-radius: 4px 4px 0 0;
   }
   .sm-forma a:hover, .sm-forma a:focus, .sm-forma a:active {
-    background: var(--color-primary); /*#f6ffed;*/
-    color: var(--color-primary-text);
+    background: var(--color-primary-text); /*#f6ffed;*/
+    color: var(--color-primary);
   }
   .sm-forma a.highlighted {
     background: var(--color-primary); /*#f6ffed;*/
