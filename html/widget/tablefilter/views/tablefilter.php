@@ -14,8 +14,8 @@
                     <?php if ($auxiliary_filter) { ?>
                     <?php echo $auxiliary_filter; ?>
                     <div class="input-group">
-                        <a href='#' id='<?php echo $id; ?>_filter_set1'>Applica filtro</a><br><br>
-                        <a href='#' id='<?php echo $id; ?>_filter_reset'>Azzera filtro</a>
+                        <a href='#' id='<?php echo $id; ?>_filter_set1'><?php echo Lang::t('_FILTER_APPLY', 'standard');?></a><br><br>
+                        <a href='#' id='<?php echo $id; ?>_filter_reset'><?php echo Lang::t('_FILTER_RESET', 'standard');?></a>
                     </div>
                     <?php } ?>                    
                     <div class="input-group">

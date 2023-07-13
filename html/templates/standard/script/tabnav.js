@@ -62,15 +62,20 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 function manageTabNavigation(selector, start_tab){
+
   if (selector.startsWith('.')) {
     divElement = document.querySelector(selector);
   } else if (selector.startsWith('#')) {
-    var id = selector.slice(1); // Rimuovi il cancelletto dal selettore di ID
+    var id = selector.slice(1);
     divElement = document.getElementById(id);
   }
-  const elements = divElement.querySelectorAll('a, button, input');
-  let tabIndex = start_tab;
-  elements.forEach(function(element) {
-    element.setAttribute('tabindex', tabIndex);
-  });
+
+  if (divElement) {
+    const elements = divElement.querySelectorAll('a, button, input');
+    let tabIndex = start_tab;
+    elements.forEach(function(element) {
+      element.setAttribute('tabindex', tabIndex);
+    });
+  }
+
 }

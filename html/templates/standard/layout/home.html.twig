@@ -110,18 +110,5 @@
 {{ Layout_getZone('debug') }}
 {{ Layout_getAnalytics() }}
 
-<script>
-       window.addEventListener('DOMContentLoaded', function() {
-           var elements = document.querySelectorAll('a, button, input');
-
-           var tabIndex = 1;
-
-           elements.forEach(function(element) {
-               element.setAttribute('tabindex', tabIndex);
-               tabIndex++;
-            });
-        });
-</script>
-
 </body>
 </html>
