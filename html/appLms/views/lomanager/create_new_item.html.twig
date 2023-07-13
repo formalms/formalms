@@ -14,12 +14,14 @@
     </ul>
 
     <div class="row createFolderForm hidden">
-        <div class="col-lg-12">
+        <div class="col-lg-12 inputBtnContainer">
             <div class="createFolder__link ft-is-folder">
-                <input type="text" class="createFolder__input" placeholder="{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}">
-                <button class="btn cancelCreateFolder__btn" type="reset"></button>
-                <button class="btn createFolder__btn" type="button"></button>
+                <input type="text" class="createFolder__input resizeInput" placeholder="{{ Lang_translate('_ORGFOLDERNAME', 'storage') }}"/>
                 <input type="hidden" name="authentic_request" value="{{ Util_getSignature() }}" />
+            </div>
+            <div class="btnContainer">
+                <button class="btn cancelCreateFolder__btn noBorder" type="reset"></button>
+                <button class="btn createFolder__btn noBorder" type="button"></button>
             </div>
             <div class="createFolder__input_err hidden"></div>
         </div>

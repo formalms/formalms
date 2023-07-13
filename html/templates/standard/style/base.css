@@ -1900,3 +1900,32 @@ ul.tabs li.current{
 .dropdown-toggle:focus {
     border: 3px solid rgba(232, 63, 29, 0.5)!important;
 }
+
+.noBorder {
+    border: none!important;
+}
+
+.resizeInput {
+    width: 15rem!important;
+    padding-right: 0!important;
+}
+
+.btnContainer {
+    width: 100%;
+    text-align: left;
+    position: relative;
+    text-decoration: none;
+    color: #000;
+    padding: 18px 16px 16px 56px;
+    display: block;
+    transition: all .2s ease-in-out;
+    background: rgba(0,0,0,0);
+    pointer-events: all;
+    margin-left: 10px;
+}
+
+.inputBtnContainer {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
