@@ -6,6 +6,7 @@ var SliderMenu = (function() {
     var _$menus = $('.slider-menu');
     if (_$menus.length) {
       _$menus.slick({
+		slidesToShow : 10,
         infinite: false,
         variableWidth: true,
         draggable: false,
