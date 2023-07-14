@@ -1933,3 +1933,7 @@ ul.tabs li.current{
     align-items: center;
     width: 100%;
 }
+
+a:focus, a:hover {
+    text-decoration: underline!important;
+}
