@@ -372,6 +372,10 @@ ul.style_none li{list-style:none; }
 .quick_search_form a {
     color: var(--color-wrapper-text) !important;
 }
+.quick_search_form a:hover{
+    background-color: #3D3D3D!important;
+    color: white!important;
+}
 .quick_search_form .search_t{float:left;}
 .quick_search_form #course_filter{width: 50%; float: left;}
 #admcontainer [id$="_table_container"]{clear:both;}/* fixes .quick_search_form overlap above admin tables */
