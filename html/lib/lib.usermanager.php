@@ -862,8 +862,8 @@ class UserManager
                     break;
                 case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man and resolve here the course part
-                    $course_code = substr(str_replace('-', '', $reg_code), 10, 10);
-                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                    $course_code = $reg_code;
+                    //$reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
 
                     //control course registration
                     require_once _lms_ . '/lib/lib.course.php';
@@ -1399,7 +1399,7 @@ class UserManagerRenderer
         require_once _base_ . '/lib/lib.table.php';
         require_once _adm_ . '/lib/lib.field.php';
 
-        $lang = &FormaLanguage::createInstance('register', $platform);
+        $lang = FormaLanguage::createInstance('register', $platform);
 
         if ($options['register_type'] != 'self' && $options['register_type'] != 'self_optin' && $options['register_type'] != 'moderate') {
             return '<div class="register_noactive">' . Lang::t('_REG_NOT_ACTIVE', 'register', $platform) . '</div>';
@@ -1527,7 +1527,7 @@ class UserManagerRenderer
     {
         $res = ['success' => true, 'msg' => ''];
 
-        $lang = &FormaLanguage::createInstance('register', 'lms');
+        $lang = FormaLanguage::createInstance('register', 'lms');
         $code_is_mandatory = (FormaLms\lib\Get::sett('mandatory_code', 'off') == 'on');
 
         if ($reg_code != '') {
@@ -1538,8 +1538,8 @@ class UserManagerRenderer
                     break;
                 case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man and resolve here the course part
-                    $course_code = substr(str_replace('-', '', $reg_code), 10, 10);
-                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                    $course_code = $reg_code;
+                    //$reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
 
                     //control course registration
                     require_once _lms_ . '/lib/lib.course.php';
@@ -1608,7 +1608,11 @@ class UserManagerRenderer
                 case 'tree_drop':
                     $query = sql_query("SELECT code FROM %adm_org_chart_tree WHERE idOrg = $reg_code LIMIT 1");
                     $reg_code = sql_fetch_array($query)['code'];
-                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                    //non permette codici più lunghi di 10 caratteri e 
+                    //se il controllo sostituisce anche i trattini con nulla di sbase non si dovrebbe poter scrivere 
+                    //un codice coi trattini
+                    //$reg_code = substr(str_replace('-', '', $reg_code), 0, 10); 
+                    
                     $array_course = $this->getCodeCourses($reg_code);
                     $array_folder = $uma->getFoldersFromCode($reg_code);
 
@@ -1672,7 +1676,7 @@ class UserManagerRenderer
 
     public function _opt_in($options, $platform, $opt_link)
     {
-        $lang = &FormaLanguage::createInstance('register', $platform);
+        $lang = FormaLanguage::createInstance('register', $platform);
 
         // Check for error
         $errors = [];
@@ -1680,7 +1684,7 @@ class UserManagerRenderer
         // Insert temporary
         $random_code = md5($_POST['register']['userid'] . mt_rand() . mt_rand() . mt_rand());
         // register as temporary user and send mail
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $iduser = '';
 
         $iduser = $acl_man->registerTempUser(
@@ -1813,7 +1817,7 @@ class UserManagerRenderer
 
     public function _special_field($options, $platform, $opt_link, $errors)
     {
-        $lang = &FormaLanguage::createInstance('register', $platform);
+        $lang = FormaLanguage::createInstance('register', $platform);
 
         // Check for error
         $out = '';
@@ -1839,7 +1843,7 @@ class UserManagerRenderer
                     break;
                 case 'tree_course':
                     //a mixed code, let's cut the tree part and go on with the tree_man
-                    $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
+                  //  $reg_code = substr(str_replace('-', '', $reg_code), 0, 10);
                 //procced with tree_man
                 // no break
                 case 'tree_man':
@@ -2292,8 +2296,8 @@ class UserManagerRenderer
 
     public function confirmRegister($platform, $options)
     {
-        $lang = &FormaLanguage::createInstance('register', $platform);
-        $acl_man = &\FormaLms\lib\Forma::getAclManager();
+        $lang = FormaLanguage::createInstance('register', $platform);
+        $acl_man = \FormaLms\lib\Forma::getAclManager();
         $acl = \FormaLms\lib\Forma::getAcl();
 
         if (!isset($_GET['random_code'])) {
