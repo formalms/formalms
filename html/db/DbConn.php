@@ -79,7 +79,7 @@ class DbConn
         if ($link) {
             return $link;
         }
-        if (self::$instance == null) {
+        if (self::$instance == null || self::$instance->conn == null) {
             self::$instance = self::getConnection($db_type, $host, $user, $pass, $name);
 
 

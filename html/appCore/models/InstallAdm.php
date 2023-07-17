@@ -21,6 +21,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  *
  * @since 4.0
  */
+
 use \FormaLms\lib\Helpers\HelperTool;
 
 class InstallAdm extends Model
@@ -37,8 +38,8 @@ class InstallAdm extends Model
     protected $response;
     /** @var bool * */
     protected $upgrade;
-     /** @var bool * */
-     protected $installFlag;
+    /** @var bool * */
+    protected $installFlag;
 
 
     public const CHECK_REQUIREMENTS = '1';
@@ -63,13 +64,13 @@ class InstallAdm extends Model
         require_once(_lib_ . '/System/lang/' . Lang::getSelLang() . '.php');
         require_once(_lib_ . '/System/lang/' . 'english' . '.php');
 
-        $this->installFlag = $this->checkDbInstallation();
+        $this->installFlag = static::checkDbInstallation();
         $this->upgrade = $this->installFlag ? \FormaLms\lib\Version\VersionChecker::needsUpgrade() : false;
 
         $this->debug = $debug;
 
-        if(!$debug) {
-           // ini_set("display_errors", false);
+        if (!$debug) {
+            // ini_set("display_errors", false);
         }
         $this->fillSteps();
         $this->fillLabels();
@@ -324,7 +325,7 @@ class InstallAdm extends Model
         $res = [];
 
         $checkRequirements = 1;
-  
+
         $res['mandatory']['php'] = \FormaLms\lib\Version\VersionChecker::matchPhpVersion()['message'];
 
         $driver = [
@@ -344,7 +345,7 @@ class InstallAdm extends Model
         }
         if (array_filter($driver)) {
             // mysql version, in easyphp the version number is ina string regcut it
-           
+
             $mysqlVersion = \FormaLms\lib\Version\VersionChecker::getSqlVersion();
 
             if ('unknown' === $mysqlVersion) {
@@ -353,7 +354,7 @@ class InstallAdm extends Model
 
                 if (\FormaLms\lib\Version\VersionChecker::compareSqlVersion($mysqlVersion)) {
                     $res['mandatory']['mysql'] = 'ok';
-                  
+
                 } else {
                     $res['mandatory']['mysql'] = 'err';
                 }
@@ -366,8 +367,8 @@ class InstallAdm extends Model
         $res['mandatory']['mbstring'] = (extension_loaded('mbstring') ? 'ok' : 'err');
         $res['requirements']['ldap'] = (extension_loaded('ldap') ? 'ok' : 'err');
         $res['requirements']['openssl'] = (extension_loaded('openssl') ? 'ok' : 'err');
-        $res['requirements']['allowUrlFopen'] = ((bool) ini_get('allow_url_fopen') ? 'ok' : 'err');
-        $res['requirements']['allowUrlInclude'] = ((bool) ini_get('allow_url_include') ? 'err' : 'ok');
+        $res['requirements']['allowUrlFopen'] = ((bool)ini_get('allow_url_fopen') ? 'ok' : 'err');
+        $res['requirements']['allowUrlInclude'] = ((bool)ini_get('allow_url_include') ? 'err' : 'ok');
         $res['mandatory']['mimeCt'] = (function_exists('mime_content_type') || (class_exists('file') && method_exists('finfo', 'file')) ? 'ok' : 'err');
         //$res['mandatory']['disableFunctions'] = in_array('shell_exec', explode(',', ini_get('disable_functions'))) ? 'err' : 'ok';
 
@@ -377,7 +378,7 @@ class InstallAdm extends Model
 
         $resultArray = array_merge($res['mandatory'], $res['requirements']);
         $resultArray['checkRequirements'] = $checkRequirements;
-   
+
         return $resultArray;
     }
 
@@ -391,7 +392,7 @@ class InstallAdm extends Model
     {
         $res = '';
 
-        $platform_folders = (array) $this->session->get('platform_arr');
+        $platform_folders = (array)$this->session->get('platform_arr');
         $file_to_check = ['config.php'];
         $dir_to_check = [];
         $empty_dir_to_check = [];
@@ -499,7 +500,7 @@ class InstallAdm extends Model
         }
 
         if (file_exists($fn)) {
-            $handle = fopen($fn, 'r');
+            $handle = fopen($fn, 'rb');
             $content = fread($handle, filesize($fn));
             fclose($handle);
         }
@@ -528,7 +529,7 @@ class InstallAdm extends Model
             include _base_ . '/config.php';
 
             foreach ($localCfg['dbConfig'] as $key => $value) {
-                $localCfg['dbConfig'][$key] = $cfg[HelperTool ::camelCaseToSnake($key)];
+                $localCfg['dbConfig'][$key] = $cfg[HelperTool::camelCaseToSnake($key)];
             }
         }
 
@@ -571,7 +572,7 @@ class InstallAdm extends Model
             include _base_ . '/config.php';
 
             foreach ($localCfg['smtp'] as $key => $value) {
-                $localCfg['smtp'][$key] = isset($cfg[HelperTool::camelCaseToSnake($key)]) ? $cfg[HelperTool::camelCaseToSnake($key)] : '';
+                $localCfg['smtp'][$key] = $cfg[HelperTool::camelCaseToSnake($key)] ?? '';
             }
         }
 
@@ -664,7 +665,7 @@ class InstallAdm extends Model
         return true;
     }
 
-     /**
+    /**
      * Method to set errors
      *
      *
@@ -804,19 +805,20 @@ class InstallAdm extends Model
     {
         $result = 'err_connect';
 
-        $GLOBALS['db_link'] = \FormaLms\db\DbConn::getConnection(
-            'mysqli',
-            $db_host,
-            $db_user,
-            $db_pass,
-            $db_name,
-            true
+        \FormaLms\db\DbConn::getInstance(
+            null, [
+                'db_type' => 'mysqli',
+                'db_host' => $db_host,
+                'db_user' => $db_user,
+                'db_pass' => $db_pass,
+                'db_name' => $db_name,
+            ]
         );
-        if ($GLOBALS['db_link']::$connected) {
+        if (\FormaLms\db\DbConn::getInstance()::$connected) {
             if ($db_name == '') {
                 return 'err_db_sel';
             }
-            $res = sql_select_db($db_name, $GLOBALS['db_link']);
+            $res = sql_select_db($db_name);
             if (!$res) {
                 return 'create_db';
             } else {
@@ -836,7 +838,8 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private function validateAdminData($password, $confirmPassword, $email): string
+    private
+    function validateAdminData($password, $confirmPassword, $email): string
     {
         $success = true;
         $messages = [];
@@ -867,7 +870,8 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private function validateSmtpData($params): string
+    private
+    function validateSmtpData($params): string
     {
         $success = true;
         $messages = [];
@@ -892,7 +896,8 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    public function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd): bool
+    public
+    function checkSmtpConnection($smtpHost, $smtpPort, $smtpSecure, $smtpAutoTls, $smtpUser, $smtpPwd): bool
     {
         $mail = new PHPMailer\PHPMailer\PHPMailer();
 
@@ -927,7 +932,8 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private function validateConnection($connectionResult, $dbName): string
+    private
+    function validateConnection($connectionResult, $dbName): string
     {
         $success = false;
         $messages = [];
@@ -936,18 +942,18 @@ class InstallAdm extends Model
 
         $checkSqlVersion = \FormaLms\lib\Version\VersionChecker::getSqlVersionArray($this->getSqlVersionByQuery());
 
-        if(!empty($checkSqlVersion[1])) {
+        if (!empty($checkSqlVersion[1])) {
             $sqlVersionCheck = \FormaLms\lib\Version\VersionChecker::compareSqlVersion($checkSqlVersion[1]);
         }
 
-        if($sqlVersionCheck) {
+        if ($sqlVersionCheck) {
             switch ($connectionResult) {
                 case 'create_db':
                     //mi salvo in sessione che devo creare il db
                     $this->session->set('creationDb', $dbName);
                     $this->session->save();
                     $success = true;
-    
+
                     break;
                 case 'ok':
                     $removeCreateDb = true;
@@ -962,19 +968,19 @@ class InstallAdm extends Model
                         $success = false;
                         $messages[] = $this->errorLabels['db_not_empty'];
                     }
-    
+
                     break;
                 case 'err_connect':
                     $removeCreateDb = true;
                     $success = false;
                     $messages[] = $this->errorLabels['cant_connect_db'];
-    
+
                     break;
                 case 'err_db_sel':
                     $removeCreateDb = true;
                     $success = false;
                     $messages[] = $this->errorLabels['cant_select_db'];
-    
+
                     break;
                 default:
             }
@@ -986,14 +992,14 @@ class InstallAdm extends Model
             }
         } else {
 
-            if($connectionResult == 'err_connect'){
-                 $messages[] = $this->errorLabels['cant_connect_db'];
+            if ($connectionResult == 'err_connect') {
+                $messages[] = $this->errorLabels['cant_connect_db'];
             } else {
                 $messages[] = $this->errorLabels['unsuitable_sql_version'];
             }
 
         }
-        
+
         return $this->setResponse($success, $messages)->wrapResponse();
     }
 
@@ -1004,9 +1010,10 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    public function checkDBEmpty($dbName): bool
+    public
+    function checkDBEmpty($dbName): bool
     {
-        $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $dbName . "'", $GLOBALS['db_link']);
+        $row = sql_query("SELECT COUNT(DISTINCT `table_name`) FROM `information_schema`.`columns` WHERE `table_schema` = '" . $dbName . "'");
         [$count] = sql_fetch_row($row);
 
         return $count == 0 ? true : false;
@@ -1018,7 +1025,8 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    public function getSqlVersionByQuery(): ?string
+    public
+    function getSqlVersionByQuery(): ?string
     {
         $row = sql_query("SELECT version()");
         [$version] = sql_fetch_row($row);
@@ -1031,9 +1039,10 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    public function checkDBCharset(): bool
+    public
+    function checkDBCharset(): bool
     {
-        $row = sql_query("show variables like 'character_set_database'", $GLOBALS['db_link']);
+        $row = sql_query("show variables like 'character_set_database'");
         [, $charset] = sql_fetch_row($row);
 
         return $charset === 'utf8' || $charset === 'utf8mb4' ? true : false;
@@ -1047,15 +1056,16 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    public function finalize($request): string
+    public
+    function finalize($request): string
     {
         $params = $request->request->all();
         $messages = [];
         $success = false;
         $type = 'standard';
-   
 
-        if (array_key_exists('upgrade',$params) && $params['upgrade']) {
+
+        if (array_key_exists('upgrade', $params) && $params['upgrade']) {
             switch ($params['check']) {
                 case 1:
                     //se c'è da installare metto la tabella doctrine migrations
@@ -1073,9 +1083,9 @@ class InstallAdm extends Model
                 case 2:
                     //lancio migrate
                     $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
-                    $responseMigration =  $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
+                    $responseMigration = $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
 
-            
+
                     if (!$responseMigration['success']) {
                         $type = 'database';
                         $this->setErrors($type);
@@ -1141,11 +1151,11 @@ class InstallAdm extends Model
 
             case 2:
                 $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
-                $responseMigration = $migrator->executeCommand('migrate',['debug' => $params['debug']]);
+                $responseMigration = $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
 
                 //controllo che le tabelle siano effettivamente presenti
                 $success = static::checkDbInstallation();
-        
+
                 if (!$success || !$responseMigration['success']) {
                     $type = 'database';
                     $this->setErrors($type);
@@ -1154,7 +1164,7 @@ class InstallAdm extends Model
                     $messages[] = _MIGRATION_COMPLETED;
                 }
 
-    
+
                 break;
             case 3:
 
@@ -1226,7 +1236,8 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    public function migrateByCli($debug = false, $testLine = '')
+    public
+    function migrateByCli($debug = false, $testLine = '')
     {
         $migrationFile = dirname(__DIR__, 2) . '/bin/doctrine-migrations';
         $mainPath = dirname(__DIR__, 2);
@@ -1238,8 +1249,8 @@ class InstallAdm extends Model
 
         //DO NOT UNCOOMENT - it could give error in environment without shell_exec enabled
         # return shell_exec("php " . $migrationFile . " migrate ". $testLine ." --no-interaction --configuration=" . $mainPath . "/migrations.yaml --db-configuration=" . $mainPath . "/migrations-db.php ".$debugString); //2>&1
- 
-        return true;    
+
+        return true;
     }
 
     /**
@@ -1248,7 +1259,8 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    public static function checkDbInstallation(): bool
+    public
+    static function checkDbInstallation(): bool
     {
         \FormaLms\db\DbConn::getInstance();
 
@@ -1264,7 +1276,8 @@ class InstallAdm extends Model
      *
      * @return self
      */
-    public function setResponse($success = false, $messages = [], $type = 'default'): self
+    public
+    function setResponse($success = false, $messages = [], $type = 'default'): self
     {
         $this->response['success'] = $success;
         $this->response['messages'] = $messages;
@@ -1280,7 +1293,8 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    public function getErrorMessages($request): array
+    public
+    function getErrorMessages($request): array
     {
         $params = $request->request->all();
         $messages = [];
@@ -1300,7 +1314,8 @@ class InstallAdm extends Model
      * @return string
      */
 
-    public function wrapResponse()
+    public
+    function wrapResponse()
     {
         return FormaLms\lib\Serializer\FormaSerializer::getInstance()->serialize($this->response, 'json');
     }
@@ -1312,7 +1327,8 @@ class InstallAdm extends Model
      * @return void
      */
 
-    private function saveConfig()
+    private
+    function saveConfig()
     {
         // ----------- Generating config file -----------------------------
         $config = '';
@@ -1338,17 +1354,18 @@ class InstallAdm extends Model
         $this->session->save();
     }
 
-     /**
+    /**
      * Method to save tmp configuration file
      *
      * @return void
      */
 
-    public function saveTmpConfig()
+    public
+    function saveTmpConfig()
     {
         $config = $this->generateConfig();
 
-        $tempConfig = sys_get_temp_dir(). '/config.php';
+        $tempConfig = sys_get_temp_dir() . '/config.php';
         touch($tempConfig);
         if (is_writable($tempConfig)) {
             $handle = fopen($tempConfig, 'wb');
@@ -1366,9 +1383,10 @@ class InstallAdm extends Model
      * @return void
      */
 
-    public function deleteTmpConfig()
+    public
+    function deleteTmpConfig()
     {
-        @unlink(sys_get_temp_dir(). '/config.php');
+        @unlink(sys_get_temp_dir() . '/config.php');
     }
 
     /**
@@ -1377,7 +1395,8 @@ class InstallAdm extends Model
      *
      * @return string
      */
-    private function generateConfig()
+    private
+    function generateConfig()
     {
         $tpl_fn = _base_ . '/config_template.php';
         $values = $this->session->get('setValues');
@@ -1428,7 +1447,8 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private function registerAdminUser()
+    private
+    function registerAdminUser()
     {
         // ----------- Registering admin user ---------------------------------
 
@@ -1485,7 +1505,8 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private function storeSettings()
+    private
+    function storeSettings()
     {
 
         $values = $this->session->get('setValues');
@@ -1519,7 +1540,8 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private function addInstallerRoles()
+    private
+    function addInstallerRoles()
     {
         require_once _lib_ . '/System/lib.role.php';
 
@@ -1543,7 +1565,8 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    private function importLangs($langs = []): array
+    private
+    function importLangs($langs = []): array
     {
         $langAdm = new LangAdm();
         $langsToInstall = count($langs) ? $langs : $this->session->get('setLangs');
@@ -1570,13 +1593,13 @@ class InstallAdm extends Model
      *
      * @return array
      */
-    private function getInstalledLanguages(): array
+    private
+    function getInstalledLanguages(): array
     {
         $langAdm = new LangAdm();
 
         return $langAdm->getLangCodeList();
     }
-
 
 
     /**
@@ -1585,7 +1608,8 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private function saveSmtpToDatabase()
+    private
+    function saveSmtpToDatabase()
     {
         $result = true;
 
@@ -1630,7 +1654,8 @@ class InstallAdm extends Model
      *
      * @return self
      */
-    public function saveFields($request)
+    public
+    function saveFields($request)
     {
         $params = $request->request->all();
 
@@ -1648,25 +1673,23 @@ class InstallAdm extends Model
     }
 
 
-
-
-
     /**
      * Method to install migration table if database already ecists
      *
      *
      * @return boolean
      */
-    public function installMigrationsTable()
+    public
+    function installMigrationsTable()
     {
 
         $migrationSettings = FormaLms\lib\Database\FormaMigrator::getInstance()->getMigrationTableSettings();
         $connection = \FormaLms\db\DbConn::getInstance();
         $createQuery = "CREATE TABLE IF NOT EXISTS " . $migrationSettings->getTableName() . "  ("
-            . $migrationSettings->getVersionColumnName() ." varchar(" . $migrationSettings->getVersionColumnLength() .") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,"
+            . $migrationSettings->getVersionColumnName() . " varchar(" . $migrationSettings->getVersionColumnLength() . ") CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,"
             . $migrationSettings->getExecutedAtColumnName() . " datetime(0) NULL DEFAULT NULL,"
             . $migrationSettings->getExecutionTimeColumnName() . " int(11) NULL DEFAULT NULL,
-            PRIMARY KEY (" . $migrationSettings->getVersionColumnName() .") USING BTREE
+            PRIMARY KEY (" . $migrationSettings->getVersionColumnName() . ") USING BTREE
           ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic";
 
         $creationTable = sql_query($createQuery);
@@ -1686,7 +1709,8 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private function saveUpgradeVersion()
+    private
+    function saveUpgradeVersion()
     {
         $qtxt = "UPDATE core_setting SET param_value='" . \FormaLms\lib\Version\VersionChecker::getFileVersion() . "' WHERE param_name='core_version'";
         return sql_query($qtxt);
@@ -1698,7 +1722,8 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private function setDefaultTemplate()
+    private
+    function setDefaultTemplate()
     {
         $qtxt = "UPDATE core_setting SET param_value='standard' WHERE param_name='defaultTemplate'";
         return sql_query($qtxt);
@@ -1711,7 +1736,8 @@ class InstallAdm extends Model
      *
      * @return boolean
      */
-    private function cleanSession()
+    private
+    function cleanSession()
     {
         $this->session->set('setValues', []);
         $this->session->set('setLangs', []);
@@ -1722,13 +1748,14 @@ class InstallAdm extends Model
         return true;
     }
 
-     /**
+    /**
      * Method to generate lock file
      *
      * @return bool
      */
 
-    public function generateLock()
+    public
+    function generateLock()
     {
         $response = false;
         // ----------- Generating lock file -----------------------------
@@ -1742,15 +1769,15 @@ class InstallAdm extends Model
     }
 
 
-
-   /**
+    /**
      * Method to download config file
      *
      * @return void
      */
-    public function downlodConfigFile()
+    public
+    function downlodConfigFile()
     {
-        $tmpName = sys_get_temp_dir(). '/config.php';
+        $tmpName = sys_get_temp_dir() . '/config.php';
 
 
         header('Content-Description: File Transfer');
@@ -1770,12 +1797,13 @@ class InstallAdm extends Model
         //unlink($tmpName);
     }
 
-      /**
+    /**
      * Method to download lock file
      *
      * @return void
      */
-    public function downloadLockFile()
+    public
+    function downloadLockFile()
     {
         header('Content-Description: File Transfer');
         header('Content-Type: text/plain');
@@ -1798,7 +1826,8 @@ class InstallAdm extends Model
      *
      * @return bool
      */
-    private function handleErrors(): bool
+    private
+    function handleErrors(): bool
     {
         $errors = $this->session->get('installErrors') ?? [];
         $result = true;
@@ -1821,18 +1850,19 @@ class InstallAdm extends Model
      *
      * @return self
      */
-    public function testMigrate($params = [], $save = false)
+    public
+    function testMigrate($params = [], $save = false)
     {
         if ($save) {
             $this->saveTmpConfig();
         }
 
         $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
-        if (array_key_exists('upgrade', $params) && (int) $params['upgrade']) {
+        if (array_key_exists('upgrade', $params) && (int)$params['upgrade']) {
             $this->installMigrationsTable();
         }
 
-        $resultMigration = $migrator->executeCommand('migrate', ['debug' => (bool) array_key_exists('debug', $params), 'test' => true]);
+        $resultMigration = $migrator->executeCommand('migrate', ['debug' => (bool)array_key_exists('debug', $params), 'test' => true]);
         $messages[] = 'CHECK: ' . $resultMigration['message'];
         return $this->setResponse(true, $messages)->wrapResponse();
     }

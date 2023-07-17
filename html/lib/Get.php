@@ -226,7 +226,7 @@ class Get
 
         $platform = 'framework';
 
-        if (array_key_exists($sett_name, $GLOBALS[$platform]) ?? []) {
+        if (array_key_exists($sett_name, $GLOBALS[$platform] ?? []) ) {
             $result = $GLOBALS[$platform][$sett_name];
         } else {
             $notLoadedParams = static::_loadOption($GLOBALS[$platform] ?? []);
