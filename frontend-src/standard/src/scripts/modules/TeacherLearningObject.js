@@ -19,10 +19,11 @@ class TeacherLearningObject extends LearningObject {
 
             _this.folderViewInstance = new FolderView(baseUrl, controller.controller, controller.selector, null, folderTreeInstance);
             new CreateItem(baseUrl, controller.selector);
-            // Event on fv-is-scormorg
+            
             if (controller.scormPlayerEnabled) {
+                // Event on fv-is-scormorg and fv-is-xAPI
                 this.folderViewInstance.filterDBClickEvents.push((el) => {
-                    if (el.querySelector('.fv-is-scormorg')) {
+                    if (el.querySelector('.fv-is-scormorg') || el.querySelector('.fv-is-xAPI')) {
                         let src = el.querySelector('.fv-is-play').getAttribute('href');
                         this.scormLightbox(src, el.querySelector('.folderView__label').innerHTML, controller.selector);
                         return false;
@@ -33,7 +34,7 @@ class TeacherLearningObject extends LearningObject {
 
                 // Event on fv-is-play
                 this.folderViewInstance.addEvent('fv-is-play', (e, el) => {
-                    if (el.parentNode.parentNode.querySelector('.fv-is-scormorg')) {
+                    if (el.parentNode.parentNode.querySelector('.fv-is-scormorg') || el.parentNode.parentNode.querySelector('.fv-is-xAPI')) {
                         e.preventDefault();
                         let src = el.getAttribute('href');
                         this.scormLightbox(src, el.parentElement.parentElement.querySelector('.folderView__label').innerHTML, controller.selector);
