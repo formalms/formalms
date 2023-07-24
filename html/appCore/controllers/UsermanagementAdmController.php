@@ -69,13 +69,17 @@ class UsermanagementAdmController extends AdmController
 
     protected function _setSessionValue($index, $value)
     {
-        $this->session->set($this->sessionPrefix . '_' . $index, $value);
+        $this->session->set($this->sessionPrefix . '_' . $index, (int) $value);
+        $this->session->save();
+     //   dd($this->_getSessionValue('selected_node'), $index, $value);
+       
     }
 
     protected function _getSessionValue($index, $default = false)
     {
         if (!$this->session->has($this->sessionPrefix . '_' . $index)) {
-            $this->session->set($this->sessionPrefix . '_' . $index, $default);
+            $this->session->set($this->sessionPrefix . '_' . $index, (int) $default);
+            $this->session->save();
         }
 
         return $this->session->get($this->sessionPrefix . '_' . $index);
@@ -229,6 +233,8 @@ class UsermanagementAdmController extends AdmController
 
     public function gettabledata()
     {
+
+
         //check permissions
         if (!$this->permissions['view_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];
@@ -254,6 +260,11 @@ class UsermanagementAdmController extends AdmController
         $rowsPerPage = FormaLms\lib\Get::req('rowsPerPage', DOTY_INT, $results);
         $sort = FormaLms\lib\Get::req('sort', DOTY_STRING, '');
         $dir = FormaLms\lib\Get::req('dir', DOTY_STRING, 'asc');
+
+        if(FormaLms\lib\Get::req('select_node', DOTY_INT, 0)) {
+           $this->_setSessionValue('selected_node', $idOrg); 
+        }
+        
 
         $var_fields = FormaLms\lib\Get::req('_dyn_field', DOTY_MIXED, []);
         if (stristr($sort, '_dyn_field_') !== false) {
@@ -420,13 +431,13 @@ class UsermanagementAdmController extends AdmController
 
         $arr_idst = false;
 
-        if ($this->session->has('usermanagement_selected_node') && $this->session->get('usermanagement_selected_node') != 0 && !$is_editing) {
+        if ($this->_issetSessionValue('selected_node') && $this->_getSessionValue('selected_node') != 0 && !$is_editing) {
             $arr_idst = [];
-            $tmp = $acl_man->getGroup(false, '/oc_' . $this->session->get('usermanagement_selected_node'));
+            $tmp = $acl_man->getGroup(false, '/oc_' . $this->_getSessionValue('selected_node'));
             $arr_idst[] = $tmp[0];
-            $tmp = $acl_man->getGroup(false, '/ocd_' . $this->session->get('usermanagement_selected_node'));
+            $tmp = $acl_man->getGroup(false, '/ocd_' . $this->_getSessionValue('selected_node'));
             $arr_idst[] = $tmp[0];
-            $acl = &Docebo::user()->getACL();
+            $acl = Docebo::user()->getACL();
             $arr_idst = $acl->getArrSTGroupsST($arr_idst);
         }
 
@@ -459,6 +470,8 @@ class UsermanagementAdmController extends AdmController
 
     public function create()
     {
+
+       // dd($this->_getSessionValue('selected_node'));
         //check permissions
         if (!$this->permissions['add_user']) {
             $output = ['success' => false, 'message' => $this->_getErrorMessage('no permission')];

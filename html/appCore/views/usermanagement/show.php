@@ -214,7 +214,7 @@ $dyn_labels = [];
     //render table
     $this->widget('table', [
     'id' => 'usertable',
-    'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettabledata',
+    'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettabledata&select_node=1',
     'sort' => 'userid',
     'columns' => $columns_arr,
     'fields' => $arr_fields,
