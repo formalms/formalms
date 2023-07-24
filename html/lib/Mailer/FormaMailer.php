@@ -360,7 +360,7 @@ class FormaMailer extends PHPMailer
 
         // if(FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '' && filter_var(FormaLms\lib\Get::sett('send_cc_for_system_emails'), FILTER_VALIDATE_EMAIL) !== false){
         if (\FormaLms\lib\Get::sett('send_cc_for_system_emails', '') !== '') {
-            $arr_cc_for_system_emails = explode(' ', \FormaLms\lib\Get::sett('send_cc_for_system_emails'));
+            $arr_cc_for_system_emails = $this->getEmailListFromString(\FormaLms\lib\Get::sett('send_cc_for_system_emails'));
             foreach ($arr_cc_for_system_emails as $user_cc_for_system_emails) {
                 try {
                     $this->addCC($user_cc_for_system_emails);
@@ -370,7 +370,7 @@ class FormaMailer extends PHPMailer
         }
 
         if (\FormaLms\lib\Get::sett('send_ccn_for_system_emails', '') !== '') {
-            $arr_ccn_for_system_emails = explode(' ',\FormaLms\lib\Get::sett('send_ccn_for_system_emails'));
+            $arr_ccn_for_system_emails = $this->getEmailListFromString(\FormaLms\lib\Get::sett('send_ccn_for_system_emails'));
             foreach ($arr_ccn_for_system_emails as $user_ccn_for_system_emails) {
                 try {
                     $this->addBCC($user_ccn_for_system_emails);
@@ -436,5 +436,20 @@ class FormaMailer extends PHPMailer
         $body = \Lang::t('_TESTMAIL_BODY', 'mailconfig');
         return $this->SendMail($recipients, $subject, $body, $sender);
 
+    }
+
+    
+    private function getEmailListFromString($emails)
+    {
+        $delimiters = [' ', ',', '|'];
+
+        $emails = str_replace($delimiters, $delimiters[0], $emails); // 'foo. bar. baz.'
+
+        $emailsArray = explode($delimiters[0], $emails);
+        if (is_array($emailsArray) && count($emailsArray) > 1) {
+            return $emailsArray;
+        }
+
+        return $emailsArray ?: [];
     }
 }
