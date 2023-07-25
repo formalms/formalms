@@ -69,13 +69,15 @@ class UsermanagementAdmController extends AdmController
 
     protected function _setSessionValue($index, $value)
     {
-        $this->session->set($this->sessionPrefix . '_' . $index, $value);
+        $this->session->set($this->sessionPrefix . '_' . $index, (int) $value);
+        $this->session->save();
     }
 
     protected function _getSessionValue($index, $default = false)
     {
         if (!$this->session->has($this->sessionPrefix . '_' . $index)) {
-            $this->session->set($this->sessionPrefix . '_' . $index, $default);
+            $this->session->set($this->sessionPrefix . '_' . $index, (int) $default);
+            $this->session->save();
         }
 
         return $this->session->get($this->sessionPrefix . '_' . $index);
@@ -261,6 +263,10 @@ class UsermanagementAdmController extends AdmController
             $sort = $var_fields[(int) $index];
         }
 
+        if(FormaLms\lib\Get::req('select_node', DOTY_INT, 0)) {
+            $this->_setSessionValue('selected_node', $idOrg); 
+         }
+
         $filter_text = FormaLms\lib\Get::req('filter_text', DOTY_STRING, '');
 
         $searchFilter = [
@@ -420,7 +426,7 @@ class UsermanagementAdmController extends AdmController
 
         $arr_idst = false;
 
-        if ($this->session->has('usermanagement_selected_node') && $this->session->get('usermanagement_selected_node') != 0 && !$is_editing) {
+        if ($this->_issetSessionValue('selected_node') && $this->_getSessionValue('selected_node') != 0 && !$is_editing) {
             $arr_idst = [];
             $tmp = $acl_man->getGroup(false, '/oc_' . $this->session->get('usermanagement_selected_node'));
             $arr_idst[] = $tmp[0];
