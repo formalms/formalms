@@ -22,6 +22,7 @@ final class Version20221012000004 extends AbstractMigration
     {
 
         $this->addSql('SET FOREIGN_KEY_CHECKS=0');
+        $this->addSql("SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO'");
 
         $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta`');
         $this->addSql('DROP TABLE IF EXISTS `learning_certiticate_meta_assign`');

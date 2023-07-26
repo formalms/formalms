@@ -267,5 +267,10 @@ class FormaMigrator
         return $this->configFile->getConfiguration()->getMetaDataStorageConfiguration();
     }
 
+    public function getConnection() {
+
+        return $this->connection;
+    }
+
 }
 

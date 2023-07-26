@@ -20,6 +20,9 @@ final class Version20230518000005 extends AbstractMigration
     public function up(Schema $schema): void
     {
 
+        $this->addSql('SET FOREIGN_KEY_CHECKS=0');
+        $this->addSql("SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO'");
+
         $this->addSql('DROP TABLE IF EXISTS `core_db_upgrades`');
 
         $this->addSql('UPDATE `core_event_consumer` SET `consumer_class`= "FormaSettingNotifier" WHERE `idConsumer` = 5');
@@ -27,6 +30,7 @@ final class Version20230518000005 extends AbstractMigration
         $this->addSql('UPDATE `core_event_consumer` SET `consumer_class`= "FormaCourseNotifier" WHERE `idConsumer` = 2');
         $this->addSql('UPDATE `core_event_consumer` SET `consumer_class`= "FormaUserNotifier" WHERE `idConsumer` = 1');
 
+        $this->addSql('SET FOREIGN_KEY_CHECKS=1');
     }
 
     public function down(Schema $schema): void

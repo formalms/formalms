@@ -172,18 +172,27 @@ class VersionChecker
     {
 
         $sqlServerVersion = [];
-        $check = sql_get_server_info();
+        $check = strtolower(sql_get_server_info());
 
         if ($external) {
-            $check = $external;
+            $check = strtolower($external);
         }
-
         try {
 
-            preg_match('/([0-9]+\.[\.0-9]+)/', $check, $sqlServerVersion);
+            //check if mariadb is involved
+            if(preg_match('/mariadb/', $check)) {
+                $tmpArray = [];
+                preg_match('/([\.0-99]+-mariadb)/', $check, $tmpArray);
+                $tmpVersions = explode('-', $tmpArray[0]);
+                $sqlServerVersion = array_reverse($tmpVersions);
+            } else {
+                 preg_match('/([0-9]+\.[\.0-9]+)/', $check, $sqlServerVersion);
+            }
+
         } catch (\Exception $exception) {
             $sqlServerVersion = [];
         }
+
 
         return $sqlServerVersion;
 
