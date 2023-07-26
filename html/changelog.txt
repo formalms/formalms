@@ -1,6 +1,13 @@
 FORMA LMS
 RELEASE CHANGELOG
 
+---------------------------------------------------------------------------------------
+forma.lms 3.3.11
+---------------------------------------------------------------------------------------
+Release date: 2023 july
+
+- #      - add fallback to ',' '|' and space separator fo CC and CCN in mailer
+- #      - fix session in select node usermanagement
 
 ---------------------------------------------------------------------------------------
 forma.lms 3.3.10
