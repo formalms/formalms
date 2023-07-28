@@ -1328,7 +1328,7 @@ class DateManager
                 $query = 'SELECT SUM(presence) AS sum_presence, COUNT(*) AS tot_day'
                     . ' FROM %lms_course_date_presence WHERE id_date = ' . (int) $date_info['id_date']
                     . ' AND id_user = ' . (int) $id_user
-                . ' AND day != "0000-00-00"'
+                . ' AND day IS NOT NULL'
                 . ' GROUP BY id_date, id_user';
                 $re = sql_query($query);
 

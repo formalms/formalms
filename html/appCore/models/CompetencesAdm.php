@@ -1247,7 +1247,7 @@ class CompetencesAdm extends Model implements Accessible
         if (property_exists($params, 'score_got')) {
             $set .= 'score_got=' . $params->score_got;
         }
-        //if (property_exists($params, 'expire_date')) $set .= "expire_date=".($user->expire_date != "" ? $user->expire_date : "0000-00-00 00:00:00");
+  
         if ($set == '') {
             return true;
         }

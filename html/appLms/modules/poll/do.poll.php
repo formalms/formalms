@@ -325,7 +325,7 @@ function writePollReport($id_poll, $id_param, $back_url, $mvc = false)
             if ($einfo->name != '') {
                 $_label .= $einfo->neme;
             }
-            if (($einfo->date_begin != '' || $einfo->date_begin != '0000-00-00') && ($einfo->date_end != '' || $einfo->date_end != '0000-00-00')) {
+            if (($einfo->date_begin != '' || $einfo->date_begin) && ($einfo->date_end != '' || $einfo->date_end)) {
                 $_label .= ' (' . Format::date($einfo->date_begin, 'date')
                     . ' - ' . Format::date($einfo->date_end, 'date') . ')';
             }

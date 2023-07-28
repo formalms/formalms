@@ -1626,12 +1626,12 @@ class Org_TreeView extends RepoTreeView
                             }
                         } else {
                             if (!$isFolder) {
-                                if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM] != '0000-00-00 00:00:00') {
+                                if ($arrData[ORGFIELD_PUBLISHFROM] != '' && $arrData[ORGFIELD_PUBLISHFROM]) {
                                     if ($arrData[ORGFIELD_PUBLISHFROM] > date('Y-m-d H:i:s')) {
                                         return false;
                                     }
                                 }
-                                if ($arrData[ORGFIELD_PUBLISHTO] != '' && $arrData[ORGFIELD_PUBLISHTO] != '0000-00-00 00:00:00') {
+                                if ($arrData[ORGFIELD_PUBLISHTO] != '' && $arrData[ORGFIELD_PUBLISHTO]) {
                                     if ($arrData[ORGFIELD_PUBLISHTO] < date('Y-m-d H:i:s')) {
                                         return false;
                                     }
@@ -1892,7 +1892,7 @@ class Org_TreeView extends RepoTreeView
 
             $orgFieldPublishFrom = $folder->otherValues[ORGFIELD_PUBLISHFROM] ?? null;
 
-            if (($orgFieldPublishFrom != '' && $orgFieldPublishFrom != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
+            if (($orgFieldPublishFrom != '' && $orgFieldPublishFrom) && ($levelCourse <= 3)) {
                 if ($orgFieldPublishFrom > date('Y-m-d H:i:s')) {
                     continue;
                 }
@@ -1900,7 +1900,7 @@ class Org_TreeView extends RepoTreeView
 
             $orgFieldPublishTo = $folder->otherValues[ORGFIELD_PUBLISHTO] ?? null;
 
-            if (($orgFieldPublishTo != '' && $orgFieldPublishTo != '0000-00-00 00:00:00') && ($levelCourse <= 3)) {
+            if (($orgFieldPublishTo != '' && $orgFieldPublishTo) && ($levelCourse <= 3)) {
                 if ($orgFieldPublishTo < date('Y-m-d H:i:s')) {
                     continue;
                 }
