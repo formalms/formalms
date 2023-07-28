@@ -61,9 +61,9 @@ class LearningCommontrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="firstAttempt", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="firstAttempt", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $firstattempt = '0000-00-00 00:00:00';
+    private $firstattempt = null;
 
     /**
      * @var \DateTime|null
@@ -82,9 +82,9 @@ class LearningCommontrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateAttempt", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="dateAttempt", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateattempt = '0000-00-00 00:00:00';
+    private $dateattempt = null;
 
     /**
      * @var string

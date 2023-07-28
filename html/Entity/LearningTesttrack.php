@@ -47,9 +47,9 @@ class LearningTesttrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_attempt", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_attempt", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateAttempt = '0000-00-00 00:00:00';
+    private $dateAttempt = null;
 
     /**
      * @var \DateTime|null
@@ -61,9 +61,9 @@ class LearningTesttrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end_attempt", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_end_attempt", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateEndAttempt = '0000-00-00 00:00:00';
+    private $dateEndAttempt = null;
 
     /**
      * @var int

@@ -96,9 +96,9 @@ class CoreDeletedUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="lastenter", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="lastenter", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $lastenter = '0000-00-00 00:00:00';
+    private $lastenter = null;
 
     /**
      * @var bool
@@ -110,23 +110,23 @@ class CoreDeletedUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pwd_expire_at", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="pwd_expire_at", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $pwdExpireAt = '0000-00-00 00:00:00';
+    private $pwdExpireAt = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="register_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="register_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $registerDate = '0000-00-00 00:00:00';
+    private $registerDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="deletion_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="deletion_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $deletionDate = '0000-00-00 00:00:00';
+    private $deletionDate = null;
 
     /**
      * @var int

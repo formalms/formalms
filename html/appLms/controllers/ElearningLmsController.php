@@ -324,7 +324,7 @@ class ElearningLmsController extends LmsController
         }
 
         $date_ok = true;
-        if ($cinfo['unsubscribe_date_limit'] !== '' && $cinfo['unsubscribe_date_limit'] !== '0000-00-00 00:00:00' && $cinfo['unsubscribe_date_limit'] !== null) {
+        if ($cinfo['unsubscribe_date_limit'] !== '' && $cinfo['unsubscribe_date_limit'] && $cinfo['unsubscribe_date_limit'] !== null) {
             if ($cinfo['unsubscribe_date_limit'] < date('Y-m-d H:i:s')) {
                 //self unsubscribing is no more allowed, go back to courselist page
                 Util::jump_to($jump_url . '&res=err_unsub');

@@ -40,16 +40,16 @@ class LearningTimePeriod
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_date", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="start_date", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $startDate = '0000-00-00';
+    private $startDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end_date", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="end_date", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $endDate = '0000-00-00';
+    private $endDate = null;
 
 
 }

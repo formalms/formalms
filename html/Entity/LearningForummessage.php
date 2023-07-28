@@ -61,9 +61,9 @@ class LearningForummessage
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="posted", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $posted = '0000-00-00 00:00:00';
+    private $posted = null;
 
     /**
      * @var int
@@ -103,9 +103,9 @@ class LearningForummessage
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="modified_by_on", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="modified_by_on", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $modifiedByOn = '0000-00-00 00:00:00';
+    private $modifiedByOn = null;
 
 
 }

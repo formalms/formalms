@@ -96,9 +96,9 @@ class CoreUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pwd_expire_at", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="pwd_expire_at", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $pwdExpireAt = '0000-00-00 00:00:00';
+    private $pwdExpireAt = null;
 
     /**
      * @var bool
@@ -117,9 +117,9 @@ class CoreUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="register_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="register_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $registerDate = '0000-00-00 00:00:00';
+    private $registerDate = null;
 
     /**
      * @var string|null

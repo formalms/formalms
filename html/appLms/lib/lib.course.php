@@ -963,7 +963,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
 
             if ($response['can']) {
-                if (!empty($userCourse['dateBeginValidity']) && ($userCourse['dateBeginValidity'] !== '0000-00-00 00:00:00') && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateBeginValidity']) <= 0)) {
+                if (!empty($userCourse['dateBeginValidity']) && ($userCourse['dateBeginValidity']) && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateBeginValidity']) <= 0)) {
                     $response['can'] = false;
 
                     $response['reason'] = 'subscription_not_started';
@@ -971,7 +971,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
 
             if ($response['can']) {
-                if (!empty($userCourse['dateExpireValidity']) && ($userCourse['dateExpireValidity'] !== '0000-00-00 00:00:00') && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateExpireValidity']) >= 0)) {
+                if (!empty($userCourse['dateExpireValidity']) && ($userCourse['dateExpireValidity']) && (strcmp(date('Y-m-d H:i:s'), $userCourse['dateExpireValidity']) >= 0)) {
                     $response['can'] = false;
 
                     $response['reason'] = 'subscription_expired';
@@ -996,7 +996,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
 
             if ($response['can']) {
                 // control if the course is elapsed
-                if ($course['date_begin'] !== '0000-00-00') {
+                if ($course['date_begin']) {
                     try {
                         $date = new DateTime($course['date_begin']);
                         $timeStart = $date->format('U');
@@ -1016,7 +1016,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
             }
 
             if ($response['can']) {
-                if ($course['date_end'] !== '0000-00-00') {
+                if ($course['date_end']) {
                     try {
                         $date = new DateTime($course['date_end']);
                         $timeEnd = $date->format('U');
@@ -1097,7 +1097,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                 case ADMIN_GROUP_ADMIN:
                 case ADMIN_GROUP_USER:
                 default:
-                    if (($course['sub_start_date'] !== '0000-00-00') && !empty($course['sub_start_date'])) {
+                    if (($course['sub_start_date']) && !empty($course['sub_start_date'])) {
                         try {
                             $date = new DateTime($course['sub_start_date']);
                             $expireTime = $date->format('U') - $now;
@@ -1109,7 +1109,7 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                         }
                     }
 
-                    if (empty($response) && ($course['sub_end_date'] !== '0000-00-00') && !empty($course['sub_end_date'])) {
+                    if (empty($response) && ($course['sub_end_date']) && !empty($course['sub_end_date'])) {
                         try {
                             $date = new DateTime($course['sub_end_date']);
                             $expireTime = $date->format('U') - $now;
@@ -1334,13 +1334,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     $temp = '';
                     switch ($filter['c_expire']['value']) {
                         case 1:
-                            $temp .= " AND c.date_end = '0000-00-00' ";
+                            $temp .= " AND c.date_end IS NULL ";
                             break;
                         case 2:
                             $temp .= " AND c.date_end >= '" . date('Y-m-d') . "' ";
                             break;
                         case 3:
-                            $temp .= " AND c.date_end <= '" . date('Y-m-d') . "' AND c.date_end <> '0000-00-00' ";
+                            $temp .= " AND c.date_end <= '" . date('Y-m-d') . "' AND c.date_end IS NOT NULL ";
                             break;
                     }
                     $filter_conds .= $temp;
@@ -1469,13 +1469,13 @@ VALUES ('" . $idCourse . "', '" . $id_module . "', '" . $id_main . "', '" . $i++
                     $temp = '';
                     switch ($filter['c_expire']['value']) {
                         case 1:
-                            $temp .= " AND c.date_end = '0000-00-00' ";
+                            $temp .= " AND c.date_end IS NULL ";
                             break;
                         case 2:
                             $temp .= " AND UNIX_TIMESTAMP(c.date_end) >= '" . time() . "' ";
                             break;
                         case 3:
-                            $temp .= " AND UNIX_TIMESTAMP(c.date_end) <= '" . time() . "' AND c.date_end <> '0000-00-00' ";
+                            $temp .= " AND UNIX_TIMESTAMP(c.date_end) <= '" . time() . "' AND c.date_end IS NOT NULL ";
                             break;
                     }
                     $filter_conds .= $temp;
@@ -2110,7 +2110,7 @@ class Man_CourseUser
             " WHERE autoregistration_code = '" . $code . "'"
             . " AND autoregistration_code <> ''"
             . " AND (                       
-                            (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+                            (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                             (can_subscribe=1)
                          ) ";
 

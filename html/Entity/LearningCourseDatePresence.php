@@ -26,11 +26,11 @@ class LearningCourseDatePresence
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="day", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="day", type="date", nullable=true, options={"default"="NULL"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $day = '0000-00-00';
+    private $day = null;
 
     /**
      * @var int

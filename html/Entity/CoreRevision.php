@@ -70,9 +70,9 @@ class CoreRevision
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="rev_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="rev_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $revDate = '0000-00-00 00:00:00';
+    private $revDate = null;
 
     /**
      * @var string

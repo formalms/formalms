@@ -50,9 +50,9 @@ class CoreRestAuthentication
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="generation_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="generation_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $generationDate = '0000-00-00 00:00:00';
+    private $generationDate = null;
 
     /**
      * @var \DateTime|null
@@ -64,9 +64,9 @@ class CoreRestAuthentication
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expiry_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="expiry_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $expiryDate = '0000-00-00 00:00:00';
+    private $expiryDate = null;
 
 
 }

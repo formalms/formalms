@@ -47,9 +47,9 @@ class LearningTracksession
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="enterTime", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="enterTime", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $entertime = '0000-00-00 00:00:00';
+    private $entertime = null;
 
     /**
      * @var int
@@ -75,9 +75,9 @@ class LearningTracksession
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="lastTime", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="lastTime", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $lasttime = '0000-00-00 00:00:00';
+    private $lasttime = null;
 
     /**
      * @var string

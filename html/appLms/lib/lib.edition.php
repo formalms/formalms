@@ -341,8 +341,7 @@ class EditionManager
 
                 /*
                 if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                    $query .= " AND (s.date_begin_validity <= '".$filter['date_valid']."' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                    $query .= " AND (s.date_expire_validity >= '".$filter['date_valid']."' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                
                 }
                 */
             }
@@ -428,8 +427,8 @@ class EditionManager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -455,7 +454,7 @@ class EditionManager
 
                     case 3:
                         //not expired without expiring date
-                        $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='' OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='') ";
 
                         break;
 
@@ -554,8 +553,8 @@ class EditionManager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -581,7 +580,7 @@ class EditionManager
 
                     case 3:
                         //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='')";
 
                         break;
 
@@ -631,8 +630,8 @@ class EditionManager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -658,7 +657,7 @@ class EditionManager
 
                     case 3:
                         //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='')";
 
                         break;
 
@@ -789,7 +788,7 @@ class EditionManager
         $query = 'SELECT id_edition'
             . ' FROM ' . $this->edition_table
             . ' WHERE ('
-            . " date_begin = '0000-00-00'"
+            . " date_begin IS NULL"
             . " OR date_begin > '" . date('Y-m-d') . "')"
             . (count($user_edition) > 0 ? ' AND id_edition NOT IN (' . implode(',', $user_edition) . ')' : '')
             . (count($edition_full) > 0 ? ' AND id_edition NOT IN (' . implode(',', $edition_full) . ')' : '')
@@ -811,7 +810,7 @@ class EditionManager
         $query = 'SELECT *'
             . ' FROM ' . $this->edition_table
             . ' WHERE ('
-            . " date_begin = '0000-00-00'"
+            . " date_begin IS NULL"
             . " OR date_begin > '" . date('Y-m-d') . "')"
             . ' AND id_course = ' . (int)$id_course . ' '
             . ' AND status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')';

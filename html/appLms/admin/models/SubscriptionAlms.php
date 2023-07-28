@@ -889,7 +889,6 @@ class SubscriptionAlms extends Model implements Accessible
             . ' FROM %lms_courseuser AS cu JOIN %lms_course AS c JOIN %adm_user AS u '
             . ' ON (cu.idUser = u.idst AND cu.idCourse = c.idCourse AND cu.requesting_unsubscribe = 1 '
             . ' AND (c.unsubscribe_date_limit >= NOW() OR c.unsubscribe_date_limit IS NULL '
-            . " OR c.unsubscribe_date_limit = '0000-00-00 00:00:00')) "
             . ' WHERE 1';
 
         if (isset($filter['text']) && $filter['text'] != '') {
@@ -996,7 +995,6 @@ class SubscriptionAlms extends Model implements Accessible
             if (!$all) {
                 $query .= "AND (
 					c.unsubscribe_date_limit >= NOW() OR c.unsubscribe_date_limit IS NULL
-					OR c.unsubscribe_date_limit = '0000-00-00 00:00:00'
 				) ";
             } else {
                 $query .= 'AND c.unsubscribe_date_limit >= NOW() ';
@@ -1080,7 +1078,7 @@ class SubscriptionAlms extends Model implements Accessible
             case 0: return false; break;
             case 1:
             case 2:
-                if ($cinfo['unsubscribe_date_limit'] != '' && $cinfo['unsubscribe_date_limit'] != '0000-00-00 00:00:00') {
+                if ($cinfo['unsubscribe_date_limit'] != '') {
                     if ($cinfo['unsubscribe_date_limit'] < date('Y-m-d H:i:s')) {
                         return false;
                     }
@@ -1340,8 +1338,8 @@ class SubscriptionAlms extends Model implements Accessible
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL) ";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL) ";
             }
 
             if (isset($filter['show'])) {
@@ -1360,7 +1358,7 @@ class SubscriptionAlms extends Model implements Accessible
                      break;
 
                     case 3:  //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
                      break;
 
                     default:
@@ -1431,8 +1429,8 @@ class SubscriptionAlms extends Model implements Accessible
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -1451,7 +1449,7 @@ class SubscriptionAlms extends Model implements Accessible
                      break;
 
                     case 3:  //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
                      break;
 
                     default:
@@ -1514,8 +1512,8 @@ class SubscriptionAlms extends Model implements Accessible
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -1534,7 +1532,7 @@ class SubscriptionAlms extends Model implements Accessible
                      break;
 
                     case 3:  //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
                      break;
 
                     default:

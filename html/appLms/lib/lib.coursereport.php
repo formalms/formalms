@@ -237,7 +237,7 @@ class CourseReportManager
         }
         $re_scores = sql_query($query_scores);
         while ($test_data = sql_fetch_assoc($re_scores)) {
-            if ($test_data['date_attempt'] == '0000-00-00 00:00:00') {
+            if (!$test_data['date_attempt']) {
                 $test_data['date_attempt'] = '';
             }
             $data[$test_data['id_report']][$test_data['id_user']] = $test_data;

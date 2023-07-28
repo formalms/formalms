@@ -147,8 +147,8 @@ class CourseSubscribe_Manager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -163,7 +163,7 @@ class CourseSubscribe_Manager
                         break;
 
                     case 3:  //not expired without expiring date
-                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire IS NULL OR s.date_expire='')";
                         break;
 
                     case 0:
@@ -226,12 +226,11 @@ class CourseSubscribe_Manager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                //$query .= " AND (s.date_begin_validity <= '".$filter['date_valid']."' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                //$query .= " AND (s.date_expire_validity >= '".$filter['date_valid']."' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+
                 $time_validity_date = strtotime($filter['date_valid']);
                 $validity_date = date('Y-m-d H:i:s', $time_validity_date);
-                $query .= " AND (s.date_begin_validity <= '" . $validity_date . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $validity_date . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $validity_date . "' OR s.date_begin_validity IS NULL) ";
+                $query .= " AND (s.date_expire_validity >= '" . $validity_date . "' OR s.date_expire_validity IS NULL) ";
             }
 
             if (isset($filter['show'])) {
@@ -250,7 +249,7 @@ class CourseSubscribe_Manager
                         break;
 
                     case 3:  //not expired without expiring date
-                        $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='' OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                        $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='') ";
                         break;
 
                     default:
@@ -363,8 +362,8 @@ class CourseSubscribe_Manager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL) ";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL) ";
             }
         }
 

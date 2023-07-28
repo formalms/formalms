@@ -539,10 +539,10 @@ if (\FormaLms\lib\FormaUser::getCurrentUser()->isAnonymous()) {
             while ($ed_info = sql_fetch_assoc($re_edition)) {
                 if ($ed_info['img_material'] != '') {
                     $html .= '<li><b>[' . $ed_info['code'] . '] ' . $ed_info['name'] . '</b><br/><p>';
-                    if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00')) {
+                    if (($ed_info['date_begin'] && $ed_info['date_end'])) {
                         $html .= $lang->def('_EDITIONS');
                     }
-                    if ($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
+                    if ($ed_info['date_begin'] && $ed_info['date_end']) {
                         $html .= ' ' . str_replace(['[date_begin]', '[date_end]'],
                                                 [Format::date($ed_info['date_begin'], 'date'),
                                                     Format::date($ed_info['date_end'], 'date'), ],

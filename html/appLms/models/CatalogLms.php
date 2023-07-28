@@ -171,8 +171,8 @@ class CatalogLms extends Model
             . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
             . " AND (                       
-						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND
-                         (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+						(can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND
+                         (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                         (can_subscribe=1)
 					) "
             . $filter
@@ -233,8 +233,8 @@ class CatalogLms extends Model
             . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
             . " AND (                       
-						(can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND
-                         (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+						(can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND
+                         (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                         (can_subscribe=1)
 					) "
             . $filter
@@ -363,7 +363,7 @@ class CatalogLms extends Model
             . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
             . " AND course_type <> 'assessment'"
             . ' AND ('
-            . " date_begin = '0000-00-00'"
+            . " date_begin IS NULL"
             . " OR date_begin > '" . date('Y-m-d') . "'"
             . ' )'
             . $filter
@@ -707,7 +707,7 @@ class CatalogLms extends Model
                        %lms_course.course_type <> 'assessment' and
                        %lms_course.status NOT IN (" . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ")
                        AND (                       
-                              (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+                              (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )";
             } else {
@@ -718,7 +718,7 @@ class CatalogLms extends Model
                        %lms_course.course_type <> 'assessment' and
                        %lms_course.status NOT IN (" . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ")
                        AND (                       
-                              (can_subscribe=2 AND (sub_end_date = '0000-00-00' OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date = '0000-00-00' OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
+                              (can_subscribe=2 AND (sub_end_date IS NULL OR sub_end_date >= '" . date('Y-m-d') . "') AND (sub_start_date IS NULL OR '" . date('Y-m-d') . "' >= sub_start_date)) OR
                               (can_subscribe=1)
                           )
                        AND idCatalogue = " . (int) $this->currentCatalogue .

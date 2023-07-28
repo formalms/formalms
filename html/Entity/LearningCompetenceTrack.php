@@ -61,9 +61,9 @@ class LearningCompetenceTrack
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_assignment", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_assignment", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateAssignment = '0000-00-00 00:00:00';
+    private $dateAssignment = null;
 
     /**
      * @var float

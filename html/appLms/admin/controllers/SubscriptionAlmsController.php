@@ -657,8 +657,8 @@ class SubscriptionAlmsController extends AlmsController
         $list = [];
         $date_complete = [];
         foreach ($array_user as $value) {
-            $is_valid_begin = $value['date_begin_validity'] && $value['date_begin_validity'] != '0000-00-00 00:00:00';
-            $is_valid_expire = $value['date_expire_validity'] && $value['date_expire_validity'] != '0000-00-00 00:00:00';
+            $is_valid_begin = $value['date_begin_validity'];
+            $is_valid_expire = $value['date_expire_validity'];
 
             $del_url = 'ajax.adm_server.php?r=' . $this->link . '/del&id_user=' . $value['id_user']
                 . '&id_course=' . $this->id_course . '&id_edition=' . $this->id_edition . '&id_date=' . $this->id_date;
@@ -2949,7 +2949,7 @@ class SubscriptionAlmsController extends AlmsController
                         }
 
                         list($date_expire) = sql_fetch_row(sql_query($query));
-                        if ($date_expire == null || $date_expire == '' || $date_expire == '0000-00-00 00:00:00' || $date_expire > $_new_date) {
+                        if ($date_expire == null || $date_expire == '' || $date_expire > $_new_date) {
                             if ($id_path > 0) {
                                 $query = "UPDATE %lms_courseuser SET date_begin_validity = '" . $_new_date . "' " . ' WHERE idCourse IN (' . implode(',', array_values($courses)) . ') AND idUser=' . (int) $id_user;
                             } else {
@@ -2982,7 +2982,7 @@ class SubscriptionAlmsController extends AlmsController
                         }
 
                         list($date_begin) = sql_fetch_row(sql_query($query));
-                        if ($date_begin == null || $date_begin == '' || $date_begin == '0000-00-00 00:00:00' || $date_begin < $_new_date) {
+                        if ($date_begin == null || $date_begin == '' || $date_begin < $_new_date) {
                             if ($id_path > 0) {
                                 $query = "UPDATE %lms_courseuser SET date_expire_validity = '" . $_new_date . "' " . ' WHERE idCourse IN (' . implode(',', array_values($courses)) . ') AND idUser=' . (int) $id_user;
                             } else {

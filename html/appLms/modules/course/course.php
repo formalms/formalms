@@ -725,7 +725,7 @@ function userCourseList(&$url, $use_tab = true, $page_add = true)
         // 10 days in the future
         $range = time() + (10 * 24 * 60 * 60);
         $expiring = false;
-        if ($cinfo['date_end'] != '0000-00-00') {
+        if ($cinfo['date_end']) {
             $time_end = fromDatetimeToTimestamp($cinfo['date_end']);
             if ($range > $time_end) {
                 $expiring = true;
@@ -1113,7 +1113,7 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
                     $lang->def('_COURSE_INTRO')
                 ) .
 
-                ($cinfo['date_begin'] != '0000-00-00' || $cinfo['date_end'] != '0000-00-00'
+                ($cinfo['date_begin'] || $cinfo['date_end']
                     ?
                         str_replace(
                             ['[date_begin]', '[date_end]'],
@@ -1168,10 +1168,10 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
         $cinfo['date_end'] = $ed_info['date_end'];
         $access = Man_Course::canEnterCourse($cinfo);
 
-        if ($ed_info['date_begin'] == '0000-00-00') {
+        if (!$ed_info['date_begin']) {
             $ed_info['date_begin'] = '';
         }
-        if ($ed_info['date_end'] == '0000-00-00') {
+        if (!$ed_info['date_end']) {
             $ed_info['date_end'] = '';
         }
 
@@ -1248,10 +1248,10 @@ function dashmycourse(&$url, $lang, &$subscription, $cinfo, $index)
             $cinfo['date_end'] = $ed_info['date_end'];
             $access = Man_Course::canEnterCourse($cinfo);
 
-            if ($ed_info['date_begin'] == '0000-00-00') {
+            if (!$ed_info['date_begin']) {
                 $ed_info['date_begin'] = '';
             }
-            if ($ed_info['date_end'] == '0000-00-00') {
+            if (!$ed_info['date_end']) {
                 $ed_info['date_end'] = '';
             }
 

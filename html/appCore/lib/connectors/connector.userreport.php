@@ -70,9 +70,9 @@ class FormaConnectorUserReport extends FormaConnector
                                 'code' => '',
                                 'course' => '',
                                 'course_status' => '',
-                                'subscribe_date' => '0000-00-00 00:00:00',
-                                'begin_date' => '0000-00-00 00:00:00',
-                                'complete_date' => '0000-00-00 00:00:00',
+                                'subscribe_date' => '1970-01-01 00:00:00',
+                                'begin_date' => '1970-01-01 00:00:00',
+                                'complete_date' => '1970-01-01 00:00:00',
                                 'user_status' => '',
                                 'score' => '', ];
     public string $last_error;

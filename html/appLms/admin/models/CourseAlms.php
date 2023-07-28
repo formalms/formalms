@@ -1782,7 +1782,7 @@ class CourseAlms extends Model
                  WHERE id_course = $id_course
                  AND cdu.id_user = $id_user
                  ORDER BY cd.id_date DESC LIMIT 1";
-        // AND cdu.date_complete <> '0000-00-00 00:00:00'
+
 
         return sql_fetch_row(sql_query($query)) ?: '';
     }

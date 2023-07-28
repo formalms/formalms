@@ -239,7 +239,7 @@ function intro($object_test, $id_param, $deleteLastTrack = false)
         $attempts_until_now = $track_info['attempts_for_suspension'];
         $last_suspension_date = $track_info['suspended_until'];
         if ($last_suspension_date == '') {
-            $last_suspension_date = '0000-00-00 00:00:00';
+            $last_suspension_date = null;
         }
         $now = date('Y-m-d H:i:s');
 

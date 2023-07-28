@@ -754,8 +754,8 @@ class Course_API extends API
             $list = [];
             foreach ($arrayUsers as $value) {
                 if (!$userFilterEnabled || in_array($value['id_user'], $idUsers)) {
-                    $is_valid_begin = $value['date_begin_validity'] && $value['date_begin_validity'] != '0000-00-00 00:00:00';
-                    $is_valid_expire = $value['date_expire_validity'] && $value['date_expire_validity'] != '0000-00-00 00:00:00';
+                    $is_valid_begin = $value['date_begin_validity'];
+                    $is_valid_expire = $value['date_expire_validity'];
 
                     $del_url = 'ajax.adm_server.php?r=' . $this->link . '/del&id_user=' . $value['id_user']
                         . '&id_course=' . $this->id_course . '&id_edition=' . $this->id_edition . '&id_date=' . $this->id_date;
@@ -1139,8 +1139,8 @@ class Course_API extends API
             $params['classroom_allow_overbooking'] ? $params['classroom_allow_overbooking'] : false,
             $params['classroom_status'] ? $params['classroom_status'] : 0,
             $params['classroom_test_type'] ? $params['classroom_test_type'] : 0,
-            $params['classroom_sub_start_date'] ? $params['classroom_sub_start_date'] : '0000-00-00 00:00:00',
-            $params['classroom_sub_end_date'] ? $params['classroom_sub_end_date'] : '0000-00-00 00:00:00',
+            $params['classroom_sub_start_date'] ? $params['classroom_sub_start_date'] : null,
+            $params['classroom_sub_end_date'] ? $params['classroom_sub_end_date'] : null,
             $params['classroom_unsubscribe_date_limit'] ? $params['classroom_unsubscribe_date_limit'] : false
         );
 
@@ -1199,9 +1199,9 @@ class Course_API extends API
         $sub_end_date = trim($date_info['sub_end_date']);
         $unsubscribe_date_limit = trim($date_info['unsubscribe_date_limit']);
 
-        $sub_start_date = (!empty($sub_start_date) ? Format::dateDb($sub_start_date, 'date') : '0000-00-00') . ' 00:00:00';
-        $sub_end_date = (!empty($sub_end_date) ? Format::dateDb($sub_end_date, 'date') : '0000-00-00') . ' 00:00:00';
-        $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '0000-00-00') . ' 00:00:00';
+        $sub_start_date = (!empty($sub_start_date) ? Format::dateDb($sub_start_date, 'date') : '1970-01-01') . ' 00:00:00';
+        $sub_end_date = (!empty($sub_end_date) ? Format::dateDb($sub_end_date, 'date') : '1970-01-01') . ' 00:00:00';
+        $unsubscribe_date_limit = (!empty($unsubscribe_date_limit) ? Format::dateDb($unsubscribe_date_limit, 'date') : '1970-01-01') . ' 00:00:00';
 
         $idDate = $date_info['id_date'];
 

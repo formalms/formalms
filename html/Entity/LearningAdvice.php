@@ -33,9 +33,9 @@ class LearningAdvice
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="posted", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="posted", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $posted = '0000-00-00 00:00:00';
+    private $posted = null;
 
     /**
      * @var int

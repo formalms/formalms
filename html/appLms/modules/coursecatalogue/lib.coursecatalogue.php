@@ -67,7 +67,7 @@ function displayCourseList(&$url, $order_type)
     $where_course = " c.status <> '" . CST_PREPARATION . "' ";
 
     if (FormaLms\lib\Get::sett('catalogue_hide_ended') == 'on') {
-        $where_course .= " AND ( c.date_end = '0000-00-00'"
+        $where_course .= " AND ( c.date_end IS NULL"
                             . " OR c.date_end > '" . date('Y-m-d') . "' ) ";
     }
 
@@ -175,7 +175,7 @@ function displayCourseList(&$url, $order_type)
     $from_edition = ' FROM %lms_course_edition AS e';
     $where_edition = " WHERE e.status <> '" . CST_PREPARATION . "' ";
 
-    $where_edition .= " AND (e.date_begin > '" . date('Y-m-d H:i:s') . "' OR e.date_begin = '0000-00-00 00:00:00')";
+    $where_edition .= " AND (e.date_begin > '" . date('Y-m-d H:i:s') . "' OR e.date_begin IS NULL')";
 
     $order_edition = ' ORDER BY date_begin ';
 
@@ -650,10 +650,10 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
 
             $html .= '<li><b class="course_title">[' . $ed_info['code'] . '] ' . $ed_info['name'] . '</b><p>';
 
-            if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+            if (($ed_info['date_begin'] && $ed_info['date_end']) || $ed_info['classrooms'] != '') {
                 $html .= $lang->def('_EDITIONS');
             }
-            if ($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
+            if ($ed_info['date_begin'] && $ed_info['date_end']) {
                 $html .= ' ' . str_replace(['[date_begin]', '[date_end]'],
                                         [Format::date($ed_info['date_begin'], 'date'),
                                             Format::date($ed_info['date_end'], 'date'), ],
@@ -664,7 +664,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                                             [$ed_info['classrooms']['classroom'], $ed_info['classrooms']['location']],
                                             $lang->def('_IN_THE_CLASSROOM'));
             }
-            if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+            if (($ed_info['date_begin'] && $ed_info['date_end']) || $ed_info['classrooms'] != '') {
                 $html .= '<br />';
             }
             if ($ed_info['max_num_subscribe'] == 0) {
@@ -677,7 +677,7 @@ function dashcourse(&$url, &$lang, &$cinfo, $uc_status, $index, $enable_actions 
                                         $lang->def('_USER_EDITION_SUBSCRIBE')) . '</p>';
             }
 
-            if (($ed_info['user_count'] != '' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+            if (($ed_info['user_count'] != '' && $ed_info['date_end']) || $ed_info['classrooms'] != '') {
                 $html .= '<br />';
             }
 
@@ -1139,7 +1139,7 @@ function getCourseEditionList($course_id)
     $qtxt .= "WHERE t1.idCourse='" . (int) $course_id . "'  ";
     $qtxt .= " AND t1.status <> '" . CST_PREPARATION . "' ";
 
-    $qtxt .= " AND (t1.date_begin > '" . date('Y-m-d H:i:s') . "' OR t1.date_begin = '0000-00-00 00:00:00')";
+    $qtxt .= " AND (t1.date_begin > '" . date('Y-m-d H:i:s') . "' OR t1.date_begin IS NULL)";
 
     $qtxt .= ' GROUP BY t1.idCourseEdition ';
     $qtxt .= 'ORDER BY t1.date_begin';
@@ -1151,10 +1151,10 @@ function getCourseEditionList($course_id)
     while ($ed_info = sql_fetch_assoc($q)) {
         $html .= '<li><b>[' . $ed_info['code'] . '] ' . $ed_info['name'] . '</b><br/><p>';
 
-        if (($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') || $ed_info['classrooms'] != '') {
+        if (($ed_info['date_begin'] && $ed_info['date_end']) || $ed_info['classrooms'] != '') {
             $html .= $lang->def('_EDITIONS');
         }
-        if ($ed_info['date_begin'] != '0000-00-00' && $ed_info['date_end'] != '0000-00-00') {
+        if ($ed_info['date_begin'] && $ed_info['date_end']) {
             $html .= ' ' . str_replace(['[date_begin]', '[date_end]'],
                                     [Format::date($ed_info['date_begin'], 'date'),
                                         Format::date($ed_info['date_end'], 'date'), ],

@@ -68,9 +68,9 @@ class CoreUserFile
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="uldate", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="uldate", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $uldate = '0000-00-00 00:00:00';
+    private $uldate = null;
 
 
 }

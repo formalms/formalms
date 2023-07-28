@@ -47,30 +47,30 @@ class LearningCourseDateDay
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_begin", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_begin", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateBegin = '0000-00-00 00:00:00';
+    private $dateBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateEnd = '0000-00-00 00:00:00';
+    private $dateEnd = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pause_begin", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="pause_begin", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $pauseBegin = '0000-00-00 00:00:00';
+    private $pauseBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pause_end", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="pause_end", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $pauseEnd = '0000-00-00 00:00:00';
+    private $pauseEnd = null;
 
     /**
      * @var string

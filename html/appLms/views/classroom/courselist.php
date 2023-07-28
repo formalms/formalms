@@ -76,14 +76,14 @@
                 echo '<p class="course_support_info">';
                 echo '<ul class="action-list">';
                 foreach ($display_info[$course['idCourse']] as $key => $info) {
-                    $_start_time = $info->start_date != '' && $info->start_date != '0000-00-00 00:00:00' ? Format::date($info->start_date, 'datetime') : '';
-                    $_end_time = $info->end_date != '' && $info->end_date != '0000-00-00 00:00:00' ? Format::date($info->end_date, 'datetime') : '';
+                    $_start_time = $info->start_date != '' && $info->start_date ? Format::date($info->start_date, 'datetime') : '';
+                    $_end_time = $info->end_date != '' && $info->end_date ? Format::date($info->end_date, 'datetime') : '';
                     echo '<li style="width: 98%;">'; //.($info->code != "" ? '['.$info->code.'] ' : "").$info->name.' '
 
                     $start_date = $info->date_info['date_begin'];
                     $end_date = $info->date_info['date_end'];
-                    $_start_time = $start_date != '' && $start_date != '0000-00-00 00:00:00' ? Format::date($start_date, 'datetime') : '';
-                    $_end_time = $end_date != '' && $end_date != '0000-00-00 00:00:00' ? Format::date($end_date, 'datetime') : '';
+                    $_start_time = $start_date != '' && $start_date ? Format::date($start_date, 'datetime') : '';
+                    $_end_time = $end_date != '' && $end_date ? Format::date($end_date, 'datetime') : '';
 
                     echo '<b>' . Lang::t('_COURSE_BEGIN', 'certificate') . '</b>: ' . ($_start_time ? $_start_time : '- ') . '; '
                         . '<b>' . Lang::t('_COURSE_END', 'certificate') . '</b>: ' . ($_end_time ? $_end_time : '- ') . '; ';
@@ -117,7 +117,7 @@
             } else {
                 //auto unsubscribe management: create a link for the user in the course block
                 $_can_unsubscribe = ($course['auto_unsubscribe'] == 1 || $course['auto_unsubscribe'] == 2);
-                $_date_limit = $course['unsubscribe_date_limit'] != '' && $course['unsubscribe_date_limit'] != '0000-00-00 00:00:00'
+                $_date_limit = $course['unsubscribe_date_limit'] != '' && $course['unsubscribe_date_limit']
                     ? $course['unsubscribe_date_limit']
                     : false;
                 echo '<!-- ' . print_r($course['auto_unsubscribe'], true) . ' -->';

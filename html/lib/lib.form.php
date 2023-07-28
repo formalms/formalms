@@ -460,7 +460,7 @@ class Form
 
         $date = '';
         $iso = Format::dateDb($value, 'datetime');
-        if ($value != '' && $value != '0000-00-00 00:00:00') {
+        if ($value != '' && $value) {
             $datetime = new DateTime($iso);
             $timestamp = $datetime->format('U'); //mktime(0, 0, 0, (int)substr($iso, 5, 2), (int)substr($iso, 8, 2), (int)substr($iso, 0, 4));
             $date = date('m/d/Y h:m', $timestamp);

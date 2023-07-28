@@ -47,9 +47,9 @@ class LearningCommentAjax
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="posted_on", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="posted_on", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $postedOn = '0000-00-00 00:00:00';
+    private $postedOn = null;
 
     /**
      * @var string

@@ -44,16 +44,16 @@ class LearningCourseDateUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_subscription", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_subscription", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateSubscription = '0000-00-00 00:00:00';
+    private $dateSubscription = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_complete", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_complete", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateComplete = '0000-00-00 00:00:00';
+    private $dateComplete = null;
 
     /**
      * @var string|null

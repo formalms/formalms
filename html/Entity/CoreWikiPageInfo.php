@@ -59,9 +59,9 @@ class CoreWikiPageInfo
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_update", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="last_update", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $lastUpdate = '0000-00-00 00:00:00';
+    private $lastUpdate = null;
 
     /**
      * @var int

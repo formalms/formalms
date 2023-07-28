@@ -1530,7 +1530,7 @@ class CourseAlmsController extends AlmsController
         $params['base_link_course'] = $this->base_link_course;
 
         $params['use_unsubscribe_date_limit'] = (bool) ($params['course']['unsubscribe_date_limit'] != '');
-        $params['unsubscribe_date_limit'] = $params['course']['unsubscribe_date_limit'] != '' && $params['course']['unsubscribe_date_limit'] != '0000-00-00 00:00:00'
+        $params['unsubscribe_date_limit'] = $params['course']['unsubscribe_date_limit'] != '' && !$params['course']['unsubscribe_date_limit']
             ? Format::date($params['course']['unsubscribe_date_limit'], 'date')
             : '';
 

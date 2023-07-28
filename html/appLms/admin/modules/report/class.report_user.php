@@ -3116,7 +3116,7 @@ class Report_User extends Report
                                 case 'date_first_access':
                                 case 'date_last_access':
                                 case 'date_complete':
-                                    if ($user_info[$index] == '0000-00-00 00:00:00' || $user_info[$index] == '') {
+                                    if (!$user_info[$index] || $user_info[$index] == '') {
                                         $line[] = '';
                                     } else {
                                         $line[] = ['style' => 'align-center', 'value' => Format::date($user_info[$index], 'datetime')];
@@ -3496,7 +3496,7 @@ class Report_User extends Report
     public function _convertDate($date)
     {
         $output = '';
-        if ($date != '0000-00-00 00:00:00') {
+        if ($date) {
             $output = Format::date($date);
         }
 
@@ -4032,10 +4032,10 @@ class Report_User extends Report
         $end_date = isset($reportTempData['columns_filter']['comm_end_date']) ? substr($reportTempData['columns_filter']['comm_end_date'], 0, 10) : '';
 
         //check and validate time period dates
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || $start_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || is_null($start_date)) {
             $start_date = '';
         }
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || $end_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || is_null($end_date)) {
             $end_date = '';
         }
 
@@ -4297,10 +4297,10 @@ class Report_User extends Report
         $end_date = isset($reportTempData['columns_filter']['comp_end_date']) ? substr($reportTempData['columns_filter']['comp_end_date'], 0, 10) : '';
 
         //check and validate time period dates
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || $start_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || is_null($start_date)) {
             $start_date = '';
         }
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || $end_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || is_null($end_date)) {
             $end_date = '';
         }
 

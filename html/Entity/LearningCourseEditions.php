@@ -61,16 +61,16 @@ class LearningCourseEditions
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_begin", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="date_begin", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $dateBegin = '0000-00-00';
+    private $dateBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_end", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateEnd = '0000-00-00 00:00:00';
+    private $dateEnd = null;
 
     /**
      * @var int
@@ -110,16 +110,16 @@ class LearningCourseEditions
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sub_date_begin", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="sub_date_begin", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $subDateBegin = '0000-00-00';
+    private $subDateBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sub_date_end", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="sub_date_end", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $subDateEnd = '0000-00-00';
+    private $subDateEnd = null;
 
     /**
      * @var string

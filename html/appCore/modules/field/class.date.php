@@ -493,7 +493,7 @@ class Field_Date extends Field
             return false;
         } elseif (trim($_POST['field_' . self::getFieldType()][$this->id_common]) == '') {
             return false;
-        } elseif (trim($new_entry) == '0000-00-00') {
+        } elseif (trim($new_entry) == '1970-01-01') {
             return false;
         } else {
             return true;
@@ -677,7 +677,7 @@ class Field_Date extends Field
 
         $new_entry = $_POST['field_' . self::getFieldType()][$this->id_common];
         $new_entry = Format::dateDb($new_entry, 'date');
-        if ($new_entry == '0000-00-00') {
+        if ($new_entry == '1970-01-01') {
             return true;
         }
 

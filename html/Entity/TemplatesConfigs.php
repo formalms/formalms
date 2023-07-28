@@ -40,9 +40,9 @@ class TemplatesConfigs
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=true, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="created_at", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $createdAt = '0000-00-00 00:00:00';
+    private $createdAt = null;
 
     /**
      * @var \DateTime|null

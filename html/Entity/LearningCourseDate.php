@@ -96,23 +96,23 @@ class LearningCourseDate
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sub_start_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="sub_start_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $subStartDate = '0000-00-00 00:00:00';
+    private $subStartDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="sub_end_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="sub_end_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $subEndDate = '0000-00-00 00:00:00';
+    private $subEndDate = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="unsubscribe_date_limit", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="unsubscribe_date_limit", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $unsubscribeDateLimit = '0000-00-00 00:00:00';
+    private $unsubscribeDateLimit = null;
 
     /**
      * @var string

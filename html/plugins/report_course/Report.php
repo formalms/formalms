@@ -1067,10 +1067,10 @@ class Report extends \ReportPlugin
                     . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ') ')
                     . ($show_suspended ? '' : ' AND u.valid = 1 ')
                     . ($only_students ? ' AND cu.level = 3 ' : '');
-                if ($start_time != '' && $start_time != '0000-00-00') {
+                if ($start_time != '' && $start_time) {
                     $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) >= '" . $start_time . "' ";
                 }
-                if ($end_time != '' && $end_time != '0000-00-00') {
+                if ($end_time != '' && $end_time) {
                     $query_course_user .= " AND greatest(coalesce(cu.date_complete, 0), coalesce(cu.date_first_access, 0), coalesce(cu.date_inscr), 0) <= '" . $end_time . "'";
                 }
 
@@ -1121,10 +1121,10 @@ class Report extends \ReportPlugin
 						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))
 						FROM %lms_tracksession
 						WHERE  idUser IN ( ' . implode(',', $effective_user) . ' )  ';
-                    if ($start_time != '' && $start_time != '0000-00-00') {
+                    if ($start_time != '' && $start_time) {
                         $query_time .= " AND enterTime >= '" . $start_time . "' ";
                     }
-                    if ($end_time != '' && $end_time != '0000-00-00') {
+                    if ($end_time != '' && $end_time) {
                         $query_time .= " AND enterTime <= '" . $end_time . "' ";
                     }
                     $query_time .= ' GROUP BY idCourse ';
@@ -1161,12 +1161,12 @@ class Report extends \ReportPlugin
                     $output .= '<div class="datasummary">'
                         . '<b>' . $lang->def('_FOLDER_NAME') . ' :</b> ' . $folder_name['name']
                         . ($folder_name['type_of_folder'] == ORG_CHART_WITH_DESCENDANTS ? ' (' . $lang->def('_WITH_DESCENDANTS') . ')' : '') . '<br />';
-                    if (($start_time != '' && $start_time != '0000-00-00') || ($end_time != '' && $end_time != '0000-00-00')) {
+                    if (($start_time != '' && $start_time) || ($end_time != '' && $end_time)) {
                         $output .= '<b>' . $lang->def('_TIME_BELT_2') . ' :</b> '
-                            . ($start_time != '' && $start_time != '0000-00-00'
+                            . ($start_time != '' && $start_time
                                 ? ' <b>' . $lang->def('_START_TIME') . ' </b>' . Format::date($start_time, 'date')
                                 : '')
-                            . ($end_time != '' && $end_time != '0000-00-00'
+                            . ($end_time != '' && $end_time
                                 ? ' <b>' . $lang->def('_TO') . ' </b>' . Format::date($end_time, 'date')
                                 : '')
                             . '<br />';
@@ -1179,10 +1179,10 @@ class Report extends \ReportPlugin
                         . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ') ')
                         . ($show_suspended ? '' : ' AND u.valid = 1 ')
                         . ($only_students ? ' AND cu.level = 3 ' : '');
-                    if ($start_time != '' && $start_time != '0000-00-00') {
+                    if ($start_time != '' && $start_time) {
                         $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                     }
-                    if ($end_time != '' && $end_time != '0000-00-00') {
+                    if ($end_time != '' && $end_time) {
                         $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'  AND cu.level='3'";
                     }
 
@@ -1230,10 +1230,10 @@ class Report extends \ReportPlugin
 						SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime))
 						FROM %lms_tracksession
 						WHERE  idUser IN ( ' . implode(',', $group_user) . ' )  ';
-                        if ($start_time != '' && $start_time != '0000-00-00') {
+                        if ($start_time != '' && $start_time) {
                             $query_time .= " AND enterTime >= '" . $start_time . "' ";
                         }
-                        if ($end_time != '' && $end_time != '0000-00-00') {
+                        if ($end_time != '' && $end_time) {
                             $query_time .= " AND enterTime <= '" . $end_time . "' ";
                         }
                         $query_time .= ' GROUP BY idCourse ';
@@ -1273,10 +1273,10 @@ class Report extends \ReportPlugin
                     . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
                     . ($show_suspended ? '' : ' AND u.valid = 1 ')
                     . ($only_students ? ' AND cu.level = 3 ' : '');
-                if ($start_time != '' && $start_time != '0000-00-00') {
+                if ($start_time != '' && $start_time) {
                     $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                 }
-                if ($end_time != '' && $end_time != '0000-00-00') {
+                if ($end_time != '' && $end_time) {
                     $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
                 }
 
@@ -1330,10 +1330,10 @@ class Report extends \ReportPlugin
                 if (!empty($effective_user)) {
                     $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) '
                         . ' FROM %lms_tracksession WHERE  idUser IN ( ' . implode(',', $effective_user) . ' ) ';
-                    if ($start_time != '' && $start_time != '0000-00-00') {
+                    if ($start_time != '' && $start_time) {
                         $query_time .= " AND enterTime >= '" . $start_time . "' ";
                     }
-                    if ($end_time != '' && $end_time != '0000-00-00') {
+                    if ($end_time != '' && $end_time) {
                         $query_time .= " AND enterTime <= '" . $end_time . "' ";
                     }
                     $query_time .= ' GROUP BY idCourse ';
@@ -1369,12 +1369,12 @@ class Report extends \ReportPlugin
                     $output .= '<div class="datasummary">'
                         . '<b>' . $lang->def('_FOLDER_NAME') . ' :</b> ' . $folder_name['name']
                         . ($folder_name['type_of_folder'] == ORG_CHART_WITH_DESCENDANTS ? ' (' . $lang->def('_WITH_DESCENDANTS') . ')' : '') . '<br />';
-                    if (($start_time != '' && $start_time != '0000-00-00') || ($end_time != '' && $end_time != '0000-00-00')) {
+                    if (($start_time != '' && $start_time) || ($end_time != '' && $end_time)) {
                         $output .= '<b>' . $lang->def('_TIME_BELT_2') . ' :</b> '
-                            . ($start_time != '' && $start_time != '0000-00-00'
+                            . ($start_time != '' && $start_time
                                 ? ' <b>' . $lang->def('_START_TIME') . ' </b>' . Format::date($start_time, 'date')
                                 : '')
-                            . ($end_time != '' && $end_time != '0000-00-00'
+                            . ($end_time != '' && $end_time
                                 ? ' <b>' . $lang->def('_TO') . ' </b>' . Format::date($end_time, 'date')
                                 : '')
                             . '<br />';
@@ -1390,10 +1390,10 @@ class Report extends \ReportPlugin
                         . ($all_courses ? '' : 'AND cu.idCourse IN (' . implode(',', $course_selected) . ')')
                         . ($show_suspended ? '' : ' AND u.valid = 1 ')
                         . ($only_students ? ' AND cu.level = 3 ' : '');
-                    if ($start_time != '' && $start_time != '0000-00-00') {
+                    if ($start_time != '' && $start_time) {
                         $query_course_user .= " AND cu.date_complete >= '" . $start_time . "' ";
                     }
-                    if ($end_time != '' && $end_time != '0000-00-00') {
+                    if ($end_time != '' && $end_time) {
                         $query_course_user .= " AND cu.date_complete <= '" . $end_time . "'";
                     }
 
@@ -1446,10 +1446,10 @@ class Report extends \ReportPlugin
                     if (!empty($group_user)) {
                         $query_time = 'SELECT idCourse, SUM(UNIX_TIMESTAMP(lastTime) - UNIX_TIMESTAMP(enterTime)) '
                             . ' FROM %lms_tracksession WHERE  idUser IN ( ' . implode(',', $group_user) . ' ) ';
-                        if ($start_time != '' && $start_time != '0000-00-00') {
+                        if ($start_time != '' && $start_time) {
                             $query_time .= " AND enterTime >= '" . $start_time . "' ";
                         }
-                        if ($end_time != '' && $end_time != '0000-00-00') {
+                        if ($end_time != '' && $end_time) {
                             $query_time .= " AND enterTime <= '" . $end_time . "' ";
                         }
                         $query_time .= ' GROUP BY idCourse ';
@@ -1832,13 +1832,13 @@ class Report extends \ReportPlugin
             $code_c = $course_info['code'];
             $name_c = $course_info['name'];
 
-            $_date_create = $info_course['create_date'] != '0000-00-00 00:00:00' && $info_course['create_date'] != ''
+            $_date_create = $info_course['create_date'] && $info_course['create_date'] != ''
                 ? Format::date($info_course['create_date'], 'datetime')
                 : '';
-            $_date_begin = $info_course['date_begin'] != '0000-00-00 00:00:00' && $info_course['date_begin'] != ''
+            $_date_begin = $info_course['date_begin'] && $info_course['date_begin'] != ''
                 ? Format::date($info_course['date_begin'], 'datetime')
                 : '';
-            $_date_end = $info_course['date_end'] != '0000-00-00 00:00:00' && $info_course['date_end'] != ''
+            $_date_end = $info_course['date_end'] && $info_course['date_end'] != ''
                 ? Format::date($info_course['date_end'], 'datetime')
                 : '';
 

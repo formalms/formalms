@@ -35,11 +35,11 @@ class CorePasswordHistory
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="pwd_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="pwd_date", type="datetime", nullable=true, options={"default"="NULL"})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
-    private $pwdDate = '0000-00-00 00:00:00';
+    private $pwdDate = null;
 
     /**
      * @var string

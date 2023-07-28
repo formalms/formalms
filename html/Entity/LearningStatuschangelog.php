@@ -30,10 +30,10 @@ class LearningStatuschangelog
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="when_do", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="when_do", type="datetime", nullable=true, options={"default"="NULL"})
      
      */
-    private $whenDo = '0000-00-00 00:00:00';
+    private $whenDo = null;
 
     /**
      * @var int

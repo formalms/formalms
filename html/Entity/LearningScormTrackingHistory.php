@@ -37,10 +37,10 @@ class LearningScormTrackingHistory
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_action", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_action", type="datetime", nullable=true, options={"default"="NULL"})
      
      */
-    private $dateAction = '0000-00-00 00:00:00';
+    private $dateAction = null;
 
     /**
      * @var float|null

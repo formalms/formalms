@@ -472,8 +472,7 @@ class CourseLms extends Model
             if ((int) $course['auto_unsubscribe'] === 2) {
                 $editionKey = array_key_first($course['editions']);
 
-                if (($course['editions'][$editionKey]['unsubscribe_date_limit'] !== null)
-                    && ($course['editions'][$editionKey]['unsubscribe_date_limit'] !== '0000-00-00 00:00:00')) {
+                if (($course['editions'][$editionKey]['unsubscribe_date_limit'])) {
                     $unsub_date_limit = $course['editions'][$editionKey]['unsubscribe_date_limit'];
                     $unsub_date_limit = DateTime::createFromFormat('Y-m-d H:i:s', $unsub_date_limit);
                 } else {
@@ -496,7 +495,7 @@ class CourseLms extends Model
         } else {
             // if course date end, cannot unenroll
             $courseDateEnd = DateTime::createFromFormat('Y-m-d', $course['date_end']);
-            if ($course['date_end'] != null && $course['date_end'] != '0000-00-00' && $now > $courseDateEnd) {
+            if ($course['date_end'] && $now > $courseDateEnd) {
                 return false;
             }
 

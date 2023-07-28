@@ -33,16 +33,16 @@ class LearningTransaction
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $date = '0000-00-00 00:00:00';
+    private $date = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_confirm", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_confirm", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateConfirm = '0000-00-00 00:00:00';
+    private $dateConfirm = null;
 
     /**
      * @var int

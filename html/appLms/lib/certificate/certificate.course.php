@@ -164,7 +164,7 @@ class CertificateSubs_Course extends CertificateSubstitution
                  WHERE id_course = ' . $this->id_course . '
                  AND cdu.id_user = ' . $this->id_user . '
                  ORDER BY cd.id_date DESC LIMIT 1;';
-                // AND cdu.date_complete <> '0000-00-00 00:00:00'
+                // AND cdu.date_complete IS NOT NULL
                 list($id_date) = sql_fetch_row(sql_query($query));
 
                 if ($id_date) {

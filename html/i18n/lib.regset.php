@@ -858,9 +858,9 @@ class RegionalSettingsManager
 
 class FormaDate
 {
-    public $day = '00';
-    public $month = '00';
-    public $year = '0000';
+    public $day = '01';
+    public $month = '01';
+    public $year = '1970';
     public $hour = '00';
     public $min = '00';
     public $sec = '00';

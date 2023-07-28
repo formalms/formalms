@@ -1852,10 +1852,10 @@ class Report extends \ReportPlugin
         $end_date = isset($ref['columns_filter']['comm_end_date']) ? substr($ref['columns_filter']['comm_end_date'], 0, 10) : '';
 
         //check and validate time period dates
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || $start_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || is_null($start_date)) {
             $start_date = '';
         }
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || $end_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || is_null($end_date)) {
             $end_date = '';
         }
 
@@ -2192,10 +2192,10 @@ class Report extends \ReportPlugin
         $end_date = substr($ref['columns_filter']['comp_end_date'], 0, 10);
 
         //check and validate time period dates
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || $start_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $start_date) || is_null($start_date)) {
             $start_date = '';
         }
-        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || $end_date == '0000-00-00') {
+        if (!preg_match('/^(\d{4})\D?(0[1-9]|1[0-2])\D?([12]\d|0[1-9]|3[01])$/', $end_date) || is_null($end_date)) {
             $end_date = '';
         }
 

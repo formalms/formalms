@@ -33,9 +33,9 @@ class CoreUserLogAttempt
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="attempt_at", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="attempt_at", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $attemptAt = '0000-00-00 00:00:00';
+    private $attemptAt = null;
 
     /**
      * @var int

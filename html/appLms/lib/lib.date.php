@@ -903,7 +903,7 @@ class DateManager
     public function toggleDateFinished($id_date, $id_user)
     {
         $query = 'UPDATE %lms_course_date_user '
-            . " SET date_complete = '0000-00-00 00:00:00'"
+            . " SET date_complete = NULL"
             . ' WHERE id_date = ' . $id_date
             . ' AND id_user = ' . $id_user;
 
@@ -1074,7 +1074,7 @@ class DateManager
         $res = [];
 
         while ($row = sql_fetch_assoc($result)) {
-            $res[$row['id_user']][$row['day']] = $row;
+            $res[$row['id_user']][$row['day']??'1970-01-01'] = $row;
         }
 
         return $res;
@@ -1134,16 +1134,16 @@ class DateManager
 
                     if ($first) {
                         $first = false;
-                        $query .= " ('0000-00-00', " . $id_date . ', ' . $id_user . ', 0, ' . ($user_info['score'] >= $score_min ? 1 : 0) . ", '" . $user_info['score'] . "', '" . $user_info['note'] . "')";
+                        $query .= " (NULL, " . $id_date . ', ' . $id_user . ', 0, ' . ($user_info['score'] >= $score_min ? 1 : 0) . ", '" . $user_info['score'] . "', '" . $user_info['note'] . "')";
                     } else {
-                        $query .= ", ('0000-00-00', " . $id_date . ', ' . $id_user . ', 0, ' . ($user_info['score'] >= $score_min ? 1 : 0) . ", '" . $user_info['score'] . "', '" . $user_info['note'] . "')";
+                        $query .= ", (NULL, " . $id_date . ', ' . $id_user . ', 0, ' . ($user_info['score'] >= $score_min ? 1 : 0) . ", '" . $user_info['score'] . "', '" . $user_info['note'] . "')";
                     }
                 } else {
                     if ($first) {
                         $first = false;
-                        $query .= " ('0000-00-00', " . $id_date . ', ' . $id_user . ", 0, 0, NULL, '" . $user_info['note'] . "')";
+                        $query .= " (NULL, " . $id_date . ', ' . $id_user . ", 0, 0, NULL, '" . $user_info['note'] . "')";
                     } else {
-                        $query .= ", ('0000-00-00', " . $id_date . ', ' . $id_user . ", 0, 0, NULL, '" . $user_info['note'] . "')";
+                        $query .= ", (NULL, " . $id_date . ', ' . $id_user . ", 0, 0, NULL, '" . $user_info['note'] . "')";
                     }
                 }
 
@@ -1645,8 +1645,8 @@ class DateManager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -1672,7 +1672,7 @@ class DateManager
 
                     case 3:
                          //not expired without expiring date
-                            $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='' OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                            $query .= " AND (s.date_expire_validity IS NULL OR s.date_expire_validity='') ";
 
                         break;
 
@@ -1764,8 +1764,8 @@ class DateManager
             }
 
             if (isset($filter['date_valid']) && strlen($filter['date_valid']) >= 10) {
-                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL OR s.date_begin_validity='0000-00-00 00:00:00') ";
-                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL OR s.date_expire_validity='0000-00-00 00:00:00') ";
+                $query .= " AND (s.date_begin_validity <= '" . $filter['date_valid'] . "' OR s.date_begin_validity IS NULL)";
+                $query .= " AND (s.date_expire_validity >= '" . $filter['date_valid'] . "' OR s.date_expire_validity IS NULL)";
             }
 
             if (isset($filter['show'])) {
@@ -1791,7 +1791,7 @@ class DateManager
 
                     case 3:
                          //not expired without expiring date
-                            $query .= " AND (s.date_expire IS NULL OR s.date_expire='' OR s.date_expire='0000-00-00 00:00:00') ";
+                            $query .= " AND (s.date_expire IS NULL OR s.date_expire='') ";
 
                         break;
 
@@ -1989,7 +1989,7 @@ class DateManager
             . ' AND id_course = ' . (int) $id_course
             . " AND (
 						unsubscribe_date_limit >= '" . date('Y-m-d') . "' OR
-						unsubscribe_date_limit = '0000-00-00 00:00:00' OR
+						unsubscribe_date_limit IS NULL OR
 						unsubscribe_date_limit = ''
 					)";
 

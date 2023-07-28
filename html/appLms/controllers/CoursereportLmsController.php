@@ -1140,7 +1140,7 @@ class CoursereportLmsController extends LmsController
                 if ($einfo->name != '') {
                     $_label .= $einfo->name;
                 }
-                if (($einfo->sub_start_date != '' || $einfo->sub_start_date != '0000-00-00') && ($einfo->sub_end_date != '' || $einfo->sub_end_date != '0000-00-00')) {
+                if (($einfo->sub_start_date != '' || $einfo->sub_start_date) && ($einfo->sub_end_date != '' || $einfo->sub_end_date)) {
                     $_label .= ' (' . Format::date($einfo->sub_start_date, 'date')
                         . ' - ' . Format::date($einfo->sub_end_date, 'date') . ')';
                 }

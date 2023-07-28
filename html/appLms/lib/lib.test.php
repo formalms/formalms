@@ -134,7 +134,7 @@ class GroupTestManagement
             $re_times = sql_query($times_sql);
             $test_data['times'] = sql_num_rows($re_times);
 
-            if ($test_data['date_attempt_mod'] != null && $test_data['date_attempt_mod'] !== '0000-00-00 00:00:00') {
+            if ($test_data['date_attempt_mod']) {
                 $test_data['date_attempt'] = $test_data['date_attempt_mod'];
             }
             if (!$pure) {

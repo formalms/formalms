@@ -54,9 +54,9 @@ class LearningInstmsg
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="data", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="data", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $data = '0000-00-00 00:00:00';
+    private $data = null;
 
 
 }

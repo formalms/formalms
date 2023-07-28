@@ -385,7 +385,7 @@ class Timetable
     public function checkNullDate($date)
     {
         if ($date !== false) {
-            if ((empty($date)) || (substr($date, 0, 10) == '0000-00-00')) {
+            if ((empty($date)) || is_null($date)) {
                 $date = false;
             }
         }

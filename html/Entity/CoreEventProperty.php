@@ -52,9 +52,9 @@ class CoreEventProperty
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="property_date", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="property_date", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $propertyDate = '0000-00-00';
+    private $propertyDate = null;
 
 
 }

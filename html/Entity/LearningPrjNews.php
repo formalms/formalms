@@ -40,9 +40,9 @@ class LearningPrjNews
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="ndate", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="ndate", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $ndate = '0000-00-00';
+    private $ndate = null;
 
     /**
      * @var string

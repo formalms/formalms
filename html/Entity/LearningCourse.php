@@ -194,16 +194,16 @@ class LearningCourse
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_begin", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="date_begin", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $dateBegin = '0000-00-00';
+    private $dateBegin = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="date_end", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $dateEnd = '0000-00-00';
+    private $dateEnd = null;
 
     /**
      * @var string
@@ -306,9 +306,9 @@ class LearningCourse
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="create_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="create_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $createDate = '0000-00-00 00:00:00';
+    private $createDate = null;
 
     /**
      * @var string

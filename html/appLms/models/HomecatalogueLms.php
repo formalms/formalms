@@ -87,7 +87,7 @@ class HomecatalogueLms extends CatalogLms
                     . ' WHERE status NOT IN (' . CST_PREPARATION . ', ' . CST_CONCLUDED . ', ' . CST_CANCELLED . ')'
                     . " AND course_type <> 'assessment'"
                     . ' AND ('
-                    . " date_end = '0000-00-00'"
+                    . " date_end IS NULL"
                     . " OR date_end > '" . date('Y-m-d') . "'"
                     . ' )'
                     . $filter

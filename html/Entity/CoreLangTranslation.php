@@ -52,9 +52,9 @@ class CoreLangTranslation
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="save_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="save_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $saveDate = '0000-00-00 00:00:00';
+    private $saveDate = null;
 
 
 }

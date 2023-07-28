@@ -57,7 +57,7 @@ final class LMSTemplateController extends TemplateController
         $certificates = $model->loadMyCertificates(false, false);
 
         foreach ($certificates as $cert) {
-            if ($cert[0] == '0000-00-00' || $cert[0] == '') { // $cert['on_date']
+            if (!$cert[0] || $cert[0] == '') { // $cert['on_date']
                 ++$availables;
             }
         }

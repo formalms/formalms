@@ -54,9 +54,9 @@ class LearningLightRepoFiles
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="post_date", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="post_date", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $postDate = '0000-00-00 00:00:00';
+    private $postDate = null;
 
 
 }

@@ -259,7 +259,7 @@ class DbConn
                     case "%date" : {
                         //is in iso format ?
                         $check = preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/", $data[$current]);
-                        if($check == false) $data[$current] = '0000-00-00 00:00:00';
+                        
                     };
                     case "%text" :
                     case "%s" : {

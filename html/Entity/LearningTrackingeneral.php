@@ -68,9 +68,9 @@ class LearningTrackingeneral
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="timeof", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="timeof", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $timeof = '0000-00-00 00:00:00';
+    private $timeof = null;
 
     /**
      * @var string

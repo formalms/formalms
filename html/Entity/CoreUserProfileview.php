@@ -45,9 +45,9 @@ class CoreUserProfileview
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_view", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_view", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateView = '0000-00-00 00:00:00';
+    private $dateView = null;
 
 
 }

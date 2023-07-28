@@ -68,9 +68,9 @@ class CoreUserTemp
     /**
      * @var \DateTime|null
      *
-     * @ORM\Column(name="request_on", type="datetime", nullable=true, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="request_on", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $requestOn = '0000-00-00 00:00:00';
+    private $requestOn = null;
 
     /**
      * @var string

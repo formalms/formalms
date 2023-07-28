@@ -623,7 +623,7 @@ class ClassroomAlmsController extends AlmsController
         echo '<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"></head><body>';
         echo $edition_name;
         echo '<table border=1><tr><td><b>Username</b></td><td><b>' . Lang::t('_FULLNAME', 'standard') . '</b></td>';
-        $query = "SELECT DISTINCT day FROM learning_course_date_presence WHERE day<>'0000-00-00' AND id_date=" . $this->idDate . ' ORDER BY day';
+        $query = "SELECT DISTINCT day FROM learning_course_date_presence WHERE day IS NOT NULL AND id_date=" . $this->idDate . ' ORDER BY day';
         $res = sql_query($query);
         while ($row = sql_fetch_array($res)) {
             echo '<td><b>' . substr($row[0], 8, 2) . '-' . substr($row[0], 5, 2) . '-' . substr($row[0], 0, 4) . '</b></td>';
@@ -647,7 +647,7 @@ class ClassroomAlmsController extends AlmsController
                     echo '<td>X</td>';
                 }
             }
-            $query = 'SELECT note FROM learning_course_date_presence WHERE id_date=' . $this->idDate . ' AND id_user=' . $row[3] . " AND day='0000-00-00'";
+            $query = 'SELECT note FROM learning_course_date_presence WHERE id_date=' . $this->idDate . ' AND id_user=' . $row[3] . " AND day IS NULL";
             $res3 = sql_query($query);
             $row3 = sql_fetch_array($res3);
             echo '<td>' . $row3[0] . '</td></tr>';

@@ -61,9 +61,9 @@ class LearningReservationEvents
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="date", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $date = '0000-00-00';
+    private $date = null;
 
     /**
      * @var int
@@ -75,9 +75,9 @@ class LearningReservationEvents
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="deadLine", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="deadLine", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $deadline = '0000-00-00';
+    private $deadline = null;
 
     /**
      * @var \DateTime

@@ -45,9 +45,9 @@ class LearningLightRepoUser
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="last_enter", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="last_enter", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $lastEnter = '0000-00-00 00:00:00';
+    private $lastEnter = null;
 
     /**
      * @var bool

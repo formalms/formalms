@@ -344,7 +344,7 @@ function statuserfilter()
             if ($einfo->name != '') {
                 $_label .= $einfo->neme;
             }
-            if (($einfo->date_begin != '' || $einfo->date_begin != '0000-00-00') && ($einfo->date_end != '' || $einfo->date_end != '0000-00-00')) {
+            if (($einfo->date_begin != '' || $einfo->date_begin) && ($einfo->date_end != '' || $einfo->date_end)) {
                 $_label .= ' (' . Format::date($einfo->date_begin, 'date')
                     . ' - ' . Format::date($einfo->date_end, 'date') . ')';
             }
@@ -385,7 +385,7 @@ function statuserfilter()
             if ($einfo->name != '') {
                 $_label .= $einfo->neme;
             }
-            if (($einfo->sub_start_date != '' || $einfo->sub_start_date != '0000-00-00') && ($einfo->sub_end_date != '' || $einfo->sub_end_date != '0000-00-00')) {
+            if (($einfo->sub_start_date != '' || $einfo->sub_start_date) && ($einfo->sub_end_date != '' || $einfo->sub_end_date)) {
                 $_label .= ' (' . Format::date($einfo->sub_start_date, 'date')
                     . ' - ' . Format::date($einfo->sub_end_date, 'date') . ')';
             }

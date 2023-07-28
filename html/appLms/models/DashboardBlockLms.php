@@ -266,14 +266,14 @@ abstract class DashboardBlockLms extends Model
         ];
 
         $dateBegin = trim(str_replace('00:00:00', '', $course['course_date_begin']));
-        if ($dateBegin === '0000-00-00') {
+        if (!$dateBegin) {
             $dateBegin = '';
         } else {
             $startDate = new DateTime($dateBegin);
         }
 
         $dateEnd = trim(str_replace('00:00:00', '', $course['course_date_end']));
-        if ($dateEnd === '0000-00-00') {
+        if (!$dateEnd) {
             $dateEnd = '';
         } else {
             $endDate = new DateTime($dateEnd);
@@ -325,12 +325,12 @@ abstract class DashboardBlockLms extends Model
     protected function getDataFromReservation($reservation)
     {
         $dateBegin = $reservation['date_begin'];
-        if ($dateBegin === '0000-00-00') {
+        if (!$dateBegin) {
             $dateBegin = '';
         }
 
         $dateEnd = $reservation['date_end'];
-        if ($dateEnd === '0000-00-00') {
+        if (!$dateEnd) {
             $dateEnd = '';
         }
 

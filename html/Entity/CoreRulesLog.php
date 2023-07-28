@@ -33,9 +33,9 @@ class CoreRulesLog
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="log_time", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="log_time", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $logTime = '0000-00-00 00:00:00';
+    private $logTime = null;
 
     /**
      * @var string

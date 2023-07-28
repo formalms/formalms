@@ -40,16 +40,16 @@ class CoreTransaction
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_creation", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_creation", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateCreation = '0000-00-00 00:00:00';
+    private $dateCreation = null;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_activated", type="datetime", nullable=false, options={"default"="0000-00-00 00:00:00"})
+     * @ORM\Column(name="date_activated", type="datetime", nullable=true, options={"default"="NULL"})
      */
-    private $dateActivated = '0000-00-00 00:00:00';
+    private $dateActivated = null;
 
     /**
      * @var bool

@@ -47,9 +47,9 @@ class CoreRules
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="creation_date", type="date", nullable=false, options={"default"="0000-00-00"})
+     * @ORM\Column(name="creation_date", type="date", nullable=true, options={"default"="NULL"})
      */
-    private $creationDate = '0000-00-00';
+    private $creationDate = null;
 
     /**
      * @var bool
