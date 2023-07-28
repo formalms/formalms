@@ -23,6 +23,7 @@ defined('IN_FORMA') or exit('Direct access is forbidden.');
  */
 
 use \FormaLms\lib\Helpers\HelperTool;
+use Doctrine\DBAL\Driver\PDO\PDOException;
 
 class InstallAdm extends Model
 {
@@ -1082,9 +1083,18 @@ class InstallAdm extends Model
 
                 case 2:
                     //lancio migrate
-                    $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
-                    $responseMigration = $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
 
+                    try {
+                        $migrator = FormaLms\lib\Database\FormaMigrator::getInstance();
+                        $responseMigration = $migrator->executeCommand('migrate', ['debug' => $params['debug']]);
+    
+                    } catch(PDOException $e) {
+                        $messages[] = $e->getMessage();
+                        $success = false;
+                        $type = 'database';
+                        return $this->setResponse($success, $messages, $type)->wrapResponse();
+                    }
+                    
 
                     if (!$responseMigration['success']) {
                         $type = 'database';

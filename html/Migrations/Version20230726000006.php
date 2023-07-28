@@ -77,6 +77,8 @@ final class Version20230726000006 extends AbstractMigration
         $this->addSql('ALTER TABLE `core_user` CHANGE pwd_expire_at pwd_expire_at DATETIME DEFAULT NULL, CHANGE register_date register_date DATETIME DEFAULT NULL');
         $this->addSql('UPDATE `core_user` SET `pwd_expire_at` = NULL WHERE `pwd_expire_at` = "0000-00-00 00:00:00"');
         $this->addSql('UPDATE `core_user` SET `register_date` = NULL WHERE `register_date` = "0000-00-00 00:00:00"');
+        $this->addSql('UPDATE `core_user` SET `lastenter` = NULL WHERE `lastenter` = "0000-00-00 00:00:00"');
+       
 
         $this->addSql('ALTER TABLE `core_user_file` CHANGE uldate uldate DATETIME DEFAULT NULL');
         $this->addSql('UPDATE `core_user_file` SET `uldate` = NULL WHERE `uldate` = "0000-00-00 00:00:00"');
