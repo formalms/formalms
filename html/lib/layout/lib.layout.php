@@ -211,7 +211,7 @@ class Layout
 
         $html = '<ul class="list-inline" id="language_selection">';
         foreach ($lang_list as $lang) {
-            $html .= '<li><a class="lang-sprite lang_' . strtolower(str_replace(' ', '_', $lang->lang_code)) . ($lang->lang_code == $lang_sel ? ' current' : '') . '"'
+            $html .= '<li><a aria-label="'.Lang::t('_DEFAULT_LANGUAGE').' '.$lang->lang_code.'" class="lang-sprite lang_' . strtolower(str_replace(' ', '_', $lang->lang_code)) . ($lang->lang_code == $lang_sel ? ' current' : '') . '"'
                 . ' href="' . (isset($args['redirect_on']) ? $args['redirect_on'] : 'index.php')
                 . '?' //.($r !== '' ? '?r='.$r.'&amp;' : '?')
                 . ($server_query_string !== '' ? str_replace('&', '&amp;', $server_query_string) . '&amp;' : '')
