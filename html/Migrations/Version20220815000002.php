@@ -210,37 +210,38 @@ final class Version20220815000002 extends AbstractMigration
             ('certificate.user.php', 'CertificateSubs_User'),
             ('certificate.userstat.php', 'CertificateSubs_UserStat')");
 
-        $this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta` (
-            `idMetaCertificate` int(11) NOT NULL AUTO_INCREMENT,
-            `idCertificate` int(11) NOT NULL DEFAULT '0',
-            `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-            `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-            PRIMARY KEY (`idMetaCertificate`)
-            ) ENGINE = InnoDB
-            DEFAULT CHARACTER SET = utf8
-            COLLATE = utf8_general_ci");
+        #DEPRECATED SINCE 4.02
+        #$this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta` (
+        #    `idMetaCertificate` int(11) NOT NULL AUTO_INCREMENT,
+        #    `idCertificate` int(11) NOT NULL DEFAULT '0',
+        #    `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+        #    `description` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+        #    PRIMARY KEY (`idMetaCertificate`)
+        #    ) ENGINE = InnoDB
+        #    DEFAULT CHARACTER SET = utf8
+        #    COLLATE = utf8_general_ci");
   
-        $this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta_assign` (
-            `idUser` int(11) NOT NULL DEFAULT '0',
-            `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
-            `idCertificate` int(11) NOT NULL DEFAULT '0',
-            `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-            `cert_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
-            PRIMARY KEY (`idUser`,`idMetaCertificate`)
-            ) ENGINE = InnoDB
-            DEFAULT CHARACTER SET = utf8
-            COLLATE = utf8_general_ci");
+        #$this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta_assign` (
+        #    `idUser` int(11) NOT NULL DEFAULT '0',
+        #    `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
+        #    `idCertificate` int(11) NOT NULL DEFAULT '0',
+        #    `on_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+        #    `cert_file` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+        #    PRIMARY KEY (`idUser`,`idMetaCertificate`)
+        #    ) ENGINE = InnoDB
+        #    DEFAULT CHARACTER SET = utf8
+        #    COLLATE = utf8_general_ci");
   
-        $this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta_course` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
-            `idUser` int(11) NOT NULL DEFAULT '0',
-            `idCourse` int(11) NOT NULL DEFAULT '0',
-            `idCourseEdition` int(11) NOT NULL DEFAULT '0',
-            PRIMARY KEY (`id`)
-            ) ENGINE = InnoDB
-            DEFAULT CHARACTER SET = utf8
-            COLLATE = utf8_general_ci");
+        #$this->addSql("CREATE TABLE IF NOT EXISTS `learning_certificate_meta_course` (
+        #    `id` int(11) NOT NULL AUTO_INCREMENT,
+        #    `idMetaCertificate` int(11) NOT NULL DEFAULT '0',
+        #    `idUser` int(11) NOT NULL DEFAULT '0',
+        #    `idCourse` int(11) NOT NULL DEFAULT '0',
+        #    `idCourseEdition` int(11) NOT NULL DEFAULT '0',
+        #    PRIMARY KEY (`id`)
+        #    ) ENGINE = InnoDB
+        #    DEFAULT CHARACTER SET = utf8
+        #    COLLATE = utf8_general_ci");
 
 
         $this->addSql("CREATE TABLE IF NOT EXISTS `learning_classroom` (

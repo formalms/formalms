@@ -259,14 +259,14 @@ final class Version20230726000006 extends AbstractMigration
         $this->addSql('UPDATE `learning_transaction` SET `date` = NULL WHERE `date` = "0000-00-00 00:00:00"');
         $this->addSql('UPDATE `learning_transaction` SET `date_confirm` = NULL WHERE `date_confirm` = "0000-00-00 00:00:00"');
 
-        $this->addSql('ALTER TABLE `dashboard_layouts` CHANGE `created_at` `created_at` TIMESTAMP DEFAULT NULL');
-        $this->addSql('UPDATE `dashboard_layouts` SET `created_at` = NULL WHERE `created_at` = "0000-00-00 00:00:00"');
+        $this->addSql('ALTER TABLE `dashboard_layouts` CHANGE `created_at` `created_at` DATETIME DEFAULT NULL');
+        $this->addSql('UPDATE `dashboard_layouts` SET `created_at` = CURRENT_TIMESTAMP WHERE `created_at` = "0000-00-00 00:00:00"');
 
         $this->addSql('ALTER TABLE `dashboard_block_config` CHANGE `created_at` `created_at` DATETIME DEFAULT NULL');
-        $this->addSql('UPDATE `dashboard_block_config` SET `created_at` = NULL WHERE `created_at` = "0000-00-00 00:00:00"');
+        $this->addSql('UPDATE `dashboard_block_config` SET `created_at` = CURRENT_TIMESTAMP WHERE `created_at` = "0000-00-00 00:00:00"');
 
         $this->addSql('ALTER TABLE `dashboard_blocks` CHANGE `created_at` `created_at` DATETIME DEFAULT NULL');
-        $this->addSql('UPDATE `dashboard_blocks` SET `created_at` = NULL WHERE `created_at` = "0000-00-00 00:00:00"');
+        $this->addSql('UPDATE `dashboard_blocks` SET `created_at` = CURRENT_TIMESTAMP WHERE `created_at` = "0000-00-00 00:00:00"');
 
 
         $this->addSql('SET FOREIGN_KEY_CHECKS=1');

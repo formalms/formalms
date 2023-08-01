@@ -78,5 +78,38 @@ class HelperTool
         DEALLOCATE PREPARE dropForeignKeyIfExists;';
     }
 
+    public static function dropIndexIfExistsQueryBuilder() : string{
+
+        return HelperTool::dropProcedure('drop_index_if_exists') . '
+        CREATE PROCEDURE drop_index_if_exists ( IN theIndexName VARCHAR ( 128 ), IN theTable VARCHAR ( 128 ) ) 
+            BEGIN
+                DECLARE existing INT;
+        SELECT
+            COUNT(*) INTO existing 
+        FROM
+            information_schema.statistics 
+        WHERE
+            TABLE_SCHEMA = DATABASE () 
+            AND table_name = theTable 
+            AND index_name = theIndexName;
+            
+            IF existing > 0 THEN
+                
+                SET @s = CONCAT( "DROP INDEX `", theIndexName, "` ON `", theTable, "`" );
+                PREPARE stmt FROM @s;
+                EXECUTE stmt;
+            
+            END IF;
+        
+        END;';
+    }
+
+    public static function dropProcedure($procedure) : string{
+
+        return 'DROP PROCEDURE
+                IF
+                EXISTS `'. $procedure .'`;';
+    }
+
 
 }
