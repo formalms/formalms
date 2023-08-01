@@ -2,6 +2,23 @@ FORMA LMS
 RELEASE CHANGELOG
 
 ---------------------------------------------------------------------------------------
+forma.lms 4.0.1
+---------------------------------------------------------------------------------------
+Release date: 2023 august
+
+- #      - fix on zero date after tests
+- #      - other substitutions of zero date
+- #      - substition zero date with nullable dates
+- #      - fix session in select node usermanagement
+- #      - add fallback to ',' '|' and space separator fo CC and CCN in mailer
+- #      - Enabled scorm player for xAPI learning objects.
+- #      - substitution image default for courses
+- #      - fix wrong filename
+- #      - removed font file with wrong camel case in name
+- #      - fix installer
+- #      - update maturity
+
+---------------------------------------------------------------------------------------
 forma.lms 4.0.0
 ---------------------------------------------------------------------------------------
 Release date: 2023 july
@@ -372,6 +389,15 @@ Release date: 2023 july
 - #      - update config
 - #      - creation domainhandler
 - #      - mail refactor
+
+---------------------------------------------------------------------------------------
+forma.lms 3.3.11
+---------------------------------------------------------------------------------------
+Release date: 2023 august
+
+- #      - add fallback to ',' '|' and space separator fo CC and CCN in mailer
+- #      - fix session in select node usermanagement
+- #      - fix english regional setting date separator
 
 ---------------------------------------------------------------------------------------
 forma.lms 3.3.10
