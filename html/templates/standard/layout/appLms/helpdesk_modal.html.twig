@@ -79,10 +79,10 @@
                                         <div class="col-md-3">
                                             <label for="send_cc">{{ Lang_translate('_SEND_CC', 'standard') }}</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-1">
                                             <input class="form-control" id="send_cc" name="send_cc" checked data-toggle="toggle" data-on="{{ Lang_translate('_GROUP_FIELD_NORMAL', 'admin_directory') }}"
-                                                   data-size="small" data-off="{{ Lang_translate('_NO', 'standard') }}" data-onstyle="success"
-                                                   data-offstyle="danger" type="checkbox">
+                                            data-size="small" data-off="{{ Lang_translate('_NO', 'standard') }}" data-onstyle="success"
+                                            data-offstyle="danger" type="checkbox">
 
                                         </div>
                                     </div>
@@ -91,22 +91,21 @@
                                         <div class="col-md-3">
                                             <label for="priority">{{ Lang_translate('_PRIORITY', 'message') }}</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-1">
                                             <input class="form-control" id="priorita" name="priorita" data-size="small" checked data-toggle="toggle" data-on="{{ Lang_translate('_NORMAL', 'message') }}"
-                                                   data-off="{{ Lang_translate('_HIGH', 'message') }}" data-onstyle="success" data-offstyle="danger"
-                                                   type="checkbox">
+                                            data-off="{{ Lang_translate('_HIGH', 'message') }}" data-onstyle="success" data-offstyle="danger"
+                                            type="checkbox">
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-3">
                                             <label for="disclaimer">{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}</label>
                                         </div>
-                                        <div class="col-md-6">
-
+                                        <div class="col-md-1">
                                             <input class="form-control" id="disclaimer" name="disclaimer"   type="checkbox" title="{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER_TITLE', 'customer_help') }}">
-
+                                        </div>
+                                        <div class="col-md-5">
                                             <p>{{ Lang_translate('_CUSTOMER_HELP_DISCLAIMER', 'customer_help') }}</p>
-
                                         </div>
                                     </div>
                                 </div>
