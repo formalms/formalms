@@ -29,6 +29,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width:100%;
 
   @include breakpoint($tablet) {
     margin: 0 auto;
