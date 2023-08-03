@@ -368,6 +368,11 @@ p {
     height: 34px;
     margin-top: 0;
     line-height: 34px;
+    max-width: 420px;
+  }
+
+  .homepage__form--lost-pwd &.thin:hover {
+    border: solid 2px var(--color-primary);
   }
 }
 

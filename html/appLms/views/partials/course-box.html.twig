@@ -151,7 +151,7 @@
                 {% block entercourse %}
                     {% if course.canEnter %}
 
-                        <a class="forma-button course-box__cta__button" title="{{ course.name }}"
+                        <a class="forma-button course-box__cta__button no-border" title="{{ course.name }}"
                            href="index.php?modname=course&amp;op=aula&amp;idCourse={{ course.idCourse }} "
                            rel= {{ course.rel }}>
                             <span class="forma-button__label"> {{ Lang_translate('_USER_STATUS_ENTER', 'catalogue') }}</span>
