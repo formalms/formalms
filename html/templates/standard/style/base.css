@@ -1858,10 +1858,10 @@ ul.tabs li.current{
     background: #a94442 !important;
 }
 
-:focus, input:focus-visible {
+input:focus-visible {
     outline: 3px solid rgba(232, 63, 29, 0.5)!important;
-    background-color: transparent!important;
-}
+    background-color: #FFFFFF!important;
+}   
 
 .input_label {
     margin: 0;
@@ -1901,6 +1901,10 @@ ul.tabs li.current{
     border: 3px solid rgba(232, 63, 29, 0.5)!important;
 }
 
+.dropdown-toggle:hover {
+    border: none!important;
+}
+
 .noBorder {
     border: none!important;
 }
@@ -1936,4 +1940,14 @@ a:focus, a:hover {
 
 .no-border {
     border: none!important;
+}
+
+.forma-button--primary:focus {
+    color: white!important;
+}
+
+.course-box__cta:focus {
+    color: white!important;
+    border: none!important;
+    outline: none!important;
 }

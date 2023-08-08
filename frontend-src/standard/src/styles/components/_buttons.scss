@@ -27,7 +27,7 @@
   line-height: 40px;
   color: var(--color-primary-text);
   background: var(--color-primary);
-  border: 3px solid var(--color-primary);
+  border: 1px solid var(--color-primary);
   font-family: $font;
   font-size: 12px;
   border-radius: $border-radius;
@@ -51,16 +51,13 @@
   }
 
   &:hover {
-    text-decoration: none;
-    color: var(--color-primary);
+    color: var(--color-primary)!important;
     background: var(--color-primary-text);
-    border: 3px solid var(--color-primary-text);
+    border: 1px solid var(--color-primary-text);
   }
 
   &:focus {
-    text-decoration: none;
-    color: var(--color-primary);
-    background: var(--color-primary-text);
+    color: var(--color-white);
   }
 
   .user-panel & {
@@ -168,6 +165,10 @@
     }
   }
 
+  .forma-button__label:focus {
+    color: aqua
+  }
+
   // .course-box & {
     //padding: 10px 0;
   // }
@@ -254,7 +255,6 @@
   }
 
   &:hover {
-    text-decoration: none;
     background: var(--color-info-text);
     color: var(--color-info);
   }
@@ -320,12 +320,9 @@
     color: var(--color-white);
 
     &:focus {
-      color: var(--color-white);
+      color: var(--color-primary);
+      background-color: var(--color-white);
     }
-  }
-
-  &:focus {
-    color: var(--color-primary);
   }
 }
 
@@ -431,6 +428,7 @@ a.btn.btn-default {
     &:hover {
       background-color: var(--color-primary-text);
       color: var(--color-primary);
+      text-decoration: underline;
     }
   }
 }

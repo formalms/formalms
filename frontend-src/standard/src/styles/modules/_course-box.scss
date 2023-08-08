@@ -1,4 +1,3 @@
-
 // course-box scss variables
 $course-box-border: 2px;
 
@@ -21,14 +20,14 @@ $course-box-border: 2px;
   border: solid $course-box-border var(--color-grey);
   transition:
     // transform 0.2s ease 0s,
-    box-shadow 0.3s ease 0s
-  ;
+    box-shadow 0.3s ease 0s;
   cursor: default;
   // @include breakpoint($tablet) {
   //   max-width: 404px;
   // }
 }
-:is(.course-box--disabled,.course-box--disabled *) {
+
+:is(.course-box--disabled, .course-box--disabled *) {
   filter: grayscale(100%);
   pointer-events: none;
   opacity: 0.8;
@@ -37,17 +36,18 @@ $course-box-border: 2px;
 
 .course-box:hover {
   box-shadow: var(--color-grey) 5px 5px 0 0;
-  // transform: scale(1.01,1.01);
+  // transform: scale(1.01, 1.01);
   // border: $course-box-border solid var(--color-grey);
   // border-bottom: $course-box-border solid var(--color-primary);
   // border-right: $course-box-border solid var(--color-primary);
+
   .course-box__cover {
     background-position: 55% 55%;
     transition: background-position 300ms ease-in-out;
   }
 }
 
-.course-box > * {
+.course-box>* {
   width: 100%;
   overflow: hidden;
   position: relative;
@@ -64,7 +64,7 @@ $course-box-border: 2px;
   top: 4px;
   left: 4px;
   height: 25px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 100vh;
   padding: 3px 2px;
 
@@ -92,11 +92,12 @@ $course-box-border: 2px;
       background-color: var(--color-grey-04);
       -webkit-mask-size: contain;
       -webkit-mask-repeat: no-repeat;
+
       background: {
         position: center;
         repeat: no-repeat;
         size: contain;
-        // color: var(--color-white);
+        color: var(--color-white);
       }
     }
   }
@@ -114,7 +115,7 @@ $course-box-border: 2px;
 
   .course-box__options {
     margin: 0 !important;
-    
+
     .dropdown-toggle {
       $dropdownToggleSize: 19px;
       width: $dropdownToggleSize;
@@ -180,7 +181,7 @@ $course-box-border: 2px;
   padding: 4px 10px 3px;
   top: 116px;
   left: 5px;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   color: var(--color-grey-04);
   border-radius: 100vh;
   font-weight: 600;
@@ -193,10 +194,12 @@ $course-box-border: 2px;
 .course-box__cover {
   position: relative;
   height: 140px;
+
   background: {
     image: url(images/course-box/course-box-bg.png);
     repeat: no-repeat;
   }
+
   background-position: 50% 50%;
   background-size: cover;
   transition: background-position 300ms ease-in-out;
@@ -233,17 +236,19 @@ $course-box-border: 2px;
   padding-left: 9px;
   background-color: var(--color-grey) !important;
 
- .course-box__closingdate__text {
-   display: block;
-   &:after {
-    content: ': ';
+  .course-box__closingdate__text {
+    display: block;
+
+    &:after {
+      content: ': ';
+    }
   }
- }
- .course-box__closingdate__value {
-   display: block;
-   font-weight: bold;
-   padding-right: 0.3rem;
- }
+
+  .course-box__closingdate__value {
+    display: block;
+    font-weight: bold;
+    padding-right: 0.3rem;
+  }
 }
 
 .course-box__extrainformation {
@@ -255,29 +260,37 @@ $course-box-border: 2px;
   // background-color: plum;
   display: flex;
   align-items: center;
-  & > * {
+
+  &>* {
     display: inline-block;
   }
+
   .course-box__next {
     flex: 1 0 61%;
     padding-left: 6px;
+
     .course-box__next__text {
       display: block;
+
       &::after {
         content: ': ';
       }
     }
+
     .course-box__next__value {
       display: block;
       font-weight: bold;
     }
   }
+
   .course-box__allDates {
     flex: 1 0 39%;
     padding-right: 1.4rem;
+
     a {
       color: var(--color-primary);
       text-decoration: none;
+
       &:hover {
         text-decoration: underline;
       }
@@ -303,6 +316,7 @@ $course-box-border: 2px;
     margin: auto 0 0 auto;
     position: relative;
     border-bottom-right-radius: 0;
+
     &::before {
       position: absolute;
       content: '';
@@ -313,22 +327,31 @@ $course-box-border: 2px;
       background-color: var(--color-primary);
       clip-path: polygon(100% 0, 105% 100%, 0 100%);
       transition: all 0.4s ease 0s;
-      border: 1px solid var(--color-primary);
+      border-width: 1px 0 1px 1px;
+      border-style: solid;
+      border-color: var(--color-primary);
+      outline: none !important;
     }
+
     &:hover {
-      background: var(--color-primary);
-      color: var(--color-primary-text);
-      border: 2px solid var(--color-primary);
+      background: var(--color-primary) !important;
+      color: var(--color-white) !important;
+
       .forma-button__label:after {
         animation-duration: 400ms;
         animation-name: formaButtonLabelAfter;
         animation-iteration-count: infinite;
         animation-direction: alternate;
       }
-      &::before {
-        background: var(--color-primary);
+
+      &:focus {
+        background: var(--color-primary) !important;
+        color: var(--color-white) !important;
+        border: none !important;
+        outline: none !important;
       }
     }
+
 
     .forma-button__label {
       left: -1rem;
@@ -348,7 +371,7 @@ $course-box-border: 2px;
       font-size: .8em !important;
       font-style: italic;
     }
-  
+
   }
 }
 
@@ -379,6 +402,7 @@ div {
       left: 9px;
       width: 20px;
       height: 20px;
+
       background: {
         position: center;
         repeat: no-repeat;
@@ -406,12 +430,12 @@ div {
     }
   }
 
-  i + .course-box__date-box {
+  i+.course-box__date-box {
     margin-right: 0;
     margin-bottom: 20px;
   }
 
-  .course-box__date-box + i {
+  .course-box__date-box+i {
     float: left;
     margin: 0 6px;
     padding-top: 18px;
@@ -453,6 +477,7 @@ div {
     background-color: var(--color-white);
     opacity: 0;
     visibility: hidden;
+
     transition: {
       property: z-index, opacity, visibility;
       duration: 0s, 0.25s;
@@ -770,6 +795,7 @@ div {
   //
   // Style guide: 3.2
 }
+
 .course-box--OLD-COMMENTED-CSS {
   display: none;
   // .course-box__item--half {
