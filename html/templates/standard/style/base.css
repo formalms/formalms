@@ -1946,8 +1946,10 @@ a:focus, a:hover {
     color: white!important;
 }
 
-.course-box__cta:focus {
-    color: white!important;
-    border: none!important;
-    outline: none!important;
+.course-box__cta .course-box__cta__button {
+    &:focus{
+        color: white;
+        border: none!important;
+        outline: 2px solid black;
+    }
 }
