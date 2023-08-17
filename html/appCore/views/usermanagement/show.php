@@ -50,7 +50,7 @@ if ($permissions['view_org']) {
 
     $this->widget('tree', [
         'id' => 'usertree',
-        'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettabledata&select_node=1',
+        'ajaxUrl' => 'ajax.adm_server.php?r=' . $this->link . '/gettreedata&select_node=1',
         'treeClass' => 'OrgFolderTree',
         'treeFile' => FormaLms\lib\Get::rel_path('adm') . '/views/usermanagement/orgchartfoldertree.js',
         'languages' => $languages,
