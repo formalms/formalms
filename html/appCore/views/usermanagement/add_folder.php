@@ -36,7 +36,7 @@ $body .= '<hr>';
 
 // adding custom fields (if any)
 
-$vett_custom_org = $this->model->getCustomFieldOrg($id);
+$vett_custom_org = $this->model->getCustomFieldOrg(isset($id) ?? 0);
 foreach ($vett_custom_org as $key => $value) {
     $valueField = $this->model->getValueCustom($id, $value['id_field']);
     if ($value['type_field'] == 'dropdown') {

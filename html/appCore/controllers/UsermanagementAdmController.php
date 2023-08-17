@@ -1485,7 +1485,6 @@ class UsermanagementAdmController extends AdmController
             'json' => $this->json,
             'template_array' => $template_array,
             'default_template' => $template_id,
-            'template_array' => $template_arr,
         ]);
     }
 
