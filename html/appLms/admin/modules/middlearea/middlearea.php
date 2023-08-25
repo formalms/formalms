@@ -19,8 +19,7 @@ function view_area()
 
     require_once _lms_ . '/lib/lib.middlearea.php';
 
-    $lang = &FormaLanguage::createInstance('middlearea', 'lms');
-    $lc = &FormaLanguage::createInstance('menu_course', 'lms');
+    $lang = FormaLanguage::createInstance('middlearea', 'lms');
 
     $query_menu = "SELECT mo.idModule, mo.default_name, module_name
     FROM %lms_module as mo WHERE mo.module_info IN ('all','user')
@@ -81,6 +80,9 @@ HTML;
     $list_pl = $pl->get_all_plugins();
 
     foreach ($list_pl as $key) {
+        if(!array_key_exists('name', $key)) {
+            continue;
+        }
         $plugin_name = strtolower($key['name']);
         $tab['tb_' . $plugin_name] = Lang::t('_' . strtoupper($key['name']), 'middlearea');
     }
@@ -90,6 +92,10 @@ HTML;
 
     while (list($obj_index, $is_home) = sql_fetch_row($re_tablist)) {
         $id = $obj_index;
+
+        if(!array_key_exists($id, $tab)) {
+            continue;
+        }
         $name = $tab[$id];
 
         $tab_list .= '<li id="' . $id . '">'
@@ -112,6 +118,11 @@ HTML;
         'news' => Lang::t('_NEWS', 'middlearea'),
         'mo_message' => Lang::t('_MESSAGES', 'menu_over'),
     ];
+
+    $eventBlocks = Events::trigger('core.arealms.read', ['blocks' => $block]); 
+
+    $block = $eventBlocks['blocks'];
+
     $slider_options = array_merge($block, $menu_on_slider);
     foreach ($slider_options as $id => $name) {
         $block_list .= '<div class="direct_block">'

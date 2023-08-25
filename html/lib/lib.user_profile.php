@@ -2297,6 +2297,10 @@ class UserProfileViewer
             $html .= '<div class="col-xs-4"><a class="btn btn-default" href="index.php?r=message/show&sop=unregistercourse">' . Lang::t('_MESSAGES', 'standard') . '</a></div>';
         }
 
+        $buttonsHtml = Events::trigger('lms.profile.buttons', ['manager' => $ma, 'html' => $html]);
+
+        $html = $buttonsHtml['html'];
+
         $html .= '</div>'; //chiusura pulsanti certificati-messaggi
 
         $pg = new PluginManager('UserProfile');
