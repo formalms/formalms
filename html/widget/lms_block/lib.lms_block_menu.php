@@ -105,12 +105,12 @@ class Lms_BlockWidget_menu extends Widget
             $openForm = $form->openForm('course_autoregistration', 'index.php?modname=course_autoregistration&amp;op=subscribe');
 
             $inputText = $form->getInputTextfield(Lang::t('_LBL_CODE', 'standard'), 'course_autoregistration_code', 'course_autoregistration_code', '', '', 30, ' size=30 placeholder="' . $str_code . '"');
-
+            $labelInput = $form->getlabel('course_autoregistration_code',Lang::t('_DIRECOTRY_SELFREGISTERED', 'dmin_directory'),'screenreader');
             $submitButton = $form->getButton('subscribe_info', 'subscribe_info', Lang::t('_LBL_SEND', 'standard'), 'button btn btn-default');
             $closeForm = $form->closeForm();
 
             $html .= '<div class="input-group">
-                           ' . $openForm . $inputText . '
+                           ' . $openForm . $inputText . $labelInput. '
                            <div class="input-group-btn">
                            ' . $submitButton . '
                            </div>
