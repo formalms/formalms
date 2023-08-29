@@ -55,7 +55,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-6">
-                <a href="javascript:void(0)" id="open_profile" role="button" aria-label="{{ Lang_translate('_PROFILE', 'screen_reader') }}" class="c-menu__close" aria-hidden="true"><span class="glyphicon glyphicon-remove">{{ Lang_translate('_PROFILE', 'profile') }}</span></a>
+                <a title="{{ Lang_translate('_PROFILE', 'profile') }}" href="javascript:void(0)" id="open_profile" role="button" aria-label="{{ Lang_translate('_PROFILE', 'screen_reader') }}" class="c-menu__close" aria-hidden="true">
+                    <span class="glyphicon glyphicon-remove">{{ Lang_translate('_PROFILE', 'profile') }}</span>
+                </a>
             </div>
             <div class="col-xs-6">
                 <a title="{{ Lang_translate('_LOGOUT', 'standard') }}" href="{{ Get_relPath('base') }}/index.php?r={{ Util_getConstant('_logout_') }}">
