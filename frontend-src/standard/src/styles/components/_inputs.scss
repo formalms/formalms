@@ -385,7 +385,7 @@
   max-width: 100%;
   &:hover {
     background-color: var(--color-grey);
-    color: var(--color-white);
+    color: var(--color-white)!important;
   }
 }
 
@@ -434,7 +434,7 @@
     transition: $transition-base;
 
     &:hover {
-      color: var(--color-primary);
+
     }
   }
 
@@ -446,6 +446,9 @@
       left: none;
       bottom: none;
       right: 1px solid var(--color-grey);
+    }
+    &:focus {
+      color: var(--color-grey-04);
     }
   }
 

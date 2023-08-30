@@ -1951,3 +1951,8 @@ a:focus, a:hover {
     border: none!important;
     outline: none!important;
 }
+
+.header__profile__button:focus, .c-menu__close:focus {
+    outline: 2px solid black!important;
+    border-radius: 2px;
+}

@@ -6,7 +6,7 @@
     <ul class="dropdown-menu" id="dropdownMenu_{{ tab.type }}" aria-labelledby="dropdownMenu_{{ tab.type }}">
         {% for el in lo_types %}
             <li id="type_{{ el.type }}" data-id="{{ el.type }}" class="folderView__li itemType">
-                <div class="folderView__el {% if el.type %}fv-is-{{ el.type }}{% else %}fv-is-folder{% endif %}">
+                <div class="folderView__el {% if el.type %}bg-fv-is-{{ el.type }}{% else %}bg-fv-is-folder{% endif %}">
                     <a href="#" class="folderView__label" title="{{ el.title }}">{{ el.title }}</a>
                 </div>
             </li>
