@@ -320,10 +320,11 @@ $course-box-border: 2px;
     &::before {
       position: absolute;
       content: '';
-      left: -20px;
+      left: -21px;
       top: 0;
       bottom: 0;
       width: 21px;
+      height: 41px;
       background-color: var(--color-primary);
       clip-path: polygon(100% 0, 105% 100%, 0 100%);
       transition: all 0.4s ease 0s;
