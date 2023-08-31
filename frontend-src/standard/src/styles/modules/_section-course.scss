@@ -260,7 +260,7 @@
 .forma-dropdown__selected {
   &:hover {
     background-color: var(--color-primary);
-    color: var(--color-primary-text);
+    color: var(--color-primary-text)!important;
     &:before {
       background: var(--color-primary-text) !important;
     }
